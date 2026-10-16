@@ -1,5 +1,5 @@
 {
-  "version": "0.84.0",
+  "version": "0.85.0",
   "max_year": 2027,
   "source_host": "foundation-roadmap-library08261-final100-20261016-04",
   "source_script_sha256": "de6ca0f3097b15e3437c58b91ac9ee80fead0ae4d772bc7736ae234aa2275711",
@@ -49,10 +49,36 @@
         1740,
         218
       ]
+    },
+    {
+      "id": "orchard",
+      "name": "Rectangular orchard",
+      "recipe": "orchard.csrecipe.json",
+      "scene": "orchard.max",
+      "thumbnail": "thumbnail-54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b.png",
+      "counts": [
+        35,
+        2200
+      ],
+      "source_host": "foundation-roadmap-grid0850-final100-20261016-03",
+      "source_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea"
+    },
+    {
+      "id": "hexagonal",
+      "name": "Hexagonal hillside planting",
+      "recipe": "hexagonal.csrecipe.json",
+      "scene": "hexagonal.max",
+      "thumbnail": "thumbnail-1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70.png",
+      "counts": [
+        247,
+        1800
+      ],
+      "source_host": "foundation-roadmap-grid0850-final100-20261016-03",
+      "source_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea"
     }
   ],
   "files": {
-    "README.md": "63faa4086a67802f24e704570b4d56c6cfa4068ed0be8fd9c36377e7a3218bcf",
+    "README.md": "382c8cfeba5bd4d653074e05eded0b06d4f78d8e518766bd6f998a87ec3e74c5",
     "borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
     "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
     "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
@@ -69,8 +95,16 @@
     "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
     "woodland.csrecipe.json": "0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee",
     "woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58",
-    "woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc"
+    "woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc",
+    "orchard.csrecipe.json": "54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b",
+    "orchard.max": "c1a15f730c1e3fdf4b983b082bc269c690606b176b8eb4fe725ac3d101f76102",
+    "thumbnail-54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b.png": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4",
+    "orchard.csrecipe.json.library.json": "2497156012614cca60b577b6f61b84f2c9f631e89f3bbaaa35483e944bf84971",
+    "hexagonal.csrecipe.json": "1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70",
+    "hexagonal.max": "1d3bb178ef4b2646c48b7f6c8b66ef04fefd4aaf84633b2436926501a0a7e94f",
+    "thumbnail-1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70.png": "92274aaaf6d5c6e3cb2386f8848de7fd4da688c73c9252130b830bc922c86fd4",
+    "hexagonal.csrecipe.json.library.json": "b8003fda4af5d5192734e212a10092baff5d690dded54a2b8c104968424034b3"
   },
-  "qualification_host": "foundation-roadmap-variation0840-successor100-20261016-09",
-  "qualification_script_sha256": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948"
+  "qualification_host": "foundation-roadmap-grid0850-final100-20261016-03",
+  "qualification_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea"
 }

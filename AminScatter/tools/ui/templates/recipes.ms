@@ -91,7 +91,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=3 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.84.0 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=4 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.85.0 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -122,7 +122,7 @@ fn CyrusRecipeCapture root selected name = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",3),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",2027),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",4),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",2027),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -294,7 +294,7 @@ fn CyrusRecipeSuggestBindings root document = (
 fn CyrusOpenRecipeLibrary root = (
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=1 do throw "Restart Max with the complete Cyrus 0.84.0 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=1 do throw "Restart Max with the complete Cyrus 0.85.0 package."
     if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
     rollout browser "Cyrus library - complete recipes" width:850 height:650 (
         local root=undefined,node=undefined,owners=#(),directory="",entries=#(),page=1,document=undefined,bindings=#(),layerChoices=#(),bindingControls=false

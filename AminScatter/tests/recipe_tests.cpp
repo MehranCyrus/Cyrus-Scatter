@@ -13,7 +13,7 @@ std::string file(const std::filesystem::path& p){std::ifstream in(p,std::ios::bi
 void put(const std::filesystem::path& p,const std::string& s){std::ofstream out(p,std::ios::binary|std::ios::trunc);out<<s;}
 }
 int main(){std::filesystem::path temporary;try{
-    const auto defaults=parse(file(CYRUS_RECIPE_DEFAULTS));validateSettings(defaults);check(fields().size()==235);
+    const auto defaults=parse(file(CYRUS_RECIPE_DEFAULTS));validateSettings(defaults);check(fields().size()==242);
     auto settings=defaults;settings.erase("paintDensity");rejected([&]{validateSettings(settings);});
     settings=defaults;settings["unknown"]=1;rejected([&]{validateSettings(settings);});
     settings=defaults;settings["alignNormal"]=1;rejected([&]{validateSettings(settings);});
@@ -34,9 +34,16 @@ int main(){std::filesystem::path temporary;try{
     Json paint={{"payload",hex(bytes)},{"receiverRole",nullptr},{"radius",.5},{"erase",true},{"frame",Json::array({1.,0.,0.,0.,1.,0.,0.,0.,1.,0.,0.,0.})}};
     Json layer={{"id","canopy"},{"name","Canopy"},{"enabled",true},{"visible",false},{"settings",defaults},{"paint",nullptr},{"areas",Json::array()}};
     layer["areas"].push_back({{"id","bed"},{"settings",defaults},{"receiverRole",nullptr},{"paint",paint}});
-    Json d={{"format","cyrus.planting-recipe"},{"formatVersion",3},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","fixture"},{"name","Complete hillside"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
+    Json d={{"format","cyrus.planting-recipe"},{"formatVersion",4},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","fixture"},{"name","Complete hillside"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
     validate(d);
-    auto v2=d;v2["formatVersion"]=2;
+    auto stripGrid=[](Json& settings){for(const auto* name:{"placementMode","gridColumnWU","gridRowWU","gridOriginXWU","gridOriginYWU","gridHeading","gridJitter"})settings.erase(name);};
+    auto v3=d;v3["formatVersion"]=3;stripGrid(v3["rootSettings"]);stripGrid(v3["layers"][0]["settings"]);stripGrid(v3["layers"][0]["areas"][0]["settings"]);
+    validate(v3);check(currentDocument(v3)==d);check(v3["formatVersion"]==3);
+    auto badGrid=v3;badGrid["rootSettings"]["placementMode"]=1;rejected([&]{validate(badGrid);});
+    auto grid=d;grid["layers"][0]["settings"]["placementMode"]=4;grid["layers"][0]["settings"]["gridColumnWU"]=37.125;grid["layers"][0]["settings"]["gridHeading"]=-31.;validate(grid);check(parse(grid.dump())==grid);
+    for(const auto* name:{"gridColumnWU","gridRowWU"}){auto invalid=defaults;invalid[name]=0.;rejected([&]{validateSettings(invalid);});}
+    auto invalid=defaults;invalid["placementMode"]=5;rejected([&]{validateSettings(invalid);});invalid=defaults;invalid["gridJitter"]=101.;rejected([&]{validateSettings(invalid);});
+    auto v2=v3;v2["formatVersion"]=2;
     v2["rootSettings"].erase("procReceiverVariationIDs");v2["layers"][0]["settings"].erase("procReceiverVariationIDs");v2["layers"][0]["areas"][0]["settings"].erase("procReceiverVariationIDs");
     validate(v2);check(currentDocument(v2)==d);check(v2["formatVersion"]==2);
     auto receiverV2=v2;auto& receiverSettings=receiverV2["layers"][0]["settings"];
@@ -53,7 +60,7 @@ int main(){std::filesystem::path temporary;try{
     variation=defaults;variation["procSourceNodes"]={nullptr,nullptr};variation["procSourceIDs"]={"same-source","same-source"};rejected([&]{validateSettings(variation);});
     variation=defaults;variation["sources"]={nullptr,nullptr};variation["sourceRowIDs"]={"same-row","same-row"};rejected([&]{validateSettings(variation);});
     variation=defaults;variation["procReceiverNodes"]={nullptr};variation["procReceiverIDs"]={""};variation["procReceiverVariationIDs"]={"valid"};rejected([&]{validateSettings(variation);});
-    auto legacy=d;legacy["formatVersion"]=1;
+    auto legacy=v3;legacy["formatVersion"]=1;
     auto strip=[](Json& settings){for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ","orientationTarget","procReceiverVariationIDs"})settings.erase(name);};
     strip(legacy["rootSettings"]);strip(legacy["layers"][0]["settings"]);strip(legacy["layers"][0]["areas"][0]["settings"]);
     validate(legacy);check(currentDocument(legacy)==d);check(legacy["formatVersion"]==1);
@@ -77,14 +84,15 @@ int main(){std::filesystem::path temporary;try{
     rejected([&]{parse("{\"bad\":NaN}");});rejected([&]{parse("{\"bad\":\"\xff\"}");});
     temporary=std::filesystem::temp_directory_path()/pathFromUTF8("cyrus-recipe-test-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
     std::filesystem::create_directory(temporary);const auto path=temporary/pathFromUTF8("hillside-\xc3\xa9.csrecipe.json");writeNew(path,d);check(read(path)==d);
+    const auto gridPath=temporary/"grid"/"recipe.json";writeNew(gridPath,grid);check(read(gridPath)==grid);
     const auto old=file(path);rejected([&]{writeNew(path,d);});check(file(path)==old);
     const auto manifest=read(path,false);check(manifest["layers"][0]["areas"][0]["paint"]["payload"].is_object());
     const auto relative=manifest["layers"][0]["areas"][0]["paint"]["payload"]["file"].get<std::string>();check(file(path.parent_path()/pathFromUTF8(relative))==std::string(bytes.begin(),bytes.end()));
-    auto malformed=manifest;malformed["formatVersion"]=4;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
+    auto malformed=manifest;malformed["formatVersion"]=5;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     malformed=manifest;malformed["layers"][0]["areas"][0]["paint"]["payload"]["file"]="../outside.cspaint";put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     put(path.parent_path()/pathFromUTF8(relative),"corrupt");rejected([&]{read(path);});
     // Metadata browsing never reads/hydrates Paint attachments.
     check(read(path,false)["name"]==d["name"]);
     check(!std::filesystem::exists(temporary/"outside.cspaint"));
     std::filesystem::remove_all(temporary);temporary.clear();std::cout<<"PASS: "<<assertions<<" recipe assertions; typed completeness, exact Paint, hashes, bounded parsing, atomic new saves and traversal rejection\n";return 0;
-}catch(const std::exception& e){if(!temporary.empty()){std::error_code ignored;std::filesystem::remove_all(temporary,ignored);}std::cerr<<e.what()<<'\n';return 1;}}
+}catch(const std::exception& e){if(!temporary.empty()){std::error_code ignored;std::filesystem::remove_all(temporary,ignored);}std::cerr<<"after "<<assertions<<" assertions: "<<e.what()<<'\n';return 1;}}

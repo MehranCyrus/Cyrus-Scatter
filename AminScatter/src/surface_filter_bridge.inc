@@ -54,8 +54,8 @@ Value* cyrusSurfaceFilter_cf(Value** a,int n){
                 const auto id=proceduralID(row->data[2]);
                 if(id.rfind("c:",0)!=0)throw RuntimeError(_T("Unprotected surface filter row has no candidate identity"));
                 std::size_t used=0;const auto encoded=std::stoull(id.substr(2),&used);
-                unsigned slot=0,ordinal=0;
-                if(used!=id.size()-2||!cyrus::receivers::decode(encoded,slot,ordinal))throw RuntimeError(_T("Invalid surface filter candidate identity"));
+                unsigned slot=0;std::uint64_t ordinal=0;
+                if(used!=id.size()-2||!cyrus::receivers::decodeCandidate(encoded,slot,ordinal))throw RuntimeError(_T("Invalid surface filter candidate identity"));
                 auto found=std::find_if(receivers.begin(),receivers.end(),[&](const Receiver& r){return r.slot==slot;});
                 if(found==receivers.end())throw RuntimeError(_T("Surface filter candidate receiver is missing"));
                 const auto face=std::size_t(row->data[3]->to_int()-1);

@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.85.0",
+      "date": "2026-10-16",
+      "title": "Regular planting grids and two more presets.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 qualification and MZP; not installed. Physical DPI, heavy heap-pressure Undo and the remaining program/EXE remain open.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Rectangular, Staggered and Hexagonal positions with physical spacing, fixed world origin/heading and stable jitter, independent of source assignment."
+        },
+        {
+          "kind": "Improved",
+          "text": "Cached projection and complete 64-bit cell identities integrate masks, Paint, Bands, orientation, Edit and spacing. Inactive Count/Density/refill animation does no grid work."
+        },
+        {
+          "kind": "Added",
+          "text": "Orchard and hexagonal hillside recipes with real result thumbnails and editable scenes; six examples are bundled. Complete/numeric presets use formats 4/3 with strict earlier reads."
+        }
+      ],
+      "evidence": [
+        "docs/plans/improvement-program/I06_0850.md"
+      ]
+    },
+    {
       "version": "0.84.0",
       "date": "2026-10-16",
       "title": "Explicit copy and recipe variation.",

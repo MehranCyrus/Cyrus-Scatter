@@ -1,8 +1,8 @@
-# Cyrus Scatter 0.84.0 — current source workflow
+# Cyrus Scatter 0.85.0 — current source workflow
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) is independent of scene format. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Supported scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md).
 
-Updated 16 October 2026. Source 0.84.0 adds [explicit copy/import variation choices](plans/improvement-program/I05_0840.md). The preceding 0.83.0 adds [direction/target orientation and angular normal blending](plans/improvement-program/I04_0830.md). The preceding 0.82.6.1 adds searchable complete recipes, categories/tags, stored thumbnails and four procedural examples with compatible demonstration scenes; see [current evidence and acceptance](plans/improvement-program/I03_08261.md). It retains the [0.82.6 panel responsiveness improvements](plans/panel-performance-0826/PROGRESS.md), [complete static recipes including Paint](plans/recipes-0825/PROGRESS.md), mesh-channel density, Paint tooltips and earlier phase features. The matched pair is tested in isolated Max 2027 profiles and packaged for manual installation. The [active program](plans/improvement-program/PROGRESS.md) resumes Phase 6; later features are still pending. Historical receipts remain unchanged; physical artist acceptance is separate.
+Updated 16 October 2026. Source 0.85.0 adds [regular grids and two new example presets](plans/improvement-program/I06_0850.md). The preceding 0.84.0 adds [explicit copy/import variation choices](plans/improvement-program/I05_0840.md). The preceding 0.83.0 adds [direction/target orientation and angular normal blending](plans/improvement-program/I04_0830.md). The preceding 0.82.6.1 adds searchable complete recipes, categories/tags, stored thumbnails and four procedural examples with compatible demonstration scenes; see [current evidence and acceptance](plans/improvement-program/I03_08261.md). It retains the [0.82.6 panel responsiveness improvements](plans/panel-performance-0826/PROGRESS.md), [complete static recipes including Paint](plans/recipes-0825/PROGRESS.md), mesh-channel density, Paint tooltips and earlier phase features. The matched pair is tested in isolated Max 2027 profiles and packaged for manual installation. The [active program](plans/improvement-program/PROGRESS.md) resumes Phase 6; later features are still pending. Historical receipts remain unchanged; physical artist acceptance is separate.
 
 Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
@@ -48,7 +48,20 @@ In a Band, choose **Models used by this Band** directly below its width/range, b
 
 ## Layout and Amount
 
-Layout is directly after Models. It assigns models to candidate positions:
+Layout is directly after Models. **Planting positions** chooses the generator; **Source assignment** below it chooses models independently.
+
+| Planting positions | Controls and behavior |
+| --- | --- |
+| Surface random | Existing surface sampling with Count or area Density |
+| Rectangular | Independent column and row spacing |
+| Staggered | Row spacing plus alternate half-column offsets |
+| Hexagonal | One nearest-neighbor distance; row pitch is calculated |
+
+For grids, set **Origin X/Y**, **Heading** and optional **Jitter %**. The frame is world XY and projects down onto the highest hit of each receiver. It stays fixed when terrain bounds or masks change. Zero jitter keeps exact lattice positions. Completely vertical receivers have no usable projected surface.
+
+Grid pitch determines population. Count/Density and target/refill controls are inactive; masks and collision rules remove cells without adding replacements. Paint, Bands and normal controls keep their existing roles. Analyzer Single/EdgeRow provides its own positions and cannot be combined with grids. Grid cells over holes still count toward the shared one-million work limit; excessive bounds retain the preceding result and request larger spacing or a smaller domain. Authored CS Edit/radius bindings still require explicit reset/restore when generation geometry changes.
+
+Source assignment offers:
 
 | Mode | Use | Important limit |
 | --- | --- | --- |
@@ -65,7 +78,7 @@ For Bands, add a closed Path, add an inside/outside Band, and explicitly choose 
 
 Distances remain world-space widths when the Path is scaled. **Rounded** uses distance to the original border segments. **Sharp** uses bounded miter offsets; acute corners have a miter limit, and overly narrow or complex requests may require simplification. The preview shows the admitted contours rather than promising unlimited corner precision.
 
-Amount offers fixed Count or area Density. The seed makes a given recipe reproducible. Sampling can use a texture mask. Candidate budget makes a bounded candidate request; restrictions can leave fewer accepted plants. Accepted target makes additional bounded attempts. A shortfall can be correct when spacing, boundaries or masks leave insufficient room. Increasing retry work cannot make an impossible arrangement fit.
+With Surface random, Amount offers fixed Count or area Density. The seed makes a given recipe reproducible. Sampling can use a texture mask. Candidate budget makes a bounded candidate request; restrictions can leave fewer accepted plants. Accepted target makes additional bounded attempts. A shortfall can be correct when spacing, boundaries or masks leave insufficient room. Increasing retry work cannot make an impossible arrangement fit.
 
 Count accepts up to **1,000,000** per population. All populations on one controller share a **1,000,000-candidate work limit**, including retry and protected-edit requirements. Exceeding the shared limit reports an error and keeps the preceding complete result. This limit is separate from the viewport display budget. Texture Density requires valid mapping in the selected UV channel on every receiver; errors identify the receiver and channel.
 
@@ -154,7 +167,7 @@ Select a recipe and choose **Review bindings**. Pick the destination scene objec
 
 Paint binding requires compatible evaluated geometry, receiver frame and saved system units. Incompatible terrain blocks the import and retains the existing setup; there is no full-surface fallback. Already orphaned coverage can be retained unbound, with its original bytes and known frame, but cannot be activated on arbitrary terrain. Older orphan documents with unknown frames remain unknown. Field overlays stay off on imported layers; enable them explicitly if needed. Manual mode waits for **Update scatter**; Live publishes through the normal dependency callbacks. Browsing and binding review do no scattering work.
 
-Save Everything currently supports static settings. Authored Scatter Edit deltas, per-instance radius overrides and animated/wired/expression or unknown parameter controllers block the complete save with an explanation; their scene data is preserved. Stop any brush gesture before saving/importing. The library indexes up to 10,000 recipes and displays 128 rows per page; a limit warning requests a smaller folder. Scans use a file-only worker; listing never hydrates Paint attachments or scatters plants. Arbitrary-terrain Paint projection, asset import and recipe blending remain future work. The included meadow, woodland, mountain and painted-border examples have actual-result thumbnails and matching `.max` scenes under `<Max user scripts>/CyrusScatter/Library-0.84.0`. Open a copy of a matching scene before testing compatible bindings. See the [four-example inventory](plans/improvement-program/I03_08261.md).
+Save Everything currently supports static settings. Authored Scatter Edit deltas, per-instance radius overrides and animated/wired/expression or unknown parameter controllers block the complete save with an explanation; their scene data is preserved. Stop any brush gesture before saving/importing. The library indexes up to 10,000 recipes and displays 128 rows per page; a limit warning requests a smaller folder. Scans use a file-only worker; listing never hydrates Paint attachments or scatters plants. Arbitrary-terrain Paint projection, asset import and recipe blending remain future work. The six included meadow, woodland, mountain, painted-border, orchard and hexagonal hillside examples have actual-result thumbnails and matching `.max` scenes under `<Max user scripts>/CyrusScatter/Library-0.85.0`. Open a copy of a matching scene before testing compatible bindings. See the [six-example inventory](../AminScatter/library/README.md).
 
 ## Named settings and curve presets
 
@@ -221,7 +234,7 @@ Transforms show X Min/Max, Y Min/Max and Z Min/Max side by side for rotation, sc
 
 **Align to normal / Normal %** chooses preferred up: disabled or 0% uses world +Z, 100% uses the geometric face normal, and intermediate values blend angularly. In direction modes this controls roll while preserving the heading. Slope eligibility stays independent. Coincident targets and parallel heading/up have deterministic fallbacks. Missing targets/zero vectors report an error and keep the last complete plants. Manual waits for Update; Live follows relevant target/parent or orientation animation. Target geometry changes with an unchanged pivot do not recalculate scatter. See the [orientation guide and limits](plans/improvement-program/I04_0830.md).
 
-New complete recipes use format 3; numeric settings presets remain format 2. Existing complete recipes in formats 1/2 derive random domains from their original receiver identities. Format 1 also receives neutral orientation defaults; files and Paint are not rewritten. Complete recipes bind target roles explicitly. The four bundled format-1 examples remain usable through this qualified conversion.
+New complete recipes use format 4; numeric settings presets use format 3. Earlier complete formats 1/2/3 receive neutral Surface random defaults. Formats 1/2 retain their original receiver variation, and format 1 receives neutral orientation defaults. Files and Paint are not rewritten. Grid distances convert with scene units. The original four format-1 examples and the two new format-4 grid examples are qualified; explicit target bindings still apply.
 
 Fresh ordinary layers expose Within this layer and Between layers spacing. Clearance is **factor × (radius A + radius B) + gap**. XY ignores vertical distance; 3D includes it. Each relationship has its own settings. Per-instance radius overrides belong to stable instance identities; generator changes can require an explicit clear instead of silently rebinding edits.
 

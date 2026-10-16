@@ -8,7 +8,7 @@ context, not the active execution boundary.
 
 15 October 2026. **Original plan; I01/I02 subsequently implemented as 0.82.6. Phase 6 remains paused.** See the [implementation and scoped qualification](../panel-performance-0826/PROGRESS.md); I03 onward remain planning only. No implementation, Max testing, build, version change, installation or Git publication is authorized by this document. The user requested a detailed comparison-based plan, ordered from easiest to hardest, with performance and testing for every step.
 
-This is a research supplement to the [existing eleven-phase roadmap](README.md), not a replacement execution program. Its **I01–I18 identifiers are difficulty ranks**, not product phases or versions. The existing [TODO](TODO.md) remains the phase execution ledger; [BACKLOG](../../BACKLOG.md) remains the defect/acceptance ledger. The step specifications below preserve the original proposal. **I01/I02 are now implemented in 0.82.6; I03-I18 remain proposed.** Starting one later requires an implementation scope; listing P06 here does not resume it.
+This is a research supplement to the [existing eleven-phase roadmap](README.md), not a replacement execution program. Its **I01–I18 identifiers are difficulty ranks**, not product phases or versions. The existing [TODO](TODO.md) remains the phase execution ledger; [BACKLOG](../../BACKLOG.md) remains the defect/acceptance ledger. The step specifications below preserve the original proposal. **I01–I06 are implemented under the active goal, with scoped evidence in the current ledger.** Later item descriptions remain proposals until their bounded implementation and qualification pass.
 
 ## Original planning baseline and evidence
 
@@ -45,7 +45,7 @@ Difficulty is relative engineering risk, not a duration estimate. Adjacent ranks
 | I03 | Recipe browser and completeness feedback | Small–medium | Existing 0.82.5 service | P10 follow-up |
 | I04 | Direction controls and controlled normal blending | Medium | Existing final-transform/radius contract | P07; ranking does not reorder P06/P07 execution |
 | I05 | Explicit variation policy for copy/import | Medium, high semantic risk | Identity/persistence audit | P10 follow-up; F02/F11 |
-| I06 | Rectangular, staggered and hexagonal layouts | Medium | Stable domain IDs and projection contract | **P06 — paused** |
+| I06 | Rectangular, staggered and hexagonal layouts | Medium | Stable domain IDs and projection contract | **P06 — scoped-qualified in 0.85.0** |
 | I07 | Path spacing, sequences and reference placement | Medium–large | I04/I06 shared services where actually needed | P08 |
 | I08 | Scale/rotation maps and map-driven model selection | Medium–large | Map snapshot contract; final transforms | P09 |
 | I09 | Shared evaluated terrain snapshots | Large, high performance value | I01 proves extraction cost | Cross-cutting performance; P11 support |
@@ -131,7 +131,7 @@ Recommended priorities after a future implementation authorization: establish I0
 
 **Tests:** analytic coordinate/count oracle for all layouts; shifted/rotated/negative origins; known row offsets; clipped borders/holes; terrain transforms; overlapping receivers; unit conversion; stable surviving cells after domain expansion; zero/tiny spacing rejection; candidate-limit failure preserves old output.
 
-**Exit:** P06's existing acceptance and generated UI/recipe field accounting pass. No implementation starts under this plan. F02/F05/F06/F09/F10.
+**Exit:** Implemented and scoped-qualified as [I06/P06 0.85.0](../improvement-program/I06_0850.md). Final contract uses spacing-defined population with Count/Density inactive, world-XY highest-hit projection and bounded sparse-domain enumeration. F02/F05/F06/F09/F10.
 
 ## I07 — path spacing, repeating sequences and reference placement
 
@@ -354,4 +354,4 @@ These links point to local research evidence, which is outside the Cyrus Git rep
 
 For the existing Cyrus recipe architecture, retain the [research contract](../../Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md) as broader design and the [0.82.5 format](../recipes-0825/FORMAT.md) as the implemented wire contract. For the original phase outcomes, retain [IMPLEMENTATION](IMPLEMENTATION.md) and [VALIDATION](VALIDATION.md). Planning is complete. I01/I02 implementation and scoped acceptance are recorded in the [0.82.6 handoff](../panel-performance-0826/PROGRESS.md); later steps and their acceptance gates remain pending. Phase 6 stays paused.
 
-Current successor: [I05 0.84.0 variation policy](../improvement-program/I05_0840.md), following [I04/P07 direction and normal blending](../improvement-program/I04_0830.md). P06 grids and the remaining program stay open; B26 heap-pressure Undo work is unresolved. Historical version proposals above do not select future delivery numbers.
+Current successor: [I06/P06 0.85.0 grids](../improvement-program/I06_0850.md), following [I05 variation](../improvement-program/I05_0840.md) and [I04/P07 direction](../improvement-program/I04_0830.md). Six examples are scoped-qualified. I07/P08 paths is next; B26 and the remaining program/EXE stay open. Historical version proposals do not select future delivery numbers.

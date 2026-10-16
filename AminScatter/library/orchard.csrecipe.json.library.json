@@ -1,0 +1,20 @@
+{
+  "format": "cyrus.recipe-library",
+  "metadata": {
+    "category": "Orchards",
+    "description": "World-aligned rectangular tree rows with independent groundcover. Change column and row pitch without moving the lattice origin. Replace the pyramids with your tree models.",
+    "tags": [
+      "grid",
+      "rectangular",
+      "trees",
+      "groundcover"
+    ]
+  },
+  "recipeSHA256": "54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b",
+  "thumbnail": {
+    "bytes": 276154,
+    "file": "thumbnail-54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b.png",
+    "sha256": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4"
+  },
+  "version": 1
+}

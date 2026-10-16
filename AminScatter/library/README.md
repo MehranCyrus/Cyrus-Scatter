@@ -1,8 +1,6 @@
 # Cyrus planting examples
 
-Four editable examples originally captured for Cyrus Scatter 0.82.6.1, requalified for 0.83.0 and 3ds Max 2027. Their original format-1 recipe bytes, compatible scenes and thumbnails are retained; format 2 reads them with neutral orientation defaults. They use
-procedural pyramids as groundcover, shrubs, flowers and trees. Replace these model
-roles with your own assets; no third-party vegetation library is required.
+Six editable procedural examples for Cyrus Scatter 0.85.0 and 3ds Max 2027. The original four format-1 recipes, scenes and thumbnails remain unchanged; format 4 reads them with neutral defaults. The orchard and hexagonal hillside examples use format 4 and the grid generator. Replace their pyramids and simple flower shapes with your own models; no third-party vegetation library is required.
 
 | Example | Demonstrates |
 | --- | --- |
@@ -10,6 +8,8 @@ roles with your own assets; no third-party vegetation library is required.
 | Trees and understory | Upright canopy, shrubs and normal-aligned groundcover |
 | Mountain planting | Soft slope/altitude exclusion, upright trees and aligned groundcover |
 | Painted garden and spline borders | Saved Paint with a clearing, density/scale fading and two spline Bands |
+| Rectangular orchard | Even tree rows with independent low groundcover |
+| Hexagonal hillside planting | Regular nearest-neighbor planting, surface projection and normal blending |
 
 Open the matching `.max` file to inspect the editable result. Select the Cyrus
 controller, choose a layer, change settings and press **Update scatter**. These
@@ -37,7 +37,7 @@ overwritten by later versions. Keep each recipe, its Paint payload folder,
 
 Thumbnails are actual renders of the saved accepted placements. These are
 demonstration assets, not botanical models or renderer-specific proxy packages.
-Grid/path examples will be added when their features are delivered.
+Grid presets use explicit world XY origins. Spacing determines their population; masks and collision rules thin it. Path and formal-garden examples remain planned.
 
 ## Content permission
 

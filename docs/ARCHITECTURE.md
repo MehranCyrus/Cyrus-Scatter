@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to development source Cyrus Scatter 0.81.8, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unrelated unfinished work, and [current feedback evidence](plans/eleven-phase-roadmap/P01.md) for measured acceptance and remaining gates. The [preceding viewport evidence](plans/terrace-0815/VIEWPORT_0817.md) and [Bands record](plans/spline-bands/PROGRESS.md) preserve their own qualification. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated reports describe their own snapshots.
+Applies to development source Cyrus Scatter 0.85.0, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unrelated unfinished work, and [current grid evidence](plans/improvement-program/I06_0850.md) for measured acceptance and remaining gates. The [preceding viewport evidence](plans/terrace-0815/VIEWPORT_0817.md) and [Bands record](plans/spline-bands/PROGRESS.md) preserve their own qualification. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated reports describe their own snapshots.
 
 ## Ownership
 
@@ -178,3 +178,9 @@ Canonical receiver candidates retain random local transforms and an immutable co
 ## Variation domains (0.84.0)
 
 Receiver correspondence and receiver randomness are now distinct. The appended schema-58 `variationSettings` block stores `procReceiverVariationIDs`; an empty scene array resolves to existing receiver IDs, preserving preceding output. Copy/import remap correspondence and independently retain or regenerate variation. Sampler, mesh-density and slope/altitude stochastic filters consume the same effective domain. Cache keys invalidate only affected receivers; nondefault domains enter the receiver binding value, so stale authored overrides fail while default bindings retain their exact preceding representation. See [format 3](plans/improvement-program/FORMAT_3.md) and [qualification](plans/improvement-program/I05_0840.md). Native Paint remains receiver-bound. Numeric settings format stays 2. B26 tracks observed heavy MAXScript heap growth clearing Undo; this delivery does not close the allocation problem.
+
+## Regular placement generators (0.85.0)
+
+Layer-owned grid settings append a schema-58 block. A bounded world-XY lattice projects onto the highest hit of each evaluated receiver through a copied-data triangle hierarchy. The immutable GC-owned snapshot holds geometry and anchored candidates without node pointers. Existing assignment, transformation, Paint, mask, orientation, Edit and final-spacing stages consume those anchors. New positive 64-bit cell IDs are disjoint from unchanged random ordinals; every receiver transport/filter/orientation/Edit consumer preserves their full local key. Signed lattice coordinates keep common identities independent of the receiver bounds.
+
+Snapshot keys use evaluated geometry, exact grid settings, required UV mapping, seed and receiver variation. Root admission counts enumerated cells, including holes, across all layers. Invalid successors retain prior publication. Inactive grid settings in Surface random and inactive Count/Density/refill settings in grids do not expire candidate validity. Recipe/numeric formats are now 4/3; see [format 4](plans/improvement-program/FORMAT_4.md). Limits, measured geometry extraction, collection behavior and still-open I09/I10/I11 work are documented in [I06](plans/improvement-program/I06_0850.md).

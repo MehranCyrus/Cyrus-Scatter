@@ -75,6 +75,12 @@ bool orientationField(const MCHAR* name){
     return false;
 }
 void settingsValidity(ReferenceTarget* owner, TimeValue t, Interval& valid,bool excludeOrientation=false) {
+    int placementMode=1;
+    if(excludeOrientation)for(int b=0;b<owner->NumParamBlocks();++b){auto* block=owner->GetParamBlock(b);if(!block)continue;
+        for(int p=0;p<block->NumParams();++p){const auto id=block->IndextoID(p);const auto* name=block->GetParamDef(id).int_name;
+            if(name&&_tcscmp(name,_T("placementMode"))==0)placementMode=block->GetInt(id,t);
+        }
+    }
     for (int b = 0; b < owner->NumParamBlocks(); ++b) {
         auto* block = owner->GetParamBlock(b);
         if (!block) continue;
@@ -83,6 +89,18 @@ void settingsValidity(ReferenceTarget* owner, TimeValue t, Interval& valid,bool 
         for (int p = 0; p < block->NumParams(); ++p) {
             const auto id = block->IndextoID(p);
             if(excludeOrientation&&orientationField(block->GetParamDef(id).int_name))continue;
+            if(excludeOrientation){const auto* name=block->GetParamDef(id).int_name;
+                if(name&&((_tcsncmp(name,_T("grid"),4)==0&&placementMode==1)||
+                    (_tcscmp(name,_T("gridRowWU"))==0&&placementMode==4)))continue;
+                // Grid population is determined by pitch and receiver coverage.
+                // Inactive Count/Density/refill animation must not expire its
+                // candidate interval or make unchanged rows publish again.
+                if(name&&placementMode>1){bool inactive=false;
+                    for(const auto* field:{_T("amount"),_T("plantsPerM2"),_T("populationMode"),_T("procPopulation"),_T("procAttemptFactor"),_T("procRounds"),_T("procRepair")})
+                        if(_tcscmp(name,field)==0){inactive=true;break;}
+                    if(inactive)continue;
+                }
+            }
             const int entries = is_tab(block->GetParameterType(id)) ? block->Count(id) : 1;
             for (int i = 0; i < entries; ++i)
                 controllerValidity(block->GetControllerByIndex(p, i), t, valid);

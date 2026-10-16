@@ -14,6 +14,9 @@ Vec3 operator*(Vec3 a, double s);
 double dot(Vec3 a, Vec3 b);
 double length(Vec3 a);
 struct Triangle { Vec3 a, b, c; Vec3 uvA{}, uvB{}, uvC{}; };
+// Immutable numeric generator output. Keys are local to a receiver and remain
+// independent of enumeration/compaction order (e.g. signed lattice cells).
+struct CandidateAnchor { std::uint64_t key{}; Vec3 position{},bary{}; std::uint32_t face{}; };
 struct Range { double min{}, max{}; };
 struct Area { std::vector<std::vector<Vec3>> loops; bool include{true}; };
 struct AnalyzerBand { Area boundary; double width{1}; std::vector<std::uint32_t> sources; double scaleMin{1},scaleMax{1};
@@ -82,6 +85,10 @@ Settings prepareEdgeRows(const Settings&);
 // All surface vertices must already be in world space. Source vertices are in
 // pivot-local space. Empty/degenerate/non-finite input raises invalid_argument.
 std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& settings);
+// Reuses the complete scatter pipeline with explicit, already projected anchors.
+// count must equal anchors.size(), candidateStart must be zero. No random refill.
+std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& settings,
+                              const std::vector<CandidateAnchor>& anchors);
 struct FinalSettings { bool cleanup{false},relax{false},planar{true}; double radius{1},strength{.3},maxMove{.1},gap{0}; unsigned minNeighbors{2},minIsland{5},iterations{5}; };
 // Optional caller-owned budget. Procedural replay shares the remaining budget
 // with spacing; direct numerical callers may omit this budget.

@@ -50,8 +50,8 @@ Value* cyrusOrientSurfaceRows_cf(Value** a,int n){
         for(int axis:axes)if(axis<1||axis>4)throw RuntimeError(_T("Invalid orientation source axis"));
         output.reserve(rows->size);
         for(int i=0;i<rows->size;++i){
-            auto row=placementInstance(groupArray(rows->data[i]));unsigned slot=0,ordinal=0;
-            if(!cyrus::receivers::decode(row.candidateKey,slot,ordinal)||slot>=snapshots.size())throw RuntimeError(_T("Orientation candidate has no valid receiver"));
+            auto row=placementInstance(groupArray(rows->data[i]));unsigned slot=0;std::uint64_t localKey=0;
+            if(!cyrus::receivers::decodeCandidate(row.candidateKey,slot,localKey)||slot>=snapshots.size())throw RuntimeError(_T("Orientation candidate has no valid receiver"));
             const auto& snapshot=snapshots[slot];
             if(!snapshot.normals||row.triangle<snapshot.begin||row.triangle-snapshot.begin>=snapshot.normals->size())throw RuntimeError(_T("Orientation face belongs to another receiver"));
             if(row.source>=axes.size())throw RuntimeError(_T("Orientation source axis is missing"));

@@ -93,7 +93,7 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 | P03 | 0.82.0 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Implemented, qualified and pushed under original label |
 | P04 | 0.82.1 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Implemented, qualified and pushed under original label |
 | P05 | 0.82.2 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Implemented, qualified and pushed under original label; corrected 0.82.2 label compiled for Max 2027 |
-| P06 | 0.82.7 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned; paused before implementation |
+| P06 | 0.85.0 (I06) | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Scoped Max 2027 qualification and package passed; see I06 handoff |
 | P07 | 0.83.0 | Target/direction orientation controls | Medium | Final-transform and radius contracts; active-goal sequencing | Delivered in I04; scoped qualification |
 | P08 | 0.82.9 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
 | P09 | 0.83.0 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
@@ -175,4 +175,4 @@ planting, a new advanced Edit system, renderer/material expansion, edge trimming
 animation/geometry LOD, general curved-surface painting and an Effects framework.
 Do not make them hidden prerequisites for finishing phases 1–11.
 
-Current successor: [I05 0.84.0 variation policy](../improvement-program/I05_0840.md), following [I04/P07 direction and normal blending](../improvement-program/I04_0830.md). P06 grids and the remaining program stay open; B26 heap-pressure Undo work is unresolved. Historical version proposals above do not select future delivery numbers.
+Current successor: [I06/P06 0.85.0 grids](../improvement-program/I06_0850.md), following [I05 variation](../improvement-program/I05_0840.md) and [I04/P07 direction](../improvement-program/I04_0830.md). Six examples are scoped-qualified. I07/P08 paths is next; B26 and the remaining program/EXE stay open. Historical version proposals do not select future delivery numbers.

@@ -21,7 +21,9 @@ const std::vector<Field>& fields(const std::string& category){
         {"amount",K::integer,0,1000000},{"populationMode",K::integer,1,2},
         {"plantsPerM2",K::number,0,1e9},{"randomSeed",K::integer,0,2147483647},
         {"procPopulation",K::integer,1,2},{"procAttemptFactor",K::integer,1,32},
-        {"procRounds",K::integer,1,16},{"procRepair",K::boolean,0,1}};
+        {"procRounds",K::integer,1,16},{"procRepair",K::boolean,0,1},
+        {"placementMode",K::integer,1,4},{"gridColumnWU",K::number,.0001,1e9,true},{"gridRowWU",K::number,.0001,1e9,true},
+        {"gridOriginXWU",K::number,-1e9,1e9,true},{"gridOriginYWU",K::number,-1e9,1e9,true},{"gridHeading",K::number,-36000,36000},{"gridJitter",K::number,0,100}};
     static const std::vector<Field> transforms={
         {"advancedAxes",K::boolean,0,1},{"alignNormal",K::boolean,0,1},{"projectMove",K::boolean,0,1},
         {"rotXMin",K::number,-36000,36000},{"rotXMax",K::number,-36000,36000},
@@ -91,7 +93,7 @@ Document parse(const std::string& text){
     };
     auto json=Json::parse(text,callback);
     keys(json,{"format","version","category","name","values"});
-    require(json["format"]=="cyrus.settings-preset"&&json["version"].is_number_integer()&&(json["version"]==1||json["version"]==2),"Unsupported preset format/version");
+    require(json["format"]=="cyrus.settings-preset"&&json["version"].is_number_integer()&&(json["version"]==1||json["version"]==2||json["version"]==3),"Unsupported preset format/version");
     require(json["category"].is_string()&&json["name"].is_string(),"Invalid preset metadata");
     Document d;d.category=json["category"].get<std::string>();d.name=json["name"].get<std::string>();
     if(json["version"]==1&&d.category=="transforms"){
@@ -100,6 +102,11 @@ Document parse(const std::string& text){
         auto& values=json["values"];require(values.is_object(),"Invalid transform values");
         for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ"})require(!values.contains(name),"Orientation fields require preset version 2");
         values["orientationMode"]=1;values["orientationBlend"]=100.;values["orientationX"]=0.;values["orientationY"]=1.;values["orientationZ"]=0.;
+    }
+    if(json["version"]!=3&&d.category=="population"){
+        auto& v=json["values"];require(v.is_object(),"Invalid population values");
+        for(const auto* name:{"placementMode","gridColumnWU","gridRowWU","gridOriginXWU","gridOriginYWU","gridHeading","gridJitter"})require(!v.contains(name),"Grid fields require preset version 3");
+        v["placementMode"]=1;v["gridColumnWU"]=1.;v["gridRowWU"]=1.;v["gridOriginXWU"]=0.;v["gridOriginYWU"]=0.;v["gridHeading"]=0.;v["gridJitter"]=0.;
     }
     const auto& spec=fields(d.category);const auto& values=json["values"];
     if(curve(d.category)){
@@ -129,7 +136,7 @@ std::string serialize(const Document& d){
         else if(spec[i].kind==K::integer)values[spec[i].name]=static_cast<std::int64_t>(d.values[i]);
         else values[spec[i].name]=d.values[i];
     }}
-    const auto text=Json{{"format","cyrus.settings-preset"},{"version",2},{"category",d.category},{"name",d.name},{"values",values}}.dump(2)+"\n";
+    const auto text=Json{{"format","cyrus.settings-preset"},{"version",3},{"category",d.category},{"name",d.name},{"values",values}}.dump(2)+"\n";
     require(text.size()<=maxBytes,"Preset exceeds 64 KiB");return text;
 }
 }

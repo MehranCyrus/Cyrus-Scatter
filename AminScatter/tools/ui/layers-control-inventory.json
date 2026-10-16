@@ -364,6 +364,36 @@
         "name": "removeContainer"
       }
     ],
+    "placementUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "generatorList"
+      },
+      {
+        "kind": "spinner",
+        "name": "columnSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "rowSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "originXSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "originYSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "headingSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "jitterSpin"
+      }
+    ],
     "distributionUI": [
       {
         "kind": "button",

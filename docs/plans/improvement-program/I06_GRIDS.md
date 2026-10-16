@@ -1,6 +1,6 @@
 # I06 / P06 — regular planting layouts
 
-Baseline: I05 0.84.0, `f2bc8dd6bc831a71cc46b19a6cb91611d431928d`, pushed and verified. The active goal resumes P06. Proposed substantial delivery **0.85.0** adds authored grid generation and cell identity; it is not delivered by this plan. Preserve the exact 0.84.0 package and receipts. F01–F07/F09–F11 apply. B26 heap-pressure Undo stays open in I10/I11.
+Baseline: I05 0.84.0, `f2bc8dd6bc831a71cc46b19a6cb91611d431928d`, pushed and verified. The active goal resumes P06. Substantial delivery **0.85.0** adds authored grid generation and cell identity; see [the completed scoped handoff](I06_0850.md). Preserve the exact 0.84.0 package and receipts. F01–F07/F09–F11 apply. B26 heap-pressure Undo stays open in I10/I11.
 
 ## Artist contract
 
@@ -31,4 +31,4 @@ Append saved settings without renumbering old parameters. Plan a complete-recipe
 5. Actual controls at 100%/150%, heavy idle/panel measurements, failure recovery and retained-resource lifecycle. Keep B26 visible rather than counting a warmed heap as a fix.
 6. Add actual-result orchard and staggered/hex examples with compatible scenes and thumbnails. Update artist/architecture/version/roadmap/catalog/website sources; verify the exact MZP, commit/push, then continue paths. EXE and the eight-example goal remain later acceptance.
 
-Current status: source audit and numeric foundation are starting. No I06 UI or delivered grid feature exists yet.
+Current status: **implemented, scoped Max 2027 qualification and MZP passed**. See [I06_0850.md](I06_0850.md), [qualification](QUALIFICATION_0850.json) and [package](PACKAGE_0850.json). The grid, copied-data snapshot, full identity transport, persistent formats and controls pass the documented final host matrix. Six procedural examples are available. Physical artist acceptance, B26 and the remaining goal remain open; Git checkpoint state is in [PROGRESS.md](PROGRESS.md).

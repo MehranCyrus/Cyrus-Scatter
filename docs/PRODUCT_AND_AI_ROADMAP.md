@@ -1,12 +1,12 @@
 # Cyrus Scatter: product and AI direction
 
-Maintained public-facing summary, reviewed 16 October 2026 against Scatter development/package 0.84.0, Analyzer 0.14 and MCP package/plan 0.73.0/0.73. This is the source for the website's product status and roadmap. Update it alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). It does not replace engineering acceptance criteria or announce a release date.
+Maintained public-facing summary, reviewed 16 October 2026 against Scatter development/package 0.85.0, Analyzer 0.14 and MCP package/plan 0.73.0/0.73. This is the source for the website's product status and roadmap. Update it alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). It does not replace engineering acceptance criteria or announce a release date.
 
 ## The product today
 
 Cyrus Scatter is an artist-controlled scattering plugin for 3ds Max. Build a landscape from your own models, arrange planting in layers and refine it with ordinary controls. AI is optional; everyday use does not depend on an assistant, account connection or trained model.
 
-The current development/package is **0.84.0 / schema 58**. It includes explicit copy/import variation, searchable static multi-layer recipes with Paint and stored thumbnails, four procedural examples, direction/normal controls, mesh/UV density, slope/altitude and retained previews. Qualification and the manual Max 2027 installer are recorded in the [I05 handoff](plans/improvement-program/I05_0840.md). The active goal resumes Phase 6; grids, remaining features, additional examples and the EXE are incomplete. Heavy MAXScript heap pressure can still clear Undo (B26). Existing offline team licensing and independent Analyzer/MCP versions are unchanged. Physical input, high DPI, long sessions, heavy assets and wider renderer/material acceptance remain open. Version 1.0 stays reserved for publication readiness.
+The current development/package is **0.85.0 / schema 58**. It includes rectangular/staggered/hexagonal grids, explicit copy/import variation, searchable static recipes with Paint and stored thumbnails, six procedural examples, direction/normal controls, mesh/UV density, slope/altitude and retained previews. See the [I06 handoff](plans/improvement-program/I06_0850.md) for qualification and the manual Max 2027 installer. The active program continues with paths and later features; two further examples and the EXE remain incomplete. Heavy MAXScript heap pressure can still clear Undo (B26). Team licensing and independent Analyzer/MCP versions are unchanged. Physical input/display, long sessions, heavy assets and wider renderer/material acceptance remain open. Version 1.0 remains reserved for publication readiness.
 
 | Feature | What the artist can do | Boundary to explain |
 | --- | --- | --- |
@@ -14,7 +14,8 @@ The current development/package is **0.84.0 / schema 58**. It includes explicit 
 | Source models and containers | Use model weights, labels, identification colors and optional rectangular palettes | New containers start with collection disabled; arrange them before enabling collection |
 | Amount and stable candidates | Choose Density or Fixed Total with receiver-local identities | Adding a receiver preserves unchanged base candidates; quotas and acceptance constraints can still change final output |
 | Density and target controls | Modulate density with supported texture/UV maps; choose candidate budgets or bounded accepted targets | Targets can underfill when masks, spacing and bounded retries reject candidates; Point/Empty restrictions apply |
-| Layout | Choose Random mix, Clusters, Spline bands or Surface Analyzer guides | Clusters assign source groups; they do not necessarily move the candidate positions |
+| Planting positions | Choose Surface random, Rectangular, Staggered or Hexagonal grids | Grids use world XY/highest-hit projection; pitch sets population and masks/spacing thin it |
+| Source assignment | Choose Random mix, Clusters, Spline bands or compatible Analyzer guides | Model assignment is independent of grid positions; Analyzer Single/EdgeRow cannot supply positions to a grid |
 | Vector painting | Paint and erase named receiver-bound areas; shape density and scale feathering with curves | Supports single-valued terrain in receiver-local XY; closed spheres, folds and vertical receivers are outside vector painting support |
 | Include/Exclude and falloff | Combine closed masks, holes, delete strips, density ramps and scale ramps | Uses world XY; Includes union and Exclude wins |
 | Variation and spacing | Adjust transforms, model radii, within-layer and between-layer clearance | Collision radii are simplified footprints, not exact mesh intersection |
@@ -62,7 +63,7 @@ Expand supported procedural recipes and area/layout operations in bounded groups
 
 ### 3. Build a recipe library and artist review companion
 
-Extend the current static recipe library with search, thumbnails, curated examples and an artist review companion. Explicit model/receiver/map roles and Save Everything including Paint are available locally; asset packaging and arbitrary-terrain Paint projection remain separate. Keep selection, approval and application separate. Start with curated recipes and deterministic variations before requiring a trained model.
+Extend the searchable static recipe library and its stored thumbnails/six examples with more curated content and an artist review companion. Explicit model/receiver/map roles and Save Everything including Paint are available locally; asset packaging and arbitrary-terrain Paint projection remain separate. Keep selection, approval and application separate. Start with curated recipes and deterministic variations before requiring a trained model.
 
 **Ready when:** artists can compare, choose and apply useful alternatives while retaining ordinary editable Cyrus layers and controls. Completed examples keep their scene, source and view provenance.
 

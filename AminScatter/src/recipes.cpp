@@ -82,7 +82,7 @@ const std::vector<Field>& fields(){static const std::vector<Field> result={
 };return result;}
 
 void validateSettings(const Json& s){
-    require(s.is_object()&&s.size()==fields().size(),"complete settings field count differs from recipe v3");
+    require(s.is_object()&&s.size()==fields().size(),"complete settings field count differs from recipe v4");
     for(const auto& f:fields()){
         require(s.contains(f.name),std::string("missing authored field ")+f.name);const auto& v=s.at(f.name);std::string kind=f.type;
         if(kind.size()>3&&kind.substr(kind.size()-3)=="tab"){
@@ -148,21 +148,23 @@ void validateSettings(const Json& s){
     require(s["orientationMode"]!=3||!s["orientationTarget"].is_null(),"Look at target requires an explicit target role");
 }
 
-Json currentDocument(const Json& input){
-    Json result=input;
-    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2))return result;
+Json currentDocument(const Json& document){
+    auto result=document;
+    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3))return result;
     require(result["formatVersion"].is_number_integer(),"recipe version must be an integer");
-    const bool v1=result["formatVersion"]==1;
-    // Access through at() so incomplete structure cannot be silently repaired.
-    const auto extend=[v1](Json& s){
-        require(s.is_object()&&s.size()+(v1?7:1)==fields().size(),"incomplete preceding recipe settings");
-        require(!s.contains("procReceiverVariationIDs"),"variation domains require recipe format 3");
-        if(v1){
-            for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ","orientationTarget"})require(!s.contains(name),"orientation fields require recipe format 2");
-            s["orientationMode"]=1;s["orientationBlend"]=100.;s["orientationX"]=0.;s["orientationY"]=1.;s["orientationZ"]=0.;s["orientationTarget"]=nullptr;
+    const int version=result["formatVersion"].get<int>();
+    const auto extend=[&](Json& s){
+        require(s.is_object(),"invalid legacy settings");
+        if(version<3){
+            require(!s.contains("procReceiverVariationIDs"),"variation domains require recipe format 3");
+            if(version==1){
+                for(const auto* name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ","orientationTarget"})require(!s.contains(name),"orientation fields require recipe format 2");
+                s["orientationMode"]=1;s["orientationBlend"]=100.;s["orientationX"]=0.;s["orientationY"]=1.;s["orientationZ"]=0.;s["orientationTarget"]=nullptr;
+            }
+            s["procReceiverVariationIDs"]=s.at("procReceiverIDs");
         }
-        // Preserve original stochastic inputs BEFORE the host remaps ownership.
-        s["procReceiverVariationIDs"]=s.at("procReceiverIDs");
+        for(const auto* name:{"placementMode","gridColumnWU","gridRowWU","gridOriginXWU","gridOriginYWU","gridHeading","gridJitter"})require(!s.contains(name),"grid fields require recipe format 4");
+        s["placementMode"]=1;s["gridColumnWU"]=100.;s["gridRowWU"]=100.;s["gridOriginXWU"]=0.;s["gridOriginYWU"]=0.;s["gridHeading"]=0.;s["gridJitter"]=0.;
     };
     extend(result.at("rootSettings"));
     require(result.at("layers").is_array()&&result.at("layers").size()<=10,"invalid layers");
@@ -170,13 +172,13 @@ Json currentDocument(const Json& input){
         extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
         for(auto& area:layer.at("areas"))extend(area.at("settings"));
     }
-    result["formatVersion"]=3;return result;
+    result["formatVersion"]=4;return result;
 }
 
 void validate(const Json& d,bool hydrated){
-    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2)){validate(currentDocument(d),hydrated);return;}
+    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3)){validate(currentDocument(d),hydrated);return;}
     keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships"});
-    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==3&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"]==2027,"unsupported recipe version/engine/host");
+    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==4&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"]==2027,"unsupported recipe version/engine/host");
     id(d["id"]);const auto name=text(d["name"],320);require(!name.empty(),"empty name");require(number(d["unitsPerMetre"])>0,"invalid saved unit scale");require(d["exportScope"]=="complete-setup","only complete authored recipes are supported");validateSettings(d["rootSettings"]);
     require(d["roles"].is_array()&&d["roles"].size()<=4096,"too many roles");std::map<std::string,std::string> roles;
     for(const auto& r:d["roles"]){keys(r,{"id","kind","name","purposes","requirements"});const auto key=id(r["id"]),kind=text(r["kind"],16);require(kind=="node"||kind=="texture"||kind=="layer","unknown role kind");require(roles.emplace(key,kind).second,"duplicate role");text(r["name"],1024);require(r["purposes"].is_array()&&r["purposes"].size()<=256,"role purposes limit");for(const auto& purpose:r["purposes"])text(purpose,128);if(!r["requirements"].is_null()){const auto& q=r["requirements"];keys(q,{"width","length","collectEnabled","showLabel","savedSources"});require(kind=="node"&&number(q["width"])>0&&number(q["length"])>0&&q["collectEnabled"].is_boolean()&&q["showLabel"].is_boolean()&&q["savedSources"].is_array()&&q["savedSources"].size()<=1024,"invalid container requirements");}}

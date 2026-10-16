@@ -138,7 +138,7 @@ fn CyrusPresetEntries directory category = (
     #(items,invalid)
 )
 fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
-    if cyrusPresetVersion==undefined or cyrusPresetVersion()!=2 do throw "Load the matching Cyrus preset native module."
+    if cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 do throw "Load the matching Cyrus preset native module."
     local target=CyrusPresetMakeBinding root owner category peer:peer editor:editor
     CyrusPresetCheckBinding target
     if CyrusPresetBrowser!=undefined do try(destroyDialog CyrusPresetBrowser)catch()

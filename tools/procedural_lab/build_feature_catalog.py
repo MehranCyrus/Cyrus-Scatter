@@ -12,7 +12,7 @@ SECTION_CAPS={
     'host':['C01'],'updateUI':['C24'],
     'previewUI':['C25','C28','C29'],'surface':['C02','C07'],'manager':['C03','C26'],
     'diagnostics':['C32'],'setsUI':['C04'],'sourceUI':['C05','C06','C08'],
-    'sourceContainersUI':['C07'],'distributionUI':['C09','C11'],
+    'sourceContainersUI':['C07'],'placementUI':['C09'],'distributionUI':['C09','C11'],
     'populationPolicyUI':['C10'],'areaUI':['C12','C13'],'brushUI':['C14','C15'],
     'backgroundUI':['C16'],'randomUI':['C19'],'diversityUI':['C17','C18'],
     'proceduralUI':['C20'],'instanceRadiusUI':['C21'],'spacingUI':['C23'],
@@ -56,7 +56,7 @@ def build():
     return dict(schema='cyrus.feature-catalog/1.0',authority='Help only. Tool dispatch, closed schema and local approval determine authority.',
                 capability_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                 control_inventory_sha256=hashlib.sha256(inventory_path.read_bytes()).hexdigest(),
-                development_version='0.84.0',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
+                development_version='0.85.0',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
 
 if __name__=='__main__':
     target=ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json'

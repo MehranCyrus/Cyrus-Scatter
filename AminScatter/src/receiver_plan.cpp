@@ -1,4 +1,5 @@
 #include "receiver_plan.h"
+#include "grid.h"
 #include <algorithm>
 #include <cmath>
 #include <map>
@@ -43,6 +44,21 @@ bool decode(std::uint64_t id,unsigned& slot,unsigned& ordinal){
     const auto offset=id-marker;
     slot=unsigned((offset/stride)%slots);ordinal=unsigned((offset/page)*stride+offset%stride);
     return ordinal<limit;
+}
+std::uint64_t candidateIdentity(unsigned slot,std::uint64_t key){
+    grid::Cell cell;
+    if(grid::decode(key,cell)){
+        require(cell.receiver==0,"Grid generator key must be receiver-local");
+        cell.receiver=slot;return grid::identity(cell);
+    }
+    require(key<limit,"Invalid local candidate key");return identity(slot,unsigned(key));
+}
+bool decodeCandidate(std::uint64_t id,unsigned& slot,std::uint64_t& key){
+    unsigned ordinal=0;
+    if(decode(id,slot,ordinal)){key=ordinal;return true;}
+    grid::Cell cell;
+    if(!grid::decode(id,cell))return false;
+    slot=cell.receiver;cell.receiver=0;key=grid::identity(cell);return true;
 }
 std::uint64_t salt(const std::string& id){
     require(!id.empty()&&id.size()<=256,"Invalid persistent receiver identity");std::uint64_t value=1469598103934665603ULL;

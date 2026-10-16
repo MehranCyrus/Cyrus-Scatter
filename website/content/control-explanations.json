@@ -2379,5 +2379,68 @@
       "AminScatter/tools/ui/templates/unified-core.ms:4105",
       "AminScatter/tools/ui/templates/unified-core.ms:4153"
     ]
+  },
+  "layer.placementUI.generatorList": {
+    "label": "Planting positions",
+    "help": "Choose Surface random, Rectangular, Staggered or Hexagonal. Grids project down onto the highest world-Z hit per receiver. Source assignment remains independent; Analyzer Single/EdgeRow cannot replace grid positions.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I06_0850.md:5",
+      "AminScatter/tools/ui/templates/unified-core.ms:4523"
+    ]
+  },
+  "layer.placementUI.columnSpin": {
+    "label": "Column spacing",
+    "help": "World distance between columns. For Hexagonal this is the nearest-neighbor spacing; row pitch is calculated. Pitch sets population, so Count/Density and refill controls are inactive.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I06_0850.md:5",
+      "AminScatter/tools/ui/templates/unified-core.ms:4524"
+    ]
+  },
+  "layer.placementUI.rowSpin": {
+    "label": "Row spacing",
+    "help": "World distance between Rectangular or Staggered rows. Staggered offsets alternate rows by half a column. Hidden in Hexagonal mode, whose row pitch is calculated.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I06_0850.md:5",
+      "AminScatter/tools/ui/templates/unified-core.ms:4525"
+    ]
+  },
+  "layer.placementUI.originXSpin": {
+    "label": "Grid origin X",
+    "help": "World X coordinate of the fixed lattice frame. Changing receiver bounds or masks does not move this origin.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I06_0850.md:5",
+      "AminScatter/tools/ui/templates/unified-core.ms:4526"
+    ]
+  },
+  "layer.placementUI.originYSpin": {
+    "label": "Grid origin Y",
+    "help": "World Y coordinate of the fixed lattice frame. Every receiver in this layer uses the same frame.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I06_0850.md:5",
+      "AminScatter/tools/ui/templates/unified-core.ms:4527"
+    ]
+  },
+  "layer.placementUI.headingSpin": {
+    "label": "Grid heading",
+    "help": "Rotate the lattice around world Z at its explicit origin. Projection remains vertical.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I06_0850.md:5",
+      "AminScatter/tools/ui/templates/unified-core.ms:4528"
+    ]
+  },
+  "layer.placementUI.jitterSpin": {
+    "label": "Grid jitter",
+    "help": "Stable displacement per cell: 0% gives exact lattice points; 100% permits up to half a pitch along each grid axis. Masks do not reroll surviving unrelaxed cells.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I06_0850.md:5",
+      "AminScatter/tools/ui/templates/unified-core.ms:4529"
+    ]
   }
 }

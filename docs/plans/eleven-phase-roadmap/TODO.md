@@ -126,16 +126,16 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Qualify actual conversion controls and unchanged other layers.
 - [x] Update version/docs; commit, push and verify.
 
-## P06 — grid layouts (0.82.6)
+## P06 — grid layouts (I06 / 0.85.0)
 
-- [ ] Freeze lattice frame/origin, spacing, stagger/hex rules and projected-hit policy.
-- [ ] Prove bounded collision-free stable cell identities in the chosen transport.
-- [ ] Implement cell enumeration and independent deterministic jitter.
-- [ ] Integrate shared eligibility/source/transform/spacing/Edit publication.
-- [ ] Add mode-specific controls and unambiguous Count/Density interaction.
-- [ ] Test analytic positions/counts, boundary edits, identity stability and all masks/filters.
-- [ ] Measure bounded large-grid preparation/cache reuse; run host lifecycle/regressions.
-- [ ] Update version/docs; commit, push and verify.
+- [x] Freeze lattice frame/origin, spacing, stagger/hex rules and projected-hit policy.
+- [x] Prove bounded collision-free stable cell identities in the chosen transport.
+- [x] Implement cell enumeration and independent deterministic jitter.
+- [x] Integrate shared eligibility/source/transform/spacing/Edit publication.
+- [x] Add mode-specific controls and unambiguous Count/Density interaction.
+- [x] Test analytic positions/counts, boundary edits, identity stability and all masks/filters.
+- [x] Measure bounded large-grid preparation/cache reuse; run host lifecycle/regressions.
+- [ ] Update version/docs; commit, push and verify. — docs and package complete; Git checkpoint pending.
 
 ## P07 — direction controls (delivered as I04 / 0.83.0)
 
@@ -226,4 +226,4 @@ For each subsequent entry record the exact change, evidence/receipt, failures,
 version decision, commit/remote hash and next action. Keep detailed raw outputs
 in the owned ignored run directory; link only evidence that actually exists.
 
-Current successor: [I05 0.84.0 variation policy](../improvement-program/I05_0840.md), following [I04/P07 direction and normal blending](../improvement-program/I04_0830.md). P06 grids and the remaining program stay open; B26 heap-pressure Undo work is unresolved. Historical version proposals above do not select future delivery numbers.
+Current successor: [I06/P06 0.85.0 grids](../improvement-program/I06_0850.md), following [I05 variation](../improvement-program/I05_0840.md) and [I04/P07 direction](../improvement-program/I04_0830.md). Six examples are scoped-qualified. I07/P08 paths is next; B26 and the remaining program/EXE stay open. Historical version proposals do not select future delivery numbers.

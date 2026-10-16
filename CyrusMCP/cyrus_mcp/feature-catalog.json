@@ -2,8 +2,8 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "590c28d7d511ece776cdcc3101b324cb3fbd842c32424d372a2fa08cdd33e902",
-  "control_inventory_sha256": "cab74fa957f1a421d4fdaee06c21630b60a705b91eed63c99b7e2288f7beeacf",
-  "development_version": "0.84.0",
+  "control_inventory_sha256": "5edab482f5b14e957d881859bf3e898b12f68d71b94fdb742fc3dd5ceef815b4",
+  "development_version": "0.85.0",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -1475,6 +1475,97 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Unlink this rectangle without deleting it or registered source settings.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "placementUI",
+      "kind": "dropdownlist",
+      "name": "generatorList",
+      "capabilities": [
+        "C09"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Choose how planting positions are generated. Grids project downward onto the highest world-Z hit of each receiver; source assignment below remains independent.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "placementUI",
+      "kind": "spinner",
+      "name": "columnSpin",
+      "capabilities": [
+        "C09"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Column spacing in scene units. In Hexagonal mode this is the nearest-neighbor distance; row pitch is calculated automatically.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "placementUI",
+      "kind": "spinner",
+      "name": "rowSpin",
+      "capabilities": [
+        "C09"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Distance between rows for Rectangular and Staggered layouts. Staggered offsets odd rows by half a column.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "placementUI",
+      "kind": "spinner",
+      "name": "originXSpin",
+      "capabilities": [
+        "C09"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "World X origin of the lattice. Changing terrain bounds or masks never moves this origin.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "placementUI",
+      "kind": "spinner",
+      "name": "originYSpin",
+      "capabilities": [
+        "C09"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "World Y origin of the lattice. All receivers in this layer use the same world frame.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "placementUI",
+      "kind": "spinner",
+      "name": "headingSpin",
+      "capabilities": [
+        "C09"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Rotate the lattice in degrees around world Z at its origin. Projection remains vertical.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "placementUI",
+      "kind": "spinner",
+      "name": "jitterSpin",
+      "capabilities": [
+        "C09"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Stable cell-based displacement: 0 gives exact positions; 100 allows up to half a pitch in each grid axis. Masks do not reroll surviving cells.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

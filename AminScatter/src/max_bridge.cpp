@@ -19,6 +19,7 @@
 #include "license_boundary.h"
 #include "placement_transport.h"
 #include "orientation.h"
+#include "grid.h"
 #include <sstream>
 #include <locale>
 #include <memory>
@@ -35,6 +36,7 @@
 #define ScripterExport __declspec(dllexport)
 #include "spline_field_bridge.inc"
 #include "direction_orientation_value.inc"
+#include "grid_value.inc"
 
 extern "C" __declspec(dllexport) const TCHAR* LibDescription() {
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
@@ -191,7 +193,9 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false) {
     if(count!=29) throw RuntimeError(_T("Cyrus generation requires its current 29-field contract."));
     type_check(args[28],Array,_T("generation options"));
     auto* v1=static_cast<Array*>(args[28]);
-    if(v1->size!=12)throw RuntimeError(_T("Expected current keyed generation options including density UV channel"));
+    if(v1->size!=12&&v1->size!=13)throw RuntimeError(_T("Expected keyed generation options including density UV channel and optional grid snapshot"));
+    const CyrusGridSnapshot* grid=nullptr;
+    if(v1->size==13&&v1->data[12]!=&undefined){type_check(v1->data[12],CyrusGridSnapshot,_T("grid receiver snapshot"));grid=static_cast<CyrusGridSnapshot*>(v1->data[12]);}
     const int uvChannel=v1->data[11]->to_int();
     if(uvChannel<1||uvChannel>=MAX_MESHMAPS)throw RuntimeError(_T("Density UV channel must be 1..99"));
     amin::Settings s;
@@ -313,7 +317,14 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false) {
     }
     std::vector<amin::Instance> instances;std::vector<amin::Vec3> orientationNormals;
     try {
-        const auto mesh=surfaceMeshes(args[0],s.distribution==2,uvChannel);
+        if(grid){
+            type_check(args[0],Array,_T("grid receiver"));const auto* targets=static_cast<Array*>(args[0]);
+            if(targets->size!=1||!targets->data[0]->to_node()||targets->data[0]->to_node()->GetHandle()!=grid->receiverHandle||
+               grid->seed!=s.seed||grid->salt!=s.receiverSalt||grid->uv!=(s.distribution==2)||(grid->uv&&grid->uvChannel!=uvChannel)||s.candidateStart!=0||s.count!=grid->projection.anchors.size())
+                throw RuntimeError(_T("Grid snapshot does not match receiver, variation, mapping or candidate schedule"));
+        }
+        const auto evaluated=grid?std::vector<amin::Triangle>{}:surfaceMeshes(args[0],s.distribution==2,uvChannel);
+        const auto& mesh=grid?grid->mesh:evaluated;
         if(canonical)orientationNormals=cyrus::orientation::normals(mesh);
         if(args[27]!=&undefined) {
             type_check(args[27],Array,_T("final pass"));auto* f=static_cast<Array*>(args[27]);
@@ -325,14 +336,14 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false) {
             cfg.minNeighbors=f->data[6]->to_int();cfg.minIsland=f->data[7]->to_int();cfg.relax=f->data[8]->to_bool()!=FALSE;
             cfg.strength=f->data[9]->to_float();cfg.iterations=f->data[10]->to_int();cfg.maxMove=f->data[11]->to_float();cfg.gap=f->data[12]->to_float();cfg.planar=f->data[13]->to_bool()!=FALSE;
             auto input=rows(f->data[0]);
-            for(auto& p:input){unsigned slot=0,ordinal=0;if(!cyrus::receivers::decode(p.candidateKey,slot,ordinal)||slot!=receiverSlot)throw RuntimeError(_T("Final movement rows must belong to this receiver."));p.candidateKey=ordinal;}
+            for(auto& p:input){unsigned slot=0;std::uint64_t key=0;if(!cyrus::receivers::decodeCandidate(p.candidateKey,slot,key)||slot!=receiverSlot)throw RuntimeError(_T("Final movement rows must belong to this receiver."));p.candidateKey=key;}
             instances=amin::finalize(mesh,amin::prepareEdgeRows(s),std::move(input),rows(f->data[1]),radii(f->data[2]),radii(f->data[3]),cfg);
-            for(auto& p:instances)p.candidateKey=cyrus::receivers::identity(receiverSlot,unsigned(p.candidateKey));
+            for(auto& p:instances)p.candidateKey=cyrus::receivers::candidateIdentity(receiverSlot,p.candidateKey);
             for(auto& p:instances)anchorInstance(p,mesh);
         } else {
             amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Candidates);
-            instances=amin::scatter(mesh,s);
-            for(auto& p:instances)p.candidateKey=cyrus::receivers::identity(receiverSlot,unsigned(p.candidateKey));
+            instances=grid?amin::scatter(mesh,s,grid->projection.anchors):amin::scatter(mesh,s);
+            for(auto& p:instances)p.candidateKey=cyrus::receivers::candidateIdentity(receiverSlot,p.candidateKey);
             for(auto& p:instances)anchorInstance(p,mesh);
         }
     }
@@ -357,6 +368,7 @@ def_visible_primitive(cyrusScatterCanonical,"cyrusScatterCanonical");
 Value* cyrusScatterCanonical_cf(Value** args,int count){return scatterAdvanced(args,count,true);}
 #include "procedural_bridge.inc"
 #include "receiver_bridge.inc"
+#include "grid_bridge.inc"
 #include "direction_orientation_bridge.inc"
 #include "surface_filter_bridge.inc"
 #include "mesh_density_bridge.inc"

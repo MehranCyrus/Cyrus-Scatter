@@ -4,6 +4,8 @@ Companion to the [current artist guide](ARTIST_GUIDE.md). These settings belong 
 
 ## Assignment and guides
 
+**Planting positions** is separate from model assignment. Surface random uses Count/Density. Rectangular, Staggered and Hexagonal grids use physical spacing, a fixed world XY origin/heading and stable jitter, projecting to the highest surface hit. Masks and collision rules thin this lattice; disabled Count/Density/refill settings do not affect it. Hexagonal calculates row pitch from its nearest-neighbor spacing. Grids keep the source choices and Band curves below; Analyzer Single/EdgeRow cannot replace their positions. See [the grid workflow and limits](plans/improvement-program/I06_0850.md).
+
 Random mix chooses among weighted models. Clusters choose assignment groups across space; grouping colors and viewport identification colors are separate. Spline Bands use closed Paths in world XY, explicit source/group choices and per-Band scale multipliers. Consecutive ranges use first-match ownership; Independent ranges combine eligible density contributions. A selected Paint Area does not supply a different model collection.
 
 Spline bands accept model-free Point placeholders through **Models / Points** or **Assignment groups**. Use Models & Points > Add Point, name the row and choose it directly for each band. **Plant centres** displays one point per accepted placement; Points have no final mesh output until replaced with models. Saved row identities retain explicit choices through replacement, removal of another row, layer copy and save/reopen. See the [0.79.1 runtime checks](Point_Workflow_0.79.1_2026-10-11/README.md).

@@ -54,8 +54,8 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
             if(set->size!=7)throw RuntimeError(_T("Procedural population requires its receiver schedule"));
             std::unordered_map<std::string,std::uint64_t> schedule;
             {auto* order=groupArray(set->data[6]);if(order->size>cyrus::receivers::limit)throw RuntimeError(_T("Receiver schedule exceeds 1,000,000 candidates"));
-                for(int k=0;k<order->size;++k){const auto id=order->data[k]->to_int64();unsigned slot=0,local=0;
-                    if(id<0||!cyrus::receivers::decode(std::uint64_t(id),slot,local)||!schedule.emplace("c:"+std::to_string(id),std::uint64_t(k)).second)throw RuntimeError(_T("Invalid receiver candidate schedule"));}}
+                for(int k=0;k<order->size;++k){const auto id=order->data[k]->to_int64();unsigned slot=0;std::uint64_t local=0;
+                    if(id<0||!cyrus::receivers::decodeCandidate(std::uint64_t(id),slot,local)||!schedule.emplace("c:"+std::to_string(id),std::uint64_t(k)).second)throw RuntimeError(_T("Invalid receiver candidate schedule"));}}
             cyrus::procedural::Population p;p.id=proceduralID(set->data[0]);auto* rows=groupArray(set->data[1]);
             originals.back().push_back(rows);auto* radii=groupArray(set->data[2]);
             if(radii->size!=rows->size)throw RuntimeError(_T("One radius pair per procedural instance required"));

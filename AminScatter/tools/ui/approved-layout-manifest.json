@@ -409,6 +409,54 @@
       "scope": "Layer",
       "controls": [
         {
+          "component": "placementUI",
+          "control": "generatorList",
+          "presentation": "placementUI_generatorList",
+          "advanced": false
+        },
+        {
+          "component": "placementUI",
+          "control": "columnSpin",
+          "presentation": "placementUI_columnSpin",
+          "advanced": false
+        },
+        {
+          "component": "placementUI",
+          "control": "rowSpin",
+          "presentation": "placementUI_rowSpin",
+          "advanced": false
+        },
+        {
+          "component": "placementUI",
+          "control": "originXSpin",
+          "presentation": "placementUI_originXSpin",
+          "advanced": false
+        },
+        {
+          "component": "placementUI",
+          "control": "originYSpin",
+          "presentation": "placementUI_originYSpin",
+          "advanced": false
+        },
+        {
+          "component": "placementUI",
+          "control": "headingSpin",
+          "presentation": "placementUI_headingSpin",
+          "advanced": false
+        },
+        {
+          "component": "placementUI",
+          "control": "jitterSpin",
+          "presentation": "placementUI_jitterSpin",
+          "advanced": false
+        },
+        {
+          "component": "placementUI",
+          "control": "gridInfo",
+          "presentation": "placementUI_gridInfo",
+          "advanced": false
+        },
+        {
           "component": "diversityUI",
           "control": "diversityRadio",
           "presentation": "diversityUI_diversityRadio",

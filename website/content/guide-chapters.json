@@ -22,6 +22,7 @@
       {
         "title": "Layout and Amount",
         "paragraphs": [
+          "**Planting positions** chooses Surface random, Rectangular, Staggered or Hexagonal. Grids expose world-unit spacing, fixed Origin X/Y, Heading and stable Jitter. They project down onto the highest receiver hit. Hexagonal calculates row pitch from its nearest-neighbor distance. Count/Density and refill are inactive; masks and collision rules thin the lattice. Source assignment below is independent. Entirely vertical receivers and Analyzer Single/EdgeRow positions are unsupported with grids.",
           "Random mix chooses weighted sources. Clusters choose assignment groups across space. Spline Bands use closed world-XY Paths, explicit Models / Points or Assignment groups, and Consecutive or Independent ranges. Surface Analyzer consumes separately analyzed boundary, path and point channels.",
           "Consecutive accumulates widths separately on each Path/side and preserves unassigned intervals as gaps. Independent exposes each Band's Start/End and combines eligible contributions. New Bands start unassigned. Scaling a Path changes its outline, not its world-space Band distances.",
           "Density and its optional curve shape a Band's contribution from Start to End. Independent contributions cap total occupancy at 100%, then choose the Band proportionally. A 100% Sphere plus 25% Box gives approximately 80% Sphere/20% Box in the overlap and 25% occupancy where only Box contributes, before other masks/spacing.",
@@ -112,9 +113,9 @@
       {
         "title": "Final artist acceptance",
         "paragraphs": [
-          "Run the 0.84.0 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
+          "Run the 0.85.0 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
           "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
-          "Development source 0.84.0 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "Development source 0.85.0 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
           "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
         ]
       },
@@ -126,7 +127,8 @@
           "Paint binding needs compatible geometry, frame and saved system units. Incompatible terrain rejects the import; orphan coverage stays unbound. Authored Edit deltas, per-instance radius overrides and nonstatic Scatter parameter controllers block complete save and preserve the scene. Manual waits for Update; Live follows relevant changes. Browsing does no scattering work. Search, categories/tags and stored PNG thumbnails are available in 0.82.6.1. Asset import, blending and arbitrary-terrain Paint transfer remain future work.",
           "Choose My recipes (Documents/CyrusScatter/Library), Bundled examples, or Custom folder. Search matches names, layers, tags, categories and descriptions. The summary shows layers, Paint and external roles. Refresh explicitly rereads disk changes; Cancel stops a scan. Up to 10,000 recipes are indexed with 128 visible rows. Browsing does not evaluate terrain or hydrate Paint attachments.",
           "Choose an optional PNG before Save Everything: at most 1024 pixels per axis and 2 MiB. Thumbnails are stored and reused, never regenerated on selection. Keep the optional .library.json and thumbnail PNG with the recipe and Paint payload when sharing. Saving from Bundled examples writes into My recipes.",
-          "The four initial examples are layered meadow, trees with understory, mountain planting and painted garden with spline borders. They include permitted procedural geometry, actual-result thumbnails and matching editable Max scenes in the versioned Library folder under Max user scripts. Open a copy of a matching scene to test compatible Paint bindings. Artist model substitution remains explicit."
+          "The four initial examples are layered meadow, trees with understory, mountain planting and painted garden with spline borders. They include permitted procedural geometry, actual-result thumbnails and matching editable Max scenes in the versioned Library folder under Max user scripts. Open a copy of a matching scene to test compatible Paint bindings. Artist model substitution remains explicit.",
+          "Six procedural examples include meadow, woodland, mountain, painted borders, rectangular orchard and hexagonal hillside planting. Each has an actual-result thumbnail and compatible editable Max scene. Select Saved variation with matching scene roles to reproduce the saved result; user recipes remain separate from the versioned bundled folder."
         ]
       },
       {
@@ -135,7 +137,7 @@
           "In Transforms > Orientation, choose Random, World direction or Look at target. World direction aims along a nonzero XYZ vector. Look at target aims toward a picked object’s world pivot. Models use local +Z up and the Forward axis set in Models & Points. Local random rotations still apply; zero their ranges to check exact aim.",
           "Align to normal and Normal % set preferred up: disabled or 0% uses world +Z; 100% uses the geometric face normal, with angular blending between. Direction modes use this to control roll while preserving heading. Slope eligibility is independent. Coincident targets and parallel heading/up use deterministic fallbacks.",
           "Manual waits for Update. Live follows relevant target/parent or orientation animation. Missing targets and zero vectors retain the last complete plants and report failure. Editing the target’s shape or rotating it around an unchanged pivot does not calculate scatter.",
-          "Complete recipes bind orientation targets as external roles. Numeric Transform presets preserve the destination target and require it for Look at target. New complete recipes use format 3 and numeric settings presets remain format 2. Complete recipe formats 1/2 retain original receiver random inputs when read; format 1 also receives neutral orientation defaults. Reading never rewrites Paint or files. Physical picker, 4K and mixed-monitor testing remains artist acceptance."
+          "Complete recipes bind orientation targets as external roles. Numeric Transform presets preserve the destination target and require it for Look at target. New complete recipes use format 4 and numeric settings presets use format 3. Grid distances convert with scene units; earlier complete formats receive neutral Surface random defaults. Complete recipe formats 1/2 retain original receiver random inputs when read; format 1 also receives neutral orientation defaults. Reading never rewrites Paint or files. Physical picker, 4K and mixed-monitor testing remains artist acceptance."
         ]
       },
       {
@@ -154,6 +156,7 @@
       {
         "title": "Assignment and guides",
         "paragraphs": [
+          "Grid planting and model assignment are independent. Rectangular, Staggered and Hexagonal use a fixed world XY frame and highest-hit surface projection. Spacing sets population; masks, Paint and collision rules remove cells without random refill. Stable cell identities do not shift with terrain bounds. Analyzer Single/EdgeRow cannot also supply positions to a grid.",
           "Random mix uses model weights; Clusters chooses assignment groups. Spline Bands use closed world-XY Paths and explicit Models / Points or assignment-group choices. Consecutive uses ordered first-match ownership, including empty reserved intervals. Independent combines eligible Band contributions over shared candidates.",
           "Consecutive widths accumulate separately on each side. Two 200 mm inside bands form 0-200 and 200-400 mm strips. Scaling or rotating a spline transforms its outline before distance is measured; it does not scale the width setting.",
           "Independent Start/End ranges may overlap. Density strength multiplies the sampled curve from the near to far boundary, inward for Inside Bands. Contributions sum to capped occupancy, then select a Band proportionally. Independent/nontrivial density requires Candidate budget. Rounded and bounded Sharp joins are explicit Path choices.",
@@ -226,7 +229,7 @@
         "title": "The product today",
         "paragraphs": [
           "The main product is artist-controlled scattering in 3ds Max: layers, receivers, models and Points, optional vector Paint Areas, layouts, area limits, transforms, spacing, previews and exact output. AI is optional and separate.",
-          "Current development/package is Scatter 0.84.0 / schema 58, with explicit copy/import variation, direction/target controls and angular normal blending, retaining searchable complete recipes, stored thumbnails and four procedural examples. Native Paint, explicit scene roles and transactional import are preserved. Current qualification uses Max 2027 only. The active program resumes Phase 6; remaining features and the final EXE are incomplete. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
+          "Current development/package is Scatter 0.85.0 / schema 58, with regular grids and explicit copy/import variation, direction/target controls and angular normal blending, retaining searchable complete recipes, stored thumbnails and six procedural examples. Native Paint, explicit scene roles and transactional import are preserved. Current qualification uses Max 2027 only. The active program resumes Phase 6; remaining features and the final EXE are incomplete. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
         ]
       },
       {
@@ -263,7 +266,7 @@
       {
         "title": "3. Build a recipe library and artist review companion",
         "paragraphs": [
-          "Extend the current static recipe library with search/thumbnails, curated examples and an artist review companion. Models, maps and receivers bind explicitly; asset packaging and arbitrary-terrain Paint transfer remain separate."
+          "Extend the searchable recipe library, stored thumbnails and six procedural examples with further curated content and an artist review companion. Models, maps and receivers bind explicitly; asset packaging and arbitrary-terrain Paint transfer remain separate."
         ]
       },
       {

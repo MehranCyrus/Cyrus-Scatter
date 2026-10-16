@@ -504,7 +504,8 @@ global AminScatterCopyLayer, AminScatterRefreshLayerPanels
 global CyrusReceiverVariationDomains,CyrusRemapLayerCorrespondence
 global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph)
 AminScatterOrientationFields=#(#alignNormal,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#sourceForwardAxes)
-AminScatterLayerFields=#(#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+global AminScatterGridFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter)
+AminScatterLayerFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
 AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 fn CyrusReceiverVariationDomains owner = (
     local ids=owner.procReceiverIDs as array,domains=owner.procReceiverVariationIDs as array
@@ -2142,7 +2143,7 @@ initialRollupState:0x8
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry
                 if cached!=undefined then (receiverRows=cached[3];receiverNormals=cached[4];procReceiverHits+=1)
                 else if receiverCount>0 do (
-                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if distributionMode==3 then densityUVChannel else 1))
+                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if distributionMode==3 then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined))
                     local generated=cyrusScatterCanonical #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     receiverRows=generated[1];receiverNormals=generated[2]
                     if finalRelax and receiverRows.count>0 do (
@@ -2183,7 +2184,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.84.0"
+    fn uiVersion = "0.85.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2335,6 +2336,30 @@ initialRollupState:0x8
         on procReceiverVariationIDs set value index do markInputDirty()
     )
 
+    parameters gridSettings (
+        placementMode type:#integer default:1
+        gridColumnWU type:#worldunits default:100.0
+        gridRowWU type:#worldunits default:100.0
+        gridOriginXWU type:#worldunits default:0.0
+        gridOriginYWU type:#worldunits default:0.0
+        gridHeading type:#float default:0.0
+        gridJitter type:#float default:0.0
+        on placementMode set value do markInputDirty()
+        on gridColumnWU set value do markInputDirty()
+        on gridRowWU set value do markInputDirty()
+        on gridOriginXWU set value do markInputDirty()
+        on gridOriginYWU set value do markInputDirty()
+        on gridHeading set value do markInputDirty()
+        on gridJitter set value do markInputDirty()
+    )
+    local procGridCache=#()
+    fn gridPayload = (for key in AminScatterGridFields collect getProperty this key)
+    fn gridKey = (cyrusGridKey (this.gridPayload()))
+    fn gridSnapshot slot = (
+        for entry in procGridCache where entry[1]==slot do return entry[3]
+        undefined
+    )
+
     fn selectedPaintArea parent = (
         if parent==undefined do return undefined
         for area in parent.paintAreas where area.layerID==parent.uiAreaID do return area
@@ -2387,7 +2412,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=3 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=4 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -2666,13 +2691,14 @@ initialRollupState:0x8
         with printAllElements on (
             format "%|%|%|%|%|" (this.inputTimeKey()) (if receiverLocal then 0 else procGeometryRevision) (if receiverLocal then 0 else if overlapOwner!=undefined then overlapOwner.procManualRevision else procManualRevision) (this.containerSourceKey plants) previewOnly to:stream
             format "DensityMap:%|" (if densityMap==undefined then 0 else getHandleByAnim densityMap) to:stream
-            format "Ownership:%:%:%:%|" logicalParentID paintSetEnabled (if receiverLocal then 0 else this.effectivePopulation()) (this.effectiveSeed()) to:stream
+            format "Ownership:%:%:%:%|" logicalParentID paintSetEnabled (if receiverLocal or placementMode>1 then 0 else this.effectivePopulation()) (this.effectiveSeed()) to:stream
+            if placementMode>1 do format "Placement:%|" (this.gridKey()) to:stream
             if not receiverLocal do format "Variation:%|" (CyrusReceiverVariationDomains this) to:stream
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
             format "MeshMask:%|" (if meshMaskEnabled then this.meshMaskPayload() else #(false)) to:stream
-            for key in AminScatterLayerFields where (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterOrientationFields key==0 and findItem AminScatterSurfaceFilterFields key==0 and findItem AminScatterMeshMaskFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where findItem AminScatterGridFields key==0 and (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterOrientationFields key==0 and findItem AminScatterSurfaceFilterFields key==0 and findItem AminScatterMeshMaskFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and ((not receiverLocal and placementMode==1) or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -3032,6 +3058,7 @@ initialRollupState:0x8
         local stream=stringStream "",domains=CyrusReceiverVariationDomains this
         with printAllElements on (
             format "CyrusBinding2:%|" (this.effectiveSeed()) to:stream
+            if placementMode>1 do format "Placement:%|" (this.gridKey()) to:stream
             for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
             for key in #(#distributionMode,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove) do format "%:%|" key (getProperty this key) to:stream
             if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs,#pathIDs,#pathJoins,#strokeIDs,#strokePathIDs,#bandArrangement,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" key (getProperty this key) to:stream
@@ -3050,16 +3077,28 @@ initialRollupState:0x8
     )
 
     fn receiverCacheStats = (#(procReceiverBuilds,procReceiverHits,procReceiverCache.count))
-    fn procPlanReceivers active = (
+    fn procPlanReceivers active remaining:1000000 = (
         local parent=overlapOwner.logicalParent this,allocation=this.effectivePopulation(),meters=units.decodeValue "1m"
-        local requirements=cyrusEditReceiverRequirements active editLayerKey,inputs=#()
+        local requirements=cyrusEditReceiverRequirements active editLayerKey,inputs=#(),nextGrid=#(),gridInputs=#(),gridCells=0
+        local domains=CyrusReceiverVariationDomains this,placementKey=this.gridKey()
         procReceiverGeometry=#()
         for node in this.validSurfaces() do (
             local slot=findItem procReceiverNodes node
-            append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
-            append procReceiverGeometry #(slot,(cyrusProceduralSurfaceKey #(node) (distributionMode==3) densityUVChannel),(if meshMaskEnabled then cyrusMeshDensityKey node (this.meshMaskPayload()) else "off"))
+            local geometry=cyrusProceduralSurfaceKey #(node) (distributionMode==3) densityUVChannel
+            append procReceiverGeometry #(slot,geometry,(if meshMaskEnabled then cyrusMeshDensityKey node (this.meshMaskPayload()) else "off"))
+            if placementMode==1 then append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
+            else (
+                local key=geometry+"|UV:"+(distributionMode as string)+":"+(densityUVChannel as string)+"|"+placementKey+"|"+domains[slot]+"|"+((this.effectiveSeed()) as string),snapshot=undefined
+                for entry in procGridCache where entry[1]==slot and entry[2]==key do snapshot=entry[3]
+                if snapshot==undefined do snapshot=cyrusGridPrepare node (this.gridPayload()) (this.effectiveSeed()) domains[slot] (distributionMode==3) densityUVChannel (remaining-gridCells)
+                local info=cyrusGridSnapshotInfo snapshot
+                gridCells+=info[1]
+                if gridCells>remaining do throw "Grid cells exceed this setup's remaining candidate budget. Increase spacing or reduce the terrain domain. The previous result is retained."
+                append nextGrid #(slot,key,snapshot);append gridInputs #(slot,snapshot)
+            )
         )
-        procReceiverPlanData=cyrusReceiverPlan inputs allocation[1] (if parent.populationMode==2 then allocation[2]/(meters*meters) else -1.0) (if parent.procPopulation==2 then parent.procAttemptFactor else 1) ((overlapOwner.populationAllocation this countOverride:1000000)[1])
+        local nextPlan=if placementMode>1 then cyrusGridPlan gridInputs else cyrusReceiverPlan inputs allocation[1] (if parent.populationMode==2 then allocation[2]/(meters*meters) else -1.0) (if parent.procPopulation==2 then parent.procAttemptFactor else 1) ((overlapOwner.populationAllocation this countOverride:1000000)[1])
+        procReceiverPlanData=nextPlan;procGridCache=nextGrid
         densityCapped=procReceiverPlanData[5]
         procReceiverPlanData
     )
@@ -3345,7 +3384,7 @@ initialRollupState:0x8
                 format "Membership:%|Filter:%|Orientation:%|" leaf.containerMembershipKey (leaf.surfaceFilterKey()) (leaf.orientationKey()) to:stream
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
-                for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
+                for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) where leaf.placementMode==1 or findItem #(#procPopulation,#procAttemptFactor,#procRounds,#procRepair) key==0 do format "%:%|" key (getProperty leaf key) to:stream
             )
         )
         stream as string
@@ -3378,20 +3417,24 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.84.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=3 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=2 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.84.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=4 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
-                if cyrusEnabled do (leaf.requireCurrentAnalyzers();cyrusValidateOrientation (leaf.orientationPayload());cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload());cyrusValidateMeshDensity (leaf.meshMaskPayload()))
-                if parent.procPopulation==2 and leaf.diversityMode==3 do (
+                if cyrusEnabled do (leaf.gridKey();leaf.requireCurrentAnalyzers();cyrusValidateOrientation (leaf.orientationPayload());cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload());cyrusValidateMeshDensity (leaf.meshMaskPayload()))
+                if cyrusEnabled and leaf.placementMode>1 and leaf.diversityMode==4 do (
+                    local analyzerInput=leaf.lineInputs (leaf.validSources()) previewOnly:true
+                    for row in analyzerInput[2] where row[6]>=5 do throw "Grids cannot combine with Analyzer Single or Edge Row position generators. Use Analyzer areas or Bands for grid source assignment."
+                )
+                if parent.placementMode==1 and parent.procPopulation==2 and leaf.diversityMode==3 do (
                     leaf.syncStrokes()
                     if leaf.bandArrangement==2 do throw "Independent Bands require Candidate budget. Accepted target would refill their density."
                     for i=1 to leaf.strokeIDs.count do (
@@ -3399,7 +3442,7 @@ initialRollupState:0x8
                         for value in (leaf.bandCurve i) where value!=1.0 do throw "Band density curves require Candidate budget."
                     )
                 )
-                if parent.procPopulation==2 do for source in leaf.validSources() do (
+                if parent.placementMode==1 and parent.procPopulation==2 do for source in leaf.validSources() do (
                     local index=leaf.sourceRow source
                     if leaf.isEmptySource index and not leaf.isPointSource index and leaf.sourceWeight index>0 do throw "Accepted target does not refill weighted Empty assets. Use candidate budget, Point placeholders, or remove the Empty weight."
                 )
@@ -3662,10 +3705,10 @@ initialRollupState:0x8
         local requests=for leaf in layerObjects collect #(0,0,0)
         -- Admit the full bounded candidate pool before any Edit/publication mutation.
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
-            local leaf=layerObjects[i],parent=this.logicalParent leaf,receiverPlan=leaf.procPlanReceivers active
+            local leaf=layerObjects[i],parent=this.logicalParent leaf,receiverPlan=leaf.procPlanReceivers active remaining:(1000000-admission)
             local quota=receiverPlan[3],attempts=receiverPlan[4],pool=receiverPlan[2].count
             if pool>1000000 do throw "This population requires more than 1,000,000 candidates, including protected edits. Reduce its Amount or retry budget."
-            requests[i]=#(quota,attempts,pool);admission+=pool
+            requests[i]=#(quota,attempts,pool);admission+=if leaf.placementMode>1 then receiverPlan[6] else pool
         )
         if admission>1000000 do throw ("This Scatter requests "+(admission as string)+" candidates across its layers; the total limit is 1,000,000 including retries. Reduce Amount or retry limits. The previous result is retained.")
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
@@ -3686,7 +3729,7 @@ initialRollupState:0x8
                     append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()))
                     append indices i
                 )
-                append layers #(parent.layerID,parent.procPopulation==2,parent.procRepair,parent.procRounds,#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)
+                append layers #(parent.layerID,(parent.placementMode==1 and parent.procPopulation==2),(parent.placementMode==1 and parent.procRepair),(if parent.placementMode==1 then parent.procRounds else 1),#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)
                 append mapping indices
             )
             local pairs=for i=1 to procRuleA.count collect #(procRuleScope[i],procRuleA[i],procRuleB[i],#(procRuleEnabled[i],procRuleMultiplier[i],procRuleGapWU[i],procRulePlanar[i]))
@@ -4475,6 +4518,40 @@ initialRollupState:0x8
         on selected_sourceContainersUI rolledUp state do (CyrusContainerPanel root).bindSection selected_sourceContainersUI
     )
 
+    rollout selected_placementUI "Placement generator - layer" width:#cmdPanel category:75 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,obj=undefined,controlsReady=false,binding=false,setSpecific=false
+        dropdownlist generatorList "Planting positions" items:#("Surface random","Rectangular","Staggered","Hexagonal") selection:1 width:(selected_placementUI.width-8) tooltip:"Choose how planting positions are generated. Grids project downward onto the highest world-Z hit of each receiver; source assignment below remains independent."
+        spinner columnSpin "Columns:" type:#worldunits range:[0.0001,1e9,100] fieldWidth:82 width:(selected_placementUI.width-8) tooltip:"Column spacing in scene units. In Hexagonal mode this is the nearest-neighbor distance; row pitch is calculated automatically."
+        spinner rowSpin "Rows:" type:#worldunits range:[0.0001,1e9,100] fieldWidth:82 width:(selected_placementUI.width-8) tooltip:"Distance between rows for Rectangular and Staggered layouts. Staggered offsets odd rows by half a column."
+        spinner originXSpin "Origin X:" type:#worldunits range:[-1e9,1e9,0] fieldWidth:82 width:(selected_placementUI.width-8) tooltip:"World X origin of the lattice. Changing terrain bounds or masks never moves this origin."
+        spinner originYSpin "Origin Y:" type:#worldunits range:[-1e9,1e9,0] fieldWidth:82 width:(selected_placementUI.width-8) tooltip:"World Y origin of the lattice. All receivers in this layer use the same world frame."
+        spinner headingSpin "Heading:" range:[-36000,36000,0] fieldWidth:82 width:(selected_placementUI.width-8) tooltip:"Rotate the lattice in degrees around world Z at its origin. Projection remains vertical."
+        spinner jitterSpin "Jitter %:" range:[0,100,0] fieldWidth:82 width:(selected_placementUI.width-8) tooltip:"Stable cell-based displacement: 0 gives exact positions; 100 allows up to half a pitch in each grid axis. Masks do not reroll surviving cells."
+        label gridInfo "World XY / highest surface. Spacing sets population; masks and collision rules thin it. No Count/Density refill." width:(selected_placementUI.width-8) height:60
+        fn bind layer = (
+            binding=true;controlsReady=false;obj=layer
+            generatorList.selection=obj.placementMode;columnSpin.value=obj.gridColumnWU;rowSpin.value=obj.gridRowWU
+            originXSpin.value=obj.gridOriginXWU;originYSpin.value=obj.gridOriginYWU;headingSpin.value=obj.gridHeading;jitterSpin.value=obj.gridJitter
+            rowSpin.enabled=obj.placementMode!=4;controlsReady=true;binding=false
+        )
+        fn changePlacement field value = (
+            if not controlsReady or binding or obj==undefined do return false
+            local controller=root,layer=obj
+            undo "Cyrus planting layout" on setProperty layer field value
+            controller.bindNativeUI();CyrusViewportRedraw();true
+        )
+        on generatorList selected value do changePlacement #placementMode value
+        on columnSpin changed value do changePlacement #gridColumnWU value
+        on rowSpin changed value do changePlacement #gridRowWU value
+        on originXSpin changed value do changePlacement #gridOriginXWU value
+        on originYSpin changed value do changePlacement #gridOriginYWU value
+        on headingSpin changed value do changePlacement #gridHeading value
+        on jitterSpin changed value do changePlacement #gridJitter value
+        on selected_placementUI open do (root=this;controlsReady=false)
+        on selected_placementUI close do controlsReady=false
+        on selected_placementUI rolledUp state do (CyrusContainerPanel root).bindSection selected_placementUI
+    )
+
     rollout selected_distributionUI "Population and seed - layer" width:#cmdPanel category:80 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined
         local setSpecific=false
@@ -4513,6 +4590,7 @@ initialRollupState:0x8
             selected_distributionUI.height=if obj.sharedSpacing() then (if textured then 308 else 184) else (if textured then 340 else 208)
         )
         fn syncControls = (
+            for c in #(populationRadio,countSpin,densitySpin) do c.enabled=obj.placementMode==1
             populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;uvChannelSpin.value=obj.densityUVChannel;resolutionList.selection=findItem #(64,128,256,512) obj.densityResolution
             meshCheck.checked=obj.meshMaskEnabled;meshChannelSpin.value=obj.meshMaskChannel;meshComponentList.selection=obj.meshMaskComponent
             meshMinSpin.value=obj.meshMaskMinimum;meshMaxSpin.value=obj.meshMaskMaximum;meshInvertCheck.checked=obj.meshMaskInvert
@@ -4582,7 +4660,8 @@ initialRollupState:0x8
             binding=true
             for c in selected_populationPolicyUI.controls do c.enabled=true
             populationList.selection=owner.procPopulation;attemptSpin.value=owner.procAttemptFactor;roundSpin.value=owner.procRounds;repairCheck.checked=owner.procRepair
-            local retry=true and owner.procPopulation==2
+            populationList.enabled=owner.placementMode==1
+            local retry=owner.placementMode==1 and owner.procPopulation==2
             attemptSpin.enabled=retry;roundSpin.enabled=retry;repairCheck.enabled=retry
             info.enabled=true;controlsReady=true;binding=false
         )

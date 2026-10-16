@@ -12,6 +12,10 @@ constexpr unsigned stride=131072, limit=1000000, slots=128;
 // saved candidate ID; growth beyond 131072 cannot alias the next receiver.
 std::uint64_t identity(unsigned slot,unsigned ordinal);
 bool decode(std::uint64_t id,unsigned& slot,unsigned& ordinal);
+// Both supported families. A local cell key is kept at full 64-bit precision;
+// only the original random family has a bounded ordinal/prefix requirement.
+std::uint64_t candidateIdentity(unsigned slot,std::uint64_t localKey);
+bool decodeCandidate(std::uint64_t id,unsigned& slot,std::uint64_t& localKey);
 std::uint64_t salt(const std::string& persistentID);
 struct Input { unsigned slot; std::string id; double area; unsigned required=0; };
 struct Allocation { unsigned slot,budget,attempts,pool; };

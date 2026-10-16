@@ -77,6 +77,15 @@
     "pickContainer": "Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved.",
     "removeContainer": "Unlink this rectangle without deleting it or registered source settings."
   },
+  "placementUI": {
+    "generatorList": "Choose how planting positions are generated. Grids project downward onto the highest world-Z hit of each receiver; source assignment below remains independent.",
+    "columnSpin": "Column spacing in scene units. In Hexagonal mode this is the nearest-neighbor distance; row pitch is calculated automatically.",
+    "rowSpin": "Distance between rows for Rectangular and Staggered layouts. Staggered offsets odd rows by half a column.",
+    "originXSpin": "World X origin of the lattice. Changing terrain bounds or masks never moves this origin.",
+    "originYSpin": "World Y origin of the lattice. All receivers in this layer use the same world frame.",
+    "headingSpin": "Rotate the lattice in degrees around world Z at its origin. Projection remains vertical.",
+    "jitterSpin": "Stable cell-based displacement: 0 gives exact positions; 100 allows up to half a pitch in each grid axis. Masks do not reroll surviving cells."
+  },
   "distributionUI": {
     "presetsButton": "Save or apply named population settings. Assets and receiver references are preserved.",
     "countSpin": "Layer population before eligibility, up to 1,000,000. All layers and retries share the Scatter's 1,000,000 candidate limit.",

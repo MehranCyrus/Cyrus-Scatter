@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <memory>
 #include <unordered_map>
+#include <unordered_set>
 #include <functional>
 #include <numeric>
 
@@ -182,13 +183,31 @@ double stableUnit(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel
     const auto counter=Random::mix(ordinal)^Random::mix((std::uint64_t(seed)<<32)^channel)^Random::mix(receiver);
     return double(Random::mix(counter+0x9e3779b97f4a7c15ULL)>>11)*(1.0/9007199254740992.0);
 }
-std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& s) {
+namespace {
+std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Settings& s,
+                                const std::vector<CandidateAnchor>* candidates) {
     detail::recordComputeStats({});
     if(s.splineField&&s.analyzerPattern)
         throw std::invalid_argument("Prepared spline fields cannot mix with Analyzer rows");
     if(s.candidateStart>std::numeric_limits<std::uint64_t>::max()-s.count)
         throw std::invalid_argument("Candidate ordinal overflow");
-    if(s.analyzerPattern&&std::any_of(s.analyzerBands.begin(),s.analyzerBands.end(),[](const AnalyzerBand& b){return b.kind==6;}))return scatter(surface,prepareEdgeRows(s));
+    if(candidates){
+        if(candidates->size()!=s.count||s.candidateStart!=0||candidates->size()>1000000)
+            throw std::invalid_argument("Anchored population requires its complete bounded candidate schedule");
+        if(s.analyzerPattern&&std::any_of(s.analyzerBands.begin(),s.analyzerBands.end(),[](const AnalyzerBand& b){return b.kind>=5;}))
+            throw std::invalid_argument("Grid/path anchors cannot mix with Analyzer single/edge-row position generators");
+        std::unordered_set<std::uint64_t> keys;keys.reserve(candidates->size());
+        for(const auto& a:*candidates){
+            if(!finite(a.position)||!finite(a.bary)||a.face>=surface.size()||!keys.insert(a.key).second||
+               std::abs(a.bary.x+a.bary.y+a.bary.z-1)>1e-10||std::min({a.bary.x,a.bary.y,a.bary.z}) < -1e-10)
+                throw std::invalid_argument("Invalid or duplicate explicit candidate anchor");
+            const auto& t=surface[a.face];
+            const auto p=t.a+(t.b-t.a)*a.bary.y+(t.c-t.a)*a.bary.z;
+            if(length(p-a.position)>1e-10*std::max({1.,length(t.a),length(t.b),length(t.c)}))
+                throw std::invalid_argument("Explicit candidate is not on its receiver face");
+        }
+    }
+    if(s.analyzerPattern&&std::any_of(s.analyzerBands.begin(),s.analyzerBands.end(),[](const AnalyzerBand& b){return b.kind==6;}))return scatterImpl(surface,prepareEdgeRows(s),nullptr);
     if(s.relaxEnabled&&(!std::isfinite(s.relaxSpacing)||s.relaxSpacing<=0||!std::isfinite(s.relaxStrength)||s.relaxStrength<0||s.relaxStrength>1||s.relaxIterations>100))
         throw std::invalid_argument("Invalid relax controls");
     validate(s.uniformScale);
@@ -288,8 +307,9 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         clusterCandidates.resize(s.count);
         std::uint64_t ordinal=s.candidateStart;
         for(auto& candidate:clusterCandidates) {
-            placement.candidate(s.seed,ordinal++,1,s.receiverSalt);
-            const auto sampled=sampler.sample(placement);
+            placement.candidate(s.seed,ordinal,1,s.receiverSalt);
+            const auto sampled=candidates ? std::make_pair((*candidates)[ordinal].position,(*candidates)[ordinal].face) : sampler.sample(placement);
+            ++ordinal;
             candidate.position=sampled.first; candidate.triangle=sampled.second;
         }
         std::array<ComputeStats,64> rangeStats{};
@@ -306,15 +326,16 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         }
     }
     for(std::uint64_t i=0;i<end;++i) {
-        const auto ordinal=s.candidateStart+i;
+        const auto ordinal=candidates ? (*candidates)[i].key : s.candidateStart+i;
         placement.candidate(s.seed,ordinal,1,s.receiverSalt);transforms.candidate(s.seed,ordinal,2,s.receiverSalt);
         sources.candidate(s.seed,ordinal,3,s.receiverSalt);scales.candidate(s.seed,ordinal,4,s.receiverSalt);
         distribution.candidate(s.seed,ordinal,5,s.receiverSalt);diversity.candidate(s.clusterSeed,ordinal,6,s.receiverSalt);
-        const bool single=ordinal<anchors.size();
+        const bool single=!candidates&&ordinal<anchors.size();
         const auto anchorIndex=static_cast<std::size_t>(ordinal);
         if(!population&&!single) break;
         auto [p,id]=batchClusters ? std::make_pair(clusterCandidates[static_cast<std::size_t>(i)].position,
-                                                 clusterCandidates[static_cast<std::size_t>(i)].triangle) : sampler.sample(placement);
+                                                 clusterCandidates[static_cast<std::size_t>(i)].triangle) :
+            candidates ? std::make_pair((*candidates)[i].position,(*candidates)[i].face) : sampler.sample(placement);
         if(single) {
             const auto target=anchors[anchorIndex].first;
             double best=INFINITY;
@@ -418,6 +439,9 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     detail::recordComputeStats(computeStats);
     return result;
 }
+}
+std::vector<Instance> scatter(const std::vector<Triangle>& surface,const Settings& s){return scatterImpl(surface,s,nullptr);}
+std::vector<Instance> scatter(const std::vector<Triangle>& surface,const Settings& s,const std::vector<CandidateAnchor>& anchors){return scatterImpl(surface,s,&anchors);}
 #include "final.inc"
 std::vector<Vec3> sampleSource(const std::vector<Triangle>& mesh,std::uint32_t count,std::uint32_t seed) {
     Sampler sampler(mesh); Random random(seed); std::vector<Vec3> result; result.reserve(count);

@@ -2,10 +2,10 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.84.0 | I05 explicit copy/import variation policies; remaining program continues |
-| Scatter native/package | 0.84.0 packaged for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped Max 2027 qualification are in the I05 handoff; manual installation is separate |
-| Recipe / numeric-settings format and capability | 3 / 2 | Complete recipes add receiver random domains; strict reads of formats 1/2 preserve their original variation; numeric seed policy is an operation option |
-| Saved MAXScript schema | 58 | Appended orientation and variation parameter blocks preserve existing parameter IDs; no earlier-schema migration |
+| Scatter UI | 0.85.0 | I06 regular grids; remaining program continues |
+| Scatter native/package | 0.85.0 packaged for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped Max 2027 qualification are in the I06 handoff; manual installation is separate |
+| Recipe / numeric-settings format and capability | 4 / 3 | Grid settings and unit-aware distances; strict earlier reads retain Surface random and original variation |
+| Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
@@ -20,7 +20,7 @@
 are development delivery identifiers. This overrides the earlier small-step
 selection table below for the [active goal](plans/improvement-program/OBJECTIVE.md).
 Phase 6 is resumed within that goal; preset work is first. Current packaged
-delivery is [0.84.0](plans/improvement-program/I05_0840.md): a substantial copy/import workflow with separate saved receiver random domains. Scene schema 58 is retained; complete recipes advance to format 3 and numeric presets stay 2. The earlier 0.83.0 and 0.82.6.1 receipts remain frozen. Library presentation and native orientation retain independent capability 1. I06 grids are provisionally 0.85.0; assess the complete delivery before changing source versions.
+delivery is [0.85.0](plans/improvement-program/I06_0850.md): a substantial placement generator with disjoint stable cell identities, independent source assignment and two additional presets. Scene schema 58 is retained with an appended grid block; complete recipes advance to 4 (242 fields), numeric settings to 3 and grid capability to 1. Strict earlier-format reads retain Surface random and original variation. The 0.84.0, 0.83.0 and 0.82.6.1 receipts remain frozen. Library presentation and native orientation retain independent capability 1. I07 paths is next; select its version from the complete bounded implementation contract before editing metadata.
 
 The preceding small-step policy is retained as historical context:
 

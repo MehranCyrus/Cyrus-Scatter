@@ -78,8 +78,8 @@ Value* cyrusMeshDensityFilter_cf(Value** a,int n){check_arg_count(cyrusMeshDensi
         const auto seed=std::uint32_t(a[3]->to_int());const auto salt=cyrus::receivers::salt(proceduralID(a[4]));
         for(int i=0;i<rows->size;++i){auto* row=groupArray(rows->data[i]);cyrus::rows::raw(row);bool keep=true;
             if(s.enabled){const int face=row->data[3]->to_int()-1;if(face<0||std::size_t(face)>=snapshot.corners.size())throw RuntimeError(_T("Mesh density anchor is outside receiver"));
-                unsigned slot=0,ordinal=0;const auto id=std::uint64_t(row->data[2]->to_int64());
-                if(!cyrus::receivers::decode(id,slot,ordinal))throw RuntimeError(_T("Mesh density candidate identity is invalid"));
+                unsigned slot=0;std::uint64_t ordinal=0;const auto id=std::uint64_t(row->data[2]->to_int64());
+                if(!cyrus::receivers::decodeCandidate(id,slot,ordinal))throw RuntimeError(_T("Mesh density candidate identity is invalid"));
                 const auto value=cyrus::mesh_density::sample(snapshot.corners[std::size_t(face)],vec(row->data[4]->to_point3()));
                 keep=cyrus::mesh_density::accepts(cyrus::mesh_density::weight(value,s),seed,ordinal,salt);++meshDensityRows;}
             if(keep)vl.result->append(row);

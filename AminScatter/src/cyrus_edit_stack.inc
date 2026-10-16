@@ -127,8 +127,11 @@ Value* cyrusEditReceiverRequirements_cf(Value** a,int count){
     std::array<unsigned,cyrus::receivers::slots> required{};
     for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end())continue;
         for(const auto& row:found->second.rows)if(!row.deleted&&(row.inputId!=row.outputId||hasEditTransform(row.delta))&&row.inputId.rfind(L"c:",0)==0){
-            try{std::size_t used=0;const auto id=std::stoull(row.inputId.substr(2),&used);unsigned slot=0,ordinal=0;
-                if(used!=row.inputId.size()-2||!cyrus::receivers::decode(id,slot,ordinal))throw std::invalid_argument("Old identity");required[slot]=std::max(required[slot],ordinal+1);}
+            try{std::size_t used=0;const auto id=std::stoull(row.inputId.substr(2),&used);unsigned slot=0;std::uint64_t ordinal=0;
+                if(used!=row.inputId.size()-2||!cyrus::receivers::decodeCandidate(id,slot,ordinal))throw std::invalid_argument("Old identity");
+                // A grid already admits its complete cell schedule; there is no
+                // random prefix to extend. Binding validation still guards edits.
+                if(ordinal<cyrus::receivers::limit)required[slot]=std::max(required[slot],unsigned(ordinal+1));}
             catch(...){throw RuntimeError(_T("Old combined-surface Edit identities require an explicit Reset Edits before using receiver-local sampling. Saved edits are preserved."));}}
     }
     one_typed_value_local(Array* result);vl.result=new Array(int(required.size()));for(auto value:required)vl.result->append(Integer::intern(int(value)));return_value(vl.result);
