@@ -1,4 +1,4 @@
-// Recipe v2 explicit allowlist. Changes require a format/capability decision.
+// Recipe v3 explicit allowlist. Changes require a format/capability decision.
 // Native Paint, owner graph, pair rules and guarded Edit are separate records.
     {"procSamplingSalt","integer",false},
     {"procPopulation","integer",false},
@@ -235,3 +235,4 @@
     {"orientationY","float",false},
     {"orientationZ","float",false},
     {"orientationTarget","node",false},
+    {"procReceiverVariationIDs","stringtab",false},

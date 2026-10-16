@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.84.0",
+      "date": "2026-10-16",
+      "title": "Explicit copy and recipe variation.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 qualification and MZP; not installed. Heavy heap-pressure Undo remains unresolved. Remaining program and EXE stay open.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Same/New layer copies, Saved/New recipe imports and explicit numeric Amount seed policies."
+        },
+        {
+          "kind": "Improved",
+          "text": "Independent ownership with preserved receiver random inputs, complete supported Paint copying and rollback after late import failures."
+        },
+        {
+          "kind": "Added",
+          "text": "Format-3 recipes with strict preceding-format reads; passive choices preserve calculation, preparation and upload counters."
+        }
+      ],
+      "evidence": [
+        "docs/plans/improvement-program/I05_0840.md"
+      ]
+    },
+    {
       "version": "0.83.0",
       "date": "2026-10-16",
       "title": "Direction, target aiming and angular normal blending.",

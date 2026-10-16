@@ -175,4 +175,4 @@ planting, a new advanced Edit system, renderer/material expansion, edge trimming
 animation/geometry LOD, general curved-surface painting and an Effects framework.
 Do not make them hidden prerequisites for finishing phases 1–11.
 
-Current successor: [I04/P07 0.83.0 direction and normal blending](../improvement-program/I04_0830.md). I05 variation policy follows; P06 grids and the remaining program stay open. Historical version proposals above do not select future delivery numbers.
+Current successor: [I05 0.84.0 variation policy](../improvement-program/I05_0840.md), following [I04/P07 direction and normal blending](../improvement-program/I04_0830.md). P06 grids and the remaining program stay open; B26 heap-pressure Undo work is unresolved. Historical version proposals above do not select future delivery numbers.

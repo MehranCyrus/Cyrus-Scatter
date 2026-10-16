@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="b8b8e78ba8f2cf8b55e749505d1f8aa1f87cdc1d55b9df01338d47529b800b3e"
+﻿global CyrusLoadedScriptFingerprint="19ea3bce640054c375edd50821ce2ac14fbc9dd32d97a101df283690c5e787e6"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -61,7 +61,7 @@ global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipeCapture,CyrusRecipeImport,Cyr
 -- late-bound globals explicitly so cold compilation cannot capture undefined
 -- function locals before the controller has registered them.
 global AminScatterObject,CyrusScatterEdit,CyrusNewLayerID,CyrusAnalyzerFilter,CyrusRequireAuthor
-global CyrusPointSuspended,CyrusBrushSessionLayer,CyrusViewportRedraw
+global CyrusPointSuspended,CyrusBrushSessionLayer,CyrusViewportRedraw,CyrusReceiverVariationDomains,CyrusRemapLayerCorrespondence
 global CyrusRecipeCaptureContext,CyrusRecipePut,CyrusRecipeOwnerNode,CyrusRecipeCheckRoot
 global CyrusRecipeRole,CyrusRecipeCaptureValue,CyrusRecipeCaptureSettings,CyrusRecipeCapturePaint
 global CyrusRecipeResolve,CyrusRecipeValidateBindings,CyrusRecipeApplyValue,CyrusRecipeApplySettings
@@ -123,9 +123,11 @@ fn CyrusRecipeCaptureSettings context owner = (
         local label=if owner==context.root then "setup settings" else if owner.isPaintArea then "Paint Area "+owner.paintSetName else context.root.layerCaption owner
         throw ("Cannot save "+label+": "+staticError)
     )
+    -- Enroll only bounded correspondence metadata; Save does not evaluate terrain.
+    if owner!=context.root and not owner.isPaintArea do owner.procEnsureCorrespondence()
     local pairs=#()
     for field in (cyrusRecipeSchema()) do (
-        local key=field[1],kind=field[2],value=getProperty owner (key as name)
+        local key=field[1],kind=field[2],value=if key=="procReceiverVariationIDs" then CyrusReceiverVariationDomains owner else getProperty owner (key as name)
         if matchPattern kind pattern:"*tab" then (
             kind=substring kind 1 (kind.count-3)
             value=for entry in value collect (CyrusRecipeCaptureValue context entry kind key)
@@ -145,7 +147,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=2 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.83.0 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=3 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.84.0 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -176,7 +178,7 @@ fn CyrusRecipeCapture root selected name = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",2),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",2027),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",3),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",2027),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -228,7 +230,7 @@ fn CyrusRecipeApplyValue bindings value kind metres = (
         default:value
     )
 )
-fn CyrusRecipeApplySettings owner settings bindings = (
+fn CyrusRecipeApplySettings owner settings bindings variation:#new = (
     local metres=(units.decodeValue "1m") as double
     for field in (cyrusRecipeSchema()) do (
         local key=field[1],kind=field[2],value=CyrusRecipeGet settings key
@@ -238,19 +240,8 @@ fn CyrusRecipeApplySettings owner settings bindings = (
         ) else value=CyrusRecipeApplyValue bindings value kind metres
         setProperty owner (key as name) value
     )
-    -- Source row/correspondence IDs are local to each new owner. Numeric Path/
-    -- Band IDs are already owner-local; their fresh owner gives a new namespace.
-    local before=#(),after=#()
-    for key in #(#sourceRowIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
-        local values=(getProperty owner key) as array
-        for i=1 to values.count do if not matchPattern values[i] pattern:"placeholder:*" do (
-            local index=findItem before values[i]
-            if index==0 do (append before values[i];append after (CyrusNewLayerID());index=before.count)
-            values[i]=after[index]
-        )
-        setProperty owner key values
-    )
-    owner.procReceiverID="";for value in owner.procReceiverIDs do owner.procReceiverID+=value+"|"
+    -- Ownership is always fresh; saved random domains are an explicit choice.
+    CyrusRemapLayerCorrespondence owner variation:variation
     owner.nextPathID=1;for value in owner.pathIDs do owner.nextPathID=amax owner.nextPathID (value+1)
     owner.nextBandID=1;for value in owner.strokeIDs do owner.nextBandID=amax owner.nextBandID (value+1)
     owner.fieldFalloff=false;owner.fieldBoundaries=false
@@ -263,7 +254,8 @@ fn CyrusRecipeRestorePaint data target document = (
     cyrusBrushRecipeImport (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame")
 )
 
-fn CyrusRecipeImport destination document bindings newSetup:false = (
+fn CyrusRecipeImport destination document bindings newSetup:false variation:#new = (
+    if findItem #(#same,#new) variation==0 do throw "Choose Saved or New variation."
     CyrusRequireAuthor()
     if theHold.Holding() do throw "Finish the current undoable operation before importing a recipe."
     if CyrusBrushSessionLayer!=undefined do throw "Stop the brush before importing a recipe."
@@ -280,13 +272,13 @@ fn CyrusRecipeImport destination document bindings newSetup:false = (
             if newSetup do (
                 createdNode=AminScatterObject name:(CyrusRecipeGet document "name")
                 root=createdNode.baseObject;node=createdNode;root.setLayerTransfer true
-                CyrusRecipeApplySettings root (CyrusRecipeGet document "rootSettings") bindings
+                CyrusRecipeApplySettings root (CyrusRecipeGet document "rootSettings") bindings variation:variation
                 root.layerID=CyrusNewLayerID();root.layerObjects=#();root.layerNames=#();root.layerEnabled=#();root.layerVisible=#()
             )
             for record in layers do (
                 local owner=createInstance AminScatterObject
                 owner.setLayerTransfer true;owner.layerID=CyrusNewLayerID();owner.logicalParentID="";owner.isPaintArea=false
-                CyrusRecipeApplySettings owner (CyrusRecipeGet record "settings") bindings
+                CyrusRecipeApplySettings owner (CyrusRecipeGet record "settings") bindings variation:variation
                 owner.editLayerKey=root.nextEditLayerKey;root.nextEditLayerKey+=1
                 owner.procOrder=root.layerObjects.count+imported.count+1;owner.procSetOrder=owner.procOrder
                 owner.paintAreas=#()
@@ -295,7 +287,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false = (
                 for areaRecord in (CyrusRecipeGet record "areas") do (
                     local area=createInstance AminScatterObject
                     area.setLayerTransfer true;area.layerID=CyrusNewLayerID();area.logicalParentID=owner.layerID;area.isPaintArea=true
-                    CyrusRecipeApplySettings area (CyrusRecipeGet areaRecord "settings") bindings
+                    CyrusRecipeApplySettings area (CyrusRecipeGet areaRecord "settings") bindings variation:variation
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")
                     local areaPaint=CyrusRecipeGet areaRecord "paint"
                     if areaPaint!=undefined and (CyrusRecipeResolve bindings (CyrusRecipeGet areaPaint "receiverRole"))!=area.areaTarget do throw "Paint document and area binding disagree."
@@ -358,7 +350,7 @@ fn CyrusRecipeSuggestBindings root document = (
 fn CyrusOpenRecipeLibrary root = (
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=1 do throw "Restart Max with the complete Cyrus 0.83.0 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=1 do throw "Restart Max with the complete Cyrus 0.84.0 package."
     if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
     rollout browser "Cyrus library - complete recipes" width:850 height:650 (
         local root=undefined,node=undefined,owners=#(),directory="",entries=#(),page=1,document=undefined,bindings=#(),layerChoices=#(),bindingControls=false
@@ -396,8 +388,9 @@ fn CyrusOpenRecipeLibrary root = (
         pickbutton bindNode "Pick scene object..." pos:[330,486] width:150 autoDisplay:false
         mapbutton bindMap "Pick texture..." pos:[490,486] width:150
         dropdownlist bindLayer "Layer:" items:#() pos:[650,482] width:188
-        checkbox newSetupCheck "New setup (unchecked: Add layers to this setup)" pos:[330,522] width:508
-        button importButton "Import reviewed recipe" pos:[330,554] width:210 enabled:false
+        checkbox newSetupCheck "New setup" pos:[330,522] width:220 tooltip:"Unchecked: Add layers to this setup. Checked: create a separate Scatter setup."
+        dropdownlist importVariation items:#("New variation","Saved variation") selection:1 pos:[570,518] width:268 tooltip:"New chooses fresh random inputs once. Saved preserves recipe inputs; identical output also requires matching terrain, assets, order, masks and spacing."
+        button importButton "Add layers" pos:[330,554] width:210 enabled:false
         button closeButton "Close" pos:[748,554] width:90
         label status "Browsing never calculates scattering. Refresh rereads changed library files." pos:[12,618] width:826 height:28
         timer scanTimer interval:250 active:false
@@ -557,9 +550,10 @@ fn CyrusOpenRecipeLibrary root = (
         on bindLayer selected i do try(validRoot();local index=selectedRole();if index>0 and i>0 and i<=layerChoices.count do (bindings[index][2]=layerChoices[i];showBindings()))catch(status.text=getCurrentException())
         on importButton pressed do try(
             validRoot();if document==undefined do throw "Review a recipe first."
-            local result=CyrusRecipeImport root document bindings newSetup:newSetupCheck.checked
+            local result=CyrusRecipeImport root document bindings newSetup:newSetupCheck.checked variation:(if importVariation.selection==2 then #same else #new)
             status.text=if result[1].updateMode==1 then "Imported as one Undo. Manual mode: Update scatter to calculate." else "Imported as one Undo. Live follows relevant changes."
         )catch(status.text=getCurrentException())
+        on newSetupCheck changed value do importButton.text=if value then "Create new setup" else "Add layers"
         on settingsPresets pressed do try(
             validRoot();local owner=root.selectedLayer()
             if owner==undefined do throw "Select a destination layer first."
@@ -614,7 +608,9 @@ fn CyrusPresetCapture target = (
     )
     for field in schema collect (local v=getProperty target.owner (field[1] as name);if field[3] then v/meters else v)
 )
-fn CyrusPresetApply target document = (
+fn CyrusPresetApply target document seedPolicy:#saved = (
+    if findItem #(#saved,#current,#new) seedPolicy==0 do throw "Choose Saved, Current or New seed."
+    if target.category!="population" and seedPolicy!=#saved do throw "Seed choices apply only to Amount presets."
     CyrusRequireAuthor();CyrusPresetCheckBinding target
     if theHold.Holding() do throw "Finish the current undoable operation before applying a preset."
     -- Revalidate the entire typed proposal even for callers that bypass the browser.
@@ -622,6 +618,16 @@ fn CyrusPresetApply target document = (
     if document[1]!=target.category do throw "This preset belongs to a different category."
     local schema=cyrusPresetSchema target.category,values=deepCopy document[3],owner=target.owner,meters=units.decodeValue "1m"
     local fields=for f in schema collect (f[1] as name)
+    if target.category=="population" do (
+        local index=findItem fields #randomSeed
+        if seedPolicy==#current then values[index]=owner.randomSeed
+        else if seedPolicy==#new do (
+            local identity=(dotNetClass "System.Guid").NewGuid()
+            local chosen=bit.and (identity.GetHashCode()) 2147483647
+            if chosen==owner.randomSeed do chosen=if chosen==2147483647 then 0 else chosen+1
+            values[index]=chosen
+        )
+    )
     if target.category=="spacing" then (
         fields=if target.peer==undefined then #(#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar) else #()
         values[3]*=meters
@@ -709,7 +715,7 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
     local target=CyrusPresetMakeBinding root owner category peer:peer editor:editor
     CyrusPresetCheckBinding target
     if CyrusPresetBrowser!=undefined do try(destroyDialog CyrusPresetBrowser)catch()
-    rollout browser "Cyrus presets" width:420 height:345 (
+    rollout browser "Cyrus presets" width:420 height:385 (
         local target=undefined,entries=#(),directory=""
         label targetInfo "" pos:[12,10] width:396 height:38
         listbox presets "Saved presets" pos:[12,50] width:396 height:8
@@ -720,7 +726,8 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
         button deletePreset "Delete" pos:[312,220] width:96
         button refreshList "Refresh" pos:[12,255] width:90
         button closeButton "Close" pos:[312,255] width:96
-        label status "Selecting a preset does not change the scene." pos:[12,290] width:396 height:44
+        dropdownlist seedChoice "Amount seed:" items:#("Saved seed","Keep current seed","New seed") selection:1 pos:[12,288] width:396 tooltip:"Amount presets save a seed, not receiver variation domains. Changing this choice does not change the scene."
+        label status "Selecting a preset does not change the scene." pos:[12,336] width:396 height:44
         fn refresh selectPath:undefined = (
             if selectPath==undefined and presets.selection>0 and presets.selection<=entries.count do selectPath=entries[presets.selection][1]
             local result=CyrusPresetEntries directory target.category
@@ -735,6 +742,7 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
         fn enteredName = (local value=trimRight (trimLeft presetName.text);if value=="" do throw "Enter a preset name.";value)
         on browser open do (
             target=CyrusPresetOpenBinding;directory=CyrusPresetDirectory()
+            seedChoice.visible=target.category=="population";seedChoice.enabled=seedChoice.visible
             targetInfo.text=(target.root.layerCaption (target.root.logicalParent target.owner))+" / "+target.category+(if target.peer!=undefined then " / "+target.root.layerCaption target.peer else "")
             if target.editor!=undefined do targetInfo.text+=("\nCurve is "+(if target.editor.presetEnabled() then "enabled" else "disabled")+". Apply preserves this state.")
             try(refresh())catch(status.text=getCurrentException())
@@ -748,7 +756,7 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
         )catch(status.text=getCurrentException())
         on applyPreset pressed do try(
             local document=CyrusPresetRead (selectedPath())
-            CyrusPresetApply target document
+            CyrusPresetApply target document seedPolicy:(if target.category=="population" then #(#saved,#current,#new)[seedChoice.selection] else #saved)
             status.text=if target.root.updateMode==1 then "Applied. Manual mode: use Update scatter." else "Applied. Live update follows the normal dependency rules."
         )catch(status.text=getCurrentException())
         on renamePreset pressed do try(
@@ -1271,12 +1279,51 @@ try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade)
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
+global CyrusReceiverVariationDomains,CyrusRemapLayerCorrespondence
 global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph)
 AminScatterOrientationFields=#(#alignNormal,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#sourceForwardAxes)
-AminScatterLayerFields=#(#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
-AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
-fn AminScatterCopyLayer origin destination = (
+AminScatterLayerFields=#(#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
+fn CyrusReceiverVariationDomains owner = (
+    local ids=owner.procReceiverIDs as array,domains=owner.procReceiverVariationIDs as array
+    if ids.count>128 or ids.count!=owner.procReceiverNodes.count do throw "Receiver correspondence history is incomplete."
+    if domains.count==0 then domains=ids
+    else if domains.count!=ids.count do throw "Receiver variation history is incomplete; the previous result is retained."
+    local seen=#(),allowed="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.:"
+    for value in domains do (
+        if value.count==0 or value.count>256 or (trimLeft value allowed)!="" or findItem seen value>0 do throw "Receiver variation domains must be unique bounded identifiers."
+        append seen value
+    )
+    domains
+)
+fn CyrusRemapLayerCorrespondence owner variation:#same = (
+    if findItem #(#same,#new) variation==0 do throw "Choose Same or New variation."
+    for key in #(#sourceRowIDs,#procSourceIDs,#procReceiverIDs) do (
+        local seen=#()
+        for value in (getProperty owner key) do (
+            if value.count==0 or value.count>256 or findItem seen value>0 do throw "Copy/import requires complete unique correspondence identities."
+            append seen value
+        )
+    )
+    local domains=CyrusReceiverVariationDomains owner,before=#(),after=#()
+    for key in #(#sourceRowIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
+        local values=(getProperty owner key) as array
+        for i=1 to values.count do if not matchPattern values[i] pattern:"placeholder:*" do (
+            local index=findItem before values[i]
+            if index==0 do (append before values[i];append after (CyrusNewLayerID());index=before.count)
+            values[i]=after[index]
+        )
+        setProperty owner key values
+    )
+    owner.procReceiverVariationIDs=if variation==#same then domains else owner.procReceiverIDs as array
+    owner.procReceiverID="";for value in owner.procReceiverIDs do owner.procReceiverID+=value+"|"
+    true
+)
+fn AminScatterCopyLayer origin destination variation:#same = (
     origin.procAssertSchema()
+    if origin.paintAreas.count>128 do throw "Copy exceeds the Paint Area capacity."
+    for area in origin.paintAreas where area.paintAreas.count>0 do throw "Nested Paint Areas are not supported; the scene is preserved."
+    if not origin.isPaintArea do origin.procEnsureCorrespondence()
     destination.setLayerTransfer true
     try (
         for key in AminScatterLayerFields do (
@@ -1302,14 +1349,13 @@ fn AminScatterCopyLayer origin destination = (
         destination.paintAreas=#();destination.uiAreaID=""
         for area in origin.paintAreas do (
             local duplicate=createInstance AminScatterObject
-            duplicate.isPaintArea=true;duplicate.layerID=CyrusNewLayerID();duplicate.logicalParentID=destination.layerID
-            duplicate.areaTarget=area.areaTarget;duplicate.paintSetName=area.paintSetName
-            duplicate.paintSetEnabled=area.paintSetEnabled;duplicate.paintEnabled=true
-            duplicate.fallScaleGraph=area.fallScaleGraph;duplicate.fallDensityGraph=area.fallDensityGraph
-            duplicate.paintDensity=area.paintDensity;duplicate.paintView=area.paintView;duplicate.paintColor=area.paintColor
-            if area.paintDocument!=undefined do duplicate.paintDocument=copy area.paintDocument
+            duplicate.layerID=CyrusNewLayerID()
+            AminScatterCopyLayer area duplicate variation:variation
+            duplicate.isPaintArea=true;duplicate.logicalParentID=destination.layerID
+            duplicate.areaTarget=area.areaTarget;duplicate.bakedNodes=#()
             append destination.paintAreas duplicate
         )
+        CyrusRemapLayerCorrespondence destination variation:variation
         destination.setLayerTransfer false
     ) catch(destination.setLayerTransfer false;throw())
 )
@@ -2908,21 +2954,39 @@ initialRollupState:0x8
         )
         this.invalidateGroups();this.bindNativeUI()
     )
-    fn copyLogicalLayer origin = (CyrusRequireAuthor();
+    fn copyLogicalLayer origin variation:#same = (CyrusRequireAuthor();
+        if findItem #(#same,#new) variation==0 do throw "Choose Same or New variation."
+        if origin==undefined or findItem (this.logicalLayers()) origin==0 do throw "Select a current logical layer to copy."
+        if theHold.Holding() do throw "Finish the current undoable operation before copying a layer."
+        if CyrusBrushSessionLayer!=undefined do throw "Stop the brush before copying a layer."
+        for edit in this.procModifiers() where cyrusEditRecipeHasData edit do throw "Named layer copy cannot yet transfer authored Scatter Edit data. The setup is preserved; use Max object Copy to duplicate the complete setup."
         local members=(for candidate in this.layerObjects where candidate==origin or candidate.logicalParentID==origin.layerID collect candidate),copyParent,copies=#()
         if this.layerObjects.count+members.count>10 do throw "Copy exceeds the 10-population capacity."
-        undo "Cyrus copy layer and areas" on (
+        for member in members do (
+            if member.procRadiusIDs.count>0 do throw "Named layer copy cannot yet transfer per-instance radius overrides. The layer is preserved; use Max object Copy to duplicate the complete setup."
+            if member.paintAreas.count>128 do throw "Copy exceeds the Paint Area capacity."
+            for area in member.paintAreas where area.paintAreas.count>0 do throw "Nested Paint Areas are not supported; the scene is preserved."
+            member.procEnsureCorrespondence();CyrusReceiverVariationDomains member
+        )
+        local suspended=CyrusPointSuspended
+        theHold.Begin();CyrusPointSuspended=true
+        try (
             for member in members do (
                 this.newLayer();local destination=this.selectedLayer();append copies destination
-                AminScatterCopyLayer member destination
+                AminScatterCopyLayer member destination variation:variation
                 destination.bakedNodes=#()
+                local originalIndex=findItem this.layerObjects member
+                this.layerEnabled[this.activeLayer]=this.layerEnabled[originalIndex]
+                this.layerVisible[this.activeLayer]=this.layerVisible[originalIndex]
                 if member==origin then (
                     copyParent=destination;destination.logicalParentID="";destination.uiAreaID=""
                     this.layerNames[this.activeLayer]=(this.layerCaption origin)+" copy"
                 ) else destination.logicalParentID=copyParent.layerID
             )
             this.procCopyRelations members copies
-        )
+            theHold.Accept "Cyrus copy layer and areas"
+        )catch(theHold.Cancel();CyrusPointSuspended=suspended;throw())
+        CyrusPointSuspended=suspended
         this.invalidateGroups();this.bindNativeUI();copyParent
     )
 
@@ -3002,7 +3066,7 @@ initialRollupState:0x8
         if not rawOnly and finalPass==undefined and overlapOwner!=undefined do return overlapOwner.groupPlacements this plants previewOnly
         if not cyrusEnabled or disabledAnalyzerInput() do return #()
         if (this.brushMaskActive() or meshMaskEnabled) and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Paint and mesh density masks require Keep on surface for nonzero movement."
-        local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count
+        local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count,variationDomains=CyrusReceiverVariationDomains this
         if targets.count==0 do return #()
         if plants.count==0 and not previewOnly do throw "Add a plant model."
         requestedCount=if procCandidateCount==undefined then (this.effectivePopulation())[1] else procCandidateCount
@@ -3028,12 +3092,12 @@ initialRollupState:0x8
                 for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]+"|MeshMask:"+entry[3]
                 if request==undefined do throw "Receiver allocation is missing."
                 local receiverCount=request[4],receiverRows=#(),receiverNormals=undefined
-                local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+geometryKey+"|"+(receiverCount as string)
+                local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+variationDomains[slot]+"|"+geometryKey+"|"+(receiverCount as string)
                 local cached=undefined
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry
                 if cached!=undefined then (receiverRows=cached[3];receiverNormals=cached[4];procReceiverHits+=1)
                 else if receiverCount>0 do (
-                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot,(if distributionMode==3 then densityUVChannel else 1))
+                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if distributionMode==3 then densityUVChannel else 1))
                     local generated=cyrusScatterCanonical #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     receiverRows=generated[1];receiverNormals=generated[2]
                     if finalRelax and receiverRows.count>0 do (
@@ -3041,7 +3105,7 @@ initialRollupState:0x8
                         receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
                     )
                     if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed
-                    if meshMaskEnabled do receiverRows=cyrusMeshDensityFilter receiverRows receiver (this.meshMaskPayload()) seed procReceiverIDs[slot]
+                    if meshMaskEnabled do receiverRows=cyrusMeshDensityFilter receiverRows receiver (this.meshMaskPayload()) seed variationDomains[slot]
                     receiverRows=this.applyAnalyzerArea receiverRows
                     receiverRows=this.applyFalloff receiverRows
                     procReceiverBuilds+=1
@@ -3074,7 +3138,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.83.0"
+    fn uiVersion = "0.84.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -3185,7 +3249,8 @@ initialRollupState:0x8
     fn applySurfaceFilter rows = (
         if not slopeEnabled and not altitudeEnabled then (procPreparedSurfaceStats=#(-1,0,0);rows) else (
             local targets=this.validSurfaces()
-            local keys=for target in targets collect (local slot=findItem procReceiverNodes target;#(slot,procReceiverIDs[slot]))
+            local domains=CyrusReceiverVariationDomains this
+            local keys=for target in targets collect (local slot=findItem procReceiverNodes target;#(slot,domains[slot]))
             local filtered=cyrusSurfaceFilter rows targets keys (this.effectiveSeed()) (this.surfaceFilterPayload())
             procPreparedSurfaceStats=filtered[2];filtered[1]
         )
@@ -3245,6 +3310,13 @@ initialRollupState:0x8
         on orientationTarget preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=orientationTarget and not (cyrusLicenseAllows()) then orientationTarget else value)
     )
 
+    parameters variationSettings (
+        procReceiverVariationIDs type:#stringTab tabSize:0 tabSizeVariable:true
+        on procReceiverVariationIDs set value index do markInputDirty()
+
+
+    )
+
     fn selectedPaintArea parent = (
         if parent==undefined do return undefined
         for area in parent.paintAreas where area.layerID==parent.uiAreaID do return area
@@ -3297,7 +3369,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=2 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=3 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -3571,12 +3643,13 @@ initialRollupState:0x8
     fn applyPaint rows = (this.procApplyPaint rows)
     fn paintBaseInputKey plants previewOnly receiverLocal:false = (
         local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
-        join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
+        join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
             format "%|%|%|%|%|" (this.inputTimeKey()) (if receiverLocal then 0 else procGeometryRevision) (if receiverLocal then 0 else if overlapOwner!=undefined then overlapOwner.procManualRevision else procManualRevision) (this.containerSourceKey plants) previewOnly to:stream
             format "DensityMap:%|" (if densityMap==undefined then 0 else getHandleByAnim densityMap) to:stream
             format "Ownership:%:%:%:%|" logicalParentID paintSetEnabled (if receiverLocal then 0 else this.effectivePopulation()) (this.effectiveSeed()) to:stream
+            if not receiverLocal do format "Variation:%|" (CyrusReceiverVariationDomains this) to:stream
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
@@ -3748,6 +3821,10 @@ initialRollupState:0x8
     fn procEnsureSources = (
         this.syncStrokes()
         this.ensureFallCurves();this.ensureAreaFalloffs()
+        this.procEnsureCorrespondence()
+    )
+    fn procEnsureCorrespondence = (
+        local domains=CyrusReceiverVariationDomains this,previousReceivers=procReceiverNodes.count
         -- Keep correspondence history so replacing a node and Undo can recover
         -- its original binding. This metadata never becomes an artist Undo step.
         undo off (
@@ -3772,9 +3849,11 @@ initialRollupState:0x8
                 if index==0 do (
                     if procReceiverNodes.count>=128 do throw "Receiver identity history is full. Create a new setup before enrolling more surfaces."
                     append procReceiverNodes node;append procReceiverIDs (CyrusNewLayerID());index=procReceiverNodes.count
+                    append domains procReceiverIDs[index]
                 )
                 receiverKey+=procReceiverIDs[index]+"|"
             )
+            if procReceiverNodes.count!=previousReceivers do procReceiverVariationIDs=domains
             if procReceiverID!=receiverKey do procReceiverID=receiverKey
         )
     )
@@ -3932,7 +4011,7 @@ initialRollupState:0x8
         result
     )
     fn procBinding plants rows = (
-        local stream=stringStream ""
+        local stream=stringStream "",domains=CyrusReceiverVariationDomains this
         with printAllElements on (
             format "CyrusBinding2:%|" (this.effectiveSeed()) to:stream
             for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
@@ -3940,7 +4019,14 @@ initialRollupState:0x8
             if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs,#pathIDs,#pathJoins,#strokeIDs,#strokePathIDs,#bandArrangement,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" key (getProperty this key) to:stream
             if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" key (getProperty this key) to:stream
             format "\nCyrusReceivers2\n" to:stream
-            for entry in procReceiverGeometry do format "%=%\n" procReceiverIDs[entry[1]] entry[2] to:stream
+            for entry in procReceiverGeometry do (
+                local slot=entry[1],value=entry[2]
+                -- Keep the receiver's binding key stable. A changed domain is
+                -- changed generation data, never a newly added receiver.
+                -- The default domain preserves the exact preceding binding.
+                if domains[slot]!=procReceiverIDs[slot] do value+="|Variation:"+domains[slot]
+                format "%=%\n" procReceiverIDs[slot] value to:stream
+            )
         )
         stream as string
     )
@@ -4274,14 +4360,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.83.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.84.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=2 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=2 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.83.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=3 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=2 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.84.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -4737,6 +4823,8 @@ initialRollupState:0x8
         checkbox flow_layersUI_enabledCheck "Enabled" pos:[8,8] width:((managerUI.width-16-((amin 2 (amax 1 (floor ((managerUI.width-8)/62.4))))-1)*4)/(amin 2 (amax 1 (floor ((managerUI.width-8)/62.4))))) tooltip:"Include this layer in calculation and final output."
         button flow_layersUI_upButton "▲" pos:[8,8] width:((managerUI.width-16-((amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))-1)*4)/(amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))) tooltip:"Evaluate earlier; earlier layers occupy space first." height:22
         button flow_layersUI_downButton "▼" pos:[8,8] width:((managerUI.width-16-((amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))-1)*4)/(amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))) tooltip:"Evaluate after the preceding layers." height:22
+        dropdownlist flow_layersUI_copyVariation "" items:#("Same variation","New variation") selection:1 pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/58))))) tooltip:"Same keeps random inputs. New chooses fresh inputs once. Copy always creates independent layer data. Changing this choice does not calculate scatter."
+        label flow_layersUI_copyVariation_caption "Copy variation:" pos:[6,6] width:(managerUI.width-12) height:18
         button flow_layersUI_recipesButton "Recipes..." pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/70))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/70))))) tooltip:"Save complete selected layers including Paint, or bind and import a saved multi-layer recipe. Browsing does not calculate scattering." height:22
         label flow_layersUI_countInfo "Select a layer." pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/58))))) height:46
         label heading_0 "Layers - evaluation order" pos:[6,6] width:(managerUI.width-12) height:18
@@ -4771,7 +4859,7 @@ initialRollupState:0x8
         fn flow_layersUI_bind layer = (
             flow_layersUI_binding=true;flow_layersUI_members=flow_layersUI_root.logicalLayers()
             local selected=flow_layersUI_currentLayer(),index=findItem flow_layersUI_root.layerObjects selected,valid=index>0
-            for c in #(flow_layersUI_copyButton,flow_layersUI_removeButton,flow_layersUI_nameEdit,flow_layersUI_visibleCheck,flow_layersUI_enabledCheck) do c.enabled=valid
+            for c in #(flow_layersUI_copyButton,flow_layersUI_copyVariation,flow_layersUI_removeButton,flow_layersUI_nameEdit,flow_layersUI_visibleCheck,flow_layersUI_enabledCheck) do c.enabled=valid
             flow_layersUI_nameEdit.text=if valid then flow_layersUI_root.layerNames[index] else ""
             flow_layersUI_layerColor.enabled=valid;flow_layersUI_layerColor.color=if valid then selected.layerIDColor else (color 100 220 120)
             flow_layersUI_visibleCheck.checked=valid and flow_layersUI_root.layerVisible[index]
@@ -4820,7 +4908,7 @@ initialRollupState:0x8
         on flow_layersUI_copyButton pressed do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
             local action=CyrusBeginAction root "flow_layersUI_copyButton"
             try (try(
-            local controller=flow_layersUI_root,parent=controller.copyLogicalLayer (flow_layersUI_currentLayer())
+            local controller=flow_layersUI_root,policy=if flow_layersUI_copyVariation.selection==2 then #new else #same,parent=controller.copyLogicalLayer (flow_layersUI_currentLayer()) variation:policy
             local targetPanel=CyrusContainerPanel controller
             if targetPanel.controlsReady and targetPanel.root==controller do targetPanel.selectLayerView parent
         )catch(messageBox (getCurrentException()) title:"Cyrus layer")
@@ -5138,6 +5226,18 @@ initialRollupState:0x8
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(fitCheck flow_layersUI_enabledCheck cellWidth,fitCheck flow_layersUI_visibleCheck cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(flow_layersUI_copyVariation);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if flow_layersUI_copyVariation_caption.visible!=show do flow_layersUI_copyVariation_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel flow_layersUI_copyVariation_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(flow_layersUI_copyVariation_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                flow_layersUI_copyVariation_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_layersUI_copyVariation_caption.width=cellWidth;flow_layersUI_copyVariation_caption.enabled=flow_layersUI_copyVariation.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_layersUI_recipesButton);show=(true and (true))
@@ -13519,7 +13619,7 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.83.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.84.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -13636,7 +13736,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.83.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.84.0 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()

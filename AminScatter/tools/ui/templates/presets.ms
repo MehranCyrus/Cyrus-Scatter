@@ -35,7 +35,9 @@ fn CyrusPresetCapture target = (
     )
     for field in schema collect (local v=getProperty target.owner (field[1] as name);if field[3] then v/meters else v)
 )
-fn CyrusPresetApply target document = (
+fn CyrusPresetApply target document seedPolicy:#saved = (
+    if findItem #(#saved,#current,#new) seedPolicy==0 do throw "Choose Saved, Current or New seed."
+    if target.category!="population" and seedPolicy!=#saved do throw "Seed choices apply only to Amount presets."
     CyrusRequireAuthor();CyrusPresetCheckBinding target
     if theHold.Holding() do throw "Finish the current undoable operation before applying a preset."
     -- Revalidate the entire typed proposal even for callers that bypass the browser.
@@ -43,6 +45,16 @@ fn CyrusPresetApply target document = (
     if document[1]!=target.category do throw "This preset belongs to a different category."
     local schema=cyrusPresetSchema target.category,values=deepCopy document[3],owner=target.owner,meters=units.decodeValue "1m"
     local fields=for f in schema collect (f[1] as name)
+    if target.category=="population" do (
+        local index=findItem fields #randomSeed
+        if seedPolicy==#current then values[index]=owner.randomSeed
+        else if seedPolicy==#new do (
+            local identity=(dotNetClass "System.Guid").NewGuid()
+            local chosen=bit.and (identity.GetHashCode()) 2147483647
+            if chosen==owner.randomSeed do chosen=if chosen==2147483647 then 0 else chosen+1
+            values[index]=chosen
+        )
+    )
     if target.category=="spacing" then (
         fields=if target.peer==undefined then #(#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar) else #()
         values[3]*=meters
@@ -130,7 +142,7 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
     local target=CyrusPresetMakeBinding root owner category peer:peer editor:editor
     CyrusPresetCheckBinding target
     if CyrusPresetBrowser!=undefined do try(destroyDialog CyrusPresetBrowser)catch()
-    rollout browser "Cyrus presets" width:420 height:345 (
+    rollout browser "Cyrus presets" width:420 height:385 (
         local target=undefined,entries=#(),directory=""
         label targetInfo "" pos:[12,10] width:396 height:38
         listbox presets "Saved presets" pos:[12,50] width:396 height:8
@@ -141,7 +153,8 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
         button deletePreset "Delete" pos:[312,220] width:96
         button refreshList "Refresh" pos:[12,255] width:90
         button closeButton "Close" pos:[312,255] width:96
-        label status "Selecting a preset does not change the scene." pos:[12,290] width:396 height:44
+        dropdownlist seedChoice "Amount seed:" items:#("Saved seed","Keep current seed","New seed") selection:1 pos:[12,288] width:396 tooltip:"Amount presets save a seed, not receiver variation domains. Changing this choice does not change the scene."
+        label status "Selecting a preset does not change the scene." pos:[12,336] width:396 height:44
         fn refresh selectPath:undefined = (
             if selectPath==undefined and presets.selection>0 and presets.selection<=entries.count do selectPath=entries[presets.selection][1]
             local result=CyrusPresetEntries directory target.category
@@ -156,6 +169,7 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
         fn enteredName = (local value=trimRight (trimLeft presetName.text);if value=="" do throw "Enter a preset name.";value)
         on browser open do (
             target=CyrusPresetOpenBinding;directory=CyrusPresetDirectory()
+            seedChoice.visible=target.category=="population";seedChoice.enabled=seedChoice.visible
             targetInfo.text=(target.root.layerCaption (target.root.logicalParent target.owner))+" / "+target.category+(if target.peer!=undefined then " / "+target.root.layerCaption target.peer else "")
             if target.editor!=undefined do targetInfo.text+=("\nCurve is "+(if target.editor.presetEnabled() then "enabled" else "disabled")+". Apply preserves this state.")
             try(refresh())catch(status.text=getCurrentException())
@@ -169,7 +183,7 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
         )catch(status.text=getCurrentException())
         on applyPreset pressed do try(
             local document=CyrusPresetRead (selectedPath())
-            CyrusPresetApply target document
+            CyrusPresetApply target document seedPolicy:(if target.category=="population" then #(#saved,#current,#new)[seedChoice.selection] else #saved)
             status.text=if target.root.updateMode==1 then "Applied. Manual mode: use Update scatter." else "Applied. Live update follows the normal dependency rules."
         )catch(status.text=getCurrentException())
         on renamePreset pressed do try(

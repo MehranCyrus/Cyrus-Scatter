@@ -1,5 +1,5 @@
 {
-  "version": "0.83.0",
+  "version": "0.84.0",
   "max_year": 2027,
   "source_host": "foundation-roadmap-library08261-final100-20261016-04",
   "source_script_sha256": "de6ca0f3097b15e3437c58b91ac9ee80fead0ae4d772bc7736ae234aa2275711",
@@ -52,7 +52,7 @@
     }
   ],
   "files": {
-    "README.md": "25a44e3c11e609df2755133fa6b6812406c4c7a90724aae853f7420ca56b77f9",
+    "README.md": "63faa4086a67802f24e704570b4d56c6cfa4068ed0be8fd9c36377e7a3218bcf",
     "borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
     "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
     "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
@@ -71,6 +71,6 @@
     "woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58",
     "woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc"
   },
-  "qualification_host": "foundation-roadmap-orientation0830-final150-20261016-07",
-  "qualification_script_sha256": "8ed01163ebd88909bb7ce34aaffd24ff10232d13705a0c60dfa32468e8b32eb1"
+  "qualification_host": "foundation-roadmap-variation0840-successor100-20261016-09",
+  "qualification_script_sha256": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948"
 }

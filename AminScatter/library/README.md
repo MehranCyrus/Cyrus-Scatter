@@ -19,7 +19,12 @@ To reuse a recipe, open **Layers > Recipes**, choose **Bundled examples**, selec
 the recipe and click **Review bindings**. Explicitly bind its terrain, models and
 paths. Match unique scene names can suggest bindings in the included scene. Choose
 **New setup**, or leave it unchecked to **Add layers** to the selected controller.
+Choose **Saved variation** to reproduce the saved arrangement with identical
+terrain, source order, quotas, masks and collision context; **New variation** is
+the default for a fresh arrangement. Both create independent layer ownership.
 Import is one Undo; Manual mode calculates when you press Update scatter.
+Under MAXScript heap pressure, a heavy Update can clear Max Undo history; this
+known host-memory boundary remains under investigation.
 
 Paint belongs to compatible receiver geometry, frame and saved system units.
 The painted-garden example includes matching terrain. An arbitrary replacement

@@ -226,4 +226,4 @@ For each subsequent entry record the exact change, evidence/receipt, failures,
 version decision, commit/remote hash and next action. Keep detailed raw outputs
 in the owned ignored run directory; link only evidence that actually exists.
 
-Current successor: [I04/P07 0.83.0 direction and normal blending](../improvement-program/I04_0830.md). I05 variation policy follows; P06 grids and the remaining program stay open. Historical version proposals above do not select future delivery numbers.
+Current successor: [I05 0.84.0 variation policy](../improvement-program/I05_0840.md), following [I04/P07 direction and normal blending](../improvement-program/I04_0830.md). P06 grids and the remaining program stay open; B26 heap-pressure Undo work is unresolved. Historical version proposals above do not select future delivery numbers.

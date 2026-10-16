@@ -182,6 +182,10 @@
         "name": "downButton"
       },
       {
+        "kind": "dropdownlist",
+        "name": "copyVariation"
+      },
+      {
         "kind": "button",
         "name": "recipesButton"
       }

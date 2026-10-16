@@ -29,6 +29,7 @@
     "enabledCheck": "Include this layer in calculation and final output.",
     "upButton": "Evaluate earlier; earlier layers occupy space first.",
     "downButton": "Evaluate after the preceding layers.",
+    "copyVariation": "Same keeps random inputs. New chooses fresh inputs once. Copy always creates independent layer data. Changing this choice does not calculate scatter.",
     "recipesButton": "Save complete selected layers including Paint, or bind and import a saved multi-layer recipe. Browsing does not calculate scattering."
   },
   "diagnostics": {

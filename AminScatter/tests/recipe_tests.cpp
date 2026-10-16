@@ -13,7 +13,7 @@ std::string file(const std::filesystem::path& p){std::ifstream in(p,std::ios::bi
 void put(const std::filesystem::path& p,const std::string& s){std::ofstream out(p,std::ios::binary|std::ios::trunc);out<<s;}
 }
 int main(){std::filesystem::path temporary;try{
-    const auto defaults=parse(file(CYRUS_RECIPE_DEFAULTS));validateSettings(defaults);check(fields().size()==234);
+    const auto defaults=parse(file(CYRUS_RECIPE_DEFAULTS));validateSettings(defaults);check(fields().size()==235);
     auto settings=defaults;settings.erase("paintDensity");rejected([&]{validateSettings(settings);});
     settings=defaults;settings["unknown"]=1;rejected([&]{validateSettings(settings);});
     settings=defaults;settings["alignNormal"]=1;rejected([&]{validateSettings(settings);});
@@ -34,10 +34,27 @@ int main(){std::filesystem::path temporary;try{
     Json paint={{"payload",hex(bytes)},{"receiverRole",nullptr},{"radius",.5},{"erase",true},{"frame",Json::array({1.,0.,0.,0.,1.,0.,0.,0.,1.,0.,0.,0.})}};
     Json layer={{"id","canopy"},{"name","Canopy"},{"enabled",true},{"visible",false},{"settings",defaults},{"paint",nullptr},{"areas",Json::array()}};
     layer["areas"].push_back({{"id","bed"},{"settings",defaults},{"receiverRole",nullptr},{"paint",paint}});
-    Json d={{"format","cyrus.planting-recipe"},{"formatVersion",2},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","fixture"},{"name","Complete hillside"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
+    Json d={{"format","cyrus.planting-recipe"},{"formatVersion",3},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","fixture"},{"name","Complete hillside"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
     validate(d);
+    auto v2=d;v2["formatVersion"]=2;
+    v2["rootSettings"].erase("procReceiverVariationIDs");v2["layers"][0]["settings"].erase("procReceiverVariationIDs");v2["layers"][0]["areas"][0]["settings"].erase("procReceiverVariationIDs");
+    validate(v2);check(currentDocument(v2)==d);check(v2["formatVersion"]==2);
+    auto receiverV2=v2;auto& receiverSettings=receiverV2["layers"][0]["settings"];
+    receiverSettings["procReceiverNodes"]={nullptr,nullptr};receiverSettings["procReceiverIDs"]={"original-a","original-b"};
+    validate(receiverV2);const auto receiverV3=currentDocument(receiverV2);
+    check(receiverV3["layers"][0]["settings"]["procReceiverVariationIDs"]==receiverSettings["procReceiverIDs"]);
+    auto variation=receiverV3["layers"][0]["settings"];variation["procReceiverVariationIDs"]={};rejected([&]{validateSettings(variation);});
+    variation=receiverV3["layers"][0]["settings"];variation["procReceiverVariationIDs"]={"same","same"};rejected([&]{validateSettings(variation);});
+    variation["procReceiverVariationIDs"]={"valid",""};rejected([&]{validateSettings(variation);});
+    variation["procReceiverVariationIDs"]={"valid",std::string(257,'x')};rejected([&]{validateSettings(variation);});
+    variation["procReceiverVariationIDs"]={"valid","not a domain"};rejected([&]{validateSettings(variation);});
+    variation["procReceiverVariationIDs"]={"saved-a","saved-b"};validateSettings(variation);
+    variation["procReceiverIDs"]={"same-owner","same-owner"};rejected([&]{validateSettings(variation);});
+    variation=defaults;variation["procSourceNodes"]={nullptr,nullptr};variation["procSourceIDs"]={"same-source","same-source"};rejected([&]{validateSettings(variation);});
+    variation=defaults;variation["sources"]={nullptr,nullptr};variation["sourceRowIDs"]={"same-row","same-row"};rejected([&]{validateSettings(variation);});
+    variation=defaults;variation["procReceiverNodes"]={nullptr};variation["procReceiverIDs"]={""};variation["procReceiverVariationIDs"]={"valid"};rejected([&]{validateSettings(variation);});
     auto legacy=d;legacy["formatVersion"]=1;
-    auto strip=[](Json& settings){for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ","orientationTarget"})settings.erase(name);};
+    auto strip=[](Json& settings){for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ","orientationTarget","procReceiverVariationIDs"})settings.erase(name);};
     strip(legacy["rootSettings"]);strip(legacy["layers"][0]["settings"]);strip(legacy["layers"][0]["areas"][0]["settings"]);
     validate(legacy);check(currentDocument(legacy)==d);check(legacy["formatVersion"]==1);
     auto badLegacy=legacy;badLegacy["rootSettings"]["orientationMode"]=1;rejected([&]{validate(badLegacy);});
@@ -63,7 +80,7 @@ int main(){std::filesystem::path temporary;try{
     const auto old=file(path);rejected([&]{writeNew(path,d);});check(file(path)==old);
     const auto manifest=read(path,false);check(manifest["layers"][0]["areas"][0]["paint"]["payload"].is_object());
     const auto relative=manifest["layers"][0]["areas"][0]["paint"]["payload"]["file"].get<std::string>();check(file(path.parent_path()/pathFromUTF8(relative))==std::string(bytes.begin(),bytes.end()));
-    auto malformed=manifest;malformed["formatVersion"]=3;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
+    auto malformed=manifest;malformed["formatVersion"]=4;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     malformed=manifest;malformed["layers"][0]["areas"][0]["paint"]["payload"]["file"]="../outside.cspaint";put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     put(path.parent_path()/pathFromUTF8(relative),"corrupt");rejected([&]{read(path);});
     // Metadata browsing never reads/hydrates Paint attachments.

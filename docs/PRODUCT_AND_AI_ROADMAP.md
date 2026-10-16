@@ -1,12 +1,12 @@
 # Cyrus Scatter: product and AI direction
 
-Maintained public-facing summary, reviewed 15 October 2026 against Scatter development/package 0.82.5, Analyzer 0.14 and MCP package/plan 0.73.0/0.73. This is the source for the website's product status and roadmap. Update it alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). It does not replace engineering acceptance criteria or announce a release date.
+Maintained public-facing summary, reviewed 16 October 2026 against Scatter development/package 0.84.0, Analyzer 0.14 and MCP package/plan 0.73.0/0.73. This is the source for the website's product status and roadmap. Update it alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). It does not replace engineering acceptance criteria or announce a release date.
 
 ## The product today
 
 Cyrus Scatter is an artist-controlled scattering plugin for 3ds Max. Build a landscape from your own models, arrange planting in layers and refine it with ordinary controls. AI is optional; everyday use does not depend on an assistant, account connection or trained model.
 
-The current development/package is **0.82.5 / schema 58**. It includes complete static multi-layer recipes with native Paint, explicit dependency roles and transactional import, alongside mesh/UV density, slope/altitude and retained preview behavior. Qualification and the manual Max 2027 installer are recorded in the [recipe handoff](plans/recipes-0825/PROGRESS.md). Phase 6 remains paused. Existing offline team licensing and independent Analyzer/MCP versions are unchanged. Physical input, high DPI, long sessions, heavy assets and wider renderer/material acceptance remain open. Version 1.0 stays reserved for publication readiness.
+The current development/package is **0.84.0 / schema 58**. It includes explicit copy/import variation, searchable static multi-layer recipes with Paint and stored thumbnails, four procedural examples, direction/normal controls, mesh/UV density, slope/altitude and retained previews. Qualification and the manual Max 2027 installer are recorded in the [I05 handoff](plans/improvement-program/I05_0840.md). The active goal resumes Phase 6; grids, remaining features, additional examples and the EXE are incomplete. Heavy MAXScript heap pressure can still clear Undo (B26). Existing offline team licensing and independent Analyzer/MCP versions are unchanged. Physical input, high DPI, long sessions, heavy assets and wider renderer/material acceptance remain open. Version 1.0 stays reserved for publication readiness.
 
 | Feature | What the artist can do | Boundary to explain |
 | --- | --- | --- |

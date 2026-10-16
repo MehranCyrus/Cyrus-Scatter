@@ -5,7 +5,7 @@ global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipeCapture,CyrusRecipeImport,Cyr
 -- late-bound globals explicitly so cold compilation cannot capture undefined
 -- function locals before the controller has registered them.
 global AminScatterObject,CyrusScatterEdit,CyrusNewLayerID,CyrusAnalyzerFilter,CyrusRequireAuthor
-global CyrusPointSuspended,CyrusBrushSessionLayer,CyrusViewportRedraw
+global CyrusPointSuspended,CyrusBrushSessionLayer,CyrusViewportRedraw,CyrusReceiverVariationDomains,CyrusRemapLayerCorrespondence
 global CyrusRecipeCaptureContext,CyrusRecipePut,CyrusRecipeOwnerNode,CyrusRecipeCheckRoot
 global CyrusRecipeRole,CyrusRecipeCaptureValue,CyrusRecipeCaptureSettings,CyrusRecipeCapturePaint
 global CyrusRecipeResolve,CyrusRecipeValidateBindings,CyrusRecipeApplyValue,CyrusRecipeApplySettings
@@ -67,9 +67,11 @@ fn CyrusRecipeCaptureSettings context owner = (
         local label=if owner==context.root then "setup settings" else if owner.isPaintArea then "Paint Area "+owner.paintSetName else context.root.layerCaption owner
         throw ("Cannot save "+label+": "+staticError)
     )
+    -- Enroll only bounded correspondence metadata; Save does not evaluate terrain.
+    if owner!=context.root and not owner.isPaintArea do owner.procEnsureCorrespondence()
     local pairs=#()
     for field in (cyrusRecipeSchema()) do (
-        local key=field[1],kind=field[2],value=getProperty owner (key as name)
+        local key=field[1],kind=field[2],value=if key=="procReceiverVariationIDs" then CyrusReceiverVariationDomains owner else getProperty owner (key as name)
         if matchPattern kind pattern:"*tab" then (
             kind=substring kind 1 (kind.count-3)
             value=for entry in value collect (CyrusRecipeCaptureValue context entry kind key)
@@ -89,7 +91,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=2 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.83.0 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=3 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.84.0 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -120,7 +122,7 @@ fn CyrusRecipeCapture root selected name = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",2),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",2027),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",3),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",2027),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -172,7 +174,7 @@ fn CyrusRecipeApplyValue bindings value kind metres = (
         default:value
     )
 )
-fn CyrusRecipeApplySettings owner settings bindings = (
+fn CyrusRecipeApplySettings owner settings bindings variation:#new = (
     local metres=(units.decodeValue "1m") as double
     for field in (cyrusRecipeSchema()) do (
         local key=field[1],kind=field[2],value=CyrusRecipeGet settings key
@@ -182,19 +184,8 @@ fn CyrusRecipeApplySettings owner settings bindings = (
         ) else value=CyrusRecipeApplyValue bindings value kind metres
         setProperty owner (key as name) value
     )
-    -- Source row/correspondence IDs are local to each new owner. Numeric Path/
-    -- Band IDs are already owner-local; their fresh owner gives a new namespace.
-    local before=#(),after=#()
-    for key in #(#sourceRowIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
-        local values=(getProperty owner key) as array
-        for i=1 to values.count do if not matchPattern values[i] pattern:"placeholder:*" do (
-            local index=findItem before values[i]
-            if index==0 do (append before values[i];append after (CyrusNewLayerID());index=before.count)
-            values[i]=after[index]
-        )
-        setProperty owner key values
-    )
-    owner.procReceiverID="";for value in owner.procReceiverIDs do owner.procReceiverID+=value+"|"
+    -- Ownership is always fresh; saved random domains are an explicit choice.
+    CyrusRemapLayerCorrespondence owner variation:variation
     owner.nextPathID=1;for value in owner.pathIDs do owner.nextPathID=amax owner.nextPathID (value+1)
     owner.nextBandID=1;for value in owner.strokeIDs do owner.nextBandID=amax owner.nextBandID (value+1)
     owner.fieldFalloff=false;owner.fieldBoundaries=false
@@ -207,7 +198,8 @@ fn CyrusRecipeRestorePaint data target document = (
     cyrusBrushRecipeImport (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame")
 )
 
-fn CyrusRecipeImport destination document bindings newSetup:false = (
+fn CyrusRecipeImport destination document bindings newSetup:false variation:#new = (
+    if findItem #(#same,#new) variation==0 do throw "Choose Saved or New variation."
     CyrusRequireAuthor()
     if theHold.Holding() do throw "Finish the current undoable operation before importing a recipe."
     if CyrusBrushSessionLayer!=undefined do throw "Stop the brush before importing a recipe."
@@ -224,13 +216,13 @@ fn CyrusRecipeImport destination document bindings newSetup:false = (
             if newSetup do (
                 createdNode=AminScatterObject name:(CyrusRecipeGet document "name")
                 root=createdNode.baseObject;node=createdNode;root.setLayerTransfer true
-                CyrusRecipeApplySettings root (CyrusRecipeGet document "rootSettings") bindings
+                CyrusRecipeApplySettings root (CyrusRecipeGet document "rootSettings") bindings variation:variation
                 root.layerID=CyrusNewLayerID();root.layerObjects=#();root.layerNames=#();root.layerEnabled=#();root.layerVisible=#()
             )
             for record in layers do (
                 local owner=createInstance AminScatterObject
                 owner.setLayerTransfer true;owner.layerID=CyrusNewLayerID();owner.logicalParentID="";owner.isPaintArea=false
-                CyrusRecipeApplySettings owner (CyrusRecipeGet record "settings") bindings
+                CyrusRecipeApplySettings owner (CyrusRecipeGet record "settings") bindings variation:variation
                 owner.editLayerKey=root.nextEditLayerKey;root.nextEditLayerKey+=1
                 owner.procOrder=root.layerObjects.count+imported.count+1;owner.procSetOrder=owner.procOrder
                 owner.paintAreas=#()
@@ -239,7 +231,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false = (
                 for areaRecord in (CyrusRecipeGet record "areas") do (
                     local area=createInstance AminScatterObject
                     area.setLayerTransfer true;area.layerID=CyrusNewLayerID();area.logicalParentID=owner.layerID;area.isPaintArea=true
-                    CyrusRecipeApplySettings area (CyrusRecipeGet areaRecord "settings") bindings
+                    CyrusRecipeApplySettings area (CyrusRecipeGet areaRecord "settings") bindings variation:variation
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")
                     local areaPaint=CyrusRecipeGet areaRecord "paint"
                     if areaPaint!=undefined and (CyrusRecipeResolve bindings (CyrusRecipeGet areaPaint "receiverRole"))!=area.areaTarget do throw "Paint document and area binding disagree."
@@ -302,7 +294,7 @@ fn CyrusRecipeSuggestBindings root document = (
 fn CyrusOpenRecipeLibrary root = (
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=1 do throw "Restart Max with the complete Cyrus 0.83.0 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=1 do throw "Restart Max with the complete Cyrus 0.84.0 package."
     if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
     rollout browser "Cyrus library - complete recipes" width:850 height:650 (
         local root=undefined,node=undefined,owners=#(),directory="",entries=#(),page=1,document=undefined,bindings=#(),layerChoices=#(),bindingControls=false
@@ -340,8 +332,9 @@ fn CyrusOpenRecipeLibrary root = (
         pickbutton bindNode "Pick scene object..." pos:[330,486] width:150 autoDisplay:false
         mapbutton bindMap "Pick texture..." pos:[490,486] width:150
         dropdownlist bindLayer "Layer:" items:#() pos:[650,482] width:188
-        checkbox newSetupCheck "New setup (unchecked: Add layers to this setup)" pos:[330,522] width:508
-        button importButton "Import reviewed recipe" pos:[330,554] width:210 enabled:false
+        checkbox newSetupCheck "New setup" pos:[330,522] width:220 tooltip:"Unchecked: Add layers to this setup. Checked: create a separate Scatter setup."
+        dropdownlist importVariation items:#("New variation","Saved variation") selection:1 pos:[570,518] width:268 tooltip:"New chooses fresh random inputs once. Saved preserves recipe inputs; identical output also requires matching terrain, assets, order, masks and spacing."
+        button importButton "Add layers" pos:[330,554] width:210 enabled:false
         button closeButton "Close" pos:[748,554] width:90
         label status "Browsing never calculates scattering. Refresh rereads changed library files." pos:[12,618] width:826 height:28
         timer scanTimer interval:250 active:false
@@ -501,9 +494,10 @@ fn CyrusOpenRecipeLibrary root = (
         on bindLayer selected i do try(validRoot();local index=selectedRole();if index>0 and i>0 and i<=layerChoices.count do (bindings[index][2]=layerChoices[i];showBindings()))catch(status.text=getCurrentException())
         on importButton pressed do try(
             validRoot();if document==undefined do throw "Review a recipe first."
-            local result=CyrusRecipeImport root document bindings newSetup:newSetupCheck.checked
+            local result=CyrusRecipeImport root document bindings newSetup:newSetupCheck.checked variation:(if importVariation.selection==2 then #same else #new)
             status.text=if result[1].updateMode==1 then "Imported as one Undo. Manual mode: Update scatter to calculate." else "Imported as one Undo. Live follows relevant changes."
         )catch(status.text=getCurrentException())
+        on newSetupCheck changed value do importButton.text=if value then "Create new setup" else "Add layers"
         on settingsPresets pressed do try(
             validRoot();local owner=root.selectedLayer()
             if owner==undefined do throw "Select a destination layer first."

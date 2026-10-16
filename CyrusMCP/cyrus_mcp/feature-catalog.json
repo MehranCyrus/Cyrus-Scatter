@@ -2,8 +2,8 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "590c28d7d511ece776cdcc3101b324cb3fbd842c32424d372a2fa08cdd33e902",
-  "control_inventory_sha256": "4675f07aca4dc979041258b3ee44d18ff5a0c7d276a4fadef84de8a84653a79a",
-  "development_version": "0.83.0",
+  "control_inventory_sha256": "cab74fa957f1a421d4fdaee06c21630b60a705b91eed63c99b7e2288f7beeacf",
+  "development_version": "0.84.0",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -867,6 +867,20 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Evaluate after the preceding layers.",
+      "view": "Local setup controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "kind": "dropdownlist",
+      "name": "copyVariation",
+      "capabilities": [
+        "C03",
+        "C26"
+      ],
+      "owner_context": "Controller / local view",
+      "help": "Same keeps random inputs. New chooses fresh inputs once. Copy always creates independent layer data. Changing this choice does not calculate scatter.",
       "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

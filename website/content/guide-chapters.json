@@ -112,9 +112,9 @@
       {
         "title": "Final artist acceptance",
         "paragraphs": [
-          "Run the 0.83.0 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
+          "Run the 0.84.0 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
           "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
-          "Development source 0.83.0 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "Development source 0.84.0 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
           "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
         ]
       },
@@ -135,7 +135,16 @@
           "In Transforms > Orientation, choose Random, World direction or Look at target. World direction aims along a nonzero XYZ vector. Look at target aims toward a picked object’s world pivot. Models use local +Z up and the Forward axis set in Models & Points. Local random rotations still apply; zero their ranges to check exact aim.",
           "Align to normal and Normal % set preferred up: disabled or 0% uses world +Z; 100% uses the geometric face normal, with angular blending between. Direction modes use this to control roll while preserving heading. Slope eligibility is independent. Coincident targets and parallel heading/up use deterministic fallbacks.",
           "Manual waits for Update. Live follows relevant target/parent or orientation animation. Missing targets and zero vectors retain the last complete plants and report failure. Editing the target’s shape or rotating it around an unchanged pivot does not calculate scatter.",
-          "Complete recipes bind orientation targets as external roles. Numeric Transform presets preserve the destination target and require it for Look at target. New saves use format 2; the preceding format 1 reads with neutral orientation defaults without rewriting Paint or files. Physical picker, 4K and mixed-monitor testing remains artist acceptance."
+          "Complete recipes bind orientation targets as external roles. Numeric Transform presets preserve the destination target and require it for Look at target. New complete recipes use format 3 and numeric settings presets remain format 2. Complete recipe formats 1/2 retain original receiver random inputs when read; format 1 also receives neutral orientation defaults. Reading never rewrites Paint or files. Physical picker, 4K and mixed-monitor testing remains artist acceptance."
+        ]
+      },
+      {
+        "title": "Copy and import variation",
+        "paragraphs": [
+          "Choose Same variation (default) or New variation before copying a layer. Both create independent layer ownership and Paint. Same retains receiver random inputs; New chooses fresh inputs once. Changing the choice is passive.",
+          "Recipes default to New variation. Choose Saved variation to retain the saved random inputs, then Add layers or Create new setup. Exact matching requires identical evaluated terrain, receiver history, quotas, source order/weights, masks, Relax and collision context. Paint requires compatible geometry, frame and saved units.",
+          "Amount settings presets separately offer Saved seed, Keep current seed or New seed. These numeric presets do not contain complete arrangements. Redo restores the chosen variation rather than rerolling.",
+          "Named layer Copy currently rejects authored Scatter Edit and per-instance radius data; use Max object Copy for a complete setup. Under heavy MAXScript heap pressure, an Update can clear Max Undo history. This known memory limitation remains open. Physical display/input and sustained production acceptance remain separate."
         ]
       }
     ]
@@ -217,7 +226,7 @@
         "title": "The product today",
         "paragraphs": [
           "The main product is artist-controlled scattering in 3ds Max: layers, receivers, models and Points, optional vector Paint Areas, layouts, area limits, transforms, spacing, previews and exact output. AI is optional and separate.",
-          "Current development/package is Scatter 0.83.0 / schema 58, with direction/target controls and angular normal blending, retaining searchable complete recipes, stored thumbnails and four procedural examples. Native Paint, explicit scene roles and transactional import are preserved. Current qualification uses Max 2027 only. The active program resumes Phase 6; remaining features and the final EXE are incomplete. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
+          "Current development/package is Scatter 0.84.0 / schema 58, with explicit copy/import variation, direction/target controls and angular normal blending, retaining searchable complete recipes, stored thumbnails and four procedural examples. Native Paint, explicit scene roles and transactional import are preserved. Current qualification uses Max 2027 only. The active program resumes Phase 6; remaining features and the final EXE are incomplete. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
         ]
       },
       {

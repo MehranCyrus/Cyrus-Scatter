@@ -2371,5 +2371,13 @@
       "docs/plans/improvement-program/I04_ORIENTATION.md:7",
       "AminScatter/tools/ui/templates/unified-core.ms:4899"
     ]
+  },
+  "general.manager.copyVariation": {
+    "label": "Copy variation",
+    "help": "Same keeps receiver random inputs; New chooses fresh inputs once when Copy runs. Both create independent layer data and Paint. Exact output still depends on matching terrain, source order, masks, quotas and collision context. Changing this choice does not calculate scatter.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4105",
+      "AminScatter/tools/ui/templates/unified-core.ms:4153"
+    ]
   }
 }

@@ -1,0 +1,3636 @@
+{
+  "version": "0.84.0",
+  "max_year": 2027,
+  "state": "scoped I05 qualification passed; B26 heap-pressure Undo unresolved",
+  "native_receipt": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exit_code": 0
+      },
+      {
+        "stage": "build",
+        "exit_code": 0
+      },
+      {
+        "stage": "tests",
+        "exit_code": 0
+      }
+    ],
+    "project": "scatter",
+    "max_year": 2027,
+    "host_launched": false,
+    "installed": false,
+    "binaries": {
+      "build/variation-0840-20261016-01/native-02/AminScatter.dlx": "e25b592962a4732056bf9aa206af9548e33feef87b0a222356d2ab1e0b4b222d",
+      "build/variation-0840-20261016-01/native-02/CyrusBrush.dlx": "da65e43ee9895fedbae3228ac745e09c90857a7e1013adc938c9ea46f2c224e8",
+      "build/variation-0840-20261016-01/native-02/CyrusBrushStorage.dlh": "ff8f09896a31e3343efefe203c992295e5e34f4a1758ccc3927a0d9e35294fb5",
+      "build/variation-0840-20261016-01/native-02/CyrusScatterEdit.dlm": "332e4c7380fe5d39fda44e8d63b94e3f5179f01cf992afe3a64207b2e3b74568"
+    },
+    "sources": {
+      "AminScatter/CMakeLists.txt": "ac6e69adfdae73b89296c3b262b408e8a9a4618253200647b36b50ecb4f3bc2e",
+      "AminScatter/scripts/AminScatterObject.ms": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948",
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "AminScatter/src/analyzer_area_bridge.inc": "f0cff418f0d97ae8adf49376260577402e2e00665fb03c0004323ffbd71f12a6",
+      "AminScatter/src/authored_revision.inc": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+      "AminScatter/src/boundary_falloff.inc": "cbf155f7a0005f2bf2d7d13108afa72295e4efa7da49aea7cff7c8c562f01508",
+      "AminScatter/src/boundary_falloff_bridge.inc": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa",
+      "AminScatter/src/brush.cpp": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+      "AminScatter/src/brush_host.cpp": "34bfdb1b7872b44b0eef8bc41afede51ee87462e6965dd4a6e2a2fcff3238f84",
+      "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+      "AminScatter/src/cluster.inc": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+      "AminScatter/src/cyrus_edit.cpp": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0",
+      "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "AminScatter/src/cyrus_edit_stack.inc": "50a69846b33a6ed3d864b05149e76554fb5bf7601b9527e65d7b9b76771a6e70",
+      "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "AminScatter/src/diagnostics.cpp": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+      "AminScatter/src/diagnostics_bridge.cpp": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+      "AminScatter/src/direction_orientation_bridge.inc": "8a8fdd24c1e0cd5dc1e5b0bca66e55d41a7c4440d16ded692afb678efaf1ac13",
+      "AminScatter/src/direction_orientation_value.inc": "3f3ced9aecf90e0fdce2fce8741ab7f14384ea117e0839c4832595d56a22eb7d",
+      "AminScatter/src/edge_border.inc": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+      "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "AminScatter/src/final.inc": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+      "AminScatter/src/geometry_preview.inc": "8c9e83bac16cd39665567974d468fe30bb606b1d0cfa3c5491ecee1e6ba6641f",
+      "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "AminScatter/src/group_spacing_bridge.inc": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+      "AminScatter/src/input_validity.cpp": "3cca1244fe19ece28800754f87708373f007942304d246c76d5a87f28d3747c7",
+      "AminScatter/src/max_bridge.cpp": "c09ab4a9876e4311489c079092873cd3f0289e3db122ee5aa3281d67459b25e5",
+      "AminScatter/src/mesh_density.cpp": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+      "AminScatter/src/mesh_density_bridge.inc": "bb6a1136b6dce992c32f4777777a54a9dfbedd706d543b4242b348ac9188e219",
+      "AminScatter/src/mesh_display.inc": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+      "AminScatter/src/orientation.cpp": "7ca86521e02e3dd16f4afd02720d0f2564040f858fd5d1c9e4af5727f5265d3a",
+      "AminScatter/src/orientation.inc": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+      "AminScatter/src/orientation_bridge.inc": "f3ac20fe49f3a8180f61616f02a25476e50b5258ad976d7edb0fde6c0ee3f040",
+      "AminScatter/src/placement_identity.inc": "5127bcf87d9baf77f02bdad0f63423a2be3ca78b1c06378a6598c24eb0b3e831",
+      "AminScatter/src/point_display.cpp": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+      "AminScatter/src/point_publication.inc": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "AminScatter/src/prepared_band.inc": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+      "AminScatter/src/presets.cpp": "91532bf91e668630b37875d6d97bbbc5f6520bd24be0d753a6f0f910f4cee229",
+      "AminScatter/src/presets_bridge.cpp": "34086946c58f87a9edd9d6785f905632bca68ed5472d918df09ab1e89560946f",
+      "AminScatter/src/preview.cpp": "7520542056413651cab2ba98c4621ba795407e3d773e0c09294ab75864b995bf",
+      "AminScatter/src/preview_palette.inc": "151abdd16a665c65be6917dca1cc27f5cc055aad970ece320defcc3158645dc8",
+      "AminScatter/src/procedural.cpp": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78",
+      "AminScatter/src/procedural_bridge.inc": "43f784cbdbe49ac4c4dd0114637fcead9dfb56ef5f19a51c0e3280d37a995a61",
+      "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+      "AminScatter/src/receiver_bridge.inc": "efd8201130550ad5d05929abaecbe330e4492ab7fb644f9a6cf5b5fd1292e571",
+      "AminScatter/src/receiver_plan.cpp": "ff971e7179ceeaa9544983169e6feb1ab61279f3b082702a33b1117f547e79a0",
+      "AminScatter/src/recipe_fields.inc": "04d3771ec2a83acb678a3a79d58336aaaebf7d1a8065bbd7c5400fa37d26f75b",
+      "AminScatter/src/recipe_library.cpp": "9ee2da93e8b91515c6260ecee08525d6b3c3c2768f86429b0e011f548177cf1b",
+      "AminScatter/src/recipes.cpp": "ad1cba0ce89a6ae644dbd57b3550a866f2436b8b9520d8e7237742469ce9dcc2",
+      "AminScatter/src/recipes_bridge.cpp": "4f191a721f24be9c65a4dea4420db97b725d0a09b737dc8ec6d6d678fc0d5b01",
+      "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+      "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "AminScatter/src/scatter.cpp": "7b6c07ecb6b39c3b24213b88f0684dd3f2df31e647b00a37837ab4615c9fc4f6",
+      "AminScatter/src/source_container.cpp": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+      "AminScatter/src/source_geometry.inc": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+      "AminScatter/src/spacing.inc": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+      "AminScatter/src/spline_bands.cpp": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+      "AminScatter/src/spline_field_bridge.inc": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+      "AminScatter/src/spline_overlay.cpp": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+      "AminScatter/src/spline_overlay_bridge.inc": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+      "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "AminScatter/src/surface_filter_bridge.inc": "ce67c9f8838ff6f9e27a913de684f40dc6d3c4eab2177497c4faad98336005c9",
+      "AminScatter/src/team_license.cpp": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+      "AminScatter/src/whole_scale_bridge.inc": "c8db7bdba6d03af4b717434666a50883fdf3e32b7bb1535cd8dba845d4baa1ea",
+      "AminScatter/include/brush.h": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+      "AminScatter/include/diagnostics.h": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+      "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "AminScatter/include/license_boundary.h": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+      "AminScatter/include/mesh_density.h": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+      "AminScatter/include/orientation.h": "514e8bdb9adebd10eb3ce4317fd83681070b72b3ba92ede239bb2e1e5be18930",
+      "AminScatter/include/placement_transport.h": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "AminScatter/include/point_preview.h": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+      "AminScatter/include/presets.h": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+      "AminScatter/include/preview_budget.h": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+      "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "AminScatter/include/procedural.h": "24600188b2a8c0714736d81688c82a68fab5f0ddaf0c20c7dc6357fcd83201ee",
+      "AminScatter/include/receiver_plan.h": "411a12f26f107a18324a280b48859b2494b03ab2137f1868ae7aec766b53a6c0",
+      "AminScatter/include/recipe_library.h": "fb143cc9e5766eeb89f299bf43c67c8bae105f69ae9ccaa35c727b4279141f1b",
+      "AminScatter/include/recipes.h": "cc28cfa1d34d630a4669f752e1e26bb3df3d04f2ac3f49207f75e51169ec7e05",
+      "AminScatter/include/scatter.h": "eccf36f4a08b5d7f81f5b77f5d71dce1d9720b918421ecfbc387df984b2fb918",
+      "AminScatter/include/spline_bands.h": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+      "AminScatter/include/spline_field_value.h": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+      "AminScatter/include/spline_overlay.h": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+      "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+      "AminScatter/include/viewport_policy.h": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+      "AminScatter/tests/boundary_falloff_tests.cpp": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+      "AminScatter/tests/brush_conversion_tests.cpp": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+      "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+      "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+      "AminScatter/tests/compute_benchmark.cpp": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+      "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "AminScatter/tests/data/recipe_v1_defaults.json": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+      "AminScatter/tests/data/recipe_v2_defaults.json": "27be9fc368e48cc5002125abadca5d70c6eb0a48fda121e558f3f9184dd362ab",
+      "AminScatter/tests/data/recipe_v3_defaults.json": "5fbe1bdc1e116cae020b136663ea5118ce7f10411da95353ef7811d21861fc25",
+      "AminScatter/tests/diagnostics_tests.cpp": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+      "AminScatter/tests/direction_orientation_tests.cpp": "c1fcab5234137fc3be723b57a125da2f90f87c8e277f0aba023c7b1deb93d693",
+      "AminScatter/tests/edge_border_tests.cpp": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+      "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "AminScatter/tests/mesh_density_tests.cpp": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+      "AminScatter/tests/orientation_tests.cpp": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+      "AminScatter/tests/prepared_band_tests.cpp": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+      "AminScatter/tests/preset_tests.cpp": "5d93543f57c8ab80a38e4d9fda4c2a5d45b6cf7b3c9f731615554e59f7f1cd01",
+      "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "AminScatter/tests/procedural_tests.cpp": "8922e68682e29000c5b79fd2e1975761c2af47f47d229a18164cffbfd1a1695b",
+      "AminScatter/tests/publication_tests.cpp": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "AminScatter/tests/receiver_tests.cpp": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+      "AminScatter/tests/recipe_library_tests.cpp": "6ac10630855a7ede988b3adfe69396fde182c53856fcbfa1442438bf64b1a791",
+      "AminScatter/tests/recipe_tests.cpp": "ed9d651b839464cc2bcbc3579c882ad84295a2e37efbe723f5158a3791cd8710",
+      "AminScatter/tests/scatter_tests.cpp": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+      "AminScatter/tests/spacing_tests.cpp": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+      "AminScatter/tests/spline_band_tests.cpp": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+      "AminScatter/tests/spline_overlay_tests.cpp": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+      "AminScatter/tests/surface_filter_tests.cpp": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+      "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "AminScatter/tests/viewport_policy_tests.cpp": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+      "AminScatter/tests/weight_tests.cpp": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+      "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+    },
+    "preview_fault_lab": false,
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+  },
+  "native_receipt_identity": {
+    "path": "build/variation-0840-20261016-01/native-02/receipt.json",
+    "sha256": "2bad3ddc84ef02560da878bf9cc9962f677454d5c904f60a7c9bb0dc4c279b88"
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.84.0",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 289,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948",
+    "preserved_files": [],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "python": {
+    "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q",
+    "passed": 166,
+    "seconds": 12.58
+  },
+  "sources": {
+    "AminScatter/tools/ui/approved-layout-manifest.json": "b60598ea28a4475e048006d6448c5ea0662b35baf2468ead7e51e6f3023ff516",
+    "AminScatter/tools/ui/approved-layout-rows.cjs": "0f637524ea46a3cf578b2ebfa76ced1159725073bfe1268ee9b28b32f196b1f4",
+    "AminScatter/tools/ui/approved-layout.cjs": "fe6a4ed378f14a69d24565ceee806256b3cd6c98a7e93cfedc3ed92fef5242a6",
+    "AminScatter/tools/ui/approved-layout.test.cjs": "3f1fd5b462e828c39d7342020f0c2b3701ef059368049f976ad850a61956f3b8",
+    "AminScatter/tools/ui/colored-lists.cjs": "e1ad27c1d1ddb12ae7254b03b95d5c3fd7f9ba1b4725879a7007ee53befeff30",
+    "AminScatter/tools/ui/container-system.cjs": "a505abf756b9b86cd7a4475d6dbc1a2d1e3e51620c665a18e87957eb0c3bed18",
+    "AminScatter/tools/ui/control-tooltips.json": "7ae398545384b60f056cab5140e9b10fe6c391a617bb38777c97c7542e02d4e7",
+    "AminScatter/tools/ui/generate.cjs": "ad3f414210001ef9e4883c37b6beab17d651af70c7cc0e047f85d103c27e7017",
+    "AminScatter/tools/ui/inventory.cjs": "6f24603029d62ca0e9d1a8a072fcfccb77148d6973a0a8531dfcce950cf68cb6",
+    "AminScatter/tools/ui/layers-control-inventory.json": "cab74fa957f1a421d4fdaee06c21630b60a705b91eed63c99b7e2288f7beeacf",
+    "AminScatter/tools/ui/lazy-pages.cjs": "09f500289354b9bfc3463952cfa4d599ad1b3830634f879a1cd680cde687e351",
+    "AminScatter/tools/ui/licensing.cjs": "b2a2b67f1985bd7b8c6cf6e164031ac579a966826918409194636f5ae9ce9806",
+    "AminScatter/tools/ui/maxscript-blocks.cjs": "c51f282c7e088a2551e5456c75b6d0c869713a888d65d676ef4b554e74e4120b",
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": "d21aa6dd6e58238fb376f9474d24e2cfaecdd1e71fc05b22df6ab2c816cd9452",
+    "AminScatter/tools/ui/templates/container-node.ms": "5644374200f34d76ce2289d9f1e7cb312d94de184789843ebadf5ff00b5ef887",
+    "AminScatter/tools/ui/templates/container-properties-ui.ms": "145117954e07d57c6d3881c2f015ef87d269a57dcc0e6d6f706c0a02f6a13c7d",
+    "AminScatter/tools/ui/templates/licensing.ms": "87140848c827d63d3aa5bf2fc2bc0937657a7a899d72923a4c735cd7939d54a5",
+    "AminScatter/tools/ui/templates/presets.ms": "2a7d5c041372347adde7509ce6b15ceb02aa6fe579ecc034189089cf1c54de02",
+    "AminScatter/tools/ui/templates/recipes.ms": "0265d2a43f90d8f7dba09b473b29c203be33bc0e38024e18fb6aaba4067080ef",
+    "AminScatter/tools/ui/templates/unified-core.ms": "8b89cf3c6da7d9e3cc2482adbe65a9bb5d2fb46c92e8e44a49180b7259263af0",
+    "AminScatter/src/analyzer_area_bridge.inc": "f0cff418f0d97ae8adf49376260577402e2e00665fb03c0004323ffbd71f12a6",
+    "AminScatter/src/authored_revision.inc": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+    "AminScatter/src/boundary_falloff.inc": "cbf155f7a0005f2bf2d7d13108afa72295e4efa7da49aea7cff7c8c562f01508",
+    "AminScatter/src/boundary_falloff_bridge.inc": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa",
+    "AminScatter/src/brush.cpp": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+    "AminScatter/src/brush_host.cpp": "34bfdb1b7872b44b0eef8bc41afede51ee87462e6965dd4a6e2a2fcff3238f84",
+    "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+    "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+    "AminScatter/src/cluster.inc": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+    "AminScatter/src/cyrus_edit.cpp": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0",
+    "AminScatter/src/cyrus_edit_stack.inc": "50a69846b33a6ed3d864b05149e76554fb5bf7601b9527e65d7b9b76771a6e70",
+    "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+    "AminScatter/src/diagnostics.cpp": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+    "AminScatter/src/diagnostics_bridge.cpp": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+    "AminScatter/src/direction_orientation_bridge.inc": "8a8fdd24c1e0cd5dc1e5b0bca66e55d41a7c4440d16ded692afb678efaf1ac13",
+    "AminScatter/src/direction_orientation_value.inc": "3f3ced9aecf90e0fdce2fce8741ab7f14384ea117e0839c4832595d56a22eb7d",
+    "AminScatter/src/edge_border.inc": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+    "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+    "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+    "AminScatter/src/final.inc": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+    "AminScatter/src/geometry_preview.inc": "8c9e83bac16cd39665567974d468fe30bb606b1d0cfa3c5491ecee1e6ba6641f",
+    "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+    "AminScatter/src/group_spacing_bridge.inc": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+    "AminScatter/src/input_validity.cpp": "3cca1244fe19ece28800754f87708373f007942304d246c76d5a87f28d3747c7",
+    "AminScatter/src/max_bridge.cpp": "c09ab4a9876e4311489c079092873cd3f0289e3db122ee5aa3281d67459b25e5",
+    "AminScatter/src/mesh_density.cpp": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+    "AminScatter/src/mesh_density_bridge.inc": "bb6a1136b6dce992c32f4777777a54a9dfbedd706d543b4242b348ac9188e219",
+    "AminScatter/src/mesh_display.inc": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+    "AminScatter/src/orientation.cpp": "7ca86521e02e3dd16f4afd02720d0f2564040f858fd5d1c9e4af5727f5265d3a",
+    "AminScatter/src/orientation.inc": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+    "AminScatter/src/orientation_bridge.inc": "f3ac20fe49f3a8180f61616f02a25476e50b5258ad976d7edb0fde6c0ee3f040",
+    "AminScatter/src/placement_identity.inc": "5127bcf87d9baf77f02bdad0f63423a2be3ca78b1c06378a6598c24eb0b3e831",
+    "AminScatter/src/point_display.cpp": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+    "AminScatter/src/point_publication.inc": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+    "AminScatter/src/prepared_band.inc": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+    "AminScatter/src/presets.cpp": "91532bf91e668630b37875d6d97bbbc5f6520bd24be0d753a6f0f910f4cee229",
+    "AminScatter/src/presets_bridge.cpp": "34086946c58f87a9edd9d6785f905632bca68ed5472d918df09ab1e89560946f",
+    "AminScatter/src/preview.cpp": "7520542056413651cab2ba98c4621ba795407e3d773e0c09294ab75864b995bf",
+    "AminScatter/src/preview_palette.inc": "151abdd16a665c65be6917dca1cc27f5cc055aad970ece320defcc3158645dc8",
+    "AminScatter/src/procedural.cpp": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78",
+    "AminScatter/src/procedural_bridge.inc": "43f784cbdbe49ac4c4dd0114637fcead9dfb56ef5f19a51c0e3280d37a995a61",
+    "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+    "AminScatter/src/receiver_bridge.inc": "efd8201130550ad5d05929abaecbe330e4492ab7fb644f9a6cf5b5fd1292e571",
+    "AminScatter/src/receiver_plan.cpp": "ff971e7179ceeaa9544983169e6feb1ab61279f3b082702a33b1117f547e79a0",
+    "AminScatter/src/recipes.cpp": "ad1cba0ce89a6ae644dbd57b3550a866f2436b8b9520d8e7237742469ce9dcc2",
+    "AminScatter/src/recipes_bridge.cpp": "4f191a721f24be9c65a4dea4420db97b725d0a09b737dc8ec6d6d678fc0d5b01",
+    "AminScatter/src/recipe_fields.inc": "04d3771ec2a83acb678a3a79d58336aaaebf7d1a8065bbd7c5400fa37d26f75b",
+    "AminScatter/src/recipe_library.cpp": "9ee2da93e8b91515c6260ecee08525d6b3c3c2768f86429b0e011f548177cf1b",
+    "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+    "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+    "AminScatter/src/scatter.cpp": "7b6c07ecb6b39c3b24213b88f0684dd3f2df31e647b00a37837ab4615c9fc4f6",
+    "AminScatter/src/source_container.cpp": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+    "AminScatter/src/source_geometry.inc": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+    "AminScatter/src/spacing.inc": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+    "AminScatter/src/spline_bands.cpp": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+    "AminScatter/src/spline_field_bridge.inc": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+    "AminScatter/src/spline_overlay.cpp": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+    "AminScatter/src/spline_overlay_bridge.inc": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+    "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+    "AminScatter/src/surface_filter_bridge.inc": "ce67c9f8838ff6f9e27a913de684f40dc6d3c4eab2177497c4faad98336005c9",
+    "AminScatter/src/team_license.cpp": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+    "AminScatter/src/whole_scale_bridge.inc": "c8db7bdba6d03af4b717434666a50883fdf3e32b7bb1535cd8dba845d4baa1ea",
+    "AminScatter/include/brush.h": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+    "AminScatter/include/diagnostics.h": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+    "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+    "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+    "AminScatter/include/license_boundary.h": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+    "AminScatter/include/mesh_density.h": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+    "AminScatter/include/orientation.h": "514e8bdb9adebd10eb3ce4317fd83681070b72b3ba92ede239bb2e1e5be18930",
+    "AminScatter/include/placement_transport.h": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+    "AminScatter/include/point_preview.h": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+    "AminScatter/include/presets.h": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+    "AminScatter/include/preview_budget.h": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+    "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+    "AminScatter/include/procedural.h": "24600188b2a8c0714736d81688c82a68fab5f0ddaf0c20c7dc6357fcd83201ee",
+    "AminScatter/include/receiver_plan.h": "411a12f26f107a18324a280b48859b2494b03ab2137f1868ae7aec766b53a6c0",
+    "AminScatter/include/recipes.h": "cc28cfa1d34d630a4669f752e1e26bb3df3d04f2ac3f49207f75e51169ec7e05",
+    "AminScatter/include/recipe_library.h": "fb143cc9e5766eeb89f299bf43c67c8bae105f69ae9ccaa35c727b4279141f1b",
+    "AminScatter/include/scatter.h": "eccf36f4a08b5d7f81f5b77f5d71dce1d9720b918421ecfbc387df984b2fb918",
+    "AminScatter/include/spline_bands.h": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+    "AminScatter/include/spline_field_value.h": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+    "AminScatter/include/spline_overlay.h": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+    "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+    "AminScatter/include/viewport_policy.h": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b"
+  },
+  "fixtures": {
+    "tools/variation_0840/bands.ms": "34a8c970bf4e34852b18f4ecd1eaf88c89c34f190499bdcb8a7d0f07255c18b5",
+    "tools/variation_0840/binding_guard.ms": "a96c40628bf65af625951a6242561ecbf1654baca72dbce849a145e0b9158ef3",
+    "tools/variation_0840/browser_actions.ms": "089835360f4d6494903deac0a7f170f5c2edab676d187646fe4c0b34044fc12f",
+    "tools/variation_0840/capture.py": "bcaed7f2b1333cb472727c35ed201c88a88129ac21438d5a1fe5185018b607ed",
+    "tools/variation_0840/clone_baseline.py": "12f06ed6ab900f6da84a617d901c22a84e812b783e62417ff103665b8c956a38",
+    "tools/variation_0840/close.ms": "3ce2ebad4f57c6afb5efd5aee9891ee4893b27d80a66ea6999d32f27ae950bec",
+    "tools/variation_0840/copy_rollback.ms": "f8ce62c0b1a010d57ab1791117c029e9fc94cbcf1fe29fcc079b91bb232b9bd5",
+    "tools/variation_0840/core.ms": "fd09d18b33c1b24be595343f04ac7ec10ac46fb5ef08c82f1e77bb0fba45d8fb",
+    "tools/variation_0840/dialog_layout.py": "605b1dbece2231ccfdfbc94dda70f8a955eb41687a324af50993a37aa6c321f1",
+    "tools/variation_0840/existing_examples.py": "3dabf4474842b46d83dad8861fb553366df5bd43865df0a959c6340f291ec041",
+    "tools/variation_0840/heavy_copy.ms": "2f17771ab8c60601bec4329244d72486b05d74da90a7de2dd0f367d89eec50d7",
+    "tools/variation_0840/heavy_setup.py": "e4f75ee6a1ce16a0582c89f7c7014921cfe9a4624ac4e6cf471ea413f2536f0f",
+    "tools/variation_0840/idle.py": "0531f54d1d6b84bffdd53d56e54fb3bbaf74148e0a055956c2f49d1b96c2e7b5",
+    "tools/variation_0840/import_failure.ms": "7663825efd0f96c21a6aea2d4b3d2585b57f0507cfccae939f604da0de269b97",
+    "tools/variation_0840/installer_compile.py": "d28784e4c0971944621473ab888eeb9cd490fe0d893e02979ee45b62bd287e49",
+    "tools/variation_0840/launch.py": "53ad9e24dd9163064946ed13ca3a1516823d5cb40f4441c795031ec9d0115b42",
+    "tools/variation_0840/launch_baseline.py": "97828878da60bc33786fafc606fe3355eefdd97a053ec96e8aaf61604f2ea9c5",
+    "tools/variation_0840/layout.py": "2e1055724060984591d3d2b06d87b956bce5245af7969e8e3f4ae553b0945fa1",
+    "tools/variation_0840/masks.ms": "ce6cfd49509a14d627594608588c7f5a1fadc6966a53dbe577a633021e233867",
+    "tools/variation_0840/package.py": "1fc3a97b51573a5f77526040e99d8796a9e10db6716c20a9e71e9417ee5fb219",
+    "tools/variation_0840/passive.py": "3ca9139593cf99931afe26c1c6ff6ce440588a4ef7d59668175521bb3bb323ad",
+    "tools/variation_0840/probe.ms": "f1440d0167dfcf5c14fb81f114532b02f4bcda6f604631a9077cbdd79824580f",
+    "tools/variation_0840/receiver_growth.ms": "0651ed73688d2733e6b151623276eae98937d60866ee7f944894ec1c75a8d95b",
+    "tools/variation_0840/scroll_manager.py": "00d371a0ec50f5a21d3f9f09409374cfe43c6f3232e5227ee4023c20cf679d99",
+    "tools/variation_0840/source_changes.ms": "0237a8efd1225307f3f2d73efb1d6dd008cdb9cf76f923c5787d572d12ef838d",
+    "tools/variation_0840/undo_pressure.ms": "e578f140e37f719675b0dcdde8f9cdaefd18010244748bc2ba01f7f9b5e0213e",
+    "tools/variation_0840/undo_probe.ms": "26b438af9766aed3625a6eef4334d1ba0f9d777a014af5d030d8518d491b1659",
+    "tools/variation_0840/undo_stress.ms": "226c6d265bc90342f17d274de86613f1e969338582d07dd47daf23f2a4b15605",
+    "tools/variation_0840/unsampled.ms": "6717fcc6931076602facd6bc79419d5001acbd88a0a628a19842caf4f30e09bf"
+  },
+  "evidence": [
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/bands-15060702.txt",
+      "sha256": "fd3cbfa0bc8fb406edd578f1f55fdf4fd4cac492b79393e7765b32c7ce1c5c23"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/binding-guard-14661478.txt",
+      "sha256": "08abee60780a87a96f3f17608d3c09f74aec9ac85c2da59a142ab5c82007681e"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/browser-actions-14743804.txt",
+      "sha256": "4fed574c9aac036f9f7fd8d48149c0db1f160d70bbf7bdb58dd88b0dfb57f438"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/copy-rollback-14721683.txt",
+      "sha256": "03cb69e33d6f938eee5516f88fadaf31b6a279b2bf1b3f9210b8a1064d169744"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/existing-examples-1792110935270454500.json",
+      "sha256": "6ca66dc88701c96913632626a986fa07baad66bcec254b79385e42f59e11ab99",
+      "result": {
+        "status": "passed",
+        "examples": [
+          {
+            "id": "meadow",
+            "rows": [
+              "2aadd854dddc5a12fefb56987afe3dbf608c02ca5978260183998b94319c9757",
+              "c8e511559bc8c1927c0b45427c4c8f0c36f9b67d710a07f5864267034f378f60",
+              "d12913e8bd4a0f5ab3b4320b9842e9dfc08e676e6f4b62d80e686242fc99088f"
+            ],
+            "counts": [
+              2600,
+              140,
+              350
+            ]
+          },
+          {
+            "id": "woodland",
+            "rows": [
+              "72798954b304aa5d071bc117496ea74f7662147228e5b7120a52315c26d1dc9d",
+              "07859a96a43b78dc56ebed564c067f582ab4906e4e2630a7a0a1c9766890d80b",
+              "5277e9c8aa3709ab60a19e98390b0e78569e829a0642c7cb85efc6279b42e1b8"
+            ],
+            "counts": [
+              90,
+              340,
+              1500
+            ]
+          },
+          {
+            "id": "mountain",
+            "rows": [
+              "85b650aa97c09fc91c1565c15f4bea5dfc4efd8347fe9aa1e5bca485a4d4c28e",
+              "a1bc0e9d3eb8efb2d4cdc1be7c3cffc23a47b3249e326eafc553b1333ca5fc06"
+            ],
+            "counts": [
+              454,
+              3230
+            ]
+          },
+          {
+            "id": "borders",
+            "rows": [
+              "b47da1001db529ab3d7e95c9f3d00f552d5473b641008b028881d452dc2908cc",
+              "20a883405f1dab363989eb5227d739968d72003296d9bfa8570e8d88df16b04f"
+            ],
+            "counts": [
+              1740,
+              218
+            ]
+          }
+        ],
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "v1 read adds orientation defaults and original receiver domains: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "Reading leaves original recipe bytes unchanged: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "Delivered schema-58 scene reopens: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "Existing accepted counts preserved: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "Every root setting preserved: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: meadow/Fine grass"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: meadow/Tall meadow patches"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: meadow/Warm flowers"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "All eight placement fields match the delivered 0.83.0 result: meadow"
+          },
+          {
+            "passed": true,
+            "assertion": "v1 read adds orientation defaults and original receiver domains: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Reading leaves original recipe bytes unchanged: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Delivered schema-58 scene reopens: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Existing accepted counts preserved: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Every root setting preserved: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: woodland/Canopy - upright"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: woodland/Understory"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: woodland/Groundcover"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "All eight placement fields match the delivered 0.83.0 result: woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "v1 read adds orientation defaults and original receiver domains: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "Reading leaves original recipe bytes unchanged: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "Delivered schema-58 scene reopens: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "Existing accepted counts preserved: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "Every root setting preserved: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: mountain/Trees below the summit"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: mountain/Slope-aware groundcover"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "All eight placement fields match the delivered 0.83.0 result: mountain"
+          },
+          {
+            "passed": true,
+            "assertion": "v1 read adds orientation defaults and original receiver domains: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Reading leaves original recipe bytes unchanged: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Delivered schema-58 scene reopens: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Existing accepted counts preserved: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Every root setting preserved: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: borders/Painted garden - saved clearing"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Every Paint Area setting preserved: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Complete authored Paint preserved: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "Every layer setting preserved: borders/Border bands - density and size"
+          },
+          {
+            "passed": true,
+            "assertion": "Owner IDs and Paint Area counts preserved: borders"
+          },
+          {
+            "passed": true,
+            "assertion": "All eight placement fields match the delivered 0.83.0 result: borders"
+          }
+        ],
+        "historical_0830_receipt": {
+          "path": "build\\mcp-qualification\\foundation-roadmap-orientation0830-final150-20261016-07\\existing-examples-1792105545285434300.json",
+          "sha256": "f55e866b93d4832d007abbdf94e003fc95d5c20fd41d6f3585a3192e3a0b6c3f"
+        },
+        "root_differences": {}
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/heavy-setup-1792110960157138700.json",
+      "sha256": "a90690ccdb9dac42c997a29a5771501e84c462b9c0cc6e36f0174247227b68a9",
+      "result": {
+        "status": "prepared",
+        "initial_update_ms": 1231.0129999823403,
+        "rows": [
+          30000,
+          30000
+        ]
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/idle-1792111049907516200.json",
+      "sha256": "651c4535bf5c48f81a732d7ba2e7eb2077554ad8adc6e2faf15bf6bb846d30c2",
+      "result": {
+        "status": "passed",
+        "before": {
+          "observed_seconds": 153109.9628692,
+          "rows": [
+            "484a1961536ccc6c61d8adcafda81f4b1c2a60805575080e24823818f2b3c046",
+            "5c05b7b0195b4ae1658550980d029fe0963200fe94ec6f910580d4f8c9a644de"
+          ],
+          "orientation": [
+            97,
+            115,
+            227910
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            398,
+            13379432,
+            1713,
+            0,
+            2,
+            489928,
+            1,
+            "10019373027120604472;9905783776621007540;"
+          ]
+        },
+        "after": {
+          "observed_seconds": 153151.3436578,
+          "rows": [
+            "484a1961536ccc6c61d8adcafda81f4b1c2a60805575080e24823818f2b3c046",
+            "5c05b7b0195b4ae1658550980d029fe0963200fe94ec6f910580d4f8c9a644de"
+          ],
+          "orientation": [
+            97,
+            115,
+            227910
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            398,
+            13379432,
+            1717,
+            0,
+            2,
+            489928,
+            1,
+            "10019373027120604472;9905783776621007540;"
+          ]
+        },
+        "elapsed_seconds": 41.38078859998495
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/import-failure-14932043.txt",
+      "sha256": "b49274207795fd8a178743a0eee4185af5f24c19a1a696d8be70c6e895ad62b1"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/layout-amount100.json",
+      "sha256": "e0f8849b1648d154bc6ed87d5a12c87ed0545348b85085fb14b46d73025f6ef6",
+      "result": {
+        "status": "passed",
+        "scale": 1.0,
+        "controls": [
+          {
+            "name": "LabelControl:targetInfo",
+            "rect": [
+              762,
+              345,
+              1158,
+              383
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ListBoxControl:presets",
+            "rect": [
+              762,
+              401,
+              1158,
+              511
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:presets",
+            "rect": [
+              762,
+              385,
+              831,
+              398
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:presetName",
+            "rect": [
+              797,
+              525,
+              1158,
+              542
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:presetName",
+            "rect": [
+              762,
+              525,
+              793,
+              538
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:saveNew",
+            "rect": [
+              762,
+              555,
+              852,
+              576
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:applyPreset",
+            "rect": [
+              862,
+              555,
+              952,
+              576
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:renamePreset",
+            "rect": [
+              962,
+              555,
+              1052,
+              576
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:DeletePreset",
+            "rect": [
+              1062,
+              555,
+              1158,
+              576
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:refreshList",
+            "rect": [
+              762,
+              590,
+              852,
+              611
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:closeButton",
+            "rect": [
+              1062,
+              590,
+              1158,
+              611
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:seedChoice",
+            "rect": [
+              762,
+              641,
+              1158,
+              662
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ComboBoxControl:seedChoice",
+            "rect": [
+              762,
+              623,
+              829,
+              636
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "LabelControl:Status",
+            "rect": [
+              762,
+              671,
+              1158,
+              715
+            ],
+            "class": "Static",
+            "text_height": 13
+          }
+        ],
+        "clipped": [],
+        "overlaps": [],
+        "dialog": [
+          742,
+          304,
+          1178,
+          728
+        ]
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/layout-manager100.json",
+      "sha256": "5d567e587291e5a39ef764ff7fac4b328e0469c597e9f880727fe94d6a5a1a8b",
+      "result": {
+        "status": "passed",
+        "pages": [
+          {
+            "name": "managerUI",
+            "hwnd": 5312396,
+            "body": [
+              1176,
+              549,
+              1338,
+              874
+            ],
+            "page_rect": [
+              1177,
+              550,
+              1364,
+              873
+            ],
+            "width": 187.0,
+            "slot_width": 162.0,
+            "height": 323.0,
+            "slot_height": 325.0,
+            "layout_width": 154.0,
+            "header_inset": 20.0,
+            "controls": [
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_colored:System.Windows.Forms.ListBox",
+                "rect": [
+                  1183,
+                  594,
+                  1325,
+                  678
+                ],
+                "class": "Afx:00007FFAD9880000:0",
+                "font": {
+                  "size": 11.0,
+                  "height": 14.0,
+                  "dpi": 96,
+                  "row": 18
+                }
+              },
+              {
+                "name": "LabelControl:flow_layersUI_layerList_caption",
+                "rect": [
+                  1183,
+                  576,
+                  1325,
+                  594
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_addButton",
+                "rect": [
+                  1183,
+                  690,
+                  1208,
+                  712
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_copyButton",
+                "rect": [
+                  1212,
+                  690,
+                  1237,
+                  712
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_removeButton",
+                "rect": [
+                  1241,
+                  690,
+                  1266,
+                  712
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ColorPickerControl:flow_layersUI_layerColor",
+                "rect": [
+                  1303,
+                  714,
+                  1321,
+                  736
+                ],
+                "class": "ColorSwatch"
+              },
+              {
+                "name": "EditTextControl:flow_layersUI_nameEdit",
+                "rect": [
+                  1225,
+                  714,
+                  1297,
+                  731
+                ],
+                "class": "Edit"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_nameEdit_caption",
+                "rect": [
+                  1183,
+                  715,
+                  1221,
+                  733
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_visibleCheck",
+                "rect": [
+                  1256,
+                  738,
+                  1325,
+                  758
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_enabledCheck",
+                "rect": [
+                  1183,
+                  738,
+                  1252,
+                  758
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_upButton",
+                "rect": [
+                  1270,
+                  690,
+                  1295,
+                  712
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_downButton",
+                "rect": [
+                  1299,
+                  690,
+                  1324,
+                  712
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ComboBoxControl:flow_layersUI_copyVariation",
+                "rect": [
+                  1183,
+                  778,
+                  1325,
+                  799
+                ],
+                "class": "ComboBox"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_copyVariation_caption",
+                "rect": [
+                  1183,
+                  760,
+                  1325,
+                  778
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_recipesButton",
+                "rect": [
+                  1183,
+                  802,
+                  1325,
+                  824
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_countInfo",
+                "rect": [
+                  1183,
+                  826,
+                  1325,
+                  867
+                ],
+                "class": "Static",
+                "text_height": 39
+              },
+              {
+                "name": "LabelControl:heading_0",
+                "rect": [
+                  1183,
+                  556,
+                  1325,
+                  574
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_grip:System.Windows.Forms.Panel",
+                "rect": [
+                  1183,
+                  680,
+                  1325,
+                  688
+                ],
+                "class": "Afx:00007FFAD9880000:0"
+              }
+            ],
+            "clipped": [],
+            "overlaps": []
+          }
+        ],
+        "scale_requested": 1.0,
+        "max_scale": 1.0,
+        "custom_scale": 1.0,
+        "clipped_count": 0,
+        "overlap_count": 0
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/layout-recipe100.json",
+      "sha256": "b738b812e1fa7836479b56d4b34d3230ac9fd99b34048a04341683d7008e2b9b",
+      "result": {
+        "status": "passed",
+        "scale": 1.0,
+        "controls": [
+          {
+            "name": "LabelControl:saveTitle",
+            "rect": [
+              547,
+              212,
+              847,
+              244
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              547,
+              262,
+              847,
+              320
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              547,
+              246,
+              668,
+              259
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              582,
+              330,
+              847,
+              347
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              547,
+              330,
+              578,
+              343
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              600,
+              358,
+              847,
+              375
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              547,
+              358,
+              596,
+              371
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              576,
+              386,
+              847,
+              403
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              547,
+              386,
+              572,
+              399
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              608,
+              414,
+              847,
+              472
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              547,
+              414,
+              604,
+              427
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:chooseThumbnail",
+            "rect": [
+              547,
+              484,
+              727,
+              505
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:clearThumbnail",
+            "rect": [
+              737,
+              484,
+              847,
+              505
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:thumbnailInfo",
+            "rect": [
+              547,
+              516,
+              847,
+              548
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:thumbnailView:System.Windows.Forms.PictureBox",
+            "rect": [
+              547,
+              554,
+              847,
+              722
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "LabelControl:previewTitle",
+            "rect": [
+              547,
+              728,
+              847,
+              748
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:saveRecipe",
+            "rect": [
+              547,
+              756,
+              692,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:preflightButton",
+            "rect": [
+              702,
+              756,
+              847,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:settingsCategory",
+            "rect": [
+              547,
+              786,
+              692,
+              807
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:settingsPresets",
+            "rect": [
+              702,
+              786,
+              847,
+              807
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:directoryInfo",
+            "rect": [
+              865,
+              212,
+              1373,
+              244
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:libraryLocation",
+            "rect": [
+              865,
+              248,
+              1010,
+              269
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:chooseFolder",
+            "rect": [
+              1020,
+              248,
+              1150,
+              269
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:refreshButton",
+            "rect": [
+              1160,
+              248,
+              1245,
+              269
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:cancelButton",
+            "rect": [
+              1255,
+              248,
+              1373,
+              269
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              906,
+              282,
+              1185,
+              299
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              865,
+              282,
+              902,
+              295
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:categoryFilter",
+            "rect": [
+              1195,
+              282,
+              1373,
+              303
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              865,
+              332,
+              1373,
+              429
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              865,
+              316,
+              947,
+              329
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:previousButton",
+            "rect": [
+              865,
+              460,
+              955,
+              481
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:nextButton",
+            "rect": [
+              965,
+              460,
+              1055,
+              481
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:pageInfo",
+            "rect": [
+              1067,
+              462,
+              1373,
+              482
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:contentInfo:System.Windows.Forms.TextBox",
+            "rect": [
+              865,
+              492,
+              1373,
+              562
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "ButtonControl:reviewButton",
+            "rect": [
+              865,
+              570,
+              1025,
+              591
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:suggestButton",
+            "rect": [
+              1043,
+              570,
+              1373,
+              591
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              865,
+              620,
+              1373,
+              678
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              865,
+              604,
+              1079,
+              617
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "PickerControl:bindNode",
+            "rect": [
+              865,
+              688,
+              1015,
+              709
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "MapButtonControl:bindMap",
+            "rect": [
+              1025,
+              688,
+              1175,
+              709
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1185,
+              702,
+              1373,
+              723
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1185,
+              684,
+              1216,
+              697
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "CheckBoxControl:newSetupCheck",
+            "rect": [
+              865,
+              724,
+              1085,
+              739
+            ],
+            "class": "Button",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:importVariation",
+            "rect": [
+              1105,
+              720,
+              1373,
+              741
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:importButton",
+            "rect": [
+              865,
+              756,
+              1075,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:closeButton",
+            "rect": [
+              1283,
+              756,
+              1373,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:Status",
+            "rect": [
+              547,
+              820,
+              1373,
+              848
+            ],
+            "class": "Static",
+            "text_height": 13
+          }
+        ],
+        "clipped": [],
+        "overlaps": [],
+        "dialog": [
+          527,
+          171,
+          1393,
+          860
+        ]
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/masks-14726662.txt",
+      "sha256": "58813b10a51e7746e1f6b6bc7b6e8524470b75f49ac6b2a021994c2adfae1cea"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/passive-1792111004811148700.json",
+      "sha256": "3107cc9a89aa698dd064fc3ff6c155dfe2cb6c029029944879032bb8a730de46",
+      "result": {
+        "status": "passed",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Actual layer, recipe and numeric seed choices leave 60000 complete rows and calculation/preparation/upload counters unchanged"
+          }
+        ],
+        "manager_cycles": {
+          "milliseconds": [
+            76.29180001094937,
+            53.78240000572987,
+            46.33750001084991,
+            41.81880000396632,
+            45.15650001121685,
+            45.333499991102144,
+            45.19340000115335,
+            46.490700013237074,
+            41.519899998093024,
+            44.55009999219328,
+            57.49249999644235,
+            37.12439999799244,
+            36.448200000450015,
+            37.45239999261685,
+            48.668700008420274,
+            62.57850001566112,
+            46.3197999924887,
+            62.95510000200011,
+            43.82930000429042,
+            59.18750001001172,
+            41.55780002474785,
+            40.6105000001844,
+            49.87089999485761,
+            42.276699998183176,
+            50.77709999750368,
+            39.230700000189245,
+            39.67829997418448,
+            44.94459999841638,
+            42.915300000458956,
+            52.02079997980036
+          ],
+          "median": 45.1749500061851,
+          "p95": 62.95510000200011
+        },
+        "before": {
+          "observed_seconds": 153106.2468884,
+          "rows": [
+            "484a1961536ccc6c61d8adcafda81f4b1c2a60805575080e24823818f2b3c046",
+            "5c05b7b0195b4ae1658550980d029fe0963200fe94ec6f910580d4f8c9a644de"
+          ],
+          "orientation": [
+            97,
+            115,
+            227910
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            398,
+            13379432,
+            1713,
+            0,
+            2,
+            489928,
+            1,
+            "10019373027120604472;9905783776621007540;"
+          ]
+        },
+        "after": {
+          "observed_seconds": 153109.9628692,
+          "rows": [
+            "484a1961536ccc6c61d8adcafda81f4b1c2a60805575080e24823818f2b3c046",
+            "5c05b7b0195b4ae1658550980d029fe0963200fe94ec6f910580d4f8c9a644de"
+          ],
+          "orientation": [
+            97,
+            115,
+            227910
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            398,
+            13379432,
+            1713,
+            0,
+            2,
+            489928,
+            1,
+            "10019373027120604472;9905783776621007540;"
+          ]
+        }
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/receiver-growth-14706614.txt",
+      "sha256": "192585fbbfd5b06c21ddfa37b0d37acdbb872950162afc8d9b3028fe5c9d21c7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/source-changes-14953971.txt",
+      "sha256": "40d39898a3fa22972501b3f51995586c52ddc7ad300ee29c2cc9bd9f055e4bd8"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/unsampled-14732445.txt",
+      "sha256": "7991a7379e3c04fc77b4b16206fbe8c2ec755de9764aac0d5587a1a0bd8912b0"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/variation-core-14674321.txt",
+      "sha256": "411591a3690ac59908626711f78a3d991169d664ca2aa42bd895294cb315f481"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/loaded.tsv",
+      "sha256": "bc5f94bb84a604e67bc22f241487ff7a1a41592622cca5cfffe7aa013e90885b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/launch.json",
+      "sha256": "47b25f825250bf60450ee053ae6c419f7f856f4908c71b030d24f681934102bd",
+      "result": {
+        "pid": 3920,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor100-20261016-09",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor100-20261016-09\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor100-20261016-09\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor100-20261016-09\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor100-20261016-09\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "e25b592962a4732056bf9aa206af9548e33feef87b0a222356d2ab1e0b4b222d",
+          "CyrusBrush.dlx": "da65e43ee9895fedbae3228ac745e09c90857a7e1013adc938c9ea46f2c224e8",
+          "CyrusBrushStorage.dlh": "ff8f09896a31e3343efefe203c992295e5e34f4a1758ccc3927a0d9e35294fb5",
+          "CyrusScatterEdit.dlm": "332e4c7380fe5d39fda44e8d63b94e3f5179f01cf992afe3a64207b2e3b74568"
+        },
+        "script_sha256": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "preview_fault_lab": false,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4",
+        "native_receipt_sha256": "2bad3ddc84ef02560da878bf9cc9962f677454d5c904f60a7c9bb0dc4c279b88",
+        "scale": 1.0,
+        "native_build_script_sha256": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948"
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/heavy-setup-1792111267822739900.json",
+      "sha256": "1c29e5bca07e7dace5774c07a092d8df6d9cd6df29a844285e80ee445c830b46",
+      "result": {
+        "status": "prepared",
+        "initial_update_ms": 1191.6847999964375,
+        "rows": [
+          30000,
+          30000
+        ]
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/idle-1792111322851090300.json",
+      "sha256": "96704565ca480909da300cfc8a21f5e0ef0312fe864c9f359ee962d75c2778c4",
+      "result": {
+        "status": "failed",
+        "before": {
+          "observed_seconds": 153400.2258131,
+          "rows": [
+            "16f596c74bb773fdc53c67a24b49298b41c075896f5e7316563d36cf46ee9d74",
+            "1ddefd7a528d854455b91eba2cd927227dae8b16e092b3ab0bc10a95c9ba7460"
+          ],
+          "orientation": [
+            2,
+            4,
+            120000
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            8,
+            320000,
+            16,
+            0,
+            2,
+            489928,
+            1,
+            "16219807143130128148;3654551881101791487;"
+          ]
+        },
+        "after": {
+          "observed_seconds": 153424.2875243,
+          "rows": [
+            "16f596c74bb773fdc53c67a24b49298b41c075896f5e7316563d36cf46ee9d74",
+            "1ddefd7a528d854455b91eba2cd927227dae8b16e092b3ab0bc10a95c9ba7460"
+          ],
+          "orientation": [
+            2,
+            4,
+            120000
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            8,
+            320000,
+            20,
+            0,
+            2,
+            489928,
+            1,
+            "16219807143130128148;3654551881101791487;"
+          ]
+        },
+        "elapsed_seconds": 24.061711199989077,
+        "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\variation_0840\\idle.py\", line 18, in <module>\n    assert elapsed>=30\n           ^^^^^^^^^^^\nAssertionError\n"
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/idle-1792111351824097300.json",
+      "sha256": "78302cd5c3911773580489615d34f76451a3f8a7f54eb71615c48784811ce816",
+      "result": {
+        "status": "passed",
+        "before": {
+          "observed_seconds": 153400.2258131,
+          "rows": [
+            "16f596c74bb773fdc53c67a24b49298b41c075896f5e7316563d36cf46ee9d74",
+            "1ddefd7a528d854455b91eba2cd927227dae8b16e092b3ab0bc10a95c9ba7460"
+          ],
+          "orientation": [
+            2,
+            4,
+            120000
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            8,
+            320000,
+            16,
+            0,
+            2,
+            489928,
+            1,
+            "16219807143130128148;3654551881101791487;"
+          ]
+        },
+        "after": {
+          "observed_seconds": 153453.2603908,
+          "rows": [
+            "16f596c74bb773fdc53c67a24b49298b41c075896f5e7316563d36cf46ee9d74",
+            "1ddefd7a528d854455b91eba2cd927227dae8b16e092b3ab0bc10a95c9ba7460"
+          ],
+          "orientation": [
+            2,
+            4,
+            120000
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            8,
+            320000,
+            20,
+            0,
+            2,
+            489928,
+            1,
+            "16219807143130128148;3654551881101791487;"
+          ]
+        },
+        "elapsed_seconds": 53.03457769998931
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/installer-compile.json",
+      "sha256": "1fb54fd13072edf87735e23c4ad4f3fb6416c6ec7fc8bc2c3504179039390894",
+      "result": {
+        "status": "passed",
+        "installer_sha256": "e3e55d934fc6122f19ae2dcf91f6f1de964a18ce719a2f39a99bb02732da5ae6",
+        "bundled_file_count": 19,
+        "installed": false,
+        "scope": "Actual Max compilation, function never invoked; inventory array evaluated as data only."
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/layout-amount150.json",
+      "sha256": "bb3265132a29cbb2ee6c8bcaa76d0e957e3a821afdbda26d7a48b4170fa3440b",
+      "result": {
+        "status": "passed",
+        "scale": 1.5,
+        "controls": [
+          {
+            "name": "LabelControl:targetInfo",
+            "rect": [
+              663,
+              253,
+              1257,
+              310
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ListBoxControl:presets",
+            "rect": [
+              663,
+              331,
+              1257,
+              448
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:presets",
+            "rect": [
+              663,
+              313,
+              732,
+              327
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:presetName",
+            "rect": [
+              701,
+              523,
+              1258,
+              543
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:presetName",
+            "rect": [
+              663,
+              523,
+              695,
+              537
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:saveNew",
+            "rect": [
+              663,
+              568,
+              798,
+              594
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:applyPreset",
+            "rect": [
+              813,
+              568,
+              948,
+              594
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:renamePreset",
+            "rect": [
+              963,
+              568,
+              1098,
+              594
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:DeletePreset",
+            "rect": [
+              1113,
+              568,
+              1257,
+              594
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:refreshList",
+            "rect": [
+              663,
+              621,
+              798,
+              647
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:closeButton",
+            "rect": [
+              1113,
+              621,
+              1257,
+              647
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:seedChoice",
+            "rect": [
+              663,
+              691,
+              1257,
+              712
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ComboBoxControl:seedChoice",
+            "rect": [
+              663,
+              670,
+              731,
+              684
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "LabelControl:Status",
+            "rect": [
+              663,
+              742,
+              1257,
+              808
+            ],
+            "class": "Static",
+            "text_height": 13
+          }
+        ],
+        "clipped": [],
+        "overlaps": [],
+        "dialog": [
+          637,
+          207,
+          1283,
+          824
+        ]
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/layout-manager150-exposed.json",
+      "sha256": "32311e52cd6cff28cf0e4eb80adf55e695c3e6a3ca21e57c90c706b9576b1f88",
+      "result": {
+        "status": "passed",
+        "pages": [
+          {
+            "name": "managerUI",
+            "hwnd": 17309714,
+            "body": [
+              1361,
+              474,
+              1523,
+              1002
+            ],
+            "page_rect": [
+              1362,
+              475,
+              1643,
+              1000
+            ],
+            "width": 187.0,
+            "slot_width": 108.0,
+            "height": 525.0,
+            "slot_height": 528.0,
+            "layout_width": 100.0,
+            "header_inset": 20.0,
+            "controls": [
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_colored:System.Windows.Forms.ListBox",
+                "rect": [
+                  1371,
+                  541,
+                  1503,
+                  631
+                ],
+                "class": "Afx:00007FFAD9880000:0",
+                "font": {
+                  "size": 11.0,
+                  "height": 14.0,
+                  "dpi": 96,
+                  "row": 24
+                }
+              },
+              {
+                "name": "LabelControl:flow_layersUI_layerList_caption",
+                "rect": [
+                  1371,
+                  514,
+                  1503,
+                  541
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_addButton",
+                "rect": [
+                  1371,
+                  649,
+                  1410,
+                  682
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_copyButton",
+                "rect": [
+                  1416,
+                  649,
+                  1455,
+                  682
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_removeButton",
+                "rect": [
+                  1463,
+                  649,
+                  1502,
+                  682
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ColorPickerControl:flow_layersUI_layerColor",
+                "rect": [
+                  1470,
+                  721,
+                  1497,
+                  754
+                ],
+                "class": "ColorSwatch"
+              },
+              {
+                "name": "EditTextControl:flow_layersUI_nameEdit",
+                "rect": [
+                  1371,
+                  748,
+                  1461,
+                  768
+                ],
+                "class": "Edit"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_nameEdit_caption",
+                "rect": [
+                  1371,
+                  721,
+                  1461,
+                  748
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_visibleCheck",
+                "rect": [
+                  1371,
+                  817,
+                  1503,
+                  846
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_enabledCheck",
+                "rect": [
+                  1371,
+                  784,
+                  1503,
+                  813
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_upButton",
+                "rect": [
+                  1371,
+                  685,
+                  1410,
+                  718
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_downButton",
+                "rect": [
+                  1416,
+                  685,
+                  1455,
+                  718
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ComboBoxControl:flow_layersUI_copyVariation",
+                "rect": [
+                  1371,
+                  877,
+                  1503,
+                  898
+                ],
+                "class": "ComboBox"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_copyVariation_caption",
+                "rect": [
+                  1371,
+                  850,
+                  1503,
+                  877
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_recipesButton",
+                "rect": [
+                  1371,
+                  913,
+                  1503,
+                  946
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_countInfo",
+                "rect": [
+                  1371,
+                  949,
+                  1503,
+                  991
+                ],
+                "class": "Static",
+                "text_height": 39
+              },
+              {
+                "name": "LabelControl:heading_0",
+                "rect": [
+                  1371,
+                  484,
+                  1503,
+                  511
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_grip:System.Windows.Forms.Panel",
+                "rect": [
+                  1371,
+                  634,
+                  1503,
+                  646
+                ],
+                "class": "Afx:00007FFAD9880000:0"
+              }
+            ],
+            "clipped": [],
+            "overlaps": []
+          }
+        ],
+        "scale_requested": 1.5,
+        "max_scale": 1.5,
+        "custom_scale": 1.5,
+        "clipped_count": 0,
+        "overlap_count": 0
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/layout-manager150-visible.json",
+      "sha256": "bb023298a21bdc733f5cad6d0c5b3be82758a7d93889c4c560b76e5dbaa68e15",
+      "result": {
+        "status": "passed",
+        "pages": [
+          {
+            "name": "managerUI",
+            "hwnd": 7541258,
+            "body": [
+              1361,
+              509,
+              1523,
+              1037
+            ],
+            "page_rect": [
+              1362,
+              510,
+              1643,
+              1035
+            ],
+            "width": 187.0,
+            "slot_width": 108.0,
+            "height": 525.0,
+            "slot_height": 528.0,
+            "layout_width": 100.0,
+            "header_inset": 20.0,
+            "controls": [
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_colored:System.Windows.Forms.ListBox",
+                "rect": [
+                  1371,
+                  576,
+                  1503,
+                  666
+                ],
+                "class": "Afx:00007FFAD9880000:0",
+                "font": {
+                  "size": 11.0,
+                  "height": 14.0,
+                  "dpi": 96,
+                  "row": 24
+                }
+              },
+              {
+                "name": "LabelControl:flow_layersUI_layerList_caption",
+                "rect": [
+                  1371,
+                  549,
+                  1503,
+                  576
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_addButton",
+                "rect": [
+                  1371,
+                  684,
+                  1410,
+                  717
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_copyButton",
+                "rect": [
+                  1416,
+                  684,
+                  1455,
+                  717
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_removeButton",
+                "rect": [
+                  1463,
+                  684,
+                  1502,
+                  717
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ColorPickerControl:flow_layersUI_layerColor",
+                "rect": [
+                  1470,
+                  756,
+                  1497,
+                  789
+                ],
+                "class": "ColorSwatch"
+              },
+              {
+                "name": "EditTextControl:flow_layersUI_nameEdit",
+                "rect": [
+                  1371,
+                  783,
+                  1461,
+                  803
+                ],
+                "class": "Edit"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_nameEdit_caption",
+                "rect": [
+                  1371,
+                  756,
+                  1461,
+                  783
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_visibleCheck",
+                "rect": [
+                  1371,
+                  852,
+                  1503,
+                  882
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_enabledCheck",
+                "rect": [
+                  1371,
+                  819,
+                  1503,
+                  849
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_upButton",
+                "rect": [
+                  1371,
+                  720,
+                  1410,
+                  753
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_downButton",
+                "rect": [
+                  1416,
+                  720,
+                  1455,
+                  753
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ComboBoxControl:flow_layersUI_copyVariation",
+                "rect": [
+                  1371,
+                  912,
+                  1503,
+                  933
+                ],
+                "class": "ComboBox"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_copyVariation_caption",
+                "rect": [
+                  1371,
+                  885,
+                  1503,
+                  912
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_recipesButton",
+                "rect": [
+                  1371,
+                  948,
+                  1503,
+                  981
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_countInfo",
+                "rect": [
+                  1371,
+                  984,
+                  1503,
+                  1026
+                ],
+                "class": "Static",
+                "text_height": 39
+              },
+              {
+                "name": "LabelControl:heading_0",
+                "rect": [
+                  1371,
+                  519,
+                  1503,
+                  546
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_grip:System.Windows.Forms.Panel",
+                "rect": [
+                  1371,
+                  669,
+                  1503,
+                  681
+                ],
+                "class": "Afx:00007FFAD9880000:0"
+              }
+            ],
+            "clipped": [],
+            "overlaps": []
+          }
+        ],
+        "scale_requested": 1.5,
+        "max_scale": 1.5,
+        "custom_scale": 1.5,
+        "clipped_count": 0,
+        "overlap_count": 0
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/layout-manager150.json",
+      "sha256": "822c7544442097bdb082cf27bea8fc8e9c99d6b03f4dfd50c3a6bbcea6f51f84",
+      "result": {
+        "status": "passed",
+        "pages": [
+          {
+            "name": "managerUI",
+            "hwnd": 3813964,
+            "body": [
+              1361,
+              474,
+              1523,
+              1002
+            ],
+            "page_rect": [
+              1362,
+              475,
+              1643,
+              1000
+            ],
+            "width": 187.0,
+            "slot_width": 108.0,
+            "height": 525.0,
+            "slot_height": 528.0,
+            "layout_width": 100.0,
+            "header_inset": 20.0,
+            "controls": [
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_colored:System.Windows.Forms.ListBox",
+                "rect": [
+                  1371,
+                  541,
+                  1503,
+                  631
+                ],
+                "class": "Afx:00007FFAD9880000:0",
+                "font": {
+                  "size": 11.0,
+                  "height": 14.0,
+                  "dpi": 96,
+                  "row": 24
+                }
+              },
+              {
+                "name": "LabelControl:flow_layersUI_layerList_caption",
+                "rect": [
+                  1371,
+                  514,
+                  1503,
+                  541
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_addButton",
+                "rect": [
+                  1371,
+                  649,
+                  1410,
+                  682
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_copyButton",
+                "rect": [
+                  1416,
+                  649,
+                  1455,
+                  682
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_removeButton",
+                "rect": [
+                  1463,
+                  649,
+                  1502,
+                  682
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ColorPickerControl:flow_layersUI_layerColor",
+                "rect": [
+                  1470,
+                  721,
+                  1497,
+                  754
+                ],
+                "class": "ColorSwatch"
+              },
+              {
+                "name": "EditTextControl:flow_layersUI_nameEdit",
+                "rect": [
+                  1371,
+                  748,
+                  1461,
+                  768
+                ],
+                "class": "Edit"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_nameEdit_caption",
+                "rect": [
+                  1371,
+                  721,
+                  1461,
+                  748
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_visibleCheck",
+                "rect": [
+                  1371,
+                  817,
+                  1503,
+                  846
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "CheckBoxControl:flow_layersUI_enabledCheck",
+                "rect": [
+                  1371,
+                  784,
+                  1503,
+                  813
+                ],
+                "class": "Button",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_upButton",
+                "rect": [
+                  1371,
+                  685,
+                  1410,
+                  718
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_downButton",
+                "rect": [
+                  1416,
+                  685,
+                  1455,
+                  718
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "ComboBoxControl:flow_layersUI_copyVariation",
+                "rect": [
+                  1371,
+                  877,
+                  1503,
+                  898
+                ],
+                "class": "ComboBox"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_copyVariation_caption",
+                "rect": [
+                  1371,
+                  850,
+                  1503,
+                  877
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "ButtonControl:flow_layersUI_recipesButton",
+                "rect": [
+                  1371,
+                  913,
+                  1503,
+                  946
+                ],
+                "class": "CustButton"
+              },
+              {
+                "name": "LabelControl:flow_layersUI_countInfo",
+                "rect": [
+                  1371,
+                  949,
+                  1503,
+                  991
+                ],
+                "class": "Static",
+                "text_height": 39
+              },
+              {
+                "name": "LabelControl:heading_0",
+                "rect": [
+                  1371,
+                  484,
+                  1503,
+                  511
+                ],
+                "class": "Static",
+                "text_height": 13
+              },
+              {
+                "name": "dotNetControl:flow_layersUI_layerList_grip:System.Windows.Forms.Panel",
+                "rect": [
+                  1371,
+                  634,
+                  1503,
+                  646
+                ],
+                "class": "Afx:00007FFAD9880000:0"
+              }
+            ],
+            "clipped": [],
+            "overlaps": []
+          }
+        ],
+        "scale_requested": 1.5,
+        "max_scale": 1.5,
+        "custom_scale": 1.5,
+        "clipped_count": 0,
+        "overlap_count": 0
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/layout-recipe150.json",
+      "sha256": "631f96704d47107f046f4e2e456510ec3163682178087aa6f03c9a57db7f66d5",
+      "result": {
+        "status": "passed",
+        "scale": 1.5,
+        "controls": [
+          {
+            "name": "LabelControl:saveTitle",
+            "rect": [
+              340,
+              55,
+              790,
+              103
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              340,
+              124,
+              790,
+              187
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              340,
+              106,
+              462,
+              120
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              378,
+              232,
+              791,
+              252
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              340,
+              232,
+              372,
+              246
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              396,
+              274,
+              791,
+              294
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              340,
+              274,
+              390,
+              288
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              372,
+              316,
+              791,
+              336
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              340,
+              316,
+              366,
+              330
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              403,
+              358,
+              790,
+              445
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              340,
+              358,
+              397,
+              372
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:chooseThumbnail",
+            "rect": [
+              340,
+              463,
+              610,
+              489
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:clearThumbnail",
+            "rect": [
+              625,
+              463,
+              790,
+              489
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:thumbnailInfo",
+            "rect": [
+              340,
+              511,
+              790,
+              559
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:thumbnailView:System.Windows.Forms.PictureBox",
+            "rect": [
+              340,
+              568,
+              790,
+              820
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "LabelControl:previewTitle",
+            "rect": [
+              340,
+              829,
+              790,
+              859
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:saveRecipe",
+            "rect": [
+              340,
+              871,
+              558,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:preflightButton",
+            "rect": [
+              573,
+              871,
+              791,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:settingsCategory",
+            "rect": [
+              340,
+              916,
+              558,
+              937
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:settingsPresets",
+            "rect": [
+              573,
+              916,
+              791,
+              942
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:directoryInfo",
+            "rect": [
+              817,
+              55,
+              1579,
+              103
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:libraryLocation",
+            "rect": [
+              817,
+              109,
+              1035,
+              130
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:chooseFolder",
+            "rect": [
+              1050,
+              109,
+              1245,
+              135
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:refreshButton",
+            "rect": [
+              1260,
+              109,
+              1388,
+              135
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:cancelButton",
+            "rect": [
+              1402,
+              109,
+              1579,
+              135
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              861,
+              160,
+              1298,
+              180
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              817,
+              160,
+              855,
+              174
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:categoryFilter",
+            "rect": [
+              1312,
+              160,
+              1579,
+              181
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              817,
+              229,
+              1579,
+              333
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              817,
+              211,
+              900,
+              225
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:previousButton",
+            "rect": [
+              817,
+              427,
+              952,
+              453
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:nextButton",
+            "rect": [
+              967,
+              427,
+              1102,
+              453
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:pageInfo",
+            "rect": [
+              1120,
+              430,
+              1579,
+              460
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:contentInfo:System.Windows.Forms.TextBox",
+            "rect": [
+              817,
+              475,
+              1579,
+              580
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "ButtonControl:reviewButton",
+            "rect": [
+              817,
+              592,
+              1057,
+              618
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:suggestButton",
+            "rect": [
+              1084,
+              592,
+              1579,
+              618
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              817,
+              661,
+              1579,
+              724
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              817,
+              643,
+              1032,
+              657
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "PickerControl:bindNode",
+            "rect": [
+              817,
+              769,
+              1042,
+              795
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "MapButtonControl:bindMap",
+            "rect": [
+              1057,
+              769,
+              1282,
+              795
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1297,
+              784,
+              1579,
+              805
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1297,
+              763,
+              1329,
+              777
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "CheckBoxControl:newSetupCheck",
+            "rect": [
+              817,
+              823,
+              1147,
+              840
+            ],
+            "class": "Button",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:importVariation",
+            "rect": [
+              1177,
+              817,
+              1579,
+              838
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:importButton",
+            "rect": [
+              817,
+              871,
+              1132,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:closeButton",
+            "rect": [
+              1444,
+              871,
+              1579,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:Status",
+            "rect": [
+              340,
+              967,
+              1579,
+              1009
+            ],
+            "class": "Static",
+            "text_height": 13
+          }
+        ],
+        "clipped": [],
+        "overlaps": [],
+        "dialog": [
+          314,
+          9,
+          1605,
+          1023
+        ]
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/passive-1792111294420047300.json",
+      "sha256": "5ce0a31dd065b24c2e025b47700265ffc78c89b44f38fc4576558d2130a5df6a",
+      "result": {
+        "status": "passed",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Actual layer, recipe and numeric seed choices leave 60000 complete rows and calculation/preparation/upload counters unchanged"
+          }
+        ],
+        "manager_cycles": {
+          "milliseconds": [
+            145.88460000231862,
+            20.085600001038983,
+            38.03979998338036,
+            24.161599983926862,
+            38.45639998326078,
+            24.12790001835674,
+            31.140800012508407,
+            44.17440001270734,
+            17.8340999991633,
+            29.553300002589822,
+            58.76919999718666,
+            11.243100016145036,
+            24.44199999445118,
+            33.92549999989569,
+            44.97509999782778,
+            20.05970000755042,
+            30.014800024218857,
+            30.95239997492172,
+            85.71980000124313,
+            44.521700008772314,
+            64.04479997581802,
+            22.119600005680695,
+            46.36639999807812,
+            39.990599994780496,
+            32.78550002141856,
+            32.88270000484772,
+            33.822600002167746,
+            30.21719999378547,
+            32.50150001258589,
+            41.783599997870624
+          ],
+          "median": 32.83410001313314,
+          "p95": 85.71980000124313
+        },
+        "before": {
+          "observed_seconds": 153395.8558144,
+          "rows": [
+            "16f596c74bb773fdc53c67a24b49298b41c075896f5e7316563d36cf46ee9d74",
+            "1ddefd7a528d854455b91eba2cd927227dae8b16e092b3ab0bc10a95c9ba7460"
+          ],
+          "orientation": [
+            2,
+            4,
+            120000
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            8,
+            320000,
+            16,
+            0,
+            2,
+            489928,
+            1,
+            "16219807143130128148;3654551881101791487;"
+          ]
+        },
+        "after": {
+          "observed_seconds": 153400.2258131,
+          "rows": [
+            "16f596c74bb773fdc53c67a24b49298b41c075896f5e7316563d36cf46ee9d74",
+            "1ddefd7a528d854455b91eba2cd927227dae8b16e092b3ab0bc10a95c9ba7460"
+          ],
+          "orientation": [
+            2,
+            4,
+            120000
+          ],
+          "epoch": 3,
+          "receiver": [
+            [
+              1,
+              1,
+              1
+            ],
+            [
+              1,
+              1,
+              1
+            ]
+          ],
+          "prepare": [
+            3,
+            2
+          ],
+          "preview": [
+            5,
+            3
+          ],
+          "display": [
+            10000,
+            2,
+            1,
+            2,
+            2,
+            8,
+            320000,
+            16,
+            0,
+            2,
+            489928,
+            1,
+            "16219807143130128148;3654551881101791487;"
+          ]
+        }
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/loaded.tsv",
+      "sha256": "4089e0dc70ce5501d0f3555d9c1b576641ee0fe54bf7dd7deac21dac9aebb83a"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/launch.json",
+      "sha256": "492ca5418ddfa2350c00a9b40b31f5536762e2b8e18f73f736f8b3e7be93402a",
+      "result": {
+        "pid": 9220,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor150-20261016-10",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor150-20261016-10\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor150-20261016-10\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor150-20261016-10\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-variation0840-successor150-20261016-10\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "e25b592962a4732056bf9aa206af9548e33feef87b0a222356d2ab1e0b4b222d",
+          "CyrusBrush.dlx": "da65e43ee9895fedbae3228ac745e09c90857a7e1013adc938c9ea46f2c224e8",
+          "CyrusBrushStorage.dlh": "ff8f09896a31e3343efefe203c992295e5e34f4a1758ccc3927a0d9e35294fb5",
+          "CyrusScatterEdit.dlm": "332e4c7380fe5d39fda44e8d63b94e3f5179f01cf992afe3a64207b2e3b74568"
+        },
+        "script_sha256": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "preview_fault_lab": false,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4",
+        "native_receipt_sha256": "2bad3ddc84ef02560da878bf9cc9962f677454d5c904f60a7c9bb0dc4c279b88",
+        "scale": 1.5,
+        "native_build_script_sha256": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948"
+      }
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/owned-manager150.png",
+      "sha256": "6ddf40a2ac378e606fd00ff01b471d366fa66cbeec60b22003877720bbd18c9c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-undo0830-20261016-01/undo-pressure-12886030.txt",
+      "sha256": "2b20ac45912e33bdf65487a08296cd49e8493f3b080d0db7b63895615f3a88f7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-variation0840-core-20261016-06/undo-pressure-12886030.txt",
+      "sha256": "3d1508fb1582cf5ed283b31a9004441bb4df00f332296a9f0101bbbb825887d6"
+    }
+  ],
+  "limits": [
+    "B26: low-headroom heavy Update may clear Undo; reproduced in previous 0.83.0 and earlier candidate",
+    "Physical 4K/mixed-monitor/input not qualified",
+    "No installation, artist-profile restart, website publication or renderer qualification",
+    "8-example goal and EXE incomplete"
+  ],
+  "owned_hosts_closed": true,
+  "closure": {
+    "build/mcp-qualification/foundation-roadmap-variation0840-successor100-20261016-09/closed-owned-session.txt": "f066397cab449ebf40f8aece3d8b02fd35b68656a4a8826cf2d23a7fb328e9db",
+    "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/closed-owned-session.txt": "4cdb85392310eeb4715b302cc069c4f86df1771091d79af9ec983fa1c66a3eee"
+  },
+  "website": {
+    "docs_sync": "passed",
+    "docs_check": "passed",
+    "local_build": "passed; existing >500kB chunk advisory",
+    "published": false
+  }
+}

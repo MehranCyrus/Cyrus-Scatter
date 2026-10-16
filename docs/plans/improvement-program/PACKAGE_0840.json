@@ -1,0 +1,73 @@
+{
+  "state": "scoped Max 2027 qualification and archive checks passed; B26 remains open; not installed",
+  "version": "0.84.0",
+  "max_year": 2027,
+  "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.84.0-20261016\\CyrusScatter-0.84.0-Max2027.mzp",
+  "sha256": "c4e8804baf3aa1edb493435c34a102618f2cf6771c1b9c9c6839c8dc77a5109b",
+  "bytes": 2727288,
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.84.0",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "9bf9e18f7c7f",
+    "files": {
+      "AminScatter.dlx": "e25b592962a4732056bf9aa206af9548e33feef87b0a222356d2ab1e0b4b222d",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "CyrusBrush.dlx": "da65e43ee9895fedbae3228ac745e09c90857a7e1013adc938c9ea46f2c224e8",
+      "CyrusBrushStorage.dlh": "ff8f09896a31e3343efefe203c992295e5e34f4a1758ccc3927a0d9e35294fb5",
+      "CyrusScatter.mcr": "b83d305580710c63cb53cc839e4689f0d80b96eef46d4c99ed57e76436b5abfe",
+      "CyrusScatter.ms": "c556d4cfa840f539aba5179081ed261320837fefe87da14549e9fed0a6c29948",
+      "CyrusScatterEdit.dlm": "332e4c7380fe5d39fda44e8d63b94e3f5179f01cf992afe3a64207b2e3b74568",
+      "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+      "INSTALL.txt": "19b6fea600f56f9c2734f4ca66209577ffcb9074f151a8c239ad204295646d24",
+      "Library/README.md": "63faa4086a67802f24e704570b4d56c6cfa4068ed0be8fd9c36377e7a3218bcf",
+      "Library/borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
+      "Library/borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
+      "Library/borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
+      "Library/inventory.json": "13f64ee66fe54f1e6380c420fa9ed61a07e8b7bea2d09a440e1980e4a79e315f",
+      "Library/meadow.csrecipe.json": "813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5",
+      "Library/meadow.csrecipe.json.library.json": "2ba09952910ac638a3fe1b17fb38c1eac252b2e4b18f8b5c00f3f58815a40d5c",
+      "Library/meadow.max": "2307155f5a9a55cc0967c6dd46d28f3d80e01836105edf9fd4d9b507f01288b9",
+      "Library/mountain.csrecipe.json": "180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8",
+      "Library/mountain.csrecipe.json.library.json": "00bfe79d25d11feaf3748bb6dbd39d39bcccd121b8852bf1b324bbfbf63ad918",
+      "Library/mountain.max": "3850e1587a89ddb11c8b61346595dc5c76240451c8c8644c46f1c1cfa614005a",
+      "Library/paint-68e28fee-6e72-4dd7-9f0d-3aebe8110ff0.payload/paint-1.cspaint": "de23637359e59378389154387462da1bacc57ff2c5b39c66602d81257f1c931d",
+      "Library/thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524",
+      "Library/thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be",
+      "Library/thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0",
+      "Library/thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
+      "Library/woodland.csrecipe.json": "0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee",
+      "Library/woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58",
+      "Library/woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc",
+      "LibraryFiles.ms": "f7e527adc1a04e80fe8ce885ebcaa896732ac14a86c7048b9f2131e0eebf021a",
+      "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+      "install.ms": "e3e55d934fc6122f19ae2dcf91f6f1de964a18ce719a2f39a99bb02732da5ae6",
+      "mzp.run": "3f8eb0afc20962391731a7964b86b2522ce848afda4528128ea9e719ec86f30c",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "licensing": {
+      "mode": "offline-team",
+      "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+      "term_days": 30
+    }
+  },
+  "host": "foundation-roadmap-variation0840-successor100-20261016-09",
+  "native_receipt_sha256": "2bad3ddc84ef02560da878bf9cc9962f677454d5c904f60a7c9bb0dc4c279b88",
+  "source_packager_sha256": "de0fc680ca18451bcdf0aac6613ff90c4566b3e1efc68381c4e1a2d10ff1bca6",
+  "library_inventory_sha256": "13f64ee66fe54f1e6380c420fa9ed61a07e8b7bea2d09a440e1980e4a79e315f",
+  "installed": false,
+  "installer_compile": {
+    "path": "build/mcp-qualification/foundation-roadmap-variation0840-successor150-20261016-10/installer-compile.json",
+    "sha256": "1fb54fd13072edf87735e23c4ad4f3fb6416c6ec7fc8bc2c3504179039390894",
+    "result": {
+      "status": "passed",
+      "installer_sha256": "e3e55d934fc6122f19ae2dcf91f6f1de964a18ce719a2f39a99bb02732da5ae6",
+      "bundled_file_count": 19,
+      "installed": false,
+      "scope": "Actual Max compilation, function never invoked; inventory array evaluated as data only."
+    }
+  }
+}

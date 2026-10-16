@@ -121,7 +121,7 @@ Recommended priorities after a future implementation authorization: establish I0
 
 **Exit:** artists can predict variation policy without borrowed ownership or false exact-copy promises. F01/F02/F11; `receiver_plan.cpp`, sampler, recipe capture/import and existing Edit identity paths.
 
-## I06 — regular layouts: Phase 6 remains paused
+## I06 — regular layouts: resumed by the active goal
 
 **Current gap and research:** Bands describe planting strips; they do not provide rectangular/staggered/hexagonal lattice rules. Forest's selected Image path is a repeating map-aligned lattice, whereas current Cyrus samples surface area.
 
@@ -354,4 +354,4 @@ These links point to local research evidence, which is outside the Cyrus Git rep
 
 For the existing Cyrus recipe architecture, retain the [research contract](../../Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md) as broader design and the [0.82.5 format](../recipes-0825/FORMAT.md) as the implemented wire contract. For the original phase outcomes, retain [IMPLEMENTATION](IMPLEMENTATION.md) and [VALIDATION](VALIDATION.md). Planning is complete. I01/I02 implementation and scoped acceptance are recorded in the [0.82.6 handoff](../panel-performance-0826/PROGRESS.md); later steps and their acceptance gates remain pending. Phase 6 stays paused.
 
-Current successor: [I04/P07 0.83.0 direction and normal blending](../improvement-program/I04_0830.md). I05 variation policy follows; P06 grids and the remaining program stay open. Historical version proposals above do not select future delivery numbers.
+Current successor: [I05 0.84.0 variation policy](../improvement-program/I05_0840.md), following [I04/P07 direction and normal blending](../improvement-program/I04_0830.md). P06 grids and the remaining program stay open; B26 heap-pressure Undo work is unresolved. Historical version proposals above do not select future delivery numbers.

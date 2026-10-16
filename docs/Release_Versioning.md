@@ -2,10 +2,10 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.83.0 | I04/P07 direction/target controls and angular normal blending; remaining program continues |
-| Scatter native/package | 0.83.0 packaged for Max 2027; historical installation receipts preserved | Exact pair, package hashes and scoped Max 2027 qualification are in the I04 handoff; manual installation is separate |
-| Recipe / numeric-settings format and capability | 2 / 2 | Orientation fields; strict neutral-default conversion from the immediately preceding format 1; native Paint and explicit roles preserved |
-| Saved MAXScript schema | 58 | Appended orientation parameter block preserves existing parameter IDs; no earlier-schema migration |
+| Scatter UI | 0.84.0 | I05 explicit copy/import variation policies; remaining program continues |
+| Scatter native/package | 0.84.0 packaged for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped Max 2027 qualification are in the I05 handoff; manual installation is separate |
+| Recipe / numeric-settings format and capability | 3 / 2 | Complete recipes add receiver random domains; strict reads of formats 1/2 preserve their original variation; numeric seed policy is an operation option |
+| Saved MAXScript schema | 58 | Appended orientation and variation parameter blocks preserve existing parameter IDs; no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
@@ -20,7 +20,7 @@
 are development delivery identifiers. This overrides the earlier small-step
 selection table below for the [active goal](plans/improvement-program/OBJECTIVE.md).
 Phase 6 is resumed within that goal; preset work is first. Current packaged
-delivery is [0.83.0](plans/improvement-program/I04_0830.md): a substantial direction/normal-blending feature, with scene schema 58 retained and recipe/settings formats advanced to 2. The preceding user-selected 0.82.6.1 label and its receipts remain historical. Library presentation and native orientation each have independent capability 1. I05 variation policy is provisionally 0.84.0; reassess the complete next delivery before changing it.
+delivery is [0.84.0](plans/improvement-program/I05_0840.md): a substantial copy/import workflow with separate saved receiver random domains. Scene schema 58 is retained; complete recipes advance to format 3 and numeric presets stay 2. The earlier 0.83.0 and 0.82.6.1 receipts remain frozen. Library presentation and native orientation retain independent capability 1. I06 grids are provisionally 0.85.0; assess the complete delivery before changing source versions.
 
 The preceding small-step policy is retained as historical context:
 

@@ -70,6 +70,12 @@
         },
         {
           "component": "flow_layersUI",
+          "control": "copyVariation",
+          "presentation": "flow_layersUI_copyVariation",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
           "control": "recipesButton",
           "presentation": "flow_layersUI_recipesButton",
           "advanced": false
