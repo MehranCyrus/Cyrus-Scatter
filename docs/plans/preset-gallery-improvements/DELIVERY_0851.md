@@ -65,3 +65,5 @@ Website `docs:sync`, `docs:check` and the TypeScript/Vite production build pass.
 All three final owned Max hosts were closed after their checks, with closure markers and process absence verified. The artist PID 26972 remains running. A read-only check of its on-disk startup/macro wrappers matches the supported preceding 0.85.0 hashes; this is not an installation or a loaded-engine requalification.
 
 Raw owned-host receipts, `.max` scenes, binaries and installers remain ignored local artifacts; Git contains source, contracts, example data/images and hash-pinned evidence summaries. Preserve the distribution separately when sharing or backing up the repository.
+
+Source/evidence commit **`7bd98de7aed4e78ee01baaaa3e5bc40493571d7a`** was pushed to `origin/codex/workflow-0.75`; `git ls-remote` matched it. This subsequent documentation-only checkpoint records that verification without changing the qualified product or installer bytes. Unrelated Physics, landscape/presentation/prototype work and their documentation-index rows remain outside this delivery.
