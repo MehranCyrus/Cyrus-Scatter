@@ -5,6 +5,7 @@
 #include "asset_mesh.h"
 #include <max.h>
 #include <triobj.h>
+#include <splshape.h>
 #include <MeshNormalSpec.h>
 #include <icurvctl.h>
 #include <hold.h>
@@ -149,6 +150,34 @@ public:
     void Redo() override {undone_=false;}
     MSTR Description() override {return _T("Cyrus imported cache lifetime");}
 };
+// A ready-preset Load explicitly calculates after its authored hold. Keep its
+// complete transient publication with that hold, so Undo/Redo needs no files or
+// new solve. Values are immutable cache generations, retained by reference.
+class PresetPublicationRestore final : public RestoreObj {
+    struct Field {Value* name;ValueHolderMember before,after;};
+    struct Owner {ValueHolderMember value;std::vector<Field> fields;};
+    std::vector<Owner> owners_;bool captured_=false;
+    static int slot(MSPlugin* p,Value* name){auto* v=p->pc->local_scope->get(name);return v&&is_pluginlocalthunk(v)?static_cast<PluginLocalThunk*>(v)->index:-1;}
+    void apply(bool redo){
+        for(auto& owner:owners_){auto* p=dynamic_cast<MSPlugin*>(owner.value.get_value()->to_reftarg());if(!p)continue;
+            for(auto& field:owner.fields){const int i=slot(p,field.name);if(i>=0)p->set_local(i,(redo?field.after:field.before).get_value());}
+            const int flag=slot(p,Name::intern(_T("procPresetPublicationRestored")));if(flag>=0)p->set_local(flag,&true_value);
+        }
+    }
+public:
+    explicit PresetPublicationRestore(Array* owners){
+        if(owners->size<1||owners->size>11)throw RuntimeError(_T("Preset publication owner limit"));
+        const MCHAR* names[]={_T("procEpoch"),_T("procPublishedOwners"),_T("procPublishedSources"),_T("procPublishedFinalKeep"),_T("procPublishedRadii"),_T("procPublishedInfo"),_T("procPublishedMetadata"),_T("procPublishedDisplayKey"),_T("groupSnapshotRows"),_T("groupSnapshotKey"),_T("groupPrepareRows"),_T("groupPrepareKey"),_T("procPreparedRows"),_T("procPreparedKey"),_T("procReceiverCache"),_T("procReceiverGeometry"),_T("procReceiverPlanData"),_T("procOrientationReceivers"),_T("procGridCache"),_T("paintBaseRows"),_T("paintBaseKey"),_T("paintBaseFaceCounts"),_T("cachedPoints"),_T("cachedPointCount"),_T("generatedCount"),_T("radiusPreview"),_T("inspectionCache"),_T("procPreviewDisplayKey"),_T("procPreviewGeometryKey"),_T("procPreviewInspectionKey"),_T("procPreviewModes"),_T("procPreviewModesEpoch"),_T("procLastStats"),_T("procLastRounds"),_T("requestedCount"),_T("groupEligible"),_T("groupRemoved"),_T("groupConflicts"),_T("overlapBefore"),_T("overlapAfter"),_T("procLastSurfaceStats"),_T("procDependencyHandles"),_T("inputTimeObserved"),_T("orientationTimeObserved"),_T("previewBuildCount"),_T("previewError"),_T("dirty")};
+        for(int j=0;j<owners->size;++j){auto* value=owners->data[j];auto* p=dynamic_cast<MSPlugin*>(value->to_reftarg());if(!p||value->to_reftarg()->ClassID()!=Class_ID(0x617d43a1,0x395c2e17))throw RuntimeError(_T("Expected Cyrus preset owner"));Owner owner{ValueHolderMember(value),{}};
+            for(const auto* name:names){auto* key=Name::intern(name);const int i=slot(p,key);if(i<0)throw RuntimeError(_T("Preset publication requires its matching script"));owner.fields.push_back({key,ValueHolderMember(p->get_local(i)),ValueHolderMember(&undefined)});}owners_.push_back(std::move(owner));}
+    }
+    void Restore(int) override {
+        if(!captured_){for(auto& owner:owners_){auto* p=dynamic_cast<MSPlugin*>(owner.value.get_value()->to_reftarg());for(auto& field:owner.fields)field.after=p->get_local(slot(p,field.name));}captured_=true;}
+        apply(false);
+    }
+    void Redo() override {if(captured_)apply(true);}
+    MSTR Description() override {return _T("Cyrus preset publication");}
+};
 class PackageTask {
     std::thread worker_;std::atomic<bool> stop_{false},done_{true};std::mutex mutex_;
     std::uint64_t token_=0,bytes_=0;std::string state_="idle",stage_,error_,result_;
@@ -203,7 +232,23 @@ Value* createAssetMesh(const cyrus::assets::Mesh& data,double metres,const MCHAR
 }
 }
 def_visible_primitive(cyrusAssetPackageVersion,"cyrusAssetPackageVersion");
-Value* cyrusAssetPackageVersion_cf(Value**,int n){check_arg_count(cyrusAssetPackageVersion,0,n);return Integer::intern(1);}
+Value* cyrusAssetPackageVersion_cf(Value**,int n){check_arg_count(cyrusAssetPackageVersion,0,n);return Integer::intern(2);}
+def_visible_primitive(cyrusAssetSplineSnapshot,"cyrusAssetSplineSnapshot");
+Value* cyrusAssetSplineSnapshot_cf(Value** a,int n){check_arg_count(cyrusAssetSplineSnapshot,2,n);return recipeAPI([&]()->Value*{
+    auto* node=a[0]->to_node();const double metres=a[1]->to_double();if(!node||!std::isfinite(metres)||metres<=0)throw RuntimeError(_T("Invalid preset spline input"));
+    const auto time=GetCOREInterface()->GetTime();auto* object=node->EvalWorldState(time).obj;
+    if(!object||object->SuperClassID()!=SHAPE_CLASS_ID)throw RuntimeError(_T("Preset path requires a shape"));auto* shape=static_cast<ShapeObject*>(object);
+    const int count=shape->NumberOfCurves(time);if(count<1||count>128||!shape->CanMakeBezier())throw RuntimeError(_T("Preset path exceeds supported curve bounds"));
+    std::size_t pieces=0;for(int i=0;i<count;++i){const int n=shape->NumberOfPieces(time,i);if(n<1)throw RuntimeError(_T("Preset path is empty"));pieces+=std::size_t(n)+(shape->CurveClosed(time,i)?0:1);if(pieces>4096)throw RuntimeError(_T("Preset paths exceed 4096 knots"));}
+    BezierShape copy;shape->MakeBezier(time,copy);if(copy.SplineCount()!=count)throw RuntimeError(_T("Preset path conversion changed curve count"));
+    auto point=[&](const Point3& p){return cyrus::recipes::Json::array({p.x/metres,p.y/metres,p.z/metres});};
+    cyrus::recipes::Json curves=cyrus::recipes::Json::array();std::size_t total=0;
+    for(int i=0;i<count;++i){auto* spline=copy.GetSpline(i);const int knots=spline?spline->KnotCount():0;total+=std::size_t(std::max(0,knots));if(knots<2||total>4096)throw RuntimeError(_T("Preset paths exceed supported knot bounds"));cyrus::recipes::Json rows=cyrus::recipes::Json::array();
+        for(int k=0;k<knots;++k){const int type=spline->GetKnotType(k);const char* name=type==KTYPE_CORNER?"corner":type==KTYPE_AUTO?"smooth":type==KTYPE_BEZIER?"bezier":type==KTYPE_BEZIER_CORNER?"bezierCorner":nullptr;if(!name)throw RuntimeError(_T("Unsupported preset knot type"));rows.push_back({{"type",name},{"line",spline->GetLineType(k)==LTYPE_LINE?"line":"curve"},{"point",point(spline->GetKnotPoint(k))},{"in",point(spline->GetInVec(k))},{"out",point(spline->GetOutVec(k))}});}
+        curves.push_back({{"closed",spline->Closed()!=0},{"knots",rows}});
+    }
+    return recipeValue(curves);
+});}
 def_visible_primitive(cyrusAssetPackageStart,"cyrusAssetPackageStart");
 Value* cyrusAssetPackageStart_cf(Value** a,int n){check_arg_count(cyrusAssetPackageStart,7,n);return recipeAPI([&]()->Value*{
     type_check(a[0],String,_T("package destination"));type_check(a[1],String,_T("package recipe"));type_check(a[4],Array,_T("package file bindings"));
@@ -298,6 +343,11 @@ Value* cyrusAssetPreparedMeshCreate_cf(Value** a,int n){check_arg_count(cyrusAss
 def_visible_primitive(cyrusRecipeVersion,"cyrusRecipeVersion");
 Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(5);}
 def_visible_primitive(cyrusRecipeTrackCreated,"cyrusRecipeTrackCreated");
+def_visible_primitive(cyrusPresetTrackPublication,"cyrusPresetTrackPublication");
+Value* cyrusPresetTrackPublication_cf(Value** a,int n){check_arg_count(cyrusPresetTrackPublication,1,n);type_check(a[0],Array,_T("Preset publication owners"));
+    if(!theHold.Holding())throw RuntimeError(_T("Preset publication requires its authored hold"));auto restore=std::make_unique<PresetPublicationRestore>(static_cast<Array*>(a[0]));
+    if(!theHold.Put(restore.get()))throw RuntimeError(_T("Cannot record preset publication"));restore.release();return &ok;
+}
 Value* cyrusRecipeTrackCreated_cf(Value** a,int n){
     check_arg_count(cyrusRecipeTrackCreated,1,n);
     if(!theHold.Holding())throw RuntimeError(_T("Recipe lifetime requires its authored hold"));

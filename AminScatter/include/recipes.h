@@ -21,6 +21,8 @@ Json parse(const std::string& text);
 std::string serialize(const Json& document);
 std::string digest(const std::vector<unsigned char>& bytes);
 std::filesystem::path pathFromUTF8(const std::string& text);
+// Native Windows I/O must not depend on the host's long-path manifest flag.
+std::filesystem::path nativePath(const std::filesystem::path& path,bool force=false);
 std::string hex(const std::vector<unsigned char>& bytes);
 std::vector<unsigned char> unhex(const std::string& text);
 // New-file saves only. Payloads publish before the manifest; no overwrite on read.

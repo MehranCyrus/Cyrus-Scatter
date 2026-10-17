@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 
-[assembly: AssemblyVersion("0.85.2.0")]
-[assembly: AssemblyFileVersion("0.85.2.0")]
+[assembly: AssemblyVersion("0.85.3.0")]
+[assembly: AssemblyFileVersion("0.85.3.0")]
 namespace CyrusScatter.UI
 {
     // Layout and navigation only. The host owns catalog requests and all scene actions.
@@ -27,7 +27,7 @@ namespace CyrusScatter.UI
         private readonly Label location=new(){AutoEllipsis=true},status=new(){AutoEllipsis=true},detail=new(){AutoEllipsis=true};
         private readonly ToolStripButton previous=new("Previous"),next=new("Next"),load=new("Load Selected"),refresh=new("Refresh"),cancel=new("Cancel scan");
         private readonly ToolStripDropDownButton actions=new("Recipe actions...");
-        private readonly ToolStripMenuItem edit=new("Edit details..."),update=new("Update selected..."),style=new("Apply Style..."),export=new("Export portable package...");
+        private readonly ToolStripMenuItem edit=new("Edit details..."),update=new("Update selected..."),style=new("Apply Style..."),export=new("Export portable package..."),bindings=new("Review bindings (advanced)...");
         private readonly ToolStripLabel page=new();
         private bool binding;
         private int viewIndex,zoomIndex=1;
@@ -67,10 +67,10 @@ namespace CyrusScatter.UI
             ViewIndex=0;ZoomIndex=1;
             search.TextChanged+=(_,_)=>Request("search");
             refresh.Click+=(_,_)=>Request("refresh");cancel.Click+=(_,_)=>Request("cancel");
-            actions.DropDownItems.AddRange(new ToolStripItem[]{edit,update,style,export});
+            actions.DropDownItems.AddRange(new ToolStripItem[]{edit,update,style,export,bindings});
             footer.Items.Add(Button("Save Recipe...","save"));footer.Items.Add(actions);footer.Items.Add(new ToolStripSeparator());footer.Items.Add(previous);footer.Items.Add(next);footer.Items.Add(page);
             load.Alignment=ToolStripItemAlignment.Right;footer.Items.Add(load);
-            previous.Click+=(_,_)=>Request("previous");next.Click+=(_,_)=>Request("next");load.Click+=(_,_)=>Request("load");edit.Click+=(_,_)=>Request("edit");update.Click+=(_,_)=>Request("update");style.Click+=(_,_)=>Request("style");export.Click+=(_,_)=>Request("export");
+            previous.Click+=(_,_)=>Request("previous");next.Click+=(_,_)=>Request("next");load.Click+=(_,_)=>Request("load");edit.Click+=(_,_)=>Request("edit");update.Click+=(_,_)=>Request("update");style.Click+=(_,_)=>Request("style");export.Click+=(_,_)=>Request("export");bindings.Click+=(_,_)=>Request("bindings");
             for(int i=1;i<=3;i++){var node=new TreeNode(new[]{"My recipes","Bundled examples","Custom library"}[i-1]){Tag=i};node.Nodes.Add(new TreeNode("All recipes"){Tag=""});tree.Nodes.Add(node);}
             tree.AfterSelect+=(_,e)=>{
                 if(binding||e.Node==null)return;
@@ -98,7 +98,7 @@ namespace CyrusScatter.UI
             refresh.Enabled=!scanning;cancel.Enabled=scanning;tree.Enabled=!scanning;
         }
         public void SetSelectionActions(bool selected,bool writable,bool scanning)
-        {load.Enabled=selected&&!scanning;load.Text=CollectionsView?"Open Collection":"Load Selected";actions.Enabled=edit.Enabled=selected&&!CollectionsView&&!scanning;update.Enabled=edit.Enabled&&writable;style.Enabled=export.Enabled=edit.Enabled;}
+        {load.Enabled=selected&&!scanning;load.Text=CollectionsView?"Open Collection":"Load + Update";actions.Enabled=edit.Enabled=selected&&!CollectionsView&&!scanning;update.Enabled=edit.Enabled&&writable;style.Enabled=export.Enabled=edit.Enabled;}
         private int S(int n)=>Math.Max(1,(int)Math.Round(n*DeviceDpi/96.0*userScale));
         private void Arrange()
         {

@@ -11,7 +11,7 @@ global CyrusRecipeCaptureContext,CyrusRecipePut,CyrusRecipeOwnerNode,CyrusRecipe
 global CyrusRecipeRole,CyrusRecipeCaptureValue,CyrusRecipeCaptureSettings,CyrusRecipeCapturePaint
 global CyrusRecipeResolve,CyrusRecipeValidateBindings,CyrusRecipeApplyValue,CyrusRecipeApplySettings
 global CyrusRecipeRestorePaint,CyrusRecipeDirectory,CyrusRecipeBundledDirectory,CyrusRecipeSuggestBindings,CyrusOpenPresets,CyrusPresetSameValues,CyrusRecipeViewPreferences,CyrusRecipeIsBundled,CyrusRecipeEditDetails,CyrusRecipeDetailEditor,CyrusRecipeDetailOpenData
-global CyrusOpenAssetExport,CyrusOpenAssetImport
+global CyrusOpenAssetExport,CyrusOpenAssetImport,CyrusOpenReadyPreset,CyrusPresetPackageDirectory,CyrusPresetSaveReady,CyrusPresetReviseReady
 global CyrusRecipeFields,CyrusRecipeSchemaCache=undefined
 -- The matching module's fixed schema is read-only for these consumers. Avoid
 -- rebuilding hundreds of rows for every owner on every explicit capture.
@@ -98,9 +98,9 @@ fn CyrusRecipeCapturePaint context owner = (
     context.paintDocuments+=1;context.paintBytes+=bytes
     CyrusRecipeObject #(#("payload",data[1]),#("receiverRole",CyrusRecipeRole context (cyrusBrushTarget owner.paintDocument) "node" "paintReceiver"),#("radius",data[2]),#("erase",data[3]),#("frame",data[4]))
 )
-fn CyrusRecipeCapture root selected name = (
+fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.85.2 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.85.3 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -135,6 +135,7 @@ fn CyrusRecipeCapture root selected name = (
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
+    if bindingResult!=undefined do for i=1 to context.roles.count do append bindingResult #((CyrusRecipeGet context.roles[i] "id"),context.values[i])
     document
 )
 fn CyrusRecipeResolve bindings identity = (
@@ -200,14 +201,15 @@ fn CyrusRecipeApplySettings owner settings bindings variation:#new = (
     owner.fieldFalloff=false;owner.fieldBoundaries=false
     true
 )
-fn CyrusRecipeRestorePaint data target document = (
+fn CyrusRecipeRestorePaint data target document packaged:false = (
     if data==undefined do return undefined
     local unitsNow=(units.decodeValue "1m") as double,unitsSaved=CyrusRecipeGet document "unitsPerMetre"
+    if packaged do return (cyrusBrushPresetRestore (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame") (unitsNow/unitsSaved))
     if target!=undefined and abs(unitsNow-unitsSaved)>1e-9*(amax 1.0 (abs unitsSaved)) do throw "Native Paint requires its saved system-unit context. Original coverage is retained; use matching units before binding."
     cyrusBrushRecipeImport (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame")
 )
 
-fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined = (
+fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined = (
     if findItem #(#same,#new) variation==0 do throw "Choose Saved or New variation."
     CyrusRequireAuthor()
     if theHold.Holding() do throw "Finish the current undoable operation before importing a recipe."
@@ -226,6 +228,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
     local oldSuspended=CyrusPointSuspended,root=destination,createdNode=undefined,imported=#(),identityMap=#(),committed=false
     theHold.Begin();CyrusPointSuspended=true
     try (
+        if packagedPaintReceivers!=undefined do cyrusPresetTrackPublication (join #(destination) (destination.layerObjects as array))
         with animate off (
             if prepareAssets!=undefined do (
                 -- Only the trusted package command supplies this internal factory.
@@ -250,7 +253,8 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                 owner.procOrder=root.layerObjects.count+imported.count+1;owner.procSetOrder=owner.procOrder
                 owner.paintAreas=#()
                 local paint=CyrusRecipeGet record "paint"
-                owner.paintDocument=CyrusRecipeRestorePaint paint (if paint==undefined then undefined else CyrusRecipeResolve bindings (CyrusRecipeGet paint "receiverRole")) document
+                local paintTarget=if paint==undefined then undefined else CyrusRecipeResolve bindings (CyrusRecipeGet paint "receiverRole")
+                owner.paintDocument=CyrusRecipeRestorePaint paint paintTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers paintTarget>0)
                 for areaRecord in (CyrusRecipeGet record "areas") do (
                     local area=createInstance AminScatterObject
                     if newSetup do cyrusRecipeTrackCreated area
@@ -259,7 +263,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")
                     local areaPaint=CyrusRecipeGet areaRecord "paint"
                     if areaPaint!=undefined and (CyrusRecipeResolve bindings (CyrusRecipeGet areaPaint "receiverRole"))!=area.areaTarget do throw "Paint document and area binding disagree."
-                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document
+                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers area.areaTarget>0)
                     area.setLayerTransfer false;append owner.paintAreas area
                     append identityMap #((CyrusRecipeGet areaRecord "id"),area)
                 )
@@ -348,10 +352,13 @@ fn CyrusRecipeEditDetails path expected version = (
             savedTags.text=tags
         )
         on commitDetails pressed do try (
+            if CyrusPresetReviseEditor!=undefined do throw "Wait for the current preset revision to finish before saving details again."
             local tags=#()
             for value in filterString savedTags.text "," do (local tag=trimRight (trimLeft value);if tag!="" do appendIfUnique tags tag)
             local metadata=CyrusRecipeObject #(#("category",trimRight (trimLeft savedCategory.text)),#("tags",tags),#("description",savedDescription.text))
+            local previous=expected
             expected=cyrusRecipeEntryWrite path (CyrusRecipeObject #(#("name",trimRight (trimLeft savedName.text)))) metadata imagePath capture expected true
+            CyrusPresetReviseReady path previous expected
             -- The previous image path remains immutable and readable across revisions.
             local summary=cyrusRecipeInfo path
             identity.text=filenameFromPath path+" | revision "+((summary[15] as integer) as string)
@@ -375,7 +382,7 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
     if path!="" and CyrusRecipeIsBundled path (root.uiVersion()) do throw "Bundled examples are read-only. Save a copy in My recipes."
     if CyrusRecipeSaveEditor!=undefined do try(destroyDialog CyrusRecipeSaveEditor)catch()
     rollout editor "Save planting recipe" width:440 height:590 (
-        local root,node,owners=#(),directory="",reviewPath="",reviewHash="",thumbnailFile="",thumbnailCapture=undefined,ownedCapture=""
+        local root,node,owners=#(),directory="",reviewPath="",reviewHash="",thumbnailFile="",thumbnailCapture=undefined,ownedCapture="",captureBindings=#()
         label title "Save selected layers, their settings and Paint" pos:[12,12] width:416
         multiListBox saveLayers "Layers - evaluation order" pos:[12,38] width:416 height:5
         edittext recipeName "Name:" pos:[12,142] width:416
@@ -387,7 +394,8 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
         button captureThumbnail "Capture viewport" pos:[12,348] width:202 tooltip:"Capture published plants without recalculating. Update pending settings first."
         button updateCapture "Update + capture" pos:[226,348] width:202 tooltip:"Explicitly update the Scatter setup, then capture the active viewport."
         label thumbnailInfo "Optional PNG, up to 1024 px and 2 MiB" pos:[12,384] width:416 height:40
-        label saveNote "Saved Paint remains bound to compatible receiver geometry. Models and terrain are bound when loading the recipe." pos:[12,429] width:416 height:44
+        label saveNote "Complete settings and Paint are saved. Include assets for a preset that loads without model picking." pos:[12,429] width:416 height:28
+        checkbox readyPreset "Include models, materials, terrain and paths" pos:[12,461] width:416 checked:true tooltip:"Save a ready-to-use preset. Static supported assets are packaged with complete Paint. Uncheck for a settings-only recipe with external bindings."
         button saveRecipe "Save new copy" pos:[12,482] width:132
         button updateRecipe "Update selected" pos:[154,482] width:132 enabled:false
         button closeButton "Close" pos:[296,482] width:132
@@ -395,7 +403,8 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
         fn validRoot = (CyrusRecipeCheckRoot root node)
         fn captureSelection = (
             validRoot();local selected=for i in saveLayers.selection where i<=owners.count collect owners[i]
-            CyrusRecipeCapture root selected (trimRight (trimLeft recipeName.text))
+            captureBindings=#()
+            CyrusRecipeCapture root selected (trimRight (trimLeft recipeName.text)) bindingResult:captureBindings
         )
         fn metadataValues = (
             local tags=#()
@@ -450,6 +459,10 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
             local digest=cyrusRecipeEntryWrite path data (metadataValues()) thumbnailFile thumbnailCapture (if updating then reviewHash else "") false
             if updating do reviewHash=digest
             status.text=if updating then "Updated recipe and Paint. Previous revision retained." else "Saved new recipe and Paint. Models and terrain require binding on load."
+            if readyPreset.checked do (
+                status.text="Settings and Paint saved. Packaging the preset assets..."
+                CyrusPresetSaveReady root path digest captureBindings
+            )
             if CyrusRecipeBrowser!=undefined do try(CyrusRecipeBrowser.refreshEntry path)catch(status.text+=" Refresh the library to see it.")
             path
         )
@@ -643,7 +656,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.85.2 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.85.3 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -807,11 +820,11 @@ fn CyrusOpenRecipeStyle root path digest = (
 fn CyrusOpenRecipeLibrary root = (
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=3 do throw "Restart Max with the complete Cyrus 0.85.2 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=3 do throw "Restart Max with the complete Cyrus 0.85.3 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.85.2.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.85.2 gallery package."
+    if assemblyName.Version.ToString()!="0.85.3.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.85.3 gallery package."
     if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
     rollout browser "Cyrus Library" width:1000 height:680 (
         local root,node,directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
@@ -886,7 +899,9 @@ fn CyrusOpenRecipeLibrary root = (
                 local entry=selectedEntry()
                 if entry==undefined do throw "Select a recipe."
                 local packageDirectory=getFilenamePath entry[1]
-                if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenAssetImport root packageDirectory
+                local readyDirectory=CyrusPresetPackageDirectory entry[1] entry[2][11]
+                if doesFileExist (pathConfig.appendPath readyDirectory "cyrus.package.json") then CyrusOpenReadyPreset root readyDirectory expected:entry[2][11]
+                else if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenReadyPreset root packageDirectory expected:entry[2][11]
                 else CyrusOpenRecipeLoad root entry[1] entry[2][11]
             )
         )
@@ -923,6 +938,13 @@ fn CyrusOpenRecipeLibrary root = (
                 "export":(
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
                     CyrusOpenAssetExport root entry[1] entry[2][11]
+                )
+                "bindings":(
+                    local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
+                    local packageDirectory=getFilenamePath entry[1],readyDirectory=CyrusPresetPackageDirectory entry[1] entry[2][11]
+                    if doesFileExist (pathConfig.appendPath readyDirectory "cyrus.package.json") then CyrusOpenAssetImport root readyDirectory
+                    else if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenAssetImport root packageDirectory
+                    else CyrusOpenRecipeLoad root entry[1] entry[2][11]
                 )
                 "edit":(
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."

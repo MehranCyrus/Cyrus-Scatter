@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+[assembly: System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.8")]
+
 namespace Cyrus.Setup {
     sealed class SetupWindow : Form {
         readonly TextBox profile=new TextBox(), details=new TextBox();
@@ -13,6 +15,10 @@ namespace Cyrus.Setup {
         readonly Label status=new Label();
         CancellationTokenSource cancellation;bool busy;
         public SetupWindow() {
+            // The standalone net48 host must opt into modern paths before any
+            // library IO; content-addressed preset paths can exceed MAX_PATH.
+            AppContext.SetSwitch("Switch.System.IO.UseLegacyPathHandling", false);
+            AppContext.SetSwitch("Switch.System.IO.BlockLongPaths", false);
             Text="Cyrus Scatter "+BuildIdentity.Version+" — Max 2027";StartPosition=FormStartPosition.CenterScreen;
             Font=new Font("Segoe UI",10);AutoScaleMode=AutoScaleMode.Dpi;ClientSize=new Size(700,470);MinimumSize=new Size(620,450);
             var layout=new TableLayoutPanel { Dock=DockStyle.Fill,Padding=new Padding(20),ColumnCount=2,RowCount=7 };

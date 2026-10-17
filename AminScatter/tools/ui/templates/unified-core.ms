@@ -30,7 +30,7 @@ fn CyrusResetTimeOwners = (
     CyrusTimeOwners=for node in objects where classof node.baseObject==AminScatterObject collect node
 )
 
-global CyrusDiagnosticEmit,CyrusActiveActionID=0L,CyrusActionSequence=0L,CyrusBeginAction,CyrusEndAction
+global CyrusDiagnosticEmit,CyrusActiveActionID=0L,CyrusActionSequence=0L,CyrusBeginAction,CyrusEndAction,CyrusScriptWorkspaceReserved
 fn CyrusDiagnosticEmit event origin owner epoch detail correlation:undefined = (
     if cyrusDiagnosticActive!=undefined do try (
         if cyrusDiagnosticActive() do cyrusDiagnosticEvent event origin owner epoch detail (if correlation==undefined then CyrusActiveActionID else correlation)
@@ -200,6 +200,8 @@ fn CyrusUIResultText root owner = (
         if state.densityCapped do text+="\nDensity limited to 1,000,000 candidates."
     )
     if state.errorText!="" do text+="\n\n"+state.errorText
+    if owner.populationMode==1 and owner.amount!=owner.requestedCount do text+="\nCurrent Count: "+(CyrusUICount owner.amount)+"; showing the last completed result."
+    if CyrusScriptWorkspaceReserved>0 do text+="\n\nSession script workspace expanded by "+(((ceil (CyrusScriptWorkspaceReserved/1048576.0)) as integer) as string)+" MB. Saved Max preferences unchanged."
     text
 )
 
@@ -499,6 +501,24 @@ fn AminScatterSourceFilter n = (
 try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 
 global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade)
+-- Reserve the documented session heap before large script transports can force
+-- automatic full collection. This never changes the saved initial heap setting.
+global CyrusScriptWorkspaceReserved=0L
+fn CyrusReserveScriptWorkspace required = (
+    if required<0 do throw "Invalid Update working-memory request."
+    if heapFree<required do gc light:true
+    if heapFree<required do (
+        local before=heapSize,target=undefined,failure=""
+        try (
+            target=cyrusScriptMemoryTarget heapSize heapFree required
+            heapSize=target
+        ) catch(failure=getCurrentException())
+        if failure!="" do throw ("Cannot reserve Update working memory without risking Undo: "+failure+". The previous complete result is retained.")
+        CyrusScriptWorkspaceReserved+=amax 0L (heapSize-before)
+    )
+    if heapFree<required do throw "Update workspace reservation was insufficient. The previous complete result and Undo history are retained."
+    true
+)
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
 global CyrusReceiverVariationDomains,CyrusRemapLayerCorrespondence
@@ -2184,7 +2204,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.85.2"
+    fn uiVersion = "0.85.4"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -3420,14 +3440,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.2 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.4 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3608,6 +3628,7 @@ initialRollupState:0x8
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
         procPreviewModes=state[21];procPreviewModesEpoch=state[22];orientationTimeObserved=state[23]
     )
+    local procPresetPublicationRestored=false
     fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats,procDependencyHandles))
     fn procRestoreResult state = (
         this.procRestorePreview state[1];procLastStats=state[2];procLastRounds=state[3];procEpoch=state[4];requestedCount=state[5]
@@ -3724,7 +3745,7 @@ initialRollupState:0x8
         -- These are admission allowances, not reported process-memory usage.
         -- The 30k fixture measured ~43.5 MB preparation, 2.3 MB per radius pass
         -- and 1.8 MB scheduling. Extra row-producing falloff passes add room.
-        if theHold.Holding() or (theHold.GetUndoNames()).count>0 or (theHold.GetRedoNames()).count>0 do (
+        (
             local requiredHeap=8388608L
             for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
                 local leaf=layerObjects[i],pool=requests[i][3] as integer64,plants=leaf.validSources()
@@ -3741,11 +3762,9 @@ initialRollupState:0x8
                     requiredHeap+=pool*(2048L+passes*512L)
                 )
             )
-            -- Light collection is documented to preserve Undo; never request a
-            -- full collection, delayed flush, or a heap preference change. It
-            -- runs only for an actual successor that fails initial admission.
-            if heapFree<requiredHeap do gc light:true
-            if heapFree<requiredHeap do throw ("Update needs "+(((ceil (requiredHeap/1048576.0)) as integer) as string)+" MB of free MAXScript working memory to preserve Undo. This session has "+(((floor (heapFree/1048576.0)) as integer) as string)+" MB. Reduce Amount or retry limits. The previous complete result and Undo history are retained.")
+            -- Light collection and a bounded session reservation precede row
+            -- transport. Never flush history or alter saved heap preferences.
+            CyrusReserveScriptWorkspace requiredHeap
         )
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
         local publishedMetadata=for leaf in layerObjects collect undefined
@@ -6238,6 +6257,13 @@ fn AminScatterLayerUndo = (
     CyrusResetTimeOwners()
     for n in objects where classof n.baseObject==AminScatterObject do (
         for entry in (n.baseObject.layerEntries includeDisabled:true) do entry[2].forcePreviewUpdate()
+        if n.baseObject.procPresetPublicationRestored do (
+            n.baseObject.procPresetPublicationRestored=false
+            n.baseObject.procPublishedDisplayKey=""
+            for leaf in n.baseObject.layerObjects do (leaf.procPreviewDisplayKey="";leaf.procPresetPublicationRestored=false)
+            n.baseObject.procEnsureDisplay pending:(n.baseObject.groupSnapshotKey!=n.baseObject.procInputKey())
+            CyrusViewportRecordsDirty=true
+        )
         if (modPanel.getCurrentObject())==n.baseObject do AminScatterRefreshLayerPanels n.baseObject
     )
     CyrusViewportRedraw()

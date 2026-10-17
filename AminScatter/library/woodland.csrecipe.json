@@ -2,7 +2,7 @@
   "evaluationContract": "CyrusUnified1",
   "exportScope": "complete-setup",
   "format": "cyrus.planting-recipe",
-  "formatVersion": 1,
+  "formatVersion": 5,
   "hostYear": 2027,
   "id": "9608f549-2132-4fbc-a93e-8c1d5b1de759",
   "layers": [
@@ -103,6 +103,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -127,6 +133,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -143,6 +155,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -160,6 +173,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "498f3936-8633-4c9e-a6f7-6514bcfb9a81"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -393,6 +409,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -417,6 +439,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -433,6 +461,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -450,6 +479,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "ef74f15f-e12a-41f3-a74c-1a8dadcf3e7e"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -683,6 +715,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -707,6 +745,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -723,6 +767,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -740,6 +785,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "f3148509-4fa0-4ac8-9528-7bbd96a99501"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -891,6 +939,24 @@
     }
   ],
   "name": "Trees and understory",
+  "presentation": {
+    "capture": null,
+    "metadata": {
+      "category": "Woodland",
+      "description": "Upright canopy above normal-aligned shrubs and groundcover, with independent layer settings.",
+      "tags": [
+        "trees",
+        "shrubs",
+        "groundcover"
+      ]
+    },
+    "thumbnail": {
+      "bytes": 281631,
+      "file": "recipe-data-4991e6658d9fb371918ce68a3bf187cf/thumbnail.png",
+      "sha256": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524"
+    }
+  },
+  "revision": 4,
   "roles": [
     {
       "id": "role-1",
@@ -1022,6 +1088,12 @@
     "finalNeighborRadius": 100.0,
     "finalRelax": false,
     "finalStrength": 0.30000001192092896,
+    "gridColumnWU": 100.0,
+    "gridHeading": 0.0,
+    "gridJitter": 0.0,
+    "gridOriginXWU": 0.0,
+    "gridOriginYWU": 0.0,
+    "gridRowWU": 100.0,
     "groupCenters": false,
     "iconSize": 10.0,
     "identificationMode": 1,
@@ -1046,6 +1118,12 @@
     "movZMaxWU": 0.0,
     "movZMinWU": 0.0,
     "movementRange": 0.0,
+    "orientationBlend": 100.0,
+    "orientationMode": 1,
+    "orientationTarget": null,
+    "orientationX": 0.0,
+    "orientationY": 1.0,
+    "orientationZ": 0.0,
     "paintColor": [
       130.19032287597656,
       191.60606384277344,
@@ -1062,6 +1140,7 @@
     "patternLines": [],
     "patternPaths": [],
     "patternWidths": [],
+    "placementMode": 1,
     "plantsPerM2": 100.0,
     "pointColorMode": 2,
     "pointsPerPlant": 80,
@@ -1076,6 +1155,7 @@
     "procReceiverID": "",
     "procReceiverIDs": [],
     "procReceiverNodes": [],
+    "procReceiverVariationIDs": [],
     "procRepair": true,
     "procRounds": 8,
     "procSamplingSalt": 0,

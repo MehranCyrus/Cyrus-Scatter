@@ -1,5 +1,5 @@
 {
-  "version": "0.85.2",
+  "version": "0.85.4",
   "max_year": 2027,
   "source_host": "foundation-roadmap-library08261-final100-20261016-04",
   "source_script_sha256": "de6ca0f3097b15e3437c58b91ac9ee80fead0ae4d772bc7736ae234aa2275711",
@@ -9,79 +9,115 @@
       "name": "Layered meadow",
       "recipe": "meadow.csrecipe.json",
       "scene": "meadow.max",
-      "thumbnail": "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png",
+      "thumbnail": "recipe-data-ccdd1dbd46aec07f8779b3267968d6c7/thumbnail.png",
       "counts": [
         2600,
         140,
         350
-      ]
+      ],
+      "ready_package": "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6",
+      "ready_package_sha256": "0a47901dc0a1a02e650c644e7da0223f8d92708c2363315c5b495758b148e841",
+      "ready_assets": {
+        "meshes": 4,
+        "splines": 0
+      }
     },
     {
       "id": "woodland",
       "name": "Trees and understory",
       "recipe": "woodland.csrecipe.json",
       "scene": "woodland.max",
-      "thumbnail": "thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png",
+      "thumbnail": "recipe-data-4991e6658d9fb371918ce68a3bf187cf/thumbnail.png",
       "counts": [
         90,
         340,
         1500
-      ]
+      ],
+      "ready_package": "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87",
+      "ready_package_sha256": "d3c48d3f26e8059c8e0356acd132bbfdfdbf691ad4d9924aae04b7fe76737c1c",
+      "ready_assets": {
+        "meshes": 5,
+        "splines": 0
+      }
     },
     {
       "id": "mountain",
       "name": "Mountain planting",
       "recipe": "mountain.csrecipe.json",
       "scene": "mountain.max",
-      "thumbnail": "thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png",
+      "thumbnail": "recipe-data-59ac2c651d1c067c73eb204eb636d117/thumbnail.png",
       "counts": [
         454,
         3230
-      ]
+      ],
+      "ready_package": "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2",
+      "ready_package_sha256": "1fbf63b1834329cf3086124f9556ecc4bd9a0abcf973f075d6ee5f87565f93a2",
+      "ready_assets": {
+        "meshes": 4,
+        "splines": 0
+      }
     },
     {
       "id": "borders",
       "name": "Painted garden and spline borders",
       "recipe": "borders.csrecipe.json",
       "scene": "borders.max",
-      "thumbnail": "thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png",
+      "thumbnail": "recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/thumbnail.png",
       "counts": [
         1740,
         218
-      ]
+      ],
+      "ready_package": "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1",
+      "ready_package_sha256": "10ae081b8850718de5527cc2ea3b79400057f9f3787e50778c052797c70e5be3",
+      "ready_assets": {
+        "meshes": 4,
+        "splines": 1
+      }
     },
     {
       "id": "orchard",
       "name": "Rectangular orchard",
       "recipe": "orchard.csrecipe.json",
       "scene": "orchard.max",
-      "thumbnail": "thumbnail-54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b.png",
+      "thumbnail": "recipe-data-c60280d33ad21f904d8747313d053ff2/thumbnail.png",
       "counts": [
         35,
         2200
       ],
       "source_host": "foundation-roadmap-grid0850-final100-20261016-03",
-      "source_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea"
+      "source_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea",
+      "ready_package": "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20",
+      "ready_package_sha256": "c3240f367497f74eae898bde9e1003c8b99de1f69b614ba9559edc76f2b89e0c",
+      "ready_assets": {
+        "meshes": 3,
+        "splines": 0
+      }
     },
     {
       "id": "hexagonal",
       "name": "Hexagonal hillside planting",
       "recipe": "hexagonal.csrecipe.json",
       "scene": "hexagonal.max",
-      "thumbnail": "thumbnail-1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70.png",
+      "thumbnail": "recipe-data-8fb444cc46a3744a37b710f3f7b602ca/thumbnail.png",
       "counts": [
         247,
         1800
       ],
       "source_host": "foundation-roadmap-grid0850-final100-20261016-03",
-      "source_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea"
+      "source_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea",
+      "ready_package": "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0",
+      "ready_package_sha256": "43240be8b9e0062bd2bf8733b22924e2f599f70982ff93799bb5e6760f253374",
+      "ready_assets": {
+        "meshes": 4,
+        "splines": 0
+      }
     },
     {
       "id": "formal",
       "name": "Four garden rooms",
       "recipe": "42f6a31c-1e9e-4a10-8bef-60667aca32e2.csrecipe.json",
       "scene": "formal/formal.max",
-      "thumbnail": "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/thumbnail.png",
+      "thumbnail": "recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/thumbnail.png",
       "counts": [
         38,
         579,
@@ -89,14 +125,20 @@
       ],
       "source_host": "foundation-roadmap-gallery0851-admission-20261016-01",
       "qualification_scope": "Actual format-5 Save/Load, full rows, Paint, Undo/Redo; exact-placement Scanline preview",
-      "source_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83"
+      "source_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83",
+      "ready_package": "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89",
+      "ready_package_sha256": "9236ba030a4414624db4ac9a8690c6181c5806ce103d7f2ed1bdae000346f45e",
+      "ready_assets": {
+        "meshes": 5,
+        "splines": 0
+      }
     },
     {
       "id": "valley",
       "name": "Valley moss and rocky crests",
       "recipe": "2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json",
       "scene": "valley/valley.max",
-      "thumbnail": "recipe-data-e1592409d58f330ffa85b138add62df4/thumbnail.png",
+      "thumbnail": "recipe-data-e9f7fb1f4bbc3dd89624cabb3ab0db6b/thumbnail.png",
       "counts": [
         3320,
         400,
@@ -104,47 +146,135 @@
       ],
       "source_host": "foundation-roadmap-gallery0851-admission-20261016-01",
       "qualification_scope": "Actual format-5 Save/Load, full rows, Paint, Undo/Redo; exact-placement Scanline preview",
-      "source_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83"
+      "source_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83",
+      "ready_package": "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37",
+      "ready_package_sha256": "8ecf44265f816bd6282c3e9d2b9b1fa71a208ccb214b88715643af673cdbefac",
+      "ready_assets": {
+        "meshes": 4,
+        "splines": 0
+      }
     }
   ],
   "files": {
-    "README.md": "a6f4b1a8e1f73f77d49062aaa253d40be51ed2ee674b553a7cd0043b877a7154",
-    "borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
+    "2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json": "e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37",
+    "42f6a31c-1e9e-4a10-8bef-60667aca32e2.csrecipe.json": "dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/assets.json": "fca8c38a4da09578ac311ff9a08562edfe7ccc70d15aeadff4e4d1e2eb925cbf",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/assets/23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677.cmesh": "23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/assets/30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8.cmesh": "30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/assets/4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6.cmesh": "4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/assets/dc5a01fb98f8b045904d2bb80ab61cc6c8904fa47602491da55a0001b549cc22.cmesh": "dc5a01fb98f8b045904d2bb80ab61cc6c8904fa47602491da55a0001b549cc22",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/cyrus.package.json": "0a47901dc0a1a02e650c644e7da0223f8d92708c2363315c5b495758b148e841",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/entry.csrecipe.json": "183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6",
+    "Presets/183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6/recipe-data-ccdd1dbd46aec07f8779b3267968d6c7/thumbnail.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/assets.json": "be7fd888c31ab36fcd1f1b6b27f5e65c964904aedb067c38ea7fad2a9279ad00",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/assets/23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677.cmesh": "23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/assets/30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8.cmesh": "30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/assets/4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6.cmesh": "4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/assets/b12140174cc4daa8835a1b379239698522f614bac11dcf6dbb2bb90ebc45718a.cmesh": "b12140174cc4daa8835a1b379239698522f614bac11dcf6dbb2bb90ebc45718a",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/cyrus.package.json": "43240be8b9e0062bd2bf8733b22924e2f599f70982ff93799bb5e6760f253374",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/entry.csrecipe.json": "193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0",
+    "Presets/193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0/recipe-data-8fb444cc46a3744a37b710f3f7b602ca/thumbnail.png": "92274aaaf6d5c6e3cb2386f8848de7fd4da688c73c9252130b830bc922c86fd4",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/assets.json": "ddb0f6466536ee3435fce113c0b8852bca5fc7692d9c7a8c0bb304b45e981577",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/assets/23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677.cmesh": "23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/assets/30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8.cmesh": "30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/assets/4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6.cmesh": "4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/assets/801c84dce177a889e663e8b1618a303335ff0972ba942ce80c76b3dfb7d01dff.cmesh": "801c84dce177a889e663e8b1618a303335ff0972ba942ce80c76b3dfb7d01dff",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/assets/dc5a01fb98f8b045904d2bb80ab61cc6c8904fa47602491da55a0001b549cc22.cmesh": "dc5a01fb98f8b045904d2bb80ab61cc6c8904fa47602491da55a0001b549cc22",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/cyrus.package.json": "d3c48d3f26e8059c8e0356acd132bbfdfdbf691ad4d9924aae04b7fe76737c1c",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/entry.csrecipe.json": "1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87",
+    "Presets/1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87/recipe-data-4991e6658d9fb371918ce68a3bf187cf/thumbnail.png": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/assets.json": "57ed767881534324a7a16a791d33669ba526c0d0f7e8d4d08b83a62a14570ead",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/assets/23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677.cmesh": "23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/assets/30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8.cmesh": "30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/assets/4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6.cmesh": "4f48ff3ea60c6bb586076578ec90223b3df32414ec826cb9caa05fbb30893ce6",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/assets/dc5a01fb98f8b045904d2bb80ab61cc6c8904fa47602491da55a0001b549cc22.cmesh": "dc5a01fb98f8b045904d2bb80ab61cc6c8904fa47602491da55a0001b549cc22",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/cyrus.package.json": "10ae081b8850718de5527cc2ea3b79400057f9f3787e50778c052797c70e5be3",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/entry.csrecipe.json": "9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/paint-1.cspaint": "de23637359e59378389154387462da1bacc57ff2c5b39c66602d81257f1c931d",
+    "Presets/9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1/recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/thumbnail.png": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/assets.json": "4d660e723b2b43a829d2fa2edf1e426b3dc8d9cd8dc8ccd35d37c0e643b906b2",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/assets/14023b2c3f1ec7d98ba1ba3d470b680463b05e6b1f955c02aadcfcd1925ff9e4.cmesh": "14023b2c3f1ec7d98ba1ba3d470b680463b05e6b1f955c02aadcfcd1925ff9e4",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/assets/23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677.cmesh": "23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/assets/30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8.cmesh": "30e75d2d91d5fc145f01cee53a96f947f3364b7d377093100b78fb559ea755b8",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/assets/801c84dce177a889e663e8b1618a303335ff0972ba942ce80c76b3dfb7d01dff.cmesh": "801c84dce177a889e663e8b1618a303335ff0972ba942ce80c76b3dfb7d01dff",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/cyrus.package.json": "1fbf63b1834329cf3086124f9556ecc4bd9a0abcf973f075d6ee5f87565f93a2",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/entry.csrecipe.json": "cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2",
+    "Presets/cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2/recipe-data-59ac2c651d1c067c73eb204eb636d117/thumbnail.png": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/assets.json": "f934f30140a82b52e19ab26ec5bd89ef482d21519dad598a99dbc59a3b016d98",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/assets/30545ae915b89f6bbc06da2c77f467b43b54ce14760bb83755236c04e72632fb.cmesh": "30545ae915b89f6bbc06da2c77f467b43b54ce14760bb83755236c04e72632fb",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/assets/3603959577d53298c3204ce6567a455a3c4814d74dede1238caca2da849f4a2e.cmesh": "3603959577d53298c3204ce6567a455a3c4814d74dede1238caca2da849f4a2e",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/assets/9d2a39c2fe3d1584efe3e0f9626cd7866d0661fa1e7b79f68c5e83d569db631d.cmesh": "9d2a39c2fe3d1584efe3e0f9626cd7866d0661fa1e7b79f68c5e83d569db631d",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/assets/ceb97f88e7ebcf7efc7028e7d088ba33eb3adbf4f9a403c3ee4040b174ef326b.cmesh": "ceb97f88e7ebcf7efc7028e7d088ba33eb3adbf4f9a403c3ee4040b174ef326b",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/assets/d0439ed72699952710c0f9cffd95da5c481addf2320af41dc68f81d2265e6a12.cmesh": "d0439ed72699952710c0f9cffd95da5c481addf2320af41dc68f81d2265e6a12",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/cyrus.package.json": "9236ba030a4414624db4ac9a8690c6181c5806ce103d7f2ed1bdae000346f45e",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/entry.csrecipe.json": "dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/paint-1.cspaint": "b4c463669fb02dfabcec551a2082aad7d27f504f4f6bf831105473dd86183f9e",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/paint-2.cspaint": "1784eb7fc740585a33f844ae5a7e094c86940184914f919f09a3ac506b46c059",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/paint-3.cspaint": "b05fd7ddb54f2f31d9ee48968c6db3a11d8952f67200518440f74e7e3562d912",
+    "Presets/dbf5817df35bec6685e1a0af999babc9ea89538337256997b365b7d251955d89/recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/thumbnail.png": "eafa4693a7a46659c232d2b2abf7a10a535abf8f646b66b956fa384ca11b454e",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/assets.json": "5a5e990b7cb1d347c10e8d981e0fe3f6b69b386a9b6472e3d22c1ee740b9c794",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/assets/3603959577d53298c3204ce6567a455a3c4814d74dede1238caca2da849f4a2e.cmesh": "3603959577d53298c3204ce6567a455a3c4814d74dede1238caca2da849f4a2e",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/assets/98180698a1a9a85150e045b372835d92e10fe15a078d4397b4741cf25a548aec.cmesh": "98180698a1a9a85150e045b372835d92e10fe15a078d4397b4741cf25a548aec",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/assets/ceb97f88e7ebcf7efc7028e7d088ba33eb3adbf4f9a403c3ee4040b174ef326b.cmesh": "ceb97f88e7ebcf7efc7028e7d088ba33eb3adbf4f9a403c3ee4040b174ef326b",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/assets/d0439ed72699952710c0f9cffd95da5c481addf2320af41dc68f81d2265e6a12.cmesh": "d0439ed72699952710c0f9cffd95da5c481addf2320af41dc68f81d2265e6a12",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/cyrus.package.json": "8ecf44265f816bd6282c3e9d2b9b1fa71a208ccb214b88715643af673cdbefac",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/entry.csrecipe.json": "e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37",
+    "Presets/e05fab22a0fee4f91b8bf804612e516aded9c3ce00184398a33c9894f7efed37/recipe-data-e9f7fb1f4bbc3dd89624cabb3ab0db6b/thumbnail.png": "acbb719d07572cae1281feeecb77c2d3cbdbab4d65d921e5aa0368b7419230b5",
+    "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/assets.json": "16874f07d6153bfbf4858058a8ef159e71b7e526eaa40df7dd5c560a4dedb91e",
+    "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/assets/23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677.cmesh": "23cd1b16764b13d270171cd635cd5cd899ce9b69ec0332c4aeb50ca76ec9e677",
+    "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/assets/801c84dce177a889e663e8b1618a303335ff0972ba942ce80c76b3dfb7d01dff.cmesh": "801c84dce177a889e663e8b1618a303335ff0972ba942ce80c76b3dfb7d01dff",
+    "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/assets/8b4bb0b4fbd57d0e76b938c6c09049d3b45b9e5ca90e7a952e3304b1a3ebbb70.cmesh": "8b4bb0b4fbd57d0e76b938c6c09049d3b45b9e5ca90e7a952e3304b1a3ebbb70",
+    "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/cyrus.package.json": "c3240f367497f74eae898bde9e1003c8b99de1f69b614ba9559edc76f2b89e0c",
+    "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/entry.csrecipe.json": "fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20",
+    "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/recipe-data-c60280d33ad21f904d8747313d053ff2/thumbnail.png": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4",
+    "README.md": "cff749e3b15d521f38e92a0a91a3c63423f839ee87deff51278dff26bd89d0f9",
+    "borders.csrecipe.json": "9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1",
     "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
     "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
-    "meadow.csrecipe.json": "813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5",
+    "formal/formal.max": "ab0393a3f270eee6a0405813bd98e7f4c88dbcef0c05d49e52dbdbfba88d83a0",
+    "hexagonal.csrecipe.json": "193e024e7890d7a9c077d17f411525da0edcf0e0e5a0a195c033e0a065d3cce0",
+    "hexagonal.csrecipe.json.library.json": "b8003fda4af5d5192734e212a10092baff5d690dded54a2b8c104968424034b3",
+    "hexagonal.max": "1d3bb178ef4b2646c48b7f6c8b66ef04fefd4aaf84633b2436926501a0a7e94f",
+    "meadow.csrecipe.json": "183525a5597119c51acff4061cbdf4aec46a4f10ec5728361d8292b402890ee6",
     "meadow.csrecipe.json.library.json": "2ba09952910ac638a3fe1b17fb38c1eac252b2e4b18f8b5c00f3f58815a40d5c",
     "meadow.max": "2307155f5a9a55cc0967c6dd46d28f3d80e01836105edf9fd4d9b507f01288b9",
-    "mountain.csrecipe.json": "180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8",
+    "mountain.csrecipe.json": "cdaae5f6a5e6b2a92fd211a4080118bae9d5082d0975626a18aa949dce7bdff2",
     "mountain.csrecipe.json.library.json": "00bfe79d25d11feaf3748bb6dbd39d39bcccd121b8852bf1b324bbfbf63ad918",
     "mountain.max": "3850e1587a89ddb11c8b61346595dc5c76240451c8c8644c46f1c1cfa614005a",
+    "orchard.csrecipe.json": "fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20",
+    "orchard.csrecipe.json.library.json": "2497156012614cca60b577b6f61b84f2c9f631e89f3bbaaa35483e944bf84971",
+    "orchard.max": "c1a15f730c1e3fdf4b983b082bc269c690606b176b8eb4fe725ac3d101f76102",
     "paint-68e28fee-6e72-4dd7-9f0d-3aebe8110ff0.payload/paint-1.cspaint": "de23637359e59378389154387462da1bacc57ff2c5b39c66602d81257f1c931d",
+    "recipe-data-4991e6658d9fb371918ce68a3bf187cf/thumbnail.png": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524",
+    "recipe-data-59ac2c651d1c067c73eb204eb636d117/thumbnail.png": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-1.cspaint": "b4c463669fb02dfabcec551a2082aad7d27f504f4f6bf831105473dd86183f9e",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-2.cspaint": "1784eb7fc740585a33f844ae5a7e094c86940184914f919f09a3ac506b46c059",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-3.cspaint": "b05fd7ddb54f2f31d9ee48968c6db3a11d8952f67200518440f74e7e3562d912",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/thumbnail.png": "eafa4693a7a46659c232d2b2abf7a10a535abf8f646b66b956fa384ca11b454e",
+    "recipe-data-8fb444cc46a3744a37b710f3f7b602ca/thumbnail.png": "92274aaaf6d5c6e3cb2386f8848de7fd4da688c73c9252130b830bc922c86fd4",
+    "recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/paint-1.cspaint": "de23637359e59378389154387462da1bacc57ff2c5b39c66602d81257f1c931d",
+    "recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/thumbnail.png": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be",
+    "recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/paint-1.cspaint": "b4c463669fb02dfabcec551a2082aad7d27f504f4f6bf831105473dd86183f9e",
+    "recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/paint-2.cspaint": "1784eb7fc740585a33f844ae5a7e094c86940184914f919f09a3ac506b46c059",
+    "recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/paint-3.cspaint": "b05fd7ddb54f2f31d9ee48968c6db3a11d8952f67200518440f74e7e3562d912",
+    "recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/thumbnail.png": "eafa4693a7a46659c232d2b2abf7a10a535abf8f646b66b956fa384ca11b454e",
+    "recipe-data-c60280d33ad21f904d8747313d053ff2/thumbnail.png": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4",
+    "recipe-data-ccdd1dbd46aec07f8779b3267968d6c7/thumbnail.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
+    "recipe-data-e1592409d58f330ffa85b138add62df4/thumbnail.png": "acbb719d07572cae1281feeecb77c2d3cbdbab4d65d921e5aa0368b7419230b5",
+    "recipe-data-e9f7fb1f4bbc3dd89624cabb3ab0db6b/thumbnail.png": "acbb719d07572cae1281feeecb77c2d3cbdbab4d65d921e5aa0368b7419230b5",
     "thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524",
     "thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be",
     "thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0",
-    "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
-    "woodland.csrecipe.json": "0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee",
-    "woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58",
-    "woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc",
-    "orchard.csrecipe.json": "54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b",
-    "orchard.max": "c1a15f730c1e3fdf4b983b082bc269c690606b176b8eb4fe725ac3d101f76102",
-    "thumbnail-54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b.png": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4",
-    "orchard.csrecipe.json.library.json": "2497156012614cca60b577b6f61b84f2c9f631e89f3bbaaa35483e944bf84971",
-    "hexagonal.csrecipe.json": "1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70",
-    "hexagonal.max": "1d3bb178ef4b2646c48b7f6c8b66ef04fefd4aaf84633b2436926501a0a7e94f",
     "thumbnail-1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70.png": "92274aaaf6d5c6e3cb2386f8848de7fd4da688c73c9252130b830bc922c86fd4",
-    "hexagonal.csrecipe.json.library.json": "b8003fda4af5d5192734e212a10092baff5d690dded54a2b8c104968424034b3",
-    "formal/formal.max": "ab0393a3f270eee6a0405813bd98e7f4c88dbcef0c05d49e52dbdbfba88d83a0",
+    "thumbnail-54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b.png": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4",
+    "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
     "valley/valley.max": "77dc636b7fc2bd9d1427dd506580339a6652a6c1492e8f4cf810da6bdc3d89c1",
-    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/thumbnail.png": "eafa4693a7a46659c232d2b2abf7a10a535abf8f646b66b956fa384ca11b454e",
-    "recipe-data-e1592409d58f330ffa85b138add62df4/thumbnail.png": "acbb719d07572cae1281feeecb77c2d3cbdbab4d65d921e5aa0368b7419230b5",
-    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-3.cspaint": "b05fd7ddb54f2f31d9ee48968c6db3a11d8952f67200518440f74e7e3562d912",
-    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-1.cspaint": "b4c463669fb02dfabcec551a2082aad7d27f504f4f6bf831105473dd86183f9e",
-    "2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json": "f568088702390f14dd21dce92d714f0755059b9746757fb9b67476f14113dec2",
-    "42f6a31c-1e9e-4a10-8bef-60667aca32e2.csrecipe.json": "2229831d947fc00de20a8a94eb55348b0daefe53d45747575d386fc6833161d8",
-    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-2.cspaint": "1784eb7fc740585a33f844ae5a7e094c86940184914f919f09a3ac506b46c059"
+    "woodland.csrecipe.json": "1f668045086af6ded67f698193a2066dffa27be4b54a78728fba4e7244047d87",
+    "woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58",
+    "woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc"
   },
-  "qualification_host": "foundation-roadmap-gallery0851-admission-20261016-01",
+  "qualification_host": "foundation-presets0853-qualified-20261016-01",
   "qualification_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83",
-  "previous_qualification_version": "0.85.1"
+  "previous_qualification_version": "0.85.2",
+  "ready_preset_contract": "asset graph 2; Add Layers; compatible current or included terrain; explicit Load + Update"
 }

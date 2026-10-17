@@ -18,6 +18,7 @@
 #include "receiver_binding_host.h"
 #include "license_boundary.h"
 #include "placement_transport.h"
+#include "script_buffers.h"
 #include "orientation.h"
 #include "grid.h"
 #include <sstream>

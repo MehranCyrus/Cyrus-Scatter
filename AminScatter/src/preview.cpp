@@ -21,6 +21,7 @@
 #include "diagnostics.h"
 #include "preview_sampling.h"
 #include "placement_transport.h"
+#include "script_buffers.h"
 #include "spline_overlay.h"
 #include "spline_field_value.h"
 #include <maxscript/macros/define_instantiation_functions.h>
@@ -154,16 +155,13 @@ Value* cyrusPreviewPlacementsEqual_cf(Value** args,int count) {
 def_visible_primitive(cyrusPreviewRadiiEqual,"cyrusPreviewRadiiEqual");
 Value* cyrusPreviewRadiiEqual_cf(Value** args,int count) {
     check_arg_count(cyrusPreviewRadiiEqual,2,count);
-    for(int i=0;i<2;++i)type_check(args[i],Array,_T("preview radii"));
-    auto* a=static_cast<Array*>(args[0]);auto* b=static_cast<Array*>(args[1]);
-    if(a->size>1000000||b->size>1000000)throw RuntimeError(_T("Radius comparison exceeds 1,000,000 placements"));
-    if(a->size!=b->size)return &false_value;
-    for(int i=0;i<a->size;++i) {
-        type_check(a->data[i],Array,_T("radius pair"));type_check(b->data[i],Array,_T("radius pair"));
-        auto* left=static_cast<Array*>(a->data[i]);auto* right=static_cast<Array*>(b->data[i]);
-        if(left->size!=2||right->size!=2)throw RuntimeError(_T("Expected XY and 3D radius pairs"));
+    const auto size=cyrusRadiusCount(args[0]),other=cyrusRadiusCount(args[1]);
+    if(size>1000000||other>1000000)throw RuntimeError(_T("Radius comparison exceeds 1,000,000 placements"));
+    if(size!=other)return &false_value;
+    for(std::size_t i=0;i<size;++i) {
+        const auto left=cyrusRadiusAt(args[0],i),right=cyrusRadiusAt(args[1],i);
         for(int metric=0;metric<2;++metric)
-            if(left->data[metric]->to_double()!=right->data[metric]->to_double())return &false_value;
+            if(left[metric]!=right[metric])return &false_value;
     }
     return &true_value;
 }

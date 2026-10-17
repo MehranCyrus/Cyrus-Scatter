@@ -26,9 +26,9 @@ double number(const Json& value,double lo,double hi){require(value.is_number(),"
 void vector(const Json& value,std::size_t size,double lo,double hi){require(value.is_array()&&value.size()==size,"Invalid asset vector.");for(const auto& v:value)number(v,lo,hi);}
 std::string suffix(const Json& file){const auto s=text(file.at("suffix"),8);const std::set<std::string> supported={"cmesh","png","jpg","jpeg","tga","bmp","tif","tiff"};require(supported.count(s)!=0,"Unsupported package file suffix.");require((file.at("kind")=="mesh")== (s=="cmesh"),"Asset file type and suffix differ.");return s;}
 std::string relative(const Json& file){return "assets/"+hash(file.at("sha256"))+"."+suffix(file);}
-std::string load(const std::filesystem::path& path,std::size_t cap){std::ifstream in(path,std::ios::binary|std::ios::ate);require(bool(in),"Cannot read package document.");const auto n=in.tellg();require(n>=0&&static_cast<std::uint64_t>(n)<=cap,"Package document exceeds its limit.");std::string data(static_cast<std::size_t>(n),'\0');in.seekg(0);if(n>0)in.read(data.data(),n);require(bool(in),"Incomplete package document.");return data;}
+std::string load(const std::filesystem::path& path,std::size_t cap){std::ifstream in(recipes::nativePath(path),std::ios::binary|std::ios::ate);require(bool(in),"Cannot read package document.");const auto n=in.tellg();require(n>=0&&static_cast<std::uint64_t>(n)<=cap,"Package document exceeds its limit.");std::string data(static_cast<std::size_t>(n),'\0');in.seekg(0);if(n>0)in.read(data.data(),n);require(bool(in),"Incomplete package document.");return data;}
 std::string digest(const std::string& data){return recipes::digest({data.begin(),data.end()});}
-void put(const std::filesystem::path& path,const std::string& data){require(!std::filesystem::exists(path),"Package staging collision.");std::filesystem::create_directories(path.parent_path());std::ofstream out(path,std::ios::binary);require(bool(out),"Cannot write package staging file.");out.write(data.data(),static_cast<std::streamsize>(data.size()));out.flush();require(bool(out),"Package staging write failed.");out.close();require(load(path,data.size())==data,"Package staging readback failed.");}
+void put(const std::filesystem::path& rawPath,const std::string& data){const auto path=recipes::nativePath(rawPath);require(!std::filesystem::exists(path),"Package staging collision.");std::filesystem::create_directories(path.parent_path());std::ofstream out(path,std::ios::binary);require(bool(out),"Cannot write package staging file.");out.write(data.data(),static_cast<std::streamsize>(data.size()));out.flush();require(bool(out),"Package staging write failed.");out.close();require(load(path,data.size())==data,"Package staging readback failed.");}
 struct Hash {
     BCRYPT_ALG_HANDLE algorithm=nullptr;BCRYPT_HASH_HANDLE value=nullptr;
     Hash(){require(BCryptOpenAlgorithmProvider(&algorithm,BCRYPT_SHA256_ALGORITHM,nullptr,0)>=0,"Package hash provider unavailable.");if(BCryptCreateHash(algorithm,&value,nullptr,0,nullptr,0,0)<0){BCryptCloseAlgorithmProvider(algorithm,0);algorithm=nullptr;throw std::runtime_error("Package hash unavailable.");}}
@@ -36,7 +36,8 @@ struct Hash {
     void add(unsigned char* data,ULONG size){require(BCryptHashData(value,data,size,0)>=0,"Package hashing failed.");}
     std::string finish(){std::vector<unsigned char> bytes(32);require(BCryptFinishHash(value,bytes.data(),32,0)>=0,"Package hashing failed.");return recipes::hex(bytes);}
 };
-std::string stream(const std::filesystem::path& input,const std::filesystem::path& output,std::uint64_t expected,const Checkpoint& point){
+std::string stream(const std::filesystem::path& rawInput,const std::filesystem::path& rawOutput,std::uint64_t expected,const Checkpoint& point){
+    const auto input=recipes::nativePath(rawInput),output=rawOutput.empty()?rawOutput:recipes::nativePath(rawOutput);
     require(std::filesystem::is_regular_file(input)&&!std::filesystem::is_symlink(input),"Package dependency must be a regular, unlinked file.");
     require(std::filesystem::file_size(input)==expected,"Package dependency size changed.");
     std::ifstream in(input,std::ios::binary);require(bool(in),"Cannot open package dependency.");std::ofstream out;
@@ -60,7 +61,10 @@ Json readDescriptor(const std::filesystem::path& root,const Json& row,std::size_
 }
 
 void validateGraph(const Json& graph,const Json& recipe){
-    keys(graph,{"format","version","nodes","meshes","materials","maps","files","externalRoles"});require(graph.at("format")=="cyrus.library-assets"&&graph.at("version")==1,"Unsupported asset graph.");
+    const bool context=graph.value("version",0)==2;
+    if(context)keys(graph,{"format","version","nodes","meshes","materials","maps","files","externalRoles","splines"});
+    else keys(graph,{"format","version","nodes","meshes","materials","maps","files","externalRoles"});
+    require(graph.at("format")=="cyrus.library-assets"&&(graph.at("version")==1||context),"Unsupported asset graph.");
     std::map<std::string,std::string> roleKinds,fileKinds;std::set<std::string> assigned,ids,meshes,materials,maps;
     for(const auto& role:recipe.at("roles"))roleKinds.emplace(role.at("id").get<std::string>(),role.at("kind").get<std::string>());
     for(const auto* name:{"nodes","meshes","materials","maps","files","externalRoles"})require(graph.at(name).is_array()&&graph.at(name).size()<=(std::string(name)=="files"?maxFiles:maxObjects),"Asset graph count exceeds bounds.");
@@ -90,14 +94,26 @@ void validateGraph(const Json& graph,const Json& recipe){
         for(const auto& slot:slots){keys(slot,{"slot","map","amount","enabled"});const auto name=text(slot.at("slot"));require((name=="ambient"||name=="diffuse"||name=="opacity")&&seen.insert(name).second,"Unsupported or duplicate material map slot.");reference(slot.at("map"),maps);number(slot.at("amount"),-1000,1000);require(slot.at("enabled").is_boolean(),"Material map enable flag required.");}
     }
     for(const auto& node:graph.at("nodes")){keys(node,{"id","name","mesh","material","transform","wireColor","roles"});require(ids.insert(identity(node.at("id"))).second,"Duplicate asset ID.");text(node.at("name"));require(!node.at("mesh").is_null(),"Asset node requires a mesh.");reference(node.at("mesh"),meshes);reference(node.at("material"),materials);vector(node.at("transform"),12,-1e9,1e9);vector(node.at("wireColor"),3,0,255);roles(node.at("roles"),"node");}
+    if(context){
+        const auto& splines=graph.at("splines");require(splines.is_array()&&splines.size()<=maxObjects,"Spline count exceeds bounds.");std::size_t knots=0;
+        for(const auto& shape:splines){
+            keys(shape,{"id","name","transform","wireColor","roles","curves"});require(ids.insert(identity(shape.at("id"))).second,"Duplicate asset ID.");text(shape.at("name"));vector(shape.at("transform"),12,-1e9,1e9);vector(shape.at("wireColor"),3,0,255);roles(shape.at("roles"),"node");
+            const auto& curves=shape.at("curves");require(curves.is_array()&&!curves.empty()&&curves.size()<=128,"Spline curve count exceeds bounds.");
+            for(const auto& curve:curves){keys(curve,{"closed","knots"});require(curve.at("closed").is_boolean(),"Spline closure must be Boolean.");const auto& rows=curve.at("knots");require(rows.is_array()&&rows.size()>=2,"Spline needs at least two knots.");knots+=rows.size();require(knots<=4096,"Preset splines exceed 4096 knots.");
+                for(const auto& knot:rows){keys(knot,{"type","line","point","in","out"});const auto type=text(knot.at("type")),line=text(knot.at("line"));require(type=="corner"||type=="smooth"||type=="bezier"||type=="bezierCorner","Unsupported spline knot type.");require(line=="line"||line=="curve","Unsupported spline segment type.");for(const auto* key:{"point","in","out"})vector(knot.at(key),3,-1e9,1e9);}
+            }
+        }
+    }
     for(const auto& role:graph.at("externalRoles")){const auto id=text(role);require(roleKinds.count(id)!=0&&assigned.insert(id).second,"Unknown or duplicate external role.");}
     require(assigned.size()==roleKinds.size(),"Asset graph must retain every recipe role as packaged or explicitly external.");
 }
 
-std::filesystem::path writePackage(const std::filesystem::path& input,const std::filesystem::path& source,const std::string& expected,
+std::filesystem::path writePackage(const std::filesystem::path& rawInput,const std::filesystem::path& rawSource,const std::string& expected,
  const Json& graph,const std::map<std::string,std::filesystem::path>& inputs,const std::string& redistribution,const Checkpoint& point){
+    require(rawInput.is_absolute()&&rawSource.is_absolute(),"Package export needs absolute paths.");
+    const auto input=recipes::nativePath(rawInput),source=recipes::nativePath(rawSource);
     require(input.is_absolute()&&source.is_absolute()&&!input.filename().empty(),"Package export needs absolute paths.");hash(expected);require(!redistribution.empty(),"Confirm permission to redistribute the packaged content.");text(redistribution,1024);
-    require(std::filesystem::is_directory(input.parent_path()),"Choose an existing package parent folder.");const auto parent=std::filesystem::canonical(input.parent_path()),output=parent/input.filename();filesystem(parent);require(!std::filesystem::exists(output),"Package destination exists. Choose a new folder.");
+    require(std::filesystem::is_directory(input.parent_path()),"Choose an existing package parent folder.");const auto parent=recipes::nativePath(std::filesystem::canonical(input.parent_path())),output=parent/input.filename();filesystem(parent);require(!std::filesystem::exists(output),"Package destination exists. Choose a new folder.");
     const auto recipeBytes=load(source,recipes::maxManifestBytes);require(digest(recipeBytes)==expected,"Recipe changed since export review.");const auto recipe=recipes::parse(recipeBytes);require(recipe.at("formatVersion")==5,"Resave this recipe before portable export.");recipes::validate(recipe,false);validateGraph(graph,recipe);require(inputs.size()==graph.at("files").size(),"Resolve every package file exactly once.");
     const auto graphBytes=graph.dump();require(graphBytes.size()<=maxGraphBytes,"Asset graph metadata exceeds its budget.");
     const auto stage=parent/recipes::pathFromUTF8(".cyrus-package-stage-"+nonce());bool owned=false,published=false;std::uint64_t copied=recipeBytes.size()+graphBytes.size();std::set<std::string> stored;
@@ -116,7 +132,9 @@ std::filesystem::path writePackage(const std::filesystem::path& input,const std:
     }catch(...){if(owned&&!published){std::error_code error;std::filesystem::remove_all(stage,error);}throw;}
 }
 
-Json readPackage(const std::filesystem::path& directory,const Checkpoint& point){
+Json readPackage(const std::filesystem::path& rawDirectory,const Checkpoint& point){
+    require(rawDirectory.is_absolute(),"Package requires an absolute folder.");
+    const auto directory=recipes::nativePath(rawDirectory);
     require(directory.is_absolute()&&std::filesystem::is_directory(directory)&&!std::filesystem::is_symlink(directory),"Package requires an unlinked absolute folder.");
     const auto manifest=recipes::parse(load(directory/"cyrus.package.json",8192));keys(manifest,{"format","version","hostYear","recipe","graph","redistribution"});require(manifest.at("format")=="cyrus.library-package"&&manifest.at("version")==1&&manifest.at("hostYear")==2027,"Unsupported library package.");require(!text(manifest.at("redistribution"),1024).empty(),"Package redistribution declaration missing.");require(manifest.at("recipe").at("file")=="entry.csrecipe.json"&&manifest.at("graph").at("file")=="assets.json","Unexpected package document paths.");
     const auto recipe=readDescriptor(directory,manifest.at("recipe"),recipes::maxManifestBytes);require(recipe.at("formatVersion")==5,"Unsupported package recipe version.");recipes::validate(recipe,false);
@@ -137,7 +155,9 @@ Json readPackage(const std::filesystem::path& directory,const Checkpoint& point)
     return {{"manifest",manifest},{"recipe",recipe},{"graph",graph}};
 }
 
-PreparedPackage preparePackage(const std::filesystem::path& directory,const Checkpoint& point,const std::filesystem::path& bitmapDirectory){
+PreparedPackage preparePackage(const std::filesystem::path& rawDirectory,const Checkpoint& point,const std::filesystem::path& bitmapDirectory){
+    require(rawDirectory.is_absolute(),"Package requires an absolute folder.");
+    const auto directory=recipes::nativePath(rawDirectory);
     PreparedPackage result;result.metadata=readPackage(directory,point);
     auto notify=[&](const char* stage){if(point)point(stage,result.payloadBytes);};
     notify("preparing-paint");

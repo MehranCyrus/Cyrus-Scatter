@@ -368,6 +368,26 @@ extern "C" __declspec(dllexport) ULONG CanAutoDefer(){return 0;}
 BOOL WINAPI DllMain(HINSTANCE module,DWORD reason,LPVOID){if(reason==DLL_PROCESS_ATTACH)instance=module;return TRUE;}
 static_assert(MAX_PRODUCT_YEAR_NUMBER==CYRUS_MAX_YEAR,"Brush SDK mismatch");
 
+// Only the trusted packaged-receiver path uses this explicit unit conversion.
+// Ordinary recipe rebinding retains its strict geometry/frame/unit checks.
+def_visible_primitive(cyrusBrushPresetRestore,"cyrusBrushPresetRestore");
+Value* cyrusBrushPresetRestore_cf(Value** a,int n){check_arg_count(cyrusBrushPresetRestore,6,n);return api([&]()->Value*{
+    type_check(a[0],String,_T("Packaged Paint bytes"));const auto* input=a[0]->to_string();const auto length=wcslen(input);
+    if(length>cyrus::recipes::maxPaintBytes*2)throw std::runtime_error("Packaged Paint exceeds bounds");
+    std::string packed;packed.reserve(length);for(std::size_t i=0;i<length;++i){if(input[i]>127)throw std::runtime_error("Invalid Paint hex");packed+=static_cast<char>(input[i]);}
+    auto original=b::decode(cyrus::recipes::unhex(packed));const double factor=a[5]->to_double();
+    if(!std::isfinite(factor)||factor<=0||factor>1e9)throw std::runtime_error("Invalid packaged Paint unit conversion");
+    const double radius=a[2]->to_double()*factor;if(!std::isfinite(radius)||radius<=.0001||radius>1e7)throw std::runtime_error("Invalid packaged brush radius");
+    if(a[3]!=&true_value&&a[3]!=&false_value)throw std::runtime_error("Invalid packaged brush mode");
+    type_check(a[4],Array,_T("Packaged receiver frame"));auto* frame=static_cast<Array*>(a[4]);if(frame->size!=12)throw std::runtime_error("Paint frame needs twelve values");
+    auto* node=a[1]->to_node();if(!node)throw std::runtime_error("Packaged Paint receiver is missing");const auto tm=node->GetObjectTM(GetCOREInterface()->GetTime());
+    for(int i=0;i<12;++i){const double expected=frame->data[i]->to_double()*(i>=9?factor:1.),actual=tm.GetRow(i/3)[i%3];if(!std::isfinite(expected)||std::abs(expected-actual)>1e-6*std::max({1.,std::abs(expected),std::abs(actual)}))throw std::runtime_error("Packaged Paint receiver frame differs");}
+    for(auto& contour:original.contours)for(auto& xy:contour)for(auto& value:xy)value*=factor;
+    original.falloff.inside*=factor;original.falloff.outside*=factor;b::validate(original.falloff);b::encode(original);
+    std::unique_ptr<PaintDocument> p(static_cast<PaintDocument*>(GetCOREInterface()->CreateInstance(REF_TARGET_CLASS_ID,documentID)));if(!p)throw std::runtime_error("Brush storage class unavailable");
+    p->requireAuthor();p->prepare(node);original.surface=p->surface->fingerprint();p->document=std::move(original);p->radius=radius;p->erase=a[3]==&true_value;
+    return MAXRefTarg::intern(p.release());
+});}
 def_visible_primitive(cyrusBrushCreate,"cyrusBrushCreate");
 // Read only: no pollTarget, field preparation, brush commit or scene mutation.
 def_visible_primitive(cyrusBrushRecipeExport,"cyrusBrushRecipeExport");

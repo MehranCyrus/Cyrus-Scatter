@@ -46,12 +46,13 @@ Value* cyrusGridPlan_cf(Value** a,int n){
         if(slot<1||slot>128||!snapshots.emplace(unsigned(slot-1),snapshot).second)throw RuntimeError(_T("Duplicate or invalid grid receiver slot"));
         cells+=snapshot->projection.enumeratedCells;hits+=snapshot->projection.anchors.size();if(cells>1000000)throw RuntimeError(_T("Grid exceeds the shared candidate limit"));
     }
-    four_typed_value_locals(Array* result,Array* rows,Array* row,Array* order);vl.result=new Array(6);vl.rows=new Array(entries->size);vl.result->append(vl.rows);
-    vl.order=new Array(int(hits));vl.result->append(vl.order);
+    three_typed_value_locals(Array* result,Array* rows,Array* row);vl.result=new Array(6);vl.rows=new Array(entries->size);vl.result->append(vl.rows);
+    std::vector<std::uint64_t> order;order.reserve(std::size_t(hits));
     for(const auto& entry:snapshots){const auto& anchors=entry.second->projection.anchors;vl.row=new Array(4);vl.rows->append(vl.row);vl.row->append(Integer::intern(entry.first+1));
         for(int i=0;i<3;++i)vl.row->append(Integer::intern(int(anchors.size())));
-        for(const auto& anchor:anchors)vl.order->append(Integer64::intern(cyrus::receivers::candidateIdentity(entry.first,anchor.key)));
+        for(const auto& anchor:anchors)order.push_back(cyrus::receivers::candidateIdentity(entry.first,anchor.key));
     }
+    vl.result->append(cyrusNativeSchedule(std::move(order)));
     vl.result->append(Integer::intern(int(hits)));vl.result->append(Integer::intern(int(hits)));vl.result->append(&false_value);vl.result->append(Integer::intern(int(cells)));return_value(vl.result);
 }
 def_visible_primitive(cyrusGridSnapshotInfo,"cyrusGridSnapshotInfo");

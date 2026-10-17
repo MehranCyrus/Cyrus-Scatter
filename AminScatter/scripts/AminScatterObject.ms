@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="e5c2f9b8305e4fab561f03961626e87b7f763f101f35734a926699fd7c69e027"
+﻿global CyrusLoadedScriptFingerprint="9f932772610b5a84ad9d671bcb4369825ba4c82b66ee8d981479b81447e6dd1f"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -54,17 +54,217 @@ macroScript CyrusTeamLicense category:"Cyrus" buttonText:"Cyrus License" tooltip
     on execute do CyrusOpenLicenseDialog()
 )
 
+-- Ready-to-use library actions reuse the bounded package worker/transaction.
+-- Catalog selection never calls these scene/asset functions.
+global CyrusOpenReadyPreset,CyrusReadyPresetEditor,CyrusReadyPresetOpenData
+global CyrusPresetPackageDirectory,CyrusPresetPlan,CyrusPresetSaveReady,CyrusPresetSaveEditor,CyrusPresetSaveOpenData,CyrusPresetReviseReady,CyrusPresetReviseEditor,CyrusPresetReviseOpenData
+global CyrusRecipeGet,CyrusRecipeObject,CyrusRecipeResolve,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode,CyrusRecipeRestorePaint,CyrusRecipeValidateBindings,CyrusRecipeBrowser
+global CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetImportPlan,CyrusAssetImport,CyrusAssetCapture,CyrusAssetOwnStage,CyrusAssetWatch,CyrusAssetRemoveStage,CyrusAssetBitmapDirectory
+global CyrusRequireAuthor,CyrusViewportRedraw,CyrusPresetSameValues
+global CyrusPointSuspended
+fn CyrusPresetPackageDirectory path digest = (
+    -- Keep native file paths short while retaining the full content identity.
+    pathConfig.appendPath (getFilenamePath path) ("Presets\\"+digest)
+)
+fn CyrusPresetReviseReady path previous digest = (
+    local source=CyrusPresetPackageDirectory path previous,destination=CyrusPresetPackageDirectory path digest
+    if not doesFileExist (pathConfig.appendPath source "cyrus.package.json") or previous==digest do return true
+    if CyrusPresetReviseEditor!=undefined do throw "A preset revision is still being saved. Wait for it to finish."
+    local job=cyrusAssetPackagePrepare source (CyrusAssetBitmapDirectory())
+    rollout editor "Save preset details" width:500 height:150 (
+        local path="",source="",destination="",digest="",job=0L,preparing=true,finished=false
+        label status "Updating the ready preset without reading or changing scene objects..." pos:[12,12] width:476 height:84
+        button closeButton "Cancel" pos:[12,110] width:476
+        timer progress interval:100 active:false
+        on editor open do (
+            path=CyrusPresetReviseOpenData[1];source=CyrusPresetReviseOpenData[2];destination=CyrusPresetReviseOpenData[3];digest=CyrusPresetReviseOpenData[4];job=CyrusPresetReviseOpenData[5];progress.active=true
+        )
+        on progress tick do try (
+            local state=cyrusAssetPackagePoll job
+            if preparing and state[1]=="ready" then (
+                local package=cyrusAssetPackagePrepared job false,graph=CyrusRecipeGet package "graph",files=#()
+                for file in (CyrusRecipeGet graph "files") do append files #((CyrusRecipeGet file "id"),(pathConfig.appendPath source ("assets\\"+(CyrusRecipeGet file "sha256")+"."+(CyrusRecipeGet file "suffix"))))
+                local replacement=cyrusAssetPackageStart destination path digest graph files (CyrusRecipeGet (CyrusRecipeGet package "manifest") "redistribution") 1
+                cyrusAssetPackageRelease job;job=replacement;preparing=false;status.text="Saving revised preset files..."
+            ) else if (preparing and (state[1]=="failed" or state[1]=="cancelled")) or (not preparing and state[1]!="exporting") do (
+                progress.active=false;finished=true;closeButton.text="Close"
+                status.text=if state[1]=="complete" then "Preset details and ready assets saved. Load + Update remains available." else "Settings details saved; ready revision did not finish. "+state[4]
+                if preparing do (cyrusAssetPackageRelease job;job=0L)
+                if CyrusRecipeBrowser!=undefined do CyrusRecipeBrowser.refreshEntry path
+            )
+        )catch(progress.active=false;finished=true;closeButton.text="Close";status.text="Settings details saved; ready revision failed. "+getCurrentException())
+        on closeButton pressed do destroyDialog editor
+        on editor close do (
+            progress.active=false
+            if job!=0L do (if not finished do cyrusAssetPackageCancel job;if preparing do cyrusAssetPackageRelease job)
+            CyrusPresetReviseEditor=undefined
+        )
+    )
+    CyrusPresetReviseOpenData=#(path,source,destination,digest,job);CyrusPresetReviseEditor=editor
+    createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow);true
+)
+fn CyrusPresetPlan root directory package document = (
+    CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
+    local graph=CyrusRecipeGet package "graph",roles=CyrusRecipeGet document "roles",bindings=#(),terrain=#(),receiverRoles=#(),reason="Included terrain",compatible=true
+    if (CyrusRecipeGet document "layers").count+root.layerObjects.count>10 do throw "This preset would exceed 10 populations. Use a new Scatter setup or remove unneeded layers first. Existing planting is preserved."
+    if (CyrusRecipeGet graph "externalRoles").count>0 do throw "This package still needs external dependencies. Use Recipe actions > Review bindings, or save a ready preset including its terrain and paths."
+    local selected=root.selectedLayer()
+    if selected!=undefined do terrain=selected.validSurfaces()
+    if terrain.count==0 do for layer in root.logicalLayers() do for node in layer.validSurfaces() do appendIfUnique terrain node
+    for role in roles where CyrusAssetRoleIsReceiver role do append receiverRoles role
+    if terrain.count==1 and receiverRoles.count==1 then (
+        bindings=#(#((CyrusRecipeGet receiverRoles[1] "id"),terrain[1]))
+        -- A required field must exist; valid zero is different from missing.
+        try (
+            for record in (CyrusRecipeGet document "layers") do (
+                local settings=CyrusRecipeGet record "settings"
+                if CyrusRecipeGet settings "meshMaskEnabled" do (
+                    local curve=CyrusRecipeGet settings "meshMaskSamples"
+                    if curve.count==0 do curve=#(0.0,1.0)
+                    cyrusMeshDensityKey terrain[1] #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve)
+                )
+                local paint=CyrusRecipeGet record "paint"
+                if paint!=undefined do CyrusRecipeRestorePaint paint terrain[1] document
+                for area in (CyrusRecipeGet record "areas") do (
+                    local data=CyrusRecipeGet area "paint"
+                    if data!=undefined do CyrusRecipeRestorePaint data terrain[1] document
+                )
+            )
+        )catch(compatible=false)
+        if compatible then reason="Current terrain: "+terrain[1].name
+        else (bindings=#();reason="Included terrain: saved Paint or mesh-channel data")
+    ) else reason=if terrain.count>1 then "Included terrain: destination has multiple receivers" else "Included terrain: no destination terrain"
+    -- A saved path belongs to its saved receiver frame. Never move a path to an
+    -- unrelated destination implicitly; use included context for path presets.
+    if (CyrusRecipeGet graph "version")==2 and (CyrusRecipeGet graph "splines").count>0 do (bindings=#();reason="Included terrain and spline paths")
+    if bindings.count>0 do CyrusRecipeValidateBindings root (CyrusRecipeObject #(#("roles",receiverRoles))) bindings
+    local manifest=CyrusRecipeGet package "manifest",descriptor=CyrusRecipeGet manifest "recipe"
+    #(CyrusAssetImportPlan root:root node:(CyrusRecipeOwnerNode root) inputKey:(root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:false variation:#new assets:#clone preset:true,reason)
+)
+fn CyrusOpenReadyPreset root directory expected:"" = (
+    CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
+    CyrusRecipeCheckRoot root node
+    if CyrusReadyPresetEditor!=undefined do try(destroyDialog CyrusReadyPresetEditor)catch()
+    local job=cyrusAssetPackagePrepare directory (CyrusAssetBitmapDirectory())
+    rollout editor "Load planting preset" width:500 height:206 (
+        local root,node,directory,expected="",job=0L,finished=false,plan=undefined,result=undefined,terrainNote="",displayHeld=false,previousSuspended=false,updateReadyAt=0.0
+        label title "Loading models, materials and planting settings..." pos:[12,12] width:476 height:38
+        label status "Adds new layers and updates scatter once. Existing planting settings are kept." pos:[12,54] width:476 height:96
+        button closeButton "Cancel" pos:[12,166] width:476
+        timer progress interval:100 active:false
+        fn resumeDisplay = (
+            if displayHeld do (CyrusPointSuspended=previousSuspended;displayHeld=false)
+        )
+        fn loadPrepared = (
+            CyrusRecipeCheckRoot root node
+            local package=cyrusAssetPackagePrepared job false,document=cyrusAssetPackagePrepared job true
+            if expected!="" and (CyrusRecipeGet (CyrusRecipeGet (CyrusRecipeGet package "manifest") "recipe") "sha256")!=expected do throw "The ready preset does not match this gallery entry. Refresh the library."
+            local proposed=CyrusPresetPlan root directory package document
+            plan=proposed[1];terrainNote=proposed[2]
+            status.text="Adding preset layers. "+terrainNote
+            -- Keep import's normal Live redraw from solving before the explicit
+            -- Update. Max batches node notifications with a 150 ms delay; let
+            -- that batch invalidate the newly created inputs before calculating.
+            previousSuspended=CyrusPointSuspended;CyrusPointSuspended=true;displayHeld=true
+            result=CyrusAssetImport plan preparedToken:job
+            local clock=dotNetClass "System.Diagnostics.Stopwatch"
+            updateReadyAt=(clock.GetTimestamp() as double)+clock.Frequency*0.3
+            status.text="Layers added. Finishing Update...\n"+terrainNote
+            closeButton.text="Close (layers added)"
+            progress.active=true
+        )
+        fn finishUpdate = (
+            -- This button is explicitly Load + Update, a calculation boundary.
+            -- Authored import and subsequent complete publication stay separate.
+            root.refreshAll()
+            resumeDisplay()
+            local document=cyrusAssetPackagePrepared job true
+            title.text="Loaded: "+(CyrusRecipeGet document "name")
+            status.text=((result[2].count) as string)+" new layers added.\n"+terrainNote+"\nExisting layers and their settings were kept. "+(if root.updateMode==1 then "Manual mode is still enabled." else "Live mode is still enabled.")
+            finished=true;closeButton.text="Close";CyrusViewportRedraw()
+        )
+        on editor open do (
+            root=CyrusReadyPresetOpenData[1];node=CyrusReadyPresetOpenData[2];directory=CyrusReadyPresetOpenData[3];job=CyrusReadyPresetOpenData[4];expected=CyrusReadyPresetOpenData[5]
+            progress.active=true
+        )
+        on progress tick do try (
+            CyrusRecipeCheckRoot root node
+            local value=cyrusAssetPackagePoll job
+            if result!=undefined then (
+                local clock=dotNetClass "System.Diagnostics.Stopwatch"
+                if (clock.GetTimestamp() as double)>=updateReadyAt do (
+                    progress.active=false;finishUpdate();cyrusAssetPackageRelease job;job=0L
+                )
+            ) else if value[1]=="ready" then (
+                progress.active=false;loadPrepared()
+            ) else if value[1]=="failed" or value[1]=="cancelled" then (
+                progress.active=false;finished=true;closeButton.text="Close";status.text=value[4]
+                cyrusAssetPackageRelease job;job=0L
+            ) else status.text="Preparing preset: "+value[2]+"\nExisting layers remain unchanged."
+        )catch(
+            resumeDisplay()
+            progress.active=false;finished=true;closeButton.text="Close"
+            status.text=(if result==undefined then "Preset was not added. " else "Preset layers were added, but Update failed. The last complete preview is retained; Undo removes the added preset. ")+getCurrentException()
+            if job!=0L do (cyrusAssetPackageRelease job;job=0L)
+        )
+        on closeButton pressed do destroyDialog editor
+        on editor close do (
+            progress.active=false
+            resumeDisplay()
+            if job!=0L do (if not finished do cyrusAssetPackageCancel job;cyrusAssetPackageRelease job)
+            CyrusReadyPresetEditor=undefined
+        )
+    )
+    CyrusReadyPresetOpenData=#(root,node,directory,job,expected);CyrusReadyPresetEditor=editor
+    createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
+    true
+)
+fn CyrusPresetSaveReady root path digest bindings = (
+    CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
+    local directory=CyrusPresetPackageDirectory path digest
+    if doesFileExist (pathConfig.appendPath directory "cyrus.package.json") do return true
+    if CyrusPresetSaveEditor!=undefined do try(destroyDialog CyrusPresetSaveEditor)catch()
+    local stage=CyrusAssetOwnStage(),job=0L
+    try (
+        local capture=CyrusAssetCapture root path digest bindings stage[1] includeContext:true
+        if (CyrusRecipeGet capture[1] "externalRoles").count>0 do throw "Ready preset needs a supported adapter for all dependencies. The settings recipe is saved; it is not a complete ready preset."
+        (dotNetClass "System.IO.Directory").CreateDirectory (getFilenamePath directory)
+        job=cyrusAssetPackageStart directory path digest capture[1] capture[2] "User-created preset; redistribution remains subject to the user's source-asset licenses." 1
+        CyrusAssetWatch job stage;stage=undefined
+    )catch(if stage!=undefined do CyrusAssetRemoveStage stage;throw())
+    rollout editor "Save ready-to-use preset" width:500 height:150 (
+        local job=0L,path="",finished=false
+        label status "Saving models, materials, terrain, paths and complete Paint..." pos:[12,12] width:476 height:84
+        button closeButton "Cancel" pos:[12,110] width:476
+        timer progress interval:100 active:false
+        on editor open do (job=CyrusPresetSaveOpenData[1];path=CyrusPresetSaveOpenData[2];progress.active=true)
+        on progress tick do try (
+            local value=cyrusAssetPackagePoll job
+            if value[1]!="exporting" do (
+                progress.active=false;finished=true;closeButton.text="Close"
+                status.text=if value[1]=="complete" then "Ready preset saved with its models, materials, terrain, paths and Paint. Select it in the library and use Load + Update." else "Settings recipe saved; ready package did not finish. "+value[4]
+                if CyrusRecipeBrowser!=undefined do CyrusRecipeBrowser.refreshEntry path
+            )
+        )catch(progress.active=false;finished=true;closeButton.text="Close";status.text=getCurrentException())
+        on closeButton pressed do destroyDialog editor
+        on editor close do (progress.active=false;if not finished do cyrusAssetPackageCancel job;CyrusPresetSaveEditor=undefined)
+    )
+    CyrusPresetSaveOpenData=#(job,path);CyrusPresetSaveEditor=editor
+    createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
+    true
+)
+
 -- Explicit portable export. This template uses only closed built-in adapters.
 -- Catalog browsing never calls these functions or inspects scene dependencies.
 global CyrusAssetCapture,CyrusAssetCaptureContext,CyrusAssetMaterial,CyrusAssetMap,CyrusAssetSettingsEqual,CyrusAssetCheckDefaults,CyrusAssetRoleIsSource,CyrusAssetExportEditor,CyrusAssetExportOpenData,CyrusOpenAssetExport
-global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipeResolve,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode,CyrusRecipeSuggestBindings,CyrusRequireAuthor,CyrusNewLayerID,CyrusPresetSameValues
+global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipeResolve,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode,CyrusRecipeSuggestBindings,CyrusRequireAuthor,CyrusNewLayerID,CyrusPresetSameValues,CyrusRecipeRestorePaint
 global CyrusAssetJobs,CyrusAssetCleanupTimer,CyrusAssetCleanupTick,CyrusAssetOwnStage,CyrusAssetRemoveStage,CyrusAssetWatch
 global CyrusAssetCheckController
 global CyrusAssetStage,CyrusAssetImport,CyrusAssetImportPlan,CyrusAssetReview,CyrusRecipeImport,CyrusRecipePut
 global CyrusOpenAssetImport,CyrusAssetImportEditor,CyrusAssetImportOpenData,CyrusRecipeValidateBindings
 global CyrusAssetColorContext,CyrusAssetCheckColor,CyrusAssetBitmapDirectory,CyrusAssetRestoreMap
-global CyrusAssetSharedSnapshot
-struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined)
+global CyrusAssetSharedSnapshot,CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetCaptureSpline,CyrusAssetBoundNode
+struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false)
 if CyrusAssetJobs==undefined do CyrusAssetJobs=#()
 struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined)
 fn CyrusAssetBitmapDirectory = (pathConfig.appendPath (getDir #userScripts) "CyrusScatter\\ImportedAssets")
@@ -181,11 +381,31 @@ fn CyrusAssetRoleIsSource role = (
     for purpose in purposes where findItem #("sources","procSourceNodes") purpose==0 do return false
     true
 )
-fn CyrusAssetCapture root recipePath digest bindings directory = (
+fn CyrusAssetRoleIsReceiver role = (
+    if (CyrusRecipeGet role "kind")!="node" do return false
+    local purposes=CyrusRecipeGet role "purposes"
+    for purpose in purposes where findItem #("surface","surfaceNodes","procReceiverNodes","areaTarget","paintReceiver") purpose==0 do return false
+    purposes.count>0
+)
+fn CyrusAssetRoleIsPath role = (
+    if (CyrusRecipeGet role "kind")!="node" do return false
+    local purposes=CyrusRecipeGet role "purposes"
+    for purpose in purposes where findItem #("areaNodes","patternLines","patternPaths") purpose==0 do return false
+    purposes.count>0
+)
+fn CyrusAssetCaptureSpline source roleID metres index = (
+    if not isValidNode source or superclassof source!=Shape or source.modifiers.count>0 or source.parent!=undefined or source.children.count>0 do throw "Ready presets require independent static spline paths."
+    CyrusAssetCheckController source.transform.controller;cyrusRecipeCheckStatic source.baseObject
+    local curves=cyrusAssetSplineSnapshot source metres,values=#(),transform=source.objectTransform
+    for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
+    CyrusRecipeObject #(#("id","spline-"+(index as string)),#("name",source.name),#("transform",values),#("wireColor",#(source.wireColor.r as double,source.wireColor.g as double,source.wireColor.b as double)),#("roles",#(roleID)),#("curves",curves))
+)
+fn CyrusAssetCapture root recipePath digest bindings directory includeContext:false = (
     CyrusRequireAuthor();CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=1 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed. Review it again before export."
-    local document=cyrusRecipeReadMetadata recipePath,roles=CyrusRecipeGet document "roles",context=CyrusAssetCaptureContext directory:directory,nodes=#(),nodeValues=#(),meshes=#(),external=#(),metres=(units.decodeValue "1m") as double
+    local document=if includeContext then cyrusRecipeRead recipePath else cyrusRecipeReadMetadata recipePath
+    local roles=CyrusRecipeGet document "roles",context=CyrusAssetCaptureContext directory:directory,nodes=#(),nodeValues=#(),meshes=#(),splines=#(),external=#(),metres=(units.decodeValue "1m") as double
     if not (doesDirectoryExist directory) do throw "Owned asset staging folder is missing."
     for role in roles do (
         local roleID=CyrusRecipeGet role "id"
@@ -193,7 +413,8 @@ fn CyrusAssetCapture root recipePath digest bindings directory = (
             local value=CyrusRecipeResolve bindings roleID,id=CyrusAssetMap context value
             if id==undefined do throw "Bind every texture role before portable export."
             for row in context.maps where (CyrusRecipeGet row "id")==id do append (CyrusRecipeGet row "roles") roleID
-        ) else if not (CyrusAssetRoleIsSource role) then append external roleID
+        ) else if includeContext and (CyrusAssetRoleIsPath role) then append splines (CyrusAssetCaptureSpline (CyrusRecipeResolve bindings roleID) roleID metres (splines.count+1))
+        else if not (CyrusAssetRoleIsSource role) and not (includeContext and (CyrusAssetRoleIsReceiver role)) then append external roleID
         else (
             local source=CyrusRecipeResolve bindings roleID
             if not isValidNode source do throw ("Bind the source to package: "+CyrusRecipeGet role "name")
@@ -202,10 +423,23 @@ fn CyrusAssetCapture root recipePath digest bindings directory = (
             else (
                 if nodes.count>=128 do throw "Package source limit is 128."
                 if isGroupHead source or isGroupMember source or source.children.count>0 or source.parent!=undefined do throw "Portable sources must be independent objects; groups and hierarchies need their own adapter."
-                if source.modifiers.count>0 do throw "Portable sources currently require static geometry without modifiers. The source is preserved."
+                if source.modifiers.count>0 and not (includeContext and (CyrusAssetRoleIsReceiver role)) do throw "Portable sources currently require static geometry without modifiers. The source is preserved."
                 CyrusAssetCheckController source.transform.controller
                 cyrusRecipeCheckStatic source.baseObject
-                if findItem #(Box,Sphere,Cylinder,Cone,Pyramid,GeoSphere,Editable_Mesh,Editable_Poly) (classof source.baseObject)==0 do throw "This geometry class has no qualified portable adapter."
+                if includeContext and (CyrusAssetRoleIsReceiver role) do (
+                    -- Terrain is an evaluated snapshot, including produced mesh
+                    -- channels, rather than a serialized modifier stack.
+                    for record in (CyrusRecipeGet document "layers") do (
+                        local paint=CyrusRecipeGet record "paint"
+                        if paint!=undefined and (CyrusRecipeGet paint "receiverRole")==roleID do CyrusRecipeRestorePaint paint source document
+                        for area in (CyrusRecipeGet record "areas") do (
+                            local data=CyrusRecipeGet area "paint"
+                            if data!=undefined and (CyrusRecipeGet data "receiverRole")==roleID do CyrusRecipeRestorePaint data source document
+                        )
+                    )
+                    if findItem (CyrusRecipeGet role "purposes") "paintReceiver">0 and source.objectTransform!=source.transform do throw "Ready presets with Paint require receiver object offsets baked before painting. The original Paint and settings recipe are preserved."
+                )
+                if findItem #(Box,Sphere,Cylinder,Cone,Pyramid,GeoSphere,Editable_Mesh,Editable_Poly,Plane) (classof source.baseObject)==0 do throw "This geometry class has no qualified portable adapter."
                 local materialID=CyrusAssetMaterial context source.material,number=(nodes.count+1) as string,meshID="mesh-"+number,fileID="mesh-file-"+number,path=pathConfig.appendPath directory (fileID+".cmesh")
                 local info=cyrusAssetMeshExport source path metres,transform=source.transform,values=#()
                 for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
@@ -219,6 +453,7 @@ fn CyrusAssetCapture root recipePath digest bindings directory = (
     )
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed during asset capture. Export was cancelled."
     local graph=CyrusRecipeObject #(#("format","cyrus.library-assets"),#("version",1),#("nodes",nodes),#("meshes",meshes),#("materials",context.materials),#("maps",context.maps),#("files",context.files),#("externalRoles",external))
+    if includeContext do (CyrusRecipePut graph "version" 2;CyrusRecipePut graph "splines" splines)
     #(graph,context.fileBindings)
 )
 
@@ -258,7 +493,7 @@ fn CyrusAssetWatch token stage = (
 fn CyrusOpenAssetExport root path digest = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=1 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo path)[11]!=digest do throw "Recipe changed. Refresh before export."
     local document=cyrusRecipeReadMetadata path
     if CyrusAssetExportEditor!=undefined do try(destroyDialog CyrusAssetExportEditor)catch()
@@ -393,6 +628,15 @@ fn CyrusAssetRestoreMap data fileData token currentColor = (
         opened=undefined;result
     )catch(if opened!=undefined do close opened;throw())
 )
+fn CyrusAssetBoundNode data bindings = (
+    local roles=CyrusRecipeGet data "roles",found=0,node=undefined
+    for role in roles do for pair in bindings where pair[1]==role do (
+        if pair[2]==undefined or (node!=undefined and pair[2]!=node) do throw "Packaged context bindings disagree."
+        node=pair[2];found+=1
+    )
+    if found>0 and found!=roles.count do throw "Bind every role of a shared packaged context node together."
+    node
+)
 fn CyrusAssetStage package bindings = (
     if not theHold.Holding() do throw "Portable source staging requires the recipe's authored transaction."
     local graph=package[1],directory=package[2],metres=(units.decodeValue "1m") as double,materials=#(),maps=#(),files=CyrusRecipeGet graph "files",meshes=CyrusRecipeGet graph "meshes",resolved=for pair in bindings collect #(pair[1],pair[2])
@@ -418,7 +662,7 @@ fn CyrusAssetStage package bindings = (
         material.adTextureLock=CyrusRecipeGet data "textureLock"
         append materials #((CyrusRecipeGet data "id"),material)
     )
-    for data in (CyrusRecipeGet graph "nodes") do (
+    for data in (CyrusRecipeGet graph "nodes") where (CyrusAssetBoundNode data bindings)==undefined do (
         local meshID=CyrusRecipeGet data "mesh",meshData=undefined,fileData=undefined
         for row in meshes where (CyrusRecipeGet row "id")==meshID do meshData=row
         for row in files where (CyrusRecipeGet row "id")==(CyrusRecipeGet meshData "file") do fileData=row
@@ -429,6 +673,21 @@ fn CyrusAssetStage package bindings = (
         node.wireColor=colorValue (CyrusRecipeGet data "wireColor")
         local materialID=CyrusRecipeGet data "material"
         if materialID!=undefined do node.material=CyrusRecipeResolve materials materialID
+        if package.count>4 do for role in package[5] where (CyrusAssetRoleIsReceiver role) and findItem (CyrusRecipeGet data "roles") (CyrusRecipeGet role "id")>0 do (
+            node.isHidden=false;appendIfUnique package[4] node
+        )
+        for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
+    )
+    if (CyrusRecipeGet graph "version")==2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
+        local node=splineShape name:(CyrusRecipeGet data "name"),values=CyrusRecipeGet data "transform",index=0
+        fn pointValue value metres = [value[1]*metres,value[2]*metres,value[3]*metres]
+        for curve in (CyrusRecipeGet data "curves") do (
+            addNewSpline node;index+=1
+            for knot in (CyrusRecipeGet curve "knots") do addKnot node index ((CyrusRecipeGet knot "type") as name) ((CyrusRecipeGet knot "line") as name) (pointValue (CyrusRecipeGet knot "point") metres) (pointValue (CyrusRecipeGet knot "in") metres) (pointValue (CyrusRecipeGet knot "out") metres)
+            if CyrusRecipeGet curve "closed" do close node index
+        )
+        updateShape node;node.transform=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
+        node.wireColor=colorValue (CyrusRecipeGet data "wireColor");node.isHidden=true
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
     )
     resolved
@@ -451,7 +710,8 @@ fn CyrusAssetImport plan preparedToken:0L = (
         CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation
     ) else (
         if plan.assets!=#clone do throw "Unsupported asset reuse policy."
-        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken))
+        local packagedReceivers=#()
+        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"))) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined)
     )
 )
 
@@ -561,7 +821,7 @@ global CyrusRecipeCaptureContext,CyrusRecipePut,CyrusRecipeOwnerNode,CyrusRecipe
 global CyrusRecipeRole,CyrusRecipeCaptureValue,CyrusRecipeCaptureSettings,CyrusRecipeCapturePaint
 global CyrusRecipeResolve,CyrusRecipeValidateBindings,CyrusRecipeApplyValue,CyrusRecipeApplySettings
 global CyrusRecipeRestorePaint,CyrusRecipeDirectory,CyrusRecipeBundledDirectory,CyrusRecipeSuggestBindings,CyrusOpenPresets,CyrusPresetSameValues,CyrusRecipeViewPreferences,CyrusRecipeIsBundled,CyrusRecipeEditDetails,CyrusRecipeDetailEditor,CyrusRecipeDetailOpenData
-global CyrusOpenAssetExport,CyrusOpenAssetImport
+global CyrusOpenAssetExport,CyrusOpenAssetImport,CyrusOpenReadyPreset,CyrusPresetPackageDirectory,CyrusPresetSaveReady,CyrusPresetReviseReady
 global CyrusRecipeFields,CyrusRecipeSchemaCache=undefined
 -- The matching module's fixed schema is read-only for these consumers. Avoid
 -- rebuilding hundreds of rows for every owner on every explicit capture.
@@ -648,9 +908,9 @@ fn CyrusRecipeCapturePaint context owner = (
     context.paintDocuments+=1;context.paintBytes+=bytes
     CyrusRecipeObject #(#("payload",data[1]),#("receiverRole",CyrusRecipeRole context (cyrusBrushTarget owner.paintDocument) "node" "paintReceiver"),#("radius",data[2]),#("erase",data[3]),#("frame",data[4]))
 )
-fn CyrusRecipeCapture root selected name = (
+fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.85.2 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.85.3 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -685,6 +945,7 @@ fn CyrusRecipeCapture root selected name = (
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
+    if bindingResult!=undefined do for i=1 to context.roles.count do append bindingResult #((CyrusRecipeGet context.roles[i] "id"),context.values[i])
     document
 )
 fn CyrusRecipeResolve bindings identity = (
@@ -750,14 +1011,15 @@ fn CyrusRecipeApplySettings owner settings bindings variation:#new = (
     owner.fieldFalloff=false;owner.fieldBoundaries=false
     true
 )
-fn CyrusRecipeRestorePaint data target document = (
+fn CyrusRecipeRestorePaint data target document packaged:false = (
     if data==undefined do return undefined
     local unitsNow=(units.decodeValue "1m") as double,unitsSaved=CyrusRecipeGet document "unitsPerMetre"
+    if packaged do return (cyrusBrushPresetRestore (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame") (unitsNow/unitsSaved))
     if target!=undefined and abs(unitsNow-unitsSaved)>1e-9*(amax 1.0 (abs unitsSaved)) do throw "Native Paint requires its saved system-unit context. Original coverage is retained; use matching units before binding."
     cyrusBrushRecipeImport (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame")
 )
 
-fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined = (
+fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined = (
     if findItem #(#same,#new) variation==0 do throw "Choose Saved or New variation."
     CyrusRequireAuthor()
     if theHold.Holding() do throw "Finish the current undoable operation before importing a recipe."
@@ -776,6 +1038,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
     local oldSuspended=CyrusPointSuspended,root=destination,createdNode=undefined,imported=#(),identityMap=#(),committed=false
     theHold.Begin();CyrusPointSuspended=true
     try (
+        if packagedPaintReceivers!=undefined do cyrusPresetTrackPublication (join #(destination) (destination.layerObjects as array))
         with animate off (
             if prepareAssets!=undefined do (
                 -- Only the trusted package command supplies this internal factory.
@@ -800,7 +1063,8 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                 owner.procOrder=root.layerObjects.count+imported.count+1;owner.procSetOrder=owner.procOrder
                 owner.paintAreas=#()
                 local paint=CyrusRecipeGet record "paint"
-                owner.paintDocument=CyrusRecipeRestorePaint paint (if paint==undefined then undefined else CyrusRecipeResolve bindings (CyrusRecipeGet paint "receiverRole")) document
+                local paintTarget=if paint==undefined then undefined else CyrusRecipeResolve bindings (CyrusRecipeGet paint "receiverRole")
+                owner.paintDocument=CyrusRecipeRestorePaint paint paintTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers paintTarget>0)
                 for areaRecord in (CyrusRecipeGet record "areas") do (
                     local area=createInstance AminScatterObject
                     if newSetup do cyrusRecipeTrackCreated area
@@ -809,7 +1073,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")
                     local areaPaint=CyrusRecipeGet areaRecord "paint"
                     if areaPaint!=undefined and (CyrusRecipeResolve bindings (CyrusRecipeGet areaPaint "receiverRole"))!=area.areaTarget do throw "Paint document and area binding disagree."
-                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document
+                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers area.areaTarget>0)
                     area.setLayerTransfer false;append owner.paintAreas area
                     append identityMap #((CyrusRecipeGet areaRecord "id"),area)
                 )
@@ -898,10 +1162,13 @@ fn CyrusRecipeEditDetails path expected version = (
             savedTags.text=tags
         )
         on commitDetails pressed do try (
+            if CyrusPresetReviseEditor!=undefined do throw "Wait for the current preset revision to finish before saving details again."
             local tags=#()
             for value in filterString savedTags.text "," do (local tag=trimRight (trimLeft value);if tag!="" do appendIfUnique tags tag)
             local metadata=CyrusRecipeObject #(#("category",trimRight (trimLeft savedCategory.text)),#("tags",tags),#("description",savedDescription.text))
+            local previous=expected
             expected=cyrusRecipeEntryWrite path (CyrusRecipeObject #(#("name",trimRight (trimLeft savedName.text)))) metadata imagePath capture expected true
+            CyrusPresetReviseReady path previous expected
             -- The previous image path remains immutable and readable across revisions.
             local summary=cyrusRecipeInfo path
             identity.text=filenameFromPath path+" | revision "+((summary[15] as integer) as string)
@@ -925,7 +1192,7 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
     if path!="" and CyrusRecipeIsBundled path (root.uiVersion()) do throw "Bundled examples are read-only. Save a copy in My recipes."
     if CyrusRecipeSaveEditor!=undefined do try(destroyDialog CyrusRecipeSaveEditor)catch()
     rollout editor "Save planting recipe" width:440 height:590 (
-        local root,node,owners=#(),directory="",reviewPath="",reviewHash="",thumbnailFile="",thumbnailCapture=undefined,ownedCapture=""
+        local root,node,owners=#(),directory="",reviewPath="",reviewHash="",thumbnailFile="",thumbnailCapture=undefined,ownedCapture="",captureBindings=#()
         label title "Save selected layers, their settings and Paint" pos:[12,12] width:416
         multiListBox saveLayers "Layers - evaluation order" pos:[12,38] width:416 height:5
         edittext recipeName "Name:" pos:[12,142] width:416
@@ -937,7 +1204,8 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
         button captureThumbnail "Capture viewport" pos:[12,348] width:202 tooltip:"Capture published plants without recalculating. Update pending settings first."
         button updateCapture "Update + capture" pos:[226,348] width:202 tooltip:"Explicitly update the Scatter setup, then capture the active viewport."
         label thumbnailInfo "Optional PNG, up to 1024 px and 2 MiB" pos:[12,384] width:416 height:40
-        label saveNote "Saved Paint remains bound to compatible receiver geometry. Models and terrain are bound when loading the recipe." pos:[12,429] width:416 height:44
+        label saveNote "Complete settings and Paint are saved. Include assets for a preset that loads without model picking." pos:[12,429] width:416 height:28
+        checkbox readyPreset "Include models, materials, terrain and paths" pos:[12,461] width:416 checked:true tooltip:"Save a ready-to-use preset. Static supported assets are packaged with complete Paint. Uncheck for a settings-only recipe with external bindings."
         button saveRecipe "Save new copy" pos:[12,482] width:132
         button updateRecipe "Update selected" pos:[154,482] width:132 enabled:false
         button closeButton "Close" pos:[296,482] width:132
@@ -945,7 +1213,8 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
         fn validRoot = (CyrusRecipeCheckRoot root node)
         fn captureSelection = (
             validRoot();local selected=for i in saveLayers.selection where i<=owners.count collect owners[i]
-            CyrusRecipeCapture root selected (trimRight (trimLeft recipeName.text))
+            captureBindings=#()
+            CyrusRecipeCapture root selected (trimRight (trimLeft recipeName.text)) bindingResult:captureBindings
         )
         fn metadataValues = (
             local tags=#()
@@ -1000,6 +1269,10 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
             local digest=cyrusRecipeEntryWrite path data (metadataValues()) thumbnailFile thumbnailCapture (if updating then reviewHash else "") false
             if updating do reviewHash=digest
             status.text=if updating then "Updated recipe and Paint. Previous revision retained." else "Saved new recipe and Paint. Models and terrain require binding on load."
+            if readyPreset.checked do (
+                status.text="Settings and Paint saved. Packaging the preset assets..."
+                CyrusPresetSaveReady root path digest captureBindings
+            )
             if CyrusRecipeBrowser!=undefined do try(CyrusRecipeBrowser.refreshEntry path)catch(status.text+=" Refresh the library to see it.")
             path
         )
@@ -1193,7 +1466,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.85.2 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.85.3 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -1357,11 +1630,11 @@ fn CyrusOpenRecipeStyle root path digest = (
 fn CyrusOpenRecipeLibrary root = (
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=3 do throw "Restart Max with the complete Cyrus 0.85.2 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=3 do throw "Restart Max with the complete Cyrus 0.85.3 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.85.2.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.85.2 gallery package."
+    if assemblyName.Version.ToString()!="0.85.3.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.85.3 gallery package."
     if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
     rollout browser "Cyrus Library" width:1000 height:680 (
         local root,node,directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
@@ -1436,7 +1709,9 @@ fn CyrusOpenRecipeLibrary root = (
                 local entry=selectedEntry()
                 if entry==undefined do throw "Select a recipe."
                 local packageDirectory=getFilenamePath entry[1]
-                if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenAssetImport root packageDirectory
+                local readyDirectory=CyrusPresetPackageDirectory entry[1] entry[2][11]
+                if doesFileExist (pathConfig.appendPath readyDirectory "cyrus.package.json") then CyrusOpenReadyPreset root readyDirectory expected:entry[2][11]
+                else if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenReadyPreset root packageDirectory expected:entry[2][11]
                 else CyrusOpenRecipeLoad root entry[1] entry[2][11]
             )
         )
@@ -1473,6 +1748,13 @@ fn CyrusOpenRecipeLibrary root = (
                 "export":(
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
                     CyrusOpenAssetExport root entry[1] entry[2][11]
+                )
+                "bindings":(
+                    local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
+                    local packageDirectory=getFilenamePath entry[1],readyDirectory=CyrusPresetPackageDirectory entry[1] entry[2][11]
+                    if doesFileExist (pathConfig.appendPath readyDirectory "cyrus.package.json") then CyrusOpenAssetImport root readyDirectory
+                    else if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenAssetImport root packageDirectory
+                    else CyrusOpenRecipeLoad root entry[1] entry[2][11]
                 )
                 "edit":(
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
@@ -1770,7 +2052,7 @@ fn CyrusResetTimeOwners = (
     CyrusTimeOwners=for node in objects where classof node.baseObject==AminScatterObject collect node
 )
 
-global CyrusDiagnosticEmit,CyrusActiveActionID=0L,CyrusActionSequence=0L,CyrusBeginAction,CyrusEndAction
+global CyrusDiagnosticEmit,CyrusActiveActionID=0L,CyrusActionSequence=0L,CyrusBeginAction,CyrusEndAction,CyrusScriptWorkspaceReserved
 fn CyrusDiagnosticEmit event origin owner epoch detail correlation:undefined = (
     if cyrusDiagnosticActive!=undefined do try (
         if cyrusDiagnosticActive() do cyrusDiagnosticEvent event origin owner epoch detail (if correlation==undefined then CyrusActiveActionID else correlation)
@@ -1940,6 +2222,8 @@ fn CyrusUIResultText root owner = (
         if state.densityCapped do text+="\nDensity limited to 1,000,000 candidates."
     )
     if state.errorText!="" do text+="\n\n"+state.errorText
+    if owner.populationMode==1 and owner.amount!=owner.requestedCount do text+="\nCurrent Count: "+(CyrusUICount owner.amount)+"; showing the last completed result."
+    if CyrusScriptWorkspaceReserved>0 do text+="\n\nSession script workspace expanded by "+(((ceil (CyrusScriptWorkspaceReserved/1048576.0)) as integer) as string)+" MB. Saved Max preferences unchanged."
     text
 )
 
@@ -2239,6 +2523,24 @@ fn AminScatterSourceFilter n = (
 try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 
 global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade)
+-- Reserve the documented session heap before large script transports can force
+-- automatic full collection. This never changes the saved initial heap setting.
+global CyrusScriptWorkspaceReserved=0L
+fn CyrusReserveScriptWorkspace required = (
+    if required<0 do throw "Invalid Update working-memory request."
+    if heapFree<required do gc light:true
+    if heapFree<required do (
+        local before=heapSize,target=undefined,failure=""
+        try (
+            target=cyrusScriptMemoryTarget heapSize heapFree required
+            heapSize=target
+        ) catch(failure=getCurrentException())
+        if failure!="" do throw ("Cannot reserve Update working memory without risking Undo: "+failure+". The previous complete result is retained.")
+        CyrusScriptWorkspaceReserved+=amax 0L (heapSize-before)
+    )
+    if heapFree<required do throw "Update workspace reservation was insufficient. The previous complete result and Undo history are retained."
+    true
+)
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
 global CyrusReceiverVariationDomains,CyrusRemapLayerCorrespondence
@@ -4101,7 +4403,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.85.2"
+    fn uiVersion = "0.85.4"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -5372,14 +5674,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.2 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.4 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -5560,6 +5862,7 @@ initialRollupState:0x8
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
         procPreviewModes=state[21];procPreviewModesEpoch=state[22];orientationTimeObserved=state[23]
     )
+    local procPresetPublicationRestored=false
     fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats,procDependencyHandles))
     fn procRestoreResult state = (
         this.procRestorePreview state[1];procLastStats=state[2];procLastRounds=state[3];procEpoch=state[4];requestedCount=state[5]
@@ -5676,7 +5979,7 @@ initialRollupState:0x8
         -- These are admission allowances, not reported process-memory usage.
         -- The 30k fixture measured ~43.5 MB preparation, 2.3 MB per radius pass
         -- and 1.8 MB scheduling. Extra row-producing falloff passes add room.
-        if theHold.Holding() or (theHold.GetUndoNames()).count>0 or (theHold.GetRedoNames()).count>0 do (
+        (
             local requiredHeap=8388608L
             for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
                 local leaf=layerObjects[i],pool=requests[i][3] as integer64,plants=leaf.validSources()
@@ -5693,11 +5996,9 @@ initialRollupState:0x8
                     requiredHeap+=pool*(2048L+passes*512L)
                 )
             )
-            -- Light collection is documented to preserve Undo; never request a
-            -- full collection, delayed flush, or a heap preference change. It
-            -- runs only for an actual successor that fails initial admission.
-            if heapFree<requiredHeap do gc light:true
-            if heapFree<requiredHeap do throw ("Update needs "+(((ceil (requiredHeap/1048576.0)) as integer) as string)+" MB of free MAXScript working memory to preserve Undo. This session has "+(((floor (heapFree/1048576.0)) as integer) as string)+" MB. Reduce Amount or retry limits. The previous complete result and Undo history are retained.")
+            -- Light collection and a bounded session reservation precede row
+            -- transport. Never flush history or alter saved heap preferences.
+            CyrusReserveScriptWorkspace requiredHeap
         )
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
         local publishedMetadata=for leaf in layerObjects collect undefined
@@ -14845,7 +15146,7 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.85.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.85.4" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -14968,7 +15269,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.85.2 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.85.4 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
@@ -15511,6 +15812,13 @@ fn AminScatterLayerUndo = (
     CyrusResetTimeOwners()
     for n in objects where classof n.baseObject==AminScatterObject do (
         for entry in (n.baseObject.layerEntries includeDisabled:true) do entry[2].forcePreviewUpdate()
+        if n.baseObject.procPresetPublicationRestored do (
+            n.baseObject.procPresetPublicationRestored=false
+            n.baseObject.procPublishedDisplayKey=""
+            for leaf in n.baseObject.layerObjects do (leaf.procPreviewDisplayKey="";leaf.procPresetPublicationRestored=false)
+            n.baseObject.procEnsureDisplay pending:(n.baseObject.groupSnapshotKey!=n.baseObject.procInputKey())
+            CyrusViewportRecordsDirty=true
+        )
         if (modPanel.getCurrentObject())==n.baseObject do AminScatterRefreshLayerPanels n.baseObject
     )
     CyrusViewportRedraw()

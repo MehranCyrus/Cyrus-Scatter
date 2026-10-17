@@ -55,3 +55,15 @@ def test_library_package_requires_exact_content_and_confined_paths(tmp_path):
     inventory['files']={'../outside.max':'a'*64};(tmp_path/'inventory.json').write_text(json.dumps(inventory))
     with pytest.raises(ValueError,match='Unsafe'):builder.library_payload(tmp_path,'0.82.6.1')
     with pytest.raises(ValueError,match='version/host'):builder.library_payload(tmp_path,'0.83.0')
+
+
+def test_ready_mesh_payload_requires_content_addressed_preset_path(tmp_path):
+    name='Presets/'+'a'*64+'/assets/'+'b'*64+'.cmesh'
+    path=tmp_path/name;path.parent.mkdir(parents=True);path.write_bytes(b'bounded fixture')
+    inventory={'version':'0.85.3','max_year':2027,'files':{name:builder.sha(path.read_bytes())}}
+    (tmp_path/'inventory.json').write_text(json.dumps(inventory))
+    assert builder.library_payload(tmp_path,'0.85.3')['Library/'+name]==path.read_bytes()
+    for rejected in ('loose.cmesh','Presets/short/assets/'+('b'*64)+'.cmesh',name.replace('.cmesh','.dll')):
+        inventory['files']={rejected:builder.sha(path.read_bytes())}
+        (tmp_path/'inventory.json').write_text(json.dumps(inventory))
+        with pytest.raises(ValueError,match='Unsupported bundled'):builder.library_payload(tmp_path,'0.85.3')

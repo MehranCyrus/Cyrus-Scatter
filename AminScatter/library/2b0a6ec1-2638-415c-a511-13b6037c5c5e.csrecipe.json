@@ -950,11 +950,11 @@
     },
     "thumbnail": {
       "bytes": 469424,
-      "file": "recipe-data-e1592409d58f330ffa85b138add62df4/thumbnail.png",
+      "file": "recipe-data-e9f7fb1f4bbc3dd89624cabb3ab0db6b/thumbnail.png",
       "sha256": "acbb719d07572cae1281feeecb77c2d3cbdbab4d65d921e5aa0368b7419230b5"
     }
   },
-  "revision": 2,
+  "revision": 4,
   "roles": [
     {
       "id": "role-1",

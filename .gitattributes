@@ -160,3 +160,31 @@
 /website/content/guide-chapters.json -text whitespace=cr-at-eol
 /website/content/source-manifest.json -text whitespace=cr-at-eol
 /website/verification/react-static-checks.json -text whitespace=cr-at-eol
+
+# Exact-byte inputs of the qualified 0.85.3/0.85.4 implementation checkpoint.
+/AminScatter/CMakeLists.txt -text whitespace=cr-at-eol
+/AminScatter/include/recipes.h -text whitespace=cr-at-eol
+/AminScatter/src/asset_package.cpp -text whitespace=cr-at-eol
+/AminScatter/src/brush_host.cpp -text whitespace=cr-at-eol
+/AminScatter/src/preview.cpp -text whitespace=cr-at-eol
+/AminScatter/src/recipe_store.cpp -text whitespace=cr-at-eol
+/AminScatter/src/recipes.cpp -text whitespace=cr-at-eol
+/AminScatter/src/recipes_bridge.cpp -text whitespace=cr-at-eol
+/AminScatter/tools/ui/generate.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/approved-main-ui.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/recipes.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/unified-core.ms -text whitespace=cr-at-eol
+/AminScatter/ui/LibraryGallery.cs -text whitespace=cr-at-eol
+/CyrusMCP/tests/test_feature_catalog.py -text whitespace=cr-at-eol
+/tools/build_max.py -text whitespace=cr-at-eol
+/tools/memory_0854/presets.ms -text whitespace=cr-at-eol
+/tools/presets_0853/acceptance.ms -text whitespace=cr-at-eol
+/tools/presets_0853/inspect_layout.py -text whitespace=cr-at-eol
+/tools/presets_0853/inspect_library.py -text whitespace=cr-at-eol
+/tools/presets_0853/installer_exe.ps1 -text whitespace=cr-at-eol
+/tools/presets_0853/library.py -text whitespace=cr-at-eol
+/tools/presets_0853/package.py -text whitespace=cr-at-eol
+/tools/presets_0853/recipient.py -text whitespace=cr-at-eol
+/tools/presets_0853/workflow.ms -text whitespace=cr-at-eol
+/tools/procedural_lab/build_feature_catalog.py -text whitespace=cr-at-eol
+/tools/procedural_lab/check_generated.py -text whitespace=cr-at-eol

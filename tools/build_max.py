@@ -89,7 +89,10 @@ def library_payload(folder, version):
         if not re.fullmatch(r'[A-Za-z0-9_.\-/]+', name) or '..' in name or name.startswith('/'):
             raise ValueError('Unsafe bundled example path: '+name)
         path = (folder / name).resolve()
-        if not path.is_relative_to(folder.resolve()) or path.suffix.lower() not in ('.json', '.png', '.cspaint', '.max', '.md', '.txt'):
+        allowed = path.suffix.lower() in ('.json', '.png', '.cspaint', '.max', '.md', '.txt')
+        if path.suffix.lower() == '.cmesh':
+            allowed = re.fullmatch(r'Presets/[a-f0-9]{64}/assets/[a-f0-9]{64}\.cmesh', name) is not None
+        if not path.is_relative_to(folder.resolve()) or not allowed:
             raise ValueError('Unsupported bundled example: '+name)
         data = path.read_bytes();total += len(data)
         if total > 128*1024*1024 or sha(data) != expected:

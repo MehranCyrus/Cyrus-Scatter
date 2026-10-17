@@ -2,7 +2,7 @@
   "evaluationContract": "CyrusUnified1",
   "exportScope": "complete-setup",
   "format": "cyrus.planting-recipe",
-  "formatVersion": 1,
+  "formatVersion": 5,
   "hostYear": 2027,
   "id": "68e28fee-6e72-4dd7-9f0d-3aebe8110ff0",
   "layers": [
@@ -28,7 +28,7 @@
             ],
             "payload": {
               "bytes": 268,
-              "file": "paint-68e28fee-6e72-4dd7-9f0d-3aebe8110ff0.payload/paint-1.cspaint",
+              "file": "recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/paint-1.cspaint",
               "sha256": "de23637359e59378389154387462da1bacc57ff2c5b39c66602d81257f1c931d"
             },
             "radius": 20.0,
@@ -114,6 +114,12 @@
             "finalNeighborRadius": 100.0,
             "finalRelax": false,
             "finalStrength": 0.30000001192092896,
+            "gridColumnWU": 100.0,
+            "gridHeading": 0.0,
+            "gridJitter": 0.0,
+            "gridOriginXWU": 0.0,
+            "gridOriginYWU": 0.0,
+            "gridRowWU": 100.0,
             "groupCenters": false,
             "iconSize": 10.0,
             "identificationMode": 1,
@@ -138,6 +144,12 @@
             "movZMaxWU": 0.0,
             "movZMinWU": 0.0,
             "movementRange": 0.0,
+            "orientationBlend": 100.0,
+            "orientationMode": 1,
+            "orientationTarget": null,
+            "orientationX": 0.0,
+            "orientationY": 1.0,
+            "orientationZ": 0.0,
             "paintColor": [
               130.19032287597656,
               191.60606384277344,
@@ -154,6 +166,7 @@
             "patternLines": [],
             "patternPaths": [],
             "patternWidths": [],
+            "placementMode": 1,
             "plantsPerM2": 100.0,
             "pointColorMode": 2,
             "pointsPerPlant": 80,
@@ -168,6 +181,7 @@
             "procReceiverID": "",
             "procReceiverIDs": [],
             "procReceiverNodes": [],
+            "procReceiverVariationIDs": [],
             "procRepair": true,
             "procRounds": 8,
             "procSamplingSalt": 0,
@@ -374,6 +388,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -398,6 +418,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -414,6 +440,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -431,6 +458,9 @@
         ],
         "procReceiverNodes": [
           "role-1"
+        ],
+        "procReceiverVariationIDs": [
+          "c0564e41-42a0-45d7-8a98-6f03ed5211fc"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -695,6 +725,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -719,6 +755,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -747,6 +789,7 @@
           1.0,
           1.0
         ],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -764,6 +807,9 @@
         ],
         "procReceiverNodes": [
           "role-1"
+        ],
+        "procReceiverVariationIDs": [
+          "0d0fca55-5fb9-4e52-8020-14adb7879d1d"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -977,6 +1023,24 @@
     }
   ],
   "name": "Painted garden and spline borders",
+  "presentation": {
+    "capture": null,
+    "metadata": {
+      "category": "Gardens",
+      "description": "Saved Paint with an inner clearing, plus two spline Bands with independent density and scale curves. Use the included compatible terrain for Paint.",
+      "tags": [
+        "paint",
+        "bands",
+        "curves"
+      ]
+    },
+    "thumbnail": {
+      "bytes": 221986,
+      "file": "recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/thumbnail.png",
+      "sha256": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be"
+    }
+  },
+  "revision": 4,
   "roles": [
     {
       "id": "role-1",
@@ -1110,6 +1174,12 @@
     "finalNeighborRadius": 100.0,
     "finalRelax": false,
     "finalStrength": 0.30000001192092896,
+    "gridColumnWU": 100.0,
+    "gridHeading": 0.0,
+    "gridJitter": 0.0,
+    "gridOriginXWU": 0.0,
+    "gridOriginYWU": 0.0,
+    "gridRowWU": 100.0,
     "groupCenters": false,
     "iconSize": 10.0,
     "identificationMode": 1,
@@ -1134,6 +1204,12 @@
     "movZMaxWU": 0.0,
     "movZMinWU": 0.0,
     "movementRange": 0.0,
+    "orientationBlend": 100.0,
+    "orientationMode": 1,
+    "orientationTarget": null,
+    "orientationX": 0.0,
+    "orientationY": 1.0,
+    "orientationZ": 0.0,
     "paintColor": [
       130.19032287597656,
       191.60606384277344,
@@ -1150,6 +1226,7 @@
     "patternLines": [],
     "patternPaths": [],
     "patternWidths": [],
+    "placementMode": 1,
     "plantsPerM2": 100.0,
     "pointColorMode": 2,
     "pointsPerPlant": 80,
@@ -1164,6 +1241,7 @@
     "procReceiverID": "",
     "procReceiverIDs": [],
     "procReceiverNodes": [],
+    "procReceiverVariationIDs": [],
     "procRepair": true,
     "procRounds": 8,
     "procSamplingSalt": 0,

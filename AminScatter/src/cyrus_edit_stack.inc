@@ -40,6 +40,15 @@ Value* cyrusEditStack_cf(Value** a,int count) {
     type_check(a[0],Array,_T("modifiers"));type_check(a[1],Array,_T("rows"));
     auto* mods=static_cast<Array*>(a[0]);auto* rows=static_cast<Array*>(a[1]);
     const int key=a[2]->to_int();const std::wstring signature=a[3]->to_string();
+    if(mods->size==0){
+        // Normalization changes only identity type. The prepared generation is
+        // immutable, so keep its already-rounded matrix/anchor values shared.
+        for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("instance row"));cyrus::rows::raw(static_cast<Array*>(rows->data[i]));}
+        two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
+        for(int i=0;i<rows->size;++i){auto* input=static_cast<Array*>(rows->data[i]);vl.row=new Array(8);vl.result->append(vl.row);
+            for(int j=0;j<8;++j)vl.row->append(j==2?static_cast<Value*>(new String((L"c:"+std::to_wstring(input->data[2]->to_int64())).c_str())):input->data[j]);}
+        return_value(vl.result);
+    }
     std::vector<EditInput> input;input.reserve(rows->size);
     for(int i=0;i<rows->size;++i) {
         type_check(rows->data[i],Array,_T("instance row"));auto* row=static_cast<Array*>(rows->data[i]);

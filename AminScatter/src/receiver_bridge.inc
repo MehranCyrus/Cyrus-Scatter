@@ -22,16 +22,19 @@ Value* cyrusReceiverPlan_cf(Value** a,int n){
     cyrus::receivers::Plan plan;
     try{plan=cyrus::receivers::plan(entries,unsigned(a[1]->to_int()),a[2]->to_double(),unsigned(a[3]->to_int()),unsigned(a[4]->to_int()));}
     catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
-    four_typed_value_locals(Array* result,Array* rows,Array* row,Array* order);
+    three_typed_value_locals(Array* result,Array* rows,Array* row);
     vl.result=new Array(5);vl.rows=new Array(int(plan.receivers.size()));vl.result->append(vl.rows);
     for(const auto& r:plan.receivers){vl.row=new Array(4);vl.rows->append(vl.row);for(auto x:{r.slot+1,r.budget,r.attempts,r.pool})vl.row->append(Integer::intern(int(x)));}
-    vl.order=new Array(int(plan.order.size()));vl.result->append(vl.order);for(auto id:plan.order)vl.order->append(Integer64::intern(id));
+    vl.result->append(cyrusNativeSchedule(std::move(plan.order)));
     vl.result->append(Integer::intern(int(plan.budget)));vl.result->append(Integer::intern(int(plan.attempts)));vl.result->append(plan.capped?&true_value:&false_value);
     return_value(vl.result);
 }
 def_visible_primitive(cyrusReceiverOffsetRows,"cyrusReceiverOffsetRows");
 Value* cyrusReceiverOffsetRows_cf(Value** a,int n){
     check_arg_count(cyrusReceiverOffsetRows,2,n);auto* rows=groupArray(a[0]);const int offset=a[1]->to_int();if(offset<0)throw RuntimeError(_T("Invalid receiver face offset"));
+    // A single receiver needs no face-index rewriting. Validate every row even
+    // on this shared immutable fast path; downstream orientation owns matrices.
+    if(offset==0){for(int i=0;i<rows->size;++i)cyrus::rows::raw(groupArray(rows->data[i]));return a[0];}
     two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
     for(int i=0;i<rows->size;++i){auto* r=groupArray(rows->data[i]);cyrus::rows::raw(r);
         const auto face=std::int64_t(r->data[3]->to_int())+offset;if(face<1||face>INT_MAX)throw RuntimeError(_T("Receiver face offset overflow"));

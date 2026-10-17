@@ -78,12 +78,13 @@ void validateEntryPresentation(const Json& presentation){
 std::string contentFingerprint(const Json& hydrated){
     validate(hydrated,true);auto data=currentDocument(hydrated);for(const auto* key:{"id","name","revision","presentation"})data.erase(key);return sha(data.dump());
 }
-std::string writeEntry(const std::filesystem::path& input,const Json& document,const Json& info,const std::filesystem::path& image,
+std::string writeEntry(const std::filesystem::path& rawInput,const Json& document,const Json& info,const std::filesystem::path& image,
     const Json& capture,const std::string& expectedHash,bool metadataOnly,const std::function<void(const char*)>& checkpoint){
+    require(rawInput.is_absolute(),"Entry save requires an absolute path.");const auto input=nativePath(rawInput);
     metadata(info);captureRecord(capture);require(input.is_absolute(),"Entry save requires an absolute path.");
     require(!input.filename().empty(),"Entry filename is empty.");
     std::filesystem::create_directories(input.parent_path());
-    const auto parent=std::filesystem::canonical(input.parent_path()),path=parent/input.filename();
+    const auto parent=nativePath(std::filesystem::canonical(input.parent_path())),path=parent/input.filename();
 #ifdef _WIN32
     localFilesystem(parent);Lock lock(std::filesystem::path(path.wstring()+L".cyrus-lock"));
 #else

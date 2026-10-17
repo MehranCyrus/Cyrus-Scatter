@@ -2,7 +2,7 @@
   "evaluationContract": "CyrusUnified1",
   "exportScope": "complete-setup",
   "format": "cyrus.planting-recipe",
-  "formatVersion": 1,
+  "formatVersion": 5,
   "hostYear": 2027,
   "id": "e9d3b9f1-de8e-47b9-8e77-c172043ac01a",
   "layers": [
@@ -103,6 +103,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -127,6 +133,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -143,6 +155,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -160,6 +173,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "30b02109-6460-4878-96c9-fb84381d8bdb"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -393,6 +409,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -417,6 +439,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -433,6 +461,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -450,6 +479,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "97da9bce-7c35-49c4-81e4-f555bf52f63c"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -683,6 +715,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -707,6 +745,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -723,6 +767,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -740,6 +785,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "c3ad7a2c-8aa6-4fee-8c35-8343a3b956b5"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -878,6 +926,24 @@
     }
   ],
   "name": "Layered meadow",
+  "presentation": {
+    "capture": null,
+    "metadata": {
+      "category": "Meadows",
+      "description": "Three grass and flower layers. Replace the procedural pyramids and flower shapes with your own vegetation.",
+      "tags": [
+        "grass",
+        "flowers",
+        "three layers"
+      ]
+    },
+    "thumbnail": {
+      "bytes": 292818,
+      "file": "recipe-data-ccdd1dbd46aec07f8779b3267968d6c7/thumbnail.png",
+      "sha256": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9"
+    }
+  },
+  "revision": 4,
   "roles": [
     {
       "id": "role-1",
@@ -999,6 +1065,12 @@
     "finalNeighborRadius": 100.0,
     "finalRelax": false,
     "finalStrength": 0.30000001192092896,
+    "gridColumnWU": 100.0,
+    "gridHeading": 0.0,
+    "gridJitter": 0.0,
+    "gridOriginXWU": 0.0,
+    "gridOriginYWU": 0.0,
+    "gridRowWU": 100.0,
     "groupCenters": false,
     "iconSize": 10.0,
     "identificationMode": 1,
@@ -1023,6 +1095,12 @@
     "movZMaxWU": 0.0,
     "movZMinWU": 0.0,
     "movementRange": 0.0,
+    "orientationBlend": 100.0,
+    "orientationMode": 1,
+    "orientationTarget": null,
+    "orientationX": 0.0,
+    "orientationY": 1.0,
+    "orientationZ": 0.0,
     "paintColor": [
       130.19032287597656,
       191.60606384277344,
@@ -1039,6 +1117,7 @@
     "patternLines": [],
     "patternPaths": [],
     "patternWidths": [],
+    "placementMode": 1,
     "plantsPerM2": 100.0,
     "pointColorMode": 2,
     "pointsPerPlant": 80,
@@ -1053,6 +1132,7 @@
     "procReceiverID": "",
     "procReceiverIDs": [],
     "procReceiverNodes": [],
+    "procReceiverVariationIDs": [],
     "procRepair": true,
     "procRounds": 8,
     "procSamplingSalt": 0,

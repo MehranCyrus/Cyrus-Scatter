@@ -2,7 +2,7 @@
   "evaluationContract": "CyrusUnified1",
   "exportScope": "complete-setup",
   "format": "cyrus.planting-recipe",
-  "formatVersion": 4,
+  "formatVersion": 5,
   "hostYear": 2027,
   "id": "d4d6e61b-6d41-4ea5-b3cc-11606d60828e",
   "layers": [
@@ -633,6 +633,25 @@
     }
   ],
   "name": "Hexagonal hillside planting",
+  "presentation": {
+    "capture": null,
+    "metadata": {
+      "category": "Gardens",
+      "description": "Even nearest-neighbor planting on a gentle hill, with low underplanting. The hexagonal row pitch is calculated from its spacing; normal blending follows the surface.",
+      "tags": [
+        "grid",
+        "hexagonal",
+        "normals",
+        "terrain"
+      ]
+    },
+    "thumbnail": {
+      "bytes": 281124,
+      "file": "recipe-data-8fb444cc46a3744a37b710f3f7b602ca/thumbnail.png",
+      "sha256": "92274aaaf6d5c6e3cb2386f8848de7fd4da688c73c9252130b830bc922c86fd4"
+    }
+  },
+  "revision": 4,
   "roles": [
     {
       "id": "role-1",

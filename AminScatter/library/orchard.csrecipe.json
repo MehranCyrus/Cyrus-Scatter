@@ -2,7 +2,7 @@
   "evaluationContract": "CyrusUnified1",
   "exportScope": "complete-setup",
   "format": "cyrus.planting-recipe",
-  "formatVersion": 4,
+  "formatVersion": 5,
   "hostYear": 2027,
   "id": "8e1c6066-9775-4a1b-bbdb-4478e0f242c8",
   "layers": [
@@ -620,6 +620,25 @@
     }
   ],
   "name": "Rectangular orchard",
+  "presentation": {
+    "capture": null,
+    "metadata": {
+      "category": "Orchards",
+      "description": "World-aligned rectangular tree rows with independent groundcover. Change column and row pitch without moving the lattice origin. Replace the pyramids with your tree models.",
+      "tags": [
+        "grid",
+        "rectangular",
+        "trees",
+        "groundcover"
+      ]
+    },
+    "thumbnail": {
+      "bytes": 276154,
+      "file": "recipe-data-c60280d33ad21f904d8747313d053ff2/thumbnail.png",
+      "sha256": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4"
+    }
+  },
+  "revision": 4,
   "roles": [
     {
       "id": "role-1",

@@ -2,7 +2,7 @@
   "evaluationContract": "CyrusUnified1",
   "exportScope": "complete-setup",
   "format": "cyrus.planting-recipe",
-  "formatVersion": 1,
+  "formatVersion": 5,
   "hostYear": 2027,
   "id": "d499d541-14c2-4fd6-9900-887f63144303",
   "layers": [
@@ -103,6 +103,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -127,6 +133,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -143,6 +155,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -160,6 +173,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "a923f3f2-9aac-460d-ab55-856019256e58"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -393,6 +409,12 @@
         "finalNeighborRadius": 100.0,
         "finalRelax": false,
         "finalStrength": 0.30000001192092896,
+        "gridColumnWU": 100.0,
+        "gridHeading": 0.0,
+        "gridJitter": 0.0,
+        "gridOriginXWU": 0.0,
+        "gridOriginYWU": 0.0,
+        "gridRowWU": 100.0,
         "groupCenters": false,
         "iconSize": 10.0,
         "identificationMode": 1,
@@ -417,6 +439,12 @@
         "movZMaxWU": 0.0,
         "movZMinWU": 0.0,
         "movementRange": 0.0,
+        "orientationBlend": 100.0,
+        "orientationMode": 1,
+        "orientationTarget": null,
+        "orientationX": 0.0,
+        "orientationY": 1.0,
+        "orientationZ": 0.0,
         "paintColor": [
           130.19032287597656,
           191.60606384277344,
@@ -433,6 +461,7 @@
         "patternLines": [],
         "patternPaths": [],
         "patternWidths": [],
+        "placementMode": 1,
         "plantsPerM2": 100.0,
         "pointColorMode": 2,
         "pointsPerPlant": 80,
@@ -450,6 +479,9 @@
         ],
         "procReceiverNodes": [
           "role-2"
+        ],
+        "procReceiverVariationIDs": [
+          "3028a159-bd12-4a40-bcbd-ad89a2188e64"
         ],
         "procRepair": true,
         "procRounds": 8,
@@ -601,6 +633,24 @@
     }
   ],
   "name": "Mountain planting",
+  "presentation": {
+    "capture": null,
+    "metadata": {
+      "category": "Terrain",
+      "description": "Soft slope and altitude eligibility reduces planting on cliffs and near the summit. Tree trunks stay upright.",
+      "tags": [
+        "slope",
+        "altitude",
+        "normals"
+      ]
+    },
+    "thumbnail": {
+      "bytes": 278500,
+      "file": "recipe-data-59ac2c651d1c067c73eb204eb636d117/thumbnail.png",
+      "sha256": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0"
+    }
+  },
+  "revision": 4,
   "roles": [
     {
       "id": "role-1",
@@ -722,6 +772,12 @@
     "finalNeighborRadius": 100.0,
     "finalRelax": false,
     "finalStrength": 0.30000001192092896,
+    "gridColumnWU": 100.0,
+    "gridHeading": 0.0,
+    "gridJitter": 0.0,
+    "gridOriginXWU": 0.0,
+    "gridOriginYWU": 0.0,
+    "gridRowWU": 100.0,
     "groupCenters": false,
     "iconSize": 10.0,
     "identificationMode": 1,
@@ -746,6 +802,12 @@
     "movZMaxWU": 0.0,
     "movZMinWU": 0.0,
     "movementRange": 0.0,
+    "orientationBlend": 100.0,
+    "orientationMode": 1,
+    "orientationTarget": null,
+    "orientationX": 0.0,
+    "orientationY": 1.0,
+    "orientationZ": 0.0,
     "paintColor": [
       130.19032287597656,
       191.60606384277344,
@@ -762,6 +824,7 @@
     "patternLines": [],
     "patternPaths": [],
     "patternWidths": [],
+    "placementMode": 1,
     "plantsPerM2": 100.0,
     "pointColorMode": 2,
     "pointsPerPlant": 80,
@@ -776,6 +839,7 @@
     "procReceiverID": "",
     "procReceiverIDs": [],
     "procReceiverNodes": [],
+    "procReceiverVariationIDs": [],
     "procRepair": true,
     "procRounds": 8,
     "procSamplingSalt": 0,

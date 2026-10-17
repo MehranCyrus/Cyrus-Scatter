@@ -60,12 +60,12 @@ void scalar(const Json& v,const std::string& kind){
     else throw std::invalid_argument("Recipe: unsupported declared field type "+kind);
 }
 std::string loadText(const std::filesystem::path& p,std::size_t limit){
-    std::ifstream in(p,std::ios::binary|std::ios::ate);require(bool(in),"cannot read file");const auto size=in.tellg();
+    std::ifstream in(nativePath(p),std::ios::binary|std::ios::ate);require(bool(in),"cannot read file");const auto size=in.tellg();
     require(size>=0&&static_cast<std::uint64_t>(size)<=limit,"file exceeds bounds");std::string out(static_cast<std::size_t>(size),'\0');in.seekg(0);
     if(!out.empty())in.read(out.data(),static_cast<std::streamsize>(out.size()));require(bool(in),"file read failed");return out;
 }
 void saveBytes(const std::filesystem::path& p,const std::string& bytes){
-    std::ofstream out(p,std::ios::binary|std::ios::trunc);require(bool(out),"cannot create staged file");out.write(bytes.data(),static_cast<std::streamsize>(bytes.size()));out.flush();require(bool(out),"staged file write failed");out.close();require(!out.fail(),"staged file close failed");
+    std::ofstream out(nativePath(p),std::ios::binary|std::ios::trunc);require(bool(out),"cannot create staged file");out.write(bytes.data(),static_cast<std::streamsize>(bytes.size()));out.flush();require(bool(out),"staged file write failed");out.close();require(!out.fail(),"staged file close failed");
 }
 template<class F>void paints(Json& d,F f){for(auto& layer:d["layers"]){if(!layer["paint"].is_null())f(layer["paint"]);for(auto& area:layer["areas"])if(!area["paint"].is_null())f(area["paint"]);}}
 std::filesystem::path checkedAttachment(const std::filesystem::path& manifest,const std::string& relative){
@@ -73,11 +73,22 @@ std::filesystem::path checkedAttachment(const std::filesystem::path& manifest,co
     require(relative.find('\\')==std::string::npos&&relative.find(':')==std::string::npos,"attachment path must be relative");
     const std::filesystem::path p=pathFromUTF8(relative);require(!p.is_absolute(),"absolute attachment path");
     for(const auto& part:p)require(part!=".."&&part!=".","attachment path escapes package");
-    const auto parent=std::filesystem::weakly_canonical(manifest.parent_path());const auto target=std::filesystem::weakly_canonical(parent/p);
-    auto a=parent.begin(),b=target.begin();for(;a!=parent.end();++a,++b)require(b!=target.end()&&*a==*b,"attachment resolves outside package");return target;
+    const auto parent=nativePath(std::filesystem::weakly_canonical(nativePath(manifest.parent_path(),true)),true);const auto target=nativePath(std::filesystem::weakly_canonical(parent/p),true);
+    auto a=parent.begin(),b=target.begin();for(;a!=parent.end();++a,++b)require(b!=target.end()&&*a==*b,"attachment resolves outside package");return nativePath(target);
 }
 }
 
+std::filesystem::path nativePath(const std::filesystem::path& path,bool force){
+#ifdef _WIN32
+    auto value=std::filesystem::absolute(path).lexically_normal().wstring();
+    if(value.starts_with(L"\\\\?\\UNC\\"))value=L"\\\\"+value.substr(8);
+    else if(value.starts_with(L"\\\\?\\"))value=value.substr(4);
+    if(!force&&value.size()<248)return std::filesystem::path(value);
+    return std::filesystem::path(value.starts_with(L"\\\\")?L"\\\\?\\UNC\\"+value.substr(2):L"\\\\?\\"+value);
+#else
+    (void)force;return path;
+#endif
+}
 const std::vector<Field>& fields(){static const std::vector<Field> result={
 #include "recipe_fields.inc"
 };return result;}

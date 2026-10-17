@@ -35,6 +35,14 @@ int main(){std::filesystem::path folder;try{
         {"files",Json::array({{{"id","file-1"},{"kind","mesh"},{"sha256",sha(load(mesh))},{"bytes",load(mesh).size()},{"suffix","cmesh"}},{{"id","file-2"},{"kind","mesh"},{"sha256",sha(load(other))},{"bytes",load(other).size()},{"suffix","cmesh"}}})},{"externalRoles",{"terrain"}}};
     const std::map<std::string,std::filesystem::path> files={{"file-1",mesh},{"file-2",other}};
     assets::validateGraph(graph,data);
+    auto context=graph,contextRecipe=data;context["version"]=2;contextRecipe["roles"].push_back({{"id","path"},{"kind","node"},{"name","Border"},{"purposes",{"patternPaths"}},{"requirements",nullptr}});
+    const Json knot={{"type","bezierCorner"},{"line","curve"},{"point",{0,0,0}},{"in",{-1,0,0}},{"out",{1,0,0}}};
+    context["splines"]=Json::array({{{"id","spline-1"},{"name","Border"},{"transform",{1,0,0,0,1,0,0,0,1,0,0,0}},{"wireColor",{0,255,0}},{"roles",{"path"}},{"curves",Json::array({{{"closed",false},{"knots",Json::array({knot,knot})}}})}}});
+    assets::validateGraph(context,contextRecipe);
+    auto malformed=context;malformed["splines"][0]["roles"]={"terrain"};rejects([&]{assets::validateGraph(malformed,contextRecipe);});
+    malformed=context;malformed["splines"][0]["curves"][0]["knots"][0]["type"]="script";rejects([&]{assets::validateGraph(malformed,contextRecipe);});
+    malformed=context;malformed["splines"][0]["curves"][0]["knots"]=Json::array();rejects([&]{assets::validateGraph(malformed,contextRecipe);});
+    malformed=context;malformed["splines"][0]["curves"][0]["knots"]=Json::array();for(int i=0;i<4097;++i)malformed["splines"][0]["curves"][0]["knots"].push_back(knot);rejects([&]{assets::validateGraph(malformed,contextRecipe);});
     auto bad=graph;bad["externalRoles"]=Json::array();rejects([&]{assets::validateGraph(bad,data);});
     bad=graph;bad["nodes"][0]["mesh"]="node-1";rejects([&]{assets::validateGraph(bad,data);});
     bad=graph;bad["files"][0]["suffix"]="../ms";rejects([&]{assets::validateGraph(bad,data);});
@@ -77,10 +85,25 @@ int main(){std::filesystem::path folder;try{
     bad=textured;bad["maps"][0]["color"]["mode"]="OCIO_Custom";rejects([&]{assets::validateGraph(bad,data);});
     bad=textured;bad["maps"][0]["output"]["code"]="arbitrary";rejects([&]{assets::validateGraph(bad,data);});
     check(std::filesystem::directory_iterator(out/"assets")!=std::filesystem::directory_iterator());
+#ifdef _WIN32
+    // Max's process need not opt in to long paths: all native file operations
+    // retain containment/hash checks beyond the ordinary MAX_PATH boundary.
+    const auto deep=folder/std::string(120,'a')/std::string(120,'b')/std::string(80,'c');
+    std::filesystem::create_directories(recipes::nativePath(deep));
+    const auto longPackage=deep/"ready";
+    assets::writePackage(longPackage,path,recipeSHA,graph,files,"Owned long-path fixture");
+    check(assets::readPackage(longPackage)["graph"]==graph);
+    check(assets::preparePackage(longPackage).meshes.size()==2);
+    auto longManifest=recipes::parse(load(recipes::nativePath(longPackage/"cyrus.package.json")));
+    longManifest["graph"]["file"]="../assets.json";
+    put(recipes::nativePath(longPackage/"cyrus.package.json"),longManifest.dump());rejects([&]{assets::readPackage(longPackage);});
+    rejects([&]{assets::readPackage("relative-folder");});
+    std::filesystem::remove_all(recipes::nativePath(deep,true));
+#endif
     rejects([&]{assets::writePackage(out,path,recipeSHA,graph,files,"Owned test assets");});
     const auto newOut=folder/"new-output";put(mesh,"same size changed data");rejects([&]{assets::writePackage(newOut,path,recipeSHA,graph,files,"Owned test assets");});check(!std::filesystem::exists(newOut));
     const auto payload=out/"assets"/(graph["files"][0]["sha256"].get<std::string>()+".cmesh");put(payload,"tampered payload");rejects([&]{assets::readPackage(out);});
     auto manifest=recipes::parse(load(result));manifest["graph"]["file"]="../assets.json";put(result,manifest.dump());rejects([&]{assets::readPackage(out);});
     check(load(other)==std::string(second.begin(),second.end()));
-    std::filesystem::remove_all(folder);std::cout<<checks<<" package assertions passed\n";return 0;
+    std::filesystem::remove_all(recipes::nativePath(folder,true));std::cout<<checks<<" package assertions passed\n";return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<"\nFixture: "<<folder<<'\n';return 1;}}

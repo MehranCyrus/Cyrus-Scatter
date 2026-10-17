@@ -1,14 +1,14 @@
 -- Explicit portable export. This template uses only closed built-in adapters.
 -- Catalog browsing never calls these functions or inspects scene dependencies.
 global CyrusAssetCapture,CyrusAssetCaptureContext,CyrusAssetMaterial,CyrusAssetMap,CyrusAssetSettingsEqual,CyrusAssetCheckDefaults,CyrusAssetRoleIsSource,CyrusAssetExportEditor,CyrusAssetExportOpenData,CyrusOpenAssetExport
-global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipeResolve,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode,CyrusRecipeSuggestBindings,CyrusRequireAuthor,CyrusNewLayerID,CyrusPresetSameValues
+global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipeResolve,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode,CyrusRecipeSuggestBindings,CyrusRequireAuthor,CyrusNewLayerID,CyrusPresetSameValues,CyrusRecipeRestorePaint
 global CyrusAssetJobs,CyrusAssetCleanupTimer,CyrusAssetCleanupTick,CyrusAssetOwnStage,CyrusAssetRemoveStage,CyrusAssetWatch
 global CyrusAssetCheckController
 global CyrusAssetStage,CyrusAssetImport,CyrusAssetImportPlan,CyrusAssetReview,CyrusRecipeImport,CyrusRecipePut
 global CyrusOpenAssetImport,CyrusAssetImportEditor,CyrusAssetImportOpenData,CyrusRecipeValidateBindings
 global CyrusAssetColorContext,CyrusAssetCheckColor,CyrusAssetBitmapDirectory,CyrusAssetRestoreMap
-global CyrusAssetSharedSnapshot
-struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined)
+global CyrusAssetSharedSnapshot,CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetCaptureSpline,CyrusAssetBoundNode
+struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false)
 if CyrusAssetJobs==undefined do CyrusAssetJobs=#()
 struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined)
 fn CyrusAssetBitmapDirectory = (pathConfig.appendPath (getDir #userScripts) "CyrusScatter\\ImportedAssets")
@@ -125,11 +125,31 @@ fn CyrusAssetRoleIsSource role = (
     for purpose in purposes where findItem #("sources","procSourceNodes") purpose==0 do return false
     true
 )
-fn CyrusAssetCapture root recipePath digest bindings directory = (
+fn CyrusAssetRoleIsReceiver role = (
+    if (CyrusRecipeGet role "kind")!="node" do return false
+    local purposes=CyrusRecipeGet role "purposes"
+    for purpose in purposes where findItem #("surface","surfaceNodes","procReceiverNodes","areaTarget","paintReceiver") purpose==0 do return false
+    purposes.count>0
+)
+fn CyrusAssetRoleIsPath role = (
+    if (CyrusRecipeGet role "kind")!="node" do return false
+    local purposes=CyrusRecipeGet role "purposes"
+    for purpose in purposes where findItem #("areaNodes","patternLines","patternPaths") purpose==0 do return false
+    purposes.count>0
+)
+fn CyrusAssetCaptureSpline source roleID metres index = (
+    if not isValidNode source or superclassof source!=Shape or source.modifiers.count>0 or source.parent!=undefined or source.children.count>0 do throw "Ready presets require independent static spline paths."
+    CyrusAssetCheckController source.transform.controller;cyrusRecipeCheckStatic source.baseObject
+    local curves=cyrusAssetSplineSnapshot source metres,values=#(),transform=source.objectTransform
+    for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
+    CyrusRecipeObject #(#("id","spline-"+(index as string)),#("name",source.name),#("transform",values),#("wireColor",#(source.wireColor.r as double,source.wireColor.g as double,source.wireColor.b as double)),#("roles",#(roleID)),#("curves",curves))
+)
+fn CyrusAssetCapture root recipePath digest bindings directory includeContext:false = (
     CyrusRequireAuthor();CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=1 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed. Review it again before export."
-    local document=cyrusRecipeReadMetadata recipePath,roles=CyrusRecipeGet document "roles",context=CyrusAssetCaptureContext directory:directory,nodes=#(),nodeValues=#(),meshes=#(),external=#(),metres=(units.decodeValue "1m") as double
+    local document=if includeContext then cyrusRecipeRead recipePath else cyrusRecipeReadMetadata recipePath
+    local roles=CyrusRecipeGet document "roles",context=CyrusAssetCaptureContext directory:directory,nodes=#(),nodeValues=#(),meshes=#(),splines=#(),external=#(),metres=(units.decodeValue "1m") as double
     if not (doesDirectoryExist directory) do throw "Owned asset staging folder is missing."
     for role in roles do (
         local roleID=CyrusRecipeGet role "id"
@@ -137,7 +157,8 @@ fn CyrusAssetCapture root recipePath digest bindings directory = (
             local value=CyrusRecipeResolve bindings roleID,id=CyrusAssetMap context value
             if id==undefined do throw "Bind every texture role before portable export."
             for row in context.maps where (CyrusRecipeGet row "id")==id do append (CyrusRecipeGet row "roles") roleID
-        ) else if not (CyrusAssetRoleIsSource role) then append external roleID
+        ) else if includeContext and (CyrusAssetRoleIsPath role) then append splines (CyrusAssetCaptureSpline (CyrusRecipeResolve bindings roleID) roleID metres (splines.count+1))
+        else if not (CyrusAssetRoleIsSource role) and not (includeContext and (CyrusAssetRoleIsReceiver role)) then append external roleID
         else (
             local source=CyrusRecipeResolve bindings roleID
             if not isValidNode source do throw ("Bind the source to package: "+CyrusRecipeGet role "name")
@@ -146,10 +167,23 @@ fn CyrusAssetCapture root recipePath digest bindings directory = (
             else (
                 if nodes.count>=128 do throw "Package source limit is 128."
                 if isGroupHead source or isGroupMember source or source.children.count>0 or source.parent!=undefined do throw "Portable sources must be independent objects; groups and hierarchies need their own adapter."
-                if source.modifiers.count>0 do throw "Portable sources currently require static geometry without modifiers. The source is preserved."
+                if source.modifiers.count>0 and not (includeContext and (CyrusAssetRoleIsReceiver role)) do throw "Portable sources currently require static geometry without modifiers. The source is preserved."
                 CyrusAssetCheckController source.transform.controller
                 cyrusRecipeCheckStatic source.baseObject
-                if findItem #(Box,Sphere,Cylinder,Cone,Pyramid,GeoSphere,Editable_Mesh,Editable_Poly) (classof source.baseObject)==0 do throw "This geometry class has no qualified portable adapter."
+                if includeContext and (CyrusAssetRoleIsReceiver role) do (
+                    -- Terrain is an evaluated snapshot, including produced mesh
+                    -- channels, rather than a serialized modifier stack.
+                    for record in (CyrusRecipeGet document "layers") do (
+                        local paint=CyrusRecipeGet record "paint"
+                        if paint!=undefined and (CyrusRecipeGet paint "receiverRole")==roleID do CyrusRecipeRestorePaint paint source document
+                        for area in (CyrusRecipeGet record "areas") do (
+                            local data=CyrusRecipeGet area "paint"
+                            if data!=undefined and (CyrusRecipeGet data "receiverRole")==roleID do CyrusRecipeRestorePaint data source document
+                        )
+                    )
+                    if findItem (CyrusRecipeGet role "purposes") "paintReceiver">0 and source.objectTransform!=source.transform do throw "Ready presets with Paint require receiver object offsets baked before painting. The original Paint and settings recipe are preserved."
+                )
+                if findItem #(Box,Sphere,Cylinder,Cone,Pyramid,GeoSphere,Editable_Mesh,Editable_Poly,Plane) (classof source.baseObject)==0 do throw "This geometry class has no qualified portable adapter."
                 local materialID=CyrusAssetMaterial context source.material,number=(nodes.count+1) as string,meshID="mesh-"+number,fileID="mesh-file-"+number,path=pathConfig.appendPath directory (fileID+".cmesh")
                 local info=cyrusAssetMeshExport source path metres,transform=source.transform,values=#()
                 for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
@@ -163,6 +197,7 @@ fn CyrusAssetCapture root recipePath digest bindings directory = (
     )
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed during asset capture. Export was cancelled."
     local graph=CyrusRecipeObject #(#("format","cyrus.library-assets"),#("version",1),#("nodes",nodes),#("meshes",meshes),#("materials",context.materials),#("maps",context.maps),#("files",context.files),#("externalRoles",external))
+    if includeContext do (CyrusRecipePut graph "version" 2;CyrusRecipePut graph "splines" splines)
     #(graph,context.fileBindings)
 )
 
@@ -202,7 +237,7 @@ fn CyrusAssetWatch token stage = (
 fn CyrusOpenAssetExport root path digest = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=1 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo path)[11]!=digest do throw "Recipe changed. Refresh before export."
     local document=cyrusRecipeReadMetadata path
     if CyrusAssetExportEditor!=undefined do try(destroyDialog CyrusAssetExportEditor)catch()
@@ -337,6 +372,15 @@ fn CyrusAssetRestoreMap data fileData token currentColor = (
         opened=undefined;result
     )catch(if opened!=undefined do close opened;throw())
 )
+fn CyrusAssetBoundNode data bindings = (
+    local roles=CyrusRecipeGet data "roles",found=0,node=undefined
+    for role in roles do for pair in bindings where pair[1]==role do (
+        if pair[2]==undefined or (node!=undefined and pair[2]!=node) do throw "Packaged context bindings disagree."
+        node=pair[2];found+=1
+    )
+    if found>0 and found!=roles.count do throw "Bind every role of a shared packaged context node together."
+    node
+)
 fn CyrusAssetStage package bindings = (
     if not theHold.Holding() do throw "Portable source staging requires the recipe's authored transaction."
     local graph=package[1],directory=package[2],metres=(units.decodeValue "1m") as double,materials=#(),maps=#(),files=CyrusRecipeGet graph "files",meshes=CyrusRecipeGet graph "meshes",resolved=for pair in bindings collect #(pair[1],pair[2])
@@ -362,7 +406,7 @@ fn CyrusAssetStage package bindings = (
         material.adTextureLock=CyrusRecipeGet data "textureLock"
         append materials #((CyrusRecipeGet data "id"),material)
     )
-    for data in (CyrusRecipeGet graph "nodes") do (
+    for data in (CyrusRecipeGet graph "nodes") where (CyrusAssetBoundNode data bindings)==undefined do (
         local meshID=CyrusRecipeGet data "mesh",meshData=undefined,fileData=undefined
         for row in meshes where (CyrusRecipeGet row "id")==meshID do meshData=row
         for row in files where (CyrusRecipeGet row "id")==(CyrusRecipeGet meshData "file") do fileData=row
@@ -373,6 +417,21 @@ fn CyrusAssetStage package bindings = (
         node.wireColor=colorValue (CyrusRecipeGet data "wireColor")
         local materialID=CyrusRecipeGet data "material"
         if materialID!=undefined do node.material=CyrusRecipeResolve materials materialID
+        if package.count>4 do for role in package[5] where (CyrusAssetRoleIsReceiver role) and findItem (CyrusRecipeGet data "roles") (CyrusRecipeGet role "id")>0 do (
+            node.isHidden=false;appendIfUnique package[4] node
+        )
+        for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
+    )
+    if (CyrusRecipeGet graph "version")==2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
+        local node=splineShape name:(CyrusRecipeGet data "name"),values=CyrusRecipeGet data "transform",index=0
+        fn pointValue value metres = [value[1]*metres,value[2]*metres,value[3]*metres]
+        for curve in (CyrusRecipeGet data "curves") do (
+            addNewSpline node;index+=1
+            for knot in (CyrusRecipeGet curve "knots") do addKnot node index ((CyrusRecipeGet knot "type") as name) ((CyrusRecipeGet knot "line") as name) (pointValue (CyrusRecipeGet knot "point") metres) (pointValue (CyrusRecipeGet knot "in") metres) (pointValue (CyrusRecipeGet knot "out") metres)
+            if CyrusRecipeGet curve "closed" do close node index
+        )
+        updateShape node;node.transform=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
+        node.wireColor=colorValue (CyrusRecipeGet data "wireColor");node.isHidden=true
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
     )
     resolved
@@ -395,7 +454,8 @@ fn CyrusAssetImport plan preparedToken:0L = (
         CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation
     ) else (
         if plan.assets!=#clone do throw "Unsupported asset reuse policy."
-        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken))
+        local packagedReceivers=#()
+        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"))) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined)
     )
 )
 

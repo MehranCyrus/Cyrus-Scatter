@@ -53,19 +53,20 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
         for(int s=0;s<populations->size;++s){auto* set=groupArray(populations->data[s]);
             if(set->size!=7)throw RuntimeError(_T("Procedural population requires its receiver schedule"));
             std::unordered_map<std::string,std::uint64_t> schedule;
-            {auto* order=groupArray(set->data[6]);if(order->size>cyrus::receivers::limit)throw RuntimeError(_T("Receiver schedule exceeds 1,000,000 candidates"));
-                for(int k=0;k<order->size;++k){const auto id=order->data[k]->to_int64();unsigned slot=0;std::uint64_t local=0;
+            {const auto& order=cyrusScheduleValues(set->data[6]);if(order.size()>cyrus::receivers::limit)throw RuntimeError(_T("Receiver schedule exceeds 1,000,000 candidates"));
+                for(std::size_t k=0;k<order.size();++k){const auto id=order[k];unsigned slot=0;std::uint64_t local=0;
                     if(id<0||!cyrus::receivers::decodeCandidate(std::uint64_t(id),slot,local)||!schedule.emplace("c:"+std::to_string(id),std::uint64_t(k)).second)throw RuntimeError(_T("Invalid receiver candidate schedule"));}}
             cyrus::procedural::Population p;p.id=proceduralID(set->data[0]);auto* rows=groupArray(set->data[1]);
-            originals.back().push_back(rows);auto* radii=groupArray(set->data[2]);
-            if(radii->size!=rows->size)throw RuntimeError(_T("One radius pair per procedural instance required"));
+            originals.back().push_back(rows);auto* radii=set->data[2];
+            if(cyrusRadiusCount(radii)!=std::size_t(rows->size))throw RuntimeError(_T("One radius pair per procedural instance required"));
             p.self=proceduralRule(set->data[3]);const int budget=set->data[4]->to_int(),attempts=set->data[5]->to_int();
             if(budget<0||attempts<0)throw RuntimeError(_T("Negative procedural budget"));p.budget=unsigned(budget);p.attemptLimit=unsigned(attempts);
             for(int i=0;i<rows->size;++i){auto* row=groupArray(rows->data[i]);const auto id=proceduralRowID(row);const auto position=row->data[0]->to_matrix3().GetTrans();
                 const bool pin=groupProtected(row);std::uint64_t ordinal=0;
                 if(id.rfind("c:",0)==0){const auto found=schedule.find(id);if(found==schedule.end())throw RuntimeError(_T("Candidate missing from receiver schedule"));ordinal=found->second;}
                 else if(!pin)throw RuntimeError(_T("Nonprocedural identity is not protected"));
-                p.samples.push_back({{position.x,position.y,position.z},proceduralRadiusPair(radii->data[i]),ordinal,id,pin});
+                const auto radius=cyrusRadiusAt(radii,i);
+                p.samples.push_back({{position.x,position.y,position.z},{float(radius[0]),float(radius[1])},ordinal,id,pin});
             }
             layer.sets.push_back(std::move(p));
         }
@@ -90,8 +91,9 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
             auto* kept=new Array(int(r.kept.size()));keptLayer->append(kept);for(auto i:r.kept)kept->append(originals[l][s]->data[i]);
             // Freeze the actual collision radii alongside the selected original
             // rows. Inspection must not recalculate them from pending settings.
-            auto* keptRadii=new Array(int(r.kept.size()));radiusLayer->append(keptRadii);
-            for(auto i:r.kept)appendProceduralRadii(keptRadii,plan.layers[l].sets[s].samples[i].radii);
+            std::vector<CyrusRadiusPair> keptRadii;keptRadii.reserve(r.kept.size());
+            for(auto i:r.kept){const auto pair=plan.layers[l].sets[s].samples[i].radii;keptRadii.push_back({float(pair.xy),float(pair.spatial)});}
+            radiusLayer->append(cyrusNativeRadii(std::move(keptRadii)));
             std::array<std::size_t,7> reasons{};for(auto reason:r.reasons)++reasons[std::size_t(reason)];
             auto* stats=new Array(12);statsLayer->append(stats);
             for(auto value:{std::uint64_t(r.reasons.size()),std::uint64_t(r.kept.size()),std::uint64_t(reasons[2]),std::uint64_t(r.conflicts.size()),std::uint64_t(reasons[3]),std::uint64_t(reasons[4]),std::uint64_t(reasons[5]),std::uint64_t(reasons[6]),std::uint64_t(reasons[0]),r.attempts,std::uint64_t(r.shortfall),r.neighborVisits})stats->append(Integer64::intern(static_cast<INT64>(value)));
@@ -103,7 +105,7 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
 def_visible_primitive(cyrusProceduralPublicationVersion,"cyrusProceduralPublicationVersion");
 Value* cyrusProceduralPublicationVersion_cf(Value**,int n){
     check_arg_count(cyrusProceduralPublicationVersion,0,n);
-    return Integer::intern(2);
+    return Integer::intern(3);
 }
 
 def_visible_primitive(cyrusProceduralRadii,"cyrusProceduralRadii");
@@ -129,7 +131,7 @@ Value* cyrusProceduralRadii_cf(Value** a,int n){
     for(int i=0;i<ids->size;++i){const int mode=modes->data[i]->to_int();if((mode!=1&&mode!=2)||!std::isfinite(values[i])||values[i]<0)throw RuntimeError(_T("Invalid instance radius override"));
         if(!overrides.emplace(proceduralID(ids->data[i]),std::make_pair(mode,values[i])).second)throw RuntimeError(_T("Duplicate radius override"));
     }
-    one_typed_value_local(Array* result);vl.result=new Array(rows->size);
+    std::vector<CyrusRadiusPair> result;result.reserve(rows->size);
     for(int i=0;i<rows->size;++i){auto* row=groupArray(rows->data[i]);cyrus::rows::edited(row);
         const int source=row->data[1]->to_int()-1;if(source<0||std::size_t(source)>=sources.size())throw RuntimeError(_T("Missing radius source"));
         const auto& spec=sources[std::size_t(source)];cyrus::procedural::Radii r{spec.manual,spec.manual};
@@ -145,7 +147,8 @@ Value* cyrusProceduralRadii_cf(Value** a,int n){
             if(found->second.first==1)r.xy=r.spatial=found->second.second;
             else {r.xy*=found->second.second;r.spatial*=found->second.second;}
         }
-        appendProceduralRadii(vl.result,r);
+        if(!std::isfinite(r.xy)||!std::isfinite(r.spatial)||r.xy<0||r.spatial<0||r.xy>std::numeric_limits<float>::max()||r.spatial>std::numeric_limits<float>::max())throw RuntimeError(_T("Effective radius overflow"));
+        result.push_back({float(r.xy),float(r.spatial)});
     }
-    return_value(vl.result);
+    return cyrusNativeRadii(std::move(result));
 }
