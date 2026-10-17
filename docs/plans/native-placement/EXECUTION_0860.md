@@ -217,10 +217,54 @@ The current knowledge generation verifies 33/36 enrolled parents; AGENTS,
 README and the modified Edit bridge are stale. New sources/plans are inspected
 directly. Publish a reviewed successor at the delivery knowledge checkpoint.
 
+## Native preview input adapters
+
+The internal `preview-native-01` pair now feeds native placements directly into
+the existing Point/Mesh/proxy snapshots. `PreviewRows` reads immutable records
+on the host thread and creates only stack SDK matrices for displayed data.
+All inputs, including unshown source indices and Band ownership, are validated.
+The existing retained draw publisher and snapshot ownership stay in place.
+`cyrusPreviewContentEqual` compares complete native draw content and bounds
+without exporting population arrays; allocation/GPU identity and field diagnostic
+metadata are deliberately separate from that semantic comparison.
+
+[Exact N05 preview evidence](N05_PREVIEW_QUALIFICATION.json) records 18 point
+cases and 78 geometry cases across plane/mountain and 5k/50k/200k placements,
+full/one/limited subsets, all proxy modes, Mesh and placeholders. Band/color
+and source validation, rejected-successor retention, changed equal-count data,
+source edits and copied-geometry lifetimes pass. Actual Nitrous publication
+reuses unchanged uploads. After input placement release, drawing remains valid;
+last-cache/scene departure releases tracked Point/Mesh reservations. The matching
+pair passes 42 native suites, 168 Python tests, generated checks, the existing
+controller/65-second idle/copy/Edit/radius tests and all eight preset round trips.
+The successful owned host is guarded-closed; artist and unrelated hosts remain
+preserved.
+
+`cyrusPlacementSourceUsage` returns at most 1,024 counts but scans native input.
+Compute/cache this summary during preparation/publication; do not introduce a
+population scan on passive panel refresh. The main controller still uses its
+existing production route. Bound native root publication, ordinary Count on the
+native route, radius-ring preparation, active Edit and downstream consumers
+remain open. These tests do not establish full Update speedup, presented FPS,
+physical input latency or production-renderer acceptance.
+
 ## Next dependency-ready work
 
-Adapt retained Point/Mesh preview consumers and coherent native publication,
-then connect Surface random through native acceptance, preview and ordinary
+N05 implementation decision, now implemented for the preview input adapters:
+retain the existing Point/Mesh snapshots and
+atomic draw publication. Add a host-thread reader for either the native view
+or the temporary legacy comparison input; reconstruct only stack SDK Matrix3
+values for the shown subset. Validate all source indices and Band ownership,
+including unshown inputs, before producing a cache. A native full-cache equality
+query will compare points, triangles, instance matrices, bounds and palettes
+without diagnostic population expansion. Test all display modes, budgets,
+colors, placeholders, failure retention and resource release before routing the
+controller. Source-count equality is insufficient to establish publication asset
+correspondence: capture stable source IDs/handles and input/publication epochs
+at the root transaction, preserving Manual pending settings and existing Undo.
+
+Implement frozen source/receiver bindings and coherent native root publication,
+then connect Surface random through native acceptance, retained preview and ordinary
 Count Undo/Redo. Ordinary scalar history keeps its existing refresh semantics;
 do not introduce full placement snapshots for every Count change merely because
 the standalone hold probe can retain them. Complete optional Paint/mask/Band/

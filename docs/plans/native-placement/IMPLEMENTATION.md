@@ -73,7 +73,7 @@ Likely files: `procedural_bridge.inc`, `include/procedural.h`, `src/procedural.c
 Dependencies: N02–N04; active Edit may remain temporarily bridged until N07.
 
 - [ ] Package root accepted data, source correspondence, metadata and statistics into immutable publication ownership; keep small UI summaries.
-- [ ] Adapt Point/Mesh/proxy/centres builders, source-use queries and radius overlays to consume native data; reuse retained display generations.
+- [ ] Finish preview adapters: Point/Mesh/proxy/centres and bounded source-use output now consume native input with [actual Max parity/retained lifetime evidence](N05_PREVIEW_QUALIFICATION.json). Radius-ring preparation and production routing remain open; source-use work is cached at preparation/publication, never passive UI.
 - [ ] Stage all owners and Edit visibility before installation; preserve the existing rollback boundary and post-commit observer distinction.
 - [ ] Adapt ordinary Count/parameter Undo refresh without adding full snapshots for every scalar edit. Preserve Manual pending behavior.
 - [ ] Replace preset publication's large field-list retention with coherent native references where appropriate, preserving its authored hold and ready Load Undo/Redo.

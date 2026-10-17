@@ -61,6 +61,12 @@ def_visible_primitive(cyrusPlacementOwner,"cyrusPlacementOwner");
 Value* cyrusPlacementOwner_cf(Value**,int n){check_arg_count(cyrusPlacementOwner,0,n);return api([]{return Integer64::intern(static_cast<INT64>(p::newOwner()));});}
 def_visible_primitive(cyrusPlacementToken,"cyrusPlacementToken");
 Value* cyrusPlacementToken_cf(Value** a,int n){check_arg_count(cyrusPlacementToken,1,n);return tokenValue(cyrusPlacementView(a[0]).token());}
+def_visible_primitive(cyrusPlacementSourceUsage,"cyrusPlacementSourceUsage");
+Value* cyrusPlacementSourceUsage_cf(Value** a,int n){check_arg_count(cyrusPlacementSourceUsage,1,n);return api([&]()->Value*{
+    const auto counts=cyrusPlacementView(a[0]).sourceUsage();
+    one_typed_value_local(Array* result);vl.result=new Array(static_cast<int>(counts.size()));
+    for(auto count:counts)vl.result->append(Integer::intern(int(count)));return_value(vl.result);
+});}
 
 // Explicit small boundary for authored commands/qualification. This is never a
 // full-population fallback: migrated generation must construct native records.

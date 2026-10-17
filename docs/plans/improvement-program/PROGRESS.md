@@ -33,7 +33,10 @@ ordered plane/mountain parity through 200k candidates, numeric schedules,
 protected scopes, failure retention and real Max hold/lifetime probes. The
 current pair also preserves the existing controller and eight preset round trips;
 see [exact evidence and remaining work](../native-placement/EXECUTION_0860.md).
-The main controller still uses the existing route. Native publication/preview,
+The N05 native Point/Mesh/proxy input adapters now pass full native draw-content
+comparison and actual retained upload/lifetime checks through 200k placements;
+see [the preview receipt](../native-placement/N05_PREVIEW_QUALIFICATION.json).
+The main controller still uses the existing route. Bound native publication,
 optional stages, active Edit, downstream consumers and remaining N01–N09
 acceptance are open. No 0.86.0 installer or active-pipeline speedup is claimed.
 

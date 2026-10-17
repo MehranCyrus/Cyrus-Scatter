@@ -21,6 +21,7 @@
 #include "diagnostics.h"
 #include "preview_sampling.h"
 #include "placement_transport.h"
+#include "placement_value.h"
 #include "script_buffers.h"
 #include "spline_overlay.h"
 #include "spline_field_value.h"
@@ -28,6 +29,7 @@
 #undef ScripterExport
 #define ScripterExport __declspec(dllexport)
 #include "preview_palette.inc"
+#include "preview_rows.inc"
 #include "source_geometry.inc"
 namespace { std::atomic<std::uint64_t> fallbackCalls{0},fallbackPointVertices{0},fallbackFaces{0}; }
 struct FieldPreviewDetails {
@@ -61,6 +63,7 @@ public:
 
 };
 visible_class_instance(AminPointCache,"AminPointCache");
+#include "preview_compare.inc"
 #include "geometry_preview.inc"
 #include "spline_overlay_bridge.inc"
 
@@ -68,14 +71,13 @@ def_visible_primitive(aminScatterBuildPreview,"aminScatterBuildPreview");
 Value* aminScatterBuildPreview_cf(Value** args,int count) {
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Preview);
     check_arg_count(aminScatterBuildPreview,4,count);
-    for(int i=0;i<3;++i) type_check(args[i],Array,_T("preview inputs"));
-    auto* data=static_cast<Array*>(args[0]);
+    for(int i=1;i<3;++i) type_check(args[i],Array,_T("preview inputs"));
+    PreviewRows data(args[0]);
     auto* sources=static_cast<Array*>(args[1]);
     const auto palette=previewPalette(args[2],sources->size);
     const int budget=args[3]->to_int();
     if(budget<0)
         throw RuntimeError(_T("Invalid preview budget or source colors."));
-    if(data->size>1000000)throw RuntimeError(_T("Preview input exceeds 1,000,000 placements"));
     std::size_t inputSamples=0;
     for(int i=0;i<sources->size;++i) {
         type_check(sources->data[i],Array,_T("source samples"));
@@ -84,7 +86,7 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
         inputSamples+=samples;
     }
     const auto perSource=sources->size?static_cast<Array*>(sources->data[0])->size:0;
-    const auto requested=std::size_t(data->size)*perSource;
+    const auto requested=data.size()*perSource;
     const auto outputLimit=budget?std::min<std::size_t>(budget,requested):requested;
     const auto stagingBytes=inputSamples*sizeof(Point3)+outputLimit*2*(sizeof(Point3)+sizeof(std::uint8_t))+sources->size*256+4096;
     if(stagingBytes>cyrus::pointPreviewOwnerLimit)throw RuntimeError(_T("Point preparation exceeds the 64 MiB allowance"));
@@ -104,25 +106,18 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
     // Validate every input, including unshown rows, without copying the entire
     // placement stream. Conversion stays on the host thread; only the bounded
     // displayed samples enter the immutable snapshot used by draw workers.
-    for(int i=0;i<data->size;++i) {
-        type_check(data->data[i],Array,_T("placement"));
-        auto* row=static_cast<Array*>(data->data[i]);
-        previewBandSlot(row,*palette);
-        const int index=row->data[1]->to_int()-1;
-        if(index<0||index>=sources->size) throw RuntimeError(_T("Invalid source index."));
-    }
+    data.validate(sources->size,*palette);
     std::vector<AminPointCache::Group> groups;
     for(auto c:rgb) groups.push_back({c,{}});
-    const std::uint64_t total=static_cast<std::uint64_t>(data->size)*pointsPerPlant;
+    const std::uint64_t total=static_cast<std::uint64_t>(data.size())*pointsPerPlant;
     const auto shown=budget?std::min<std::uint64_t>(total,static_cast<std::uint64_t>(budget)):total;
     int size=0;
     for(std::uint64_t sample=0;sample<shown;++sample) {
         const auto flat=amin::previewPointIndex(sample,total,shown);
         const auto plant=static_cast<std::size_t>(flat/pointsPerPlant);
-        auto* row=static_cast<Array*>(data->data[plant]);
-        const auto source=row->data[1]->to_int()-1;
-        groups[source].points.push_back(samples[source][flat%pointsPerPlant]*row->data[0]->to_matrix3());
-        groups[source].bandSlots.push_back(previewBandSlot(row,*palette));
+        const auto source=data.source(plant)-1;
+        groups[source].points.push_back(samples[source][flat%pointsPerPlant]*data.matrix(plant));
+        groups[source].bandSlots.push_back(data.band(plant,*palette));
         ++size;
     }
     auto snapshot=std::make_shared<cyrus::PointSnapshot>(std::move(groups));
@@ -136,16 +131,11 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
 def_visible_primitive(cyrusPreviewPlacementsEqual,"cyrusPreviewPlacementsEqual");
 Value* cyrusPreviewPlacementsEqual_cf(Value** args,int count) {
     check_arg_count(cyrusPreviewPlacementsEqual,2,count);
-    for(int i=0;i<2;++i)type_check(args[i],Array,_T("preview placements"));
-    auto* a=static_cast<Array*>(args[0]);auto* b=static_cast<Array*>(args[1]);
-    if(a->size>1000000||b->size>1000000)throw RuntimeError(_T("Preview comparison exceeds 1,000,000 placements"));
-    if(a->size!=b->size)return &false_value;
-    for(int i=0;i<a->size;++i) {
-        type_check(a->data[i],Array,_T("preview placement"));type_check(b->data[i],Array,_T("preview placement"));
-        auto* left=static_cast<Array*>(a->data[i]);auto* right=static_cast<Array*>(b->data[i]);
-        cyrus::rows::current(left);cyrus::rows::current(right);
-        if(left->data[1]->to_int()!=right->data[1]->to_int()||left->data[5]->to_int64()!=right->data[5]->to_int64())return &false_value;
-        const auto x=left->data[0]->to_matrix3(),y=right->data[0]->to_matrix3();
+    PreviewRows a(args[0]),b(args[1]);
+    if(a.size()!=b.size())return &false_value;
+    for(std::size_t i=0;i<a.size();++i) {
+        if(a.source(i)!=b.source(i)||a.owner(i)!=b.owner(i))return &false_value;
+        const auto x=a.matrix(i),y=b.matrix(i);
         for(int row=0;row<4;++row)for(int axis=0;axis<3;++axis)
             if(x.GetRow(row)[axis]!=y.GetRow(row)[axis])return &false_value;
     }

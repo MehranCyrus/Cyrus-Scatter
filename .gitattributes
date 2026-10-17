@@ -192,3 +192,4 @@
 # Exact-byte native-stage evidence and its qualified build driver.
 /docs/plans/native-placement/N03_N04_QUALIFICATION.json -text whitespace=cr-at-eol
 /tools/procedural_lab/offline_build.py -text whitespace=cr-at-eol
+/AminScatter/src/geometry_preview.inc -text whitespace=cr-at-eol

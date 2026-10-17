@@ -2,6 +2,11 @@
 
 **Proposal, not implementation.** Read [scope and baseline](README.md) first. Preserve foundation F01–F12, including their qualification limits. Symbols named below for new types/interfaces are working design names, not existing APIs.
 
+Some storage and adapter work is now implemented; the [execution handoff](EXECUTION_0860.md)
+and exact receipts distinguish that work from the still-proposed publication,
+history and downstream boundaries below. Do not infer complete implementation
+from this design.
+
 ## 1. Boundary and stage order
 
 MAXScript remains responsible for the existing UI and authored settings. Its bulk work is replaced with small validated requests and opaque immutable native values. It may retain one value per owner/generation, not one object per plant. Native computation returns bounded statistics and publication handles; it does not recreate complete script rows for another native function to consume.
@@ -96,6 +101,27 @@ Evict only reconstructible, unpinned caches. Never evict the published result, p
 MAXScript parameters remain the sole authored owner for existing settings; the native request is an evaluated snapshot, not a second independent copy to synchronize as saved state. Native Edit records remain the authored owner for instance edits. Native Paint documents remain the authored coverage owner.
 
 ### Commit protocol
+
+N05 binding decision: use a small immutable source cohort per population,
+shared by its placement generations, rather than a process-global handle
+registry. It identifies the exact ordered source roles/IDs and scene bindings,
+including Point/Empty/unassigned policy. Count and display changes must not
+invent a new semantic source mapping; replacing/reordering assets must not reuse
+the old mapping merely because its cardinality matches. At publication, freeze
+the receiver slot/identity, face-range and binding-revision correspondence as
+well as the complete input signature and root epoch. Validate candidates and
+prepared/published populations against these bindings before install. The current
+bare native view has only source cardinality and session owner; it is insufficient
+for this production boundary.
+
+Keep bulk placements/radii and source/receiver correspondence in native owned
+storage. Host references stay on the host thread; any necessary GC/SDK reference
+retention must use verified Max lifetime semantics, never a raw scene pointer
+handed to workers. A root publication owns the complete ordered population,
+statistics and draw/output references. Small UI summaries bind that publication.
+Keep authored parameters, ordinary scalar Undo and current receiver-bound Paint
+ownership unchanged. These binding/publication types remain pending until source,
+GC, scene lifecycle and actual controller tests prove them.
 
 1. Capture settings/revisions and root ownership under the existing host scheduling/reentrancy guard. Determine whether this is cached, Manual-pending or an authorized successor.
 2. Admit estimated additional resources, retaining the old result and all existing history. Capture referenced numeric inputs.

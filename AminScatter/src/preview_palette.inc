@@ -40,9 +40,7 @@ std::shared_ptr<const cyrus::PreviewPalette> previewPalette(Value* value,std::si
         palette->sourceColors.capacity()*sizeof(Point3)+palette->bandIDs.capacity()*sizeof(std::uint64_t));
     return palette;
 }
-std::uint8_t previewBandSlot(Array* row,const cyrus::PreviewPalette& palette) {
-    cyrus::rows::current(row);
-    const auto id=cyrus::rows::owner(row);
+std::uint8_t previewBandSlot(std::uint64_t id,const cyrus::PreviewPalette& palette) {
     if(id==0) {
         if(palette.requireBand)throw RuntimeError(_T("An ordinary Band placement lost its owner"));
         return 0;
@@ -50,4 +48,7 @@ std::uint8_t previewBandSlot(Array* row,const cyrus::PreviewPalette& palette) {
     const auto found=std::lower_bound(palette.bandIDs.begin(),palette.bandIDs.end(),id);
     if(found==palette.bandIDs.end()||*found!=id)throw RuntimeError(_T("Placement owner is missing from the published Band palette"));
     return std::uint8_t(1+std::distance(palette.bandIDs.begin(),found));
+}
+std::uint8_t previewBandSlot(Array* row,const cyrus::PreviewPalette& palette) {
+    cyrus::rows::current(row);return previewBandSlot(cyrus::rows::owner(row),palette);
 }

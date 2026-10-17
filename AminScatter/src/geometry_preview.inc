@@ -3,22 +3,23 @@ def_visible_primitive(cyrusBuildGeometryPreview,"cyrusBuildGeometryPreview");
 Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Preview);
  check_arg_count(cyrusBuildGeometryPreview,6,count);
- for(int i=0;i<3;++i)type_check(args[i],Array,_T("geometry preview"));
- auto* rows=static_cast<Array*>(args[0]);auto* sources=static_cast<Array*>(args[1]);
+ for(int i=1;i<3;++i)type_check(args[i],Array,_T("geometry preview"));
+ PreviewRows rows(args[0]);auto* sources=static_cast<Array*>(args[1]);
  const auto palette=previewPalette(args[2],sources->size);
  int mode=args[3]->to_int(),limit=args[4]->to_int(),budget=args[5]->to_int();
  if(mode<1||mode>4||limit<0||budget<0)throw RuntimeError(_T("Invalid geometry display settings"));
- if(rows->size>1000000||sources->size>512)throw RuntimeError(_T("Mesh preview input exceeds 1,000,000 placements or 512 sources"));
- const int wanted=limit?std::min(limit,int(rows->size)):int(rows->size);
- auto staging=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,rows->size+std::size_t(wanted)*2*(sizeof(Matrix3)+1)+sources->size*512+4096);
+ if(rows.size()>1000000||sources->size>512)throw RuntimeError(_T("Mesh preview input exceeds 1,000,000 placements or 512 sources"));
+ const int wanted=limit?std::min(limit,int(rows.size())):int(rows.size());
+ auto staging=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,rows.size()+std::size_t(wanted)*2*(sizeof(Matrix3)+1)+sources->size*512+4096);
  auto markerStaging=cyrus::reservePreviewMemory(cyrus::pointPreviewBudget,std::size_t(wanted)*2*(sizeof(Point3)+1)+sources->size*256+4096);
  std::vector<std::shared_ptr<cyrus::PreviewMemory>> sourceStaging;
  std::size_t retainedFaces=0,inspectedFaces=0;
- std::vector<std::uint8_t> bandSlots;bandSlots.reserve(rows->size);
- for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("placement"));auto* row=static_cast<Array*>(rows->data[i]);bandSlots.push_back(previewBandSlot(row,*palette));if(row->data[1]->to_int()>sources->size)throw RuntimeError(_T("Invalid preview source"));}
+ rows.validate(sources->size,*palette);
+ std::vector<std::uint8_t> bandSlots;bandSlots.reserve(rows.size());
+ for(std::size_t i=0;i<rows.size();++i)bandSlots.push_back(rows.band(i,*palette));
  std::vector<AminPointCache::Geometry> geometry(sources->size);std::vector<AminPointCache::Group> markers(sources->size);
  std::vector<bool> used(sources->size,false);
- for(int k=0;k<wanted;++k){const int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);used[static_cast<Array*>(rows->data[i])->data[1]->to_int()-1]=true;}
+ for(int k=0;k<wanted;++k){const auto i=std::size_t(k)*rows.size()/wanted;used[rows.source(i)-1]=true;}
  const auto time=GetCOREInterface()->GetTime();
  for(int i=0;i<sources->size;++i){auto& dst=geometry[i];dst.color=palette->sourceColors[i];markers[i].color=dst.color;
   if(!used[i])continue;
@@ -68,7 +69,7 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
   }
  }
  int shown=0;std::size_t faces=0;
- for(int k=0;k<wanted;++k){int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);auto* row=static_cast<Array*>(rows->data[i]);int src=row->data[1]->to_int()-1;auto tm=row->data[0]->to_matrix3();auto& group=geometry[src];
+ for(int k=0;k<wanted;++k){const auto i=std::size_t(k)*rows.size()/wanted;const auto src=rows.source(i)-1;const auto tm=rows.matrix(i);auto& group=geometry[src];
   if(group.faces.empty()){if(group.placeholder){markers[src].points.push_back(tm.GetTrans());markers[src].bandSlots.push_back(bandSlots[i]);++shown;}continue;}
   // Retain the bounded instance stream. Controller-wide draw admission chooses
   // full meshes or boxes without erasing an entire source from the preview.

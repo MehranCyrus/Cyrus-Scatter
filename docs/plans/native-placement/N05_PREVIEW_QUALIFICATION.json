@@ -1,0 +1,855 @@
+{
+  "schema": "cyrus.native-preview-qualification/1",
+  "date": "2026-10-17",
+  "parent_head": "6ff219451727e2f71f9ec0bbe739db5d559ae526",
+  "status": "Internal N05 preview adapters. Goal active; immutable bound publication/controller routing, remaining native foundation and full roadmap remain incomplete.",
+  "product_metadata": "0.85.4/schema58",
+  "target_delivery": "0.86.0",
+  "installer_created": false,
+  "artist_installed": false,
+  "build": {
+    "path": "build/native-publication-0860-20261017-03/preview-native-01/receipt.json",
+    "sha256": "9ecb74b522bdd39a35f96a99680c0e706109b493eed916613dacd790e461005d",
+    "sources": {
+      "AminScatter/CMakeLists.txt": "444554bad30d7dea03941f5f62fc03d4d51298b97daca7178446e0036dec1b46",
+      "AminScatter/scripts/AminScatterObject.ms": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "AminScatter/ui/LibraryGallery.cs": "49bffd7815107f01f6b2cee5f6cb9ce0a514a82d84680aa1324504587e361378",
+      "AminScatter/tools/build_gallery.py": "a3f87747bd0691c45e02ccaf3c4ea16b59373769c25743bc994e4947351a58f7",
+      "AminScatter/src/analyzer_area_bridge.inc": "f0cff418f0d97ae8adf49376260577402e2e00665fb03c0004323ffbd71f12a6",
+      "AminScatter/src/asset_bitmap.cpp": "76be12a8be96357afad9ed1ec618f0b0cbd4695798d7599fa7c438fe8ff8bdc7",
+      "AminScatter/src/asset_mesh.cpp": "47ba4eabe61a9257d08dc0634d82ca000cadfc513b9a39b450c8923e241bbd0b",
+      "AminScatter/src/asset_package.cpp": "83b1143ba6bdfc60ad9c7dd1bb09296568e1762eb090a98c4c04033c67a8ddb2",
+      "AminScatter/src/authored_revision.inc": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+      "AminScatter/src/boundary_falloff.inc": "cbf155f7a0005f2bf2d7d13108afa72295e4efa7da49aea7cff7c8c562f01508",
+      "AminScatter/src/boundary_falloff_bridge.inc": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa",
+      "AminScatter/src/brush.cpp": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+      "AminScatter/src/brush_host.cpp": "5ceda0601c62a051ee80d70dcb5870474264c331ca62998ef6a8c7795ce6f068",
+      "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+      "AminScatter/src/cluster.inc": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+      "AminScatter/src/cyrus_edit.cpp": "6a4d3599fe5bbf69911a506aeae316ff29dbb5c14ddbee93caa4185f50fc04ff",
+      "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "AminScatter/src/cyrus_edit_stack.inc": "0564b1eb9f04b7504b2279061012bcb2ccd75d610833396ca8dc9893637f3934",
+      "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "AminScatter/src/diagnostics.cpp": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+      "AminScatter/src/diagnostics_bridge.cpp": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+      "AminScatter/src/direction_orientation_bridge.inc": "1626e99c631f5ac4d639f59001ecb1c967f650c464f897943dd8af996d566156",
+      "AminScatter/src/direction_orientation_value.inc": "3f3ced9aecf90e0fdce2fce8741ab7f14384ea117e0839c4832595d56a22eb7d",
+      "AminScatter/src/edge_border.inc": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+      "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "AminScatter/src/final.inc": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+      "AminScatter/src/geometry_preview.inc": "c57ecb50090d391e26ed9d6a28fb75e31e01f698419d6692bc81cd970965351b",
+      "AminScatter/src/grid.cpp": "8c1babc895f2294ef156d75a063e1d81f15e49466b22e407df5ce530da1afba9",
+      "AminScatter/src/grid_bridge.inc": "dfde74276cf5c911bbba74cc85d31d8b842da6507b7258016af818e3744fc559",
+      "AminScatter/src/grid_value.inc": "0cedd161155510222687b7fa19007598710d83f0dc6fccc9f5168463114251cb",
+      "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "AminScatter/src/group_spacing_bridge.inc": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+      "AminScatter/src/input_validity.cpp": "a4ff5a6e53b21c4bcc6eff954ddef108036f0d2dedd99c49485fed0c171cb52d",
+      "AminScatter/src/max_bridge.cpp": "81f57dda7e4888005eadc69c90242b78ab27320433f96e9b51ffe4a6c4b56d11",
+      "AminScatter/src/mesh_density.cpp": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+      "AminScatter/src/mesh_density_bridge.inc": "198c68a4222c4e11506de8b2cc7f913565de41018b41afe369ab56b9d7ab2a84",
+      "AminScatter/src/mesh_display.inc": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+      "AminScatter/src/orientation.cpp": "7ca86521e02e3dd16f4afd02720d0f2564040f858fd5d1c9e4af5727f5265d3a",
+      "AminScatter/src/orientation.inc": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+      "AminScatter/src/orientation_bridge.inc": "f3ac20fe49f3a8180f61616f02a25476e50b5258ad976d7edb0fde6c0ee3f040",
+      "AminScatter/src/placement_api.cpp": "1f001d7d612fce66bdb6fdfc731f93b2bd89a5d12098fba5f6b32a3842db8e8f",
+      "AminScatter/src/placement_hold_qualification.cpp": "990cac7d666bfe492ab3a6840284db0dac5ba74f9c54a8eba06c5a905f1a9b5e",
+      "AminScatter/src/placement_identity.inc": "5134fd60f3a338957160fa5ae4130acbe25ee78ce6d94ba5dd9a8e90d90fa67e",
+      "AminScatter/src/placement_materialization.cpp": "917868e70cced1ae5b4213ff90f4f5f00f8af7dacbb0fb5ff48884a83ec62218",
+      "AminScatter/src/placement_observation.cpp": "d96577a38c8971fcfd12f9a3e98ffc4824338d2d46f63e6338e6856de2afee3c",
+      "AminScatter/src/placement_store.cpp": "5e72a783b9af1baf806a2936ba1180f472dcf6e776159e1c53933f68fcd991e9",
+      "AminScatter/src/placement_value.cpp": "c509cfaaaaf1e5d3a6c0f362d4e22250bc9192b6c163a2d90c762376b5bdaed5",
+      "AminScatter/src/point_display.cpp": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+      "AminScatter/src/point_publication.inc": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "AminScatter/src/prepared_band.inc": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+      "AminScatter/src/presets.cpp": "84edeb4557b083fe81f637ab736c79adb1a95722a18eabdac56969b68285184e",
+      "AminScatter/src/presets_bridge.cpp": "8fd0b86f736ec9fe08885b54a19b1f6ede9191652fd2d21af8d0cf59bd4b3245",
+      "AminScatter/src/preview.cpp": "941c15104e958e67a8abe595bff9e845c498d6f6a3444587ce5faa646ec701a2",
+      "AminScatter/src/preview_compare.inc": "f6d0d444bf496f887653fdc396b49743c3c539840afd3211f0711b5d93923fb4",
+      "AminScatter/src/preview_palette.inc": "c8b06143363b809e315679f9a6125e2adad750c63db18d2d33273f645e287222",
+      "AminScatter/src/preview_rows.inc": "0b0a986c45882e73b42cee34189aebf33303fd65d750fcdfb69708796bfb890f",
+      "AminScatter/src/procedural.cpp": "10db01bb4a645fa306396163e32dd33dccb2ea49967d9649032d41668e8d10be",
+      "AminScatter/src/procedural_bridge.inc": "be766ef274cb07626278c4d0eaf62d95b88aa5bc4870ac34a3d6363a30b28036",
+      "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+      "AminScatter/src/receiver_bridge.inc": "b97e6ce2102240781b12f7955ac253200d003201f6dd0ddebd4731753e50d9ac",
+      "AminScatter/src/receiver_plan.cpp": "eb4907eeba7e8f0e4b5d73039a7dcbf14f8d504e2b9b5c81cc51f995bcb8a0b8",
+      "AminScatter/src/recipe_fields.inc": "b1cf18dd736e517edf508cae26bf1601324a41423596a212bade2cf866c7cf43",
+      "AminScatter/src/recipe_library.cpp": "27d83855a8aa56e58a8b9b8233520157271470a8bea6902c7c6300a73c739135",
+      "AminScatter/src/recipe_store.cpp": "5428e1308b72b52a290501a46209021c78dace1fc638d3330c82feaddbdc269d",
+      "AminScatter/src/recipes.cpp": "955b69dc5033c72646fba2f186d4b34c38e8905e0797da0a800fcf0d73770783",
+      "AminScatter/src/recipes_bridge.cpp": "a85725a0997e402d8d905cf656aaccfb68b86577259c85965b09fee26bde41e7",
+      "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+      "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "AminScatter/src/scatter.cpp": "37497aeddafd25469c38c9762f4b691ba4c60cf27c0cc634e201e59367c6747b",
+      "AminScatter/src/script_buffers.cpp": "1b6ce5e69ae53758f133e9555bba39580e516a7d6dededc178b24d3d06e33bbe",
+      "AminScatter/src/source_container.cpp": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+      "AminScatter/src/source_geometry.inc": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+      "AminScatter/src/spacing.inc": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+      "AminScatter/src/spline_bands.cpp": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+      "AminScatter/src/spline_field_bridge.inc": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+      "AminScatter/src/spline_overlay.cpp": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+      "AminScatter/src/spline_overlay_bridge.inc": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+      "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "AminScatter/src/surface_filter_bridge.inc": "2391d5a14e9aa9f6bc614b62384547a9b81e3d3db4a9955e94f0b4d87b5b0e76",
+      "AminScatter/src/team_license.cpp": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+      "AminScatter/src/whole_scale_bridge.inc": "c8db7bdba6d03af4b717434666a50883fdf3e32b7bb1535cd8dba845d4baa1ea",
+      "AminScatter/include/asset_bitmap.h": "bf9521a56cc97a9b3ca3c354c748813411db27148b54e3c719aaae44ee45ecd8",
+      "AminScatter/include/asset_mesh.h": "bafa89f7731971a18e070fb0d18aded4bbcaf7609c0d5482237ec7344613fa95",
+      "AminScatter/include/asset_package.h": "bae423820fdfb6194cff671bf88b49fdb713a7868b76f19b82d3151f23c22c17",
+      "AminScatter/include/brush.h": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+      "AminScatter/include/diagnostics.h": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+      "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "AminScatter/include/grid.h": "98ac2390235f798fb2d7aeda183913d267be54fc9619e7b2c0fd4f96e46f3f65",
+      "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "AminScatter/include/license_boundary.h": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+      "AminScatter/include/maxscript_heap.h": "ed040d8a74c576d495f34e7f63253651a4f372dfca4f88866621897e39ced6cf",
+      "AminScatter/include/mesh_density.h": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+      "AminScatter/include/orientation.h": "514e8bdb9adebd10eb3ce4317fd83681070b72b3ba92ede239bb2e1e5be18930",
+      "AminScatter/include/placement_api.h": "5d2c74aef6a1320290d4d5090aece3b9ef053d97f7fc0c187aa226262c02e8f8",
+      "AminScatter/include/placement_materialization.h": "04f4e7ff8c4c12c0366edde96e8518786517c8ab6622c97845a40c5c3665c270",
+      "AminScatter/include/placement_store.h": "5f0ebe2760519736ab551ac17b527755279b93406e31050055f77cd9bda77205",
+      "AminScatter/include/placement_transport.h": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "AminScatter/include/placement_value.h": "15060d30d5ac01d2973e8d087b5ef38746c19e428a5477724053879c85b20729",
+      "AminScatter/include/point_preview.h": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+      "AminScatter/include/presets.h": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+      "AminScatter/include/preview_budget.h": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+      "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "AminScatter/include/procedural.h": "4e96c632f1fc8ba44da699e42b194ca9f1d447ea2b5c46eeefdd671ada3331d1",
+      "AminScatter/include/receiver_plan.h": "f0616163138d83af9bc24bf3bba4e4d79bdec052da9ff4b3d657182e8d5d1b55",
+      "AminScatter/include/recipe_library.h": "f7a84c3da0de59568131da7fb94f6907dcde19c6fe57c9c27c2e171dfef4e57c",
+      "AminScatter/include/recipe_store.h": "06f0afe90e942f4b43d6e990df84864827d10925552014658b2e438ddee17cfb",
+      "AminScatter/include/recipes.h": "fba0b0ac753361da2f0c61d67d86a6f67591cfdf312eec7ad8f7ab75e39307a1",
+      "AminScatter/include/scatter.h": "d94407f2f4f0f927768190ca968b7efeaed58b39478e02e15103da090aed5090",
+      "AminScatter/include/script_buffers.h": "678872bcaa4fd330e14111f0e8f31187d2e6eca7710a9997092465d5fbefe335",
+      "AminScatter/include/script_memory_budget.h": "d6aa56bc7262a4a7004e556c2db75b2afaac8054c8d560b10f38665b09bd774c",
+      "AminScatter/include/spline_bands.h": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+      "AminScatter/include/spline_field_value.h": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+      "AminScatter/include/spline_overlay.h": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+      "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+      "AminScatter/include/viewport_policy.h": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+      "AminScatter/tests/asset_mesh_tests.cpp": "b05a56854210eb7a2a5ddd2df11651a7b02cfa0388b7f5a963a0436e44a24adc",
+      "AminScatter/tests/asset_package_tests.cpp": "ae732d7a814dca5d5f7a1905a00d669dec48ed485ccde156607dbffef24fccee",
+      "AminScatter/tests/boundary_falloff_tests.cpp": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+      "AminScatter/tests/brush_conversion_tests.cpp": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+      "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+      "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+      "AminScatter/tests/compute_benchmark.cpp": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+      "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "AminScatter/tests/data/recipe_v1_defaults.json": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+      "AminScatter/tests/data/recipe_v2_defaults.json": "27be9fc368e48cc5002125abadca5d70c6eb0a48fda121e558f3f9184dd362ab",
+      "AminScatter/tests/data/recipe_v3_defaults.json": "5fbe1bdc1e116cae020b136663ea5118ce7f10411da95353ef7811d21861fc25",
+      "AminScatter/tests/data/recipe_v4_defaults.json": "a770a5240e4730d2e128ce2ebd9be5130750d2b5bf59d3b370a46c7ad9ce633b",
+      "AminScatter/tests/diagnostics_tests.cpp": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+      "AminScatter/tests/direction_orientation_tests.cpp": "c1fcab5234137fc3be723b57a125da2f90f87c8e277f0aba023c7b1deb93d693",
+      "AminScatter/tests/edge_border_tests.cpp": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+      "AminScatter/tests/grid_tests.cpp": "756eb16ebf851a73e9790418acfe10cd2cee76f383b7eb1696844a51f9ab3665",
+      "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "AminScatter/tests/mesh_density_tests.cpp": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+      "AminScatter/tests/orientation_tests.cpp": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+      "AminScatter/tests/placement_store_failure_tests.cpp": "ba196f3ebb0fb5e3e80bdaef57ab40444e17ba461fead4769919ea89265b4906",
+      "AminScatter/tests/placement_store_tests.cpp": "fe50b8cd68377715b719b8e2802b235a8c66847f4e12e64dce08ff0c4bc48cb7",
+      "AminScatter/tests/prepared_band_tests.cpp": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+      "AminScatter/tests/preset_tests.cpp": "9dec8c828b652581e404f183438dd8c1b2eec3f8f8afdbd054ffaf2f44429bbf",
+      "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "AminScatter/tests/procedural_tests.cpp": "09fb42d91be64374c4c8b5b46e128fce9d3376af4d7c7b63eb3c07baab4085db",
+      "AminScatter/tests/publication_tests.cpp": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "AminScatter/tests/receiver_tests.cpp": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+      "AminScatter/tests/recipe_library_tests.cpp": "0957b93e3e7f3b2ab9c219c4e8b605888f1e7c2dfcec90d74527ae016cc7eb6e",
+      "AminScatter/tests/recipe_store_tests.cpp": "7d2eac41249ef7d6301b887dca442e860f815057500ab87b48f382b90bb00aab",
+      "AminScatter/tests/recipe_tests.cpp": "3b937ed031e60ad6c886c2aaf96b576a5c3e83ec6f6e7cad5d48bf312346ab02",
+      "AminScatter/tests/scatter_tests.cpp": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+      "AminScatter/tests/script_memory_tests.cpp": "b15b8519be25d5da030617561ca6faed7e93de0dae1ab551a3a52bb171068dcd",
+      "AminScatter/tests/spacing_tests.cpp": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+      "AminScatter/tests/spline_band_tests.cpp": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+      "AminScatter/tests/spline_overlay_tests.cpp": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+      "AminScatter/tests/surface_filter_tests.cpp": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+      "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "AminScatter/tests/viewport_policy_tests.cpp": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+      "AminScatter/tests/weight_tests.cpp": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+      "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+    },
+    "binaries": {
+      "build/native-publication-0860-20261017-03/preview-native-01/AminScatter.dlx": "c98d8249e9fb1bfa87547eecc349cbc522882b5ed2f599a5c095c8fcde4d9ec1",
+      "build/native-publication-0860-20261017-03/preview-native-01/CyrusBrush.dlx": "7b0ab1438f5dd4a9affe7192d430a675e79c76a219ac1a4e8af377b54427c9ad",
+      "build/native-publication-0860-20261017-03/preview-native-01/CyrusBrushStorage.dlh": "d40ec4a7fcd09a59a47d7a6f911f186456e5714e6fadd5d10bd0b06f3168c23e",
+      "build/native-publication-0860-20261017-03/preview-native-01/CyrusGallery.dll": "9cb9e69e3cb9fe08f65e69c956eafcfc718e754aef514415b780896eb162a5cc",
+      "build/native-publication-0860-20261017-03/preview-native-01/CyrusScatterEdit.dlm": "90d12d04893e018434852b3cd90e1195db72fe4556917bc63060e8007d2cee8f"
+    },
+    "native_suites_passed": 42,
+    "test_output": {
+      "path": "build/native-publication-0860-20261017-03/preview-native-01/tests.log",
+      "sha256": "0f1f59ac31fde50900b43162de8a40a2856ccf21f977ec22ca695b70c7122b56"
+    }
+  },
+  "host": {
+    "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01",
+    "pid": 43760,
+    "loaded_binaries": {
+      "AminScatter.dlx": "c98d8249e9fb1bfa87547eecc349cbc522882b5ed2f599a5c095c8fcde4d9ec1",
+      "CyrusBrush.dlx": "7b0ab1438f5dd4a9affe7192d430a675e79c76a219ac1a4e8af377b54427c9ad",
+      "CyrusBrushStorage.dlh": "d40ec4a7fcd09a59a47d7a6f911f186456e5714e6fadd5d10bd0b06f3168c23e",
+      "CyrusScatterEdit.dlm": "90d12d04893e018434852b3cd90e1195db72fe4556917bc63060e8007d2cee8f"
+    },
+    "script_sha256": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+    "launch": {
+      "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/launch.json",
+      "sha256": "63c2f5698ab45265370d1d0d06f674a11b6a06997a010eba6706634d720d81a7"
+    },
+    "loaded": {
+      "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/loaded.tsv",
+      "sha256": "4b3e7a2b605794340cd8f75386428eff0992d260caa04a8eb2086ae7888607ed"
+    },
+    "startup": {
+      "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/startup-observation.json",
+      "sha256": "346f4d49ed8a2fec6eafefced99033a8e488508b8a13a6bccfde98021796dd35"
+    },
+    "closure": {
+      "pid": 43760,
+      "close_marker": true,
+      "exited": true
+    },
+    "closure_receipt": {
+      "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/closure-observation.json",
+      "sha256": "818f415cf5bf655e72237f050a7dfea813b6e75d1327263b942e668ce48b555f"
+    },
+    "requests": {
+      "generation-022e2b789c6d43c4ad6fef8bba525f95.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-0391b491b80347f98c3421d73a1fd550.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-0629fcd966194bc18a807b2ff45d54e4.ms": "a2950b8a626623e02b3ed9ee26dc77d89ee5ff99d3d65a54a7a24cdaf545091b",
+      "generation-0a47bcffa3a84d60b2eca76615105ce8.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-0bb0ded6576547c484991e5fac6366ca.ms": "01636546fe2cf845431b07c0e22ef477a522af99c05df44dd4da52b640f0c0bd",
+      "generation-10d01aa5af754ba5819948c2b810939d.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-10d43659d3144ca6ac39cf2fd4fa2421.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-128213ed286543adaed676b05ee27d1f.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-13068f5502a84656a204a905cfba5c5a.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-1471f62b480141dab003b0b62926ede8.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-1560432212304e8e98fc70a297868974.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-17866a3254974252a341adb0e48a589b.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-18e8bf6a44fb488e8772ea523931f352.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-1915a85653c140b190f2b2c8aeda015d.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-198cfea38e494b4c8d4502ead1b2991d.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-19ba72225c764ac689e0decf9e4a7cd5.ms": "97f3c1d248aae78be4a28fd19c2b2a2170107598d5fd47b714269b66ede403b1",
+      "generation-1aa778c5230b4753943253a8835ced33.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-1b79aaa1bd2c477e8212509ae48a1b0a.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-1c29d60b5fd64e23b3d212a7119b17db.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-1c57029d1f824302b7adf394bf4dfc4f.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-1ebd7d780e3f4e9e8d35045a4852a74c.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-228f01f73b1e464ca5486585d9f4f322.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-22b0b6a3bb274ca98d9b1d0a15c7e41e.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-26cab8838e034b4589122ace48a4edd7.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-2a6b1e10a65846de86b18a9832c3073d.ms": "a2950b8a626623e02b3ed9ee26dc77d89ee5ff99d3d65a54a7a24cdaf545091b",
+      "generation-2bfacd36b4d542f1933564938ea6270b.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-2faad499aaea48d983048f3b27998729.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-2fe5ae8f1e35468583036b81a6fb33b9.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-30f91800f8c647478bb5f4610c08b2fa.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-323b8f7498954a1b98766d9edc3c8737.ms": "97f3c1d248aae78be4a28fd19c2b2a2170107598d5fd47b714269b66ede403b1",
+      "generation-352f0d4ebc3642b980ad5b3f1fbb26bb.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-35467e427d244df9bde11025329f9b37.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-370ec174d71d40c199723daf178118d5.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-3973cab44b4f4894b41027e47ed15f06.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-3a0f18a94e594958a41ce6e697c9a538.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-3afcf5d64818423eb920ac6207ea4d88.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-422caa2c10ba470084b53d62bd042fac.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-43c5f7e63f6f4be5b01c4231aceafb50.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-4ad97f844cf5464b933e4f6bdc453f5f.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-4d4103e01379424d921f34e86c8700f4.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-4d50902f456a40bd9bf327d35ae43ebb.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-4da8db05648d47f2963b03f335949d32.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-4e6d7ecc2c3e4e368933c2e193cfc83c.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-4f147943599840eaa256fd67ba6e19b8.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-53fddad654174c4594f74177c7339078.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-5833614b4c0647578eddbf376b2d7565.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-59e645788f5a46eeac90e47e7a626182.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-5df330a326bf4d7a88e93128b4f645db.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-61cd3ee0ebd2409d8e5afc34c6d1fe08.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-61f04e6fcf704d45b72ad1c406b5deaf.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-64664f01f5f04f9b89b2f3803fbd1eac.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-6489596a2324403fb1aa3fe81e51afe7.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-64eb563f79fe4f54aac312c19134aa6a.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-655adf17b0784942a6806aca505d5cb0.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-658fb2bd576e4bc8b884fc1dec623404.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-69a340f2ef794fcf952ccdf4494c2591.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-6b8864dbc8ff42ec93acadf7df98f4c2.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-6f6a45d4d3a04dbc90d3e92129009440.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-707352a83fa24410af373513f8e30855.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-75029d4e1524475a8e98bd0286e252f0.ms": "97f3c1d248aae78be4a28fd19c2b2a2170107598d5fd47b714269b66ede403b1",
+      "generation-76097def7e504318bf59449f8e8fc950.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-766734bc7c7343b7a507613c704d8d0c.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-76d3c489ef1d448592c3e24593aaa1c7.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-7b75676b2196468fa9b7809b26d4bcea.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-7b9f082ccc364c179e06e30bf373df61.ms": "64d8d1cbd71826ed07ec1ba9c2231aeaf35129cc0ab860890e503d8ad44989d1",
+      "generation-8168d33e61cc414c9b05b7b5d6cf9efe.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-8278f2c2238a417b9ef5726a74b6fe94.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-86d558e8a2d64a9391a5dc4b766e531e.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-86fb832e61aa45859cd6feedbec501ef.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-89208f28d73647e485ad262dd3d0d26d.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-89303024d7a4429490f0737d93a5d26f.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-894547044eb7469c86d1a9913c4cb724.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-8ade02f6916f4abfb2df0b40eb588fee.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-8b82b79e8fb6487aaad2e9aa8fb57d0c.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-8bac0e5c3ec643ebb5aad3351c45c424.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-8d97b1e06fa64295912cbee97ccf63fe.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-8e24eb5086934fcebfe4eaffacc89ec7.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-8fb3bdcc3849406b92befb942069adda.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-906fbfd2bfad4b0faae93f940f761eb6.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-9487e8fa050a4e05b9a149ea72287ab3.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-94e79cab39a04e669be2b6ab2fa92620.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-9717d9c865a046c399b45dfd22b9592a.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-9bcdabe1fc30461c87eb7429fbd9670c.ms": "97f3c1d248aae78be4a28fd19c2b2a2170107598d5fd47b714269b66ede403b1",
+      "generation-9e27858d4b7b4f56a958e56f306df29e.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-9e74c129411348069d9e6ea9ff4074e5.ms": "01636546fe2cf845431b07c0e22ef477a522af99c05df44dd4da52b640f0c0bd",
+      "generation-a1275cb99b3d4ff2abbafbd696e02c04.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-a215e6ce0aec4afaab21c45d840b14b0.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-a3d7f685bcd7414e8eba18b17c202eaa.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-a6aec8efcd32406a9744e69f765a45e1.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-a7e0a25168204a6f9eeab4e35f3e0b23.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-a858a19b7b154ca19633467622bb7fad.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-ab0797ff2b414d38abd51ad97f21fe86.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-ab640cf7cff94f8f8f9c18ab552f95a9.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-ab8bd58289864245821b5ff8e4114a0a.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-ae05744ff312448195a35aeb817321ac.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-aeceb69d3de94695a98fb6530ee50d97.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-aede2a940a8a4d04927be67536fc60fd.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-af848fe37a22438588e07cd36b6aad08.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-b2a2fa79873841468164e38b7a218f50.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-b5f358560c8f41e8aef72c9142eb05d1.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-b610d97b357840008b51ddf26c81a9d9.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-b8daabf8a6f4465aa036bb9c26498146.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-b9525dd0935a4420833120834aa48865.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-b9a506523cae402982b7f0f6206fcafa.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-baadb01c32b44dd1b0431dba373ceba8.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-bcafc6d5e6504b4889d049684e145324.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-c1091b0eb87f4b198b2216b73dd43d85.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-c6e0dde0717d43e79e914c484161cc1a.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-c8471f6efd224a3d9877938e49ba3f86.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-c8fe11271c944f53bd4a5c303657ef10.ms": "01636546fe2cf845431b07c0e22ef477a522af99c05df44dd4da52b640f0c0bd",
+      "generation-c9ada7f9f8614eaeb5b20cec0bbd3cf3.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-ca150e8415a641ae91a9c682822d5070.ms": "97f3c1d248aae78be4a28fd19c2b2a2170107598d5fd47b714269b66ede403b1",
+      "generation-ce8b62a56ae7420bafad9289fc6141ce.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-d68cbf9e87c54053af630684c9c7d912.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-d735874e99f54880bc0f11d197618ac8.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-d9adbbe6b4c34198aa2ced2d20241249.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-d9d517de6d254ee198c05274d7900236.ms": "01636546fe2cf845431b07c0e22ef477a522af99c05df44dd4da52b640f0c0bd",
+      "generation-db5834eb9831481ba0efc9fe9a8516f8.ms": "01636546fe2cf845431b07c0e22ef477a522af99c05df44dd4da52b640f0c0bd",
+      "generation-db80e01162a5406da8fb2e35d289f50e.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-e0807ccd65a8467a87905009940278d1.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-e28a153bcfeb4d0092e717be2d3e1976.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-e3fd4e9f31924a659faa7dc874c85efe.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-e5789172bb9d4f969926310326d5e219.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-e65c66ca7fff401bb753d43d3df2dcd8.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-e7517fb123df4c078e762493573299e1.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-eb255f6760b04c17bfb3d7002f696c2b.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-ee0a1ffd1330424e9b4b179b1b6e0bb7.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-efc197c8f2e345588a834955758f9f0d.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-f32145dae6814328a53b69f82dc6d2c5.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-f5f56582d77a4bedae1f5f82308ccf50.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-f98c00524cf94e059b03d32bc3919fd0.ms": "97f3c1d248aae78be4a28fd19c2b2a2170107598d5fd47b714269b66ede403b1",
+      "generation-f9f3ac604bfd4a4b9ed2af19c2f171ad.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-fc304edcf04e4a6f8aecfb21860c14dc.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "generation-fdb4a75f7e94471fba57892ae50b73a7.ms": "092b3331433b8d44e0c787ac75287f079a55316d4a4794ca5559a5edad72a4f3",
+      "request-0541cffec031470a89bfae3b78f88ba1.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-0558b77918ad4d7aa598c12b5ebb4235.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-0758dda439e34111ac31032176495cb2.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-076f68a68099451586474bc369a7f578.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-086d46f05eab4e5e9ac2cf41562ac189.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-0b21faea2a2646cca49da2d1da98c726.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-0e57932b33e643498582a580f7be59e1.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-0e9c41b1510c4ec68dfc49c1ecc26108.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-0ea18ae92fc34485a588e9ed38e0fc30.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-11e226176205484c9ffd7b283ad35c07.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-1857a212015d4168b9df41faa3d9b9b4.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-1ebbce64397b4279a60f00d116358f20.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-200b42ddcbc24427ab312de604fc9502.ms": "9aa591b1926637478450c4b3cde366b631ba5229e2afc7655ba4a8c69946a940",
+      "request-23c9fc395a8f4d47953360f156b8ce25.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-255cf25bc3a44b948d2eb018974afa70.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-2706af96548148bcacb41f69b6f85dc5.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-27bcae113e22466998e626ddaf6e049d.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-29f775df9bc44029926cc6ed37cf6d6c.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-2a1ce2169e94481a8dc9c13115a3daad.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-2b0274235e2c4195b17e1d36d49622cd.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-2f4682192152428693ff24d23606b173.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-30397ba755e54bfbb6ff9f54bc1b3095.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-308973488fc5427e80837847cb1276c8.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-30d68a4e362d4c63bfa4bd9f13dc8a4a.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-3716876cc72b46ac9eee45d92fe1ca19.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-37449f80101846a484bfdd4a459bc895.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-39f72a6dcd514922b55e479ab77b1c65.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-3e31ce98fd6e486185d4200157854e3f.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-3e93469d6e504aa6bf507b5373427d5f.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-408ba93d7360460f85c162ff1a1d5a3a.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-4091f1ba631f4ce384738c268a002521.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-41f02a48e0b347f098721feb7eb0ef60.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-43383d41cdd14bea9c1145d1c8311c60.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-43b10c69e4fe42018e53af345444ff85.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-43d090b2637e4f5c830d5fcef1e05a34.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-45b3ea8affdd43a58a3a5dd8bc682ea3.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-467a12ba34f04942b5ac480f3c45820d.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-46c290febc284f02a303f2c88fc8acd2.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-473f24b380b14308a594678e953a05bc.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-4e9ebff224814c37924ad4dd19363900.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-532217e716374663b79ed6fbd2d1c67b.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-542726b4dd074cc395a9985fbe79ab32.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-554561467b9f44918619df8bebc57f01.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-57ab0fab3d6940c1a4491047ce08ea67.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-59c30b29efef4cb08fae7b8931772297.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-5bdc5646c7b2440ea84c5dd0b0c31561.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-5d6b8f7ab0184a39928d5564758bfcaf.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-5e62f4fd75c14da78c7fb91a723a13b7.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-609eac82d28140d09f23cf6ba7361e00.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-62bb64ef6c1b42419181ecba2ba76571.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-6358b7693a6b4de9ad161c33b1de6f96.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-6796e94b2568432595f1e95597cd7320.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-702acbc7df5746c48a431e37b2f45c16.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-7440c41b2bee4b1ebf594e1288da2111.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-76b0d4f4b430466ea1020200fda96be2.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-7a1c7a60d064414f86b678aea8d9cbea.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-7d9705f2aea24443b4e4e448a7fd499c.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-7da6c058b20a4de7b94e72ec65c5b489.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-7eddd553d48d48888fb89cb18c44af0e.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-8247af7ca55946ec89f5318c08adc422.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-848207ff846240f4a398b13c5e1d6f59.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-8532af12097f4ec6bc571a21949e7c39.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-8a61ee6b63a94369aa0988e279798605.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-8ae47a3fdff647df9bf43c5168b8ab7b.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-8b5e6efda64847c7bed28fb157753d45.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-8c1313903f194325b5c6e1f0d9642202.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-8d9881c613874a2dab4c22bb7f293cd5.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-8ded63db86dc4512bccee4485d369357.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-8ea9ca4509db479aa259ca016a23fb3c.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-90bb733cccca45d398f72936715d13e4.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-916fbc146f0f47869ba5d16f7d89c6dd.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-91dda27d4541488c8e33a511fb13c5f5.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-91e2f08f2b724596b184bd5928c2dbf0.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-94c55cb26bea41d0b58131002ff447b1.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-9811d99ee9754158881b73b4c822b1cb.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-9980cf576fce496fab602667ba2b3ff8.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-9e05eec362ff4c37ad6aae7659b4c3d6.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-9f0245e0c7164d739c888b36fbf2a04b.ms": "ca4850c0b6153c507191eb35698d1960020de99d368c9be6c2b2f5073db50ffa",
+      "request-a134d0aee97644a6b34fd51bdd4ffd0f.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-a9b3685b54a9493b815d544e75352839.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-ab5f933d2db340e6bc0c8a92ee0929ff.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-ada34ba011c14f269624cb45faabbcd9.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-ae759668e79a408f9618a6c5f9dd4d28.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-aea450564f1941589809f709bd75a6a3.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-af4d7ff697b34a4a9dccc7c960f81739.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-b3dad4654f2d4cc6838d0b6f5150f971.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-b7ac12cfa4c943b0a806f4a0c8f553da.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-bafefc16dba24bdfb27f348521ccc5fa.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-c1aa65f1a0364142bb8be5c33cf4ccb1.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-c301382959b94071801487c59a266414.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-c3dab823334e4f2789960fc6c735edd8.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-c65fa3f45bc14545b5a106e752e4f827.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-c87c045c76df49e9babfbaa4636cda86.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-c905dbee9c404f88a2b853f9c2d52374.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-ca5e1689a2764eb19eb940ec231b5ab8.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-cdb242b7b23b451183c855c246b4674a.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-ce88dd08d05b4ba8b84b5f92ca926bad.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-close-72e29f66f1a247f082d5a4b3b976cba5.ms": "0239f95540535225f3e3295bfad2a6cf59ca9a3e6ab377bc307d08b01eaf53c6",
+      "request-d0109341734c4797ab8b5d79eb816d6d.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-d20ae852a6f94059becdd29c2a37d133.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-d4a52c8ac0944502ab7d6a5bed14f261.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-d96d230db59844bcada2d96cfb35a51b.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-d97876ff5cee4c77bf70207530a3e07c.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-dd44a4a6751e484aaf5a83732de1200c.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-e5186441e3ce4bb5adb32ce8fdc2ae54.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-e5a7339700d9431ea72d2673de4e7ab1.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-e6a4f3884d734739bf99e55d3f0664de.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-ebfe3e40a3d24b739cae6f7725168dd8.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-f0f534f56dcb477a8bc1250a386cc2cb.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-f2f2b089c5304418b337600e32f00ac0.ms": "995b1919f94039b2d472e5ec59f9c5f2e29e43a858ff854fb69fcf519292913d",
+      "request-f62339970a79444ea67e4634c39105f3.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb",
+      "request-fa9beb7cf06343a580b45d931d94bf6b.ms": "41468fac16f372348aa31fe5e7edd6b5f874a40526e30b8ed437c6f48ff7be9a",
+      "request-fd271899f09641c2ad5852dd3e3d65c1.ms": "378612de5178e570dc850d6de9a4eae27b4ea5df25466e12c19943836b1e73ae",
+      "request-ff4516c2f6894aa9bfeff721d4fff36c.ms": "2f06f008e810aa24b2c4923c993aa4a7adeb0d3569251e506f241c30204861eb"
+    }
+  },
+  "checks": {
+    "python": {
+      "passed": 168,
+      "output": {
+        "path": "build/native-publication-0860-20261017-03/pytest.log",
+        "sha256": "42bb1e8a3ef1be168501e19f7d2dde91777688125761f394c8351457fb185e16"
+      }
+    },
+    "generated": {
+      "path": "build/native-publication-0860-20261017-03/generated/generated-check.json",
+      "sha256": "bfd7411b304ec66cbed7dd96c53411ad13c439c84184f3c38c2ffc0b5e10c18e"
+    },
+    "point_cases": 18,
+    "geometry_cases": 78,
+    "terrains": [
+      "plane",
+      "mountain"
+    ],
+    "counts": [
+      5000,
+      50000,
+      200000
+    ],
+    "native_comparison": "Exact draw-content equality: points, faces, full instance matrices, Band slots, palette, local/group/global bounds, counts and placeholder/reduction flags. Allocation/GPU identity and field diagnostic metadata are intentionally excluded.",
+    "retained": "Actual Nitrous publication completes; unchanged cache adds no revision/upload. Input placements can release while retained draw content remains valid. Own scene departure and last-cache release return tracked Point/Mesh reservations to zero.",
+    "negative_cases": "Changed equal-count positions/transforms, source geometry mutation, palette changes, inconsistent samples, invalid mode, and unshown source/Band inputs.",
+    "controller": {
+      "path": "build/native-publication-0860-20261017-03/core.log",
+      "sha256": "ac9015c232195fedb17d5ad3b37bbfcdd29c4c7db8a08af0356e3e89a65da894"
+    },
+    "presets": {
+      "path": "build/native-publication-0860-20261017-03/presets.log",
+      "sha256": "fa5900122eeac9669e1f019c16b2f85da91ac7e12bd2e897e5171a0f5132678b"
+    },
+    "preset_outputs": [
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-verify.txt",
+        "sha256": "e933796451355f08c78f307b9cdcffff95626f2bd467025a6d09c3c32ecd266d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-meadow-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-verify.txt",
+        "sha256": "861148a8cfedd41c813b16f7f029a6237e8d4ae70b5fce15fd0497eae0aad1e4"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-woodland-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-verify.txt",
+        "sha256": "80cbb9c7aef58439c3b5b5ea1b8969cc4fdc0f34b84a6260b4ef4b14fe19e6c4"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-mountain-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-verify.txt",
+        "sha256": "66a1243f500d49060748ee4daf514526769af311549ca26f0dd4a207126ce691"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-borders-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-verify.txt",
+        "sha256": "fda0b53b7023d239613dc12c9dfd8a44790a4f421cf90636ef5aebb9e40efbdc"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-orchard-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-verify.txt",
+        "sha256": "47c35daff6d89af8f3ae422f4f3510d3d2544656ac29a655e9235c91bb3265b5"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-hexagonal-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-verify.txt",
+        "sha256": "113412cea57c9a23148af5960cd2b40d2723b1d22989b097485e5cbec819b451"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-formal-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-setup.txt",
+        "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-load.txt",
+        "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-verify.txt",
+        "sha256": "226481b913a2b034aed87c612e76bbd0e0e12890aebaae6791bd3799dee35f39"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-undo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-verifyUndo.txt",
+        "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-redo.txt",
+        "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-verifyRedo.txt",
+        "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-reopen.txt",
+        "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+      },
+      {
+        "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/acceptance-valley-verifyReopen.txt",
+        "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+      }
+    ],
+    "preview_output": {
+      "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/native-preview.txt",
+      "sha256": "21705d34f94b4c80fd3b7f07bb27dd121e713d5eeebf01880736b648777620c6"
+    },
+    "main_preview_driver": {
+      "path": "build/native-publication-0860-20261017-03/preview-01.log",
+      "sha256": "5d7fa0df14521ffa1b8219f7064ee8cede129db71417d641a80fd7454203fc4c"
+    },
+    "negative_driver": {
+      "path": "build/native-publication-0860-20261017-03/preview-comparison-02.log",
+      "sha256": "e0185555f65f3050c3b4dcf490f80d043d05b5fdaf212289bbe1b049a1ad4ef3"
+    }
+  },
+  "preserved_source_sha256": {
+    "AminScatter/tools/ui/templates/unified-core.ms": "ba6a9c28aa431742a7dc4729ca350895390d4247bc6f655ea754ed945548d634",
+    "AminScatter/scripts/AminScatterObject.ms": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+    "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+    "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292"
+  },
+  "tools": {
+    "tools/native_placement/preview.ms": "c831370b92c8647b0ef7b9e39c4ab2a73b87f07abb65d3f6f78a5b65bf6cdd90",
+    "tools/native_placement/run_preview.py": "e98e8d1551f797dc5031278c14a6b5f18863d227b824c54d70ac908bf5f91306",
+    "tools/native_placement/launch_observed.py": "03cc169ee99012ff9033dc0c2250defe09c822064316db112235b2c301a1052a"
+  },
+  "harness_repair": {
+    "failed_driver": {
+      "path": "build/native-publication-0860-20261017-03/preview-comparison.log",
+      "sha256": "41ff3b25900fc8931afe43180192a7b0854b2589878083d4ed093f10d18d7b47"
+    },
+    "observation": {
+      "path": "build/mcp-qualification/foundation-memory0854-nativeaccept-preview-20261017-01/comparison-first-source.txt",
+      "sha256": "61987e3c7c06f4f309a672970cbd22b5d2add8aaf7a7de09251d33102f39cc82"
+    },
+    "cause": "First stochastic row used source 2; the test edited source 1, so unchanged geometry was correct. The repaired bounded fixture explicitly selects source 1. Both terrains then pass; native sources/binaries unchanged."
+  },
+  "limitations": [
+    "This is a native input adapter into existing snapshots, not the integrated native controller/ordinary Count route.",
+    "Actual source identities and receiver binding epochs are not yet carried by bare placement values. See pending N05 binding decision.",
+    "Source-use output is bounded to at most 1024 counts, but computation scans the native population. Compute/cache it at preparation/publication, never on passive panel refresh.",
+    "Existing MAXScript radius-ring preparation, active Edit and downstream render/PFlow/Bake remain pending.",
+    "No full Update speedup, presented FPS, physical input latency, renderer compatibility or full native-memory peak claim.",
+    "The 65-second idle/controller and eight-preset regressions use the retained production row route.",
+    "Raw fixtures, request copies and native modules remain ignored local artifacts. The receipt preserves identities, not binary contents."
+  ],
+  "knowledge": {
+    "generation": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100",
+    "state": "Compatible historical binding; known stale parents. New sources/plans inspected directly. No refresh during this internal prototype."
+  }
+}
