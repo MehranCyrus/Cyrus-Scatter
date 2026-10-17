@@ -46,7 +46,13 @@ Matched warm CPU Update measurements improve at 50k/200k but regress at 5k;
 and the N08 profiling requirement. The [frozen publication/controller receipt](../native-placement/N05_PUBLICATION_QUALIFICATION.json)
 pins the 180 source inputs and actual loaded pair; 43 native suites, 168 Python
 tests, generated checks and all eight existing ready-preset regressions pass.
-Optional stages, radius rings, active Edit,
+The [18 October optional-preparation checkpoint](../native-placement/EXECUTION_0860.md#optional-preparation-checkpoint--18-october-2026)
+adds native Whole Scale/mesh density controller routing and direct Analyzer Area
+adapter parity. Complete field/radius/statistic comparisons, same-frame mapping
+and Data Channel Live updates, Count Undo/Redo, failure recovery, save/reopen and
+idle/panel counters are recorded with their exact pair. The actual Analyzer Area
+owner workflow remains guarded; physical VertexPaint strokes are not inferred.
+Remaining optional stages, radius rings, active Edit,
 preset native history, rendering/PFlow/Bake and remaining N01–N09 acceptance are
 open. No 0.86.0 installer or product-wide speedup is claimed.
 

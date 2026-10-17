@@ -333,6 +333,65 @@ unconditional light collection is a candidate to measure, not a proven cause.
 
 No normal-profile installation, version bump or 0.86.0 package has occurred.
 
+## Optional preparation checkpoint — 18 October 2026
+
+Whole Scale, mesh-channel density and Analyzer Area now accept immutable native
+candidate buffers. Whole Scale builds a private successor with the existing SDK
+Float32 multiplication. Removal-only mask/Area operations retain ordered native
+selections. Source correspondence and evaluated-receiver provenance survive all
+three stages; their input generations remain immutable. The legacy adapters
+retain their numerical expressions, with opt-in materialization counters added.
+
+Whole Scale and mesh density are enabled in the internal, default-off controller
+route. Native raw/prepared keys now include a bounded `ReceiverFields` signature
+from the numeric channel snapshot already captured during receiver planning.
+Passive key reads do not evaluate a mesh. Relevant mapping notifications and
+explicit Update still control when planning occurs; a geometry-only signature
+does not establish channel freshness.
+
+The [optional-preparation receipt](N03_OPTIONAL_PREPARATION_QUALIFICATION.json)
+records the frozen `native-02` pair under
+`build/native-preparation-0860-20261018-01/` and the owned final host
+`foundation-memory0854-nativeaccept-controller-20261018-04`. Scope:
+
+- Plane/mountain complete ordered field parity at 5k/50k/200k for all three
+  adapters, including multiple scale ranges, two mesh channels, all components,
+  inversion/remapping/curves, Area caps/widths and combined stages.
+- Zero/full/out-of-range and missing/disabled fields, same-frame numeric changes
+  with unchanged geometry, failure preservation and final storage release.
+- Controller rows/radii/statistics parity through 200k and zero Count; scaled
+  collision radii retain the existing spacing result and winner order.
+- Actual mesh mapping and Data Channel Curvature/Vertex Output Live callbacks;
+  Manual pending edits, ordinary Count Undo/Redo, missing-input retention and
+  recovery, authored scene save/reopen and 65 seconds idle on both terrains.
+- No placement-sized MAXScript values in covered native calls, and no extra
+  channel reads, preparation, solve, preview builds or retained uploads during
+  the qualified idle/panel windows.
+
+Analyzer Area remains guarded at controller level pending an actual, separately
+qualified Analyzer owner, including stale-guide rejection and history. Direct
+numeric paths/points do not prove that workflow. Physical VertexPaint strokes,
+UI drag/scroll/DPI and renderer behavior were not newly qualified here. Single
+optional-route Update timings are observations, not controlled performance
+distributions. The prior small-count overhead remains an N08 requirement.
+
+Corrected iterations are retained: the test initially supplied an invalid empty
+density curve, a helper conflicted with MAXScript's `log`, and Data Channel's
+operator ID required its full-width Integer64 representation. The controller key
+writer now explicitly writes its prefix into an empty StringStream. Final
+qualification must use the receipt's exact source/test hashes; earlier script-only
+host iterations are not the final pair. No product version bump or installer is
+created for this internal checkpoint.
+
+Final exact-pair validation also passed all 43 native suites, 168 Python tests,
+the generated-source check, the earlier native controller/history/lifecycle
+matrix, the existing default-engine core tests and all eight ready-preset
+Load/Undo/Redo/save/reopen cases. The receipt verifies 180 frozen source inputs,
+actual loaded native paths/hashes, final driver/log hashes and guarded host exit.
+The owned final session is closed; artist sessions and installed packages were
+preserved. New implementation evidence is still read from these originals until
+a reviewed knowledge-index successor enrolls it.
+
 ## Next dependency-ready work
 
 N05 implementation decision, now implemented for the preview input adapters:
@@ -348,9 +407,8 @@ controller. Source-count equality is insufficient to establish publication asset
 correspondence: capture stable source IDs/handles and input/publication epochs
 at the root transaction, preserving Manual pending settings and existing Undo.
 
-Finish qualifying the frozen source/receiver bindings, preparation receipts and
-coherent native root publication, then prove the connected Surface random route
-through native acceptance, retained preview and ordinary Count Undo/Redo.
+The connected Surface random route now has scoped source/receiver binding,
+preparation, acceptance, retained preview and ordinary Count Undo/Redo evidence.
 Ordinary scalar history keeps its existing refresh semantics;
 do not introduce full placement snapshots for every Count change merely because
 the standalone hold probe can retain them. Complete optional Paint/mask/Band/
@@ -361,17 +419,31 @@ boundaries and slope/altitude formulas and controls.
 The first coherent qualified user delivery remains 0.86.0 with matching MZP/EXE.
 These adapters are internal prototypes; there is no new user installer yet.
 
-After the first controller route is frozen, adapt Whole Scale, mesh-channel
-density, Analyzer Areas and boundary falloff, then Brush's cross-module output,
-special Analyzer orientation/final Relax and the remaining optional consumers.
+Next qualify the actual Analyzer Area controller workflow and adapt boundary
+falloff, then Brush's cross-module output, special Analyzer orientation/final Relax
+and the remaining optional consumers.
 Reuse the existing numerical expressions and Float32 boundaries. Every changed
 record builder preserves source and evaluated-receiver provenance; removal-only
 stages can return native selections. Seal preparation only after these stages.
 
-For mesh masks, the geometric receiver signature alone is insufficient: selected
-numeric channel values have their own `cyrusMeshDensityKey` in
-`procReceiverGeometry[3]`. Verify that raw/prepared reuse and the final receipt
-include the applicable field revision, including same-frame changes. Keep
-explicit Update freshness separate from actual VertexPaint/Data Channel Live
-notification evidence. Do not infer the latter from Forest's static research,
-unchanged topology, output equality or geometry-only hashing.
+For mesh masks, preserve the newly qualified numeric signature and same-frame
+mapping/Data Channel behavior. Actual physical VertexPaint stroke notifications
+remain a separate qualification; do not infer them from the numeric fixture,
+Forest's static research or unchanged topology.
+
+Follow-on source inspection, 18 October: `boundary_falloff_bridge.inc` converts
+rows to the existing numeric `amin::boundaryFalloff` kernel and reconstructs them.
+Preserve its three-dimensional Analyzer distance versus world-XY Area distance,
+strict deletion edge, curve sampling, candidate stream 7 and final Float32
+conversion. Its input/output `Instance` vectors are separate scratch costs;
+removing MAXScript transport does not by itself remove those copies.
+
+`cyrusBrushRegionFilter` is owned by the separate Brush module. Its current
+placement API only leases read-only records. A successor output API must keep
+allocation, builders and final script-value ownership in AminScatter, preserve
+source/receiver provenance and use a bounded POD boundary. Preserve the existing
+UTF-16 population hash, full candidate threshold, strongest-density union with
+saved-order ties, and Float32 scale multiplication. Do not pass STL ownership
+between modules or materialize a full script population to work around the
+missing output operation. Qualify exact-pair rejection, partial failure and last
+lease release along with Paint/Undo/receiver and final-output parity.

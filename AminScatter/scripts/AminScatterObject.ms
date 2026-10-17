@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="38faa84bebccf038e57f0e7a1e29483165eea302064008681fc8a9bb4dd4cd48"
+﻿global CyrusLoadedScriptFingerprint="4969eb3ad344045bfa630066721fb63a9a4eae41e93532a7dfab87b25366adf3"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -4367,7 +4367,7 @@ initialRollupState:0x8
         if plants.count==0 and not previewOnly do throw "Add a plant model."
         requestedCount=if procCandidateCount==undefined then (this.effectivePopulation())[1] else procCandidateCount
         if requestedCount<=0 do return (if this.procUsesNative() then this.procNativeEmpty 1 plants else #())
-        local baseKey=(this.paintBaseInputKey plants previewOnly)+"|StablePool:"+(requestedCount as string)+"|Native:"+(this.procUsesNative() as string)
+        local baseKey=(this.paintBaseInputKey plants previewOnly)+"|StablePool:"+(requestedCount as string)+"|Native:"+(this.procUsesNative() as string)+(this.procFieldKey())
         local result
         if finalPass==undefined and baseKey==paintBaseKey and paintBaseRows!=undefined then (result=paintBaseRows;paintBaseHits+=1)
         else (
@@ -5693,8 +5693,18 @@ initialRollupState:0x8
         )
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
+    fn procFieldKey = (
+        -- Receiver planning samples actual selected channel values only during
+        -- a relevant successor calculation. Record that bounded field proof in
+        -- raw/prepared caches without evaluating meshes from passive key reads.
+        if not this.procUsesNative() or not meshMaskEnabled do return ""
+        local stream=stringStream ""
+        format "ReceiverFields:" to:stream
+        for entry in procReceiverGeometry do format "%:%|" entry[1] entry[3] to:stream
+        stream as string
+    )
     fn procPreparationKey pool plants = (
-        (this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())+"|Native:"+(this.procUsesNative() as string)
+        (this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())+"|Native:"+(this.procUsesNative() as string)+(this.procFieldKey())
     )
     fn procPrepare pool plants = (
         if this.procUsesNative() do this.procNativeSources plants
@@ -5727,7 +5737,7 @@ initialRollupState:0x8
         if not procNativeRoute do return true
         for modifier in this.procModifiers() where modifier.enabled do throw "Native migration: active Edit is not integrated yet."
         for leaf in layerObjects do (
-            if leaf.placementMode!=1 or leaf.distributionMode!=1 or leaf.diversityMode!=1 or leaf.paintEnabled or leaf.meshMaskEnabled or leaf.finalRelax or leaf.wholeScaleMin!=1.0 or leaf.wholeScaleMax!=1.0 or leaf.areaUseLine or leaf.areaUsePoints or leaf.containerProvider()!=undefined do throw "Native migration: this optional preparation route is not integrated yet."
+            if leaf.placementMode!=1 or leaf.distributionMode!=1 or leaf.diversityMode!=1 or leaf.paintEnabled or leaf.finalRelax or leaf.areaUseLine or leaf.areaUsePoints or leaf.containerProvider()!=undefined do throw "Native migration: this optional preparation route is not integrated yet."
             for area in (join #(undefined) (leaf.areaNodes as array)) do (
                 local cfg=leaf.getFallConfig area
                 if cfg[1] or cfg[3] or cfg[6] do throw "Native migration: boundary falloff is not integrated yet."

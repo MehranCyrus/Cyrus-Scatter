@@ -48,6 +48,10 @@ Dependencies: N02. Integration acceptance also requires N04/N05.
 - [x] Feed rectangular/staggered/hexagonal projected grid generation into native records without changing cell identities, holes or admission counts. Direct-adapter parity passes; production routing remains pending.
 - [ ] Replace receiver row joins/face-offset copies with native segments or explicit mapping; preserve receiver cache reuse.
 - [ ] Adapt mesh masks, Analyzer Areas, boundary falloff and optional Relax to native views/builders in their exact order.
+  Whole Scale and mesh density now have internal controller witnesses; Analyzer
+  Area has direct numeric adapter parity but remains guarded in the controller.
+  See [the optional-preparation checkpoint](EXECUTION_0860.md#optional-preparation-checkpoint--18-october-2026).
+  Boundary falloff, real Analyzer ownership and Relax remain open.
 - [ ] Adapt Brush region eligibility/scale through the cross-module contract; preserve canonical Paint bytes, area union, binding and source independence.
 - [ ] Adapt orientation, source filtering/scales/offsets and the special Analyzer orientation path. Avoid mutation of shared pre-transform caches.
 - [ ] Initially adapt active Edit through a clearly measured temporary comparison boundary if needed; N07 removes its bulk row route. Do not label this intermediate path fully native.
@@ -134,4 +138,7 @@ Dependencies: all preceding required routes; optional renderer API optimization 
 - [ ] Update maintained architecture/artist docs and website sources only for proven behavior, and report any local website build separately from deployment.
 - [ ] Commit/push only if separately authorized at delivery. Keep ignored scenes/binaries/installers backed up by their explicit artifact paths.
 
-Exit: user can test the packaged version, documented limits are accurate, and no later roadmap phase has started. Phase 6 remains paused unless the user explicitly resumes it.
+Exit: the user can test the packaged version and documented limits are accurate.
+Then continue the remaining original and advanced roadmap under the
+[active objective](../improvement-program/OBJECTIVE.md). That objective explicitly
+superseded the former pause; P06 is already implemented and is not a native N step.

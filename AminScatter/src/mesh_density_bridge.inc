@@ -71,8 +71,29 @@ Value* cyrusMeshDensityKey_cf(Value** a,int n){check_arg_count(cyrusMeshDensityK
 def_visible_primitive(cyrusMeshDensityFilter,"cyrusMeshDensityFilter");
 Value* cyrusMeshDensityFilter_cf(Value** a,int n){check_arg_count(cyrusMeshDensityFilter,5,n);
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Mask);
+    if(cyrusIsPlacementValue(a[0]))try{
+        const auto& view=cyrusPlacementView(a[0]);
+        if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Mesh density requires raw native candidates"));
+        const auto s=meshDensitySettings(a[2]);
+        const auto snapshot=s.enabled?meshDensitySnapshot(a[1]->to_node(),s):MeshDensitySnapshot{};
+        const auto seed=std::uint32_t(a[3]->to_int());const auto salt=cyrus::receivers::salt(proceduralID(a[4]));
+        if(!s.enabled)return a[0];
+        std::vector<std::uint32_t> selected;selected.reserve(view.size());
+        for(std::size_t i=0;i<view.size();++i){const auto& row=view.at(i);const auto face=std::size_t(row.face-1);
+            if(face>=snapshot.corners.size())throw RuntimeError(_T("Mesh density anchor is outside receiver"));
+            unsigned slot=0;std::uint64_t ordinal=0;
+            if(!cyrus::receivers::decodeCandidate(row.identity,slot,ordinal))throw RuntimeError(_T("Mesh density candidate identity is invalid"));
+            const auto value=cyrus::mesh_density::sample(snapshot.corners[face],{row.bary[0],row.bary[1],row.bary[2]});
+            const bool keep=cyrus::mesh_density::accepts(cyrus::mesh_density::weight(value,s),seed,ordinal,salt);++meshDensityRows;
+            if(keep)selected.push_back(static_cast<std::uint32_t>(i));
+        }
+        if(selected.size()==view.size())return a[0];
+        return cyrusPlacementValue(view.select(selected));
+    }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
     auto* rows=groupArray(a[0]);if(rows->size>1000000)throw RuntimeError(_T("Mesh density exceeds candidate limit"));
+    cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Eligibility);
     one_typed_value_local(Array* result);vl.result=new Array(rows->size);
+    materializations.populationArray();
     try{const auto s=meshDensitySettings(a[2]);
         const auto snapshot=s.enabled?meshDensitySnapshot(a[1]->to_node(),s):MeshDensitySnapshot{};
         const auto seed=std::uint32_t(a[3]->to_int());const auto salt=cyrus::receivers::salt(proceduralID(a[4]));

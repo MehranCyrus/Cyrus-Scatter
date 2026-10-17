@@ -2,8 +2,9 @@
 
 Source inspected on 17 October 2026 against the dirty 0.85.4 workspace identified in [EVIDENCE.json](EVIDENCE.json). Anchors below are symbols; recorded line numbers are navigation aids and can move. This is source evidence, not newly executed Max behavior.
 
-The table below preserves the inspected pre-migration/default route. Subsequent
-internal implementation and actual Max evidence are in the [execution handoff](EXECUTION_0860.md).
+The table below inventories the inspected pre-migration/default route, with
+explicitly marked migration updates. Subsequent internal implementation and
+actual Max evidence are in the [execution handoff](EXECUTION_0860.md).
 Native source/receiver cohorts now live in `placement_binding.h/.cpp`; immutable
 data publication and shared radii in `placement_publication.h/.cpp`,
 `placement_publication_value.cpp` and `script_buffers.cpp`. The authoritative
@@ -21,7 +22,7 @@ additions do not convert the remaining Paint/Edit/render/Bake consumers below.
 | Native generation | `src/max_bridge.cpp`: `scatterAdvanced`, `cyrusScatterCanonical`; `include/scatter.h`: `Instance` | Uses native `std::vector<amin::Instance>` then creates an Array, Matrix3 and identity/anchor fields for every returned placement. This is the first major native-to-script boundary |
 | Receiver cache | `unified-core.ms`: `cspImpl_placements`; `src/receiver_bridge.inc`: `cyrusReceiverOffsetRows` | Per-receiver script row caches are joined into a layer base. Zero face offset now shares rows; other offsets must retain exact face correspondence |
 | Grid | `src/grid_bridge.inc`; `procGridCache` | Already retains native grid snapshots and native schedule values. Reuse projected anchors/identity domains; do not replace the grid algorithm |
-| Eligibility and scale | `src/mesh_density_bridge.inc`, `src/boundary_falloff_bridge.inc`; `applyAnalyzerArea`, `applyFalloff` | Existing numerical paths are wrapped in row conversion; masks and transform order need parity witnesses |
+| Eligibility and scale | `src/whole_scale_bridge.inc`, `src/mesh_density_bridge.inc`, `src/analyzer_area_bridge.inc`, `src/boundary_falloff_bridge.inc`; `applyAnalyzerArea`, `applyFalloff` | Whole Scale/mesh density use native builders/selections in the internal controller; Analyzer Area has direct native adapter parity but its real owner workflow remains guarded. Boundary falloff remains row-converted. [Scope/evidence](EXECUTION_0860.md#optional-preparation-checkpoint--18-october-2026) |
 | Paint | `src/brush_host.cpp`: `cyrusBrushRegionFilter`, `cyrusClonePlacementRows`; `procApplyPaint` | Paint returns copied rows/matrices with receiver-bound coverage. Even disabled Paint clones matrices before later mutable transforms. Deleting that copy without changing ownership would be unsafe |
 | Orientation / source transforms | `src/direction_orientation_bridge.inc`: `cyrusOrientSurfaceRows`; `max_bridge.cpp`: `cyrusApplySourceTransforms` | Orientation converts through native instances and new script rows. Source transforms already mutate their validated transient matrices in place; they are not another whole-array copy to claim as a new saving |
 | Preparation and Edit | `procPrepare`, `CyrusEditApplyLayer`; `src/cyrus_edit_stack.inc` | No-modifier path creates edited ID strings/row shells while sharing matrices. Active path converts through `EditInput`, changes Edit maps and emits rows |

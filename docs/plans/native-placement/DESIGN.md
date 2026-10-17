@@ -110,9 +110,10 @@ invent a new semantic source mapping; replacing/reordering assets must not reuse
 the old mapping merely because its cardinality matches. At publication, freeze
 the receiver slot/identity, face-range and binding-revision correspondence as
 well as the complete input signature and root epoch. Validate candidates and
-prepared/published populations against these bindings before install. The current
-bare native view has only source cardinality and session owner; it is insufficient
-for this production boundary.
+prepared/published populations against these bindings before install. The internal
+route now implements frozen source and evaluated-receiver cohorts, preparation
+receipts and an immutable root data frame. The [N05 scoped qualification](N05_PUBLICATION_QUALIFICATION.json)
+proves the first controller route; it does not qualify every optional consumer.
 
 Keep bulk placements/radii and source/receiver correspondence in native owned
 storage. Host references stay on the host thread; any necessary GC/SDK reference
@@ -120,8 +121,9 @@ retention must use verified Max lifetime semantics, never a raw scene pointer
 handed to workers. A root publication owns the complete ordered population,
 statistics and draw/output references. Small UI summaries bind that publication.
 Keep authored parameters, ordinary scalar Undo and current receiver-bound Paint
-ownership unchanged. These binding/publication types remain pending until source,
-GC, scene lifecycle and actual controller tests prove them.
+ownership unchanged. Source correspondence, GC, ordinary Count history and scene
+lifecycle have scoped first-route evidence. Optional-stage, active Edit, preset
+native history and downstream integration remain separate acceptance work.
 
 1. Capture settings/revisions and root ownership under the existing host scheduling/reentrancy guard. Determine whether this is cached, Manual-pending or an authorized successor.
 2. Admit estimated additional resources, retaining the old result and all existing history. Capture referenced numeric inputs.
