@@ -29,8 +29,12 @@ Value* cyrusValidateOrientation_cf(Value** a,int n){
 }
 def_visible_primitive(cyrusOrientSurfaceRows,"cyrusOrientSurfaceRows");
 Value* cyrusOrientSurfaceRows_cf(Value** a,int n){
-    check_arg_count(cyrusOrientSurfaceRows,4,n);auto* rows=groupArray(a[0]);auto* forward=groupArray(a[3]);
-    if(rows->size>1000000||forward->size>65536)throw RuntimeError(_T("Orientation row/source bounds exceeded"));
+    check_arg_count(cyrusOrientSurfaceRows,4,n);
+    const auto* native=cyrusIsPlacementValue(a[0])?&cyrusPlacementView(a[0]):nullptr;
+    auto* rows=native?nullptr:groupArray(a[0]);auto* forward=groupArray(a[3]);
+    const auto size=native?native->size():std::size_t(rows->size);
+    if(native&&native->stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Orientation requires raw native candidates"));
+    if(size>1000000||forward->size>65536)throw RuntimeError(_T("Orientation row/source bounds exceeded"));
     auto* receivers=groupArray(a[1]);if(receivers->size>128)throw RuntimeError(_T("Orientation receiver limit exceeded"));
     struct Snapshot {const std::vector<amin::Vec3>* normals=nullptr;std::size_t begin=0;};
     std::array<Snapshot,128> snapshots{};std::size_t faceOffset=0;
@@ -48,20 +52,27 @@ Value* cyrusOrientSurfaceRows_cf(Value** a,int n){
         auto settings=orientationSettings(a[2]);std::vector<int> axes;axes.reserve(forward->size);
         for(int i=0;i<forward->size;++i){if(!cyrus::rows::integer(forward->data[i]))throw RuntimeError(_T("Invalid orientation source axis"));axes.push_back(forward->data[i]->to_int());}
         for(int axis:axes)if(axis<1||axis>4)throw RuntimeError(_T("Invalid orientation source axis"));
-        output.reserve(rows->size);
-        for(int i=0;i<rows->size;++i){
-            auto row=placementInstance(groupArray(rows->data[i]));unsigned slot=0;std::uint64_t localKey=0;
+        auto orient=[&](amin::Instance row){unsigned slot=0;std::uint64_t localKey=0;
             if(!cyrus::receivers::decodeCandidate(row.candidateKey,slot,localKey)||slot>=snapshots.size())throw RuntimeError(_T("Orientation candidate has no valid receiver"));
             const auto& snapshot=snapshots[slot];
             if(!snapshot.normals||row.triangle<snapshot.begin||row.triangle-snapshot.begin>=snapshot.normals->size())throw RuntimeError(_T("Orientation face belongs to another receiver"));
             if(row.source>=axes.size())throw RuntimeError(_T("Orientation source axis is missing"));
-            output.push_back(cyrus::orientation::orient(row,(*snapshot.normals)[row.triangle-snapshot.begin],settings,axes[row.source]));
+            return cyrus::orientation::orient(row,(*snapshot.normals)[row.triangle-snapshot.begin],settings,axes[row.source]);
+        };
+        if(native) {
+            cyrus::placements::Builder builder(native->token().owner,cyrus::placements::Stage::Candidates,native->sources(),size);
+            for(std::size_t i=0;i<size;++i){const auto& input=native->at(i);unsigned slot=0;std::uint64_t local=0;
+                if(!cyrus::receivers::decodeCandidate(input.identity,slot,local)||slot!=input.receiver)throw RuntimeError(_T("Native orientation receiver correspondence differs"));
+                builder.appendGenerated(placementRecord(orient(placementInstance(input)),slot,false));}
+            ++orientationApplications;orientationAppliedRows+=size;return cyrusPlacementValue(builder.freeze());
         }
+        output.reserve(size);for(std::size_t i=0;i<size;++i)output.push_back(orient(placementInstance(groupArray(rows->data[i]))));
     }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
-    two_typed_value_locals(Array* result,Array* row);vl.result=new Array(static_cast<int>(output.size()));
+    cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Orientation);
+    two_typed_value_locals(Array* result,Array* row);vl.result=new Array(static_cast<int>(output.size()));materializations.populationArray();
     for(const auto& p:output){
-        vl.row=new Array(8);vl.result->append(vl.row);
-        vl.row->append(new Matrix3Value(Matrix3(point(p.xAxis),point(p.yAxis),point(p.zAxis),point(p.position))));
+        vl.row=new Array(8);materializations.row();vl.result->append(vl.row);
+        auto* matrix=new Matrix3Value(Matrix3(point(p.xAxis),point(p.yAxis),point(p.zAxis),point(p.position)));materializations.matrix();vl.row->append(matrix);
         vl.row->append(Integer::intern(p.source+1));appendIdentity(vl.row,p);
     }
     ++orientationApplications;orientationAppliedRows+=output.size();return_value(vl.result);

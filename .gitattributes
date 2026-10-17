@@ -188,3 +188,7 @@
 /tools/presets_0853/workflow.ms -text whitespace=cr-at-eol
 /tools/procedural_lab/build_feature_catalog.py -text whitespace=cr-at-eol
 /tools/procedural_lab/check_generated.py -text whitespace=cr-at-eol
+
+# Exact-byte native-stage evidence and its qualified build driver.
+/docs/plans/native-placement/N03_N04_QUALIFICATION.json -text whitespace=cr-at-eol
+/tools/procedural_lab/offline_build.py -text whitespace=cr-at-eol

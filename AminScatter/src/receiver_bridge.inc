@@ -31,14 +31,24 @@ Value* cyrusReceiverPlan_cf(Value** a,int n){
 }
 def_visible_primitive(cyrusReceiverOffsetRows,"cyrusReceiverOffsetRows");
 Value* cyrusReceiverOffsetRows_cf(Value** a,int n){
-    check_arg_count(cyrusReceiverOffsetRows,2,n);auto* rows=groupArray(a[0]);const int offset=a[1]->to_int();if(offset<0)throw RuntimeError(_T("Invalid receiver face offset"));
+    check_arg_count(cyrusReceiverOffsetRows,2,n);const int offset=a[1]->to_int();if(offset<0)throw RuntimeError(_T("Invalid receiver face offset"));
+    if(cyrusIsPlacementValue(a[0]))try{
+        const auto& view=cyrusPlacementView(a[0]);
+        if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Receiver offsets require raw native candidates"));
+        if(offset==0)return a[0];
+        cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size());
+        for(std::size_t i=0;i<view.size();++i){auto r=view.at(i);const auto face=std::uint64_t(r.face)+offset;if(face>INT_MAX)throw RuntimeError(_T("Receiver face offset overflow"));r.face=static_cast<std::uint32_t>(face);builder.appendGenerated(r);}
+        return cyrusPlacementValue(builder.freeze());
+    }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+    auto* rows=groupArray(a[0]);
     // A single receiver needs no face-index rewriting. Validate every row even
     // on this shared immutable fast path; downstream orientation owns matrices.
     if(offset==0){for(int i=0;i<rows->size;++i)cyrus::rows::raw(groupArray(rows->data[i]));return a[0];}
-    two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
+    cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Receiver);
+    two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);materializations.populationArray();
     for(int i=0;i<rows->size;++i){auto* r=groupArray(rows->data[i]);cyrus::rows::raw(r);
         const auto face=std::int64_t(r->data[3]->to_int())+offset;if(face<1||face>INT_MAX)throw RuntimeError(_T("Receiver face offset overflow"));
-        vl.row=new Array(r->size);vl.result->append(vl.row);for(int k=0;k<r->size;++k)vl.row->append(k==3?Integer::intern(int(face)):r->data[k]);}
+        vl.row=new Array(r->size);materializations.row();vl.result->append(vl.row);for(int k=0;k<r->size;++k)vl.row->append(k==3?Integer::intern(int(face)):r->data[k]);}
     return_value(vl.result);
 }
 def_visible_primitive(cyrusReceiverMergeBinding,"cyrusReceiverMergeBinding");

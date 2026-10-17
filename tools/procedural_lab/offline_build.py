@@ -27,10 +27,13 @@ def main():
     parser.add_argument("--year", type=int, choices=(2026, 2027))
     parser.add_argument("--project", choices=("scatter", "analyzer"), default="scatter")
     parser.add_argument("--preview-fault-lab", action="store_true", help="NEVER SHIP: isolated Scatter SDK preview fault injection")
+    parser.add_argument("--placement-qualification", action="store_true", help="NEVER SHIP: isolated native placement/Undo ownership probes")
     parser.add_argument("--output", type=Path, help="Private build directory; defaults to the dated implementation lab")
     args = parser.parse_args()
     if args.preview_fault_lab and (args.project!="scatter" or not args.year):
         parser.error("Preview fault qualification requires a Scatter SDK build")
+    if args.placement_qualification and (args.project!="scatter" or args.year!=2027 or args.preview_fault_lab):
+        parser.error("Placement qualification requires a separate Max 2027 Scatter SDK build")
     spec = importlib.util.spec_from_file_location("build_max", ROOT / "tools/build_max.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -43,6 +46,7 @@ def main():
     (folder / "receipt.json").write_text(json.dumps({"status": "pending", "project": args.project, "max_year": args.year}) + "\n", encoding="utf-8")
     command = ["cmake", "-S", str(ROOT / project), "-B", str(folder), "-G", "NMake Makefiles", "-DCMAKE_BUILD_TYPE=Release"]
     if args.preview_fault_lab: command += ["-DCYRUS_PREVIEW_TEST_FAULTS=ON"]
+    if args.placement_qualification: command += ["-DCYRUS_PLACEMENT_QUALIFICATION=ON"]
     if args.year:
         sdk = ROOT / f"build/tooling/max{args.year}-sdk/Program Files/Autodesk/3ds Max {args.year} SDK/maxsdk"
         command += [f"-D{enable_flag}=ON", f"-DCYRUS_MAX_YEAR={args.year}", f"-DMAXSDK_ROOT={sdk}"]
@@ -66,7 +70,7 @@ def main():
     if source_hashes(project) != sources:
         raise SystemExit("Build sources changed while building/testing; receipt stays pending. Rebuild the frozen source.")
     (folder / "receipt.json").write_text(json.dumps({"stages": results, "project": args.project, "max_year": args.year,
-        "host_launched": False, "installed": False,"binaries":binaries,"sources":sources,"preview_fault_lab":args.preview_fault_lab,
+        "host_launched": False, "installed": False,"binaries":binaries,"sources":sources,"preview_fault_lab":args.preview_fault_lab,"placement_qualification":args.placement_qualification,
         "qualification":"SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."}, indent=2) + "\n", encoding="utf-8")
 
 

@@ -1,4 +1,5 @@
 #include "placement_store.h"
+#include "placement_materialization.h"
 #include <cmath>
 #include <cstring>
 #include <iostream>
@@ -128,5 +129,19 @@ void workerPins() {
     for(auto sum:sums)check(sum==49995000,"Concurrent numeric reads preserve full identities");
     check(metrics().liveBytes==before.liveBytes&&metrics().liveStores==before.liveStores,"Last worker releases numeric storage without host calls");
 }
+void normalizationAndObservation() {
+    Builder builder(newOwner(),Stage::Candidates,1,3);for(std::uint32_t i=0;i<3;++i)builder.appendGenerated(record(i));auto raw=builder.freeze();
+    const auto before=metrics();auto edited=raw.edited();
+    check(edited.stage()==Stage::Edited&&raw.stage()==Stage::Candidates,"Interpretation view does not mutate raw stage");
+    check(&edited.at(0)==&raw.at(0)&&edited.token().generation==raw.token().generation&&edited.token().view!=raw.token().view,"Normalization pins existing records with distinct view token");
+    check(metrics().allocations==before.allocations&&metrics().liveBytes==before.liveBytes,"Normalization allocates no population payload");
+    check(edited.textIdentity(2)=="c:2"&&edited.edited().token()==edited.token(),"Normalized identity and repeated normalization");
+    auto selected=edited.select({2,0});check(selected.stage()==Stage::Edited&&selected.textIdentity(0)=="c:2","Selection keeps interpretation metadata");
+    auto compact=selected.compact();check(compact.stage()==Stage::Edited&&compact.textIdentity(1)=="c:0","Compaction keeps interpreted identities");
+    observeMaterializations(false);const auto off=materializations();{MaterializationScope scope(TransportStage::Generate);scope.row();scope.matrix();}
+    check(materializations()[0].rows==off[0].rows,"Observation disabled by default/explicit off");
+    observeMaterializations(true);try{MaterializationScope scope(TransportStage::Generate);scope.row();scope.matrix();scope.string();scope.populationArray();throw 1;}catch(int){}
+    const auto on=materializations();check(on[0].rows==off[0].rows+1&&on[0].matrices==off[0].matrices+1&&on[0].strings==off[0].strings+1&&on[0].populationArrays==off[0].populationArrays+1,"Completed allocations survive exceptional scope exit");observeMaterializations(false);
 }
-int main(){try{basic();identitiesAndViews();malformed();capacity();workerPins();std::cout<<"Native immutable placement layout, identities, tokens, views, bounded readback and release passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+}
+int main(){try{basic();identitiesAndViews();malformed();capacity();workerPins();normalizationAndObservation();std::cout<<"Native immutable placement layout, identities, tokens, views, bounded readback and release passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

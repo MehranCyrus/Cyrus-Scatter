@@ -41,6 +41,8 @@ class View {
     struct Selection;
     std::shared_ptr<const Data> data_;
     std::shared_ptr<const Selection> selection_;
+    Stage stage_{};
+    std::uint64_t view_=0;
     View(std::shared_ptr<const Data>,std::shared_ptr<const Selection> = {});
     std::size_t physical(std::size_t) const;
     void valid() const;
@@ -63,6 +65,9 @@ public:
     std::vector<Record> page(std::size_t offset,std::size_t count,Token) const;
     // Arbitrary unique order, flattened directly to the base; no view chains.
     View select(const std::vector<std::uint32_t>&) const;
+    // No-modifier identity normalization changes interpretation, not records.
+    // It preserves the immutable base and gives the view a distinct token.
+    View edited() const;
     View compact() const;
 };
 

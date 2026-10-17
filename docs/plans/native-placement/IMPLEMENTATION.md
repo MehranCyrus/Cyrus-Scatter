@@ -13,14 +13,14 @@ Dependencies: implementation authorization.
 - [ ] Add bounded opt-in stage allocation/ownership counters: logical size/capacity, unique live bytes, peak live bytes, allocation counts, wrapper/row materialization, history pins and peak coexistence. Keep default hot-path overhead measured and small.
 - [ ] Establish full ordered semantic fingerprints (all eight current fields, radii, source/receiver mapping, accepted order and statistics), not only positions or viewport images.
 - [ ] Measure ordinary Count Undo, Manual copy, ready-preset Undo and CS Edit history separately. Determine when native restores are created, sealed and destroyed.
-- [ ] Qualify Max hold ordering, repeated Restore/Redo and Size accounting with small disposable probes before redesigning history ownership.
+- [x] Qualify Max hold ordering, repeated Restore/Redo and Size accounting with small disposable probes before redesigning history ownership. [Private Max 2027 probe](N03_N04_QUALIFICATION.json); production history redesign remains N05/N07.
 
 Performance target: expose actual dominant costs without changing output or adding placement work to passive UI. Existing historical time ranges are context, not a fresh A/B baseline. Tests: V01–V03, V08–V10. Exit: reproducible baseline, named consumer inventory and an agreed measured byte model.
 
 Partial execution: [ten warm repetitions per Count/terrain and 120-second idle](N01_BASELINE.json)
 passed. Explicit reachability distinguishes shared values from actual requested
-array capacity. Full stage/scratch/materialization/history ownership and hold
-probes remain open. These measurements support the isolated N02 type prototype;
+array capacity. Private hold/Size probes now pass; full stage/scratch/peak/history
+ownership remains open. These measurements support the isolated N02 type prototype;
 they do not close N01 or replace integrated before/after peak accounting.
 
 ## N02 — Native data and lifetime foundation (medium)
@@ -30,7 +30,7 @@ Dependencies: N01.
 - [x] Implement typed immutable placement generation and builder in the existing native project; specify compact field layout and old rounding boundaries. 96-byte records; [implementation/evidence](EXECUTION_0860.md).
 - [x] Implement numeric/tagged identity with bounded authored-key storage and exact external string round-trip. Pure and actual Max round-trip tests pass within the declared current key format.
 - [x] Add native views/indices, bounded readback and source-use summaries, without implicit bulk Array conversion.
-- [ ] Add full native semantic fingerprint queries, including metadata/radii at integration boundaries.
+- [x] Add full native semantic fingerprint queries, including metadata/radii at integration boundaries. Native/legacy ordered semantic parity passes; supplied metadata is caller-owned, not yet bound automatically to an immutable publication epoch.
 - [x] Establish GC wrapper ownership, native retention and a guarded cross-module Brush POD read lease. Real Max GC/release and Brush reads pass; write-stage adaptation is N03 work.
 - [ ] Qualify controller scene/owner retirement and current publication-token routing; generic retained numeric snapshots alone do not establish it.
 - [ ] Account for capacities, shared storage and index buffers; reject invalid/overflowing requests before mutation.
@@ -44,8 +44,8 @@ Performance target: native storage has no per-placement MAXScript object, no str
 
 Dependencies: N02. Integration acceptance also requires N04/N05.
 
-- [ ] Start with Surface random without optional stages; feed existing `scatter` output directly into native records at existing precision boundaries.
-- [ ] Add rectangular/staggered/hexagonal projected grids without changing cell identities, holes or admission counts.
+- [x] Implement the direct Surface random native producer at existing precision boundaries. [Internal adapter parity](N03_N04_QUALIFICATION.json); main controller integration is still pending.
+- [x] Feed rectangular/staggered/hexagonal projected grid generation into native records without changing cell identities, holes or admission counts. Direct-adapter parity passes; production routing remains pending.
 - [ ] Replace receiver row joins/face-offset copies with native segments or explicit mapping; preserve receiver cache reuse.
 - [ ] Adapt mesh masks, Analyzer Areas, boundary falloff and optional Relax to native views/builders in their exact order.
 - [ ] Adapt Brush region eligibility/scale through the cross-module contract; preserve canonical Paint bytes, area union, binding and source independence.
@@ -59,11 +59,11 @@ Likely files: `max_bridge.cpp`, receiver/grid/mask/falloff/orientation adapters,
 
 Dependencies: N03 simple path; expand alongside optional preparation adapters.
 
-- [ ] Replace string-keyed generated schedules with numeric lookup while retaining exact ordinal ordering and authored-copy identity.
+- [x] Implement numeric generated schedule lookup and sample identity in the native adapter, retaining exact ordinal order and authored-copy text. The comparison/production legacy route remains until N05–N09 integration and removal.
 - [ ] Feed compact position/radius views into the existing solver; reduce redundant `Sample`/ID copies without changing its rules.
-- [ ] Keep radius overrides and Float32 rounding identical; source Auto bounds still validate all required active sources.
-- [ ] Return accepted indices/reasons/native radius views and bounded per-layer stats.
-- [ ] Preserve independent collision scopes, protected reservations, target/refill rounds, cleanup visits and reported shortfall.
+- [x] Keep radius overrides and Float32 rounding identical in the native adapter; source Auto bounds validate all admitted sources. Direct stage parity and rejection tests pass.
+- [x] Return ordered native accepted selections/radii and bounded per-layer statistics without script placement lists. Full output parity passes; selection retention policy remains below.
+- [x] Preserve independent collision scopes, protected reservations, target/refill rounds, cleanup visits and shortfall in the native adapter. [Plane/mountain and pure numerical witnesses](N03_N04_QUALIFICATION.json); production integration remains open.
 - [ ] Choose bounded index-view versus accepted compaction policy from retained-byte measurements; do not pin enormous rejected pools unnecessarily.
 
 Likely files: `procedural_bridge.inc`, `include/procedural.h`, `src/procedural.cpp`, receiver schedule adapter. Performance target: no full input/result script population; reduced schedule string/hash allocation; unchanged numeric winner order. Tests: V03/V06/V11, serial/parallel equality, near-limit rejected/refill scenes. Exit: full accepted output/radii/stats equal baseline, including protected zero-quota and work-limit cases.

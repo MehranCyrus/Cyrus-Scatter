@@ -1,6 +1,6 @@
 # Native placement pipeline — active implementation
 
-Current execution: [measured N01 baseline and internal N02 storage work](EXECUTION_0860.md).
+Current execution: [measured N01 baseline, internal storage, native producer and acceptance adapters](EXECUTION_0860.md).
 The active placement pipeline is still the qualified 0.85.4 route; no 0.86.0
 installer or native-pipeline performance improvement is claimed yet.
 

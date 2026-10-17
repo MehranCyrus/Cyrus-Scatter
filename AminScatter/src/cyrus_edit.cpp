@@ -13,6 +13,8 @@
 #include <maxscript/foundation/strings.h>
 #include <maxscript/foundation/3dmath.h>
 #include "placement_transport.h"
+#include "placement_value.h"
+#include "placement_materialization.h"
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include <map>
 #include <vector>

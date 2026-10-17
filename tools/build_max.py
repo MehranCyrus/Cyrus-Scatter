@@ -56,7 +56,17 @@ def scatter_version():
     return version
 
 
-def reject_development_binary(filename, data, *, allow_owned_preview=False):
+def reject_development_binary(filename, data, *, allow_owned_preview=False, allow_owned_placement=False):
+    if allow_owned_placement:
+        # Only the explicitly validated private host uses this exact marker.
+        # Product packaging never supplies this allowance; other experiment or
+        # licensing markers still reject below, including mixed test builds.
+        marker='Cyrus Scatter NEVER SHIP native placement ownership qualification'
+        found=False
+        for encoding in ('ascii','utf-16le'):
+            needle=marker.encode(encoding)
+            if needle in data:found=True;data=data.replace(needle,b'')
+        if not found:raise RuntimeError('Owned placement qualification marker is missing: '+filename)
     for marker in ('CYRUS_LICENSE_EXPERIMENT_NEVER_SHIP', 'NEVER SHIP',
                    'cyrusOwnedLabClock', 'cyrusOwnedLabActivate',
                    'cyrusOwnedLabBrushEnd', 'cyrusSignedLabInstall'):

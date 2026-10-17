@@ -86,12 +86,12 @@ struct Builder::Impl {
 
 Metrics metrics() noexcept {return {live.load(),peak.load(),total.load(),allocations.load(),blocks.load(),stores.load(),selections.load(),readbacks.load()};}
 std::uint64_t newOwner(){return next();}
-View::View(std::shared_ptr<const Data> d,std::shared_ptr<const Selection> s):data_(std::move(d)),selection_(std::move(s)){}
+View::View(std::shared_ptr<const Data> d,std::shared_ptr<const Selection> s):data_(std::move(d)),selection_(std::move(s)),stage_(data_->stage),view_(selection_?selection_->id:data_->generation){}
 void View::valid() const {if(!data_)throw std::logic_error("Moved-from native placement view");}
 std::size_t View::size() const {valid();return selection_?selection_->indices.size():data_->rows.size();}
-Stage View::stage() const {valid();return data_->stage;}
+Stage View::stage() const {valid();return stage_;}
 std::uint32_t View::sources() const {valid();return data_->sources;}
-Token View::token() const {valid();return {data_->owner,data_->generation,selection_?selection_->id:data_->generation};}
+Token View::token() const {valid();return {data_->owner,data_->generation,view_};}
 void View::require(Token t) const {check(token()==t,"Stale or foreign native placement token");}
 std::size_t View::physical(std::size_t i) const {if(i>=size())throw std::out_of_range("Native placement index");return selection_?selection_->indices[i]:i;}
 const Record& View::at(std::size_t i) const {const auto index=physical(i);return data_->rows[index];}
@@ -123,7 +123,11 @@ View View::select(const std::vector<std::uint32_t>& indices) const {
     // Scratch is bounded by the selected view's logical population, not by IDs.
     std::vector<bool> used(size(),false);
     for(auto i:indices){check(i<size()&&!used[i],"Duplicate or invalid native selection index");used[i]=true;selected->indices.push_back(static_cast<std::uint32_t>(physical(i)));}
-    return View(data_,std::move(selected));
+    View result(data_,std::move(selected));result.stage_=stage_;return result;
+}
+View View::edited() const {
+    valid();if(stage_==Stage::Edited)return *this;
+    View result=*this;result.stage_=Stage::Edited;result.view_=next();return result;
 }
 View View::compact() const {return Builder(*this).freeze();}
 

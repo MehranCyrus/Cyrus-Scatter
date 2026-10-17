@@ -28,9 +28,14 @@ per Count/terrain, 120 seconds idle, typed immutable 96-byte native records,
 flat views, bounded pages, allocation-failure tests, real Max GC retention/release
 and guarded Brush POD reads. Native SDK suites, Python/generated checks and the
 existing core/eight-preset regressions pass within the recorded pairs/scopes.
-This is not the migrated placement pipeline or a new user delivery. Remaining
-N01 ownership/peak/history probes, N02 integration boundaries and N03–N09 are
-still open. No 0.86.0 installer or active-pipeline speedup is claimed.
+Internal N03/N04 producer/preparation/radius/acceptance adapters now have full
+ordered plane/mountain parity through 200k candidates, numeric schedules,
+protected scopes, failure retention and real Max hold/lifetime probes. The
+current pair also preserves the existing controller and eight preset round trips;
+see [exact evidence and remaining work](../native-placement/EXECUTION_0860.md).
+The main controller still uses the existing route. Native publication/preview,
+optional stages, active Edit, downstream consumers and remaining N01–N09
+acceptance are open. No 0.86.0 installer or active-pipeline speedup is claimed.
 
 The [0.85.4 Count memory correction](../memory-0854/README.md) is the current
 compiled and scoped-qualified pair. It retains [0.85.3 ready asset-backed presets](../preset-gallery-improvements/LOAD_0853.md),
@@ -106,9 +111,10 @@ At program enrollment the knowledge index was stale. The [17 October repair](../
 ## Resume here
 
 Read the current delivery and phase table above, the actual Git state and the
-user's current instruction. Further feature work is paused. If later authorized,
-I07/P08 paths is the next pending roadmap feature; N01–N09 is separately proposed
-foundation work. Preserve historical receipts, unrelated files and B26's open
+user's current instruction. The active goal resumes N01–N09 first, then I07/P08
+paths and every remaining original/advanced area in OBJECTIVE.md. Follow the
+native execution handoff for the next dependency-ready work. Preserve completed
+P01–P07, historical receipts, unrelated files and B26's open
 limits. The dated execution entries below record past tasks and intermediate
 failures; they are not current authorization or current qualification.
 

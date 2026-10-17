@@ -37,16 +37,24 @@ static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<Ed
 def_visible_primitive(cyrusEditStack,"cyrusEditStack");
 Value* cyrusEditStack_cf(Value** a,int count) {
     check_arg_count(cyrusEditStack,4,count);
-    type_check(a[0],Array,_T("modifiers"));type_check(a[1],Array,_T("rows"));
-    auto* mods=static_cast<Array*>(a[0]);auto* rows=static_cast<Array*>(a[1]);
+    type_check(a[0],Array,_T("modifiers"));
+    auto* mods=static_cast<Array*>(a[0]);
     const int key=a[2]->to_int();const std::wstring signature=a[3]->to_string();
+    if(cyrusIsPlacementValue(a[1])) {
+        const auto& view=cyrusPlacementView(a[1]);
+        if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("CS Edit requires raw native candidates"));
+        if(mods->size!=0)throw RuntimeError(_T("Native active Edit integration is not yet qualified"));
+        try{return cyrusPlacementValue(view.edited());}catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+    }
+    type_check(a[1],Array,_T("rows"));auto* rows=static_cast<Array*>(a[1]);
     if(mods->size==0){
         // Normalization changes only identity type. The prepared generation is
         // immutable, so keep its already-rounded matrix/anchor values shared.
         for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("instance row"));cyrus::rows::raw(static_cast<Array*>(rows->data[i]));}
-        two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
-        for(int i=0;i<rows->size;++i){auto* input=static_cast<Array*>(rows->data[i]);vl.row=new Array(8);vl.result->append(vl.row);
-            for(int j=0;j<8;++j)vl.row->append(j==2?static_cast<Value*>(new String((L"c:"+std::to_wstring(input->data[2]->to_int64())).c_str())):input->data[j]);}
+        cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Edit);
+        two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);materializations.populationArray();
+        for(int i=0;i<rows->size;++i){auto* input=static_cast<Array*>(rows->data[i]);vl.row=new Array(8);materializations.row();vl.result->append(vl.row);
+            for(int j=0;j<8;++j)if(j==2){auto* id=new String((L"c:"+std::to_wstring(input->data[2]->to_int64())).c_str());materializations.string();vl.row->append(id);}else vl.row->append(input->data[j]);}
         return_value(vl.result);
     }
     std::vector<EditInput> input;input.reserve(rows->size);
@@ -63,11 +71,12 @@ Value* cyrusEditStack_cf(Value** a,int count) {
         input=applyStable(m,key,input,signature);
         if(m->layers[key].invalid)throw RuntimeError(_T("CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup."));
     }
+    cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Edit);
     two_typed_value_locals(Array* result,Array* row);
-    vl.result=new Array(0);
+    vl.result=new Array(0);materializations.populationArray();
     for(auto& r:input){
-        vl.row=new Array(8);vl.result->append(vl.row);vl.row->append(new Matrix3Value(r.tm));vl.row->append(Integer::intern(r.source));
-        vl.row->append(new String(r.id.c_str()));
+        vl.row=new Array(8);materializations.row();vl.result->append(vl.row);auto* matrix=new Matrix3Value(r.tm);materializations.matrix();vl.row->append(matrix);vl.row->append(Integer::intern(r.source));
+        auto* id=new String(r.id.c_str());materializations.string();vl.row->append(id);
         vl.row->append(Integer::intern(r.face));vl.row->append(new Point3Value(r.bary));vl.row->append(Integer64::intern(r.owner));
         vl.row->append(r.protectedEdit?&true_value:&false_value);vl.row->append(Integer::intern(2));
     }

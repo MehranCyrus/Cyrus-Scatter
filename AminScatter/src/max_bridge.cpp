@@ -19,6 +19,8 @@
 #include "license_boundary.h"
 #include "placement_transport.h"
 #include "script_buffers.h"
+#include "placement_value.h"
+#include "placement_materialization.h"
 #include "orientation.h"
 #include "grid.h"
 #include <sstream>
@@ -32,6 +34,7 @@
 #include <cstring>
 #include <tuple>
 #include <cmath>
+#include <charconv>
 #include <maxscript/macros/define_instantiation_functions.h>
 #undef ScripterExport
 #define ScripterExport __declspec(dllexport)
@@ -42,6 +45,8 @@
 extern "C" __declspec(dllexport) const TCHAR* LibDescription() {
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
     return _T("Cyrus Scatter CYRUS_LICENSE_EXPERIMENT_NEVER_SHIP");
+#elif defined(CYRUS_PLACEMENT_QUALIFICATION)
+    return _T("Cyrus Scatter NEVER SHIP native placement ownership qualification");
 #else
     return _T("Cyrus Scatter 0.7 native engine");
 #endif
@@ -86,12 +91,21 @@ Value* cyrusScatterComputeStats_cf(Value**,int count) {
 def_visible_primitive(cyrusFilterSourceRows, "cyrusFilterSourceRows");
 Value* cyrusFilterSourceRows_cf(Value** args,int count) {
     check_arg_count(cyrusFilterSourceRows,2,count);
-    type_check(args[0],Array,_T("placement rows"));
     type_check(args[1],Array,_T("source visibility"));
-    auto* rows=static_cast<Array*>(args[0]);auto* flags=static_cast<Array*>(args[1]);
+    auto* flags=static_cast<Array*>(args[1]);
     std::vector<bool> keep;keep.reserve(flags->size);
     for(int i=0;i<flags->size;++i) keep.push_back(flags->data[i]->to_bool()!=FALSE);
-    one_typed_value_local(Array* result);vl.result=new Array(rows->size);
+    if(cyrusIsPlacementValue(args[0]))try{
+        const auto& view=cyrusPlacementView(args[0]);std::size_t size=0;
+        for(std::size_t i=0;i<view.size();++i){const auto source=view.at(i).source;if(source<1||source>keep.size())throw RuntimeError(_T("Invalid source index"));if(keep[source-1])++size;}
+        if(size==view.size())return args[0];
+        std::vector<std::uint32_t> selected;selected.reserve(size);
+        for(std::size_t i=0;i<view.size();++i)if(keep[view.at(i).source-1])selected.push_back(static_cast<std::uint32_t>(i));
+        return cyrusPlacementValue(view.select(selected));
+    }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+    type_check(args[0],Array,_T("placement rows"));auto* rows=static_cast<Array*>(args[0]);
+    cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Source);
+    one_typed_value_local(Array* result);vl.result=new Array(rows->size);materializations.populationArray();
     for(int i=0;i<rows->size;++i) {
         type_check(rows->data[i],Array,_T("placement row"));
         auto* row=static_cast<Array*>(rows->data[i]);
@@ -109,11 +123,26 @@ def_visible_primitive(cyrusApplySourceTransforms, "cyrusApplySourceTransforms");
 Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Attributes);
     check_arg_count(cyrusApplySourceTransforms,3,count);
-    for(int i=0;i<3;++i) type_check(args[i],Array,_T("source transform inputs"));
-    auto* rows=static_cast<Array*>(args[0]);auto* offsets=static_cast<Array*>(args[1]);auto* scales=static_cast<Array*>(args[2]);
+    for(int i=1;i<3;++i) type_check(args[i],Array,_T("source transform inputs"));
+    auto* offsets=static_cast<Array*>(args[1]);auto* scales=static_cast<Array*>(args[2]);
     if(offsets->size!=scales->size) throw RuntimeError(_T("Source transform count mismatch"));
     std::vector<float> z,factors;z.reserve(scales->size);factors.reserve(scales->size);
     for(int i=0;i<scales->size;++i) {z.push_back(offsets->data[i]->to_float());factors.push_back(scales->data[i]->to_float());}
+    if(cyrusIsPlacementValue(args[0]))try{
+        const auto& view=cyrusPlacementView(args[0]);
+        if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Source transforms require raw native candidates"));
+        cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size());
+        for(std::size_t i=0;i<view.size();++i){auto record=view.at(i);const auto source=record.source-1;
+            if(source>=factors.size())throw RuntimeError(_T("Invalid source index"));
+            Matrix3 tm(1);for(int j=0;j<4;++j)tm.SetRow(j,Point3(record.transform[std::size_t(j*3)],record.transform[std::size_t(j*3+1)],record.transform[std::size_t(j*3+2)]));
+            for(int axis=0;axis<3;++axis)tm.SetRow(axis,tm.GetRow(axis)*factors[source]);
+            tm.SetRow(3,tm.GetRow(3)+Point3(0.0f,0.0f,z[source]));
+            for(int j=0;j<4;++j)for(int k=0;k<3;++k)record.transform[std::size_t(j*3+k)]=tm.GetRow(j)[k];
+            builder.appendGenerated(record);
+        }
+        return cyrusPlacementValue(builder.freeze());
+    }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+    type_check(args[0],Array,_T("source transform rows"));auto* rows=static_cast<Array*>(args[0]);
     // Validate all rows before modifying any. These are transient placement
     // values, never scene transforms; preserve MAXScript's in-place alias rules.
     for(int i=0;i<rows->size;++i) {
@@ -190,7 +219,7 @@ std::vector<amin::Triangle> surfaceMeshes(Value* input,bool requireUv=false,int 
     }
     return result;
 }
-Value* scatterAdvanced(Value** args,int count,bool canonical=false) {
+Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t nativeOwner=0) {
     if(count!=29) throw RuntimeError(_T("Cyrus generation requires its current 29-field contract."));
     type_check(args[28],Array,_T("generation options"));
     auto* v1=static_cast<Array*>(args[28]);
@@ -349,10 +378,24 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false) {
         }
     }
     catch(const std::exception& error) {const std::string message=error.what();throw RuntimeError(MSTR(std::wstring(message.begin(),message.end()).c_str()));}
-    three_typed_value_locals(Array* result,Array* row,Array* pair);vl.result=new Array(static_cast<int>(instances.size()));
+    if(nativeOwner) {
+        try {
+            cyrus::placements::Builder builder(nativeOwner,cyrus::placements::Stage::Candidates,static_cast<std::uint32_t>(ns),instances.size());
+            for(const auto& v:instances) {
+                // Match the old Matrix3/Point3 Float32 boundaries exactly. These
+                // are stack SDK math values, never per-placement script Values.
+                builder.appendGenerated(placementRecord(v,receiverSlot,true));
+            }
+            two_typed_value_locals(Value* buffer,Array* pair);vl.buffer=cyrusPlacementValue(builder.freeze());
+            if(canonical){vl.pair=new Array(2);vl.pair->append(vl.buffer);vl.pair->append(new CyrusOrientationNormals(std::move(orientationNormals)));++orientationSnapshotBuilds;return_value(vl.pair);}
+            return_value(vl.buffer);
+        } catch(const std::exception& error){throw RuntimeError(MSTR::FromACP(error.what()));}
+    }
+    cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Generate);
+    three_typed_value_locals(Array* result,Array* row,Array* pair);vl.result=new Array(static_cast<int>(instances.size()));materializations.populationArray();
     for(const auto& v:instances) {
-        vl.row=new Array(2);vl.result->append(vl.row);
-        vl.row->append(new Matrix3Value(Matrix3(point(v.xAxis*v.scale),point(v.yAxis*v.scale),point(v.zAxis*v.scale),point(v.position))));
+        vl.row=new Array(2);materializations.row();vl.result->append(vl.row);
+        auto* matrix=new Matrix3Value(Matrix3(point(v.xAxis*v.scale),point(v.yAxis*v.scale),point(v.zAxis*v.scale),point(v.position)));materializations.matrix();vl.row->append(matrix);
         vl.row->append(Integer::intern(v.source+1));
         appendIdentity(vl.row,v);
     }
@@ -367,6 +410,12 @@ def_visible_primitive(cyrusScatterAdvanced, "cyrusScatterAdvanced");
 Value* cyrusScatterAdvanced_cf(Value** args,int count){return scatterAdvanced(args,count);}
 def_visible_primitive(cyrusScatterCanonical,"cyrusScatterCanonical");
 Value* cyrusScatterCanonical_cf(Value** args,int count){return scatterAdvanced(args,count,true);}
+def_visible_primitive(cyrusScatterCanonicalNative,"cyrusScatterCanonicalNative");
+Value* cyrusScatterCanonicalNative_cf(Value** args,int count){
+    check_arg_count(cyrusScatterCanonicalNative,30,count);
+    if(!cyrus::rows::integer(args[0])||args[0]->to_int64()<=0)throw RuntimeError(_T("Native generation requires its session owner"));
+    return scatterAdvanced(args+1,count-1,true,std::uint64_t(args[0]->to_int64()));
+}
 #include "procedural_bridge.inc"
 #include "receiver_bridge.inc"
 #include "grid_bridge.inc"

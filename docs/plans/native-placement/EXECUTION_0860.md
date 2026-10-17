@@ -129,17 +129,99 @@ Those broad regressions ran against `store-native-01`; the final pair repeats
 the N02 host boundary/GC tests and all 42 native suites. All owned successful
 hosts were closed through their guarded command; the artist host was preserved.
 
-Knowledge status after activating this goal: the selected 36-parent generation
+At the earlier N02 checkpoint, knowledge status after activating this goal was:
+the selected 36-parent generation
 is compatible, with 34 current parents; the reviewed edits to `AGENTS.md` and
 root `README.md` make those two enrolled parents stale. Native execution plans
 and new sources are read directly. Do not present the old index as fully fresh;
 publish a reviewed successor at the delivery knowledge checkpoint.
 
+## Native producer and ownership qualification
+
+Producer/ownership work is now implemented in an internal pair. The native
+canonical producer and orientation preserve the existing Float32 boundaries;
+no-modifier Edit normalization shares the same immutable base with a distinct
+view token. Twenty-six plane/mountain cases compare full ordered fields and
+the v2 rows/radii/binding/statistics fingerprint. Producer-only warm timing is
+recorded in [N03_PRODUCER_BENCHMARK.json](N03_PRODUCER_BENCHMARK.json); this is
+not full Update, preview, input latency or FPS acceptance.
+
+An explicitly nonshipping SDK probe tests ordinary, repeated Restore(false),
+cancel, super holds and abandoned Redo in Max 2027. The 5k/50k/90k native
+vectors total 13,920,000 unique requested bytes. Conservative per-record pin
+attribution reaches 19,680,000 bytes because multiple records share storage;
+it must not be reported as unique physical memory. Abandoning Redo destroys all
+five restore records. Removing the remaining script/current pins releases all
+tracked vectors. Ordinary production Count history is still the existing
+parameter refresh path; this standalone probe does not replace or qualify it.
+
+Implementation decision (F02/F03/F05/F07): extend the existing radius
+and acceptance bridges to immutable native input/output, preserving the same
+pure solver and Float32 radius boundary. Generated schedules and sample
+identities use numeric keys; authored keys remain exact text. Receiver/owner,
+edited stage, root work bounds, radius lengths and candidate membership are
+validated before publication. Accepted selections preserve order and immutable
+predecessors; an empty selection releases its base. Measure selection retention
+before choosing a compaction policy. No main controller route is switched until
+native preview and ordinary Undo are integrated; optional features and all
+downstream consumers must follow. Slope/altitude formulas and controls stay fixed.
+
+Test acceptance: full ordered rows, frozen radii and all statistics/rounds equal
+the legacy bridge on plane/mountain, multiple receivers, grids, three collision
+scopes, protected zero-quota edits, radius overrides, cleanup/refill and failure
+retention. Instrument script materializations and native lifetime separately.
+This is implementation progress under the full active goal, not a reduced
+delivery scope or authorization to omit later native/roadmap requirements.
+
+## Native acceptance adapter qualification
+
+The current internal `acceptance-native-01` pair implements native receiver
+offset/join, source scale/offset/filtering, the existing post-Edit surface
+eligibility filter, effective radii/overrides and procedural acceptance. The
+same numerical solver still determines order, collision scopes, refill, cleanup
+and statistics. Generated schedules and sample identities use numeric keys;
+generated samples allocate no decimal identity strings. Native results retain
+ordered immutable selections and native radii. All-kept results reuse the input;
+empty selections drop their rejected base.
+
+Plane and mountain comparisons include 5k/50k/200k candidates, two receiver
+slots (including 128), projected grids, source filtering, enabled surface
+filters, radius overrides, target/refill, cleanup, three collision scopes and
+protected zero-quota copies. Full ordered row/radius/statistics fingerprints
+match the old bridge. Rejections preserve the earlier complete value. The
+retained controller route also passes actual Count/Manual/Live, failure recovery,
+65-second idle, 60k/90k copy history, active Edit/radius save/reopen and all eight
+ready presets' Load/Undo/Redo/save/reopen regressions. See the exact source,
+binary, fixture and log witnesses in [the stage receipt](N03_N04_QUALIFICATION.json).
+
+Materialization observation now distinguishes population arrays from individual
+rows, matrices and strings. It is opt-in and batches atomic updates at function
+exit. Only listed adapters are covered; Paint is explicitly uninstrumented.
+Native storage counters cover requested placement-vector capacity, not all
+solver/source/geometry/allocator memory. Sample scratch still contains copied
+positions/radii and an empty string object for numeric candidates. Reducing that
+scratch and choosing view/compaction retention remain measured N04/N08 work.
+
+Bare native joins validate session owner, stage and source **count**; they do
+not contain an actual frozen asset correspondence table. N05 must bind and
+validate source identities and input/publication epochs before the controller
+uses this route. The v2 diagnostic hashes the metadata supplied by its caller;
+it does not itself establish that the metadata belongs to the published epoch.
+
+The current knowledge generation verifies 33/36 enrolled parents; AGENTS,
+README and the modified Edit bridge are stale. New sources/plans are inspected
+directly. Publish a reviewed successor at the delivery knowledge checkpoint.
+
 ## Next dependency-ready work
 
-Finish remaining N01 ownership/history probes and N02 boundaries, then connect
-one Surface-random native path through acceptance, retained preview and ordinary
-Count Undo/Redo. Preserve Float32 stage boundaries and slope/altitude formulas
-and controls. Expand to optional features and consumers only with parity evidence.
-The first coherent qualified user delivery remains 0.86.0, with matching MZP/EXE;
-there is no new installer from this internal storage checkpoint.
+Adapt retained Point/Mesh preview consumers and coherent native publication,
+then connect Surface random through native acceptance, preview and ordinary
+Count Undo/Redo. Ordinary scalar history keeps its existing refresh semantics;
+do not introduce full placement snapshots for every Count change merely because
+the standalone hold probe can retain them. Complete optional Paint/mask/Band/
+Analyzer/Relax adapters, active Edit, inspection/render/PFlow/Bake and the full
+N01–N09 acceptance before declaring the foundation finished. Preserve Float32
+boundaries and slope/altitude formulas and controls.
+
+The first coherent qualified user delivery remains 0.86.0 with matching MZP/EXE.
+These adapters are internal prototypes; there is no new user installer yet.

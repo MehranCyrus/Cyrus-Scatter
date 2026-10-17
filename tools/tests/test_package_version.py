@@ -11,6 +11,14 @@ builder=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(builder)
 
 
+def test_placement_qualification_binary_is_never_allowed_by_default():
+    marker='Cyrus Scatter NEVER SHIP native placement ownership qualification'.encode('utf-16le')
+    with pytest.raises(RuntimeError):builder.reject_development_binary('AminScatter.dlx',marker)
+    builder.reject_development_binary('AminScatter.dlx',marker,allow_owned_placement=True)
+    with pytest.raises(RuntimeError):builder.reject_development_binary('AminScatter.dlx',b'normal product',allow_owned_placement=True)
+    with pytest.raises(RuntimeError):builder.reject_development_binary('AminScatter.dlx',marker+b'CYRUS_LICENSE_EXPERIMENT_NEVER_SHIP',allow_owned_placement=True)
+
+
 @pytest.mark.parametrize('label,metadata',[('0.72','0.72.0'),('0.7.1','0.7.1'),('0.82.6.1','0.82.6.1'),('0.83.0','0.83.0')])
 def test_short_and_full_development_labels_have_exact_package_versions(tmp_path,monkeypatch,label,metadata):
     script=tmp_path/'AminScatter/scripts/AminScatterObject.ms'

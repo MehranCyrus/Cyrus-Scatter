@@ -3,6 +3,8 @@
 #include "recipe_store.h"
 #include "asset_package.h"
 #include "asset_mesh.h"
+#include "placement_value.h"
+#include "script_buffers.h"
 #include <max.h>
 #include <triobj.h>
 #include <splshape.h>
@@ -413,6 +415,16 @@ Value* cyrusRecipePublicationFingerprint_cf(Value** a,int n){check_arg_count(cyr
     if(BCryptOpenAlgorithmProvider(&hash.algorithm,BCRYPT_SHA256_ALGORITHM,nullptr,0)<0||BCryptCreateHash(hash.algorithm,&hash.hash,nullptr,0,nullptr,0,0)<0)throw std::runtime_error("Capture fingerprint provider unavailable");
     hash.add("cyrus-published-rows-v1[");std::size_t count=0;
     for(int g=0;g<groups->size;++g){
+        if(cyrusIsPlacementValue(groups->data[g])) {
+            const auto& view=cyrusPlacementView(groups->data[g]);count+=view.size();if(count>1000000)throw RuntimeError(_T("Capture exceeds one million published rows"));
+            hash.add("[");
+            for(std::size_t i=0;i<view.size();++i) {
+                const auto& p=view.at(i);auto matrix=r::Json::array();for(float component:p.transform)matrix.push_back(component);
+                const auto identity=view.stage()==cyrus::placements::Stage::Candidates?r::Json(static_cast<std::int64_t>(p.identity)):r::Json(view.textIdentity(i));
+                hash.add(r::Json::array({matrix,p.source,identity,p.face,r::Json::array({p.bary[0],p.bary[1],p.bary[2]}),static_cast<std::int64_t>(p.band),(p.flags&cyrus::placements::Protected)!=0,2}).dump());hash.add(",");
+            }
+            hash.add("]");continue;
+        }
         type_check(groups->data[g],Array,_T("published rows"));auto* rows=static_cast<Array*>(groups->data[g]);count+=rows->size;if(count>1000000)throw RuntimeError(_T("Capture exceeds one million published rows"));
         hash.add("[");for(int i=0;i<rows->size;++i){
             type_check(rows->data[i],Array,_T("published row"));auto* row=static_cast<Array*>(rows->data[i]);if(row->size!=8)throw RuntimeError(_T("Capture requires complete eight-field rows"));
@@ -423,10 +435,45 @@ Value* cyrusRecipePublicationFingerprint_cf(Value** a,int n){check_arg_count(cyr
             if(!is_string(row->data[2])&&!Number::is_integer_number(row->data[2]))throw RuntimeError(_T("Invalid capture row identity"));
             if(row->data[6]!=&true_value&&row->data[6]!=&false_value)throw RuntimeError(_T("Invalid capture row flag"));
             type_check(row->data[4],Point3Value,_T("published anchor"));
-            const auto identity=is_string(row->data[2])?r::Json(recipeUTF8(row->data[2],160)):recipeTree(row->data[2]);
+            const auto identity=is_string(row->data[2])?r::Json(recipeUTF8(row->data[2],256)):recipeTree(row->data[2]);
             hash.add(r::Json::array({matrix,recipeTree(row->data[1]),identity,recipeTree(row->data[3]),vector(row->data[4]->to_point3()),recipeTree(row->data[5]),recipeTree(row->data[6]),recipeTree(row->data[7])}).dump());hash.add(",");
         }hash.add("]");
     }hash.add("]");std::vector<unsigned char> bytes(32);if(BCryptFinishHash(hash.hash,bytes.data(),32,0)<0)throw std::runtime_error("Capture fingerprint could not finish");return recipeString(r::hex(bytes));});}
+
+namespace {
+r::Json placementMetadata(Value* v,std::size_t& nodes,std::size_t& characters,int depth=0) {
+    if(depth>8||nodes==0)throw RuntimeError(_T("Publication metadata exceeds bounded depth/values"));--nodes;
+    if(is_string(v)){auto text=recipeUTF8(v,4096);if(text.size()>characters)throw RuntimeError(_T("Publication metadata text exceeds one MiB"));characters-=text.size();return text;}
+    if(v==&undefined||v==&true_value||v==&false_value||Number::is_integer_number(v)||Number::is_float_number(v))return recipeTree(v);
+    type_check(v,Array,_T("frozen publication metadata"));auto* a=static_cast<Array*>(v);if(a->size>4096)throw RuntimeError(_T("Publication metadata array exceeds bounds"));
+    auto json=r::Json::array();for(int i=0;i<a->size;++i)json.push_back(placementMetadata(a->data[i],nodes,characters,depth+1));return json;
+}
+}
+// Explicit diagnostic: rows + frozen radii + frozen source/receiver correspondence
+// and statistics. It never solves or creates per-placement script rows/pairs.
+def_visible_primitive(cyrusPlacementPublicationFingerprint,"cyrusPlacementPublicationFingerprint");
+Value* cyrusPlacementPublicationFingerprint_cf(Value** a,int n){check_arg_count(cyrusPlacementPublicationFingerprint,4,n);return recipeAPI([&]()->Value*{
+    type_check(a[0],Array,_T("published populations"));type_check(a[1],Array,_T("published radii"));
+    auto* groups=static_cast<Array*>(a[0]);auto* radii=static_cast<Array*>(a[1]);
+    if(groups->size>10||groups->size!=radii->size)throw RuntimeError(_T("Publication populations and radii differ"));
+    std::size_t nodes=20000,characters=1048576;const auto bindings=placementMetadata(a[2],nodes,characters),stats=placementMetadata(a[3],nodes,characters);
+    one_typed_value_local(Value* rows);vl.rows=cyrusRecipePublicationFingerprint_cf(a,1);
+    struct Hash {
+        BCRYPT_ALG_HANDLE algorithm=nullptr;BCRYPT_HASH_HANDLE value=nullptr;
+        ~Hash(){if(value)BCryptDestroyHash(value);if(algorithm)BCryptCloseAlgorithmProvider(algorithm,0);}
+        void add(const std::string& text){if(BCryptHashData(value,reinterpret_cast<PUCHAR>(const_cast<char*>(text.data())),static_cast<ULONG>(text.size()),0)<0)throw std::runtime_error("Publication fingerprint failed");}
+    } hash;
+    if(BCryptOpenAlgorithmProvider(&hash.algorithm,BCRYPT_SHA256_ALGORITHM,nullptr,0)<0||BCryptCreateHash(hash.algorithm,&hash.value,nullptr,0,nullptr,0,0)<0)throw std::runtime_error("Publication fingerprint provider unavailable");
+    hash.add("cyrus-publication-v2[");hash.add(r::Json::array({recipeUTF8(vl.rows,64),bindings,stats}).dump());hash.add("[");
+    for(int g=0;g<groups->size;++g) {
+        std::size_t size=0;
+        if(cyrusIsPlacementValue(groups->data[g]))size=cyrusPlacementView(groups->data[g]).size();
+        else {type_check(groups->data[g],Array,_T("published rows"));size=static_cast<Array*>(groups->data[g])->size;}
+        if(cyrusRadiusCount(radii->data[g])!=size)throw RuntimeError(_T("Published radii do not match the frozen population"));
+        hash.add("[");for(std::size_t i=0;i<size;++i){const auto pair=cyrusRadiusAt(radii->data[g],i);hash.add(r::Json::array({pair[0],pair[1]}).dump());hash.add(",");}hash.add("]");
+    }
+    hash.add("]]");std::vector<unsigned char> bytes(32);if(BCryptFinishHash(hash.value,bytes.data(),32,0)<0)throw std::runtime_error("Publication fingerprint could not finish");return_value(recipeString(r::hex(bytes)));
+});}
 def_visible_primitive(cyrusRecipeEntryWrite,"cyrusRecipeEntryWrite");
 Value* cyrusRecipeEntryWrite_cf(Value** a,int n){check_arg_count(cyrusRecipeEntryWrite,7,n);return recipeAPI([&]()->Value*{
     type_check(a[0],String,_T("recipe filename"));type_check(a[3],String,_T("thumbnail filename"));

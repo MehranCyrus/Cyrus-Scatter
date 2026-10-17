@@ -1,5 +1,6 @@
 #include "procedural.h"
 #include "execution.h"
+#include "receiver_plan.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -235,4 +236,24 @@ void largePopulation(){
     p.maxSamples=1000000;p.layers[0].sets[0].budget=p.layers[0].sets[0].attemptLimit=1000001;
     rejects([&]{evaluate(p);});
 }
-int main(){try{stableSampler();stablePatternAndRelax();distances();refill();targetAndOrdering();scaleBounds();mixedRadiusMetrics();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();largePopulation();std::cout<<"Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay, expanded capacity and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+void numericIdentities(){
+    Plan legacy;auto a=layer("a"),b=layer("b");a.acceptedTarget=true;a.rounds=4;
+    auto first=population("first",3);first.attemptLimit=64;first.self={true,1,.25,true};
+    first.samples={sample(0,0,0,.3),sample(.1,0,1,.3),sample(2,0,4,.3),sample(3,0,31,.3)};
+    auto second=population("second",0);auto pin=sample(4,0,0,.3,true);pin.id="copy:authored";second.samples={pin};
+    auto third=population("third",2);third.samples={sample(2,0,0,.3),sample(9,0,1,.3)};
+    a.sets={first,second};b.sets={third};legacy.layers={a,b};legacy.rules={{Scope::Layers,"a","b",{true,1,.2,true}}};
+    for(std::size_t l=0;l<legacy.layers.size();++l)for(auto& set:legacy.layers[l].sets)for(auto& p:set.samples)
+        if(!p.protectedEdit)p.id="c:"+std::to_string(cyrus::receivers::identity(unsigned(l),unsigned(p.ordinal)));
+    auto native=legacy;for(auto& l:native.layers)for(auto& set:l.sets)for(auto& p:set.samples)if(!p.protectedEdit){p.candidateIdentity=std::stoull(p.id.substr(2));p.id.clear();}
+    const auto old=evaluate(legacy),now=evaluate(native);
+    for(std::size_t l=0;l<old.layers.size();++l){check(old.layers[l].rounds==now.layers[l].rounds&&old.layers[l].limitReached==now.layers[l].limitReached,"Numeric identity changed refill rounds");
+        for(std::size_t s=0;s<old.layers[l].sets.size();++s){const auto& x=old.layers[l].sets[s];const auto& y=now.layers[l].sets[s];
+            check(x.kept==y.kept&&x.conflicts==y.conflicts&&x.reasons==y.reasons&&x.attempts==y.attempts&&x.neighborVisits==y.neighborVisits&&x.shortfall==y.shortfall,"Numeric identity changed acceptance, reasons or work");}}
+    auto duplicate=native.layers[0].sets[0].samples[0];duplicate.id=legacy.layers[0].sets[0].samples[0].id;duplicate.candidateIdentity=0;duplicate.ordinal=999;
+    native.layers[0].sets[0].samples.push_back(duplicate);rejects([&]{evaluate(native);});
+    std::reverse(native.layers[0].sets[0].samples.begin(),native.layers[0].sets[0].samples.end());rejects([&]{evaluate(native);});
+    native=legacy;native.layers[0].sets[0].samples[0].candidateIdentity=cyrus::receivers::identity(0,0);rejects([&]{evaluate(native);});
+    native.layers[0].sets[0].samples[0].id.clear();native.layers[0].sets[0].samples[0].candidateIdentity=1;rejects([&]{evaluate(native);});
+}
+int main(){try{stableSampler();stablePatternAndRelax();distances();refill();targetAndOrdering();scaleBounds();mixedRadiusMetrics();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();largePopulation();numericIdentities();std::cout<<"Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay, expanded capacity, numeric identities and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

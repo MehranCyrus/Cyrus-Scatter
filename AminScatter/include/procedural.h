@@ -18,6 +18,9 @@ struct Sample {
     std::uint64_t ordinal=0;
     std::string id;
     bool protectedEdit=false;
+    // Native candidates keep their exact key without allocating decimal text.
+    // Zero selects the existing authored/text boundary (including test keys).
+    std::uint64_t candidateIdentity=0;
 };
 struct Population {
     std::string id;

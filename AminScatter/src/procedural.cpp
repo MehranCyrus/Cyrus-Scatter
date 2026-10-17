@@ -1,6 +1,7 @@
 #include "procedural.h"
 #include "receiver_plan.h"
 #include <algorithm>
+#include <charconv>
 #include <cmath>
 #include <limits>
 #include <map>
@@ -47,9 +48,22 @@ Result evaluate(const Plan& plan){
             require(!set.id.empty()&&setIDs.emplace(set.id,std::make_pair(l,s)).second,"Duplicate or empty set identity");
             validate(set.self);require(set.budget<=receivers::limit&&set.attemptLimit<=receivers::limit,"Population budget/attempt limit exceeds 1,000,000");
             require(set.attemptLimit>=set.budget,"Attempt limit is below initial budget");
-            std::set<std::string> ids;std::set<std::uint64_t> ordinaryOrdinals;
+            std::set<std::string> ids;std::set<std::uint64_t> candidateIDs,ordinaryOrdinals;
             for(const auto& p:set.samples){
-                require(!p.id.empty()&&ids.insert(p.id).second,"Duplicate or empty instance identity");
+                if(p.candidateIdentity){
+                    unsigned receiver=0;std::uint64_t local=0;
+                    require(p.id.empty()&&receivers::decodeCandidate(p.candidateIdentity,receiver,local)&&candidateIDs.insert(p.candidateIdentity).second,"Duplicate or invalid native candidate identity");
+                }else{
+                    require(!p.id.empty()&&ids.insert(p.id).second,"Duplicate or empty instance identity");
+                    // The same candidate cannot appear once as numeric and once
+                    // through the old canonical text boundary.
+                    if(p.id.size()>2&&p.id.compare(0,2,"c:")==0&&!(p.id.size()>3&&p.id[2]=='0')){
+                        std::uint64_t key=0;const auto parsed=std::from_chars(p.id.data()+2,p.id.data()+p.id.size(),key);
+                        unsigned receiver=0;std::uint64_t local=0;
+                        if(parsed.ec==std::errc{}&&parsed.ptr==p.id.data()+p.id.size()&&receivers::decodeCandidate(key,receiver,local))
+                            require(candidateIDs.insert(key).second,"Duplicate candidate identity across transports");
+                    }
+                }
                 require(std::isfinite(p.radii.xy)&&p.radii.xy>=0&&std::isfinite(p.radii.spatial)&&p.radii.spatial>=0&&finite(p.position),"Non-finite or negative procedural sample");
                 if(!p.protectedEdit)require(ordinaryOrdinals.insert(p.ordinal).second,"Duplicate ordinary candidate ordinal");
             }
