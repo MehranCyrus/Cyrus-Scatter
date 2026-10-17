@@ -175,6 +175,11 @@ delivery scope or authorization to omit later native/roadmap requirements.
 
 ## Native acceptance adapter qualification
 
+Implementation checkpoint **`9945c82`** is pushed to `codex/workflow-0.75`,
+with the remote ref verified. It includes the internal adapters, private probe,
+tests and stage evidence. The companion evidence update records the final Python
+rerun; native/script bytes remain unchanged. Unrelated work remains excluded.
+
 The current internal `acceptance-native-01` pair implements native receiver
 offset/join, source scale/offset/filtering, the existing post-Edit surface
 eligibility filter, effective radii/overrides and procedural acceptance. The

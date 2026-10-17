@@ -2,6 +2,7 @@
   "schema": "cyrus.native-stage-qualification/1",
   "date": "2026-10-17",
   "parent_git_head": "8645c6cc4878a05e8fa6f835610872b2da1359ea",
+  "implementation_checkpoint": "9945c82110f4fdb05350c87c20a51e6645e384e8",
   "status": "Internal native producer/preparation/acceptance adapters; full goal active. Not an integrated native controller or user delivery.",
   "version": {
     "product_metadata": "0.85.4",
@@ -1014,8 +1015,8 @@
     "python": {
       "passed": 168,
       "output": {
-        "path": "build/native-migration-0860-20261017-02/pytest.log",
-        "sha256": "70cde31e4b6d51fff57b2f8954863e7a1030abe2a879d58bebb2b2a367988357"
+        "path": "build/native-migration-0860-20261017-02/pytest-current.log",
+        "sha256": "85e1647de891a03655848ac39117a898006e35197866bf5aa86bcacbd3fc003a"
       }
     },
     "current_generation_cases": 26,
@@ -1346,7 +1347,7 @@
   },
   "helpers_at_checkpoint": {
     "tools/native_placement/launch_observed.py": "03cc169ee99012ff9033dc0c2250defe09c822064316db112235b2c301a1052a",
-    "tools/native_placement/qualify_stages.py": "dc980a16ff1156eb0324626bf6559258a083c4e6c8e4f77da38f7962ac66daa6",
+    "tools/native_placement/qualify_stages.py": "2468ce0bae49b953cc984b24f038e19b7b27b7a726a663d735f47a134b19e766",
     "tools/native_placement/record_store_qualification.py": "84b5bceb57d66477b769840ca170aa7d819c1edc3f8e652b682bccc005fd7545",
     "tools/native_placement/run_acceptance.py": "892eda8a0f485f59e55fa3959a3a7c0aed5450cc93ee0889295770af1442e864",
     "tools/native_placement/run_baseline.py": "6a45c53a14b4b39dc0e20018ac951122b1e90cfe5a123a1f3f825b3d491ab310",

@@ -54,10 +54,11 @@ for path in ('AminScatter/tools/ui/templates/unified-core.ms','AminScatter/scrip
     assert hashlib.sha256(original).hexdigest()==sha(ROOT/path);preserved[path]=sha(ROOT/path)
 helpers=[*sorted((ROOT/'tools/native_placement').glob('*.py')),*sorted((ROOT/'tools/native_placement').glob('*.ms')),
     ROOT/'tools/build_max.py',ROOT/'tools/memory_0854/host.py',ROOT/'tools/procedural_lab/layer_editor_071/private_host.py',ROOT/'tools/procedural_lab/offline_build.py',ROOT/'tools/tests/test_package_version.py']
-assert '168 passed' in read(RUN/'pytest.log')
+assert '168 passed' in read(RUN/'pytest-current.log')
 generated=RUN/'generated/generated-check.json';assert json.loads(read(generated))['passed']
 document={
     'schema':'cyrus.native-stage-qualification/1','date':'2026-10-17','parent_git_head':'8645c6cc4878a05e8fa6f835610872b2da1359ea',
+    'implementation_checkpoint':'9945c82110f4fdb05350c87c20a51e6645e384e8',
     'status':'Internal native producer/preparation/acceptance adapters; full goal active. Not an integrated native controller or user delivery.',
     'version':{'product_metadata':'0.85.4','schema':58,'target_first_coherent_delivery':'0.86.0','installer_created':False,'artist_installation':False},
     'source_sets':{'producer-and-hold':old,'acceptance':current},
@@ -66,7 +67,7 @@ document={
         host('foundation-memory0854-nativegenerate-product-20261017-01',['generation.txt','generation-benchmark.tsv','generation-boundaries.txt']),
         host('foundation-memory0854-nativegenerate-hold-20261017-03',['generation.txt','hold-observations.txt','hold-events.txt']),
         host('foundation-memory0854-nativeaccept-20261017-01',['startup-observation.json','acceptance.txt','generation.txt','generation-boundaries.txt','memory-fix.txt'])],
-    'checks':{'generated':record(generated),'python':{'passed':168,'output':record(RUN/'pytest.log')},'current_generation_cases':26,
+    'checks':{'generated':record(generated),'python':{'passed':168,'output':record(RUN/'pytest-current.log')},'current_generation_cases':26,
         'acceptance_terrains':['plane','mountain'],'acceptance_counts':[5000,50000,200000],
         'acceptance':'Full ordered semantic rows, radii, supplied bindings/statistics; source transforms/filtering, explicit receiver correspondence, grids, existing surface math, overrides, cleanup/refill, protected scopes and failure retention.',
         'current_controller_regression':record(RUN/'acceptance-core.log'),'current_eight_presets':record(RUN/'acceptance-presets.log'),'preset_outputs':preset_outputs,
