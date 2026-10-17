@@ -155,7 +155,7 @@ def dispatch(task):
     if kind=='baseline_compare':
         read=support.reader();old_receipt,old,old_labels=support.verify_evaluation_receipt(Path(args['baseline']),args['baseline_generation'],read)
         _,new,new_labels=support.verify_evaluation_receipt(Path(args['candidate']),args['candidate_generation'],read)
-        result=support.compare_baseline(old,new,old_labels,new_labels,args['sources_changed'],args.get('conclusion_review'))
+        result=support.compare_baseline(old,new,old_labels,new_labels,args['sources_changed'],args.get('conclusion_review'),args.get('evidence_review'))
         result=support.review_manual_tradeoffs(result,old,new,args.get('tradeoff_review'))
         result['latency']={'baseline_median':old_receipt['median_query_seconds'],
                            'baseline_p95':old_receipt['p95_query_seconds'],

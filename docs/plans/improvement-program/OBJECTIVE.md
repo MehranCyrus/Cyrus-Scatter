@@ -1,3 +1,5 @@
+> Historical user objective, enrolled 15 October 2026. P06 grids and P07 orientation were subsequently implemented. Further roadmap implementation is currently paused. Read the [current phase table and scope](PROGRESS.md#original-phase-status) and [engineering foundation](../../ENGINEERING_FOUNDATION.md) before acting. The original objective below preserves past authorization; it does not authorize new implementation, Physics Lab integration, native migration or Git/install actions.
+
 Implement and qualify the remaining Cyrus Scatter improvement program, starting with presets, then continuing through the documented roadmap. Deliver a usable preset library with thumbnails and a distributable Windows EXE installer.
 
 Work autonomously through coding, testing, corrections, documentation, packaging and Git checkpoints. Do not stop after planning or wait for my manual testing between phases. I will perform final artist acceptance afterward.

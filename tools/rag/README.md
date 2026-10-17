@@ -1,5 +1,7 @@
 # Local catalog and lexical search
 
+**Current maintenance:** the [phase-status reconciliation](STATUS_RECONCILIATION_2026-10-17.md) records the documentation correction and successor-index verification. P06/P07 are already implemented; further roadmap development is paused. The [preceding repair](KNOWLEDGE_REPAIR_2026-10-17.md) records reviewed retirements, full contracts and retrieval limits. The [earlier audit](FOUNDATION_REFRESH_2026-10-17.md) and 12 October completion remain historical evidence. Verify sources when relying on the index. Direct maintained guidance in AGENTS.md and the engineering foundation remains authoritative within the user's current scope.
+
 The [12 October completion handoff](COMPLETION_2026-10-12.md) records the expanded
 foundation corpus, measured limits, selected generation and actual consumers.
 It also explains source-only sharing and the separately authorized refresh policy.

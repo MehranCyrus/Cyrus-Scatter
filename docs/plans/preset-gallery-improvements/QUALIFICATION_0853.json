@@ -1,0 +1,651 @@
+{
+  "version": "0.85.3",
+  "status": "passed for the bounded ready-preset delivery",
+  "baseline_commit": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+  "branch": "codex/workflow-0.75",
+  "max_year": 2027,
+  "script_sha256": "274d4b9212e8c44740007bed2131551267f7c526de5f2d6294e1ba2bad1e22be",
+  "native_receipt": {
+    "path": "build/presets-0853-20261016-01/native-04/receipt.json",
+    "sha256": "4d80ccb1b740353572cb064f09bae80fa1e131a3d00d319d3ad9f303e5850975"
+  },
+  "native_inputs_rehashed": 155,
+  "native_suites": 39,
+  "native_test_log": {
+    "path": "build/presets-0853-20261016-01/native-04/tests.log",
+    "sha256": "b631adff340f50008c3c8af83e7aed1afbf8283416b76bdf343a0d51b0ffbaf0"
+  },
+  "python_tests": 167,
+  "python_result": "167 passed in 14.06 s; terminal result observed, raw pytest log not retained",
+  "generated": {
+    "path": "build/presets-0853-20261016-01/generated-final-timing/generated-check.json",
+    "sha256": "cac4b3e70b6fb3e630e5be046fef7a884c110fba1393667b7eacaa417173b712"
+  },
+  "asset_capture_producer": {
+    "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/launch.json",
+    "sha256": "cb852a59093ef973674626f927fbb5a77bb5e039b03e0521c2fa358ef38e1663"
+  },
+  "asset_captures": [
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-meadow-capture.json",
+      "sha256": "823e04c3669d1648e89ec2b237d5889f09d4c874981a03832b1def24156f650b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-woodland-capture.json",
+      "sha256": "ef155912f9041cc2c9b596e9038d9fdf5212e9daab6dbc086282f6243f3de03f"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-mountain-capture.json",
+      "sha256": "ff640c9f8afe8847bc90f8b1ad4f5aba840403c2284e527d5a33541760587bf2"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-borders-capture.json",
+      "sha256": "fbc52f71de857535610dcc9576dce7f87f911ced96f5431b11c567a1cfedde59"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-orchard-capture.json",
+      "sha256": "ef338bb0e190543c34f770af807e89846370c2f4cdfe7546a6862d170170df7e"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-hexagonal-capture.json",
+      "sha256": "7319421801b820182b176179ebcf49b5118b98b28f2091630293158c5b1c05ec"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-formal-capture.json",
+      "sha256": "53a7fe30668bc05def23e34f52790b1e36aa53e5c2ddad369de37670bd48497f"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-qualified-20261016-01/library-valley-capture.json",
+      "sha256": "78e5ac4ffc9f16492da2c462af1aab9f9497b54ed70ceb790104ce9d079075e7"
+    }
+  ],
+  "final_host": {
+    "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/launch.json",
+    "sha256": "fe47615a92a31507bd65c13ff79755aaff2b8e88d56f34c538dfc2751856dc1d"
+  },
+  "recipient": {
+    "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/launch.json",
+    "sha256": "7db04f3ebba19f8f25154ae24afa23c7099c1afae8f36d0f9f1828ad470f6b64"
+  },
+  "acceptance": [
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-verify.txt",
+      "sha256": "e933796451355f08c78f307b9cdcffff95626f2bd467025a6d09c3c32ecd266d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-meadow-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-verify.txt",
+      "sha256": "861148a8cfedd41c813b16f7f029a6237e8d4ae70b5fce15fd0497eae0aad1e4"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-woodland-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-verify.txt",
+      "sha256": "b74fe8d822b7801a3a2db2d32863b648b8568378823edccf6a11501fd17172a8"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-mountain-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-verify.txt",
+      "sha256": "86811482cfa695497f5dcb89996d3934c79e2faa9d556036434f36e06db29795"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-borders-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-verify.txt",
+      "sha256": "fda0b53b7023d239613dc12c9dfd8a44790a4f421cf90636ef5aebb9e40efbdc"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-orchard-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-verify.txt",
+      "sha256": "47c35daff6d89af8f3ae422f4f3510d3d2544656ac29a655e9235c91bb3265b5"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-hexagonal-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-verify.txt",
+      "sha256": "dc1e8485bce64fbe4585e5bb66794b4332ccd00c175186d3ad260dcef263821b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-formal-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-verify.txt",
+      "sha256": "74b4d329e7e6c51407a992eba0cb66652ccacc314152a0aa2af10f9e08694192"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/acceptance-valley-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    }
+  ],
+  "workflow": [
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83175871-setup.txt",
+      "sha256": "c6ad5672e097487df125bac1b3874874345872c04da9e0d31aa521e84d07b8e5"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83179856-galleryLoad.txt",
+      "sha256": "1a545d1e06fbeae48c84a38ce72df3a241e2a55a23c82f9cb62a65881d3fc27b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83181761-preserved.txt",
+      "sha256": "81adaafc68b5690b45deb01540d07b5a946de8a54087572599b5ac9618c2c15f"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83182582-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83183346-checkUndo.txt",
+      "sha256": "8cb9a9f31b0e66e78f1cbac3ed2bf47ff48953a17e16a910529fe7e090a3aaef"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83183594-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83184380-checkRedo.txt",
+      "sha256": "664acdda9933707b638f28949b9c334ad8dff2f5d66f6bbaf3310693e72c701b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83184644-save.txt",
+      "sha256": "f170443e69c3532afd01b369317a3257a5a572e70a1fca56216e14b4156b0af3"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83185428-checkSave.txt",
+      "sha256": "ad505e2822bcbbacd3814cd0d1b4e997ba56105cb8c33990e6eaa84d293a6ea4"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83185742-loadSaved.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83187962-checkSaved.txt",
+      "sha256": "28b45638094b5891f181d5a5defd045ce6d0dc917f68693820a37addd5e8cf23"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83188232-cancel.txt",
+      "sha256": "62f32a7732a1057a6bddb3b57b4e73487d4100e13ae071503b2a72d79e022968"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83188564-fault.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/workflow-83189147-checkFault.txt",
+      "sha256": "f2476942d2a7f11f59f00539d6dad6f22367c22335498ed7d920500e0baec494"
+    }
+  ],
+  "extra": [
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-capacity.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-checkCapacity.txt",
+      "sha256": "6876f17c6c2eb25ba8fd8c5051e8378d3e9428d420fae858e299d1e3666f914f"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-revise.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-checkRevision.txt",
+      "sha256": "dac33fc338a6753b2b7e5a65894fa9601e6fd039d9e281b44df2ec19b96b90cf"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-liveLoad.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-checkLive.txt",
+      "sha256": "554bb0ea0de35f4d73310445328f894ac5e898bc5c17dddfb0eb194085de7a97"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-closeAfterAddStart.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-closeAfterAddFinish.txt",
+      "sha256": "ca12d098e7416caf261319ff06b658cf3a7592f4567e3068273b2ef8e3a202dd"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-idleStart.txt",
+      "sha256": "f8db42c12a7c8d897c43a5d8092b82d5836627627a404d54d2b6bd0f9ec5d3ba"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-browse.txt",
+      "sha256": "d81cbe2686a5a9747e23172ea70316d05c2fbe530afc157f5c91adbc492b0e45"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-final-timing-20261016-02/extra-idleCheck.txt",
+      "sha256": "bb371e258106bbfe1ebd9f9bbdd8a2c601cde04ab1f7e7f02022aae4870e1d90"
+    }
+  ],
+  "installed_acceptance": [
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-verify.txt",
+      "sha256": "9255b98f9614c036ad38c70c54bad3da6852c6f02467bdae3a747368eba99126"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-borders-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-setup.txt",
+      "sha256": "64383e44885a91ff5bf367bad8bf14d33e93e785cb8ac5a9ee12ab57df1455b7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-load.txt",
+      "sha256": "39638618cf18e620ede754b6e339d8cebbf2914f7b0903113a433826f7bec99c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-verify.txt",
+      "sha256": "fa8575b6b5d53d9576978595e34639276852642507629c12df2179a709effc14"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-undo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-verifyUndo.txt",
+      "sha256": "82078d7a08d96f6f4536c936653d05375b6547feaa5b8798961838cf110b1371"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-redo.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-verifyRedo.txt",
+      "sha256": "c7e4dbd49c46653f7f68a20654104a5b061e3d8197d4e51490745bb4d344a74b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-reopen.txt",
+      "sha256": "f67bfaf4426768b3ce6555c9296407d14906528d26b43e02ec8df3a4f478512d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/acceptance-valley-verifyReopen.txt",
+      "sha256": "24664df56bd8ad86d27ac97badceecc093db80c1641b849f91e8c83e65ab112d"
+    }
+  ],
+  "terrain_and_single_live_solve": [
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/terrain-missing.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/terrain-checkMissing.txt",
+      "sha256": "7975b8313097255f9deee9ceb4efbc12c9b4f2fcc9c3923d594c17329005bdf9"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/terrain-settled.txt",
+      "sha256": "4699be3ae8b83706270231cbd705445f59179fa05ff3997adbbe52267a050b31"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/terrain-valid.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/terrain-checkValid.txt",
+      "sha256": "2cc60b27df5a541fd155988fce803ecafae2f5b5d6a035039e8bc6beb9441c8c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/terrain-liveCount.txt",
+      "sha256": "418e46c79dabe4473fb42a42545cf1e493273395982fa5c643b6056899e2ae4b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/terrain-checkLiveCount.txt",
+      "sha256": "a66746c77fd6d376481d98c03e9f064c643616480219a635b72f1c0b1c0ec7c2"
+    }
+  ],
+  "exe_handler": {
+    "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/result.json",
+    "sha256": "4a7fabd9f7f71b3f066c274a90bbfe1a0592657fafc23fe24e0e6a3bb31185f3"
+  },
+  "mzp_wrapper": {
+    "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/mzp-wrapper-passed.txt",
+    "sha256": "8d19f2be2f21472c1eb3d1b383e3231faf20327a12169ba45381385e5fcbd9aa"
+  },
+  "actual_pointer_load": {
+    "path": "build/mcp-qualification/foundation-presets0853-recipient-e8186a8b/actual-click-load-final.txt",
+    "sha256": "2bf15ff1ed14843ce03b7c3b743b00f49cdde5622b9c6d5bece03c972962a29f"
+  },
+  "layout_predecessor_checks": [
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-scale150-20261016-01/layout-settled-1.5-0-observe.json",
+      "sha256": "815347c8eb641a99f6a7c4c8bc2dfe257275bb7ebdf918f0cea1e6e1243b8960"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-scale150-20261016-01/layout-settled-1.5-1-observe.json",
+      "sha256": "5a791c8f509524270dd52534efc16f38ecf957cf313069f8dc2f05b835b78898"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-af636a31/layout-settled-1.0-0-observe.json",
+      "sha256": "dcc5cd206fbfe3a6ba952d42c6e99fec4793de5ea0fa0e046492b38d64fdd8b3"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-presets0853-recipient-af636a31/layout-settled-1.0-1-observe.json",
+      "sha256": "49fea170c5070d9c542ed7109bf1d834d214d97e12971b3607a1cb26346e9c69"
+    }
+  ],
+  "layout_scope": "48 settled page/owner layouts at default and configured 150%; native/C#/main-panel code unchanged by final ready-command timing correction; final installed 150% Load/Save visually inspected",
+  "idle_seconds": 47.752,
+  "notification_failure_predecessor": {
+    "path": "build/presets-0853-20261016-01/notification-predecessor/terrain-settled.txt",
+    "sha256": "33993306a31f8f80f456040cdb5e091cee57af94472bfb93427c03d5e57b075e"
+  },
+  "screenshots": [
+    {
+      "path": "build/presets-0853-20261016-01/ready-load-final-150.png",
+      "sha256": "1d5874819f25b274674adaa6168de7ccf98943cc690269603aaca39b33c555d0"
+    },
+    {
+      "path": "build/presets-0853-20261016-01/ready-save-final-150.png",
+      "sha256": "f2971bb7ea3a0d26aaa3448545c4bd08bb5888e97fcfc31464f165ac25e730ce"
+    },
+    {
+      "path": "build/presets-0853-20261016-01/modify-navigation-default.png",
+      "sha256": "4568a2d94399fff2890899c2d9ad4a6bd5542a7c3d3c6d1979a554a2515158f7"
+    }
+  ],
+  "fixtures": {
+    "tools/presets_0853/await_host.py": "8d843fc656f969e3b52f46ad02e6a42124fa8264674e48c324d9ce2d0efa6d05",
+    "tools/presets_0853/build_library.py": "1be165f95306d24402f6e6263aaacf0ef3ef2cfb689c5ecf73dd9e225f1da496",
+    "tools/presets_0853/check_delivery.py": "4a22c53f71a9ece5b4e443b9e6f60f00da88a0bd4fb9ae41ae56706da3e15f9b",
+    "tools/presets_0853/close.py": "d92a96b1fc0cafd5e46f21de8b7e38e40aa981b55ea605c516b0922904146913",
+    "tools/presets_0853/copy_capture_receipts.py": "3599223cd7e7f3fba8ed4edea47238d567de72885e8cbab1d0a78bc3a244a7c0",
+    "tools/presets_0853/dispatch.py": "32bf57d20285b87ca0d340bc4464f23c9cb3840bffa5a3accd4103fe67c7d153",
+    "tools/presets_0853/finalize_docs.py": "6023f731efd53f97e8a4e3b567f46c6e1c0061f0fccadf7404910943a49b9b1a",
+    "tools/presets_0853/inspect_layout.py": "0293d91c54b669cbafd0bec69cd8e36f04b0b7ac8e349366fdd2d39abcdf233a",
+    "tools/presets_0853/inspect_library.py": "9a5bcaf950358d6ef284418ed310140cc70dcc34dd4e00388b05911e631e2baf",
+    "tools/presets_0853/launch.py": "8a0bfb95e832e2f5b76ace0a0cf36594dbbf759243cf841d174a16b78f82f571",
+    "tools/presets_0853/library.py": "fc45b9c758c692dbe5cc5c84a451ce753f27e57c343e310c1b9bdf3a83fc98dd",
+    "tools/presets_0853/package.py": "f4263de7bcff3d606895598191a294ed05c919746933394960d6dc7930ecd5e8",
+    "tools/presets_0853/recipient.py": "7a0c332e21418c2adeac3af8ab347996e1a5d181eb5dd4b920dc093f09fe5c0f",
+    "tools/presets_0853/recipient_acceptance.py": "8c62546231b44ef66b22c21930ef178a97efcedcdde8901132bd06d1c97fa203",
+    "tools/presets_0853/run_acceptance.py": "cadea70a2a3bf8082e04a05c03442f0ba4091725b8746d9ed0f7c19d3ce994b8",
+    "tools/presets_0853/run_extra.py": "e29aed423b71b181bc9e1934e3a4e05459f5218d450e09f382cca46c12e12bf7",
+    "tools/presets_0853/run_layout.py": "f1fcdb33d73851ed1cd874815b3dcd00e7b0b8ba92b2fb8484e8d60d040552b3",
+    "tools/presets_0853/run_library_layout.py": "841ffd8551339056006b0d7ceb17ee62b6407f324b1ca62583f8688c57d5ddc1",
+    "tools/presets_0853/run_terrain.py": "fe825a3399c826dbeca952ffb354d0df10f5a35ae4f9d56baf8b27b9306c8d99",
+    "tools/presets_0853/run_workflow.py": "9f59f11f560563c62d1310fe818f9374f087e600a6f6c3a117aab9de8d7a6cb4",
+    "tools/presets_0853/scale_prepare.py": "f9c7995899f30f815d64f68b912a6f9a3916c2328894701e73bab9b748e34ef4",
+    "tools/presets_0853/seal.py": "f77749b69566fe0cd08bbc560b1987943e346365a354531141e503b9f196a8ff",
+    "tools/presets_0853/stage_library.py": "d44e106e1d20f326752a7c5ee11a88e730b877ecec523f1296c2c984eb5e61a0"
+  },
+  "limitations": [
+    "Static mesh/Standard-Blinn/static-PNG adapter; unsupported shaders/proxies/XRefs/animation and authored Edit/radius codecs remain open",
+    "Included terrain is an evaluated snapshot; arbitrary-terrain Paint reprojection is not implemented",
+    "Per-layer viewport budget share redistributes; explicit Load + Update applies pending Manual edits",
+    "Configured DPI/layout and pointer checks are not physical 4K/mixed-monitor or tablet qualification",
+    "No new production-renderer, huge-asset, full-disk/ACL/network or general B26 heavy-session qualification",
+    "Normal artist profile not installed or restarted; no Git push or website publication in this task"
+  ]
+}

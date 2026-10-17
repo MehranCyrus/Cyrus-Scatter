@@ -288,12 +288,31 @@ def search(index: Path, query: str, top_k: int = 10, mode: str = "keyword", filt
         groups = {}
         rank_order = {r["chunk_id"]: i for i, r in enumerate(ranked)}
         for record in ranked:
-            groups.setdefault(record["text_group"], []).append(record)
+            groups.setdefault(record.get('contract',{}).get('chunk_id',record["text_group"]), []).append(record)
         results = []
+        historical_sections = set()
         for members in groups.values():
             # A returned exact path always keeps that path; otherwise prefer an enrolled canonical original within identical text.
             representative = min(members, key=lambda r: (not r["match"]["exact_path"], r["source"]["canonical"]["preferred_path"] != r["path"], rank_order[r["chunk_id"]]))
+            # Broad history queries should not spend multiple result slots on
+            # overlapping windows from the same report section. Exact lookup
+            # remains exhaustive within its caller-selected top-k.
+            if mode == 'keyword' and representative['source']['role'] == 'historical_evidence' and representative['context']:
+                key=(representative['path'],representative['context'])
+                if key in historical_sections:
+                    continue
+                historical_sections.add(key)
             representative["equivalent_sources"] = [{"path": r["path"], "parent_sha256": r["parent_sha256"], "locator": r["locator"], "source": r["source"], "match": r["match"]} for r in members if r is not representative]
+            if 'contract' in representative:
+                # Rank bounded matching fragments, return the complete reviewed
+                # contract once. Other fragments are not duplicate sources.
+                representative['matched_chunk_id']=representative['chunk_id']
+                representative['matched_locator']=representative['locator']
+                representative.update(representative.pop('contract'))
+                representative['search_text']=normalize(representative['original_text'])
+                representative['equivalent_sources']=[]
+                representative['method']='reviewed-contract-section'
+                representative['method_limits']='Complete explicitly enrolled section, ranked by its best matching fragment. Surrounding document and external evidence are separate; requirements are not proof of implementation or acceptance.'
             representative["excerpt"] = representative["original_text"][:600]
             representative["excerpt_truncated"] = len(representative["original_text"]) > 600
             representative["rank"] = len(results) + 1

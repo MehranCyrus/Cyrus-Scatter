@@ -56,6 +56,8 @@ def successor(corpus, datasets, old_bytes, new_bytes):
             raise ReviewRequired('Historical, unknown or delivered evidence requires explicit review: ' + path)
         ranges = source['ranges']
         source['ranges'] = [[1, len(current)]] if ranges == [[1, len(prior)]] else [locate(prior, current, a, b) for a, b in ranges]
+        if 'contract_sections' in source:
+            source['contract_sections'] = [locate(prior, current, a, b) for a, b in source['contract_sections']]
         if not current or any(a <= last[1] for last, (a, b) in zip(source['ranges'], source['ranges'][1:])):
             raise ReviewRequired('Source ranges became empty, reordered or overlapping')
         source['sha256'] = sha(new)

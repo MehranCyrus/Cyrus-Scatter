@@ -1,6 +1,8 @@
-# Portable recipe package — candidate adapter
+# Portable recipe package — supported adapters
 
-PG06/PG07 implementation contract, 0.85.1 candidate. This is separate from the MZP/EXE installer. See [progress](PROGRESS_0851.md) for qualified pairs and remaining work. The static mesh/Standard-material import command is implemented and has scoped owned-host witnesses; full delivery gates remain open.
+Current 0.85.3 extension: [ready-preset contract and qualification](LOAD_0853.md). Graph 2 adds bounded static Bezier spline context (128 curves, 4096 total knots) and packaged evaluated receiver geometry/maps. Ready Save uses captured exact references; all eight examples become asset-backed. Ordinary packages/graph 1 retain their existing adapter. Ready Load adds layers and explicitly Updates once, with publication Undo/Redo and current-or-included terrain selection. Only transaction-created verified receivers may use packaged Paint unit conversion; arbitrary receiver substitution remains strict. Native file operations preserve containment/integrity checks through Windows long-path handling.
+
+The remaining text records the preceding PG06/PG07 implementation contract, 0.85.1 candidate. It remains historical scope where the extension differs. This is separate from the MZP/EXE installer. See [progress](PROGRESS_0851.md) for qualified pairs and remaining work. The static mesh/Standard-material import command is implemented and has scoped owned-host witnesses; full delivery gates remain open.
 
 An export creates a new immutable folder containing `cyrus.package.json`, the exact reviewed `entry.csrecipe.json`, `assets.json`, referenced Paint/thumbnail payloads and content-addressed asset files. Recipe identity, revision, settings and complete Paint bytes remain intact. Every role is either supplied by a packaged asset or explicitly external. Terrain, Paint receivers, paths, Analyzers and external spacing partners stay external in the initial adapter. Same-name assets are not automatically interchangeable.
 

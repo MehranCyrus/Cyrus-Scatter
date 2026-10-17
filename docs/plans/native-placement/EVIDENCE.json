@@ -1,0 +1,264 @@
+{
+  "schema": "cyrus.native-placement-plan-evidence/1",
+  "date": "2026-10-17",
+  "status": "proposal-only",
+  "branch": "codex/workflow-0.75",
+  "head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+  "baseline": "Dirty working source 0.85.4; scene schema 58; no new loaded-host audit",
+  "source_files": [
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "sha256": "e1a5896fc71af0c5a5cac13d1a7177f887e1d663d5b7d04f167a8347c4e6d37a",
+      "bytes": 14893
+    },
+    {
+      "path": "AminScatter/include/scatter.h",
+      "sha256": "d94407f2f4f0f927768190ca968b7efeaed58b39478e02e15103da090aed5090",
+      "bytes": 6306
+    },
+    {
+      "path": "AminScatter/include/procedural.h",
+      "sha256": "24600188b2a8c0714736d81688c82a68fab5f0ddaf0c20c7dc6357fcd83201ee",
+      "bytes": 2041
+    },
+    {
+      "path": "AminScatter/include/placement_transport.h",
+      "sha256": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "bytes": 2218
+    },
+    {
+      "path": "AminScatter/include/script_buffers.h",
+      "sha256": "678872bcaa4fd330e14111f0e8f31187d2e6eca7710a9997092465d5fbefe335",
+      "bytes": 474
+    },
+    {
+      "path": "AminScatter/include/script_memory_budget.h",
+      "sha256": "d6aa56bc7262a4a7004e556c2db75b2afaac8054c8d560b10f38665b09bd774c",
+      "bytes": 1246
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "bytes": 2975
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "sha256": "9ffaa452a052e560c5a34b8d8ae688b266b821c5efa39479e3f1fa4345aa0b54",
+      "bytes": 28758
+    },
+    {
+      "path": "AminScatter/src/script_buffers.cpp",
+      "sha256": "1b6ce5e69ae53758f133e9555bba39580e516a7d6dededc178b24d3d06e33bbe",
+      "bytes": 6188
+    },
+    {
+      "path": "AminScatter/src/receiver_bridge.inc",
+      "sha256": "258c807984e61fdca9b38aca70e09a9e94d048164129024559784a886da4fa00",
+      "bytes": 4522
+    },
+    {
+      "path": "AminScatter/src/receiver_plan.cpp",
+      "sha256": "eb4907eeba7e8f0e4b5d73039a7dcbf14f8d504e2b9b5c81cc51f995bcb8a0b8",
+      "bytes": 6773
+    },
+    {
+      "path": "AminScatter/src/grid_bridge.inc",
+      "sha256": "dfde74276cf5c911bbba74cc85d31d8b842da6507b7258016af818e3744fc559",
+      "bytes": 6086
+    },
+    {
+      "path": "AminScatter/src/mesh_density_bridge.inc",
+      "sha256": "198c68a4222c4e11506de8b2cc7f913565de41018b41afe369ab56b9d7ab2a84",
+      "bytes": 8285
+    },
+    {
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "sha256": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa",
+      "bytes": 3129
+    },
+    {
+      "path": "AminScatter/src/brush_host.cpp",
+      "sha256": "ad4654990e4beaef993c40a4d46e05dd52171b2c71d8f0899ea8d0573a197457",
+      "bytes": 58275
+    },
+    {
+      "path": "AminScatter/src/direction_orientation_bridge.inc",
+      "sha256": "f9e2856986995376b1fcad93aafe195d3f3505cdbad4c9a542420e98f54e384e",
+      "bytes": 6215
+    },
+    {
+      "path": "AminScatter/src/surface_filter_bridge.inc",
+      "sha256": "efb94bc8773c5507799fef063b330f0ded8997e49c9d67365c69987dfbd805a6",
+      "bytes": 5337
+    },
+    {
+      "path": "AminScatter/src/surface_filter.cpp",
+      "sha256": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "bytes": 2937
+    },
+    {
+      "path": "AminScatter/src/procedural_bridge.inc",
+      "sha256": "5cd770155c400dd703750baea385ff3d71de89525412fede725206348df31a8e",
+      "bytes": 12626
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "sha256": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78",
+      "bytes": 11374
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "sha256": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0",
+      "bytes": 16642
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "sha256": "ba90cbab08ef20f9d6ccdeb3123dc371c685d394c484840a5df40484ccf24075",
+      "bytes": 11449
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_storage.inc",
+      "sha256": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "bytes": 2345
+    },
+    {
+      "path": "AminScatter/src/recipes_bridge.cpp",
+      "sha256": "bd56f9cc593c0d073ec0738f31d478645fa3ac27b085f0aee40865cb866ef28b",
+      "bytes": 50588
+    },
+    {
+      "path": "AminScatter/src/preview.cpp",
+      "sha256": "069b6ce3424e45f0749e17959d7f749a26569545396f4508c2f237b47c4a508e",
+      "bytes": 22396
+    },
+    {
+      "path": "AminScatter/src/geometry_preview.inc",
+      "sha256": "8c9e83bac16cd39665567974d468fe30bb606b1d0cfa3c5491ecee1e6ba6641f",
+      "bytes": 7049
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "bytes": 2426
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "ba6a9c28aa431742a7dc4729ca350895390d4247bc6f655ea754ed945548d634",
+      "bytes": 491570
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "sha256": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+      "bytes": 1408489
+    },
+    {
+      "path": "docs/plans/memory-0854/README.md",
+      "sha256": "bf3b12ab7ef6b3c522692f49b4e92dfe59917228c03474087d2260dbebe150b6",
+      "bytes": 10560
+    },
+    {
+      "path": "docs/plans/memory-0854/QUALIFICATION.json",
+      "sha256": "d6be87c5274c0b85c312b0c50c67fa67ff0778fdc88e0b306d16f33ced7a27a2",
+      "bytes": 39610
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "sha256": "c3b64ff874681597cb8c75711eca6a84c7d5ad43a381bda65c6365af5e36b004",
+      "bytes": 19178
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "sha256": "63260efc22dc698596426b41e71576a2df62e1cc24207f2faee888fd01a1e528",
+      "bytes": 11905
+    },
+    {
+      "path": "docs/Release_Versioning.md",
+      "sha256": "3b4a751fe3516a4bb46d5ecc26452217765f267380cb1dd24b3d8735a5867873",
+      "bytes": 20735
+    }
+  ],
+  "forest_reports": [
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/73_MEMORY_UNDO_SUMMARY.md",
+      "sha256": "a0ca6ca381d97cc6d037f22bb9481a331ac795cb98009080f95bbd9403a313a6",
+      "bytes": 4593
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/75_MAXSCRIPT_NATIVE_BOUNDARY.md",
+      "sha256": "ee62752e1d037cb23982bfaa3c06f1b7b60bbcaa9754af33c681faa80de2ecea",
+      "bytes": 6233
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/76_UNDO_SNAPSHOTS_AND_LIFETIMES.md",
+      "sha256": "0abd4c858a9151dee7c8e46f7d7990d7c7ddf91899d55e68a904b4737c7a86d3",
+      "bytes": 5470
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/77_MEMORY_LIMITS_AND_CACHE_COSTS.md",
+      "sha256": "7bb67193b7b84360033e147293f21ded22d0e3fb832d1fcc49f2925f95181516",
+      "bytes": 6576
+    }
+  ],
+  "scope": {
+    "product_code_changed": false,
+    "max_interaction": false,
+    "new_builds_or_runtime_tests": false,
+    "installed": false,
+    "phase_6": "paused",
+    "slope_altitude": "unchanged",
+    "product_version_changed": false
+  },
+  "knowledge": {
+    "generation": "44bb57523e1286764c655754ce79ed3e4299bce12c0c71b7c49b212258dfa0d3",
+    "full_source_check": "stale_evidence",
+    "parents_checked": 38,
+    "matched": 15,
+    "changed": 21,
+    "missing": 2,
+    "identifier_search": "procEvaluateRoot",
+    "results": 0,
+    "route": "direct source inspection; actual root method evaluateProcedural; no refresh"
+  },
+  "primary_references": [
+    {
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_restore_obj.html",
+      "accessed": "2026-10-17",
+      "supports": "Repeated Restore/Redo and approximate owned-byte reporting; no exact default Size assumed"
+    },
+    {
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_hold.html",
+      "accessed": "2026-10-17",
+      "supports": "Host Undo hold and Put registration; not tested callback timing"
+    }
+  ],
+  "preservation_inventory": "build/native-placement-plan-20261017-01/before.json",
+  "preexisting_files": 5726,
+  "documentation_validation": {
+    "checked_preexisting_files": 5726,
+    "unchanged_preexisting_files": 5722,
+    "changed_preexisting_files": [
+      "README.md",
+      "docs/BACKLOG.md",
+      "docs/README.md",
+      "docs/plans/improvement-program/PROGRESS.md"
+    ],
+    "new_files": [
+      "docs/plans/native-placement/DESIGN.md",
+      "docs/plans/native-placement/EVIDENCE.json",
+      "docs/plans/native-placement/IMPLEMENTATION.md",
+      "docs/plans/native-placement/README.md",
+      "docs/plans/native-placement/SOURCE_MAP.md",
+      "docs/plans/native-placement/VALIDATION.md"
+    ],
+    "missing_files": [],
+    "unexpected_changes": [],
+    "local_plan_links_checked": 19,
+    "broken_links": [],
+    "implementation_steps": 9,
+    "pending_todos": 59,
+    "validation_scenarios": 15,
+    "product_and_other_preexisting_files_preserved": true,
+    "new_runtime_tests": false,
+    "git_diff_check": "passed"
+  }
+}

@@ -13,6 +13,8 @@ Recheck installed/source/loaded identities rather than carrying old installation
 
 ## 2. Trace ownership before changing behavior
 
+For architecture choices, use the [native boundary and extension contracts](ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries). The agent recommends the simplest justified design, including per-instance storage/transport, dependency invalidation, peak/history memory and failure recovery. Record these decisions in the relevant existing plan before implementation. Physics or animation requires explicit time/state/cache semantics; a standalone experiment does not authorize integration. Technical choice is the agent's responsibility within the user's product scope.
+
 Follow generation → receiving surface/Brush eligibility → transforms/Edit/radius → applicable collision scopes → cleanup/refill → atomic publication → preview/exact output/export. Identify the dependencies invalidated by the proposed change, the cache reused, and what failure leaves published.
 
 Current layers own receivers, models, amount and calculation settings. Optional named Paint Areas own receiver-bound coverage and share the layer models; overlapping areas union coverage. Current schema 58 rejects earlier development scenes and has no retained model-owning paint-set, stroke-history or placement-format compatibility path; use new current setups. Read the current ownership guide before adapting fixtures that mutate the former setup-wide receiver field. Source-container membership and saved per-source settings are distinct from receiving surfaces and placed instances. Moving a model out of a palette must not silently delete its saved settings. Distinguish requested, accepted, shown and output counts.
@@ -68,6 +70,8 @@ Record source commit plus dirty/untracked scope, script SHA/payload fingerprint,
 Serialize mutations in each Max process. After a request timeout, inspect completion/response state before issuing another request. Stop only verified owned process IDs; never terminate every `3dsmax.exe`. Keep private diagnostic transports out of product packages and the public MCP interface.
 
 Measure calculation, preparation, uploads, drawing, memory and presentation separately. Cache reuse does not eliminate draw cost. Synchronous redraw duration is not presented FPS; total process memory is not VRAM. Compare equal geometry, shown subset, camera, renderer and settings; distinguish cold/warm runs and report frame-time distributions where available. Explicitly report metrics or host scenarios that could not be measured. Require CPU/dependency/bounds evidence before proposing GPU compute or larger abstractions.
+
+For bulk native migrations, also count script/native materialization, unique live buffers, old/new publication overlap and Undo/Redo retention/release. Confirm zero unnecessary solves/uploads on warm idle, panel browsing and unrelated animation. For future stateful work, test seek/replay, checkpoints, cancelled/stale publication and scene reset separately. Do not infer those lifetimes from the existing synchronous executor.
 
 ## 5. Keep automation and learning boundaries explicit
 

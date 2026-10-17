@@ -29,7 +29,7 @@ BOUNDS = {'stage_seconds':90, 'total_seconds':1800, 'max_stage_seconds':120,
           'max_total_seconds':3600, 'captured_stream_bytes':1024*1024,
           'stage_read_bytes':2*1024**3, 'total_read_bytes':16*1024**3,
           'report_bytes':256*1024, 'definition_bytes':2*1024**2,
-          'artifact_bytes':64*1024**2, 'evaluations':3, 'baseline_receipts':6}
+          'artifact_bytes':64*1024**2, 'evaluations':4, 'baseline_receipts':8}
 
 encoded = detection.encoded
 sha = detection.sha
@@ -136,19 +136,31 @@ def review_runtime(runtime, review):
 
 
 def review_definition(baseline, candidate, review):
-    """Explicit reviewed additions only; no removal or implicit authority promotion."""
+    """Hash-bound manual enrollment/retirement; never implicit authority promotion."""
     if candidate.get('schema')!='cyrus.corpus/1':raise Blocked('unsupported_corpus','Unsupported candidate corpus schema')
     old={s['path']:s for s in baseline['sources']};new={s['path']:s for s in candidate['sources']}
-    added=set(new)-set(old)
+    added=set(new)-set(old);removed=set(old)-set(new)
     enrollment=(review or {}).get('enrollment',{})
     if (len(new)!=len(candidate['sources']) or len(set(map(path_key,new)))!=len(new)
-            or set(old)-set(new) or [p for p in new if p in old]!=list(old)):
-        raise Blocked('scope_changed','Candidate must preserve existing paths, spelling and relative order; duplicate/case-alias paths are rejected')
+            or [p for p in new if p in old]!=[p for p in old if p in new]):
+        raise Blocked('scope_changed','Candidate must preserve surviving paths, spelling and relative order; duplicate/case-alias paths are rejected')
+    retirements=(review or {}).get('retirements',[])
+    if (not isinstance(retirements,list) or any(not isinstance(r,dict) for r in retirements)
+            or len(retirements)!=len(removed) or {r.get('path') for r in retirements}!=removed):
+        raise Blocked('retirement_review_pending','Every removed source requires exactly one explicit retirement review')
+    changes=[]
+    for entry in retirements:
+        path=entry['path']
+        if (entry.get('old_sha256')!=old[path]['sha256']
+                or not all(isinstance(entry.get(k),str) and entry[k].strip()
+                           for k in ('reason','historical_evidence','replacement_or_omission'))
+                or not all(entry.get(k) is True for k in ('agent_reviewed','references_checked','evaluation_requirements_checked'))):
+            raise Blocked('retirement_review_pending','Retirement requires prior hash, history, disposition and reviewed dependencies: '+path)
+        changes.append({'path':path,'fields':['retired'],'enrolled':False,'retired':True,'review':entry})
     if added and (set(enrollment.get('added',[]))!=added
             or not isinstance(enrollment.get('reason'),str) or not enrollment['reason'].strip()
             or enrollment.get('agent_reviewed') is not True):
         raise Blocked('scope_changed','New sources require a separate explicit enrollment review; automatic refresh cannot enroll')
-    changes=[]
     proposals={c['path']:c for c in (review or {}).get('sources',[])}
     for path,source in new.items():
         previous=old.get(path,{})
@@ -166,8 +178,10 @@ def review_definition(baseline, candidate, review):
         metadata_fields={'status_source','inventory_decision','inventory_reason','referenced_by_current_docs',
             'current_reference_sources','component','generated','generated_source','review_status','applicability',
             'canonical','selection_reason'}
+        atomic_review=(set(fields)<=metadata_fields|{'contract_sections'}
+                       and entry.get('contract_sections_reviewed') is True)
         if (source['sha256']==previous.get('sha256') and not (
-                set(fields)<=metadata_fields and entry.get('unchanged_metadata_reviewed') is True)):
+                (set(fields)<=metadata_fields or atomic_review) and entry.get('unchanged_metadata_reviewed') is True)):
             raise Blocked('unchanged_scope_changed','Unchanged parents must preserve their complete source definitions, including ranges, roles, applicability and canonical ownership: '+path)
         changes.append({'path':path,'fields':fields,'enrolled':path in added,'review':entry})
     return changes
@@ -218,7 +232,40 @@ def reviewed_conclusions(before,after,changes,sources_changed):
     return normalized
 
 
-def compare_baseline(old,new,labels_before,labels_after,sources_changed,conclusion_review=None):
+def review_evidence_alternatives(before, after, changes, sources_changed):
+    """Explicit equivalent-owner additions; never remove/weaken existing units."""
+    result=copy.deepcopy(before);seen=set()
+    for entry in changes or []:
+        field={'base':'queries','anchors':'anchors'}.get(entry.get('group'))
+        key=(field,entry.get('id'))
+        if not sources_changed or field is None or key in seen:
+            raise Blocked('evidence_review_pending','Invalid/duplicate evidence-owner review')
+        seen.add(key)
+        previous=next((q for q in result[field] if q['id']==entry.get('id')),None)
+        current=next((q for q in after[field] if q['id']==entry.get('id')),None)
+        if (not previous or not current or entry.get('old_value')!=previous.get('required_evidence')
+                or entry.get('new_value')!=current.get('required_evidence')
+                or entry.get('agent_reviewed') is not True
+                or not all(isinstance(entry.get(k),str) and entry[k].strip() for k in ('reason','equivalence_evidence'))):
+            raise Blocked('evidence_review_pending','Exact prior/current evidence and substantive equivalence review required')
+        a,b=entry['old_value'],entry['new_value']
+        if len(a)!=len(b):raise Blocked('evidence_review_pending','Evidence units cannot be added or removed')
+        def clean(v):
+            if isinstance(v,dict):return {k:clean(x) for k,x in v.items() if k not in ('sha256','start_line','end_line')}
+            if isinstance(v,list):return [clean(x) for x in v]
+            return v
+        for old_unit,new_unit in zip(a,b):
+            if (clean({k:v for k,v in old_unit.items() if k not in ('alternatives','canonical_paths')})
+                    !=clean({k:v for k,v in new_unit.items() if k not in ('alternatives','canonical_paths')})
+                    or not all(clean(x) in [clean(y) for y in new_unit['alternatives']] for x in old_unit['alternatives'])
+                    or not set(old_unit['canonical_paths'])<=set(new_unit['canonical_paths'])
+                    or not set(new_unit['canonical_paths'])<={x['path'] for x in new_unit['alternatives']}):
+                raise Blocked('evidence_review_pending','Only reviewed equivalent alternatives may be added; existing owners and requirements remain')
+        previous['required_evidence']=copy.deepcopy(b)
+    return result
+
+
+def compare_baseline(old,new,labels_before,labels_after,sources_changed,conclusion_review=None,evidence_review=None):
     """Provenance is excluded explicitly; questions and evidence are never pruned."""
     def stable_questions(dataset):
         def clean(value):
@@ -227,6 +274,7 @@ def compare_baseline(old,new,labels_before,labels_after,sources_changed,conclusi
             return value
         return clean({'queries':dataset['queries'],'anchors':dataset['anchors']})
     reviewed=reviewed_conclusions(labels_before,labels_after,conclusion_review,sources_changed)
+    reviewed=review_evidence_alternatives(reviewed,labels_after,evidence_review,sources_changed)
     if stable_questions(reviewed)!=stable_questions(labels_after):
         raise Blocked('evaluation_semantics_changed','Question/qualifier/split/evidence requirement changes need separate review; exact comparability is unavailable')
     before={(q['group'],q['id']):q for q in old['questions']};after={(q['group'],q['id']):q for q in new['questions']}
@@ -256,6 +304,7 @@ def compare_baseline(old,new,labels_before,labels_after,sources_changed,conclusi
             'metrics_before':old['metrics'],'metrics_after':new['metrics'],
             'question_differences':differences,'regressions':regressions,
             'reviewed_reference_conclusion_changes':conclusion_review or [],
+            'reviewed_equivalent_evidence_changes':evidence_review or [],
             'excluded_fields':['index_generation','configuration_identities','run/query timings'],
             'human_review':'pending; historical and candidate labels are agent-authored'}
 

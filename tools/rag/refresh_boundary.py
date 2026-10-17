@@ -189,6 +189,11 @@ def kill_worker(process):
 # Tiny unicode-persian/1 derivation, limited to this known producer identity.
 # This is an independent calculation; extract.py is never executed.
 NORMALIZER_SOURCE_SHA256 = "2806b4b303cf6145a2414f8766e59461756137cdf8d2900924f3304b8310b717"
+# Both reviewed extractors implement the identical unicode-persian/1 normalizer.
+# Keep the earlier producer identifiable when verifying sealed historical indexes.
+NORMALIZER_SOURCE_SHA256S = {NORMALIZER_SOURCE_SHA256,
+    "e8c97fc1a982c0dd736d1ba862c73b550e2cc5defae5ae9a3f9e8604523accaa",
+    "d6941fbdfef51881ee646358efce56b5a283e4b23ca29eb2cdec5a81b61db45a"}
 
 
 def normalize_v1(text):

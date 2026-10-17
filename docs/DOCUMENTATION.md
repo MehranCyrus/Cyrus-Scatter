@@ -13,6 +13,14 @@ The capability matrix and MCP agent workflow remain at their existing `Current_S
 - Unique design rationale and unresolved findings. Carry still-open acceptance into the backlog before retiring a task plan.
 - Separate component contracts such as licensing and MCP; do not flatten distinct ownership into one document.
 
+## Foundation and knowledge upkeep
+
+The [engineering foundation](ENGINEERING_FOUNDATION.md) owns durable behavior and architecture direction; [architecture](ARCHITECTURE.md) describes implemented source, task plans describe proposals, and dated receipts preserve what actually ran. Agent skills route to these documents instead of copying version policies or roadmap commands. Current user scope overrides a historical objective.
+
+A documentation inventory or topic scan is not a semantic review of every file. Report the inspected scope, keep historical qualification labels intact, and update current entrypoints when later experiments or fixes supersede their summaries. Reusable lessons need cause, scope, evidence, uncertainty and an invalidation condition.
+
+Knowledge indexing has separate enrollment, freshness, retrieval and activation gates. Removed source paths require explicit scope/evaluation review; do not restore retired fixtures, overwrite sealed hashes or switch registration just to make status green. Fresh source hashes do not establish implementation correctness. The [17 October audit](../tools/rag/FOUNDATION_REFRESH_2026-10-17.md) records the actual follow-up and remaining limits.
+
 ## What to remove or consolidate
 
 Remove duplicate explanations, obsolete installation instructions and copy-paste task prompts after moving still-useful guidance into the maintained documents. Git preserves their original text. A short compatibility link is justified only for an externally used old document path; do not keep two full versions of the same current guide.

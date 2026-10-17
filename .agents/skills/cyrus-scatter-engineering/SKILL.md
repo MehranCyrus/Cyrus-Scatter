@@ -42,6 +42,14 @@ only decision-critical uncertainties, reusing applicable project studies first;
 uncertain vendor/API facts need primary sources with version/scope. Separate vendor
 documentation, observation, inference and the design chosen for Cyrus.
 
+Apply the foundation's native boundary and physics/animation sections when choosing
+architecture. Prefer native bulk computation/storage; measure copies, invalidation,
+peak/history memory and publication, not language percentages. Script test drivers
+can test C++ implementations. Keep current capabilities, standalone experiments
+and future integration separate. Record the recommendation and acceptance in the
+existing plan; do not make the artist choose a programming language or infer a
+roadmap resumption from an old objective.
+
 Validate the intended change, an important unaffected case and relevant failure or
 lifecycle boundary. Compare stable identities and full transforms for stability;
 compare solve/preparation/upload counters separately for reuse. Account for quotas,
@@ -50,10 +58,9 @@ pre-commit rejection alone does not prove atomicity.
 
 Use the [workflow](../../../docs/AGENT_WORKFLOW.md) for test levels and host isolation.
 Before choosing a delivery version, apply the [version policy](../../../docs/Release_Versioning.md#choosing-the-next-version).
-Use the user's small-step development sequence: advance PATCH through 9, then
-carry into MINOR (`0.81.8 → 0.81.9 → 0.82.0`). New features use the same step;
-larger milestones require an explicit user-selected label. Preserve original
-build/qualification identities when correcting phase numbering.
+Use its current user-authorized program override or explicit delivery label;
+do not reapply a superseded small-step rule from historical evidence. Documentation
+alone does not bump the product. Preserve original build/qualification identities.
 Assess the full change since the last delivery, record the proposed version and its
 impact-based reason, and keep version labels separate from qualification claims.
 Offline passes do not qualify Max callbacks, physical interaction, renderers or loaded

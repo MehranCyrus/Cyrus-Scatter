@@ -1,0 +1,1039 @@
+{
+  "product": "CyrusPhysicsLab",
+  "version": "0.1.3",
+  "max_year": 2027,
+  "schema": 1,
+  "solver_profile": "cpl-leaf-3",
+  "date": "2026-10-17",
+  "scope": {
+    "computer_use": false,
+    "artist_profile_install_restart": false,
+    "main_scatter_preset_changes": false,
+    "commit_push": false
+  },
+  "baseline": {
+    "launch": {
+      "pid": 49532,
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\listener.log"
+      ],
+      "max_year": 2027,
+      "computer_use": false,
+      "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+      "normal_profile_modified": false,
+      "requested_scale": null,
+      "binaries": {
+        "CyrusPhysicsLab.dlx": "2be17e3b5d765205a8698b51d7c730947c8033961b2f877836e02e9fef26e906",
+        "CyrusPhysicsStorage.dlh": "30fabda26fb0b094853d227cec6b47bb0bd4ded20f18ad06931e517d9c423c9e"
+      },
+      "script_sha256": "be95254e7eb2fa269fca29bd9076ab28d2f6fa087096ed8f968aa24593f22450",
+      "diagnostic_helper_sha256": null,
+      "fixture_sha256": "6343a80bf5ac500ac87666dca160c39b1b90d36434fb2d4f594e2a1db7511df3",
+      "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+    },
+    "before_late": {
+      "active": false,
+      "commits": 0,
+      "cooks": 3,
+      "error": "Wait for settling before another stroke",
+      "lastTickMs": 0.0,
+      "motion": null,
+      "painting": true,
+      "preview": 0,
+      "revision": 1,
+      "rows": 0,
+      "settled": true,
+      "settling": false,
+      "stale": true,
+      "ticks": 0,
+      "timedOut": false,
+      "version": "0.1.2"
+    },
+    "error": "-- Known system exception\n-- ########################################################################\n-- Address: 0x8ed3d364; nCode: 0x00000000C0000005\n-- Desc: EXCEPTION_ACCESS_VIOLATION The thread tried to read from or write to a virtual address for which it does not have the appropriate access.\n--       Read of Address: 0x0000000000000100\n-- ########################################################################\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\fixture.ms LINE: 24P\n--\tthread data: threadID:35872\n--\t------------------------------------------------------\n--\t[stack level: 0]\n--\tIn anonymous codeblock; filename: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\fixture.ms; position: 1395; line: 24\n--\t\tLocals:\n--\t\t\tfirst: false\n--\t\t\tsource: $Sphere:Sphere001 @ [8000.000000,8000.000000,1000.000000]\n--\t\t\tground: $Plane:Plane001 @ [0.000000,0.000000,0.000000]\n--\t\t\tlab: $Cyrus_Physics_Lab:Old_callback_crash @ [0.000000,0.000000,0.000000]\n--\t\tExternals:\n--\t\t\tCyrusPhysicsLab: Global:CyrusPhysicsLab : CyrusPhysicsLab\n--\t\t\tCPLTestDir: Global:CPLTestDir : \"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/physics-lab-013-old-crash-01/\"\n--\t\t\tcplStage: Global:cplStage : cplStage()\n--\t------------------------------------------------------\n--\t[stack level: 1]\n--\tcalled from anonymous codeblock; filename: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\fixture.ms; position: 205; line: 4\n--\t\tLocals:\n--\t\t\tprocess: dotNetObject:System.Diagnostics.Process\n--\t\t\tlog: <File:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-old-crash-01\\loaded.tsv>\n--\t\tExternals:\n--\t\t\tCPLTestDir: Global:CPLTestDir : \"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/physics-lab-013-old-crash-01/\"\n--\t\t\tcplStage: Global:cplStage : cplStage()\n--\t------------------------------------------------------\n--\t[stack level: 2]\n--\tcalled from top-level\n",
+    "error_receipt": {
+      "path": "build/physics-lab-013-old-crash-01/error.txt",
+      "sha256": "c8e3bc52b7f789995938e6c463079bfe6fb59e3c2bc19e34e06d957285401873",
+      "bytes": 1909
+    },
+    "observation": "Ordinary 0.1.2 Start/Stop/Start, release, rejected late callback clears session, next late hit causes native read AV at 0x100. MaxScript catches this injected SDK callback fault; not proof of the exact artist crash stack.",
+    "private_driver_note": "The later private probe added a rejected-finish command after this baseline; the baseline private DLL hash was not separately frozen. Product native/script hashes and the exact executed fixture/error are retained."
+  },
+  "build": {
+    "receipt": {
+      "path": "build/physics-lab-013-delivery-20261017-02/receipt.json",
+      "sha256": "3c910afcd7e6a7937d8eac5b3d67eeef8e680b638b5bf235de5155a60c57b2cb",
+      "bytes": 5636
+    },
+    "identity": {
+      "version": "0.1.3",
+      "max_year": 2027,
+      "source_hashes": {
+        "CMakeLists.txt": "c1ca94ed61b0236bc856c924fcbac53d0b9c6d950ebcb43a8d2f10521b68602f",
+        "README.md": "a52552525dd61bd789d7ea98a8fc26e03e0845777927d200cf58465c144bd0b7",
+        "include/core.h": "d27e8c839c89df9cd940bb77b21085aa2a04b3d8720d814f90a09a83038b7000",
+        "include/diagnostics.h": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0",
+        "installer/CyrusPhysicsLabStartup.ms": "a9d31803d3c2434d12bb6d0813fb7f4bd550a0735b523cd73956ecb4501b16c9",
+        "scripts/CyrusPhysicsLab.ms": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d",
+        "src/core.cpp": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200",
+        "src/crash_watch.cpp": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4",
+        "src/diagnostics.cpp": "5c401905d27c675ff06e66e670b74bd6929f20587b2ffdd04dc99e7d96e487aa",
+        "src/jolt_world.cpp": "0c91fc3e5e05bf837e33257186869c07bf1e32c984a3b689c1117e1c92d27d42",
+        "src/max_host.cpp": "3ab5a91d07d8b7e3a286fc54a1c97cb00bb731c45b9496458158886251dcb54e",
+        "src/physx_world.cpp": "0f966570a65f40f0be0e8e2fbf81658f75c1cd7c4cce0b1cdd8fa846c139e00e",
+        "src/storage_plugin.cpp": "1fd142acd4cd5aab9aabf83193bec8742b25bcd5e2272bf48e931279a78c54ee",
+        "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+        "tests/core_tests.cpp": "975be38e04da2ef9bf2840fd5f0f00369bbbe6737c044d77cbe49a79ac812457",
+        "tests/demo.ms": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8",
+        "tests/host.ms": "dcd15b87209af23cf1c8a617b10367065f00d3f6486fae90649d6466218db96f",
+        "tests/host_brush_ui.ms": "2cf24f76d2a45f28ddba9e892b36060d20f9403f0b80e3377c2aaab8ea694f89",
+        "tests/host_extended.ms": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224",
+        "tests/host_faults.ms": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d",
+        "tests/host_previous_scene.ms": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86",
+        "tests/host_proxy_previous_scene.ms": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564",
+        "tests/host_proxy_ui.ms": "a85f99f4d920fd00acf503331b700b30bffdd589c7bc92234a477ae86c339091",
+        "tests/host_regression.ms": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791",
+        "tests/host_scaled_ui.ms": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191",
+        "tests/host_timeout_ui.ms": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992",
+        "tests/host_transforms.ms": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208",
+        "tests/host_ui_layout.ms": "b2664f68fcdb93ef0c20a4b56eacdb7eb15a178fc214bd0c6cb392987a6b44d1",
+        "tests/ui_layout.py": "e61ce676fe0238957bd76646b612addcbcc94b0e8397b5a962cd0152d310eb4d",
+        "tests/fixtures/pyramid_append_plane.json": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f",
+        "tests/paint_probe/CMakeLists.txt": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd",
+        "tests/paint_probe/probe.cpp": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a",
+        "tools/build.py": "e5b68b2157095202810654f0ba3bc589bdf481020c164c3499fdfc4091a12768",
+        "tools/build_probe.py": "dd7cff0e5b651d116c0996f7d745ab0453d575050b0d8821698bc191eef8588a",
+        "tools/compare.py": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156",
+        "tools/host_test.py": "645b7ba2d16233dc3aabac87828f78863bcbbe904f6686fddf1508495d06072b",
+        "tools/installer_test.py": "4d9d9dbc54ab859c7413cf0fba3e1309e6271553012f987ffa4880ac4aaf1a1e",
+        "tools/package.py": "397c9ccd7f57d575c300277482b65d3a88ef51260219a1940b226018425308c0"
+      },
+      "shared_source_hashes": {
+        "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+        "tools/build_max.py": "afd5df9f9eda4c9a170ded0c7ede9d9dc67d57b6cc83651166cca1d3114ec188",
+        "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+      },
+      "pins": {
+        "jolt": [
+          "jrouwe/JoltPhysics",
+          "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+        ],
+        "physx": [
+          "NVIDIA-Omniverse/PhysX",
+          "b97365c6ddb32fda8469bc788ec18024862b0368"
+        ]
+      },
+      "toolchain": {
+        "msvc": "14.38.33130",
+        "windows_sdk": "10.0.19041.0"
+      },
+      "dependency_archives": {
+        "jolt": {
+          "repository": "jrouwe/JoltPhysics",
+          "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+          "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+        },
+        "physx": {
+          "repository": "NVIDIA-Omniverse/PhysX",
+          "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+          "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+        }
+      },
+      "host_launched": false,
+      "installed": false,
+      "faults": false,
+      "binaries": {
+        "cpl_compare.exe": "28ba38a0d2d63b940d79a7d822b6a952a8297370122fe8fb3d6e77fcadfb3039",
+        "cpl_tests.exe": "f29d004bd5f834df476df55e0db2dc22e9bb6606d7ea21cca9b87f128220a8d3",
+        "CyrusPhysicsCrashWatch.exe": "581254ce81b15a04e9d3297325f91539d557dfbf5b8d9f587cd76ff7a2bea982",
+        "CyrusPhysicsLab.dlx": "8131bb1af5985d8413339b36e4c923f970e66dcdf7a6ddd1f8a2e3b6f5cb52a7",
+        "CyrusPhysicsStorage.dlh": "85c14398f6912b572becdba65c22b4971bff28ad355cce1804c63c650613df0b"
+      }
+    },
+    "native_pdb": {
+      "path": "build/physics-lab-013-delivery-20261017-02/CyrusPhysicsLab.pdb",
+      "sha256": "12cb8b9c9a601121570318dc338c23abb7ff75fc2d31687a56f376e839b1f2a2",
+      "bytes": 9482240
+    }
+  },
+  "full_host": {
+    "folder": "build\\physics-lab-013-final-03",
+    "launch": {
+      "pid": 30120,
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-final-03\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-final-03\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-final-03\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-final-03\\listener.log"
+      ],
+      "max_year": 2027,
+      "computer_use": false,
+      "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+      "normal_profile_modified": false,
+      "requested_scale": null,
+      "binaries": {
+        "CyrusPhysicsLab.dlx": "8131bb1af5985d8413339b36e4c923f970e66dcdf7a6ddd1f8a2e3b6f5cb52a7",
+        "CyrusPhysicsStorage.dlh": "85c14398f6912b572becdba65c22b4971bff28ad355cce1804c63c650613df0b"
+      },
+      "script_sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d",
+      "diagnostic_helper_sha256": "4e1d696ba05524d93bdb4a1a6f8ad69b60d43e9b445cd2776b3e63bfb97a1b39",
+      "fixture_sha256": "a31225c439a9b06b6b520d7b1ff5069b24bca7ad2141610af1103bcc18ba3d07",
+      "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+    },
+    "artifacts": [
+      {
+        "path": "build/physics-lab-013-final-03/assertions.txt",
+        "sha256": "0b8325a5db85b9909a2e2a24a6a7455d3ec31b7e1f9f3e882e036662674c5fbb",
+        "bytes": 1869
+      },
+      {
+        "path": "build/physics-lab-013-final-03/completed.json",
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "bytes": 2
+      },
+      {
+        "path": "build/physics-lab-013-final-03/demo-assertions.txt",
+        "sha256": "1b8775293c44061c75052d6484a5503e8ad980ab794085e21aae263af65667ad",
+        "bytes": 230
+      },
+      {
+        "path": "build/physics-lab-013-final-03/demo-recipe.json",
+        "sha256": "a9ed89082656d721f793ed26cc09a341c9a7167d36b93bf68749f6d0290d226f",
+        "bytes": 66429
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostic-info.json",
+        "sha256": "075bac3eb0e81119edbd61cf4560550ea09c1e096c129d836fb628905fd12794",
+        "bytes": 418
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/build-identity.json",
+        "sha256": "5adf62ebb0116e0bac0357d88e53ad89c20bafc4efd7789733127df199267a29",
+        "bytes": 305
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-0.json",
+        "sha256": "1416b3faa5865e13a92bb82a760d791955f19e24dfcaf7597aa9110a256c9dd7",
+        "bytes": 193671
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-1.json",
+        "sha256": "e88a079faf13b5d79a5c1afa8e6b132ae6bc0b055852f562444318ba1e18fb8c",
+        "bytes": 127502
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-2.json",
+        "sha256": "6cea7049891febf555a9b8a0ed0cdebdf747eed2c611b471e8257c0ee160c087",
+        "bytes": 191635
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-3.json",
+        "sha256": "b2f5a632b3f9ff12576ae0191c9037b33d9c17ede2ad5a04fbb1aa93bafe6941",
+        "bytes": 193697
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-4.json",
+        "sha256": "e88a079faf13b5d79a5c1afa8e6b132ae6bc0b055852f562444318ba1e18fb8c",
+        "bytes": 127502
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-5.json",
+        "sha256": "0710e1b0e7c890c162c175ff016bb5b0b3765c4a8cc940ed60441376574fbb20",
+        "bytes": 191224
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-6.json",
+        "sha256": "e88a079faf13b5d79a5c1afa8e6b132ae6bc0b055852f562444318ba1e18fb8c",
+        "bytes": 127502
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/context-7.json",
+        "sha256": "0648e48601207933e443fb1f3b0bf0ae24faf1284e0097260ef77aae11d39968",
+        "bytes": 191626
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/events-0.jsonl",
+        "sha256": "7326ac6bcb0aa519cb319aadfa424b30ae316270b6081d1ccd8fc1b5da836d55",
+        "bytes": 1593279
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/exception.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/modules.json",
+        "sha256": "35c32a570bb2bc4b40b94ec0b925be3870d7879cb7e701a40dbfb6a764a376b3",
+        "bytes": 151669
+      },
+      {
+        "path": "build/physics-lab-013-final-03/diagnostics/20261017-050952-037-pid30120/process-exit.json",
+        "sha256": "4b1878db73d9303795a1b2d524a13c71189f87e6476b5b9679d03ea5238e2b6d",
+        "bytes": 56
+      },
+      {
+        "path": "build/physics-lab-013-final-03/fixture.ms",
+        "sha256": "a31225c439a9b06b6b520d7b1ff5069b24bca7ad2141610af1103bcc18ba3d07",
+        "bytes": 640
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host-assertions.txt",
+        "sha256": "cf5e3ae7f1f454dc2159031c3453ab81a55910e641123c9efe95e2aa98f6ff75",
+        "bytes": 272
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_brush_ui-assertions.txt",
+        "sha256": "a07db833f29850b9d3c863c2d8704027ee01713229123b34b9d855bd5af71024",
+        "bytes": 273
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_extended-assertions.txt",
+        "sha256": "ca64b76e4a75f5ad282964bc1edc4665f02577524b15857e802bd908d0693798",
+        "bytes": 65
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_previous_scene-assertions.txt",
+        "sha256": "915909046012f3becfd2296f77071d312d1967c71f348f57de0fa6def209ebc3",
+        "bytes": 114
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_proxy_previous_scene-assertions.txt",
+        "sha256": "f766e68de3b4664836e74bb5b5137ef742b8bdca63514eb8125506c968502953",
+        "bytes": 88
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_proxy_ui-assertions.txt",
+        "sha256": "de671ac6d832433cbab71b0cd9b43fd3946d53228d9d0b354e0296aa05b96eb6",
+        "bytes": 183
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_timeout_ui-assertions.txt",
+        "sha256": "0493408e4f29b442b95241afb17d9ba9a0287a8058faf3605ab83b6f0b80636a",
+        "bytes": 103
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_transforms-assertions.txt",
+        "sha256": "0d7bf169b1d1f474d5ff3e5abcea7715ae2be356b1c8cce295d4f9ddb6325ffd",
+        "bytes": 139
+      },
+      {
+        "path": "build/physics-lab-013-final-03/host_ui_layout-assertions.txt",
+        "sha256": "6fc5fa0c60e6b0511d0e88286b10555dd37cc99658bdfdd3c6a7a07917e054ff",
+        "bytes": 78
+      },
+      {
+        "path": "build/physics-lab-013-final-03/launch.json",
+        "sha256": "a769015168e57e3c1cdd2a3370c0424f35c2dc8ae7698832b4207c7f5c43e8db",
+        "bytes": 1362
+      },
+      {
+        "path": "build/physics-lab-013-final-03/lifecycle-assertions.txt",
+        "sha256": "555705b3257cf3b7b6702bcd61276384ad83ca52aab01a7ac4e36ef75e76912b",
+        "bytes": 158
+      },
+      {
+        "path": "build/physics-lab-013-final-03/loaded.tsv",
+        "sha256": "32b4604978d437f6ca851e42e4052d82c95bdb7fd1025f4b9e67529e899e29fb",
+        "bytes": 230
+      },
+      {
+        "path": "build/physics-lab-013-final-03/retained-after-rejection.json",
+        "sha256": "5bdfdce959e6cc9c0fc705b4e5155ea193de4646574828f262be60c3d948253a",
+        "bytes": 199520
+      },
+      {
+        "path": "build/physics-lab-013-final-03/sphere-auto.json",
+        "sha256": "97e46dd3fc118ff0cabdd23dd87b7b030505076ef1c994849609eca16c2f6325",
+        "bytes": 199547
+      },
+      {
+        "path": "build/physics-lab-013-final-03/sphere-custom.json",
+        "sha256": "3bcc950d62d546e779cf7d4a506fe5d8694e2e635e9bcf18f61b03bcc3b0b162",
+        "bytes": 172279
+      },
+      {
+        "path": "build/physics-lab-013-final-03/stages.txt",
+        "sha256": "38929e0fd2a5807c6479309fcff17cf56e049fdf3fdff5cdbed1c4f5f8ea444f",
+        "bytes": 1070
+      },
+      {
+        "path": "build/physics-lab-013-final-03/standard-assertions.txt",
+        "sha256": "38aa61c5fc1d5555906bc6fcc9d3992fd1135ab6d49960a15b9b5c06b3a97f44",
+        "bytes": 1710
+      },
+      {
+        "path": "build/physics-lab-013-final-03/start.ms",
+        "sha256": "71b7633256f5b924144b514180e96c45be0c2e27cdd8298117cc5208a95742dd",
+        "bytes": 1474
+      },
+      {
+        "path": "build/physics-lab-013-final-03/transforms.json",
+        "sha256": "6be9526727f868736528f7f21202a94f71e10d035d5e334464e8650ff60d3796",
+        "bytes": 18987
+      },
+      {
+        "path": "build/physics-lab-013-final-03/ui-layout.json",
+        "sha256": "147f0b177757484da0110db023c247e9246d7428dba11aa7cf8ff0ca823bde79",
+        "bytes": 24901
+      }
+    ],
+    "assertions": "host_ui_layout: PASS native rollout bounds and caption metrics; no screen pixels or OS input\n\nhost_proxy_ui: PASS 1960 Sphere32/plane/button/Painter/proxy/Undo/roundtrip checks; source 482 vertices / 960 faces\nSphere32 Start handler 138 ms (whole handler, not solver-only or presented FPS)\n\nhost_brush_ui: PASS 78 actual-button/timer/SDK-hit checks\n{\"active\":false,\"commits\":2,\"cooks\":4,\"error\":\"\",\"lastTickMs\":9.6112,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":10,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":96,\"timedOut\":false,\"version\":\"0.1.3\"}\n\nhost_timeout_ui: PASS timeout UI: saved-result retention, status, disabled edits, Stop, explicit Keep preview and Undo\n\nhost: PASS 18 scripted assertions; no physical input\\n{\"active\":false,\"commits\":0,\"cooks\":0,\"error\":\"\",\"lastTickMs\":0.0,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":6,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":0,\"timedOut\":false,\"version\":\"0.1.3\"}\\n\nhost_extended: PASS 21 extended scripted assertions; physical input not tested\n\nhost_transforms: PASS centimetres, source offset/rotation/nonuniform scale, mirrored receiver, transformed polygon, save/reopen and self-binding rejection\n\nhost_previous_scene: PASS preserved 0.1.0 scene opens with 60 cached bodies, original solver profile and current UI; no replay/resave\n\nhost_proxy_previous_scene: PASS preserved 0.1.1 scene: profile 2 and 60 cached leaves unchanged; no replay/resave\n\ndemo: {\"active\":false,\"commits\":1,\"cooks\":1,\"error\":\"\",\"lastTickMs\":12.5225,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":60,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":60,\"timedOut\":false,\"version\":\"0.1.3\"}\n\n\nPASS 361 checks: 50 Stop/restart cycles, late callbacks during rejected/settling/cancelled gestures, prior-result retention, Undo, recovery and save/reopen.\n",
+    "lifecycle_assertions": "PASS 361 checks: 50 Stop/restart cycles, late callbacks during rejected/settling/cancelled gestures, prior-result retention, Undo, recovery and save/reopen.\n",
+    "qualification": "Final native/script hashes match. Helper was subsequently changed only for first/latest atomic dump publication and was separately qualified by final forced-fault, abrupt-exit and installed-pair tests."
+  },
+  "memory": {
+    "scope": "Owned final native/script tests; not the artist session or the original 0.1.2 baseline.",
+    "samples": 517,
+    "heap_free_bytes_min": 63875520,
+    "heap_free_bytes_max": 81025460,
+    "private_bytes_min": 2746793984,
+    "private_bytes_max": 2940710912
+  },
+  "fatal_capture": {
+    "launch": {
+      "pid": 20096,
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-fatal-03\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-fatal-03\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-fatal-03\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-fatal-03\\listener.log"
+      ],
+      "max_year": 2027,
+      "computer_use": false,
+      "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+      "normal_profile_modified": false,
+      "requested_scale": null,
+      "binaries": {
+        "CyrusPhysicsLab.dlx": "8131bb1af5985d8413339b36e4c923f970e66dcdf7a6ddd1f8a2e3b6f5cb52a7",
+        "CyrusPhysicsStorage.dlh": "85c14398f6912b572becdba65c22b4971bff28ad355cce1804c63c650613df0b"
+      },
+      "script_sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d",
+      "diagnostic_helper_sha256": "581254ce81b15a04e9d3297325f91539d557dfbf5b8d9f587cd76ff7a2bea982",
+      "fixture_sha256": "e72555d2fd721a01205defcc352241ba73e118b945911b6922dafdfc62b2f866",
+      "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+    },
+    "artifacts": [
+      {
+        "path": "build/physics-lab-013-fatal-03/before-crash-info.json",
+        "sha256": "0501442936a69bcf5cfc385f92f4ba9211104846fea85507cf05568ffc4d14a1",
+        "bytes": 417
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/crash-harness-output.txt",
+        "sha256": "55167b9275ba640e25239ffb998ab443078e04cb2c689da4140d9534cd3575b8",
+        "bytes": 1867
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/crash-harness.json",
+        "sha256": "594af45247312639af60bd3a3d964a3f43f8b4f1b1c607628a1a0ef68ccb7b23",
+        "bytes": 194
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/build-identity.json",
+        "sha256": "73c2d09af3d12f6110b013c576fd37f287ef9047774f458e6225fc7654fcc982",
+        "bytes": 305
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/context-0.json",
+        "sha256": "23801319d2fc77b8c06c3b324670ed7142c9bb68da8d6fb739edded585ed0c20",
+        "bytes": 63867
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/context-1.json",
+        "sha256": "23801319d2fc77b8c06c3b324670ed7142c9bb68da8d6fb739edded585ed0c20",
+        "bytes": 63867
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/dump-attempts.jsonl",
+        "sha256": "7c393442c8503e9b68c4fa4a6b8bd4359e21d382f6a01ef82216885e2f84d805",
+        "bytes": 376
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/dump-status.json",
+        "sha256": "96dc167af59e90443714bb128ff918b6333603cd1b55ed4dd1ee7a3a102cc24d",
+        "bytes": 193
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/events-0.jsonl",
+        "sha256": "c898c3a159f52d25ca0c8828f5fa3c83fada1413bb6fc642d7190d2d9144534b",
+        "bytes": 8598
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/exception-1.dmp",
+        "sha256": "55c1d60a63441e0b69dd0130e83b34678cf14ce3aeb869dc3e4393657b35f15f",
+        "bytes": 10578067
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/exception-1.dmp.json",
+        "sha256": "3a03896f7a5afa1d2d7840d315a259244cb75de9c04bb6656c5575deeea85c72",
+        "bytes": 183
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/exception.txt",
+        "sha256": "e1f870d083505b8fea61f16a5c4361f69dfe607166919892df5729765798597d",
+        "bytes": 385
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/modules.json",
+        "sha256": "0f95e4094815e90cd3e17ca07ca3269882320615c9cdb881a64b4dd30d930b1d",
+        "bytes": 151531
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/process-exit.json",
+        "sha256": "601765007f511f512158eb299ac0277c6f24a656c8a64540609d00a4721db478",
+        "bytes": 57
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/error.txt",
+        "sha256": "3f0282080f01e0b3fa5952b2c3be22bb34f202bfa518d0d2a5d38b8edd4fbc2e",
+        "bytes": 1736
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/fixture.ms",
+        "sha256": "e72555d2fd721a01205defcc352241ba73e118b945911b6922dafdfc62b2f866",
+        "bytes": 366
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/launch.json",
+        "sha256": "8d8212f0b6e51ecae7c9f35edc94e8ded866fdff0f7e922356a3b78169f2c69f",
+        "bytes": 1362
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/loaded.tsv",
+        "sha256": "fb5f52d4325bcdf6e9090fd896cc830d5df45d756a769e96ead625a793ef07dd",
+        "bytes": 230
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/stages.txt",
+        "sha256": "ec7ec09f49d9fa9709bd88f477949e324611b06c596b269b7349fc9d4f9ed805",
+        "bytes": 42
+      },
+      {
+        "path": "build/physics-lab-013-fatal-03/start.ms",
+        "sha256": "d8ec8a7a68a1d75c45df698427763a0be9acde4999ccd6d6ad001ffd0839e0f6",
+        "bytes": 1474
+      }
+    ],
+    "dump": {
+      "path": "build/physics-lab-013-fatal-03/diagnostics/20261017-051114-990-pid20096/exception-1.dmp",
+      "sha256": "55c1d60a63441e0b69dd0130e83b34678cf14ce3aeb869dc3e4393657b35f15f",
+      "bytes": 10578067
+    },
+    "status": {
+      "notification": 1,
+      "thread": 15220,
+      "exception_code": 3221225477,
+      "address": 140721681078197,
+      "dump_written": true,
+      "error": 0,
+      "file": "exception-1.dmp",
+      "previous_complete_dump_retained": false
+    },
+    "exception": {
+      "thread": 15220,
+      "code": 3221225477,
+      "address": 140721681078197
+    },
+    "fault_module": {
+      "base": 140721681072128,
+      "name": "CyrusPhysicsProbe.dlx",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-brush-probe-013\\CyrusPhysicsProbe.dlx",
+      "size": 45056
+    },
+    "streams": [
+      {
+        "type": 3,
+        "size": 10324,
+        "rva": 1812
+      },
+      {
+        "type": 17,
+        "size": 13772,
+        "rva": 12136
+      },
+      {
+        "type": 4,
+        "size": 110920,
+        "rva": 25908
+      },
+      {
+        "type": 14,
+        "size": 1380,
+        "rva": 136828
+      },
+      {
+        "type": 13,
+        "size": 500172,
+        "rva": 138208
+      },
+      {
+        "type": 5,
+        "size": 531140,
+        "rva": 1255562
+      },
+      {
+        "type": 6,
+        "size": 168,
+        "rva": 1644
+      },
+      {
+        "type": 7,
+        "size": 56,
+        "rva": 224
+      },
+      {
+        "type": 15,
+        "size": 1364,
+        "rva": 280
+      },
+      {
+        "type": 21,
+        "size": 524,
+        "rva": 638380
+      },
+      {
+        "type": 22,
+        "size": 152,
+        "rva": 638904
+      },
+      {
+        "type": 24,
+        "size": 460,
+        "rva": 639056
+      },
+      {
+        "type": 0,
+        "size": 0,
+        "rva": 0
+      },
+      {
+        "type": 0,
+        "size": 0,
+        "rva": 0
+      },
+      {
+        "type": 0,
+        "size": 0,
+        "rva": 0
+      },
+      {
+        "type": 0,
+        "size": 0,
+        "rva": 0
+      }
+    ],
+    "checked_memory_ranges": 33196,
+    "checked_thread_contexts": 215,
+    "attempts": [
+      {
+        "notification": 1,
+        "thread": 15220,
+        "exception_code": 3221225477,
+        "address": 140721681078197,
+        "dump_written": true,
+        "error": 0,
+        "file": "exception-1.dmp",
+        "previous_complete_dump_retained": false
+      },
+      {
+        "notification": 2,
+        "thread": 15220,
+        "exception_code": 3221225477,
+        "address": 140721962041482,
+        "dump_written": false,
+        "error": 2147942699,
+        "file": "exception-2.dmp",
+        "previous_complete_dump_retained": false
+      }
+    ],
+    "note": "First complete original-fault dump is valid. A later rethrow dump attempt returned partial-copy when the owned harness terminated lingering Max (exit 78); its temporary file was not published and the complete first dump remained."
+  },
+  "hard_termination": {
+    "launch": {
+      "pid": 14756,
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-hardkill-02\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-hardkill-02\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-hardkill-02\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-hardkill-02\\listener.log"
+      ],
+      "max_year": 2027,
+      "computer_use": false,
+      "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+      "normal_profile_modified": false,
+      "requested_scale": null,
+      "binaries": {
+        "CyrusPhysicsLab.dlx": "8131bb1af5985d8413339b36e4c923f970e66dcdf7a6ddd1f8a2e3b6f5cb52a7",
+        "CyrusPhysicsStorage.dlh": "85c14398f6912b572becdba65c22b4971bff28ad355cce1804c63c650613df0b"
+      },
+      "script_sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d",
+      "diagnostic_helper_sha256": "581254ce81b15a04e9d3297325f91539d557dfbf5b8d9f587cd76ff7a2bea982",
+      "fixture_sha256": "441499c96730f42d4deae61dd1a2889cd49ac1d7187b04d3fa1b9e5fcefd9f59",
+      "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+    },
+    "artifacts": [
+      {
+        "path": "build/physics-lab-013-hardkill-02/before-crash-info.json",
+        "sha256": "49e7f78c75e5af1cca391983a6beda55270d4fd3e06180574947e4ee7266599f",
+        "bytes": 421
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/crash-harness-output.txt",
+        "sha256": "520f721d3c66f1c8ae845cbfc24e3de5892938af2e27a34045b21e7b88cc0289",
+        "bytes": 501
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/crash-harness.json",
+        "sha256": "594af45247312639af60bd3a3d964a3f43f8b4f1b1c607628a1a0ef68ccb7b23",
+        "bytes": 194
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/diagnostics/20261017-051125-417-pid14756/build-identity.json",
+        "sha256": "73c2d09af3d12f6110b013c576fd37f287ef9047774f458e6225fc7654fcc982",
+        "bytes": 305
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/diagnostics/20261017-051125-417-pid14756/context-0.json",
+        "sha256": "23801319d2fc77b8c06c3b324670ed7142c9bb68da8d6fb739edded585ed0c20",
+        "bytes": 63867
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/diagnostics/20261017-051125-417-pid14756/context-1.json",
+        "sha256": "23801319d2fc77b8c06c3b324670ed7142c9bb68da8d6fb739edded585ed0c20",
+        "bytes": 63867
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/diagnostics/20261017-051125-417-pid14756/events-0.jsonl",
+        "sha256": "8387f459fca0fd2f940a971efc5283376e0df4376fa9276d9436dacf5f3feb40",
+        "bytes": 8592
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/diagnostics/20261017-051125-417-pid14756/exception.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/diagnostics/20261017-051125-417-pid14756/modules.json",
+        "sha256": "2ddd91f6e128ba4464424bbf897b115a49b033590cf64ec86c4a45dbeadfe438",
+        "bytes": 151537
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/diagnostics/20261017-051125-417-pid14756/process-exit.json",
+        "sha256": "f65d809381eb9a96bbeda53de8f43d9d252e3a2e6f8ead7c5e4e4303a4a4533b",
+        "bytes": 57
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/fixture.ms",
+        "sha256": "441499c96730f42d4deae61dd1a2889cd49ac1d7187b04d3fa1b9e5fcefd9f59",
+        "bytes": 356
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/launch.json",
+        "sha256": "5fb3419f7b31b875e18748435261eee28ea743f4bd572aa2c4274a8f05c19eeb",
+        "bytes": 1374
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/loaded.tsv",
+        "sha256": "f0741b7855ff984943343752e1cc42c3aeff938378539862114bf3093d633179",
+        "bytes": 236
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/stages.txt",
+        "sha256": "ec7ec09f49d9fa9709bd88f477949e324611b06c596b269b7349fc9d4f9ed805",
+        "bytes": 42
+      },
+      {
+        "path": "build/physics-lab-013-hardkill-02/start.ms",
+        "sha256": "aa0cb5a78cb9fa4a3833a28bbcd61a962dbc47ba90c499e21e1728a5ee2662d2",
+        "bytes": 1483
+      }
+    ],
+    "exit": {
+      "pid": 14756,
+      "exit_code": 77,
+      "exception_notifications": 0
+    },
+    "last_flushed_event": {
+      "data": {
+        "document": 2998700102864,
+        "ending": false,
+        "error": "",
+        "gesture_active": true,
+        "maxscript_heap_free_bytes": 80060264,
+        "message": "Owned test only; abrupt exit code 77, no clean shutdown.",
+        "owner": 3,
+        "painting": true,
+        "preview_count": 1,
+        "process_memory": {
+          "available": true,
+          "peak_working_set_bytes": 2162409472,
+          "private_bytes": 3149774848,
+          "working_set_bytes": 2157346816
+        },
+        "rejected_gesture": false,
+        "released": false,
+        "revision": 1,
+        "saved_count": 0,
+        "session": true,
+        "staged": true
+      },
+      "event": "qa.before_terminate_process",
+      "qpc": 2559871757028,
+      "seq": 22,
+      "thread": 54788,
+      "utc_filetime": 134366874856041509
+    },
+    "pass": "Exit 77 without clean shutdown preserves all complete JSONL records and the final marker; no final SEH dump is expected from TerminateProcess."
+  },
+  "installer": {
+    "receipt": {
+      "pass": true,
+      "computer_use": false,
+      "normal_profile_modified": false,
+      "package_sha256": "10756869ba3542fcfc4a7d994bba6b03d11d3de4ba0539a338383bc666006720",
+      "installed_pair": {
+        "CyrusPhysicsStorage.dlh": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-installed-02\\scripts\\CyrusPhysicsLab\\0.1.3\\9004653a153d\\native\\CyrusPhysicsStorage.dlh",
+          "sha256": "85c14398f6912b572becdba65c22b4971bff28ad355cce1804c63c650613df0b"
+        },
+        "CyrusPhysicsLab.dlx": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-installed-02\\scripts\\CyrusPhysicsLab\\0.1.3\\9004653a153d\\native\\CyrusPhysicsLab.dlx",
+          "sha256": "8131bb1af5985d8413339b36e4c923f970e66dcdf7a6ddd1f8a2e3b6f5cb52a7"
+        }
+      },
+      "installed_script_sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d",
+      "fixture_sha256": "a85f99f4d920fd00acf503331b700b30bffdd589c7bc92234a477ae86c339091",
+      "restart_command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-installed-02\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-installed-02\\restart-plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-installed-02\\restart.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-013-installed-02\\restart-listener.log"
+      ]
+    },
+    "artifacts": [
+      {
+        "path": "build/physics-lab-013-installed-02/assertions.txt",
+        "sha256": "766a093a2e31239a7cfce84d5746dcb28cd0e25323a3590ca27d4cf36c4f98c6",
+        "bytes": 183
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/completed.json",
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "bytes": 2
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/fixture.ms",
+        "sha256": "835a1e8cb8908eb904e509e590edaff6e851d69f1a1d806bf86c53dfe1172d13",
+        "bytes": 965
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/installed-path.txt",
+        "sha256": "dcadb0f35c224e91b4af700b3e3fd8a50098de76888c32aff032fcd18054801f",
+        "bytes": 119
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/installer-receipt.json",
+        "sha256": "d55e4b770bf4aa8d2d646f3cfa651dba55fd624f8362d653629a7e14ac1da2a6",
+        "bytes": 1561
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/launch.json",
+        "sha256": "a64ecfa88ec0993807aa238c90abd88f4a49c75828d9d7a121bde55dcada7c7e",
+        "bytes": 1378
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/loaded.tsv",
+        "sha256": "a8cb040dcb869b975f1e669b3bb39957be51fd7361b01b083c17d8439f0188a6",
+        "bytes": 238
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/restart-completed.json",
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "bytes": 2
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/restart-loaded.tsv",
+        "sha256": "6352f7a89c24cd73adbe0e60d50a21b32a6cef1c051d1cfa372c82ae97e23157",
+        "bytes": 330
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/restart-stages.txt",
+        "sha256": "81d727edde0605053ee3fb1f3b462109e900f9f299fe3b3a2ee9ba4cf7945dc5",
+        "bytes": 44
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/restart.ms",
+        "sha256": "26e7cea76e2edc44ebf966cfd8077e1990969f001ff92529fc43bf77ebf1e1df",
+        "bytes": 1243
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/sphere-auto.json",
+        "sha256": "97e46dd3fc118ff0cabdd23dd87b7b030505076ef1c994849609eca16c2f6325",
+        "bytes": 199547
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/sphere-custom.json",
+        "sha256": "3bcc950d62d546e779cf7d4a506fe5d8694e2e635e9bcf18f61b03bcc3b0b162",
+        "bytes": 172279
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/stages.txt",
+        "sha256": "ec7ec09f49d9fa9709bd88f477949e324611b06c596b269b7349fc9d4f9ed805",
+        "bytes": 42
+      },
+      {
+        "path": "build/physics-lab-013-installed-02/start.ms",
+        "sha256": "85e18942e0dd808011befbdb4de87ce38ec052eaa52b4311fdd55b076d44c20f",
+        "bytes": 1486
+      }
+    ],
+    "final_helper_sha256": "581254ce81b15a04e9d3297325f91539d557dfbf5b8d9f587cd76ff7a2bea982"
+  },
+  "package": {
+    "product": "CyrusPhysicsLab",
+    "version": "0.1.3",
+    "max_year": 2027,
+    "integrated_into_scatter": false,
+    "payload": {
+      "native/CyrusPhysicsLab.dlx": "8131bb1af5985d8413339b36e4c923f970e66dcdf7a6ddd1f8a2e3b6f5cb52a7",
+      "native/CyrusPhysicsStorage.dlh": "85c14398f6912b572becdba65c22b4971bff28ad355cce1804c63c650613df0b",
+      "native/CyrusPhysicsCrashWatch.exe": "581254ce81b15a04e9d3297325f91539d557dfbf5b8d9f587cd76ff7a2bea982",
+      "native/build-identity.json": "06b9b983aa392d16cec04585f7fea02381431a10fd01a612a45686ed85e3b29c",
+      "scripts/CyrusPhysicsLab.ms": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d",
+      "README.md": "a52552525dd61bd789d7ea98a8fc26e03e0845777927d200cf58465c144bd0b7",
+      "licenses/Jolt-MIT.txt": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3",
+      "licenses/nlohmann-MIT.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "Uninstall.ms": "ed974125dd5ba550eed71a9ef7903c78c41f55c23494a0935b180e95b693f6d6",
+      "CyrusPhysicsLabStartup.ms": "5ae7a7a8a0beeefed329e55c01f75c48591859accac03d2cc6bfbfbfa0fefbed",
+      "install.ms": "fb04c6e11fb8d2923adc9272f12cf1d02a1b7188c1d66eb96d657d82e740fa98",
+      "mzp.run": "745d69e3d08f98195a049d5e2b89da0f0da4eb78f9037b25c59670f1fd86e7df"
+    },
+    "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusPhysicsLab-0.1.3-20261017-02\\CyrusPhysicsLab-0.1.3-Max2027.mzp",
+    "package_sha256": "10756869ba3542fcfc4a7d994bba6b03d11d3de4ba0539a338383bc666006720",
+    "package_bytes": 718695,
+    "installed": false
+  },
+  "preservation": {
+    "normal_profile_before": {
+      "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4",
+      "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\Plugin.UserSettings.ini": "65a76a192166687841a287b54231f6194b9d30b2da83b28b9b5c8ae0d4c0a202",
+      "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\startup\\CyrusPhysicsLabStartup.ms": "f11656224d5343b739e77ee47df3fd0056e15cd627718d7e4513b8f62ed88626"
+    },
+    "normal_profile_changed": [],
+    "old_package": {
+      "path": "dist/CyrusPhysicsLab-0.1.2-20261016/CyrusPhysicsLab-0.1.2-Max2027.mzp",
+      "sha256": "81b97157e364ea44fa11d58dc595d024014836e972f96faed966ad094714acae",
+      "bytes": 657416
+    }
+  },
+  "private_probe": {
+    "binary": {
+      "path": "build/physics-lab-brush-probe-013/CyrusPhysicsProbe.dlx",
+      "sha256": "dfd1f903cb7cfb79eb655fcd212b352cac461380b3cc87a82d549084df56c09a",
+      "bytes": 26112
+    },
+    "source": {
+      "path": "CyrusPhysicsLab/tests/paint_probe/probe.cpp",
+      "sha256": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a",
+      "bytes": 6934
+    },
+    "in_package": false
+  },
+  "historical_iterations": [
+    {
+      "run": "build/physics-lab-013-lifecycle-01",
+      "result": "361 assertions passed on preceding instrumentation; final native/script suite repeats them."
+    },
+    {
+      "run": "build/physics-lab-013-final-01",
+      "result": "All ten standard fixtures passed, then duplicate private probe function registration blocked combined fixture. Only verified owned Max PID11148 was stopped; tests now consistently use one private probe."
+    },
+    {
+      "run": "build/physics-lab-013-final-02",
+      "result": "Full suite and 361 lifecycle assertions passed before memory metrics were added."
+    },
+    {
+      "run": "build/physics-lab-013-fatal-01",
+      "result": "Original fault captured; later dump was partial. Successor helper publishes atomically and preserves complete dumps."
+    },
+    {
+      "run": "build/physics-lab-013-fatal-02",
+      "result": "Atomic dump capture iteration; final helper changes first/latest retention, qualified in fatal-03."
+    },
+    {
+      "run": "build/physics-lab-013-hardkill-01",
+      "result": "Earlier native/helper abrupt-exit durability pass; final hashes repeated in hardkill-02."
+    },
+    {
+      "run": "build/physics-lab-013-installed-01",
+      "result": "Earlier candidate installation/restart passed; superseded by final package installed-02."
+    },
+    {
+      "package": "dist/CyrusPhysicsLab-0.1.3-20261017",
+      "result": "Undelivered candidate preserved; final delivery uses 20261017-02."
+    }
+  ],
+  "knowledge": {
+    "status": "stale_evidence",
+    "sources_checked": 38,
+    "sources_verified": 15,
+    "physics_lab_enrolled": false,
+    "fallback": "Direct current/frozen source inspection."
+  },
+  "git": {
+    "branch": "codex/workflow-0.75",
+    "head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+    "status": " M AminScatter/CMakeLists.txt\n M AminScatter/include/recipes.h\n M AminScatter/library/2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json\n M AminScatter/library/42f6a31c-1e9e-4a10-8bef-60667aca32e2.csrecipe.json\n M AminScatter/library/README.md\n M AminScatter/library/borders.csrecipe.json\n M AminScatter/library/hexagonal.csrecipe.json\n M AminScatter/library/inventory.json\n M AminScatter/library/meadow.csrecipe.json\n M AminScatter/library/mountain.csrecipe.json\n M AminScatter/library/orchard.csrecipe.json\n M AminScatter/library/woodland.csrecipe.json\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/setup/Program.cs\n M AminScatter/setup/app.manifest\n M AminScatter/src/asset_package.cpp\n M AminScatter/src/brush_host.cpp\n M AminScatter/src/recipe_store.cpp\n M AminScatter/src/recipes.cpp\n M AminScatter/src/recipes_bridge.cpp\n M AminScatter/tests/asset_package_tests.cpp\n M AminScatter/tools/ui/generate.cjs\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/assets.ms\n M AminScatter/tools/ui/templates/recipes.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M AminScatter/ui/LibraryGallery.cs\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M CyrusMCP/tests/test_feature_catalog.py\n M README.md\n M docs/ARCHITECTURE.md\n M docs/ARTIST_GUIDE.md\n M docs/BACKLOG.md\n M docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md\n M docs/HISTORY.md\n M docs/README.md\n M docs/Release_Versioning.md\n M docs/plans/improvement-program/PROGRESS.md\n M docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md\n M docs/plans/preset-gallery-improvements/PACKAGE_CONTRACT.md\n M docs/plans/preset-gallery-improvements/README.md\n M docs/plans/preset-gallery-improvements/TODO.md\n M tools/build_max.py\n M tools/procedural_lab/build_feature_catalog.py\n M tools/procedural_lab/check_generated.py\n M tools/tests/test_package_version.py\n M website/content/changelog.json\n M website/content/guide-chapters.json\n M website/content/source-manifest.json\n M website/src/content/reference.json\n M website/verification/react-static-checks.json\n?? AminScatter/library/Presets/\n?? AminScatter/library/recipe-data-4991e6658d9fb371918ce68a3bf187cf/\n?? AminScatter/library/recipe-data-59ac2c651d1c067c73eb204eb636d117/\n?? AminScatter/library/recipe-data-8fb444cc46a3744a37b710f3f7b602ca/\n?? AminScatter/library/recipe-data-8fbc5c2515d065bb09351ddb0f75da3c/\n?? AminScatter/library/recipe-data-98db4ef0fe7e17c5b838ed0b95e2b795/\n?? AminScatter/library/recipe-data-c60280d33ad21f904d8747313d053ff2/\n?? AminScatter/library/recipe-data-ccdd1dbd46aec07f8779b3267968d6c7/\n?? AminScatter/library/recipe-data-e9f7fb1f4bbc3dd89624cabb3ab0db6b/\n?? AminScatter/tools/ui/templates/preset-loading.ms\n?? CyrusPhysicsLab/\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/Scatter_Physics_Research_2026-10-16/\n?? docs/plans/landscape-presentation/\n?? docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.json\n?? docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.md\n?? docs/plans/preset-gallery-improvements/LOAD_0853.md\n?? docs/plans/preset-gallery-improvements/PACKAGE_0853.json\n?? docs/plans/preset-gallery-improvements/QUALIFICATION_0853.json\n?? presentation-studio/\n?? tools/presets_0853/\n?? website/prototypes/\n"
+  },
+  "limits": [
+    "No physical mouse/tablet or artist-profile interaction was tested.",
+    "The exact artist crash stack remains unknown until the new package records it; the reproduced 0.1.2 native null-read path is fixed.",
+    "First-chance fatal-code notifications can be handled or rethrown by Max; they do not alone prove an unhandled process crash.",
+    "Hard kill/fail-fast, stack exhaustion, inaccessible memory, disk failure or power loss can prevent a final dump. Flushed logs and independent exit records cover the tested abrupt-termination path.",
+    "Local snapshots/dumps may include geometry/process memory; no automatic upload.",
+    "The separately observed edge-footprint whole-stroke abort and empty-gesture Undo entry are not redesigned in this patch."
+  ]
+}

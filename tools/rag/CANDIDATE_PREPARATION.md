@@ -4,7 +4,7 @@
 verification and evaluation pipeline. Phase 4A detects changes; Phase 4B prepares
 and mechanically validates separate candidates. Human semantic review remains
 pending. [Phase 4C](ACTIVATION.md) separately prepares and applies explicitly
-confirmed activation/rollback plans. Automatic refresh is unimplemented.
+confirmed activation/rollback plans. [Automatic refresh](AUTOMATIC_REFRESH.md) is implemented with explicit bounded authorization; see the [current activation report](KNOWLEDGE_REPAIR_2026-10-17.md) for enabled scope.
 
 Run with Python 3.11 and the standard library. No dependency changes are needed.
 From the repository root, choose a **new** run identity and use explicit paths:
@@ -30,7 +30,7 @@ py -3.11 -B tools/rag/prepare_candidate.py `
 
 The command must run from the selected checkout's own coordinator. The baseline
 and historical evaluations must be explicit complete artifacts in that root.
-Select one to three distinct evaluation definitions, each with two historical
+Select one to four distinct evaluation definitions, each with two historical
 receipts (plain and terminology). It never chooses a newest directory implicitly.
 Omit `--json` for human-readable stage outcomes and evidence location.
 
@@ -69,8 +69,8 @@ generation may differ solely because audit/Git provenance changed.
 Each candidate is independently checked after build and again after evaluation:
 sealed artifacts, SQLite integrity/metadata/all rows/FTS exports, root/runtime/
 corpus compatibility, every full parent and checked identifier citations. A
-successful build alone establishes no candidate readiness. Six comparisons for
-the three current definitions cover the complete metrics and all question records,
+successful build alone establishes no candidate readiness. Two comparisons per
+definition (up to eight for four definitions) cover complete metrics and all question records,
 including language/anchor splits, required evidence, precision, canonical ranking,
 misleading/wrong-build/history evidence and related unanswerable results.
 Latency comparisons are descriptive sequential measurements with uncontrolled OS
@@ -156,10 +156,30 @@ and label files. Pass a separately versioned JSON `--review` with:
 - Unchanged parent bytes may receive separately reviewed provenance metadata
   updates only with `unchanged_metadata_reviewed: true` in their source entry.
   This cannot change selected ranges or promote historical/unknown authority.
+- Retiring a source requires one `retirements` entry per removed path: exact
+  `path` and `old_sha256`, substantive `reason`, `historical_evidence` and
+  `replacement_or_omission`, plus `agent_reviewed`, `references_checked` and
+  `evaluation_requirements_checked` set to true. Missing files are never retired
+  automatically. Surviving paths keep their spelling and relative order. Sealed
+  baseline definitions and evidence remain unchanged. A retirement cannot drop
+  an evaluation requirement; unresolved required evidence blocks preparation.
+- An unchanged Markdown parent can receive reviewed `contract_sections` intervals
+  only with `contract_sections_reviewed: true` and the metadata review above.
+  Ordinary enrolled ranges cannot shrink through this exception. Every interval
+  starts at a heading and includes the full section through its next peer heading,
+  including limits and evidence. Sections are ordered, disjoint and contained in
+  enrolled ranges. More than 128 lines or 16,384 characters fails explicitly;
+  complete contracts are never silently truncated to the ordinary chunk size.
+  `original_text` contains the full section; `excerpt` remains only a display aid.
+  Small bounded fragments retain the normal lexical scoring. Results coalesce
+  matching fragments into one section, expose `matched_chunk_id`/`matched_locator`,
+  and cite the full returned section separately. Fragments of one section are
+  not presented as independent duplicate sources. Freshness validates the entire
+  returned contract against its parent, including conditions outside the match.
 
 These records attest agent review; booleans cannot establish semantic correctness
-or human approval. This workflow rejects unreviewed expansion, removal, changes to
-existing path spelling/order and historical/unknown authority promotion. Automatic
+or human approval. This workflow rejects unreviewed expansion or retirement, changes to
+surviving path spelling/order and historical/unknown authority promotion. Automatic
 refresh has no permission to create these review attestations. Question IDs, questions,
 splits, languages, qualifiers, answerability and intended evidence requirements
 must stay comparable; only explicitly reviewed parent hashes/line locations may
@@ -167,6 +187,19 @@ move. Broader semantic changes need separate review/evaluation scope. Invalid
 labels retain the real validation failure. Question-level differences and
 regressions are saved without tuning ranking, glossary or labels to improve scores.
 Any unresolved regression prevents a passing validation receipt.
+
+A supported behavior can move to another maintained owner. `evidence_alternatives`
+is a separate manual review: each entry binds `old_evaluation_sha256`, `group`,
+`id`, exact `old_value`/`new_value` required-evidence arrays, `agent_reviewed: true`,
+`reason` and `equivalence_evidence`. It may **add equivalent alternatives only**;
+all prior owners, unit IDs, unit counts, questions, qualifiers and answerability
+remain. Removing a unit or replacing an old owner is rejected. Ordinary evaluation
+validation still requires enrolled, hash-matching real source intervals.
+The original-owner comparison must remain available alongside the new result;
+do not describe this as unchanged-label comparability or use an unrelated paragraph
+to manufacture a pass. Review records attest inspected semantics, not a proof of
+equivalence. Automatic refresh never authors these decisions. Activation recomputes
+the same recorded review rather than accepting a summary score.
 
 A deliberately expanded manual corpus can trade earlier ranks or labeled precision
 for additional qualified evidence. `retrieval_tradeoffs` in its review may record

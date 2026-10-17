@@ -1,0 +1,2198 @@
+{
+  "date": "2026-10-16",
+  "scope": "Research only: actual Forest library imports on an owned Max 2027 host, plus direct Cyrus source comparison. No product changes or new release qualification.",
+  "head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+  "branch": "codex/workflow-0.75",
+  "forest": "Forest Pack Lite 9.4.3 / native 9,4,3,766",
+  "max": "2027 / 29.1.0.11426",
+  "host_pid": 46868,
+  "owned_profile": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02",
+  "launch": {
+    "pid": 46868,
+    "max_year": 2027,
+    "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-forest-library-20261016-02",
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-silent",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-forest-library-20261016-02\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-forest-library-20261016-02\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-forest-library-20261016-02\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-forest-library-20261016-02\\listener.log"
+    ],
+    "binaries": {
+      "AminScatter.dlx": "9429e2cff87c876841c39db99cf862d05d51459ba0f5ddb65f9806d7f39e75b0",
+      "CyrusBrush.dlx": "2bad4d54acd7e393c682e5df6f1aaeb9cef52bc9a665ce2f02d8d900f33be4ce",
+      "CyrusBrushStorage.dlh": "3dc2d3e0a7c01a087077d6c26c33bf37f8bec12bcbcc817156dfd442eaad7bcd",
+      "CyrusScatterEdit.dlm": "83e1a703c3eb170312bf283112fd99f4a1b600a82dc76d42a9fca04544940eed"
+    },
+    "script_sha256": "b379eda5b00674292e72636e5ee52c7fe0795dca5e98c549a539f50c87a53d16",
+    "script_assets": {
+      "CyrusGallery.dll": "219c2ee235a80fb32b55fb2aed050dfb36d22203add26bd2077e97e14bb51b00"
+    },
+    "normal_profile_modified": false,
+    "development_transport": true,
+    "preview_fault_lab": false,
+    "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+    "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+  },
+  "vendor_preservation": {
+    "baseline_file_count": 134,
+    "unchanged": true,
+    "changed_paths": [],
+    "scope": "Installed package files and 17 index.xml + 17 catalog.ms files; excludes pre/post hashes for consumed .max assets and globally stored vendor preferences."
+  },
+  "cyrus_preservation": {
+    "receipt": "build/ui-0852-20261016-01/native-01/receipt.json",
+    "receipt_sha256": "05c3fcb02abe83de5064f0de99c22728ac8fbcfdc9658f195b73e1a386703c95",
+    "input_count": 155,
+    "unchanged": true,
+    "changed_paths": []
+  },
+  "sources": {
+    "AminScatter/tools/ui/templates/recipes.ms": "10eca775d4472155cf566adb54f3be8973525806e4aa12889dfd94391087226b",
+    "AminScatter/tools/ui/templates/assets.ms": "bad2d2c0ebbbd47a9052133f10ee6ca79a628f0ad6ae66b3b18784430d27feb7",
+    "AminScatter/tools/ui/templates/unified-core.ms": "b3f7958c7254c8e58e46e617e3d501f961c19285a5a109c4239367da3cdb5da4",
+    "AminScatter/src/mesh_density_bridge.inc": "198c68a4222c4e11506de8b2cc7f913565de41018b41afe369ab56b9d7ab2a84",
+    "AminScatter/src/input_validity.cpp": "a4ff5a6e53b21c4bcc6eff954ddef108036f0d2dedd99c49485fed0c171cb52d",
+    "AminScatter/library/2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json": "f568088702390f14dd21dce92d714f0755059b9746757fb9b67476f14113dec2"
+  },
+  "research_sources": {
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/37_LIBRARY_MAX_PRESETS_SUMMARY.md": "fb7e4d8b9864317afdd902fe3b777b03fe604cfd2db9c8280634f2218d0e78b1",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/38_LIBRARY_MAX_IMPORT_APPLY.md": "adadfea24cd34924ecaac743fd254121e8581ce2ec9b4facecd9732073729854",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/39_LIBRARY_SEEDS_EFFECTS_CUSTOM_ITEMS.md": "7b0d66bddcd73572084e9643385b79c5fae5975e2a5cd6b32731b12748e612df",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/40_LIBRARY_REFERENCES_AND_LIFECYCLE.md": "2199319f6428a970f609e8dac6509b07befe2dc2adf03eb4b7ed755e1f850382",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/41_LIBRARY_MAX_CODE_MAP.md": "84c805ac236b308ef35d8f8705e1a779615f5455cdb8e62ebfa6cf6960e5ee37",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/68_SAME_FRAME_CHANNEL_INVALIDATION_SUMMARY.md": "8d8d63b2a285f76e73659caf9b4366decb0dec397fef54d0193774902c5b3acc",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/69_RECEIVER_REFERENCE_NOTIFICATIONS.md": "b71f67a258239cd625a3db65690ffde750cc42be54d5bf530f6e2d1a2a0585b0",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/70_SHARED_RECEIVER_REFRESH_AND_MANUAL.md": "e22854844dfec8c4d3f6bdd4f3fb8f50f4029485fd7254a68c0268495a15379a",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/71_SAME_FRAME_CHANNEL_FIXTURES.md": "6abf2a9b8102b93af47795db3a30460d30c5540fc3d620d45a8437e73a70e314",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/design/11_PRESETS_AND_LIBRARY_SPEC.md": "47b3fc5269cb8d7fb0b43b582fef92a60dc27a7cd96aabc62e3437ba9f5c80fa",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/design/12_LIBRARY_ASSET_IMPORT_SPEC.md": "8c0790489a728adb48f5c59e94bee9ec9aa3215f2f4e853c9c794a26abefbb86",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/design/21_RECEIVER_CHANNEL_REVISION_SPEC.md": "5cf5830a77df522c2bcad3d15b66cc3538e3932508692bec7f9f467e3c298ec0",
+    "F:/Cursor/_Cyrus_Apps/Forest Reverse/design/03_IMPLEMENTATION_PLAN.md": "9429efd71e2909228f41206cc2066b92f66144a754694e352dc2713d7520f67f"
+  },
+  "snapshots": {
+    "grass-first-load": {
+      "label": "grass-first-load",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": null,
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": false,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 38,
+              "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_wildgrass_09"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "203.1999969482422",
+            "units_y": "25400.0",
+            "threshold": "25",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 38,
+          "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "grass-repeat-before": {
+      "label": "grass-repeat-before",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": null,
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": true,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 38,
+              "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_wildgrass_09"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "203.1999969482422",
+            "units_y": "25400.0",
+            "threshold": "25",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 38,
+          "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [
+        "Forest research sentinel"
+      ],
+      "redo": []
+    },
+    "grass-repeat-after": {
+      "label": "grass-repeat-after",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": null,
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": false,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 76,
+              "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_wildgrass_09"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "203.1999969482422",
+            "units_y": "25400.0",
+            "threshold": "25",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 76,
+          "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "large-before-open": {
+      "label": "large-before-open",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": true,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 76,
+              "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_wildgrass_09"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "203.1999969482422",
+            "units_y": "25400.0",
+            "threshold": "25",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 76,
+          "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [
+        "Forest research sentinel 2"
+      ],
+      "redo": []
+    },
+    "large-after-open": {
+      "label": "large-after-open",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": true,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 76,
+              "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_wildgrass_09"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "203.1999969482422",
+            "units_y": "25400.0",
+            "threshold": "25",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 76,
+          "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [
+        "Forest research sentinel 2"
+      ],
+      "redo": []
+    },
+    "large-selected-before-load": {
+      "label": "large-selected-before-load",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": true,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 76,
+              "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_wildgrass_09"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "203.1999969482422",
+            "units_y": "25400.0",
+            "threshold": "25",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 76,
+          "name": "_forest_library_EXUDOWQ__fp_common_grass_01__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [
+        "Forest research sentinel 2"
+      ],
+      "redo": []
+    },
+    "large-after-load": {
+      "label": "large-after-load",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": false,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 115,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_01",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 116,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 117,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_common_grass_clump_01",
+            "_fp_common_grass_clump_02",
+            "_fp_common_grass_clump_03"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "full.bmp",
+            "units_x": "3960.0",
+            "units_y": "10000.0",
+            "threshold": "50",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 115,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_01",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 116,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 117,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "large-reopened": {
+      "label": "large-reopened",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "seed": 54321,
+          "manual": false,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 115,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_01",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 116,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 117,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_common_grass_clump_01",
+            "_fp_common_grass_clump_02",
+            "_fp_common_grass_clump_03"
+          ],
+          "source_materials": [
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "full.bmp",
+            "units_x": "3960.0",
+            "units_y": "10000.0",
+            "threshold": "50",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 115,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_01",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 116,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 117,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "model-before": {
+      "label": "model-before",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "areas": {
+            "ids": [
+              1
+            ],
+            "active": [
+              true
+            ],
+            "types": [
+              3
+            ]
+          },
+          "seed": 54321,
+          "manual": false,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 115,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_01",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 116,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 117,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "_fp_common_grass_clump_01",
+            "_fp_common_grass_clump_02",
+            "_fp_common_grass_clump_03"
+          ],
+          "source_materials": [
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "full.bmp",
+            "units_x": "3960.0",
+            "units_y": "10000.0",
+            "threshold": "50",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 115,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_01",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 116,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 117,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "model-merge-after": {
+      "label": "model-merge-after",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "areas": {
+            "ids": [
+              1
+            ],
+            "active": [
+              true
+            ],
+            "types": [
+              3
+            ]
+          },
+          "seed": 54321,
+          "manual": false,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 124,
+              "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 116,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 117,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "Wild grass 09",
+            "_fp_common_grass_clump_02",
+            "_fp_common_grass_clump_03"
+          ],
+          "source_materials": [
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "full.bmp",
+            "units_x": "3960.0",
+            "units_y": "10000.0",
+            "threshold": "50",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 116,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 117,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 124,
+          "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "model-xref-warm-after": {
+      "label": "model-xref-warm-after",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 3,
+      "objects": [
+        {
+          "handle": 2,
+          "name": "Owned receiver",
+          "class": "Plane",
+          "material": null,
+          "hidden": false,
+          "layer": "0"
+        },
+        {
+          "handle": 3,
+          "name": "Owned Forest target",
+          "class": "Forest_Lite",
+          "material": {
+            "name": "forest_automat_7C6BF1A0",
+            "class": "Multimaterial"
+          },
+          "hidden": false,
+          "layer": "0",
+          "areas": {
+            "ids": [
+              1
+            ],
+            "active": [
+              true
+            ],
+            "types": [
+              3
+            ]
+          },
+          "seed": 54321,
+          "manual": false,
+          "surfaces": [
+            {
+              "handle": 2,
+              "name": "Owned receiver",
+              "class": "Plane",
+              "material": null,
+              "hidden": false,
+              "layer": "0"
+            }
+          ],
+          "sources": [
+            {
+              "handle": 124,
+              "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 116,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            },
+            {
+              "handle": 117,
+              "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+              "class": "Editable_mesh",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "Wild grass 09",
+            "_fp_common_grass_clump_02",
+            "_fp_common_grass_clump_03"
+          ],
+          "source_materials": [
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            },
+            {
+              "handle": 56392,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "full.bmp",
+            "units_x": "3960.0",
+            "units_y": "10000.0",
+            "threshold": "50",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 116,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 117,
+          "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        },
+        {
+          "handle": 124,
+          "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+          "class": "Editable_mesh",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "model-xref-fresh-scene": {
+      "label": "model-xref-fresh-scene",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 1,
+      "objects": [
+        {
+          "handle": 1,
+          "name": "Owned XRef target",
+          "class": "Forest_Lite",
+          "material": null,
+          "hidden": false,
+          "layer": "0",
+          "areas": {
+            "ids": [
+              1
+            ],
+            "active": [
+              false
+            ],
+            "types": [
+              3
+            ]
+          },
+          "seed": 123456,
+          "manual": false,
+          "surfaces": [],
+          "sources": [
+            {
+              "handle": 8,
+              "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+              "class": "XRefObject",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "Wild grass 09"
+          ],
+          "source_materials": [
+            {
+              "handle": 97312,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "10000.0",
+            "units_y": "10000.0",
+            "threshold": "50",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 8,
+          "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+          "class": "XRefObject",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    },
+    "model-xref-reopened": {
+      "label": "model-xref-reopened",
+      "time": "0f",
+      "max_version": "#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")",
+      "renderer": "Arnold",
+      "target_handle": 1,
+      "objects": [
+        {
+          "handle": 1,
+          "name": "Owned XRef target",
+          "class": "Forest_Lite",
+          "material": null,
+          "hidden": false,
+          "layer": "0",
+          "areas": {
+            "ids": [
+              1
+            ],
+            "active": [
+              false
+            ],
+            "types": [
+              3
+            ]
+          },
+          "seed": 123456,
+          "manual": false,
+          "surfaces": [],
+          "sources": [
+            {
+              "handle": 8,
+              "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+              "class": "XRefObject",
+              "material": {
+                "name": "_fp_grass",
+                "class": "Multimaterial"
+              },
+              "hidden": true,
+              "layer": "forest_templates"
+            }
+          ],
+          "source_names": [
+            "Wild grass 09"
+          ],
+          "source_materials": [
+            {
+              "handle": 107293,
+              "name": "_fp_grass",
+              "class": "Multimaterial"
+            }
+          ],
+          "distribution": {
+            "mapname": "dense.bmp",
+            "units_x": "10000.0",
+            "units_y": "10000.0",
+            "threshold": "50",
+            "surfanim": "False"
+          }
+        },
+        {
+          "handle": 8,
+          "name": "_forest_library_TWL3GAA__fp_wildgrass_09",
+          "class": "XRefObject",
+          "material": {
+            "name": "_fp_grass",
+            "class": "Multimaterial"
+          },
+          "hidden": true,
+          "layer": "forest_templates"
+        }
+      ],
+      "undo": [],
+      "redo": []
+    }
+  },
+  "materials_and_loaded_modules": {
+    "renderer": "Arnold",
+    "sources": [
+      {
+        "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_01",
+        "material": {
+          "name": "_fp_grass",
+          "class": "Multimaterial",
+          "submaterials": [
+            {
+              "name": "_fp_grass-a",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "_fp_grass-b",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "fp_cane_leaf",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "trunk",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "_fp_white_grass",
+              "class": "PhysicalMaterial"
+            }
+          ]
+        }
+      },
+      {
+        "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_02",
+        "material": {
+          "name": "_fp_grass",
+          "class": "Multimaterial",
+          "submaterials": [
+            {
+              "name": "_fp_grass-a",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "_fp_grass-b",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "fp_cane_leaf",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "trunk",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "_fp_white_grass",
+              "class": "PhysicalMaterial"
+            }
+          ]
+        }
+      },
+      {
+        "name": "_forest_library_EGZWXLY__fp_common_grass_01_large__fp_common_grass_clump_03",
+        "material": {
+          "name": "_fp_grass",
+          "class": "Multimaterial",
+          "submaterials": [
+            {
+              "name": "_fp_grass-a",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "_fp_grass-b",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "fp_cane_leaf",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "trunk",
+              "class": "PhysicalMaterial"
+            },
+            {
+              "name": "_fp_white_grass",
+              "class": "PhysicalMaterial"
+            }
+          ]
+        }
+      }
+    ],
+    "bitmaps": [
+      {
+        "name": "Map #607",
+        "filename": "fp_grasstexture_difusse2.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse2.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #721",
+        "filename": "fp_grasstexture_difusse.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #722",
+        "filename": "fp_grasstexture_difusse3.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse3.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #723",
+        "filename": "fp_grasstexture_difusse4.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse4.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #725",
+        "filename": "fp_grasstexture_difusse.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #721",
+        "filename": "fp_grasstexture_difusse.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #607",
+        "filename": "fp_grasstexture_difusse2.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse2.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #722",
+        "filename": "fp_grasstexture_difusse3.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse3.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #723",
+        "filename": "fp_grasstexture_difusse4.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse4.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #726",
+        "filename": "fp_grasstexture_trans.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_trans.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #607",
+        "filename": "fp_grasstexture_difusse2.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse2.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #723",
+        "filename": "fp_grasstexture_difusse4.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse4.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #722",
+        "filename": "fp_grasstexture_difusse3.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse3.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #721",
+        "filename": "fp_grasstexture_difusse.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #725",
+        "filename": "fp_grasstexture_difusse.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #721",
+        "filename": "fp_grasstexture_difusse.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #607",
+        "filename": "fp_grasstexture_difusse2.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse2.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #722",
+        "filename": "fp_grasstexture_difusse3.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse3.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #723",
+        "filename": "fp_grasstexture_difusse4.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_difusse4.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #726",
+        "filename": "fp_grasstexture_trans.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_trans.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #665",
+        "filename": "fp_daisy_leaf_dif01.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif01.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #708",
+        "filename": "fp_daisy_leaf_dif01.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif01.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #709",
+        "filename": "fp_daisy_leaf_dif02.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif02.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #710",
+        "filename": "fp_daisy_leaf_dif03.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif03.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #711",
+        "filename": "fp_daisy_leaf_dif04.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif04.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #29",
+        "filename": "fp_daisy_leaf_spec.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_spec.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #665",
+        "filename": "fp_daisy_leaf_dif01.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif01.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #708",
+        "filename": "fp_daisy_leaf_dif01.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif01.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #709",
+        "filename": "fp_daisy_leaf_dif02.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif02.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #710",
+        "filename": "fp_daisy_leaf_dif03.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif03.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #711",
+        "filename": "fp_daisy_leaf_dif04.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_dif04.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #144",
+        "filename": "fp_daisy_leaf_normal.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_normal.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #15",
+        "filename": "fp_daisy_leaf_bump.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_daisy_leaf_bump.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #3",
+        "filename": "fp_grass_stem_dark.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grass_stem_dark.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #11",
+        "filename": "fp_grass_stem_dark.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grass_stem_dark.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      },
+      {
+        "name": "Map #728",
+        "filename": "fp_grasstexture_mask.jpg",
+        "resolved_path": "c:\\users\\mehran\\appdata\\local\\itoo software\\forest pack lite\\maps\\fp_grasstexture_mask.jpg",
+        "resolved_exists": true,
+        "channel": 1
+      }
+    ],
+    "modules": [
+      {
+        "name": "ForestPackLite.dlo",
+        "path": "c:\\programdata\\autodesk\\applicationplugins\\forestpacklite2027\\contents\\plugins\\2027\\ForestPackLite.dlo",
+        "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d"
+      },
+      {
+        "name": "ForestQt.dll",
+        "path": "c:\\programdata\\autodesk\\applicationplugins\\forestpacklite2027\\contents\\plugins\\2027\\ForestQt.dll",
+        "sha256": "6ac7021bedb83c0ed70f6a0c2b2d123fad44be9bd8fb328c75e6dd9eb65abefb"
+      },
+      {
+        "name": "ForestQtCatalog.dll",
+        "path": "c:\\programdata\\autodesk\\applicationplugins\\forestpacklite2027\\contents\\plugins\\2027\\ForestQtCatalog.dll",
+        "sha256": "eefef4a421bdb50320c951bf271a6b90d847bc09572337b816572f2ef9767e20"
+      }
+    ]
+  },
+  "raw_files": [
+    {
+      "path": "build/forest-library-runtime-20261016/current-host.json",
+      "bytes": 1785,
+      "sha256": "84f400ec1f4182f0a4ecf9ab6919a3f8efeb88adf781e2b1bdde6dbbd1bcbe95"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/dispatch.py",
+      "bytes": 1071,
+      "sha256": "c7f3d7d0e8f49982e2d83e4c3379050862608fbfc2296703bd05f2b7c0127091"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/grass-loaded.png",
+      "bytes": 542638,
+      "sha256": "c8a760995416ff703d1fffcfeac8f0d38b1764c2387ff4b50a7c48d18e75f776"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/materials-predecessor.py",
+      "bytes": 1289,
+      "sha256": "52bd07c61940b95f619e88faabb9f181d2c6c84b6879eb0e9ca12d9812d67949"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/materials.py",
+      "bytes": 1613,
+      "sha256": "95b10912a8d8b12b07e99a64b3662811688e0b7f629ec559694ce5dfe0972293"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/probe.ms",
+      "bytes": 275,
+      "sha256": "99fd609869a5fa57b09862b21438c2b03862f117e030ac6c5154463e344c447f"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/snapshot-v1.py",
+      "bytes": 1462,
+      "sha256": "a2681f8acdad8ada0a80230dd9b412737159a4c9f29f8a5aa3461fbc60daf85e"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/snapshot.py",
+      "bytes": 1625,
+      "sha256": "b25261bbfed9a97c12597c59035e9b650c5e99c8a9cea4a11c3e64b029c97ede"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/vendor-baseline.json",
+      "bytes": 24803,
+      "sha256": "802638a8e7f9a9b23ef6ed6368ff64b7000afb0bba934761178ab2cac2d8a7b4"
+    },
+    {
+      "path": "build/forest-library-runtime-20261016/windows.json",
+      "bytes": 347,
+      "sha256": "af8a6661ca70faf1df8ae29109672eb4e80bf099c6999813c382a5e878071cf6"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/after-first-catalog-action.txt",
+      "bytes": 251,
+      "sha256": "be4f8be1338db69a4247b807bc2eba7cf8a4c925921e861d2ea7cf12889734cc"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/before-library-load.txt",
+      "bytes": 170,
+      "sha256": "c6dced131d7781d335a451c820224de4e889fb8fa9f193146d44521d18491bb2"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/catalog-selection-before-close.txt",
+      "bytes": 2,
+      "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/close-owned-host.ms",
+      "bytes": 193,
+      "sha256": "f39b978985418cc64e3df3dafbcfac54c6e02533473946a337613cef5a43aae4"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/closure-marker.txt",
+      "bytes": 68,
+      "sha256": "0fdc4a21e5fd1547c54678ab77399c5b87757f41cd0e6737aada2844b3242dbd"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/dev-request.txt",
+      "bytes": 127,
+      "sha256": "2918fe64548ff29a0c8d630b6b296c4c9714c544a28a5547a8beb9e3684862fd"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/dev-result.txt",
+      "bytes": 156,
+      "sha256": "08e9ddeaf60aeff0b772ddaa6fc1c3c7edf7d269d69054754a4d603426931319"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/forest-interfaces.txt",
+      "bytes": 3244,
+      "sha256": "94d63dc2d2429028e20870743ca221c6a3ad834b458c7de11c0e5e78dffd6ceb"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/forest-properties.txt",
+      "bytes": 12132,
+      "sha256": "7aeb2c3ac667484c37c772651a7d2b6ad79255e7d57388a173d58eb30d1e2345"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/grass-count-before-update.txt",
+      "bytes": 3,
+      "sha256": "101770a4004c3406015d7e013e2729f1d23b7e8ceb486069d48f2693088cf7c4"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/grass-explicit-update.txt",
+      "bytes": 129,
+      "sha256": "c66c37e7de255a1112ca9fef9bbf90253164a148065a281ce26ee1535431ec2e"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/grass-first-load.json",
+      "bytes": 1888,
+      "sha256": "1068f7d37b77a99a69e6a358fe6f8c72cdca97301781e189d73e86e95644ae8b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/grass-repeat-after.json",
+      "bytes": 1890,
+      "sha256": "cb9d097e11de7416f769ce03d8227438798fd1ed830713154bcb5395c924eb42"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/grass-repeat-before.json",
+      "bytes": 1926,
+      "sha256": "41ca7235c40f02e335edd1d430820d8ee31e164f82552f9a8b1b92fc50f90be4"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/large-after-load.json",
+      "bytes": 3615,
+      "sha256": "3bd1863371f6a733cb0bf29de5c1d7d0811f965488d8f04c380d213f2161bc19"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/large-after-open.json",
+      "bytes": 2009,
+      "sha256": "89bdd593e752924f2d3da7b6e84972d2a93934e65ef90021f4a25fa861132b85"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/large-before-open.json",
+      "bytes": 2010,
+      "sha256": "796feda3a60de3c121d60c8966d9f4b82c1e20d12bc119752cac176e35165ab0"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/large-count.txt",
+      "bytes": 3,
+      "sha256": "1253e9373e781b7500266caa55150e08e210bc8cd8cc70d89985e3600155e860"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/large-reopened.json",
+      "bytes": 3613,
+      "sha256": "bca33fb7ea87ddffe02585dcfc9491fba5b8e804659a316dd3a068664def2438"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/large-selected-before-load.json",
+      "bytes": 2019,
+      "sha256": "c5aa206c074d91d9e290ed8a595639e97ebdcced2e4fcbbc662bcb100c589132"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/launch.json",
+      "bytes": 1787,
+      "sha256": "d6b733b1a2d4eb8590ca06f5c9b35af014a5bc7e4594ebeb7d50c6bb4855f1d2"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/listener.log",
+      "bytes": 301,
+      "sha256": "63d3abd0e52824667912a2273600bfa8e8082c613da81bbae5a223a5e0174a90"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/loaded.tsv",
+      "bytes": 588,
+      "sha256": "2302a1b35db5d677106bd1c5f6b5114e35130a9355f914b02156f1779e3a825d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/materials-and-modules-resolved.json",
+      "bytes": 12863,
+      "sha256": "c27229a00b43c2b1e8d29387db2fc751980a0ffefe4c885d3526aa8f4a1bc142"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/materials-and-modules.json",
+      "bytes": 26469,
+      "sha256": "228691b0ba1b9eec72d868e0cf4a96cfe357db6909a8b49d5f63ead216d915bd"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/max.ini",
+      "bytes": 35574,
+      "sha256": "cb2b90028e95cd271396442ef22d7d2ceba768f3c743e23e1c5f0aeab7b561ef"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/model-before.json",
+      "bytes": 3859,
+      "sha256": "baca7f7047e40a4f3b83f38ef53668c8aad40a89472cdaa92055a09cada47c6f"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/model-merge-after.json",
+      "bytes": 3782,
+      "sha256": "ea2f0e304bebaf60c9545b308a341b4a43f6bcab97f63e40521d4ab8dcd8a018"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/model-xref-fresh-scene.json",
+      "bytes": 1662,
+      "sha256": "393ec6d6e2d9492d6b1672b8f326be57c8522ef64116097b00872fdb6adcd583"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/model-xref-reopened.json",
+      "bytes": 1660,
+      "sha256": "13b9600c4fd380a1611d21e6231212730f012558efe5df4d9cd00079eb70e677"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/model-xref-warm-after.json",
+      "bytes": 3786,
+      "sha256": "4407a03807e9f64f7c35911f5b3145df7aaf3bc811739df5248a756c1e340f96"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/plugins.ini",
+      "bytes": 218,
+      "sha256": "5bb5f51f0f54a0df888a2c2547660e91fdc0d7290219526dde91bc3c68614b13"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/ready.json",
+      "bytes": 2,
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/reopened-count-and-units.txt",
+      "bytes": 49,
+      "sha256": "dd9254df846829591f22a086f7bf25064fe664fd21cdb89299158ebf00a033b2"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-054723cfa37247a79aa8c23c5627792a.ms",
+      "bytes": 759,
+      "sha256": "707dede3ef2f7d11dea3831102148a917bf299943d2ce0f67aa10dd3d42d871b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-17b8df9a565045d0ab80b3639ab07032.ms",
+      "bytes": 220,
+      "sha256": "8dfca2d2868382324feb6a5a8c80ec0d3339abced69896e98b8f24bd777df62a"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-1d5c6a3265e6499baca0f6a2fd63605f.ms",
+      "bytes": 353,
+      "sha256": "ff04371ac6085f4af5b84b03929d0882b369bd215cd5b00d49d44350123ec98c"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-239523f42d3c4c77a9072dfe37e0d598.ms",
+      "bytes": 230,
+      "sha256": "1cd4ccb9f69231efda26ff0414bfd2ad938ea840ca1c57149f9997d272f4f7f1"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-2bc37765af60444fa555f64afa9c01b7.ms",
+      "bytes": 210,
+      "sha256": "6926b13cd022a3dc2b1e65dec267bf5fe5eee8b8ac8ab27e4f42ade2a6a98dd1"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-6d347cbac62e45fbbaab712ec0590c1b.ms",
+      "bytes": 579,
+      "sha256": "bece6992de58f7de7167485c3949961d28eba957a9717b689d68570ce163c072"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-7213c3a33c3a458f95d1f8b2f95c5054.ms",
+      "bytes": 442,
+      "sha256": "140756329b595a67d0710a9108d1c4d22567702f5e2303843ad0fec8e1e96ea6"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-7e8563f16d514730b7e867a5cf7254e2.ms",
+      "bytes": 459,
+      "sha256": "9a20b05e057249572f9e430ce893afb243cdc62f8dae02fe0e3f4e67624121e7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-8077a7584c2a49cfa5b77e84c33b86f7.ms",
+      "bytes": 280,
+      "sha256": "edbf995f0d885e81a0ef3d7ba93715da4d019720b17390dda0f4e63d7c04d1df"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-82652d06609c4f17bb0d39d90d62bfc3.ms",
+      "bytes": 221,
+      "sha256": "ede62c345d720e6d21f18839eed3ee5e9cec6d0c928fb9fa9a6cb85448225cd9"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-839aa0c19fbe44a1a8cb28b21ac6b27c.ms",
+      "bytes": 334,
+      "sha256": "09df10024f4eef7b2180c5426dba24fccc8256c0b1c21a713d60df06ffd66bf5"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-868ca502c45248388e7c233b1195ee1c.ms",
+      "bytes": 330,
+      "sha256": "3538ed05cb062da38151140f44bc520bab586104722a2645560f2c29ec365e78"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-b357cb2882c349deb93ea755447a3a18.ms",
+      "bytes": 111,
+      "sha256": "aba4387d8525050042cd44b2f45c8a950253aad64daa2187c7857532219eddcb"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-b6e50f8ec1e14c888a602e9e08a3fef0.ms",
+      "bytes": 349,
+      "sha256": "e519b3ccf8c5397dfc7d6b56252537a8463c31a83e84a2c01a503e338abc9e9b"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-c036efc1e3f0472bac79817771a27eb3.ms",
+      "bytes": 305,
+      "sha256": "42878761d50fa11424081db06fff771299736efd6d182e911a4d921e8261da54"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-c481118d78ac4e5e8ea1a4bdf8168ecf.ms",
+      "bytes": 1009,
+      "sha256": "6a7babd5fa25e7a19c4651a63c81dd2ee60c0507e4abc13b3fd829b7784c79c8"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-ddf41c42bdb543a780132ff1830cff07.ms",
+      "bytes": 210,
+      "sha256": "6926b13cd022a3dc2b1e65dec267bf5fe5eee8b8ac8ab27e4f42ade2a6a98dd1"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-ee7fa43824c34097a4e9905d3b7f065d.ms",
+      "bytes": 380,
+      "sha256": "bc897db00307b8e7fcb4720ab01a3ca2b64d92cc7643d409394aba8a02997fe0"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-f19ffed358104c1186bd90d3728ee6d5.ms",
+      "bytes": 703,
+      "sha256": "9a2ebabf08bd9713b22bd20096d763f78e4bb5ced1b84c73280a59561a05e564"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-f32921874f7a4d3aae47d121cd664d5d.ms",
+      "bytes": 347,
+      "sha256": "534cee962930f5cb1beb425678a3abc597647391ca855968443d8d90ea220f74"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/request-f8b7bc0ba8b644b8ab1514995cb751bb.ms",
+      "bytes": 285,
+      "sha256": "c1d8be0fc299723eed3ebb836b5b998835028a572e8c26b6632c5dc187c91a8d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/snapshot-label.txt",
+      "bytes": 19,
+      "sha256": "b49e3b270af1c88588dddd0556d7197a93f795428b597c85b888adc8dbf595c3"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/start.ms",
+      "bytes": 2224,
+      "sha256": "18fa218dbf32267e1fa6b6d83134f760c5f746861d60c2e2df9001b16de0581e"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/xref-fresh-path.txt",
+      "bytes": 154,
+      "sha256": "071897682679e1f7ac168dd52f771f6ef456956191a1dc5e88307d548210b55f"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/xref-fresh-scene.txt",
+      "bytes": 1734,
+      "sha256": "d56a54f978c61da85247950af443632983c0443377cf7722537d02bb5802a742"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/xref-manager-interface-2.txt",
+      "bytes": 3149,
+      "sha256": "f77ca9ef2e2219a4c0ad5af00a741d4e07d3323dddc3f853864108b327d390f2"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/xref-manager-interface.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/xref-reopened.txt",
+      "bytes": 142,
+      "sha256": "68b9381a277a04fa17f469ce4661cce010c18687f43e9b21f41f5fc8ba8b225b"
+    }
+  ],
+  "scene_witnesses": [
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/project/scenes/Forest library large witness.max",
+      "bytes": 18993152,
+      "sha256": "6700a1c62e9b8aaf272d40f82997fdd7688bdc7b33f7a59e88bf63fc5c3c05f2"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-forest-library-20261016-02/project/scenes/Forest XRef model witness.max",
+      "bytes": 847872,
+      "sha256": "4cc7f26621340d292da747223c8a1769a8def16a1d85d9f6dc1e735b2e14914b"
+    }
+  ],
+  "closure_marker": "Owned Forest research host PID46868 closing after library/XRef tests",
+  "limits": [
+    "Lite only; Pro authoring/editor not exercised.",
+    "No production render or pixel comparison, arbitrary groups/controllers, multi-select or custom/effect transfer qualification.",
+    "No modern VertexPaint or Data Channel Curvature same-frame runtime campaign.",
+    "No Forest engine evaluation/upload counters or FPS/relative performance benchmark.",
+    "Warm repeated preset source handle changed; stable node count is not asset-cache hit proof.",
+    "The earlier failed private launch did not qualify runtime behavior.",
+    "Only actual Load Selected was used for import acceptance; attempted double-clicks did not load in the fixture.",
+    "Private test Max and normal Max profiles were separated; globally stored vendor UI preferences were not baseline compared."
+  ],
+  "shutdown_observation": {
+    "owned_host_closed": true,
+    "max_processes_observed_after_closure": [
+      22792
+    ],
+    "closure_note": "Only private research PID46868 was sent quitMAX. Other processes were not controlled. Initial artist PID20300 was no longer present at final observation; cause not investigated or attributed."
+  }
+}

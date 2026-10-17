@@ -25,7 +25,7 @@ def preflight(args):
     if not 1<=args.stage_seconds<=support.BOUNDS['max_stage_seconds'] or not 1<=args.total_seconds<=support.BOUNDS['max_total_seconds']:
         raise support.Blocked('invalid_deadlines','Requested deadlines exceed the documented bounds')
     if not 1<=len(args.evaluation)<=support.BOUNDS['evaluations'] or len(args.baseline_evaluation)!=2*len(args.evaluation):
-        raise support.Blocked('invalid_evaluations','Explicit 1..3 evaluation definitions and two historical profile receipts per definition are required')
+        raise support.Blocked('invalid_evaluations','Explicit 1..4 evaluation definitions and two historical profile receipts per definition are required')
     output=support.fresh(args.out,root/'_local/rag/candidates')
     if output.name!=args.run_id:raise support.Blocked('invalid_output','Fresh output directory name must equal --run-id')
     if not index.is_relative_to(root/'_local/rag/indexes'):raise support.Blocked('wrong_root','Baseline must be an explicit published index in this root')
@@ -91,7 +91,9 @@ def preflight(args):
         # Check preserved question semantics before any expensive audit/build.
         conclusions=[entry for entry in (review or {}).get('reference_conclusions',[])
                      if entry.get('old_evaluation_sha256')==receipt['evaluation_sha256']]
-        support.compare_baseline(results,results,labels,current,bool(changes),conclusions)
+        alternatives=[entry for entry in (review or {}).get('evidence_alternatives',[])
+                      if entry.get('old_evaluation_sha256')==receipt['evaluation_sha256']]
+        support.compare_baseline(results,results,labels,current,bool(changes),conclusions,alternatives)
         tradeoffs=[entry for entry in (review or {}).get('retrieval_tradeoffs',[])
                    if entry.get('old_evaluation_sha256')==receipt['evaluation_sha256'] and entry.get('profile')==profile]
         if len(tradeoffs)>1:raise support.Blocked('invalid_tradeoff_review','Ambiguous manual retrieval review')
@@ -101,7 +103,7 @@ def preflight(args):
         evidence_roots.append(str(path.parent))
         historical.append({'definition':definition['path'],'profile':profile,'receipt':str(path),
                            'evaluation_sha256':receipt['evaluation_sha256'],'results_sha256':receipt['results_sha256'],
-                           'conclusion_review':conclusions,'tradeoff_review':tradeoffs[0] if tradeoffs else None})
+                           'conclusion_review':conclusions,'evidence_review':alternatives,'tradeoff_review':tradeoffs[0] if tradeoffs else None})
     registration=root/'.codex/config.toml'
     if registration.exists():freeze(registration)
     own={name:support.sha(read.read(support.TOOL/name,support.BOUNDS['definition_bytes'])[0]) for name in support.OWN}
@@ -167,6 +169,7 @@ def plan(root,output,run_id,observation):
             add('baseline_compare',{'baseline':baseline['receipt'],'candidate':str(evaluations[0]/'run.json'),
                 'baseline_generation':observation['generation'],'candidate_generation':None,
                 'conclusion_review':baseline.get('conclusion_review',[]),
+                'evidence_review':baseline.get('evidence_review',[]),
                 'tradeoff_review':baseline.get('tradeoff_review'),
                 'sources_changed':observation['source_update_needed'],'out':str(output/'comparisons'/f'd{number}-{profile}.json')})
     # Reverify both after all measurement work, not only immediately after build.

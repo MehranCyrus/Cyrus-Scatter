@@ -45,6 +45,34 @@ class RevisionReviewTests(unittest.TestCase):
             s.review_definition({'sources':[old]},{'schema':'cyrus.corpus/1','sources':[new]},review)
         self.assertEqual(result.exception.issue,'authority_promotion')
 
+    def test_retirement_requires_exact_review_and_preserves_history(self):
+        candidate={'schema':'cyrus.corpus/1','sources':[]}
+        entry={'path':self.source['path'],'old_sha256':self.source['sha256'],
+               'reason':'Retired migration fixture', 'historical_evidence':'sealed baseline corpus',
+               'replacement_or_omission':'Omitted, no supported current equivalent',
+               'agent_reviewed':True,'references_checked':True,'evaluation_requirements_checked':True}
+        result=s.review_definition(self.baseline,candidate,{'retirements':[entry]})
+        self.assertTrue(result[0]['retired'])
+        self.assertEqual(self.baseline['sources'],[self.source])
+        for changes in ([], [entry,entry], [{**entry,'old_sha256':'b'*64}],
+                        [{**entry,'evaluation_requirements_checked':False}], [{**entry,'historical_evidence':''}]):
+            with self.subTest(changes=changes),self.assertRaises(s.Blocked):
+                s.review_definition(self.baseline,candidate,{'retirements':changes})
+        with self.assertRaises(s.Blocked):
+            s.review_definition(self.baseline,{'schema':'cyrus.corpus/1','sources':[self.source]}, {'retirements':[entry]})
+
+    def test_atomic_section_review_does_not_allow_range_shrink(self):
+        candidate={'schema':'cyrus.corpus/1','sources':[{**self.source,'contract_sections':[[1,3]]}]}
+        entry={**self.review['sources'][0], 'path':self.source['path'], 'old_sha256':self.source['sha256'],
+               'new_sha256':self.source['sha256'], 'field_reasons':{'contract_sections':'Preserve complete rule and limits'},
+               'unchanged_metadata_reviewed':True}
+        with self.assertRaises(s.Blocked):s.review_definition(self.baseline,candidate,{'sources':[entry]})
+        entry['contract_sections_reviewed']=True
+        self.assertEqual(len(s.review_definition(self.baseline,candidate,{'sources':[entry]})),1)
+        candidate['sources'][0]['ranges']=[[1,2]]
+        entry['field_reasons']['ranges']='Attempt to drop limits'
+        with self.assertRaises(s.Blocked):s.review_definition(self.baseline,candidate,{'sources':[entry]})
+
     def test_runtime_review_binds_both_identities(self):
         runtime={'adapter.py':'a'*64}
         change={'name':'adapter.py','old_sha256':'a'*64,'new_sha256':'b'*64,
@@ -82,6 +110,27 @@ class RevisionReviewTests(unittest.TestCase):
         altered=copy.deepcopy(after);altered['queries'][0]['required_evidence']=[]
         with self.assertRaises(s.Blocked):s.compare_baseline(results,results,before,altered,True,[note])
         with self.assertRaises(s.Blocked):s.compare_baseline(results,results,before,after,True,[{**note,'old_value':'wrong'}])
+
+    def test_equivalent_owner_addition_is_explicit_and_cannot_drop_requirements(self):
+        unit={'id':'rule','canonical_paths':['guide.md'],'alternatives':[{'path':'guide.md','sha256':'a'*64,'start_line':1,'end_line':1}]}
+        before={'queries':[{'id':'q','query':'same question','required_evidence':[unit]}],'anchors':[]}
+        after=copy.deepcopy(before)
+        after['queries'][0]['required_evidence'][0]['alternatives'].append({'path':'foundation.md','sha256':'b'*64,'start_line':1,'end_line':12})
+        after['queries'][0]['required_evidence'][0]['canonical_paths'].append('foundation.md')
+        note={'group':'base','id':'q','old_value':before['queries'][0]['required_evidence'],
+              'new_value':after['queries'][0]['required_evidence'],'agent_reviewed':True,
+              'reason':'A maintained contract now states the same requirement','equivalence_evidence':'Full rule, conditions and limits inspected'}
+        result={'questions':[],'metrics':{},'evaluation_sha256':'fixture'}
+        with self.assertRaises(s.Blocked):s.compare_baseline(result,result,before,after,True)
+        self.assertTrue(s.compare_baseline(result,result,before,after,True,evidence_review=[note])['passed'])
+        for mutation in ('drop_unit','drop_owner','change_id'):
+            bad=copy.deepcopy(after)
+            if mutation=='drop_unit':bad['queries'][0]['required_evidence']=[]
+            elif mutation=='drop_owner':bad['queries'][0]['required_evidence'][0]['alternatives'].pop(0)
+            else:bad['queries'][0]['required_evidence'][0]['id']='easier'
+            with self.subTest(mutation=mutation),self.assertRaises(s.Blocked):
+                s.compare_baseline(result,result,before,bad,True,evidence_review=[{**note,'new_value':bad['queries'][0]['required_evidence']}])
+        with self.assertRaises(s.Blocked):s.compare_baseline(result,result,before,after,False,evidence_review=[note])
 
 
 class ManualTradeoffTests(unittest.TestCase):

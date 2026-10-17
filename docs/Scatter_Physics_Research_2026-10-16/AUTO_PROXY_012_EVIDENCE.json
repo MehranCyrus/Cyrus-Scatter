@@ -1,0 +1,240 @@
+{
+  "product": "CyrusPhysicsLab",
+  "version": "0.1.2",
+  "max_year": 2027,
+  "schema": 1,
+  "solver_profile": "cpl-leaf-3",
+  "scope": {
+    "computer_use": false,
+    "physical_input_tested": false,
+    "scatter_integration": false,
+    "preset_work": false,
+    "artist_install_restart": false,
+    "commit_push": false
+  },
+  "git": {
+    "initial_head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+    "final_head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+    "status": " M docs/README.md\n M docs/plans/preset-gallery-improvements/README.md\n?? CyrusPhysicsLab/\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/Scatter_Physics_Research_2026-10-16/\n?? docs/plans/landscape-presentation/\n?? docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.json\n?? docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.md\n?? presentation-studio/\n?? website/prototypes/\n"
+  },
+  "baseline": {
+    "launch": {
+      "path": "build/physics-lab-012-baseline-01/launch.json",
+      "sha256": "8ab6420b789d17944d1ef3384e7d67cf656aa3cb3edb7562b035df3fe9bad690"
+    },
+    "assertions": {
+      "path": "build/physics-lab-012-baseline-01/assertions.txt",
+      "sha256": "cf274c7ba19ef015a37c705c4d8841a633520e6f55851ca366c8234fcb80e79e"
+    },
+    "result": "REPRODUCED Sphere32: 482 vertices, 960 faces; Start rejected with -- Runtime error: Proxy limited to 128 vertices before thickening; supply a simplified proxy\n",
+    "scene": {
+      "path": "build/physics-lab-012-baseline-01/Sphere32_Rejection.max",
+      "sha256": "7370e71800368e6c5c442be7a589b73cb0ac487d19790a4ae07703da6f859022"
+    }
+  },
+  "ordinary_build": {
+    "path": "build/physics-lab-012-delivery-20261016-01/receipt.json",
+    "sha256": "39870ea1526a67e85e2194ced7334a40c47fee1b437aab006212199f45c6c594"
+  },
+  "native_pair": {
+    "CyrusPhysicsLab.dlx": {
+      "path": "build/physics-lab-012-delivery-20261016-01/CyrusPhysicsLab.dlx",
+      "sha256": "2be17e3b5d765205a8698b51d7c730947c8033961b2f877836e02e9fef26e906"
+    },
+    "CyrusPhysicsStorage.dlh": {
+      "path": "build/physics-lab-012-delivery-20261016-01/CyrusPhysicsStorage.dlh",
+      "sha256": "30fabda26fb0b094853d227cec6b47bb0bd4ded20f18ad06931e517d9c423c9e"
+    }
+  },
+  "numeric": {
+    "checks": 3174,
+    "receipt": {
+      "path": "build/physics-lab-012-delivery-20261016-01/Testing/Temporary/LastTest.log",
+      "sha256": "b2af777abb685fc3821ae4b25dfbe8573696851258d4e2e278356fa9b5c10a03"
+    }
+  },
+  "host_runs": [
+    {
+      "launch": {
+        "path": "build/physics-lab-012-final-01/launch.json",
+        "sha256": "8898feb2aac80130cacedcdd0b96d87dcc5cd74e6d833d4d9660edb3b66c0a15"
+      },
+      "assertions": {
+        "path": "build/physics-lab-012-final-01/assertions.txt",
+        "sha256": "ab45d9056a92a89c7f030044e86a25f92a459e4a2f0a89fc981ea0b90ba6bcd7"
+      },
+      "result": "host_ui_layout: PASS native rollout bounds and caption metrics; no screen pixels or OS input\n\nhost_proxy_ui: PASS 1960 Sphere32/plane/button/Painter/proxy/Undo/roundtrip checks; source 482 vertices / 960 faces\nSphere32 Start handler 109 ms (whole handler, not solver-only or presented FPS)\n\nhost_brush_ui: PASS 78 actual-button/timer/SDK-hit checks\n{\"active\":false,\"commits\":2,\"cooks\":4,\"error\":\"\",\"lastTickMs\":0.8946,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":10,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":96,\"timedOut\":false,\"version\":\"0.1.2\"}\n\nhost_timeout_ui: PASS timeout UI: saved-result retention, status, disabled edits, Stop, explicit Keep preview and Undo\n\nhost: PASS 18 scripted assertions; no physical input\\n{\"active\":false,\"commits\":0,\"cooks\":0,\"error\":\"\",\"lastTickMs\":0.0,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":6,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":0,\"timedOut\":false,\"version\":\"0.1.2\"}\\n\nhost_extended: PASS 21 extended scripted assertions; physical input not tested\n\nhost_transforms: PASS centimetres, source offset/rotation/nonuniform scale, mirrored receiver, transformed polygon, save/reopen and self-binding rejection\n\nhost_previous_scene: PASS preserved 0.1.0 scene opens with 60 cached bodies, original solver profile and current UI; no replay/resave\n\nhost_proxy_previous_scene: PASS preserved 0.1.1 scene: profile 2 and 60 cached leaves unchanged; no replay/resave\n\ndemo: {\"active\":false,\"commits\":1,\"cooks\":1,\"error\":\"\",\"lastTickMs\":0.2709,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":60,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":60,\"timedOut\":false,\"version\":\"0.1.2\"}\n\n",
+      "layout": {
+        "receipt": {
+          "path": "build/physics-lab-012-final-01/ui-layout.json",
+          "sha256": "114f32ec4d93133f8bdbc58d60747d08ee5bf955cb144f94d5345d4b1eadee0b"
+        },
+        "scale": 1.0,
+        "logical_widths": [
+          162
+        ],
+        "native_children": 61,
+        "owned_renders": [
+          {
+            "path": "build/physics-lab-012-final-01/ui-areaUI.png",
+            "sha256": "358a928379e266974f6c5a1ac94388066b3686ab7150954e505417c495c12151"
+          },
+          {
+            "path": "build/physics-lab-012-final-01/ui-brushHeader.png",
+            "sha256": "10ed76205876c3283c0754a9df32f5efb1201e0f4658e595243c19dc0b796428"
+          },
+          {
+            "path": "build/physics-lab-012-final-01/ui-brushUI.png",
+            "sha256": "01ad48b3993f50d5db628bc307d434a8d1ec117c9647faa67f56c076ec45bb4c"
+          },
+          {
+            "path": "build/physics-lab-012-final-01/ui-collisionUI.png",
+            "sha256": "117d1627ba8e7d3d9e09ab750299522bb629b0b2466fa7aef3fd42d1eb3508ac"
+          },
+          {
+            "path": "build/physics-lab-012-final-01/ui-objectsUI.png",
+            "sha256": "38be7e28dac32cddea6acee664ca2948de07f16428786ce58064e8d382901bab"
+          },
+          {
+            "path": "build/physics-lab-012-final-01/ui-resultUI.png",
+            "sha256": "6dda9cbaa9d1007bda1113f0a729c23fd88cf6952ae9a90549d45c15a105e86c"
+          }
+        ]
+      },
+      "sphere_auto": {
+        "path": "build/physics-lab-012-final-01/sphere-auto.json",
+        "sha256": "97e46dd3fc118ff0cabdd23dd87b7b030505076ef1c994849609eca16c2f6325"
+      },
+      "sphere_custom": {
+        "path": "build/physics-lab-012-final-01/sphere-custom.json",
+        "sha256": "3bcc950d62d546e779cf7d4a506fe5d8694e2e635e9bcf18f61b03bcc3b0b162"
+      },
+      "render_geometry_equal": true,
+      "render_vertices": 482,
+      "render_faces": 960,
+      "auto_collision_vertices": 192,
+      "custom_collision_vertices": 26
+    },
+    {
+      "launch": {
+        "path": "build/physics-lab-012-final-02/launch.json",
+        "sha256": "70821dc4a06edb51373de621afa717037cf35413d785d32379d256fbf14d98f3"
+      },
+      "assertions": {
+        "path": "build/physics-lab-012-final-02/assertions.txt",
+        "sha256": "fc00389d2118f16d8603e1f29a990151901c4266e98253539dbb38e4cd6ccef6"
+      },
+      "result": "PASS native rollout bounds and caption metrics; no screen pixels or OS input\nPASS 1960 Sphere32/plane/button/Painter/proxy/Undo/roundtrip checks; source 482 vertices / 960 faces\nSphere32 Start handler 107 ms (whole handler, not solver-only or presented FPS)\nPASS timeout UI: saved-result retention, status, disabled edits, Stop, explicit Keep preview and Undo\nPASS 78 actual-button/timer/SDK-hit checks\n{\"active\":false,\"commits\":2,\"cooks\":4,\"error\":\"\",\"lastTickMs\":0.2194,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":10,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":93,\"timedOut\":false,\"version\":\"0.1.2\"}\n",
+      "layout": {
+        "receipt": {
+          "path": "build/physics-lab-012-final-02/ui-layout.json",
+          "sha256": "c809f7e0ee957dea132354691153e6078ac38e559016695b08ef038412d3fabd"
+        },
+        "scale": 1.5,
+        "logical_widths": [
+          108
+        ],
+        "native_children": 61,
+        "owned_renders": [
+          {
+            "path": "build/physics-lab-012-final-02/ui-areaUI.png",
+            "sha256": "9cdd14a5f05e6315bf69ac9ec63adf4cbf33038c09b3a2f52932abeb33c84712"
+          },
+          {
+            "path": "build/physics-lab-012-final-02/ui-brushHeader.png",
+            "sha256": "ff7a8ca149c7c47c7545a97025e31a2a9e5d4e734d4e38eb15316cb30a024ad6"
+          },
+          {
+            "path": "build/physics-lab-012-final-02/ui-brushUI.png",
+            "sha256": "8926f149913172725bbf126ff33d0f1849e73c7a67ad66ccf87b22fdf797329d"
+          },
+          {
+            "path": "build/physics-lab-012-final-02/ui-collisionUI.png",
+            "sha256": "cd466eaefb3a927fa8a5cc65189a30662b8e35f198af6f77cdce302c7270cf27"
+          },
+          {
+            "path": "build/physics-lab-012-final-02/ui-objectsUI.png",
+            "sha256": "b042b92e3d27f22b9613581665eb930d18359392d65cf400165a9c4702b4247f"
+          },
+          {
+            "path": "build/physics-lab-012-final-02/ui-resultUI.png",
+            "sha256": "15bd99ff44fb11f6fe9b18c288884d352f8ab324447aadb9e6f874ecdfe4e068"
+          }
+        ]
+      },
+      "sphere_auto": {
+        "path": "build/physics-lab-012-final-02/sphere-auto.json",
+        "sha256": "3983e35a9cd5cf79c66a9ea7374a620af40b1c3c65e7c997b32442fcf118d0e6"
+      },
+      "sphere_custom": {
+        "path": "build/physics-lab-012-final-02/sphere-custom.json",
+        "sha256": "9730e758fea114e91c94a389642bf1436fbb19f881245d84d4466b822b35de33"
+      },
+      "render_geometry_equal": true,
+      "render_vertices": 482,
+      "render_faces": 960,
+      "auto_collision_vertices": 192,
+      "custom_collision_vertices": 26
+    }
+  ],
+  "private_fault_run": {
+    "build_receipt": {
+      "path": "build/physics-lab-012-faults-01/private-build-receipt.json",
+      "sha256": "b234664cb99867582fd5c0b5fe958e2bb29cb0963d0f956e25b70445c819fd50"
+    },
+    "launch": {
+      "path": "build/physics-lab-012-faults-01/launch.json",
+      "sha256": "e4749d91a91e562777e46fadba2b3c8698710d9d9a2407a4d6243582abd02dc1"
+    },
+    "assertions": {
+      "path": "build/physics-lab-012-faults-01/assertions.txt",
+      "sha256": "47112d91925522168492deb446b7a939483714499018cee4386c27b83536ec25"
+    }
+  },
+  "sdk_probe": {
+    "module": {
+      "path": "build/physics-lab-brush-probe-011/CyrusPhysicsProbe.dlx",
+      "sha256": "a832dda37dc2c126b0005c3505ab0e023be7dce95c0493bc4385c1767b29fcc0"
+    },
+    "source": {
+      "path": "CyrusPhysicsLab/tests/paint_probe/probe.cpp",
+      "sha256": "b225f1c547d60f92582aedb88bf0af63738ee858a23149b90fbf3130ca841d9a"
+    },
+    "method": "public SDK TestHit and canvas callbacks; no OS input"
+  },
+  "package": {
+    "file": {
+      "path": "dist/CyrusPhysicsLab-0.1.2-20261016/CyrusPhysicsLab-0.1.2-Max2027.mzp",
+      "sha256": "81b97157e364ea44fa11d58dc595d024014836e972f96faed966ad094714acae"
+    },
+    "manifest": {
+      "path": "dist/CyrusPhysicsLab-0.1.2-20261016/package.json",
+      "sha256": "e860447005a69f0bc86a05cdf5e85684212ec7790ce795b30790deeb20ea0570"
+    },
+    "bytes": 657416
+  },
+  "isolated_installer": {
+    "path": "build/physics-lab-012-installed-01/installer-receipt.json",
+    "sha256": "ef5bfe0e2b00e2ee07e5fb341336654b2fdb6b0cdb0dc85f530a1860697f52b1"
+  },
+  "normal_profile_before_after": {
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini": {
+      "exists": true,
+      "sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+    },
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\Plugin.UserSettings.ini": {
+      "exists": true,
+      "sha256": "a0d4ff2eb9dfdaa324d93ea25bcd840d38b524860e301b944053e1f2acd996f5"
+    },
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\startup\\CyrusPhysicsLabStartup.ms": {
+      "exists": true,
+      "sha256": "230bc6373b33ad5c82befdedb8ee0f9c0c78745cf53ae918a116da8a5d3c4f38"
+    }
+  },
+  "limits": [
+    "Automatic collision geometry is a conservative convex approximation; curved/concave details may have a gap.",
+    "Explicit custom proxies remain limited to 128 input vertices.",
+    "Max custom control scales 1.0/1.5 are separate from actual Windows or mixed-monitor DPI.",
+    "Physical input, arbitrary meshes, dense production piles and general performance remain artist acceptance."
+  ]
+}

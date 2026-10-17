@@ -1,0 +1,3059 @@
+{
+  "product": "CyrusPhysicsLab",
+  "version": "0.1.2",
+  "max_year": 2027,
+  "scope": {
+    "test_only": true,
+    "computer_use": false,
+    "physical_input_tested": false,
+    "implementation_changes": false,
+    "preset_changes": false,
+    "integration": false,
+    "install_restart_artist_session": false,
+    "commit_push": false
+  },
+  "method": "Owned hidden Max 2027; actual Start button handler; private SDK driver uses viewport projection, Painter TestHit, StartStroke, PaintStroke, EndStroke/CancelStroke; ordinary product binaries.",
+  "fixture": {
+    "receiver": "5000 x 5000 mm Plane, 4 x 4 segments, XY at z=0",
+    "source": "Sphere32, radius 32.788mm, scale 1; full 482-vertex render mesh",
+    "seed": 42,
+    "spacing_m": 0.2,
+    "drop_height_m": 0.1,
+    "radii_m": [
+      0.01,
+      0.25
+    ],
+    "viewport": "Top; 12000 x 9000 mm disposable hidden framing Plane; receiver is the sole Painter target"
+  },
+  "source_receipt": {
+    "path": "build/physics-lab-012-delivery-20261016-01/receipt.json",
+    "sha256": "39870ea1526a67e85e2194ced7334a40c47fee1b437aab006212199f45c6c594"
+  },
+  "git": {
+    "branch": "codex/workflow-0.75",
+    "head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+    "status": " M AminScatter/CMakeLists.txt\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/src/asset_package.cpp\n M AminScatter/src/brush_host.cpp\n M AminScatter/src/recipes_bridge.cpp\n M AminScatter/tests/asset_package_tests.cpp\n M AminScatter/tools/ui/generate.cjs\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/assets.ms\n M AminScatter/tools/ui/templates/recipes.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M AminScatter/ui/LibraryGallery.cs\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M docs/README.md\n M docs/plans/preset-gallery-improvements/README.md\n M tools/procedural_lab/build_feature_catalog.py\n M tools/procedural_lab/check_generated.py\n?? AminScatter/tools/ui/templates/preset-loading.ms\n?? CyrusPhysicsLab/\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/Scatter_Physics_Research_2026-10-16/\n?? docs/plans/landscape-presentation/\n?? docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.json\n?? docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.md\n?? docs/plans/preset-gallery-improvements/LOAD_0853.md\n?? presentation-studio/\n?? tools/presets_0853/\n?? website/prototypes/\n"
+  },
+  "preservation": {
+    "before_receipt": {
+      "path": "build/physics-lab-012-outside-fixtures/before.json",
+      "sha256": "a0575835d478053bae9e0f3935005ae454f6443b9153b0f63639cc8033e344fd"
+    },
+    "all_before_hashes": {
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\CMakeLists.txt": "ae800ee33c8abfc2537c379c0e3035d2ee1184094fe908d83ecc293be7393b92",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\README.md": "e5fe6dcbfed67f16519410b19b61b22fba4b1fa7af54e8893b6d355024136d45",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\include\\core.h": "d27e8c839c89df9cd940bb77b21085aa2a04b3d8720d814f90a09a83038b7000",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\installer\\CyrusPhysicsLabStartup.ms": "0da539120504f8f57f62a123ea492b4426e521980089180e883269c92b073285",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\scripts\\CyrusPhysicsLab.ms": "be95254e7eb2fa269fca29bd9076ab28d2f6fa087096ed8f968aa24593f22450",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\src\\core.cpp": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\src\\jolt_world.cpp": "0c91fc3e5e05bf837e33257186869c07bf1e32c984a3b689c1117e1c92d27d42",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\src\\max_host.cpp": "fde096a9be2f3d299a4c3c1eb8109dbfaf35da8b07c51da708bb6011567287e7",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\src\\physx_world.cpp": "0f966570a65f40f0be0e8e2fbf81658f75c1cd7c4cce0b1cdd8fa846c139e00e",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\src\\storage_plugin.cpp": "97b95e1c768028e2abbeddc10488cceb3febcaa7b4e099097db27b98fc10228a",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\core_tests.cpp": "975be38e04da2ef9bf2840fd5f0f00369bbbe6737c044d77cbe49a79ac812457",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\demo.ms": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host.ms": "dcd15b87209af23cf1c8a617b10367065f00d3f6486fae90649d6466218db96f",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_brush_ui.ms": "a23d4cff37d4006da536f37e57aaaa141a18b1461922d4569aa75277102f2d8f",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_extended.ms": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_faults.ms": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_previous_scene.ms": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_proxy_previous_scene.ms": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_proxy_ui.ms": "68b4fd492aefa9f08819cd5294c3b6b28fa48913a9f6e37322241710b9b9bb68",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_regression.ms": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_scaled_ui.ms": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_timeout_ui.ms": "e40f0262fa67853d47fb68d7cd6e7a2d987f3b46793e2883953e1afca3674af5",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_transforms.ms": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\host_ui_layout.ms": "b2664f68fcdb93ef0c20a4b56eacdb7eb15a178fc214bd0c6cb392987a6b44d1",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\ui_layout.py": "e61ce676fe0238957bd76646b612addcbcc94b0e8397b5a962cd0152d310eb4d",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\fixtures\\pyramid_append_plane.json": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\paint_probe\\CMakeLists.txt": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\paint_probe\\probe.cpp": "b225f1c547d60f92582aedb88bf0af63738ee858a23149b90fbf3130ca841d9a",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tests\\__pycache__\\ui_layout.cpython-311.pyc": "c15a37c578332bb1a1c98f5d5e08ad65dc5a443958c51fa0fffdebd74822494c",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\build.py": "a91fadeada074442ab399a53f8c9dca39275bb3586ba1c3b3459e1f0716ae257",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\build_probe.py": "41e464552cb9a99ed394003582fc572f3a831462b82bc5a85d09be22d6eb1706",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\compare.py": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\host_test.py": "1614b92ceab4ecf427bdfa151c116b6f919efb57b8d4982764c43e48e6f61af9",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\installer_test.py": "dbe726f755ad7774d159bf4872d582484c505f10488c1e3a43826bfa5c982f1d",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\package.py": "d6748a7196c15d32380d1989abd57c7c5c973e789b150ddbd083fcb38f2747c3",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\__pycache__\\build.cpython-311.pyc": "a1b10fe6a2fa3e19e2a5a77638b1eb91c11b1c61d1c895ee5e0cb1100b80f465",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\__pycache__\\compare.cpython-311.pyc": "18e717e47179c6c8840cc886a5588db9d29c5cdad606b0a85904fb09aca200fc",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\__pycache__\\host_test.cpython-311.pyc": "27f8c5aa490549fed45943edeaf3bfaa7a2a3cfdacb1c6d854d6b311b3ada1bc",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\__pycache__\\installer_test.cpython-311.pyc": "377fe730e71fe1cbb914d90942c19c528e5f35541925a04d67a14a37fb6e55ff",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\tools\\__pycache__\\package.cpython-311.pyc": "b15e00c500e05907b9ae5c6561bae457fb401cd5bdd8e9aae61081fcb8438c95",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusPhysicsLab-0.1.2-20261016\\CyrusPhysicsLab-0.1.2-Max2027.mzp": "81b97157e364ea44fa11d58dc595d024014836e972f96faed966ad094714acae",
+      "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4",
+      "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\Plugin.UserSettings.ini": "a0d4ff2eb9dfdaa324d93ea25bcd840d38b524860e301b944053e1f2acd996f5",
+      "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\startup\\CyrusPhysicsLabStartup.ms": "230bc6373b33ad5c82befdedb8ee0f9c0c78745cf53ae918a116da8a5d3c4f38"
+    },
+    "changed_files": [],
+    "frozen_build_source_mismatches": [],
+    "normal_profile_files_unchanged": true
+  },
+  "private_probe": {
+    "binary": {
+      "path": "build/physics-lab-brush-probe-011/CyrusPhysicsProbe.dlx",
+      "sha256": "a832dda37dc2c126b0005c3505ab0e023be7dce95c0493bc4385c1767b29fcc0"
+    },
+    "source": {
+      "path": "CyrusPhysicsLab/tests/paint_probe/probe.cpp",
+      "sha256": "b225f1c547d60f92582aedb88bf0af63738ee858a23149b90fbf3130ca841d9a"
+    },
+    "packaged": false
+  },
+  "package_unchanged": {
+    "path": "dist/CyrusPhysicsLab-0.1.2-20261016/CyrusPhysicsLab-0.1.2-Max2027.mzp",
+    "sha256": "81b97157e364ea44fa11d58dc595d024014836e972f96faed966ad094714acae"
+  },
+  "scripted_assertions": 113,
+  "scenarios": 11,
+  "runs": [
+    {
+      "run": "build/physics-lab-012-outside-01",
+      "launch": {
+        "pid": 41252,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-01\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-01\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-01\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-01\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "2be17e3b5d765205a8698b51d7c730947c8033961b2f877836e02e9fef26e906",
+          "CyrusPhysicsStorage.dlh": "30fabda26fb0b094853d227cec6b47bb0bd4ded20f18ad06931e517d9c423c9e"
+        },
+        "script_sha256": "be95254e7eb2fa269fca29bd9076ab28d2f6fa087096ed8f968aa24593f22450",
+        "fixture_sha256": "fa55f06d2c57e70bb00b8ae2b7586c989840c283d4a0851b86cae224428658c4",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "launch_receipt": {
+        "path": "build/physics-lab-012-outside-01/launch.json",
+        "sha256": "7341989f538fb19a18d40bd9dbfd98d2903d1707bffa7bd79dc8ce466ca8afeb"
+      },
+      "loaded": {
+        "path": "build/physics-lab-012-outside-01/loaded.tsv",
+        "sha256": "28a44a7506248f7dba74c3331cf75ae96324b55d49f11dfaffc1daec583e9bf5"
+      },
+      "completion": {
+        "path": "build/physics-lab-012-outside-01/completed.json",
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      },
+      "assertions": "PASS 65 scripted assertions; seven scenarios; actual Painter TestHit and canvas callbacks; no physical mouse input.",
+      "paths": [
+        {
+          "name": "all-outside-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "all-outside-path",
+          "world_path_mm": "#([3000,0,0], [3500,500,0], [3000,1000,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        },
+        {
+          "name": "leave-reenter-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "leave-reenter-inside1",
+          "world_path_mm": "#([-1500,0,0], [-1100,0,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "leave-reenter-gap",
+          "world_path_mm": "#([3000,0,0], [3000,1000,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        },
+        {
+          "name": "leave-reenter-inside2",
+          "world_path_mm": "#([1100,1000,0], [1500,1000,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "release-outside-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "release-outside-inside",
+          "world_path_mm": "#([-600,0,0], [-200,0,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "release-outside-path",
+          "world_path_mm": "#([3000,0,0], [3500,1000,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        },
+        {
+          "name": "start-outside-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "start-outside-miss",
+          "world_path_mm": "#([3000,0,0], [3000,1000,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        },
+        {
+          "name": "start-outside-enter",
+          "world_path_mm": "#([0,0,0], [400,0,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "outside-overlap-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "outside-overlap-path",
+          "world_path_mm": "#([2600,0,0], [2600,500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        },
+        {
+          "name": "edge-footprint-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "edge-footprint-safe",
+          "world_path_mm": "#([-800,1000,0], [-400,1000,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "edge-footprint-edge",
+          "world_path_mm": "#([2450,1000,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "1",
+          "exception": ""
+        },
+        {
+          "name": "edge-footprint-recovery",
+          "world_path_mm": "#([-1000,0,0], [-600,0,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "cancel-outside-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "cancel-outside-inside",
+          "world_path_mm": "#([-600,0,0], [-200,0,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "cancel-outside-cancel",
+          "world_path_mm": "#([3000,0,0])",
+          "finish": "true",
+          "cancel": "true",
+          "sdk_hits": "0",
+          "exception": ""
+        }
+      ],
+      "raw_files": [
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-after-state.json",
+          "sha256": "05b8e0c4f262d7c8132bcfbbf80d638a31452f67eea7ac173162d8cf04d9e44d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-after-stats.json",
+          "sha256": "7bcc23e38a4f14614ac89a919896bd5a90bc7cd33c86908bdb9c170ff8df2d0c"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-after-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-before-stats.json",
+          "sha256": "436432020b8d729fa25870bb0f461e26c5ed3662687ac74896e512d574468c0a"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-path-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-path-stats.json",
+          "sha256": "debe4254dc54a700b88b3ccf35b175224c32437deca69e0a98c23d0675446f2e"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/all-outside-path-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/assertions.txt",
+          "sha256": "807f941e7fd7ef9db7a59d13a39ae25d2bc0b6d7daaf126e93e6ac9d56b36a28"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-after-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-after-stats.json",
+          "sha256": "12c3e67209791a8378d967efffd1fa068109c4d7d0373918f4aec0e5a7135135"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-after-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-before-stats.json",
+          "sha256": "6988216bbd44dca5c92e241f24e316f4d7eed195dfbd17a16150a4e746304bea"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-cancel-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-cancel-stats.json",
+          "sha256": "12c3e67209791a8378d967efffd1fa068109c4d7d0373918f4aec0e5a7135135"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-cancel-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-inside-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-inside-stats.json",
+          "sha256": "890879794883e9e48540991bdc79243121b2a326df1998fbf402518f6a84f821"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-inside-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-after-state.json",
+          "sha256": "45a4aa7f96555c556295392a9d46de753dc61417fd9f7f907594471d53111464"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-after-stats.json",
+          "sha256": "30458c3b2ec999e5511a11f24867e50b369c0af62a11a86939e2ce1e4408571f"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-after-ui.txt",
+          "sha256": "b3025c29030605bd17e8f167a541cb84e6e2ce1da845018ad4026f68736ff155"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-before-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-before-stats.json",
+          "sha256": "f425e29c77a31815fa433fa4c842d63acce361f7e29762a699d26e060bd3c1b5"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-edge-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-edge-stats.json",
+          "sha256": "5097d2eecbea8e9c56cc0e05ea4c25aec887158f912f590afa09f53fa893287e"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-edge-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-recovered-state.json",
+          "sha256": "d0074139fb6931bb0cad0d0e9710e222df43ea8a255e284cac962c0e0ebfa1b3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-recovered-stats.json",
+          "sha256": "d50a6e3b3d337f59e2dc3b0f5cd5f9eff3986e7428ee2478752d2cbdfec93dea"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-recovered-ui.txt",
+          "sha256": "92678fc6e6fb7f385c122d14c948600d9e1521f52e36ba66420c62be40bd0a80"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-recovery-state.json",
+          "sha256": "45a4aa7f96555c556295392a9d46de753dc61417fd9f7f907594471d53111464"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-recovery-stats.json",
+          "sha256": "b816c8c9bc515d1997bc025ac5a5d949c4f4a6da6eb34fa11af0c2243210a30a"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-recovery-ui.txt",
+          "sha256": "4b62c173faca993a2e60c05e3c11526b2eaeae9ff1ab9d8ff661230702f27c0f"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-safe-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-safe-stats.json",
+          "sha256": "a7f653792f1288fc921a157f22feb4cf61d629fa7aed484470dd708601677014"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-safe-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/fixture.ms",
+          "sha256": "fa55f06d2c57e70bb00b8ae2b7586c989840c283d4a0851b86cae224428658c4"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-after-state.json",
+          "sha256": "bc979b9b6164215ec3a1474b3d6a42fcd37dbd1ad7cb25629e0d1e601e639eb9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-after-stats.json",
+          "sha256": "4702c70e37b615fc9dec3a58a95fbe6f07430eec04cce2c668bf0aebed3958ff"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-after-ui.txt",
+          "sha256": "e1102db17d135b9fcdfc8f5d020161f82b4ece4ccc2c1c27a5f62690edc951bb"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-before-stats.json",
+          "sha256": "8c97f99f68cf1fc4783bcca227ab99aaa9c7929c8f53a03254d7767357817572"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-gap-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-gap-stats.json",
+          "sha256": "55bd3e1273ac78a43035afd8e66d094d57f448e71d8563596a83a8a86404701c"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-gap-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-inside1-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-inside1-stats.json",
+          "sha256": "55bd3e1273ac78a43035afd8e66d094d57f448e71d8563596a83a8a86404701c"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-inside1-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-inside2-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-inside2-stats.json",
+          "sha256": "bc0d41ba5207c5288067d9dcfda3d538218882f9e87e13c2fd90b1c5fe88f507"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-inside2-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-undo-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-undo-stats.json",
+          "sha256": "bccb8b4764c618d7b2364b9f44fc9b83184d3ff86a65eb05ed2b1c6c979e4bec"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-undo-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/listener.log",
+          "sha256": "63d3abd0e52824667912a2273600bfa8e8082c613da81bbae5a223a5e0174a90"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-after-state.json",
+          "sha256": "0b2f24595ef2f3ebdd9410bbaafc97151f7af65cf7fd02d231d7fc002c24f0fa"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-after-stats.json",
+          "sha256": "8f3197c9fe44011e6aba5e9804513af4ae7ec22adf072ad1901b7d49f8078250"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-after-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-before-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-before-stats.json",
+          "sha256": "f819bc90994aa9a74c2bcf39eb36b1bb8b41dba8bec98e51a17a31456f883c59"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-path-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-path-stats.json",
+          "sha256": "592da5f46e5a465a6c97a6d76aef76e0e4b85428da3693f45594a1a15dc8db49"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-path-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/paths.tsv",
+          "sha256": "91e26684140a253805bf4111d875aa2d27f4568db9330a75b4454fbdf1b1a7a1"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-after-state.json",
+          "sha256": "8e8d197901241eef88518ba9627fd1dfb298449690a111f0306481b4c102d006"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-after-stats.json",
+          "sha256": "21553887be0842e3fc4ab9dd228c1af9a54b2280760aa48ec0ff39d6b84492d5"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-after-ui.txt",
+          "sha256": "e533f9838f10befbc2d05016717ae26244aa38b282b3e84a27451be932a9c8e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-before-stats.json",
+          "sha256": "596650e23b9204bc3bd24922b98d030ce4802e1b9100ecdf4376169d58ac0d6f"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-inside-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-inside-stats.json",
+          "sha256": "a94dec3a1170db68f943672db0c2c47d8ab9f7f2be25b16984e2f3077cb2778c"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-inside-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-path-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-path-stats.json",
+          "sha256": "3fd86944222ca79594c8d7569832de8fbb71b0e569253b45f2cced9b0d001b41"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/release-outside-path-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-after-state.json",
+          "sha256": "c4d2c6c34fdd738c29c5008e2d66449e9a8c3bad8750f9f53efdc451aa6655fe"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-after-stats.json",
+          "sha256": "b60c29c5ad735861558346727af4cb2d903bea1e9b6c789e7f0e3935e7be0643"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-after-ui.txt",
+          "sha256": "47a9083c01e47e9577133de8a05217d4c720b95fbe0bab6d646559ac162c3d73"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-before-stats.json",
+          "sha256": "10694a5076fc908c629db9c434a14a0a154c2076ac4a07090c5e3d61097fd3fa"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-enter-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-enter-stats.json",
+          "sha256": "a61de1eaa864f2358bd2b374c15e83e3f3e56080e5ed5fb15b13cbc593bb6698"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-enter-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-miss-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-miss-stats.json",
+          "sha256": "e74a0a32ebb5b9e319089256d890fc588519cd6f1a2b6bc34ccb5cfa24c08c52"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start-outside-miss-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-01/start.ms",
+          "sha256": "0cfd8df0f3f2aa9512b83f392bb71423a0e562b7eba36ee4f7d8c71c2748c2a1"
+        }
+      ]
+    },
+    {
+      "run": "build/physics-lab-012-outside-03",
+      "launch": {
+        "pid": 33816,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-03\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-03\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-03\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-03\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "2be17e3b5d765205a8698b51d7c730947c8033961b2f877836e02e9fef26e906",
+          "CyrusPhysicsStorage.dlh": "30fabda26fb0b094853d227cec6b47bb0bd4ded20f18ad06931e517d9c423c9e"
+        },
+        "script_sha256": "be95254e7eb2fa269fca29bd9076ab28d2f6fa087096ed8f968aa24593f22450",
+        "fixture_sha256": "bb13c082cc5891f8b2082f2df7b0c383b7362627bf88c4d65d8daa4a0b825ea9",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "launch_receipt": {
+        "path": "build/physics-lab-012-outside-03/launch.json",
+        "sha256": "1acb1821060e9ce188d5da47f7b178a9299245366115474ea7582a43f523afc5"
+      },
+      "loaded": {
+        "path": "build/physics-lab-012-outside-03/loaded.tsv",
+        "sha256": "cf0b8445fd159c720ad52650fa9cf8d8c3cec1abeba8267674ea31f35f43857e"
+      },
+      "completion": {
+        "path": "build/physics-lab-012-outside-03/completed.json",
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      },
+      "assertions": "PASS 15 extended edge/recovery assertions; existing ordinary 0.1.2 unchanged.",
+      "paths": [
+        {
+          "name": "edge-sweep-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "edge-sweep-safe",
+          "world_path_mm": "#([-800,1000,0], [-400,1000,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "edge-sweep-path",
+          "world_path_mm": "#([2450,1000,0], [2450,1800,0], [2450,-1800,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "-1",
+          "exception": "-- Runtime error: PaintStroke failed"
+        },
+        {
+          "name": "edge-sweep-recovery",
+          "world_path_mm": "#([-1000,0,0], [-600,0,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        }
+      ],
+      "raw_files": [
+        {
+          "path": "build/physics-lab-012-outside-03/assertions.txt",
+          "sha256": "7abc45a3f6f3e4189d30e09d7c24fa25019cecfdb97a371b9241650f566a082b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-after-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-after-stats.json",
+          "sha256": "2672e85f73e20f3807aed945d51586bb669d035a2dc818c24542608121122072"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-after-ui.txt",
+          "sha256": "e5349131ba6fb0077d47db66370924b1b06ef173a7740c7d3f050fe26394b4e2"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-before-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-before-stats.json",
+          "sha256": "e5f9a098641b0f0518e6de389ac4b78f10043bee1b09755d3ccc5c25e2050522"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-path-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-path-stats.json",
+          "sha256": "2672e85f73e20f3807aed945d51586bb669d035a2dc818c24542608121122072"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-path-ui.txt",
+          "sha256": "e5349131ba6fb0077d47db66370924b1b06ef173a7740c7d3f050fe26394b4e2"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-recovered-state.json",
+          "sha256": "884c8a6148bf89a9f031d499d26b19d69af7304be556ee4ee3c0c22e6876ee9a"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-recovered-stats.json",
+          "sha256": "d4c752164ca7511d1239beadeaced973649c682c95ad870f970df31f51a98762"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-recovered-ui.txt",
+          "sha256": "47a9083c01e47e9577133de8a05217d4c720b95fbe0bab6d646559ac162c3d73"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-recovery-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-recovery-stats.json",
+          "sha256": "1e1b03b17840dbf116b539df9e65e837d3918743744f56e0a628ffc6826cd7c1"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-recovery-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-safe-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-safe-stats.json",
+          "sha256": "8c502d7da83882072ab2401e459564984d5d209824f7d4f0b600a0c9976a4305"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-safe-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/fixture.ms",
+          "sha256": "bb13c082cc5891f8b2082f2df7b0c383b7362627bf88c4d65d8daa4a0b825ea9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/listener.log",
+          "sha256": "63d3abd0e52824667912a2273600bfa8e8082c613da81bbae5a223a5e0174a90"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/paths.tsv",
+          "sha256": "a924ed1e64def4572bc296634d261147526861ce0bd31e77cd628f443fb82ce2"
+        },
+        {
+          "path": "build/physics-lab-012-outside-03/start.ms",
+          "sha256": "760f677153b65ab96ba637745155f33aa38fe8cfc3d72a0b24198b010da86b0c"
+        }
+      ]
+    },
+    {
+      "run": "build/physics-lab-012-outside-04",
+      "launch": {
+        "pid": 52768,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-04\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-04\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-04\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-04\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "2be17e3b5d765205a8698b51d7c730947c8033961b2f877836e02e9fef26e906",
+          "CyrusPhysicsStorage.dlh": "30fabda26fb0b094853d227cec6b47bb0bd4ded20f18ad06931e517d9c423c9e"
+        },
+        "script_sha256": "be95254e7eb2fa269fca29bd9076ab28d2f6fa087096ed8f968aa24593f22450",
+        "fixture_sha256": "2c25b07fd8c2b35a7067d3cd85ddfbee0c36d983d74e2ab3826a5d36932a556d",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "launch_receipt": {
+        "path": "build/physics-lab-012-outside-04/launch.json",
+        "sha256": "c78e3e4e30d5841e57537480cbb42c55b95cb1ac7a28fb36a5e9126cf50bbf1b"
+      },
+      "loaded": {
+        "path": "build/physics-lab-012-outside-04/loaded.tsv",
+        "sha256": "09486386529a11d8beca9e5be8932b0f38014eba2ea69f69c7f7db7364a7a1b3"
+      },
+      "completion": {
+        "path": "build/physics-lab-012-outside-04/completed.json",
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+      },
+      "assertions": "PASS 33 off-surface hold/budget/empty-Undo assertions; product unchanged.",
+      "paths": [
+        {
+          "name": "hold-outside-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "hold-outside-inside",
+          "world_path_mm": "#([-600,0,0], [-200,0,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "hold-outside-miss",
+          "world_path_mm": "#([3000,0,0], [3000,1000,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        },
+        {
+          "name": "hold-outside-reenter",
+          "world_path_mm": "#([1100,1000,0], [1500,1000,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "hold-limit-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "hold-limit-inside",
+          "world_path_mm": "#([-600,0,0], [-200,0,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "hold-limit-miss",
+          "world_path_mm": "#([3000,0,0])",
+          "finish": "false",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        },
+        {
+          "name": "hold-limit-recovery",
+          "world_path_mm": "#([1000,0,0], [1400,0,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "empty-undo-baseline-path",
+          "world_path_mm": "#([-1500,-1500,0], [-1100,-1500,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "2",
+          "exception": ""
+        },
+        {
+          "name": "empty-undo-miss",
+          "world_path_mm": "#([3000,0,0], [3000,1000,0])",
+          "finish": "true",
+          "cancel": "false",
+          "sdk_hits": "0",
+          "exception": ""
+        }
+      ],
+      "raw_files": [
+        {
+          "path": "build/physics-lab-012-outside-04/assertions.txt",
+          "sha256": "f08210b47764bd5fa961d2743af9583a2926ef537732aa47d7cc451b8166ff40"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-after-state.json",
+          "sha256": "05b8e0c4f262d7c8132bcfbbf80d638a31452f67eea7ac173162d8cf04d9e44d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-after-stats.json",
+          "sha256": "b55b485df9be0f2fb996a72c67f01c52999e28c453dd7bd89b4d1efba7b581ca"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-after-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-before-stats.json",
+          "sha256": "d3419fd1b037c935006e61ec5c53d28be995010f23b0c624626dee752d3deb76"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-miss-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-miss-stats.json",
+          "sha256": "842a23f6dc562c0fe65014e815f16a5155fbad225a7d072b33702a0f01b994d1"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-miss-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo1-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo1-stats.json",
+          "sha256": "235a2a89d26f6459b24361bca2733316f5660a14d1d614a2937598f57c3056b8"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo1-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo2-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo2-stats.json",
+          "sha256": "9bedcecba39c6060d6b7df1845f5a4824a21b976482ddd0647935c25c8329e4e"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo2-ui.txt",
+          "sha256": "c653ed845f8a39544037ce8a4bc71db12edb172c29b1d924031879dcb2a3527e"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/fixture.ms",
+          "sha256": "2c25b07fd8c2b35a7067d3cd85ddfbee0c36d983d74e2ab3826a5d36932a556d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-after-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-after-stats.json",
+          "sha256": "3380affa22cf23912f838d225b3684c3b8dde81e476a3d5049d7971b51eaccaf"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-after-ui.txt",
+          "sha256": "52fa62f6ea753a26e275cd820d9ffaeac26040161fcb47feee5cd32ce1975ecc"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-before-stats.json",
+          "sha256": "ab893c79fb65279e8f149208a0a48c998443cbac7dbe785e21cd7781a4ad5ae8"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-inside-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-inside-stats.json",
+          "sha256": "ccdc397e85b5aac4107b3b8457de143da1a8c261982aa8aea002a15212402fd5"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-inside-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-miss-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-miss-stats.json",
+          "sha256": "ccdc397e85b5aac4107b3b8457de143da1a8c261982aa8aea002a15212402fd5"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-miss-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-recovered-state.json",
+          "sha256": "8d63ef3ff2e9767c10adb36763e16c06675343abb65ade99cb9b396e9ba89c8e"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-recovered-stats.json",
+          "sha256": "b02742f95dc3eb78e34817b4ce1815bfec9b103cf6155ffdc8e393c66dad13db"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-recovered-ui.txt",
+          "sha256": "47a9083c01e47e9577133de8a05217d4c720b95fbe0bab6d646559ac162c3d73"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-recovery-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-recovery-stats.json",
+          "sha256": "9b3374532b784f16094ff94b759064645c16024678e977e4cba080f169765a6b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-limit-recovery-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-240steps-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-240steps-stats.json",
+          "sha256": "68016ebe239c5ec6ecbf89353da859cfa41178c0f7e793a93f0e13f5ef794389"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-240steps-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-after-state.json",
+          "sha256": "951e5f0d26a7c99d78f7ce83e885fd4c3efb12bacaebdce1c5e5919a0de74862"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-after-stats.json",
+          "sha256": "cd7d581cda1839965996431ed19cc04a8bf2022fa0c956f28ab0f8f8a549fa16"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-after-ui.txt",
+          "sha256": "c8b997915c2422f649fd8d29494f899e708402a66a184f26f8e272cc6a5c7a73"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-baseline-path-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-baseline-path-stats.json",
+          "sha256": "b75a2006e4ef98fbb06b72d285aac3857958ad5e938f303cf898ac14037d80a9"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-baseline-path-ui.txt",
+          "sha256": "27e1d71c2411832516399f9782cbf594cd0cf676745f4eeadf5be83f16012e9b"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-before-stats.json",
+          "sha256": "8b08dbabb6bf6af6dd1073f817ef69b1ad3e8e3476adf47b337a502f5312bc96"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-before-ui.txt",
+          "sha256": "20d1b63270c70c58756f6ef1f000a734f9cf9cb4833df7376c653f7bdee4d2d6"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-inside-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-inside-stats.json",
+          "sha256": "ed688dd416fefbc396362a005a7dbf3c867538596d7a359ca46b526657a70b84"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-inside-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-miss-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-miss-stats.json",
+          "sha256": "ed688dd416fefbc396362a005a7dbf3c867538596d7a359ca46b526657a70b84"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-miss-ui.txt",
+          "sha256": "cbac72d0599e19b776484b22b31e8c1542e06912988fbe6b79498c771d06a0e7"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-reenter-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-reenter-stats.json",
+          "sha256": "4de4f6b27ae476e8f7fd044ecde935271795836e5975850843e1a2b605b39de2"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/hold-outside-reenter-ui.txt",
+          "sha256": "8082ffc457cb174ed6f06440b9a9a5df89d7b5084d80a30019999318625b0f0d"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/listener.log",
+          "sha256": "63d3abd0e52824667912a2273600bfa8e8082c613da81bbae5a223a5e0174a90"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/paths.tsv",
+          "sha256": "99bdee4e5a666072aed267dff393e9b5378285809a0777430925fbc7e9791ac5"
+        },
+        {
+          "path": "build/physics-lab-012-outside-04/start.ms",
+          "sha256": "31cf73cb40dd7b05dce5159a7998b4a14f4d949317123b0311a4c53ce980e834"
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "name": "all-outside",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/all-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.4673,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 13,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/all-outside-after-state.json",
+          "sha256": "05b8e0c4f262d7c8132bcfbbf80d638a31452f67eea7ac173162d8cf04d9e44d"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.2477,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 22,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 3
+      },
+      "previous_saved_poses_unchanged": true,
+      "changed_saved_state_fields": [
+        "gesture",
+        "revision"
+      ],
+      "new_births": []
+    },
+    {
+      "name": "leave-reenter",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.4973,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/leave-reenter-after-state.json",
+          "sha256": "bc979b9b6164215ec3a1474b3d6a42fcd37dbd1ad7cb25629e0d1e601e639eb9"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.7804,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 6,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 23,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n6 saved bodies",
+        "rows": 6,
+        "births": 6,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 7
+      },
+      "previous_saved_poses_unchanged": true,
+      "changed_saved_state_fields": [
+        "births",
+        "gesture",
+        "nextId",
+        "revision",
+        "rows"
+      ],
+      "new_births": [
+        {
+          "gesture": 2,
+          "id": 3,
+          "p": [
+            -1.5022812618130272,
+            0.01596235366799132,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.06975958268645573,
+            -0.9975638328565303
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 4,
+          "p": [
+            -1.3135067647070748,
+            0.011672576996177193,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.7801978386177463,
+            0.6255328389590726
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 5,
+          "p": [
+            1.0901217909408851,
+            1.0154317072901209,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.26780131062181306,
+            -0.9634741605405094
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 6,
+          "p": [
+            1.2937668697966291,
+            1.0099091677000058,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.7143673275933253,
+            -0.6997709062737394
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "release-outside",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/release-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.581,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/release-outside-after-state.json",
+          "sha256": "8e8d197901241eef88518ba9627fd1dfb298449690a111f0306481b4c102d006"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.7096,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 5,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 23,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n5 saved bodies",
+        "rows": 5,
+        "births": 5,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 6
+      },
+      "previous_saved_poses_unchanged": true,
+      "changed_saved_state_fields": [
+        "births",
+        "gesture",
+        "nextId",
+        "revision",
+        "rows"
+      ],
+      "new_births": [
+        {
+          "gesture": 2,
+          "id": 3,
+          "p": [
+            -0.6140853448235577,
+            0.01596235366799132,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.06975958268645573,
+            -0.9975638328565303
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 4,
+          "p": [
+            -0.4253108477176052,
+            0.011672576996177193,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.7801978386177463,
+            0.6255328389590726
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 5,
+          "p": [
+            -0.21577821625377316,
+            0.014449083166930816,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.26780131062181306,
+            -0.9634741605405094
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "start-outside",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/start-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.5472,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/start-outside-after-state.json",
+          "sha256": "c4d2c6c34fdd738c29c5008e2d66449e9a8c3bad8750f9f53efdc451aa6655fe"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.7064,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 4,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 23,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n4 saved bodies",
+        "rows": 4,
+        "births": 4,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 5
+      },
+      "previous_saved_poses_unchanged": true,
+      "changed_saved_state_fields": [
+        "births",
+        "gesture",
+        "nextId",
+        "revision",
+        "rows"
+      ],
+      "new_births": [
+        {
+          "gesture": 2,
+          "id": 3,
+          "p": [
+            -0.007856441239524246,
+            0.01596235366799132,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.06975958268645573,
+            -0.9975638328565303
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 4,
+          "p": [
+            0.18091805586642823,
+            0.011672576996177193,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.7801978386177463,
+            0.6255328389590726
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "outside-overlap",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-before-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.6531,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 11,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/outside-overlap-after-state.json",
+          "sha256": "0b2f24595ef2f3ebdd9410bbaafc97151f7af65cf7fd02d231d7fc002c24f0fa"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.1536,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 20,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 3
+      },
+      "previous_saved_poses_unchanged": true,
+      "changed_saved_state_fields": [
+        "gesture",
+        "revision"
+      ],
+      "new_births": []
+    },
+    {
+      "name": "edge-footprint",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-before-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.6672,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/edge-footprint-after-state.json",
+          "sha256": "45a4aa7f96555c556295392a9d46de753dc61417fd9f7f907594471d53111464"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 1.0824,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 19,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 23,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n19 saved bodies",
+        "rows": 19,
+        "births": 19,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 20
+      },
+      "previous_saved_poses_unchanged": true,
+      "changed_saved_state_fields": [
+        "births",
+        "gesture",
+        "nextId",
+        "revision",
+        "rows"
+      ],
+      "new_births": [
+        {
+          "gesture": 2,
+          "id": 3,
+          "p": [
+            -0.6578709576473399,
+            1.0578956026405488,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.06975958268645573,
+            -0.9975638328565303
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 4,
+          "p": [
+            -0.7385086077968424,
+            0.9506511834480961,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.7801978386177463,
+            0.6255328389590726
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 5,
+          "p": [
+            -0.30019288739984373,
+            1.0200638392684305,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.26780131062181306,
+            -0.9634741605405094
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 6,
+          "p": [
+            -0.0090659854949722,
+            0.882000346429593,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.7143673275933253,
+            -0.6997709062737394
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 7,
+          "p": [
+            -0.15937386694158345,
+            1.0460624742570312,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.2669981457551161,
+            0.9636970427283306
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 8,
+          "p": [
+            0.08255396835631278,
+            1.148115193832905,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.14880246448070777,
+            -0.9888669407784182
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 9,
+          "p": [
+            0.19876764580014278,
+            0.8797572698375737,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.022285722389313343,
+            -0.9997516424480565
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 10,
+          "p": [
+            0.7279548560737374,
+            0.8266167400277309,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.8453507541138449,
+            -0.5342116645292893
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 11,
+          "p": [
+            0.9103301945270941,
+            0.9845837966818013,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.9683140536245961,
+            -0.2497356473415497
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 12,
+          "p": [
+            1.1291277026960373,
+            0.8690286833437487,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.9757238340178518,
+            -0.21900456554488437
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 13,
+          "p": [
+            1.2007531524278705,
+            1.2395480401908938,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.9640897549592804,
+            0.2655766261977032
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 14,
+          "p": [
+            1.57246486913496,
+            0.9412396588610317,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.24140391986066098,
+            -0.970424725301199
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 15,
+          "p": [
+            1.4368309274225692,
+            1.1403992914391337,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.5392054189441198,
+            -0.8421742789834514
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 16,
+          "p": [
+            1.813229881201522,
+            0.9326626993872391,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.9754052906501326,
+            0.22041896236878147
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 17,
+          "p": [
+            1.97845761108942,
+            1.1512834884371757,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.2899886329484706,
+            -0.9570300897885485
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 18,
+          "p": [
+            2.25843501721332,
+            0.9649321886329227,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.9380457548238768,
+            -0.3465114166328483
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "gesture": 2,
+          "id": 19,
+          "p": [
+            2.2050767439638848,
+            1.1321778277314571,
+            0.10000000149011612
+          ],
+          "q": [
+            0.0,
+            0.0,
+            0.8567569769339014,
+            -0.5157203529773499
+          ],
+          "scale": 1.0,
+          "source": 0,
+          "spin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "step": 0,
+          "velocity": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cancel-outside",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.5449,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-01/cancel-outside-after-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.5449,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "previous_saved_poses_unchanged": true,
+      "changed_saved_state_fields": [],
+      "new_births": []
+    },
+    {
+      "name": "extended-edge-sweep",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-before-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.4151,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "safe_pending": {
+        "state": {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-safe-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        "stats": {
+          "active": true,
+          "commits": 1,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.4151,
+          "motion": {},
+          "painting": true,
+          "preview": 3,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-after-state.json",
+          "sha256": "2c5c645d3f29adc8c4a8d74e96919df5523e7777f8a3b8f73e6cbea1960a4a36"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 3,
+          "error": "Brush footprint leaves the receiver; reduce radius or move inward",
+          "lastTickMs": 0.4151,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush footprint leaves\nthe receiver; reduce\nradius or move inward\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "recovered": {
+        "state": {
+          "path": "build/physics-lab-012-outside-03/edge-sweep-recovered-state.json",
+          "sha256": "884c8a6148bf89a9f031d499d26b19d69af7304be556ee4ee3c0c22e6876ee9a"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 4,
+          "error": "",
+          "lastTickMs": 0.7732,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 4,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 23,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n4 saved bodies",
+        "rows": 4,
+        "births": 4,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 5
+      },
+      "exact_saved_state_unchanged_on_failure": true,
+      "finding": "Off-receiver generated footprint cancels the entire pending stroke; earlier valid pending bodies are lost."
+    },
+    {
+      "name": "hold-outside",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/hold-outside-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.6654,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/hold-outside-after-state.json",
+          "sha256": "951e5f0d26a7c99d78f7ce83e885fd4c3efb12bacaebdce1c5e5919a0de74862"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.7152,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 7,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 53,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n7 saved bodies",
+        "rows": 7,
+        "births": 7,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 8
+      },
+      "previous_saved_poses_unchanged": true,
+      "held_after_240_steps": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/hold-outside-240steps-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": true,
+          "commits": 1,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.5991,
+          "motion": {
+            "active": 3,
+            "max_angular_radps": 6.840843137280517e-06,
+            "max_linear_mps": 2.243948431824211e-07,
+            "quiet_steps": 0,
+            "steps": 240
+          },
+          "painting": true,
+          "preview": 3,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 42,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      }
+    },
+    {
+      "name": "hold-limit",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/hold-limit-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.6314,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/hold-limit-after-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 3,
+          "error": "Settle timeout; previous result preserved",
+          "lastTickMs": 0.1439,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 462,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Settle timeout; previous\nresult preserved\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "previous_saved_poses_unchanged": true,
+      "recovered": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/hold-limit-recovered-state.json",
+          "sha256": "8d63ef3ff2e9767c10adb36763e16c06675343abb65ade99cb9b396e9ba89c8e"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 4,
+          "error": "",
+          "lastTickMs": 0.8319,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 4,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 473,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n4 saved bodies",
+        "rows": 4,
+        "births": 4,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 5
+      },
+      "step_budget": 3600,
+      "finding": "At the existing 3600-step stroke budget, an unreleased off-surface stroke cancels instead of offering Keep preview."
+    },
+    {
+      "name": "empty-undo",
+      "before": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/empty-undo-before-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 1,
+          "cooks": 2,
+          "error": "",
+          "lastTickMs": 0.4681,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "after": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/empty-undo-after-state.json",
+          "sha256": "05b8e0c4f262d7c8132bcfbbf80d638a31452f67eea7ac173162d8cf04d9e44d"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.2142,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 3,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 20,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 3,
+        "gesture": 3,
+        "nextId": 3
+      },
+      "previous_saved_poses_unchanged": true,
+      "undo1": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo1-state.json",
+          "sha256": "c370aaba4561067db7b464e8e22de2a1d7b5eab35ce80f7cf0076c5ac4728de3"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.2142,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 2,
+          "rows": 2,
+          "settled": true,
+          "settling": false,
+          "stale": false,
+          "ticks": 20,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n2 saved bodies",
+        "rows": 2,
+        "births": 2,
+        "revision": 2,
+        "gesture": 2,
+        "nextId": 3
+      },
+      "undo2": {
+        "state": {
+          "path": "build/physics-lab-012-outside-04/empty-undo-undo2-state.json",
+          "sha256": "69860fb4ed08b5f21c79fe4f98b56cc6ee51358707d86c23bbebb472b4020046"
+        },
+        "stats": {
+          "active": false,
+          "commits": 2,
+          "cooks": 3,
+          "error": "",
+          "lastTickMs": 0.2142,
+          "motion": null,
+          "painting": true,
+          "preview": 0,
+          "revision": 1,
+          "rows": 0,
+          "settled": true,
+          "settling": false,
+          "stale": true,
+          "ticks": 20,
+          "timedOut": false,
+          "version": "0.1.2"
+        },
+        "ui": "Brush active.\nDrag on the receiver;\nrelease to settle.\n0 saved bodies",
+        "rows": 0,
+        "births": 0,
+        "revision": 1,
+        "gesture": 1,
+        "nextId": 1
+      },
+      "finding": "Zero-birth gesture commits a revision/gesture advance and consumes an Undo step."
+    }
+  ],
+  "failed_test_harness_iteration": {
+    "run": "build/physics-lab-012-outside-02",
+    "error": "-- Compile error: no local declarations at top level:  original\n--  In line: local original=\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-012-outside-02\\fixture.ms LINE: 1P\n",
+    "interpretation": "Test fixture compile error from a top-level local declaration; no brush behavior exercised. Corrected only the ignored test fixture; successor run 03 passed."
+  },
+  "knowledge": {
+    "status": "stale_evidence",
+    "source_verification_requested": true,
+    "sources_checked": 38,
+    "sources_verified": 15,
+    "physics_lab_enrolled": false,
+    "fallback": "Direct current and frozen source inspection; ordinary frozen binaries hash verified."
+  },
+  "limits": [
+    "No physical mouse/tablet input or artist-session testing.",
+    "One horizontal finite Plane and one Sphere32 source; arbitrary curved/concave receivers, holes, production scenes, and body motion beyond receiver edges are not qualified.",
+    "Viewport quantization affects spacing counts; recorded counts are observations, not general spacing guarantees.",
+    "Hold-budget test advances fixed solver steps directly; it is not a wall-clock latency measurement.",
+    "Private driver calls StartStroke when resuming a split path; existing session is retained; miss samples run actual Painter TestHit and PaintStroke."
+  ]
+}

@@ -1,11 +1,50 @@
 # Remaining improvement program â€” execution ledger
 
-Active goal: [complete user objective](OBJECTIVE.md). Enrolled 15 October 2026.
+Historical program objective: [complete user objective](OBJECTIVE.md). Enrolled 15 October 2026; current scope below takes precedence.
 Baseline: `b23ed93f97af347b98b92b355660bdc3eeb0ef19`, branch `codex/workflow-0.75`, delivered Scatter 0.82.6. The user explicitly resumed Phase 6 for this program. Work begins with presets; no later feature is complete by enrollment.
 
 ## Current delivery
 
-**I03 / 0.82.6.1 â€” delivered. I04 / 0.83.0 â€” delivered and pushed.** I03 commit `f030fb33ea6eaed1815cc3cd561877cd9aadff67` is pushed on `codex/workflow-0.75`; `git ls-remote` matches. Search/categories/tags, stored thumbnails, cancellation, clear content/dependency summaries and owner-specific Save Everything failures preserve recipe fidelity, Paint bindings and passive browsing. Four procedural examples and their compatible scenes are included. See [delivery and acceptance](I03_08261.md), [exact qualification](QUALIFICATION_08261.json) and [package identity](PACKAGE_08261.json). I04 [handoff](I04_0830.md), [qualification](QUALIFICATION_0830.json) and [package](PACKAGE_0830.json) pin the successor. I04 implementation commit `a814513b3cb1d99640fe5b5c9886dcfc95c73a77` is pushed on `codex/workflow-0.75`; the remote hash matches. I05 implementation `f2bc8dd6bc831a71cc46b19a6cb91611d431928d` is pushed and verified remotely. I06/P06 implementation `9f8cc157279b6e257f1f4a0eb6280fc75b0ea58c` is pushed and the remote hash is verified. Current request authorizes the [preset/gallery implementation](../preset-gallery-improvements/PROGRESS_0851.md) as **0.85.1**. The [0.85.1 library handoff](../preset-gallery-improvements/DELIVERY_0851.md) is ready with its exact MZP/EXE and bounded Max 2027 qualification. I07/P08 paths remains the existing program next feature; PG01–PG08 are delivered for the declared supported subset; PG09 has scene-asset reuse only, and PG10 remains prerequisite-gated. [I06 handoff](I06_0850.md), [qualification](QUALIFICATION_0850.json) and [package](PACKAGE_0850.json) record the exact bounded delivery. B26 remains open.
+Current task, 17 October 2026: reconcile maintained documentation and knowledge
+after the user identified misleading phase-pause wording. Product source remains
+Scatter 0.85.4 / schema 58 / CyrusUnified1. No new product implementation, Max
+tests, version bump, artist installation or Git push is part of this maintenance.
+Further roadmap implementation is paused. This describes authorization to start
+new work; it does not undo any delivered feature.
+
+The [0.85.4 Count memory correction](../memory-0854/README.md) is the current
+compiled and scoped-qualified pair. It retains [0.85.3 ready asset-backed presets](../preset-gallery-improvements/LOAD_0853.md),
+[0.85.2 Modify/library UI corrections](../preset-gallery-improvements/UI_CORRECTION_0852.md)
+and the [0.85.1 gallery delivery](../preset-gallery-improvements/DELIVERY_0851.md).
+Eight ready presets, Paint, thumbnails and both MZP/EXE delivery formats are present.
+Broader B26, physical artist input and production-renderer acceptance remain open.
+
+## Original phase status
+
+P numbers identify the original eleven product outcomes. I numbers identify the
+Forest-informed improvement items; PG numbers identify gallery work. They are
+independent of release numbers. **P06 is complete for its declared scope.**
+
+| Original phase | Implemented delivery | Remaining scope |
+| --- | --- | --- |
+| P01–P05 | Workflow/feedback 0.81.8; settings presets 0.81.9; slope/altitude 0.82.0; density-map channel/resolution 0.82.1; Paint/spline conversion 0.82.2 | Original receipts retain their tested scope; general artist acceptance remains separate |
+| P06 / I06 — regular grids | [0.85.0](I06_0850.md): Rectangular, Staggered and Hexagonal | Broad production acceptance remains separate from scoped qualification |
+| P07 / I04 — orientation | [0.83.0](I04_0830.md): direction/target controls and normal blending | Broad production acceptance remains separate |
+| P08 / I07 — direct paths | Pending | Arc-length spacing, repeating sequences/gaps and reference placement; existing Spline Bands remain a separate implemented feature |
+| P09 / I08 — transform/assignment maps | Pending | Scale/rotation maps and map-driven model choice; existing density masks/maps remain implemented |
+| P10 — recipes/library | Static core 0.82.5, browser 0.82.6.1, variation 0.84.0, grid/orientation fields, gallery/assets 0.85.1 and ready loading 0.85.3 | Future P08/P09 fields, PG09 broader adapters, PG10 authored Edit/effects and final production acceptance |
+| P11 — adaptive viewport/performance | Existing 0.81.6/0.81.7 adaptive limits/reuse, 0.82.3/0.82.6 responsiveness and 0.85.4 Count-memory improvements | Full final-layout/map/asset performance and lifecycle matrix |
+
+I03–I06 have delivered checkpoints. I15/PG01–PG08 have a supported static-asset
+subset; PG09 is partial and PG10 depends on I13/I14. I07/P08 is the next pending
+roadmap feature, not an active coding task. The N01–N09 native migration remains
+a [proposal](../native-placement/README.md); the separate Physics Lab is not
+integrated Scatter physics. Neither is authorized by this documentation task.
+
+Historical implementation checkpoints I03 `f030fb3`, I04 `a814513`, I05 `f2bc8dd`
+and I06 `9f8cc15` were recorded as pushed in their original receipts. Current
+checkout HEAD is `5aee4ef2242307b92e16c96e0106ee095d6a4215` plus dirty/untracked
+work. No new remote comparison is implied by this maintenance.
 
 Contracts: F01, F04-F08, F09-F11. Native library scans operate on copied filesystem paths and metadata only, never Max scene objects. Explicit Refresh rereads content, even for same-size/same-time file replacement. Browsing never hydrates Paint. Search/page operations use the bounded in-memory index; no filesystem polling while idle. Thumbnail loading is explicit for the selected entry with byte/pixel bounds and resource disposal.
 
@@ -16,11 +55,11 @@ First version rationale: user-selected four-part development label 0.82.6.1 for 
 | Item | State / next evidence |
 | --- | --- |
 | I03 browser/search/tags/thumbnails and clear preflight | Implemented and scoped Max 2027 qualification passed; see I03 handoff; physical artist acceptance remains |
-| At least eight usable presets and accurate thumbnails | Eight staged and exact-pair round-trip tested in 0.85.1: original six plus Four garden rooms and Valley moss and rocky crests; final gallery delivery gate applies. A direct path example remains dependent on I07 |
+| At least eight usable presets and accurate thumbnails | Eight delivered and exact-pair round-trip tested through 0.85.4: original six plus Four garden rooms and Valley moss and rocky crests; see current memory/preset receipts. A direct path example remains dependent on I07 |
 | I04/P07 direction and normal blending | Implemented and scoped Max 2027 qualification passed; 0.83.0 package ready and commit `a814513` pushed; physical artist acceptance separate |
 | I05 copy/import variation policy | Scoped-qualified and MZP ready in [0.84.0](I05_0840.md); commit `f2bc8dd` pushed and remote verified; B26 heavy Undo remains open |
 | I06/P06 rectangular/staggered/hex grids | Scoped-qualified and MZP ready as [0.85.0](I06_0850.md); `9f8cc15` pushed and remote verified |
-| Preset/gallery PG01–PG10 supplement | [Detailed plan](../preset-gallery-improvements/README.md), [performance/Max 2027 acceptance](../preset-gallery-improvements/VALIDATION.md) and [TODO](../preset-gallery-improvements/TODO.md) prepared; implementation authorized as 0.85.1, tracked in the [candidate ledger](../preset-gallery-improvements/PROGRESS_0851.md) |
+| Preset/gallery PG01–PG10 supplement | [Detailed plan](../preset-gallery-improvements/README.md), [performance/Max 2027 acceptance](../preset-gallery-improvements/VALIDATION.md) and [TODO](../preset-gallery-improvements/TODO.md) implemented for PG01–PG08’s declared subset in 0.85.1, with ready loading in 0.85.3; PG09 partial and PG10 gated; see the [historical candidate ledger](../preset-gallery-improvements/PROGRESS_0851.md) |
 | I07/P08 paths/sequences/references | Pending; arc-length and seam/identity contract |
 | I08/P09 transform and assignment maps | Pending; shared samples and final-radius acceptance |
 | I09 shared terrain snapshots | Pending profiling trigger; record decision and extraction/memory evidence |
@@ -34,18 +73,23 @@ First version rationale: user-selected four-part development label 0.82.6.1 for 
 | I17 renderer adapters/edge trimming | Pending; explicit supported renderer/version/material/source matrix |
 | I18 bounded expressions | Pending I14; grammar/types/units/fuel and failure retention |
 | Max 2027 MZP for every delivered version | 0.82.6.1, 0.83.0, 0.84.0 and 0.85.0 archives verified; not installed; continue for subsequent deliveries |
-| Final EXE with presets/thumbnails/demo content | 0.85.1 unsigned EXE candidate embeds the exact MZP and eight example sets; owned actual Install, startup, recovery and preservation tests pass. Final-pair lifecycle gate and handoff pending; full-disk/ACL/network limits remain |
+| Final EXE with presets/thumbnails/demo content | 0.85.4 unsigned EXE and MZP are compiled and payload-verified with eight example sets; preceding owned 0.85.1 installer lifecycle witnesses retain their original scope. Artist/fresh-recipient acceptance and full-disk/ACL/network limits remain |
 | Final docs, Git remote, supported matrix and user checklist | Pending complete program; per-delivery checkpoints required |
 
 ## Preservation and qualification
 
 Unrelated pending work: landscape row in docs/README.md, LOGO.psd, Landing Page Design/, docs/plans/landscape-presentation/, presentation-studio/, website/prototypes/. Preserve these. Artist scenes/profile/installed modules are untouched. Use owned Max 2027 profiles only; no Max 2026, website deployment or external distribution.
 
-Knowledge index remains stale; reuse direct current source evidence. Original 0.82.6 hashes and receipts remain historical. At enrollment no new host/native pass was claimed. Subsequent I03 progress is recorded below.
+At program enrollment the knowledge index was stale. The [17 October repair](../../../tools/rag/KNOWLEDGE_REPAIR_2026-10-17.md) subsequently activated a fresh reviewed successor; check current status rather than reusing that historical stale observation. Original 0.82.6 hashes and receipts remain historical. At enrollment no new host/native pass was claimed. Subsequent I03 progress is recorded below.
 
 ## Resume here
 
-Read this ledger and actual Git state. I03–I06 historical deliveries remain frozen at `9f8cc15`. The user subsequently authorized [PG01–PG10 implementation as 0.85.1](../preset-gallery-improvements/PROGRESS_0851.md), then supplied Forest screenshots to clarify the collection-browser layout. Follow that current ledger, its supported adapters and exact-pair gates. PG09 is partial; PG10 requires I13/I14, with expressions separately dependent on I18. No further Phase 6 or unrelated feature is included. Preserve unrelated files and B26's broader open status. Do not repeat historical checks without a new change/concern or infer current acceptance from old receipts.
+Read the current delivery and phase table above, the actual Git state and the
+user's current instruction. Further feature work is paused. If later authorized,
+I07/P08 paths is the next pending roadmap feature; N01–N09 is separately proposed
+foundation work. Preserve historical receipts, unrelated files and B26's open
+limits. The dated execution entries below record past tasks and intermediate
+failures; they are not current authorization or current qualification.
 
 ## I03 implementation evidence â€” 16 October 2026, active candidate
 

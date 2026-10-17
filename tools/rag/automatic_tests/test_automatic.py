@@ -49,6 +49,12 @@ class RelocationTests(unittest.TestCase):
         self.assertEqual(corpus['sources'][0]['ranges'], [[4, 4]])
         with self.assertRaises(evidence.ReviewRequired):
             self.revise(self.raw.replace(b'copied', b'live'))
+    def test_contract_relocation_is_exact_and_changed_limits_require_review(self):
+        self.source['contract_sections']=[[1,3]]
+        corpus,_,_=self.revise(b'Introduction.\n'+self.raw)
+        self.assertEqual(corpus['sources'][0]['contract_sections'],[[2,4]])
+        with self.assertRaises(evidence.ReviewRequired):
+            self.revise(self.raw.replace(b'copied',b'live'))
     def test_historical_unknown_and_delivered_evidence_are_immutable(self):
         for status, role in [('historical', 'maintained_guide'), ('unknown', 'implementation'), ('current', 'delivered_artifact')]:
             self.source.update(knowledge_status=status, role=role)

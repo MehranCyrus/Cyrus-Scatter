@@ -20,10 +20,10 @@ parsed = json.loads
 TOOL = Path(__file__).resolve().parent
 LIMITS = {"artifact_bytes": 64*1024*1024, "source_bytes": 16*1024*1024,
           "parent_total_bytes": 32*1024*1024, "control_bytes": 2*1024*1024,
-          "total_bytes": 384*1024*1024, "inputs": 128, "parents": 64,
+          "total_bytes": 384*1024*1024, "inputs": 256, "parents": 64,
           "chunks": 20000, "path_chars": 1024, "report_bytes": 256*1024,
           "worker_seconds": 20, "wall_seconds": 25, "git_seconds": 2,
-          "evaluation_baselines": 6}
+          "evaluation_baselines": 8}
 IMPLEMENTATION_FILES = ("refresh_status.py", "refresh_inspect.py", "refresh_boundary.py")
 INTEGRITY_CHECKS = ('complete_publication', 'logical_identity_and_counts',
                     'all_artifact_fingerprints', 'chunk_export_equality', 'explicit_root',
@@ -183,8 +183,8 @@ def sealed_generation(root, index, reader, normalizer_sha=None):
             raise ValueError('SQLite row counts disagree')
         # Independently derive the known normalization contract; never execute
         # the inspected producer, even when its bytes match the published hash.
-        normalizer_matches = (normalizer_sha == boundary.NORMALIZER_SOURCE_SHA256
-                              and runtime.get('extract.py') == normalizer_sha
+        normalizer_matches = (normalizer_sha in boundary.NORMALIZER_SOURCE_SHA256S
+                              and runtime.get('extract.py') in boundary.NORMALIZER_SOURCE_SHA256S
                               and identities.get('normalization_version') == 'unicode-persian/1')
         for n,chunk in enumerate(chunks,1):
             reader.check(); source = chunk['source']

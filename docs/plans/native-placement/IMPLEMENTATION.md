@@ -1,0 +1,129 @@
+# Implementation sequence and TODO
+
+All tasks below are **pending**. Investigation/design are complete; no implementation, instrumentation, test fixture changes or product metadata changes are included in this planning delivery. Phase 6 remains paused. See [design](DESIGN.md) and [acceptance matrix](VALIDATION.md).
+
+Each step must record source/native/script identities, actual checks, memory/timing changes and unresolved failures before proceeding. A private partial build is not a user delivery. Use Max 2027 only; preserve artist sessions, scenes, existing changes and independent product versions. Do not install/restart the artist session.
+
+## N01 — Establish a comparable baseline (low–medium)
+
+Dependencies: implementation authorization.
+
+- [ ] Freeze the 0.85.4 qualified pair and copy the 5k/50k/200k, cold-copy, grid, Paint and ready-preset witnesses into an owned run; keep old artifacts immutable.
+- [ ] Audit every production row consumer, including Brush, Edit, field/radius previews, PFlow, Bake, MCP and diagnostics. Identify hidden bulk serialization, hashing and array loops.
+- [ ] Add bounded opt-in stage allocation/ownership counters: logical size/capacity, unique live bytes, peak live bytes, allocation counts, wrapper/row materialization, history pins and peak coexistence. Keep default hot-path overhead measured and small.
+- [ ] Establish full ordered semantic fingerprints (all eight current fields, radii, source/receiver mapping, accepted order and statistics), not only positions or viewport images.
+- [ ] Measure ordinary Count Undo, Manual copy, ready-preset Undo and CS Edit history separately. Determine when native restores are created, sealed and destroyed.
+- [ ] Qualify Max hold ordering, repeated Restore/Redo and Size accounting with small disposable probes before redesigning history ownership.
+
+Performance target: expose actual dominant costs without changing output or adding placement work to passive UI. Existing historical time ranges are context, not a fresh A/B baseline. Tests: V01–V03, V08–V10. Exit: reproducible baseline, named consumer inventory and an agreed measured byte model.
+
+## N02 — Native data and lifetime foundation (medium)
+
+Dependencies: N01.
+
+- [ ] Implement typed immutable placement generation and builder in the existing native project; specify compact field layout and old rounding boundaries.
+- [ ] Implement numeric/tagged identity with bounded authored-key storage and exact external string round-trip.
+- [ ] Add native views/indices, bounded readback, source-use summaries and full fingerprint queries. No implicit bulk Array conversion.
+- [ ] Establish GC wrapper ownership, native reference retention, scene/owner retirement and cross-module Brush API with matching capability guards.
+- [ ] Account for capacities, shared storage and index buffers; reject invalid/overflowing requests before mutation.
+- [ ] Add allocation-failure seams in nonshipping qualification builds; production builds must exclude fault controls.
+
+Likely files: `include/script_buffers.h`, `src/script_buffers.cpp`, new narrowly scoped placement headers/sources, `CMakeLists.txt`, `placement_transport.h` boundary adapter. Do not move registration/class IDs.
+
+Performance target: native storage has no per-placement MAXScript object, no string for generated candidates, and no duplicate store per DLL. Tests: ownership/GC, immutable alias rejection, stale/wrong handle, malformed fields, numerical boundaries, module startup/shutdown, V04/V10/V11. Exit: proven native value usable from the real Max host without changing the active pipeline yet.
+
+## N03 — Generation and preparation (medium–high)
+
+Dependencies: N02. Integration acceptance also requires N04/N05.
+
+- [ ] Start with Surface random without optional stages; feed existing `scatter` output directly into native records at existing precision boundaries.
+- [ ] Add rectangular/staggered/hexagonal projected grids without changing cell identities, holes or admission counts.
+- [ ] Replace receiver row joins/face-offset copies with native segments or explicit mapping; preserve receiver cache reuse.
+- [ ] Adapt mesh masks, Analyzer Areas, boundary falloff and optional Relax to native views/builders in their exact order.
+- [ ] Adapt Brush region eligibility/scale through the cross-module contract; preserve canonical Paint bytes, area union, binding and source independence.
+- [ ] Adapt orientation, source filtering/scales/offsets and the special Analyzer orientation path. Avoid mutation of shared pre-transform caches.
+- [ ] Initially adapt active Edit through a clearly measured temporary comparison boundary if needed; N07 removes its bulk row route. Do not label this intermediate path fully native.
+- [ ] Adapt the existing surface filter to native inputs without changing its slope/altitude math, validation, authored controls or protected behavior.
+
+Likely files: `max_bridge.cpp`, receiver/grid/mask/falloff/orientation adapters, `brush_host.cpp`, `unified-core.ms`. Tests: stage-by-stage parity for V02/V03/V05/V06 and failure release. Performance target: generation/preparation no longer expands to script arrays on migrated paths; unchanged receiver data remains shared. Exit: each optional feature has a parity witness and allocation counters; failed successors leave cached inputs/publication intact.
+
+## N04 — Native acceptance (medium–high)
+
+Dependencies: N03 simple path; expand alongside optional preparation adapters.
+
+- [ ] Replace string-keyed generated schedules with numeric lookup while retaining exact ordinal ordering and authored-copy identity.
+- [ ] Feed compact position/radius views into the existing solver; reduce redundant `Sample`/ID copies without changing its rules.
+- [ ] Keep radius overrides and Float32 rounding identical; source Auto bounds still validate all required active sources.
+- [ ] Return accepted indices/reasons/native radius views and bounded per-layer stats.
+- [ ] Preserve independent collision scopes, protected reservations, target/refill rounds, cleanup visits and reported shortfall.
+- [ ] Choose bounded index-view versus accepted compaction policy from retained-byte measurements; do not pin enormous rejected pools unnecessarily.
+
+Likely files: `procedural_bridge.inc`, `include/procedural.h`, `src/procedural.cpp`, receiver schedule adapter. Performance target: no full input/result script population; reduced schedule string/hash allocation; unchanged numeric winner order. Tests: V03/V06/V11, serial/parallel equality, near-limit rejected/refill scenes. Exit: full accepted output/radii/stats equal baseline, including protected zero-quota and work-limit cases.
+
+## N05 — Publication, display and existing history (high)
+
+Dependencies: N02–N04; active Edit may remain temporarily bridged until N07.
+
+- [ ] Package root accepted data, source correspondence, metadata and statistics into immutable publication ownership; keep small UI summaries.
+- [ ] Adapt Point/Mesh/proxy/centres builders, source-use queries and radius overlays to consume native data; reuse retained display generations.
+- [ ] Stage all owners and Edit visibility before installation; preserve the existing rollback boundary and post-commit observer distinction.
+- [ ] Adapt ordinary Count/parameter Undo refresh without adding full snapshots for every scalar edit. Preserve Manual pending behavior.
+- [ ] Replace preset publication's large field-list retention with coherent native references where appropriate, preserving its authored hold and ready Load Undo/Redo.
+- [ ] Preserve abandoned Redo, imported setup lifetime, deletion/restoration and scene-reset release. No dangling native handle in a retained MAXWrapper.
+
+Likely files: `unified-core.ms`, `preview.cpp`, `geometry_preview.inc`, `point_publication.inc`, `recipes_bridge.cpp`, `preset-loading.ms` as needed for history capture only. Performance target: no placement-scaled script allocation during Update/preview; unchanged displays reuse buffers; ordinary Count history does not grow by full snapshots per edit. Tests: V07–V12, all eight presets, 60k→90k copy. Exit: coherent simple and optional-feature pipeline through viewport with correct history. This is the first possible intermediate delivery after scope/version review; disclose remaining active Edit/render transport.
+
+## N06 — Inspection, rendering and Bake (high)
+
+Dependencies: N05.
+
+- [ ] Keep publication manifest and 500-row paging contract stable; readback must be cached, detached and epoch-bound.
+- [ ] Move full fingerprinting/source grouping into native code so tests/diagnostics do not distort the production memory measurement.
+- [ ] Replace persistent `CyrusPFData` transform arrays with publication-owned native groups; first prove bounded accessor behavior in the actual PFlow Script Operator.
+- [ ] Qualify a native particle channel-fill route only if SDK inspection and measurements justify it. If unsupported, retain bounded access with explicit dispatch cost; do not retain full script arrays.
+- [ ] Pin the same publication across render callbacks and release it correctly on render end/cancel, IR transitions, save/reset/shutdown and source deletion.
+- [ ] Make Bake iterate native data or bounded pages in one authored host operation; preserve exact transforms, node ownership and failure cleanup.
+
+Performance target: no second persistent per-placement script transform store for rendering. Bake memory is measured separately from its unavoidable real scene nodes/host Undo. Tests: V12–V14 plus source frame/scale/material/Point/Empty/proxy parity, cancellation and page invalidation. Exit: every supported consumer uses native data or bounded explicit readback. Renderer families without actual qualification stay listed as unqualified.
+
+## N07 — Compact CS Edit and its Undo (very high)
+
+Dependencies: N01 hold study and N02–N05 stable generation ownership. N06 can be developed separately but host mutations must be serialized.
+
+- [ ] Separate authored edits/selection from derived matrices, source lists and published visibility IDs.
+- [ ] Replace full `ProceduralEditTransaction` map copies with staged derived successors and rollback references.
+- [ ] Replace `EditRestore` full-map history with small operation deltas or changed immutable blocks; large selection uses a compact representation.
+- [ ] Avoid allocating an ordinary identity Edit record for every candidate unless required to preserve ordering/dormancy; prove any sparse representation against the old behavior.
+- [ ] Preserve native Save/Load field contract initially. If sparse persistence cannot preserve current semantics, stop that substep and record a format proposal rather than inventing a migration path.
+- [ ] Cover mixed parameter/Edit/Paint/preset history, repeated Restore/Redo, cancel, clone, delete, reset, lower/re-raise Count, missing receiver and abandoned Redo.
+- [ ] Implement/qualify realistic restore-size attribution and unique retained-byte counters; do not clear host history or conceal costs with a constant Size.
+
+Likely files: `cyrus_edit.cpp`, `cyrus_edit_stack.inc`, `cyrus_edit_storage.inc` only if justified, native publication owner. Performance target: moving/selecting a few instances must not copy all population transforms into each history record. Large authored edits still cost proportional memory. Tests: V08–V11 and dedicated 1/100/10k/all-selection history curves. Exit: no bulk script Edit transport and no unexplained population-scaled copies for sparse commands; exact semantics persist.
+
+## N08 — Admission, cache retention and responsiveness (high)
+
+Dependencies: N03–N07 measured final routes.
+
+- [ ] Replace the placement-scaled MAXScript workspace estimate only after instrumentation proves all hot consumers are native/bounded. Keep justified script overhead protection.
+- [ ] Account for old/new results, pinned Undo, source/receiver geometry, solver scratch, retained preview and graphics staging separately. Check growth overflow and system commit headroom.
+- [ ] Evict reconstructible unpinned caches before rejection; bound scratch reuse and release abandoned generations. Do not evict required Undo/publication.
+- [ ] Consolidate redundant evaluated receiver snapshots only after same-frame channel/geometry and animation tests prove fresh reuse; this is optional measured optimization, not a prerequisite rewrite.
+- [ ] Verify held-interaction coalescing and latest-value publication. Passive UI never scans all placements or grows memory.
+- [ ] Recheck cancellation/progress feasibility only at safe stage boundaries. If synchronous blocking remains material, document the separate scheduling gap; do not silently add asynchronous solving.
+
+Performance target: meaningful measured peak reduction against N01, bounded post-Undo/Redo resource ownership, no UI regression. Existing work caps remain. Tests: V09–V11/V15, injected budget failure and sustained sessions. Exit: defensible byte-based admission and honest latency/memory claims, with every retained allocation attributed.
+
+## N09 — Final acceptance and delivery (high validation effort)
+
+Dependencies: all preceding required routes; optional renderer API optimization may remain explicitly excluded only if its bounded replacement is qualified.
+
+- [ ] Run the complete validation matrix on one frozen source/script/native pair in private Max 2027 profiles, including normal and fault builds separately.
+- [ ] Reconcile every current row consumer; no production hot path calls an unbounded legacy array adapter. Remove temporary duplicate engine/comparison routes from shipping builds.
+- [ ] Document numerical parity, memory reduction, latency distributions, history behavior, failure recovery and unqualified boundaries; update B26 by actual evidence, not by completion of code.
+- [ ] Select and record the release version before changing metadata; keep independent versions separate. Do not rename old receipts.
+- [ ] Generate authoritative UI output, run focused/full appropriate native/Python checks, compile a final matching pair and qualify exact loaded hashes.
+- [ ] Build Max 2027 MZP and EXE from that pair, verify archive/payload/version/host guards and EXE embedded payload. Supply install/test instructions; do not install.
+- [ ] Update maintained architecture/artist docs and website sources only for proven behavior, and report any local website build separately from deployment.
+- [ ] Commit/push only if separately authorized at delivery. Keep ignored scenes/binaries/installers backed up by their explicit artifact paths.
+
+Exit: user can test the packaged version, documented limits are accurate, and no later roadmap phase has started. Phase 6 remains paused unless the user explicitly resumes it.

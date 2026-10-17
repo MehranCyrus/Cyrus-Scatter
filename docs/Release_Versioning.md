@@ -2,10 +2,10 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.85.2 | Modify background navigation and default library scaling correction; preceding gallery adapters retained |
-| Scatter native/package | 0.85.2 MZP/EXE for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped qualification are in the PG handoff; artist installation is separate |
+| Scatter UI | 0.85.4 | Count memory correction; ready presets and preceding UI corrections retained |
+| Scatter native/package | 0.85.4 Max 2027 MZP/EXE; exact qualification in the memory handoff | Historical installation receipts preserved; no artist installation by this task |
 | Recipe / numeric-settings format and capability | 5 / 3 | Revisioned presentation/capture; 242 authored fields retained; strict earlier recipe reads |
-| Library / portable-package capability | 3 / 1 | Bounded collection pages and static mesh/Standard/PNG adapters |
+| Library / portable-package capability | 3 / 2 | Bounded collections; graph 2 adds evaluated receiver/static spline context to the mesh/Standard/PNG adapter; package manifest remains 1 |
 | Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -15,17 +15,23 @@
 
 ## Choosing the next version
 
+**17 October 2026 memory correction, 0.85.4 selected before implementation:** the user authorizes the Count-change memory fix, retained Undo, Max 2027 qualification and an installer without installation. Reduce transient script transport, keep schedules/radii in immutable native-owned buffers, and reserve necessary session script workspace before allocation can force destructive collection. Report reservation in diagnostics; do not change saved heap preferences. Preserve scene schema 58, authored settings, recipe/library formats, registration identities and independent product versions. Slope/altitude behavior is out of scope; Phase 6 remains paused. The preceding investigation is `build/memory-investigation-20261017-01/README.md`; native/script identities and release acceptance must be freshly qualified.
+
+**16 October 2026 ready-preset correction:** the user selects **0.85.3** after the Forest runtime comparison, and explicitly chooses Add Layers to preserve existing planting. Asset-backed loading and ready saves reuse the current gallery/recipe transaction, extending the portable adapter to capability 2/graph 2. Recipe format 5, scene schema 58, library capability 3, CyrusUnified1 and independent product versions remain unchanged. See [scope and acceptance](plans/preset-gallery-improvements/LOAD_0853.md). No further Phase 6 work is included.
+
 **16 October 2026 UI correction:** **0.85.1 → 0.85.2** is a patch for native Modify scrolling/dragging and the default-zero library scale case. It preserves lazy construction, scene schema 58, recipe/numeric formats 5/3, library/package capabilities 3/1 and all independent product versions. See the [correction and exact-pair acceptance](plans/preset-gallery-improvements/UI_CORRECTION_0852.md). No further roadmap feature is included.
 
 **16 October 2026 delivery:** the user selected **0.85.1** for the [preset/gallery implementation](plans/preset-gallery-improvements/PROGRESS_0851.md). The MZP and unsigned EXE contain the same qualified payload; the artist profile was not installed into. [Format 5](plans/preset-gallery-improvements/FORMAT_5.md) adds logical revision and optional presentation/capture while retaining 242 authored fields and scene schema 58. Library capability 3 adds bounded collection summaries; portable capability 1 declares its closed adapter. Numeric settings remain format 3. These separate capability changes do not renumber Analyzer, MCP or licensing. Final package and acceptance follow the [handoff](plans/preset-gallery-improvements/DELIVERY_0851.md).
 
-**Active program override, 15 October 2026:** the user explicitly authorizes
+**Current scope, 17 October 2026:** Scatter remains 0.85.4. Foundation/documentation and knowledge maintenance do not bump the product. P01–P07 are implemented, with supported P10 recipe/library deliveries; I07/P08 paths and subsequent feature work remain pending. Further implementation is paused. The preserved resumption and older version proposals below are history, not current authorization. Use the [current ledger](plans/improvement-program/PROGRESS.md#original-phase-status) for implementation status and the next authorized action.
+
+**Historical program override, 15 October 2026 (version selection still applies to authorized deliveries):** the user explicitly authorizes
 0.82.6.1 for the preset/browser delivery, followed by substantial deliveries
 0.83.0, 0.84.0, etc., and smaller patch follow-ups. Three- and four-part labels
 are development delivery identifiers. This overrides the earlier small-step
 selection table below for the [active goal](plans/improvement-program/OBJECTIVE.md).
 Phase 6 is resumed within that goal; preset work is first. The preceding packaged
-delivery is [0.85.0](plans/improvement-program/I06_0850.md): a substantial placement generator with disjoint stable cell identities, independent source assignment and two additional presets. Scene schema 58 is retained with an appended grid block; complete recipes advance to 4 (242 fields), numeric settings to 3 and grid capability to 1. Strict earlier-format reads retain Surface random and original variation. The 0.84.0, 0.83.0 and 0.82.6.1 receipts remain frozen. Library presentation and native orientation retain independent capability 1. I07 paths is next; select its version from the complete bounded implementation contract before editing metadata.
+delivery is [0.85.0](plans/improvement-program/I06_0850.md): a substantial placement generator with disjoint stable cell identities, independent source assignment and two additional presets. Scene schema 58 is retained with an appended grid block; complete recipes advance to 4 (242 fields), numeric settings to 3 and grid capability to 1. Strict earlier-format reads retain Surface random and original variation. The 0.84.0, 0.83.0 and 0.82.6.1 receipts remain frozen. Library presentation and native orientation retain independent capability 1. I07 paths was the next program feature at that handoff; it remains paused. Select any future delivery version from its complete authorized implementation contract before editing metadata.
 
 The preceding small-step policy is retained as historical context:
 

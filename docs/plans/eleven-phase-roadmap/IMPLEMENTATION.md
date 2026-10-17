@@ -1,5 +1,11 @@
 # Phase specifications
 
+Current execution status is in the [phase table](../improvement-program/PROGRESS.md#original-phase-status):
+P01–P07 implemented, P08/P09 pending, P10 delivered for supported recipe/library
+scope and P11 partial. Further implementation is paused. Version assignments and
+enrollment instructions in this original specification are historical; use the
+current version policy and user instruction for any new delivery.
+
 Read with [the roadmap](README.md), [validation](VALIDATION.md) and
 [the current checklist](TODO.md). These are chosen initial implementation scopes;
 record any material refinement before coding that phase. Existing contracts

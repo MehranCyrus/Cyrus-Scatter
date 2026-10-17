@@ -1,0 +1,253 @@
+{
+  "product": "CyrusPhysicsLab",
+  "version": "0.1.1",
+  "max_year": 2027,
+  "schema": 1,
+  "solver_profile": "cpl-leaf-2",
+  "scope": {
+    "computer_use": false,
+    "physical_mouse_tablet_tested": false,
+    "integrated_into_scatter": false,
+    "preset_work": false,
+    "artist_install_or_restart": false,
+    "commit_or_push": false
+  },
+  "git": {
+    "initial_head": "4eed74777e23c4c1c1a6490c80e2e09ded436d37",
+    "final_head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+    "branch": "codex/workflow-0.75",
+    "status": " M docs/README.md\n?? CyrusPhysicsLab/\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/Scatter_Physics_Research_2026-10-16/\n?? docs/plans/landscape-presentation/\n?? presentation-studio/\n?? website/prototypes/\n"
+  },
+  "ordinary_build": {
+    "path": "build/physics-lab-011-delivery-20261016-03/receipt.json",
+    "sha256": "97db5ec53a83e01cf0edf9ebe60847f183013fef763d4344f534b3c886733e9e"
+  },
+  "native_pair": {
+    "CyrusPhysicsLab.dlx": {
+      "path": "build/physics-lab-011-delivery-20261016-03/CyrusPhysicsLab.dlx",
+      "sha256": "98d8e0c2dbe851e1c93d9871d9faa920270b512616c5a4438cde20487b1f6026"
+    },
+    "CyrusPhysicsStorage.dlh": {
+      "path": "build/physics-lab-011-delivery-20261016-03/CyrusPhysicsStorage.dlh",
+      "sha256": "1355d20d32918506189b1da9d3280877d554641dee4f8d3f00543bff00376385"
+    }
+  },
+  "numeric": {
+    "checks": 2481,
+    "receipt": {
+      "path": "build/physics-lab-011-delivery-20261016-03/Testing/Temporary/LastTest.log",
+      "sha256": "998749a1e4a0cee51f1888231462008acde16f5a21ea340e4b56d9d56900e488"
+    },
+    "captured_regression": {
+      "path": "CyrusPhysicsLab/tests/fixtures/pyramid_append_plane.json",
+      "sha256": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f"
+    }
+  },
+  "host_runs": [
+    {
+      "launch": {
+        "path": "build/physics-lab-011-final-05/launch.json",
+        "sha256": "203c002d25eb1748b8e201e8c933aa78295300057430f4df156bce4411fd2ef3"
+      },
+      "assertions": {
+        "path": "build/physics-lab-011-final-05/assertions.txt",
+        "sha256": "1939f3278e0eb25eb4756fd29a6df237d637c0fc01f6e121d1ab85aee99f41f2"
+      },
+      "loaded": {
+        "path": "build/physics-lab-011-final-05/loaded.tsv",
+        "sha256": "b38b842d7369c2cba398d207ac9ddce699a83de24f169d5cd3065deef59e3030"
+      },
+      "result": "host_ui_layout: PASS native rollout bounds and caption metrics; no screen pixels or OS input\n\nhost_brush_ui: PASS 78 actual-button/timer/SDK-hit checks\n{\"active\":false,\"commits\":2,\"cooks\":4,\"error\":\"\",\"lastTickMs\":0.4748,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":10,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":93,\"timedOut\":false,\"version\":\"0.1.1\"}\n\nhost_timeout_ui: PASS timeout UI: saved-result retention, status, disabled edits, Stop, explicit Keep preview and Undo\n\nhost: PASS 18 scripted assertions; no physical input\\n{\"active\":false,\"commits\":0,\"cooks\":0,\"error\":\"\",\"lastTickMs\":0.0,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":6,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":0,\"timedOut\":false,\"version\":\"0.1.1\"}\\n\nhost_extended: PASS 21 extended scripted assertions; physical input not tested\n\nhost_transforms: PASS centimetres, source offset/rotation/nonuniform scale, mirrored receiver, transformed polygon, save/reopen and self-binding rejection\n\nhost_previous_scene: PASS preserved 0.1.0 scene opens with 60 cached bodies, original solver profile and current UI; no replay/resave\n\ndemo: {\"active\":false,\"commits\":1,\"cooks\":1,\"error\":\"\",\"lastTickMs\":0.3832,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":60,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":60,\"timedOut\":false,\"version\":\"0.1.1\"}\n\n",
+      "layout": {
+        "receipt": {
+          "path": "build/physics-lab-011-final-05/ui-layout.json",
+          "sha256": "a05ddbc32174716b39b3a1c556c9eab15d2c6f2a4ae7ba8508a2ddecb83a51eb"
+        },
+        "scales": [
+          1.0
+        ],
+        "logical_widths": [
+          162
+        ],
+        "native_children": 60,
+        "accepted_owned_renders": [
+          {
+            "path": "build/physics-lab-011-final-05/ui-areaUI.png",
+            "sha256": "434f08c94237897db0e23bddc866ca7ce5b0ea5e4a42df0f0acb390883061d68"
+          },
+          {
+            "path": "build/physics-lab-011-final-05/ui-brushHeader.png",
+            "sha256": "6cf9d7de65c90481ca9d24b1e0e596a757811ef24854e4f3c1d0df1b145b6b19"
+          },
+          {
+            "path": "build/physics-lab-011-final-05/ui-brushUI.png",
+            "sha256": "96a94ab4fa0c45e0684c6497cae456c0289d302dfb8114f95660552c4eb043e9"
+          },
+          {
+            "path": "build/physics-lab-011-final-05/ui-collisionUI.png",
+            "sha256": "212cb24243f49998397e6944729027986282209802d06075d6823e832900853b"
+          },
+          {
+            "path": "build/physics-lab-011-final-05/ui-objectsUI.png",
+            "sha256": "273cca367bef440d956f7d0a3c342da0c3823de47897b40177addd958f485408"
+          },
+          {
+            "path": "build/physics-lab-011-final-05/ui-resultUI.png",
+            "sha256": "8db394a6edeb1abc1cae4f632ba074dcbbc4feda104f67e44862542e81e17ae2"
+          }
+        ]
+      }
+    },
+    {
+      "launch": {
+        "path": "build/physics-lab-011-final-06/launch.json",
+        "sha256": "8d7bc7bdfbe90ce7fcef0ff54a01a380656cc9014a4846e4269f0d538d1f7b05"
+      },
+      "assertions": {
+        "path": "build/physics-lab-011-final-06/assertions.txt",
+        "sha256": "289ea20d9c87a1f61dc25df4109f4d05919b54e54224faac20b1abf385985c3e"
+      },
+      "loaded": {
+        "path": "build/physics-lab-011-final-06/loaded.tsv",
+        "sha256": "6c11146db3653f9b97fde441bab930b8bfed35c663bb063c8d5ab453870394fe"
+      },
+      "result": "PASS native rollout bounds and caption metrics; no screen pixels or OS input\nPASS timeout UI: saved-result retention, status, disabled edits, Stop, explicit Keep preview and Undo\nPASS 78 actual-button/timer/SDK-hit checks\n{\"active\":false,\"commits\":2,\"cooks\":4,\"error\":\"\",\"lastTickMs\":0.7554,\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":10,\"settled\":true,\"settling\":false,\"stale\":false,\"ticks\":92,\"timedOut\":false,\"version\":\"0.1.1\"}\n",
+      "layout": {
+        "receipt": {
+          "path": "build/physics-lab-011-final-06/ui-layout.json",
+          "sha256": "1fb8238af8ac5c9232f8cdf634cfe6c32e775a10f6a5e62250ff4a3ecdbe905f"
+        },
+        "scales": [
+          1.5
+        ],
+        "logical_widths": [
+          108
+        ],
+        "native_children": 60,
+        "accepted_owned_renders": [
+          {
+            "path": "build/physics-lab-011-final-06/ui-areaUI.png",
+            "sha256": "6ed307d0eca3af03df1e88cc6e2dfa3a9413bf812c70523af341895eb75674ee"
+          },
+          {
+            "path": "build/physics-lab-011-final-06/ui-brushHeader.png",
+            "sha256": "ffeb495d02a6730ccba7ca4c776f0299cfbec687b46438d74687b87a9739468d"
+          },
+          {
+            "path": "build/physics-lab-011-final-06/ui-brushUI.png",
+            "sha256": "572f5bba5817b7f62bf14b226c578d257884779ea5f0d4ab79611a30f38240e1"
+          },
+          {
+            "path": "build/physics-lab-011-final-06/ui-collisionUI.png",
+            "sha256": "fc4f1ac9ff45ac6eb9ba07b8fe1f21e70acf00435b3953888d29bf338729781f"
+          },
+          {
+            "path": "build/physics-lab-011-final-06/ui-objectsUI.png",
+            "sha256": "84a0529216df01fd8e221430a3aa06f114b01555386d57d0faec701c1ea75648"
+          },
+          {
+            "path": "build/physics-lab-011-final-06/ui-resultUI.png",
+            "sha256": "3701a7ddc24d15dba54a4f7850571d46125e9b6e721232d7f9f2d38a40783361"
+          }
+        ]
+      }
+    },
+    {
+      "launch": {
+        "path": "build/physics-lab-011-timeout-native-01/launch.json",
+        "sha256": "fab771a44d563cd7620ec4c4b7ff3edc266d51967a013a7c930d9aa4fff07ed1"
+      },
+      "assertions": {
+        "path": "build/physics-lab-011-timeout-native-01/assertions.txt",
+        "sha256": "0493408e4f29b442b95241afb17d9ba9a0287a8058faf3605ab83b6f0b80636a"
+      },
+      "loaded": {
+        "path": "build/physics-lab-011-timeout-native-01/loaded.tsv",
+        "sha256": "bea8eeb2e5baebd823d28cf38c0e996ff6d62b29ce8dab3d6c6a0d63df5883ec"
+      },
+      "result": "PASS timeout UI: saved-result retention, status, disabled edits, Stop, explicit Keep preview and Undo\n",
+      "accepted_timeout_render": {
+        "path": "build/physics-lab-011-timeout-native-01/ui-timeout.png",
+        "sha256": "63f58610b3408d4192e916deb9243ceec5075c979e2cc00f15affe21cbcc29ee"
+      }
+    }
+  ],
+  "private_fault_run": {
+    "build_receipt": {
+      "path": "build/physics-lab-011-faults-02/private-build-receipt.json",
+      "sha256": "55ab136f70ab2df72ffa13ee1b25cef9e9f466158762a15aec2ef6074cfc0d21"
+    },
+    "launch": {
+      "path": "build/physics-lab-011-faults-02/launch.json",
+      "sha256": "6cdd3f4c589e0965e17467e274c9ff13e5ba9c45052b8df30a1cd82c9cb5c29f"
+    },
+    "assertions": {
+      "path": "build/physics-lab-011-faults-02/assertions.txt",
+      "sha256": "47112d91925522168492deb446b7a939483714499018cee4386c27b83536ec25"
+    }
+  },
+  "sdk_probe": {
+    "module": {
+      "path": "build/physics-lab-brush-probe-011/CyrusPhysicsProbe.dlx",
+      "sha256": "a832dda37dc2c126b0005c3505ab0e023be7dce95c0493bc4385c1767b29fcc0"
+    },
+    "source": {
+      "path": "CyrusPhysicsLab/tests/paint_probe/probe.cpp",
+      "sha256": "b225f1c547d60f92582aedb88bf0af63738ee858a23149b90fbf3130ca841d9a"
+    },
+    "method": "public SDK TestHit and canvas stroke callbacks; no OS input"
+  },
+  "package": {
+    "file": {
+      "path": "dist/CyrusPhysicsLab-0.1.1-20261016/CyrusPhysicsLab-0.1.1-Max2027.mzp",
+      "sha256": "7b2c5c0aec38d121332df67e2a15f049023d88200f3c10eb8dd94c14c6915f13"
+    },
+    "manifest": {
+      "path": "dist/CyrusPhysicsLab-0.1.1-20261016/package.json",
+      "sha256": "3a276401806e06d9aa75e6ab004d4a308e3633477d108d5fb21f794f288fa4b5"
+    },
+    "bytes": 652682
+  },
+  "isolated_installer": {
+    "path": "build/physics-lab-011-installed-02/installer-receipt.json",
+    "sha256": "b6fe0ab039b1beaf97da1f8c67de027991e9f559ca2e28f642ca7eed0d66be00"
+  },
+  "normal_profile_fingerprints_before_and_after": {
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini": {
+      "exists": true,
+      "sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+    },
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\Plugin.UserSettings.ini": {
+      "exists": true,
+      "sha256": "a0d4ff2eb9dfdaa324d93ea25bcd840d38b524860e301b944053e1f2acd996f5"
+    },
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\startup\\CyrusPhysicsLabStartup.ms": {
+      "exists": true,
+      "sha256": "230bc6373b33ad5c82befdedb8ee0f9c0c78745cf53ae918a116da8a5d3c4f38"
+    }
+  },
+  "preserved_failures": [
+    {
+      "path": "build/physics-lab-011-final-02/error.txt",
+      "sha256": "999a1c90ff6067a3bbf1e10f3681fc4fade98300006990483ada78d4b4150bc8"
+    },
+    {
+      "path": "build/physics-lab-011-diagnostic-02/append-pending.json",
+      "sha256": "8c23750eb6c5d9d12e8200b7b04b8663bff32c65af7691e7c25ac9a0f33b9574"
+    },
+    {
+      "path": "build/physics-lab-011-diagnostic-02/append-stats.json",
+      "sha256": "37d5ab1624ab1042f0c7ee5649cd180e2e8aedf462dcc0214074f27705f245df"
+    },
+    {
+      "path": "build/physics-lab-011-append-baseline/tests.log",
+      "sha256": "b308c803e83955eb5094de84bca610bf6205c9987fea560d3a9215b494e3f0a6"
+    }
+  ],
+  "limits": [
+    "No physical mouse/tablet feel or mixed-monitor DPI qualification.",
+    "Max custom-control scales 1.0 and 1.5 are distinct from real Windows DPI changes.",
+    "Certified upward horizontal rectangular ground gets a 10 cm solid slab below its exact top. General meshes and holes are not filled.",
+    "Other thin-triangle contacts, dense production piles and production performance remain experimental."
+  ]
+}

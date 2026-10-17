@@ -1,5 +1,11 @@
 # Validation, performance and phase completion
 
+Current execution status is in the [phase table](../improvement-program/PROGRESS.md#original-phase-status):
+P01–P07 implemented, P08/P09 pending, P10 delivered for supported recipe/library
+scope and P11 partial. Further implementation is paused. Version assignments and
+enrollment instructions in this original specification are historical; use the
+current version policy and user instruction for any new delivery.
+
 This matrix supplies the common acceptance process for all eleven phases. It
 does not assert universal correctness or turn old passing receipts into new ones.
 Read [implementation scope](IMPLEMENTATION.md) before selecting the tests.

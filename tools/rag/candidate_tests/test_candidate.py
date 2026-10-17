@@ -171,7 +171,7 @@ class CandidateTests(unittest.TestCase):
         _,_,_,observation=self.preflight()
         baseline={'sources':copy.deepcopy(self.definition['sources'])}
         candidate=copy.deepcopy(self.definition);candidate['sources'].pop()
-        with self.assertRaisesRegex(support.Blocked,'preserve'):support.review_definition(baseline,candidate,None)
+        with self.assertRaisesRegex(support.Blocked,'retirement review'):support.review_definition(baseline,candidate,None)
         candidate=copy.deepcopy(self.definition);candidate['sources'][1]['knowledge_status']='current'
         entry={'path':self.history,'old_sha256':candidate['sources'][1]['sha256'],'new_sha256':candidate['sources'][1]['sha256'],
             'field_reasons':{'knowledge_status':'fixture proposed promotion'},**{k:True for k in ('diff_inspected','ranges_checked',

@@ -1,0 +1,807 @@
+{
+  "schema": "cyrus.physics-research/1",
+  "date_local": "2026-10-16",
+  "timezone": "Asia/Tehran",
+  "verified_utc": "2026-10-16T09:58:39.848997+00:00",
+  "scope": "Research/documentation only; static source/native analysis, no target execution, engine harness, host simulation, SDK build or product implementation.",
+  "git": {
+    "branch": "codex/workflow-0.75",
+    "head": "9f8cc157279b6e257f1f4a0eb6280fc75b0ea58c",
+    "preexisting_status": " M AminScatter/CMakeLists.txt\n M AminScatter/include/recipe_library.h\n M AminScatter/include/recipes.h\n M AminScatter/installer/install.ms\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/src/recipe_library.cpp\n M AminScatter/src/recipes.cpp\n M AminScatter/src/recipes_bridge.cpp\n M AminScatter/tests/recipe_library_tests.cpp\n M AminScatter/tests/recipe_tests.cpp\n M AminScatter/tools/ui/generate.cjs\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/presets.ms\n M AminScatter/tools/ui/templates/recipes.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M CyrusMCP/tests/test_feature_catalog.py\n M README.md\n M docs/README.md\n M docs/Release_Versioning.md\n M docs/plans/eleven-phase-roadmap/FOREST_IMPROVEMENTS.md\n M docs/plans/eleven-phase-roadmap/README.md\n M docs/plans/eleven-phase-roadmap/TODO.md\n M docs/plans/improvement-program/PROGRESS.md\n M tools/build_max.py\n M tools/eleven_phases/reload.py\n M tools/procedural_lab/build_feature_catalog.py\n M tools/procedural_lab/check_generated.py\n M tools/procedural_lab/layer_editor_071/private_host.py\n M tools/procedural_lab/offline_build.py\n?? AminScatter/include/asset_bitmap.h\n?? AminScatter/include/asset_mesh.h\n?? AminScatter/include/asset_package.h\n?? AminScatter/include/recipe_store.h\n?? AminScatter/src/asset_bitmap.cpp\n?? AminScatter/src/asset_mesh.cpp\n?? AminScatter/src/asset_package.cpp\n?? AminScatter/src/recipe_store.cpp\n?? AminScatter/tests/asset_mesh_tests.cpp\n?? AminScatter/tests/asset_package_tests.cpp\n?? AminScatter/tests/recipe_store_tests.cpp\n?? AminScatter/tools/build_gallery.py\n?? AminScatter/tools/ui/templates/assets.ms\n?? AminScatter/ui/LibraryGallery.cs\n?? LOGO.psd\n?? \"Landing Page Design/Cyrus_Scatter_Landing_Page (2).html\"\n?? \"Landing Page Design/Design 1/ARTWORK-REVIEW.md\"\n?? \"Landing Page Design/Design 1/MANIFEST.json\"\n?? \"Landing Page Design/Design 1/OPEN-ME.html\"\n?? \"Landing Page Design/Design 1/README.md\"\n?? \"Landing Page Design/Design 1/START-HERE.txt\"\n?? \"Landing Page Design/Design 1/history/01-Original-Guide.html\"\n?? \"Landing Page Design/Design 1/history/01-Original-Preview.png\"\n?? \"Landing Page Design/Design 1/history/01-Original-Source.zip\"\n?? \"Landing Page Design/Design 1/history/02-First-Illustrated-Guide.html\"\n?? \"Landing Page Design/Design 1/history/Original-Artist-Reference.zip\"\n?? \"Landing Page Design/Design 1/history/Original-Website-README.md\"\n?? \"Landing Page Design/Design 1/validation/FINAL-VALIDATION.md\"\n?? \"Landing Page Design/Design 1/validation/content-validation.json\"\n?? \"Landing Page Design/Design 1/validation/final-package/checks.json\"\n?? \"Landing Page Design/Design 1/validation/final-package/desktop-feature-poster.png\"\n?? \"Landing Page Design/Design 1/validation/final-package/desktop-overview.png\"\n?? \"Landing Page Design/Design 1/validation/final-package/mobile-poster.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/1440-diagram.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/1440-overview.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/1440-reference.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/390-diagram.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/390-overview.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/390-reference.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/834-diagram.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/834-overview.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/834-reference.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/VALIDATION.md\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/browser-validation.json\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/content-validation.json\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/contrast-validation.json\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/control-coverage.json\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/print-style-preview.png\"\n?? \"Landing Page Design/Design 1/validation/historical-first-version/source-integrity.json\"\n?? \"Landing Page Design/Design 1/validation/source-integrity-final.json\"\n?? \"Landing Page Design/Design 1/website/.gitignore\"\n?? \"Landing Page Design/Design 1/website/README.md\"\n?? \"Landing Page Design/Design 1/website/assets/originals/companion_workflows_analyze_assign_refine.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/companion_workflows_from_analysis_to_detail.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/coverage_accepted_planting_results.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/coverage_versus_accepted_plants.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/cyrus_layered_planting_infographic.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_feature_atlas.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_natural_variation_guide.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_setup_receiving_surfaces.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_visual_guide.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/cyrus_scatter_workflow_overview.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/cyrus_three_spacing_relationships.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/include_exclude_masks_falloff_guide.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/layers_paint_sets_visual_guide.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/manual_vs._live_garden_updates.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/source_containers_plant_model_workflow.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/sources_source_containers_guide.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/spacing_cleanup_visual_guide.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/viewport_preview_to_final_garden_output.png\"\n?? \"Landing Page Design/Design 1/website/assets/originals/viewport_vs_final_planting_design.png\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/areas-falloff.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/companion-automation.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/companion-workflows.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/coverage-painting.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/coverage-vs-accepted.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/feature-atlas.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/layer-setup-guide.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/layers-and-paint-sets.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/layers-paint-sets.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/manual-vs-live.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/setup-receivers.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/source-containers.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/sources-containers.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/spacing-cleanup.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/spacing-relationships.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/transforms-variation.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/viewport-output.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/viewport-vs-final.webp\"\n?? \"Landing Page Design/Design 1/website/assets/visuals/workflow-overview.webp\"\n?? \"Landing Page Design/Design 1/website/content/control-map.json\"\n?? \"Landing Page Design/Design 1/website/content/gallery.json\"\n?? \"Landing Page Design/Design 1/website/content/reference/01_SETUP_AND_LAYERS.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/02_MODELS_AND_CONTAINERS.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/03_SOURCE_ASSIGNMENT.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/04_POPULATION.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/05_COVERAGE_AND_PAINTING.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/06_AREAS_AND_FALLOFF.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/07_TRANSFORMS.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/08_SPACING_AND_CLEANUP.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/09_VIEWPORT_AND_RENDER.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/10_STATISTICS_AND_RECORDING.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/11_OTHER_EDITING_VIEWS.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/12_SURFACE_ANALYZER.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/13_AUTOMATION_AND_LIMITS.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/14_REVIEW_AND_WALKTHROUGH.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/15_CONTROL_INDEX.md\"\n?? \"Landing Page Design/Design 1/website/content/reference/README.md\"\n?? \"Landing Page Design/Design 1/website/content/site.json\"\n?? \"Landing Page Design/Design 1/website/scripts/build.py\"\n?? \"Landing Page Design/Design 1/website/scripts/content.py\"\n?? \"Landing Page Design/Design 1/website/scripts/validate_content.py\"\n?? \"Landing Page Design/Design 1/website/src/app.js\"\n?? \"Landing Page Design/Design 1/website/src/diagrams.js\"\n?? \"Landing Page Design/Design 1/website/src/index.html\"\n?? \"Landing Page Design/Design 1/website/src/styles.css\"\n?? \"Landing Page Design/Design 1/website/tests/browser_checks.py\"\n?? \"Landing Page Design/Design 1/website/tests/final_package_checks.py\"\n?? \"Landing Page Design/Design 1/website/tests/visual_checks.py\"\n?? \"Landing Page Design/Design 2/MANIFEST.sha256\"\n?? \"Landing Page Design/Design 2/OPEN-WEBSITE.html\"\n?? \"Landing Page Design/Design 2/README.md\"\n?? \"Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Coverage.json\"\n?? \"Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Desktop.png\"\n?? \"Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Mobile.png\"\n?? \"Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Validation.md\"\n?? \"Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Visual-Guide-source.zip\"\n?? \"Landing Page Design/Design 2/archive/first-version/Cyrus-Scatter-Visual-Guide.html\"\n?? \"Landing Page Design/Design 2/archive/first-version/website-README.md\"\n?? \"Landing Page Design/Design 2/artwork/ARTWORK-NOTES.md\"\n?? \"Landing Page Design/Design 2/artwork/originals/coverage_vs_accepted_plants.png\"\n?? \"Landing Page Design/Design 2/artwork/originals/cyrus_scatter_layers_and_paint_sets.png\"\n?? \"Landing Page Design/Design 2/artwork/originals/cyrus_scatter_visual_guide_homepage.png\"\n?? \"Landing Page Design/Design 2/artwork/originals/manual_vs_live_mode_workflows.png\"\n?? \"Landing Page Design/Design 2/artwork/originals/source_containers_a_natural_scattering_guide.png\"\n?? \"Landing Page Design/Design 2/artwork/originals/three_spacing_relationships.png\"\n?? \"Landing Page Design/Design 2/artwork/originals/viewport_vs_final_scatter.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-containers.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-coverage.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-gallery.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-home.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-layers.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-spacing.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-updates.png\"\n?? \"Landing Page Design/Design 2/previews/desktop-viewport.png\"\n?? \"Landing Page Design/Design 2/previews/home-1024.png\"\n?? \"Landing Page Design/Design 2/previews/home-1440.png\"\n?? \"Landing Page Design/Design 2/previews/home-320.png\"\n?? \"Landing Page Design/Design 2/previews/home-390.png\"\n?? \"Landing Page Design/Design 2/previews/home-768.png\"\n?? \"Landing Page Design/Design 2/previews/mobile-coverage.png\"\n?? \"Landing Page Design/Design 2/reference-upload/Artist_Reference_0.73_2026-10-07.zip\"\n?? \"Landing Page Design/Design 2/website/.gitignore\"\n?? \"Landing Page Design/Design 2/website/README.md\"\n?? \"Landing Page Design/Design 2/website/VALIDATION.md\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/containers.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/coverage-candidates.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/coverage-survivors.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/final.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/flower-sources.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/grass-sources.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/live-result.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/manifest.json\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/manual-result.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/meadow.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/planting-strip.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/preview.webp\"\n?? \"Landing Page Design/Design 2/website/assets/illustrations/spacing.webp\"\n?? \"Landing Page Design/Design 2/website/content/art-assets.json\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/01_SETUP_AND_LAYERS.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/02_MODELS_AND_CONTAINERS.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/03_SOURCE_ASSIGNMENT.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/04_POPULATION.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/05_COVERAGE_AND_PAINTING.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/06_AREAS_AND_FALLOFF.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/07_TRANSFORMS.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/08_SPACING_AND_CLEANUP.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/09_VIEWPORT_AND_RENDER.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/10_STATISTICS_AND_RECORDING.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/11_OTHER_EDITING_VIEWS.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/12_SURFACE_ANALYZER.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/13_AUTOMATION_AND_LIMITS.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/14_REVIEW_AND_WALKTHROUGH.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/15_CONTROL_INDEX.md\"\n?? \"Landing Page Design/Design 2/website/content/artist-reference/README.md\"\n?? \"Landing Page Design/Design 2/website/content/control-overrides.json\"\n?? \"Landing Page Design/Design 2/website/content/guide.json\"\n?? \"Landing Page Design/Design 2/website/content/illustrations.json\"\n?? \"Landing Page Design/Design 2/website/content/source-manifest.json\"\n?? \"Landing Page Design/Design 2/website/src/app.js\"\n?? \"Landing Page Design/Design 2/website/src/diagrams.js\"\n?? \"Landing Page Design/Design 2/website/src/icons.js\"\n?? \"Landing Page Design/Design 2/website/src/illustrations.js\"\n?? \"Landing Page Design/Design 2/website/src/index.html\"\n?? \"Landing Page Design/Design 2/website/src/styles.css\"\n?? \"Landing Page Design/Design 2/website/tests/audit_rendered.py\"\n?? \"Landing Page Design/Design 2/website/tests/test_browser.py\"\n?? \"Landing Page Design/Design 2/website/tests/test_illustrations.py\"\n?? \"Landing Page Design/Design 2/website/tools/build.py\"\n?? \"Landing Page Design/Design 2/website/tools/verify.py\"\n?? \"Landing Page Design/Design 2/website/validation/browser-report.json\"\n?? \"Landing Page Design/Design 2/website/validation/coverage-report.json\"\n?? \"Landing Page Design/Design 2/website/validation/illustrations-report.json\"\n?? \"Landing Page Design/Design 2/website/validation/rendered-audit.json\"\n?? \"Landing Page Design/Design 2/website/validation/static-report.json\"\n?? \"Landing Page Design/Design 3/MANIFEST_SHA256.txt\"\n?? \"Landing Page Design/Design 3/START_HERE.html\"\n?? \"Landing Page Design/Design 3/START_HERE.md\"\n?? \"Landing Page Design/Design 3/archive/Cyrus_Scatter_Original_Website.zip\"\n?? \"Landing Page Design/Design 3/archive/Original_Artist_Reference.zip\"\n?? \"Landing Page Design/Design 3/archive/Original_Desktop_Preview.png\"\n?? \"Landing Page Design/Design 3/archive/Original_Mobile_Preview.png\"\n?? \"Landing Page Design/Design 3/archive/Original_Website_Brief.txt\"\n?? \"Landing Page Design/Design 3/artwork/README.md\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/areas_and_falloff_shape_the_edge.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/coverage_painting_from_mask_to_courtyard.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/cs_edit_refine_every_instance.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/cyrus_scatter_field_guide_homepage.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/population_guides_abundance.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/source_containers_shape_variation.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/spacing_creates_breathing_room.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/surface_analyzer_smarter_planting_zones.png\"\n?? \"Landing Page Design/Design 3/artwork/generated-originals/transforms_prevent_repetition.png\"\n?? \"Landing Page Design/Design 3/artwork/index.html\"\n?? \"Landing Page Design/Design 3/previews/illustrated-desktop-analyzer.png\"\n?? \"Landing Page Design/Design 3/previews/illustrated-desktop-atlas.png\"\n?? \"Landing Page Design/Design 3/previews/illustrated-desktop-home.png\"\n?? \"Landing Page Design/Design 3/previews/illustrated-mobile-atlas.png\"\n?? \"Landing Page Design/Design 3/previews/illustrated-mobile-home.png\"\n?? \"Landing Page Design/Design 3/website/.gitignore\"\n?? \"Landing Page Design/Design 3/website/Cyrus_Scatter_Field_Guide.html\"\n?? \"Landing Page Design/Design 3/website/DESIGN_NOTES.md\"\n?? \"Landing Page Design/Design 3/website/README.md\"\n?? \"Landing Page Design/Design 3/website/assets/illustrations.js\"\n?? \"Landing Page Design/Design 3/website/assets/mark.svg\"\n?? \"Landing Page Design/Design 3/website/assets/media/analyzer.svg\"\n?? \"Landing Page Design/Design 3/website/assets/media/analyzer.webp\"\n?? \"Landing Page Design/Design 3/website/assets/media/coverage.webp\"\n?? \"Landing Page Design/Design 3/website/assets/media/falloff.svg\"\n?? \"Landing Page Design/Design 3/website/assets/media/falloff.webp\"\n?? \"Landing Page Design/Design 3/website/assets/media/local-edit.webp\"\n?? \"Landing Page Design/Design 3/website/assets/media/population.webp\"\n?? \"Landing Page Design/Design 3/website/assets/media/source-pools.svg\"\n?? \"Landing Page Design/Design 3/website/assets/media/source-pools.webp\"\n?? \"Landing Page Design/Design 3/website/assets/media/spacing.svg\"\n?? \"Landing Page Design/Design 3/website/assets/media/spacing.webp\"\n?? \"Landing Page Design/Design 3/website/assets/media/transforms.webp\"\n?? \"Landing Page Design/Design 3/website/content/editorial.js\"\n?? \"Landing Page Design/Design 3/website/content/editorial.json\"\n?? \"Landing Page Design/Design 3/website/content/features.js\"\n?? \"Landing Page Design/Design 3/website/content/features.json\"\n?? \"Landing Page Design/Design 3/website/content/guide.js\"\n?? \"Landing Page Design/Design 3/website/content/guide.json\"\n?? \"Landing Page Design/Design 3/website/content/source/01_SETUP_AND_LAYERS.md\"\n?? \"Landing Page Design/Design 3/website/content/source/02_MODELS_AND_CONTAINERS.md\"\n?? \"Landing Page Design/Design 3/website/content/source/03_SOURCE_ASSIGNMENT.md\"\n?? \"Landing Page Design/Design 3/website/content/source/04_POPULATION.md\"\n?? \"Landing Page Design/Design 3/website/content/source/05_COVERAGE_AND_PAINTING.md\"\n?? \"Landing Page Design/Design 3/website/content/source/06_AREAS_AND_FALLOFF.md\"\n?? \"Landing Page Design/Design 3/website/content/source/07_TRANSFORMS.md\"\n?? \"Landing Page Design/Design 3/website/content/source/08_SPACING_AND_CLEANUP.md\"\n?? \"Landing Page Design/Design 3/website/content/source/09_VIEWPORT_AND_RENDER.md\"\n?? \"Landing Page Design/Design 3/website/content/source/10_STATISTICS_AND_RECORDING.md\"\n?? \"Landing Page Design/Design 3/website/content/source/11_OTHER_EDITING_VIEWS.md\"\n?? \"Landing Page Design/Design 3/website/content/source/12_SURFACE_ANALYZER.md\"\n?? \"Landing Page Design/Design 3/website/content/source/13_AUTOMATION_AND_LIMITS.md\"\n?? \"Landing Page Design/Design 3/website/content/source/14_REVIEW_AND_WALKTHROUGH.md\"\n?? \"Landing Page Design/Design 3/website/content/source/15_CONTROL_INDEX.md\"\n?? \"Landing Page Design/Design 3/website/content/source/README.md\"\n?? \"Landing Page Design/Design 3/website/index.html\"\n?? \"Landing Page Design/Design 3/website/reference-print.html\"\n?? \"Landing Page Design/Design 3/website/reports/artwork-notes.md\"\n?? \"Landing Page Design/Design 3/website/reports/browser-checks.json\"\n?? \"Landing Page Design/Design 3/website/reports/content-checks.json\"\n?? \"Landing Page Design/Design 3/website/reports/control-coverage.csv\"\n?? \"Landing Page Design/Design 3/website/reports/coverage-checklist.md\"\n?? \"Landing Page Design/Design 3/website/reports/design-inspection.json\"\n?? \"Landing Page Design/Design 3/website/reports/desktop-control.png\"\n?? \"Landing Page Design/Design 3/website/reports/desktop-home.png\"\n?? \"Landing Page Design/Design 3/website/reports/desktop-learn.png\"\n?? \"Landing Page Design/Design 3/website/reports/desktop-reference.png\"\n?? \"Landing Page Design/Design 3/website/reports/desktop-spacing.png\"\n?? \"Landing Page Design/Design 3/website/reports/illustrated-browser-checks.json\"\n?? \"Landing Page Design/Design 3/website/reports/illustrated-desktop-analyzer.png\"\n?? \"Landing Page Design/Design 3/website/reports/illustrated-desktop-atlas.png\"\n?? \"Landing Page Design/Design 3/website/reports/illustrated-desktop-home.png\"\n?? \"Landing Page Design/Design 3/website/reports/illustrated-edition-verification.md\"\n?? \"Landing Page Design/Design 3/website/reports/illustrated-mobile-atlas.png\"\n?? \"Landing Page Design/Design 3/website/reports/illustrated-mobile-home.png\"\n?? \"Landing Page Design/Design 3/website/reports/mapping-diagnostics.json\"\n?? \"Landing Page Design/Design 3/website/reports/mobile-chapter.png\"\n?? \"Landing Page Design/Design 3/website/reports/mobile-home.png\"\n?? \"Landing Page Design/Design 3/website/reports/mobile-reference.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/browser-checks.json\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/content-checks.json\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/control-coverage.csv\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/coverage-checklist.md\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/design-inspection.json\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/desktop-control.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/desktop-home.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/desktop-learn.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/desktop-reference.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/desktop-spacing.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/mapping-diagnostics.json\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/mobile-chapter.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/mobile-home.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/mobile-reference.png\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/source-integrity.json\"\n?? \"Landing Page Design/Design 3/website/reports/original-edition/verification.md\"\n?? \"Landing Page Design/Design 3/website/reports/revision-source-integrity.json\"\n?? \"Landing Page Design/Design 3/website/reports/source-integrity.json\"\n?? \"Landing Page Design/Design 3/website/reports/verification.md\"\n?? \"Landing Page Design/Design 3/website/requirements-dev.txt\"\n?? \"Landing Page Design/Design 3/website/scripts/app.js\"\n?? \"Landing Page Design/Design 3/website/scripts/build.py\"\n?? \"Landing Page Design/Design 3/website/scripts/build_content.py\"\n?? \"Landing Page Design/Design 3/website/scripts/media.js\"\n?? \"Landing Page Design/Design 3/website/scripts/prepare_media.py\"\n?? \"Landing Page Design/Design 3/website/styles/main.css\"\n?? \"Landing Page Design/Design 3/website/tests/browser_helpers.py\"\n?? \"Landing Page Design/Design 3/website/tests/check_content.py\"\n?? \"Landing Page Design/Design 3/website/tests/inspect_design.py\"\n?? \"Landing Page Design/Design 3/website/tests/test_illustrated.py\"\n?? \"Landing Page Design/Design 3/website/tests/test_site.py\"\n?? \"Landing Page Design/New folder/01-Original-Preview.png\"\n?? \"Landing Page Design/New folder/1440-diagram.png\"\n?? \"Landing Page Design/New folder/1440-overview.png\"\n?? \"Landing Page Design/New folder/1440-reference.png\"\n?? \"Landing Page Design/New folder/390-diagram.png\"\n?? \"Landing Page Design/New folder/390-overview.png\"\n?? \"Landing Page Design/New folder/390-reference.png\"\n?? \"Landing Page Design/New folder/834-diagram.png\"\n?? \"Landing Page Design/New folder/834-overview.png\"\n?? \"Landing Page Design/New folder/834-reference.png\"\n?? \"Landing Page Design/New folder/Cyrus-Scatter-Desktop.png\"\n?? \"Landing Page Design/New folder/Cyrus-Scatter-Mobile.png\"\n?? \"Landing Page Design/New folder/MANIFEST.sha256\"\n?? \"Landing Page Design/New folder/MANIFEST_SHA256.txt\"\n?? \"Landing Page Design/New folder/Original_Desktop_Preview.png\"\n?? \"Landing Page Design/New folder/Original_Mobile_Preview.png\"\n?? \"Landing Page Design/New folder/Original_Website_Brief.txt\"\n?? \"Landing Page Design/New folder/START-HERE.txt\"\n?? \"Landing Page Design/New folder/analyzer.webp\"\n?? \"Landing Page Design/New folder/areas-falloff.webp\"\n?? \"Landing Page Design/New folder/areas_and_falloff_shape_the_edge.png\"\n?? \"Landing Page Design/New folder/audit_rendered.py\"\n?? \"Landing Page Design/New folder/browser_checks.py\"\n?? \"Landing Page Design/New folder/browser_helpers.py\"\n?? \"Landing Page Design/New folder/build.py\"\n?? \"Landing Page Design/New folder/build_content.py\"\n?? \"Landing Page Design/New folder/check_content.py\"\n?? \"Landing Page Design/New folder/companion-automation.webp\"\n?? \"Landing Page Design/New folder/companion-workflows.webp\"\n?? \"Landing Page Design/New folder/companion_workflows_analyze_assign_refine.png\"\n?? \"Landing Page Design/New folder/companion_workflows_from_analysis_to_detail.png\"\n?? \"Landing Page Design/New folder/containers.webp\"\n?? \"Landing Page Design/New folder/content.py\"\n?? \"Landing Page Design/New folder/coverage-candidates.webp\"\n?? \"Landing Page Design/New folder/coverage-painting.webp\"\n?? \"Landing Page Design/New folder/coverage-survivors.webp\"\n?? \"Landing Page Design/New folder/coverage-vs-accepted.webp\"\n?? \"Landing Page Design/New folder/coverage.webp\"\n?? \"Landing Page Design/New folder/coverage_accepted_planting_results.png\"\n?? \"Landing Page Design/New folder/coverage_painting_from_mask_to_courtyard.png\"\n?? \"Landing Page Design/New folder/coverage_versus_accepted_plants.png\"\n?? \"Landing Page Design/New folder/coverage_vs_accepted_plants.png\"\n?? \"Landing Page Design/New folder/cs_edit_refine_every_instance.png\"\n?? \"Landing Page Design/New folder/cyrus_layered_planting_infographic.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_feature_atlas.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_field_guide_homepage.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_layers_and_paint_sets.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_natural_variation_guide.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_setup_receiving_surfaces.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_visual_guide.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_visual_guide_homepage.png\"\n?? \"Landing Page Design/New folder/cyrus_scatter_workflow_overview.png\"\n?? \"Landing Page Design/New folder/cyrus_three_spacing_relationships.png\"\n?? \"Landing Page Design/New folder/desktop-containers.png\"\n?? \"Landing Page Design/New folder/desktop-control.png\"\n?? \"Landing Page Design/New folder/desktop-coverage.png\"\n?? \"Landing Page Design/New folder/desktop-feature-poster.png\"\n?? \"Landing Page Design/New folder/desktop-gallery.png\"\n?? \"Landing Page Design/New folder/desktop-home.png\"\n?? \"Landing Page Design/New folder/desktop-layers.png\"\n?? \"Landing Page Design/New folder/desktop-learn.png\"\n?? \"Landing Page Design/New folder/desktop-overview.png\"\n?? \"Landing Page Design/New folder/desktop-reference.png\"\n?? \"Landing Page Design/New folder/desktop-spacing.png\"\n?? \"Landing Page Design/New folder/desktop-updates.png\"\n?? \"Landing Page Design/New folder/desktop-viewport.png\"\n?? \"Landing Page Design/New folder/falloff.webp\"\n?? \"Landing Page Design/New folder/feature-atlas.webp\"\n?? \"Landing Page Design/New folder/final.webp\"\n?? \"Landing Page Design/New folder/final_package_checks.py\"\n?? \"Landing Page Design/New folder/flower-sources.webp\"\n?? \"Landing Page Design/New folder/grass-sources.webp\"\n?? \"Landing Page Design/New folder/home-1024.png\"\n?? \"Landing Page Design/New folder/home-1440.png\"\n?? \"Landing Page Design/New folder/home-320.png\"\n?? \"Landing Page Design/New folder/home-390.png\"\n?? \"Landing Page Design/New folder/home-768.png\"\n?? \"Landing Page Design/New folder/illustrated-desktop-analyzer.png\"\n?? \"Landing Page Design/New folder/illustrated-desktop-atlas.png\"\n?? \"Landing Page Design/New folder/illustrated-desktop-home.png\"\n?? \"Landing Page Design/New folder/illustrated-mobile-atlas.png\"\n?? \"Landing Page Design/New folder/illustrated-mobile-home.png\"\n?? \"Landing Page Design/New folder/include_exclude_masks_falloff_guide.png\"\n?? \"Landing Page Design/New folder/inspect_design.py\"\n?? \"Landing Page Design/New folder/layer-setup-guide.webp\"\n?? \"Landing Page Design/New folder/layers-and-paint-sets.webp\"\n?? \"Landing Page Design/New folder/layers-paint-sets.webp\"\n?? \"Landing Page Design/New folder/layers_paint_sets_visual_guide.png\"\n?? \"Landing Page Design/New folder/live-result.webp\"\n?? \"Landing Page Design/New folder/local-edit.webp\"\n?? \"Landing Page Design/New folder/manual-result.webp\"\n?? \"Landing Page Design/New folder/manual-vs-live.webp\"\n?? \"Landing Page Design/New folder/manual_vs._live_garden_updates.png\"\n?? \"Landing Page Design/New folder/manual_vs_live_mode_workflows.png\"\n?? \"Landing Page Design/New folder/meadow.webp\"\n?? \"Landing Page Design/New folder/mobile-chapter.png\"\n?? \"Landing Page Design/New folder/mobile-coverage.png\"\n?? \"Landing Page Design/New folder/mobile-home.png\"\n?? \"Landing Page Design/New folder/mobile-poster.png\"\n?? \"Landing Page Design/New folder/mobile-reference.png\"\n?? \"Landing Page Design/New folder/planting-strip.webp\"\n?? \"Landing Page Design/New folder/population.webp\"\n?? \"Landing Page Design/New folder/population_guides_abundance.png\"\n?? \"Landing Page Design/New folder/prepare_media.py\"\n?? \"Landing Page Design/New folder/preview.webp\"\n?? \"Landing Page Design/New folder/print-style-preview.png\"\n?? \"Landing Page Design/New folder/requirements-dev.txt\"\n?? \"Landing Page Design/New folder/setup-receivers.webp\"\n?? \"Landing Page Design/New folder/source-containers.webp\"\n?? \"Landing Page Design/New folder/source-pools.webp\"\n?? \"Landing Page Design/New folder/source_containers_a_natural_scattering_guide.png\"\n?? \"Landing Page Design/New folder/source_containers_plant_model_workflow.png\"\n?? \"Landing Page Design/New folder/source_containers_shape_variation.png\"\n?? \"Landing Page Design/New folder/sources-containers.webp\"\n?? \"Landing Page Design/New folder/sources_source_containers_guide.png\"\n?? \"Landing Page Design/New folder/spacing-cleanup.webp\"\n?? \"Landing Page Design/New folder/spacing-relationships.webp\"\n?? \"Landing Page Design/New folder/spacing.webp\"\n?? \"Landing Page Design/New folder/spacing_cleanup_visual_guide.png\"\n?? \"Landing Page Design/New folder/spacing_creates_breathing_room.png\"\n?? \"Landing Page Design/New folder/surface_analyzer_smarter_planting_zones.png\"\n?? \"Landing Page Design/New folder/test_browser.py\"\n?? \"Landing Page Design/New folder/test_illustrated.py\"\n?? \"Landing Page Design/New folder/test_illustrations.py\"\n?? \"Landing Page Design/New folder/test_site.py\"\n?? \"Landing Page Design/New folder/three_spacing_relationships.png\"\n?? \"Landing Page Design/New folder/transforms-variation.webp\"\n?? \"Landing Page Design/New folder/transforms.webp\"\n?? \"Landing Page Design/New folder/transforms_prevent_repetition.png\"\n?? \"Landing Page Design/New folder/validate_content.py\"\n?? \"Landing Page Design/New folder/verify.py\"\n?? \"Landing Page Design/New folder/viewport-output.webp\"\n?? \"Landing Page Design/New folder/viewport-vs-final.webp\"\n?? \"Landing Page Design/New folder/viewport_preview_to_final_garden_output.png\"\n?? \"Landing Page Design/New folder/viewport_vs_final_planting_design.png\"\n?? \"Landing Page Design/New folder/viewport_vs_final_scatter.png\"\n?? \"Landing Page Design/New folder/visual_checks.py\"\n?? \"Landing Page Design/New folder/workflow-overview.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/README.md\"\n?? \"Landing Page Design/cyrus-scatter-site/app.js\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/courtyard-480.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/courtyard-960.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/courtyard-mobile.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/detail-480.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/detail-960.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/detail-mobile.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/favicon.svg\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/landscape-480.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/landscape-960.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/assets/landscape-mobile.webp\"\n?? \"Landing Page Design/cyrus-scatter-site/config.js\"\n?? \"Landing Page Design/cyrus-scatter-site/file-manifest.json\"\n?? \"Landing Page Design/cyrus-scatter-site/index.html\"\n?? \"Landing Page Design/cyrus-scatter-site/styles.css\"\n?? \"Landing Page Design/cyrus-scatter-site/tests/browser-report.json\"\n?? \"Landing Page Design/cyrus-scatter-site/tests/browser_test.py\"\n?? \"Landing Page Design/cyrus-scatter-site/tools/build_standalone.py\"\n?? docs/plans/landscape-presentation/BUILDING_DELIVERY.md\n?? docs/plans/landscape-presentation/BUILDING_STUDY.md\n?? docs/plans/landscape-presentation/PROGRESS.md\n?? docs/plans/landscape-presentation/README.md\n?? docs/plans/landscape-presentation/RESEARCH_2026-10-15.md\n?? docs/plans/landscape-presentation/SCENE_PREPARATION.md\n?? docs/plans/preset-gallery-improvements/BROWSER_LAYOUT.md\n?? docs/plans/preset-gallery-improvements/FORMAT_5.md\n?? docs/plans/preset-gallery-improvements/PACKAGE_CONTRACT.md\n?? docs/plans/preset-gallery-improvements/PROGRESS_0851.md\n?? docs/plans/preset-gallery-improvements/README.md\n?? docs/plans/preset-gallery-improvements/STYLE_CONTRACT.md\n?? docs/plans/preset-gallery-improvements/TODO.md\n?? docs/plans/preset-gallery-improvements/VALIDATION.md\n?? presentation-studio/.gitignore\n?? presentation-studio/README.md\n?? presentation-studio/fixtures/README.md\n?? presentation-studio/package-lock.json\n?? presentation-studio/package.json\n?? presentation-studio/player/index.html\n?? presentation-studio/player/main.ts\n?? presentation-studio/playwright.config.ts\n?? presentation-studio/src/assets/bounds.ts\n?? presentation-studio/src/assets/demo.ts\n?? presentation-studio/src/assets/glb.ts\n?? presentation-studio/src/assets/images.ts\n?? presentation-studio/src/assets/meshopt.ts\n?? presentation-studio/src/assets/prune.ts\n?? presentation-studio/src/assets/worker-import.ts\n?? presentation-studio/src/compiler/compile.ts\n?? presentation-studio/src/compiler/shell.ts\n?? presentation-studio/src/core/hash.ts\n?? presentation-studio/src/core/history.ts\n?? presentation-studio/src/core/model.ts\n?? presentation-studio/src/player/main.ts\n?? presentation-studio/src/player/style.css\n?? presentation-studio/src/presentation/camera-clip.ts\n?? presentation-studio/src/presentation/evaluate.ts\n?? presentation-studio/src/render/host.ts\n?? presentation-studio/src/render/overlay.ts\n?? presentation-studio/src/render/quality.ts\n?? presentation-studio/src/render/resources.ts\n?? presentation-studio/src/storage/archive.ts\n?? presentation-studio/src/storage/local.ts\n?? presentation-studio/src/studio/contracts.ts\n?? presentation-studio/src/studio/main.ts\n?? presentation-studio/src/studio/navigation.ts\n?? presentation-studio/src/studio/style.css\n?? presentation-studio/src/studio/view.ts\n?? presentation-studio/src/studio/viewport-camera.ts\n?? presentation-studio/src/workers/archive.ts\n?? presentation-studio/src/workers/import.ts\n?? presentation-studio/studio/index.html\n?? presentation-studio/studio/main.ts\n?? presentation-studio/tests/browser/camera-authoring.spec.ts\n?? presentation-studio/tests/browser/camera-focus.spec.ts\n?? presentation-studio/tests/browser/compatibility.spec.ts\n?? presentation-studio/tests/browser/lighting-style.spec.ts\n?? presentation-studio/tests/browser/max-camera.spec.ts\n?? presentation-studio/tests/browser/meshopt.spec.ts\n?? presentation-studio/tests/browser/options-audit.spec.ts\n?? presentation-studio/tests/browser/photos.spec.ts\n?? presentation-studio/tests/browser/previous-study.spec.ts\n?? presentation-studio/tests/browser/recovery.spec.ts\n?? presentation-studio/tests/browser/scene-preparation.spec.ts\n?? presentation-studio/tests/browser/stress.spec.ts\n?? presentation-studio/tests/browser/studio.spec.ts\n?? presentation-studio/tests/browser/ui-actions.ts\n?? presentation-studio/tests/helpers/meshopt-fixture.ts\n?? presentation-studio/tests/integration/lighting-style.test.ts\n?? presentation-studio/tests/integration/max-camera.test.ts\n?? presentation-studio/tests/integration/meshopt-public.test.ts\n?? presentation-studio/tests/integration/portable.test.ts\n?? presentation-studio/tests/unit/camera-clip.test.ts\n?? presentation-studio/tests/unit/contracts.test.ts\n?? presentation-studio/tests/unit/meshopt.test.ts\n?? presentation-studio/tools/benchmark-production.mjs\n?? presentation-studio/tools/check-prepared.ts\n?? presentation-studio/tools/embed-player.mjs\n?? presentation-studio/tools/fetch-test-assets.mjs\n?? presentation-studio/tools/make-fixtures.ts\n?? presentation-studio/tools/max2027/CyrusCameraExporter.ms\n?? presentation-studio/tools/max2027/README.md\n?? presentation-studio/tools/max2027/building-study/audit-delivery.py\n?? presentation-studio/tools/max2027/building-study/author-presentation.py\n?? presentation-studio/tools/max2027/building-study/baseline-identities.mjs\n?? presentation-studio/tools/max2027/building-study/building-browser.py\n?? presentation-studio/tools/max2027/building-study/compare-final.mjs\n?? presentation-studio/tools/max2027/building-study/compare-grille.mjs\n?? presentation-studio/tools/max2027/building-study/compare-meshopt.mjs\n?? presentation-studio/tools/max2027/building-study/compare-reproduced-diagnostic.mjs\n?? presentation-studio/tools/max2027/building-study/compare-reproduced.mjs\n?? presentation-studio/tools/max2027/building-study/download-via-browser.mjs\n?? presentation-studio/tools/max2027/building-study/finish-final.py\n?? presentation-studio/tools/max2027/building-study/freeze-geometry.ms\n?? presentation-studio/tools/max2027/building-study/geometry-variants.ms\n?? presentation-studio/tools/max2027/building-study/grille-browser.py\n?? presentation-studio/tools/max2027/building-study/inspect.ms\n?? presentation-studio/tools/max2027/building-study/make-camera-request.mjs\n?? presentation-studio/tools/max2027/building-study/make-final-camera-request.mjs\n?? presentation-studio/tools/max2027/building-study/make-project-fixture.ts\n?? presentation-studio/tools/max2027/building-study/materials.ms\n?? presentation-studio/tools/max2027/building-study/measure-final-silhouettes.mjs\n?? presentation-studio/tools/max2027/building-study/measure-silhouettes.mjs\n?? presentation-studio/tools/max2027/building-study/meshopt-lossless-trial.mjs\n?? presentation-studio/tools/max2027/building-study/prepare-variants.mjs\n?? presentation-studio/tools/max2027/building-study/qualify-final-standalone.mjs\n?? presentation-studio/tools/max2027/building-study/qualify-final-studio.mjs\n?? presentation-studio/tools/max2027/building-study/qualify-final.py\n?? presentation-studio/tools/max2027/building-study/qualify-meshopt.py\n?? presentation-studio/tools/max2027/building-study/qualify-standalone.mjs\n?? presentation-studio/tools/max2027/building-study/quality-browser.py\n?? presentation-studio/tools/max2027/building-study/save-compressed-presentation.mjs\n?? presentation-studio/tools/max2027/building-study/save-final-presentation.mjs\n?? presentation-studio/tools/max2027/building-study/save-presentation.py\n?? presentation-studio/tools/max2027/building-study/verify-building-camera.ts\n?? presentation-studio/tools/max2027/building-study/verify-material-only-successor.mjs\n?? presentation-studio/tools/max2027/host-workflow.py\n?? presentation-studio/tools/max2027/prepare_scene.py\n?? presentation-studio/tools/max2027/qualification.ms\n?? presentation-studio/tools/max2027/scene-preparation/README.md\n?? presentation-studio/tools/max2027/scene-preparation/export-materials.ms\n?? presentation-studio/tools/max2027/scene-preparation/geometry.ms\n?? presentation-studio/tools/max2027/scene-preparation/materials.ms\n?? presentation-studio/tools/max2027/scene-preparation/native.ms\n?? presentation-studio/tools/max2027/scene-preparation/post.mjs\n?? presentation-studio/tools/max2027/scene-preparation/recipe.py\n?? presentation-studio/tools/max2027/scene-preparation/recipes/building.json\n?? presentation-studio/tools/max2027/scene-preparation/recipes/conservative.json\n?? presentation-studio/tools/max2027/scene-preparation/tests/geometry-fixture.ms\n?? presentation-studio/tools/max2027/scene-preparation/tests/make-native-fixture.ms\n?? presentation-studio/tools/max2027/scene-preparation/tests/post.test.mjs\n?? presentation-studio/tools/max2027/scene-preparation/tests/test_launcher.py\n?? presentation-studio/tools/max2027/scene-preparation/tests/test_recipe.py\n?? presentation-studio/tools/max2027/scene-preparation/tests/verify-prepared-fixture.ms\n?? presentation-studio/tools/prepare-asset.mjs\n?? presentation-studio/tools/previous-study-fixture.ts\n?? presentation-studio/tools/verify-export.mjs\n?? presentation-studio/tsconfig.json\n?? presentation-studio/vite.player.config.ts\n?? presentation-studio/vite.studio.config.ts\n?? presentation-studio/vitest.config.ts\n?? tools/gallery_0851/asset_introspection.ms\n?? tools/gallery_0851/bitmap_controller_probe.ms\n?? tools/gallery_0851/bitmap_probe.ms\n?? tools/gallery_0851/bitmap_uv_probe.ms\n?? tools/gallery_0851/browser.py\n?? tools/gallery_0851/capture_boundaries.py\n?? tools/gallery_0851/capture_import.ms\n?? tools/gallery_0851/catalog_fixture.py\n?? tools/gallery_0851/collections.py\n?? tools/gallery_0851/collections_performance.py\n?? tools/gallery_0851/curve_presets.ms\n?? tools/gallery_0851/diagnostic_build.py\n?? tools/gallery_0851/heap_stages.ms\n?? tools/gallery_0851/heavy_setup.py\n?? tools/gallery_0851/launch.py\n?? tools/gallery_0851/lifecycle.py\n?? tools/gallery_0851/package_bitmap_boundaries.ms\n?? tools/gallery_0851/package_bitmap_export.ms\n?? tools/gallery_0851/package_bitmap_import.ms\n?? tools/gallery_0851/package_bitmap_render.ms\n?? tools/gallery_0851/package_export_start.ms\n?? tools/gallery_0851/package_export_verify.ms\n?? tools/gallery_0851/package_import.ms\n?? tools/gallery_0851/package_import_boundaries.ms\n?? tools/gallery_0851/package_mesh_fidelity.ms\n?? tools/gallery_0851/package_preparation.ms\n?? tools/gallery_0851/performance.py\n?? tools/gallery_0851/persistence.py\n?? tools/gallery_0851/preset_noop.ms\n?? tools/gallery_0851/run_lifecycle.py\n?? tools/gallery_0851/stage_managed.py\n?? tools/gallery_0851/style.ms\n?? tools/gallery_0851/style_boundaries.ms\n?? tools/gallery_0851/undo_pressure.ms\n?? tools/gallery_0851/undo_pressure_retained.ms\n?? website/prototypes/botanical-islands/README.md\n?? website/prototypes/botanical-islands/VECTOR_PROVENANCE.md\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/01-western-meadow.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/02-upper-garden-fork.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/03-meeting-clearing.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/04-pavilion-finale.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/asset-verification.json\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/capture-manifest.json\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/generation-prompts.json\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-01-frame-ink.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-02-frame-ink.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-03-frame-ink.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-04-frame-ink.png\n?? website/prototypes/botanical-islands/concepts/photoreal-stops-20261013-01/stop-04-material-reference.png\n?? website/prototypes/botanical-islands/index.html\n?? website/prototypes/botanical-islands/package-lock.json\n?? website/prototypes/botanical-islands/package.json\n?? website/prototypes/botanical-islands/public/assets/brand/favicon-32.png\n?? website/prototypes/botanical-islands/public/assets/brand/logo-192.png\n?? website/prototypes/botanical-islands/public/assets/data/botanical-islands-layout.json\n?? website/prototypes/botanical-islands/public/assets/data/vector-manifest.json\n?? website/prototypes/botanical-islands/public/assets/data/verification.json\n?? website/prototypes/botanical-islands/public/assets/fonts/instrument-serif-italic-latin.woff2\n?? website/prototypes/botanical-islands/public/assets/fonts/instrument-serif-latin.woff2\n?? website/prototypes/botanical-islands/public/assets/fonts/instrumentserif-OFL.txt\n?? website/prototypes/botanical-islands/public/assets/fonts/manrope-OFL.txt\n?? website/prototypes/botanical-islands/public/assets/fonts/manrope-latin.woff2\n?? website/prototypes/botanical-islands/public/assets/models/botanical-islands-garden.glb\n?? website/prototypes/botanical-islands/public/assets/photographs/01-western-meadow.png\n?? website/prototypes/botanical-islands/public/assets/photographs/02-upper-garden-fork.png\n?? website/prototypes/botanical-islands/public/assets/photographs/03-meeting-clearing.png\n?? website/prototypes/botanical-islands/public/assets/photographs/04-pavilion-finale.png\n?? website/prototypes/botanical-islands/public/assets/vectors/01-base-blueprint.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/02-plantable-areas.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/03-placement-points.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/04-ground-cover.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/05-understory.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/06-tree-canopy.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/07-camera-route-plan.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/08-color-planting-plan.svg\n?? website/prototypes/botanical-islands/public/assets/vectors/botanical-islands-master.svg\n?? website/prototypes/botanical-islands/references/camera-route-20261013.png\n?? website/prototypes/botanical-islands/scripts/export-vectors.mjs\n?? website/prototypes/botanical-islands/src/botany.js\n?? website/prototypes/botanical-islands/src/garden-data.js\n?? website/prototypes/botanical-islands/src/garden.js\n?? website/prototypes/botanical-islands/src/main.js\n?? website/prototypes/botanical-islands/src/pavilion.js\n?? website/prototypes/botanical-islands/src/presentation.js\n?? website/prototypes/botanical-islands/src/style.css\n?? website/prototypes/scroll-garden/README.md\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/01-base-blueprint.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/02-scatter-areas.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/03-placement-points.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/04-ground-cover.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/05-understory.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/06-full-planted-blueprint.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/07-forest-building-line.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/08-forest-building-color.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/base-prompt.json\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/generation.json\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/image-manifest.json\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/prompts.json\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/selected-reference.png\n?? website/prototypes/scroll-garden/concepts/botanical-islands-layers-20261013-01/storyboard.json\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/01-meadow-loop.png\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/02-terrace-ribbons.png\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/03-woodland-clearing.png\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/04-courtyard-orchard.png\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/05-botanical-islands.png\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/generation.json\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/image-manifest.json\n?? website/prototypes/scroll-garden/concepts/plans-20261013-01/prompts.json\n?? website/prototypes/scroll-garden/index.html\n?? website/prototypes/scroll-garden/package-lock.json\n?? website/prototypes/scroll-garden/package.json\n?? website/prototypes/scroll-garden/public/assets/brand/favicon-32.png\n?? website/prototypes/scroll-garden/public/assets/brand/logo-192.png\n?? website/prototypes/scroll-garden/public/assets/fonts/instrument-serif-italic-latin.woff2\n?? website/prototypes/scroll-garden/public/assets/fonts/instrument-serif-latin.woff2\n?? website/prototypes/scroll-garden/public/assets/fonts/instrumentserif-OFL.txt\n?? website/prototypes/scroll-garden/public/assets/fonts/manrope-OFL.txt\n?? website/prototypes/scroll-garden/public/assets/fonts/manrope-latin.woff2\n?? website/prototypes/scroll-garden/src/main.js\n?? website/prototypes/scroll-garden/src/scene.js\n?? website/prototypes/scroll-garden/src/style.css\n"
+  },
+  "source_manifest": [
+    {
+      "path": "AminScatter/src/brush_host.cpp",
+      "bytes": 55747,
+      "sha256": "34bfdb1b7872b44b0eef8bc41afede51ee87462e6965dd4a6e2a2fcff3238f84"
+    },
+    {
+      "path": "AminScatter/src/brush.cpp",
+      "bytes": 16310,
+      "sha256": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12"
+    },
+    {
+      "path": "AminScatter/src/brush_surface.cpp",
+      "bytes": 6605,
+      "sha256": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac"
+    },
+    {
+      "path": "AminScatter/include/brush.h",
+      "bytes": 3399,
+      "sha256": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266"
+    },
+    {
+      "path": "AminScatter/src/group_spacing.cpp",
+      "bytes": 7879,
+      "sha256": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1"
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "bytes": 11374,
+      "sha256": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78"
+    },
+    {
+      "path": "AminScatter/include/scatter.h",
+      "bytes": 6306,
+      "sha256": "d94407f2f4f0f927768190ca968b7efeaed58b39478e02e15103da090aed5090"
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "bytes": 2975,
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2"
+    },
+    {
+      "path": "AminScatter/include/point_preview.h",
+      "bytes": 3307,
+      "sha256": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d"
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "bytes": 2426,
+      "sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "bytes": 486917,
+      "sha256": "196f2a68f3681b9fd215218ec04e1cf4f977937cd255508334b2f4973f63f8fd"
+    },
+    {
+      "path": "AminScatter/src/recipes.cpp",
+      "bytes": 26641,
+      "sha256": "095f71b3fbcce56e83678bd19d1d21c9c556f8b96a2d5b70cca193362b9bda72"
+    },
+    {
+      "path": "AminScatter/src/recipes_bridge.cpp",
+      "bytes": 37684,
+      "sha256": "d9bcf31030cec35164ba4e18f1332474139b90b666e7e77fe109434b4331ff07"
+    },
+    {
+      "path": "AminScatter/include/recipes.h",
+      "bytes": 1393,
+      "sha256": "45096b24efbd45cecb424efa47b1f13ad895322b312c1400e49b4ab1cabfb833"
+    },
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "bytes": 14607,
+      "sha256": "c48671629312f2d3a2d5d9d0dfddc1e8b9c605e62f0976dfa52c81f1266a537b"
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "bytes": 19178,
+      "sha256": "c3b64ff874681597cb8c75711eca6a84c7d5ad43a381bda65c6365af5e36b004"
+    }
+  ],
+  "source_preservation": {
+    "selected_source_drift": [
+      "AminScatter/tools/ui/templates/unified-core.ms",
+      "AminScatter/src/recipes_bridge.cpp"
+    ],
+    "preexisting_tracked_drift_except_navigation": [
+      "AminScatter/scripts/AminScatterObject.ms",
+      "AminScatter/src/recipes_bridge.cpp",
+      "AminScatter/tools/ui/templates/recipes.ms",
+      "AminScatter/tools/ui/templates/unified-core.ms"
+    ],
+    "navigation_only_one_added_row": true,
+    "interpretation": "Concurrent edits observed, not research writes. Relevant changed sections re-inspected; no whole-tree freeze or host qualification claimed."
+  },
+  "native": {
+    "input": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\inputs\\tyFlow_2027.dlo",
+    "installed": "C:\\Program Files\\Autodesk\\3ds Max 2027\\Plugins\\tyFlow_2027.dlo",
+    "bytes": 650320384,
+    "sha256": "5b1068b5b3627f64f78cd2b51ca0c23d616be09943077d5ffcf1c6fecc713fd9",
+    "image_base": "0x180000000",
+    "program_hash_verified": true,
+    "original_project_files_unchanged": true,
+    "tools": {
+      "ghidra": "12.1.4",
+      "ghidra_mcp": "6.0.0",
+      "java": "21"
+    },
+    "live_schema_count": 215,
+    "registered_routes_from_log": 245,
+    "sdk_header": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include\\IPainterInterface.h",
+      "sha256": "b6d984fb5f5e880c5770878e0134a96bbe968b9bba86ac9c91974986cc9de7dc"
+    },
+    "birth_paint_canvas_offset": "0x590",
+    "birth_paint_canvas_vtable_rva": "0x06b3f548",
+    "function_ledger": [
+      {
+        "label": "canvas_slot0",
+        "body_bytes": 297,
+        "instructions": 67,
+        "decoded_bytes": 297,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182df0a90",
+        "entry_rva": "0x2df0a90",
+        "private_folder": "paint-functions",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      },
+      {
+        "label": "canvas_slot2",
+        "body_bytes": 91,
+        "instructions": 22,
+        "decoded_bytes": 91,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182ded920",
+        "entry_rva": "0x2ded920",
+        "private_folder": "paint-functions",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      },
+      {
+        "label": "canvas_slot3",
+        "body_bytes": 91,
+        "instructions": 22,
+        "decoded_bytes": 91,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182ded980",
+        "entry_rva": "0x2ded980",
+        "private_folder": "paint-functions",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      },
+      {
+        "label": "canvas_slot4",
+        "body_bytes": 116,
+        "instructions": 29,
+        "decoded_bytes": 116,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182ded890",
+        "entry_rva": "0x2ded890",
+        "private_folder": "paint-functions",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      },
+      {
+        "label": "canvas_slot5",
+        "body_bytes": 103,
+        "instructions": 24,
+        "decoded_bytes": 103,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182df0bc0",
+        "entry_rva": "0x2df0bc0",
+        "private_folder": "paint-functions",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      },
+      {
+        "label": "canvas_slot6",
+        "body_bytes": 12197,
+        "instructions": 2747,
+        "decoded_bytes": 12193,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182deda20",
+        "entry_rva": "0x2deda20",
+        "private_folder": "paint-functions",
+        "limits": "Unresolved four-byte instruction coverage gap and type-propagation warning; no complete behavioral claim."
+      },
+      {
+        "label": "canvas_slot1",
+        "body_bytes": 6,
+        "instructions": 2,
+        "decoded_bytes": 6,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182deda10",
+        "entry_rva": "0x2deda10",
+        "private_folder": "paint-followup",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      },
+      {
+        "label": "end_helper",
+        "body_bytes": 119,
+        "instructions": 34,
+        "decoded_bytes": 119,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182df4060",
+        "entry_rva": "0x2df4060",
+        "private_folder": "paint-followup",
+        "limits": "Starts in a short unwind fragment; decompiled flow extends beyond it. Complete function bounds unresolved."
+      },
+      {
+        "label": "commit_helper",
+        "body_bytes": 204,
+        "instructions": 46,
+        "decoded_bytes": 204,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182df3f90",
+        "entry_rva": "0x2df3f90",
+        "private_folder": "paint-followup",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      },
+      {
+        "label": "stroke_state_ctor",
+        "body_bytes": 235,
+        "instructions": 65,
+        "decoded_bytes": 235,
+        "completed": true,
+        "error": "",
+        "entry_va": "0x182deb4e0",
+        "entry_rva": "0x2deb4e0",
+        "private_folder": "paint-followup",
+        "limits": "Selected entry/range only; decompiler completion is not runtime qualification."
+      }
+    ],
+    "errors_and_limits": [
+      "Initial schema route guesses returned 404; actual endpoint /mcp/schema succeeded.",
+      "Defined-string search returned zero; fresh raw PE inspection supplied anchors.",
+      "Initial one-byte/zero-instruction placeholder exports rejected; final ledgers replaced them.",
+      "One helper-generation shell command failed quoting before writing output; file-based generation succeeded.",
+      "PainterDisplay has a four-byte gap/type warning; end_helper full unwind bounds remain unresolved.",
+      "No vendor solver or original source fully recovered; no vendor runtime/performance claims."
+    ],
+    "cleanup": {
+      "verified_executable": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\java\\jdk-21.0.12.1+1\\bin\\java.exe",
+      "stopped_pid": 2084,
+      "verified_run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scatter-physics-research-20261016-01"
+    }
+  },
+  "github_sources": [
+    {
+      "key": "ghidraGitHub",
+      "url": "https://github.com/bethington/ghidra-mcp/blob/v6.0.0/README.md",
+      "ref": "v6.0.0",
+      "file_blob_sha": "9e92c7c449aa4c283d4bc2f45f4133a85bd8e7a2",
+      "returned_text_sha256": "92ea20d315dd689bdea59366e25d7053fa975f67b063249cda8e42b7a579ffa3",
+      "note": "Hash covers returned selected text, not full upstream file; file_blob_sha identifies the full Git blob."
+    },
+    {
+      "key": "github0",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/HelloWorld/HelloWorld.cpp",
+      "ref": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+      "file_blob_sha": "5836e6562e47a419375117023741fadf34f805ed",
+      "returned_text_sha256": "3f619d5a6ba9b6766e4b473cdc60b7030d9478064370cc5adf1141c75d459178",
+      "note": "Hash covers returned selected text, not full upstream file; file_blob_sha identifies the full Git blob."
+    },
+    {
+      "key": "jolt_hull",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/Shape/ConvexHullShape.h",
+      "ref": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+      "file_blob_sha": "19bce7614da108d72d5afea470a145d92e956a93",
+      "returned_text_sha256": "67c35dacb85d67dc4f8b301eb7bf36e72ec9a33978f467780ba5ad2c3f404af5",
+      "note": "Hash covers returned selected text, not full upstream file; file_blob_sha identifies the full Git blob."
+    },
+    {
+      "key": "bullet_step",
+      "url": "https://github.com/bulletphysics/bullet3/blob/d3afe76132fc76b0f9b2359cbaef47a3766e7fbb/src/BulletDynamics/Dynamics/btDiscreteDynamicsWorld.cpp",
+      "ref": "d3afe76132fc76b0f9b2359cbaef47a3766e7fbb",
+      "file_blob_sha": "9e99c154f202c86987ccd2d5927d715f1e312c3b",
+      "returned_text_sha256": "1b6869a9d8ce95edbd678954494f7b3248370ca434ab8e161af172c48fa87b5e",
+      "note": "Hash covers returned selected text, not full upstream file; file_blob_sha identifies the full Git blob."
+    },
+    {
+      "key": "gitMore0",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/EPhysicsUpdateError.h",
+      "ref": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+      "file_blob_sha": "c9edd6deda08d7c52ca4ba69418aa64cc4711fd4",
+      "returned_text_sha256": "fb30737aabb439015c4b5631a1edfaee1f3f676ac4c4c0c4e84d951743a4ef20",
+      "note": "Hash covers returned selected text, not full upstream file; file_blob_sha identifies the full Git blob."
+    },
+    {
+      "key": "gitMore1",
+      "url": "https://github.com/NVIDIA-Omniverse/PhysX/blob/b97365c6ddb32fda8469bc788ec18024862b0368/physx/snippets/snippethelloworld/SnippetHelloWorld.cpp",
+      "ref": "b97365c6ddb32fda8469bc788ec18024862b0368",
+      "file_blob_sha": "c8e841eead765f2d306b66736cd335ab96d2a40e",
+      "returned_text_sha256": "e3b9acf53556d871f7502d080c5fbf09c224dce5afe25398264df31894574a44",
+      "note": "Hash covers returned selected text, not full upstream file; file_blob_sha identifies the full Git blob."
+    },
+    {
+      "key": "gitMore2",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Build/CMakeLists.txt",
+      "ref": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+      "file_blob_sha": "5d233ff248ef8ac9f5be30bac1ac4d8e96e2fa55",
+      "returned_text_sha256": "1247b6610f4905153a462e31b8a278225f451c4e8a8ff35d9ebce75a57b0422e",
+      "note": "Hash covers returned selected text, not full upstream file; file_blob_sha identifies the full Git blob."
+    }
+  ],
+  "private_run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scatter-physics-research-20261016-01",
+  "private_artifacts": [
+    {
+      "path": "build/scatter-physics-research-20261016-01/baseline.json",
+      "bytes": 59579,
+      "sha256": "686776f45a0bc539e3633e9af792770b6c71bc9cdb3bd4f42b4a0c375f298af4"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/birth-paint-bases.json",
+      "bytes": 1190,
+      "sha256": "71e2db05b993822a321031564a02a80c8c670a05fac887f5616a91bd1449cff4"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/bootstrap.py",
+      "bytes": 2671,
+      "sha256": "e4dfe7866bad0ff187a179c4a1a03b6994d626bf069c5ef35b82b568fa006dfc"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/close-project.json",
+      "bytes": 49,
+      "sha256": "8982817de4e694ec96c9a0933a271ea29e6d6bffd0e8a2ced93dd16627f12d2d"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/close-project.request.json",
+      "bytes": 74,
+      "sha256": "477f71b1aa246c58716486d537b43f4e93d7876ca94ca4b1fe5868706be8d6b0"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/document-validation.json",
+      "bytes": 1337,
+      "sha256": "f08b5854733beca94bda8eb04806ea53b1cb4bcec0c87b90da7bd4c4d8bc1cac"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/finalize.py",
+      "bytes": 7653,
+      "sha256": "2f906b6ea02ccc5bca70ade90f13867d73490f6358cda960a548bed638f2c05d"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/github-receipts.json",
+      "bytes": 39589,
+      "sha256": "2e9e954e556e09775bc26efc6e62facb6a8bad9eaad128d36cdf3982b6eb438b"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/headless.log",
+      "bytes": 4023,
+      "sha256": "e22e37237aa4c9b848558387925748f00b6041bd09dd13afc10c16a5d69acfb9"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/launch.args",
+      "bytes": 11156,
+      "sha256": "dc920c26ab32d9521c7ad0285a3545abb89ba900da06002ef973c80d6775b8de"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/live-schema.json",
+      "bytes": 190351,
+      "sha256": "29b8cbfdd9e1f67c45eb95becf0b75e81557afb5e07b043f7fa4078a6daef9d1"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/live-schema.request.json",
+      "bytes": 70,
+      "sha256": "b95efc3b85e0461bb4854a85b737767cf36f2127ae1689bcbc488a6a4eda6278"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/load-program.json",
+      "bytes": 70,
+      "sha256": "320d4334a78dbd02b0b120718784e75b7e9c0041fdadc9419450ab28de3c6229"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/load-program.request.json",
+      "bytes": 122,
+      "sha256": "bc641529bbc73a904b31b04db4c3b864ef63d29717da4c3ec26c90d7a3ac8c86"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/make_followup.py",
+      "bytes": 496,
+      "sha256": "270e83963a658c403484f56b47161d58885ddfc18f9dc368044b59e5e8bf2b29"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/native_requests.py",
+      "bytes": 1442,
+      "sha256": "02f6b5e95a4ff6da5a0c90926d5a53592c0d4be4d1e2d4b620fedfb35d139128"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/open-project.json",
+      "bytes": 50,
+      "sha256": "22d4ad34f4b646dfc732ff11bcb16bb537bef944d912cc2f5125e0f049bc08eb"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/open-project.request.json",
+      "bytes": 202,
+      "sha256": "5e89b5ee5004e565cd7271ea6749e3ee2a8317d5c793d8e1f8e72764a15821da"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/PaintFollowup-response.json",
+      "bytes": 722,
+      "sha256": "e06857cfc1451778db14d1f4a8bb40859ff8dba94b2b3da45b33ebcae4fc87a7"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/PaintFollowup-response.request.json",
+      "bytes": 2887,
+      "sha256": "98d162317ad0337adfd7f46c19738365e4434e4a88efd8b6c62fd9ab22e90687"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/PaintFollowup.java",
+      "bytes": 2697,
+      "sha256": "f2ceb78c195ab97bf9426ef9b81199e4c233e9140119bd7a8fffbf904bd7911b"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/PaintSelected-response.json",
+      "bytes": 807,
+      "sha256": "f80836d3ed6e520466c42526c031f670007c394e770a43889d233c1f7563449b"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/PaintSelected-response.request.json",
+      "bytes": 2978,
+      "sha256": "a8894a7e820719f2b8c58981c37f2469dad7eaa012193545ae0fa3a55d40d246"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/PaintSelected.java",
+      "bytes": 2745,
+      "sha256": "3360137dffb4c02a15f615f0389b938a9327ac4f596c7fb8eb3f3446d1b6d391"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/physics-strings.json",
+      "bytes": 47,
+      "sha256": "4194e9c2df53d208b293139bd0326e512663d64a59d1f61f945bb1f9968a2e11"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/physics-strings.request.json",
+      "bytes": 240,
+      "sha256": "9ce5d5c11c7dfd7fe8bc3e8891c72786dea6d14f655d48b14c2f82cff83d5610"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/program-identity.txt",
+      "bytes": 819,
+      "sha256": "4e6ebdb1d4c0e8fdbc3cc5cf5b2e1b7d92597c0003dd7eea3ab6125fb8ec3275"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/ProgramIdentity-response.json",
+      "bytes": 1344,
+      "sha256": "6a619a12d03d115320bdaf6a1987afd4e86215b1baf2589157bbf27d576ed0c1"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/ProgramIdentity-response.request.json",
+      "bytes": 818,
+      "sha256": "f851eefbe89ff3505fc46715a18422184fa547fd64628d749f04de56a476f39d"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/ProgramIdentity.java",
+      "bytes": 687,
+      "sha256": "89083c3741c6dbf947543949f6d177035a85bdca54140232140760af01cd8ec2"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/question-refs.tsv",
+      "bytes": 95,
+      "sha256": "a59aaa11940383fc0f1644a3c760a4831a72e64e2e8112d384a1b79e1e3b9f3d"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/QuestionRefs-response.json",
+      "bytes": 588,
+      "sha256": "c76e91a0cc600f82089c7832f5a97a43c42638c284a29c38f56b469158493567"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/QuestionRefs-response.request.json",
+      "bytes": 1285,
+      "sha256": "00bcd712b928041c6e927fdfc614eae2223c1f1ecba748aab0f186126c59bd1d"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/QuestionRefs.java",
+      "bytes": 1120,
+      "sha256": "ef30ba57404c042316ab5b9e5598cdc6d0c8922bd9d946ea9c0505e7cb6362e9"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/raw-anchors.json",
+      "bytes": 325028,
+      "sha256": "d3e6e86b7f4e4009017b8942f979d737afc211be33723400f4cf446b39815da0"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/save-program.json",
+      "bytes": 83,
+      "sha256": "0f8bc82a810e1641032da9390094159f3edf440e331d8ad71258f3796803c792"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/save-program.request.json",
+      "bytes": 72,
+      "sha256": "11f77b37df8c3e7bd9f5efb0f9ce97b7ece978074434c8c018fed13adee77ae5"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/scan_target.py",
+      "bytes": 1500,
+      "sha256": "2a9aac09b8808924375766a22f141c544486d0e0e2e2c6699f06cd8b2964dcfa"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/server-start.json",
+      "bytes": 509,
+      "sha256": "b526acfab529c3eba77972310efce327c9eecadc1f6757ce6f9880b11f5e7546"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/server-stopped.json",
+      "bytes": 269,
+      "sha256": "e0de1cb22d7513a00620804e3ff9b9912863014caa0dab144b0233bdcb047ab6"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/target-identity.json",
+      "bytes": 1817,
+      "sha256": "5c369a4a0c46a857e5752409717805784750acfacf64888a717600ca9b704062"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/web-receipts.json",
+      "bytes": 195259,
+      "sha256": "63422fedffe2a1d5fd179d71e690a1ffcb4de65af65b3f64a310e6d24707d7c8"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/canvas_slot1.asm.txt",
+      "bytes": 36,
+      "sha256": "892cbe91bddbad980d110e50d29fa1d4aefa5e6501c56db2e1b2a3c2a38a5f38"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/canvas_slot1.c",
+      "bytes": 56,
+      "sha256": "425ddb1e8c0dcac821eb88eb9d354fe8de2ceabdf3e386db9ee3f4b011485f0d"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/canvas_slot1.refs.tsv",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/commit_helper.asm.txt",
+      "bytes": 1349,
+      "sha256": "cae34868fd7071730853723690c8189cec053e90052ada18dd95e2471617ed82"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/commit_helper.c",
+      "bytes": 959,
+      "sha256": "0f6727468d5ce940301dc0b0ea2abb9103f2de656541ffd5321c5b4474ef1d14"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/commit_helper.refs.tsv",
+      "bytes": 564,
+      "sha256": "0d927ba86d8e154e6436e0d925068e2459a8f33ce3279866bfe53ce0a1a738ae"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/end_helper.asm.txt",
+      "bytes": 858,
+      "sha256": "119af26e636df2b2e9b9638f24d8483abdb877b76e380dc85bbd8ef00b085134"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/end_helper.c",
+      "bytes": 2652,
+      "sha256": "f10d0e0e0bc9c4e3eed77612ea753b88a5db0900237fab48dbf8c0e534d87908"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/end_helper.refs.tsv",
+      "bytes": 339,
+      "sha256": "65ff0e1bf6108b4b09998e3fdef65832a682183c4dafc380f2203974a1586325"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/ledger.tsv",
+      "bytes": 225,
+      "sha256": "690f1995807c5ad161bc14faa34c963abf13492601d6e6d4d7dfdc5736094eac"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/stroke_state_ctor.asm.txt",
+      "bytes": 2016,
+      "sha256": "934e7339847d8e8901e0abe44186fd31b8dd51b0fa04111360b72fdeaa8e4f13"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/stroke_state_ctor.c",
+      "bytes": 1002,
+      "sha256": "3bda5fdcb7eea3d8059c9e8e1abb2fe5226fe849aacaa1bfd49d26ccc804c853"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-followup/stroke_state_ctor.refs.tsv",
+      "bytes": 195,
+      "sha256": "d804d20d09bf1be534767b66bed99c9d965bc72fccd718a408be855c97eebc83"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot0.asm.txt",
+      "bytes": 2096,
+      "sha256": "0b5adc73b051e8d3438a0f40a9d37e322e862017ec146dd4aa855e8073ba1e6b"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot0.c",
+      "bytes": 1726,
+      "sha256": "9150b820cf27ea977a231908ef4942dba971f0b0eae1d5c521ddbd6bbc32e3cc"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot0.refs.tsv",
+      "bytes": 546,
+      "sha256": "63f695d0e77c4d65ad624da0a0f3e7ba460200b307db237223427379c1610a06"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot2.asm.txt",
+      "bytes": 565,
+      "sha256": "22973b2bb7a8711ae197eb876d301c0e5f546230817568249501115f8d511f08"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot2.c",
+      "bytes": 219,
+      "sha256": "e90a1a16470fa7a80639ccc3a93ac39d13a4ef5ce43b531e4f8ae8a86a58e2b2"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot2.refs.tsv",
+      "bytes": 156,
+      "sha256": "848020cac9c70ca8b1e2f6691b7951d925d3a82bde4da28c9e676d30397bb62c"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot3.asm.txt",
+      "bytes": 565,
+      "sha256": "ab3611216293b19fe30ff13a7ef4b8fcb0a7b1dc32e8a8f1e71deded116cdb2b"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot3.c",
+      "bytes": 219,
+      "sha256": "0b4fa150743803658227efbf323e73be757cb57958b25cb82100a767cd0c7f49"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot3.refs.tsv",
+      "bytes": 156,
+      "sha256": "a1c3a6ba02b9f93f40ab1c95e7f6b84d5e8f518c88a79945b019b4fc8dbdfab9"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot4.asm.txt",
+      "bytes": 818,
+      "sha256": "6759114ea34354a2ac6e43134d6b2e68d8e52dbcb6c689adda2f03c4c2d7d982"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot4.c",
+      "bytes": 719,
+      "sha256": "325f7438036e9aa6096c66dff2b6e48e9e2a0ff126fd92d7107df89c370512cb"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot4.refs.tsv",
+      "bytes": 238,
+      "sha256": "a1f63c347f76cecb562cf55d5fd4bd2ba1b11ea2d3bffbc640327f7a918ee1d6"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot5.asm.txt",
+      "bytes": 625,
+      "sha256": "d2657479adc09b5ea1c6f85949fe25b2cd934789792f0f87286f9fa07b09d731"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot5.c",
+      "bytes": 255,
+      "sha256": "187425bf8f8ac130af5fb8a9aad68a7b3632f3ad3ab41b60f958ce6c0cbb8871"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot5.refs.tsv",
+      "bytes": 195,
+      "sha256": "819d5e017fd6ae1172a137abf95d0ad8cdc884bbdea30f213777ae2ae25941e1"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot6.asm.txt",
+      "bytes": 84576,
+      "sha256": "4604bf059a537f2c2bd67637cb731763fbe9f41d562a5473390e6b3aa1dd9459"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot6.c",
+      "bytes": 75625,
+      "sha256": "e62cf6aa0823660eb499ff986f55506d29e0acea3f4dd2e41e1af6c228417060"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/canvas_slot6.refs.tsv",
+      "bytes": 15040,
+      "sha256": "7626479945ab0a533d9a3c22ac0ef32b43d47bdbdcc0f4b79a0d6a6d25555714"
+    },
+    {
+      "path": "build/scatter-physics-research-20261016-01/paint-functions/ledger.tsv",
+      "bytes": 308,
+      "sha256": "604a683df96d4aa97e12a51b32ce08b634da3b78e6db86c6444f8a0ffa61037e"
+    }
+  ],
+  "runtime_experiments_executed": [],
+  "knowledge": "stale_evidence; direct source fallback; see KNOWLEDGE_STATUS.json",
+  "source_manifest_at_end": [
+    {
+      "path": "AminScatter/src/brush_host.cpp",
+      "bytes": 55747,
+      "sha256": "34bfdb1b7872b44b0eef8bc41afede51ee87462e6965dd4a6e2a2fcff3238f84"
+    },
+    {
+      "path": "AminScatter/src/brush.cpp",
+      "bytes": 16310,
+      "sha256": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12"
+    },
+    {
+      "path": "AminScatter/src/brush_surface.cpp",
+      "bytes": 6605,
+      "sha256": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac"
+    },
+    {
+      "path": "AminScatter/include/brush.h",
+      "bytes": 3399,
+      "sha256": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266"
+    },
+    {
+      "path": "AminScatter/src/group_spacing.cpp",
+      "bytes": 7879,
+      "sha256": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1"
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "bytes": 11374,
+      "sha256": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78"
+    },
+    {
+      "path": "AminScatter/include/scatter.h",
+      "bytes": 6306,
+      "sha256": "d94407f2f4f0f927768190ca968b7efeaed58b39478e02e15103da090aed5090"
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "bytes": 2975,
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2"
+    },
+    {
+      "path": "AminScatter/include/point_preview.h",
+      "bytes": 3307,
+      "sha256": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d"
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "bytes": 2426,
+      "sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "bytes": 489298,
+      "sha256": "8ac9473c2e12892f8cb8351b82a117f6f1f9a9c52fc976294588a283a26a5969"
+    },
+    {
+      "path": "AminScatter/src/recipes.cpp",
+      "bytes": 26641,
+      "sha256": "095f71b3fbcce56e83678bd19d1d21c9c556f8b96a2d5b70cca193362b9bda72"
+    },
+    {
+      "path": "AminScatter/src/recipes_bridge.cpp",
+      "bytes": 39429,
+      "sha256": "3e17e37d5cb6122be627178cfc0f9dd44b0a8948f67d65c84f17ea8d87f2e53a"
+    },
+    {
+      "path": "AminScatter/include/recipes.h",
+      "bytes": 1393,
+      "sha256": "45096b24efbd45cecb424efa47b1f13ad895322b312c1400e49b4ab1cabfb833"
+    },
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "bytes": 14607,
+      "sha256": "c48671629312f2d3a2d5d9d0dfddc1e8b9c605e62f0976dfa52c81f1266a537b"
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "bytes": 19178,
+      "sha256": "c3b64ff874681597cb8c75711eca6a84c7d5ad43a381bda65c6365af5e36b004"
+    }
+  ],
+  "concurrent_tracked_fingerprints": [
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "before_sha256": "b62bb4d24aa9c1ed452c9d1e5d76d7c0ee6e1768c0dd7a7b066c5cdd37e6d160",
+      "after_sha256": "d8aad0802a21da637ee470fd81e266ab174c503a39a589ea73c7d92d35b8f2d4"
+    },
+    {
+      "path": "AminScatter/src/recipes_bridge.cpp",
+      "before_sha256": "d9bcf31030cec35164ba4e18f1332474139b90b666e7e77fe109434b4331ff07",
+      "after_sha256": "3e17e37d5cb6122be627178cfc0f9dd44b0a8948f67d65c84f17ea8d87f2e53a"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/recipes.ms",
+      "before_sha256": "5c1f2c38f69368485aee78f6b01de595417626875aac7f31918425ba9d8dd7bb",
+      "after_sha256": "f44f429ba2c2d8d90649becb3ba495b60b4d6cc0aae0e1d47217715495df2e72"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "before_sha256": "196f2a68f3681b9fd215218ec04e1cf4f977937cd255508334b2f4973f63f8fd",
+      "after_sha256": "8ac9473c2e12892f8cb8351b82a117f6f1f9a9c52fc976294588a283a26a5969"
+    }
+  ],
+  "research_write_scope": [
+    "docs/Scatter_Physics_Research_2026-10-16/",
+    "docs/README.md: one new navigation row",
+    "build/scatter-physics-research-20261016-01/: ignored analysis artifacts"
+  ]
+}

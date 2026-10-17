@@ -1,12 +1,17 @@
 # Forest-informed Cyrus improvement plan
 
-**Preset/gallery planning update, 16 October 2026:** [PG01–PG10](../preset-gallery-improvements/README.md) compares the current 0.85.0 recipe/browser implementation with the Forest library continuation, then orders the remaining work from easiest to hardest. It adds detailed performance, transaction, asset ownership and [Max 2027 acceptance](../preset-gallery-improvements/VALIDATION.md) gates. All PG implementation remains pending; the current request is documentation only. PG steps supplement the existing I/P roadmap rather than renumbering it.
+**Current status, 17 October 2026:** I01–I06 are implemented. I06 corresponds
+to the completed original P06 grids; I04 corresponds to completed P07 orientation.
+The supported recipe/gallery and static-asset slices are delivered through
+0.85.3 and retained by current 0.85.4. I07/P08 paths is pending; further roadmap
+implementation is paused. See the [current ledger](../improvement-program/PROGRESS.md#original-phase-status).
 
-**Execution update, 16 October 2026:** I01/I02 were delivered in 0.82.6.
-The [active user goal](../improvement-program/OBJECTIVE.md) authorizes I03–I18
-and resumes P06. I03 is implemented and scoped-tested as [0.82.6.1](../improvement-program/I03_08261.md); see the [current ledger](../improvement-program/PROGRESS.md).
-The plan's original pause and authorization statements below remain historical
-context, not the active execution boundary.
+## Historical research and proposal baseline
+
+The 16 October preset/gallery planning checkpoint preceded implementation of
+the declared PG01–PG08 subset. Its original pending state is superseded by the
+[gallery delivery](../preset-gallery-improvements/DELIVERY_0851.md) and later
+ready-preset correction. PG numbers supplement the existing I/P roadmap.
 
 15 October 2026. **Original plan; I01/I02 subsequently implemented as 0.82.6. Phase 6 remains paused.** See the [implementation and scoped qualification](../panel-performance-0826/PROGRESS.md); I03 onward remain planning only. No implementation, Max testing, build, version change, installation or Git publication is authorized by this document. The user requested a detailed comparison-based plan, ordered from easiest to hardest, with performance and testing for every step.
 
@@ -332,7 +337,7 @@ When separately authorized, use disposable Max 2027 scenes and the hash-pinned F
 
 ## Delivery checklist for each later authorized step
 
-- [ ] Select a bounded slice, preserve the Phase 6 pause unless explicitly resumed, and record intended behavior, unaffected behavior, owners and relevant F/V contracts.
+- [ ] Select a bounded slice only after current authorization for further roadmap work, and record intended behavior, unaffected behavior, owners and relevant F/V contracts.
 - [ ] Pin current source/evidence; resolve semantic decisions and predeclare fixtures/performance thresholds before coding.
 - [ ] Implement in native sources and authoritative templates/generator; account for new authored fields in presets/recipes, catalog and units. No generated-script-only fix.
 - [ ] Pass focused native/generated checks and the applicable Max 2027 correctness, lifecycle, failure and performance gates. Expand regressions when shared paths change.
@@ -360,4 +365,8 @@ These links point to local research evidence, which is outside the Cyrus Git rep
 
 For the existing Cyrus recipe architecture, retain the [research contract](../../Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md) as broader design and the [0.82.5 format](../recipes-0825/FORMAT.md) as the implemented wire contract. For the original phase outcomes, retain [IMPLEMENTATION](IMPLEMENTATION.md) and [VALIDATION](VALIDATION.md). Planning is complete. I01/I02 implementation and scoped acceptance are recorded in the [0.82.6 handoff](../panel-performance-0826/PROGRESS.md); later steps and their acceptance gates remain pending. Phase 6 stays paused.
 
-Current successor: [I06/P06 0.85.0 grids](../improvement-program/I06_0850.md), following [I05 variation](../improvement-program/I05_0840.md) and [I04/P07 direction](../improvement-program/I04_0830.md). Six examples are scoped-qualified. I07/P08 paths is next; B26 and the remaining program/EXE stay open. Historical version proposals do not select future delivery numbers.
+Current successor: [0.85.4 memory correction](../memory-0854/README.md), retaining
+the gallery/UI/ready-preset deliveries and implemented I01–I06. Eight examples and
+MZP/EXE packages are delivered for the supported subset. I07/P08 paths, broader
+adapters and general B26/production acceptance remain open. Historical proposals
+and version labels below/above do not authorize further implementation.

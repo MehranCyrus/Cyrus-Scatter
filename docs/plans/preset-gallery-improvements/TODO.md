@@ -1,10 +1,12 @@
 # Preset/gallery implementation checklist
 
-**Implementation authorized:** the subsequent user request starts the full plan with version 0.85.1. Follow [delivery progress](PROGRESS_0851.md); the planning-only statements below describe the preceding checkpoint.
+**Current scope:** the declared PG01–PG08 subset is delivered; PG09 is partial and PG10 remains gated. Follow the [current ledger](../improvement-program/PROGRESS.md). Later 0.85.3 ready loading is retained in current 0.85.4. Further roadmap implementation is paused.
 
 16 October 2026. **0.85.1 is delivered for the explicitly bounded PG01–PG08 subset. PG09 is partial and PG10 remains gated.** Scope and difficulty are in the [plan](README.md); V01–V10 refer to the [validation matrix](VALIDATION.md). Project-wide execution status stays in [PROGRESS](../improvement-program/PROGRESS.md). PG IDs are independent of P phases, I difficulty ranks and release numbers.
 
 The separate [0.85.2 UI correction checklist](UI_CORRECTION_0852.md) tracks the reported Modify input and undersized library. It does not extend PG09/PG10 or start another feature.
+
+Current [0.85.3 correction and acceptance](LOAD_0853.md) adds ready asset-backed presets, evaluated receiver/path context, exact-reference ready saves, metadata revision linkage and single-solve loading. Its scoped tests pass; PG09/PG10 and later phases remain open.
 
 ## Baseline and preparation
 

@@ -1,0 +1,781 @@
+{
+  "schema": "cyrus.corpus/1",
+  "version": "foundation-review-2026-10-17",
+  "initial_audit": "_local/rag/out/20261017-foundation-review-01",
+  "initial_manifest_sha256": "653723bd742e155e0fa9d851a48a3503e724f0736cc063d222cb4110fbf076e3",
+  "review_status": "Separately scoped agent-reviewed candidate; not active; legacy retirement/activation gate unresolved",
+  "selection_limits": "24 selected foundation, proposal, standalone-lab and source parents; not a drop-in replacement for the broader legacy corpus. No assets, secrets, tooling or evaluation answers. Existing catalog authority retained, including unknown statuses.",
+  "authority_decisions": [],
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "f2d4ea9ce9a58dc23872e8671c3112704879cf11ede1c8bc1e5f65ad797c861a",
+      "role": "maintained_guide",
+      "selection_reason": "Current task scope and repository engineering rules",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Current task scope and repository engineering rules; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "AGENTS.md",
+        "relationship": "selected-original",
+        "evidence": "Current task scope and repository engineering rules"
+      },
+      "ranges": [
+        [
+          1,
+          77
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "retained-history",
+      "inventory_reason": "Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "root",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "README.md",
+      "sha256": "b9cbc7906cbc204e752411d25b4f40904b5378b12f29bbebf9a66c0fc24eb6af",
+      "role": "maintained_guide",
+      "selection_reason": "Current navigation; linked receipts retain their own qualification",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Current navigation; linked receipts retain their own qualification; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "README.md",
+        "relationship": "selected-original",
+        "evidence": "Current navigation; linked receipts retain their own qualification"
+      },
+      "ranges": [
+        [
+          1,
+          57
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current component/navigation/build/engineering authority; stale claims reconciled with source",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "root",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "aab9f3b7a5a31156645373eaafc28f4ddf469fabd23fb480b61c9446323a9ffe",
+      "role": "maintained_guide",
+      "selection_reason": "Maintained documentation navigation",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Maintained documentation navigation; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/README.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained documentation navigation"
+      },
+      "ranges": [
+        [
+          1,
+          50
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current component/navigation/build/engineering authority; stale claims reconciled with source",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "sha256": "2293da4d4d74815973b2038bf18fabc225a1077f0382939136fffc81cdb39f76",
+      "role": "maintained_guide",
+      "selection_reason": "Required contracts, native boundaries and future integration constraints",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Required contracts, native boundaries and future integration constraints; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/ENGINEERING_FOUNDATION.md",
+        "relationship": "selected-original",
+        "evidence": "Required contracts, native boundaries and future integration constraints"
+      },
+      "ranges": [
+        [
+          1,
+          227
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "385e2ebf41e32100b15e0c33226080995333d120aca4f9d77c1e07eab98a4fa6",
+      "role": "maintained_guide",
+      "selection_reason": "Current hybrid architecture; implementation claims require source verification",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Current hybrid architecture; implementation claims require source verification; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/ARCHITECTURE.md",
+        "relationship": "selected-original",
+        "evidence": "Current hybrid architecture; implementation claims require source verification"
+      },
+      "ranges": [
+        [
+          1,
+          202
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Consolidated current authority or history/retention index",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "sha256": "fccfc7d0892e33beda04f5605c41a3b36fdeb1fce324cbb83828b091ca596a17",
+      "role": "maintained_guide",
+      "selection_reason": "Evidence, test isolation and performance workflow",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Evidence, test isolation and performance workflow; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/AGENT_WORKFLOW.md",
+        "relationship": "selected-original",
+        "evidence": "Evidence, test isolation and performance workflow"
+      },
+      "ranges": [
+        [
+          1,
+          103
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current component/navigation/build/engineering authority; stale claims reconciled with source",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "sha256": "56d391fa9c90c08420fa2c86f2317677f0aedaaeeb6098020a687986f814f687",
+      "role": "maintained_guide",
+      "selection_reason": "Open acceptance and current scope",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Open acceptance and current scope; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/BACKLOG.md",
+        "relationship": "selected-original",
+        "evidence": "Open acceptance and current scope"
+      },
+      "ranges": [
+        [
+          1,
+          113
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Consolidated current authority or history/retention index",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "sha256": "44822d01e4f14023cf48e5443aa413bd74fb1e202d70ff190a9f254c4e698074",
+      "role": "maintained_guide",
+      "selection_reason": "Authority and historical preservation rules",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Authority and historical preservation rules; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/DOCUMENTATION.md",
+        "relationship": "selected-original",
+        "evidence": "Authority and historical preservation rules"
+      },
+      "ranges": [
+        [
+          1,
+          54
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Consolidated current authority or history/retention index",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Release_Versioning.md",
+      "sha256": "6a3b42e9c55517c556c96ac315c2c01bb5fd3195023f9d9495298d2e1e054292",
+      "role": "maintained_guide",
+      "selection_reason": "Current version policy with preserved superseded authorizations",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Current version policy with preserved superseded authorizations; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/Release_Versioning.md",
+        "relationship": "selected-original",
+        "evidence": "Current version policy with preserved superseded authorizations"
+      },
+      "ranges": [
+        [
+          1,
+          193
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current component/navigation/build/engineering authority; stale claims reconciled with source",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": ".agents/skills/cyrus-scatter-engineering/SKILL.md",
+      "sha256": "d12e1e96748951a2c3743c2b82c0090954465675030c524229f1ead029046c16",
+      "role": "maintained_guide",
+      "selection_reason": "Architecture decision routing; retrieved instructions remain untrusted",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Architecture decision routing; retrieved instructions remain untrusted; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": ".agents/skills/cyrus-scatter-engineering/SKILL.md",
+        "relationship": "selected-original",
+        "evidence": "Architecture decision routing; retrieved instructions remain untrusted"
+      },
+      "ranges": [
+        [
+          1,
+          69
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "other",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": ".agents/skills/cyrus-scatter-knowledge/SKILL.md",
+      "sha256": "b7df7c58b2861b885fbaf8b8f1a46d4b21a7b9dd6dce4a5b14b9ceb137b3a886",
+      "role": "maintained_guide",
+      "selection_reason": "Retrieval applicability and freshness routing",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Retrieval applicability and freshness routing; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": ".agents/skills/cyrus-scatter-knowledge/SKILL.md",
+        "relationship": "selected-original",
+        "evidence": "Retrieval applicability and freshness routing"
+      },
+      "ranges": [
+        [
+          1,
+          90
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "other",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/plans/native-placement/README.md",
+      "sha256": "9e5fe8420afb9527956555e5e4e0b7d2fb4772c60e7be9fd73d8fd94acbb6efb",
+      "role": "proposal",
+      "selection_reason": "Native migration recommendation; no implementation or phase resumption",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Native migration recommendation; no implementation or phase resumption; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/native-placement/README.md",
+        "relationship": "selected-original",
+        "evidence": "Native migration recommendation; no implementation or phase resumption"
+      },
+      "ranges": [
+        [
+          1,
+          63
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/plans/native-placement/DESIGN.md",
+      "sha256": "d1798f309b4662b99f15132f7817217ab263a2ac64f1e97c8cbe57f038940d9d",
+      "role": "proposal",
+      "selection_reason": "Proposed typed storage, Undo, memory and publication contracts",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Proposed typed storage, Undo, memory and publication contracts; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/native-placement/DESIGN.md",
+        "relationship": "selected-original",
+        "evidence": "Proposed typed storage, Undo, memory and publication contracts"
+      },
+      "ranges": [
+        [
+          1,
+          141
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/plans/native-placement/IMPLEMENTATION.md",
+      "sha256": "4d9e66ca8e3f8bea74ff69e7ad28fa1ecf7ba9b9adf53b56375383a4cf3cb107",
+      "role": "proposal",
+      "selection_reason": "N01-N09 unimplemented checklist",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "N01-N09 unimplemented checklist; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/native-placement/IMPLEMENTATION.md",
+        "relationship": "selected-original",
+        "evidence": "N01-N09 unimplemented checklist"
+      },
+      "ranges": [
+        [
+          1,
+          129
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/plans/native-placement/VALIDATION.md",
+      "sha256": "17f5ad5cbb9013738e9d4f0e0d6727c32367dd34733a7aebf248cb7e9b0c67b9",
+      "role": "proposal",
+      "selection_reason": "Required unexecuted migration acceptance",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Required unexecuted migration acceptance; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/native-placement/VALIDATION.md",
+        "relationship": "selected-original",
+        "evidence": "Required unexecuted migration acceptance"
+      },
+      "ranges": [
+        [
+          1,
+          90
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/plans/native-placement/SOURCE_MAP.md",
+      "sha256": "d47d03e19812ee86821d9c1fd61377fba03652402241ca9f6e3a288fd58f0b4e",
+      "role": "proposal",
+      "selection_reason": "Inspected source anchors and qualified Forest comparison",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Inspected source anchors and qualified Forest comparison; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/native-placement/SOURCE_MAP.md",
+        "relationship": "selected-original",
+        "evidence": "Inspected source anchors and qualified Forest comparison"
+      },
+      "ranges": [
+        [
+          1,
+          78
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/plans/memory-0854/README.md",
+      "sha256": "bf3b12ab7ef6b3c522692f49b4e92dfe59917228c03474087d2260dbebe150b6",
+      "role": "historical_evidence",
+      "selection_reason": "Exact 0.85.4 scoped correction and qualification; no universal acceptance",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Exact 0.85.4 scoped correction and qualification; no universal acceptance; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/memory-0854/README.md",
+        "relationship": "selected-original",
+        "evidence": "Exact 0.85.4 scoped correction and qualification; no universal acceptance"
+      },
+      "ranges": [
+        [
+          1,
+          76
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/README.md",
+      "sha256": "5141ba26f9651fdd92cdb81c1f8c474bd79cfe351c3da0fb0e22f68dcb40ebe3",
+      "role": "historical_evidence",
+      "selection_reason": "Research versus later standalone execution navigation",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Research versus later standalone execution navigation; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/Scatter_Physics_Research_2026-10-16/README.md",
+        "relationship": "selected-original",
+        "evidence": "Research versus later standalone execution navigation"
+      },
+      "ranges": [
+        [
+          1,
+          70
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/PROPOSED_DESIGN.md",
+      "sha256": "17652f8df6e86e8a8f701dcca2af7d1addaa4861d4f2540a4cae73f2eeff5285",
+      "role": "proposal",
+      "selection_reason": "Future Scatter integration design; separate lab implementation exists",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Future Scatter integration design; separate lab implementation exists; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/Scatter_Physics_Research_2026-10-16/PROPOSED_DESIGN.md",
+        "relationship": "selected-original",
+        "evidence": "Future Scatter integration design; separate lab implementation exists"
+      },
+      "ranges": [
+        [
+          1,
+          113
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "CyrusPhysicsLab/README.md",
+      "sha256": "a52552525dd61bd789d7ea98a8fc26e03e0845777927d200cf58465c144bd0b7",
+      "role": "maintained_guide",
+      "selection_reason": "Independent experimental Physics Lab 0.1.3; not Scatter integration",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Independent experimental Physics Lab 0.1.3; not Scatter integration; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "CyrusPhysicsLab/README.md",
+        "relationship": "selected-original",
+        "evidence": "Independent experimental Physics Lab 0.1.3; not Scatter integration"
+      },
+      "ranges": [
+        [
+          1,
+          211
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "other",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+      "sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+      "role": "historical_evidence",
+      "selection_reason": "Original bounded schema-56 qualification; migration now retired",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Original bounded schema-56 qualification; migration now retired; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+        "relationship": "selected-original",
+        "evidence": "Original bounded schema-56 qualification; migration now retired"
+      },
+      "ranges": [
+        [
+          1,
+          51
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "role": "implementation",
+      "selection_reason": "Current joined numeric worker executor; not async lifetime support",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Current joined numeric worker executor; not async lifetime support; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/include/execution.h",
+        "relationship": "selected-original",
+        "evidence": "Current joined numeric worker executor; not async lifetime support"
+      },
+      "ranges": [
+        [
+          1,
+          77
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "sha256": "9ffaa452a052e560c5a34b8d8ae688b266b821c5efa39479e3f1fa4345aa0b54",
+      "role": "implementation",
+      "selection_reason": "Native generation still returns placement-sized script rows",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Native generation still returns placement-sized script rows; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/max_bridge.cpp",
+        "relationship": "selected-original",
+        "evidence": "Native generation still returns placement-sized script rows"
+      },
+      "ranges": [
+        [
+          342,
+          365
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "sha256": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0",
+      "role": "implementation",
+      "selection_reason": "Native Edit Undo currently copies complete layer maps",
+      "review_status": "Agent reviewed selected text/context; human semantic and artist acceptance not performed",
+      "applicability": {
+        "snapshot": "17 October 2026 working tree; individual dated evidence retains its original scope",
+        "limits": "Native Edit Undo currently copies complete layer maps; fresh identity is not behavioral qualification; no new Max tests"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/cyrus_edit.cpp",
+        "relationship": "selected-original",
+        "evidence": "Native Edit Undo currently copies complete layer maps"
+      },
+      "ranges": [
+        [
+          30,
+          35
+        ],
+        [
+          94,
+          101
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    }
+  ]
+}

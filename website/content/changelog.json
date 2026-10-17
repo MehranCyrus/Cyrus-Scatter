@@ -1,7 +1,53 @@
 {
-  "reviewed": "2026-10-16",
+  "reviewed": "2026-10-17",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.85.4",
+      "date": "2026-10-17",
+      "title": "Large Count edits preserve Undo.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 development delivery; broader heavy-session and production-renderer acceptance remain separate.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Actual Updates reserve session script workspace when needed instead of rejecting large Count edits solely against current free heap. Saved Max preferences stay unchanged."
+        },
+        {
+          "kind": "Improved",
+          "text": "Compact native candidate schedules and collision radii, plus fewer preparation copies, reduce temporary MAXScript allocations. Diagnostics distinguish pending Count from the retained completed result."
+        }
+      ],
+      "evidence": [
+        "docs/plans/memory-0854/README.md"
+      ]
+    },
+    {
+      "version": "0.85.3",
+      "date": "2026-10-16",
+      "title": "Ready-to-use planting presets.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 development delivery; normal artist installation and production-renderer acceptance remain separate.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Eight ready presets supply models, materials, evaluated terrain, spline context and complete Paint. Load + Update adds new layers."
+        },
+        {
+          "kind": "Improved",
+          "text": "Ready Save captures exact dependencies; renamed presets retain their assets and Undo/Redo restores complete publications."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Required channel data can use included terrain; delayed notifications no longer cause a redundant Live load solve. Nested package paths support Windows long-path handling."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/LOAD_0853.md"
+      ]
+    },
     {
       "version": "0.85.2",
       "date": "2026-10-16",
@@ -114,7 +160,7 @@
       "changes": [
         {
           "kind": "Added",
-          "text": "World direction and Look at target modes, explicit source forward axes and 0â€“100% geometric-normal blending."
+          "text": "World direction and Look at target modes, explicit source forward axes and 0Ã¢â‚¬â€œ100% geometric-normal blending."
         },
         {
           "kind": "Improved",
@@ -882,7 +928,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer Ã¢â€ â€™ Surfaces Ã¢â€ â€™ Models Ã¢â€ â€™ Amount Ã¢â€ â€™ Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Surfaces ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Models ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Amount ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

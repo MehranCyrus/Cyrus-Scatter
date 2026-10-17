@@ -79,6 +79,10 @@ when its worker ends. A tool call remains read-only and does not await a rebuild
 For changed eligible inputs, one operation:
 
 1. Freezes current parent bytes and rebinds exact surviving evidence locations.
+   Complete contract-section intervals relocate only when their entire original
+   text occurs exactly once. Changed limits, ambiguous copies or a changed heading
+   boundary require review; a heading match alone is insufficient. Enrollment and
+   retirement remain manual reviewed decisions.
 2. Runs two complete audits and compares their observations and artifacts.
 3. Builds and verifies two indexes; evaluates both profiles of every definition
    against both indexes; compares paired exports and each historical baseline.

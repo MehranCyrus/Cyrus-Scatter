@@ -1,0 +1,732 @@
+{
+  "date": "2026-10-16",
+  "product": "CyrusPhysicsLab",
+  "version": "0.1.0",
+  "scene_schema": 1,
+  "solver_profile": "cpl-leaf-1",
+  "scope": {
+    "integrated_into_scatter": false,
+    "computer_use": false,
+    "artist_profile_installed": false,
+    "owned_profile_installed_and_restarted": true,
+    "max_year": 2027,
+    "committed_or_pushed_by_this_task": false
+  },
+  "source_state": {
+    "branch": "codex/workflow-0.75",
+    "initial_head": "9f8cc157279b6e257f1f4a0eb6280fc75b0ea58c",
+    "observed_delivery_head": "4eed74777e23c4c1c1a6490c80e2e09ded436d37",
+    "concurrent_head_change": "Separate gallery work committed during this task; standalone/research remain untracked",
+    "changed_paths_owned_by_task": [
+      "CyrusPhysicsLab/",
+      "docs/Scatter_Physics_Research_2026-10-16/"
+    ],
+    "knowledge": "Stale evidence; direct source inspection; no index refresh"
+  },
+  "ordinary_build": {
+    "receipt": {
+      "path": "build/physics-lab-010-delivery-20261016-05/receipt.json",
+      "sha256": "84da730d8afc502e743f822ec72c4ae6a07ac64300eea2c2e662236f612b6783",
+      "bytes": 3805
+    },
+    "identity": {
+      "version": "0.1.0",
+      "max_year": 2027,
+      "source_hashes": {
+        "CMakeLists.txt": "32d1460d91ec13b405247d42e7782aae2aa53624274d73e6fb2902a5d0fb2a55",
+        "README.md": "86204448852d34c750988df0ccef2c04dabe26b5cd1faf2c27137bba1b1b03cc",
+        "include/core.h": "b7610f169e81508c35d32f79631e1f3126d8d99193e08a85b5b753400ad90e5b",
+        "installer/CyrusPhysicsLabStartup.ms": "0da539120504f8f57f62a123ea492b4426e521980089180e883269c92b073285",
+        "scripts/CyrusPhysicsLab.ms": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "src/core.cpp": "a3b79e153336c54038a40774a7c2222ff39790eea8b637e9a975a054e442515f",
+        "src/jolt_world.cpp": "1cd4e5f3b04defa69f214009a2974b9fe830021a515bc062e7fd2deaa0e95884",
+        "src/max_host.cpp": "731309a027eadd0722e275b921817b3f7dd49eccb9df9a138706f79592b71170",
+        "src/physx_world.cpp": "04e4f060d4b4600578218a6ce41c9b0672ab4aa4813934b56b77cb487aee7d9f",
+        "src/storage_plugin.cpp": "267ee12b1972769a6e829cbd59cdfc52c8ec1d4aa8e5383172ab7e7cc809fa78",
+        "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+        "tests/core_tests.cpp": "8572a78d7afc0a232ae7ec4b58c300492bb1ca5c671bb3445364faf00ccfc091",
+        "tests/demo.ms": "5b855351465070fdd0fffc0a3343341166bcf778d8f398ef858e6f64b210438a",
+        "tests/host.ms": "acb01be8d16813ff177752ad9ec59f850a45704a4bf32a112753ce4c15dca997",
+        "tests/host_extended.ms": "5de28ae68007f0e8b929cd103e64bdd2869ce6f895936986df18f1fabf2b324c",
+        "tests/host_faults.ms": "1f8b0e3694ce468502b795b85e16c965f5c49bcedf13c37666bc62fd7c993c62",
+        "tests/host_transforms.ms": "fcccd4a1bfd23d12813944de3a02cc70c2711e1df2316aec984418191a50b0ac",
+        "tools/build.py": "7ca4e4fa39e82574bddf6ec9ef13e9565b2b9393be7a1225008449628361c089",
+        "tools/compare.py": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156",
+        "tools/host_test.py": "7d3f20c5ba02fcbf0c58d8f5b6d1313c09a8a69956785958d57e7b2351007675",
+        "tools/package.py": "09876501c6d23fad927e1b4194ac0717fcc873db307536aa6f5d8502068a565d"
+      },
+      "shared_source_hashes": {
+        "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+        "tools/build_max.py": "819c6c550834f695697df01f27b90600a995f2077cc91b788e9ec9922f02acc8",
+        "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+      },
+      "pins": {
+        "jolt": [
+          "jrouwe/JoltPhysics",
+          "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+        ],
+        "physx": [
+          "NVIDIA-Omniverse/PhysX",
+          "b97365c6ddb32fda8469bc788ec18024862b0368"
+        ]
+      },
+      "toolchain": {
+        "msvc": "14.38.33130",
+        "windows_sdk": "10.0.19041.0"
+      },
+      "dependency_archives": {
+        "jolt": {
+          "repository": "jrouwe/JoltPhysics",
+          "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+          "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+        },
+        "physx": {
+          "repository": "NVIDIA-Omniverse/PhysX",
+          "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+          "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+        }
+      },
+      "host_launched": false,
+      "installed": false,
+      "faults": false,
+      "binaries": {
+        "cpl_compare.exe": "ae641e2f1be832f29db77a66faadea7a11a22fcb126140f39a24cf52e6750d16",
+        "cpl_tests.exe": "0dad99dd36912d80b8d4ccd10188bc3732fc32ea2c6a4b9806bb5f53b0568389",
+        "CyrusPhysicsLab.dlx": "2ceb16c2a6ffd4d85b8069454a70f7517709a677db6247062dbe05b9ec1e2cb9",
+        "CyrusPhysicsStorage.dlh": "022e7086cac8af7eb2bbbefd216e323de6a5a3847f564dfe19a90d7c9ac15d6e"
+      }
+    },
+    "numeric_test_log": {
+      "path": "build/physics-lab-010-delivery-20261016-05/Testing/Temporary/LastTest.log",
+      "sha256": "4bb67e1c7d19edc6a80f52840fae181d267612cac7d38d5cd971b762ad89b0c1",
+      "bytes": 928
+    },
+    "numeric_assertions": 2426
+  },
+  "package": {
+    "receipt": {
+      "path": "dist/CyrusPhysicsLab-0.1.0-20261016-05/package.json",
+      "sha256": "144e9cfcb5e1863329fcf7cc6e69ec08c3918e51f638f7822506c51ebc2e815c",
+      "bytes": 1372
+    },
+    "identity": {
+      "product": "CyrusPhysicsLab",
+      "version": "0.1.0",
+      "max_year": 2027,
+      "integrated_into_scatter": false,
+      "payload": {
+        "native/CyrusPhysicsLab.dlx": "2ceb16c2a6ffd4d85b8069454a70f7517709a677db6247062dbe05b9ec1e2cb9",
+        "native/CyrusPhysicsStorage.dlh": "022e7086cac8af7eb2bbbefd216e323de6a5a3847f564dfe19a90d7c9ac15d6e",
+        "scripts/CyrusPhysicsLab.ms": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "README.md": "86204448852d34c750988df0ccef2c04dabe26b5cd1faf2c27137bba1b1b03cc",
+        "licenses/Jolt-MIT.txt": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3",
+        "licenses/nlohmann-MIT.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+        "Uninstall.ms": "ed974125dd5ba550eed71a9ef7903c78c41f55c23494a0935b180e95b693f6d6",
+        "CyrusPhysicsLabStartup.ms": "689455d8aa41a1e693612fb21f026f42cd73c1c03a687965b3e4f20995fd5301",
+        "install.ms": "716d80005700d2820f046a1f339b0240511a339ecf83fe7f2a974ce39a34c9f0",
+        "mzp.run": "021caa378db47199015a6e28cfb9e54805807a8a537ab68acf47fc31dd9dd1c7"
+      },
+      "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusPhysicsLab-0.1.0-20261016-05\\CyrusPhysicsLab-0.1.0-Max2027.mzp",
+      "package_sha256": "1f59e7b417c3fa81882edc8040163508386b4456f3bb7736e89fae6436631d38",
+      "package_bytes": 645573,
+      "installed": false
+    },
+    "archive": {
+      "path": "dist/CyrusPhysicsLab-0.1.0-20261016-05/CyrusPhysicsLab-0.1.0-Max2027.mzp",
+      "sha256": "1f59e7b417c3fa81882edc8040163508386b4456f3bb7736e89fae6436631d38",
+      "bytes": 645573
+    },
+    "integrity_and_payload_hashes_verified": true,
+    "host_guard_verified": true,
+    "private_command_names_absent": true
+  },
+  "host_runs": {
+    "18": {
+      "launch": {
+        "path": "build/physics-lab-host-20261016-18/launch.json",
+        "sha256": "0efac5af776d2673094aa360b0339346e67681c6d846d52f2582ef3089e5fff4",
+        "bytes": 1234
+      },
+      "launch_metadata": {
+        "pid": 6808,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-18\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-18\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-18\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-18\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "8069ceb32150a622374c42e5c954843c316422620a04965df8ed2935d6cd8796",
+          "CyrusPhysicsStorage.dlh": "3bf8642e35cb06a7f1201556d810c7b4c9aa63994c1b9f3228827527d77b9f45"
+        },
+        "script_sha256": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "fixture_sha256": "acb01be8d16813ff177752ad9ec59f850a45704a4bf32a112753ce4c15dca997",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "loaded": {
+        "path": "build/physics-lab-host-20261016-18/loaded.tsv",
+        "sha256": "10efdbbb7dce91f89f41538ab7c76f03c03952c6a71ff783b16590d92095e52f",
+        "bytes": 238
+      },
+      "assertions": {
+        "path": "build/physics-lab-host-20261016-18/assertions.txt",
+        "sha256": "e74831376d4060cceeb1568eb7ff28bdd0cc210cfb3710a94ae28e4a2edefbcf",
+        "bytes": 272
+      }
+    },
+    "19": {
+      "launch": {
+        "path": "build/physics-lab-host-20261016-19/launch.json",
+        "sha256": "2d17aa027a4025ce2c211b8687b069d2855a5c4b975b765c6b449d852c28e993",
+        "bytes": 1235
+      },
+      "launch_metadata": {
+        "pid": 14488,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-19\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-19\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-19\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-19\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "8069ceb32150a622374c42e5c954843c316422620a04965df8ed2935d6cd8796",
+          "CyrusPhysicsStorage.dlh": "3bf8642e35cb06a7f1201556d810c7b4c9aa63994c1b9f3228827527d77b9f45"
+        },
+        "script_sha256": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "fixture_sha256": "fcccd4a1bfd23d12813944de3a02cc70c2711e1df2316aec984418191a50b0ac",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "loaded": {
+        "path": "build/physics-lab-host-20261016-19/loaded.tsv",
+        "sha256": "3c6c098494765525a2d14948bfc1a3f01ffde85bd61e2d3cb0d351158198bfed",
+        "bytes": 238
+      },
+      "assertions": {
+        "path": "build/physics-lab-host-20261016-19/assertions.txt",
+        "sha256": "0d7bf169b1d1f474d5ff3e5abcea7715ae2be356b1c8cce295d4f9ddb6325ffd",
+        "bytes": 139
+      }
+    },
+    "20": {
+      "launch": {
+        "path": "build/physics-lab-host-20261016-20/launch.json",
+        "sha256": "aec2044356cec2bba2d944398a5cdbd12a66cd5f86d500621e1a71eb82d069be",
+        "bytes": 1235
+      },
+      "launch_metadata": {
+        "pid": 23488,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-20\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-20\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-20\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-20\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "8069ceb32150a622374c42e5c954843c316422620a04965df8ed2935d6cd8796",
+          "CyrusPhysicsStorage.dlh": "3bf8642e35cb06a7f1201556d810c7b4c9aa63994c1b9f3228827527d77b9f45"
+        },
+        "script_sha256": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "fixture_sha256": "5b855351465070fdd0fffc0a3343341166bcf778d8f398ef858e6f64b210438a",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "loaded": {
+        "path": "build/physics-lab-host-20261016-20/loaded.tsv",
+        "sha256": "68d70d91d16c47482cf509bf98997c83afbb4e1f34c3b7399f81a149b19b14ef",
+        "bytes": 238
+      },
+      "assertions": {
+        "path": "build/physics-lab-host-20261016-20/assertions.txt",
+        "sha256": "3dda4dafbed159bff261d870b602b856a1822aa5320f2a4e2d82c3efc81fb391",
+        "bytes": 229
+      }
+    },
+    "21": {
+      "launch": {
+        "path": "build/physics-lab-host-20261016-21/launch.json",
+        "sha256": "6b995681e980fc26b1cfc55281ba81122b02e25f671e35c95fab12a0e35fed0f",
+        "bytes": 1235
+      },
+      "launch_metadata": {
+        "pid": 37412,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-21\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-21\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-21\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-21\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "8069ceb32150a622374c42e5c954843c316422620a04965df8ed2935d6cd8796",
+          "CyrusPhysicsStorage.dlh": "3bf8642e35cb06a7f1201556d810c7b4c9aa63994c1b9f3228827527d77b9f45"
+        },
+        "script_sha256": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "fixture_sha256": "5de28ae68007f0e8b929cd103e64bdd2869ce6f895936986df18f1fabf2b324c",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "loaded": {
+        "path": "build/physics-lab-host-20261016-21/loaded.tsv",
+        "sha256": "be565e7176fb8a94b0a7cab2a3bb2a458567b11f68c09de181ccc265a95cb706",
+        "bytes": 238
+      },
+      "assertions": {
+        "path": "build/physics-lab-host-20261016-21/assertions.txt",
+        "sha256": "ca64b76e4a75f5ad282964bc1edc4665f02577524b15857e802bd908d0693798",
+        "bytes": 65
+      }
+    },
+    "25": {
+      "launch": {
+        "path": "build/physics-lab-host-20261016-25/launch.json",
+        "sha256": "ad1cfbe64478baae5bc6ce218c0a4f0d4861a1eaa716b5e45f34a187eeb363d4",
+        "bytes": 1235
+      },
+      "launch_metadata": {
+        "pid": 29712,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-25\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-25\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-25\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-25\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "2ceb16c2a6ffd4d85b8069454a70f7517709a677db6247062dbe05b9ec1e2cb9",
+          "CyrusPhysicsStorage.dlh": "022e7086cac8af7eb2bbbefd216e323de6a5a3847f564dfe19a90d7c9ac15d6e"
+        },
+        "script_sha256": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "fixture_sha256": "797da339afe76d3ef6bb1e446c54443f72c5e6658063b67e9a75ee95f3aaf089",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "loaded": {
+        "path": "build/physics-lab-host-20261016-25/loaded.tsv",
+        "sha256": "e751698585f03e5e62628eec290d7e49e19fffded366843865df137142bb194f",
+        "bytes": 238
+      },
+      "assertions": {
+        "path": "build/physics-lab-host-20261016-25/assertions.txt",
+        "sha256": "31361f532b333937af40cca79f74925f9b57d14a64329e725deed201334516a3",
+        "bytes": 229
+      }
+    },
+    "26": {
+      "launch": {
+        "path": "build/physics-lab-host-20261016-26/launch.json",
+        "sha256": "cc26ad5e0e801e653bac428d5e29dfce83d336287fcf7465bd100865c24f5e34",
+        "bytes": 1235
+      },
+      "launch_metadata": {
+        "pid": 26016,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-26\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-26\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-26\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-26\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "1193b4794a856784b79a09fccbfcf4919bab2e2776f4ac5fb43371cf73e61974",
+          "CyrusPhysicsStorage.dlh": "022e7086cac8af7eb2bbbefd216e323de6a5a3847f564dfe19a90d7c9ac15d6e"
+        },
+        "script_sha256": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "fixture_sha256": "1f8b0e3694ce468502b795b85e16c965f5c49bcedf13c37666bc62fd7c993c62",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "loaded": {
+        "path": "build/physics-lab-host-20261016-26/loaded.tsv",
+        "sha256": "06c84bc15903c577e175758975798cb8ba35ca454e47ce269c4d27c513b9e661",
+        "bytes": 238
+      },
+      "assertions": {
+        "path": "build/physics-lab-host-20261016-26/assertions.txt",
+        "sha256": "47112d91925522168492deb446b7a939483714499018cee4386c27b83536ec25",
+        "bytes": 113
+      }
+    },
+    "27": {
+      "launch": {
+        "path": "build/physics-lab-host-20261016-27/launch.json",
+        "sha256": "a376272173a74ed3a6144cafd62147468ab7eaf8268c7eedce00b74a330f8587",
+        "bytes": 1235
+      },
+      "launch_metadata": {
+        "pid": 11712,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-27\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-27\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-27\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-27\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "2ceb16c2a6ffd4d85b8069454a70f7517709a677db6247062dbe05b9ec1e2cb9",
+          "CyrusPhysicsStorage.dlh": "022e7086cac8af7eb2bbbefd216e323de6a5a3847f564dfe19a90d7c9ac15d6e"
+        },
+        "script_sha256": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "fixture_sha256": "4db51fce54375e87f02b4e046848287fcacc157704b0c0c51f3a087beab589de",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "loaded": {
+        "path": "build/physics-lab-host-20261016-27/loaded.tsv",
+        "sha256": "b3e6d445bca47727ab0f08a6197d880c0a4ce56f00faaad45787ef502e473027",
+        "bytes": 238
+      },
+      "assertions": {
+        "path": "build/physics-lab-host-20261016-27/assertions.txt",
+        "sha256": "865d68aed09b0e83b27098bc37d8f59cf53430065307555fda1d60dcf93115a9",
+        "bytes": 67
+      }
+    }
+  },
+  "installed_restart": {
+    "receipt": {
+      "path": "build/physics-lab-host-20261016-25/restart06-receipt.json",
+      "sha256": "249f84c374ea02fa6c5a397aa062a2592476ef683198f5d3746727f43cc66ad3",
+      "bytes": 701
+    },
+    "identity": {
+      "pass": true,
+      "computer_use": false,
+      "normal_profile_modified": false,
+      "installed_pair": {
+        "CyrusPhysicsStorage.dlh": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-25\\scripts\\CyrusPhysicsLab\\0.1.0\\583376d731f8\\native\\CyrusPhysicsStorage.dlh",
+          "sha256": "022e7086cac8af7eb2bbbefd216e323de6a5a3847f564dfe19a90d7c9ac15d6e"
+        },
+        "CyrusPhysicsLab.dlx": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-host-20261016-25\\scripts\\CyrusPhysicsLab\\0.1.0\\583376d731f8\\native\\CyrusPhysicsLab.dlx",
+          "sha256": "2ceb16c2a6ffd4d85b8069454a70f7517709a677db6247062dbe05b9ec1e2cb9"
+        }
+      }
+    },
+    "fixture": {
+      "path": "build/physics-lab-host-20261016-25/restart06.ms",
+      "sha256": "5ee9e9baeeb7f729e1c804aa89a5a290c85fe352307928c83cdb80085acdd815",
+      "bytes": 1790
+    },
+    "custom_plugin_configuration": {
+      "path": "build/physics-lab-host-20261016-25/restart06-plugins.ini",
+      "sha256": "750d4f62ea9539d92db3c8ade0b0ed9ad380943a5d368daf1e6a0b797e6d801b",
+      "bytes": 450
+    },
+    "scope": "Custom -p configuration includes the actual installed directory read from the private Plugin.UserSettings.ini. Startup automatic, no manual class fileIn.",
+    "installed_fixture_assertions": {
+      "basic": {
+        "path": "build/physics-lab-host-20261016-25/installed-basic-assertions.txt",
+        "sha256": "e74831376d4060cceeb1568eb7ff28bdd0cc210cfb3710a94ae28e4a2edefbcf",
+        "bytes": 272
+      },
+      "extended": {
+        "path": "build/physics-lab-host-20261016-25/installed-extended-assertions.txt",
+        "sha256": "ca64b76e4a75f5ad282964bc1edc4665f02577524b15857e802bd908d0693798",
+        "bytes": 65
+      },
+      "transforms": {
+        "path": "build/physics-lab-host-20261016-25/installed-transforms-assertions.txt",
+        "sha256": "0d7bf169b1d1f474d5ff3e5abcea7715ae2be356b1c8cce295d4f9ddb6325ffd",
+        "bytes": 139
+      },
+      "demo": {
+        "path": "build/physics-lab-host-20261016-25/installed-demo-assertions.txt",
+        "sha256": "31361f532b333937af40cca79f74925f9b57d14a64329e725deed201334516a3",
+        "bytes": 229
+      }
+    }
+  },
+  "current_source_private_faults": {
+    "receipt": {
+      "path": "build/physics-lab-010-private-20261016-26/receipt.json",
+      "sha256": "2a318f930e9a470793cb73fb430e65f7eabaca2d66367ae620fb465339290183",
+      "bytes": 3804
+    },
+    "identity": {
+      "version": "0.1.0",
+      "max_year": 2027,
+      "source_hashes": {
+        "CMakeLists.txt": "32d1460d91ec13b405247d42e7782aae2aa53624274d73e6fb2902a5d0fb2a55",
+        "README.md": "86204448852d34c750988df0ccef2c04dabe26b5cd1faf2c27137bba1b1b03cc",
+        "include/core.h": "b7610f169e81508c35d32f79631e1f3126d8d99193e08a85b5b753400ad90e5b",
+        "installer/CyrusPhysicsLabStartup.ms": "0da539120504f8f57f62a123ea492b4426e521980089180e883269c92b073285",
+        "scripts/CyrusPhysicsLab.ms": "b976bfe7e2c5d8b7f532846f862cfb753ce044cc45c09ec57d7705dd36888e3b",
+        "src/core.cpp": "a3b79e153336c54038a40774a7c2222ff39790eea8b637e9a975a054e442515f",
+        "src/jolt_world.cpp": "1cd4e5f3b04defa69f214009a2974b9fe830021a515bc062e7fd2deaa0e95884",
+        "src/max_host.cpp": "731309a027eadd0722e275b921817b3f7dd49eccb9df9a138706f79592b71170",
+        "src/physx_world.cpp": "04e4f060d4b4600578218a6ce41c9b0672ab4aa4813934b56b77cb487aee7d9f",
+        "src/storage_plugin.cpp": "267ee12b1972769a6e829cbd59cdfc52c8ec1d4aa8e5383172ab7e7cc809fa78",
+        "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+        "tests/core_tests.cpp": "8572a78d7afc0a232ae7ec4b58c300492bb1ca5c671bb3445364faf00ccfc091",
+        "tests/demo.ms": "5b855351465070fdd0fffc0a3343341166bcf778d8f398ef858e6f64b210438a",
+        "tests/host.ms": "acb01be8d16813ff177752ad9ec59f850a45704a4bf32a112753ce4c15dca997",
+        "tests/host_extended.ms": "5de28ae68007f0e8b929cd103e64bdd2869ce6f895936986df18f1fabf2b324c",
+        "tests/host_faults.ms": "1f8b0e3694ce468502b795b85e16c965f5c49bcedf13c37666bc62fd7c993c62",
+        "tests/host_transforms.ms": "fcccd4a1bfd23d12813944de3a02cc70c2711e1df2316aec984418191a50b0ac",
+        "tools/build.py": "7ca4e4fa39e82574bddf6ec9ef13e9565b2b9393be7a1225008449628361c089",
+        "tools/compare.py": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156",
+        "tools/host_test.py": "7d3f20c5ba02fcbf0c58d8f5b6d1313c09a8a69956785958d57e7b2351007675",
+        "tools/package.py": "09876501c6d23fad927e1b4194ac0717fcc873db307536aa6f5d8502068a565d"
+      },
+      "shared_source_hashes": {
+        "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+        "tools/build_max.py": "819c6c550834f695697df01f27b90600a995f2077cc91b788e9ec9922f02acc8",
+        "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+        "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+      },
+      "pins": {
+        "jolt": [
+          "jrouwe/JoltPhysics",
+          "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+        ],
+        "physx": [
+          "NVIDIA-Omniverse/PhysX",
+          "b97365c6ddb32fda8469bc788ec18024862b0368"
+        ]
+      },
+      "toolchain": {
+        "msvc": "14.38.33130",
+        "windows_sdk": "10.0.19041.0"
+      },
+      "dependency_archives": {
+        "jolt": {
+          "repository": "jrouwe/JoltPhysics",
+          "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+          "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+        },
+        "physx": {
+          "repository": "NVIDIA-Omniverse/PhysX",
+          "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+          "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+        }
+      },
+      "host_launched": false,
+      "installed": false,
+      "faults": true,
+      "binaries": {
+        "cpl_compare.exe": "ae641e2f1be832f29db77a66faadea7a11a22fcb126140f39a24cf52e6750d16",
+        "cpl_tests.exe": "0dad99dd36912d80b8d4ccd10188bc3732fc32ea2c6a4b9806bb5f53b0568389",
+        "CyrusPhysicsLab.dlx": "1193b4794a856784b79a09fccbfcf4919bab2e2776f4ac5fb43371cf73e61974",
+        "CyrusPhysicsStorage.dlh": "022e7086cac8af7eb2bbbefd216e323de6a5a3847f564dfe19a90d7c9ac15d6e"
+      }
+    },
+    "package_rejection_before_output_creation": true,
+    "host_run": 26
+  },
+  "comparison": {
+    "receipt": {
+      "path": "build/physics-lab-comparison-20261016-06/comparison.json",
+      "sha256": "98dac9aae673adf498acd3bcaabb910d4c8a227cb57f1d552e2bbba4958965b3",
+      "bytes": 49309
+    },
+    "runs": 80,
+    "passes": 80,
+    "summary": [
+      {
+        "engine": "jolt",
+        "scene": "flat",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 30.5355,
+        "same_build_repeatable": true
+      },
+      {
+        "engine": "jolt",
+        "scene": "pile",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 1567.766,
+        "same_build_repeatable": true
+      },
+      {
+        "engine": "jolt",
+        "scene": "curb",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 32.316,
+        "same_build_repeatable": true
+      },
+      {
+        "engine": "jolt",
+        "scene": "fast",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 33.816,
+        "same_build_repeatable": true
+      },
+      {
+        "engine": "physx",
+        "scene": "flat",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 26.3695,
+        "same_build_repeatable": true
+      },
+      {
+        "engine": "physx",
+        "scene": "pile",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 165.589,
+        "same_build_repeatable": true
+      },
+      {
+        "engine": "physx",
+        "scene": "curb",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 26.8035,
+        "same_build_repeatable": true
+      },
+      {
+        "engine": "physx",
+        "scene": "fast",
+        "count": 100,
+        "passes": 5,
+        "median_solve_ms": 38.9382,
+        "same_build_repeatable": true
+      }
+    ],
+    "scope": "1/100 cuboids, four scenarios, five repeats per engine. Floor/OBB pair gates; no exhaustive curb or general mesh oracle. Local timings under competing workload, not FPS. No final 1000-body qualification."
+  },
+  "artifacts": [
+    {
+      "path": "build/physics-lab-host-20261016-25/PhysicsLab_Leaves_Max2027.max",
+      "sha256": "c76d392d87b0923bd4ce4c3b42c6c0a98a9462be986234d8a2dddfdf112e4651",
+      "bytes": 860160
+    },
+    {
+      "path": "build/physics-lab-host-20261016-25/demo-recipe.json",
+      "sha256": "862c9dc22b7f167c2b2f3d303b3035e17924abe7d01dabda59851d01d964916f",
+      "bytes": 66429
+    },
+    {
+      "path": "build/physics-lab-host-20261016-25/demo.png",
+      "sha256": "76bc0b5f2ed35963eafa1b5f8e8530ee0d27d6d93a7437a9a3d422b1ef728fb4",
+      "bytes": 646556
+    },
+    {
+      "path": "build/physics-lab-host-20261016-25/geometry-oracle.json",
+      "sha256": "a70b5bee42355f161f2d630e93c50397355bee92df93190a3d68acaf21a528fe",
+      "bytes": 311
+    },
+    {
+      "path": "build/physics-lab-host-20261016-27/demo.jpg",
+      "sha256": "72e6a8e9cc222026a3f3a685e23f6fb0cb7e8be5869652584e7d8a06ca57b2d7",
+      "bytes": 51232
+    }
+  ],
+  "demo_geometry_oracle": {
+    "pass": true,
+    "settled": true,
+    "rows": 60,
+    "minimum_render_vertex_z_m": 0.0007157906865139095,
+    "maximum_render_vertex_z_m": 0.02871019998636154,
+    "floor_tolerance_m": 0.001,
+    "scope": "Render vertices versus analytic ground top only; no general mesh or pairwise/curb penetration proof"
+  },
+  "historical_failure_paths": [
+    "build/physics-lab-comparison-20261016-01",
+    "build/physics-lab-comparison-20261016-02",
+    "build/physics-lab-comparison-20261016-03",
+    "build/physics-lab-comparison-20261016-04",
+    "build/physics-lab-host-20261016-06",
+    "build/physics-lab-host-20261016-09",
+    "build/physics-lab-host-20261016-16",
+    "build/physics-lab-host-20261016-22/restart02-error.txt",
+    "build/physics-lab-host-20261016-23",
+    "build/physics-lab-host-20261016-24"
+  ],
+  "remaining_acceptance": [
+    "Physical brush/tablet feel, UI/DPI and artist Undo",
+    "Dense piles and real alpha/curved assets",
+    "General concave/holed/sloped colliders",
+    "Controlled latency/memory and long sessions",
+    "Arbitrary low-memory/internal Jolt unwind",
+    "Third-party and additional renderer/material coexistence",
+    "Bindings/settings UX and stricter snapshot validation",
+    "Main plugin integration is a later decision"
+  ],
+  "documentation": {
+    "ledger": {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/IMPLEMENTATION.md",
+      "sha256": "92bec6ec585ce96ecc4664a81b29812dc8681a2f9843f36e9b949bf935d0f5bd",
+      "bytes": 18371
+    },
+    "guide": {
+      "path": "CyrusPhysicsLab/README.md",
+      "sha256": "86204448852d34c750988df0ccef2c04dabe26b5cd1faf2c27137bba1b1b03cc",
+      "bytes": 9642
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "sources": [
+    {
+      "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+      "old_sha256": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+      "new_sha256": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+      "field_reasons": {
+        "applicability": "Correct stale version/qualification metadata while preserving previous index snapshot and original limits.",
+        "review_status": "Record explicit metadata review, without authority promotion or new product acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": "2293da4d4d74815973b2038bf18fabc225a1077f0382939136fffc81cdb39f76",
+      "new_sha256": "2293da4d4d74815973b2038bf18fabc225a1077f0382939136fffc81cdb39f76",
+      "field_reasons": {
+        "applicability": "Correct stale version/qualification metadata while preserving previous index snapshot and original limits.",
+        "review_status": "Record explicit metadata review, without authority promotion or new product acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "56d391fa9c90c08420fa2c86f2317677f0aedaaeeb6098020a687986f814f687",
+      "new_sha256": "56d391fa9c90c08420fa2c86f2317677f0aedaaeeb6098020a687986f814f687",
+      "field_reasons": {
+        "applicability": "Correct stale version/qualification metadata while preserving previous index snapshot and original limits.",
+        "review_status": "Record explicit metadata review, without authority promotion or new product acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "old_sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "new_sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "field_reasons": {
+        "applicability": "Correct stale version/qualification metadata while preserving previous index snapshot and original limits.",
+        "review_status": "Record explicit metadata review, without authority promotion or new product acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "old_sha256": "ba90cbab08ef20f9d6ccdeb3123dc371c685d394c484840a5df40484ccf24075",
+      "new_sha256": "ba90cbab08ef20f9d6ccdeb3123dc371c685d394c484840a5df40484ccf24075",
+      "field_reasons": {
+        "applicability": "Correct stale version/qualification metadata while preserving previous index snapshot and original limits.",
+        "review_status": "Record explicit metadata review, without authority promotion or new product acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "AminScatter/tests/publication_tests.cpp",
+      "old_sha256": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "new_sha256": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "field_reasons": {
+        "applicability": "Correct stale version/qualification metadata while preserving previous index snapshot and original limits.",
+        "review_status": "Record explicit metadata review, without authority promotion or new product acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "tools/foundation_validation/publication.py",
+      "old_sha256": "cf32a07e724b9841bac927fff74aef0d95bfde4fecc3f6b84f17d6b6a8482181",
+      "new_sha256": "cf32a07e724b9841bac927fff74aef0d95bfde4fecc3f6b84f17d6b6a8482181",
+      "field_reasons": {
+        "applicability": "Correct stale version/qualification metadata while preserving previous index snapshot and original limits.",
+        "review_status": "Record explicit metadata review, without authority promotion or new product acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    }
+  ],
+  "runtime": [],
+  "evaluations": [],
+  "corpus": {
+    "old_sha256": "694ac8d42466874e80a2bf61deb971adde06f6a54d23ab616ea857e202a734fe",
+    "new_sha256": "1a0ae0a83cb0f5baf8d8d1f5e2f202c009f1e2a196aee68d8b4317bf9394338f",
+    "reason": "Metadata-only correction: source bytes, enrolled ranges, contract sections, ranking and evaluation definitions unchanged. Remove stale current-source snapshot labels; preserve historical source status and prior metadata as history."
+  }
+}

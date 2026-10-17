@@ -1,0 +1,141 @@
+{
+  "schema": "cyrus.index-status/2",
+  "index_generation": "44bb57523e1286764c655754ce79ed3e4299bce12c0c71b7c49b212258dfa0d3",
+  "ok": false,
+  "error_type": "stale_evidence",
+  "root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "compatible": true,
+  "all_sources_verified": false,
+  "sources_checked": 38,
+  "sources_verified": 15,
+  "source_issues": [
+    {
+      "error": "changed source AGENTS.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "AGENTS.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source README.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "README.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/ARTIST_GUIDE.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/ARTIST_GUIDE.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/ARCHITECTURE.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/ARCHITECTURE.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/LAYOUT_AND_FALLOFF.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/LAYOUT_AND_FALLOFF.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/AGENT_WORKFLOW.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/AGENT_WORKFLOW.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/PRODUCT_AND_AI_ROADMAP.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source website/README.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "website/README.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source website/content/source-manifest.json: hash/identity mismatch; review evidence and rebuild",
+      "path": "website/content/source-manifest.json",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tools/ui/generate.cjs: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/include/receiver_plan.h: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/include/receiver_plan.h",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tools/ui/templates/unified-core.ms: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/scripts/AminScatterObject.ms: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tests/receiver_tests.cpp: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tests/receiver_tests.cpp",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source CyrusMCP/tests/test_feature_catalog.py: hash/identity mismatch; review evidence and rebuild",
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/ENGINEERING_FOUNDATION.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/BACKLOG.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/BACKLOG.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/src/cyrus_edit_stack.inc: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tests/publication_tests.cpp: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tests/publication_tests.cpp",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source tools/foundation_validation/publication.py: hash/identity mismatch; review evidence and rebuild",
+      "path": "tools/foundation_validation/publication.py",
+      "source_status": "changed"
+    },
+    {
+      "error": "missing source tools/foundation_validation/units.py: [WinError 2] The system cannot find the file specified: 'F:\\\\Cursor\\\\_Cyrus_Apps\\\\CyrusScatter\\\\tools\\\\foundation_validation\\\\units.py'; review evidence and rebuild",
+      "path": "tools/foundation_validation/units.py",
+      "source_status": "missing"
+    },
+    {
+      "error": "missing source tools/foundation_validation/units_guards.py: [WinError 2] The system cannot find the file specified: 'F:\\\\Cursor\\\\_Cyrus_Apps\\\\CyrusScatter\\\\tools\\\\foundation_validation\\\\units_guards.py'; review evidence and rebuild",
+      "path": "tools/foundation_validation/units_guards.py",
+      "source_status": "missing"
+    }
+  ],
+  "refresh": {
+    "configured": true,
+    "state": "stopped",
+    "process_running": false,
+    "issue": "missing",
+    "exit_code": 2,
+    "last_observation": {
+      "state": "stopped",
+      "issue": "missing",
+      "observed_utc": "2026-10-16T09:49:09.308326+00:00",
+      "watcher_running": false
+    }
+  }
+}

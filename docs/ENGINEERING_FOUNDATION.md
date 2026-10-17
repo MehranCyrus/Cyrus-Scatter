@@ -1,6 +1,6 @@
 # Cyrus Scatter engineering foundation
 
-Maintained contracts, established 12 October 2026 and aligned to development source 0.81.5/schema 58 on 13 October. **Required behavior is not implementation compliance or release acceptance.** The [current terrace record](plans/terrace-0815/PROGRESS.md) and preceding [Bands implementation record](plans/spline-bands/PROGRESS.md) record scoped native and Max 2026/2027 evidence and remaining gates. The [0.79.6 correction handoff](Foundation_0.79.6_2026-10-12/README.md) is historical publication/units evidence; its old-schema migration is retired. Earlier failures remain in the [local audit receipt](../_local/foundation-audit/20261012-3f4f69a4/AUDIT.md); that ignored receipt is not supplied by a source-only clone.
+Maintained contracts, established 12 October 2026; engineering direction reviewed against Scatter 0.85.4/schema 58 on 17 October. **Required behavior is not implementation compliance or release acceptance.** Use the [current memory handoff](plans/memory-0854/README.md) for the latest scoped qualification and the [native placement plan](plans/native-placement/README.md) for proposed migration. The earlier [terrace](plans/terrace-0815/PROGRESS.md), [Bands](plans/spline-bands/PROGRESS.md) and [0.79.6 correction](Foundation_0.79.6_2026-10-12/README.md) records retain their original builds, Max versions and limits; old-schema migration is retired. Earlier failures remain in the [local audit receipt](../_local/foundation-audit/20261012-3f4f69a4/AUDIT.md); that ignored receipt is not supplied by a source-only clone.
 
 The [architecture](ARCHITECTURE.md) owns implementation detail, the [backlog](BACKLOG.md) owns unresolved work, and the [workflow](AGENT_WORKFLOW.md) owns execution and host isolation. After required startup, read relevant sections without recursively loading history. F01–F09 retain their original meanings; F10–F12 make units, persistence and Analyzer boundaries explicit.
 
@@ -10,9 +10,58 @@ The [architecture](ARCHITECTURE.md) owns implementation detail, the [backlog](BA
 
 Prefer preservation of authored work, predictable edits and bounded computation. Extend existing ownership and pipelines with the smallest sufficient design. A node framework, GPU solver or compatibility layer needs a demonstrated problem and comparison with the simpler option. Competitor similarity is not a rationale or proof.
 
+## Native foundation and language boundaries
+
+**Engineering direction:** choose the implementation boundary according to data volume, ownership and measured cost. The agent owns this technical recommendation; do not require the artist to choose a programming language. This direction governs new designs and migration reviews. It does not claim the existing pipeline already satisfies every target or authorize a rewrite.
+
+| Work | Preferred owner and reason |
+| --- | --- |
+| Placement generation, per-instance masks/transforms, spacing, spatial indexes and bulk result buffers | Native C++ with compact typed storage; avoid placement-sized script objects and repeated native/script conversion |
+| Receiver/source snapshots, dependency revisions and publication | Native host boundary with explicit lifetimes; Max evaluates its scene on the host thread, numerical workers consume owned data |
+| Large Edit/result history and resource accounting | Native ownership with appropriate immutable sharing, changed blocks or command deltas; measure retained allocations and history release rather than assuming C++ copies are cheap |
+| UI, small authored commands, automation and test drivers | MAXScript or the existing managed UI when appropriate; passive views read cached summaries and captured valid owners |
+| Authored settings and scene/recipe persistence | Preserve the current supported ownership and serialization until a separately justified change; moving every parameter block to C++ is not a prerequisite for native computation |
+
+The current hybrid already has substantial C++ algorithms/display, while MAXScript still transports and retains many placement rows. 0.85.4's compact schedules/radii and heap reservation are a scoped correction, not completion of the [N01–N09 migration](plans/native-placement/IMPLEMENTATION.md). Script-driven tests can exercise native implementations; testability does not justify leaving bulk work in MAXScript.
+
+For any feature or migration, trace **authored inputs → evaluated snapshot → candidate/attribute work → acceptance → complete publication → preview/render/export**. Declare the authoritative owner, stable identity, units/frame, dependencies, temporary copies, memory peak, failure result and Undo lifetime at each affected boundary. A native pointer or solver handle is not a saved identity. Preserve existing numerical rounding/order where output parity is required.
+
+Prefer one coherent typed pipeline and bounded inspection access. Do not ship duplicate placement engines, restore retired development compatibility or build a generic graph/GPU layer merely for possible future features. Exceptions to the preferred language boundary need a concrete cost/lifetime explanation and relevant measurement, recorded in the existing implementation plan.
+
+## Performance and recovery requirements
+
+These requirements apply through F02–F08 and F11; they are not claims of universal current compliance.
+
+- **Avoid work before accelerating it.** Warm idle, selection, panel opening, library browsing and unrelated timeline changes must not solve static placements or upload unchanged buffers. Relevant edits invalidate only the affected dependencies and downstream work. Cold realization and resource recovery are explicit, measured exceptions.
+- **Separate validity from time.** Include time only for time-dependent inputs; do not treat every frame tick as a reason to rebuild static terrain/planting. A relevant same-frame mesh/channel change still requires a new revision. Invalidating output alone does not prove that the receiver snapshot was refreshed.
+- **Account for real peak memory.** Distinguish authored records, reusable snapshots, candidate/prepared/published buffers, old/new generations during commit, scratch, Undo/Redo retention, render copies and GPU resources. Count shared allocations once; account for retention of a large base buffer by a small view. A count cap, free script heap or process RAM alone is not an exact memory budget.
+- **Preserve artist recovery.** Ordinary parameter Undo, explicit Edit commands and transactional preset loading have different history requirements. Do not clear Undo, silently lower the requested Count or drop authored data to hide a resource problem. Stage a complete successor, publish atomically and retain the previous complete result on failure, with a useful diagnosis.
+- **Keep interaction bounded.** Coalesce relevant changes during expensive interaction where appropriate, while keeping final settings exact. Measure actual wheel/drag/spinner/brush input, panel mount, DPI and callback lifetimes separately from direct function timing. A C++ call or time slice can still block Max.
+
+## Physics and animation extension contract
+
+**Required design constraints for future integration; not delivered Scatter capabilities.** The independently versioned [Physics Lab](../CyrusPhysicsLab/README.md) has experimental implementation and its own evidence. It does not qualify integration into Scatter. The [physics design](Scatter_Physics_Research_2026-10-16/PROPOSED_DESIGN.md) remains the integration proposal; the [execution ledger](Scatter_Physics_Research_2026-10-16/README.md) distinguishes later lab work from the original research. Further roadmap implementation requires a current user instruction; completed P06 grids and P07 orientation remain implemented.
+
+1. Separate static scattering, animated evaluation and stateful simulation. Animated transforms, deforming receiver/proxy geometry, animated masks and solver state have different invalidation costs. Completed static planting and settled results remain reusable while unrelated objects animate.
+2. Keep authored emission/coverage, stable body IDs, solver state, completed transforms and display buffers distinct. Solver handles, point-array order and viewport timing cannot define persistent identity. Stable IDs do not guarantee unchanged transforms when physically coupled bodies interact.
+3. Declare time semantics before implementation: start/reset state, fixed simulation steps/substeps, frame rate and units, birth schedule, forward/backward seeking, checkpoints, missing-cache behavior and subframe render evaluation. Resuming simulation may require velocities/contact or solver state; final transforms alone do not establish resumability. Do not silently recook a whole simulation during a preview/render read.
+4. Separate render meshes, collision proxies, receivers and colliders. Validate source-pivot/center-of-mass mapping and scale once. Cache proxy preparation by relevant geometry/settings revisions. Physically settled results need a dedicated publication inlet; ordinary projection/alignment/spacing cleanup must not move or delete their support afterward without an explicit policy.
+5. Keep workers isolated from Max. Any future asynchronous scheduler needs owned snapshots, session/revision checks, bounded progress, cancellation and join/retirement on owner deletion, scene reset/load and shutdown. The present synchronous executor does not supply that guarantee. A cancelled or stale solve cannot publish late or hold an ordinary Undo transaction open indefinitely.
+6. Bound bodies, contact pairs, proxy geometry, scratch, history, checkpoints and render caches separately. Show incomplete/stale results honestly. Scene save/load, missing assets, engine-version changes and recipe portability need explicit contracts; solver memory dumps are not portable recipes.
+
+Primary reference lessons checked on 17 October 2026: SideFX documents separate render/proxy/collider inputs and simulation cache limits in [RBD Bullet Solver](https://www.sidefx.com/docs/houdini/nodes/sop/rbdbulletsolver.html), explicit saved-output reuse in [File Cache](https://www.sidefx.com/docs/houdini/nodes/sop/filecache.html), and changing point distributions on changing surfaces in [Scatter](https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html). These are workflow references, not evidence of Cyrus behavior or a claim about Houdini's private implementation. Forest's [inspected memory paths](plans/native-placement/SOURCE_MAP.md) also show why native storage alone does not prove compact Undo or failure retention.
+
+## Evolve through measured decisions
+
+For consequential work, record the problem and expected artist behavior, current source path, simplest viable alternative, selected boundary, measurable acceptance and remaining uncertainty in the existing plan. Reuse applicable research; consult primary Autodesk/renderer/SideFX/engine documentation or bounded vendor observations for unresolved questions. Distinguish vendor documentation, inspected source/binary, executed observations and our chosen design. Do not copy a vendor's weakness to claim parity.
+
+Compare before/after on the same source/build identities and scene inputs: cold/warm latency, repeated Count edits, peak/retained memory, history growth/release, actual input responsiveness and solve/preparation/upload counts. Cover Manual/Live, unrelated edits/animation, owner switching, failure before/after commit, Undo/Redo and save/reopen. Physics adds timestep/replay/seek/cancel/collider tests; animation adds relevant deformation and subframe output. Use Max 2027 only. Numerical tests, host automation and physical input each establish different evidence.
+
+After a completed improvement, update the maintained contract/architecture/backlog and its reproducible receipt; keep historical evidence unchanged. A later measured alternative may supersede a design without weakening ownership, recovery or authoring guarantees. Scope new tasks from the user's current request, not from an old roadmap command. Knowledge retrieval helps find evidence but does not replace source review; fresh hashes do not prove current behavioral truth.
+
 ## Contract and evidence map
 
-**U** is the authoritative [controller template](../AminScatter/tools/ui/templates/unified-core.ms); symbols are search anchors, not whole-file verification. **N** is the fresh offline native build (15 suites), **P** the 10 focused MCP publication tests, and **W** the isolated audit probes. Their identities/results are pinned in the local receipt. None launches Max.
+**U** is the authoritative [controller template](../AminScatter/tools/ui/templates/unified-core.ms); symbols are search anchors, not whole-file verification. **N** is the original 12 October offline native build (15 suites), **P** its 10 focused MCP publication tests, and **W** its isolated audit probes. Their identities/results are pinned in the historical local receipt. These labels do not describe tests rerun for the 17 October documentation update. Versioned limits below retain their original evidence scope; consult the current handoff/backlog for later corrections. None of N/P/W launches Max.
 
 ### F01 Layer and Paint Area ownership
 
@@ -173,6 +222,6 @@ Typed distance representation and bounded publication recovery are implemented a
 
 Select IDs, trace owner → dependencies → preparation → acceptance → publication, and inspect relevant source/tests. Reuse evidence already read; escalate when it conflicts, is stale or misses the boundary. For consequential choices, record expected/unchanged behavior, rationale/alternative, identities/units, failure/recovery, actual verification and remaining acceptance in the existing maintained location.
 
-Research only unresolved decision-critical questions. Reuse the bounded [surface studies](Vendor_Surface_Paint_Research_2026-10-09/README.md) and [native studies](Vendor_Native_Deep_Research_2026-10-09/README.md) when relevant; uncertain API facts require primary vendor sources with version/scope. Distinguish documentation, observation, inference and chosen design. No external API uncertainty required new vendor research in this audit.
+Research only unresolved decision-critical questions. Reuse the bounded [surface studies](Vendor_Surface_Paint_Research_2026-10-09/README.md) and [native studies](Vendor_Native_Deep_Research_2026-10-09/README.md) when relevant; uncertain API facts require primary vendor sources with version/scope. Distinguish documentation, observation, inference and chosen design. The original 12 October audit required no new vendor research; the 17 October extension review checked the SideFX pages linked above.
 
 Read contract rows with their exceptions and verification cells. New documents/skills are not automatically indexed. Direct guidance is available now; post-enrollment retrieval and fresh-session effectiveness remain pending. Architecture quality, test counts and documentation volume do not establish production readiness.

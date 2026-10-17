@@ -91,7 +91,7 @@ def evidence(root,path,target,action,snapshot):
     if inventory['baseline_generation']!=old[0]['generation_id'] or receipt['preflight']['generation']!=old[0]['generation_id']:
         c.fail('invalid_evidence','Historical baseline identity differs')
     definitions=receipt['preflight']['definitions']
-    if not 1<=len(definitions)<=3 or len({d['path'] for d in definitions})!=len(definitions):c.fail('invalid_evidence','Explicit distinct definition scope is required')
+    if not 1<=len(definitions)<=c.s.BOUNDS['evaluations'] or len({d['path'] for d in definitions})!=len(definitions):c.fail('invalid_evidence','Explicit distinct definition scope is required')
     current={}
     for definition in definitions:
         current[definition['path']]=json.loads(snapshot.add(Path(definition['path']),expected=definition['sha256']))
@@ -137,7 +137,7 @@ def evidence(root,path,target,action,snapshot):
                 paired.append(item)
                 if target==index:selected_evaluations.append(str(location))
             if paired[0][1]!=paired[1][1]:c.fail('retrieval_regression','Paired meaningful results differ')
-            compared=c.s.compare_baseline(previous[1],paired[0][1],previous[2],paired[0][2],receipt['source_update_needed'],historical[0].get('conclusion_review'))
+            compared=c.s.compare_baseline(previous[1],paired[0][1],previous[2],paired[0][2],receipt['source_update_needed'],historical[0].get('conclusion_review'),historical[0].get('evidence_review'))
             compared=c.s.review_manual_tradeoffs(compared,previous[1],paired[0][1],historical[0].get('tradeoff_review'))
             if not compared['passed'] and not compared['accepted_for_manual_candidate']:
                 c.fail('retrieval_regression','Historical comparison has unresolved regressions')

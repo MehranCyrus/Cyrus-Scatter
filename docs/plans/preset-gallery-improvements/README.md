@@ -1,10 +1,14 @@
 # Preset and gallery improvements — staged implementation plan
 
-**Implementation authorized:** the subsequent user request starts the full plan with version 0.85.1. Follow [candidate progress](PROGRESS_0851.md); the planning-only statements below describe the preceding checkpoint.
+Current bounded delivery: [0.85.3 ready-to-use presets](LOAD_0853.md), implementing the user's Add-as-new-layers preference. It follows the actual Forest comparison below. It is retained in current [0.85.4](../memory-0854/README.md). P06 grids and P07 orientation are already implemented; I07/P08 paths and further roadmap implementation remain paused. Historical planning text is not new authorization.
+
+**Delivered scope:** PG01–PG08’s declared subset is delivered; PG09 is partial and PG10 remains prerequisite-gated. The [0.85.1 handoff](DELIVERY_0851.md), later ready-preset correction and [current ledger](../improvement-program/PROGRESS.md) supersede planning-only statements below.
 
 16 October 2026. This plan originated as a documentation-only checkpoint. The subsequent user request authorizes its implementation as **0.85.1**. The [candidate ledger](PROGRESS_0851.md) records implementation and evidence separately; this plan is not release qualification. The [collection browser layout](BROWSER_LAYOUT.md) incorporates the user's later Forest screenshots.
 
 The subsequent [0.85.2 UI correction](UI_CORRECTION_0852.md) addresses Modify background navigation and default library scale without adding another roadmap feature. Original PG01–PG10 contracts and qualification limits remain.
+
+The later [Forest runtime comparison](FOREST_RUNTIME_2026-10-16.md) records actual Lite 9.4.3 / Max 2027 preset/model imports, material reuse, XRefs and scene round trips, compared with the current 0.85.2 source. It identifies the bundled settings-recipe versus asset-backed library gap and qualifies earlier static Manual/Undo assumptions. This is research only; it adds no product implementation or roadmap authorization.
 
 Baseline: Scatter **0.85.0**, scene schema 58, complete recipe format/capability 4, numeric settings format/capability 3, library presentation capability 1; branch `codex/workflow-0.75`, commit `9f8cc157279b6e257f1f4a0eb6280fc75b0ea58c`. That commit matches the remote branch. The [I06 handoff](../improvement-program/I06_0850.md) identifies the existing qualified package. Six procedural recipes, matching scenes and actual-result thumbnails exist; the larger program and EXE remain incomplete.
 
@@ -30,7 +34,7 @@ Source anchors, inspected at the baseline:
 - [Catalog](../../../AminScatter/src/recipe_library.cpp) and [limits](../../../AminScatter/include/recipe_library.h): scan/page, sidecar integrity, cancellation, thumbnail lifetime.
 - [Current examples](../../../AminScatter/library/README.md), [I03 evidence](../improvement-program/I03_08261.md), [I05 variation evidence](../improvement-program/I05_0840.md), [format 4](../improvement-program/FORMAT_4.md).
 
-The local knowledge index is stale; this recipe template is not enrolled in its path results. These findings use direct source inspection. No index refresh or new Max run forms part of this planning task.
+At the original planning checkpoint the local knowledge index was stale, and the recipe template was not enrolled. Those findings used direct source inspection. The [17 October repair](../../../tools/rag/KNOWLEDGE_REPAIR_2026-10-17.md) subsequently activated a fresh reviewed index; enrollment remains explicit and does not cover every linked source.
 
 ### Forest evidence and its limits
 

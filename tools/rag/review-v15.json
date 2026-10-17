@@ -1,0 +1,140 @@
+{
+  "corpus": {
+    "old_sha256": "1a0ae0a83cb0f5baf8d8d1f5e2f202c009f1e2a196aee68d8b4317bf9394338f",
+    "new_sha256": "9d62ad9e20cfc66cffe1198f3cd2230acc1bf77f59592d4109a8c79efdcec491",
+    "reason": "Preserve all 36 sources, 57 complete sections and retirement decisions; review six documentation parents after phase-status reconciliation."
+  },
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "old_sha256": "f2d4ea9ce9a58dc23872e8671c3112704879cf11ede1c8bc1e5f65ad797c861a",
+      "new_sha256": "f840a34440a865a93b091592ada974b887f0d29e580cd3e8913b7feec21613a0",
+      "field_reasons": {
+        "ranges": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "review_status": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "contract_sections": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "sha256": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "README.md",
+      "old_sha256": "b9cbc7906cbc204e752411d25b4f40904b5378b12f29bbebf9a66c0fc24eb6af",
+      "new_sha256": "4d78eb4cba91f7baeadba9eff09d388e857be2c2e49ee29c2e3849fdd887337e",
+      "field_reasons": {
+        "review_status": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "sha256": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "4ea7c913f07d39e8fa861dd0ee65d0769d642fae6867088e964b37c2294c3010",
+      "new_sha256": "747090f8cbda6f518aaf3623f07fc9587dfea93cf5be908c3391cfe5fd4f7244",
+      "field_reasons": {
+        "review_status": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "sha256": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "website/content/source-manifest.json",
+      "old_sha256": "be6632d2874ae5118ae1d1bbb693f6bfd3c523271785816b8e4590a6c913ebda",
+      "new_sha256": "12f0d67947536038cbdd97f75eda092a7cb820052ed9a332936c8008c35cd392",
+      "field_reasons": {
+        "review_status": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "sha256": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": "2293da4d4d74815973b2038bf18fabc225a1077f0382939136fffc81cdb39f76",
+      "new_sha256": "3a0908705a9b79eb852307235789ff456ee487cdf175446e3263a59a0e74adbf",
+      "field_reasons": {
+        "review_status": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "sha256": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "56d391fa9c90c08420fa2c86f2317677f0aedaaeeb6098020a687986f814f687",
+      "new_sha256": "cef3c7d5974b54785f51ae443bab1fe9666eb61ec48c822fdd10a61669c51aba",
+      "field_reasons": {
+        "review_status": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage.",
+        "sha256": "Reviewed phase completion/current-scope wording, unchanged product evidence and complete bounded source/contract coverage."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "28e286a2a2a99076f4dc3d5b796f13ba272645c0378bb292691f183a26fef01d",
+      "new_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "reason": "Every original query, requirement, allowed owner, split, qualifier, answerability and reference conclusion preserved. Evidence hashes/lines rebound after explicit documentation-only review; changed source spans are recorded in the local journal."
+    },
+    {
+      "old_sha256": "f59ab8fc729919e1d33ad2d7eca05d64bd219e706a1777e6a91e52976f7ac998",
+      "new_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "reason": "Every original query, requirement, allowed owner, split, qualifier, answerability and reference conclusion preserved. Evidence hashes/lines rebound after explicit documentation-only review; changed source spans are recorded in the local journal."
+    },
+    {
+      "old_sha256": "c30c2945f70805ccd535a7c7edcfbce078cff146cc647326ba0cc214a9c7d20b",
+      "new_sha256": "8e95e267959426f8fd237ca300f29638e6dd52ef2699164d79da403878befa88",
+      "reason": "Every original query, requirement, allowed owner, split, qualifier, answerability and reference conclusion preserved. Evidence hashes/lines rebound after explicit documentation-only review; changed source spans are recorded in the local journal."
+    },
+    {
+      "old_sha256": "f8221e829620e3f3d094153019b84474bcc3454108545ed446af6eb793710ed4",
+      "new_sha256": "c6bed353c2d640410375646ddc0d1cf81646c363ca8363e064738e54e2c07b2d",
+      "reason": "Every original query, requirement, allowed owner, split, qualifier, answerability and reference conclusion preserved. Evidence hashes/lines rebound after explicit documentation-only review; changed source spans are recorded in the local journal."
+    },
+    {
+      "old_sha256": "58132f7688c9a7e3156cefe0b86cc4f4f99788369e5a93088e4c4888c4096bf6",
+      "new_sha256": "bf5deeb0dc7d13b7f3470515900add10e9d0f015fdcca20945f0aa835ebf753c",
+      "reason": "Every original query, requirement, allowed owner, split, qualifier, answerability and reference conclusion preserved. Evidence hashes/lines rebound after explicit documentation-only review; changed source spans are recorded in the local journal."
+    }
+  ]
+}

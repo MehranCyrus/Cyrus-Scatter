@@ -20,6 +20,29 @@ import search as search_cli
 
 
 class ChunkTests(unittest.TestCase):
+    def test_complete_contract_keeps_qualifiers_and_exact_citations(self):
+        text = '# Guide\nIntro.\n\n## F02 Stability\n' + ('Required behavior.\n' * 110) + '\nOnly within quotas; Relax may change acceptance.\n\n## Next\nUnrelated.\n'
+        source = self.source(text=text)
+        source['contract_sections'] = [[4, 117]]
+        records = extract.chunks(text, source, retrieval.settings())
+        contracts = [c['contract'] for c in records if 'contract' in c]
+        self.assertGreater(len(contracts), 1)
+        self.assertEqual(len({c['chunk_id'] for c in contracts}), 1)
+        c = contracts[0]
+        self.assertIn('Only within quotas', c['original_text'])
+        self.assertNotIn('Unrelated', c['original_text'])
+        self.assertEqual(c['original_text'], text[c['locator']['start_offset']:c['locator']['end_offset']])
+        self.assertTrue(all(len(r['original_text']) <= retrieval.settings()['max_chunk_chars'] for r in records))
+
+    def test_contract_invalid_partial_overlapping_or_oversized_fails(self):
+        text = '# Guide\nIntro\n## Rule\nRequired\nLimit\n## Next\nEnd\n'
+        for intervals in ([[3, 4]], [[4, 5]], [[3, 5], [3, 5]], [[3, 5], [1, 2]], [[3, 9]]):
+            with self.subTest(intervals=intervals), self.assertRaises(ValueError):
+                extract.chunks(text, {**self.source(text=text), 'contract_sections': intervals}, retrieval.settings())
+        huge = '# Contract\n' + 'x' * extract.CONTRACT_MAX_CHARS
+        with self.assertRaises(ValueError):
+            extract.chunks(huge, {**self.source(text=huge), 'contract_sections': [[1, 2]]}, retrieval.settings())
+
     def source(self, path="a.md", text="# Heading\n\nOriginal ي ك\n"):
         return {"path": path, "sha256": retrieval.digest(text.encode()), "ranges": [[1, len(text.splitlines())]]}
 
@@ -108,6 +131,26 @@ class RetrievalFixtures(unittest.TestCase):
         self.assertEqual(corpus["sources"][1]["inventory_reason"], "keep reason")
         self.assertEqual(corpus["sources"][1]["knowledge_status"], "historical")
         self.assertEqual(texts[self.current], self.body)
+
+    def test_matching_fragment_returns_one_complete_contract_and_checks_limits(self):
+        body='# Contract\n\nUniqueRule permits work.\n\n' + 'Other context in the contract.\n'*90 + '\nLimit: must preserve Undo.\n'
+        self.write(self.current,body)
+        code,self.audit=self.scan('contract-audit')
+        self.assertEqual(code,0)
+        source=self.definition['sources'][0]
+        row=next(x for x in self.read_rows(self.audit) if x['path']==self.current)
+        source['sha256']=row['sha256'];source['ranges']=[[1,len(body.splitlines())]]
+        source['contract_sections']=source['ranges']
+        self.corpus.write_text(json.dumps(self.definition),encoding='utf8')
+        index=self.build()
+        result=retrieval.search(index,'UniqueRule',mode='identifier',top_k=5)['results']
+        self.assertEqual(len(result),1)
+        self.assertEqual(result[0]['original_text'],body)
+        self.assertNotEqual(result[0]['matched_locator'],result[0]['locator'])
+        self.assertEqual(result[0]['equivalent_sources'],[])
+        self.assertEqual(result[0]['method'],'reviewed-contract-section')
+        self.write(self.current,body.replace('preserve Undo','discard Undo'))
+        with self.assertRaises(retrieval.StaleIndex):retrieval.search(index,'UniqueRule',mode='identifier')
 
     def test_metadata_excluded_unhashed_and_tooling_sources_rejected_before_open(self):
         for path in ("maps/not-open.txt", "private/not-open.txt", "tools/rag/evaluation.json"):

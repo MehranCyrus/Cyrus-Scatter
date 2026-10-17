@@ -129,7 +129,7 @@ unchanged parent bytes stale. A registration match is not a session activation
 claim; no consumer is contacted or restarted.
 
 Generation metadata has no accepted evaluation-definition identity. By default
-the report states this omission. To supply an explicit baseline (up to six):
+the report states this omission. To supply an explicit baseline (up to eight):
 
 ```powershell
 py -3.11 -B tools/rag/refresh_status.py --root . --index _local/rag/indexes/20261012-phase3-acceptance-final-02 --evaluation tools/rag/evaluation-original-v3.json _local/rag/evaluations/20261012-phase3-acceptance-original-terminology-final-02/run.json --json
@@ -155,8 +155,10 @@ No outcome authorizes hash repair, label approval, rebuilding or switching.
 
 ## Bounds and failure behavior
 
-At most 64 parents, 20,000 chunks, 32 recorded runtime inputs, six evaluation
-baselines, 128 input reads and 1,024 characters per recorded relative path.
+At most 64 parents, 20,000 chunks, 32 recorded runtime inputs, eight evaluation
+baselines, 256 input reads and 1,024 characters per recorded relative path.
+The read-count allowance covers the supported 64-parent scope plus four paired
+evaluation sets and their control files; byte and wall limits remain unchanged.
 Artifacts are at most 64 MiB each; sources 16 MiB each and 32 MiB total; corpus
 definition 32 MiB; policy/runtime/registration/receipt controls 2 MiB each. Current
 policy may lower hash limits. Total read budget is 384 MiB, in chunks up to 1 MiB.

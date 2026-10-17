@@ -1,12 +1,17 @@
 # Eleven-phase Cyrus Scatter implementation roadmap
 
-**Current request, 16 October 2026: documentation only.** The [preset/gallery improvement plan](../preset-gallery-improvements/README.md) expands I03/P10 and I13–I15 into PG01–PG10, with a [Max 2027/performance matrix](../preset-gallery-improvements/VALIDATION.md) and [checklist](../preset-gallery-improvements/TODO.md). It does not start implementation or select a new version. I06/P06 is committed/pushed at `9f8cc15` (0.85.0); the existing program next feature is I07 paths, while library follow-up priorities are proposals until selected.
+**Current status, 17 October 2026:** Scatter 0.85.4 is the current scoped-qualified
+delivery. **P01–P07 are implemented**, including P06 grids (0.85.0) and P07
+orientation (0.83.0). P10 has substantial delivered recipe/gallery/ready-preset
+scope; P11 has an implemented performance baseline. P08 direct paths and P09
+transform/assignment maps remain pending. Further roadmap implementation is
+paused; I07/P08 is the next pending feature. See the [current phase table and
+scope](../improvement-program/PROGRESS.md#original-phase-status).
 
-**Active execution update, 16 October 2026:** the [user's improvement goal](../improvement-program/OBJECTIVE.md)
-resumes P06 and authorizes the remaining P06–P11 and I03–I18 work. Presets are
-first, implemented and scoped-tested as [0.82.6.1](../improvement-program/I03_08261.md). Follow the [current execution ledger](../improvement-program/PROGRESS.md).
-Older pause statements and provisional version assignments below describe prior
-checkpoints; the active version-policy override governs new deliveries.
+P, I and PG identifiers describe different plans; release numbers describe actual
+deliveries. Earlier resumption/pause statements and provisional versions below
+record historical checkpoints. The current ledger and user instruction govern
+new work; this maintenance does not start another phase.
 
 Created 14 October 2026. This is the execution plan requested in the Forest / Chaos
 comparison conversation. It covers feature-table items **1 through 11**, treated
@@ -16,11 +21,10 @@ conversation; it does not replace the engineering foundation or current backlog.
 **15 October planning supplement:** [Forest-informed improvements, easiest to hardest](FOREST_IMPROVEMENTS.md)
 maps the recorded reverse-engineering findings to current Cyrus 0.82.5, with
 performance gates, tests and dependencies for 18 proposed improvements. It does
-not reorder this execution program or authorize later implementation. The subsequent user-authorized [I01/I02 delivery](../panel-performance-0826/PROGRESS.md) is 0.82.6. **Phase 6 remains
-paused.** Additional effects, UV, asset and renderer work is identified separately
+not reorder this execution program or authorize later implementation. The subsequent user-authorized [I01/I02 delivery](../panel-performance-0826/PROGRESS.md) is 0.82.6. At that checkpoint P06 was paused; it was subsequently delivered as 0.85.0. Additional effects, UV, asset and renderer work is identified separately
 from the original eleven phases.
 
-## Scope and authorization
+## Historical scope and authorization at enrollment
 
 The user authorized implementation, proportionate testing, documentation, version
 selection, and a commit/push after each successfully validated phase. Continue to
@@ -63,7 +67,7 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
   rejected current-source retrieval as stale on 14 October. Direct current-source
   inspection is authoritative for this plan; no index refresh was performed.
 
-## Documents and status
+## Historical delivery references
 
 - [0.82.6 panel performance and diagnostics](../panel-performance-0826/PROGRESS.md): I01/I02 implementation, scoped Max 2027 checks and installer. P06 remains paused; next provisional label 0.82.7.
 
@@ -97,10 +101,10 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 | P05 | 0.82.2 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Implemented, qualified and pushed under original label; corrected 0.82.2 label compiled for Max 2027 |
 | P06 | 0.85.0 (I06) | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Scoped Max 2027 qualification and package passed; see I06 handoff |
 | P07 | 0.83.0 | Target/direction orientation controls | Medium | Final-transform and radius contracts; active-goal sequencing | Delivered in I04; scoped qualification |
-| P08 | 0.82.9 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
-| P09 | 0.83.0 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
-| P10 | 0.82.5 core; follow-up TBD | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Static core delivered separately; later layouts/maps and browser follow-ups remain |
-| P11 | 0.83.1 | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
+| P08 | Unassigned | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
+| P09 | Unassigned | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
+| P10 | 0.82.5 core; browser/library through 0.85.3 | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Static recipes, browser/gallery and supported ready assets delivered; future path/map fields and broader adapters remain |
+| P11 | Unassigned | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
 
 Execution is sequential. Performance and correctness work are continuous inside
 each phase. A necessary foundational fix can be a tracked subtask of the phase
@@ -177,4 +181,8 @@ planting, a new advanced Edit system, renderer/material expansion, edge trimming
 animation/geometry LOD, general curved-surface painting and an Effects framework.
 Do not make them hidden prerequisites for finishing phases 1–11.
 
-Current successor: [I06/P06 0.85.0 grids](../improvement-program/I06_0850.md), following [I05 variation](../improvement-program/I05_0840.md) and [I04/P07 direction](../improvement-program/I04_0830.md). Six examples are scoped-qualified. I07/P08 paths is next; B26 and the remaining program/EXE stay open. Historical version proposals do not select future delivery numbers.
+Current successor: [0.85.4 Count memory correction](../memory-0854/README.md),
+retaining [0.85.3 ready presets](../preset-gallery-improvements/LOAD_0853.md),
+the gallery/UI deliveries and I03–I06. Eight examples and MZP/EXE packages are
+delivered for the supported subset. I07/P08 and broader B26/production acceptance
+remain open. See the [current ledger](../improvement-program/PROGRESS.md).
