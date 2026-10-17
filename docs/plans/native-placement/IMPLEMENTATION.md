@@ -72,14 +72,14 @@ Likely files: `procedural_bridge.inc`, `include/procedural.h`, `src/procedural.c
 
 Dependencies: N02–N04; active Edit may remain temporarily bridged until N07.
 
-- [ ] Package root accepted data, source correspondence, metadata and statistics into immutable publication ownership; keep small UI summaries.
+- [ ] Package root accepted data, source correspondence, metadata and statistics into immutable publication ownership; keep small UI summaries. The internal Surface-random route and immutable data container are implemented; the [execution handoff](EXECUTION_0860.md) distinguishes its scoped Max evidence from remaining optional/preset/render integration.
 - [ ] Finish preview adapters: Point/Mesh/proxy/centres and bounded source-use output now consume native input with [actual Max parity/retained lifetime evidence](N05_PREVIEW_QUALIFICATION.json). Radius-ring preparation and production routing remain open; source-use work is cached at preparation/publication, never passive UI.
 - [ ] Stage all owners and Edit visibility before installation; preserve the existing rollback boundary and post-commit observer distinction.
 - [ ] Adapt ordinary Count/parameter Undo refresh without adding full snapshots for every scalar edit. Preserve Manual pending behavior.
 - [ ] Replace preset publication's large field-list retention with coherent native references where appropriate, preserving its authored hold and ready Load Undo/Redo.
 - [ ] Preserve abandoned Redo, imported setup lifetime, deletion/restoration and scene-reset release. No dangling native handle in a retained MAXWrapper.
 
-Likely files: `unified-core.ms`, `preview.cpp`, `geometry_preview.inc`, `point_publication.inc`, `recipes_bridge.cpp`, `preset-loading.ms` as needed for history capture only. Performance target: no placement-scaled script allocation during Update/preview; unchanged displays reuse buffers; ordinary Count history does not grow by full snapshots per edit. Tests: V07–V12, all eight presets, 60k→90k copy. Exit: coherent simple and optional-feature pipeline through viewport with correct history. This is the first possible intermediate delivery after scope/version review; disclose remaining active Edit/render transport.
+Likely files: `unified-core.ms`, `preview.cpp`, `geometry_preview.inc`, `point_publication.inc`, `recipes_bridge.cpp`, `preset-loading.ms` as needed for history capture only. Performance target: no placement-scaled script allocation during Update/preview; unchanged displays reuse buffers; ordinary Count history does not grow by full snapshots per edit. Tests: V07–V12, all eight presets, 60k→90k copy. Exit: coherent simple and optional-feature pipeline through viewport with correct history. The active objective requires full N01–N09 acceptance before the first coherent native-foundation delivery, 0.86.0; isolated adapters and the internal simple route are checkpoints, not user releases.
 
 ## N06 — Inspection, rendering and Bake (high)
 

@@ -25,7 +25,16 @@ Use the [maintained native/performance and physics/animation contracts](ENGINEER
 
 The [0.85.4 memory correction](plans/memory-0854/README.md) targets Count admission and transient transports. Qualification separates cold Count edits, the 60k→90k copy boundary, exact Undo/Redo, failure retention and passive counters. It does not establish arbitrary allocator/renderer or long-session acceptance. Further roadmap implementation is paused and slope/altitude are unchanged.
 
-The [native placement investigation and N01–N09 plan](plans/native-placement/README.md) is the next proposed B26 work: remove placement-sized script transport, preserve atomic native publication, cover render/Bake consumers and reduce CS Edit's full-map history copies. It is planning only, with no new runtime qualification or version bump. B26 stays partially addressed; Further roadmap implementation is paused. Implementation requires a subsequent user instruction.
+The user's [activated objective](plans/improvement-program/OBJECTIVE.md) resumes
+the [native placement N01–N09 program](plans/native-placement/README.md). Its
+[internal execution handoff](plans/native-placement/EXECUTION_0860.md) now records
+native storage/adapters and a connected Surface-random controller route with
+scoped Max 2027 history/lifecycle evidence. The default route remains the existing
+engine while optional preparation, active Edit, rendering/PFlow/Bake and native
+preset history are integrated. Matched first-route CPU Update measurements are
+better at 50k/200k and worse at 5k; N08 must profile that overhead and complete
+retained/peak accounting. B26 remains partially addressed. This is active
+implementation, not a qualified 0.86.0 delivery or broad production acceptance.
 
 | ID | Status and problem | Acceptance needed |
 | --- | --- | --- |

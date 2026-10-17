@@ -36,7 +36,8 @@ Value* cyrusReceiverOffsetRows_cf(Value** a,int n){
         const auto& view=cyrusPlacementView(a[0]);
         if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Receiver offsets require raw native candidates"));
         if(offset==0)return a[0];
-        cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size());
+        auto receivers=view.receiverCohort()?view.receiverCohort()->offset(static_cast<std::uint32_t>(offset)):std::shared_ptr<const cyrus::placements::ReceiverCohort>{};
+        cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size(),view.sourceCohort(),std::move(receivers));
         for(std::size_t i=0;i<view.size();++i){auto r=view.at(i);const auto face=std::uint64_t(r.face)+offset;if(face>INT_MAX)throw RuntimeError(_T("Receiver face offset overflow"));r.face=static_cast<std::uint32_t>(face);builder.appendGenerated(r);}
         return cyrusPlacementValue(builder.freeze());
     }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}

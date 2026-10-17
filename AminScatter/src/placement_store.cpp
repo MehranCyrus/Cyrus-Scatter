@@ -65,10 +65,12 @@ struct View::Data {
     const std::uint64_t owner,generation;
     const Stage stage;
     const std::uint32_t sources;
+    const std::shared_ptr<const SourceCohort> sourceCohort;
+    const std::shared_ptr<const ReceiverCohort> receiverCohort;
     Buffer<Record> rows;
     Buffer<Text> identities;
     Buffer<char> text;
-    Data(std::uint64_t o,Stage s,std::uint32_t n):owner(o),generation(next()),stage(s),sources(n){++stores;}
+    Data(std::uint64_t o,Stage s,std::uint32_t n,std::shared_ptr<const SourceCohort> cohort,std::shared_ptr<const ReceiverCohort> receivers):owner(o),generation(next()),stage(s),sources(n),sourceCohort(std::move(cohort)),receiverCohort(std::move(receivers)){++stores;}
     ~Data(){--stores;}
 };
 struct View::Selection {
@@ -79,18 +81,22 @@ struct View::Selection {
 };
 struct Builder::Impl {
     std::shared_ptr<View::Data> data;
+    std::shared_ptr<const PreparationReceipt> preparation;
     // Construction-only interning scratch. It is released before publication.
     std::unordered_map<std::string,std::uint32_t> intern;
     explicit Impl(std::shared_ptr<View::Data> p):data(std::move(p)){}
 };
 
 Metrics metrics() noexcept {return {live.load(),peak.load(),total.load(),allocations.load(),blocks.load(),stores.load(),selections.load(),readbacks.load()};}
+void noteReadback(std::size_t count) noexcept {readbacks.fetch_add(count,std::memory_order_relaxed);}
 std::uint64_t newOwner(){return next();}
 View::View(std::shared_ptr<const Data> d,std::shared_ptr<const Selection> s):data_(std::move(d)),selection_(std::move(s)),stage_(data_->stage),view_(selection_?selection_->id:data_->generation){}
 void View::valid() const {if(!data_)throw std::logic_error("Moved-from native placement view");}
 std::size_t View::size() const {valid();return selection_?selection_->indices.size():data_->rows.size();}
 Stage View::stage() const {valid();return stage_;}
 std::uint32_t View::sources() const {valid();return data_->sources;}
+const std::shared_ptr<const SourceCohort>& View::sourceCohort() const {valid();return data_->sourceCohort;}
+const std::shared_ptr<const ReceiverCohort>& View::receiverCohort() const {valid();return data_->receiverCohort;}
 Token View::token() const {valid();return {data_->owner,data_->generation,view_};}
 void View::require(Token t) const {check(token()==t,"Stale or foreign native placement token");}
 std::size_t View::physical(std::size_t i) const {if(i>=size())throw std::out_of_range("Native placement index");return selection_?selection_->indices[i]:i;}
@@ -114,30 +120,39 @@ std::vector<Record> View::page(std::size_t offset,std::size_t count,Token t) con
     check(offset<=size()&&count<=size()-offset,"Native placement page is outside its generation");
     std::vector<Record> result;result.reserve(count);
     for(std::size_t i=0;i<count;++i)result.push_back(at(offset+i));
-    readbacks.fetch_add(count,std::memory_order_relaxed);return result;
+    noteReadback(count);return result;
 }
 View View::select(const std::vector<std::uint32_t>& indices) const {
     valid();check(indices.size()<=size(),"Native selection exceeds its base");
-    if(indices.empty())return Builder(data_->owner,stage(),sources()).freeze();
+    if(indices.empty()){auto result=Builder(data_->owner,stage(),sources(),0,sourceCohort(),receiverCohort()).freeze();result.preparation_=preparation_;return result;}
     auto selected=std::make_shared<Selection>();selected->indices.reserve(indices.size());
     // Scratch is bounded by the selected view's logical population, not by IDs.
     std::vector<bool> used(size(),false);
     for(auto i:indices){check(i<size()&&!used[i],"Duplicate or invalid native selection index");used[i]=true;selected->indices.push_back(static_cast<std::uint32_t>(physical(i)));}
-    View result(data_,std::move(selected));result.stage_=stage_;return result;
+    View result(data_,std::move(selected));result.stage_=stage_;result.preparation_=preparation_;return result;
 }
 View View::edited() const {
     valid();if(stage_==Stage::Edited)return *this;
     View result=*this;result.stage_=Stage::Edited;result.view_=next();return result;
 }
+View View::prepared(const std::string& key,const std::string& binding) const {
+    valid();check(stage()==Stage::Edited&&sourceCohort(),"Preparation receipt requires edited rows with frozen source correspondence");
+    check(!key.empty()&&key.size()<=8u*1024*1024&&!binding.empty()&&binding.size()<=8u*1024*1024,"Invalid preparation key/binding");
+    if(preparation_){check(preparation_->key==key&&preparation_->binding==binding,"Cannot relabel an existing prepared generation");return *this;}
+    View result=*this;result.preparation_=std::make_shared<const PreparationReceipt>(key,binding);result.view_=next();return result;
+}
 View View::compact() const {return Builder(*this).freeze();}
 
-Builder::Builder(std::uint64_t owner,Stage s,std::uint32_t sources,std::size_t reserve) {
+Builder::Builder(std::uint64_t owner,Stage s,std::uint32_t sources,std::size_t reserve,std::shared_ptr<const SourceCohort> cohort,std::shared_ptr<const ReceiverCohort> receivers) {
     check(owner>0&&owner<=std::uint64_t(std::numeric_limits<std::int64_t>::max()),"Native placement owner is missing or invalid");check(s==Stage::Candidates||s==Stage::Edited,"Invalid native placement stage");
     check(sources<=maxSources&&reserve<=maxRecords,"Native placement request exceeds existing bounds");
-    impl_=std::make_unique<Impl>(std::make_shared<View::Data>(owner,s,sources));impl_->data->rows.reserve(reserve);
+    check(!cohort||(cohort->owner()==owner&&cohort->sources().size()==sources),"Placement source correspondence owner/count mismatch");
+    check(!receivers||receivers->owner()==owner,"Placement receiver provenance owner differs");
+    impl_=std::make_unique<Impl>(std::make_shared<View::Data>(owner,s,sources,std::move(cohort),std::move(receivers)));impl_->data->rows.reserve(reserve);
 }
-Builder::Builder(const View& view):Builder(view.token().owner,view.stage(),view.sources(),view.size()) {
+Builder::Builder(const View& view):Builder(view.token().owner,view.stage(),view.sources(),view.size(),view.sourceCohort(),view.receiverCohort()) {
     for(std::size_t i=0;i<view.size();++i){auto r=view.at(i);if(r.flags&Authored)appendAuthored(r,view.authored(i));else appendGenerated(r);}
+    impl_->preparation=view.preparation();
 }
 Builder::~Builder()=default;
 Builder::Builder(Builder&&) noexcept=default;Builder& Builder::operator=(Builder&&) noexcept=default;
@@ -145,10 +160,11 @@ void Builder::active() const {if(!impl_)throw std::logic_error("Frozen or moved-
 std::size_t Builder::size() const {active();return impl_->data->rows.size();}
 Record Builder::get(std::size_t i) const {active();return impl_->data->rows.at(i);}
 void Builder::appendGenerated(Record r) {
-    active();auto& d=*impl_->data;check(d.rows.size()<maxRecords,"Native placement candidate limit exceeded");
+    active();impl_->preparation.reset();auto& d=*impl_->data;check(d.rows.size()<maxRecords,"Native placement candidate limit exceeded");
     check((r.flags&Authored)==0,"Generated append cannot reference an authored identity");validate(r,d.stage,d.sources,d.identities.size());reserve(d.rows,d.rows.size()+1,maxRecords);d.rows.push_back(r);
 }
 void Builder::appendAuthored(Record r,std::string_view id) {
+    active();impl_->preparation.reset();
     active();auto& d=*impl_->data;check(d.stage==Stage::Edited&&d.rows.size()<maxRecords,"Authored native placement requires a bounded edited generation");
     check(!id.empty()&&id.size()<=maxIdentity,"Authored placement identity must contain 1..256 ASCII bytes");
     for(unsigned char c:id)check(c>0&&c<=127,"Authored placement identity must be an exact ASCII key");
@@ -169,10 +185,10 @@ void Builder::appendAuthored(Record r,std::string_view id) {
     r.identity=index;d.rows.push_back(r);
 }
 void Builder::replace(std::size_t i,Record r) {
-    active();auto& d=*impl_->data;if(i>=d.rows.size())throw std::out_of_range("Native placement replacement index");
+    active();impl_->preparation.reset();auto& d=*impl_->data;if(i>=d.rows.size())throw std::out_of_range("Native placement replacement index");
     validate(r,d.stage,d.sources,d.identities.size());d.rows[i]=r;
 }
 View Builder::freeze() {
-    active();std::shared_ptr<const View::Data> frozen=impl_->data;impl_.reset();return View(std::move(frozen));
+    active();std::shared_ptr<const View::Data> frozen=impl_->data;auto preparation=impl_->preparation;impl_.reset();View result(std::move(frozen));result.preparation_=std::move(preparation);return result;
 }
 }

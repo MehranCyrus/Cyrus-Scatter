@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="9f932772610b5a84ad9d671bcb4369825ba4c82b66ee8d981479b81447e6dd1f"
+﻿global CyrusLoadedScriptFingerprint="38faa84bebccf038e57f0e7a1e29483165eea302064008681fc8a9bb4dd4cd48"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -2231,6 +2231,9 @@ global CyrusPointOwner,CyrusPointSync,CyrusViewportRedraw,CyrusPointClear,CyrusP
 global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDetailStatus="",CyrusPointDeletedHandles=#()
 global CyrusViewportRecords=#(),CyrusViewportAnalyzers=#(),CyrusViewportRecordsDirty=true,CyrusPointPresentationPending=false
 global CyrusPointSceneOwners=#()
+-- Numeric retirement tickets do not pin scripted owners or placement buffers.
+-- Resolve them before a scene transition, including deleted owners Max retains.
+global CyrusNativeRetirementTickets=#()
 try(CyrusPointClear())catch()
 CyrusPointOwners=#()
 global cyrusFilterSourceRows,cyrusApplySourceTransforms
@@ -2914,6 +2917,9 @@ initialRollupState:0x8
     local procLastStats=#(),procLastRounds=#(),procPreparedBuilds=0,procPreparedHits=0,procEpoch=0,procPublishedDisplayKey="",procManualRevision=0
     local procPublishedOwners=#(),procPublishedSources=#(),procPublishedFinalKeep=#()
     local procPublishedRadii=#(),procPublishedInfo=#()
+    -- Internal migration switch. The supported optional/downstream routes are
+    -- qualified before this replaces the legacy comparison route by default.
+    local procNativeRoute=false,procNativeOwner=0L,procNativeContext=undefined,procNativePublication=undefined
     local procPublishedMetadata=#(),procDisplayFailure=false
     local procDensityMap=undefined,procDensityWatch=undefined,procDensityRevision=0
     local procDensityCache=#(),procDensityBakes=0,procDensityHits=0,procDensityInversions=0,procDensityBakeMs=0
@@ -4324,19 +4330,44 @@ initialRollupState:0x8
     fn filterSourceRowsByPolicy rows keep = (
         cyrusFilterSourceRows rows keep
     )
+    fn procUsesNative = (overlapOwner!=undefined and overlapOwner.procNativeRoute)
+    fn procNativeSources plants = (
+        if procNativeOwner==0 do (
+            procNativeOwner=cyrusPlacementOwner()
+            append CyrusNativeRetirementTickets #(getHandleByAnim this,procNativeOwner)
+        )
+        local entries=for s=1 to plants.count collect (
+            local node=plants[s],slot=this.sourceRow node
+            local id=if slot>0 and slot<=procSourceSlots.count then procSourceSlots[slot] else ("placeholder:"+(s as string))
+            #(id,node,not (this.isPointSource slot),(this.isPointSource slot),(this.isEmptySource slot))
+        )
+        if entries.count==0 do append entries #("unassigned:1",0,false,true,false)
+        local next=cyrusPlacementContextCreate procNativeOwner this.layerID entries
+        if procNativeContext==undefined or not (cyrusPlacementContextEqual procNativeContext next) do (
+            procNativeContext=next;procPreparedKey="";paintBaseKey="";procReceiverCache=#()
+        )
+        procNativeContext
+    )
+    fn procNativeEmpty stage plants = (cyrusPlacementCapture (if procNativeContext==undefined then this.procNativeSources plants else procNativeContext) stage (amax 1 plants.count) 0 #())
+    fn procSourceUsage rows = (
+        if not (cyrusPlacementIsNative rows) do throw "Native source summary requires a native placement view."
+        local root=overlapOwner,slot=if overlapOwner==undefined then 0 else findItem overlapOwner.procPublishedOwners this
+        if slot>0 and root.procNativePublication!=undefined and CyrusPresetSameValues (cyrusPlacementToken rows) (cyrusPlacementToken root.groupSnapshotRows[slot]) then (cyrusPlacementPublicationStatistics root.procNativePublication slot)[4]
+        else cyrusPlacementSourceUsage rows
+    )
     -- One generation path. Eligibility follows candidate movement; author edits
     -- and the three collision scopes run later in the ordered publication pass.
     fn cspImpl_placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         this.procAssertSchema()
         if not rawOnly and finalPass==undefined and overlapOwner!=undefined do return overlapOwner.groupPlacements this plants previewOnly
-        if not cyrusEnabled or disabledAnalyzerInput() do return #()
+        if not cyrusEnabled or disabledAnalyzerInput() do return (if this.procUsesNative() then this.procNativeEmpty 1 plants else #())
         if (this.brushMaskActive() or meshMaskEnabled) and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Paint and mesh density masks require Keep on surface for nonzero movement."
         local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count,variationDomains=CyrusReceiverVariationDomains this
-        if targets.count==0 do return #()
+        if targets.count==0 do return (if this.procUsesNative() then this.procNativeEmpty 1 plants else #())
         if plants.count==0 and not previewOnly do throw "Add a plant model."
         requestedCount=if procCandidateCount==undefined then (this.effectivePopulation())[1] else procCandidateCount
-        if requestedCount<=0 do return #()
-        local baseKey=(this.paintBaseInputKey plants previewOnly)+"|StablePool:"+(requestedCount as string)
+        if requestedCount<=0 do return (if this.procUsesNative() then this.procNativeEmpty 1 plants else #())
+        local baseKey=(this.paintBaseInputKey plants previewOnly)+"|StablePool:"+(requestedCount as string)+"|Native:"+(this.procUsesNative() as string)
         local result
         if finalPass==undefined and baseKey==paintBaseKey and paintBaseRows!=undefined then (result=paintBaseRows;paintBaseHits+=1)
         else (
@@ -4348,22 +4379,25 @@ initialRollupState:0x8
             if finalPass!=undefined do throw "Use the receiver-local candidate path before final acceptance."
             local shapeNodes=for node in areaNodes where isValidNode node collect node
             if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique shapeNodes node
-            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)
+            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)+"|Native:"+(this.procUsesNative() as string)
             local nextCache=#(),nextNormals=#(),faceOffset=0
             result=#();paintBaseFaceCounts=cyrusReceiverFaceCounts targets
+            local nativeInputs=#()
             for receiverIndex=1 to targets.count do (
                 local receiver=targets[receiverIndex],slot=findItem procReceiverNodes receiver,request=undefined,geometryKey=""
                 for entry in procReceiverPlanData[1] where entry[1]==slot do request=entry
                 for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]+"|MeshMask:"+entry[3]
                 if request==undefined do throw "Receiver allocation is missing."
-                local receiverCount=request[4],receiverRows=#(),receiverNormals=undefined
+                local receiverCount=request[4],receiverRows=(if this.procUsesNative() then this.procNativeEmpty 1 plants else #()),receiverNormals=undefined
                 local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+variationDomains[slot]+"|"+geometryKey+"|"+(receiverCount as string)
                 local cached=undefined
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry
                 if cached!=undefined then (receiverRows=cached[3];receiverNormals=cached[4];procReceiverHits+=1)
                 else if receiverCount>0 do (
                     local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if distributionMode==3 then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined))
-                    local generated=cyrusScatterCanonical #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    local generated
+                    if this.procUsesNative() then generated=cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    else generated=cyrusScatterCanonical #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     receiverRows=generated[1];receiverNormals=generated[2]
                     if finalRelax and receiverRows.count>0 do (
                         local relaxPass=#(receiverRows,#(),(for row in receiverRows collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
@@ -4377,10 +4411,13 @@ initialRollupState:0x8
                 )
                 append nextCache #(slot,receiverKey,receiverRows,receiverNormals)
                 if receiverNormals!=undefined do append nextNormals #(slot,faceOffset,receiverNormals)
-                join result (cyrusReceiverOffsetRows receiverRows faceOffset)
+                if this.procUsesNative() then (
+                    if receiverCount>0 do append nativeInputs (cyrusReceiverOffsetRows receiverRows faceOffset)
+                ) else join result (cyrusReceiverOffsetRows receiverRows faceOffset)
                 faceOffset+=paintBaseFaceCounts[receiverIndex]
             )
             -- Replace one bounded cache generation after all receiver preparation succeeds.
+            if this.procUsesNative() do result=if nativeInputs.count==0 then this.procNativeEmpty 1 plants else cyrusPlacementJoin nativeInputs
             procReceiverCache=nextCache;procOrientationReceivers=nextNormals
             paintBaseRows=result;paintBaseKey=baseKey;paintBaseBuilds+=1
         )
@@ -5235,7 +5272,10 @@ initialRollupState:0x8
         local required=for i=1 to sources.count collect (enabled and this.procAutoRequired i)
         for i=1 to required.count where required[i] and not this.sourceCanAuto i do throw ("Auto Radius: "+this.sourceLabel i+" is missing or has an unqualified source type. Restore supported geometry or choose Manual.")
         local used=#{}
-        for row in rows do used[row[2]]=true
+        if cyrusPlacementIsNative rows then (
+            local usage=this.procSourceUsage rows
+            for i=1 to usage.count where usage[i]>0 do used[i]=true
+        ) else for row in rows do used[row[2]]=true
         local inputs=for k=1 to plants.count collect (
             local i=this.sourceRow plants[k]
             if used[k] or (i>0 and required[i]) then plants[k] else 0
@@ -5297,6 +5337,7 @@ initialRollupState:0x8
         stream as string
     )
     fn procApplyPaint rows = (
+        if this.procUsesNative() and not paintEnabled do return rows
         if not paintEnabled or rows.count==0 do return cyrusClonePlacementRows rows
         local docs=#(),densities=#(),targets=this.validSurfaces()
         for area in paintAreas where area.paintSetEnabled and area.paintDocument!=undefined and findItem targets area.areaTarget>0 do (
@@ -5632,6 +5673,7 @@ initialRollupState:0x8
         local stream=stringStream ""
         with printAllElements on (
             format "Proc1:%:%:%:%:%:%:%:%|" (this.inputTimeKey()) 0 procManualRevision cyrusEnabled layerEnabled (this.procEditKey()) procRuleScope procRuleA to:stream
+            format "Native:%|" procNativeRoute to:stream
             format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGapWU procRulePlanar to:stream
             for parent in this.logicalLayers() do for leaf in this.layerSets parent do (
                 leaf.containerRefresh()
@@ -5652,9 +5694,10 @@ initialRollupState:0x8
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
     fn procPreparationKey pool plants = (
-        (this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())
+        (this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())+"|Native:"+(this.procUsesNative() as string)
     )
     fn procPrepare pool plants = (
+        if this.procUsesNative() do this.procNativeSources plants
         local key=this.procPreparationKey pool plants
         if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match" correlation:diagnosticCauseID;procPreparedHits+=1;return procPreparedRows)
         CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed" correlation:diagnosticCauseID
@@ -5670,6 +5713,7 @@ initialRollupState:0x8
         procBindingKey=this.procBinding plants rows
         rows=CyrusEditApplyLayer overlapOwner this rows
         rows=this.applySurfaceFilter rows
+        if this.procUsesNative() do rows=cyrusPlacementSealPrepared rows key procBindingKey
         procPreparedRows=rows;procPreparedKey=key;procPreparedBuilds+=1
         rows
     )
@@ -5679,8 +5723,23 @@ initialRollupState:0x8
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
+    fn procValidateNativeRoute = (
+        if not procNativeRoute do return true
+        for modifier in this.procModifiers() where modifier.enabled do throw "Native migration: active Edit is not integrated yet."
+        for leaf in layerObjects do (
+            if leaf.placementMode!=1 or leaf.distributionMode!=1 or leaf.diversityMode!=1 or leaf.paintEnabled or leaf.meshMaskEnabled or leaf.finalRelax or leaf.wholeScaleMin!=1.0 or leaf.wholeScaleMax!=1.0 or leaf.areaUseLine or leaf.areaUsePoints or leaf.containerProvider()!=undefined do throw "Native migration: this optional preparation route is not integrated yet."
+            for area in (join #(undefined) (leaf.areaNodes as array)) do (
+                local cfg=leaf.getFallConfig area
+                if cfg[1] or cfg[3] or cfg[6] do throw "Native migration: boundary falloff is not integrated yet."
+            )
+            if (findItem (leaf.sourceShowRadius as array) true)>0 do throw "Native migration: radius-ring preview is not integrated yet."
+            if leaf.autoRender do throw "Native migration: final render transport is not integrated yet."
+        )
+        true
+    )
     fn procValidate = (
         this.procAssertSchema()
+        this.procValidateNativeRoute()
         if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
@@ -5819,7 +5878,10 @@ initialRollupState:0x8
             -- A new Mesh/Point Cloud representation still verifies its epoch.
             if displayEpoch==undefined and data.count>0 and (viewportMode!=1 or not showCenters) do this.procCheckPublishedGeometry plants metadata
             local used=#{}
-            for row in data do used[row[2]]=true
+            if cyrusPlacementIsNative data then (
+                local usage=this.procSourceUsage data
+                for i=1 to usage.count where usage[i]>0 do used[i]=true
+            ) else for row in data do used[row[2]]=true
             local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i] sampleSeed:metadata[6]))
             cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette previewBudget else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) (if viewportMode==2 then viewportPreparationLimit viewportInstances viewportNavigationInstances else 0) 0
         )
@@ -5848,6 +5910,7 @@ initialRollupState:0x8
         procReceiverCache=#();procOrientationReceivers=#();paintBaseRows=#();paintBaseKey=""
         procReceiverGeometry=#();procReceiverPlanData=#(#(),#(),0,0,false);procPreparedKey=""
         procPublishedOwners=#();procPublishedSources=#();procPublishedFinalKeep=#();procPublishedRadii=#();procPublishedInfo=#();procPublishedMetadata=#()
+        procNativePublication=undefined;procNativeContext=undefined;procNativeOwner=0L
         groupSnapshotRows=#();groupSnapshotKey="";groupPrepareRows=#();groupPrepareKey=""
         paintBaseFaceCounts=#();blockerCacheRows=#();blockerCacheKey="";procDensityCache=#();procGridCache=#()
         procSplineField=undefined;procPreparedRows=#();radiusPreview=#();procFieldCache=undefined;procFieldCacheKey="";procFieldStatus="Preview hidden.";procPreviewInspectionKey=""
@@ -5979,7 +6042,7 @@ initialRollupState:0x8
         -- These are admission allowances, not reported process-memory usage.
         -- The 30k fixture measured ~43.5 MB preparation, 2.3 MB per radius pass
         -- and 1.8 MB scheduling. Extra row-producing falloff passes add room.
-        (
+        if not procNativeRoute then (
             local requiredHeap=8388608L
             for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
                 local leaf=layerObjects[i],pool=requests[i][3] as integer64,plants=leaf.validSources()
@@ -5999,12 +6062,19 @@ initialRollupState:0x8
             -- Light collection and a bounded session reservation precede row
             -- transport. Never flush history or alter saved heap preferences.
             CyrusReserveScriptWorkspace requiredHeap
+        ) else (
+            -- Opaque buffers live outside the script heap. Retire unreachable
+            -- wrappers before overlapping successors; preserve all Undo pins.
+            -- This runs only for a relevant calculation, never passive UI.
+            gc light:true
+            CyrusReserveScriptWorkspace 8388608L
         )
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
         local publishedMetadata=for leaf in layerObjects collect undefined
+        local nativePreparationKeys=for leaf in layerObjects collect "",nativeBindings=for leaf in layerObjects collect ""
         local transaction=false,previousBindings=for leaf in layerObjects collect leaf.procBindingKey
         local previousResults=for leaf in layerObjects collect leaf.procResultState()
-        local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty,procPublishedMetadata)
+        local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty,procPublishedMetadata,procNativePublication)
         groupSolving=true
         try (
             cyrusEditTransaction mods 0;transaction=true
@@ -6012,7 +6082,14 @@ initialRollupState:0x8
                 local members=this.layerSets parent,sets=#(),indices=#()
                 for leaf in members do (
                     local i=findItem layerObjects leaf,request=requests[i],plants=leaf.validSources(),rows=#()
-                    if cyrusEnabled and this.enabledLayer i do rows=leaf.containerFilter (leaf.procPrepare request[3] plants) plants
+                    if procNativeRoute do leaf.procNativeSources plants
+                    if cyrusEnabled and this.enabledLayer i then (
+                        rows=leaf.containerFilter (leaf.procPrepare request[3] plants) plants
+                        if procNativeRoute do (nativePreparationKeys[i]=leaf.procPreparationKey request[3] plants;nativeBindings[i]=leaf.procBindingKey)
+                    ) else if procNativeRoute do (
+                        nativePreparationKeys[i]="Inactive:"+key+"|"+leaf.layerID;nativeBindings[i]="Inactive:"+leaf.layerID
+                        rows=cyrusPlacementSealPrepared (leaf.procNativeEmpty 2 plants) nativePreparationKeys[i] nativeBindings[i]
+                    )
                     local geometry=leaf.procRadiusGeometry plants rows:rows enabled:(cyrusEnabled and this.enabledLayer i)
                     publishedMetadata[i]=leaf.procPreviewMetadata plants geometry:geometry
                     append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()))
@@ -6034,11 +6111,14 @@ initialRollupState:0x8
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
             local publicationInfo=this.procStagePublication accepted requests publishedSources finalKeep
+            local nextNativePublication=undefined
+            if procNativeRoute do nextNativePublication=this.procStageNativePublication accepted radii stats rounds requests publishedSources publicationInfo key nativePreparationKeys nativeBindings
             local dependencyHandles=for leaf in layerObjects collect leaf.procStageDependencyHandles()
             -- Allocation and computation have finished; publish one coherent epoch.
             this.publishGroupEdits accepted
             this.procSyncEditVisibility()
             local finishedKey=this.procInputKey()
+            if procNativeRoute and key!=finishedKey do throw "Inputs changed during native publication. The complete previous result is retained."
             procEpoch+=1
             for i=1 to layerObjects.count do (
                 local leaf=layerObjects[i]
@@ -6052,6 +6132,7 @@ initialRollupState:0x8
             )
             procPublishedOwners=publishedOwners;procPublishedSources=publishedSources;procPublishedFinalKeep=finalKeep
             procPublishedRadii=radii;procPublishedInfo=publicationInfo
+            procNativePublication=nextNativePublication
             procPublishedMetadata=publishedMetadata
             groupSnapshotRows=accepted;groupSnapshotKey=finishedKey;procPublishedDisplayKey=displayKey;groupBuilds+=1
             -- Keep native Edit rollback alive until every script owner agrees.
@@ -6063,6 +6144,7 @@ initialRollupState:0x8
             procPublishedRadii=previousPublication[5];procPublishedInfo=previousPublication[6];groupSnapshotRows=previousPublication[7]
             groupSnapshotKey=previousPublication[8];procPublishedDisplayKey=previousPublication[9];groupBuilds=previousPublication[10];CyrusViewportRecordsDirty=previousPublication[11]
             procPublishedMetadata=previousPublication[12]
+            procNativePublication=previousPublication[13]
             for i=1 to layerObjects.count do (layerObjects[i].procPreparedKey="";layerObjects[i].procCandidateCount=undefined;layerObjects[i].procBindingKey=previousBindings[i])
             groupSolving=false
             if transaction do cyrusEditTransaction mods 2
@@ -6079,6 +6161,31 @@ initialRollupState:0x8
 
     -- Private transient publication metadata. All values are captured before
     -- commit. These read methods never call validSources/procInputKey/solve.
+    fn procNativeReceiverBindings = (
+        local result=#(),begin=0
+        for node in this.validSurfaces() do (
+            local slot=findItem procReceiverNodes node,revision=undefined
+            for entry in procReceiverGeometry where entry[1]==slot do revision=entry[2]
+            if revision==undefined do throw "Native publication is missing its evaluated receiver revision."
+            local parts=filterString revision ":"
+            if parts.count!=2 do throw "Invalid evaluated receiver revision."
+            local faces=parts[1] as integer
+            append result #(slot,procReceiverIDs[slot],begin,faces,revision,getHandleByAnim node)
+            begin+=faces
+        )
+        result
+    )
+    fn procStageNativePublication accepted radii stats rounds requests sources info key preparationKeys bindings = (
+        if procNativeOwner==0 do (
+            procNativeOwner=cyrusPlacementOwner()
+            append CyrusNativeRetirementTickets #(getHandleByAnim this,procNativeOwner)
+        )
+        local payload=for i=1 to layerObjects.count collect (
+            local leaf=layerObjects[i],active=cyrusEnabled and this.enabledLayer i
+            #(accepted[i],radii[i],leaf.procNativeContext,(if active and (cyrusPlacementReceivers accepted[i]).count>0 then leaf.procNativeReceiverBindings() else #()),bindings[i],stats[i],rounds[i],(if active then leaf.procPreparedSurfaceStats else #(0,0,0)),preparationKeys[i])
+        )
+        cyrusPlacementPublicationCreate procNativeOwner procNativePublication info key payload
+    )
     fn procStagePublication accepted requests publishedSources finalKeep = (
         local sets=#(),count=0,parents=this.logicalLayers()
         for i=1 to layerObjects.count do (
@@ -6098,6 +6205,7 @@ initialRollupState:0x8
         #(CyrusNewLayerID(),procEpoch+1,(currentTime as integer),1.0/(units.decodeValue "1m"),count,sets,pairs,CyrusLoadedScriptFingerprint)
     )
     fn procPublicationInfo = (
+        if procNativePublication!=undefined do return cyrusPlacementPublicationInfo procNativePublication
         if procPublishedInfo.count==0 do throw "No cached procedural publication. Use Update locally first."
         if groupSnapshotKey.count>2097152 do throw "Publication input signature exceeds the inspection budget."
         local result=deepCopy procPublishedInfo
@@ -6105,6 +6213,7 @@ initialRollupState:0x8
         result
     )
     fn procPublicationPage publicationID offset limit = (
+        if procNativePublication!=undefined do return cyrusPlacementPublicationPage procNativePublication publicationID offset limit
         if procPublishedInfo.count==0 or procPublishedInfo[1]!=publicationID do throw "Procedural publication changed. Read its manifest again."
         if offset<0 or offset>procPublishedInfo[5] or limit<1 or limit>500 do throw "Publication page bounds are invalid."
         local result=#(),base=0
@@ -15960,6 +16069,11 @@ fn CyrusPointAfterSave = (CyrusPointSuspended=false;(CyrusPointPending=true;Cyru
 fn CyrusPointBeforeScene = (
     -- Capture owners before Max detaches the departed scene's reference graph.
     -- Its root.layerObjects can already be empty in the post-open callback.
+    for ticket in CyrusNativeRetirementTickets do (
+        local owner=getAnimByHandle ticket[1]
+        if owner!=undefined and isProperty owner #procNativeOwner and owner.procNativeOwner==ticket[2] do appendIfUnique CyrusPointSceneOwners owner
+    )
+    CyrusNativeRetirementTickets=#()
     for node in objects where classof node.baseObject==AminScatterObject do (
         local root=node.baseObject
         appendIfUnique CyrusPointSceneOwners root

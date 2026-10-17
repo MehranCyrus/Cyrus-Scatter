@@ -20,6 +20,7 @@
 #include "placement_transport.h"
 #include "script_buffers.h"
 #include "placement_value.h"
+#include "placement_host_text.h"
 #include "placement_materialization.h"
 #include "orientation.h"
 #include "grid.h"
@@ -131,7 +132,7 @@ Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
     if(cyrusIsPlacementValue(args[0]))try{
         const auto& view=cyrusPlacementView(args[0]);
         if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Source transforms require raw native candidates"));
-        cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size());
+        cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size(),view.sourceCohort(),view.receiverCohort());
         for(std::size_t i=0;i<view.size();++i){auto record=view.at(i);const auto source=record.source-1;
             if(source>=factors.size())throw RuntimeError(_T("Invalid source index"));
             Matrix3 tm(1);for(int j=0;j<4;++j)tm.SetRow(j,Point3(record.transform[std::size_t(j*3)],record.transform[std::size_t(j*3+1)],record.transform[std::size_t(j*3+2)]));
@@ -219,7 +220,16 @@ std::vector<amin::Triangle> surfaceMeshes(Value* input,bool requireUv=false,int 
     }
     return result;
 }
-Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t nativeOwner=0) {
+std::string surfaceRevision(const std::vector<amin::Triangle>& triangles,bool uv){
+    std::uint64_t hash=1469598103934665603ULL;
+    for(const auto& t:triangles){const std::array<amin::Vec3,6> vertices{{t.a,t.b,t.c,t.uvA,t.uvB,t.uvC}};
+        for(unsigned k=0;k<(uv?6u:3u);++k)for(double value:{vertices[k].x,vertices[k].y,vertices[k].z}){
+            std::uint64_t bits=0;std::memcpy(&bits,&value,sizeof(bits));
+            for(int byte=0;byte<8;++byte){hash^=(bits>>(byte*8))&255;hash*=1099511628211ULL;}
+        }}
+    return std::to_string(triangles.size())+":"+std::to_string(hash);
+}
+Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t nativeOwner=0,std::shared_ptr<const cyrus::placements::SourceCohort> nativeCohort={},const std::string& receiverID={}) {
     if(count!=29) throw RuntimeError(_T("Cyrus generation requires its current 29-field contract."));
     type_check(args[28],Array,_T("generation options"));
     auto* v1=static_cast<Array*>(args[28]);
@@ -288,6 +298,7 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
         }
     }
     const int n=args[1]->to_int(), ns=args[3]->to_int();
+    if(nativeCohort&&(nativeCohort->owner()!=nativeOwner||nativeCohort->sources().size()!=std::size_t(std::max(0,ns))))throw RuntimeError(_T("Generation source count/owner differs from its frozen source context"));
     if(n<0||n>cyrus::receivers::limit||s.candidateStart>cyrus::receivers::limit-static_cast<unsigned>(n)||ns<1)
         throw RuntimeError(_T("Candidate range must stay within 0..1,000,000 and sources must be nonempty."));
     s.count=n;s.seed=args[2]->to_int();s.sourceCount=ns;s.uniformScale={1,1};
@@ -346,6 +357,7 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
         s.rotationDegrees={{{-tilt,tilt},{-tilt,tilt},{lo,hi}}};s.movement={{{-move,move},{-move,move},{-move,move}}};
     }
     std::vector<amin::Instance> instances;std::vector<amin::Vec3> orientationNormals;
+    std::shared_ptr<const cyrus::placements::ReceiverCohort> nativeReceivers;
     try {
         if(grid){
             type_check(args[0],Array,_T("grid receiver"));const auto* targets=static_cast<Array*>(args[0]);
@@ -355,6 +367,13 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
         }
         const auto evaluated=grid?std::vector<amin::Triangle>{}:surfaceMeshes(args[0],s.distribution==2,uvChannel);
         const auto& mesh=grid?grid->mesh:evaluated;
+        if(!receiverID.empty()){
+            if(!nativeCohort)throw RuntimeError(_T("Bound generation requires frozen source correspondence"));
+            type_check(args[0],Array,_T("bound receiver"));const auto* targets=static_cast<Array*>(args[0]);
+            if(targets->size!=1||!targets->data[0]->to_node())throw RuntimeError(_T("Bound generation requires exactly one receiver"));
+            if(mesh.size()>10000000)throw RuntimeError(_T("Bound receiver face range exceeds existing work bounds"));
+            nativeReceivers=cyrus::placements::ReceiverCohort::create(nativeOwner,{{receiverSlot,0,static_cast<std::uint32_t>(mesh.size()),receiverID,surfaceRevision(mesh,s.distribution==2),std::uint64_t(Animatable::GetHandleByAnim(targets->data[0]->to_node()))}});
+        }
         if(canonical)orientationNormals=cyrus::orientation::normals(mesh);
         if(args[27]!=&undefined) {
             type_check(args[27],Array,_T("final pass"));auto* f=static_cast<Array*>(args[27]);
@@ -380,7 +399,7 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
     catch(const std::exception& error) {const std::string message=error.what();throw RuntimeError(MSTR(std::wstring(message.begin(),message.end()).c_str()));}
     if(nativeOwner) {
         try {
-            cyrus::placements::Builder builder(nativeOwner,cyrus::placements::Stage::Candidates,static_cast<std::uint32_t>(ns),instances.size());
+            cyrus::placements::Builder builder(nativeOwner,cyrus::placements::Stage::Candidates,static_cast<std::uint32_t>(ns),instances.size(),nativeCohort,nativeReceivers);
             for(const auto& v:instances) {
                 // Match the old Matrix3/Point3 Float32 boundaries exactly. These
                 // are stack SDK math values, never per-placement script Values.
@@ -413,8 +432,17 @@ Value* cyrusScatterCanonical_cf(Value** args,int count){return scatterAdvanced(a
 def_visible_primitive(cyrusScatterCanonicalNative,"cyrusScatterCanonicalNative");
 Value* cyrusScatterCanonicalNative_cf(Value** args,int count){
     check_arg_count(cyrusScatterCanonicalNative,30,count);
+    if(cyrusIsPlacementContextValue(args[0])){const auto& context=cyrusPlacementContext(args[0]);return scatterAdvanced(args+1,count-1,true,context->owner(),context);}
     if(!cyrus::rows::integer(args[0])||args[0]->to_int64()<=0)throw RuntimeError(_T("Native generation requires its session owner"));
     return scatterAdvanced(args+1,count-1,true,std::uint64_t(args[0]->to_int64()));
+}
+def_visible_primitive(cyrusScatterCanonicalBound,"cyrusScatterCanonicalBound");
+Value* cyrusScatterCanonicalBound_cf(Value** args,int count){
+    check_arg_count(cyrusScatterCanonicalBound,31,count);
+    const auto& context=cyrusPlacementContext(args[0]);
+    const auto receiverID=cyrus::placements::host::text(args[1],cyrus::placements::maxIdentity,cyrus::placements::maxIdentity);
+    if(receiverID.empty())throw RuntimeError(_T("Bound generation requires its persistent receiver identity"));
+    return scatterAdvanced(args+2,count-2,true,context->owner(),context,receiverID);
 }
 #include "procedural_bridge.inc"
 #include "receiver_bridge.inc"
@@ -426,15 +454,10 @@ def_visible_primitive(cyrusDensityMapVersion,"cyrusDensityMapVersion");
 Value* cyrusDensityMapVersion_cf(Value** a,int n){check_arg_count(cyrusDensityMapVersion,0,n);return Integer::intern(1);}
 def_visible_primitive(cyrusProceduralSurfaceKey,"cyrusProceduralSurfaceKey");
 Value* cyrusProceduralSurfaceKey_cf(Value** a,int n){
-    if(n<1||n>3)throw RuntimeError(_T("Surface key expects surfaces, optional UV flag and channel"));std::uint64_t hash=1469598103934665603ULL;
+    if(n<1||n>3)throw RuntimeError(_T("Surface key expects surfaces, optional UV flag and channel"));
     try{
         const bool uv=n>=2&&a[1]->to_bool()!=FALSE;const auto triangles=surfaceMeshes(a[0],uv,n==3?a[2]->to_int():1);
-        for(const auto& t:triangles){const std::array<amin::Vec3,6> vertices{{t.a,t.b,t.c,t.uvA,t.uvB,t.uvC}};
-        for(unsigned k=0;k<(uv?6u:3u);++k)for(double value:{vertices[k].x,vertices[k].y,vertices[k].z}){
-            std::uint64_t bits=0;std::memcpy(&bits,&value,sizeof(bits));
-            for(int byte=0;byte<8;++byte){hash^=(bits>>(byte*8))&255;hash*=1099511628211ULL;}
-        }}
-        const auto key=std::to_wstring(triangles.size())+L":"+std::to_wstring(hash);return new String(key.c_str());
+        return cyrus::placements::host::string(surfaceRevision(triangles,uv));
     }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
 }
 #include "orientation_bridge.inc"

@@ -60,7 +60,7 @@ Value* cyrusOrientSurfaceRows_cf(Value** a,int n){
             return cyrus::orientation::orient(row,(*snapshot.normals)[row.triangle-snapshot.begin],settings,axes[row.source]);
         };
         if(native) {
-            cyrus::placements::Builder builder(native->token().owner,cyrus::placements::Stage::Candidates,native->sources(),size);
+            cyrus::placements::Builder builder(native->token().owner,cyrus::placements::Stage::Candidates,native->sources(),size,native->sourceCohort(),native->receiverCohort());
             for(std::size_t i=0;i<size;++i){const auto& input=native->at(i);unsigned slot=0;std::uint64_t local=0;
                 if(!cyrus::receivers::decodeCandidate(input.identity,slot,local)||slot!=input.receiver)throw RuntimeError(_T("Native orientation receiver correspondence differs"));
                 builder.appendGenerated(placementRecord(orient(placementInstance(input)),slot,false));}

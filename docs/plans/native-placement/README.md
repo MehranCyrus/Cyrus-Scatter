@@ -1,8 +1,11 @@
 # Native placement pipeline — active implementation
 
-Current execution: [measured N01 baseline, internal storage, producer/acceptance and native preview adapters](EXECUTION_0860.md).
-The active placement pipeline is still the qualified 0.85.4 route; no 0.86.0
-installer or native-pipeline performance improvement is claimed yet.
+Current execution: [measured N01 baseline, native storage/adapters and connected internal Surface-random controller](EXECUTION_0860.md).
+The default placement pipeline remains the existing 0.85.4 route. The internal
+native route has scoped Max 2027 history/lifecycle evidence and matched CPU
+Update measurements: faster at 50k/200k, slower at 5k. Optional/downstream
+migration and N08 overhead/resource work remain open. There is no 0.86.0
+installer or product-wide performance claim.
 
 17 October 2026. **Implementation resumed by the user’s [active objective](../improvement-program/OBJECTIVE.md). P01–P07 remain implemented.** The [reviewed implementation checkpoint](BASELINE_0854_20261017.md) is `7379ea3`, pushed and remote verified. First coherent native delivery: **0.86.0**, pending N01–N09 acceptance.
 

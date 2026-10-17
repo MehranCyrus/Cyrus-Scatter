@@ -36,9 +36,19 @@ see [exact evidence and remaining work](../native-placement/EXECUTION_0860.md).
 The N05 native Point/Mesh/proxy input adapters now pass full native draw-content
 comparison and actual retained upload/lifetime checks through 200k placements;
 see [the preview receipt](../native-placement/N05_PREVIEW_QUALIFICATION.json).
-The main controller still uses the existing route. Bound native publication,
-optional stages, active Edit, downstream consumers and remaining N01–N09
-acceptance are open. No 0.86.0 installer or active-pipeline speedup is claimed.
+The default controller preserves the existing route. An internal Surface-random
+route now connects native source/receiver correspondence, preparation sealing,
+acceptance, retained preview, immutable publication and bounded inspection.
+Plane/mountain Max 2027 checks pass through 200k and zero Count, ordinary history,
+Manual/Live, failure retention, copy/deletion Undo, save/reopen, idle and retirement.
+Matched warm CPU Update measurements improve at 50k/200k but regress at 5k;
+[the current handoff](../native-placement/EXECUTION_0860.md) records exact scope
+and the N08 profiling requirement. The [frozen publication/controller receipt](../native-placement/N05_PUBLICATION_QUALIFICATION.json)
+pins the 180 source inputs and actual loaded pair; 43 native suites, 168 Python
+tests, generated checks and all eight existing ready-preset regressions pass.
+Optional stages, radius rings, active Edit,
+preset native history, rendering/PFlow/Bake and remaining N01–N09 acceptance are
+open. No 0.86.0 installer or product-wide speedup is claimed.
 
 The [0.85.4 Count memory correction](../memory-0854/README.md) is the current
 compiled and scoped-qualified pair. It retains [0.85.3 ready asset-backed presets](../preset-gallery-improvements/LOAD_0853.md),

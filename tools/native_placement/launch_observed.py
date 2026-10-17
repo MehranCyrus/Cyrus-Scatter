@@ -8,10 +8,13 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('host');parser.add_argument('--native',required=True)
+parser.add_argument('--script-only',action='store_true',help='Reuse native sources only when the guarded host helper proves generated-script-only changes.')
 args=parser.parse_args()
 assert args.host.startswith('foundation-memory0854-nativeaccept-')
 host=ROOT/'build/mcp-qualification'/args.host
-result=subprocess.run([sys.executable,'-B',str(ROOT/'tools/memory_0854/host.py'),'launch',args.host,'--native',args.native],cwd=ROOT,capture_output=True,text=True)
+command=[sys.executable,'-B',str(ROOT/'tools/memory_0854/host.py'),'launch',args.host,'--native',args.native]
+if args.script_only:command.append('--script-only')
+result=subprocess.run(command,cwd=ROOT,capture_output=True,text=True)
 print(result.stdout,flush=True)
 if result.returncode:raise RuntimeError(result.stderr)
 pid=json.loads(result.stdout)['pid']

@@ -2,6 +2,17 @@
 
 Source inspected on 17 October 2026 against the dirty 0.85.4 workspace identified in [EVIDENCE.json](EVIDENCE.json). Anchors below are symbols; recorded line numbers are navigation aids and can move. This is source evidence, not newly executed Max behavior.
 
+The table below preserves the inspected pre-migration/default route. Subsequent
+internal implementation and actual Max evidence are in the [execution handoff](EXECUTION_0860.md).
+Native source/receiver cohorts now live in `placement_binding.h/.cpp`; immutable
+data publication and shared radii in `placement_publication.h/.cpp`,
+`placement_publication_value.cpp` and `script_buffers.cpp`. The authoritative
+template's `procNativeSources`, `procPrepare`, `procStageNativePublication` and
+`evaluateProcedural` connect the default-off first route. Its cached inspection
+delegates to native manifest/page readers. Numeric retirement tickets preserve
+cleanup of departed/deleted scripted owners without keeping them alive. These
+additions do not convert the remaining Paint/Edit/render/Bake consumers below.
+
 ## Current placement route
 
 | Stage / owner | Current source | Finding and migration boundary |

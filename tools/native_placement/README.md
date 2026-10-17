@@ -35,3 +35,15 @@ Observe the current request before sending another. A wait deadline is an
 observation timeout, not proof of failure or permission to duplicate a mutation.
 Close only after the driver finishes and its final request is terminal. Preserve
 failed startup/dump evidence; do not restart or reconfigure the artist host.
+
+`run_binding.py` exercises source correspondence, evaluated receiver revisions,
+preparation sealing, native data publication and shared radii in a guarded binding
+or controller host. It compares complete legacy/native fields and tests stale
+source/terrain/preparation rejection, offset/join/empty provenance and last-pin GC.
+`run_controller.py` tests the default-off internal migration route in a controller
+host, including the real Count handlers and ordinary Undo/Redo. These drivers
+are prototypes, not release certification or an installer. Reuse native modules
+with `launch_observed.py --script-only` only when the existing host guard proves
+that **only the generated script** differs; record the iteration and freeze a
+fresh exact pair before delivery. Never mix changed native inputs with an older
+module. Startup exits and live timeouts are separate recorded outcomes.

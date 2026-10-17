@@ -248,6 +248,91 @@ native route, radius-ring preparation, active Edit and downstream consumers
 remain open. These tests do not establish full Update speedup, presented FPS,
 physical input latency or production-renderer acceptance.
 
+## N05 source/receiver correspondence and first controller route (internal)
+
+The current unshipped implementation adds immutable source cohorts (ordered role
+IDs, actual scene handles and output flags), evaluated receiver provenance,
+preparation receipts and native publication ownership. It shares placement/radius
+buffers and derives source-use counts at freeze. Detached manifest/statistics
+readback is bounded; a publication page remains limited to 500 rows. These are
+numeric/metadata owners, not standalone Max reference targets or renderer pins.
+
+Receiver provenance is stamped from the **same copied mesh actually consumed by
+generation**, using the existing surface-key hash implementation. It distinguishes
+persistent receiver IDs from random variation domains. Offset/join operations
+preserve face ranges and reject conflicting revisions. Selection, compaction and
+empty views retain provenance. Publication rejects a changed geometry signature,
+scene binding, source order or preparation receipt instead of relabeling old data.
+Protected authored copies retain the previously declared detached-provenance
+exception; active Edit migration is still pending.
+
+Local frozen builds and raw evidence are under
+`build/native-binding-0860-20261017-04/`. The source/data-container tests have passed
+on actual Max 2027 plane/mountain scenes through 200k candidates, including
+same-frame equal-topology terrain edits, receiver joins, failed successors and
+last-pin release. Shared radius ownership also passed the existing controller,
+Count history, 65-second idle, copy, Edit, save/reopen and eight ready-preset
+regressions on the recorded earlier pair. These scopes are separate: those
+legacy-controller regressions do **not** qualify the new controller route.
+
+An internal, default-off controller migration switch now connects Surface random
+to native buffers, acceptance, retained preview, data publication and bounded
+inspection. Its explicit validation rejects not-yet-integrated optional/render
+routes; it does not silently drop them. The unchanged default route preserves
+their existing behavior while migration continues. The internal switch is not a
+new artist feature or a second long-term shipping engine.
+
+The frozen `binding-native-07` pair passes actual Max 2027 controller checks on
+both terrains: 5k/50k/200k and zero Count, ordinary Count Undo/Redo, Manual/Live,
+post-preparation failure retention/recovery, retained Point/proxy/Mesh switching,
+same-cardinality source replacement, passive panels, independent copied owners,
+deletion Undo/Redo, save/reopen, 65 seconds idle and final store/radius release.
+This is scoped acceptance of the internal first route, not full N05/N09 product
+acceptance. The existing default engine/core regression and all eight ready
+preset Load/Undo/Redo/save/reopen cases pass on the same pair. The
+[machine-readable receipt](N05_PUBLICATION_QUALIFICATION.json) records all 180
+frozen input hashes, actual loaded native-module paths/hashes, 43 native suites,
+168 Python tests, generated checks, raw evidence hashes, individual benchmark
+samples, corrected iterations and remaining acceptance. The owned host is
+guarded-closed; no artist installation occurred.
+
+Initial actual-host attempts caught an unqualified forward `layerID` reference,
+Max's `IntegerPtr` node-handle type and retained buffers in a deleted copied
+controller after scene reset. The helper now uses `this.layerID`; the manifest
+reader accepts the SDK's integer-number types while rejecting fractional values.
+Numeric `(AnimHandle, native owner)` retirement tickets resolve surviving old
+scripted owners before full scene transitions, including deleted copies. Tickets
+do not pin those owners or buffers, and deletion Undo keeps its complete Manual
+result. Mismatched/reused owner tickets are ignored.
+
+The new controller performs light collection only before a relevant native
+calculation so unreachable opaque wrappers can release external allocations;
+it does not collect from passive UI or clear Undo. A premature Count-handler
+assertion also exposed legitimate deferred release-timer work: the driver now
+observes completion within a bounded interval instead of forcing Update.
+
+Five matched warm CPU Update samples per route/count/terrain (warm-up excluded)
+show a useful large-count improvement and a small-count regression:
+
+| Terrain / Count | Existing route median | Native route median |
+| --- | ---: | ---: |
+| Plane / 5k | 152.19 ms | 207.08 ms |
+| Plane / 50k | 407.82 ms | 272.89 ms |
+| Plane / 200k | 2,542.78 ms | 554.53 ms |
+| Mountain / 5k | 139.13 ms | 205.68 ms |
+| Mountain / 50k | 387.86 ms | 281.80 ms |
+| Mountain / 200k | 2,458.45 ms | 547.33 ms |
+
+Complete ordered field/radius/statistic fingerprints match between routes for
+every sample. Timing excludes hashing/file I/O and does not measure presented
+FPS, physical input latency, cold native-only script heap or all peak ownership.
+Source review removed unnecessary integer counting from the existing route;
+the final comparison preserves its original BitArray source-presence loops.
+**N08 must profile and reduce the observed 5k overhead** before delivery;
+unconditional light collection is a candidate to measure, not a proven cause.
+
+No normal-profile installation, version bump or 0.86.0 package has occurred.
+
 ## Next dependency-ready work
 
 N05 implementation decision, now implemented for the preview input adapters:
@@ -263,9 +348,10 @@ controller. Source-count equality is insufficient to establish publication asset
 correspondence: capture stable source IDs/handles and input/publication epochs
 at the root transaction, preserving Manual pending settings and existing Undo.
 
-Implement frozen source/receiver bindings and coherent native root publication,
-then connect Surface random through native acceptance, retained preview and ordinary
-Count Undo/Redo. Ordinary scalar history keeps its existing refresh semantics;
+Finish qualifying the frozen source/receiver bindings, preparation receipts and
+coherent native root publication, then prove the connected Surface random route
+through native acceptance, retained preview and ordinary Count Undo/Redo.
+Ordinary scalar history keeps its existing refresh semantics;
 do not introduce full placement snapshots for every Count change merely because
 the standalone hold probe can retain them. Complete optional Paint/mask/Band/
 Analyzer/Relax adapters, active Edit, inspection/render/PFlow/Bake and the full
@@ -274,3 +360,18 @@ boundaries and slope/altitude formulas and controls.
 
 The first coherent qualified user delivery remains 0.86.0 with matching MZP/EXE.
 These adapters are internal prototypes; there is no new user installer yet.
+
+After the first controller route is frozen, adapt Whole Scale, mesh-channel
+density, Analyzer Areas and boundary falloff, then Brush's cross-module output,
+special Analyzer orientation/final Relax and the remaining optional consumers.
+Reuse the existing numerical expressions and Float32 boundaries. Every changed
+record builder preserves source and evaluated-receiver provenance; removal-only
+stages can return native selections. Seal preparation only after these stages.
+
+For mesh masks, the geometric receiver signature alone is insufficient: selected
+numeric channel values have their own `cyrusMeshDensityKey` in
+`procReceiverGeometry[3]`. Verify that raw/prepared reuse and the final receipt
+include the applicable field revision, including same-frame changes. Keep
+explicit Update freshness separate from actual VertexPaint/Data Channel Live
+notification evidence. Do not infer the latter from Forest's static research,
+unchanged topology, output equality or geometry-only hashing.

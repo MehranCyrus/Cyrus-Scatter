@@ -6,6 +6,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include "placement_binding.h"
 
 namespace cyrus::placements {
 constexpr std::size_t maxRecords=1000000,maxSources=1024,maxPage=500,maxIdentity=256;
@@ -28,14 +29,20 @@ struct Token {
 };
 struct Metrics {
     // Requested live vector storage only, including builders and views. Object,
-    // shared_ptr control blocks and allocator headers are deliberately separate.
+    // shared_ptr control blocks, source/publication metadata and allocator
+    // headers are deliberately separate.
     std::uint64_t liveBytes=0,peakBytes=0,totalBytes=0,allocations=0,liveAllocations=0,
         liveStores=0,liveSelections=0,readbackRows=0;
 };
 Metrics metrics() noexcept;
+void noteReadback(std::size_t) noexcept; // Once per explicit bounded host page.
 std::uint64_t newOwner(); // Session-local, never serialized or reused.
 
 class Builder;
+struct PreparationReceipt {
+    const std::string key,binding;
+    PreparationReceipt(const std::string& k,const std::string& b):key(k),binding(b){}
+};
 class View {
     struct Data;
     struct Selection;
@@ -43,6 +50,7 @@ class View {
     std::shared_ptr<const Selection> selection_;
     Stage stage_{};
     std::uint64_t view_=0;
+    std::shared_ptr<const PreparationReceipt> preparation_;
     View(std::shared_ptr<const Data>,std::shared_ptr<const Selection> = {});
     std::size_t physical(std::size_t) const;
     void valid() const;
@@ -54,6 +62,9 @@ public:
     std::size_t size() const;
     Stage stage() const;
     std::uint32_t sources() const;
+    const std::shared_ptr<const SourceCohort>& sourceCohort() const;
+    const std::shared_ptr<const ReceiverCohort>& receiverCohort() const;
+    const std::shared_ptr<const PreparationReceipt>& preparation() const{return preparation_;}
     Token token() const;
     void require(Token) const; // Wrong owner, generation or selection is stale.
     const Record& at(std::size_t) const;
@@ -68,6 +79,7 @@ public:
     // No-modifier identity normalization changes interpretation, not records.
     // It preserves the immutable base and gives the view a distinct token.
     View edited() const;
+    View prepared(const std::string& key,const std::string& binding) const;
     View compact() const;
 };
 
@@ -76,7 +88,7 @@ class Builder {
     std::unique_ptr<Impl> impl_;
     void active() const;
 public:
-    Builder(std::uint64_t owner,Stage,std::uint32_t sources,std::size_t reserve=0);
+    Builder(std::uint64_t owner,Stage,std::uint32_t sources,std::size_t reserve=0,std::shared_ptr<const SourceCohort> = {},std::shared_ptr<const ReceiverCohort> = {});
     explicit Builder(const View&); // Private mutable successor; no shared writes.
     ~Builder();
     Builder(Builder&&) noexcept;Builder& operator=(Builder&&) noexcept;

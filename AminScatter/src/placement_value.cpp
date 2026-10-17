@@ -4,9 +4,11 @@
 #include <maxscript/foundation/numbers.h>
 #include <maxscript/foundation/strings.h>
 #include <maxscript/foundation/3dmath.h>
+#include <maxscript/maxwrapper/mxsobjects.h>
 #include "placement_value.h"
 #include "placement_transport.h"
 #include "placement_materialization.h"
+#include "placement_host_text.h"
 #include <charconv>
 #include <limits>
 #include <stdexcept>
@@ -55,6 +57,62 @@ Value* cyrusPlacementValue(p::View value){return new CyrusPlacementBuffer(std::m
 bool cyrusIsPlacementValue(Value* value){return value&&value->is_kind_of(class_tag(CyrusPlacementBuffer));}
 const p::View& cyrusPlacementView(Value* value){type_check(value,CyrusPlacementBuffer,_T("immutable native placement buffer"));return static_cast<CyrusPlacementBuffer*>(value)->value;}
 
+visible_class_debug_ok(CyrusPlacementContext)
+class CyrusPlacementContext : public Value {
+public:
+    const std::shared_ptr<const p::SourceCohort> value;
+    explicit CyrusPlacementContext(std::shared_ptr<const p::SourceCohort> context):value(std::move(context)){tag=class_tag(CyrusPlacementContext);}
+    classof_methods(CyrusPlacementContext,Value);
+    void collect() override{delete this;}
+    void sprin1(CharStream* s) override{s->printf(_T("<CyrusPlacementContext:%llu>"),static_cast<unsigned long long>(value->sources().size()));}
+    Value* deep_copy(HashTable*) override{return this;}
+};
+visible_class_instance(CyrusPlacementContext,"CyrusPlacementContext");
+bool cyrusIsPlacementContextValue(Value* value){return value&&value->is_kind_of(class_tag(CyrusPlacementContext));}
+const std::shared_ptr<const p::SourceCohort>& cyrusPlacementContext(Value* value){type_check(value,CyrusPlacementContext,_T("immutable native source context"));return static_cast<CyrusPlacementContext*>(value)->value;}
+Value* cyrusPlacementContextValue(std::shared_ptr<const p::SourceCohort> value){if(!value)return &undefined;return new CyrusPlacementContext(std::move(value));}
+namespace {
+std::string contextKey(Value* value){
+    return p::host::text(value,p::maxIdentity,p::maxIdentity);
+}
+Value* contextString(const std::string& value){
+    return p::host::string(value);
+}
+}
+def_visible_primitive(cyrusPlacementContextCreate,"cyrusPlacementContextCreate");
+Value* cyrusPlacementContextCreate_cf(Value** a,int n){check_arg_count(cyrusPlacementContextCreate,3,n);return api([&]()->Value*{
+    const auto owner=unsignedValue(a[0]);const auto population=contextKey(a[1]);type_check(a[2],Array,_T("ordered source bindings"));auto* input=static_cast<Array*>(a[2]);
+    if(input->size>int(p::maxSources))throw RuntimeError(_T("Source context exceeds 1024 entries"));
+    std::vector<p::SourceBinding> bindings;bindings.reserve(input->size);
+    for(int i=0;i<input->size;++i){type_check(input->data[i],Array,_T("source binding"));auto* row=static_cast<Array*>(input->data[i]);
+        if(row->size!=5)throw RuntimeError(_T("Source binding requires ID, scene object/placeholder and three output flags"));
+        p::SourceBinding source;source.id=contextKey(row->data[0]);
+        if(!cyrus::rows::integer(row->data[1])){auto* node=row->data[1]->to_node();if(!node)throw RuntimeError(_T("Source context has a missing scene object"));source.handle=Animatable::GetHandleByAnim(node);}
+        for(int k=0;k<3;++k){if(row->data[k+2]!=&true_value&&row->data[k+2]!=&false_value)throw RuntimeError(_T("Source context flags must be Boolean"));if(row->data[k+2]==&true_value)source.flags|=1u<<k;}
+        bindings.push_back(std::move(source));
+    }
+    return cyrusPlacementContextValue(p::SourceCohort::create(owner,population,bindings));
+});}
+def_visible_primitive(cyrusPlacementContextSources,"cyrusPlacementContextSources");
+Value* cyrusPlacementContextSources_cf(Value** a,int n){check_arg_count(cyrusPlacementContextSources,1,n);return api([&]()->Value*{
+    const auto& context=cyrusPlacementContext(a[0]);two_typed_value_locals(Array* result,Array* row);vl.result=new Array(int(context->sources().size()));
+    for(const auto& source:context->sources()){vl.row=new Array(5);vl.result->append(vl.row);vl.row->append(contextString(source.id));vl.row->append(Integer64::intern(static_cast<INT64>(source.handle)));
+        for(unsigned k=0;k<3;++k)vl.row->append(source.flags&(1u<<k)?&true_value:&false_value);}
+    return_value(vl.result);
+});}
+def_visible_primitive(cyrusPlacementContextEqual,"cyrusPlacementContextEqual");
+Value* cyrusPlacementContextEqual_cf(Value** a,int n){check_arg_count(cyrusPlacementContextEqual,2,n);return p::sameSourceCohort(cyrusPlacementContext(a[0]),cyrusPlacementContext(a[1]))?&true_value:&false_value;}
+def_visible_primitive(cyrusPlacementContextOf,"cyrusPlacementContextOf");
+Value* cyrusPlacementContextOf_cf(Value** a,int n){check_arg_count(cyrusPlacementContextOf,1,n);return cyrusPlacementContextValue(cyrusPlacementView(a[0]).sourceCohort());}
+
+def_visible_primitive(cyrusPlacementReceivers,"cyrusPlacementReceivers");
+Value* cyrusPlacementReceivers_cf(Value** a,int n){check_arg_count(cyrusPlacementReceivers,1,n);return api([&]()->Value*{
+    const auto& receivers=cyrusPlacementView(a[0]).receiverCohort();two_typed_value_locals(Array* result,Array* row);vl.result=new Array(receivers?int(receivers->receivers().size()):0);
+    if(receivers)for(const auto& r:receivers->receivers()){vl.row=new Array(6);vl.result->append(vl.row);vl.row->append(Integer::intern(r.slot+1));vl.row->append(contextString(r.id));
+        vl.row->append(Integer::intern(r.begin));vl.row->append(Integer::intern(r.faces));vl.row->append(contextString(r.revision));vl.row->append(Integer64::intern(static_cast<INT64>(r.handle)));}
+    return_value(vl.result);
+});}
+
 def_visible_primitive(cyrusPlacementNativeVersion,"cyrusPlacementNativeVersion");
 Value* cyrusPlacementNativeVersion_cf(Value**,int n){check_arg_count(cyrusPlacementNativeVersion,0,n);return Integer::intern(1);}
 def_visible_primitive(cyrusPlacementOwner,"cyrusPlacementOwner");
@@ -72,11 +130,12 @@ Value* cyrusPlacementSourceUsage_cf(Value** a,int n){check_arg_count(cyrusPlacem
 // full-population fallback: migrated generation must construct native records.
 def_visible_primitive(cyrusPlacementCapture,"cyrusPlacementCapture");
 Value* cyrusPlacementCapture_cf(Value** a,int n){check_arg_count(cyrusPlacementCapture,5,n);return api([&]()->Value*{
-    const auto owner=unsignedValue(a[0]),stage=unsignedValue(a[1]),sources=unsignedValue(a[2]),receiver=unsignedValue(a[3]);
+    const auto cohort=cyrusIsPlacementContextValue(a[0])?cyrusPlacementContext(a[0]):std::shared_ptr<const p::SourceCohort>{};
+    const auto owner=cohort?cohort->owner():unsignedValue(a[0]),stage=unsignedValue(a[1]),sources=unsignedValue(a[2]),receiver=unsignedValue(a[3]);
     if(stage<1||stage>2||sources>p::maxSources||receiver>=128)throw RuntimeError(_T("Invalid native placement capture context"));
     type_check(a[4],Array,_T("bounded placement input"));auto* rows=static_cast<Array*>(a[4]);
     if(rows->size>int(p::maxPage))throw RuntimeError(_T("Explicit placement capture exceeds 500 rows; no bulk script fallback"));
-    p::Builder builder(owner,stage==1?p::Stage::Candidates:p::Stage::Edited,static_cast<std::uint32_t>(sources),rows->size);
+    p::Builder builder(owner,stage==1?p::Stage::Candidates:p::Stage::Edited,static_cast<std::uint32_t>(sources),rows->size,cohort);
     for(int i=0;i<rows->size;++i) {
         type_check(rows->data[i],Array,_T("current placement row"));auto* row=static_cast<Array*>(rows->data[i]);
         if(stage==1)cyrus::rows::raw(row);else cyrus::rows::edited(row);
@@ -125,17 +184,26 @@ def_visible_primitive(cyrusPlacementJoin,"cyrusPlacementJoin");
 Value* cyrusPlacementJoin_cf(Value** a,int n){check_arg_count(cyrusPlacementJoin,1,n);return api([&]()->Value*{
     type_check(a[0],Array,_T("native receiver placements"));auto* inputs=static_cast<Array*>(a[0]);
     if(inputs->size<1||inputs->size>128)throw RuntimeError(_T("Native join requires 1..128 receiver buffers"));
-    const auto& first=cyrusPlacementView(inputs->data[0]);std::size_t size=0;
+    const auto& first=cyrusPlacementView(inputs->data[0]);std::size_t size=0;std::vector<std::shared_ptr<const p::ReceiverCohort>> receivers;
     for(int i=0;i<inputs->size;++i){const auto& view=cyrusPlacementView(inputs->data[i]);
-        if(view.token().owner!=first.token().owner||view.stage()!=first.stage()||view.sources()!=first.sources())throw RuntimeError(_T("Native join owner, stage or frozen source table differs"));
-        if(view.size()>p::maxRecords-size)throw RuntimeError(_T("Native join exceeds one million candidates"));size+=view.size();}
+        if(view.token().owner!=first.token().owner||view.stage()!=first.stage()||view.sources()!=first.sources()||!p::sameSourceCohort(view.sourceCohort(),first.sourceCohort()))throw RuntimeError(_T("Native join owner, stage or frozen source correspondence differs"));
+        if(view.size()>p::maxRecords-size)throw RuntimeError(_T("Native join exceeds one million candidates"));size+=view.size();receivers.push_back(view.receiverCohort());}
     if(inputs->size==1)return inputs->data[0];
-    p::Builder builder(first.token().owner,first.stage(),first.sources(),size);
+    p::Builder builder(first.token().owner,first.stage(),first.sources(),size,first.sourceCohort(),p::ReceiverCohort::merge(first.token().owner,receivers));
     for(int i=0;i<inputs->size;++i){const auto& view=cyrusPlacementView(inputs->data[i]);for(std::size_t j=0;j<view.size();++j){auto r=view.at(j);if(r.flags&p::Authored)builder.appendAuthored(r,view.authored(j));else builder.appendGenerated(r);}}
     return cyrusPlacementValue(builder.freeze());
 });}
 def_visible_primitive(cyrusPlacementEdited,"cyrusPlacementEdited");
 Value* cyrusPlacementEdited_cf(Value** a,int n){check_arg_count(cyrusPlacementEdited,2,n);return api([&]()->Value*{const auto& view=cyrusPlacementView(a[0]);view.require(token(a[1]));return cyrusPlacementValue(view.edited());});}
+
+def_visible_primitive(cyrusPlacementSealPrepared,"cyrusPlacementSealPrepared");
+Value* cyrusPlacementSealPrepared_cf(Value** a,int n){check_arg_count(cyrusPlacementSealPrepared,3,n);return api([&]()->Value*{
+    const auto key=p::host::text(a[1],2097152,8u*1024*1024),binding=p::host::text(a[2],2097152,8u*1024*1024);
+    return cyrusPlacementValue(cyrusPlacementView(a[0]).prepared(key,binding));
+});}
+
+def_visible_primitive(cyrusPlacementIsNative,"cyrusPlacementIsNative");
+Value* cyrusPlacementIsNative_cf(Value** a,int n){check_arg_count(cyrusPlacementIsNative,1,n);return cyrusIsPlacementValue(a[0])?&true_value:&false_value;}
 def_visible_primitive(cyrusPlacementTransportStats,"cyrusPlacementTransportStats");
 Value* cyrusPlacementTransportStats_cf(Value** a,int n){
     if(n<0||n>1)throw RuntimeError(_T("Transport statistics accept an optional observation Boolean"));
