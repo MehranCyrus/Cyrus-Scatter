@@ -1,16 +1,36 @@
 # Remaining improvement program â€” execution ledger
 
-Historical program objective: [complete user objective](OBJECTIVE.md). Enrolled 15 October 2026; current scope below takes precedence.
+Active program objective: [complete user objective, activated 17 October 2026](OBJECTIVE.md). It resumes the native migration and all named remaining roadmap areas. The earlier 15 October objective remains in that document as history.
 Baseline: `b23ed93f97af347b98b92b355660bdc3eeb0ef19`, branch `codex/workflow-0.75`, delivered Scatter 0.82.6. The user explicitly resumed Phase 6 for this program. Work begins with presets; no later feature is complete by enrollment.
 
 ## Current delivery
 
-Current task, 17 October 2026: reconcile maintained documentation and knowledge
-after the user identified misleading phase-pause wording. Product source remains
-Scatter 0.85.4 / schema 58 / CyrusUnified1. No new product implementation, Max
-tests, version bump, artist installation or Git push is part of this maintenance.
-Further roadmap implementation is paused. This describes authorization to start
-new work; it does not undo any delivered feature.
+Current active goal, 17 October 2026: implement N01–N09 native placement
+ownership, then complete the remaining original and advanced roadmap under the
+[full activated objective](OBJECTIVE.md). The user explicitly superseded the
+earlier pause. Preserve P01–P07 and existing P10. Product baseline remains
+Scatter 0.85.4 / schema 58 / CyrusUnified1; internal native prototypes are not
+user deliveries. **0.86.0** is selected for the first coherent qualified native
+foundation because it changes placement ownership, transport, history and
+consumer resource lifetimes while preserving authored behavior.
+
+The reviewed existing implementation is committed and pushed as `7379ea3`
+(remote verified). Its [fresh baseline receipt](../native-placement/BASELINE_0854_20261017.md)
+records 159 matching source hashes, 134 verified package payloads, generated
+checks, 167 Python tests, 40 native suites and private Max 2027 core plus all
+eight ready-preset round trips. No artist installation occurred. N01 complete
+allocation/peak/history baselines and N02 native storage are the next work;
+these regression checks alone do not complete N01.
+
+Active implementation now has [recorded N01 measurements and an internal N02
+storage prototype](../native-placement/EXECUTION_0860.md): ten warm repetitions
+per Count/terrain, 120 seconds idle, typed immutable 96-byte native records,
+flat views, bounded pages, allocation-failure tests, real Max GC retention/release
+and guarded Brush POD reads. Native SDK suites, Python/generated checks and the
+existing core/eight-preset regressions pass within the recorded pairs/scopes.
+This is not the migrated placement pipeline or a new user delivery. Remaining
+N01 ownership/peak/history probes, N02 integration boundaries and N03–N09 are
+still open. No 0.86.0 installer or active-pipeline speedup is claimed.
 
 The [0.85.4 Count memory correction](../memory-0854/README.md) is the current
 compiled and scoped-qualified pair. It retains [0.85.3 ready asset-backed presets](../preset-gallery-improvements/LOAD_0853.md),
@@ -37,14 +57,15 @@ independent of release numbers. **P06 is complete for its declared scope.**
 
 I03–I06 have delivered checkpoints. I15/PG01–PG08 have a supported static-asset
 subset; PG09 is partial and PG10 depends on I13/I14. I07/P08 is the next pending
-roadmap feature, not an active coding task. The N01–N09 native migration remains
-a [proposal](../native-placement/README.md); the separate Physics Lab is not
-integrated Scatter physics. Neither is authorized by this documentation task.
+roadmap feature after native foundation qualification. N01–N09 implementation
+is now authorized by the [active objective](OBJECTIVE.md); the separate Physics
+Lab still does not establish integrated Scatter physics.
 
 Historical implementation checkpoints I03 `f030fb3`, I04 `a814513`, I05 `f2bc8dd`
 and I06 `9f8cc15` were recorded as pushed in their original receipts. Current
-checkout HEAD is `5aee4ef2242307b92e16c96e0106ee095d6a4215` plus dirty/untracked
-work. No new remote comparison is implied by this maintenance.
+documentation/knowledge checkpoint is `c1290d0`; reviewed plugin implementation
+checkpoint is `7379ea3`, pushed with the remote ref verified. Unrelated local
+work remains preserved. Read actual Git state before further edits.
 
 Contracts: F01, F04-F08, F09-F11. Native library scans operate on copied filesystem paths and metadata only, never Max scene objects. Explicit Refresh rereads content, even for same-size/same-time file replacement. Browsing never hydrates Paint. Search/page operations use the bounded in-memory index; no filesystem polling while idle. Thumbnail loading is explicit for the selected entry with byte/pixel bounds and resource disposal.
 

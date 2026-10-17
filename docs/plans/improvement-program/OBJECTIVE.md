@@ -1,4 +1,191 @@
-> Historical user objective, enrolled 15 October 2026. P06 grids and P07 orientation were subsequently implemented. Further roadmap implementation is currently paused. Read the [current phase table and scope](PROGRESS.md#original-phase-status) and [engineering foundation](../../ENGINEERING_FOUNDATION.md) before acting. The original objective below preserves past authorization; it does not authorize new implementation, Physics Lab integration, native migration or Git/install actions.
+# Active improvement objective — 17 October 2026
+
+Activated explicitly by the user. This objective resumes native and remaining roadmap implementation. Follow the [current execution ledger](PROGRESS.md); preserve completed P01–P07. First coherent qualified native-foundation delivery: **0.86.0**.
+
+The complete activated user objective follows. Original attachment SHA-256: `513c486a1f089fce3bbf9354864652de4f29d157f375d3c28c9fd1bc553e7a17`.
+
+GOAL: Complete the Cyrus Scatter native foundation and remaining improvement roadmap
+
+Build Cyrus Scatter into a responsive, memory-efficient, understandable and dependable scattering system. Preserve existing features while strengthening the foundation, then implement the remaining roadmap and advanced capabilities.
+
+Work autonomously through implementation, testing, corrections, documentation, packaging and Git checkpoints. Continue beyond planning and beyond the first delivery until the agreed scope is complete. I will perform my own artist testing afterward.
+
+AUTHORIZATION AND CURRENT STATE
+
+Activating this goal explicitly resumes further roadmap implementation and supersedes earlier instructions to keep that work paused.
+
+Do not confuse roadmap identifiers:
+- P numbers describe the original eleven product outcomes.
+- I numbers describe Forest-informed improvements.
+- PG numbers describe preset/gallery improvements.
+- N numbers describe the native placement migration.
+- Release versions are separate from all these identifiers.
+
+P01–P07 are already implemented. Preserve them.
+P08 paths and P09 transform/assignment maps remain pending.
+P10 has a substantial supported recipe/library implementation.
+P11 has existing viewport/performance improvements but remaining acceptance work.
+
+Current local plugin source is 0.85.4/schema 58.
+The documentation/knowledge checkpoint is c1290d0 on codex/workflow-0.75.
+Existing plugin implementation changes remain outside that documentation-only commit.
+
+Verify the actual checkout, working changes, source hashes, packages and current evidence before acting. Historical version tables and receipts do not establish current implementation or qualification.
+
+FIRST ACTION: PRESERVE THE BASELINE
+
+Review the existing uncommitted plugin changes and their qualification evidence.
+Create a carefully scoped implementation checkpoint before beginning the migration.
+Preserve unrelated Physics Lab, landscape, presentation, website and licensing work.
+
+Read:
+- AGENTS.md and README.md
+- docs/AGENT_WORKFLOW.md
+- docs/ENGINEERING_FOUNDATION.md
+- docs/Release_Versioning.md
+- docs/BACKLOG.md
+- docs/plans/improvement-program/PROGRESS.md
+- docs/plans/native-placement/
+- docs/plans/eleven-phase-roadmap/
+- docs/plans/preset-gallery-improvements/
+
+Use the existing maintained plans and ledger. Update them rather than creating competing roadmaps.
+
+VERSIONING
+
+Use 0.86.0 for the first coherent, qualified native-foundation delivery.
+Internal experiments and incomplete prototypes are not user deliveries.
+
+Use patch versions for smaller delivered corrections and appropriate subsequent minor versions for substantial milestones. Record the reason before changing metadata.
+
+Keep script, native module, UI, package, installer and coupled catalog identities consistent. Preserve independently versioned products and historical package hashes. Reserve 1.0 for demonstrated publication readiness.
+
+PRIORITY 1: COMPLETE THE NATIVE FOUNDATION
+
+Implement N01–N09 in dependency order:
+
+N01 — Establish a comparable baseline.
+Measure Count changes, allocations, unique retained memory, peak overlap, Undo/Redo retention, preparation, uploads and passive UI behavior. Inventory every placement consumer.
+
+N02 — Implement compact native placement ownership.
+Create typed immutable storage, safe builders, shared ownership, stable identities, bounded inspection and explicit byte accounting.
+
+N03 — Connect existing generation and preparation.
+Keep Surface random, grids, Paint, masks, falloff, transforms and existing filters native through migrated routes. Preserve existing numerical boundaries and ordered results.
+
+N04 — Connect native acceptance.
+Use native views and numeric schedules for radii, spacing, protected edits, refill and cleanup. Preserve collision scopes, winner order and statistics.
+
+N05 — Connect publication, preview and ordinary history.
+Publish complete results atomically. Preserve Manual/Live behavior, retained previews, Count Undo/Redo, layer operations and ready-preset history.
+
+N06 — Adapt downstream consumers.
+Make inspection, rendering, PFlow, Bake and diagnostics consume native results or explicitly bounded readback. Eliminate hidden persistent script transform copies.
+
+N07 — Reduce CS Edit and Undo copying.
+Separate authored changes from derived placement data. Use suitable deltas or changed blocks so small edits do not copy entire populations into every history entry.
+
+N08 — Tune memory admission, caches and responsiveness.
+Use measured retained/peak costs. Release abandoned generations and history correctly. Preserve bounded work and failure recovery.
+
+N09 — Qualify and package.
+Reconcile every supported consumer, run the complete Max 2027 matrix and deliver the exact tested script/native pair.
+
+First prove one coherent route:
+Surface random → native placements → acceptance → retained preview → ordinary Count Undo/Redo.
+
+Then integrate existing optional features, Edit and downstream consumers. Do not maintain duplicate shipping placement engines indefinitely.
+
+C++ is preferred for bulk computation, placement storage and resource lifetimes. Appropriate UI, small authored commands and test drivers may remain scripted or managed.
+
+Do not change slope/altitude formulas or controls as part of this migration.
+Do not obtain apparent performance by clearing Undo, hiding failures, dropping features, disabling validation or simply raising limits.
+
+PRIORITY 2: COMPLETE THE REMAINING ORIGINAL ROADMAP
+
+After the native foundation is qualified:
+
+1. P08/I07: direct spline/path spacing, endpoints, repeating source sequences, gaps and reference placement.
+2. P09/I08: scale maps, rotation maps and map-driven model assignment, including remapping, missing-input behavior and final-radius acceptance.
+3. Extend P10 recipes and examples to preserve the new settings and relationships. Retain Paint, thumbnails, source substitution, Add Layers and ready loading.
+4. Complete measured I09/I10 cache improvements and P11/I11 viewport/resource work. Share evaluated terrain or intermediate results where profiling demonstrates value.
+5. Qualify the resulting supported product through heavy scenes, prolonged editing, physical UI interaction, rendering and recipient installation.
+
+Do not rebuild capabilities that already exist. Existing Spline Bands and density masks are distinct from the pending path and transform-map features.
+
+PRIORITY 3: IMPLEMENT THE ADVANCED EXTENSIONS
+
+Continue with explicitly supported, independently testable deliveries:
+
+- I12: true UV pattern placement and explicit projection/seam/overlap rules.
+- I13 and PG10a: portable authored Edit/radius data with exact correspondence and safe recipe application.
+- Remaining I15/PG09: broader asset sharing, XRefs and supported material variants.
+- I14 and PG10b: a typed, ordered, bounded effects stack and reusable effect documents.
+- I16: source animation sampling and geometry LOD with explicit time validity and bounded caches.
+- I17: supported renderer adapters and separately qualified edge trimming.
+- Physics integration: use the existing research and separate Physics Lab evidence to implement a bounded first Scatter workflow with proper body identity, collision proxies, time, checkpoints, cancellation, Undo and publication.
+- I18: bounded expressions after typed effects are proven, including types, units, execution limits and useful errors.
+
+For each area, define a useful supported first scope and acceptance matrix before implementation. Do not silently omit a named area, claim arbitrary compatibility or treat standalone experiments as integrated Scatter features.
+
+PERFORMANCE AND CORRECTNESS
+
+Preserve:
+- Layer order, ownership and independent collision scopes.
+- Stable identities and the documented limits of deterministic results.
+- Receiver-bound Paint and explicit compatible rebinding.
+- Manual pending edits and relevant Live updates.
+- Complete-result retention after failed successors.
+- Host-thread Max API access; workers consume owned copied data.
+- Correct Undo/Redo, save/reopen, copy and deletion lifetimes.
+
+Idle, panel browsing, selection and unrelated animation must not rebuild static placements or upload unchanged buffers.
+
+Measure before and after. Distinguish calculation, preparation, upload, drawing, memory and physical input latency. Native code alone does not prove improved responsiveness.
+
+TESTING AND DELIVERY LOOP
+
+Use Max 2027 only. Never modify original artist scenes, install into my normal profile or restart my Max session without a separate explicit request.
+
+For every delivery:
+1. Define behavior, dependencies, failure handling and acceptance.
+2. Implement in authoritative sources and regenerate required outputs.
+3. Run appropriate native, generated, Python and actual Max tests.
+4. Compare complete placement data and performance against the baseline.
+5. Test Undo/Redo, Manual/Live, save/reopen, copy, failure retention and lifecycle release.
+6. Correct failures before declaring completion.
+7. Update the maintained docs, ledger, artist guidance and knowledge evidence.
+8. Build matching Max 2027 MZP and EXE installers with verified payload hashes and guards.
+9. Commit and push the scoped, qualified checkpoint.
+10. Continue to the next dependency-ready milestone.
+
+Provide runnable installers for my testing; do not leave only loose scripts or binaries. Keep private diagnostic and fault-injection tools out of product packages.
+
+Keep the preset library useful as features arrive. Add accurate actual-result thumbnails and appropriate procedural examples, including paths, maps and later supported capabilities.
+
+Use our Forest/Chaos/Houdini research and official documentation where useful. Distinguish documented behavior, observed evidence and inference. Implement Cyrus’s own supported design.
+
+Maintain clear progress and exact evidence across conversations. If an external blocker prevents one item, record it honestly and continue independent work. Do not mark the whole goal complete while required items remain blocked or unimplemented.
+
+FINAL COMPLETION
+
+Finish with:
+- Implemented and qualified supported scope for every named area.
+- Accurate performance, memory, Undo and compatibility limits.
+- Updated documentation, roadmap and knowledge retrieval.
+- A useful preset library and distributable Max 2027 installers.
+- Verified Git checkpoints and remote state.
+- A clear final artist-testing checklist.
+
+No unsupported completion claims, hidden regressions or inference from test counts alone.
+
+---
+
+## Historical objective — 15 October 2026
+
+Preserved as history. The active objective above determines current authorization.
+
+> Historical user objective, enrolled 15 October 2026. P06 grids and P07 orientation were subsequently implemented. That maintenance task kept further roadmap implementation paused; the active objective above now supersedes that pause. Read the [current phase table and scope](PROGRESS.md#original-phase-status) and [engineering foundation](../../ENGINEERING_FOUNDATION.md) before acting. The original objective below preserves past authorization; it does not authorize new implementation, Physics Lab integration, native migration or Git/install actions.
 
 Implement and qualify the remaining Cyrus Scatter improvement program, starting with presets, then continuing through the documented roadmap. Deliver a usable preset library with thumbnails and a distributable Windows EXE installer.
 

@@ -44,12 +44,12 @@ Keep current navigation and artist docs aligned with proven changes; preserve hi
 
 Before choosing or changing a version, follow [the version policy](docs/Release_Versioning.md#choosing-the-next-version). Assess the full delivery's user-visible impact and contract changes, record the reason, and keep independently versioned products separate. Distinguish updated website sources from built or published content.
 
-**P06 grids and P07 orientation are already implemented**, alongside P01–P05
-and the supported P10 recipe/library deliveries. Further roadmap implementation
-is paused; the next pending feature is I07/P08 paths. Do not describe completed
-P06 as unimplemented or use a phase number as an authorization state. The
-[historical objective](docs/plans/improvement-program/OBJECTIVE.md) does not
-authorize resumption. Track current scope, separate P/I/PG identifiers and
+**P01–P07 are already implemented**, alongside the supported P10 recipe/library
+deliveries. The user's [active objective](docs/plans/improvement-program/OBJECTIVE.md)
+explicitly resumes native N01–N09, then the remaining original and advanced
+roadmap. Preserve completed work and distinguish P/I/PG/N identifiers from
+release labels. First coherent qualified native-foundation delivery: **0.86.0**;
+internal prototypes are not deliveries. Track current scope, evidence and
 remaining acceptance in the [ledger](docs/plans/improvement-program/PROGRESS.md). The user superseded the former
 small-step rule for this program: first preset delivery 0.82.6.1; subsequent
 substantial deliveries 0.83.0, 0.84.0, etc.; smaller follow-ups use patch steps.

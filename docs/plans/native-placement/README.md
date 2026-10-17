@@ -1,6 +1,12 @@
-# Native placement pipeline investigation and plan
+# Native placement pipeline — active implementation
 
-17 October 2026. **Planning only; implementation is not authorized by this document. P06 grids/P07 orientation remain implemented; further roadmap implementation is paused.** Baseline: delivered Scatter 0.85.4, schema 58, branch `codex/workflow-0.75`, HEAD `5aee4ef2242307b92e16c96e0106ee095d6a4215` plus existing dirty/untracked work. No product version changes, Max interaction, builds, installation, commits or pushes in this investigation. Slope/altitude behavior and settings remain outside the change scope.
+Current execution: [measured N01 baseline and internal N02 storage work](EXECUTION_0860.md).
+The active placement pipeline is still the qualified 0.85.4 route; no 0.86.0
+installer or native-pipeline performance improvement is claimed yet.
+
+17 October 2026. **Implementation resumed by the user’s [active objective](../improvement-program/OBJECTIVE.md). P01–P07 remain implemented.** The [reviewed implementation checkpoint](BASELINE_0854_20261017.md) is `7379ea3`, pushed and remote verified. First coherent native delivery: **0.86.0**, pending N01–N09 acceptance.
+
+The following investigation describes the pre-implementation findings; its historical no-test statements do not override the fresh baseline receipt or active ledger. Baseline: delivered Scatter 0.85.4, schema 58, branch `codex/workflow-0.75`, HEAD `5aee4ef2242307b92e16c96e0106ee095d6a4215` plus existing dirty/untracked work. No product version changes, Max interaction, builds, installation, commits or pushes in this investigation. Slope/altitude behavior and settings remain outside the change scope.
 
 ## Recommendation
 
@@ -29,7 +35,7 @@ Evidence and source anchors: [source map and Forest comparison](SOURCE_MAP.md). 
 
 ## Ordered work
 
-These are migration steps **N01–N09**, not resumed roadmap phases. Difficulty increases overall, but dependencies determine the order.
+These are migration steps **N01–N09**, independent of original P, improvement I and gallery PG identifiers. The active goal authorizes them first, then the remaining roadmap. Difficulty increases overall, but dependencies determine the order.
 
 | Step | Work | Difficulty | Completion evidence |
 | --- | --- | --- | --- |
@@ -60,4 +66,4 @@ The 0.85.4 [handoff](../memory-0854/README.md) records successful 50k/90k/200k C
 
 Forest's inspected Lite 9.4.3 paths demonstrate native item storage, but its custom-item Undo copies two collections and its low-memory behavior remains unverified. Our immutable generation and compact-history proposals are Cyrus design decisions, not recovered Forest algorithms.
 
-The next implementation action, if authorized, is N01, followed by the N02/N03 simple-path prototype and N04/N05 integration. Select the delivery version under [version policy](../../Release_Versioning.md#choosing-the-next-version) before changing product metadata. Planning leaves 0.85.4 current. Broader B26 stays open; further roadmap implementation is paused.
+The next implementation action, if authorized, is N01, followed by the N02/N03 simple-path prototype and N04/N05 integration. Select the delivery version under [version policy](../../Release_Versioning.md#choosing-the-next-version) before changing product metadata. 0.85.4 remains the qualified baseline while implementation proceeds. Broader B26 stays open; completion requires the active goal and N09 acceptance, not this plan alone.

@@ -1,6 +1,6 @@
 # Implementation sequence and TODO
 
-All tasks below are **pending**. Investigation/design are complete; no implementation, instrumentation, test fixture changes or product metadata changes are included in this planning delivery. Phase 6 remains paused. See [design](DESIGN.md) and [acceptance matrix](VALIDATION.md).
+The user activated implementation on 17 October 2026. The reviewed 0.85.4 implementation is checkpointed at `7379ea3`; [fresh regression evidence](BASELINE_0854_20261017.md) is recorded. N01–N09 remain open until their individual acceptance is proven. The first coherent qualified delivery is planned as 0.86.0; internal prototypes are not user deliveries. See [design](DESIGN.md) and [acceptance matrix](VALIDATION.md).
 
 Each step must record source/native/script identities, actual checks, memory/timing changes and unresolved failures before proceeding. A private partial build is not a user delivery. Use Max 2027 only; preserve artist sessions, scenes, existing changes and independent product versions. Do not install/restart the artist session.
 
@@ -8,8 +8,8 @@ Each step must record source/native/script identities, actual checks, memory/tim
 
 Dependencies: implementation authorization.
 
-- [ ] Freeze the 0.85.4 qualified pair and copy the 5k/50k/200k, cold-copy, grid, Paint and ready-preset witnesses into an owned run; keep old artifacts immutable.
-- [ ] Audit every production row consumer, including Brush, Edit, field/radius previews, PFlow, Bake, MCP and diagnostics. Identify hidden bulk serialization, hashing and array loops.
+- [x] Freeze the 0.85.4 qualified pair and repeat the 5k/50k/200k, cold-copy, grid, Paint and ready-preset witnesses in an owned run; keep old artifacts immutable. [Baseline receipt](BASELINE_0854_20261017.md); implementation checkpoint `7379ea3` pushed.
+- [x] Audit every production row consumer, including Brush, Edit, field/radius previews, PFlow, Bake, MCP and diagnostics. Identify hidden bulk serialization, hashing and array loops. [Consumer inventory](SOURCE_MAP.md).
 - [ ] Add bounded opt-in stage allocation/ownership counters: logical size/capacity, unique live bytes, peak live bytes, allocation counts, wrapper/row materialization, history pins and peak coexistence. Keep default hot-path overhead measured and small.
 - [ ] Establish full ordered semantic fingerprints (all eight current fields, radii, source/receiver mapping, accepted order and statistics), not only positions or viewport images.
 - [ ] Measure ordinary Count Undo, Manual copy, ready-preset Undo and CS Edit history separately. Determine when native restores are created, sealed and destroyed.
@@ -17,16 +17,24 @@ Dependencies: implementation authorization.
 
 Performance target: expose actual dominant costs without changing output or adding placement work to passive UI. Existing historical time ranges are context, not a fresh A/B baseline. Tests: V01–V03, V08–V10. Exit: reproducible baseline, named consumer inventory and an agreed measured byte model.
 
+Partial execution: [ten warm repetitions per Count/terrain and 120-second idle](N01_BASELINE.json)
+passed. Explicit reachability distinguishes shared values from actual requested
+array capacity. Full stage/scratch/materialization/history ownership and hold
+probes remain open. These measurements support the isolated N02 type prototype;
+they do not close N01 or replace integrated before/after peak accounting.
+
 ## N02 — Native data and lifetime foundation (medium)
 
 Dependencies: N01.
 
-- [ ] Implement typed immutable placement generation and builder in the existing native project; specify compact field layout and old rounding boundaries.
-- [ ] Implement numeric/tagged identity with bounded authored-key storage and exact external string round-trip.
-- [ ] Add native views/indices, bounded readback, source-use summaries and full fingerprint queries. No implicit bulk Array conversion.
-- [ ] Establish GC wrapper ownership, native reference retention, scene/owner retirement and cross-module Brush API with matching capability guards.
+- [x] Implement typed immutable placement generation and builder in the existing native project; specify compact field layout and old rounding boundaries. 96-byte records; [implementation/evidence](EXECUTION_0860.md).
+- [x] Implement numeric/tagged identity with bounded authored-key storage and exact external string round-trip. Pure and actual Max round-trip tests pass within the declared current key format.
+- [x] Add native views/indices, bounded readback and source-use summaries, without implicit bulk Array conversion.
+- [ ] Add full native semantic fingerprint queries, including metadata/radii at integration boundaries.
+- [x] Establish GC wrapper ownership, native retention and a guarded cross-module Brush POD read lease. Real Max GC/release and Brush reads pass; write-stage adaptation is N03 work.
+- [ ] Qualify controller scene/owner retirement and current publication-token routing; generic retained numeric snapshots alone do not establish it.
 - [ ] Account for capacities, shared storage and index buffers; reject invalid/overflowing requests before mutation.
-- [ ] Add allocation-failure seams in nonshipping qualification builds; production builds must exclude fault controls.
+- [x] Add allocation-failure seams in a separate test executable; no product fault switch or replacement heap is linked into Max modules. Pure store construction/selection/successor failures and retry pass.
 
 Likely files: `include/script_buffers.h`, `src/script_buffers.cpp`, new narrowly scoped placement headers/sources, `CMakeLists.txt`, `placement_transport.h` boundary adapter. Do not move registration/class IDs.
 

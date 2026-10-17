@@ -17,6 +17,7 @@
 #include "spline_bands.h"
 #include "license_boundary.h"
 #include "placement_transport.h"
+#include "placement_api.h"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -367,6 +368,26 @@ extern "C" __declspec(dllexport) ClassDesc* CyrusBrushDocumentDesc(){return LibC
 extern "C" __declspec(dllexport) ULONG CanAutoDefer(){return 0;}
 BOOL WINAPI DllMain(HINSTANCE module,DWORD reason,LPVOID){if(reason==DLL_PROCESS_ATTACH)instance=module;return TRUE;}
 static_assert(MAX_PRODUCT_YEAR_NUMBER==CYRUS_MAX_YEAR,"Brush SDK mismatch");
+
+// Explicit bounded numeric inspection also exercises the cross-module lifetime
+// contract. Normal Paint operations switch to this ABI during N03 integration.
+def_visible_primitive(cyrusBrushPlacementInfo,"cyrusBrushPlacementInfo");
+Value* cyrusBrushPlacementInfo_cf(Value** a,int n){check_arg_count(cyrusBrushPlacementInfo,1,n);return api([&]()->Value*{
+    const auto module=GetModuleHandleW(L"AminScatter.dlx");
+    const auto get=module?reinterpret_cast<CyrusPlacementGetApiFn>(GetProcAddress(module,"CyrusPlacementGetApi")):nullptr;
+    const auto* boundary=get?get(1):nullptr;
+    if(!boundary||boundary->version!=1||boundary->size!=sizeof(CyrusPlacementApi)||boundary->recordBytes!=sizeof(CyrusPlacementRecord))throw RuntimeError(_T("Paint requires the matching native placement ownership API"));
+    auto* lease=boundary->acquire(a[0]);if(!lease)throw RuntimeError(_T("Paint expects a native placement value on the Max thread"));
+    struct Release {const CyrusPlacementApi* api;CyrusPlacementLease* lease;~Release(){api->release(lease);}} release{boundary,lease};
+    if(!boundary->retain(lease))throw RuntimeError(_T("Cannot retain native Paint placement input"));
+    boundary->release(lease);CyrusPlacementInfo info{};info.size=sizeof(info);
+    if(!boundary->info(lease,&info))throw RuntimeError(_T("Native Paint placement metadata mismatch"));
+    one_typed_value_local(Array* result);vl.result=new Array(7);
+    for(auto v:{std::uint64_t(info.version),std::uint64_t(info.recordBytes),info.owner,info.generation,info.view,info.count})vl.result->append(Integer64::intern(static_cast<INT64>(v)));
+    if(info.count){CyrusPlacementRecord row{};if(!boundary->record(lease,info.count-1,&row))throw RuntimeError(_T("Native Paint placement read failed"));vl.result->append(new Point3Value(Point3(row.transform[9],row.transform[10],row.transform[11])));}
+    else vl.result->append(&undefined);
+    return_value(vl.result);
+});}
 
 // Only the trusted packaged-receiver path uses this explicit unit conversion.
 // Ordinary recipe rebinding retains its strict geometry/frame/unit checks.
