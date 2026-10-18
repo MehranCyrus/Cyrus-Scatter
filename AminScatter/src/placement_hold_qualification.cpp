@@ -2,6 +2,9 @@
 // package. Study actual Max holds without changing production Undo behavior.
 #include <max.h>
 #include <hold.h>
+#include "native_fault_qualification.h"
+#include "placement_api.h"
+extern "C" const CyrusPlacementApi* CyrusPlacementGetApi(std::uint32_t);
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>
 #include <maxscript/foundation/numbers.h>
@@ -95,3 +98,15 @@ Value* cyrusOwnedPlacementProbeEvents_cf(Value**,int n){check_arg_count(cyrusOwn
 }
 def_visible_primitive(cyrusOwnedPlacementProbeHoldSize,"cyrusOwnedPlacementProbeHoldSize");
 Value* cyrusOwnedPlacementProbeHoldSize_cf(Value**,int n){check_arg_count(cyrusOwnedPlacementProbeHoldSize,0,n);return Integer64::intern(static_cast<INT64>(theHold.Size()));}
+
+def_visible_primitive(cyrusOwnedNativeFault,"cyrusOwnedNativeFault");
+Value* cyrusOwnedNativeFault_cf(Value** a,int n){
+    check_arg_count(cyrusOwnedNativeFault,2,n);const int stage=a[0]->to_int(),occurrence=a[1]->to_int();
+    if(stage<0||stage>10||occurrence<0||occurrence>1000000)throw RuntimeError(_T("Invalid owned native fault"));
+    cyrus::owned::faultStage=stage;cyrus::owned::faultOccurrence=occurrence;cyrus::owned::faultHits=0;return &ok;
+}
+def_visible_primitive(cyrusOwnedNativeLeaseCounts,"cyrusOwnedNativeLeaseCounts");
+Value* cyrusOwnedNativeLeaseCounts_cf(Value**,int n){
+    check_arg_count(cyrusOwnedNativeLeaseCounts,0,n);const auto* bridge=CyrusPlacementGetApi(2);
+    one_typed_value_local(Array* result);vl.result=new Array(2);vl.result->append(Integer64::intern(bridge->liveLeases()));vl.result->append(Integer64::intern(bridge->liveFilters()));return_value(vl.result);
+}

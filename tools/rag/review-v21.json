@@ -1,0 +1,518 @@
+{
+  "corpus": {
+    "old_sha256": "9d62ad9e20cfc66cffe1198f3cd2230acc1bf77f59592d4109a8c79efdcec491",
+    "new_sha256": "49b5db91af1354bc954877ba72ce880e34f103713d5e6b76a8dd350aa1161fb4",
+    "reason": "Preserve all 36 prior sources, 57 prior complete section obligations and retirement decisions; the oversized architecture section is editorially divided into complete native-lifetime and evaluation sections without dropping any text; enroll the scoped 0.86.0 delivery report and review changed native source/contract evidence. The delivery report is one complete bounded handoff, preserving its measurements and limits together. The evolution contract adds the actual Forest-to-Cyrus validation lesson and a bounded Houdini research rule after a retrieval miss; evaluation is a regression check, not unseen holdout acceptance. No automatic authority promotion or scoring changes."
+  },
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "old_sha256": "f840a34440a865a93b091592ada974b887f0d29e580cd3e8913b7feec21613a0",
+      "new_sha256": "f28fe66c1d7b33a26ead1a3b5a7db8e01205f2471acf19bc6d0876650795c4a3",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "README.md",
+      "old_sha256": "4d78eb4cba91f7baeadba9eff09d388e857be2c2e49ee29c2e3849fdd887337e",
+      "new_sha256": "10f76a976a805c844f81dbda461df56bf14771ee83d9bcf855492d1fc292baf9",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "747090f8cbda6f518aaf3623f07fc9587dfea93cf5be908c3391cfe5fd4f7244",
+      "new_sha256": "b3d1b57dcf01074b00831efdcdc5540b380fb4e1617a70aa7f43c90080dc9071",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "old_sha256": "385e2ebf41e32100b15e0c33226080995333d120aca4f9d77c1e07eab98a4fa6",
+      "new_sha256": "27cbdf26cbe0c1e2b75d2df0fdede3dc9a1bfa1bed11511449ce98f98237b703",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "contract_sections": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "website/content/source-manifest.json",
+      "old_sha256": "12f0d67947536038cbdd97f75eda092a7cb820052ed9a332936c8008c35cd392",
+      "new_sha256": "512f77fa93617119bd80fc116ca6474f429166ff98f5009bdda88f4e7daf481e",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "old_sha256": "ba6a9c28aa431742a7dc4729ca350895390d4247bc6f655ea754ed945548d634",
+      "new_sha256": "261c3bbaca2707dd6a3c3d3d15989093d841cff56f178bc246635dc75f5a53a6",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "old_sha256": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+      "new_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "old_sha256": "033bf338542896b6b35081c02dbf946574fa2e35f6a6db3d8558118c0ca8a922",
+      "new_sha256": "efb60d6cf72d526ab818480b0b7d21714490082cd37c9db7802b0caf20d75f42",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": "3a0908705a9b79eb852307235789ff456ee487cdf175446e3263a59a0e74adbf",
+      "new_sha256": "680b02606b3592951ffa8adc4053e084145d5d2f7da1bf7492d6c1bd6ba8b763",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "contract_sections": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "applicability": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "cef3c7d5974b54785f51ae443bab1fe9666eb61ec48c822fdd10a61669c51aba",
+      "new_sha256": "89ea39f2d98eb7a5346a2cf2786ca02ab26ec63587aa7c9a6898f9721e65761f",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "contract_sections": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "old_sha256": "ba90cbab08ef20f9d6ccdeb3123dc371c685d394c484840a5df40484ccf24075",
+      "new_sha256": "ab7181ed112d23519d3564bde60fc24c91e1770119f871178d6943768401698c",
+      "field_reasons": {
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/native-placement/DELIVERY_0860.md",
+      "old_sha256": null,
+      "new_sha256": "ceeb8c56f035ecec513e0be65167de0ebdce6fe91ffce4c5bf716f39db3a4f4f",
+      "field_reasons": {
+        "path": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "selection_reason": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "role": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "review_status": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "applicability": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "canonical": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "sha256": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "knowledge_status": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "status_source": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "referenced_by_current_docs": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "current_reference_sources": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "component": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "generated": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "ranges": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "contract_sections": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "new_sha256": "3f22194ae3232c89ca19a41c137e16651eb44411967821d0ea10d550fc134030",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "new_sha256": "f2e0c3d743dedcd5ab510b3e295fee022c0f6dccffc97effcde043fd5c57eb47",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "8e95e267959426f8fd237ca300f29638e6dd52ef2699164d79da403878befa88",
+      "new_sha256": "40ad9fd98601086358683c99f10f378b99a630fc41efb94b792e909ea1865080",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "c6bed353c2d640410375646ddc0d1cf81646c363ca8363e064738e54e2c07b2d",
+      "new_sha256": "0c74b2c83f3feafa9ee295d61bfd316a1ccde8da9c544ea2d8a0826cbceae9f5",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "bf5deeb0dc7d13b7f3470515900add10e9d0f015fdcca20945f0aa835ebf753c",
+      "new_sha256": "50d4e9fecf85091dae2919ab52b67ad2b39f6635209af76339a0e98b077d0acb",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    }
+  ],
+  "enrollment": {
+    "added": [
+      "docs/plans/native-placement/DELIVERY_0860.md"
+    ],
+    "agent_reviewed": true,
+    "reason": "Keep exact delivery measurements and acceptance limits retrievable alongside maintained contracts; historical source retirement decisions and all prior owners remain unchanged."
+  },
+  "reference_conclusions": [
+    {
+      "old_evaluation_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "group": "base",
+      "id": "O05",
+      "old_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.85.4; it checks semantic membership, not physical UI behavior.",
+      "new_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.86.0; it checks semantic membership, not physical UI behavior.",
+      "reason": "Current catalog version and generated payload fingerprint changed in the native delivery; factual reference notes follow source. Questions, requirements, owners and answerability are unchanged.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "group": "base",
+      "id": "O08",
+      "old_value": "The generated first line declares payload fingerprint 9f932772610b5a84ad9d671bcb4369825ba4c82b66ee8d981479b81447e6dd1f; this differs from whole-file SHA-256.",
+      "new_value": "The generated first line declares payload fingerprint 827af832d5ecd6006e3131e18583c7fc6f668f14bf1e06200c3f1b79d28f05e8; this differs from whole-file SHA-256.",
+      "reason": "Current catalog version and generated payload fingerprint changed in the native delivery; factual reference notes follow source. Questions, requirements, owners and answerability are unchanged.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "group": "base",
+      "id": "O05",
+      "old_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.85.4; it checks semantic membership, not physical UI behavior.",
+      "new_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.86.0; it checks semantic membership, not physical UI behavior.",
+      "reason": "Current catalog version and generated payload fingerprint changed in the native delivery; factual reference notes follow source. Questions, requirements, owners and answerability are unchanged.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "group": "base",
+      "id": "O08",
+      "old_value": "The generated first line declares payload fingerprint 9f932772610b5a84ad9d671bcb4369825ba4c82b66ee8d981479b81447e6dd1f; this differs from whole-file SHA-256.",
+      "new_value": "The generated first line declares payload fingerprint 827af832d5ecd6006e3131e18583c7fc6f668f14bf1e06200c3f1b79d28f05e8; this differs from whole-file SHA-256.",
+      "reason": "Current catalog version and generated payload fingerprint changed in the native delivery; factual reference notes follow source. Questions, requirements, owners and answerability are unchanged.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "bf5deeb0dc7d13b7f3470515900add10e9d0f015fdcca20945f0aa835ebf753c",
+      "group": "base",
+      "id": "NF-SPEED",
+      "old_value": "Unanswerable: the migration is proposed and no production speedup has been established.",
+      "new_value": "Unanswerable as a universal production percentage: 0.86.0 has scoped exact-scene Max 2027 benchmarks, not a general production speed guarantee.",
+      "reason": "The native delivery now has explicitly scoped benchmarks. Preserve the negative question and answerability: these cannot establish one production-wide speedup.",
+      "agent_reviewed": true
+    }
+  ],
+  "retrieval_tradeoffs": [
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "new_evaluation_sha256": "3f22194ae3232c89ca19a41c137e16651eb44411967821d0ea10d550fc134030",
+      "profile": "plain",
+      "comparison_sha256": "40e7a107bf77ea5552daf1eb120efe08c93d7978dfe4ef5486f41a55209e3d1b",
+      "agent_reviewed": true,
+      "reason": "Explicitly reviewed rank/top-five tradeoffs for accurate native evidence and complete contracts, under unchanged hard guards. Documentation was refined after a retrieval miss; this is a regression check, not unseen holdout acceptance or a strict regression-free claim. Future automatic refresh retains strict comparisons.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 5: [True] -> [False]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "O03",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True, True] -> [True, True]; canonical rank 1 -> 2. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "new_evaluation_sha256": "3f22194ae3232c89ca19a41c137e16651eb44411967821d0ea10d550fc134030",
+      "profile": "terminology",
+      "comparison_sha256": "1542c70d842c109a3e85e09964729851b5ac8241672df750b0c6b4f5deac069d",
+      "agent_reviewed": true,
+      "reason": "Explicitly reviewed rank/top-five tradeoffs for accurate native evidence and complete contracts, under unchanged hard guards. Documentation was refined after a retrieval miss; this is a regression check, not unseen holdout acceptance or a strict regression-free claim. Future automatic refresh retains strict comparisons.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 5: [True] -> [False]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "O03",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True, True] -> [True, True]; canonical rank 1 -> 2. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "new_evaluation_sha256": "f2e0c3d743dedcd5ab510b3e295fee022c0f6dccffc97effcde043fd5c57eb47",
+      "profile": "plain",
+      "comparison_sha256": "f89ca27eb44aeba92a27df0cf873ca0885a231d291e52c92e246044bf7c01375",
+      "agent_reviewed": true,
+      "reason": "Explicitly reviewed rank/top-five tradeoffs for accurate native evidence and complete contracts, under unchanged hard guards. Documentation was refined after a retrieval miss; this is a regression check, not unseen holdout acceptance or a strict regression-free claim. Future automatic refresh retains strict comparisons.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 5: [True] -> [False]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "O03",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True, True] -> [True, True]; canonical rank 1 -> 2. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "new_evaluation_sha256": "f2e0c3d743dedcd5ab510b3e295fee022c0f6dccffc97effcde043fd5c57eb47",
+      "profile": "terminology",
+      "comparison_sha256": "d33ee9726877a3f8cbd6ad0c458d37be12ca8cf74251119b7f28357f1acfcbcb",
+      "agent_reviewed": true,
+      "reason": "Explicitly reviewed rank/top-five tradeoffs for accurate native evidence and complete contracts, under unchanged hard guards. Documentation was refined after a retrieval miss; this is a regression check, not unseen holdout acceptance or a strict regression-free claim. Future automatic refresh retains strict comparisons.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 5: [True] -> [False]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "W09",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 5 -> 6. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "O03",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True, True] -> [True, True]; canonical rank 1 -> 2. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "bf5deeb0dc7d13b7f3470515900add10e9d0f015fdcca20945f0aa835ebf753c",
+      "new_evaluation_sha256": "50d4e9fecf85091dae2919ab52b67ad2b39f6635209af76339a0e98b077d0acb",
+      "profile": "plain",
+      "comparison_sha256": "75bc61329e6297707852b133a87449b92a46c7ca4b0ae2f14efa077c05f848e8",
+      "agent_reviewed": true,
+      "reason": "Explicitly reviewed rank/top-five tradeoffs for accurate native evidence and complete contracts, under unchanged hard guards. Documentation was refined after a retrieval miss; this is a regression check, not unseen holdout acceptance or a strict regression-free claim. Future automatic refresh retains strict comparisons.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-NATIVE",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 7 -> 8. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-LAB",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 1 -> 2. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "bf5deeb0dc7d13b7f3470515900add10e9d0f015fdcca20945f0aa835ebf753c",
+      "new_evaluation_sha256": "50d4e9fecf85091dae2919ab52b67ad2b39f6635209af76339a0e98b077d0acb",
+      "profile": "terminology",
+      "comparison_sha256": "75bc61329e6297707852b133a87449b92a46c7ca4b0ae2f14efa077c05f848e8",
+      "agent_reviewed": true,
+      "reason": "Explicitly reviewed rank/top-five tradeoffs for accurate native evidence and complete contracts, under unchanged hard guards. Documentation was refined after a retrieval miss; this is a regression check, not unseen holdout acceptance or a strict regression-free claim. Future automatic refresh retains strict comparisons.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-NATIVE",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 7 -> 8. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-LAB",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed the native delivery and complete-section organization. Required-unit hits at 10: [True] -> [True]; canonical rank 1 -> 2. Hard top-ten units, canonical presence, misleading and unsupported-query guards remain intact. Preserve this rank/top-five tradeoff explicitly. Questions, requirements, scoring and runtime are unchanged."
+        }
+      ]
+    }
+  ]
+}

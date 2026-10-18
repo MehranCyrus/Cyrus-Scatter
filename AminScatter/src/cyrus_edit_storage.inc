@@ -8,7 +8,8 @@ IOResult CSEdit::Save(ISave* s) {
     for(auto& [key,l]:layers) {
         count=unsigned(l.rows.size());
         if(!write(&key,sizeof(key))||!str(l.signature)||!write(&l.invalid,sizeof(bool))||!write(&count,sizeof(count)))return IO_ERROR;
-        for(auto& r:l.rows) if(!write(&r.source,sizeof(r.source))||!write(&r.delta,sizeof(r.delta))||!write(&r.deleted,sizeof(bool))||!write(&r.selected,sizeof(bool))||!str(r.inputId)||!str(r.outputId))return IO_ERROR;
+        for(std::size_t i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);const unsigned source=l.input?l.source(r):r.savedSource;const bool selected=l.selection.get(i);
+            if(!write(&source,sizeof(source))||!write(&r.delta,sizeof(r.delta))||!write(&r.deleted,sizeof(bool))||!write(&selected,sizeof(bool))||!str(r.inputId.text())||!str(r.outputId.text()))return IO_ERROR;}
     }
     s->EndChunk();return IO_OK;
 }
@@ -26,10 +27,11 @@ IOResult CSEdit::Load(ILoad* s) {
                 int key=0;unsigned size=0;EditLayer l;
                 if(!read(&key,sizeof(key))||!str(l.signature)||!read(&l.invalid,sizeof(bool)))return IO_ERROR;
                 if(!read(&size,sizeof(size))||size>10000000)return IO_ERROR;
-                l.rows.resize(size);
-                for(auto& r:l.rows) {
-                    if(!read(&r.source,sizeof(r.source))||!read(&r.delta,sizeof(r.delta))||!read(&r.deleted,sizeof(bool))||!read(&r.selected,sizeof(bool)))return IO_ERROR;
-                    if(!str(r.inputId)||!str(r.outputId))return IO_ERROR;
+                for(unsigned j=0;j<size;++j) {
+                    EditRow r;bool selected=false;std::wstring inputId,outputId;
+                    if(!read(&r.savedSource,sizeof(r.savedSource))||!read(&r.delta,sizeof(r.delta))||!read(&r.deleted,sizeof(bool))||!read(&selected,sizeof(bool)))return IO_ERROR;
+                    if(!str(inputId)||!str(outputId))return IO_ERROR;
+                    r.inputId=EditKey(inputId);r.outputId=EditKey(outputId);l.append(r);l.selection.set(j,selected);
                 }
                 layers[key]=std::move(l);
             }

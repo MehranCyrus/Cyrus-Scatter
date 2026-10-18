@@ -1,31 +1,27 @@
 # Install and build Cyrus Scatter for Max 2027
 
-The **0.85.2 / schema 58** MZP and Windows EXE use the same Max 2027 payload.
-Check the [current delivery status and exact hashes](plans/preset-gallery-improvements/UI_CORRECTION_0852.md)
-before installing. The artist's profile has not been installed into or restarted.
-Owned test profiles separately qualify the actual EXE Install action, MZP wrapper
-and startup. Historical installation evidence is retained in
-[0.82.2](plans/eleven-phase-roadmap/INSTALLATION_0822.md). Follow the
-[library testing checklist](plans/preset-gallery-improvements/USER_TESTING_0851.md)
-and the [earlier phase checklist](plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md).
-Max 2026 retains the [preceding 0.81.6 installation](plans/terrace-0815/INSTALLATION_0816.md).
-New development/testing uses Max 2027 only. Analyzer 0.14 and existing team
-licensing are unchanged; see [owner/teammate instructions](../tools/licensing/README.md).
+The **0.86.0 / schema 58** MZP and Windows EXE contain the same Max 2027 payload.
+Check the [delivery report and exact hashes](plans/native-placement/DELIVERY_0860.md)
+for final readiness before installing. This task stages exact binaries/scripts in
+owned test profiles; it does not execute either installer or alter the artist's
+installation. Historical installer-engine execution tests remain in the
+[0.85.2 correction](plans/preset-gallery-improvements/UI_CORRECTION_0852.md), not
+new execution evidence for 0.86.0. Analyzer and MCP remain independently versioned.
 
 ## Install
 
-0.85.2 corrects Modify-panel scrolling/dragging and default library scale. It retains the preceding [collection gallery, eight examples, revisioned recipes, selective style and bounded portable assets](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md). It retains [regular planting grids, variation and direction/normal blending](plans/improvement-program/I06_0850.md), [lazy panels and bounded diagnostics](plans/panel-performance-0826/PROGRESS.md), complete supported recipes including Paint, mesh channel density and Paint tooltips.
+0.86.0 retains the earlier Modify-panel scrolling/dragging and default library scale corrections. It retains the preceding [collection gallery, eight examples, revisioned recipes, selective style and bounded portable assets](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md). It retains [regular planting grids, variation and direction/normal blending](plans/improvement-program/I06_0850.md), [lazy panels and bounded diagnostics](plans/panel-performance-0826/PROGRESS.md), complete supported recipes including Paint, mesh channel density and Paint tooltips.
 It retains the [0.82.3 idle/panel correction](plans/eleven-phase-roadmap/PERFORMANCE_0823.md),
-the five completed phases and the preceding
+the implemented P01–P07 features and the preceding
 [zero-limit Point Cloud/mode-switch fixes](plans/terrace-0815/VIEWPORT_0817.md).
 The scripts and native modules must be installed and loaded together.
 
 1. Save the scene and use a copy for development-build acceptance.
-2. Choose **Scripting > Run Script** and run the [0.85.2 Max 2027 MZP](../dist/CyrusScatter-0.85.2-20261016/CyrusScatter-0.85.2-Max2027.mzp). Alternatively, run the [companion Windows EXE](../dist/CyrusScatter-0.85.2-20261016/CyrusScatter-0.85.2-Max2027-Setup.exe), select an initialized Max 2027 profile, review the destination, and choose Install. Use one route. The EXE is unsigned and requires Windows .NET Framework 4.8. If you need Analyzer, use the [unchanged Analyzer 0.14 delivery](Container_and_Radius_0.78.3_2026-10-10/README.md).
+2. Choose **Scripting > Run Script** and run the [0.86.0 Max 2027 MZP](../dist/CyrusScatter-0.86.0-20261018/CyrusScatter-0.86.0-Max2027.mzp). Alternatively, run the [companion Windows EXE](../dist/CyrusScatter-0.86.0-20261018/CyrusScatter-0.86.0-Max2027-Setup.exe), select an initialized Max 2027 profile, review the destination, and choose Install. Use one route. The EXE is unsigned and requires Windows .NET Framework 4.8. If you need Analyzer, use the [unchanged Analyzer 0.14 delivery](Container_and_Radius_0.78.3_2026-10-10/README.md).
 3. Restart Max so both scripts and their native modules load together. Do not load a loose new script over older DLLs.
 4. Create **Geometry > Cyrus > Cyrus Scatter** and follow the [artist guide](ARTIST_GUIDE.md): Layer → Surfaces → Models → Amount → Update scatter.
 
-The [0.85.2 package record](plans/preset-gallery-improvements/UI_CORRECTION_0852.md)
+The [0.86.0 package record](plans/native-placement/DELIVERY_0860.md)
 pins the exact archive and qualified bytes. Manual installation, restart and
 normal-profile artist acceptance remain separate from the private-host tests. Earlier
 installation receipts remain historical evidence for their deliveries/backups.
@@ -34,7 +30,7 @@ Git clone. If absent, build matching source with the documented toolchain.
 
 0.78 keeps receiver-local sampling and replaces painting with a new canonical vector format.
 
-**Use schema-58 setups for 0.85.2.** The saved format remains 58; new capabilities
+**Use schema-58 setups for 0.86.0.** The saved format remains 58; new capabilities
 require the complete matching native/script pair. Create a fresh setup for an
 earlier schema. Earlier development scenes are rejected without migration.
 Preserve original files and their matching older build. Vector painting supports
@@ -50,7 +46,7 @@ Existing Analyzer guides without the new saved freshness record need one explici
 
 ## Installed files and recovery
 
-Scatter installs under the selected Max user's scripts directory in `CyrusScatter/Releases/<version-content-id>`. The release contains the matching script, native modules, managed gallery and immutable `Library-0.85.2`. Startup and plugin registration point to that complete release. Personal recipes in `Documents/CyrusScatter/Library` and activation are preserved. Analyzer uses its separate installer and directory. No compiler or SDK is required to use either built Scatter installer.
+Scatter installs under the selected Max user's scripts directory in `CyrusScatter/Releases/<version-content-id>`. The release contains the matching script, native modules, managed gallery and immutable `Library-0.86.0`. Startup and plugin registration point to that complete release. Personal recipes in `Documents/CyrusScatter/Library` and activation are preserved. Analyzer uses its separate installer and directory. No compiler or SDK is required to use either built Scatter installer.
 
 Both routes use the same hash-verified staging and journal recovery engine. A locked file or changed registration can reject installation while preserving the preceding bindings. Save your work and follow the reported recovery/restart guidance. Old release folders, imported texture storage and personal recipes are intentionally retained; unregistering is not a general disk cleanup.
 
@@ -81,4 +77,4 @@ python tools/build_max.py --max-year 2027 --sdk-root "<path-to-the-2027-maxsdk>"
 
 The package builder regenerates owned UI, checks version consistency, builds with the target SDK, runs native tests and produces versioned archives. It does not make an old host qualification apply to newly changed source. SDKs are local build dependencies, not redistributed product files.
 
-The older boss handoff and historical smoke launchers target frozen builds. Use [current test receipts and reproduction](plans/spline-bands/PROGRESS.md) for the tested Max 2026/2027 scope and remaining physical-input, DPI and renderer gates.
+The older boss handoff and historical smoke launchers target frozen builds. Use [current Max 2027 receipts and reproduction](plans/native-placement/DELIVERY_0860.md); older Max 2026 receipts remain historical. Physical-input, DPI and renderer claims retain their stated limits.

@@ -75,6 +75,17 @@ struct Instance {
     Vec3 transformPoint(Vec3 local) const;
 };
 struct BoundaryFalloff { bool remove=false,scale=false,density=false; int areaSide=0; double removeWidth=0,scaleWidth=100,densityWidth=100; std::vector<double> scaleCurve{0,.25,.5,.75,1},densityCurve{0,.25,.5,.75,1}; };
+// Prepared once per successor. Shares the numerical rule with both transport
+// adapters; no population-sized input/output scratch is needed by native rows.
+class BoundaryFalloffEvaluator {
+    struct Impl;
+    std::unique_ptr<Impl> impl_;
+public:
+    struct Result { bool keep=true; double scale=1; };
+    BoundaryFalloffEvaluator(const std::vector<std::vector<Vec3>>&,const BoundaryFalloff&,std::uint32_t);
+    ~BoundaryFalloffEvaluator();
+    Result evaluate(Vec3,std::uint64_t) const;
+};
 double stableUnit(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel,std::uint64_t receiver=0);
 std::vector<Instance> boundaryFalloff(const std::vector<Instance>&,const std::vector<std::vector<Vec3>>&,const BoundaryFalloff&,std::uint32_t);
 // Forward axes: 1=+Y, 2=-Y, 3=+X, 4=-X. Changes basis only.

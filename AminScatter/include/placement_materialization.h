@@ -19,5 +19,6 @@ public:
     void matrix() noexcept {if(active_)++counts_.matrices;}
     void string() noexcept {if(active_)++counts_.strings;}
     void populationArray() noexcept {if(active_)++counts_.populationArrays;}
+    void add(Materializations c) noexcept {if(active_){counts_.rows+=c.rows;counts_.matrices+=c.matrices;counts_.strings+=c.strings;counts_.populationArrays+=c.populationArrays;}}
 };
 }

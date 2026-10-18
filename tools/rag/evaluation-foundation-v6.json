@@ -1,0 +1,587 @@
+{
+  "schema": "cyrus.evaluation/1",
+  "dataset_kind": "challenge",
+  "review_status": "Version2 relocates all12 entire contract intervals after a semantics-preserving section conversion; original19 questions, qualifiers, answerability and evidence units unchanged. Human review pending.",
+  "scope": "Separate foundation set, not a replacement for legacy original/revised/challenge labels. Not an organic usage sample or answer-accuracy certification.",
+  "queries": [
+    {
+      "id": "FD-F01",
+      "language": "en",
+      "category": "foundation",
+      "query": "Which parts of the scatter population belong to a layer, and what belongs to a Paint Area?",
+      "information_need": "Separate population ownership from receiver-bound coverage and identify identity namespaces.",
+      "required_qualifiers": [
+        "Separate population ownership from receiver-bound coverage and identify identity namespaces."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Layers own population; areas own coverage. Source-row, native-slot and output IDs differ; arbitrary array permutation is not a supported reorder.",
+      "required_evidence": [
+        {
+          "id": "F01",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 66,
+              "end_line": 76
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F02",
+      "language": "en",
+      "category": "foundation",
+      "query": "If I add a receiver, should all existing randomly scattered points stay exactly where they were?",
+      "information_need": "Conditional candidate stability, quotas, Relax, acceptance and platform/version limits.",
+      "required_qualifiers": [
+        "Conditional candidate stability, quotas, Relax, acceptance and platform/version limits."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Surviving unrelaxed candidates have a scoped stability guarantee. Fixed Total/capped Density can redistribute quotas; acceptance and Relax can change output.",
+      "required_evidence": [
+        {
+          "id": "F02",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 78,
+              "end_line": 88
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F03",
+      "language": "en",
+      "category": "foundation",
+      "query": "Should adding an edited point to one independent layer reposition points in another layer?",
+      "information_need": "Result independence, explicit pair rules, protected edits and shared resource admission.",
+      "required_qualifiers": [
+        "Result independence, explicit pair rules, protected edits and shared resource admission."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Independent results preserve IDs/transforms. Explicit pair rules and protected-edit ordering matter; shared exhaustion can reject a whole successor.",
+      "required_evidence": [
+        {
+          "id": "F03",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 90,
+              "end_line": 100
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F04",
+      "language": "en",
+      "category": "foundation",
+      "query": "Can browsing or changing the display apply pending Manual scatter edits?",
+      "information_need": "Warm pending publication, explicit calculation, cold reconstruction and held-interaction exceptions.",
+      "required_qualifiers": [
+        "Warm pending publication, explicit calculation, cold reconstruction and held-interaction exceptions."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Warm pending recipes await explicit calculation; cached reads and display-only edits do not consume them. Cold reconstruction and held deferral are qualified exceptions.",
+      "required_evidence": [
+        {
+          "id": "F04",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 102,
+              "end_line": 112
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F05",
+      "language": "en",
+      "category": "foundation",
+      "query": "What happens to the previous complete scatter result if publishing a successor fails?",
+      "information_need": "Coherent rows, owners, radii, statistics and display, with bounded CPU/script failure qualification.",
+      "required_qualifiers": [
+        "Coherent rows, owners, radii, statistics and display, with bounded CPU/script failure qualification."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "The complete previous result is retained across the qualified preparation/admission/install failures. GPU/device and exceptional SDK failures are not universally qualified.",
+      "required_evidence": [
+        {
+          "id": "F05",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 114,
+              "end_line": 124
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F06",
+      "language": "en",
+      "category": "foundation",
+      "query": "Do the scatter candidate limits guarantee a fixed amount of memory and a maximum response time?",
+      "information_need": "Separate candidate/attempt/cleanup/resource budgets from RAM, VRAM and latency guarantees.",
+      "required_qualifiers": [
+        "Separate candidate/attempt/cleanup/resource budgets from RAM, VRAM and latency guarantees."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Finite work limits and reported underfill are required; candidate counts are not peak memory or latency guarantees.",
+      "required_evidence": [
+        {
+          "id": "F06",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 126,
+              "end_line": 136
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F07",
+      "language": "en",
+      "category": "foundation",
+      "query": "May scatter worker threads access the live Max scene while calculating placements?",
+      "information_need": "Host-thread publication, owned numeric inputs, synchronous joins and fallback limits.",
+      "required_qualifiers": [
+        "Host-thread publication, owned numeric inputs, synchronous joins and fallback limits."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Workers consume owned numeric data; host API access and publication stay on the host thread. The executor joins and is not a general asynchronous cancellation facility.",
+      "required_evidence": [
+        {
+          "id": "F07",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 138,
+              "end_line": 148
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F08",
+      "language": "en",
+      "category": "foundation",
+      "query": "How do we prove that unchanged viewport browsing reuses existing work instead of rebuilding it?",
+      "information_need": "Warm reuse, solve/preparation/upload counters, cold realization and no presented-FPS claim.",
+      "required_qualifiers": [
+        "Warm reuse, solve/preparation/upload counters, cold realization and no presented-FPS claim."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Measure avoided solve/preparation/upload work separately from visual equality. Cold or changed resources need work, and presented FPS was not measured.",
+      "required_evidence": [
+        {
+          "id": "F08",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 150,
+              "end_line": 160
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F09",
+      "language": "en",
+      "category": "foundation",
+      "query": "Can vector painting safely preserve the same face and barycentric bindings after arbitrary remeshing?",
+      "information_need": "Topology correspondence, curved scatter receivers, single-valued local-XY vector projection and scale limits.",
+      "required_qualifiers": [
+        "Topology correspondence, curved scatter receivers, single-valued local-XY vector projection and scale limits."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Arbitrary remeshing does not preserve locator identity. Vector painting requires supported unambiguous projection; unsupported cases must preserve authored borders and reject.",
+      "required_evidence": [
+        {
+          "id": "F09",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 162,
+              "end_line": 172
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F10",
+      "language": "en",
+      "category": "foundation",
+      "query": "Which scatter settings should change with scene units, and which should remain dimensionless?",
+      "information_need": "Physical distances/density, weights/scales, supported conversions and guarded native bindings.",
+      "required_qualifiers": [
+        "Physical distances/density, weights/scales, supported conversions and guarded native bindings."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Typed distances and density preserve physical meaning within the tested scope. Weights/scales remain dimensionless; native Paint/Edit conversion and extreme scales have separate limits.",
+      "required_evidence": [
+        {
+          "id": "F10",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 174,
+              "end_line": 184
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F11",
+      "language": "en",
+      "category": "foundation",
+      "query": "Can loading an incompatible saved scatter schema silently guess the intended owners and old stroke data?",
+      "information_need": "Authored identities versus caches, immediate schema-55 migration, explicit recovery and original-file preservation.",
+      "required_qualifiers": [
+        "Authored identities versus caches, immediate schema-55 migration, explicit recovery and original-file preservation."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Only immediate schema 55 migration is supported. Retired model/stroke formats remain rejected; guessed correspondence and wrong-owner restoration are invalid.",
+      "required_evidence": [
+        {
+          "id": "F11",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 186,
+              "end_line": 196
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-F12",
+      "language": "en",
+      "category": "foundation",
+      "query": "Does pressing Scatter Update also run Analyze when an enabled Analyzer dependency is stale?",
+      "information_need": "Separate Analyzer ownership, cached reads, dependency freshness and retained Scatter result.",
+      "required_qualifiers": [
+        "Separate Analyzer ownership, cached reads, dependency freshness and retained Scatter result."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Scatter must not silently Analyze. A successor rejects stale enabled dependencies and retains the old Scatter result; cached reads and fresh Analyzer host qualification remain distinct.",
+      "required_evidence": [
+        {
+          "id": "F12",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+              "start_line": 198,
+              "end_line": 208
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-CPU",
+      "language": "en",
+      "category": "boundary",
+      "query": "Why can the display reject a successor even if it would fit after deleting the old result?",
+      "information_need": "Peak coexistence admission protects the previous usable generation; GPU/device-loss coverage is not universal.",
+      "required_qualifiers": [
+        "Peak coexistence admission protects the previous usable generation; GPU/device-loss coverage is not universal."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Peak coexistence admission protects the previous usable generation; GPU/device-loss coverage is not universal.",
+      "required_evidence": [
+        {
+          "id": "CPU",
+          "alternatives": [
+            {
+              "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+              "sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+              "start_line": 13,
+              "end_line": 13
+            }
+          ],
+          "canonical_paths": [
+            "docs/Foundation_0.79.6_2026-10-12/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-PRECISION",
+      "language": "en",
+      "category": "boundary",
+      "query": "Why can an old 400 mm Paint Area distance reopen as approximately 399.9992 mm?",
+      "information_need": "The original schema-55 string already rounded to six significant digits; typed successors cannot recover discarded precision.",
+      "required_qualifiers": [
+        "The original schema-55 string already rounded to six significant digits; typed successors cannot recover discarded precision."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "The original schema-55 string already rounded to six significant digits; typed successors cannot recover discarded precision.",
+      "required_evidence": [
+        {
+          "id": "PRECISION",
+          "alternatives": [
+            {
+              "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+              "sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+              "start_line": 21,
+              "end_line": 21
+            }
+          ],
+          "canonical_paths": [
+            "docs/Foundation_0.79.6_2026-10-12/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-MIGRATION",
+      "language": "en",
+      "category": "boundary",
+      "query": "Does schema 56 migrate every older paint and model format?",
+      "information_need": "Only schema 55 migrates; earlier model/stroke formats remain rejected, and malformed Area/radius data is not guessed.",
+      "required_qualifiers": [
+        "Only schema 55 migrates; earlier model/stroke formats remain rejected, and malformed Area/radius data is not guessed."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Only schema 55 migrates; earlier model/stroke formats remain rejected, and malformed Area/radius data is not guessed.",
+      "required_evidence": [
+        {
+          "id": "MIGRATION",
+          "alternatives": [
+            {
+              "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+              "sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+              "start_line": 19,
+              "end_line": 19
+            }
+          ],
+          "canonical_paths": [
+            "docs/Foundation_0.79.6_2026-10-12/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-GUARD",
+      "language": "en",
+      "category": "boundary",
+      "query": "What should happen to existing Paint and CS Edit data when a unit conversion invalidates its geometry binding?",
+      "information_need": "Unsupported conversion is rejected; reopening with saved units recovers the tested authored result. Arbitrary topology and extreme scales remain unqualified.",
+      "required_qualifiers": [
+        "Unsupported conversion is rejected; reopening with saved units recovers the tested authored result. Arbitrary topology and extreme scales remain unqualified."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Unsupported conversion is rejected; reopening with saved units recovers the tested authored result. Arbitrary topology and extreme scales remain unqualified.",
+      "required_evidence": [
+        {
+          "id": "GUARD",
+          "alternatives": [
+            {
+              "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+              "sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+              "start_line": 23,
+              "end_line": 23
+            }
+          ],
+          "canonical_paths": [
+            "docs/Foundation_0.79.6_2026-10-12/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-RELEASE",
+      "language": "en",
+      "category": "boundary",
+      "query": "Do the 0.79.6 foundation tests mean this is already an artist-accepted packaged release?",
+      "information_need": "The report qualifies specific boundaries and explicitly does not certify a packaged release or physical artist acceptance.",
+      "required_qualifiers": [
+        "The report qualifies specific boundaries and explicitly does not certify a packaged release or physical artist acceptance."
+      ],
+      "review_status": "Agent-authored from inspected current evidence; human semantic review pending",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "The report qualifies specific boundaries and explicitly does not certify a packaged release or physical artist acceptance.",
+      "required_evidence": [
+        {
+          "id": "RELEASE",
+          "alternatives": [
+            {
+              "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+              "sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+              "start_line": 3,
+              "end_line": 3
+            }
+          ],
+          "canonical_paths": [
+            "docs/Foundation_0.79.6_2026-10-12/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-TOKENS",
+      "language": "en",
+      "category": "boundary",
+      "query": "What measured percentage of Codex tokens does this foundation knowledge base save across artist production tasks?",
+      "information_need": "A matched production task/token benchmark is not enrolled; do not infer savings from retrieval coverage.",
+      "required_qualifiers": [
+        "A matched production task/token benchmark is not enrolled; do not infer savings from retrieval coverage."
+      ],
+      "review_status": "Agent-authored negative case; human semantic review pending",
+      "split": "holdout",
+      "answerable": false,
+      "reference_conclusion": "A matched production task/token benchmark is not enrolled; do not infer savings from retrieval coverage.",
+      "required_evidence": [],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "FD-GPU",
+      "language": "en",
+      "category": "boundary",
+      "query": "Which NVIDIA driver version was certified by an exhaustive GPU device-loss recovery matrix for Scatter 0.79.6?",
+      "information_need": "No such certification matrix is enrolled; partial CPU/script failure tests cannot establish it.",
+      "required_qualifiers": [
+        "No such certification matrix is enrolled; partial CPU/script failure tests cannot establish it."
+      ],
+      "review_status": "Agent-authored negative case; human semantic review pending",
+      "split": "holdout",
+      "answerable": false,
+      "reference_conclusion": "No such certification matrix is enrolled; partial CPU/script failure tests cannot establish it.",
+      "required_evidence": [],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    }
+  ],
+  "anchors": []
+}

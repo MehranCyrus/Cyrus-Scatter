@@ -5,63 +5,23 @@ Baseline: `b23ed93f97af347b98b92b355660bdc3eeb0ef19`, branch `codex/workflow-0.7
 
 ## Current delivery
 
-Current active goal, 17 October 2026: implement N01–N09 native placement
-ownership, then complete the remaining original and advanced roadmap under the
-[full activated objective](OBJECTIVE.md). The user explicitly superseded the
-earlier pause. Preserve P01–P07 and existing P10. Product baseline remains
-Scatter 0.85.4 / schema 58 / CyrusUnified1; internal native prototypes are not
-user deliveries. **0.86.0** is selected for the first coherent qualified native
-foundation because it changes placement ownership, transport, history and
-consumer resource lifetimes while preserving authored behavior.
+18 October 2026: finish the **0.86.0 native migration**, test in private Max 2027
+profiles and supply MZP/EXE installers without installing. The native-only
+controller, compact CS Edit history, native system-commit admission and bounded
+output consumers are implemented. No later roadmap feature is being added.
 
-The reviewed existing implementation is committed and pushed as `7379ea3`
-(remote verified). Its [fresh baseline receipt](../native-placement/BASELINE_0854_20261017.md)
-records 159 matching source hashes, 134 verified package payloads, generated
-checks, 167 Python tests, 40 native suites and private Max 2027 core plus all
-eight ready-preset round trips. No artist installation occurred. N01 complete
-allocation/peak/history baselines and N02 native storage are the next work;
-these regression checks alone do not complete N01.
+The [delivery report](../native-placement/DELIVERY_0860.md) is the current
+acceptance authority. Frozen pair 11 passed the final matrix and mixed-history
+soak (3602.9 seconds / 60 complete cycles). Exact-pair MZP/EXE installers are ready for user testing;
+neither has been installed. N01–N09 is complete within the report's stated scope.
+The [execution history](../native-placement/EXECUTION_0860.md) preserves earlier
+tests and the cache/Undo defects they exposed; they are not final-pair receipts.
 
-Active implementation now has [recorded N01 measurements and an internal N02
-storage prototype](../native-placement/EXECUTION_0860.md): ten warm repetitions
-per Count/terrain, 120 seconds idle, typed immutable 96-byte native records,
-flat views, bounded pages, allocation-failure tests, real Max GC retention/release
-and guarded Brush POD reads. Native SDK suites, Python/generated checks and the
-existing core/eight-preset regressions pass within the recorded pairs/scopes.
-Internal N03/N04 producer/preparation/radius/acceptance adapters now have full
-ordered plane/mountain parity through 200k candidates, numeric schedules,
-protected scopes, failure retention and real Max hold/lifetime probes. The
-current pair also preserves the existing controller and eight preset round trips;
-see [exact evidence and remaining work](../native-placement/EXECUTION_0860.md).
-The N05 native Point/Mesh/proxy input adapters now pass full native draw-content
-comparison and actual retained upload/lifetime checks through 200k placements;
-see [the preview receipt](../native-placement/N05_PREVIEW_QUALIFICATION.json).
-The default controller preserves the existing route. An internal Surface-random
-route now connects native source/receiver correspondence, preparation sealing,
-acceptance, retained preview, immutable publication and bounded inspection.
-Plane/mountain Max 2027 checks pass through 200k and zero Count, ordinary history,
-Manual/Live, failure retention, copy/deletion Undo, save/reopen, idle and retirement.
-Matched warm CPU Update measurements improve at 50k/200k but regress at 5k;
-[the current handoff](../native-placement/EXECUTION_0860.md) records exact scope
-and the N08 profiling requirement. The [frozen publication/controller receipt](../native-placement/N05_PUBLICATION_QUALIFICATION.json)
-pins the 180 source inputs and actual loaded pair; 43 native suites, 168 Python
-tests, generated checks and all eight existing ready-preset regressions pass.
-The [18 October optional-preparation checkpoint](../native-placement/EXECUTION_0860.md#optional-preparation-checkpoint--18-october-2026)
-adds native Whole Scale/mesh density controller routing and direct Analyzer Area
-adapter parity. Complete field/radius/statistic comparisons, same-frame mapping
-and Data Channel Live updates, Count Undo/Redo, failure recovery, save/reopen and
-idle/panel counters are recorded with their exact pair. The actual Analyzer Area
-owner workflow remains guarded; physical VertexPaint strokes are not inferred.
-Remaining optional stages, radius rings, active Edit,
-preset native history, rendering/PFlow/Bake and remaining N01–N09 acceptance are
-open. No 0.86.0 installer or product-wide speedup is claimed.
-
-The [0.85.4 Count memory correction](../memory-0854/README.md) is the current
-compiled and scoped-qualified pair. It retains [0.85.3 ready asset-backed presets](../preset-gallery-improvements/LOAD_0853.md),
-[0.85.2 Modify/library UI corrections](../preset-gallery-improvements/UI_CORRECTION_0852.md)
-and the [0.85.1 gallery delivery](../preset-gallery-improvements/DELIVERY_0851.md).
-Eight ready presets, Paint, thumbnails and both MZP/EXE delivery formats are present.
-Broader B26, physical artist input and production-renderer acceptance remain open.
+The [active objective](OBJECTIVE.md) authorizes the remaining roadmap after this
+coherent delivery. P01–P07 and supported P10 work are already implemented. N01–N09
+identify the native migration, not nine additional artist features. 0.85.4 is
+the preceding delivered pair; 0.86.0 changes ownership/transport/history while
+preserving schema 58, registration identities and slope/altitude behavior.
 
 ## Original phase status
 

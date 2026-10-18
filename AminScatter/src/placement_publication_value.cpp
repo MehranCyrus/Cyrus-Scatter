@@ -5,6 +5,7 @@
 #include <maxscript/foundation/strings.h>
 #include <maxscript/foundation/3dmath.h>
 #include "placement_publication.h"
+#include "native_fault_qualification.h"
 #include "placement_value.h"
 #include "placement_transport.h"
 #include "placement_host_text.h"
@@ -64,6 +65,7 @@ Value* cyrusPlacementPublicationVersion_cf(Value**,int count){check_arg_count(cy
 // #(nativeRows,nativeRadii,expectedContext,receiverBindings,binding,stats,rounds,surfaceStats,preparationKey).
 def_visible_primitive(cyrusPlacementPublicationCreate,"cyrusPlacementPublicationCreate");
 Value* cyrusPlacementPublicationCreate_cf(Value** args,int count){check_arg_count(cyrusPlacementPublicationCreate,5,count);return api([&]()->Value*{
+    cyrus::owned::fault(7);
     p::PublicationHeader header;header.owner=number(args[0]);auto previous=args[1]==&undefined?std::shared_ptr<const p::Publication>{}:publication(args[1]);
     auto* info=array(args[2],8);header.id=key(info->data[0]);header.epoch=number(info->data[1]);
     if(!cyrus::rows::integer(info->data[2]))throw RuntimeError(_T("Publication time must be integer ticks"));header.time=info->data[2]->to_int64();header.meters=info->data[3]->to_double();

@@ -130,6 +130,14 @@ void workerPins() {
     check(metrics().liveBytes==before.liveBytes&&metrics().liveStores==before.liveStores,"Last worker releases numeric storage without host calls");
 }
 void normalizationAndObservation() {
+    {const auto owner=newOwner();auto sources=SourceCohort::create(owner,"sparse-population",{{"model",42,RenderSource}});
+     Builder large(owner,Stage::Candidates,1,200000,sources);for(std::size_t i=0;i<200000;++i)large.appendGenerated(record(i));
+     const auto base=large.freeze().edited().prepared("sparse-key","sparse-binding");auto sparse=base.select({199999,12,100});auto reduced=sparse.compactIfSparse();
+     check(reduced.baseBytes()==3*sizeof(Record)&&reduced.selectionBytes()==0&&reduced.at(0).identity==199999&&reduced.at(1).identity==12,"Sparse accepted compaction retains order without rejected payload");
+     check(reduced.preparation()==base.preparation()&&reduced.token().owner==base.token().owner,"Sparse compaction preserves immutable binding/owner");
+     check(base.compactIfSparse().token()==base.token(),"Dense publication shares its base");}
+    {const auto baseline=metrics().liveBytes;Builder empty(newOwner(),Stage::Candidates,1,200000);auto frozen=empty.freeze();
+     check(frozen.size()==0&&frozen.baseBytes()==0&&metrics().liveBytes==baseline,"All-rejected successor releases its population-sized reserve");}
     Builder builder(newOwner(),Stage::Candidates,1,3);for(std::uint32_t i=0;i<3;++i)builder.appendGenerated(record(i));auto raw=builder.freeze();
     const auto before=metrics();auto edited=raw.edited();
     check(edited.stage()==Stage::Edited&&raw.stage()==Stage::Candidates,"Interpretation view does not mutate raw stage");

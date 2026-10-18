@@ -11,7 +11,7 @@ records per-phase implementation, validation and Git checkpoints. Existing defec
 IDs and release gates below retain their independent status; creating the roadmap
 does not close them.
 
-The [remaining-improvements ledger](plans/improvement-program/PROGRESS.md) retains the previously authorized P06–P11 and I03–I18 program. I03–I06 have scoped historical deliveries through [0.85.0 grids](plans/improvement-program/I06_0850.md). The current [0.85.1 library work](plans/preset-gallery-improvements/PROGRESS_0851.md) adds the collection gallery, revision/capture/style tools, bounded static-asset packages, two examples (eight total), explicit scene-asset reuse and MZP/EXE distribution. The [0.85.1 handoff](plans/preset-gallery-improvements/DELIVERY_0851.md) records its exact qualified subset and remaining acceptance. Further roadmap implementation is paused; P06 grids and P07 orientation are already delivered. Paths, broader B26, XRefs/material variants and prerequisite-dependent Edit/effect adapters remain open.
+The [remaining-improvements ledger](plans/improvement-program/PROGRESS.md) retains the previously authorized P06–P11 and I03–I18 program. I03–I06 have scoped historical deliveries through [0.85.0 grids](plans/improvement-program/I06_0850.md). The current [0.85.1 library work](plans/preset-gallery-improvements/PROGRESS_0851.md) adds the collection gallery, revision/capture/style tools, bounded static-asset packages, two examples (eight total), explicit scene-asset reuse and MZP/EXE distribution. The [0.85.1 handoff](plans/preset-gallery-improvements/DELIVERY_0851.md) records its exact qualified subset and remaining acceptance. P06 grids and P07 orientation are already delivered. The active objective resumes the native foundation first; this 0.86.0 task adds no later roadmap feature. Paths, broader B26, XRefs/material variants and prerequisite-dependent Edit/effect adapters remain open.
 
 For B26, 0.85.1 adds conservative Undo-preserving admission, cached schema conversion, discarded-undone New Setup cache release and departed-scene cache release. These address measured library workflows; they do not establish general heavy-copy/Add Layers lifetime safety or close B26. See [the package contract](plans/preset-gallery-improvements/PACKAGE_CONTRACT.md) and exact-pair evidence.
 
@@ -23,18 +23,14 @@ The [0.85.3 ready-preset correction](plans/preset-gallery-improvements/LOAD_0853
 
 Use the [maintained native/performance and physics/animation contracts](ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) for new designs. Foundation upkeep is continuous, but each implementation needs a bounded user-authorized task and measured acceptance. The standalone Physics Lab is separate evidence, not a completed Scatter integration. Current docs/knowledge maintenance is recorded in the [17 October audit](../tools/rag/FOUNDATION_REFRESH_2026-10-17.md).
 
-The [0.85.4 memory correction](plans/memory-0854/README.md) targets Count admission and transient transports. Qualification separates cold Count edits, the 60k→90k copy boundary, exact Undo/Redo, failure retention and passive counters. It does not establish arbitrary allocator/renderer or long-session acceptance. Further roadmap implementation is paused and slope/altitude are unchanged.
-
-The user's [activated objective](plans/improvement-program/OBJECTIVE.md) resumes
-the [native placement N01–N09 program](plans/native-placement/README.md). Its
-[internal execution handoff](plans/native-placement/EXECUTION_0860.md) now records
-native storage/adapters and a connected Surface-random controller route with
-scoped Max 2027 history/lifecycle evidence. The default route remains the existing
-engine while optional preparation, active Edit, rendering/PFlow/Bake and native
-preset history are integrated. Matched first-route CPU Update measurements are
-better at 50k/200k and worse at 5k; N08 must profile that overhead and complete
-retained/peak accounting. B26 remains partially addressed. This is active
-implementation, not a qualified 0.86.0 delivery or broad production acceptance.
+The [0.85.4 memory correction](plans/memory-0854/README.md) is historical.
+The [0.86.0 native delivery report](plans/native-placement/DELIVERY_0860.md) now
+owns current source/acceptance status. The controller's bulk placement and Edit
+paths are native; the final pair passed the documented Max 2027 matrix and
+one-hour equal-history soak. B26's original Count/Undo pressure is corrected
+within that scope; arbitrary scene, third-party, allocator and long-session
+qualification remains distinct.
+Slope/altitude are unchanged; no later roadmap feature is included here.
 
 | ID | Status and problem | Acceptance needed |
 | --- | --- | --- |
@@ -63,7 +59,7 @@ implementation, not a qualified 0.86.0 delivery or broad production acceptance.
 | B23 | Corrected in [0.79.6](Foundation_0.79.6_2026-10-12/README.md): native allocation/item preparation could release the prior generation, and the script committed Edit before finishing the publication tail | Production-body failures plus actual Max 2026/2027 script fault/recovery checks pass. GPU/device loss, notification exceptions and physical long-session acceptance remain distinct limits |
 | B24 | Reduced in the [0.81.5 candidate](plans/terrace-0815/PROGRESS.md): labels use a presentation-only native update, unchanged memberships retain weak references and creation removes a redundant full refresh. Initial layer/global Create medians fell from 353/410 ms to 160/176 ms in bounded fixtures | Full reconciliation still validates movement ownership and can cost more with large hierarchies. Keep membership/Manual/Live and native movement/Undo witnesses; cold physical Undo B05 and broad heavy-asset/DPI acceptance remain separate |
 | B25 | Fixed within the [0.82.3 Max 2027 correction](plans/eleven-phase-roadmap/PERFORMANCE_0823.md): cached refresh left sibling layers dirty, and an unsubmitted native helper repeatedly scheduled scene synchronization. Heavy Point Cloud/Mesh idle, panel and navigation witnesses now retain calculation/preparation/upload counters; unrelated dispatch and redundant UI visibility work are reduced | Retain relevant Live/Manual/dependency and failure-recovery regressions. Full controller selection still takes about two seconds in this terrace; B21, cold realization B11, sustained physical FPS and arbitrary-scene acceptance remain separate |
-| B26 | Partially addressed in [0.85.4](plans/memory-0854/README.md): compact native schedules/radii, fewer row copies and explicit session workspace reservation replace rejection based only on current free script heap. Cold 5k→50k and the 60k→90k copy boundary are tested with Undo/Redo; historical failures remain frozen | Retain broader heavy Add Layers/history lifetime, sustained artist interaction, low-commit/allocator and production-renderer qualification. Do not infer unlimited memory or physical FPS from bounded scripted passes. Saved initial heap preferences remain unchanged |
+| B26 | Scoped correction in [0.86.0](plans/native-placement/DELIVERY_0860.md): bulk native placement storage, compact authored Edit history, Windows commit admission and discarded-created-owner release. Count through 1M, sparse/all Edit history, all eight ready presets, exact saved-scene benchmarks, physical UI/Corona lifecycle and a one-hour mixed-history soak pass | Continue arbitrary low-commit/allocator failure, long artist sessions, additional renderers and device/physical-monitor qualification. Preserve limits and previous-result/Undo guarantees. No unlimited-count or physical-FPS claim; saved initial heap preferences remain unchanged |
 
 ## Adaptive viewport follow-up
 

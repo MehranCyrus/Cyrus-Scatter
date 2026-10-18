@@ -8,7 +8,7 @@ def send(host,script,command):
         previous=pointer.read_text(encoding='utf-8-sig');state=response.read_text(encoding='utf-8-sig')
         assert previous in state and state.startswith(('SUCCESS','ERROR')),'Observe prior request; never duplicate a pending command'
     (host/'generation-command.txt').write_text(command)
-    request=host/f'generation-{uuid.uuid4().hex}.ms';request.write_text(script.read_text(),encoding='utf-8-sig')
+    request=host/f'generation-{uuid.uuid4().hex}.ms';request.write_text(script.read_text(encoding='utf-8-sig'),encoding='utf-8-sig')
     pending=host/f'pointer-{uuid.uuid4().hex}.tmp';pending.write_text(request.as_posix(),encoding='utf-8-sig');os.replace(pending,pointer)
     end=time.monotonic()+180
     while time.monotonic()<end:

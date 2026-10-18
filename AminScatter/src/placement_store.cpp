@@ -1,4 +1,5 @@
 #include "placement_store.h"
+#include "native_fault_qualification.h"
 #include <algorithm>
 #include <atomic>
 #include <cmath>
@@ -142,8 +143,17 @@ View View::prepared(const std::string& key,const std::string& binding) const {
     View result=*this;result.preparation_=std::make_shared<const PreparationReceipt>(key,binding);result.view_=next();return result;
 }
 View View::compact() const {return Builder(*this).freeze();}
+View View::compactIfSparse() const {
+    // Copy at most one eighth of a >1 MiB rejected base at the publication
+    // boundary. Dense views share; tiny views avoid needless generations.
+    // This trades bounded successor work for >=7/8 less base payload retained
+    // when the prepared cache is superseded but Undo/render still pins output.
+    if(selection_&&baseBytes()>1024*1024&&size()*sizeof(Record)*8<=baseBytes())return compact();
+    return *this;
+}
 
 Builder::Builder(std::uint64_t owner,Stage s,std::uint32_t sources,std::size_t reserve,std::shared_ptr<const SourceCohort> cohort,std::shared_ptr<const ReceiverCohort> receivers) {
+    cyrus::owned::fault(3);
     check(owner>0&&owner<=std::uint64_t(std::numeric_limits<std::int64_t>::max()),"Native placement owner is missing or invalid");check(s==Stage::Candidates||s==Stage::Edited,"Invalid native placement stage");
     check(sources<=maxSources&&reserve<=maxRecords,"Native placement request exceeds existing bounds");
     check(!cohort||(cohort->owner()==owner&&cohort->sources().size()==sources),"Placement source correspondence owner/count mismatch");
@@ -189,6 +199,11 @@ void Builder::replace(std::size_t i,Record r) {
     validate(r,d.stage,d.sources,d.identities.size());d.rows[i]=r;
 }
 View Builder::freeze() {
+    // An all-rejected filter must not retain its full input-sized reservation.
+    // Swapping empty buffers is nonallocating and preserves the cohorts/token.
+    active();if(impl_->data->rows.empty()){
+        Buffer<Record>().swap(impl_->data->rows);Buffer<Text>().swap(impl_->data->identities);Buffer<char>().swap(impl_->data->text);
+    }
     active();std::shared_ptr<const View::Data> frozen=impl_->data;auto preparation=impl_->preparation;impl_.reset();View result(std::move(frozen));result.preparation_=std::move(preparation);return result;
 }
 }

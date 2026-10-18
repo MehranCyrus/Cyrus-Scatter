@@ -1,4 +1,5 @@
 #include <max.h>
+#include "native_fault_qualification.h"
 #include <triobj.h>
 #include <shape.h>
 #include <maxscript/maxscript.h>
@@ -359,6 +360,7 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
     std::vector<amin::Instance> instances;std::vector<amin::Vec3> orientationNormals;
     std::shared_ptr<const cyrus::placements::ReceiverCohort> nativeReceivers;
     try {
+        cyrus::owned::fault(2);
         if(grid){
             type_check(args[0],Array,_T("grid receiver"));const auto* targets=static_cast<Array*>(args[0]);
             if(targets->size!=1||!targets->data[0]->to_node()||targets->data[0]->to_node()->GetHandle()!=grid->receiverHandle||
@@ -378,15 +380,20 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
         if(args[27]!=&undefined) {
             type_check(args[27],Array,_T("final pass"));auto* f=static_cast<Array*>(args[27]);
             if(f->size!=14)throw RuntimeError(_T("Invalid final pass payload"));
-            auto rows=[](Value* v){type_check(v,Array,_T("final rows"));auto* a=static_cast<Array*>(v);std::vector<amin::Instance> out;
+            auto rows=[](Value* v){std::vector<amin::Instance> out;
+                if(cyrusIsPlacementValue(v)){const auto& view=cyrusPlacementView(v);if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Final movement requires raw native candidates"));out.reserve(view.size());for(std::size_t i=0;i<view.size();++i)out.push_back(placementInstance(view.at(i)));return out;}
+                type_check(v,Array,_T("final rows"));auto* a=static_cast<Array*>(v);
                 for(int i=0;i<a->size;++i){type_check(a->data[i],Array,_T("placement"));out.push_back(placementInstance(static_cast<Array*>(a->data[i])));}return out;};
             auto radii=[](Value* v){type_check(v,Array,_T("radii"));auto* a=static_cast<Array*>(v);std::vector<double> out;for(int i=0;i<a->size;++i){double r=a->data[i]->to_float();if(!std::isfinite(r)||r<0)throw RuntimeError(_T("Invalid radius"));out.push_back(r);}return out;};
             amin::FinalSettings cfg;cfg.cleanup=f->data[4]->to_bool()!=FALSE;cfg.radius=f->data[5]->to_float();
             cfg.minNeighbors=f->data[6]->to_int();cfg.minIsland=f->data[7]->to_int();cfg.relax=f->data[8]->to_bool()!=FALSE;
             cfg.strength=f->data[9]->to_float();cfg.iterations=f->data[10]->to_int();cfg.maxMove=f->data[11]->to_float();cfg.gap=f->data[12]->to_float();cfg.planar=f->data[13]->to_bool()!=FALSE;
             auto input=rows(f->data[0]);
+            if(nativeOwner){const auto& view=cyrusPlacementView(f->data[0]);if(view.token().owner!=nativeOwner||!cyrus::placements::sameSourceCohort(view.sourceCohort(),nativeCohort))throw RuntimeError(_T("Final movement source correspondence differs"));
+                if(!view.receiverCohort()||!nativeReceivers||view.receiverCohort()->receivers()!=nativeReceivers->receivers())throw RuntimeError(_T("Final movement receiver correspondence differs"));}
             for(auto& p:input){unsigned slot=0;std::uint64_t key=0;if(!cyrus::receivers::decodeCandidate(p.candidateKey,slot,key)||slot!=receiverSlot)throw RuntimeError(_T("Final movement rows must belong to this receiver."));p.candidateKey=key;}
-            instances=amin::finalize(mesh,amin::prepareEdgeRows(s),std::move(input),rows(f->data[1]),radii(f->data[2]),radii(f->data[3]),cfg);
+            auto inputRadii=nativeOwner&&f->data[2]==&undefined?std::vector<double>(input.size(),0.):radii(f->data[2]);
+            instances=amin::finalize(mesh,amin::prepareEdgeRows(s),std::move(input),rows(f->data[1]),inputRadii,radii(f->data[3]),cfg);
             for(auto& p:instances)p.candidateKey=cyrus::receivers::candidateIdentity(receiverSlot,p.candidateKey);
             for(auto& p:instances)anchorInstance(p,mesh);
         } else {

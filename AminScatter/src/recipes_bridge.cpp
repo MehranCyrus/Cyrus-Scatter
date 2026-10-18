@@ -126,6 +126,7 @@ public:
             throw RuntimeError(_T("Expected a newly created Cyrus recipe owner"));
         const MCHAR* names[]={
             _T("procPreparedRows"),_T("procPreparedKey"),_T("procReceiverPlanData"),_T("procReceiverCache"),_T("procReceiverGeometry"),
+            _T("procNativePublication"),_T("procNativeContext"),
             _T("procPublishedOwners"),_T("procPublishedSources"),_T("procPublishedFinalKeep"),_T("procPublishedRadii"),_T("procPublishedInfo"),_T("procPublishedMetadata"),_T("procPublishedDisplayKey"),
             _T("groupSnapshotRows"),_T("groupSnapshotKey"),_T("groupPrepareRows"),_T("groupPrepareKey"),
             _T("paintBaseRows"),_T("paintBaseKey"),_T("paintBaseFaceCounts"),_T("blockerCacheRows"),_T("blockerCacheKey"),
@@ -170,7 +171,12 @@ public:
     explicit PresetPublicationRestore(Array* owners){
         if(owners->size<1||owners->size>11)throw RuntimeError(_T("Preset publication owner limit"));
         const MCHAR* names[]={_T("procEpoch"),_T("procPublishedOwners"),_T("procPublishedSources"),_T("procPublishedFinalKeep"),_T("procPublishedRadii"),_T("procPublishedInfo"),_T("procPublishedMetadata"),_T("procPublishedDisplayKey"),_T("groupSnapshotRows"),_T("groupSnapshotKey"),_T("groupPrepareRows"),_T("groupPrepareKey"),_T("procPreparedRows"),_T("procPreparedKey"),_T("procReceiverCache"),_T("procReceiverGeometry"),_T("procReceiverPlanData"),_T("procOrientationReceivers"),_T("procGridCache"),_T("paintBaseRows"),_T("paintBaseKey"),_T("paintBaseFaceCounts"),_T("cachedPoints"),_T("cachedPointCount"),_T("generatedCount"),_T("radiusPreview"),_T("inspectionCache"),_T("procPreviewDisplayKey"),_T("procPreviewGeometryKey"),_T("procPreviewInspectionKey"),_T("procPreviewModes"),_T("procPreviewModesEpoch"),_T("procLastStats"),_T("procLastRounds"),_T("requestedCount"),_T("groupEligible"),_T("groupRemoved"),_T("groupConflicts"),_T("overlapBefore"),_T("overlapAfter"),_T("procLastSurfaceStats"),_T("procDependencyHandles"),_T("inputTimeObserved"),_T("orientationTimeObserved"),_T("previewBuildCount"),_T("previewError"),_T("dirty")};
+        // The native publication and its scripted epoch/manifest are one frame.
+        // Restoring only the old script fields leaves the newer native frame
+        // pinned and rejects the first successor after preset Undo.
+        const MCHAR* nativeNames[]={_T("procNativePublication"),_T("procNativeContext"),_T("procNativeLastAdmission")};
         for(int j=0;j<owners->size;++j){auto* value=owners->data[j];auto* p=dynamic_cast<MSPlugin*>(value->to_reftarg());if(!p||value->to_reftarg()->ClassID()!=Class_ID(0x617d43a1,0x395c2e17))throw RuntimeError(_T("Expected Cyrus preset owner"));Owner owner{ValueHolderMember(value),{}};
+            for(const auto* name:nativeNames){auto* key=Name::intern(name);const int i=slot(p,key);if(i<0)throw RuntimeError(_T("Preset publication requires its matching native script"));owner.fields.push_back({key,ValueHolderMember(p->get_local(i)),ValueHolderMember(&undefined)});}
             for(const auto* name:names){auto* key=Name::intern(name);const int i=slot(p,key);if(i<0)throw RuntimeError(_T("Preset publication requires its matching script"));owner.fields.push_back({key,ValueHolderMember(p->get_local(i)),ValueHolderMember(&undefined)});}owners_.push_back(std::move(owner));}
     }
     void Restore(int) override {

@@ -3,6 +3,14 @@
 #include <limits>
 #include <stdexcept>
 namespace cyrus::script_memory {
+// Additional native successor allowance only. Already committed scene, Undo
+// and geometry allocations are included in the OS's consumed commit, so do not
+// charge them a second time. SDK/driver residency is not an exact owned-byte sum.
+inline void admitNative(std::uint64_t additional,std::uint64_t availableCommit){
+    constexpr std::uint64_t hostReserve=256ULL*1024*1024;
+    if(availableCommit<hostReserve||additional>availableCommit-hostReserve)
+        throw std::runtime_error("Insufficient system commit headroom for the native successor; previous result and Undo retained");
+}
 // A session allocation, not a saved Max heap preference. Keep an OS/host reserve.
 inline std::uint64_t target(std::uint64_t heap,std::uint64_t free,
                             std::uint64_t required,std::uint64_t availableCommit) {

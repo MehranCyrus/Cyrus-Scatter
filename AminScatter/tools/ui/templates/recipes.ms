@@ -229,6 +229,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
     theHold.Begin();CyrusPointSuspended=true
     try (
         if packagedPaintReceivers!=undefined do cyrusPresetTrackPublication (join #(destination) (destination.layerObjects as array))
+        if not newSetup do cyrusEditOwnerLayers (destination.procModifiers()) (for leaf in destination.layerObjects collect leaf.editLayerKey)
         with animate off (
             if prepareAssets!=undefined do (
                 -- Only the trusted package command supplies this internal factory.
@@ -246,7 +247,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
             )
             for record in layers do (
                 local owner=createInstance AminScatterObject
-                if newSetup do cyrusRecipeTrackCreated owner
+                cyrusRecipeTrackCreated owner
                 owner.setLayerTransfer true;owner.layerID=CyrusNewLayerID();owner.logicalParentID="";owner.isPaintArea=false
                 CyrusRecipeApplySettings owner (CyrusRecipeGet record "settings") bindings variation:variation
                 owner.editLayerKey=root.nextEditLayerKey;root.nextEditLayerKey+=1
@@ -257,7 +258,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                 owner.paintDocument=CyrusRecipeRestorePaint paint paintTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers paintTarget>0)
                 for areaRecord in (CyrusRecipeGet record "areas") do (
                     local area=createInstance AminScatterObject
-                    if newSetup do cyrusRecipeTrackCreated area
+                    cyrusRecipeTrackCreated area
                     area.setLayerTransfer true;area.layerID=CyrusNewLayerID();area.logicalParentID=owner.layerID;area.isPaintArea=true
                     CyrusRecipeApplySettings area (CyrusRecipeGet areaRecord "settings") bindings variation:variation
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")

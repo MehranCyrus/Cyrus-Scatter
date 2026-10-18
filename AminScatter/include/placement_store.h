@@ -81,6 +81,7 @@ public:
     View edited() const;
     View prepared(const std::string& key,const std::string& binding) const;
     View compact() const;
+    View compactIfSparse() const; // Accepted-publication retention policy.
 };
 
 class Builder {

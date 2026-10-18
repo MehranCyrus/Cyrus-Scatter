@@ -34,7 +34,7 @@ struct ProceduralRows {
             bool same=indices.size()==size();for(std::size_t i=0;same&&i<indices.size();++i)same=indices[i]==i;
             if(same)return value;
             std::vector<std::uint32_t> selected;selected.reserve(indices.size());for(auto i:indices)selected.push_back(static_cast<std::uint32_t>(i));
-            return cyrusPlacementValue(native->select(selected));
+            return cyrusPlacementValue(native->select(selected).compactIfSparse());
         }
         cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Acceptance);
         one_typed_value_local(Array* result);vl.result=new Array(int(indices.size()));materializations.populationArray();for(auto i:indices)vl.result->append(rows->data[i]);return_value(vl.result);
@@ -63,6 +63,7 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Spacing);
     check_arg_count(cyrusEvaluateProcedural,3,n);
     try{
+    cyrus::owned::fault(6);
     auto* layers=groupArray(a[0]);auto* pairs=groupArray(a[1]);
     const int cap=a[2]->to_int();if(cap<1||cap>1000000)throw RuntimeError(_T("Candidate admission cap must be 1..1000000"));
     cyrus::procedural::Plan plan;plan.maxSamples=static_cast<std::size_t>(cap);

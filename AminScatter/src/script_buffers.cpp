@@ -5,6 +5,9 @@
 #include <maxscript/foundation/strings.h>
 #include "script_buffers.h"
 #include "script_memory_budget.h"
+#include "placement_store.h"
+#include "procedural.h"
+#include "native_fault_qualification.h"
 #include <atomic>
 #include <cmath>
 #include <memory>
@@ -95,6 +98,21 @@ Value* cyrusScriptMemoryTarget_cf(Value** a,int n){
     MEMORYSTATUSEX status{};status.dwLength=sizeof(status);
     if(!GlobalMemoryStatusEx(&status))throw RuntimeError(_T("Cannot read system commit headroom"));
     try{return Integer64::intern(static_cast<INT64>(cyrus::script_memory::target(heap,free,required,status.ullAvailPageFile)));}
+    catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+}
+
+def_visible_primitive(cyrusNativeMemoryAdmit,"cyrusNativeMemoryAdmit");
+Value* cyrusNativeMemoryAdmit_cf(Value** a,int n){
+    check_arg_count(cyrusNativeMemoryAdmit,1,n);const auto pool=a[0]->to_int64();
+    if(pool<0||pool>1000000)throw RuntimeError(_T("Invalid native successor population"));
+    // Simultaneous receiver/base/prepared/output buffers, generator/Relax
+    // scratch, acceptance Sample plus schedule/index/hash/neighbor allowance.
+    // A conservative admission model, not reported physical allocation.
+    constexpr std::uint64_t perCandidate=6*sizeof(cyrus::placements::Record)+4*sizeof(amin::Instance)+sizeof(cyrus::procedural::Sample)+256;
+    const auto additional=std::uint64_t(pool)*perCandidate+64ULL*1024*1024;
+    MEMORYSTATUSEX status{};status.dwLength=sizeof(status);
+    if(!GlobalMemoryStatusEx(&status))throw RuntimeError(_T("Cannot read native commit headroom"));
+    try{cyrus::owned::fault(1);cyrus::script_memory::admitNative(additional,status.ullAvailPageFile);return Integer64::intern(INT64(additional));}
     catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
 }
 def_visible_primitive(cyrusScriptBufferStats,"cyrusScriptBufferStats");

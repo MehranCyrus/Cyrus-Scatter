@@ -1,5 +1,7 @@
 # Source findings and comparison
 
+**Historical inspection with later annotated checkpoints.** Current ownership and consumer boundaries are in [the 0.86.0 handoff](DELIVERY_0860.md) and [architecture](../../ARCHITECTURE.md). The default controller is now native-only; the default-off and pending descriptions below retain their checkpoint scope.
+
 Source inspected on 17 October 2026 against the dirty 0.85.4 workspace identified in [EVIDENCE.json](EVIDENCE.json). Anchors below are symbols; recorded line numbers are navigation aids and can move. This is source evidence, not newly executed Max behavior.
 
 The table below inventories the inspected pre-migration/default route, with
@@ -11,10 +13,29 @@ data publication and shared radii in `placement_publication.h/.cpp`,
 template's `procNativeSources`, `procPrepare`, `procStageNativePublication` and
 `evaluateProcedural` connect the default-off first route. Its cached inspection
 delegates to native manifest/page readers. Numeric retirement tickets preserve
-cleanup of departed/deleted scripted owners without keeping them alive. These
-additions do not convert the remaining Paint/Edit/render/Bake consumers below.
+cleanup of departed/deleted scripted owners without keeping them alive.
 
-## Current placement route
+### 18 October continuation: newer source and scoped runtime evidence
+
+The inventory below is the historical pre-migration audit; the following entries
+supersede its old transport descriptions for the internal native route. Product
+metadata/default routing still have not been released as 0.86.0.
+
+| Consumer | Current internal implementation | Evidence / remaining gate |
+| --- | --- | --- |
+| Boundary/Area falloff | Shared prepared evaluator; direct native records/builders | Plane/mountain 5k/50k/200k direct parity; controller Areas/Analyzer parity |
+| Paint | Brush POD API v2 filtered-successor builder, owned by AminScatter | Holes, union, feather/scale, multiple receivers, rejection and actual Paint Undo/Redo passed |
+| Relax and Analyzer orientation | Native input/output around the existing numerical kernels | Initial/final Relax, real planar Analyzer guidance and edge anchors passed; full final-pair matrix pending |
+| Radius inspection | Native ring cache with bounded authored source/color policy and 24 circle samples | Both metrics, limits/all and combined Band overlay matched complete draw content |
+| PFlow | Native per-source views; one detached matrix per Script Operator lookup; complete publication pin | Every actual particle matrix/scale matched on plane/mountain; production render/IR/cancel/source lifecycle pending |
+| Bake | Explicit pages of at most 500 records | 1001-node source/material/matrix, Undo/Redo and empty Bake passed; injected partial failure pending |
+| CS Edit | Numeric generated keys, copy-on-write row blocks, compact selection, native derived input | Old saved multi-modifier scenes, complete parity, repeated Undo/Redo, Restore(false), cancel, Count protection and rollback passed on native-04. Its conservative Size attribution failed at 200k and is superseded by the native-05 authored-only/differential policy, still awaiting host qualification |
+
+Exact build/profile identifiers and failures are in
+[execution](EXECUTION_0860.md). These witnesses do not certify the final installer
+or imply that all renderer, history, memory, physical UI or soak gates have passed.
+
+## Historical pre-migration placement inventory
 
 | Stage / owner | Current source | Finding and migration boundary |
 | --- | --- | --- |

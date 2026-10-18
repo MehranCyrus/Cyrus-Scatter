@@ -19,22 +19,40 @@ struct FallTree {
 };
 double fallCurve(const std::vector<double>& values,double t){double v=std::clamp(t,0.0,1.0)*(values.size()-1);auto i=std::min(values.size()-2,static_cast<std::size_t>(v));return values[i]+(values[i+1]-values[i])*(v-i);}
 }
-std::vector<Instance> boundaryFalloff(const std::vector<Instance>& rows,const std::vector<std::vector<Vec3>>& loops,const BoundaryFalloff& f,std::uint32_t seed){
- if(!f.remove&&!f.scale&&!f.density)return rows;
+struct BoundaryFalloffEvaluator::Impl {
+ const BoundaryFalloff f;
+ const std::vector<std::vector<Vec3>> loops;
+ const std::uint32_t seed;
+ FallTree tree;
+ Impl(const std::vector<std::vector<Vec3>>& input,const BoundaryFalloff& settings,std::uint32_t randomSeed):f(settings),loops(input),seed(randomSeed){
+ if(!f.remove&&!f.scale&&!f.density)return;
  for(double v:{f.removeWidth,f.scaleWidth,f.densityWidth})if(!std::isfinite(v)||v<0)throw std::invalid_argument("Invalid falloff width");
  for(const auto* curve:{&f.scaleCurve,&f.densityCurve}){if(curve->size()<2||curve->size()>257)throw std::invalid_argument("Invalid falloff curve");for(double v:*curve)if(!std::isfinite(v)||v<0)throw std::invalid_argument("Invalid curve value");}
- FallTree tree;for(const auto& path:loops)if(path.size()>2)for(std::size_t i=0;i<path.size();++i){if(!finite(path[i]))throw std::invalid_argument("Invalid boundary vertex");if(length(path[(i+1)%path.size()]-path[i])>1e-10)tree.edges.push_back({path[i],path[(i+1)%path.size()]});}
+ for(const auto& path:loops)if(path.size()>2)for(std::size_t i=0;i<path.size();++i){if(!finite(path[i]))throw std::invalid_argument("Invalid boundary vertex");if(length(path[(i+1)%path.size()]-path[i])>1e-10)tree.edges.push_back({path[i],path[(i+1)%path.size()]});}
  if(tree.edges.empty())throw std::invalid_argument("Analyzer has no boundary data; run Analyze first");
  if(f.areaSide)for(auto& e:tree.edges){e.a.z=0;e.b.z=0;}
  tree.build(0,tree.edges.size());
- std::vector<Instance> out;out.reserve(rows.size());
- for(std::size_t i=0;i<rows.size();++i){auto row=rows[i];auto query=row.position;if(f.areaSide)query.z=0;
+ }
+ Result evaluate(Vec3 query,std::uint64_t identity)const {
+  if(!f.remove&&!f.scale&&!f.density)return {};
+  if(f.areaSide)query.z=0;
   double distance=INFINITY;tree.nearest(0,query,distance);
   if(f.areaSide&&distance>1e-8){bool inside=false;for(const auto& path:loops)for(std::size_t a=0,b=path.size()-1;a<path.size();b=a++) {auto p=path[a],q=path[b];if((p.y>query.y)!=(q.y>query.y)&&query.x<(q.x-p.x)*(query.y-p.y)/(q.y-p.y)+p.x)inside=!inside;}
-   if(inside!=(f.areaSide==1)){out.push_back(row);continue;}}
-  double start=f.remove?f.removeWidth:0;if(f.remove&&distance<start)continue;double d=std::max(0.0,distance-start);
-  if(f.density){double rate=std::clamp(fallCurve(f.densityCurve,f.densityWidth>0?d/f.densityWidth:1),0.0,1.0);double random=stableUnit(seed,row.candidateKey,7);if(random>=rate)continue;}
-  if(f.scale){double factor=fallCurve(f.scaleCurve,f.scaleWidth>0?d/f.scaleWidth:1);row.xAxis=row.xAxis*factor;row.yAxis=row.yAxis*factor;row.zAxis=row.zAxis*factor;}
+   if(inside!=(f.areaSide==1))return {};}
+  double start=f.remove?f.removeWidth:0;if(f.remove&&distance<start)return {false,1};double d=std::max(0.0,distance-start);
+  if(f.density){double rate=std::clamp(fallCurve(f.densityCurve,f.densityWidth>0?d/f.densityWidth:1),0.0,1.0);double random=stableUnit(seed,identity,7);if(random>=rate)return {false,1};}
+  return {true,f.scale?fallCurve(f.scaleCurve,f.scaleWidth>0?d/f.scaleWidth:1):1};
+ }
+};
+BoundaryFalloffEvaluator::BoundaryFalloffEvaluator(const std::vector<std::vector<Vec3>>& loops,const BoundaryFalloff& f,std::uint32_t seed):impl_(std::make_unique<Impl>(loops,f,seed)){}
+BoundaryFalloffEvaluator::~BoundaryFalloffEvaluator()=default;
+BoundaryFalloffEvaluator::Result BoundaryFalloffEvaluator::evaluate(Vec3 p,std::uint64_t identity)const{return impl_->evaluate(p,identity);}
+std::vector<Instance> boundaryFalloff(const std::vector<Instance>& rows,const std::vector<std::vector<Vec3>>& loops,const BoundaryFalloff& f,std::uint32_t seed){
+ if(!f.remove&&!f.scale&&!f.density)return rows;
+ const BoundaryFalloffEvaluator evaluator(loops,f,seed);
+ std::vector<Instance> out;out.reserve(rows.size());
+ for(auto row:rows){const auto result=evaluator.evaluate(row.position,row.candidateKey);if(!result.keep)continue;
+  if(f.scale){row.xAxis=row.xAxis*result.scale;row.yAxis=row.yAxis*result.scale;row.zAxis=row.zAxis*result.scale;}
   out.push_back(row);
  }return out;
 }

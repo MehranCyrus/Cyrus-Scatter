@@ -2,10 +2,10 @@
 
 **Proposal, not implementation.** Read [scope and baseline](README.md) first. Preserve foundation F01–F12, including their qualification limits. Symbols named below for new types/interfaces are working design names, not existing APIs.
 
-Some storage and adapter work is now implemented; the [execution handoff](EXECUTION_0860.md)
-and exact receipts distinguish that work from the still-proposed publication,
-history and downstream boundaries below. Do not infer complete implementation
-from this design.
+The migration is now implemented. This document preserves its original proposed design;
+the [delivery report](DELIVERY_0860.md) and [architecture](../../ARCHITECTURE.md)
+describe the actual boundaries, decisions and measured limits. Proposed working
+names and hypothetical byte counts below are not current API or memory claims.
 
 ## 1. Boundary and stage order
 

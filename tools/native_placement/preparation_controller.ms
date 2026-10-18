@@ -89,6 +89,10 @@
    select NCNode;max modify mode;modPanel.setCurrentObject NCNode
    if not NCRoot.mainUI.controlsReady do NCRoot.mainUI.mountTimer.tick()
    NCRoot.updateMode=2
+   -- Switching from Manual to Live is an authored dependency change. Finish
+   -- that transition before measuring passive panels, as the controller fixture
+   -- does through its real update-mode handler. Do not count pending work as idle.
+   PCapply()
    PClog "PASS save/reopen"
   )
   "idleStart": (

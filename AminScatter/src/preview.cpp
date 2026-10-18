@@ -1,4 +1,5 @@
 #include <max.h>
+#include "native_fault_qualification.h"
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>
 #include <maxscript/foundation/numbers.h>
@@ -55,17 +56,23 @@ public:
     std::size_t faceCount=0;
     int size=0;
     int geometryMode=0;
-    AminPointCache() { tag=class_tag(AminPointCache); }
+    bool radiusDetails=false;
+    AminPointCache() { cyrus::owned::fault(8);tag=class_tag(AminPointCache); }
     classof_methods(AminPointCache,Value);
     void collect() override { delete this; }
     void sprin1(CharStream* s) override { s->printf(_T("<AminPointCache:%d>"),size); }
     Value* deep_copy(HashTable*) override { return this; }
+    Value* get_property(Value** a,int n) override {
+        if(n==1&&a[0]==Name::intern(_T("count")))return Integer::intern(size);
+        return Value::get_property(a,n);
+    }
 
 };
 visible_class_instance(AminPointCache,"AminPointCache");
 #include "preview_compare.inc"
 #include "geometry_preview.inc"
 #include "spline_overlay_bridge.inc"
+#include "radius_preview.inc"
 
 def_visible_primitive(aminScatterBuildPreview,"aminScatterBuildPreview");
 Value* aminScatterBuildPreview_cf(Value** args,int count) {
@@ -185,6 +192,7 @@ def_visible_primitive(cyrusBuildInspectionPreview,"cyrusBuildInspectionPreview")
 Value* cyrusBuildInspectionPreview_cf(Value** args,int count) {
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Preview);
     check_arg_count(cyrusBuildInspectionPreview,2,count);
+    if(args[0]->is_kind_of(class_tag(AminPointCache)))return combineRadiusPreview(args[0],args[1]);
     type_check(args[0],Array,_T("radius rings"));
     auto* rings=static_cast<Array*>(args[0]);
     AminPointCache* field=nullptr;

@@ -3,12 +3,13 @@ def_visible_primitive(cyrusAreaFalloff,"cyrusAreaFalloff");
 static Value* falloffBridge(Value** args,int count,bool area){
  if(count!=(area?5:4)) throw RuntimeError(_T("Invalid falloff argument count"));
  auto arr=[](Value* v){type_check(v,Array,_T("Boundary falloff data"));return static_cast<Array*>(v);};
- auto* input=arr(args[0]);auto* paths=area?nullptr:arr(args[1]);auto* cfg=arr(args[2]);if(cfg->size!=8)throw RuntimeError(_T("Invalid falloff settings"));
+ const bool native=cyrusIsPlacementValue(args[0]);
+ auto* input=native?nullptr:arr(args[0]);auto* paths=area?nullptr:arr(args[1]);auto* cfg=arr(args[2]);if(cfg->size!=8)throw RuntimeError(_T("Invalid falloff settings"));
  amin::BoundaryFalloff f;f.remove=cfg->data[0]->to_bool()!=FALSE;f.removeWidth=cfg->data[1]->to_float();f.scale=cfg->data[2]->to_bool()!=FALSE;f.scaleWidth=cfg->data[3]->to_float();f.density=cfg->data[5]->to_bool()!=FALSE;f.densityWidth=cfg->data[6]->to_float();
 
  auto curve=[&](Value* v){auto* a=arr(v);std::vector<double> out;for(int i=0;i<a->size;++i)out.push_back(a->data[i]->to_float());return out;};f.scaleCurve=curve(cfg->data[4]);f.densityCurve=curve(cfg->data[7]);
  std::vector<amin::Instance> rows;std::vector<std::vector<amin::Vec3>> loops;
- for(int i=0;i<input->size;++i)rows.push_back(placementInstance(arr(input->data[i])));
+ if(input)for(int i=0;i<input->size;++i)rows.push_back(placementInstance(arr(input->data[i])));
  if(!area)for(int i=0;i<paths->size;++i){auto* p=arr(paths->data[i]);std::vector<amin::Vec3> path;for(int j=0;j<p->size;++j)path.push_back(vec(p->data[j]->to_point3()));loops.push_back(std::move(path));}
  if(area){
   f.areaSide=args[4]->to_int();if(f.areaSide!=1&&f.areaSide!=2)throw RuntimeError(_T("Invalid Area mode"));
@@ -22,9 +23,27 @@ static Value* falloffBridge(Value** args,int count,bool area){
    std::vector<amin::Vec3> path;for(int k=0;k<steps;++k)path.push_back(vec(shape->InterpCurve3D(time,c,static_cast<float>(k)/steps,PARAM_SIMPLE)*tm));loops.push_back(std::move(path));
   }
  }
- try{rows=amin::boundaryFalloff(rows,loops,f,args[3]->to_int());}catch(const std::exception& e){throw RuntimeError(_T("Boundary falloff failed. Check Analyzer data and curve settings."));}
+ try{
+  if(native){
+   const auto& view=cyrusPlacementView(args[0]);
+   if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Boundary falloff requires raw native candidates"));
+   const amin::BoundaryFalloffEvaluator evaluator(loops,f,args[3]->to_int());
+   if(!f.remove&&!f.scale&&!f.density)return args[0];
+   cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size(),view.sourceCohort(),view.receiverCohort());
+   for(std::size_t i=0;i<view.size();++i){auto row=view.at(i);const auto& m=row.transform;
+    const auto result=evaluator.evaluate({m[9],m[10],m[11]},row.identity);if(!result.keep)continue;
+    // Legacy falloff multiplies in double and rounds only on SDK publication.
+    if(f.scale)for(int j=0;j<9;++j)row.transform[j]=float(double(row.transform[j])*result.scale);
+    builder.appendGenerated(row);
+   }
+   return cyrusPlacementValue(builder.freeze());
+  }
+  rows=amin::boundaryFalloff(rows,loops,f,args[3]->to_int());
+ }catch(const std::exception& e){throw RuntimeError(_T("Boundary falloff failed. Check Analyzer data and curve settings."));}
+ cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Eligibility);
+ materializations.populationArray();
  two_typed_value_locals(Array* result,Array* row);vl.result=new Array(static_cast<int>(rows.size()));
- for(const auto& r:rows){Matrix3 tm(TRUE);tm.SetRow(0,point(r.xAxis));tm.SetRow(1,point(r.yAxis));tm.SetRow(2,point(r.zAxis));tm.SetTrans(point(r.position));vl.row=new Array(2);vl.row->append(new Matrix3Value(tm));vl.row->append(Integer::intern(r.source+1));appendIdentity(vl.row,r);vl.result->append(vl.row);}return_value(vl.result);
+ for(const auto& r:rows){Matrix3 tm(TRUE);tm.SetRow(0,point(r.xAxis));tm.SetRow(1,point(r.yAxis));tm.SetRow(2,point(r.zAxis));tm.SetTrans(point(r.position));vl.row=new Array(2);materializations.row();vl.row->append(new Matrix3Value(tm));materializations.matrix();vl.row->append(Integer::intern(r.source+1));appendIdentity(vl.row,r);vl.result->append(vl.row);}return_value(vl.result);
 }
 
 Value* cyrusBoundaryFalloff_cf(Value** args,int count){return falloffBridge(args,count,false);}

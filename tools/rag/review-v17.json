@@ -1,0 +1,315 @@
+{
+  "corpus": {
+    "old_sha256": "9d62ad9e20cfc66cffe1198f3cd2230acc1bf77f59592d4109a8c79efdcec491",
+    "new_sha256": "2549bde63f0f1d5d8e797aa24ac2cdf014b2b983b454218828a0c5a54b41a83a",
+    "reason": "Preserve all 36 prior sources, 57 complete sections and retirement decisions; enroll the scoped 0.86.0 delivery report and review changed native source/contract evidence. No automatic authority promotion or scoring changes."
+  },
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "old_sha256": "f840a34440a865a93b091592ada974b887f0d29e580cd3e8913b7feec21613a0",
+      "new_sha256": "f28fe66c1d7b33a26ead1a3b5a7db8e01205f2471acf19bc6d0876650795c4a3",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "README.md",
+      "old_sha256": "4d78eb4cba91f7baeadba9eff09d388e857be2c2e49ee29c2e3849fdd887337e",
+      "new_sha256": "045044d0046099f13f9a98f352ea7650bdfd1f1c6d1c027143da37cdc75733fa",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "747090f8cbda6f518aaf3623f07fc9587dfea93cf5be908c3391cfe5fd4f7244",
+      "new_sha256": "45a4e4c9500d16d22de30fbe9034381851603e78d8d84407638731f3ee6c82f9",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "old_sha256": "385e2ebf41e32100b15e0c33226080995333d120aca4f9d77c1e07eab98a4fa6",
+      "new_sha256": "0f93aa0a825025072f1208eebd7db85a2da14ba9d513d8ed09820ea6db6d6d6a",
+      "field_reasons": {
+        "contract_sections": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "website/content/source-manifest.json",
+      "old_sha256": "12f0d67947536038cbdd97f75eda092a7cb820052ed9a332936c8008c35cd392",
+      "new_sha256": "e0cae2ead3a4d89ec318f095ed286c74602564929fc0c836a30b6d6681bb6b51",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "old_sha256": "ba6a9c28aa431742a7dc4729ca350895390d4247bc6f655ea754ed945548d634",
+      "new_sha256": "261c3bbaca2707dd6a3c3d3d15989093d841cff56f178bc246635dc75f5a53a6",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "old_sha256": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+      "new_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "old_sha256": "033bf338542896b6b35081c02dbf946574fa2e35f6a6db3d8558118c0ca8a922",
+      "new_sha256": "efb60d6cf72d526ab818480b0b7d21714490082cd37c9db7802b0caf20d75f42",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": "3a0908705a9b79eb852307235789ff456ee487cdf175446e3263a59a0e74adbf",
+      "new_sha256": "17f0e66f818e0faeac4d49f8c745afb78b20fc6866e2b5f7d33b3076b1504c5c",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "cef3c7d5974b54785f51ae443bab1fe9666eb61ec48c822fdd10a61669c51aba",
+      "new_sha256": "79426f49e7ddda2836940968c7de3b0c19926216c09c8060b63fbf5f0278b53b",
+      "field_reasons": {
+        "contract_sections": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "old_sha256": "ba90cbab08ef20f9d6ccdeb3123dc371c685d394c484840a5df40484ccf24075",
+      "new_sha256": "ab7181ed112d23519d3564bde60fc24c91e1770119f871178d6943768401698c",
+      "field_reasons": {
+        "sha256": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "ranges": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved.",
+        "review_status": "Reviewed native foundation changes and scope qualifiers in the original parent. Complete heading sections, source ownership and generated-source preference preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/native-placement/DELIVERY_0860.md",
+      "old_sha256": null,
+      "new_sha256": "e56e6fe68e1af5880729ce2ece4a3afb4576e9381040cf02f866b39c068a341f",
+      "field_reasons": {
+        "path": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "selection_reason": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "role": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "review_status": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "applicability": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "canonical": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "sha256": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "knowledge_status": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "status_source": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "referenced_by_current_docs": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "current_reference_sources": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "component": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "generated": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "ranges": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved",
+        "contract_sections": "Reviewed dated delivery report and exact evidence limits; canonical original, unknown inventory authority preserved"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "new_sha256": "c0ca318ab62ef460f3c823a7fdc0452c62b1bc8302ce17cee35e41f33b48d177",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "new_sha256": "6ecddaf6a8c145b46fb3adc96c8f43990ab850cde81a34b170076ce2c76c6641",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "8e95e267959426f8fd237ca300f29638e6dd52ef2699164d79da403878befa88",
+      "new_sha256": "cf3402299b645ed2a92d871fd846374a9b6029a467a3606c24e7cd48d27fda34",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "c6bed353c2d640410375646ddc0d1cf81646c363ca8363e064738e54e2c07b2d",
+      "new_sha256": "04ecf12ad46e24920dc4b4c581ea43c34d507efd39a0423710d48f2c41cd9046",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    },
+    {
+      "old_sha256": "bf5deeb0dc7d13b7f3470515900add10e9d0f015fdcca20945f0aa835ebf753c",
+      "new_sha256": "6f8983dd4b0a5d0b3e7132bb4762260b506928cf72ff961e18f851acd97659e0",
+      "reason": "Every query, requirement, allowed owner, split, qualifier and answerability preserved. Source hashes/line locations rebound after native-delivery source review. Changed spans are recorded separately; any reference note change needs its own exact review."
+    }
+  ],
+  "enrollment": {
+    "added": [
+      "docs/plans/native-placement/DELIVERY_0860.md"
+    ],
+    "agent_reviewed": true,
+    "reason": "Keep exact delivery measurements and acceptance limits retrievable alongside maintained contracts; historical source retirement decisions and all prior owners remain unchanged."
+  },
+  "reference_conclusions": [
+    {
+      "old_evaluation_sha256": "bf5deeb0dc7d13b7f3470515900add10e9d0f015fdcca20945f0aa835ebf753c",
+      "group": "base",
+      "id": "NF-SPEED",
+      "old_value": "Unanswerable: the migration is proposed and no production speedup has been established.",
+      "new_value": "Unanswerable as a universal production percentage: 0.86.0 has scoped exact-scene Max 2027 benchmarks, not a general production speed guarantee.",
+      "reason": "The native delivery now has explicitly scoped benchmarks. Preserve the negative question and answerability: these cannot establish one production-wide speedup.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "group": "base",
+      "id": "O05",
+      "old_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.85.4; it checks semantic membership, not physical UI behavior.",
+      "new_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.86.0; it checks semantic membership, not physical UI behavior.",
+      "reason": "Update only snapshot-specific version or payload fingerprint to the inspected exact source. Original question, required evidence, canonical source and qualifiers remain unchanged.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "e4b6e34743f775ef08bca4606d55c7910841f493427204e082a642db5d137892",
+      "group": "base",
+      "id": "O08",
+      "old_value": "The generated first line declares payload fingerprint 9f932772610b5a84ad9d671bcb4369825ba4c82b66ee8d981479b81447e6dd1f; this differs from whole-file SHA-256.",
+      "new_value": "The generated first line declares payload fingerprint 827af832d5ecd6006e3131e18583c7fc6f668f14bf1e06200c3f1b79d28f05e8; this differs from whole-file SHA-256.",
+      "reason": "Update only snapshot-specific version or payload fingerprint to the inspected exact source. Original question, required evidence, canonical source and qualifiers remain unchanged.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "group": "base",
+      "id": "O05",
+      "old_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.85.4; it checks semantic membership, not physical UI behavior.",
+      "new_value": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.86.0; it checks semantic membership, not physical UI behavior.",
+      "reason": "Update only snapshot-specific version or payload fingerprint to the inspected exact source. Original question, required evidence, canonical source and qualifiers remain unchanged.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "4ceda81431e4e1f2ca32276fd5be78fcba48570b07807f079560243d3a760728",
+      "group": "base",
+      "id": "O08",
+      "old_value": "The generated first line declares payload fingerprint 9f932772610b5a84ad9d671bcb4369825ba4c82b66ee8d981479b81447e6dd1f; this differs from whole-file SHA-256.",
+      "new_value": "The generated first line declares payload fingerprint 827af832d5ecd6006e3131e18583c7fc6f668f14bf1e06200c3f1b79d28f05e8; this differs from whole-file SHA-256.",
+      "reason": "Update only snapshot-specific version or payload fingerprint to the inspected exact source. Original question, required evidence, canonical source and qualifiers remain unchanged.",
+      "agent_reviewed": true
+    }
+  ]
+}

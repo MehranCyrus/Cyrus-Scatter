@@ -369,16 +369,21 @@ extern "C" __declspec(dllexport) ULONG CanAutoDefer(){return 0;}
 BOOL WINAPI DllMain(HINSTANCE module,DWORD reason,LPVOID){if(reason==DLL_PROCESS_ATTACH)instance=module;return TRUE;}
 static_assert(MAX_PRODUCT_YEAR_NUMBER==CYRUS_MAX_YEAR,"Brush SDK mismatch");
 
+static const CyrusPlacementApi* placementBoundary(){
+    const auto module=GetModuleHandleW(L"AminScatter.dlx");
+    const auto get=module?reinterpret_cast<CyrusPlacementGetApiFn>(GetProcAddress(module,"CyrusPlacementGetApi")):nullptr;
+    const auto* boundary=get?get(2):nullptr;
+    if(!boundary||boundary->version!=2||boundary->size!=sizeof(CyrusPlacementApi)||boundary->recordBytes!=sizeof(CyrusPlacementRecord))throw RuntimeError(_T("Paint requires the matching native placement ownership API"));
+    return boundary;
+}
+struct PlacementLeaseRelease {const CyrusPlacementApi* api;CyrusPlacementLease* lease;~PlacementLeaseRelease(){api->release(lease);}};
 // Explicit bounded numeric inspection also exercises the cross-module lifetime
 // contract. Normal Paint operations switch to this ABI during N03 integration.
 def_visible_primitive(cyrusBrushPlacementInfo,"cyrusBrushPlacementInfo");
 Value* cyrusBrushPlacementInfo_cf(Value** a,int n){check_arg_count(cyrusBrushPlacementInfo,1,n);return api([&]()->Value*{
-    const auto module=GetModuleHandleW(L"AminScatter.dlx");
-    const auto get=module?reinterpret_cast<CyrusPlacementGetApiFn>(GetProcAddress(module,"CyrusPlacementGetApi")):nullptr;
-    const auto* boundary=get?get(1):nullptr;
-    if(!boundary||boundary->version!=1||boundary->size!=sizeof(CyrusPlacementApi)||boundary->recordBytes!=sizeof(CyrusPlacementRecord))throw RuntimeError(_T("Paint requires the matching native placement ownership API"));
+    const auto* boundary=placementBoundary();
     auto* lease=boundary->acquire(a[0]);if(!lease)throw RuntimeError(_T("Paint expects a native placement value on the Max thread"));
-    struct Release {const CyrusPlacementApi* api;CyrusPlacementLease* lease;~Release(){api->release(lease);}} release{boundary,lease};
+    PlacementLeaseRelease release{boundary,lease};
     if(!boundary->retain(lease))throw RuntimeError(_T("Cannot retain native Paint placement input"));
     boundary->release(lease);CyrusPlacementInfo info{};info.size=sizeof(info);
     if(!boundary->info(lease,&info))throw RuntimeError(_T("Native Paint placement metadata mismatch"));
@@ -610,8 +615,10 @@ Value* cyrusBrushImportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushImpo
 def_visible_primitive(cyrusClonePlacementRows,"cyrusClonePlacementRows");
 def_visible_primitive(cyrusBrushRegionFilter,"cyrusBrushRegionFilter");
 Value* cyrusBrushRegionFilter_cf(Value** a,int n){check_arg_count(cyrusBrushRegionFilter,6,n);return api([&]()->Value*{
-    for(int i=0;i<5;++i)type_check(a[i],Array,_T("region coverage array"));
-    auto* rows=static_cast<Array*>(a[0]);auto* documents=static_cast<Array*>(a[1]);auto* densities=static_cast<Array*>(a[2]);
+    for(int i=1;i<5;++i)type_check(a[i],Array,_T("region coverage array"));
+    const auto* boundary=placementBoundary();
+    auto* rows=a[0]->is_kind_of(class_tag(Array))?static_cast<Array*>(a[0]):nullptr;
+    auto* documents=static_cast<Array*>(a[1]);auto* densities=static_cast<Array*>(a[2]);
     auto* receivers=static_cast<Array*>(a[3]);auto* counts=static_cast<Array*>(a[4]);
     if(documents->size>128||documents->size!=densities->size||receivers->size!=counts->size||receivers->size>128)throw std::runtime_error("Invalid bounded region coverage inputs");
     std::vector<INode*> nodes;std::vector<std::uint64_t> ends;std::uint64_t total=0;
@@ -634,23 +641,53 @@ Value* cyrusBrushRegionFilter_cf(Value** a,int n){check_arg_count(cyrusBrushRegi
     }
     std::uint64_t population=1469598103934665603ULL;const std::wstring identity=a[5]->to_string();
     for(auto c:identity){population^=static_cast<std::uint16_t>(c);population*=1099511628211ULL;}
-    two_typed_value_locals(Array* result,Array* copy);vl.result=new Array(rows->size);
-    for(int i=0;i<rows->size;++i){
-        type_check(rows->data[i],Array,_T("keyed placement"));auto* row=static_cast<Array*>(rows->data[i]);
-        cyrus::rows::raw(row);
-        const int face=row->data[3]->to_int()-1;const auto bary=vec(row->data[4]->to_point3());
+    auto evaluate=[&](std::int64_t face,b::Vec3 bary,std::uint64_t candidate)->std::pair<bool,double>{
         if(face<0||std::uint64_t(face)>=total||!std::isfinite(bary.x)||!std::isfinite(bary.y)||!std::isfinite(bary.z)||std::abs(bary.x+bary.y+bary.z-1)>1e-3||std::min({bary.x,bary.y,bary.z})<-1e-4||std::max({bary.x,bary.y,bary.z})>1.0001)throw std::runtime_error("Region anchor requires projected movement");
         const auto receiver=std::size_t(std::upper_bound(ends.begin(),ends.end(),std::uint64_t(face))-ends.begin());
         const auto localFace=unsigned(std::uint64_t(face)-(receiver?ends[receiver-1]:0));double weight=0,scale=1;
-        const double u=b::threshold(population,std::uint64_t(row->data[2]->to_int64()));
+        const double u=b::threshold(population,candidate);
         // Union once; strongest effective density controls scale. Equal weights
         // use saved area order, preserving deterministic overlap behavior.
         for(auto& region:regions)if(region.receiver==receiver){
             const auto value=region.field->query({localFace,bary},&region.stats);const double w=std::clamp(value.density*region.density,0.,1.);
             if(w>weight){weight=w;scale=value.scale;}
         }
-        if(u<weight){
+        return {u<weight,scale};
+    };
+    if(!rows){
+        auto* lease=boundary->acquire(a[0]);if(!lease)throw std::runtime_error("Paint expects native placements on the Max thread");
+        PlacementLeaseRelease release{boundary,lease};CyrusPlacementInfo info{};info.size=sizeof(info);
+        if(!boundary->info(lease,&info)||info.stage!=1)throw std::runtime_error("Paint requires raw native candidates");
+        const auto bindings=boundary->receiverCount(lease);
+        if(info.count&&!bindings)throw std::runtime_error("Paint requires receiver-bound native candidates");
+        for(std::uint32_t i=0;i<bindings;++i){CyrusPlacementReceiver r{};
+            if(!boundary->receiver(lease,i,&r))throw std::runtime_error("Paint receiver metadata unavailable");
+            bool found=false;
+            for(std::size_t j=0;j<nodes.size();++j)if(r.handle==std::uint64_t(Animatable::GetHandleByAnim(nodes[j]))&&r.begin==(j?ends[j-1]:0)&&r.faces==std::uint32_t(counts->data[j]->to_int())){found=true;break;}
+            if(!found)throw std::runtime_error("Paint receiver correspondence differs from candidate anchors");
+        }
+        auto* output=boundary->beginFilter(lease);if(!output)throw std::runtime_error("Cannot allocate native Paint successor");
+        struct Discard {const CyrusPlacementApi* api;CyrusPlacementFilter* filter;~Discard(){api->destroyFilter(filter);}} discard{boundary,output};
+        for(std::uint64_t i=0;i<info.count;++i){CyrusPlacementRecord row{};
+            if(!boundary->record(lease,i,&row))throw std::runtime_error("Cannot read native Paint candidate");
+            const auto value=evaluate(std::int64_t(row.face)-1,{row.bary[0],row.bary[1],row.bary[2]},row.identity);
+            if(!value.first)continue;
+            for(int k=0;k<3;++k){const auto offset=k*3;const auto scaled=Point3(row.transform[offset],row.transform[offset+1],row.transform[offset+2])*float(value.second);row.transform[offset]=scaled.x;row.transform[offset+1]=scaled.y;row.transform[offset+2]=scaled.z;}
+            if(!boundary->appendFilter(output,i,row.transform))throw std::runtime_error("Cannot append native Paint successor");
+        }
+        one_typed_value_local(Value* result);vl.result=static_cast<Value*>(boundary->finishFilter(output));
+        if(!vl.result)throw std::runtime_error("Cannot finalize native Paint successor");
+        for(auto& region:regions){region.doc->queries+=region.stats.fieldQueries;++region.doc->maskApplications;}
+        return_value(vl.result);
+    }
+    struct Materializations {const CyrusPlacementApi* api;std::uint64_t rows=0,matrices=0,arrays=0;~Materializations(){api->notePaintTransport(rows,matrices,arrays);}} materializations{boundary};
+    two_typed_value_locals(Array* result,Array* copy);vl.result=new Array(rows->size);++materializations.arrays;
+    for(int i=0;i<rows->size;++i){
+        type_check(rows->data[i],Array,_T("keyed placement"));auto* row=static_cast<Array*>(rows->data[i]);cyrus::rows::raw(row);
+        const auto value=evaluate(row->data[3]->to_int()-1,vec(row->data[4]->to_point3()),std::uint64_t(row->data[2]->to_int64()));const auto scale=value.second;
+        if(value.first){
             vl.copy=new Array(row->size);vl.result->append(vl.copy);Matrix3 tm=row->data[0]->to_matrix3();for(int k=0;k<3;++k)tm.SetRow(k,tm.GetRow(k)*float(scale));vl.copy->append(new Matrix3Value(tm));
+            ++materializations.rows;++materializations.matrices;
             for(int k=1;k<row->size;++k)vl.copy->append(row->data[k]);
         }
     }

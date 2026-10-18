@@ -74,6 +74,8 @@ def reject_development_binary(filename, data, *, allow_owned_preview=False, allo
             raise RuntimeError('Refusing development licensing authority in product package: '+filename)
     if not allow_owned_preview and any('cyrusOwnedPreviewFault'.encode(encoding) in data for encoding in ('ascii','utf-16le')):
         raise RuntimeError('Refusing development preview fault injection in product package: '+filename)
+    if not allow_owned_placement and any('cyrusOwnedNativeFault'.encode(encoding) in data for encoding in ('ascii','utf-16le')):
+        raise RuntimeError('Refusing development native failure injection in product package: '+filename)
 
 
 def require_team_authority(data, header):
@@ -209,6 +211,9 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Source containers are labelled helpers. Create/Pick selects an own pool automatically.\n'
            'Select the Scatter controller for planting settings; parked sources retain their metadata.\n'
            'Count supports 1,000,000 per population within a shared 1,000,000 controller candidate budget, including retries.\n'
+           '0.86.0 keeps placement generation, masks, Edit, acceptance and output ownership in native storage.\n'
+           'Sparse Edit Undo shares unchanged authored blocks; large edits still need proportional memory.\n'
+           'System-memory admission and the existing candidate cap still apply. Failed updates retain the previous complete result and Undo.\n'
            'Translation commits eligible static source models in one Undo. Resize/rotate/scale only change the boundary.\n'
            'Wholly managed groups move together; partial groups, locked/animated/constrained transforms and instanced helpers are guarded.\n'
            'Randomize XYZ has separate Undoable rotation, scale, whole-scale and movement resets.\n'

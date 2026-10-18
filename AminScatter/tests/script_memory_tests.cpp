@@ -7,6 +7,11 @@ void require(bool v){if(!v)throw std::runtime_error("workspace accounting assert
 template<class F> void rejects(F f){bool failed=false;try{f();}catch(const std::exception&){failed=true;}require(failed);}
 int main(){try{
     constexpr std::uint64_t MiB=1024*1024,commit=8ULL*1024*MiB;
+    cyrus::script_memory::admitNative(0,256*MiB);
+    cyrus::script_memory::admitNative(commit-256*MiB,commit);
+    rejects([&]{cyrus::script_memory::admitNative(1,256*MiB);});
+    rejects([&]{cyrus::script_memory::admitNative(0,255*MiB);});
+    rejects([&]{cyrus::script_memory::admitNative(std::numeric_limits<std::uint64_t>::max(),commit);});
     require(target(100*MiB,60*MiB,40*MiB,commit)==100*MiB);
     auto next=target(100*MiB,54*MiB,140*MiB,commit);
     require(next==256*MiB&&54*MiB+(next-100*MiB)>=140*MiB);

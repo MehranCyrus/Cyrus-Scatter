@@ -6,6 +6,7 @@
 #include <maxscript/foundation/3dmath.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include "placement_value.h"
+#include "native_fault_qualification.h"
 #include "placement_transport.h"
 #include "placement_materialization.h"
 #include "placement_host_text.h"
@@ -56,6 +57,40 @@ visible_class_instance(CyrusPlacementBuffer,"CyrusPlacementBuffer");
 Value* cyrusPlacementValue(p::View value){return new CyrusPlacementBuffer(std::move(value));}
 bool cyrusIsPlacementValue(Value* value){return value&&value->is_kind_of(class_tag(CyrusPlacementBuffer));}
 const p::View& cyrusPlacementView(Value* value){type_check(value,CyrusPlacementBuffer,_T("immutable native placement buffer"));return static_cast<CyrusPlacementBuffer*>(value)->value;}
+
+// A bounded accessor for the actual PFlow Script Operator. The immutable view
+// pins source/receiver correspondence; only the requested matrix is detached.
+visible_class_debug_ok(CyrusPlacementTransforms)
+class CyrusPlacementTransforms : public Value {
+public:
+    const p::View value;
+    explicit CyrusPlacementTransforms(p::View view):value(std::move(view)){tag=class_tag(CyrusPlacementTransforms);}
+    classof_methods(CyrusPlacementTransforms,Value);
+    void collect() override{delete this;}
+    void sprin1(CharStream* s) override{s->printf(_T("<CyrusPlacementTransforms:%llu>"),static_cast<unsigned long long>(value.size()));}
+    Value* deep_copy(HashTable*) override{return this;}
+    Value* get_property(Value** a,int n) override{
+        if(n==1&&a[0]==Name::intern(_T("count")))return Integer::intern(int(value.size()));
+        return Value::get_property(a,n);
+    }
+    Value* get_vf(Value** a,int n) override{
+        if(n!=1)throw RuntimeError(_T("Native transforms need one index"));
+        const int i=a[0]->to_int();if(i<1||std::size_t(i)>value.size())throw RuntimeError(_T("Native transform index out of range"));
+        const auto& m=value.at(std::size_t(i-1)).transform;Matrix3 tm(1);
+        for(int j=0;j<4;++j)tm.SetRow(j,Point3(m[j*3],m[j*3+1],m[j*3+2]));
+        p::MaterializationScope materializations(p::TransportStage::Readback);materializations.matrix();
+        return new Matrix3Value(tm);
+    }
+};
+visible_class_instance(CyrusPlacementTransforms,"CyrusPlacementTransforms");
+def_visible_primitive(cyrusPlacementTransformGroups,"cyrusPlacementTransformGroups");
+Value* cyrusPlacementTransformGroups_cf(Value** a,int n){check_arg_count(cyrusPlacementTransformGroups,1,n);return api([&]()->Value*{
+    const auto& view=cyrusPlacementView(a[0]);std::vector<std::vector<std::uint32_t>> groups(view.sources());
+    for(std::size_t i=0;i<view.size();++i)groups[view.at(i).source-1].push_back(std::uint32_t(i));
+    one_typed_value_local(Array* result);vl.result=new Array(int(groups.size()));
+    for(const auto& group:groups)vl.result->append(new CyrusPlacementTransforms(view.select(group)));
+    return_value(vl.result);
+});}
 
 visible_class_debug_ok(CyrusPlacementContext)
 class CyrusPlacementContext : public Value {
@@ -114,7 +149,7 @@ Value* cyrusPlacementReceivers_cf(Value** a,int n){check_arg_count(cyrusPlacemen
 });}
 
 def_visible_primitive(cyrusPlacementNativeVersion,"cyrusPlacementNativeVersion");
-Value* cyrusPlacementNativeVersion_cf(Value**,int n){check_arg_count(cyrusPlacementNativeVersion,0,n);return Integer::intern(1);}
+Value* cyrusPlacementNativeVersion_cf(Value**,int n){check_arg_count(cyrusPlacementNativeVersion,0,n);return Integer::intern(2);}
 def_visible_primitive(cyrusPlacementOwner,"cyrusPlacementOwner");
 Value* cyrusPlacementOwner_cf(Value**,int n){check_arg_count(cyrusPlacementOwner,0,n);return api([]{return Integer64::intern(static_cast<INT64>(p::newOwner()));});}
 def_visible_primitive(cyrusPlacementToken,"cyrusPlacementToken");
@@ -155,6 +190,7 @@ Value* cyrusPlacementCapture_cf(Value** a,int n){check_arg_count(cyrusPlacementC
 });}
 def_visible_primitive(cyrusPlacementPage,"cyrusPlacementPage");
 Value* cyrusPlacementPage_cf(Value** a,int n){check_arg_count(cyrusPlacementPage,4,n);return api([&]()->Value*{
+    cyrus::owned::fault(10);
     const auto& view=cyrusPlacementView(a[0]);const auto offset=unsignedValue(a[2]);
     const auto records=view.page(std::size_t(offset),std::size_t(unsignedValue(a[3])),token(a[1]));
     p::MaterializationScope measurement(p::TransportStage::Readback);
@@ -209,7 +245,7 @@ Value* cyrusPlacementTransportStats_cf(Value** a,int n){
     if(n<0||n>1)throw RuntimeError(_T("Transport statistics accept an optional observation Boolean"));
     if(n==1){if(a[0]!=&true_value&&a[0]!=&false_value)throw RuntimeError(_T("Transport observation requires a Boolean"));p::observeMaterializations(a[0]==&true_value);}
     two_typed_value_locals(Array* result,Array* stage);vl.result=new Array(int(p::TransportStage::Count)+1);vl.result->append(p::observingMaterializations()?&true_value:&false_value);
-    const bool covered[]={true,true,false,true,true,true,true,true,true,true};std::size_t index=0;
+    const bool covered[]={true,true,true,true,true,true,true,true,true,true};std::size_t index=0;
     static_assert(std::size(covered)==std::size_t(p::TransportStage::Count));
     for(const auto& c:p::materializations()){vl.stage=new Array(5);vl.result->append(vl.stage);vl.stage->append(covered[index++]?&true_value:&false_value);for(auto value:{c.rows,c.matrices,c.strings,c.populationArrays})vl.stage->append(Integer64::intern(static_cast<INT64>(value)));}
     return_value(vl.result);
@@ -217,3 +253,9 @@ Value* cyrusPlacementTransportStats_cf(Value** a,int n){
 def_visible_primitive(cyrusPlacementMemoryStats,"cyrusPlacementMemoryStats");
 Value* cyrusPlacementMemoryStats_cf(Value**,int n){check_arg_count(cyrusPlacementMemoryStats,0,n);const auto s=p::metrics();one_typed_value_local(Array* result);vl.result=new Array(8);
     for(auto v:{s.liveBytes,s.peakBytes,s.totalBytes,s.allocations,s.liveAllocations,s.liveStores,s.liveSelections,s.readbackRows})vl.result->append(Integer64::intern(static_cast<INT64>(v)));return_value(vl.result);}
+
+def_visible_primitive(cyrusPlacementStorageStats,"cyrusPlacementStorageStats");
+Value* cyrusPlacementStorageStats_cf(Value** a,int n){check_arg_count(cyrusPlacementStorageStats,1,n);return api([&]()->Value*{
+    const auto& view=cyrusPlacementView(a[0]);one_typed_value_local(Array* result);vl.result=new Array(3);
+    for(auto value:{view.size(),view.baseBytes(),view.selectionBytes()})vl.result->append(Integer64::intern(INT64(value)));return_value(vl.result);
+});}

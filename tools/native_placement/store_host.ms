@@ -41,7 +41,7 @@
     local empty=cyrusPlacementCapture NSOwner 1 0 0 #()
     check (empty.count==0) "Typed empty generation permits no sources" log
     local info=cyrusBrushPlacementInfo NSCompact
-    check (info[1]==1 and info[2]==96 and info[6]==2 and info[7]==NSRawRows[1][1].row4) "Brush reads the owning DLL's versioned POD lease without a second store" log
+    check (info[1]==2 and info[2]==96 and info[6]==2 and info[7]==NSRawRows[1][1].row4) "Brush reads the owning DLL's versioned POD lease without a second store" log
     fn wrongBrush=(cyrusBrushPlacementInfo #())
     check (rejected wrongBrush) "Brush rejects a wrong-kind native handle" log
     NSRetained=deepCopy NSCompact

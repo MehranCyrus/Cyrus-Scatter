@@ -1,19 +1,13 @@
-# Native placement pipeline — active implementation
+# Native placement pipeline — 0.86.0 delivery
 
-Current execution: [measured N01 baseline, native storage/adapters and connected internal Surface-random controller](EXECUTION_0860.md).
-The default placement pipeline remains the existing 0.85.4 route. The internal
-native route has scoped Max 2027 history/lifecycle evidence and matched CPU
-Update measurements: faster at 50k/200k, slower at 5k. Optional/downstream
-migration and N08 overhead/resource work remain open. There is no 0.86.0
-installer or product-wide performance claim.
+Current execution: [native pipeline, measured evidence and final qualification](EXECUTION_0860.md).
+Development source is 0.86.0 with the native-only controller enabled by default.
+Generation, masks/Paint, Edit, acceptance, preview, PFlow and bounded Bake have
+been migrated. Final scoped Max 2027 qualification and packaging are complete;
+use the [delivery report](DELIVERY_0860.md) for installers, evidence and limits.
+Earlier prototype timings and route descriptions below are historical.
 
-18 October checkpoint: [Whole Scale/mesh density controller integration and
-Analyzer Area adapter parity](EXECUTION_0860.md#optional-preparation-checkpoint--18-october-2026).
-The actual Analyzer Area owner workflow remains guarded. Same-frame numeric-field
-freshness, ordinary Count history and idle behavior have scoped Max 2027 witnesses;
-Paint, falloff, Edit and downstream migration continue under the active objective.
-
-17 October 2026. **Implementation resumed by the user’s [active objective](../improvement-program/OBJECTIVE.md). P01–P07 remain implemented.** The [reviewed implementation checkpoint](BASELINE_0854_20261017.md) is `7379ea3`, pushed and remote verified. First coherent native delivery: **0.86.0**, pending N01–N09 acceptance.
+17 October 2026. **Implementation resumed by the user’s [active objective](../improvement-program/OBJECTIVE.md). P01–P07 remain implemented.** The [reviewed implementation checkpoint](BASELINE_0854_20261017.md) is `7379ea3`, pushed and remote verified. First coherent native delivery: **0.86.0**, with scoped N01–N09 acceptance recorded in the delivery report.
 
 The following investigation describes the pre-implementation findings; its historical no-test statements do not override the fresh baseline receipt or active ledger. Baseline: delivered Scatter 0.85.4, schema 58, branch `codex/workflow-0.75`, HEAD `5aee4ef2242307b92e16c96e0106ee095d6a4215` plus existing dirty/untracked work. No product version changes, Max interaction, builds, installation, commits or pushes in this investigation. Slope/altitude behavior and settings remain outside the change scope.
 

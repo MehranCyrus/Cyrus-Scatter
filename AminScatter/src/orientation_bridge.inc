@@ -2,11 +2,13 @@ def_visible_primitive(cyrusOrientRows, "cyrusOrientRows");
 Value* cyrusOrientRows_cf(Value** args,int count) {
     check_arg_count(cyrusOrientRows,4,count);
     auto array=[](Value* v){type_check(v,Array,_T("orientation data"));return static_cast<Array*>(v);};
-    auto* input=array(args[0]);auto* pattern=array(args[1]);auto* axes=array(args[2]);auto* offsets=array(args[3]);
+    const bool native=cyrusIsPlacementValue(args[0]);
+    auto* input=native?nullptr:array(args[0]);auto* pattern=array(args[1]);auto* axes=array(args[2]);auto* offsets=array(args[3]);
     if(pattern->size!=2)throw RuntimeError(_T("Invalid orientation pattern"));
     if(!pattern->data[0]->to_bool())return args[0];
     std::vector<amin::Instance> rows;std::vector<amin::AnalyzerBand> bands;std::vector<int> forward;std::vector<double> heights;
-    for(int i=0;i<input->size;++i)rows.push_back(placementInstance(array(input->data[i])));
+    if(native){const auto& view=cyrusPlacementView(args[0]);if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Analyzer orientation requires raw native candidates"));rows.reserve(view.size());for(std::size_t i=0;i<view.size();++i)rows.push_back(placementInstance(view.at(i)));}
+    else for(int i=0;i<input->size;++i)rows.push_back(placementInstance(array(input->data[i])));
     for(int i=0;i<axes->size;++i)forward.push_back(axes->data[i]->to_int());
     for(int i=0;i<offsets->size;++i)heights.push_back(offsets->data[i]->to_float());
     auto* wire=array(pattern->data[1]);
@@ -21,8 +23,14 @@ Value* cyrusOrientRows_cf(Value** args,int count) {
         bands.push_back(std::move(band));
     }
     try{amin::orientBoundary(rows,bands,forward,heights);}catch(const std::exception&){throw RuntimeError(_T("Invalid boundary orientation data"));}
+    if(native)try{
+        const auto& view=cyrusPlacementView(args[0]);cyrus::placements::Builder builder(view.token().owner,view.stage(),view.sources(),view.size(),view.sourceCohort(),view.receiverCohort());
+        for(std::size_t i=0;i<rows.size();++i)builder.appendGenerated(placementRecord(rows[i],view.at(i).receiver,false));
+        return cyrusPlacementValue(builder.freeze());
+    }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+    cyrus::placements::MaterializationScope materializations(cyrus::placements::TransportStage::Orientation);materializations.populationArray();
     two_typed_value_locals(Array* result,Array* row);vl.result=new Array(static_cast<int>(rows.size()));
     for(const auto& row:rows){Matrix3 tm(TRUE);tm.SetRow(0,point(row.xAxis));tm.SetRow(1,point(row.yAxis));tm.SetRow(2,point(row.zAxis));tm.SetTrans(point(row.position));
-        vl.row=new Array(2);vl.row->append(new Matrix3Value(tm));vl.row->append(Integer::intern(row.source+1));appendIdentity(vl.row,row);vl.result->append(vl.row);}
+        vl.row=new Array(2);materializations.row();vl.row->append(new Matrix3Value(tm));materializations.matrix();vl.row->append(Integer::intern(row.source+1));appendIdentity(vl.row,row);vl.result->append(vl.row);}
     return_value(vl.result);
 }

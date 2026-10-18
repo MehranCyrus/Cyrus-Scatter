@@ -8,6 +8,7 @@
 #include <set>
 #include <stdexcept>
 #include <tuple>
+#include <unordered_set>
 
 namespace cyrus::procedural {
 namespace {
@@ -48,7 +49,10 @@ Result evaluate(const Plan& plan){
             require(!set.id.empty()&&setIDs.emplace(set.id,std::make_pair(l,s)).second,"Duplicate or empty set identity");
             validate(set.self);require(set.budget<=receivers::limit&&set.attemptLimit<=receivers::limit,"Population budget/attempt limit exceeds 1,000,000");
             require(set.attemptLimit>=set.budget,"Attempt limit is below initial budget");
-            std::set<std::string> ids;std::set<std::uint64_t> candidateIDs,ordinaryOrdinals;
+            // Membership only: bucket order never participates in placement.
+            // Avoid two population-sized balanced trees and their reallocations.
+            std::unordered_set<std::string> ids;std::unordered_set<std::uint64_t> candidateIDs,ordinaryOrdinals;
+            candidateIDs.reserve(set.samples.size());ordinaryOrdinals.reserve(set.samples.size());
             for(const auto& p:set.samples){
                 if(p.candidateIdentity){
                     unsigned receiver=0;std::uint64_t local=0;
@@ -101,13 +105,14 @@ Result evaluate(const Plan& plan){
             for(auto& r:result.sets){r.kept.clear();r.conflicts.clear();}
             for(std::size_t s=0;s<layer.sets.size();++s){const auto& set=layer.sets[s];auto& r=result.sets[s];
                 r.reasons.assign(set.samples.size(),Reason::NotConsumed);r.attempts=prefixes[s];
-                std::vector<std::size_t> active;
+                std::vector<std::size_t> active;active.reserve(set.samples.size());
                 for(std::size_t i=0;i<set.samples.size();++i){const auto& p=set.samples[i];
                     if(suppressed[s][i])r.reasons[i]=Reason::Cleanup;
                     else if(p.protectedEdit||p.ordinal<prefixes[s])active.push_back(i);
                 }
                 std::stable_sort(active.begin(),active.end(),[&](auto a,auto b){return set.samples[a].ordinal<set.samples[b].ordinal;});
                 std::vector<amin::Vec3> positions;std::vector<double> radii;std::vector<bool> pins;
+                positions.reserve(active.size());radii.reserve(active.size());pins.reserve(active.size());
                 for(auto i:active){const auto& p=set.samples[i];positions.push_back(p.position);radii.push_back(p.radii.forMetric(set.self.planar));pins.push_back(p.protectedEdit);}
                 std::vector<groups::ScopedRule> external;
                 // Diagnostic priority: layer, sibling, self. It never changes the
@@ -121,6 +126,7 @@ Result evaluate(const Plan& plan){
                         groups::ScopedRule rule;rule.multiplier=distance.multiplier;
                         rule.reason=ol==l?Reason::SetSpacing:Reason::LayerSpacing;
                         rule.values.gap=distance.gap;rule.values.planar=distance.planar;
+                        rule.values.ownRadii.reserve(active.size());
                         for(auto i:active)rule.values.ownRadii.push_back(set.samples[i].radii.forMetric(distance.planar));
                         const auto append=[&](std::size_t i){rule.values.blockers.push_back(other.samples[i].position);rule.values.blockerRadii.push_back(other.samples[i].radii.forMetric(distance.planar));};
                         if(ol<l||(ol==l&&os<s))for(auto i:output.layers[ol].sets[os].kept)append(i);

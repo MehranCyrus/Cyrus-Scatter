@@ -2,8 +2,9 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.85.4 | Count memory correction; ready presets and preceding UI corrections retained |
-| Scatter native/package | 0.85.4 Max 2027 MZP/EXE; exact qualification in the memory handoff | Historical installation receipts preserved; no artist installation by this task |
+| Scatter UI | 0.86.0 | Native placement foundation; authored behavior, ready presets and UI retained |
+| Scatter native/package | 0.86.0 Max 2027 MZP/EXE; [current acceptance](plans/native-placement/DELIVERY_0860.md) | Exact loaded/package identities required; no artist installation by this task |
+| Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Recipe / numeric-settings format and capability | 5 / 3 | Revisioned presentation/capture; 242 authored fields retained; strict earlier recipe reads |
 | Library / portable-package capability | 3 / 2 | Bounded collections; graph 2 adds evaluated receiver/static spline context to the mesh/Standard/PNG adapter; package manifest remains 1 |
 | Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
@@ -15,6 +16,19 @@
 
 ## Choosing the next version
 
+**18 October 2026 active delivery: 0.86.0.** The user explicitly requests finishing
+the native N01–N09 migration, Max 2027 qualification and compiled installers,
+without installation. This is a substantial foundation delivery: native
+placement/preparation/acceptance/publication/output storage, bounded script
+readback and compact native Edit history. Preserve authored algorithms, scene
+schema 58, recipe 5, numeric settings 3, CyrusUnified1, registration identities
+and independent Analyzer/MCP/licensing versions. Brush's internal placement POD
+interface advances to 2 and requires the matched module pair. The completed
+production route now uses 0.86.0; earlier prototype labels remain historical.
+Hashes, not captions, identify evidence. Both exact-pair installers are compiled and verified;
+the delivery report records scoped final acceptance. Further roadmap features wait
+until this coherent native delivery is ready.
+
 **17 October 2026 memory correction, 0.85.4 selected before implementation:** the user authorizes the Count-change memory fix, retained Undo, Max 2027 qualification and an installer without installation. Reduce transient script transport, keep schedules/radii in immutable native-owned buffers, and reserve necessary session script workspace before allocation can force destructive collection. Report reservation in diagnostics; do not change saved heap preferences. Preserve scene schema 58, authored settings, recipe/library formats, registration identities and independent product versions. Slope/altitude behavior is out of scope; Phase 6 remains paused. The preceding investigation is `build/memory-investigation-20261017-01/README.md`; native/script identities and release acceptance must be freshly qualified.
 
 **16 October 2026 ready-preset correction:** the user selects **0.85.3** after the Forest runtime comparison, and explicitly chooses Add Layers to preserve existing planting. Asset-backed loading and ready saves reuse the current gallery/recipe transaction, extending the portable adapter to capability 2/graph 2. Recipe format 5, scene schema 58, library capability 3, CyrusUnified1 and independent product versions remain unchanged. See [scope and acceptance](plans/preset-gallery-improvements/LOAD_0853.md). No further Phase 6 work is included.
@@ -23,7 +37,7 @@
 
 **16 October 2026 delivery:** the user selected **0.85.1** for the [preset/gallery implementation](plans/preset-gallery-improvements/PROGRESS_0851.md). The MZP and unsigned EXE contain the same qualified payload; the artist profile was not installed into. [Format 5](plans/preset-gallery-improvements/FORMAT_5.md) adds logical revision and optional presentation/capture while retaining 242 authored fields and scene schema 58. Library capability 3 adds bounded collection summaries; portable capability 1 declares its closed adapter. Numeric settings remain format 3. These separate capability changes do not renumber Analyzer, MCP or licensing. Final package and acceptance follow the [handoff](plans/preset-gallery-improvements/DELIVERY_0851.md).
 
-**Current scope, 17 October 2026:** Scatter remains 0.85.4. Foundation/documentation and knowledge maintenance do not bump the product. P01–P07 are implemented, with supported P10 recipe/library deliveries; I07/P08 paths and subsequent feature work remain pending. Further implementation is paused. The preserved resumption and older version proposals below are history, not current authorization. Use the [current ledger](plans/improvement-program/PROGRESS.md#original-phase-status) for implementation status and the next authorized action.
+**Historical documentation-only scope, 17 October 2026 (superseded by native implementation authorization):** Scatter remained 0.85.4. Foundation/documentation and knowledge maintenance did not bump the product. P01–P07 were implemented, with supported P10 recipe/library deliveries; I07/P08 paths and subsequent feature work remained pending. Use the [current ledger](plans/improvement-program/PROGRESS.md#original-phase-status) for implementation status and the next authorized action.
 
 **Historical program override, 15 October 2026 (version selection still applies to authorized deliveries):** the user explicitly authorizes
 0.82.6.1 for the preset/browser delivery, followed by substantial deliveries

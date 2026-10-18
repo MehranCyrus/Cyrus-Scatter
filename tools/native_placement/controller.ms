@@ -163,7 +163,7 @@
    local clock=dotNetClass "System.Diagnostics.Stopwatch"
    for native in #(false,true) do (
     NCRoot.procNativeRoute=native
-    for repetition=0 to 5 do for amount in #(5000,50000,200000) do (
+    for repetition=0 to 10 do for amount in #(5000,50000,200000) do (
      with undo off NCLeaf.amount=amount
      local start=clock.GetTimestamp()
      NCApply()

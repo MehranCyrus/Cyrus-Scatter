@@ -1,0 +1,3092 @@
+{
+  "schema": "cyrus.native-delivery/1",
+  "status": "scoped-qualified",
+  "version": "0.86.0",
+  "max_year": 2027,
+  "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+  "native_build": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exit_code": 0
+      },
+      {
+        "stage": "build",
+        "exit_code": 0
+      },
+      {
+        "stage": "tests",
+        "exit_code": 0
+      }
+    ],
+    "project": "scatter",
+    "max_year": 2027,
+    "host_launched": false,
+    "installed": false,
+    "binaries": {
+      "build/native-fields-0860-20261018-01/native-11/AminScatter.dlx": "fdc4f3354ccc0d9004e1761efb4c2e6e6210cd20102d314ce29a2130145a3073",
+      "build/native-fields-0860-20261018-01/native-11/CyrusBrush.dlx": "519f0f8233d87315d1df2c7fcc0500fb698e5f1cf97aff501c48e2e464847ea9",
+      "build/native-fields-0860-20261018-01/native-11/CyrusBrushStorage.dlh": "43a162af2685776c7c301f25ff978f1bd467e2c8a600f68b3d2cead9f39806fa",
+      "build/native-fields-0860-20261018-01/native-11/CyrusGallery.dll": "9cb9e69e3cb9fe08f65e69c956eafcfc718e754aef514415b780896eb162a5cc",
+      "build/native-fields-0860-20261018-01/native-11/CyrusScatterEdit.dlm": "62494b956eac278352ffc8981cb447a4bb0c926ebcf98cb94871f486a947e0d1"
+    },
+    "sources": {
+      "AminScatter/CMakeLists.txt": "e95c253cb827895e7b5453f58daa69c2e43cd0ecc0cc33efa29b8b4c8b669ab2",
+      "AminScatter/scripts/AminScatterObject.ms": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "AminScatter/ui/LibraryGallery.cs": "49bffd7815107f01f6b2cee5f6cb9ce0a514a82d84680aa1324504587e361378",
+      "AminScatter/tools/build_gallery.py": "a3f87747bd0691c45e02ccaf3c4ea16b59373769c25743bc994e4947351a58f7",
+      "AminScatter/src/analyzer_area_bridge.inc": "4eac0f0d53b3bd41f8de394e3fc6c285d4353b7bc967d0e360f0e63bcf467be8",
+      "AminScatter/src/asset_bitmap.cpp": "76be12a8be96357afad9ed1ec618f0b0cbd4695798d7599fa7c438fe8ff8bdc7",
+      "AminScatter/src/asset_mesh.cpp": "47ba4eabe61a9257d08dc0634d82ca000cadfc513b9a39b450c8923e241bbd0b",
+      "AminScatter/src/asset_package.cpp": "83b1143ba6bdfc60ad9c7dd1bb09296568e1762eb090a98c4c04033c67a8ddb2",
+      "AminScatter/src/authored_revision.inc": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+      "AminScatter/src/boundary_falloff.inc": "3072288bc0c425de48623b21156b17bad552621a3f84b11428da592c7dde1d8b",
+      "AminScatter/src/boundary_falloff_bridge.inc": "9d6d3fda48f118de45af70b13fcd8d8251da8460a143acc65d51c669550f465d",
+      "AminScatter/src/brush.cpp": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+      "AminScatter/src/brush_host.cpp": "45e64db0032bfe1986357c38f3f206ee8c32f648b330fce84c9248f7ca6a32f2",
+      "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+      "AminScatter/src/cluster.inc": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+      "AminScatter/src/cyrus_edit.cpp": "5fa23a7b44e1d07dae8202b057bfc45e23dc7622d68eb0aa6afce9e195c888a0",
+      "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "AminScatter/src/cyrus_edit_data.inc": "18811043d849b30d7578483a8f597aea7960b124ea8854c7846a5f84419f2390",
+      "AminScatter/src/cyrus_edit_stack.inc": "ab7181ed112d23519d3564bde60fc24c91e1770119f871178d6943768401698c",
+      "AminScatter/src/cyrus_edit_storage.inc": "653a765d23a159ba521f02d66b9a2f39d4aa65e6136b49df93a227948b358751",
+      "AminScatter/src/diagnostics.cpp": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+      "AminScatter/src/diagnostics_bridge.cpp": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+      "AminScatter/src/direction_orientation_bridge.inc": "c7bae7b0bc621fb18a0386f3eb9493ca04b2e95f769f5f3e5b310881e9388637",
+      "AminScatter/src/direction_orientation_value.inc": "3f3ced9aecf90e0fdce2fce8741ab7f14384ea117e0839c4832595d56a22eb7d",
+      "AminScatter/src/edge_border.inc": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+      "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "AminScatter/src/final.inc": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+      "AminScatter/src/geometry_preview.inc": "c57ecb50090d391e26ed9d6a28fb75e31e01f698419d6692bc81cd970965351b",
+      "AminScatter/src/grid.cpp": "8c1babc895f2294ef156d75a063e1d81f15e49466b22e407df5ce530da1afba9",
+      "AminScatter/src/grid_bridge.inc": "dfde74276cf5c911bbba74cc85d31d8b842da6507b7258016af818e3744fc559",
+      "AminScatter/src/grid_value.inc": "0cedd161155510222687b7fa19007598710d83f0dc6fccc9f5168463114251cb",
+      "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "AminScatter/src/group_spacing_bridge.inc": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+      "AminScatter/src/input_validity.cpp": "a4ff5a6e53b21c4bcc6eff954ddef108036f0d2dedd99c49485fed0c171cb52d",
+      "AminScatter/src/max_bridge.cpp": "d2e645a64642a9ea91114247d715983fd893c8f7c29345b3fa4b4f2854ee087b",
+      "AminScatter/src/mesh_density.cpp": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+      "AminScatter/src/mesh_density_bridge.inc": "8aa1fefad3289a8de43713b9702183411c3115ab61e288e45e944fde106bdb00",
+      "AminScatter/src/mesh_display.inc": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+      "AminScatter/src/orientation.cpp": "7ca86521e02e3dd16f4afd02720d0f2564040f858fd5d1c9e4af5727f5265d3a",
+      "AminScatter/src/orientation.inc": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+      "AminScatter/src/orientation_bridge.inc": "91840d903564644fe5fba1fc746056ce1dcac9ba2d9f9ac344dd4cfa32083467",
+      "AminScatter/src/placement_api.cpp": "b5f675861a00c7f4e36cb7457eaff11fd1e063510eeb734219e609619dd7f7bb",
+      "AminScatter/src/placement_binding.cpp": "4f986d96432538b1139a2e77a3eec3281ee71652ba777ab212e9550deef2756a",
+      "AminScatter/src/placement_hold_qualification.cpp": "cf595b251978fed88921cf3fe273551022075ce0b6c298af5b7a500df290155a",
+      "AminScatter/src/placement_identity.inc": "5134fd60f3a338957160fa5ae4130acbe25ee78ce6d94ba5dd9a8e90d90fa67e",
+      "AminScatter/src/placement_materialization.cpp": "917868e70cced1ae5b4213ff90f4f5f00f8af7dacbb0fb5ff48884a83ec62218",
+      "AminScatter/src/placement_observation.cpp": "d96577a38c8971fcfd12f9a3e98ffc4824338d2d46f63e6338e6856de2afee3c",
+      "AminScatter/src/placement_publication.cpp": "79d27b49e7f798cb1f9c093cf9a32c00ac3ce5662f6db8a71055ab098667cc22",
+      "AminScatter/src/placement_publication_value.cpp": "ac7ea39aaa89f82dfed99ea5f027bcc7be046b1285cbf515644f6ae3158db81d",
+      "AminScatter/src/placement_store.cpp": "21376a46c0d9d53d6424d2bb33a9f04d7d5bbbc781498460ba581672d692c170",
+      "AminScatter/src/placement_value.cpp": "ae32b22ca26948882d008b1f783445c1f842b1d3a3a401d6bff2524c3d6bf692",
+      "AminScatter/src/point_display.cpp": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+      "AminScatter/src/point_publication.inc": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "AminScatter/src/prepared_band.inc": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+      "AminScatter/src/presets.cpp": "84edeb4557b083fe81f637ab736c79adb1a95722a18eabdac56969b68285184e",
+      "AminScatter/src/presets_bridge.cpp": "8fd0b86f736ec9fe08885b54a19b1f6ede9191652fd2d21af8d0cf59bd4b3245",
+      "AminScatter/src/preview.cpp": "d46c4b540529c4dd2541eb20932cdd5d954ba261febeb999e22e8f98a6de762d",
+      "AminScatter/src/preview_compare.inc": "f6d0d444bf496f887653fdc396b49743c3c539840afd3211f0711b5d93923fb4",
+      "AminScatter/src/preview_palette.inc": "c8b06143363b809e315679f9a6125e2adad750c63db18d2d33273f645e287222",
+      "AminScatter/src/preview_rows.inc": "0b0a986c45882e73b42cee34189aebf33303fd65d750fcdfb69708796bfb890f",
+      "AminScatter/src/procedural.cpp": "7e6490833d54bf97ef19b0d1a0bfa33c592f96b3c3e7f0d4278ff6ef9d70792d",
+      "AminScatter/src/procedural_bridge.inc": "6e1db0b0b350f0bd9c5301f50a5afa41a4b0aaad65cbe20cf12b471ed72af8e9",
+      "AminScatter/src/radius_preview.inc": "300da761730f9d1ea7e5997a970abbc74464054babcec9c6e62c594b45c65def",
+      "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+      "AminScatter/src/receiver_bridge.inc": "2736997e507258bde5106ce914febec029bf821a119c5204447ded5f565aece2",
+      "AminScatter/src/receiver_plan.cpp": "eb4907eeba7e8f0e4b5d73039a7dcbf14f8d504e2b9b5c81cc51f995bcb8a0b8",
+      "AminScatter/src/recipe_fields.inc": "b1cf18dd736e517edf508cae26bf1601324a41423596a212bade2cf866c7cf43",
+      "AminScatter/src/recipe_library.cpp": "27d83855a8aa56e58a8b9b8233520157271470a8bea6902c7c6300a73c739135",
+      "AminScatter/src/recipe_store.cpp": "5428e1308b72b52a290501a46209021c78dace1fc638d3330c82feaddbdc269d",
+      "AminScatter/src/recipes.cpp": "955b69dc5033c72646fba2f186d4b34c38e8905e0797da0a800fcf0d73770783",
+      "AminScatter/src/recipes_bridge.cpp": "053c32eaa95a2fac5aeed9bf7107020c897648dd62078e93726777ec3ad56d7e",
+      "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+      "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "AminScatter/src/scatter.cpp": "37497aeddafd25469c38c9762f4b691ba4c60cf27c0cc634e201e59367c6747b",
+      "AminScatter/src/script_buffers.cpp": "2d0c21119191e335cf38acc6d81dceccfa1f491b3e65041c52660981e3627e7a",
+      "AminScatter/src/source_container.cpp": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+      "AminScatter/src/source_geometry.inc": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+      "AminScatter/src/spacing.inc": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+      "AminScatter/src/spline_bands.cpp": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+      "AminScatter/src/spline_field_bridge.inc": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+      "AminScatter/src/spline_overlay.cpp": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+      "AminScatter/src/spline_overlay_bridge.inc": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+      "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "AminScatter/src/surface_filter_bridge.inc": "2391d5a14e9aa9f6bc614b62384547a9b81e3d3db4a9955e94f0b4d87b5b0e76",
+      "AminScatter/src/team_license.cpp": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+      "AminScatter/src/whole_scale_bridge.inc": "a70bbe77a2c7e10f283df61d37044865c7503e5b79304c365dbb9b21b52affcd",
+      "AminScatter/include/asset_bitmap.h": "bf9521a56cc97a9b3ca3c354c748813411db27148b54e3c719aaae44ee45ecd8",
+      "AminScatter/include/asset_mesh.h": "bafa89f7731971a18e070fb0d18aded4bbcaf7609c0d5482237ec7344613fa95",
+      "AminScatter/include/asset_package.h": "bae423820fdfb6194cff671bf88b49fdb713a7868b76f19b82d3151f23c22c17",
+      "AminScatter/include/brush.h": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+      "AminScatter/include/diagnostics.h": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+      "AminScatter/include/edit_blocks.h": "cf45bb03123c4d7e4ffc1188aef22597e15a7d944848c789a5c54f0235c1ae36",
+      "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "AminScatter/include/grid.h": "98ac2390235f798fb2d7aeda183913d267be54fc9619e7b2c0fd4f96e46f3f65",
+      "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "AminScatter/include/license_boundary.h": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+      "AminScatter/include/maxscript_heap.h": "ed040d8a74c576d495f34e7f63253651a4f372dfca4f88866621897e39ced6cf",
+      "AminScatter/include/mesh_density.h": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+      "AminScatter/include/native_fault_qualification.h": "e89c6cbb78fd774ab09dbd6e0b432b110ed511e4aa8f1c3326133c198dfd85af",
+      "AminScatter/include/orientation.h": "514e8bdb9adebd10eb3ce4317fd83681070b72b3ba92ede239bb2e1e5be18930",
+      "AminScatter/include/placement_api.h": "18d70c37965ebc589ebda0322d1a2bdb65749038abddc591cb61eb8859a3c891",
+      "AminScatter/include/placement_binding.h": "cb14b0195b3c40563c4c84c9fd29640bcd854d734263813191cfbfab4839e230",
+      "AminScatter/include/placement_host_text.h": "74876c70fb9465f7b75e3bf0b6321763bfafc83111cd1db7a970c095445e34d7",
+      "AminScatter/include/placement_materialization.h": "4c61fb8783c9403c70ed8f58425c8f885853e7b5132facc72edacef8543da029",
+      "AminScatter/include/placement_publication.h": "53b6aa7296e622ada5ea9c273cebaff2cc982f6c9336cd91f1256ddc2b809e5b",
+      "AminScatter/include/placement_store.h": "a11b1663aac89f18a173253b0bc0a7025fcddfd85b3d915e455eba88165ac70c",
+      "AminScatter/include/placement_transport.h": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "AminScatter/include/placement_value.h": "d20dc61de4f3b2488a7f86bdceb4eef521e70fdfca22797eb846935abdfae058",
+      "AminScatter/include/point_preview.h": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+      "AminScatter/include/presets.h": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+      "AminScatter/include/preview_budget.h": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+      "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "AminScatter/include/procedural.h": "4e96c632f1fc8ba44da699e42b194ca9f1d447ea2b5c46eeefdd671ada3331d1",
+      "AminScatter/include/receiver_plan.h": "f0616163138d83af9bc24bf3bba4e4d79bdec052da9ff4b3d657182e8d5d1b55",
+      "AminScatter/include/recipe_library.h": "f7a84c3da0de59568131da7fb94f6907dcde19c6fe57c9c27c2e171dfef4e57c",
+      "AminScatter/include/recipe_store.h": "06f0afe90e942f4b43d6e990df84864827d10925552014658b2e438ddee17cfb",
+      "AminScatter/include/recipes.h": "fba0b0ac753361da2f0c61d67d86a6f67591cfdf312eec7ad8f7ab75e39307a1",
+      "AminScatter/include/scatter.h": "555a06ad5fe703ed02b9d0dac910745f45dfb9d5ddf088d661a2dba27abe9adb",
+      "AminScatter/include/script_buffers.h": "17035a5e660d9ad0cbb0b88af1922fd03bf6accb81abcba0e90721da7857d7eb",
+      "AminScatter/include/script_memory_budget.h": "7f597d6fbd01eaa36688fe08eb34c7baea16b42af0683a8950d08a4855a12a5a",
+      "AminScatter/include/spline_bands.h": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+      "AminScatter/include/spline_field_value.h": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+      "AminScatter/include/spline_overlay.h": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+      "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+      "AminScatter/include/viewport_policy.h": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+      "AminScatter/tests/asset_mesh_tests.cpp": "b05a56854210eb7a2a5ddd2df11651a7b02cfa0388b7f5a963a0436e44a24adc",
+      "AminScatter/tests/asset_package_tests.cpp": "ae732d7a814dca5d5f7a1905a00d669dec48ed485ccde156607dbffef24fccee",
+      "AminScatter/tests/boundary_falloff_tests.cpp": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+      "AminScatter/tests/brush_conversion_tests.cpp": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+      "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+      "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+      "AminScatter/tests/compute_benchmark.cpp": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+      "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "AminScatter/tests/data/recipe_v1_defaults.json": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+      "AminScatter/tests/data/recipe_v2_defaults.json": "27be9fc368e48cc5002125abadca5d70c6eb0a48fda121e558f3f9184dd362ab",
+      "AminScatter/tests/data/recipe_v3_defaults.json": "5fbe1bdc1e116cae020b136663ea5118ce7f10411da95353ef7811d21861fc25",
+      "AminScatter/tests/data/recipe_v4_defaults.json": "a770a5240e4730d2e128ce2ebd9be5130750d2b5bf59d3b370a46c7ad9ce633b",
+      "AminScatter/tests/diagnostics_tests.cpp": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+      "AminScatter/tests/direction_orientation_tests.cpp": "c1fcab5234137fc3be723b57a125da2f90f87c8e277f0aba023c7b1deb93d693",
+      "AminScatter/tests/edge_border_tests.cpp": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+      "AminScatter/tests/edit_blocks_tests.cpp": "b3a441a75fec8a58697c0e0ab5ebed22730dd433b7abf46960d134c4d4c476ef",
+      "AminScatter/tests/grid_tests.cpp": "756eb16ebf851a73e9790418acfe10cd2cee76f383b7eb1696844a51f9ab3665",
+      "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "AminScatter/tests/mesh_density_tests.cpp": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+      "AminScatter/tests/orientation_tests.cpp": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+      "AminScatter/tests/placement_publication_tests.cpp": "98f82bd58a7e6b57a028115169664c893ef01bfc17a5aa651014e1ecb0036a8a",
+      "AminScatter/tests/placement_store_failure_tests.cpp": "ba196f3ebb0fb5e3e80bdaef57ab40444e17ba461fead4769919ea89265b4906",
+      "AminScatter/tests/placement_store_tests.cpp": "38157b4569ea8bcc85d717c24de15b46d5135771f236dad7fc52885b8b2ebf99",
+      "AminScatter/tests/prepared_band_tests.cpp": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+      "AminScatter/tests/preset_tests.cpp": "9dec8c828b652581e404f183438dd8c1b2eec3f8f8afdbd054ffaf2f44429bbf",
+      "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "AminScatter/tests/procedural_tests.cpp": "09fb42d91be64374c4c8b5b46e128fce9d3376af4d7c7b63eb3c07baab4085db",
+      "AminScatter/tests/publication_tests.cpp": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "AminScatter/tests/receiver_tests.cpp": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+      "AminScatter/tests/recipe_library_tests.cpp": "0957b93e3e7f3b2ab9c219c4e8b605888f1e7c2dfcec90d74527ae016cc7eb6e",
+      "AminScatter/tests/recipe_store_tests.cpp": "7d2eac41249ef7d6301b887dca442e860f815057500ab87b48f382b90bb00aab",
+      "AminScatter/tests/recipe_tests.cpp": "3b937ed031e60ad6c886c2aaf96b576a5c3e83ec6f6e7cad5d48bf312346ab02",
+      "AminScatter/tests/scatter_tests.cpp": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+      "AminScatter/tests/script_memory_tests.cpp": "1d1a10e1bd45b82495805dba844769a95232976d4d49c48496e102ed3f0f5144",
+      "AminScatter/tests/spacing_tests.cpp": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+      "AminScatter/tests/spline_band_tests.cpp": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+      "AminScatter/tests/spline_overlay_tests.cpp": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+      "AminScatter/tests/surface_filter_tests.cpp": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+      "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "AminScatter/tests/viewport_policy_tests.cpp": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+      "AminScatter/tests/weight_tests.cpp": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+      "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+    },
+    "preview_fault_lab": false,
+    "placement_qualification": false,
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+  },
+  "fault_build": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exit_code": 0
+      },
+      {
+        "stage": "build",
+        "exit_code": 0
+      },
+      {
+        "stage": "tests",
+        "exit_code": 0
+      }
+    ],
+    "project": "scatter",
+    "max_year": 2027,
+    "host_launched": false,
+    "installed": false,
+    "binaries": {
+      "build/native-fields-0860-20261018-01/fault-11/AminScatter.dlx": "808b9bdda66590fc69e5c962a0d404adce73239521059d50160a63be5ef3ba6b",
+      "build/native-fields-0860-20261018-01/fault-11/CyrusBrush.dlx": "e13e6ea74dd6fcaa40579fda5a472631713351cc773631e05525918074f3e4f4",
+      "build/native-fields-0860-20261018-01/fault-11/CyrusBrushStorage.dlh": "6abd4259ceb8ad20c47fc2d2897de554195a52c4e1e6b412864f23896a1dca08",
+      "build/native-fields-0860-20261018-01/fault-11/CyrusGallery.dll": "9cb9e69e3cb9fe08f65e69c956eafcfc718e754aef514415b780896eb162a5cc",
+      "build/native-fields-0860-20261018-01/fault-11/CyrusScatterEdit.dlm": "90ff6c42d89ece6ec680f3ad0406110c30b17b0782cd5c21347982f166fadfa1"
+    },
+    "sources": {
+      "AminScatter/CMakeLists.txt": "e95c253cb827895e7b5453f58daa69c2e43cd0ecc0cc33efa29b8b4c8b669ab2",
+      "AminScatter/scripts/AminScatterObject.ms": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "AminScatter/ui/LibraryGallery.cs": "49bffd7815107f01f6b2cee5f6cb9ce0a514a82d84680aa1324504587e361378",
+      "AminScatter/tools/build_gallery.py": "a3f87747bd0691c45e02ccaf3c4ea16b59373769c25743bc994e4947351a58f7",
+      "AminScatter/src/analyzer_area_bridge.inc": "4eac0f0d53b3bd41f8de394e3fc6c285d4353b7bc967d0e360f0e63bcf467be8",
+      "AminScatter/src/asset_bitmap.cpp": "76be12a8be96357afad9ed1ec618f0b0cbd4695798d7599fa7c438fe8ff8bdc7",
+      "AminScatter/src/asset_mesh.cpp": "47ba4eabe61a9257d08dc0634d82ca000cadfc513b9a39b450c8923e241bbd0b",
+      "AminScatter/src/asset_package.cpp": "83b1143ba6bdfc60ad9c7dd1bb09296568e1762eb090a98c4c04033c67a8ddb2",
+      "AminScatter/src/authored_revision.inc": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+      "AminScatter/src/boundary_falloff.inc": "3072288bc0c425de48623b21156b17bad552621a3f84b11428da592c7dde1d8b",
+      "AminScatter/src/boundary_falloff_bridge.inc": "9d6d3fda48f118de45af70b13fcd8d8251da8460a143acc65d51c669550f465d",
+      "AminScatter/src/brush.cpp": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+      "AminScatter/src/brush_host.cpp": "45e64db0032bfe1986357c38f3f206ee8c32f648b330fce84c9248f7ca6a32f2",
+      "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+      "AminScatter/src/cluster.inc": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+      "AminScatter/src/cyrus_edit.cpp": "5fa23a7b44e1d07dae8202b057bfc45e23dc7622d68eb0aa6afce9e195c888a0",
+      "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "AminScatter/src/cyrus_edit_data.inc": "18811043d849b30d7578483a8f597aea7960b124ea8854c7846a5f84419f2390",
+      "AminScatter/src/cyrus_edit_stack.inc": "ab7181ed112d23519d3564bde60fc24c91e1770119f871178d6943768401698c",
+      "AminScatter/src/cyrus_edit_storage.inc": "653a765d23a159ba521f02d66b9a2f39d4aa65e6136b49df93a227948b358751",
+      "AminScatter/src/diagnostics.cpp": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+      "AminScatter/src/diagnostics_bridge.cpp": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+      "AminScatter/src/direction_orientation_bridge.inc": "c7bae7b0bc621fb18a0386f3eb9493ca04b2e95f769f5f3e5b310881e9388637",
+      "AminScatter/src/direction_orientation_value.inc": "3f3ced9aecf90e0fdce2fce8741ab7f14384ea117e0839c4832595d56a22eb7d",
+      "AminScatter/src/edge_border.inc": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+      "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "AminScatter/src/final.inc": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+      "AminScatter/src/geometry_preview.inc": "c57ecb50090d391e26ed9d6a28fb75e31e01f698419d6692bc81cd970965351b",
+      "AminScatter/src/grid.cpp": "8c1babc895f2294ef156d75a063e1d81f15e49466b22e407df5ce530da1afba9",
+      "AminScatter/src/grid_bridge.inc": "dfde74276cf5c911bbba74cc85d31d8b842da6507b7258016af818e3744fc559",
+      "AminScatter/src/grid_value.inc": "0cedd161155510222687b7fa19007598710d83f0dc6fccc9f5168463114251cb",
+      "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "AminScatter/src/group_spacing_bridge.inc": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+      "AminScatter/src/input_validity.cpp": "a4ff5a6e53b21c4bcc6eff954ddef108036f0d2dedd99c49485fed0c171cb52d",
+      "AminScatter/src/max_bridge.cpp": "d2e645a64642a9ea91114247d715983fd893c8f7c29345b3fa4b4f2854ee087b",
+      "AminScatter/src/mesh_density.cpp": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+      "AminScatter/src/mesh_density_bridge.inc": "8aa1fefad3289a8de43713b9702183411c3115ab61e288e45e944fde106bdb00",
+      "AminScatter/src/mesh_display.inc": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+      "AminScatter/src/orientation.cpp": "7ca86521e02e3dd16f4afd02720d0f2564040f858fd5d1c9e4af5727f5265d3a",
+      "AminScatter/src/orientation.inc": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+      "AminScatter/src/orientation_bridge.inc": "91840d903564644fe5fba1fc746056ce1dcac9ba2d9f9ac344dd4cfa32083467",
+      "AminScatter/src/placement_api.cpp": "b5f675861a00c7f4e36cb7457eaff11fd1e063510eeb734219e609619dd7f7bb",
+      "AminScatter/src/placement_binding.cpp": "4f986d96432538b1139a2e77a3eec3281ee71652ba777ab212e9550deef2756a",
+      "AminScatter/src/placement_hold_qualification.cpp": "cf595b251978fed88921cf3fe273551022075ce0b6c298af5b7a500df290155a",
+      "AminScatter/src/placement_identity.inc": "5134fd60f3a338957160fa5ae4130acbe25ee78ce6d94ba5dd9a8e90d90fa67e",
+      "AminScatter/src/placement_materialization.cpp": "917868e70cced1ae5b4213ff90f4f5f00f8af7dacbb0fb5ff48884a83ec62218",
+      "AminScatter/src/placement_observation.cpp": "d96577a38c8971fcfd12f9a3e98ffc4824338d2d46f63e6338e6856de2afee3c",
+      "AminScatter/src/placement_publication.cpp": "79d27b49e7f798cb1f9c093cf9a32c00ac3ce5662f6db8a71055ab098667cc22",
+      "AminScatter/src/placement_publication_value.cpp": "ac7ea39aaa89f82dfed99ea5f027bcc7be046b1285cbf515644f6ae3158db81d",
+      "AminScatter/src/placement_store.cpp": "21376a46c0d9d53d6424d2bb33a9f04d7d5bbbc781498460ba581672d692c170",
+      "AminScatter/src/placement_value.cpp": "ae32b22ca26948882d008b1f783445c1f842b1d3a3a401d6bff2524c3d6bf692",
+      "AminScatter/src/point_display.cpp": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+      "AminScatter/src/point_publication.inc": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "AminScatter/src/prepared_band.inc": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+      "AminScatter/src/presets.cpp": "84edeb4557b083fe81f637ab736c79adb1a95722a18eabdac56969b68285184e",
+      "AminScatter/src/presets_bridge.cpp": "8fd0b86f736ec9fe08885b54a19b1f6ede9191652fd2d21af8d0cf59bd4b3245",
+      "AminScatter/src/preview.cpp": "d46c4b540529c4dd2541eb20932cdd5d954ba261febeb999e22e8f98a6de762d",
+      "AminScatter/src/preview_compare.inc": "f6d0d444bf496f887653fdc396b49743c3c539840afd3211f0711b5d93923fb4",
+      "AminScatter/src/preview_palette.inc": "c8b06143363b809e315679f9a6125e2adad750c63db18d2d33273f645e287222",
+      "AminScatter/src/preview_rows.inc": "0b0a986c45882e73b42cee34189aebf33303fd65d750fcdfb69708796bfb890f",
+      "AminScatter/src/procedural.cpp": "7e6490833d54bf97ef19b0d1a0bfa33c592f96b3c3e7f0d4278ff6ef9d70792d",
+      "AminScatter/src/procedural_bridge.inc": "6e1db0b0b350f0bd9c5301f50a5afa41a4b0aaad65cbe20cf12b471ed72af8e9",
+      "AminScatter/src/radius_preview.inc": "300da761730f9d1ea7e5997a970abbc74464054babcec9c6e62c594b45c65def",
+      "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+      "AminScatter/src/receiver_bridge.inc": "2736997e507258bde5106ce914febec029bf821a119c5204447ded5f565aece2",
+      "AminScatter/src/receiver_plan.cpp": "eb4907eeba7e8f0e4b5d73039a7dcbf14f8d504e2b9b5c81cc51f995bcb8a0b8",
+      "AminScatter/src/recipe_fields.inc": "b1cf18dd736e517edf508cae26bf1601324a41423596a212bade2cf866c7cf43",
+      "AminScatter/src/recipe_library.cpp": "27d83855a8aa56e58a8b9b8233520157271470a8bea6902c7c6300a73c739135",
+      "AminScatter/src/recipe_store.cpp": "5428e1308b72b52a290501a46209021c78dace1fc638d3330c82feaddbdc269d",
+      "AminScatter/src/recipes.cpp": "955b69dc5033c72646fba2f186d4b34c38e8905e0797da0a800fcf0d73770783",
+      "AminScatter/src/recipes_bridge.cpp": "053c32eaa95a2fac5aeed9bf7107020c897648dd62078e93726777ec3ad56d7e",
+      "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+      "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "AminScatter/src/scatter.cpp": "37497aeddafd25469c38c9762f4b691ba4c60cf27c0cc634e201e59367c6747b",
+      "AminScatter/src/script_buffers.cpp": "2d0c21119191e335cf38acc6d81dceccfa1f491b3e65041c52660981e3627e7a",
+      "AminScatter/src/source_container.cpp": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+      "AminScatter/src/source_geometry.inc": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+      "AminScatter/src/spacing.inc": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+      "AminScatter/src/spline_bands.cpp": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+      "AminScatter/src/spline_field_bridge.inc": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+      "AminScatter/src/spline_overlay.cpp": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+      "AminScatter/src/spline_overlay_bridge.inc": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+      "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "AminScatter/src/surface_filter_bridge.inc": "2391d5a14e9aa9f6bc614b62384547a9b81e3d3db4a9955e94f0b4d87b5b0e76",
+      "AminScatter/src/team_license.cpp": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+      "AminScatter/src/whole_scale_bridge.inc": "a70bbe77a2c7e10f283df61d37044865c7503e5b79304c365dbb9b21b52affcd",
+      "AminScatter/include/asset_bitmap.h": "bf9521a56cc97a9b3ca3c354c748813411db27148b54e3c719aaae44ee45ecd8",
+      "AminScatter/include/asset_mesh.h": "bafa89f7731971a18e070fb0d18aded4bbcaf7609c0d5482237ec7344613fa95",
+      "AminScatter/include/asset_package.h": "bae423820fdfb6194cff671bf88b49fdb713a7868b76f19b82d3151f23c22c17",
+      "AminScatter/include/brush.h": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+      "AminScatter/include/diagnostics.h": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+      "AminScatter/include/edit_blocks.h": "cf45bb03123c4d7e4ffc1188aef22597e15a7d944848c789a5c54f0235c1ae36",
+      "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "AminScatter/include/grid.h": "98ac2390235f798fb2d7aeda183913d267be54fc9619e7b2c0fd4f96e46f3f65",
+      "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "AminScatter/include/license_boundary.h": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+      "AminScatter/include/maxscript_heap.h": "ed040d8a74c576d495f34e7f63253651a4f372dfca4f88866621897e39ced6cf",
+      "AminScatter/include/mesh_density.h": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+      "AminScatter/include/native_fault_qualification.h": "e89c6cbb78fd774ab09dbd6e0b432b110ed511e4aa8f1c3326133c198dfd85af",
+      "AminScatter/include/orientation.h": "514e8bdb9adebd10eb3ce4317fd83681070b72b3ba92ede239bb2e1e5be18930",
+      "AminScatter/include/placement_api.h": "18d70c37965ebc589ebda0322d1a2bdb65749038abddc591cb61eb8859a3c891",
+      "AminScatter/include/placement_binding.h": "cb14b0195b3c40563c4c84c9fd29640bcd854d734263813191cfbfab4839e230",
+      "AminScatter/include/placement_host_text.h": "74876c70fb9465f7b75e3bf0b6321763bfafc83111cd1db7a970c095445e34d7",
+      "AminScatter/include/placement_materialization.h": "4c61fb8783c9403c70ed8f58425c8f885853e7b5132facc72edacef8543da029",
+      "AminScatter/include/placement_publication.h": "53b6aa7296e622ada5ea9c273cebaff2cc982f6c9336cd91f1256ddc2b809e5b",
+      "AminScatter/include/placement_store.h": "a11b1663aac89f18a173253b0bc0a7025fcddfd85b3d915e455eba88165ac70c",
+      "AminScatter/include/placement_transport.h": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "AminScatter/include/placement_value.h": "d20dc61de4f3b2488a7f86bdceb4eef521e70fdfca22797eb846935abdfae058",
+      "AminScatter/include/point_preview.h": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+      "AminScatter/include/presets.h": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+      "AminScatter/include/preview_budget.h": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+      "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "AminScatter/include/procedural.h": "4e96c632f1fc8ba44da699e42b194ca9f1d447ea2b5c46eeefdd671ada3331d1",
+      "AminScatter/include/receiver_plan.h": "f0616163138d83af9bc24bf3bba4e4d79bdec052da9ff4b3d657182e8d5d1b55",
+      "AminScatter/include/recipe_library.h": "f7a84c3da0de59568131da7fb94f6907dcde19c6fe57c9c27c2e171dfef4e57c",
+      "AminScatter/include/recipe_store.h": "06f0afe90e942f4b43d6e990df84864827d10925552014658b2e438ddee17cfb",
+      "AminScatter/include/recipes.h": "fba0b0ac753361da2f0c61d67d86a6f67591cfdf312eec7ad8f7ab75e39307a1",
+      "AminScatter/include/scatter.h": "555a06ad5fe703ed02b9d0dac910745f45dfb9d5ddf088d661a2dba27abe9adb",
+      "AminScatter/include/script_buffers.h": "17035a5e660d9ad0cbb0b88af1922fd03bf6accb81abcba0e90721da7857d7eb",
+      "AminScatter/include/script_memory_budget.h": "7f597d6fbd01eaa36688fe08eb34c7baea16b42af0683a8950d08a4855a12a5a",
+      "AminScatter/include/spline_bands.h": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+      "AminScatter/include/spline_field_value.h": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+      "AminScatter/include/spline_overlay.h": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+      "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+      "AminScatter/include/viewport_policy.h": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+      "AminScatter/tests/asset_mesh_tests.cpp": "b05a56854210eb7a2a5ddd2df11651a7b02cfa0388b7f5a963a0436e44a24adc",
+      "AminScatter/tests/asset_package_tests.cpp": "ae732d7a814dca5d5f7a1905a00d669dec48ed485ccde156607dbffef24fccee",
+      "AminScatter/tests/boundary_falloff_tests.cpp": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+      "AminScatter/tests/brush_conversion_tests.cpp": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+      "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+      "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+      "AminScatter/tests/compute_benchmark.cpp": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+      "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "AminScatter/tests/data/recipe_v1_defaults.json": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+      "AminScatter/tests/data/recipe_v2_defaults.json": "27be9fc368e48cc5002125abadca5d70c6eb0a48fda121e558f3f9184dd362ab",
+      "AminScatter/tests/data/recipe_v3_defaults.json": "5fbe1bdc1e116cae020b136663ea5118ce7f10411da95353ef7811d21861fc25",
+      "AminScatter/tests/data/recipe_v4_defaults.json": "a770a5240e4730d2e128ce2ebd9be5130750d2b5bf59d3b370a46c7ad9ce633b",
+      "AminScatter/tests/diagnostics_tests.cpp": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+      "AminScatter/tests/direction_orientation_tests.cpp": "c1fcab5234137fc3be723b57a125da2f90f87c8e277f0aba023c7b1deb93d693",
+      "AminScatter/tests/edge_border_tests.cpp": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+      "AminScatter/tests/edit_blocks_tests.cpp": "b3a441a75fec8a58697c0e0ab5ebed22730dd433b7abf46960d134c4d4c476ef",
+      "AminScatter/tests/grid_tests.cpp": "756eb16ebf851a73e9790418acfe10cd2cee76f383b7eb1696844a51f9ab3665",
+      "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "AminScatter/tests/mesh_density_tests.cpp": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+      "AminScatter/tests/orientation_tests.cpp": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+      "AminScatter/tests/placement_publication_tests.cpp": "98f82bd58a7e6b57a028115169664c893ef01bfc17a5aa651014e1ecb0036a8a",
+      "AminScatter/tests/placement_store_failure_tests.cpp": "ba196f3ebb0fb5e3e80bdaef57ab40444e17ba461fead4769919ea89265b4906",
+      "AminScatter/tests/placement_store_tests.cpp": "38157b4569ea8bcc85d717c24de15b46d5135771f236dad7fc52885b8b2ebf99",
+      "AminScatter/tests/prepared_band_tests.cpp": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+      "AminScatter/tests/preset_tests.cpp": "9dec8c828b652581e404f183438dd8c1b2eec3f8f8afdbd054ffaf2f44429bbf",
+      "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "AminScatter/tests/procedural_tests.cpp": "09fb42d91be64374c4c8b5b46e128fce9d3376af4d7c7b63eb3c07baab4085db",
+      "AminScatter/tests/publication_tests.cpp": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "AminScatter/tests/receiver_tests.cpp": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+      "AminScatter/tests/recipe_library_tests.cpp": "0957b93e3e7f3b2ab9c219c4e8b605888f1e7c2dfcec90d74527ae016cc7eb6e",
+      "AminScatter/tests/recipe_store_tests.cpp": "7d2eac41249ef7d6301b887dca442e860f815057500ab87b48f382b90bb00aab",
+      "AminScatter/tests/recipe_tests.cpp": "3b937ed031e60ad6c886c2aaf96b576a5c3e83ec6f6e7cad5d48bf312346ab02",
+      "AminScatter/tests/scatter_tests.cpp": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+      "AminScatter/tests/script_memory_tests.cpp": "1d1a10e1bd45b82495805dba844769a95232976d4d49c48496e102ed3f0f5144",
+      "AminScatter/tests/spacing_tests.cpp": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+      "AminScatter/tests/spline_band_tests.cpp": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+      "AminScatter/tests/spline_overlay_tests.cpp": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+      "AminScatter/tests/surface_filter_tests.cpp": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+      "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "AminScatter/tests/viewport_policy_tests.cpp": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+      "AminScatter/tests/weight_tests.cpp": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+      "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+    },
+    "preview_fault_lab": false,
+    "placement_qualification": true,
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+  },
+  "tests": {
+    "normal_native": 44,
+    "fault_native": 44,
+    "python": 168,
+    "frozen_scenes": 50,
+    "matrix": {
+      "capacity": {
+        "status": "passed",
+        "started_utc": "2026-10-18T05:58:59.340119+00:00",
+        "elapsed_seconds": 109.86000000004424,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_capacity.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "269d804c8cbb8d8fdf2c6596a8508ec8db78d19c7368d45d6bb0a97323dbff20"
+      },
+      "lifecycle": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:00:49.229402+00:00",
+        "elapsed_seconds": 28.76600000000326,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_lifecycle.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "e864d87b8e013b2294d0fccab933275a420ae524f29ca4a9661be7c60a0e8485"
+      },
+      "retention": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:01:18.002965+00:00",
+        "elapsed_seconds": 45.26600000000326,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_retention.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "67d4a0425d4b727ba5e563ec855ddf4b2697c5b43c7320985a271ddcd8ef27f2"
+      },
+      "goldens": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:02:03.294188+00:00",
+        "elapsed_seconds": 249.78100000001723,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_shipping.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20",
+          "goldens"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "e88fb63150b5c2229798562f1dbad6db15347fe4749d65e7f4135ba9f9a85ef7"
+      },
+      "controller": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:06:13.077536+00:00",
+        "elapsed_seconds": 437.030999999959,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_shipping.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20",
+          "controller"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "8280861dcffe3d8c88799324e8e79e69a9fe4c24c63f2046a3adfbbdf43d748d"
+      },
+      "edit": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:13:30.117886+00:00",
+        "elapsed_seconds": 55.45300000003772,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_shipping.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20",
+          "edit"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "f29f07e03dc38b6fef27831ba7ab2a0cb1aa3e3ac65a6ab23fa4169dc5045fd6"
+      },
+      "fields": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:25:16.365462+00:00",
+        "elapsed_seconds": 228.51500000001397,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_shipping.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20",
+          "fields"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "74b94caaf76a1dcb4a9ad175a6a2648e99d034ffb02960963973f536d9d3b658"
+      },
+      "presets": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:29:04.888418+00:00",
+        "elapsed_seconds": 157.0470000000205,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_presets.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "c2c596bf88eba816e11eca617d250ddb834b2d3a0b8fb327d30c1dcbb58993ec"
+      },
+      "outputs": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:31:41.943373+00:00",
+        "elapsed_seconds": 42.68699999997625,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_shipping.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20",
+          "outputs"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "386dc8ee07b0e627e7f62cc8c2a6de2e4d53f16a30f553ea14c1f53747dcf784"
+      },
+      "render": {
+        "status": "passed",
+        "started_utc": "2026-10-18T06:32:24.638128+00:00",
+        "elapsed_seconds": 53.31300000002375,
+        "command": [
+          "C:\\ProgramData\\miniconda3\\python.exe",
+          "-B",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\native_placement\\run_render.py",
+          "foundation-memory0854-nativeaccept-controller-20261018-20"
+        ],
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "launch_sha256": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49",
+        "log_sha256": "4f834e86b3104112d675fdaadda2f35ef61fc17e9a1423cd954118e1415165e8"
+      },
+      "preparation": {
+        "status": "passed",
+        "elapsed_seconds": 297.76600000000326,
+        "reason": "Finish authored Manual-to-Live mode transition before the passive baseline; original failure retained."
+      }
+    },
+    "soak_seconds": 3602.8910000000033,
+    "soak_cycles": 60
+  },
+  "performance": {
+    "schema": "cyrus.native-migration-performance/1",
+    "max_year": 2027,
+    "count": {
+      "old": {
+        "host": "build/mcp-qualification/foundation-memory0854-nativeobserve-baseline-20261018-02",
+        "script_sha256": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+        "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6",
+        "timings": [
+          {
+            "kind": "mountain",
+            "count": 5000,
+            "ordered_fingerprint": "26a6cfa8f6185ff19fb49c7bb847e605d13cd8b42b9507702d7ee00bbda5ac47",
+            "median_ms": 939.0633,
+            "empirical_p95_ms": 2127.7278,
+            "median_process_peak": 5516713984.0,
+            "median_process_growth": 1228800.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 927.7719,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5511622656,
+                "process_peak": 5511688192,
+                "process_growth": 65536,
+                "sample_count": 30
+              },
+              {
+                "iteration": 2,
+                "update_ms": 611.6729,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5514530816,
+                "process_peak": 5514596352,
+                "process_growth": 65536,
+                "sample_count": 19
+              },
+              {
+                "iteration": 3,
+                "update_ms": 833.6103,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5514600448,
+                "process_peak": 5515825152,
+                "process_growth": 1224704,
+                "sample_count": 27
+              },
+              {
+                "iteration": 4,
+                "update_ms": 950.3547,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5515202560,
+                "process_peak": 5516435456,
+                "process_growth": 1232896,
+                "sample_count": 30
+              },
+              {
+                "iteration": 5,
+                "update_ms": 837.5566,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5515182080,
+                "process_peak": 5516357632,
+                "process_growth": 1175552,
+                "sample_count": 27
+              },
+              {
+                "iteration": 6,
+                "update_ms": 796.5205,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5515235328,
+                "process_peak": 5520072704,
+                "process_growth": 4837376,
+                "sample_count": 25
+              },
+              {
+                "iteration": 7,
+                "update_ms": 1257.8415,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5515735040,
+                "process_peak": 5516992512,
+                "process_growth": 1257472,
+                "sample_count": 40
+              },
+              {
+                "iteration": 8,
+                "update_ms": 1318.0381,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5517426688,
+                "process_peak": 5518880768,
+                "process_growth": 1454080,
+                "sample_count": 43
+              },
+              {
+                "iteration": 9,
+                "update_ms": 2127.7278,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5520142336,
+                "process_peak": 5521391616,
+                "process_growth": 1249280,
+                "sample_count": 65
+              },
+              {
+                "iteration": 10,
+                "update_ms": 1151.0766,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5520093184,
+                "process_peak": 5520158720,
+                "process_growth": 65536,
+                "sample_count": 37
+              }
+            ]
+          },
+          {
+            "kind": "mountain",
+            "count": 50000,
+            "ordered_fingerprint": "2824a2c34802e2ada63f523850152fe314fa4934e8fa2330904723a48be5cd25",
+            "median_ms": 1371.7139,
+            "empirical_p95_ms": 1900.0652,
+            "median_process_peak": 5509517312.0,
+            "median_process_growth": 9207808.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 1183.6216,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5499944960,
+                "process_peak": 5509152768,
+                "process_growth": 9207808,
+                "sample_count": 38
+              },
+              {
+                "iteration": 2,
+                "update_ms": 1367.8056,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5497180160,
+                "process_peak": 5506383872,
+                "process_growth": 9203712,
+                "sample_count": 44
+              },
+              {
+                "iteration": 3,
+                "update_ms": 1227.4909,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500149760,
+                "process_peak": 5508235264,
+                "process_growth": 8085504,
+                "sample_count": 39
+              },
+              {
+                "iteration": 4,
+                "update_ms": 1719.3854,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500166144,
+                "process_peak": 5508251648,
+                "process_growth": 8085504,
+                "sample_count": 54
+              },
+              {
+                "iteration": 5,
+                "update_ms": 1243.5292,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500674048,
+                "process_peak": 5509881856,
+                "process_growth": 9207808,
+                "sample_count": 40
+              },
+              {
+                "iteration": 6,
+                "update_ms": 1332.8727,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500674048,
+                "process_peak": 5508694016,
+                "process_growth": 8019968,
+                "sample_count": 43
+              },
+              {
+                "iteration": 7,
+                "update_ms": 1375.6222,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5501005824,
+                "process_peak": 5510262784,
+                "process_growth": 9256960,
+                "sample_count": 44
+              },
+              {
+                "iteration": 8,
+                "update_ms": 1900.0652,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5501292544,
+                "process_peak": 5510500352,
+                "process_growth": 9207808,
+                "sample_count": 61
+              },
+              {
+                "iteration": 9,
+                "update_ms": 1556.3993,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5503709184,
+                "process_peak": 5512916992,
+                "process_growth": 9207808,
+                "sample_count": 50
+              },
+              {
+                "iteration": 10,
+                "update_ms": 1615.0843,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5505646592,
+                "process_peak": 5514936320,
+                "process_growth": 9289728,
+                "sample_count": 51
+              }
+            ]
+          },
+          {
+            "kind": "mountain",
+            "count": 90000,
+            "ordered_fingerprint": "eddf1c173f1a4af291138b70970419878e7a04f673a751313ee6a1e85b5d0e6d",
+            "median_ms": 1582.8288,
+            "empirical_p95_ms": 2150.5594,
+            "median_process_peak": 5516283904.0,
+            "median_process_growth": 15638528.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 1480.7787,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5499990016,
+                "process_peak": 5515661312,
+                "process_growth": 15671296,
+                "sample_count": 48
+              },
+              {
+                "iteration": 2,
+                "update_ms": 1438.9747,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5498425344,
+                "process_peak": 5512794112,
+                "process_growth": 14368768,
+                "sample_count": 47
+              },
+              {
+                "iteration": 3,
+                "update_ms": 1504.9505,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500157952,
+                "process_peak": 5515767808,
+                "process_growth": 15609856,
+                "sample_count": 49
+              },
+              {
+                "iteration": 4,
+                "update_ms": 2050.8934,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500121088,
+                "process_peak": 5515784192,
+                "process_growth": 15663104,
+                "sample_count": 65
+              },
+              {
+                "iteration": 5,
+                "update_ms": 1836.2082,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500674048,
+                "process_peak": 5516283904,
+                "process_growth": 15609856,
+                "sample_count": 58
+              },
+              {
+                "iteration": 6,
+                "update_ms": 1416.0708,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500674048,
+                "process_peak": 5516283904,
+                "process_growth": 15609856,
+                "sample_count": 45
+              },
+              {
+                "iteration": 7,
+                "update_ms": 1495.8972,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5501292544,
+                "process_peak": 5516972032,
+                "process_growth": 15679488,
+                "sample_count": 48
+              },
+              {
+                "iteration": 8,
+                "update_ms": 1798.3455,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5501292544,
+                "process_peak": 5516972032,
+                "process_growth": 15679488,
+                "sample_count": 58
+              },
+              {
+                "iteration": 9,
+                "update_ms": 2150.5594,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5504409600,
+                "process_peak": 5520154624,
+                "process_growth": 15745024,
+                "sample_count": 67
+              },
+              {
+                "iteration": 10,
+                "update_ms": 1660.7071,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5505646592,
+                "process_peak": 5521260544,
+                "process_growth": 15613952,
+                "sample_count": 53
+              }
+            ]
+          },
+          {
+            "kind": "mountain",
+            "count": 200000,
+            "ordered_fingerprint": "6ddb0ff8bab7686d837dfb6c46338886d4e9b719013ea94961ca2fa0fb5fac91",
+            "median_ms": 3182.3191500000003,
+            "empirical_p95_ms": 4707.9824,
+            "median_process_peak": 5541736448.0,
+            "median_process_growth": 40155136.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 2787.5959,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496438784,
+                "process_peak": 5536550912,
+                "process_growth": 40112128,
+                "sample_count": 89
+              },
+              {
+                "iteration": 2,
+                "update_ms": 2665.2557,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5497180160,
+                "process_peak": 5542133760,
+                "process_growth": 44953600,
+                "sample_count": 85
+              },
+              {
+                "iteration": 3,
+                "update_ms": 3020.041,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500157952,
+                "process_peak": 5540249600,
+                "process_growth": 40091648,
+                "sample_count": 97
+              },
+              {
+                "iteration": 4,
+                "update_ms": 3284.3083,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5501353984,
+                "process_peak": 5542068224,
+                "process_growth": 40714240,
+                "sample_count": 106
+              },
+              {
+                "iteration": 5,
+                "update_ms": 3080.33,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500674048,
+                "process_peak": 5540831232,
+                "process_growth": 40157184,
+                "sample_count": 99
+              },
+              {
+                "iteration": 6,
+                "update_ms": 2801.41,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5500702720,
+                "process_peak": 5540798464,
+                "process_growth": 40095744,
+                "sample_count": 90
+              },
+              {
+                "iteration": 7,
+                "update_ms": 3513.4228,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5501292544,
+                "process_peak": 5541404672,
+                "process_growth": 40112128,
+                "sample_count": 112
+              },
+              {
+                "iteration": 8,
+                "update_ms": 3498.8864,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5502300160,
+                "process_peak": 5548294144,
+                "process_growth": 45993984,
+                "sample_count": 112
+              },
+              {
+                "iteration": 9,
+                "update_ms": 4707.9824,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5505130496,
+                "process_peak": 5545283584,
+                "process_growth": 40153088,
+                "sample_count": 149
+              },
+              {
+                "iteration": 10,
+                "update_ms": 4032.5444,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5505646592,
+                "process_peak": 5546983424,
+                "process_growth": 41336832,
+                "sample_count": 124
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 5000,
+            "ordered_fingerprint": "72fc3735fd2a660992b408857526412b0d1629eaf237916c27c33126994fa2f5",
+            "median_ms": 955.10265,
+            "empirical_p95_ms": 1227.5691,
+            "median_process_peak": 5506050048.0,
+            "median_process_growth": 1165312.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 986.3337,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5494419456,
+                "process_peak": 5495566336,
+                "process_growth": 1146880,
+                "sample_count": 32
+              },
+              {
+                "iteration": 2,
+                "update_ms": 905.6696,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5499592704,
+                "process_peak": 5499691008,
+                "process_growth": 98304,
+                "sample_count": 29
+              },
+              {
+                "iteration": 3,
+                "update_ms": 808.7614,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5502705664,
+                "process_peak": 5504061440,
+                "process_growth": 1355776,
+                "sample_count": 26
+              },
+              {
+                "iteration": 4,
+                "update_ms": 808.1466,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5503041536,
+                "process_peak": 5503107072,
+                "process_growth": 65536,
+                "sample_count": 26
+              },
+              {
+                "iteration": 5,
+                "update_ms": 559.0768,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5503090688,
+                "process_peak": 5504335872,
+                "process_growth": 1245184,
+                "sample_count": 18
+              },
+              {
+                "iteration": 6,
+                "update_ms": 923.8716,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5506576384,
+                "process_peak": 5507764224,
+                "process_growth": 1187840,
+                "sample_count": 29
+              },
+              {
+                "iteration": 7,
+                "update_ms": 1227.5691,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5511254016,
+                "process_peak": 5512364032,
+                "process_growth": 1110016,
+                "sample_count": 37
+              },
+              {
+                "iteration": 8,
+                "update_ms": 1066.0794,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5511335936,
+                "process_peak": 5511401472,
+                "process_growth": 65536,
+                "sample_count": 34
+              },
+              {
+                "iteration": 9,
+                "update_ms": 1033.4825,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5511266304,
+                "process_peak": 5512450048,
+                "process_growth": 1183744,
+                "sample_count": 34
+              },
+              {
+                "iteration": 10,
+                "update_ms": 1108.7789,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5511254016,
+                "process_peak": 5512507392,
+                "process_growth": 1253376,
+                "sample_count": 36
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 50000,
+            "ordered_fingerprint": "0e1f9c2df3272a663e2533f6d3b50375bb6a22020025144ccaae33e55b979b34",
+            "median_ms": 1229.35635,
+            "empirical_p95_ms": 2114.805,
+            "median_process_peak": 5500282880.0,
+            "median_process_growth": 9574400.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 1185.447,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5355913216,
+                "process_peak": 5394657280,
+                "process_growth": 38744064,
+                "sample_count": 38
+              },
+              {
+                "iteration": 2,
+                "update_ms": 1279.4922,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5381001216,
+                "process_peak": 5390917632,
+                "process_growth": 9916416,
+                "sample_count": 41
+              },
+              {
+                "iteration": 3,
+                "update_ms": 1160.501,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5388836864,
+                "process_peak": 5403103232,
+                "process_growth": 14266368,
+                "sample_count": 37
+              },
+              {
+                "iteration": 4,
+                "update_ms": 1126.0556,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5488578560,
+                "process_peak": 5499043840,
+                "process_growth": 10465280,
+                "sample_count": 36
+              },
+              {
+                "iteration": 5,
+                "update_ms": 1126.8083,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5488644096,
+                "process_peak": 5497851904,
+                "process_growth": 9207808,
+                "sample_count": 37
+              },
+              {
+                "iteration": 6,
+                "update_ms": 1040.0035,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5492064256,
+                "process_peak": 5502566400,
+                "process_growth": 10502144,
+                "sample_count": 34
+              },
+              {
+                "iteration": 7,
+                "update_ms": 2114.805,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5492305920,
+                "process_peak": 5501521920,
+                "process_growth": 9216000,
+                "sample_count": 65
+              },
+              {
+                "iteration": 8,
+                "update_ms": 1737.5927,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496741888,
+                "process_peak": 5505974272,
+                "process_growth": 9232384,
+                "sample_count": 54
+              },
+              {
+                "iteration": 9,
+                "update_ms": 1321.324,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496889344,
+                "process_peak": 5504909312,
+                "process_growth": 8019968,
+                "sample_count": 42
+              },
+              {
+                "iteration": 10,
+                "update_ms": 1273.2657,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496762368,
+                "process_peak": 5505970176,
+                "process_growth": 9207808,
+                "sample_count": 41
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 90000,
+            "ordered_fingerprint": "6a95adde3cfaecd5e41102ca1deceeadf04697ff5c4f5d7a791f003642cd370d",
+            "median_ms": 1571.9931,
+            "empirical_p95_ms": 2699.2626,
+            "median_process_peak": 5506017280.0,
+            "median_process_growth": 15673344.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 1587.9587,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5394685952,
+                "process_peak": 5429334016,
+                "process_growth": 34648064,
+                "sample_count": 51
+              },
+              {
+                "iteration": 2,
+                "update_ms": 1606.3682,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5389901824,
+                "process_peak": 5427814400,
+                "process_growth": 37912576,
+                "sample_count": 52
+              },
+              {
+                "iteration": 3,
+                "update_ms": 1437.6918,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5402976256,
+                "process_peak": 5439451136,
+                "process_growth": 36474880,
+                "sample_count": 46
+              },
+              {
+                "iteration": 4,
+                "update_ms": 1556.0275,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5488525312,
+                "process_peak": 5504208896,
+                "process_growth": 15683584,
+                "sample_count": 50
+              },
+              {
+                "iteration": 5,
+                "update_ms": 1346.5971,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5488644096,
+                "process_peak": 5504258048,
+                "process_growth": 15613952,
+                "sample_count": 44
+              },
+              {
+                "iteration": 6,
+                "update_ms": 1539.1949,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5492129792,
+                "process_peak": 5507776512,
+                "process_growth": 15646720,
+                "sample_count": 49
+              },
+              {
+                "iteration": 7,
+                "update_ms": 2699.2626,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5492289536,
+                "process_peak": 5509107712,
+                "process_growth": 16818176,
+                "sample_count": 82
+              },
+              {
+                "iteration": 8,
+                "update_ms": 2240.7619,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496770560,
+                "process_peak": 5512380416,
+                "process_growth": 15609856,
+                "sample_count": 72
+              },
+              {
+                "iteration": 9,
+                "update_ms": 1595.8107,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496926208,
+                "process_peak": 5512536064,
+                "process_growth": 15609856,
+                "sample_count": 51
+              },
+              {
+                "iteration": 10,
+                "update_ms": 1366.534,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496762368,
+                "process_peak": 5512425472,
+                "process_growth": 15663104,
+                "sample_count": 43
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 200000,
+            "ordered_fingerprint": "b57985952fad51ff4ff06df62d1994117ff4939bf6d06734ff48dee4d205b625",
+            "median_ms": 3125.783,
+            "empirical_p95_ms": 4856.9977,
+            "median_process_peak": 5531136000.0,
+            "median_process_growth": 43636736.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 3021.9901,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5419003904,
+                "process_peak": 5517905920,
+                "process_growth": 98902016,
+                "sample_count": 97
+              },
+              {
+                "iteration": 2,
+                "update_ms": 3229.5759,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5417431040,
+                "process_peak": 5522243584,
+                "process_growth": 104812544,
+                "sample_count": 104
+              },
+              {
+                "iteration": 3,
+                "update_ms": 2899.394,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5430091776,
+                "process_peak": 5521911808,
+                "process_growth": 91820032,
+                "sample_count": 94
+              },
+              {
+                "iteration": 4,
+                "update_ms": 2974.632,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5488627712,
+                "process_peak": 5529980928,
+                "process_growth": 41353216,
+                "sample_count": 96
+              },
+              {
+                "iteration": 5,
+                "update_ms": 2965.186,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5488644096,
+                "process_peak": 5528805376,
+                "process_growth": 40161280,
+                "sample_count": 95
+              },
+              {
+                "iteration": 6,
+                "update_ms": 3380.3975,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5492129792,
+                "process_peak": 5532291072,
+                "process_growth": 40161280,
+                "sample_count": 106
+              },
+              {
+                "iteration": 7,
+                "update_ms": 4856.9977,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5492293632,
+                "process_peak": 5538213888,
+                "process_growth": 45920256,
+                "sample_count": 148
+              },
+              {
+                "iteration": 8,
+                "update_ms": 3287.6752,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496889344,
+                "process_peak": 5537050624,
+                "process_growth": 40161280,
+                "sample_count": 106
+              },
+              {
+                "iteration": 9,
+                "update_ms": 2984.6274,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496926208,
+                "process_peak": 5542846464,
+                "process_growth": 45920256,
+                "sample_count": 97
+              },
+              {
+                "iteration": 10,
+                "update_ms": 3601.4503,
+                "heap_before": 603979776,
+                "heap_after": 603979776,
+                "process_before": 5496762368,
+                "process_peak": 5536923648,
+                "process_growth": 40161280,
+                "sample_count": 115
+              }
+            ]
+          }
+        ],
+        "receipts": {
+          "native-baseline.tsv": "db908976e88a0439bb36855e65b22e3df6b49c4201a046841b8f711a224f2125",
+          "native-process-samples.tsv": "8a4d06ee26b817f05bca3f41919d10818d61d6d4bbb4affc6c79e4da5a0a4ddd",
+          "launch.json": "62c38a5b77c4c3bde86630a21d2d23ab844ff8758bd3d45c3babfe625d1bb9a5"
+        }
+      },
+      "native11": {
+        "host": "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22",
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6",
+        "timings": [
+          {
+            "kind": "mountain",
+            "count": 5000,
+            "ordered_fingerprint": "26a6cfa8f6185ff19fb49c7bb847e605d13cd8b42b9507702d7ee00bbda5ac47",
+            "median_ms": 197.6209,
+            "empirical_p95_ms": 309.935,
+            "median_process_peak": 4953722880.0,
+            "median_process_growth": 718848.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 309.935,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953640960,
+                "process_peak": 4953640960,
+                "process_growth": 0,
+                "sample_count": 10
+              },
+              {
+                "iteration": 2,
+                "update_ms": 290.256,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953640960,
+                "process_peak": 4953640960,
+                "process_growth": 0,
+                "sample_count": 10
+              },
+              {
+                "iteration": 3,
+                "update_ms": 177.1147,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953739264,
+                "process_peak": 4953804800,
+                "process_growth": 65536,
+                "sample_count": 5
+              },
+              {
+                "iteration": 4,
+                "update_ms": 187.33,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4948877312,
+                "process_peak": 4951244800,
+                "process_growth": 2367488,
+                "sample_count": 6
+              },
+              {
+                "iteration": 5,
+                "update_ms": 179.5425,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4944072704,
+                "process_peak": 4945121280,
+                "process_growth": 1048576,
+                "sample_count": 6
+              },
+              {
+                "iteration": 6,
+                "update_ms": 175.5347,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4935417856,
+                "process_peak": 4936601600,
+                "process_growth": 1183744,
+                "sample_count": 5
+              },
+              {
+                "iteration": 7,
+                "update_ms": 207.9118,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 5005500416,
+                "process_peak": 5006684160,
+                "process_growth": 1183744,
+                "sample_count": 7
+              },
+              {
+                "iteration": 8,
+                "update_ms": 175.4152,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4974522368,
+                "process_peak": 4974653440,
+                "process_growth": 131072,
+                "sample_count": 5
+              },
+              {
+                "iteration": 9,
+                "update_ms": 210.9568,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4956360704,
+                "process_peak": 4956749824,
+                "process_growth": 389120,
+                "sample_count": 7
+              },
+              {
+                "iteration": 10,
+                "update_ms": 234.7334,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4956872704,
+                "process_peak": 4959105024,
+                "process_growth": 2232320,
+                "sample_count": 7
+              }
+            ]
+          },
+          {
+            "kind": "mountain",
+            "count": 50000,
+            "ordered_fingerprint": "2824a2c34802e2ada63f523850152fe314fa4934e8fa2330904723a48be5cd25",
+            "median_ms": 314.17999999999995,
+            "empirical_p95_ms": 399.7706,
+            "median_process_peak": 4964335616.0,
+            "median_process_growth": 11540480.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 365.2814,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4958220288,
+                "process_peak": 4963033088,
+                "process_growth": 4812800,
+                "sample_count": 12
+              },
+              {
+                "iteration": 2,
+                "update_ms": 399.7706,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953640960,
+                "process_peak": 4963258368,
+                "process_growth": 9617408,
+                "sample_count": 12
+              },
+              {
+                "iteration": 3,
+                "update_ms": 362.4216,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953579520,
+                "process_peak": 4966404096,
+                "process_growth": 12824576,
+                "sample_count": 12
+              },
+              {
+                "iteration": 4,
+                "update_ms": 197.1574,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953739264,
+                "process_peak": 4970266624,
+                "process_growth": 16527360,
+                "sample_count": 6
+              },
+              {
+                "iteration": 5,
+                "update_ms": 244.6107,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4948877312,
+                "process_peak": 4965412864,
+                "process_growth": 16535552,
+                "sample_count": 8
+              },
+              {
+                "iteration": 6,
+                "update_ms": 198.1403,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4944072704,
+                "process_peak": 4959555584,
+                "process_growth": 15482880,
+                "sample_count": 6
+              },
+              {
+                "iteration": 7,
+                "update_ms": 300.9668,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4935417856,
+                "process_peak": 4951949312,
+                "process_growth": 16531456,
+                "sample_count": 10
+              },
+              {
+                "iteration": 8,
+                "update_ms": 238.3535,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4904153088,
+                "process_peak": 4914409472,
+                "process_growth": 10256384,
+                "sample_count": 8
+              },
+              {
+                "iteration": 9,
+                "update_ms": 358.8999,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4975177728,
+                "process_peak": 4984377344,
+                "process_growth": 9199616,
+                "sample_count": 12
+              },
+              {
+                "iteration": 10,
+                "update_ms": 327.3932,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4956864512,
+                "process_peak": 4966486016,
+                "process_growth": 9621504,
+                "sample_count": 10
+              }
+            ]
+          },
+          {
+            "kind": "mountain",
+            "count": 90000,
+            "ordered_fingerprint": "eddf1c173f1a4af291138b70970419878e7a04f673a751313ee6a1e85b5d0e6d",
+            "median_ms": 335.46065,
+            "empirical_p95_ms": 425.6498,
+            "median_process_peak": 4958572544.0,
+            "median_process_growth": 30183424.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 393.2753,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4897607680,
+                "process_peak": 4927799296,
+                "process_growth": 30191616,
+                "sample_count": 13
+              },
+              {
+                "iteration": 2,
+                "update_ms": 363.0427,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4893024256,
+                "process_peak": 4921110528,
+                "process_growth": 28086272,
+                "sample_count": 12
+              },
+              {
+                "iteration": 3,
+                "update_ms": 425.6498,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4963246080,
+                "process_peak": 4986335232,
+                "process_growth": 23089152,
+                "sample_count": 13
+              },
+              {
+                "iteration": 4,
+                "update_ms": 396.9467,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4963356672,
+                "process_peak": 4980670464,
+                "process_growth": 17313792,
+                "sample_count": 13
+              },
+              {
+                "iteration": 5,
+                "update_ms": 279.5284,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4958498816,
+                "process_peak": 4988678144,
+                "process_growth": 30179328,
+                "sample_count": 9
+              },
+              {
+                "iteration": 6,
+                "update_ms": 265.7531,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953694208,
+                "process_peak": 4983881728,
+                "process_growth": 30187520,
+                "sample_count": 8
+              },
+              {
+                "iteration": 7,
+                "update_ms": 307.8786,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4945035264,
+                "process_peak": 4975222784,
+                "process_growth": 30187520,
+                "sample_count": 10
+              },
+              {
+                "iteration": 8,
+                "update_ms": 284.0345,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4913774592,
+                "process_peak": 4941922304,
+                "process_growth": 28147712,
+                "sample_count": 9
+              },
+              {
+                "iteration": 9,
+                "update_ms": 374.8915,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4894322688,
+                "process_peak": 4924579840,
+                "process_growth": 30257152,
+                "sample_count": 12
+              },
+              {
+                "iteration": 10,
+                "update_ms": 282.6016,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4896256000,
+                "process_peak": 4926504960,
+                "process_growth": 30248960,
+                "sample_count": 9
+              }
+            ]
+          },
+          {
+            "kind": "mountain",
+            "count": 200000,
+            "ordered_fingerprint": "6ddb0ff8bab7686d837dfb6c46338886d4e9b719013ea94961ca2fa0fb5fac91",
+            "median_ms": 518.7837,
+            "empirical_p95_ms": 661.9071,
+            "median_process_peak": 4982308864.0,
+            "median_process_growth": 69337088.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 661.9071,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4910567424,
+                "process_peak": 4979904512,
+                "process_growth": 69337088,
+                "sample_count": 22
+              },
+              {
+                "iteration": 2,
+                "update_ms": 615.8679,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4910346240,
+                "process_peak": 4979683328,
+                "process_growth": 69337088,
+                "sample_count": 19
+              },
+              {
+                "iteration": 3,
+                "update_ms": 506.7654,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4910338048,
+                "process_peak": 4979675136,
+                "process_growth": 69337088,
+                "sample_count": 16
+              },
+              {
+                "iteration": 4,
+                "update_ms": 476.5525,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4905631744,
+                "process_peak": 4974964736,
+                "process_growth": 69332992,
+                "sample_count": 15
+              },
+              {
+                "iteration": 5,
+                "update_ms": 530.802,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4975812608,
+                "process_peak": 5028724736,
+                "process_growth": 52912128,
+                "sample_count": 17
+              },
+              {
+                "iteration": 6,
+                "update_ms": 618.8295,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4971016192,
+                "process_peak": 5023928320,
+                "process_growth": 52912128,
+                "sample_count": 19
+              },
+              {
+                "iteration": 7,
+                "update_ms": 467.1411,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4962357248,
+                "process_peak": 5037174784,
+                "process_growth": 74817536,
+                "sample_count": 15
+              },
+              {
+                "iteration": 8,
+                "update_ms": 475.0594,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4931096576,
+                "process_peak": 5000433664,
+                "process_growth": 69337088,
+                "sample_count": 15
+              },
+              {
+                "iteration": 9,
+                "update_ms": 592.6258,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4912365568,
+                "process_peak": 4981702656,
+                "process_growth": 69337088,
+                "sample_count": 19
+              },
+              {
+                "iteration": 10,
+                "update_ms": 499.5792,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4913577984,
+                "process_peak": 4982915072,
+                "process_growth": 69337088,
+                "sample_count": 16
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 5000,
+            "ordered_fingerprint": "72fc3735fd2a660992b408857526412b0d1629eaf237916c27c33126994fa2f5",
+            "median_ms": 212.08375,
+            "empirical_p95_ms": 371.8,
+            "median_process_peak": 4953479168.0,
+            "median_process_growth": 0.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 371.8,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 5005496320,
+                "process_peak": 5005496320,
+                "process_growth": 0,
+                "sample_count": 12
+              },
+              {
+                "iteration": 2,
+                "update_ms": 180.4789,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4974219264,
+                "process_peak": 4974219264,
+                "process_growth": 0,
+                "sample_count": 6
+              },
+              {
+                "iteration": 3,
+                "update_ms": 267.549,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953477120,
+                "process_peak": 4953477120,
+                "process_growth": 0,
+                "sample_count": 9
+              },
+              {
+                "iteration": 4,
+                "update_ms": 221.6926,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953481216,
+                "process_peak": 4953481216,
+                "process_growth": 0,
+                "sample_count": 7
+              },
+              {
+                "iteration": 5,
+                "update_ms": 154.8863,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953477120,
+                "process_peak": 4953477120,
+                "process_growth": 0,
+                "sample_count": 5
+              },
+              {
+                "iteration": 6,
+                "update_ms": 202.4749,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4948676608,
+                "process_peak": 4948676608,
+                "process_growth": 0,
+                "sample_count": 6
+              },
+              {
+                "iteration": 7,
+                "update_ms": 129.7394,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4944629760,
+                "process_peak": 4944629760,
+                "process_growth": 0,
+                "sample_count": 4
+              },
+              {
+                "iteration": 8,
+                "update_ms": 223.0258,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4935684096,
+                "process_peak": 4935684096,
+                "process_growth": 0,
+                "sample_count": 7
+              },
+              {
+                "iteration": 9,
+                "update_ms": 279.5582,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 5005922304,
+                "process_peak": 5006970880,
+                "process_growth": 1048576,
+                "sample_count": 9
+              },
+              {
+                "iteration": 10,
+                "update_ms": 133.0552,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4974862336,
+                "process_peak": 4974862336,
+                "process_growth": 0,
+                "sample_count": 4
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 50000,
+            "ordered_fingerprint": "0e1f9c2df3272a663e2533f6d3b50375bb6a22020025144ccaae33e55b979b34",
+            "median_ms": 267.8521,
+            "empirical_p95_ms": 426.7902,
+            "median_process_peak": 4962134016.0,
+            "median_process_growth": 14956544.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 187.8559,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4938792960,
+                "process_peak": 4948414464,
+                "process_growth": 9621504,
+                "sample_count": 5
+              },
+              {
+                "iteration": 2,
+                "update_ms": 280.5545,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4904153088,
+                "process_peak": 4919640064,
+                "process_growth": 15486976,
+                "sample_count": 9
+              },
+              {
+                "iteration": 3,
+                "update_ms": 255.1497,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4974219264,
+                "process_peak": 4983418880,
+                "process_growth": 9199616,
+                "sample_count": 8
+              },
+              {
+                "iteration": 4,
+                "update_ms": 382.8642,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953477120,
+                "process_peak": 4963098624,
+                "process_growth": 9621504,
+                "sample_count": 12
+              },
+              {
+                "iteration": 5,
+                "update_ms": 205.7896,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953481216,
+                "process_peak": 4966305792,
+                "process_growth": 12824576,
+                "sample_count": 6
+              },
+              {
+                "iteration": 6,
+                "update_ms": 241.2353,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4953477120,
+                "process_peak": 4970008576,
+                "process_growth": 16531456,
+                "sample_count": 8
+              },
+              {
+                "iteration": 7,
+                "update_ms": 251.4367,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4948676608,
+                "process_peak": 4965359616,
+                "process_growth": 16683008,
+                "sample_count": 8
+              },
+              {
+                "iteration": 8,
+                "update_ms": 415.1873,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4944695296,
+                "process_peak": 4961169408,
+                "process_growth": 16474112,
+                "sample_count": 14
+              },
+              {
+                "iteration": 9,
+                "update_ms": 426.7902,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4935684096,
+                "process_peak": 4950110208,
+                "process_growth": 14426112,
+                "sample_count": 13
+              },
+              {
+                "iteration": 10,
+                "update_ms": 337.8083,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4904579072,
+                "process_peak": 4920066048,
+                "process_growth": 15486976,
+                "sample_count": 11
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 90000,
+            "ordered_fingerprint": "6a95adde3cfaecd5e41102ca1deceeadf04697ff5c4f5d7a791f003642cd370d",
+            "median_ms": 359.1032,
+            "empirical_p95_ms": 490.9426,
+            "median_process_peak": 4977043456.0,
+            "median_process_growth": 28590080.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 462.2426,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4948414464,
+                "process_peak": 4978597888,
+                "process_growth": 30183424,
+                "sample_count": 15
+              },
+              {
+                "iteration": 2,
+                "update_ms": 490.9426,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4913774592,
+                "process_peak": 4943966208,
+                "process_growth": 30191616,
+                "sample_count": 15
+              },
+              {
+                "iteration": 3,
+                "update_ms": 249.7935,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4892860416,
+                "process_peak": 4920946688,
+                "process_growth": 28086272,
+                "sample_count": 8
+              },
+              {
+                "iteration": 4,
+                "update_ms": 295.5755,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4892864512,
+                "process_peak": 4923056128,
+                "process_growth": 30191616,
+                "sample_count": 9
+              },
+              {
+                "iteration": 5,
+                "update_ms": 351.7942,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4963098624,
+                "process_peak": 4978712576,
+                "process_growth": 15613952,
+                "sample_count": 12
+              },
+              {
+                "iteration": 6,
+                "update_ms": 366.4122,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4963098624,
+                "process_peak": 4980420608,
+                "process_growth": 17321984,
+                "sample_count": 11
+              },
+              {
+                "iteration": 7,
+                "update_ms": 438.6017,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4959387648,
+                "process_peak": 4988481536,
+                "process_growth": 29093888,
+                "sample_count": 14
+              },
+              {
+                "iteration": 8,
+                "update_ms": 404.7642,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4954251264,
+                "process_peak": 4982337536,
+                "process_growth": 28086272,
+                "sample_count": 13
+              },
+              {
+                "iteration": 9,
+                "update_ms": 300.8,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4946350080,
+                "process_peak": 4975489024,
+                "process_growth": 29138944,
+                "sample_count": 10
+              },
+              {
+                "iteration": 10,
+                "update_ms": 350.1789,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4914245632,
+                "process_peak": 4942331904,
+                "process_growth": 28086272,
+                "sample_count": 11
+              }
+            ]
+          },
+          {
+            "kind": "plane",
+            "count": 200000,
+            "ordered_fingerprint": "b57985952fad51ff4ff06df62d1994117ff4939bf6d06734ff48dee4d205b625",
+            "median_ms": 516.57995,
+            "empirical_p95_ms": 733.051,
+            "median_process_peak": 5000583168.0,
+            "median_process_growth": 69337088.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 543.7656,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4966498304,
+                "process_peak": 5035839488,
+                "process_growth": 69341184,
+                "sample_count": 17
+              },
+              {
+                "iteration": 2,
+                "update_ms": 489.3977,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4931096576,
+                "process_peak": 5000261632,
+                "process_growth": 69165056,
+                "sample_count": 16
+              },
+              {
+                "iteration": 3,
+                "update_ms": 448.4637,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4910182400,
+                "process_peak": 4979523584,
+                "process_growth": 69341184,
+                "sample_count": 14
+              },
+              {
+                "iteration": 4,
+                "update_ms": 504.2585,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4910186496,
+                "process_peak": 4979523584,
+                "process_growth": 69337088,
+                "sample_count": 16
+              },
+              {
+                "iteration": 5,
+                "update_ms": 464.8469,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4910186496,
+                "process_peak": 4979527680,
+                "process_growth": 69341184,
+                "sample_count": 14
+              },
+              {
+                "iteration": 6,
+                "update_ms": 501.2388,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4905377792,
+                "process_peak": 4974718976,
+                "process_growth": 69341184,
+                "sample_count": 16
+              },
+              {
+                "iteration": 7,
+                "update_ms": 604.727,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4976381952,
+                "process_peak": 5029294080,
+                "process_growth": 52912128,
+                "sample_count": 20
+              },
+              {
+                "iteration": 8,
+                "update_ms": 733.051,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4971573248,
+                "process_peak": 5012733952,
+                "process_growth": 41160704,
+                "sample_count": 24
+              },
+              {
+                "iteration": 9,
+                "update_ms": 528.9014,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4962639872,
+                "process_peak": 5031976960,
+                "process_growth": 69337088,
+                "sample_count": 17
+              },
+              {
+                "iteration": 10,
+                "update_ms": 556.4404,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4931567616,
+                "process_peak": 5000904704,
+                "process_growth": 69337088,
+                "sample_count": 17
+              }
+            ]
+          }
+        ],
+        "receipts": {
+          "saved-native-baseline.tsv": "f95447b07813c37ccd535b71bda69ab23f5d476b09e87ee0535682c99d483cfe",
+          "saved-native-process-samples.tsv": "9c627211dec3e7ade76b60c718da418cfe574cbf85f9de2625878ce984b633c4",
+          "launch.json": "246d1ec3e134d8a4ff7343f2c509bb7180b056192635578ea991c656ff6e43e5"
+        }
+      }
+    },
+    "paint": {
+      "old": {
+        "host": "build/mcp-qualification/foundation-memory0854-nativeobserve-baseline-20261018-02",
+        "script_sha256": "1d9349d97d7f1929640efb1dffe7b8b58fe2637722eecef472e490b8df375f99",
+        "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6",
+        "timings": [
+          {
+            "kind": "multi-area Paint",
+            "count": 5000,
+            "ordered_fingerprint": "49d432e7ca593ebf1c8592bd0191c16419ebaec01a0b8536c25c00175fe8a1a4",
+            "median_ms": 326.4027,
+            "empirical_p95_ms": 517.8005,
+            "median_process_peak": 5647702016.0,
+            "median_process_growth": 65536.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 517.8005,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5651099648,
+                "process_peak": 5652340736,
+                "process_growth": 1241088,
+                "sample_count": 17
+              },
+              {
+                "iteration": 2,
+                "update_ms": 392.3942,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647593472,
+                "process_peak": 5647659008,
+                "process_growth": 65536,
+                "sample_count": 13
+              },
+              {
+                "iteration": 3,
+                "update_ms": 410.4142,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647597568,
+                "process_peak": 5648863232,
+                "process_growth": 1265664,
+                "sample_count": 13
+              },
+              {
+                "iteration": 4,
+                "update_ms": 360.8976,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647638528,
+                "process_peak": 5647704064,
+                "process_growth": 65536,
+                "sample_count": 11
+              },
+              {
+                "iteration": 5,
+                "update_ms": 324.3331,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647634432,
+                "process_peak": 5647699968,
+                "process_growth": 65536,
+                "sample_count": 11
+              },
+              {
+                "iteration": 6,
+                "update_ms": 328.4723,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647495168,
+                "process_peak": 5647560704,
+                "process_growth": 65536,
+                "sample_count": 11
+              },
+              {
+                "iteration": 7,
+                "update_ms": 307.3282,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647454208,
+                "process_peak": 5647519744,
+                "process_growth": 65536,
+                "sample_count": 10
+              },
+              {
+                "iteration": 8,
+                "update_ms": 274.2711,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647585280,
+                "process_peak": 5647650816,
+                "process_growth": 65536,
+                "sample_count": 9
+              },
+              {
+                "iteration": 9,
+                "update_ms": 319.498,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647585280,
+                "process_peak": 5648773120,
+                "process_growth": 1187840,
+                "sample_count": 10
+              },
+              {
+                "iteration": 10,
+                "update_ms": 294.556,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647585280,
+                "process_peak": 5648777216,
+                "process_growth": 1191936,
+                "sample_count": 9
+              }
+            ]
+          },
+          {
+            "kind": "multi-area Paint",
+            "count": 200000,
+            "ordered_fingerprint": "4a13d0a307c9782b305ae35cf0e601e765109a3c7ac285e460b77ae934645cc6",
+            "median_ms": 2805.07135,
+            "empirical_p95_ms": 3432.1033,
+            "median_process_peak": 5678108672.0,
+            "median_process_growth": 30521344.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 2909.6121,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5651386368,
+                "process_peak": 5681872896,
+                "process_growth": 30486528,
+                "sample_count": 94
+              },
+              {
+                "iteration": 2,
+                "update_ms": 3275.1253,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5651337216,
+                "process_peak": 5682991104,
+                "process_growth": 31653888,
+                "sample_count": 106
+              },
+              {
+                "iteration": 3,
+                "update_ms": 3432.1033,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647597568,
+                "process_peak": 5678120960,
+                "process_growth": 30523392,
+                "sample_count": 110
+              },
+              {
+                "iteration": 4,
+                "update_ms": 3015.3712,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647597568,
+                "process_peak": 5678092288,
+                "process_growth": 30494720,
+                "sample_count": 97
+              },
+              {
+                "iteration": 5,
+                "update_ms": 2647.9104,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647638528,
+                "process_peak": 5678931968,
+                "process_growth": 31293440,
+                "sample_count": 85
+              },
+              {
+                "iteration": 6,
+                "update_ms": 2444.9439,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647634432,
+                "process_peak": 5678092288,
+                "process_growth": 30457856,
+                "sample_count": 78
+              },
+              {
+                "iteration": 7,
+                "update_ms": 2700.5306,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647495168,
+                "process_peak": 5678014464,
+                "process_growth": 30519296,
+                "sample_count": 87
+              },
+              {
+                "iteration": 8,
+                "update_ms": 2649.3526,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647519744,
+                "process_peak": 5677912064,
+                "process_growth": 30392320,
+                "sample_count": 85
+              },
+              {
+                "iteration": 9,
+                "update_ms": 2479.1179,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647585280,
+                "process_peak": 5678108672,
+                "process_growth": 30523392,
+                "sample_count": 80
+              },
+              {
+                "iteration": 10,
+                "update_ms": 2920.7555,
+                "heap_before": 738197504,
+                "heap_after": 738197504,
+                "process_before": 5647585280,
+                "process_peak": 5678108672,
+                "process_growth": 30523392,
+                "sample_count": 93
+              }
+            ]
+          }
+        ],
+        "receipts": {
+          "paint-benchmark.tsv": "91ce5967205a08bd49e6f1145506b9b4014adb7156885c971fe00aef49420464",
+          "paint-process-samples.tsv": "0abf436cec605949c8928a0cb866dc62a9928f692577c2450d941a66404bb41a",
+          "launch.json": "62c38a5b77c4c3bde86630a21d2d23ab844ff8758bd3d45c3babfe625d1bb9a5"
+        }
+      },
+      "native11": {
+        "host": "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20",
+        "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+        "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6",
+        "timings": [
+          {
+            "kind": "multi-area Paint",
+            "count": 5000,
+            "ordered_fingerprint": "49d432e7ca593ebf1c8592bd0191c16419ebaec01a0b8536c25c00175fe8a1a4",
+            "median_ms": 288.9543,
+            "empirical_p95_ms": 364.3483,
+            "median_process_peak": 4882485248.0,
+            "median_process_growth": 0.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 334.8719,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4881887232,
+                "process_peak": 4881985536,
+                "process_growth": 98304,
+                "sample_count": 11
+              },
+              {
+                "iteration": 2,
+                "update_ms": 250.0231,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4877533184,
+                "process_peak": 4879839232,
+                "process_growth": 2306048,
+                "sample_count": 8
+              },
+              {
+                "iteration": 3,
+                "update_ms": 254.7458,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4878786560,
+                "process_peak": 4878790656,
+                "process_growth": 4096,
+                "sample_count": 8
+              },
+              {
+                "iteration": 4,
+                "update_ms": 335.4656,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4879720448,
+                "process_peak": 4879785984,
+                "process_growth": 65536,
+                "sample_count": 11
+              },
+              {
+                "iteration": 5,
+                "update_ms": 263.9151,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4879712256,
+                "process_peak": 4879712256,
+                "process_growth": 0,
+                "sample_count": 8
+              },
+              {
+                "iteration": 6,
+                "update_ms": 244.9509,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4882984960,
+                "process_peak": 4882984960,
+                "process_growth": 0,
+                "sample_count": 8
+              },
+              {
+                "iteration": 7,
+                "update_ms": 281.8342,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4883480576,
+                "process_peak": 4883480576,
+                "process_growth": 0,
+                "sample_count": 9
+              },
+              {
+                "iteration": 8,
+                "update_ms": 296.0744,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4883603456,
+                "process_peak": 4883603456,
+                "process_growth": 0,
+                "sample_count": 9
+              },
+              {
+                "iteration": 9,
+                "update_ms": 364.3483,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4886581248,
+                "process_peak": 4886581248,
+                "process_growth": 0,
+                "sample_count": 12
+              },
+              {
+                "iteration": 10,
+                "update_ms": 296.4991,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4886581248,
+                "process_peak": 4886581248,
+                "process_growth": 0,
+                "sample_count": 10
+              }
+            ]
+          },
+          {
+            "kind": "multi-area Paint",
+            "count": 200000,
+            "ordered_fingerprint": "4a13d0a307c9782b305ae35cf0e601e765109a3c7ac285e460b77ae934645cc6",
+            "median_ms": 1075.78085,
+            "empirical_p95_ms": 1112.7986,
+            "median_process_peak": 4935649280.0,
+            "median_process_growth": 52908032.0,
+            "samples": [
+              {
+                "iteration": 1,
+                "update_ms": 1018.1234,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4881891328,
+                "process_peak": 4934799360,
+                "process_growth": 52908032,
+                "sample_count": 33
+              },
+              {
+                "iteration": 2,
+                "update_ms": 990.2315,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4882067456,
+                "process_peak": 4934914048,
+                "process_growth": 52846592,
+                "sample_count": 31
+              },
+              {
+                "iteration": 3,
+                "update_ms": 1074.7681,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4877467648,
+                "process_peak": 4947283968,
+                "process_growth": 69816320,
+                "sample_count": 35
+              },
+              {
+                "iteration": 4,
+                "update_ms": 1085.1732,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4878831616,
+                "process_peak": 4931743744,
+                "process_growth": 52912128,
+                "sample_count": 35
+              },
+              {
+                "iteration": 5,
+                "update_ms": 1094.7194,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4879720448,
+                "process_peak": 4932624384,
+                "process_growth": 52903936,
+                "sample_count": 35
+              },
+              {
+                "iteration": 6,
+                "update_ms": 985.979,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4879777792,
+                "process_peak": 4949237760,
+                "process_growth": 69459968,
+                "sample_count": 31
+              },
+              {
+                "iteration": 7,
+                "update_ms": 1078.1101,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4882984960,
+                "process_peak": 4919779328,
+                "process_growth": 36794368,
+                "sample_count": 34
+              },
+              {
+                "iteration": 8,
+                "update_ms": 1112.7986,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4883480576,
+                "process_peak": 4936384512,
+                "process_growth": 52903936,
+                "sample_count": 36
+              },
+              {
+                "iteration": 9,
+                "update_ms": 970.5804,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4883603456,
+                "process_peak": 4952227840,
+                "process_growth": 68624384,
+                "sample_count": 32
+              },
+              {
+                "iteration": 10,
+                "update_ms": 1076.7936,
+                "heap_before": 104857600,
+                "heap_after": 104857600,
+                "process_before": 4886581248,
+                "process_peak": 4939489280,
+                "process_growth": 52908032,
+                "sample_count": 34
+              }
+            ]
+          }
+        ],
+        "receipts": {
+          "paint-benchmark.tsv": "4a563a30bdb5475bba358aecddd13ed51fd004a3fd92d7255f966c5a154d7033",
+          "paint-process-samples.tsv": "646edeb3eb2b3629db9b142434d6d590d309454554df8b3d9494f1eed5137758",
+          "launch.json": "829054cb279b95bef407b4facb480a9eb773807ff9f454d2116449d4a5150e49"
+        }
+      }
+    },
+    "limits": [
+      "Ten warm samples, iteration zero excluded; fingerprint/reachability/logging outside Update.",
+      "Count final11 loads the exact old plane/mountain scenes and repeats the N01 selected-Modify/history sequence. Every ordered fingerprint matches. Concurrent soak/desktop activity remains uncontrolled noise.",
+      "Earlier independently authored Count comparisons had different variation identities; performance-11.json retains that limitation. They are not the Count comparison in this successor.",
+      "Paint loads the exact old saved scene into final11; Modify panel is deselected in both. Profile template hashes match.",
+      "Sequential runs on the same machine; desktop/OS noise is retained. p95 is empirical nearest-rank of ten samples, not a broad latency guarantee.",
+      "Sampled process private commit includes Max/allocator/renderer memory and is not exact plugin peak or VRAM.",
+      "Script heap capacity is not used memory. Old reachable object/array payload and native store high-water exclude other solver/SDK allocations; do not call their ratio total memory savings."
+    ]
+  },
+  "launches": {
+    "foundation-memory0854-nativeaccept-controller-20261018-20": {
+      "pid": 25528,
+      "max_year": 2027,
+      "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-20",
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-20\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-20\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-20\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-20\\listener.log"
+      ],
+      "binaries": {
+        "AminScatter.dlx": "fdc4f3354ccc0d9004e1761efb4c2e6e6210cd20102d314ce29a2130145a3073",
+        "CyrusBrush.dlx": "519f0f8233d87315d1df2c7fcc0500fb698e5f1cf97aff501c48e2e464847ea9",
+        "CyrusBrushStorage.dlh": "43a162af2685776c7c301f25ff978f1bd467e2c8a600f68b3d2cead9f39806fa",
+        "CyrusScatterEdit.dlm": "62494b956eac278352ffc8981cb447a4bb0c926ebcf98cb94871f486a947e0d1",
+        "CyrusSurfaceAnalyzer.dlx": "b497c3a4d6b85b492e94d20046a921a59c527f14e9b3ae86d0fee76edcd45fa1"
+      },
+      "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "script_assets": {
+        "CyrusGallery.dll": "9cb9e69e3cb9fe08f65e69c956eafcfc718e754aef514415b780896eb162a5cc",
+        "CyrusSurfaceAnalyzer.ms": "716a78868a78ea01842bdfa680baa628316530ca774aea7b537c7fef3db0d7ae"
+      },
+      "normal_profile_modified": false,
+      "development_transport": true,
+      "preview_fault_lab": false,
+      "placement_qualification": false,
+      "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+      "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6",
+      "qualification_ui_scale": 1.0,
+      "os_display_settings_modified": false
+    },
+    "foundation-memory0854-nativeaccept-controller-20261018-21": {
+      "pid": 29412,
+      "max_year": 2027,
+      "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-21",
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-21\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-21\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-21\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-21\\listener.log"
+      ],
+      "binaries": {
+        "AminScatter.dlx": "fdc4f3354ccc0d9004e1761efb4c2e6e6210cd20102d314ce29a2130145a3073",
+        "CyrusBrush.dlx": "519f0f8233d87315d1df2c7fcc0500fb698e5f1cf97aff501c48e2e464847ea9",
+        "CyrusBrushStorage.dlh": "43a162af2685776c7c301f25ff978f1bd467e2c8a600f68b3d2cead9f39806fa",
+        "CyrusScatterEdit.dlm": "62494b956eac278352ffc8981cb447a4bb0c926ebcf98cb94871f486a947e0d1",
+        "CyrusSurfaceAnalyzer.dlx": "b497c3a4d6b85b492e94d20046a921a59c527f14e9b3ae86d0fee76edcd45fa1"
+      },
+      "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "script_assets": {
+        "CyrusGallery.dll": "9cb9e69e3cb9fe08f65e69c956eafcfc718e754aef514415b780896eb162a5cc",
+        "CyrusSurfaceAnalyzer.ms": "716a78868a78ea01842bdfa680baa628316530ca774aea7b537c7fef3db0d7ae"
+      },
+      "normal_profile_modified": false,
+      "development_transport": true,
+      "preview_fault_lab": false,
+      "placement_qualification": false,
+      "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+      "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6",
+      "qualification_ui_scale": 1.0,
+      "os_display_settings_modified": false
+    },
+    "foundation-memory0854-nativeaccept-controller-20261018-22": {
+      "pid": 17992,
+      "max_year": 2027,
+      "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-22",
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-22\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-22\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-22\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativeaccept-controller-20261018-22\\listener.log"
+      ],
+      "binaries": {
+        "AminScatter.dlx": "fdc4f3354ccc0d9004e1761efb4c2e6e6210cd20102d314ce29a2130145a3073",
+        "CyrusBrush.dlx": "519f0f8233d87315d1df2c7fcc0500fb698e5f1cf97aff501c48e2e464847ea9",
+        "CyrusBrushStorage.dlh": "43a162af2685776c7c301f25ff978f1bd467e2c8a600f68b3d2cead9f39806fa",
+        "CyrusScatterEdit.dlm": "62494b956eac278352ffc8981cb447a4bb0c926ebcf98cb94871f486a947e0d1",
+        "CyrusSurfaceAnalyzer.dlx": "b497c3a4d6b85b492e94d20046a921a59c527f14e9b3ae86d0fee76edcd45fa1"
+      },
+      "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "script_assets": {
+        "CyrusGallery.dll": "9cb9e69e3cb9fe08f65e69c956eafcfc718e754aef514415b780896eb162a5cc",
+        "CyrusSurfaceAnalyzer.ms": "716a78868a78ea01842bdfa680baa628316530ca774aea7b537c7fef3db0d7ae"
+      },
+      "normal_profile_modified": false,
+      "development_transport": true,
+      "preview_fault_lab": false,
+      "placement_qualification": false,
+      "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+      "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6",
+      "qualification_ui_scale": 1.5,
+      "os_display_settings_modified": false
+    },
+    "foundation-memory0854-nativegenerate-hold-20261018-11": {
+      "pid": 46352,
+      "max_year": 2027,
+      "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativegenerate-hold-20261018-11",
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-silent",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativegenerate-hold-20261018-11\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativegenerate-hold-20261018-11\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativegenerate-hold-20261018-11\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-memory0854-nativegenerate-hold-20261018-11\\listener.log"
+      ],
+      "binaries": {
+        "AminScatter.dlx": "808b9bdda66590fc69e5c962a0d404adce73239521059d50160a63be5ef3ba6b",
+        "CyrusBrush.dlx": "e13e6ea74dd6fcaa40579fda5a472631713351cc773631e05525918074f3e4f4",
+        "CyrusBrushStorage.dlh": "6abd4259ceb8ad20c47fc2d2897de554195a52c4e1e6b412864f23896a1dca08",
+        "CyrusScatterEdit.dlm": "90ff6c42d89ece6ec680f3ad0406110c30b17b0782cd5c21347982f166fadfa1"
+      },
+      "script_sha256": "de9f1b7888d9cb7068e6f8d96c502b0abbe3e119e5fdf139e2f80b0f16b3c220",
+      "script_assets": {
+        "CyrusGallery.dll": "9cb9e69e3cb9fe08f65e69c956eafcfc718e754aef514415b780896eb162a5cc"
+      },
+      "normal_profile_modified": false,
+      "development_transport": true,
+      "preview_fault_lab": false,
+      "placement_qualification": true,
+      "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+      "profile_template_sha256": "c3c512bd303fea886aaa237560a6017ce58f7556bd3e21c43ed9795b00b022e6"
+    }
+  },
+  "evidence_sha256": {
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-capacity.json": "70ecc5517e71ea2e7bf58bf4d706baa2ac9fd4a514b750399ef372fc14357b23",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-controller.json": "45ae68800a649a5a8bcdbc77378fa146aa20b03a2ec0f3800bb992ac6adf6132",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-edit.json": "4cea956657e8978d3978420fc63a4564d32a7411ca5f46d1bb501d3aea02b05b",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-fields.json": "3782fa9dd7ed08bfcceb827f4bf251b57be025b3a7d316a625fa63429a7fa493",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-goldens.json": "87e16c2b69063cdbba98674b53165963b5a6c51bef6dbeba9d69e19a8b5128ed",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-lifecycle.json": "622eee29ee15af8545ad2ad9dff1f37d28bec51c3202885c01680045c4a742e7",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-outputs.json": "8b86f954194144fc0ef1035a937e3e3059b860bc05704359bb5092ccbe0296a7",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-preparation-recheck.json": "afe0c01fa94b90f06a28cb5560e4a2509e5a0998c9c6c8ed623143f00b7a2321",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-preparation.json": "20832426bcb162b1597e2fd3f03d14e9084499ea69d5ed50e2de53d275aace42",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-presets.json": "76f038bd4310bc2d6ec4a00546b0291f217498d666f521854e6eee82c5182cd0",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-render.json": "ca1bc7bb0d149796361230c75317dc74c6e3b19f485aa785dad47159e8969a3f",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/final-retention.json": "02c4d91aaa31ffe6af3d37a63c3c2bdaa0165fcbce8e2e9c76b35db20fbf91c2",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/native-controller.txt": "859cd3ba25730eb69b4cc7ec12deba5127b4704e87ffa9c2c6fb6774246b99f8",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/native-edit.txt": "d17dd504f5293a5a75b29720e551fd82011f4681c34802de27f06ad98935bbc1",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/native-lifecycle.txt": "045a96c88583a740000518b14038f15f971d6b31dfff7737692deb04ffc836e9",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/native-outputs.txt": "3c4b359b0703afb4812512e24a38e65f57910a8ce582c13736a994866207cee7",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/native-preparation.txt": "4a1f5b62ce4d26fb4cc70b55b896c7b542638599138b79f12ab6b5b8b7c1afbd",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/native-retention.txt": "f60b518c202d993ef74eafb68e471c4120aa61c5bd6f1be38fd1eafde9c066c5",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/native-capacity.tsv": "75ba3ce20580e96b3797616b4054b48a84b4b7edadb7d0dd58e4ce336abd8426",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-20/corona072-result.json": "c6ed31a7af57aa885ad341483acdecc0342bf4438c83fceead8c53a1e29ae97f",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-21/native-soak.tsv": "9acdf2ef29c2db14c475e59ea957339d2f84a9ca165d9b5b3ee5a8fb90c856b5",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-21/native-soak.json": "f57541ea792a6148832d2d8327487a91fb139b19fd8401dd09cf49aae13eb04d",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/native-baseline-command.txt": "cf579bf64a8d7fe3746760f8b88f286be3aed72d01abafb11adc097de5a42352",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/native-edit.txt": "1ac72cb531406c18d14d0db061ed9aef37257bd56cd289426703d297d0b40fa1",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/native-ui-before.txt": "bc45236ab9771788260060b6768d394706d30295cbe58b28cdab359e4674fb7f",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/native-ui-passive-100.txt": "e88c498933c91aa86486a685beb5890c274c42c0369e5f2dc3eca1f1bfbce31a",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/native-ui-passive.txt": "ad2a9b3ca7028edd5df05f3da826a7cb1bd75d76632c909d543de1aa16f0587b",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/large-edit.json": "0f7df7afe3f803d06f369c869d9532d5e16b9a5afdae5deee7371bde0e83eee0",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/physical-ui-100.json": "268d2c2bbdf161e53a1aecd54a063448e0e6ede8a2cffa7f6f3577faee7f5631",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/physical-ui.json": "588c9062509e4c8e29c3270167f2915e0f60dd76c460a251b8bc9082ee1a9e75",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/saved-benchmark.json": "586ef23a909d121565c1784a856ce5fbf5578f3ef7fa250308b51e60beb0dbc4",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/saved-counts.json": "705cd268feb85032b744bee397fbd12d87d13ff8dcd1dbb6b6e9945ec93ac524",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/production-cancel-before.txt": "8ff8b08e5984779cd8c1c67cb0e3f3df4f9902f0f44523fdd86cf6a011d264da",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/production-cancel-returned.txt": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/production-cancel.txt": "5c0ac4e66926b55b37ab92dd17a8c3ee3080b6de946b267e8d860ad3635bd09b",
+    "build/mcp-qualification/foundation-memory0854-nativeaccept-controller-20261018-22/production-cancel-input.json": "8b25a93969414af83ff9065f87e7a49e9851a1e49ff57624bc6989c43da194ea",
+    "build/mcp-qualification/foundation-memory0854-nativegenerate-hold-20261018-11/native-failures.txt": "f96c6b4f1fc153d0c6f5d895eeb8a50e8818ccdf99f35d4c4f31bb88546519b5",
+    "build/native-fields-0860-20261018-01/python-final.xml": "7814fb2a9466370ee9f04ba22594035a5caea44d9249d43e507d1dc67a2b2677",
+    "build/native-fields-0860-20261018-01/generated-11/generated-check.json": "10193f3772dbe21b2cc470c6954cbad5b5ea302470e1e286b2bb3c9d65ca0cee",
+    "build/native-fields-0860-20261018-01/native-11/receipt.json": "c1c379faf4c96280ba774630e4d309b499721bf57928571b8365289973dfa13f",
+    "build/native-fields-0860-20261018-01/fault-11/receipt.json": "be71a3b567056a69edad10527f9a6dc5f34f86334a96eec23e41798cec2e6586",
+    "build/native-fields-0860-20261018-01/performance-final.json": "e6257f252d1125012bf2401e6d800948ef2a1c7b7a933801833e3a7b88b5682e"
+  },
+  "limits": [
+    "Private Max 2027 profiles only; no artist installation/restart.",
+    "One-hour bounded history soak; not arbitrary lifetime or actual OS exhaustion certification.",
+    "Corona 15 lifecycle and production Stop; not every renderer family or image-quality acceptance.",
+    "100/150 percent process UI scale; no physical 4K mixed-monitor or presented FPS claim.",
+    "Synchronous scatter/Bake work remains; one-million work cap unchanged.",
+    "Historical failed candidates and fixture corrections retain their failed evidence."
+  ]
+}

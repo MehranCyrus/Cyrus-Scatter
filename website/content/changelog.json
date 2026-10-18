@@ -1,7 +1,32 @@
 {
-  "reviewed": "2026-10-17",
-  "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
+  "reviewed": "2026-10-18",
+  "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. Historical work-state notes retain their original review date. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.86.0",
+      "date": "2026-10-18",
+      "title": "Native placement foundation.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Max 2027 development delivery; exact acceptance and limits are recorded with the matching installers. No universal performance or all-renderer guarantee.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Generation, Paint/masks, placement preparation, Edit, spacing and publication retain native data instead of full-population script arrays."
+        },
+        {
+          "kind": "Improved",
+          "text": "Edit Undo shares unchanged authored blocks. Large Count changes use native resource admission; failed updates retain the previous complete result."
+        },
+        {
+          "kind": "Improved",
+          "text": "Rendering pins native placement groups, and Bake reads bounded pages. Existing controls, Paint, presets, grids and slope/altitude behavior are preserved."
+        }
+      ],
+      "evidence": [
+        "docs/plans/native-placement/DELIVERY_0860.md"
+      ]
+    },
     {
       "version": "0.85.4",
       "date": "2026-10-17",

@@ -507,6 +507,19 @@ global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximu
 -- Reserve the documented session heap before large script transports can force
 -- automatic full collection. This never changes the saved initial heap setting.
 global CyrusScriptWorkspaceReserved=0L
+global CyrusNativeCollectionMark=0L,CyrusNativeCollections=0L
+fn CyrusNativeWorkingSetCheckpoint force:false = (
+    -- Native payload is invisible to Max's script-heap pressure. Collect only
+    -- after 64 MiB of placement allocation churn, at bounded stage boundaries.
+    -- This bounds unrooted wrappers without a full scene scan on every edit.
+    -- Live publications/history remain rooted. Never call from passive views.
+    local allocated=(cyrusPlacementMemoryStats())[3]
+    if force or allocated-CyrusNativeCollectionMark>=67108864L do (
+        gc light:true
+        CyrusNativeCollectionMark=allocated;CyrusNativeCollections+=1
+    )
+    true
+)
 fn CyrusReserveScriptWorkspace required = (
     if required<0 do throw "Invalid Update working-memory request."
     if heapFree<required do gc light:true
@@ -595,6 +608,7 @@ fn AminScatterCopyLayer origin destination variation:#same = (
         destination.paintAreas=#();destination.uiAreaID=""
         for area in origin.paintAreas do (
             local duplicate=createInstance AminScatterObject
+            if theHold.Holding() do cyrusRecipeTrackCreated duplicate
             duplicate.layerID=CyrusNewLayerID()
             AminScatterCopyLayer area duplicate variation:variation
             duplicate.isPaintArea=true;duplicate.logicalParentID=destination.layerID
@@ -875,7 +889,7 @@ initialRollupState:0x8
     local procPublishedRadii=#(),procPublishedInfo=#()
     -- Internal migration switch. The supported optional/downstream routes are
     -- qualified before this replaces the legacy comparison route by default.
-    local procNativeRoute=false,procNativeOwner=0L,procNativeContext=undefined,procNativePublication=undefined
+    local procNativeOwner=0L,procNativeContext=undefined,procNativePublication=undefined,procNativeLastAdmission=0
     local procPublishedMetadata=#(),procDisplayFailure=false
     local procDensityMap=undefined,procDensityWatch=undefined,procDensityRevision=0
     local procDensityCache=#(),procDensityBakes=0,procDensityHits=0,procDensityInversions=0,procDensityBakeMs=0
@@ -1160,10 +1174,12 @@ initialRollupState:0x8
             local paths=fallAnalyzer.packedLines fallAnalyzer.boundaryVertices fallAnalyzer.boundaryCounts
             if paths.count==0 do throw "Area Edge Falloff: Analyzer has no Boundary. Run Analyze first."
             rows=cyrusBoundaryFalloff rows paths cfg (this.effectiveSeed())
+            CyrusNativeWorkingSetCheckpoint()
         )
         for i=1 to this.areaNodes.count where isValidNode this.areaNodes[i] do (
             cfg=getFallConfig this.areaNodes[i]
             if cfg[1] or cfg[3] or cfg[6] do rows=cyrusAreaFalloff rows this.areaNodes[i] cfg (((mod ((this.effectiveSeed() as integer64)+i*1009) 2147483647)) as integer) (if i<=this.areaModes.count then this.areaModes[i] else 1)
+            CyrusNativeWorkingSetCheckpoint()
         )
         rows
     )
@@ -1493,31 +1509,13 @@ initialRollupState:0x8
         radiusPreview=#()
         if plants.count>0 and (findItem (sourceShowRadius as array) true)>0 do (
             local radii=if values==undefined then placementRadii rows plants else values
-            if radiusDisplayMetric<1 or radiusDisplayMetric>2 do throw "Radius display metric must be XY or 3D."
-            local eligible=for j=1 to rows.count where (sourceShows (sourceRow plants[rows[j][2]])) and radii[j][radiusDisplayMetric]>0 collect j
-            local count=if radiusDisplayAll then eligible.count else amin (amax 0 radiusDisplayLimit) eligible.count
-            local ringsPerRadius=if radiusDisplayMetric==1 then 1 else 3
-            if count*ringsPerRadius>10000 do throw "Radius display exceeds 10,000 rings. Reduce Radii / layer (at most 3,333 in 3D)."
-            for k=1 to count do (
-                local j=eligible[1+(floor((k-1.0)*eligible.count/(amax 1 count)) as integer)]
-                local i=sourceRow plants[rows[j][2]]
-                if sourceShows i and radii[j][radiusDisplayMetric]>0 do (
-                    local center=rows[j][1].row4,r=radii[j][radiusDisplayMetric]
-                    for axis=1 to ringsPerRadius do (
-                        local points=#()
-                        for segment=0 to 23 do (
-                            local a=r*cos(segment*15),b=r*sin(segment*15)
-                            local offset=case axis of (
-                                1: [a,b,0]
-                                2: [a,0,b]
-                                default: [0,a,b]
-                            )
-                            append points (center+offset)
-                        )
-                        append radiusPreview #(points,sourceColor i)
-                    )
-                )
+            if cyrusPlacementIsNative rows do (
+                local specs=for plant in plants collect #(this.sourceShows (this.sourceRow plant),this.sourceColor (this.sourceRow plant))
+                local circle=for segment=0 to 23 collect [cos(segment*15),sin(segment*15),0]
+                radiusPreview=cyrusNativeRadiusPreview rows radii specs #(radiusDisplayMetric,radiusDisplayLimit,radiusDisplayAll) circle
+                return true
             )
+            if rows.count>0 do throw "Radius display requires native placements."
         )
     )
     fn radiusDisplayCount = radiusPreview.count
@@ -2131,7 +2129,6 @@ initialRollupState:0x8
     fn filterSourceRowsByPolicy rows keep = (
         cyrusFilterSourceRows rows keep
     )
-    fn procUsesNative = (overlapOwner!=undefined and overlapOwner.procNativeRoute)
     fn procNativeSources plants = (
         if procNativeOwner==0 do (
             procNativeOwner=cyrusPlacementOwner()
@@ -2161,14 +2158,14 @@ initialRollupState:0x8
     fn cspImpl_placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         this.procAssertSchema()
         if not rawOnly and finalPass==undefined and overlapOwner!=undefined do return overlapOwner.groupPlacements this plants previewOnly
-        if not cyrusEnabled or disabledAnalyzerInput() do return (if this.procUsesNative() then this.procNativeEmpty 1 plants else #())
+        if not cyrusEnabled or disabledAnalyzerInput() do return (this.procNativeEmpty 1 plants)
         if (this.brushMaskActive() or meshMaskEnabled) and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Paint and mesh density masks require Keep on surface for nonzero movement."
         local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count,variationDomains=CyrusReceiverVariationDomains this
-        if targets.count==0 do return (if this.procUsesNative() then this.procNativeEmpty 1 plants else #())
+        if targets.count==0 do return (this.procNativeEmpty 1 plants)
         if plants.count==0 and not previewOnly do throw "Add a plant model."
         requestedCount=if procCandidateCount==undefined then (this.effectivePopulation())[1] else procCandidateCount
-        if requestedCount<=0 do return (if this.procUsesNative() then this.procNativeEmpty 1 plants else #())
-        local baseKey=(this.paintBaseInputKey plants previewOnly)+"|StablePool:"+(requestedCount as string)+"|Native:"+(this.procUsesNative() as string)+(this.procFieldKey())
+        if requestedCount<=0 do return (this.procNativeEmpty 1 plants)
+        local baseKey=(this.paintBaseInputKey plants previewOnly)+"|StablePool:"+(requestedCount as string)+"|Native:1"+(this.procFieldKey())
         local result
         if finalPass==undefined and baseKey==paintBaseKey and paintBaseRows!=undefined then (result=paintBaseRows;paintBaseHits+=1)
         else (
@@ -2180,7 +2177,7 @@ initialRollupState:0x8
             if finalPass!=undefined do throw "Use the receiver-local candidate path before final acceptance."
             local shapeNodes=for node in areaNodes where isValidNode node collect node
             if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique shapeNodes node
-            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)+"|Native:"+(this.procUsesNative() as string)
+            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)+"|Native:1"
             local nextCache=#(),nextNormals=#(),faceOffset=0
             result=#();paintBaseFaceCounts=cyrusReceiverFaceCounts targets
             local nativeInputs=#()
@@ -2189,7 +2186,7 @@ initialRollupState:0x8
                 for entry in procReceiverPlanData[1] where entry[1]==slot do request=entry
                 for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]+"|MeshMask:"+entry[3]
                 if request==undefined do throw "Receiver allocation is missing."
-                local receiverCount=request[4],receiverRows=(if this.procUsesNative() then this.procNativeEmpty 1 plants else #()),receiverNormals=undefined
+                local receiverCount=request[4],receiverRows=(this.procNativeEmpty 1 plants),receiverNormals=undefined
                 local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+variationDomains[slot]+"|"+geometryKey+"|"+(receiverCount as string)
                 local cached=undefined
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry
@@ -2197,32 +2194,33 @@ initialRollupState:0x8
                 else if receiverCount>0 do (
                     local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if distributionMode==3 then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined))
                     local generated
-                    if this.procUsesNative() then generated=cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
-                    else generated=cyrusScatterCanonical #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    generated=cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     receiverRows=generated[1];receiverNormals=generated[2]
+                    generated=undefined
+                    CyrusNativeWorkingSetCheckpoint()
                     if finalRelax and receiverRows.count>0 do (
-                        local relaxPass=#(receiverRows,#(),(for row in receiverRows collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
-                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
+                        local relaxPass=#(receiverRows,#(),undefined,#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
+                    receiverRows=(cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options)[1]
                     )
                     if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed
                     if meshMaskEnabled do receiverRows=cyrusMeshDensityFilter receiverRows receiver (this.meshMaskPayload()) seed variationDomains[slot]
                     receiverRows=this.applyAnalyzerArea receiverRows
                     receiverRows=this.applyFalloff receiverRows
+                    CyrusNativeWorkingSetCheckpoint()
                     procReceiverBuilds+=1
                 )
                 append nextCache #(slot,receiverKey,receiverRows,receiverNormals)
                 if receiverNormals!=undefined do append nextNormals #(slot,faceOffset,receiverNormals)
-                if this.procUsesNative() then (
-                    if receiverCount>0 do append nativeInputs (cyrusReceiverOffsetRows receiverRows faceOffset)
-                ) else join result (cyrusReceiverOffsetRows receiverRows faceOffset)
+                if receiverCount>0 do append nativeInputs (cyrusReceiverOffsetRows receiverRows faceOffset)
                 faceOffset+=paintBaseFaceCounts[receiverIndex]
             )
             -- Replace one bounded cache generation after all receiver preparation succeeds.
-            if this.procUsesNative() do result=if nativeInputs.count==0 then this.procNativeEmpty 1 plants else cyrusPlacementJoin nativeInputs
+            result=if nativeInputs.count==0 then this.procNativeEmpty 1 plants else cyrusPlacementJoin nativeInputs
             procReceiverCache=nextCache;procOrientationReceivers=nextNormals
             paintBaseRows=result;paintBaseKey=baseKey;paintBaseBuilds+=1
         )
         result=this.procApplyPaint result
+        CyrusNativeWorkingSetCheckpoint()
         result=this.applyOrientation result plants
         if plants.count>0 and sourceEmpty.count>0 do result=this.filterSourceRowsByPolicy result (for n in plants collect not (isEmptySource (sourceRow n)) or isPointSource (sourceRow n))
         if plants.count>0 and (sourceZOffsetsWU.count>0 or sourceScales.count>0) do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n))
@@ -2241,7 +2239,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.85.4"
+    fn uiVersion = "0.86.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2431,6 +2429,7 @@ initialRollupState:0x8
         CyrusStopBrush()
         undo "Cyrus add Paint Area" on (
             area=createInstance AminScatterObject
+            if theHold.Holding() do cyrusRecipeTrackCreated area
             area.isPaintArea=true;area.layerID=CyrusNewLayerID();area.logicalParentID=parent.layerID
             area.paintSetName="Area "+((parent.paintAreas.count+1) as string)
             area.areaTarget=target;area.paintEnabled=true;area.setOverlapOwner this
@@ -2612,7 +2611,9 @@ initialRollupState:0x8
         this.syncLayerIdentity()
         if layerObjects.count>=10 do throw "A scatter controller supports up to 10 layers."
         undo "Cyrus Scatter add layer" on (
+            cyrusEditOwnerLayers (this.procModifiers()) (for leaf in layerObjects collect leaf.editLayerKey)
             local obj=createInstance AminScatterObject
+            if theHold.Holding() do cyrusRecipeTrackCreated obj
             obj.surfaceNodes=this.surfaceNodes as array;obj.surface=this.surface
             obj.editLayerKey=nextEditLayerKey;nextEditLayerKey+=1
             
@@ -2643,6 +2644,7 @@ initialRollupState:0x8
                 deleteItem layerObjects i;deleteItem layerNames i;deleteItem layerEnabled i
                 if i<=layerVisible.count do deleteItem layerVisible i
                 activeLayer=amin i layerObjects.count
+                cyrusEditOwnerLayers (this.procModifiers()) (for leaf in layerObjects collect leaf.editLayerKey)
             )
         )
         activeLayer
@@ -2704,7 +2706,10 @@ initialRollupState:0x8
         undo "Cyrus Scatter build" on (
             try (
                 with redraw off (
-                    for row in data do (
+                    local token=if cyrusPlacementIsNative data then cyrusPlacementToken data else undefined
+                    for first=0 to data.count-1 by 500 do (
+                     local page=if token!=undefined then cyrusPlacementPage data token first (amin 500 (data.count-first)) else for j=first+1 to (amin data.count (first+500)) collect data[j]
+                     for row in page do (
                         local n=instance plants[row[2]]
                         append fresh n
                         n.parent=undefined
@@ -2712,6 +2717,7 @@ initialRollupState:0x8
                         n.transform=row[1]
                         n.renderable=true;n.isHidden=false
                         setUserProp n "AminScatterOwner" ownerKey
+                     )
                     )
                     for n in bakedNodes where isValidNode n do (
                         if (getUserProp n "AminScatterOwner" as string)==ownerKey do delete n
@@ -3041,7 +3047,7 @@ initialRollupState:0x8
         if cyrusPlacementIsNative rows then (
             local usage=this.procSourceUsage rows
             for i=1 to usage.count where usage[i]>0 do used[i]=true
-        ) else for row in rows do used[row[2]]=true
+        ) else if rows.count>0 do throw "Source radius preparation requires native placements."
         local inputs=for k=1 to plants.count collect (
             local i=this.sourceRow plants[k]
             if used[k] or (i>0 and required[i]) then plants[k] else 0
@@ -3103,8 +3109,8 @@ initialRollupState:0x8
         stream as string
     )
     fn procApplyPaint rows = (
-        if this.procUsesNative() and not paintEnabled do return rows
-        if not paintEnabled or rows.count==0 do return cyrusClonePlacementRows rows
+        if not paintEnabled do return rows
+        if rows.count==0 do return rows
         local docs=#(),densities=#(),targets=this.validSurfaces()
         for area in paintAreas where area.paintSetEnabled and area.paintDocument!=undefined and findItem targets area.areaTarget>0 do (
             if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area target mismatch; saved vector borders are preserved."
@@ -3439,7 +3445,6 @@ initialRollupState:0x8
         local stream=stringStream ""
         with printAllElements on (
             format "Proc1:%:%:%:%:%:%:%:%|" (this.inputTimeKey()) 0 procManualRevision cyrusEnabled layerEnabled (this.procEditKey()) procRuleScope procRuleA to:stream
-            format "Native:%|" procNativeRoute to:stream
             format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGapWU procRulePlanar to:stream
             for parent in this.logicalLayers() do for leaf in this.layerSets parent do (
                 leaf.containerRefresh()
@@ -3463,17 +3468,17 @@ initialRollupState:0x8
         -- Receiver planning samples actual selected channel values only during
         -- a relevant successor calculation. Record that bounded field proof in
         -- raw/prepared caches without evaluating meshes from passive key reads.
-        if not this.procUsesNative() or not meshMaskEnabled do return ""
+        if not meshMaskEnabled do return ""
         local stream=stringStream ""
         format "ReceiverFields:" to:stream
         for entry in procReceiverGeometry do format "%:%|" entry[1] entry[3] to:stream
         stream as string
     )
     fn procPreparationKey pool plants = (
-        (this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())+"|Native:"+(this.procUsesNative() as string)+(this.procFieldKey())
+        (this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())+"|Native:1"+(this.procFieldKey())
     )
     fn procPrepare pool plants = (
-        if this.procUsesNative() do this.procNativeSources plants
+        this.procNativeSources plants
         local key=this.procPreparationKey pool plants
         if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match" correlation:diagnosticCauseID;procPreparedHits+=1;return procPreparedRows)
         CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed" correlation:diagnosticCauseID
@@ -3488,35 +3493,28 @@ initialRollupState:0x8
         )
         procBindingKey=this.procBinding plants rows
         rows=CyrusEditApplyLayer overlapOwner this rows
+        CyrusNativeWorkingSetCheckpoint()
         rows=this.applySurfaceFilter rows
-        if this.procUsesNative() do rows=cyrusPlacementSealPrepared rows key procBindingKey
+        rows=cyrusPlacementSealPrepared rows key procBindingKey
         procPreparedRows=rows;procPreparedKey=key;procPreparedBuilds+=1
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.4 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
-        if not procNativeRoute do return true
-        for modifier in this.procModifiers() where modifier.enabled do throw "Native migration: active Edit is not integrated yet."
-        for leaf in layerObjects do (
-            if leaf.placementMode!=1 or leaf.distributionMode!=1 or leaf.diversityMode!=1 or leaf.paintEnabled or leaf.finalRelax or leaf.areaUseLine or leaf.areaUsePoints or leaf.containerProvider()!=undefined do throw "Native migration: this optional preparation route is not integrated yet."
-            for area in (join #(undefined) (leaf.areaNodes as array)) do (
-                local cfg=leaf.getFallConfig area
-                if cfg[1] or cfg[3] or cfg[6] do throw "Native migration: boundary falloff is not integrated yet."
-            )
-            if (findItem (leaf.sourceShowRadius as array) true)>0 do throw "Native migration: radius-ring preview is not integrated yet."
-            if leaf.autoRender do throw "Native migration: final render transport is not integrated yet."
-        )
+        -- Capability validation precedes any scene or publication mutation.
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.0 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.0 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3657,7 +3655,7 @@ initialRollupState:0x8
             if cyrusPlacementIsNative data then (
                 local usage=this.procSourceUsage data
                 for i=1 to usage.count where usage[i]>0 do used[i]=true
-            ) else for row in data do used[row[2]]=true
+            ) else if data.count>0 do throw "Preview preparation requires native placements."
             local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i] sampleSeed:metadata[6]))
             cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette previewBudget else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) (if viewportMode==2 then viewportPreparationLimit viewportInstances viewportNavigationInstances else 0) 0
         )
@@ -3812,39 +3810,11 @@ initialRollupState:0x8
             requests[i]=#(quota,attempts,pool);admission+=if leaf.placementMode>1 then receiverPlan[6] else pool
         )
         if admission>1000000 do throw ("This Scatter requests "+(admission as string)+" candidates across its layers; the total limit is 1,000,000 including retries. Reduce Amount or retry limits. The previous result is retained.")
-        -- A placement publication must not force Max's full garbage collector
-        -- to discard the artist's Undo history. Account for the pending script
-        -- transport before Edit mutation; unchanged prepared rows stay shared.
-        -- These are admission allowances, not reported process-memory usage.
-        -- The 30k fixture measured ~43.5 MB preparation, 2.3 MB per radius pass
-        -- and 1.8 MB scheduling. Extra row-producing falloff passes add room.
-        if not procNativeRoute then (
-            local requiredHeap=8388608L
-            for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
-                local leaf=layerObjects[i],pool=requests[i][3] as integer64,plants=leaf.validSources()
-                requiredHeap+=pool*192L
-                if (leaf.procPreparationKey requests[i][3] plants)!=leaf.procPreparedKey do (
-                    local passes=0
-                    if leaf.finalRelax do passes+=1
-                    if leaf.wholeScaleMin!=1.0 or leaf.wholeScaleMax!=1.0 do passes+=1
-                    if leaf.fallDelete or leaf.fallScale or leaf.fallDensity do passes+=1
-                    -- Reserve every authored area without normalizing settings
-                    -- or hydrating its curves during admission.
-                    passes+=leaf.areaNodes.count+leaf.paintAreas.count
-                    if leaf.orientationMode==1 and leaf.diversityMode==4 do passes+=1
-                    requiredHeap+=pool*(2048L+passes*512L)
-                )
-            )
-            -- Light collection and a bounded session reservation precede row
-            -- transport. Never flush history or alter saved heap preferences.
-            CyrusReserveScriptWorkspace requiredHeap
-        ) else (
-            -- Opaque buffers live outside the script heap. Retire unreachable
-            -- wrappers before overlapping successors; preserve all Undo pins.
-            -- This runs only for a relevant calculation, never passive UI.
-            gc light:true
-            CyrusReserveScriptWorkspace 8388608L
-        )
+        -- Only bounded authored metadata enters the script heap. Native
+        -- coexistence uses current system commit headroom, not a script-row cap.
+        CyrusNativeWorkingSetCheckpoint()
+        CyrusReserveScriptWorkspace 8388608L
+        try(cyrusNativeMemoryAdmit admission)catch(CyrusNativeWorkingSetCheckpoint force:true;cyrusNativeMemoryAdmit admission)
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
         local publishedMetadata=for leaf in layerObjects collect undefined
         local nativePreparationKeys=for leaf in layerObjects collect "",nativeBindings=for leaf in layerObjects collect ""
@@ -3858,11 +3828,11 @@ initialRollupState:0x8
                 local members=this.layerSets parent,sets=#(),indices=#()
                 for leaf in members do (
                     local i=findItem layerObjects leaf,request=requests[i],plants=leaf.validSources(),rows=#()
-                    if procNativeRoute do leaf.procNativeSources plants
+                    leaf.procNativeSources plants
                     if cyrusEnabled and this.enabledLayer i then (
                         rows=leaf.containerFilter (leaf.procPrepare request[3] plants) plants
-                        if procNativeRoute do (nativePreparationKeys[i]=leaf.procPreparationKey request[3] plants;nativeBindings[i]=leaf.procBindingKey)
-                    ) else if procNativeRoute do (
+                        (nativePreparationKeys[i]=leaf.procPreparationKey request[3] plants;nativeBindings[i]=leaf.procBindingKey)
+                    ) else (
                         nativePreparationKeys[i]="Inactive:"+key+"|"+leaf.layerID;nativeBindings[i]="Inactive:"+leaf.layerID
                         rows=cyrusPlacementSealPrepared (leaf.procNativeEmpty 2 plants) nativePreparationKeys[i] nativeBindings[i]
                     )
@@ -3888,13 +3858,13 @@ initialRollupState:0x8
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
             local publicationInfo=this.procStagePublication accepted requests publishedSources finalKeep
             local nextNativePublication=undefined
-            if procNativeRoute do nextNativePublication=this.procStageNativePublication accepted radii stats rounds requests publishedSources publicationInfo key nativePreparationKeys nativeBindings
+            nextNativePublication=this.procStageNativePublication accepted radii stats rounds requests publishedSources publicationInfo key nativePreparationKeys nativeBindings
             local dependencyHandles=for leaf in layerObjects collect leaf.procStageDependencyHandles()
             -- Allocation and computation have finished; publish one coherent epoch.
             this.publishGroupEdits accepted
             this.procSyncEditVisibility()
             local finishedKey=this.procInputKey()
-            if procNativeRoute and key!=finishedKey do throw "Inputs changed during native publication. The complete previous result is retained."
+            if key!=finishedKey do throw "Inputs changed during native publication. The complete previous result is retained."
             procEpoch+=1
             for i=1 to layerObjects.count do (
                 local leaf=layerObjects[i]
@@ -3928,6 +3898,15 @@ initialRollupState:0x8
             throw()
         )
         groupSolving=false
+        (
+            local shrink=(procNativeLastAdmission-admission) as integer64
+            procNativeLastAdmission=admission
+            -- Drop rollback-only roots before a large Count-down collection.
+            -- Otherwise a tiny successor can leave its previous million-row
+            -- wrappers waiting for future allocation pressure indefinitely.
+            previousPublication=undefined;previousResults=undefined
+            if shrink*192L>=67108864L do try(CyrusNativeWorkingSetCheckpoint force:true)catch()
+        )
         -- Observer failures do not relabel an already committed result as retained.
         try(CyrusScheduleUI())catch()
         try(CyrusPFRequestCheck())catch()
@@ -6124,7 +6103,7 @@ registerRedrawViewsCallback AminScatterObjectDraw
 
 
 -- Native Particle Flow transport. Generated nodes are disposable and never saved.
-global CyrusPFNodes=#(),CyrusPFData=#(),CyrusPFBusy=false,CyrusPFSignature="",CyrusPFRevision=0,CyrusPFManualRevision=0
+global CyrusPFNodes=#(),CyrusPFData=#(),CyrusPFPublications=#(),CyrusPFBusy=false,CyrusPFSignature="",CyrusPFRevision=0,CyrusPFManualRevision=0
 global CyrusPFProduction=false,CyrusPFPhase=0,CyrusPFPendingKey="",CyrusPFStableSince=0
 global CyrusPFTimer,CyrusPFResume=false,CyrusPFLastError="",CyrusPFBuilds=0
 global AminScatterRenderNodes=#(),AminScatterRenderRestore=#(),AminScatterRenderRedrawHeld=false
@@ -6139,7 +6118,7 @@ fn CyrusPFClear = (
  CyrusPFDeletedHandles=for n in CyrusPFNodes where isValidNode n collect (getHandleByAnim n)
  CyrusPFBusy=true;AminScatterRenderRedrawHeld=true
  try(undo off (delete (for n in CyrusPFNodes where isValidNode n collect n)))catch()
- CyrusPFNodes=#();CyrusPFData=#();CyrusPFSignature=""
+ CyrusPFNodes=#();CyrusPFData=#();CyrusPFPublications=#();CyrusPFSignature=""
  CyrusPFRestoreBaked()
  AminScatterRenderRedrawHeld=false;CyrusPFBusy=false
 )
@@ -6182,8 +6161,9 @@ fn CyrusPFBuild = (
      local sources=obj.outputSources()
      if enabled and obj.autoRender and sources.count>0 do (
       local rows=obj.placements sources
-      local groups=for src in sources collect #()
-      for row in rows do append groups[row[2]] row[1]
+      if not cyrusPlacementIsNative rows do throw "Render requires a current native placement publication."
+      local groups=cyrusPlacementTransformGroups rows
+      if root.procNativePublication!=undefined do appendIfUnique CyrusPFPublications root.procNativePublication
       for k=1 to sources.count where groups[k].count>0 do (
        append CyrusPFData groups[k];local slot=CyrusPFData.count
        local prototypeIndex=findItem prototypeSources sources[k],prototype
@@ -6210,7 +6190,7 @@ fn CyrusPFBuild = (
        local ev=Event();local birthOp=Birth Emit_Start:animationRange.start Emit_Stop:animationRange.start Amount:groups[k].count
        local shapeOp=Shape_Instance Acquire_Material:true Shape_Object:prototype
        local matOp=Material_Static Material:sources[k].material;matOp.setMaterial sources[k].material
-       local body="on ChannelsUsed c do (c.useTM=true;c.useScale=true)\non Init c do ()\non Proceed c do (global CyrusPFData;local a=if CyrusPFData.count>="+(slot as string)+" then CyrusPFData["+(slot as string)+"] else #();for i=1 to (amin (c.NumParticles()) a.count) do (c.particleIndex=i;c.particleTM=a[i];c.particleScaleXYZ=[length a[i].row1,length a[i].row2,length a[i].row3]))\non Release c do ()"
+       local body="on ChannelsUsed c do (c.useTM=true;c.useScale=true)\non Init c do ()\non Proceed c do (global CyrusPFData;local a=if CyrusPFData.count>="+(slot as string)+" then CyrusPFData["+(slot as string)+"] else #();for i=1 to (amin (c.NumParticles()) a.count) do (local tm=a[i];c.particleIndex=i;c.particleTM=tm;c.particleScaleXYZ=[length tm.row1,length tm.row2,length tm.row3]))\non Release c do ()"
        local scriptOp=Script_Operator Proceed_Script:body
        ev.AppendAction birthOp;ev.AppendAction shapeOp;ev.AppendAction matOp;ev.AppendAction scriptOp
        ParticleFlow.EndEdit()
