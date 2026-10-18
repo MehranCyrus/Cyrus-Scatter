@@ -1,0 +1,155 @@
+{
+  "corpus": {
+    "old_sha256": "49b5db91af1354bc954877ba72ce880e34f103713d5e6b76a8dd350aa1161fb4",
+    "new_sha256": "20db9e22575474c3a80ee3fb0f357e7b04b20cf6df40268c054b5d0f68858fab",
+    "reason": "User-authorized documentation consolidation: current navigation and the single execution ledger replace competing roadmaps. Preserve every previously enrolled source, retirement decision and required historical evidence; enroll only the reviewed current document index and current status ledger. No retrieval/scoring or product code change."
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "old_sha256": "10f76a976a805c844f81dbda461df56bf14771ee83d9bcf855492d1fc292baf9",
+      "new_sha256": "b8a27e49acd966cc41d4cc00f220ae9da19336ab805bc1bf86d3fff91ae29161",
+      "field_reasons": {
+        "review_status": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "contract_sections": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "ranges": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "sha256": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "old_sha256": "44822d01e4f14023cf48e5443aa413bd74fb1e202d70ff190a9f254c4e698074",
+      "new_sha256": "48268c50daecd6edab01139035e76d5e172e741fed1eff9f238827b460a95524",
+      "field_reasons": {
+        "review_status": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "contract_sections": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "ranges": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "sha256": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "89ea39f2d98eb7a5346a2cf2786ca02ab26ec63587aa7c9a6898f9721e65761f",
+      "new_sha256": "ae86d0a5e79b83804b08c46aa91546ef5366b769eb687243546093195d451c46",
+      "field_reasons": {
+        "review_status": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "contract_sections": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "ranges": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior.",
+        "sha256": "Reviewed full maintained source and diff; one current roadmap, separate defect register, archive policy, complete historical qualifiers and unchanged product behavior."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/README.md",
+      "old_sha256": null,
+      "new_sha256": "d2e2ef5ebb18f3ad27fd15f6a92bac5de2922dedf7e03534b2297fe4ad638ed1",
+      "field_reasons": {
+        "path": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "sha256": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "selection_reason": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "role": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "review_status": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "applicability": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "canonical": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "ranges": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "knowledge_status": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "status_source": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "inventory_decision": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "inventory_reason": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "referenced_by_current_docs": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "current_reference_sources": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "component": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "generated": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "contract_sections": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/improvement-program/PROGRESS.md",
+      "old_sha256": null,
+      "new_sha256": "4a47f9a77f03fbe9bd0829eb56c826af426d7c1dfb38f18d55d0e55a31c23352",
+      "field_reasons": {
+        "path": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "sha256": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "selection_reason": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "role": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "review_status": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "applicability": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "canonical": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "ranges": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "knowledge_status": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "status_source": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "inventory_decision": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "inventory_reason": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "referenced_by_current_docs": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "current_reference_sources": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "component": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "generated": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits.",
+        "contract_sections": "Reviewed current original navigation/status owner; deliberately enrolled with full source/contract and qualification limits."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "3f22194ae3232c89ca19a41c137e16651eb44411967821d0ea10d550fc134030",
+      "new_sha256": "336c4b8b3828316646964e9e68b37ccb2d06d6049227c42dd6ab39a0903d143b",
+      "reason": "Only reviewed documentation-source hashes/line locators rebound. Questions, requirements, owners, IDs, qualifiers, answerability and reference conclusions unchanged."
+    },
+    {
+      "old_sha256": "f2e0c3d743dedcd5ab510b3e295fee022c0f6dccffc97effcde043fd5c57eb47",
+      "new_sha256": "8d50683ebe5f024271936f1574f9a3ae34e17d47ddad6c3bf0c40b176440c378",
+      "reason": "Only reviewed documentation-source hashes/line locators rebound. Questions, requirements, owners, IDs, qualifiers, answerability and reference conclusions unchanged."
+    },
+    {
+      "old_sha256": "40ad9fd98601086358683c99f10f378b99a630fc41efb94b792e909ea1865080",
+      "new_sha256": "2ee8f90714c240e610b1178c6b0787f237b14235ea4c02651a0019be41de043d",
+      "reason": "Only reviewed documentation-source hashes/line locators rebound. Questions, requirements, owners, IDs, qualifiers, answerability and reference conclusions unchanged."
+    }
+  ],
+  "enrollment": {
+    "added": [
+      "docs/README.md",
+      "docs/plans/improvement-program/PROGRESS.md"
+    ],
+    "agent_reviewed": true,
+    "reason": "Make the maintained document index and single current feature ledger directly retrievable; do not enroll superseded plans, archive narratives or independent work as current guidance."
+  }
+}

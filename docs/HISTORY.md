@@ -2,12 +2,14 @@
 
 Use [the current index](README.md) for usage and [the backlog](BACKLOG.md) for next work. The entries below are dated records, not alternative current manuals. Paths remain stable for source hashes, tests, research citations and the excluded website.
 
-The latest audit is [0.75 qualification](System_Qualification_0.75_2026-10-09/README.md). Its receipts remain frozen; later documentation cleanup is not another runtime qualification.
+The latest scoped delivery is [0.86.0 native qualification](plans/native-placement/DELIVERY_0860.md). Earlier [0.75 qualification](System_Qualification_0.75_2026-10-09/README.md) remains a frozen historical campaign. Documentation cleanup is not another runtime qualification.
+
+[Archived plans and checkpoint narratives](archive/README.md) preserve superseded work queues. The [decision register](documentation-inventory.csv) records consolidation and byte-identical retirements. Dated reports below remain archived at their original paths where hashes, tools or research depend on them.
 
 | Record | Purpose |
 | --- | --- |
+| [0.86.0 native migration](plans/native-placement/DELIVERY_0860.md) | Current scoped delivery; exact normal/fault builds, native ownership/Undo, Max 2027 matrix, one-hour soak and package hashes |
 | [0.85.4 Count memory correction](plans/memory-0854/README.md) | Native transient schedules/radii, reduced row transport and session workspace reservation; bounded Max 2027 Undo/Count qualification |
-
 | [0.85.3 ready presets](plans/preset-gallery-improvements/LOAD_0853.md) | Add layers with included models/materials, evaluated terrain, paths and Paint; exact owned Max 2027 qualification |
 | [0.78.1 Start Brush and Max 2026/2027](Brush_Start_0.78.1_2026-10-10/README.md) | Frozen button, native layout and package qualification preceding the 0.78.2 drawing patch |
 | [Approved_UI_Layout_0.73_2026-10-06](Approved_UI_Layout_0.73_2026-10-06/README.md) | Dated implementation, qualification and/or delivery record |

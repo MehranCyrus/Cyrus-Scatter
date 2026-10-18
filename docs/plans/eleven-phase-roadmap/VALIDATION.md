@@ -2,7 +2,7 @@
 
 Current execution status is in the [phase table](../improvement-program/PROGRESS.md#original-phase-status):
 P01–P07 implemented, P08/P09 pending, P10 delivered for supported recipe/library
-scope and P11 partial. Further implementation is paused. Version assignments and
+scope and P11 partial. The current conversation controls implementation scope. Version assignments and
 enrollment instructions in this original specification are historical; use the
 current version policy and user instruction for any new delivery.
 
@@ -11,7 +11,7 @@ does not assert universal correctness or turn old passing receipts into new ones
 Read [implementation scope](IMPLEMENTATION.md) before selecting the tests.
 The separate [0.82.4 mesh mask campaign](MESH_MASK_0824.md) records current
 Max 2027 channels, Curvature, Paint composition, lifecycle and idle witnesses;
-P06 remains paused.
+P06 grids are implemented in 0.85.0; historical tests retain their original scope.
 
 ## Evidence levels
 

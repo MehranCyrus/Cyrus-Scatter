@@ -1,5 +1,5 @@
 path,decision,reason
-AGENTS.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+AGENTS.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 AminScatter/Analyzer-Area-guide.md,removed,Superseded version-specific guide or stale task prompt; useful current details consolidated; exact original retained in Git
 AminScatter/Area-Falloff-Graph-guide.md,removed,Superseded version-specific guide or stale task prompt; useful current details consolidated; exact original retained in Git
 AminScatter/Boundary-Falloff-guide.md,removed,Superseded version-specific guide or stale task prompt; useful current details consolidated; exact original retained in Git
@@ -23,8 +23,8 @@ CyrusMCP/requirements-pinned.txt,preserved-data,"Build input, dependency/license
 CyrusMCP/requirements.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 CyrusSurfaceAnalyzer/CMakeLists.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 CyrusSurfaceAnalyzer/README.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
-README.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
-docs/AGENT_WORKFLOW.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
+README.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
+docs/AGENT_WORKFLOW.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/AI_Design_Learning_Research_2026-10-05/01_RECOMMENDATION.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/AI_Design_Learning_Research_2026-10-05/02_CODEBASE_AUDIT.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/AI_Design_Learning_Research_2026-10-05/03_ARTIST_WORKFLOW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -66,6 +66,8 @@ docs/AI_MCP_ML_Roadmap_2026-09-30/15_Phased_Implementation_Roadmap.md,preserved-
 docs/AI_MCP_ML_Roadmap_2026-09-30/16_Risks_Decisions_and_Open_Questions.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/AI_MCP_ML_Roadmap_2026-09-30/17_ChatGPT_Connection_and_Diagnostics_First_2026-10-02.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/AI_MCP_ML_Roadmap_2026-09-30/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/ARCHITECTURE.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
+docs/ARTIST_GUIDE.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/Approved_UI_Layout_0.73_2026-10-06/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Arrangement_Research_0.75_2026-10-09/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Artist_Reference_0.73_2026-10-07/01_SETUP_AND_LAYERS.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -95,7 +97,11 @@ docs/Artist_Zones_Integration_2026-10-03/CODEBASE_AUDIT.md,preserved-excluded,"R
 docs/Artist_Zones_Integration_2026-10-03/PLANTING_GROUPS_IMPLEMENTATION.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Artist_Zones_Integration_2026-10-03/PLANTING_GROUPS_REVIEW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Artist_Zones_Integration_2026-10-03/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/BACKLOG.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/Brush_Relax_Reset_2026-10-03/REPORT.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Brush_Scaling_0.76_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Brush_Start_0.78.1_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Brush_Tool_2026-10-02/CODEBASE_INTEGRATION.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Brush_Tool_2026-10-02/IMPLEMENTATION_PLAN.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
@@ -204,6 +210,11 @@ docs/Consolidation_0.75_2026-10-09/receipts/ui074-views.txt,preserved-data,"Buil
 docs/Container_Selection_Fix_0.73_2026-10-06/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Container_Selection_Fix_0.73_2026-10-06/evidence/cold-reopen-counters.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Container_Selection_Fix_0.73_2026-10-06/evidence/settled-reopen-counters.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/Container_and_Radius_0.78.3_2026-10-10/AREA_EXAMPLES.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Container_and_Radius_0.78.3_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Container_and_Radius_0.78.3_2026-10-10/SPLINE_POINTS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Courtyard_Fixes_0.75_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Courtyard_Study_0.75_2026-10-09/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Current_System_2026-10-05/AGENT_WORKFLOW_GUIDE.md,maintained-interface,Active capability/help input or contract at dependency-pinned path
 docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md,maintained-interface,Active capability/help input or contract at dependency-pinned path
 docs/Current_System_2026-10-05/CONTROL_INVENTORY.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
@@ -285,6 +296,8 @@ docs/Cyrus_Scatter_V1_2026-10-03/PLAN.md,retained-history,"Version/provenance/de
 docs/Cyrus_Scatter_V1_2026-10-03/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Cyrus_Scatter_V1_2026-10-03/REPORT.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Cyrus_Scatter_V1_2026-10-03/ROADMAP.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+docs/DOCUMENTATION.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
+docs/ENGINEERING_FOUNDATION.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/ForestPack_Research_2026-10-08/CONTROL_MODEL.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/ForestPack_Research_2026-10-08/CYRUS_LESSONS.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/ForestPack_Research_2026-10-08/HANDOFF.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -295,6 +308,7 @@ docs/ForestPack_Research_2026-10-08/brush/NATIVE_FINDINGS.md,preserved-excluded,
 docs/ForestPack_Research_2026-10-08/brush/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/ForestPack_Research_2026-10-08/brush/REGION_DESIGN.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/ForestPack_Research_2026-10-08/brush/reproduce/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/Foundation_0.79.6_2026-10-12/README.md,preserved-data,Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.
 docs/Full_Qualification_0.73_2026-10-07/ARTIST_GUIDE.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Full_Qualification_0.73_2026-10-07/CHANGES.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Full_Qualification_0.73_2026-10-07/FEATURE_MATRIX.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
@@ -306,6 +320,9 @@ docs/Full_Qualification_0.73_2026-10-07/ROADMAP.md,retained-history,"Version/pro
 docs/Full_Qualification_0.73_2026-10-07/VENDOR_RECHECK.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Full_Qualification_0.73_2026-10-07/evidence/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Full_Qualification_0.73_2026-10-07/evidence/playback/result.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/GitHub_Tools_Inventory_2026-10-15/NEW_CONVERSATION.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/GitHub_Tools_Inventory_2026-10-15/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/HISTORY.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/Heavy_Scene_Viewport_2026-10-02/IMPLEMENTATION_PLAN.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Heavy_Scene_Viewport_2026-10-02/KNOWLEDGE.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Heavy_Scene_Viewport_2026-10-02/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -324,6 +341,89 @@ docs/Heavy_Scene_Viewport_2026-10-02/evidence/rejected/lifecycle-invalid-number-
 docs/Heavy_Scene_Viewport_2026-10-02/evidence/rejected/startup-03-registration-error.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Heavy_Scene_Viewport_2026-10-02/evidence/rejected/startup-error.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Historical_Comparison_2026-10-09/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/Cyrus_Scatter_Complete_Guide.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/README.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/01_SCOPE_REQUIREMENTS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/02_ARCHITECTURE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/03_DATA_MODEL.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/04_EVALUATION_CACHING.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/05_DISTRIBUTION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/06_AREAS_FIELDS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/07_SURFACES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/08_PAINT_ENGINE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/09_SOURCES_VARIATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/10_CONSTRAINTS_MANUAL_EDITS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/11_EFFECTS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/12_OUTPUT_RENDERING.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/13_3DSMAX_INTEGRATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/14_UX_CONTROLS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/15_TESTS_BENCHMARKS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/16_ROADMAP.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/17_IMPLEMENTATION_RECIPES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/18_FEATURE_CATALOG.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/19_RENDERER_ADAPTERS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/20_SERIALIZATION_AND_ASSETS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/21_UTILITIES_ADVANCED.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/22_SOURCES_DECISION_LOG.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/23_DEVELOPER_HANDOFF.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/24_INTERACTION_MATRIX.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/25_CORE_API_ALGORITHMS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/docs/26_LEARNING_LAB.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/reference/Original_Research_Forest.md,retained-history,Exact duplicate retained inside its original research package for manifest/provenance reproducibility; canonical original is the current research route. Route: docs/How_Forest_Works/Research Forest.md
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/templates/FEATURE_SPEC_TEMPLATE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Full_Rebuild_Blueprint_GPT 6 xhigh/templates/REFERENCE_TEST_TEMPLATE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/00_READ_ME_FIRST.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/01_PRODUCT_SCOPE_AND_BEHAVIOR.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/02_SYSTEM_ARCHITECTURE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/03_DATA_IDENTITY_AND_RANDOMNESS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/04_EVALUATION_CACHING_AND_CONCURRENCY.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/05_SURFACES_COORDINATES_AND_GEOMETRY.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/06_FIELDS_MAPS_CURVES_AND_FALLOFFS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/07_DISTRIBUTION_AND_SPECIES_SELECTION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/08_ORDERED_AREAS_EXCLUSIONS_AND_BOUNDARIES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/09_PAINTING_AUTHORING_UNDO_AND_INCREMENTAL_UPDATES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/10_SOURCES_TRANSFORMS_AND_GROUPS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/11_COLLISIONS_SPACING_AND_EXACT_INCREMENTAL_SOLVING.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/12_MANUAL_EDITING_AND_CS_EDIT.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/13_VIEWPORT_PICKING_CAMERA_AND_LOD.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/14_RENDERER_AND_PARTICLE_FLOW_INTEGRATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/15_MATERIALS_EDGE_TRIMMING_AND_ANIMATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/16_EFFECTS_AND_PROCEDURAL_EXTENSIBILITY.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/17_MAX_HOST_PERSISTENCE_COLLECTIONS_AND_ASSETS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/18_ARTIST_UI_COMMANDS_AND_AUTOMATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/19_EXISTING_CYRUS_INTEGRATION_AND_MIGRATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/20_VERIFICATION_FIXTURES_AND_BENCHMARKS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/21_BUILD_ROADMAP_AND_ENGINEERING_HANDOFF.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/22_CONTROL_CATALOG.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/23_DECISIONS_RISKS_AND_OPEN_QUESTIONS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/24_WORKED_PRODUCTION_SCENARIO.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/25_SOURCES_AND_EVIDENCE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/26_COMPANION_FEATURES_AND_SCOPE_EXTENSIONS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/VALIDATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/examples/README.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Cyrus_Scatter_Rebuild_Blueprint GPT 6/sources/Research Forest 2.md,retained-history,Exact duplicate retained inside its original research package for manifest/provenance reproducibility; canonical original is the current research route. Route: docs/How_Forest_Works/Research Forest 2.md
+docs/How_Forest_Works/Research Forest 2.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Research Forest.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Sonnet 5.5 Plan/00-overview-and-roadmap.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Sonnet 5.5 Plan/01-architecture-and-data-model.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Sonnet 5.5 Plan/02-placement-engine.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Sonnet 5.5 Plan/03-transforms-editing-effects.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Sonnet 5.5 Plan/04-viewport-rendering-performance.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Sonnet 5.5 Plan/05-product-tools-and-ui.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/Sonnet 5.5 Plan/06-testing-parity-and-milestones.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/00_ARCHITECTURE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/01_CORE_SERVICES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/02_PLUGIN_SHELL.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/03_GENERATORS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/04_SURFACES_AREAS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/05_FALLOFF_PAINT.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/06_DIVERSITY_COLLISIONS.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/07_TRANSFORMS_ANIM_MATERIAL.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/08_CAMERA_DISPLAY.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/09_RENDER.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/10_EDITING_SCRIPTING.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/11_TESTING_ROADMAP.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/How_Forest_Works/cyrus-scatter-specs Opus 5.5/README.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
 docs/Independent_Review_0.7_2026-10-05/BACKUP_CHECKPOINT.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Independent_Review_0.7_2026-10-05/CURRENT_OUTCOME.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Independent_Review_0.7_2026-10-05/EVALUATION_TRACE.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
@@ -347,7 +447,9 @@ docs/Integrated_UI_0.72_2026-10-06/PACKAGE.md,retained-history,"Version/provenan
 docs/Integrated_UI_0.72_2026-10-06/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Integrated_UI_0.72_2026-10-06/RESULTS.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Integrated_UI_0.72_2026-10-06/WORKFLOW.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+docs/LAYOUT_AND_FALLOFF.md,maintained,Consolidated current authority or history/retention index
 docs/Layer_Actions_Fix_0.73_2026-10-07/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+docs/Layer_Navigation_0.79.2_2026-10-11/README.md,preserved-data,Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.
 docs/Layer_Paint_Areas_0.74_2026-10-09/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Layer_Width_2026-10-04/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Layer_Width_2026-10-04/evidence/width-probe.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -371,11 +473,13 @@ docs/MCP_Implementation_2026-10-03/ROADMAP_STATUS.md,retained-history,"Version/p
 docs/MCP_Implementation_2026-10-03/TRY_IT.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/MCP_Implementation_2026-10-03/evidence/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Max2026_Build_0.73_2026-10-07/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
-docs/Max_2027_Installation.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
+docs/Max_2027_Installation.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/Offline_Implementation_2026-10-05/DESIGN_LAB.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Offline_Implementation_2026-10-05/IMPLEMENTATION.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Offline_Implementation_2026-10-05/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Offline_Implementation_2026-10-05/RUNTIME_ACCEPTANCE.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+docs/PRODUCT_AND_AI_ROADMAP.md,maintained,Current maintained owner/navigation; superseded narrative archived separately. Original historical qualification remains distinct.
+docs/Paint_Feedback_0.77_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Performance_Artist_Retest_2026-10-01.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Performance_Baseline_2026-10-01.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Performance_Baseline_Tool.md,preserved-tool-guide,Tool-specific guide retained; dated measurements are not new qualification
@@ -406,6 +510,9 @@ docs/Playback_Performance_2026-10-06/evidence/analyzer-max2027-tests.txt,preserv
 docs/Playback_Performance_2026-10-06/evidence/max2026-tests.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Playback_Performance_2026-10-06/evidence/max2027-result.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Playback_Performance_2026-10-06/evidence/max2027-tests.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/Point_Workflow_0.79.1_2026-10-11/LAYER_INVESTIGATION.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Point_Workflow_0.79.1_2026-10-11/NAVIGATION_PERFORMANCE.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Point_Workflow_0.79.1_2026-10-11/README.md,preserved-data,Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.
 docs/Procedural_Evaluation_2026-10-04/01_CURRENT_CODE_AND_GAPS.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Procedural_Evaluation_2026-10-04/02_PROCEDURAL_PIPELINE.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Procedural_Evaluation_2026-10-04/03_COLLISION_AND_RADIUS.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -475,14 +582,15 @@ docs/Product_Strategy_2026-09-29/15_Research_Sources.md,preserved-excluded,"Rese
 docs/Product_Strategy_2026-09-29/16_Beta_and_Product_Validation.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Product_Strategy_2026-09-29/17_Experiment_Briefs.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Product_Strategy_2026-09-29/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
-docs/README.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
+docs/README.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/Real_Scene_0.7.1_2026-10-05/FINDINGS.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Real_Scene_0.7.1_2026-10-05/PLAN.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Real_Scene_0.7.1_2026-10-05/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Real_Scene_0.7.1_2026-10-05/RESULTS.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+docs/Receiver_Stability_0.76_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Receiving_Surface_Research_2026-10-08/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Receiving_Surface_Research_2026-10-08/reproduce/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
-docs/Release_Versioning.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
+docs/Release_Versioning.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
 docs/Research_Briefs_2026-10-01/01 - Codex GPT 6 Astra - Codebase Research.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Research_Briefs_2026-10-01/02 - Web GPT 6 Pro - Independent Research.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Research_Briefs_2026-10-01/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -508,7 +616,28 @@ docs/Review_Handoff_2026-10-05/HANDOFF_PROMPT.md,removed,Superseded version-spec
 docs/Review_Handoff_2026-10-05/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Review_Handoff_2026-10-05/REQUIREMENTS_REVIEW_MATRIX.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Review_Handoff_2026-10-05/REVIEW_PLAN.md,removed,Superseded version-specific guide or stale task prompt; useful current details consolidated; exact original retained in Git
+docs/Scatter_Data_Recipes_Research_2026-10-15/FIELD_MAP.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Scatter_Data_Recipes_Research_2026-10-15/IMPLEMENTATION_PLAN.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Scatter_Data_Recipes_Research_2026-10-15/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Scatter_Data_Recipes_Research_2026-10-15/SOURCES.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Scatter_Data_Recipes_Research_2026-10-15/VALIDATION.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Scatter_Physics_Research_2026-10-16/AUTO_PROXY_012.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/BRUSH_UI_011.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/CRASH_DIAGNOSTICS_013.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/CYRUS_SOURCE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/ENGINES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/HOUDINI.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/IMPLEMENTATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/OUTSIDE_BRUSH_012.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/PHASED_PLAN.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/PROPOSED_DESIGN.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/README.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/SOURCES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/TYFLOW.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/VALIDATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
 docs/Selection_Diagnosis_2026-10-01.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
+docs/Source_Containers_Performance_2026-10-13.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Spline_Edit_Trace_2026-10-01.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Spline_Edit_Trial_2026-10-01.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Status_0.73_And_Website_2026-10-07/CHECKLIST.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
@@ -587,6 +716,10 @@ docs/System_Qualification_0.75_2026-10-09/evidence/qualification075-ui/consolida
 docs/System_Qualification_0.75_2026-10-09/evidence/qualification075-ui/layer-regions-before-save.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/System_Qualification_0.75_2026-10-09/evidence/qualification075-ui/layer-regions-checks.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/System_Qualification_0.75_2026-10-09/evidence/qualification075-ui/layout075-checks.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/Terrace_Workflow_0.79.5_2026-10-11/CONTROL_REGISTER.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Terrace_Workflow_0.79.5_2026-10-11/COVERAGE.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md,preserved-data,Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.
+docs/Terrace_Workflow_0.79.5_2026-10-11/README.md,preserved-data,Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.
 docs/TyFlow_Architecture_Research_2026-10-06/CONTINUATION.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/TyFlow_Architecture_Research_2026-10-06/CYRUS_COMPARISON.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/TyFlow_Architecture_Research_2026-10-06/EVALUATION_AND_DISPLAY.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -652,6 +785,7 @@ docs/Unified_System_0.73_2026-10-06/ROADMAP.md,retained-history,"Version/provena
 docs/Unified_System_0.73_2026-10-06/TASKS.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Unified_System_0.73_2026-10-06/evidence/INDEX.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Unified_System_0.73_2026-10-06/evidence/playback/result.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/Vector_Brush_0.78_2026-10-10/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Vendor_Native_Deep_Research_2026-10-09/CODE_MAP.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Vendor_Native_Deep_Research_2026-10-09/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Vendor_Native_Deep_Research_2026-10-09/reproduce/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -682,6 +816,13 @@ docs/Viewport_Performance_Round2_2026-10-01/evidence/tests/viewport-test.txt,pre
 docs/Viewport_Performance_Round2_2026-10-01/recipes/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Viewport_Performance_Round2_2026-10-01/recipes/probe/CMakeLists.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 docs/Workspace_Organization.md,maintained,Current workspace and backup policy; dated receipts retained
+docs/archive/README.md,maintained,"Archive navigation and preservation scope, not current implementation instructions."
+docs/archive/plans/improvement-execution-to-0860.md,retained-history,"Preserves original planning detail, failed iterations, evidence links and open requirements; not current authorization. Route: docs/plans/improvement-program/PROGRESS.md"
+docs/archive/plans/native-migration-plan.md,retained-history,"Preserves original planning detail, failed iterations, evidence links and open requirements; not current authorization. Route: docs/plans/native-placement/README.md"
+docs/archive/plans/original-eleven-phase-checklist.md,retained-history,"Preserves original planning detail, failed iterations, evidence links and open requirements; not current authorization. Route: docs/plans/eleven-phase-roadmap/TODO.md"
+docs/archive/plans/original-eleven-phase-plan.md,retained-history,"Preserves original planning detail, failed iterations, evidence links and open requirements; not current authorization. Route: docs/plans/eleven-phase-roadmap/README.md"
+docs/archive/plans/preset-gallery-checklist-0851.md,retained-history,"Preserves original planning detail, failed iterations, evidence links and open requirements; not current authorization. Route: docs/plans/preset-gallery-improvements/TODO.md"
+docs/archive/plans/preset-gallery-plan-0851.md,retained-history,"Preserves original planning detail, failed iterations, evidence links and open requirements; not current authorization. Route: docs/plans/preset-gallery-improvements/README.md"
 docs/handoffs/max2026/CHECKSUMS.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 docs/handoffs/max2026/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/handoffs/max2026/START HERE.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
@@ -698,7 +839,82 @@ docs/licensing/ROADMAP.md,preserved-excluded,"Research/website, independent lice
 docs/licensing/SIGNED_LICENSE_EXPERIMENT_2026-10-04.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/licensing/SIGNED_TOKEN_PROFILE.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/licensing/SOURCES.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/licensing/TEAM_PILOT_0.79_2026-10-11.md,preserved-data,Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.
 docs/licensing/evidence/l1-2026-10-04/requirements-signer.txt,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/FOREST_IMPROVEMENTS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/IMPLEMENTATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/eleven-phase-roadmap/INSTALLATION_0822.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/P01.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/P02.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/P02_PREFLIGHT.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/P03.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/P04.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/P05.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/PERFORMANCE_0823.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/eleven-phase-roadmap/README.md,consolidated,Superseded plan/checkpoint history archived; one maintained execution ledger owns current status. Route: docs/archive/plans/original-eleven-phase-plan.md
+docs/plans/eleven-phase-roadmap/TODO.md,maintained-interface,Retired duplicate work queue; short route kept for real external/tool citations; current sequence is improvement-program/PROGRESS.md.
+docs/plans/eleven-phase-roadmap/VALIDATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/improvement-program/FORMAT_2.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/improvement-program/FORMAT_3.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/improvement-program/FORMAT_4.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/improvement-program/I03_08261.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/I04_0830.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/I04_ORIENTATION.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/I05_0840.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/I05_VARIATION.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/I06_0850.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/I06_GRIDS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/LIBRARY.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/OBJECTIVE.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/improvement-program/PROGRESS.md,maintained,Current maintained owner/navigation; superseded narrative archived separately. Original historical qualification remains distinct.
+docs/plans/memory-0854/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/native-placement/BASELINE_0854_20261017.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/native-placement/DELIVERY_0860.md,preserved-data,Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.
+docs/plans/native-placement/DESIGN.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/native-placement/EXECUTION_0860.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/native-placement/IMPLEMENTATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/native-placement/README.md,maintained,Current maintained owner/navigation; superseded narrative archived separately. Original historical qualification remains distinct.
+docs/plans/native-placement/SOURCE_MAP.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/native-placement/VALIDATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/panel-performance-0826/PROGRESS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/BROWSER_LAYOUT.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/DELIVERY_0851.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/FORMAT_5.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/preset-gallery-improvements/INSTALLER_CONTRACT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/preset-gallery-improvements/LOAD_0853.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/PACKAGE_CONTRACT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/preset-gallery-improvements/PROGRESS_0851.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/README.md,maintained,Current maintained owner/navigation; superseded narrative archived separately. Original historical qualification remains distinct.
+docs/plans/preset-gallery-improvements/STYLE_CONTRACT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/preset-gallery-improvements/TODO.md,maintained-interface,Retired duplicate work queue; short route kept for real external/tool citations; current sequence is improvement-program/PROGRESS.md.
+docs/plans/preset-gallery-improvements/UI_CORRECTION_0852.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/USER_TESTING_0851.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/VALIDATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/recipes-0825/FORMAT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/recipes-0825/PROGRESS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/spline-bands/DESIGN.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/spline-bands/IMPLEMENTATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/spline-bands/INSTALLATION.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/spline-bands/P0_GATES.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/spline-bands/PROGRESS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/spline-bands/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/spline-bands/RESEARCH.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/spline-bands/TRANSPORT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/spline-bands/UI_REVIEW_20261013.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/spline-bands/VALIDATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/spline-bands/retired-fixtures/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/INSTALLATION_0816.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/ITERATIONS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/MESH_TEST_2026-10-13.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/PROGRESS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/REPORT.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/VIEWPORT_0816.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/VIEWPORT_0817.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/terrace-0815/VIEWPORT_POLICY_RESEARCH_2026-10-13.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 tools/brush_lab/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
 tools/licensing_lab/CMakeLists.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 tools/licensing_lab/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
@@ -709,6 +925,27 @@ tools/performance/native_point_probe/README.md,preserved-tool-guide,Guide to a s
 tools/performance/retained_integration/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
 tools/procedural_lab/layer_editor_071/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
 tools/procedural_lab/source_container_preview/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
+tools/rag/ACTIVATION.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/ADAPTER.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/AUTOMATIC_REFRESH.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/CANDIDATE_PREPARATION.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/COMPLETION_2026-10-12.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/CORPUS_REVIEW.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/DESIGN.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/EVALUATION_CHANGELOG.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/EXPERIMENT_PLAN.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/FOUNDATION_REFRESH_2026-10-17.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/GIT_HANDOFF_2026-10-17.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/GLOSSARY_REVIEW.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/INTEGRATION_READINESS.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/KNOWLEDGE_REPAIR_2026-10-17.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/NATIVE_DELIVERY_REFRESH_2026-10-18.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/PHASE4_REFRESH_PLAN.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/README.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
+tools/rag/REFRESH_STATUS.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/RESPONSE_CONTRACT.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/SELECTION.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
+tools/rag/STATUS_RECONCILIATION_2026-10-17.md,preserved-tool-guide,Knowledge tool procedure or dated receipt; current selected generation and maintenance route are tools/rag/README.md.
 tools/real_scene_071/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
 tools/v1/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
 website/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
@@ -737,9 +974,3 @@ website/sources/README.md,preserved-excluded,"Research/website, independent lice
 website/verification/BROWSER_REVIEW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 website/verification/COMBINED_BROWSER_REVIEW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 website/verification/FINAL_IMPLEMENTATION_CHECKS.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
-docs/ARTIST_GUIDE.md,maintained,Consolidated current authority or history/retention index
-docs/ARCHITECTURE.md,maintained,Consolidated current authority or history/retention index
-docs/BACKLOG.md,maintained,Consolidated current authority or history/retention index
-docs/LAYOUT_AND_FALLOFF.md,maintained,Consolidated current authority or history/retention index
-docs/HISTORY.md,maintained,Consolidated current authority or history/retention index
-docs/DOCUMENTATION.md,maintained,Consolidated current authority or history/retention index

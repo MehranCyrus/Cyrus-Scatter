@@ -1,6 +1,6 @@
 # Native migration validation plan
 
-**Required future tests, not passes.** No Max runtime, fault injection, performance test or compile ran during this planning task. Reuse the [0.85.4 receipts](../memory-0854/README.md) as historical witnesses, then establish a comparable N01 baseline. The active 17 October goal resumes implementation; the fresh pre-migration regression receipt is [recorded separately](BASELINE_0854_20261017.md). Required tests below are not passes by inclusion in this document.
+**Required matrix; outcomes are in the [0.86.0 delivery report](DELIVERY_0860.md).** The following introduction preserves the original planning checkpoint. No Max runtime, fault injection, performance test or compile ran during this planning task. Reuse the [0.85.4 receipts](../memory-0854/README.md) as historical witnesses, then establish a comparable N01 baseline. The active 17 October goal resumes implementation; the fresh pre-migration regression receipt is [recorded separately](BASELINE_0854_20261017.md). Required tests below are not passes by inclusion in this document.
 
 ## Test discipline and measurements
 

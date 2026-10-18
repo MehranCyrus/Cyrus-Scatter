@@ -1,10 +1,6 @@
-# Forest-informed Cyrus improvement plan
+# Forest-informed improvement specifications
 
-**Current status, 17 October 2026:** I01–I06 are implemented. I06 corresponds
-to the completed original P06 grids; I04 corresponds to completed P07 orientation.
-The supported recipe/gallery and static-asset slices are delivered through
-0.85.3 and retained by current 0.85.4. I07/P08 paths is pending; further roadmap
-implementation is paused. See the [current ledger](../improvement-program/PROGRESS.md#original-phase-status).
+Current status and sequence are in the [single execution ledger](../improvement-program/PROGRESS.md). I01–I06 and the scoped N01–N09 native migration are delivered; later I07–I18 requirements below remain proposals. P06/P07 are implemented. Current user scope controls further action. This document owns detailed research-derived requirements, not another operational checklist.
 
 ## Historical research and proposal baseline
 
@@ -15,7 +11,7 @@ ready-preset correction. PG numbers supplement the existing I/P roadmap.
 
 15 October 2026. **Original plan; I01/I02 subsequently implemented as 0.82.6. Phase 6 remains paused.** See the [implementation and scoped qualification](../panel-performance-0826/PROGRESS.md); I03 onward remain planning only. No implementation, Max testing, build, version change, installation or Git publication is authorized by this document. The user requested a detailed comparison-based plan, ordered from easiest to hardest, with performance and testing for every step.
 
-This is a research supplement to the [existing eleven-phase roadmap](README.md), not a replacement execution program. Its **I01–I18 identifiers are difficulty ranks**, not product phases or versions. The existing [TODO](TODO.md) remains the phase execution ledger; [BACKLOG](../../BACKLOG.md) remains the defect/acceptance ledger. The step specifications below preserve the original proposal. **I01–I06 are implemented under the active goal, with scoped evidence in the current ledger.** Later item descriptions remain proposals until their bounded implementation and qualification pass.
+This is a research supplement to the [existing eleven-phase roadmap](README.md), not a replacement execution program. Its **I01–I18 identifiers are difficulty ranks**, not product phases or versions. The [current execution ledger](../improvement-program/PROGRESS.md) owns phase status; [BACKLOG](../../BACKLOG.md) remains the defect/acceptance ledger. The step specifications below preserve the original proposal. **I01–I06 are implemented under the active goal, with scoped evidence in the current ledger.** Later item descriptions remain proposals until their bounded implementation and qualification pass.
 
 ## Original planning baseline and evidence
 
@@ -342,7 +338,7 @@ When separately authorized, use disposable Max 2027 scenes and the hash-pinned F
 - [ ] Implement in native sources and authoritative templates/generator; account for new authored fields in presets/recipes, catalog and units. No generated-script-only fix.
 - [ ] Pass focused native/generated checks and the applicable Max 2027 correctness, lifecycle, failure and performance gates. Expand regressions when shared paths change.
 - [ ] Record measured results, failed iterations and remaining limits in the existing execution handoff/TODO/backlog. Update artist help only for proven behavior.
-- [ ] Choose the next small-step delivery version under [version policy](../../Release_Versioning.md); this plan assigns no versions. Use the current [version policy](../../Release_Versioning.md) for provisional labels; the original planning baseline was 0.82.5 and the subsequent I01/I02 delivery is 0.82.6.
+- [ ] Choose the next delivery version under [version policy](../../Release_Versioning.md); this plan assigns no versions. Use the current [version policy](../../Release_Versioning.md) for provisional labels; the original planning baseline was 0.82.5 and the subsequent I01/I02 delivery is 0.82.6.
 - [ ] For a version delivered for user testing, build a runnable Max 2027 `.mzp` from the exact qualified script/native pair; verify archive, guards and payload hashes. Provide **Scripting > Run Script** and restart instructions. The user installs it; do not install or restart their session without explicit authorization.
 - [ ] Commit/push only within the authorized implementation scope, preserving unrelated work. Do not deploy a website or alter independently versioned products as a side effect.
 
@@ -363,9 +359,9 @@ These links point to local research evidence, which is outside the Cyrus Git rep
 | [Feature evidence matrix](<F:/Cursor/_Cyrus_Apps/Forest Reverse/research/forest/05_FEATURE_MATRIX.md>) | Documented broader animation/render/path capabilities; detailed later reports supersede older open-status rows |
 | [Latest research validation](<F:/Cursor/_Cyrus_Apps/Forest Reverse/evidence/validation-library-20261015-08.json>) | Research artifact integrity; no vendor execution or performance parity |
 
-For the existing Cyrus recipe architecture, retain the [research contract](../../Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md) as broader design and the [0.82.5 format](../recipes-0825/FORMAT.md) as the implemented wire contract. For the original phase outcomes, retain [IMPLEMENTATION](IMPLEMENTATION.md) and [VALIDATION](VALIDATION.md). Planning is complete. I01/I02 implementation and scoped acceptance are recorded in the [0.82.6 handoff](../panel-performance-0826/PROGRESS.md); later steps and their acceptance gates remain pending. Phase 6 stays paused.
+For the existing Cyrus recipe architecture, retain the [research contract](../../Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md) as broader design and the [0.82.5 format](../recipes-0825/FORMAT.md) as the implemented wire contract. For the original phase outcomes, retain [IMPLEMENTATION](IMPLEMENTATION.md) and [VALIDATION](VALIDATION.md). Planning is complete. I01/I02 implementation and scoped acceptance are recorded in the [0.82.6 handoff](../panel-performance-0826/PROGRESS.md); later steps and their acceptance gates remain pending. Historical pauses are superseded by the maintained execution ledger and current user scope.
 
-Current successor: [0.85.4 memory correction](../memory-0854/README.md), retaining
+Historical pre-native successor: [0.85.4 memory correction](../memory-0854/README.md), retaining
 the gallery/UI/ready-preset deliveries and implemented I01–I06. Eight examples and
 MZP/EXE packages are delivered for the supported subset. I07/P08 paths, broader
 adapters and general B26/production acceptance remain open. Historical proposals

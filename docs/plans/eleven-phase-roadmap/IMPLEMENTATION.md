@@ -2,12 +2,12 @@
 
 Current execution status is in the [phase table](../improvement-program/PROGRESS.md#original-phase-status):
 P01–P07 implemented, P08/P09 pending, P10 delivered for supported recipe/library
-scope and P11 partial. Further implementation is paused. Version assignments and
+scope and P11 partial. The current conversation controls implementation scope. Version assignments and
 enrollment instructions in this original specification are historical; use the
 current version policy and user instruction for any new delivery.
 
 Read with [the roadmap](README.md), [validation](VALIDATION.md) and
-[the current checklist](TODO.md). These are chosen initial implementation scopes;
+[the single execution ledger](../improvement-program/PROGRESS.md). These are chosen initial implementation scopes;
 record any material refinement before coding that phase. Existing contracts
 F01–F12 remain required. Every phase includes documentation, appropriate current
 schema save/copy/merge/Undo handling and its relevant regression checks.

@@ -1,23 +1,12 @@
 # Current work and acceptance
 
-This is the single maintained Scatter work list. Update it in place when a finding is resolved. The [dated 0.75 checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md) records the completed audit; an old unchecked roadmap item is not automatically a current defect or an instruction to implement it.
+This is the maintained Scatter defect and acceptance register. Update it in place when a finding is resolved; feature sequencing lives in the execution ledger. The [dated 0.75 checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md) records the completed audit; an old unchecked roadmap item is not automatically a current defect or an instruction to implement it.
 
-## Authorized feature program
+## Feature program and current evidence
 
-The [eleven-phase implementation roadmap](plans/eleven-phase-roadmap/README.md)
-tracks the user-authorized workflow, presets, filters, maps, conversion, layouts,
-recipes and adaptive-preview program. Its [TODO](plans/eleven-phase-roadmap/TODO.md)
-records per-phase implementation, validation and Git checkpoints. Existing defect
-IDs and release gates below retain their independent status; creating the roadmap
-does not close them.
+The [single execution ledger](plans/improvement-program/PROGRESS.md) owns P/I/PG/N feature status and remaining sequence; this backlog owns defect IDs and acceptance gates. P01–P07 and the supported recipe/gallery subset are implemented. The [0.86.0 native delivery](plans/native-placement/DELIVERY_0860.md) is the current exact-pair qualification, retaining the preceding ready-preset, navigation and static asset contracts. Earlier B26/library results below keep their original scope; the native delivery's Count/history/lifetime matrix is their measured successor, not a promise of unlimited memory or all-scene acceptance.
 
-The [remaining-improvements ledger](plans/improvement-program/PROGRESS.md) retains the previously authorized P06–P11 and I03–I18 program. I03–I06 have scoped historical deliveries through [0.85.0 grids](plans/improvement-program/I06_0850.md). The current [0.85.1 library work](plans/preset-gallery-improvements/PROGRESS_0851.md) adds the collection gallery, revision/capture/style tools, bounded static-asset packages, two examples (eight total), explicit scene-asset reuse and MZP/EXE distribution. The [0.85.1 handoff](plans/preset-gallery-improvements/DELIVERY_0851.md) records its exact qualified subset and remaining acceptance. P06 grids and P07 orientation are already delivered. The active objective resumes the native foundation first; this 0.86.0 task adds no later roadmap feature. Paths, broader B26, XRefs/material variants and prerequisite-dependent Edit/effect adapters remain open.
-
-For B26, 0.85.1 adds conservative Undo-preserving admission, cached schema conversion, discarded-undone New Setup cache release and departed-scene cache release. These address measured library workflows; they do not establish general heavy-copy/Add Layers lifetime safety or close B26. See [the package contract](plans/preset-gallery-improvements/PACKAGE_CONTRACT.md) and exact-pair evidence.
-
-The [0.85.2 UI correction](plans/preset-gallery-improvements/UI_CORRECTION_0852.md) addresses the reported Modify background wheel/drag failure and half-size default library. Its native input, panel bounds and passive-work checks are distinct from physical monitor/artist acceptance; broader B26 and adapter gates stay open. No new roadmap phase is included.
-
-The [0.85.3 ready-preset correction](plans/preset-gallery-improvements/LOAD_0853.md) is scoped-qualified for Max 2027: asset-backed Add/Load, complete ready saves, prepared receiver/path context, publication Undo/Redo and native long-path handling. This does not close general B26, XRefs/material variants or later roadmap phases.
+Current user scope is documentation/knowledge consolidation. Historical objectives and old unchecked tasks do not authorize feature coding during this maintenance.
 
 ## Next engineering work
 

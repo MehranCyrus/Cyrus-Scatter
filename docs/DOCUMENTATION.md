@@ -2,7 +2,7 @@
 
 ## Authority
 
-[The index](README.md) links the maintained artist guide, architecture, feature details, backlog, build and versioning instructions. Update these in place. Source and reproducible tests resolve conflicts; a historical report's use of “current” applies only to its recorded snapshot.
+[The index](README.md) links the maintained artist guide, architecture, feature details, backlog, build and versioning instructions. Update these in place. The [execution ledger](plans/improvement-program/PROGRESS.md) is the single current roadmap; the backlog owns defects and acceptance rather than a second feature queue. Source and reproducible tests resolve conflicts; a historical report's use of “current” applies only to its recorded snapshot.
 
 The capability matrix and MCP agent workflow remain at their existing `Current_System_2026-10-05` paths because code/catalog generation and external references use them. Their directory date does not make their maintained content obsolete. The semantic inventory, catalog hashes and current control register are functional inputs, not disposable prose.
 
@@ -19,13 +19,17 @@ The [engineering foundation](ENGINEERING_FOUNDATION.md) owns durable behavior an
 
 A documentation inventory or topic scan is not a semantic review of every file. Report the inspected scope, keep historical qualification labels intact, and update current entrypoints when later experiments or fixes supersede their summaries. Reusable lessons need cause, scope, evidence, uncertainty and an invalidation condition.
 
-Knowledge indexing has separate enrollment, freshness, retrieval and activation gates. Removed source paths require explicit scope/evaluation review; do not restore retired fixtures, overwrite sealed hashes or switch registration just to make status green. Fresh source hashes do not establish implementation correctness. The [17 October audit](../tools/rag/FOUNDATION_REFRESH_2026-10-17.md) records the actual follow-up and remaining limits.
+Knowledge indexing has separate enrollment, freshness, retrieval and activation gates. Removed source paths require explicit scope/evaluation review; do not restore retired fixtures, overwrite sealed hashes or switch registration just to make status green. Fresh source hashes do not establish implementation correctness. [Knowledge maintenance](../tools/rag/README.md) records the current selection and actual consumer verification; dated audits retain their original scope. Index current navigation and the execution ledger deliberately, keep required historical evidence labeled, and verify complete contracts as well as ranking. An archive location alone is not evidence that a contract is obsolete.
 
 ## What to remove or consolidate
 
 Remove duplicate explanations, obsolete installation instructions and copy-paste task prompts after moving still-useful guidance into the maintained documents. Git preserves their original text. A short compatibility link is justified only for an externally used old document path; do not keep two full versions of the same current guide.
 
 A new dated folder is appropriate for new measured evidence or a delivery receipt. It is not needed for every conversation, formatting change or restatement of the backlog. Mark historical entry points and keep them out of the current reading sequence.
+
+Before adding a document, identify its owner: artist behavior in the artist guide, implemented structure in architecture, required behavior in the foundation, status in the execution ledger, defects in the backlog, and maintenance procedure here. Add a contract only for a distinct reusable boundary. Record exact delivery evidence once, with links from maintained guidance. Do not append a second copy of its narrative to the roadmap. Use Git history for superseded prose; preserve useful failure/test receipts. Short routing pages are justified by real external/tool references, not by a desire to keep every old path alive.
+
+[The archive](archive/README.md) distinguishes physically moved plans from historical evidence kept at original byte-pinned paths. Preserve research packages and their manifests together. Rewriting links in an archived plan changes that file's bytes; record the original path/hash and recovery commit rather than presenting it as an unchanged sealed artifact.
 
 ## Website and public roadmap
 
@@ -41,7 +45,15 @@ Lead with what artists can build today. Present MCP as a separate bounded founda
 
 Do not invent pricing, purchase availability, public download endpoints, customer testimonials, release dates, benchmark comparisons or assistant-client certification. Prefer links to the guide, features and roadmap until a real distribution destination exists. Keep generated concept images and teaching diagrams labeled separately from actual plugin captures.
 
-## This cleanup
+## Consolidation on 18 October 2026
+
+The current inventory covers 667 tracked Markdown documents under docs and the knowledge tools. This count is an inventory, not semantic verification of every research claim. Current navigation, the P/I/PG/N ledgers and overlapping plan/checklist status were reviewed against the 0.86.0 delivery. Six superseded planning/checkpoint narratives were moved to the archive with original hashes and relocated relative links. The two duplicate TODO pages now route to one execution ledger; detailed future phase/gallery contracts and performance/Max 2027 gates remain accessible. Root/index pages were shortened and stale planning-only, Phase 6 pause and 0.85.4-current claims were removed from current navigation.
+
+Exact native/script/package identities, useful test/failure evidence, website-imported byte-pinned reports and original research-package artifacts are preserved. Independently active Physics Lab and presentation navigation was preserved. Product source, installed Max profiles and binaries were outside this task. No new runtime/build pass is implied. The [decision register](documentation-inventory.csv) records maintained, consolidated, archived-in-place and excluded paths; a source-only clone does not include ignored runtime artifacts.
+
+Knowledge refresh must separately verify reviewed source hashes/ranges, historical labels, original evaluation requirements, complete contract retrieval and actual project-following activation. Its exact generation, checks and remaining search limits are maintained in [the knowledge tooling entrypoint](../tools/rag/README.md), rather than another competing documentation report.
+
+## Historical cleanup on 9 October 2026
 
 The review inventoried tracked Markdown and text paths, distinguished logs/test data from guides, checked duplicated material and incoming tool/document references, read the active guides and the superseded standalone guides/task prompts, and reconciled uncertain current claims with source. Historical implementation packages were assessed for version, provenance, dependencies and retained findings; their raw results were not rerun or recertified.
 

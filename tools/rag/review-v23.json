@@ -1,0 +1,470 @@
+{
+  "corpus": {
+    "old_sha256": "49b5db91af1354bc954877ba72ce880e34f103713d5e6b76a8dd350aa1161fb4",
+    "new_sha256": "e0c22e36c2e5fd60f6d17a9f8c406944055e6ba0192d5414ada3e90dbceb3ebf",
+    "reason": "User-authorized documentation consolidation: current navigation and the single execution ledger replace competing roadmaps. Preserve every previously enrolled source, retirement decision and required historical evidence; enroll only the reviewed current document index and current status ledger. No retrieval/scoring or product code change. The first candidate exposed inventory/navigation provenance drift; this successor explicitly reconciles audit metadata without changing authority or source bytes of frozen evidence."
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "old_sha256": "10f76a976a805c844f81dbda461df56bf14771ee83d9bcf855492d1fc292baf9",
+      "new_sha256": "b8a27e49acd966cc41d4cc00f220ae9da19336ab805bc1bf86d3fff91ae29161",
+      "field_reasons": {
+        "review_status": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "contract_sections": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "ranges": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "sha256": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "old_sha256": "44822d01e4f14023cf48e5443aa413bd74fb1e202d70ff190a9f254c4e698074",
+      "new_sha256": "48268c50daecd6edab01139035e76d5e172e741fed1eff9f238827b460a95524",
+      "field_reasons": {
+        "review_status": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "contract_sections": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "ranges": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "sha256": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "89ea39f2d98eb7a5346a2cf2786ca02ab26ec63587aa7c9a6898f9721e65761f",
+      "new_sha256": "ae86d0a5e79b83804b08c46aa91546ef5366b769eb687243546093195d451c46",
+      "field_reasons": {
+        "sha256": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "review_status": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "contract_sections": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "ranges": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/README.md",
+      "old_sha256": null,
+      "new_sha256": "d2e2ef5ebb18f3ad27fd15f6a92bac5de2922dedf7e03534b2297fe4ad638ed1",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "selection_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "generated": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "canonical": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "component": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "knowledge_status": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "referenced_by_current_docs": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "review_status": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "contract_sections": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "ranges": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "path": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "role": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "sha256": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "applicability": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/improvement-program/PROGRESS.md",
+      "old_sha256": null,
+      "new_sha256": "4a47f9a77f03fbe9bd0829eb56c826af426d7c1dfb38f18d55d0e55a31c23352",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "selection_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "generated": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "canonical": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "component": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "knowledge_status": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "referenced_by_current_docs": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "review_status": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "contract_sections": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "ranges": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "path": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "role": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "sha256": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "applicability": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AGENTS.md",
+      "old_sha256": "f28fe66c1d7b33a26ead1a3b5a7db8e01205f2471acf19bc6d0876650795c4a3",
+      "new_sha256": "f28fe66c1d7b33a26ead1a3b5a7db8e01205f2471acf19bc6d0876650795c4a3",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "b3d1b57dcf01074b00831efdcdc5540b380fb4e1617a70aa7f43c90080dc9071",
+      "new_sha256": "b3d1b57dcf01074b00831efdcdc5540b380fb4e1617a70aa7f43c90080dc9071",
+      "field_reasons": {
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "old_sha256": "27cbdf26cbe0c1e2b75d2df0fdede3dc9a1bfa1bed11511449ce98f98237b703",
+      "new_sha256": "27cbdf26cbe0c1e2b75d2df0fdede3dc9a1bfa1bed11511449ce98f98237b703",
+      "field_reasons": {
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/LAYOUT_AND_FALLOFF.md",
+      "old_sha256": "29a924aa0124f787d4fe8fca4fc0432fbdda1b95f79c5ab81ef9029d079d4091",
+      "new_sha256": "29a924aa0124f787d4fe8fca4fc0432fbdda1b95f79c5ab81ef9029d079d4091",
+      "field_reasons": {
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "old_sha256": "fccfc7d0892e33beda04f5605c41a3b36fdeb1fce324cbb83828b091ca596a17",
+      "new_sha256": "fccfc7d0892e33beda04f5605c41a3b36fdeb1fce324cbb83828b091ca596a17",
+      "field_reasons": {
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "CyrusMCP/README.md",
+      "old_sha256": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
+      "new_sha256": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
+      "field_reasons": {
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+      "old_sha256": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+      "new_sha256": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "website/README.md",
+      "old_sha256": "a36fba9031040d7656ed48e669ebc9d7ec3fad501d00b5bd1d68718709bebc05",
+      "new_sha256": "a36fba9031040d7656ed48e669ebc9d7ec3fad501d00b5bd1d68718709bebc05",
+      "field_reasons": {
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "referenced_by_current_docs": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+      "old_sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+      "new_sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+      "field_reasons": {
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "referenced_by_current_docs": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+      "old_sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+      "new_sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/Layer_Navigation_0.79.2_2026-10-11/README.md",
+      "old_sha256": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
+      "new_sha256": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+      "old_sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+      "new_sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+      "old_sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+      "new_sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+      "old_sha256": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+      "new_sha256": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "current_reference_sources": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": "680b02606b3592951ffa8adc4053e084145d5d2f7da1bf7492d6c1bd6ba8b763",
+      "new_sha256": "680b02606b3592951ffa8adc4053e084145d5d2f7da1bf7492d6c1bd6ba8b763",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+      "old_sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+      "new_sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "docs/plans/native-placement/DELIVERY_0860.md",
+      "old_sha256": "ceeb8c56f035ecec513e0be65167de0ebdce6fe91ffce4c5bf716f39db3a4f4f",
+      "new_sha256": "ceeb8c56f035ecec513e0be65167de0ebdce6fe91ffce4c5bf716f39db3a4f4f",
+      "field_reasons": {
+        "inventory_decision": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "status_source": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained.",
+        "inventory_reason": "Reviewed original source and current navigation/decision register. Provenance follows the full audit, historical/unknown authority is preserved, source/role obligations are not promoted, and complete contracts remain retained."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "3f22194ae3232c89ca19a41c137e16651eb44411967821d0ea10d550fc134030",
+      "new_sha256": "336c4b8b3828316646964e9e68b37ccb2d06d6049227c42dd6ab39a0903d143b",
+      "reason": "Only reviewed documentation-source hashes/line locators rebound. Questions, requirements, owners, IDs, qualifiers, answerability and reference conclusions unchanged."
+    },
+    {
+      "old_sha256": "f2e0c3d743dedcd5ab510b3e295fee022c0f6dccffc97effcde043fd5c57eb47",
+      "new_sha256": "8d50683ebe5f024271936f1574f9a3ae34e17d47ddad6c3bf0c40b176440c378",
+      "reason": "Only reviewed documentation-source hashes/line locators rebound. Questions, requirements, owners, IDs, qualifiers, answerability and reference conclusions unchanged."
+    },
+    {
+      "old_sha256": "40ad9fd98601086358683c99f10f378b99a630fc41efb94b792e909ea1865080",
+      "new_sha256": "2ee8f90714c240e610b1178c6b0787f237b14235ea4c02651a0019be41de043d",
+      "reason": "Only reviewed documentation-source hashes/line locators rebound. Questions, requirements, owners, IDs, qualifiers, answerability and reference conclusions unchanged."
+    }
+  ],
+  "enrollment": {
+    "added": [
+      "docs/README.md",
+      "docs/plans/improvement-program/PROGRESS.md"
+    ],
+    "agent_reviewed": true,
+    "reason": "Make the maintained document index and single current feature ledger directly retrievable; do not enroll superseded plans, archive narratives or independent work as current guidance."
+  }
+}
