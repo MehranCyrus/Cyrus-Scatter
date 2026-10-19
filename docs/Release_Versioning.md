@@ -2,11 +2,11 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.0 | Native placement foundation; authored behavior, ready presets and UI retained |
-| Scatter native/package | 0.86.0 Max 2027 MZP/EXE; [current acceptance](plans/native-placement/DELIVERY_0860.md) | Exact loaded/package identities required; no artist installation by this task |
+| Scatter UI | 0.86.2 | Image/mesh density, persistent field preview, recipe recovery and full-width names |
+| Scatter native/package | 0.86.2 host MZPs/universal EXE; [current acceptance](plans/preset-gallery-improvements/DELIVERY_0862.md) | Exact loaded/package identities required; no artist installation by this task |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
-| Recipe / numeric-settings format and capability | 5 / 3 | Revisioned presentation/capture; 242 authored fields retained; strict earlier recipe reads |
-| Library / portable-package capability | 3 / 2 | Bounded collections; graph 2 adds evaluated receiver/static spline context to the mesh/Standard/PNG adapter; package manifest remains 1 |
+| Recipe / numeric-settings format and capability | 6 / 3 | 261 typed authored fields; explicit older recipe conversion; image mapping/frame/provenance |
+| Library / portable-package capability | 4 / 2 | Bounded collections; graph 2 adds evaluated receiver/static spline context to the mesh/Standard/PNG adapter; package manifest remains 1 |
 | Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -15,6 +15,29 @@
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
 
 ## Choosing the next version
+
+**Current user-selected delivery: 0.86.2.** The active goal explicitly authorizes
+the density-pattern/channel/overlay and complete recipe/library D01–D10 roadmap,
+plus D11 full-width layer naming. Final artwork is user-supplied later; three generated QA images qualify custom
+image/qualified map inputs, physical projection/repetition, persistent mask
+preview, early dependency validation, Max 2027 qualification, demo scene and exact
+MZP/EXE packaging. The user's explicit patch label governs this delivery despite
+its feature scope. Existing 0.86.1 receipts/host labels remain historical; new
+qualification originally covered Max 2027 only. The user explicitly requested the
+19 October same-version compatibility follow-up: current Max 2026 runtime checks,
+unchanged qualified Max 2027 payload and a Max 2024 SDK/managed preview. No artist install/restart is authorized. Record
+the delivered recipe format 6, library capability 4 and density-image capability 2 changes explicitly; scene schema 58 and Analyzer/MCP/licensing remain independently versioned.
+
+**Retained 0.86.1 version decision.** The user explicitly selects this patch
+label for selected-surface library loading with automatic setup creation and
+preserved existing layers, readable gallery hover/dropdown states, and distinct
+Max 2024/2026/2027 payloads/installers. No broader material/proxy/animation/Edit
+recipe adapters are included. Keep scene/recipe/native calculation contracts
+unless a measured compatibility change requires an explicit revision. Host
+support requires matching SDK and managed runtime plus actual owned-profile
+qualification; changing an installer year check alone does not establish it.
+Do not install or restart artist profiles. The pre-coding source/documentation
+checkpoint is `56b6e09db2b7e53f30fd60b6e4f51ea19296075f` (pushed and verified).
 
 **18 October 2026 active delivery: 0.86.0.** The user explicitly requests finishing
 the native N01–N09 migration, Max 2027 qualification and compiled installers,

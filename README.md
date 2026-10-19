@@ -2,12 +2,12 @@
 
 Native C++ scattering and generated MAXScript UI for 3ds Max.
 
-**Current delivery: Scatter 0.86.0 / schema 58 / CyrusUnified1; Max 2027 only.** The [native delivery report](docs/plans/native-placement/DELIVERY_0860.md) records the exact qualified pair, measurements, installers and limits. N01–N09 are complete for that scoped delivery. P01–P07 and the supported P10 recipe/library work are implemented; the [single execution ledger](docs/plans/improvement-program/PROGRESS.md) owns remaining scope. Current user instructions determine what work is authorized.
+**Current delivery: Scatter 0.86.2 / schema 58 / CyrusUnified1, qualified within scope for Max 2026/2027; Max 2024 preview.** The [density and recipe report](docs/plans/preset-gallery-improvements/DELIVERY_0862.md) owns the exact installers, demonstration and scoped tests. It adds projected image density, separate mesh-channel density, persistent surface masks, complete image/Paint recipes and layout fixes. The latest same-version UI follow-up fixes dropdown focus, simplifies Amount, bundles three starter masks and preserves metadata beside long Layer/Model names; use the latest installers in that report. The current universal EXE includes matching Max 2024/2026/2027 payloads; 2024 remains preview because no runnable host was available. Earlier receipts retain their original identities. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) owns remaining work. Unrelated roadmap work and knowledge activation remain paused.
 
 | Need | Maintained source |
 | --- | --- |
 | Use the plugin | [Artist guide](docs/ARTIST_GUIDE.md), [Layout and falloff](docs/LAYOUT_AND_FALLOFF.md) |
-| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [qualified MZP/EXE and artist tests](docs/plans/native-placement/DELIVERY_0860.md) |
+| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [qualified MZP/EXE and artist tests](docs/plans/preset-gallery-improvements/DELIVERY_0862.md) |
 | Understand implementation | [Architecture](docs/ARCHITECTURE.md), [engineering contracts](docs/ENGINEERING_FOUNDATION.md) |
 | Find remaining work | [Execution ledger](docs/plans/improvement-program/PROGRESS.md), [defects and acceptance](docs/BACKLOG.md) |
 | Work in this repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md), [version policy](docs/Release_Versioning.md) |
@@ -29,4 +29,4 @@ Layers own receivers, models and population rules. Paint Areas retain receiver-b
 
 Edit UI templates/generator modules, never only `AminScatter/scripts/AminScatterObject.ms`. Internal AminScatter names are registration identities. The [native boundary and physics/animation contract](docs/ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) governs future work; the standalone Physics Lab is separate from integrated Scatter support.
 
-Use **Scripting > Run Script** for the qualified MZP, then restart Max 2027; the unsigned EXE is an alternative. The 0.86.0 delivery did not install or restart the artist profile. `build/`, `dist/`, `_local/` and `Test Scene/` contain ignored local artifacts and assets, not Git backups; see [workspace organization](docs/Workspace_Organization.md).
+Use **Scripting > Run Script** with the MZP matching your Max year, then restart that Max version. The unsigned universal EXE provides a host selector. No artist installation or restart was performed. `build/`, `dist/`, `_local/` and `Test Scene/` contain ignored local artifacts and assets, not Git backups; see [workspace organization](docs/Workspace_Organization.md).

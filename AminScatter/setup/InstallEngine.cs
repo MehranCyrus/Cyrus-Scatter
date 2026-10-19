@@ -28,6 +28,8 @@ namespace Cyrus.Setup {
     public sealed class InstallEngine {
         const string Marker = "CyrusScatterInstall1";
         public string Version { get; private set; }
+        public string Year { get; private set; }
+        public static void CheckYear(string year) { if(year!="2024"&&year!="2026"&&year!="2027")throw new IOException("Supported hosts: Max 2024, 2026 and 2027."); }
         public string ContentID { get; private set; }
         public long PayloadBytes { get; private set; }
         readonly string source;
@@ -61,15 +63,16 @@ namespace Cyrus.Setup {
             if (data.Length > 262144 || !Hex(inventoryHash, 64) || Hash(data) != inventoryHash) throw new IOException("Installer inventory identity differs.");
             var lines = new UTF8Encoding(false, true).GetString(data).Replace("\r", "").Split('\n');
             string[] header = lines[0].Split('\t');
-            if (header.Length != 4 || header[0] != Marker || header[2] != "2027" || !Hex(header[3], 12)) throw new IOException("This installer requires the Max 2027 payload contract.");
-            Version = header[1]; ContentID = header[3];
+            if (header.Length != 4 || header[0] != Marker || !Hex(header[3], 12)) throw new IOException("Invalid Max payload contract.");
+            CheckYear(header[2]);Year=header[2];Version = header[1]; ContentID = header[3];
             if (!System.Text.RegularExpressions.Regex.IsMatch(Version, @"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$")) throw new IOException("Invalid development version.");
             var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             for (int i = 1; i < lines.Length; ++i) {
                 if (lines[i].Length == 0) continue;
                 string[] row = lines[i].Split('\t'); long size;
                 if (row.Length != 3 || !Hex(row[1], 64) || !Int64.TryParse(row[2], out size) || size < 0 || size > 128L * 1024 * 1024 || !names.Add(row[0])) throw new IOException("Invalid inventory entry.");
-                if (!Runtime.Contains(row[0]) && !row[0].StartsWith("Library/", StringComparison.Ordinal)) throw new IOException("Unsupported installer file: " + row[0]);
+                bool pattern = System.Text.RegularExpressions.Regex.IsMatch(row[0], @"^Patterns/(catalog\.tsv|index\.json|README\.md|[a-z0-9][a-z0-9_-]{0,80}\.png)$");
+                if (!Runtime.Contains(row[0]) && !row[0].StartsWith("Library/", StringComparison.Ordinal) && !pattern) throw new IOException("Unsupported installer file: " + row[0]);
                 Child(source, row[0]); files.Add(new Entry { Name = row[0], Hash = row[1], Bytes = size }); PayloadBytes += size;
             }
             if (files.Count > 512 || PayloadBytes > 512L * 1024 * 1024) throw new IOException("Installer payload exceeds its bound.");
@@ -104,23 +107,23 @@ namespace Cyrus.Setup {
         }
         static byte[] Text(string value) { return new UTF8Encoding(true).GetBytes(value); }
         static string Decode(byte[] value) { if (value == null) return ""; using (var reader = new StreamReader(new MemoryStream(value), Encoding.UTF8, true)) return reader.ReadToEnd(); }
-        static byte[] Registration(byte[] previous, string nativePath) {
+        static byte[] Registration(byte[] previous, string nativePath,string year) {
             string text = Decode(previous); if (text.Length > 1048576) throw new IOException("Plugin settings exceed the installation bound.");
             var output = new List<string>(); bool section = false, found = false;
             foreach (string raw in text.Replace("\r", "").Split('\n')) {
                 string line = raw.Trim();
                 if (line.StartsWith("[") && line.EndsWith("]")) {
-                    if (section && nativePath != null) output.Add("CyrusScatter2027=" + nativePath);
+                    if (section && nativePath != null) output.Add("CyrusScatter"+year+"=" + nativePath);
                     section = line.Equals("[Directories]", StringComparison.OrdinalIgnoreCase);
                     if (section && found) throw new IOException("Duplicate Directories sections require manual review.");
                     found |= section;
                 }
                 int equals = line.IndexOf('=');
-                if (section && equals >= 0 && (line.Substring(0, equals).Trim().Equals("CyrusScatter2027", StringComparison.OrdinalIgnoreCase) || line.Substring(0, equals).Trim().Equals("AminScatter2027", StringComparison.OrdinalIgnoreCase))) continue;
+                if (section && equals >= 0 && (line.Substring(0, equals).Trim().Equals("CyrusScatter"+year, StringComparison.OrdinalIgnoreCase) || line.Substring(0, equals).Trim().Equals("AminScatter"+year, StringComparison.OrdinalIgnoreCase))) continue;
                 output.Add(raw);
             }
             if (!found && nativePath != null) { output.Add("[Directories]"); section = true; }
-            if (section && nativePath != null) output.Add("CyrusScatter2027=" + nativePath);
+            if (section && nativePath != null) output.Add("CyrusScatter"+year+"=" + nativePath);
             return Encoding.Unicode.GetPreambleConcat(String.Join("\r\n", output));
         }
         static string[] Targets(InstallPaths paths) { return new[] {
@@ -205,7 +208,7 @@ namespace Cyrus.Setup {
                     after[0]=File.ReadAllBytes(Child(source,"CyrusScatterStartup.ms"));
                     after[1]=File.ReadAllBytes(Child(source,"CyrusScatter.mcr"));
                     after[2]=Text(Marker+"\n"+Version+"\n"+release+"\n"+Hash(after[0])+"\n"+Hash(after[1])+"\n");
-                    after[3]=Registration(before[3],Path.Combine(release,"bin"));
+                    after[3]=Registration(before[3],Path.Combine(release,"bin"),Year);
                     for(int i=0;i<targets.Length;++i)if(!Equal(ReadOptional(targets[i]),before[i]))throw new IOException("An installation target changed during preparation; retry.");
                     SaveJournal(Journal(paths),targets,before,after);
                     if(checkpoint!=null)checkpoint("journal");
@@ -227,7 +230,8 @@ namespace Cyrus.Setup {
                 }
             }
         }
-        public static void RemoveRegistration(InstallPaths paths) {
+        public static void RemoveRegistration(InstallPaths paths,string year="2027") {
+            CheckYear(year);
             string root=InstallPaths.Full(Path.Combine(paths.Scripts,"CyrusScatter"));
             if(!Directory.Exists(root))return;
             using(var installLock=new FileStream(Path.Combine(root,"install.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)) {
@@ -244,7 +248,7 @@ namespace Cyrus.Setup {
                     string line=raw.Trim();
                     if(line.StartsWith("[")&&line.EndsWith("]"))directories=line.Equals("[Directories]",StringComparison.OrdinalIgnoreCase);
                     int equals=line.IndexOf('=');
-                    if(directories&&equals>=0&&line.Substring(0,equals).Trim().Equals("CyrusScatter2027",StringComparison.OrdinalIgnoreCase)) {
+                    if(directories&&equals>=0&&line.Substring(0,equals).Trim().Equals("CyrusScatter"+year,StringComparison.OrdinalIgnoreCase)) {
                         if(!line.Substring(equals+1).Trim().Equals(native,StringComparison.OrdinalIgnoreCase))throw new IOException("The native registration changed externally. It was preserved.");
                         ++registrations;
                     }
@@ -252,7 +256,7 @@ namespace Cyrus.Setup {
                 if(registrations!=1)throw new IOException("The native registration changed externally. It was preserved.");
                 // Removing registration retains versioned recovery files, bundled
                 // libraries, imported textures and personal recipes by design.
-                after[3]=Registration(before[3],null);
+                after[3]=Registration(before[3],null,year);
                 SaveJournal(Journal(paths),targets,before,after);
                 try {
                     for(int i=0;i<targets.Length;++i) {

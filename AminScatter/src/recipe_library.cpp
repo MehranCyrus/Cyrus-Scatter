@@ -104,7 +104,33 @@ Json summary(const std::filesystem::path& recipe){
         }
     }}
     catch(const std::exception& e){warning=e.what();}
-    return Json::array({d["name"],d["layers"].size(),paints,d["id"],info["category"],info["tags"],info["description"],d["roles"].size(),layers,roles,hash,hasImage,warning,image,d["revision"]});
+    // Derived, file-only guidance is separate from the artist's description.
+    // A manifest is not a full integrity verdict; Load checks every payload.
+    std::set<int> channels,uvs;bool localFrame=false;
+    const auto inspect=[&](const Json& settings){
+        if(settings.value("meshMaskEnabled",false))channels.insert(settings["meshMaskChannel"].get<int>());
+        if(settings.value("distributionMode",1)==3){
+            if(settings.value("densityCoordinateMode",0)==0)uvs.insert(settings["densityUVChannel"].get<int>());
+            if(settings.value("densityCoordinateMode",0)==2)localFrame=true;
+        }
+    };
+    for(const auto& layer:d["layers"]){inspect(layer["settings"]);for(const auto& area:layer["areas"])inspect(area["settings"]);}
+    std::string requirements;
+    for(int channel:channels)requirements+="Requires mesh data channel "+std::to_string(channel)+". ";
+    for(int channel:uvs)requirements+="Requires receiver UV channel "+std::to_string(channel)+". ";
+    if(paints)requirements+="Paint requires compatible terrain geometry, frame and units. ";
+    if(localFrame)requirements+="Saved local image frame is retained. ";
+    if(requirements.empty())requirements="No authored channel or Paint requirements.";
+    const auto package=recipe.parent_path()/"Presets"/hash,manifest=package/"cyrus.package.json";
+    std::string readiness="Settings only";
+    try{
+        if(std::filesystem::exists(manifest)){
+            const auto m=parse(load(manifest,16384));
+            readiness=m.value("format","")=="cyrus.library-package"&&m.contains("recipe")&&m["recipe"].value("sha256","")==hash
+                ?"Packaged; checked on Load":"Incomplete package";
+        }else if(std::filesystem::exists(package))readiness="Incomplete package";
+    }catch(const std::exception&){readiness="Incomplete package";}
+    return Json::array({d["name"],d["layers"].size(),paints,d["id"],info["category"],info["tags"],info["description"],d["roles"].size(),layers,roles,hash,hasImage,warning,image,d["revision"],requirements,readiness});
 }
 std::filesystem::path thumbnail(const std::filesystem::path& recipe){
     std::string hash;const auto d=read(recipe,false,&hash);const auto p=d["presentation"].is_null()?presentation(recipe,hash):d["presentation"];if(p.is_null()||p["thumbnail"].is_null())return {};

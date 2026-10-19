@@ -424,6 +424,10 @@
         "name": "densityButton"
       },
       {
+        "kind": "button",
+        "name": "mapBrowseButton"
+      },
+      {
         "kind": "checkbox",
         "name": "invertCheck"
       },
@@ -434,6 +438,98 @@
       {
         "kind": "dropdownlist",
         "name": "resolutionList"
+      },
+      {
+        "kind": "checkbox",
+        "name": "imageCheck"
+      },
+      {
+        "kind": "button",
+        "name": "patternButton"
+      },
+      {
+        "kind": "button",
+        "name": "imageButton"
+      },
+      {
+        "kind": "imgTag",
+        "name": "imageThumbnail"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "coordinatesList"
+      },
+      {
+        "kind": "checkbox",
+        "name": "tileLockCheck"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "wrappingList"
+      },
+      {
+        "kind": "button",
+        "name": "imageCurveButton"
+      },
+      {
+        "kind": "button",
+        "name": "bakeImageButton"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "maskViewList"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "maskDetailList"
+      },
+      {
+        "kind": "spinner",
+        "name": "opacitySpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "markersCheck"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "markerSizeList"
+      },
+      {
+        "kind": "spinner",
+        "name": "tileXSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "tileYSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "repeatXSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "repeatYSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "headingSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "offsetXSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "offsetYSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "offsetUSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "offsetVSpin"
       },
       {
         "kind": "checkbox",

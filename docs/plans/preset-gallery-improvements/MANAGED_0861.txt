@@ -1,0 +1,31 @@
+PASS: Rootless selection can load; Save requires a setup
+PASS: Save becomes available on the imported setup
+PASS: Readable font at UI scale 0
+PASS: Control fits at scale 0: ToolStrip
+PASS: Control fits at scale 0: TreeView
+PASS: Control fits at scale 0: LibraryGallery
+PASS: Control fits at scale 0: Label
+PASS: Control fits at scale 0: Label
+PASS: Control fits at scale 0: ToolStrip
+PASS: Control fits at scale 0: Label
+PASS: Readable font at UI scale 1
+PASS: Control fits at scale 1: ToolStrip
+PASS: Control fits at scale 1: TreeView
+PASS: Control fits at scale 1: LibraryGallery
+PASS: Control fits at scale 1: Label
+PASS: Control fits at scale 1: Label
+PASS: Control fits at scale 1: ToolStrip
+PASS: Control fits at scale 1: Label
+PASS: Readable font at UI scale 1.5
+PASS: Control fits at scale 1.5: ToolStrip
+PASS: Control fits at scale 1.5: TreeView
+PASS: Control fits at scale 1.5: LibraryGallery
+PASS: Control fits at scale 1.5: Label
+PASS: Control fits at scale 1.5: Label
+PASS: Control fits at scale 1.5: ToolStrip
+PASS: Control fits at scale 1.5: Label
+PASS: Selected dropdown uses an explicit dark background
+PASS: Selected dropdown text remains white on dark background
+PASS: Disabled dropdown text uses readable disabled color
+PASS: Bounded PNG worker decodes and publishes on .NET Framework 4.8
+PASSED 30 managed gallery checks

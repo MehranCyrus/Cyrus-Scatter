@@ -2,6 +2,7 @@
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>
 #include <maxscript/foundation/numbers.h>
+#include "maxscript_number_types.h"
 #include <maxscript/foundation/strings.h>
 #include <maxscript/foundation/3dmath.h>
 #include "placement_publication.h"
@@ -22,7 +23,7 @@ Array* array(Value* value,int size=-1){type_check(value,Array,_T("native publica
 std::uint64_t number(Value* value,std::uint64_t maximum=std::uint64_t(INT64_MAX)){
     // Max's getHandleByAnim uses IntegerPtr. Preserve its numeric handle while
     // still rejecting Float/Double instead of truncating arbitrary numbers.
-    if(!Number::is_integer_number(value)||value->to_int64()<0||std::uint64_t(value->to_int64())>maximum)throw RuntimeError(_T("Invalid publication nonnegative integer"));return std::uint64_t(value->to_int64());
+    if(!cyrus::host::integerNumber(value)||value->to_int64()<0||std::uint64_t(value->to_int64())>maximum)throw RuntimeError(_T("Invalid publication nonnegative integer"));return std::uint64_t(value->to_int64());
 }
 bool pubBool(Value* value){if(value!=&true_value&&value!=&false_value)throw RuntimeError(_T("Publication flag must be Boolean"));return value==&true_value;}
 std::string key(Value* value){return p::host::text(value,p::maxIdentity,p::maxIdentity);}

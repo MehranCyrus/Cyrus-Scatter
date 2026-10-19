@@ -6,6 +6,8 @@ global CyrusRecipeGet,CyrusRecipeObject,CyrusRecipeResolve,CyrusRecipeCheckRoot,
 global CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetImportPlan,CyrusAssetImport,CyrusAssetCapture,CyrusAssetOwnStage,CyrusAssetWatch,CyrusAssetRemoveStage,CyrusAssetBitmapDirectory
 global CyrusRequireAuthor,CyrusViewportRedraw,CyrusPresetSameValues
 global CyrusPointSuspended
+global CyrusLibraryCheckSurface,CyrusLibraryDestination
+global CyrusAssetBoundNode
 fn CyrusPresetPackageDirectory path digest = (
     -- Keep native file paths short while retaining the full content identity.
     pathConfig.appendPath (getFilenamePath path) ("Presets\\"+digest)
@@ -32,7 +34,7 @@ fn CyrusPresetReviseReady path previous digest = (
                 cyrusAssetPackageRelease job;job=replacement;preparing=false;status.text="Saving revised preset files..."
             ) else if (preparing and (state[1]=="failed" or state[1]=="cancelled")) or (not preparing and state[1]!="exporting") do (
                 progress.active=false;finished=true;closeButton.text="Close"
-                status.text=if state[1]=="complete" then "Preset details and ready assets saved. Load + Update remains available." else "Settings details saved; ready revision did not finish. "+state[4]
+                status.text=if state[1]=="complete" then "Preset details and ready assets saved. Load onto surface remains available." else "Settings details saved; ready revision did not finish. "+state[4]
                 if preparing do (cyrusAssetPackageRelease job;job=0L)
                 if CyrusRecipeBrowser!=undefined do CyrusRecipeBrowser.refreshEntry path
             )
@@ -47,51 +49,80 @@ fn CyrusPresetReviseReady path previous digest = (
     CyrusPresetReviseOpenData=#(path,source,destination,digest,job);CyrusPresetReviseEditor=editor
     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow);true
 )
-fn CyrusPresetPlan root directory package document = (
-    CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
-    local graph=CyrusRecipeGet package "graph",roles=CyrusRecipeGet document "roles",bindings=#(),terrain=#(),receiverRoles=#(),reason="Included terrain",compatible=true
-    if (CyrusRecipeGet document "layers").count+root.layerObjects.count>10 do throw "This preset would exceed 10 populations. Use a new Scatter setup or remove unneeded layers first. Existing planting is preserved."
-    if (CyrusRecipeGet graph "externalRoles").count>0 do throw "This package still needs external dependencies. Use Recipe actions > Review bindings, or save a ready preset including its terrain and paths."
-    local selected=root.selectedLayer()
-    if selected!=undefined do terrain=selected.validSurfaces()
-    if terrain.count==0 do for layer in root.logicalLayers() do for node in layer.validSurfaces() do appendIfUnique terrain node
-    for role in roles where CyrusAssetRoleIsReceiver role do append receiverRoles role
-    if terrain.count==1 and receiverRoles.count==1 then (
-        bindings=#(#((CyrusRecipeGet receiverRoles[1] "id"),terrain[1]))
-        -- A required field must exist; valid zero is different from missing.
+fn CyrusPresetPlan root directory package document surface:undefined = (
+    CyrusLibraryCheckSurface surface
+    if root!=undefined do CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
+    local graph=CyrusRecipeGet package "graph",roles=CyrusRecipeGet document "roles",bindings=#(),receiverRoles=#(),receiverData=#(),pathTransform=undefined
+    if (CyrusRecipeGet document "layers").count+(if root==undefined then 0 else root.layerObjects.count)>10 do throw "This preset would exceed 10 populations. Existing planting is preserved."
+    if (CyrusRecipeGet graph "externalRoles").count>0 do throw "This preset has unpackaged dependencies. Save it with Save Everything before loading onto terrain."
+    for role in roles where CyrusAssetRoleIsReceiver role do (append receiverRoles role;append bindings #((CyrusRecipeGet role "id"),surface))
+    if receiverRoles.count==0 do throw "This preset has no receiving surface. Save a complete planting setup first."
+    -- Aliases of one saved terrain bind together; distinct saved terrains need an explicit future adapter.
+    for data in (CyrusRecipeGet graph "nodes") do (
+        local receiver=false
+        for role in receiverRoles where findItem (CyrusRecipeGet data "roles") (CyrusRecipeGet role "id")>0 do receiver=true
+        if receiver do (
+            if (CyrusAssetBoundNode data bindings)!=surface do throw "A saved terrain also has a model role. Save terrain and source models as separate objects."
+            append receiverData data
+        )
+    )
+    if receiverData.count!=1 do throw "Direct loading requires one saved terrain. Save each terrain as its own preset."
+    -- Validate required channels and receiver-bound Paint before staging any models or layers.
+    for record in (CyrusRecipeGet document "layers") do (
+        local records=#(CyrusRecipeGet record "settings")
+        for area in (CyrusRecipeGet record "areas") do append records (CyrusRecipeGet area "settings")
+        for settings in records do (
+        if root!=undefined and (CyrusRecipeGet settings "densityCoordinateMode")==2 do (
+            local frame=(CyrusRecipeOwnerNode root).objectTransform
+            if abs(dot frame.row1 (cross frame.row2 frame.row3))<1e-12 do throw "Cannot load a local image frame into a singular Scatter transform. Nothing was added."
+        )
+        if CyrusRecipeGet settings "meshMaskEnabled" do (
+            local curve=CyrusRecipeGet settings "meshMaskSamples"
+            if curve.count==0 do curve=#(0.0,1.0)
+            local channelError=""
+            try(cyrusMeshDensityKey surface #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve))
+            catch(channelError=getCurrentException())
+            if channelError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+channelError+" No preset layers were added.")
+        )
+        if (CyrusRecipeGet settings "distributionMode")==3 and (CyrusRecipeGet settings "densityCoordinateMode")==0 do (
+            -- Texture UVs and numeric data channels are independent requirements.
+            -- Capture here, before the asset/layer transaction, not at final Update.
+            local uvError=""
+            try(cyrusProceduralSurfaceKey #(surface) true (CyrusRecipeGet settings "densityUVChannel"))
+            catch(uvError=getCurrentException())
+            if uvError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+uvError+" No preset layers were added.")
+        )
+        )
+        local paintError=""
         try (
-            for record in (CyrusRecipeGet document "layers") do (
-                local settings=CyrusRecipeGet record "settings"
-                if CyrusRecipeGet settings "meshMaskEnabled" do (
-                    local curve=CyrusRecipeGet settings "meshMaskSamples"
-                    if curve.count==0 do curve=#(0.0,1.0)
-                    cyrusMeshDensityKey terrain[1] #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve)
-                )
-                local paint=CyrusRecipeGet record "paint"
-                if paint!=undefined do CyrusRecipeRestorePaint paint terrain[1] document
-                for area in (CyrusRecipeGet record "areas") do (
-                    local data=CyrusRecipeGet area "paint"
-                    if data!=undefined do CyrusRecipeRestorePaint data terrain[1] document
-                )
+            local paint=CyrusRecipeGet record "paint"
+            if paint!=undefined do CyrusRecipeRestorePaint paint surface document
+            for area in (CyrusRecipeGet record "areas") do (
+                local data=CyrusRecipeGet area "paint"
+                if data!=undefined do CyrusRecipeRestorePaint data surface document
             )
-        )catch(compatible=false)
-        if compatible then reason="Current terrain: "+terrain[1].name
-        else (bindings=#();reason="Included terrain: saved Paint or mesh-channel data")
-    ) else reason=if terrain.count>1 then "Included terrain: destination has multiple receivers" else "Included terrain: no destination terrain"
-    -- A saved path belongs to its saved receiver frame. Never move a path to an
-    -- unrelated destination implicitly; use included context for path presets.
-    if (CyrusRecipeGet graph "version")==2 and (CyrusRecipeGet graph "splines").count>0 do (bindings=#();reason="Included terrain and spline paths")
-    if bindings.count>0 do CyrusRecipeValidateBindings root (CyrusRecipeObject #(#("roles",receiverRoles))) bindings
+        )catch(paintError=getCurrentException())
+        if paintError!="" do throw ("Saved Paint does not match the selected terrain's geometry, frame or system units. Use compatible terrain or save a preset without that coverage. Nothing was added. "+paintError)
+    )
+    if (CyrusRecipeGet graph "version")==2 and (CyrusRecipeGet graph "splines").count>0 do (
+        local values=CyrusRecipeGet receiverData[1] "transform",metres=(units.decodeValue "1m") as double
+        local saved=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
+        if abs(dot saved.row1 (cross saved.row2 saved.row3))<1e-12 do throw "Saved terrain has a singular frame; its paths cannot be transferred."
+        -- Paths retain authored dimensions in the saved terrain's local frame; no arbitrary reprojection.
+        pathTransform=(inverse saved)*surface.objectTransform
+    )
+    CyrusRecipeValidateBindings root (CyrusRecipeObject #(#("roles",receiverRoles))) bindings
     local manifest=CyrusRecipeGet package "manifest",descriptor=CyrusRecipeGet manifest "recipe"
-    #(CyrusAssetImportPlan root:root node:(CyrusRecipeOwnerNode root) inputKey:(root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:false variation:#new assets:#clone preset:true,reason)
+    #(CyrusAssetImportPlan root:root node:(if root==undefined then undefined else CyrusRecipeOwnerNode root) inputKey:(if root==undefined then undefined else root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:(root==undefined) variation:#new assets:#clone preset:true pathTransform:pathTransform,"Selected terrain: "+surface.name)
 )
-fn CyrusOpenReadyPreset root directory expected:"" = (
-    CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
-    CyrusRecipeCheckRoot root node
+fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
+    CyrusRequireAuthor();CyrusLibraryCheckSurface surface
+    local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
+    if root!=undefined do CyrusRecipeCheckRoot root node
     if CyrusReadyPresetEditor!=undefined do try(destroyDialog CyrusReadyPresetEditor)catch()
     local job=cyrusAssetPackagePrepare directory (CyrusAssetBitmapDirectory())
     rollout editor "Load planting preset" width:500 height:206 (
-        local root,node,directory,expected="",job=0L,finished=false,plan=undefined,result=undefined,terrainNote="",displayHeld=false,previousSuspended=false,updateReadyAt=0.0
+        local root,node,surface,launchBrowser,launchSession="",directory,expected="",job=0L,finished=false,plan=undefined,result=undefined,terrainNote="",displayHeld=false,previousSuspended=false,updateReadyAt=0.0
         label title "Loading models, materials and planting settings..." pos:[12,12] width:476 height:38
         label status "Adds new layers and updates scatter once. Existing planting settings are kept." pos:[12,54] width:476 height:96
         button closeButton "Cancel" pos:[12,166] width:476
@@ -100,27 +131,29 @@ fn CyrusOpenReadyPreset root directory expected:"" = (
             if displayHeld do (CyrusPointSuspended=previousSuspended;displayHeld=false)
         )
         fn loadPrepared = (
-            CyrusRecipeCheckRoot root node
+            CyrusLibraryCheckSurface surface
+            if root!=undefined do CyrusRecipeCheckRoot root node
             local package=cyrusAssetPackagePrepared job false,document=cyrusAssetPackagePrepared job true
             if expected!="" and (CyrusRecipeGet (CyrusRecipeGet (CyrusRecipeGet package "manifest") "recipe") "sha256")!=expected do throw "The ready preset does not match this gallery entry. Refresh the library."
-            local proposed=CyrusPresetPlan root directory package document
+            local proposed=CyrusPresetPlan root directory package document surface:surface
             plan=proposed[1];terrainNote=proposed[2]
             status.text="Adding preset layers. "+terrainNote
-            -- Keep import's normal Live redraw from solving before the explicit
-            -- Update. Max batches node notifications with a 150 ms delay; let
-            -- that batch invalidate the newly created inputs before calculating.
+            -- Import owns assets, authored changes and the initial calculation
+            -- in one Undo hold. No open hold survives this modeless callback.
             previousSuspended=CyrusPointSuspended;CyrusPointSuspended=true;displayHeld=true
             result=CyrusAssetImport plan preparedToken:job
+            root=result[1];node=result[3]
+            -- MAXScript can reuse a rollout value after close/reopen. Its open
+            -- session token, not rollout equality alone, identifies this view.
+            if launchBrowser!=undefined and CyrusRecipeBrowser==launchBrowser and launchSession==launchBrowser.sessionID do (launchBrowser.bindDestination root node;launchBrowser.showSelected())
             local clock=dotNetClass "System.Diagnostics.Stopwatch"
             updateReadyAt=(clock.GetTimestamp() as double)+clock.Frequency*0.3
-            status.text="Layers added. Finishing Update...\n"+terrainNote
+            status.text="Preset calculated. Finishing library view...\n"+terrainNote
             closeButton.text="Close (layers added)"
             progress.active=true
         )
         fn finishUpdate = (
-            -- This button is explicitly Load + Update, a calculation boundary.
-            -- Authored import and subsequent complete publication stay separate.
-            root.refreshAll()
+            -- The initial result already succeeded before import committed.
             resumeDisplay()
             local document=cyrusAssetPackagePrepared job true
             title.text="Loaded: "+(CyrusRecipeGet document "name")
@@ -128,11 +161,12 @@ fn CyrusOpenReadyPreset root directory expected:"" = (
             finished=true;closeButton.text="Close";CyrusViewportRedraw()
         )
         on editor open do (
-            root=CyrusReadyPresetOpenData[1];node=CyrusReadyPresetOpenData[2];directory=CyrusReadyPresetOpenData[3];job=CyrusReadyPresetOpenData[4];expected=CyrusReadyPresetOpenData[5]
+            root=CyrusReadyPresetOpenData[1];node=CyrusReadyPresetOpenData[2];directory=CyrusReadyPresetOpenData[3];job=CyrusReadyPresetOpenData[4];expected=CyrusReadyPresetOpenData[5];surface=CyrusReadyPresetOpenData[6];launchBrowser=CyrusReadyPresetOpenData[7];launchSession=CyrusReadyPresetOpenData[8]
             progress.active=true
         )
         on progress tick do try (
-            CyrusRecipeCheckRoot root node
+            CyrusLibraryCheckSurface surface
+            if root!=undefined do CyrusRecipeCheckRoot root node
             local value=cyrusAssetPackagePoll job
             if result!=undefined then (
                 local clock=dotNetClass "System.Diagnostics.Stopwatch"
@@ -159,7 +193,7 @@ fn CyrusOpenReadyPreset root directory expected:"" = (
             CyrusReadyPresetEditor=undefined
         )
     )
-    CyrusReadyPresetOpenData=#(root,node,directory,job,expected);CyrusReadyPresetEditor=editor
+    CyrusReadyPresetOpenData=#(root,node,directory,job,expected,surface,CyrusRecipeBrowser,(if CyrusRecipeBrowser==undefined then "" else CyrusRecipeBrowser.sessionID));CyrusReadyPresetEditor=editor
     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
     true
 )
@@ -186,7 +220,7 @@ fn CyrusPresetSaveReady root path digest bindings = (
             local value=cyrusAssetPackagePoll job
             if value[1]!="exporting" do (
                 progress.active=false;finished=true;closeButton.text="Close"
-                status.text=if value[1]=="complete" then "Ready preset saved with its models, materials, terrain, paths and Paint. Select it in the library and use Load + Update." else "Settings recipe saved; ready package did not finish. "+value[4]
+                status.text=if value[1]=="complete" then "Ready preset saved with its models, materials, terrain, paths and Paint. Select it in the library and use Load onto surface." else "Settings recipe saved; ready package did not finish. "+value[4]
                 if CyrusRecipeBrowser!=undefined do CyrusRecipeBrowser.refreshEntry path
             )
         )catch(progress.active=false;finished=true;closeButton.text="Close";status.text=getCurrentException())

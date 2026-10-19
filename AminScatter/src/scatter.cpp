@@ -1,3 +1,4 @@
+#include "area_mask.h"
 #include "scatter.h"
 #include "spline_bands.h"
 #include "execution.h"
@@ -11,6 +12,7 @@
 #include <unordered_set>
 #include <functional>
 #include <numeric>
+#include <optional>
 
 namespace amin {
 Vec3 operator+(Vec3 a, Vec3 b) { return {a.x+b.x,a.y+b.y,a.z+b.z}; }
@@ -98,36 +100,7 @@ std::uint32_t cellHash(int x,int y,int z,std::uint32_t seed) {
     return mix(static_cast<std::uint32_t>(x)*0x9e3779b9u^static_cast<std::uint32_t>(y)*0x85ebca6bu^static_cast<std::uint32_t>(z)*0xc2b2ae35u^seed);
 }
 double hashUnit(std::uint32_t x) {return static_cast<double>(mix(x))/4294967296.0;}
-struct AreaMask {
-    const Area& area;
-    double x0{INFINITY}, y0{INFINITY}, x1{-INFINITY}, y1{-INFINITY};
-    explicit AreaMask(const Area& a):area(a) {
-        if(a.loops.empty()) throw std::invalid_argument("Empty area");
-        for(const auto& loop:a.loops) {
-            if(loop.size()<3) throw std::invalid_argument("Area needs a closed polygon");
-            double twiceArea=0;
-            for(std::size_t i=0;i<loop.size();++i) {
-                auto p=loop[i],q=loop[(i+1)%loop.size()];
-                if(!finite(p)) throw std::invalid_argument("Nonfinite area");
-                x0=std::min(x0,p.x);x1=std::max(x1,p.x);y0=std::min(y0,p.y);y1=std::max(y1,p.y);
-                twiceArea+=p.x*q.y-q.x*p.y;
-            }
-            if(std::abs(twiceArea)<1e-12) throw std::invalid_argument("Area has no XY footprint");
-        }
-    }
-    bool contains(Vec3 p) const {
-        if(p.x<x0||p.x>x1||p.y<y0||p.y>y1) return false;
-        bool inside=false;
-        for(const auto& loop:area.loops) for(std::size_t i=0,j=loop.size()-1;i<loop.size();j=i++) {
-            const auto a=loop[j],b=loop[i];
-            const double dx=b.x-a.x,dy=b.y-a.y;
-            if(std::abs(dx*(p.y-a.y)-dy*(p.x-a.x))<=1e-10*std::max(1.0,std::hypot(dx,dy)) &&
-                p.x>=std::min(a.x,b.x)&&p.x<=std::max(a.x,b.x)&&p.y>=std::min(a.y,b.y)&&p.y<=std::max(a.y,b.y)) return true;
-            if((a.y>p.y)!=(b.y>p.y) && p.x<a.x+(p.y-a.y)*dx/dy) inside=!inside;
-        }
-        return inside;
-    }
-};
+
 bool analyzerBand(Vec3 p,const AnalyzerBand& band,double tolerance=0,int kindOverride=-1) {
     const int kind=kindOverride<0?band.kind:kindOverride;
     if(kind==5) return false;
@@ -222,10 +195,12 @@ std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Se
         if(!std::isfinite(size)||size<=0) throw std::invalid_argument("Invalid cluster size");
         for(auto value:{s.clusterRoughness,s.clusterBlur,s.clusterNoise}) if(!std::isfinite(value)||value<0||value>1) throw std::invalid_argument("Invalid cluster controls");
     }
+    std::optional<cyrus::density::ImageSampler> densitySampler;
     if(s.distribution==2) {
-        if(!s.densityWidth||!s.densityHeight||s.density.size()!=static_cast<std::size_t>(s.densityWidth)*s.densityHeight) throw std::invalid_argument("Invalid density image");
-        for(auto value:s.density) if(!std::isfinite(value)||value<0||value>1) throw std::invalid_argument("Invalid density value");
-        for(const auto& t:surface) if(!finite(t.uvA)||!finite(t.uvB)||!finite(t.uvC)) throw std::invalid_argument("Invalid UV");
+        if(s.densityImage) densitySampler.emplace(s.densityImage->pixels,s.densityImage->width,s.densityImage->height,s.densityMapping);
+        else densitySampler.emplace(s.density,s.densityWidth,s.densityHeight,s.densityMapping);
+        if(s.densityMapping.coordinates==cyrus::density::Coordinates::UV)
+            for(const auto& t:surface) if(!finite(t.uvA)||!finite(t.uvB)||!finite(t.uvC)) throw std::invalid_argument("Invalid UV");
     }
     std::vector<AreaMask> masks;bool hasInclude=false;
     for(const auto& area:s.areas) {masks.emplace_back(area);hasInclude|=area.include;}
@@ -348,12 +323,7 @@ std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Se
             const double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),den=aa*bb-cc*cc;
             const double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/den,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/den;
             const auto uv=t.uvA*(1-u-v)+t.uvB*u+t.uvC*v;
-            const double fx=std::clamp(uv.x,0.0,1.0)*(s.densityWidth-1),fy=(1-std::clamp(uv.y,0.0,1.0))*(s.densityHeight-1);
-            const auto x=static_cast<std::uint32_t>(fx),y=static_cast<std::uint32_t>(fy);
-            const auto x1=std::min(x+1,s.densityWidth-1),y1=std::min(y+1,s.densityHeight-1);
-            const auto at=[&](std::uint32_t xx,std::uint32_t yy){return s.density[static_cast<std::size_t>(yy)*s.densityWidth+xx];};
-            const double a=fx-x,b=fy-y;
-            const double weight=(at(x,y)*(1-a)+at(x1,y)*a)*(1-b)+(at(x,y1)*(1-a)+at(x1,y1)*a)*b;
+            const double weight=densitySampler->sample(uv.x,uv.y,p.x,p.y,p.z);
             return distribution.next()<weight;
         };
         const Vec3 offset{transforms.range(s.movement[0]),transforms.range(s.movement[1]),transforms.range(s.movement[2])};
@@ -425,9 +395,7 @@ std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Se
                 const double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),den=aa*bb-cc*cc;
                 const double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/den,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/den;
                 const auto uv=t.uvA*(1-u-v)+t.uvB*u+t.uvC*v;
-                const auto x=static_cast<std::uint32_t>(std::clamp(uv.x,0.0,1.0)*(s.densityWidth-1));
-                const auto y=static_cast<std::uint32_t>((1-std::clamp(uv.y,0.0,1.0))*(s.densityHeight-1));
-                if(s.density[static_cast<std::size_t>(y)*s.densityWidth+x]<=0) return false;
+                if(densitySampler->sample(uv.x,uv.y,p.x,p.y,p.z)<=0) return false;
             }
             return true;
         };

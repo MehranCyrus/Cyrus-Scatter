@@ -40,6 +40,12 @@
         },
         {
           "component": "flow_layersUI",
+          "control": "nameLabel",
+          "presentation": "flow_layersUI_nameLabel",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
           "control": "nameEdit",
           "presentation": "flow_layersUI_nameEdit",
           "advanced": false
@@ -172,6 +178,12 @@
       "title": "Models & Points",
       "scope": "Layer",
       "controls": [
+        {
+          "component": "sourceUI",
+          "control": "sourceNameLabel",
+          "presentation": "sourceUI_sourceNameLabel",
+          "advanced": false
+        },
         {
           "component": "sourceUI",
           "control": "sourceName",
@@ -869,7 +881,7 @@
           "component": "distributionUI",
           "control": "modeRadio",
           "presentation": "distributionUI_modeRadio",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "distributionUI",
@@ -899,25 +911,31 @@
           "component": "distributionUI",
           "control": "densityHeading",
           "presentation": "distributionUI_densityHeading",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "distributionUI",
           "control": "densityButton",
           "presentation": "distributionUI_densityButton",
-          "advanced": true
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "mapBrowseButton",
+          "presentation": "distributionUI_mapBrowseButton",
+          "advanced": false
         },
         {
           "component": "distributionUI",
           "control": "invertCheck",
           "presentation": "distributionUI_invertCheck",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "distributionUI",
           "control": "uvChannelSpin",
           "presentation": "distributionUI_uvChannelSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "distributionUI",
@@ -935,6 +953,150 @@
           "component": "distributionUI",
           "control": "mapHint",
           "presentation": "distributionUI_mapHint",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "imageCheck",
+          "presentation": "distributionUI_imageCheck",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "patternButton",
+          "presentation": "distributionUI_patternButton",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "imageButton",
+          "presentation": "distributionUI_imageButton",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "imageThumbnail",
+          "presentation": "distributionUI_imageThumbnail",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "imageState",
+          "presentation": "distributionUI_imageState",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "coordinatesList",
+          "presentation": "distributionUI_coordinatesList",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "tileLockCheck",
+          "presentation": "distributionUI_tileLockCheck",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "wrappingList",
+          "presentation": "distributionUI_wrappingList",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "imageCurveButton",
+          "presentation": "distributionUI_imageCurveButton",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "bakeImageButton",
+          "presentation": "distributionUI_bakeImageButton",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "maskViewList",
+          "presentation": "distributionUI_maskViewList",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "maskDetailList",
+          "presentation": "distributionUI_maskDetailList",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "opacitySpin",
+          "presentation": "distributionUI_opacitySpin",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "markersCheck",
+          "presentation": "distributionUI_markersCheck",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "markerSizeList",
+          "presentation": "distributionUI_markerSizeList",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "tileXSpin",
+          "presentation": "distributionUI_tileXSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "tileYSpin",
+          "presentation": "distributionUI_tileYSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "repeatXSpin",
+          "presentation": "distributionUI_repeatXSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "repeatYSpin",
+          "presentation": "distributionUI_repeatYSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "headingSpin",
+          "presentation": "distributionUI_headingSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "offsetXSpin",
+          "presentation": "distributionUI_offsetXSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "offsetYSpin",
+          "presentation": "distributionUI_offsetYSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "offsetUSpin",
+          "presentation": "distributionUI_offsetUSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "offsetVSpin",
+          "presentation": "distributionUI_offsetVSpin",
           "advanced": false
         },
         {

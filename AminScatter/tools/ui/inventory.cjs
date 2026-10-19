@@ -1,6 +1,6 @@
 // Inventory semantic controls once; Modify and container views share them.
 const fs=require('fs'),util=require('./maxscript-blocks.cjs');
-const kinds='button|checkbox|checkbutton|colorpicker|dropdownlist|edittext|listbox|mapbutton|multiListBox|pickbutton|radiobuttons|spinner';
+const kinds='bitmap|imgTag|button|checkbox|checkbutton|colorpicker|dropdownlist|edittext|listbox|mapbutton|multiListBox|pickbutton|radiobuttons|spinner';
 const controls=body=>[...body.matchAll(new RegExp('^        ('+kinds+') (\\w+)\\b','gm'))].map(m=>({kind:m[1],name:m[2]}));
 module.exports=function(s,{check=false}={}){
  const inventory={general:{},layer:{},container:{},set:['setsUI','sourceUI','brushUI','proceduralUI','sourceContainersUI']};

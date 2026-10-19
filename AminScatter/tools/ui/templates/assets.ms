@@ -8,7 +8,7 @@ global CyrusAssetStage,CyrusAssetImport,CyrusAssetImportPlan,CyrusAssetReview,Cy
 global CyrusOpenAssetImport,CyrusAssetImportEditor,CyrusAssetImportOpenData,CyrusRecipeValidateBindings
 global CyrusAssetColorContext,CyrusAssetCheckColor,CyrusAssetBitmapDirectory,CyrusAssetRestoreMap
 global CyrusAssetSharedSnapshot,CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetCaptureSpline,CyrusAssetBoundNode
-struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false)
+struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false,pathTransform=undefined)
 if CyrusAssetJobs==undefined do CyrusAssetJobs=#()
 struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined)
 fn CyrusAssetBitmapDirectory = (pathConfig.appendPath (getDir #userScripts) "CyrusScatter\\ImportedAssets")
@@ -112,6 +112,12 @@ fn CyrusAssetMaterial context value = (
         setProperty defaults key (getProperty value key);setProperty defaults amount (getProperty value amount);setProperty defaults enabled (getProperty value enabled)
         append slots (CyrusRecipeObject #(#("slot",slot),#("map",CyrusAssetMap context (getProperty value key)),#("amount",getProperty value amount),#("enabled",getProperty value enabled)))
     )
+    -- Compare aliases against the material our closed adapter actually restores.
+    -- Older hosts also enumerate Diffuse_Color/Specular_Level; these are derived
+    -- from the captured canonical properties, not extra unsupported settings.
+    defaults.adLock=false;defaults.dsLock=false
+    for key in #(#diffuse,#ambient,#specular,#specularLevel,#glossiness,#soften,#selfIllumAmount,#selfIllumColor,#useSelfIllumColor,#opacity,#twoSided) do setProperty defaults key (getProperty value key)
+    defaults.adLock=value.adLock;defaults.dsLock=value.dsLock;defaults.adTextureLock=value.adTextureLock
     CyrusAssetCheckDefaults value defaults supported
     fn colorData colorValue = #(colorValue.r as double,colorValue.g as double,colorValue.b as double)
     local id="material-"+((context.materials.count+1) as string)
@@ -431,14 +437,18 @@ fn CyrusAssetStage package bindings = (
             if CyrusRecipeGet curve "closed" do close node index
         )
         updateShape node;node.transform=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
+        if package.count>5 and package[6]!=undefined do node.transform=node.transform*package[6]
         node.wireColor=colorValue (CyrusRecipeGet data "wireColor");node.isHidden=true
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
     )
     resolved
 )
 fn CyrusAssetImport plan preparedToken:0L = (
-    CyrusRequireAuthor();CyrusRecipeCheckRoot plan.root plan.node
-    if plan.root.procInputKey()!=plan.inputKey do throw "The destination changed since review. Review the package again."
+    CyrusRequireAuthor()
+    if not plan.newSetup do (
+        CyrusRecipeCheckRoot plan.root plan.node
+        if plan.root.procInputKey()!=plan.inputKey do throw "The destination changed since review. Review the package again."
+    )
     local path=pathConfig.appendPath plan.directory "entry.csrecipe.json"
     if preparedToken==0 and (cyrusRecipeInfo path)[11]!=plan.recipeHash do throw "The packaged recipe changed since review."
     -- Verify the graph/content identity as well; equal recipe IDs are insufficient.
@@ -455,7 +465,7 @@ fn CyrusAssetImport plan preparedToken:0L = (
     ) else (
         if plan.assets!=#clone do throw "Unsupported asset reuse policy."
         local packagedReceivers=#()
-        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"))) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined)
+        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"),plan.pathTransform)) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined) calculate:plan.preset
     )
 )
 

@@ -51,7 +51,11 @@ public:
     int Size()override{return int(std::min<std::size_t>(INT_MAX,sizeof(*this)+(b::vertexCount(before)+b::vertexCount(after))*sizeof(b::Point)));}
     MSTR Description()override{return _T("Cyrus vector paint");}
 };
-class PaintDocument:public ReferenceTarget,public IPainterCanvasInterface_V5,public IPainterCanvasInterface_V26_1 {
+class PaintDocument:public ReferenceTarget,public IPainterCanvasInterface_V5
+#if CYRUS_MAX_YEAR >= 2026
+    ,public IPainterCanvasInterface_V26_1
+#endif
+{
 public:
     struct RightClickHandler:public IPainterRightClickHandler {
         PaintDocument* owner;
@@ -124,10 +128,14 @@ public:
     }
     void* GetInterface(ULONG id)override{
         if(id==PAINTERCANVASINTERFACE_V5)return static_cast<IPainterCanvasInterface_V5*>(this);
+#if CYRUS_MAX_YEAR >= 2026
         if(id==PAINTERCANVASINTERFACE_V26_1)return static_cast<IPainterCanvasInterface_V26_1*>(this);
+#endif
         return ReferenceTarget::GetInterface(id);
     }
+#if CYRUS_MAX_YEAR >= 2026
     bool IsGeometryConstant()override{return true;}
+#endif
     void changed(){++revision;NotifyDependents(FOREVER,PART_ALL,REFMSG_CHANGE);}
     void requireAuthor(){if(!cyrusBoundaryAllows(this))throw std::runtime_error("Cyrus authoring license required; completed Brush work is preserved");}
     void prepare(INode* node,bool requirePaintable=false){

@@ -6,12 +6,20 @@ const axisRows=prefix=>['X','Y','Z'].map(axis=>({controls:['Min','Max'].map(end=
 module.exports={
  labels:{'flow_layersUI.addButton':'Add','flow_layersUI.copyButton':'Copy','flow_layersUI.removeButton':'Remove','flow_layersUI.enabledCheck':'Enabled','flow_layersUI.visibleCheck':'Visible','setsUI.enabledCheck':'Enabled','setsUI.visibleCheck':'Visible','setsUI.setList':'','sourceContainersUI.modeList':'','sourceContainersUI.createContainer':'Create','sourceContainersUI.pickContainer':'Pick','sourceContainersUI.removeContainer':'Unlink','flow_layersUI.upButton':'Move up','flow_layersUI.downButton':'Move down','sourceUI.addSelected':'Add selected','distributionUI.countSpin':'Count: ','distributionUI.populationRadio':'Amount','flow_updateUI.updateNow':'Update scatter'},
  pages:[
-  {name:'managerUI',title:'Layers',parts:['flow_layersUI'],layerPage:false,noAdvanced:true,rows:[heading('Layers - evaluation order'),...rows('flow_layersUI',['layerList',['addButton','copyButton','removeButton','upButton','downButton'],['nameEdit','layerColor'],['enabledCheck','visibleCheck'],'copyVariation','recipesButton'])]},
+  {name:'managerUI',title:'Layers',parts:['flow_layersUI'],layerPage:false,noAdvanced:true,rows:[heading('Layers - evaluation order'),...rows('flow_layersUI',['layerList',['addButton','copyButton','removeButton','upButton','downButton'],['nameLabel','layerColor'],'nameEdit',['enabledCheck','visibleCheck'],'copyVariation','recipesButton'])]},
   {name:'surfacesUI',title:'Surfaces',parts:['flow_surfaceUI'],layerPage:true,rows:[...rows('flow_surfaceUI',['receiversList',['sharedPick','removeSurfaces','surfacesButton'],'sharedInfo','countInfo'])]},
-  {name:'modelsUI',title:'Models & Points',parts:['sourceUI'],layerPage:true,noAdvanced:true,rows:[...rows('sourceUI',[['addPoint','addPlant'],'plantList',['removePlant','selectFromScene','addSelected','selectPlant'],['sourceName','idColor'],['replacePoint','makePoint']]),heading('Source settings'),...rows('sourceUI',[['weightSpin','sourceScaleSpin'],'radiusModeDrop','radiusModeHelp',['radiusSourceSpin','sourceZSpin'],['followRadiusCheck','showRadiusCheck'],'forwardAxis','weightHelp','sourceTransformHelp','addEmpty']),{toggle:'groupsToggle',caption:'Assignment groups'},...rows('sourceUI',['groupHeading','existingGroups','groupColor','applyColor','colorHelp']).map(r=>({...r,when:'groupsToggle.checked'}))]},
+  {name:'modelsUI',title:'Models & Points',parts:['sourceUI'],layerPage:true,noAdvanced:true,rows:[...rows('sourceUI',[['addPoint','addPlant'],'plantList',['removePlant','selectFromScene','addSelected','selectPlant'],['sourceNameLabel','idColor'],'sourceName',['replacePoint','makePoint']]),heading('Source settings'),...rows('sourceUI',[['weightSpin','sourceScaleSpin'],'radiusModeDrop','radiusModeHelp',['radiusSourceSpin','sourceZSpin'],['followRadiusCheck','showRadiusCheck'],'forwardAxis','weightHelp','sourceTransformHelp','addEmpty']),{toggle:'groupsToggle',caption:'Assignment groups'},...rows('sourceUI',['groupHeading','existingGroups','groupColor','applyColor','colorHelp']).map(r=>({...r,when:'groupsToggle.checked'}))]},
   {name:'containersUI',title:'Source containers',parts:['sourceContainersUI'],layerPage:true,noAdvanced:true,rows:[...rows('sourceContainersUI',['modeList',['createContainer','pickContainer','removeContainer'],'containersList','enabledCheck','membershipInfo','helpInfo'])]},
   {name:'layoutUI',title:'Layout',parts:['placementUI','diversityUI'],layerPage:true,rows:[...rows('placementUI',['generatorList','columnSpin','rowSpin','originXSpin','originYSpin','headingSpin','jitterSpin','gridInfo']),...rows('diversityUI',['diversityRadio','layoutHelp','sizeSpin','divSeedSpin','groupHint','pathsList',['pickPath','removePath'],'cornerMode','arrangementMode','pickAnalyzer','analyzerStatus',['selectAnalyzer','updateAnalyzer'],'analyzerChannel','strokeTitle','strokesList',['addOutside','addInside','removeStrokeButton'],'strokeWidth',['bandStart','bandEnd'],'bandAssignmentHelp','strokeMode','strokeChoices','refreshGroups','bandStrength',['bandCurveCheck','bandCurveEdit']]),{heading:'Scale',when:'diversityUI.diversityRadio.state>=3'},{controls:['diversityUI.strokeScaleMin','diversityUI.strokeScaleMax'],pair:true,when:'diversityUI.diversityRadio.state>=3'},...rows('diversityUI',['bandScaleMode','bandScaleEdit','bandColor',['fieldFalloffCheck','fieldBoundaryCheck'],'fieldView','fieldSampleSpin','fieldLegend','fieldInfo','strokeHelp']),...rows('diversityUI',[['bandUp','bandDown']],true)]},
-  {name:'populationUI',title:'Amount',parts:['distributionUI','populationPolicyUI'],layerPage:true,rows:[heading('Population and seed'),...rows('distributionUI',['presetsButton','populationRadio','countSpin','densitySpin','seedSpin']),heading('Mesh channel density'),...rows('distributionUI',['meshCheck','meshChannelSpin','meshComponentList','meshMinSpin','meshMaxSpin','meshInvertCheck','meshCurveButton',['meshPreviewButton','meshHideButton'],'meshHint'])]},
+  {name:'populationUI',title:'Amount',parts:['distributionUI','populationPolicyUI'],layerPage:true,advancedLabel:'More settings',advancedTooltip:'Show image sampling and baking, mask display options, and population retry controls below.',rows:[
+   ...rows('distributionUI',['presetsButton','populationRadio','countSpin','densitySpin','seedSpin']),
+   heading('Image density'),...rows('distributionUI',['imageCheck','patternButton',['imageButton','mapBrowseButton'],'imageThumbnail','densityButton','coordinatesList','uvChannelSpin','tileXSpin','tileYSpin','tileLockCheck','repeatXSpin','repeatYSpin','headingSpin','offsetXSpin','offsetYSpin','offsetUSpin','offsetVSpin','wrappingList','invertCheck','imageCurveButton']),
+   heading('Mesh-channel density'),...rows('distributionUI',['meshCheck','meshChannelSpin','meshComponentList','meshMinSpin','meshMaxSpin','meshInvertCheck','meshCurveButton']),
+   heading('Mask preview'),...rows('distributionUI',['maskViewList',['meshPreviewButton','meshHideButton']]),
+   heading('Image sampling & portability',true),...rows('distributionUI',['resolutionList','bakeImageButton'],true),
+   heading('Mask display',true),...rows('distributionUI',['maskDetailList','opacitySpin','markersCheck','markerSizeList'],true),
+   heading('Population & retries',true),...rows('populationPolicyUI',['populationList','attemptSpin','roundSpin','repairCheck'],true)
+  ]},
   {name:'coverageUI',title:'Painting',parts:['setsUI','brushUI'],layerPage:true,noAdvanced:true,rows:[...rows('setsUI',['paintedCheck','setList',['addButton','removeButton'],'nameEdit','targetList','enabledCheck','info']).map(r=>r.controls[0]==='setsUI.paintedCheck'?r:{...r,when:'setsUI.paintedCheck.checked'}),...rows('brushUI',['targetInfo','densitySpin','modeRadio','radiusSpin',['beginButton','stopButton'],['fillButton','emptyButton'],'exportSpline','importMode','splineTolerance','importSpline','brushState','insideSpin','outsideSpin',['densityFade','densityCurve'],['scaleFade','scaleCurve'],['scaleMin','scaleMax'],'overlayMode','overlayColor','brushHelp']).map(r=>({...r,when:'setsUI.paintedCheck.checked'}))]},
   {name:'areasUI',title:'Include / exclude',parts:['areaUI'],layerPage:true,rows:[heading('Area limits - layer'),...rows('areaUI',['areaList',['pickArea','addAreaScene'],'removeArea','areaMode','areaHint']),heading('Surface eligibility'),...rows('areaUI',['slopeCheck',['slopeMinSpin','slopeMaxSpin'],['slopeLowerSpin','slopeUpperSpin'],'altitudeCheck',['altitudeMinSpin','altitudeMaxSpin'],['altitudeLowerSpin','altitudeUpperSpin'],'filterInfo']),heading('Boundary falloff'),...rows('areaUI',['fallTarget',['fallPick','fallRemove'],'fallTargetName',['fallDeleteCheck','fallDeleteSpin'],['fallScaleCheck','fallScaleSpin'],'fallScaleEdit',['fallDensityCheck','fallDensitySpin'],'fallDensityEdit','fallHelp','refreshAreas'])]},
   {name:'transformsUI',title:'Transforms',parts:['randomUI'],layerPage:true,noAdvanced:true,hidden:['rotMinTitle','rotMaxTitle','sclMinTitle','sclMaxTitle','movMinTitle','movMaxTitle','wholeMinTitle','wholeMaxTitle',...['rot','scl','mov'].flatMap(p=>['X','Y','Z'].map(a=>p+a+'Label'))].map(n=>'randomUI.'+n),rows:[...rows('randomUI',['presetsButton','rotTitle']),...axisRows('rot'),...rows('randomUI',['resetRotation','sclTitle']),...axisRows('scl'),...rows('randomUI',['resetScale','wholeTitle']),{controls:['randomUI.wholeMinSpin','randomUI.wholeMaxSpin'],pair:true},...rows('randomUI',['resetWholeScale','movTitle']),...axisRows('mov'),...rows('randomUI',['resetMovement','projectCheck']),heading('Orientation'),...rows('randomUI',['orientationList','alignCheck','normalBlendSpin','directionXSpin','directionYSpin','directionZSpin',['targetPickButton','targetClearButton'],'targetInfo','orientationHelp'])]},
@@ -71,7 +79,7 @@ const helpOnly={
  sourceContainersUI:['helpInfo'],
  sourceUI:['radiusModeHelp','weightHelp','sourceTransformHelp','colorHelp'],
  diversityUI:['layoutHelp','groupHint','fixedHint','fieldLegend','strokeHelp','edgeRowHelp','cornerHelp','streetLayoutHelp'],
- populationPolicyUI:['info'],distributionUI:['uvHint','mapHint'],
+ populationPolicyUI:['info'],distributionUI:['uvHint','mapHint','modeRadio','densityHeading','meshHint','imageState'],
  setsUI:['info'],brushUI:['brushHelp'],
  areaUI:['areaHint','projectionHint','aaHelp','fallHelp'],
  proceduralUI:['ruleInfo'],instanceRadiusUI:['info'],spacingUI:['orderHint'],separationUI:['helpInfo'],
@@ -84,3 +92,29 @@ for(const page of module.exports.pages){
 }
 
 Object.assign(module.exports.labels,{'diversityUI.strokeScaleMin':'Min:','diversityUI.strokeScaleMax':'Max:'});
+
+Object.assign(module.exports.conditions,{
+ 'distributionUI.tileXSpin':'distributionUI_coordinatesList.selection!=3',
+ 'distributionUI.tileYSpin':'distributionUI_coordinatesList.selection!=3 and not distributionUI_tileLockCheck.checked',
+ 'distributionUI.repeatXSpin':'distributionUI_coordinatesList.selection==3',
+ 'distributionUI.repeatYSpin':'distributionUI_coordinatesList.selection==3 and not distributionUI_tileLockCheck.checked',
+ 'distributionUI.uvChannelSpin':'distributionUI_coordinatesList.selection==3',
+ 'distributionUI.offsetXSpin':'distributionUI_coordinatesList.selection!=3',
+ 'distributionUI.offsetYSpin':'distributionUI_coordinatesList.selection!=3',
+ 'distributionUI.offsetUSpin':'distributionUI_coordinatesList.selection==3',
+ 'distributionUI.offsetVSpin':'distributionUI_coordinatesList.selection==3'
+});
+
+// Empty maps reserve no thumbnail; authoring choices remain reachable while disabled.
+Object.assign(module.exports.conditions,{
+ 'distributionUI.densityButton':'distributionUI_obj!=undefined and distributionUI_obj.densityMap!=undefined',
+ 'distributionUI.imageThumbnail':'distributionUI_imageThumbnail.bitmap!=undefined',
+ 'distributionUI.imageState':'distributionUI_imageState.text!=""',
+ 'distributionUI.markerSizeList':'distributionUI_markersCheck.checked',
+ ...Object.fromEntries(['meshChannelSpin','meshComponentList','meshMinSpin','meshMaxSpin','meshInvertCheck','meshCurveButton'].map(n=>['distributionUI.'+n,'distributionUI_meshCheck.checked']))
+});
+for(const name of ['coordinatesList','uvChannelSpin','tileXSpin','tileYSpin','tileLockCheck','repeatXSpin','repeatYSpin','headingSpin','offsetXSpin','offsetYSpin','offsetUSpin','offsetVSpin','wrappingList','invertCheck','imageCurveButton']){
+ const key='distributionUI.'+name,condition=module.exports.conditions[key]||'true';
+ module.exports.conditions[key]='distributionUI_imageCheck.checked and ('+condition+')';
+}
+module.exports.conditions['distributionUI.resolutionList']='true';

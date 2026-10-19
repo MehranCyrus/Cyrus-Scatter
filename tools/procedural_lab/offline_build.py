@@ -24,7 +24,7 @@ def source_hashes(project):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--year", type=int, choices=(2026, 2027))
+    parser.add_argument("--year", type=int, choices=(2024, 2026, 2027))
     parser.add_argument("--project", choices=("scatter", "analyzer"), default="scatter")
     parser.add_argument("--preview-fault-lab", action="store_true", help="NEVER SHIP: isolated Scatter SDK preview fault injection")
     parser.add_argument("--placement-qualification", action="store_true", help="NEVER SHIP: isolated native placement/Undo ownership probes")
@@ -65,7 +65,9 @@ def main():
         if result.returncode:
             raise SystemExit(result.returncode)
     binary_suffixes={".dlx",".dlm",".dlh",".dlu",".dll"}
-    binaries={str(p.relative_to(ROOT)).replace("\\","/"):hashlib.sha256(p.read_bytes()).hexdigest()
+    # Owned builds may live on another drive when the workspace volume is full.
+    # Absolute artifact keys remain compatible with consumers using ROOT / key.
+    binaries={(p.relative_to(ROOT).as_posix() if p.is_relative_to(ROOT) else p.as_posix()):hashlib.sha256(p.read_bytes()).hexdigest()
               for p in folder.rglob("*") if p.is_file() and p.suffix.lower() in binary_suffixes}
     if source_hashes(project) != sources:
         raise SystemExit("Build sources changed while building/testing; receipt stays pending. Rebuild the frozen source.")

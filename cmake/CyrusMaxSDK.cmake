@@ -1,8 +1,8 @@
 # Shared host configuration. Each Max year requires its own build directory/SDK.
-set(CYRUS_MAX_YEAR "2026" CACHE STRING "Target 3ds Max year (2026 or 2027)")
-set_property(CACHE CYRUS_MAX_YEAR PROPERTY STRINGS 2026 2027)
-if(NOT CYRUS_MAX_YEAR MATCHES "^(2026|2027)$")
-  message(FATAL_ERROR "Only Max 2026 and 2027 build configurations are implemented")
+set(CYRUS_MAX_YEAR "2027" CACHE STRING "Target 3ds Max year (2024, 2026 or 2027)")
+set_property(CACHE CYRUS_MAX_YEAR PROPERTY STRINGS 2024 2026 2027)
+if(NOT CYRUS_MAX_YEAR MATCHES "^(2024|2026|2027)$")
+  message(FATAL_ERROR "Only Max 2024, 2026 and 2027 build configurations are implemented")
 endif()
 set(MAXSDK_ROOT "C:/Program Files/Autodesk/3ds Max ${CYRUS_MAX_YEAR} SDK/maxsdk" CACHE PATH "Matching 3ds Max SDK")
 if(NOT EXISTS "${MAXSDK_ROOT}/include/max.h" OR NOT EXISTS "${MAXSDK_ROOT}/include/maxversion.h")

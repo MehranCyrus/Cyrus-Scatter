@@ -1,13 +1,13 @@
 # Cyrus Scatter native engine and UI
 
-Current development version **0.79.1**, package metadata **0.79.1**; saved schema **55**, model **CyrusUnified1**. The [offline team licensing pilot](../docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) is implemented with matched Max 2026/2027 builds and bounded lifecycle/render qualification. Read its security and remaining host-coverage limits. The public name is Cyrus Scatter; internal AminScatter identifiers remain for registration.
+Current development/package version **0.86.2**, saved schema **58**, model **CyrusUnified1**. The [current delivery](../docs/plans/preset-gallery-improvements/DELIVERY_0862.md) qualifies the image/mesh density, mask visualization, recipe and UI follow-up in Max 2026/2027, with a separately labeled Max 2024 SDK/managed preview. The [0.86.1 report](../docs/plans/preset-gallery-improvements/DELIVERY_0861.md) retains its distinct older-host scope. Team licensing remains enabled and independently versioned. Internal AminScatter registration identities remain unchanged.
 
 - [Current artist workflow](../docs/ARTIST_GUIDE.md)
 - [Architecture and source ownership](../docs/ARCHITECTURE.md)
 - [Layout, Analyzer and falloff details](../docs/LAYOUT_AND_FALLOFF.md)
 - [Build/install instructions](../docs/Max_2027_Installation.md)
 - [Current limits and work](../docs/BACKLOG.md)
-- [Latest qualification](../docs/Container_and_Radius_0.78.3_2026-10-10/README.md)
+- [Latest qualification](../docs/plans/preset-gallery-improvements/DELIVERY_0862.md)
 
 ## Development
 

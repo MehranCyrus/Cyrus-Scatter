@@ -30,7 +30,8 @@ int main(){std::filesystem::path folder;try{
     auto invalid=metadata;invalid["tags"]={"tree","tree"};rejected([&]{writePresentation(path,invalid,image);});
     writePresentation(path,metadata,image);check(load(path)==original);info=summary(path);check(info[4]=="Woodland"&&info[5]==metadata["tags"]&&info[11]&&info[12]=="");
     const auto thumb=thumbnail(path);check(!thumb.empty()&&load(thumb)==load(image));rejected([&]{writePresentation(path,metadata,image);});
-    check(info.size()==15&&info[13][1]==digest(bytes)&&info[13][2]==bytes.size());
+    check(info.size()==17&&info[13][1]==digest(bytes)&&info[13][2]==bytes.size());
+    check(info[15]=="No authored channel or Paint requirements."&&info[16]=="Settings only");
     check(std::filesystem::equivalent(pathFromUTF8(info[13][0].get<std::string>()),thumb));
     put(thumb,"damaged");check(summary(path)[11]);rejected([&]{thumbnail(path);});put(thumb,load(image));
     const auto sidecar=std::filesystem::path(path.wstring()+L".library.json");auto side=parse(load(sidecar));const auto sideOriginal=load(sidecar);side["thumbnail"]["file"]="../outside.png";put(sidecar,side.dump());

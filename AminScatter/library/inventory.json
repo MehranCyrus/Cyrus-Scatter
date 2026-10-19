@@ -1,5 +1,5 @@
 {
-  "version": "0.86.0",
+  "version": "0.86.1",
   "max_year": 2027,
   "source_host": "foundation-roadmap-library08261-final100-20261016-04",
   "source_script_sha256": "de6ca0f3097b15e3437c58b91ac9ee80fead0ae4d772bc7736ae234aa2275711",
@@ -227,7 +227,7 @@
     "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/cyrus.package.json": "c3240f367497f74eae898bde9e1003c8b99de1f69b614ba9559edc76f2b89e0c",
     "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/entry.csrecipe.json": "fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20",
     "Presets/fc6d3fd91db969de971d5c5153754fa5638af0ba6423a43e83773f7f97a40e20/recipe-data-c60280d33ad21f904d8747313d053ff2/thumbnail.png": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4",
-    "README.md": "cff749e3b15d521f38e92a0a91a3c63423f839ee87deff51278dff26bd89d0f9",
+    "README.md": "22ef1782af6cb59d88db9c58338c66d26fbba0173ae7bb602d4ebfd656f1f9cc",
     "borders.csrecipe.json": "9c1d403cc3ef782dc1768f6da431398a2b04a4866c2b387ec8040b099b092cf1",
     "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
     "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",

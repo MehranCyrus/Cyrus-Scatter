@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="827af832d5ecd6006e3131e18583c7fc6f668f14bf1e06200c3f1b79d28f05e8"
+﻿global CyrusLoadedScriptFingerprint="00e97a2de418d985afd796b7564a05e837cb45dd7bea7920b64e5f25b19f79cb"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -62,6 +62,8 @@ global CyrusRecipeGet,CyrusRecipeObject,CyrusRecipeResolve,CyrusRecipeCheckRoot,
 global CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetImportPlan,CyrusAssetImport,CyrusAssetCapture,CyrusAssetOwnStage,CyrusAssetWatch,CyrusAssetRemoveStage,CyrusAssetBitmapDirectory
 global CyrusRequireAuthor,CyrusViewportRedraw,CyrusPresetSameValues
 global CyrusPointSuspended
+global CyrusLibraryCheckSurface,CyrusLibraryDestination
+global CyrusAssetBoundNode
 fn CyrusPresetPackageDirectory path digest = (
     -- Keep native file paths short while retaining the full content identity.
     pathConfig.appendPath (getFilenamePath path) ("Presets\\"+digest)
@@ -88,7 +90,7 @@ fn CyrusPresetReviseReady path previous digest = (
                 cyrusAssetPackageRelease job;job=replacement;preparing=false;status.text="Saving revised preset files..."
             ) else if (preparing and (state[1]=="failed" or state[1]=="cancelled")) or (not preparing and state[1]!="exporting") do (
                 progress.active=false;finished=true;closeButton.text="Close"
-                status.text=if state[1]=="complete" then "Preset details and ready assets saved. Load + Update remains available." else "Settings details saved; ready revision did not finish. "+state[4]
+                status.text=if state[1]=="complete" then "Preset details and ready assets saved. Load onto surface remains available." else "Settings details saved; ready revision did not finish. "+state[4]
                 if preparing do (cyrusAssetPackageRelease job;job=0L)
                 if CyrusRecipeBrowser!=undefined do CyrusRecipeBrowser.refreshEntry path
             )
@@ -103,51 +105,80 @@ fn CyrusPresetReviseReady path previous digest = (
     CyrusPresetReviseOpenData=#(path,source,destination,digest,job);CyrusPresetReviseEditor=editor
     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow);true
 )
-fn CyrusPresetPlan root directory package document = (
-    CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
-    local graph=CyrusRecipeGet package "graph",roles=CyrusRecipeGet document "roles",bindings=#(),terrain=#(),receiverRoles=#(),reason="Included terrain",compatible=true
-    if (CyrusRecipeGet document "layers").count+root.layerObjects.count>10 do throw "This preset would exceed 10 populations. Use a new Scatter setup or remove unneeded layers first. Existing planting is preserved."
-    if (CyrusRecipeGet graph "externalRoles").count>0 do throw "This package still needs external dependencies. Use Recipe actions > Review bindings, or save a ready preset including its terrain and paths."
-    local selected=root.selectedLayer()
-    if selected!=undefined do terrain=selected.validSurfaces()
-    if terrain.count==0 do for layer in root.logicalLayers() do for node in layer.validSurfaces() do appendIfUnique terrain node
-    for role in roles where CyrusAssetRoleIsReceiver role do append receiverRoles role
-    if terrain.count==1 and receiverRoles.count==1 then (
-        bindings=#(#((CyrusRecipeGet receiverRoles[1] "id"),terrain[1]))
-        -- A required field must exist; valid zero is different from missing.
+fn CyrusPresetPlan root directory package document surface:undefined = (
+    CyrusLibraryCheckSurface surface
+    if root!=undefined do CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
+    local graph=CyrusRecipeGet package "graph",roles=CyrusRecipeGet document "roles",bindings=#(),receiverRoles=#(),receiverData=#(),pathTransform=undefined
+    if (CyrusRecipeGet document "layers").count+(if root==undefined then 0 else root.layerObjects.count)>10 do throw "This preset would exceed 10 populations. Existing planting is preserved."
+    if (CyrusRecipeGet graph "externalRoles").count>0 do throw "This preset has unpackaged dependencies. Save it with Save Everything before loading onto terrain."
+    for role in roles where CyrusAssetRoleIsReceiver role do (append receiverRoles role;append bindings #((CyrusRecipeGet role "id"),surface))
+    if receiverRoles.count==0 do throw "This preset has no receiving surface. Save a complete planting setup first."
+    -- Aliases of one saved terrain bind together; distinct saved terrains need an explicit future adapter.
+    for data in (CyrusRecipeGet graph "nodes") do (
+        local receiver=false
+        for role in receiverRoles where findItem (CyrusRecipeGet data "roles") (CyrusRecipeGet role "id")>0 do receiver=true
+        if receiver do (
+            if (CyrusAssetBoundNode data bindings)!=surface do throw "A saved terrain also has a model role. Save terrain and source models as separate objects."
+            append receiverData data
+        )
+    )
+    if receiverData.count!=1 do throw "Direct loading requires one saved terrain. Save each terrain as its own preset."
+    -- Validate required channels and receiver-bound Paint before staging any models or layers.
+    for record in (CyrusRecipeGet document "layers") do (
+        local records=#(CyrusRecipeGet record "settings")
+        for area in (CyrusRecipeGet record "areas") do append records (CyrusRecipeGet area "settings")
+        for settings in records do (
+        if root!=undefined and (CyrusRecipeGet settings "densityCoordinateMode")==2 do (
+            local frame=(CyrusRecipeOwnerNode root).objectTransform
+            if abs(dot frame.row1 (cross frame.row2 frame.row3))<1e-12 do throw "Cannot load a local image frame into a singular Scatter transform. Nothing was added."
+        )
+        if CyrusRecipeGet settings "meshMaskEnabled" do (
+            local curve=CyrusRecipeGet settings "meshMaskSamples"
+            if curve.count==0 do curve=#(0.0,1.0)
+            local channelError=""
+            try(cyrusMeshDensityKey surface #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve))
+            catch(channelError=getCurrentException())
+            if channelError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+channelError+" No preset layers were added.")
+        )
+        if (CyrusRecipeGet settings "distributionMode")==3 and (CyrusRecipeGet settings "densityCoordinateMode")==0 do (
+            -- Texture UVs and numeric data channels are independent requirements.
+            -- Capture here, before the asset/layer transaction, not at final Update.
+            local uvError=""
+            try(cyrusProceduralSurfaceKey #(surface) true (CyrusRecipeGet settings "densityUVChannel"))
+            catch(uvError=getCurrentException())
+            if uvError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+uvError+" No preset layers were added.")
+        )
+        )
+        local paintError=""
         try (
-            for record in (CyrusRecipeGet document "layers") do (
-                local settings=CyrusRecipeGet record "settings"
-                if CyrusRecipeGet settings "meshMaskEnabled" do (
-                    local curve=CyrusRecipeGet settings "meshMaskSamples"
-                    if curve.count==0 do curve=#(0.0,1.0)
-                    cyrusMeshDensityKey terrain[1] #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve)
-                )
-                local paint=CyrusRecipeGet record "paint"
-                if paint!=undefined do CyrusRecipeRestorePaint paint terrain[1] document
-                for area in (CyrusRecipeGet record "areas") do (
-                    local data=CyrusRecipeGet area "paint"
-                    if data!=undefined do CyrusRecipeRestorePaint data terrain[1] document
-                )
+            local paint=CyrusRecipeGet record "paint"
+            if paint!=undefined do CyrusRecipeRestorePaint paint surface document
+            for area in (CyrusRecipeGet record "areas") do (
+                local data=CyrusRecipeGet area "paint"
+                if data!=undefined do CyrusRecipeRestorePaint data surface document
             )
-        )catch(compatible=false)
-        if compatible then reason="Current terrain: "+terrain[1].name
-        else (bindings=#();reason="Included terrain: saved Paint or mesh-channel data")
-    ) else reason=if terrain.count>1 then "Included terrain: destination has multiple receivers" else "Included terrain: no destination terrain"
-    -- A saved path belongs to its saved receiver frame. Never move a path to an
-    -- unrelated destination implicitly; use included context for path presets.
-    if (CyrusRecipeGet graph "version")==2 and (CyrusRecipeGet graph "splines").count>0 do (bindings=#();reason="Included terrain and spline paths")
-    if bindings.count>0 do CyrusRecipeValidateBindings root (CyrusRecipeObject #(#("roles",receiverRoles))) bindings
+        )catch(paintError=getCurrentException())
+        if paintError!="" do throw ("Saved Paint does not match the selected terrain's geometry, frame or system units. Use compatible terrain or save a preset without that coverage. Nothing was added. "+paintError)
+    )
+    if (CyrusRecipeGet graph "version")==2 and (CyrusRecipeGet graph "splines").count>0 do (
+        local values=CyrusRecipeGet receiverData[1] "transform",metres=(units.decodeValue "1m") as double
+        local saved=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
+        if abs(dot saved.row1 (cross saved.row2 saved.row3))<1e-12 do throw "Saved terrain has a singular frame; its paths cannot be transferred."
+        -- Paths retain authored dimensions in the saved terrain's local frame; no arbitrary reprojection.
+        pathTransform=(inverse saved)*surface.objectTransform
+    )
+    CyrusRecipeValidateBindings root (CyrusRecipeObject #(#("roles",receiverRoles))) bindings
     local manifest=CyrusRecipeGet package "manifest",descriptor=CyrusRecipeGet manifest "recipe"
-    #(CyrusAssetImportPlan root:root node:(CyrusRecipeOwnerNode root) inputKey:(root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:false variation:#new assets:#clone preset:true,reason)
+    #(CyrusAssetImportPlan root:root node:(if root==undefined then undefined else CyrusRecipeOwnerNode root) inputKey:(if root==undefined then undefined else root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:(root==undefined) variation:#new assets:#clone preset:true pathTransform:pathTransform,"Selected terrain: "+surface.name)
 )
-fn CyrusOpenReadyPreset root directory expected:"" = (
-    CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
-    CyrusRecipeCheckRoot root node
+fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
+    CyrusRequireAuthor();CyrusLibraryCheckSurface surface
+    local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
+    if root!=undefined do CyrusRecipeCheckRoot root node
     if CyrusReadyPresetEditor!=undefined do try(destroyDialog CyrusReadyPresetEditor)catch()
     local job=cyrusAssetPackagePrepare directory (CyrusAssetBitmapDirectory())
     rollout editor "Load planting preset" width:500 height:206 (
-        local root,node,directory,expected="",job=0L,finished=false,plan=undefined,result=undefined,terrainNote="",displayHeld=false,previousSuspended=false,updateReadyAt=0.0
+        local root,node,surface,launchBrowser,launchSession="",directory,expected="",job=0L,finished=false,plan=undefined,result=undefined,terrainNote="",displayHeld=false,previousSuspended=false,updateReadyAt=0.0
         label title "Loading models, materials and planting settings..." pos:[12,12] width:476 height:38
         label status "Adds new layers and updates scatter once. Existing planting settings are kept." pos:[12,54] width:476 height:96
         button closeButton "Cancel" pos:[12,166] width:476
@@ -156,27 +187,29 @@ fn CyrusOpenReadyPreset root directory expected:"" = (
             if displayHeld do (CyrusPointSuspended=previousSuspended;displayHeld=false)
         )
         fn loadPrepared = (
-            CyrusRecipeCheckRoot root node
+            CyrusLibraryCheckSurface surface
+            if root!=undefined do CyrusRecipeCheckRoot root node
             local package=cyrusAssetPackagePrepared job false,document=cyrusAssetPackagePrepared job true
             if expected!="" and (CyrusRecipeGet (CyrusRecipeGet (CyrusRecipeGet package "manifest") "recipe") "sha256")!=expected do throw "The ready preset does not match this gallery entry. Refresh the library."
-            local proposed=CyrusPresetPlan root directory package document
+            local proposed=CyrusPresetPlan root directory package document surface:surface
             plan=proposed[1];terrainNote=proposed[2]
             status.text="Adding preset layers. "+terrainNote
-            -- Keep import's normal Live redraw from solving before the explicit
-            -- Update. Max batches node notifications with a 150 ms delay; let
-            -- that batch invalidate the newly created inputs before calculating.
+            -- Import owns assets, authored changes and the initial calculation
+            -- in one Undo hold. No open hold survives this modeless callback.
             previousSuspended=CyrusPointSuspended;CyrusPointSuspended=true;displayHeld=true
             result=CyrusAssetImport plan preparedToken:job
+            root=result[1];node=result[3]
+            -- MAXScript can reuse a rollout value after close/reopen. Its open
+            -- session token, not rollout equality alone, identifies this view.
+            if launchBrowser!=undefined and CyrusRecipeBrowser==launchBrowser and launchSession==launchBrowser.sessionID do (launchBrowser.bindDestination root node;launchBrowser.showSelected())
             local clock=dotNetClass "System.Diagnostics.Stopwatch"
             updateReadyAt=(clock.GetTimestamp() as double)+clock.Frequency*0.3
-            status.text="Layers added. Finishing Update...\n"+terrainNote
+            status.text="Preset calculated. Finishing library view...\n"+terrainNote
             closeButton.text="Close (layers added)"
             progress.active=true
         )
         fn finishUpdate = (
-            -- This button is explicitly Load + Update, a calculation boundary.
-            -- Authored import and subsequent complete publication stay separate.
-            root.refreshAll()
+            -- The initial result already succeeded before import committed.
             resumeDisplay()
             local document=cyrusAssetPackagePrepared job true
             title.text="Loaded: "+(CyrusRecipeGet document "name")
@@ -184,11 +217,12 @@ fn CyrusOpenReadyPreset root directory expected:"" = (
             finished=true;closeButton.text="Close";CyrusViewportRedraw()
         )
         on editor open do (
-            root=CyrusReadyPresetOpenData[1];node=CyrusReadyPresetOpenData[2];directory=CyrusReadyPresetOpenData[3];job=CyrusReadyPresetOpenData[4];expected=CyrusReadyPresetOpenData[5]
+            root=CyrusReadyPresetOpenData[1];node=CyrusReadyPresetOpenData[2];directory=CyrusReadyPresetOpenData[3];job=CyrusReadyPresetOpenData[4];expected=CyrusReadyPresetOpenData[5];surface=CyrusReadyPresetOpenData[6];launchBrowser=CyrusReadyPresetOpenData[7];launchSession=CyrusReadyPresetOpenData[8]
             progress.active=true
         )
         on progress tick do try (
-            CyrusRecipeCheckRoot root node
+            CyrusLibraryCheckSurface surface
+            if root!=undefined do CyrusRecipeCheckRoot root node
             local value=cyrusAssetPackagePoll job
             if result!=undefined then (
                 local clock=dotNetClass "System.Diagnostics.Stopwatch"
@@ -215,7 +249,7 @@ fn CyrusOpenReadyPreset root directory expected:"" = (
             CyrusReadyPresetEditor=undefined
         )
     )
-    CyrusReadyPresetOpenData=#(root,node,directory,job,expected);CyrusReadyPresetEditor=editor
+    CyrusReadyPresetOpenData=#(root,node,directory,job,expected,surface,CyrusRecipeBrowser,(if CyrusRecipeBrowser==undefined then "" else CyrusRecipeBrowser.sessionID));CyrusReadyPresetEditor=editor
     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
     true
 )
@@ -242,7 +276,7 @@ fn CyrusPresetSaveReady root path digest bindings = (
             local value=cyrusAssetPackagePoll job
             if value[1]!="exporting" do (
                 progress.active=false;finished=true;closeButton.text="Close"
-                status.text=if value[1]=="complete" then "Ready preset saved with its models, materials, terrain, paths and Paint. Select it in the library and use Load + Update." else "Settings recipe saved; ready package did not finish. "+value[4]
+                status.text=if value[1]=="complete" then "Ready preset saved with its models, materials, terrain, paths and Paint. Select it in the library and use Load onto surface." else "Settings recipe saved; ready package did not finish. "+value[4]
                 if CyrusRecipeBrowser!=undefined do CyrusRecipeBrowser.refreshEntry path
             )
         )catch(progress.active=false;finished=true;closeButton.text="Close";status.text=getCurrentException())
@@ -264,7 +298,7 @@ global CyrusAssetStage,CyrusAssetImport,CyrusAssetImportPlan,CyrusAssetReview,Cy
 global CyrusOpenAssetImport,CyrusAssetImportEditor,CyrusAssetImportOpenData,CyrusRecipeValidateBindings
 global CyrusAssetColorContext,CyrusAssetCheckColor,CyrusAssetBitmapDirectory,CyrusAssetRestoreMap
 global CyrusAssetSharedSnapshot,CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetCaptureSpline,CyrusAssetBoundNode
-struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false)
+struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false,pathTransform=undefined)
 if CyrusAssetJobs==undefined do CyrusAssetJobs=#()
 struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined)
 fn CyrusAssetBitmapDirectory = (pathConfig.appendPath (getDir #userScripts) "CyrusScatter\\ImportedAssets")
@@ -368,6 +402,12 @@ fn CyrusAssetMaterial context value = (
         setProperty defaults key (getProperty value key);setProperty defaults amount (getProperty value amount);setProperty defaults enabled (getProperty value enabled)
         append slots (CyrusRecipeObject #(#("slot",slot),#("map",CyrusAssetMap context (getProperty value key)),#("amount",getProperty value amount),#("enabled",getProperty value enabled)))
     )
+    -- Compare aliases against the material our closed adapter actually restores.
+    -- Older hosts also enumerate Diffuse_Color/Specular_Level; these are derived
+    -- from the captured canonical properties, not extra unsupported settings.
+    defaults.adLock=false;defaults.dsLock=false
+    for key in #(#diffuse,#ambient,#specular,#specularLevel,#glossiness,#soften,#selfIllumAmount,#selfIllumColor,#useSelfIllumColor,#opacity,#twoSided) do setProperty defaults key (getProperty value key)
+    defaults.adLock=value.adLock;defaults.dsLock=value.dsLock;defaults.adTextureLock=value.adTextureLock
     CyrusAssetCheckDefaults value defaults supported
     fn colorData colorValue = #(colorValue.r as double,colorValue.g as double,colorValue.b as double)
     local id="material-"+((context.materials.count+1) as string)
@@ -687,14 +727,18 @@ fn CyrusAssetStage package bindings = (
             if CyrusRecipeGet curve "closed" do close node index
         )
         updateShape node;node.transform=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
+        if package.count>5 and package[6]!=undefined do node.transform=node.transform*package[6]
         node.wireColor=colorValue (CyrusRecipeGet data "wireColor");node.isHidden=true
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
     )
     resolved
 )
 fn CyrusAssetImport plan preparedToken:0L = (
-    CyrusRequireAuthor();CyrusRecipeCheckRoot plan.root plan.node
-    if plan.root.procInputKey()!=plan.inputKey do throw "The destination changed since review. Review the package again."
+    CyrusRequireAuthor()
+    if not plan.newSetup do (
+        CyrusRecipeCheckRoot plan.root plan.node
+        if plan.root.procInputKey()!=plan.inputKey do throw "The destination changed since review. Review the package again."
+    )
     local path=pathConfig.appendPath plan.directory "entry.csrecipe.json"
     if preparedToken==0 and (cyrusRecipeInfo path)[11]!=plan.recipeHash do throw "The packaged recipe changed since review."
     -- Verify the graph/content identity as well; equal recipe IDs are insufficient.
@@ -711,7 +755,7 @@ fn CyrusAssetImport plan preparedToken:0L = (
     ) else (
         if plan.assets!=#clone do throw "Unsupported asset reuse policy."
         local packagedReceivers=#()
-        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"))) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined)
+        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"),plan.pathTransform)) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined) calculate:plan.preset
     )
 )
 
@@ -808,8 +852,111 @@ fn CyrusOpenAssetImport root directory = (
     true
 )
 
+-- Pattern browsing is file-only. Only an explicit choice authors layer settings.
+global CyrusDensityPatternEditor,CyrusDensityPatternTarget,CyrusChooseDensityPattern,CyrusSetDensityImage,CyrusLoadDensityImage,CyrusBakeDensityImage
+global CyrusRecipeScriptDirectory,CyrusRecipeOwnerNode,CyrusRecipeCheckRoot,CyrusViewportRedraw,AminScatterObject
+fn CyrusSetDensityImage target path pattern:"" revision:"" = (
+    local root=if target.overlapOwner==undefined then target else target.overlapOwner,node=undefined
+    node=CyrusRecipeOwnerNode root;CyrusRecipeCheckRoot root node
+    if findItem root.layerObjects target==0 do throw "The density layer was removed."
+    if not doesFileExist path do throw "The selected density image is missing."
+    local image=undefined,map=undefined
+    try (
+        image=openBitmap path colorSpace:ColorPipelineMgr.DataColorSpace
+        if image==undefined do throw "The image could not be opened."
+        if image.width>8192 or image.height>8192 or image.numframes!=1 do throw "Density images must be single-frame images up to 8192 x 8192."
+        map=bitmaptexture name:(if pattern=="" then getFilenameFile path else "Cyrus / "+pattern) bitmap:image
+    )catch(if image!=undefined do close image;throw())
+    -- The map owns the open image. Pattern selection never consumes randomness.
+    undo "Cyrus density image" on (
+        target.densityMap=map;target.distributionMode=3
+        target.densityCoordinateMode=1;target.densityWrapMode=1
+        target.densityPatternID=pattern;target.densityPatternRevision=revision
+        target.densityMapProvenance="linear image / "+(getFilenameFile path)
+    )
+    root.bindNativeUI();CyrusViewportRedraw();true
+)
+fn CyrusLoadDensityImage target = (
+    local path=getOpenFileName caption:"Choose a density image (white permits / black excludes)" types:"Images|*.png;*.jpg;*.jpeg;*.tif;*.tiff;*.bmp;*.exr|All files|*.*|"
+    if path!=undefined do CyrusSetDensityImage target path
+)
+fn CyrusBakeDensityImage target directory:undefined = (
+    if target.densityMap==undefined do throw "Choose a texture map first."
+    local root=if target.overlapOwner==undefined then target else target.overlapOwner,node=CyrusRecipeOwnerNode root
+    CyrusRecipeCheckRoot root node
+    if findItem root.layerObjects target==0 do throw "The density layer was removed."
+    local documents=(dotNetClass "System.Environment").GetFolderPath ((dotNetClass "System.Environment+SpecialFolder").MyDocuments)
+    if directory==undefined do directory=pathConfig.appendPath documents "CyrusScatter\\Maps"
+    makeDir directory all:true
+    local token=(dotNetClass "System.Guid").NewGuid()
+    local path=pathConfig.appendPath directory (token.ToString()+".png"),image=undefined,map=undefined
+    local provenance="baked 2D tile / "+((classof target.densityMap) as string)+" / "+(currentTime as string)+" / "+(target.densityResolution as string)+" squared"
+    try (
+        image=renderMap target.densityMap size:[target.densityResolution,target.densityResolution]
+        if image==undefined do throw "This map cannot be evaluated as a 2D density tile."
+        -- Preserve numeric eligibility, independently of Max's output colour
+        -- conversion and remembered PNG export settings. Invert/curve stay authored.
+        cyrusWriteDensityImage (cyrusCaptureDensityImage image) path
+        close image;image=undefined
+        image=openBitmap path colorSpace:ColorPipelineMgr.DataColorSpace
+        map=bitmaptexture name:"Cyrus density snapshot" bitmap:image
+    )catch(if image!=undefined do close image;if doesFileExist path do deleteFile path;throw())
+    undo "Cyrus bake density tile" on (target.densityMap=map;target.densityPatternID="";target.densityPatternRevision="";target.densityMapProvenance=provenance)
+    root.bindNativeUI();CyrusViewportRedraw();true
+)
+fn CyrusChooseDensityPattern target = (
+    local assembly=dotNet.loadAssembly (pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll")
+    if CyrusDensityPatternEditor!=undefined do try(destroyDialog CyrusDensityPatternEditor)catch()
+    rollout picker "Cyrus density patterns" width:650 height:485 (
+        local target,root,node
+        dotNetControl panel "CyrusScatter.UI.DensityPatternPanel" pos:[8,8] width:634 height:396
+        label help "Original masks. White permits; black excludes. Pattern grids are density masks, not placement layouts." pos:[8,410] width:634 height:32
+        button inspect "Inspect" pos:[8,450] width:120
+        button usePattern "Use pattern" pos:[390,450] width:122
+        button cancel "Cancel" pos:[522,450] width:120
+        fn applyChoice = (
+            if panel.SelectedPath!="" do (
+                CyrusRecipeCheckRoot root node
+                CyrusSetDensityImage target panel.SelectedPath pattern:panel.SelectedPattern revision:panel.SelectedHash
+                destroyDialog picker
+            )
+        )
+        on picker open do (
+            target=CyrusDensityPatternTarget;root=if target.overlapOwner==undefined then target else target.overlapOwner;node=CyrusRecipeOwnerNode root
+            panel.LoadPatterns (pathConfig.appendPath CyrusRecipeScriptDirectory "Patterns")
+            if panel.Gallery.ItemCount==0 do help.text="No patterns were found. Choose Image or Map in Amount, or reinstall the complete Cyrus package."
+        )
+        on panel ItemActivated sender args do try(applyChoice())catch(messageBox (getCurrentException()) title:"Cyrus density pattern")
+        on inspect pressed do panel.InspectSelected()
+        on usePattern pressed do try(applyChoice())catch(messageBox (getCurrentException()) title:"Cyrus density pattern")
+        on cancel pressed do destroyDialog picker
+        on picker close do (panel.Dispose();CyrusDensityPatternEditor=undefined;CyrusDensityPatternTarget=undefined)
+    )
+    CyrusDensityPatternTarget=target;CyrusDensityPatternEditor=picker
+    createDialog picker style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
+)
+
 -- Bounded data-only recipes. Scene mutation is confined to CyrusRecipeImport.
-global CyrusRecipeBrowser,CyrusRecipeOpenRoot,CyrusRecipeOpenNode,CyrusRecipeScriptDirectory
+global CyrusRecipeBrowser,CyrusRecipeOpenRoot,CyrusRecipeOpenNode,CyrusRecipeOpenSurface,CyrusRecipeScriptDirectory
+global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusLibraryVersion
+global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
+fn CyrusLibraryVersion = "0.86.2"
+fn CyrusLibraryCheckSurface node = (
+    if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
+    true
+)
+fn CyrusLibraryDestination surface hint = (
+    CyrusLibraryCheckSurface surface
+    if hint!=undefined do (CyrusRecipeCheckRoot hint (CyrusRecipeOwnerNode hint);return hint)
+    local owners=#()
+    for node in objects where classof node.baseObject==AminScatterObject do (
+        local root=node.baseObject,uses=false
+        for layer in root.logicalLayers() where findItem (layer.validSurfaces()) surface>0 do uses=true
+        if uses do appendIfUnique owners root
+    )
+    if owners.count>1 do throw "This terrain belongs to several Scatter setups. Open Recipes from the setup that should receive the new layers."
+    if owners.count==1 then owners[1] else undefined
+)
 CyrusRecipeScriptDirectory=getFilenamePath (getSourceFileName())
 global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipeCapture,CyrusRecipeImport,CyrusOpenRecipeLibrary
 -- This template is prepended before the plugin/controller template. Declare
@@ -888,9 +1035,17 @@ fn CyrusRecipeCaptureSettings context owner = (
     )
     -- Enroll only bounded correspondence metadata; Save does not evaluate terrain.
     if owner!=context.root and not owner.isPaintArea do owner.procEnsureCorrespondence()
-    local pairs=#()
+    local pairs=#(),projection=undefined,basis=#()
+    if owner.densityCoordinateMode==2 do (
+        projection=owner.densityProjectionFrame()
+        for row=1 to 3 do join basis #(projection[row].x,projection[row].y,projection[row].z)
+    )
     for field in (CyrusRecipeFields()) do (
         local key=field[1],kind=field[2],value=if key=="procReceiverVariationIDs" then CyrusReceiverVariationDomains owner else getProperty owner (key as name)
+        if projection!=undefined do (
+            if key=="densityFrameBasis" do value=basis
+            if key=="densityFrameOriginWU" do value=#(projection.row4.x,projection.row4.y,projection.row4.z)
+        )
         if matchPattern kind pattern:"*tab" then (
             kind=substring kind 1 (kind.count-3)
             value=for entry in value collect (CyrusRecipeCaptureValue context entry kind key)
@@ -910,7 +1065,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.85.3 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.2 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -941,7 +1096,7 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",5),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",2027),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",6),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -994,7 +1149,7 @@ fn CyrusRecipeApplyValue bindings value kind metres = (
         default:value
     )
 )
-fn CyrusRecipeApplySettings owner settings bindings variation:#new = (
+fn CyrusRecipeApplySettings owner settings bindings variation:#new projectionRoot:undefined = (
     local metres=(units.decodeValue "1m") as double
     for field in (CyrusRecipeFields()) do (
         local key=field[1],kind=field[2],value=CyrusRecipeGet settings key
@@ -1003,6 +1158,17 @@ fn CyrusRecipeApplySettings owner settings bindings variation:#new = (
             value=for entry in value collect (CyrusRecipeApplyValue bindings entry kind metres)
         ) else value=CyrusRecipeApplyValue bindings value kind metres
         setProperty owner (key as name) value
+    )
+    -- Recipe frames are saved in world coordinates. Scene layer offsets are
+    -- relative to their destination Scatter, preserving both phase and ownership
+    -- without moving the destination node or its existing layers.
+    if projectionRoot!=undefined and owner.densityCoordinateMode==2 and owner.densityFrameBasis.count==9 do (
+        local b=owner.densityFrameBasis,o=owner.densityFrameOriginWU
+        local world=matrix3 [b[1],b[2],b[3]] [b[4],b[5],b[6]] [b[7],b[8],b[9]] [o[1],o[2],o[3]],transform=projectionRoot.objectTransform
+        if abs(dot transform.row1 (cross transform.row2 transform.row3))<1e-12 do throw "Destination Scatter frame is singular."
+        local offset=world*(inverse transform),values=#()
+        for row=1 to 3 do join values #(offset[row].x,offset[row].y,offset[row].z)
+        owner.densityFrameBasis=values;owner.densityFrameOriginWU=#(offset.row4.x,offset.row4.y,offset.row4.z)
     )
     -- Ownership is always fresh; saved random domains are an explicit choice.
     CyrusRemapLayerCorrespondence owner variation:variation
@@ -1019,7 +1185,7 @@ fn CyrusRecipeRestorePaint data target document packaged:false = (
     cyrusBrushRecipeImport (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame")
 )
 
-fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined = (
+fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined calculate:false = (
     if findItem #(#same,#new) variation==0 do throw "Choose Saved or New variation."
     CyrusRequireAuthor()
     if theHold.Holding() do throw "Finish the current undoable operation before importing a recipe."
@@ -1038,7 +1204,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
     local oldSuspended=CyrusPointSuspended,root=destination,createdNode=undefined,imported=#(),identityMap=#(),committed=false
     theHold.Begin();CyrusPointSuspended=true
     try (
-        if packagedPaintReceivers!=undefined do cyrusPresetTrackPublication (join #(destination) (destination.layerObjects as array))
+        if packagedPaintReceivers!=undefined and not newSetup do cyrusPresetTrackPublication (join #(destination) (destination.layerObjects as array))
         if not newSetup do cyrusEditOwnerLayers (destination.procModifiers()) (for leaf in destination.layerObjects collect leaf.editLayerKey)
         with animate off (
             if prepareAssets!=undefined do (
@@ -1052,14 +1218,14 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                 createdNode=AminScatterObject name:(CyrusRecipeGet document "name")
                 root=createdNode.baseObject;node=createdNode;root.setLayerTransfer true
                 cyrusRecipeTrackCreated root
-                CyrusRecipeApplySettings root (CyrusRecipeGet document "rootSettings") bindings variation:variation
+                CyrusRecipeApplySettings root (CyrusRecipeGet document "rootSettings") bindings variation:variation projectionRoot:node
                 root.layerID=CyrusNewLayerID();root.layerObjects=#();root.layerNames=#();root.layerEnabled=#();root.layerVisible=#()
             )
             for record in layers do (
                 local owner=createInstance AminScatterObject
                 cyrusRecipeTrackCreated owner
                 owner.setLayerTransfer true;owner.layerID=CyrusNewLayerID();owner.logicalParentID="";owner.isPaintArea=false
-                CyrusRecipeApplySettings owner (CyrusRecipeGet record "settings") bindings variation:variation
+                CyrusRecipeApplySettings owner (CyrusRecipeGet record "settings") bindings variation:variation projectionRoot:node
                 owner.editLayerKey=root.nextEditLayerKey;root.nextEditLayerKey+=1
                 owner.procOrder=root.layerObjects.count+imported.count+1;owner.procSetOrder=owner.procOrder
                 owner.paintAreas=#()
@@ -1070,7 +1236,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                     local area=createInstance AminScatterObject
                     cyrusRecipeTrackCreated area
                     area.setLayerTransfer true;area.layerID=CyrusNewLayerID();area.logicalParentID=owner.layerID;area.isPaintArea=true
-                    CyrusRecipeApplySettings area (CyrusRecipeGet areaRecord "settings") bindings variation:variation
+                    CyrusRecipeApplySettings area (CyrusRecipeGet areaRecord "settings") bindings variation:variation projectionRoot:node
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")
                     local areaPaint=CyrusRecipeGet areaRecord "paint"
                     if areaPaint!=undefined and (CyrusRecipeResolve bindings (CyrusRecipeGet areaPaint "receiverRole"))!=area.areaTarget do throw "Paint document and area binding disagree."
@@ -1096,6 +1262,15 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
             for rule in (CyrusRecipeGet document "spacingRelationships") do root.procSetPair (CyrusRecipeGet rule "scope") (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "a")) (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "b")) (CyrusRecipeGet rule "enabled") (CyrusRecipeGet rule "multiplier") ((CyrusRecipeGet rule "gap")*metres) (CyrusRecipeGet rule "planar")
             root.activeLayer=findItem root.layerObjects imported[1]
             root.setLayerTransfer false;root.procValidate()
+            if calculate do (
+                -- Ready Load succeeds only after its first complete calculation.
+                -- Keep that work inside this hold so a late failure rolls back
+                -- assets, authored layers and the previous publication together.
+                -- Calling the engine directly preserves its exceptions; the
+                -- ordinary interactive refresh records errors in diagnostics.
+                root.evaluateProcedural()
+                root.procEnsureDisplay()
+            )
         )
         theHold.Accept "Cyrus import recipe";committed=true
     )catch(
@@ -1106,7 +1281,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
     )
     CyrusPointSuspended=oldSuspended
     if committed do (
-        for owner in imported do owner.markInputDirty()
+        if not calculate do for owner in imported do owner.markInputDirty()
         root.bindNativeUI();CyrusViewportRedraw()
     )
     #(root,imported,node)
@@ -1436,7 +1611,7 @@ fn CyrusStyleFields group = (
         "Transforms":(join (for field in cyrusPresetSchema "transforms" collect field[1]) #("orientationTarget"))
         "Slope and altitude":#("slopeEnabled","slopeMinimum","slopeMaximum","slopeLowerFade","slopeUpperFade","altitudeEnabled","altitudeMinimum","altitudeMaximum","altitudeLowerFade","altitudeUpperFade")
         "Mesh channel mask":#("meshMaskEnabled","meshMaskChannel","meshMaskComponent","meshMaskMinimum","meshMaskMaximum","meshMaskInvert","meshMaskSamples","meshMaskGraph")
-        "Density texture":#("distributionMode","densityMap","invertDensity","densityUVChannel","densityResolution")
+        "Density texture":(join #("distributionMode","densityMap","invertDensity","densityUVChannel","densityResolution") (for key in AminScatterImageDensityFields collect key as string))
         "Area falloff":#("fallAnalyzer","fallDelete","fallDeleteWidth","fallScale","fallScaleWidth","fallScaleCurve","fallScaleGraph","fallDensity","fallDensityWidth","fallDensityCurve","fallDensityGraph")
         default:throw "Unsupported style group."
     )
@@ -1467,7 +1642,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.85.3 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.2 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -1628,28 +1803,40 @@ fn CyrusOpenRecipeStyle root path digest = (
     true
 )
 
-fn CyrusOpenRecipeLibrary root = (
-    local node=CyrusRecipeOwnerNode root
-    CyrusRecipeCheckRoot root node
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=3 do throw "Restart Max with the complete Cyrus 0.85.3 package."
+fn CyrusOpenRecipeLibrary root surface:undefined = (
+    if root!=undefined do CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
+    if surface==undefined do (
+        local selected=for node in selection where superclassof node==GeometryClass and classof node.baseObject!=AminScatterObject collect node
+        if selected.count==1 then surface=selected[1]
+        else if root!=undefined do (
+            local layer=root.selectedLayer(),receivers=if layer==undefined then #() else layer.validSurfaces()
+            if receivers.count==1 do surface=receivers[1]
+        )
+    )
+    CyrusLibraryCheckSurface surface
+    root=CyrusLibraryDestination surface root
+    local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.2 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.85.3.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.85.3 gallery package."
+    if assemblyName.Version.ToString()!="0.86.2.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.2 gallery package."
     if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
     rollout browser "Cyrus Library" width:1000 height:680 (
-        local root,node,directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
+        local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
         dotNetControl panel "CyrusScatter.UI.LibraryPanel" pos:[0,0] width:1000 height:680
         timer scanTimer interval:250 active:false
         fn validRoot = (CyrusRecipeCheckRoot root node)
+        fn bindDestination owner ownerNode = (root=owner;node=ownerNode;panel.HasSetup=true)
         fn selectedEntry = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>entries.count then undefined else entries[i])
         fn showSelected = (
+            panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
             local entry=selectedEntry(),i=panel.Gallery.SelectedIndex+1
             if panel.CollectionsView then (
                 panel.DetailText=if i>0 and i<=collections.count then collections[i][1]+" | "+((collections[i][2] as integer) as string)+" recipes" else "Choose a collection, or All recipes in the library tree."
                 panel.SetSelectionActions (i>0 and i<=collections.count) false scanTimer.active
             ) else (
-                panel.DetailText=if entry==undefined then "No matching recipes." else entry[2][1]+" | "+((entry[2][2] as integer) as string)+" layers; "+((entry[2][3] as integer) as string)+" Paint documents. "+entry[2][7]
+                panel.DetailText=if entry==undefined then "No matching recipes." else entry[2][1]+" | "+((entry[2][2] as integer) as string)+" layers; "+((entry[2][3] as integer) as string)+" Paint documents. "+entry[2][17]+"\n"+entry[2][16]+"\n"+entry[2][7]
                 panel.SetSelectionActions (entry!=undefined) (panel.LibraryIndex!=2) scanTimer.active
             )
         )
@@ -1671,7 +1858,7 @@ fn CyrusOpenRecipeLibrary root = (
                 local chosen=panel.Gallery.SelectedId,selected=0
                 bindingControls=true;panel.Gallery.BeginPage()
                 for i=1 to newRows.count do (
-                    local row=newRows[i],id=row[1],title=if panel.CollectionsView then row[1] else row[2][1],detail=if panel.CollectionsView then ((row[2] as integer) as string)+" recipes" else ((row[2][2] as integer) as string)+" layers | "+((row[2][3] as integer) as string)+" Paint"
+                    local row=newRows[i],id=row[1],title=if panel.CollectionsView then row[1] else row[2][1],detail=if panel.CollectionsView then ((row[2] as integer) as string)+" recipes" else ((row[2][2] as integer) as string)+" layers | "+row[2][17]
                     local descriptor=if panel.CollectionsView then row[3] else row[2][14]
                     panel.Gallery.AddItem id title detail (if descriptor.count==3 then descriptor[1] else "") (if descriptor.count==3 then descriptor[2] else "") (if descriptor.count==3 then descriptor[3] as integer else 0)
                     if id==chosen do selected=i
@@ -1685,7 +1872,7 @@ fn CyrusOpenRecipeLibrary root = (
             showSelected();true
         )
         fn refresh = (
-            validRoot();page=1;entries=#();collections=#();categories=#()
+            page=1;entries=#();collections=#();categories=#()
             panel.BeginCollections();panel.EndCollections()
             scan=cyrusRecipeLibraryStart #(directory);scanTimer.active=true;showPage()
         )
@@ -1701,7 +1888,6 @@ fn CyrusOpenRecipeLibrary root = (
             true
         )
         fn loadSelected = (
-            validRoot()
             if scanTimer.active do throw "Wait for the library scan or cancel it before loading."
             if panel.CollectionsView then (
                 local i=panel.Gallery.SelectedIndex+1
@@ -1711,13 +1897,16 @@ fn CyrusOpenRecipeLibrary root = (
                 if entry==undefined do throw "Select a recipe."
                 local packageDirectory=getFilenamePath entry[1]
                 local readyDirectory=CyrusPresetPackageDirectory entry[1] entry[2][11]
-                if doesFileExist (pathConfig.appendPath readyDirectory "cyrus.package.json") then CyrusOpenReadyPreset root readyDirectory expected:entry[2][11]
-                else if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenReadyPreset root packageDirectory expected:entry[2][11]
-                else CyrusOpenRecipeLoad root entry[1] entry[2][11]
+                CyrusLibraryCheckSurface surface
+                if root==undefined do (root=CyrusLibraryDestination surface undefined;node=if root==undefined then undefined else CyrusRecipeOwnerNode root)
+                if root!=undefined do validRoot()
+                if doesFileExist (pathConfig.appendPath readyDirectory "cyrus.package.json") then CyrusOpenReadyPreset root readyDirectory expected:entry[2][11] surface:surface
+                else if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenReadyPreset root packageDirectory expected:entry[2][11] surface:surface
+                else throw "The models and assets for this recipe are unavailable. It may be settings-only, or its asset package is missing/incomplete. Restore the complete recipe folder or save it again with Include models, materials, terrain and paths enabled."
             )
         )
         fn action name = (
-            validRoot()
+            if findItem #("save","update","style","export") name>0 do validRoot()
             case name of (
                 "selection":showSelected()
                 "load":loadSelected()
@@ -1726,7 +1915,7 @@ fn CyrusOpenRecipeLibrary root = (
                 "collection":(entries=#();collections=#();page=1;showPage())
                 "library":(
                     if panel.LibraryIndex==3 and customDirectory=="" then (directory=CyrusRecipeDirectory();panel.SetNavigation 1 "" true;refresh();panel.StatusText="Choose a custom library folder.")
-                    else (directory=if panel.LibraryIndex==1 then CyrusRecipeDirectory() else if panel.LibraryIndex==2 then CyrusRecipeBundledDirectory (root.uiVersion()) else customDirectory;refresh())
+                    else (directory=if panel.LibraryIndex==1 then CyrusRecipeDirectory() else if panel.LibraryIndex==2 then CyrusRecipeBundledDirectory (CyrusLibraryVersion()) else customDirectory;refresh())
                 )
                 "folder":(local chosen=getSavePath caption:"Choose Cyrus recipe library" initialDir:directory;if chosen!=undefined do (customDirectory=chosen;directory=chosen;panel.SetNavigation 3 "" true;refresh()))
                 "refresh":refresh()
@@ -1750,21 +1939,14 @@ fn CyrusOpenRecipeLibrary root = (
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
                     CyrusOpenAssetExport root entry[1] entry[2][11]
                 )
-                "bindings":(
-                    local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
-                    local packageDirectory=getFilenamePath entry[1],readyDirectory=CyrusPresetPackageDirectory entry[1] entry[2][11]
-                    if doesFileExist (pathConfig.appendPath readyDirectory "cyrus.package.json") then CyrusOpenAssetImport root readyDirectory
-                    else if doesFileExist (pathConfig.appendPath packageDirectory "cyrus.package.json") then CyrusOpenAssetImport root packageDirectory
-                    else CyrusOpenRecipeLoad root entry[1] entry[2][11]
-                )
                 "edit":(
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
-                    CyrusRecipeEditDetails entry[1] entry[2][11] (root.uiVersion())
+                    CyrusRecipeEditDetails entry[1] entry[2][11] (CyrusLibraryVersion())
                 )
             )
         )
         on browser open do (
-            root=CyrusRecipeOpenRoot;node=CyrusRecipeOpenNode;directory=CyrusRecipeDirectory()
+            root=CyrusRecipeOpenRoot;node=CyrusRecipeOpenNode;surface=CyrusRecipeOpenSurface;sessionID=CyrusNewLayerID();directory=CyrusRecipeDirectory()
             -- Max may restore a previous smaller dialog size without a resized
             -- event. Bind the control to that actual size before its first scan.
             local size=getDialogSize browser
@@ -1775,7 +1957,7 @@ fn CyrusOpenRecipeLibrary root = (
             try(refresh())catch(panel.StatusText=getCurrentException())
         )
         on panel ActionRequested sender args do if not bindingControls do try(action panel.RequestedAction)catch(panel.StatusText=getCurrentException())
-        on scanTimer tick do try(validRoot();showPage())catch(scanTimer.active=false;try(cyrusRecipeLibraryCancel scan)catch();panel.StatusText=getCurrentException())
+        on scanTimer tick do try(showPage())catch(scanTimer.active=false;try(cyrusRecipeLibraryCancel scan)catch();panel.StatusText=getCurrentException())
         on browser resized size do (panel.width=amax 1 size.x;panel.height=amax 1 size.y)
         on browser close do (
             scanTimer.active=false;if scan!=0 do try(cyrusRecipeLibraryCancel scan)catch()
@@ -1783,7 +1965,7 @@ fn CyrusOpenRecipeLibrary root = (
             CyrusRecipeBrowser=undefined
         )
     )
-    CyrusRecipeOpenRoot=root;CyrusRecipeOpenNode=node;CyrusRecipeBrowser=browser
+    CyrusRecipeOpenRoot=root;CyrusRecipeOpenNode=node;CyrusRecipeOpenSurface=surface;CyrusRecipeBrowser=browser
     createDialog browser style:#(#style_titlebar,#style_sysmenu,#style_resizing,#style_minimizebox,#style_maximizebox)
     true
 )
@@ -2024,24 +2206,58 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
-global CyrusMeshMaskPreviewTarget=undefined,CyrusMeshMaskPreviewNode=undefined,CyrusMeshMaskPreviewRows=#()
+try(CyrusMeshMaskPreviewTimer.Stop())catch()
+global CyrusMeshMaskPreviewTarget=undefined,CyrusMeshMaskPreviewNode=undefined,CyrusMeshMaskPreviewRows=undefined
+global CyrusMaskView=3,CyrusMaskDetail=2,CyrusMaskOpacity=80.0,CyrusMaskMarkers=false,CyrusMaskMarkerSize=1
+global CyrusMeshMaskPreviewTimer=undefined,CyrusMeshMaskPreviewPending=false,CyrusMeshMaskPreviewError=""
+global CyrusShowMeshMaskPreview,CyrusInvalidateMeshMaskPreview,CyrusMeshMaskPreviewTick
 fn CyrusClearMeshMaskPreview target = (
     if target==undefined or target==CyrusMeshMaskPreviewTarget do (
-        CyrusMeshMaskPreviewRows=#();CyrusMeshMaskPreviewTarget=undefined;CyrusMeshMaskPreviewNode=undefined
+        CyrusMeshMaskPreviewRows=undefined;CyrusMeshMaskPreviewTarget=undefined;CyrusMeshMaskPreviewNode=undefined
+        CyrusMeshMaskPreviewPending=false;CyrusMeshMaskPreviewError=""
+        if CyrusMeshMaskPreviewTimer!=undefined do CyrusMeshMaskPreviewTimer.Stop()
+    )
+)
+fn CyrusMeshMaskPreviewTick sender args = (
+    sender.Stop()
+    if CyrusMeshMaskPreviewPending and CyrusMeshMaskPreviewTarget!=undefined do (
+        local target=CyrusMeshMaskPreviewTarget
+        CyrusMeshMaskPreviewPending=false
+        try(CyrusShowMeshMaskPreview target)catch(CyrusMeshMaskPreviewError=getCurrentException();redrawViews())
+    )
+)
+fn CyrusInvalidateMeshMaskPreview target = (
+    if target==CyrusMeshMaskPreviewTarget and target!=undefined do (
+        CyrusMeshMaskPreviewPending=true;CyrusMeshMaskPreviewError=""
+        if CyrusMeshMaskPreviewTimer==undefined do (
+            CyrusMeshMaskPreviewTimer=dotNetObject "System.Windows.Forms.Timer"
+            CyrusMeshMaskPreviewTimer.Interval=180
+            dotNet.addEventHandler CyrusMeshMaskPreviewTimer "Tick" CyrusMeshMaskPreviewTick
+        )
+        CyrusMeshMaskPreviewTimer.Stop();CyrusMeshMaskPreviewTimer.Start()
     )
 )
 fn CyrusShowMeshMaskPreview target = (
-    if not target.meshMaskEnabled do throw "Enable the mesh channel density mask first."
-    local node=undefined
-    for candidate in refs.dependentNodes target where isValidNode candidate and classof candidate.baseObject==AminScatterObject do node=candidate
-    if node==undefined do throw "The mesh mask owner is no longer in this scene."
-    local targets=target.validSurfaces(),rows=#()
+    local root=if target.overlapOwner==undefined then target else target.overlapOwner,node=CyrusRecipeOwnerNode root
+    CyrusRecipeCheckRoot root node
+    if findItem root.layerObjects target==0 do throw "The density layer is no longer in this scene."
+    -- A failed switch must never label another layer's cached field as this one.
+    if CyrusMeshMaskPreviewTarget!=target do CyrusMeshMaskPreviewRows=undefined
+    CyrusMeshMaskPreviewTarget=target;CyrusMeshMaskPreviewNode=node
+    try (
+    local targets=target.validSurfaces()
     if targets.count==0 do throw "Add a receiving surface first."
-    local perReceiver=amax 1 ((2048/targets.count) as integer),cfg=target.meshMaskPayload()
-    for receiver in targets do join rows (cyrusMeshDensityPreview receiver cfg perReceiver)
-    CyrusMeshMaskPreviewTarget=target;CyrusMeshMaskPreviewNode=node;CyrusMeshMaskPreviewRows=rows
-    redrawViews();rows.count
+    local image=if target.distributionMode==3 and CyrusMaskView!=2 then target.procDensityWeights() else undefined
+    local paint=#()
+    if target.paintEnabled and CyrusMaskView==3 do for area in target.paintAreas where area.paintSetEnabled and area.paintDocument!=undefined and findItem targets area.areaTarget>0 do (
+        append paint #(area.areaTarget,(cyrusBrushRecipeExport area.paintDocument)[1],area.paintDensity)
+    )
+    local rows=cyrusPrepareDensityOverlay targets (target.meshMaskPayload()) image (target.densityMappingPayload()) target.densityUVChannel (CyrusMaskView-1) #(4096,32768,131072)[CyrusMaskDetail] true (target.surfaceFilterPayload()) target.paintEnabled paint (target.areaInputs())
+    CyrusMeshMaskPreviewRows=rows;CyrusMeshMaskPreviewPending=false;CyrusMeshMaskPreviewError=""
+    redrawViews();(cyrusDensityOverlayInfo rows)[1]
+    )catch(CyrusMeshMaskPreviewPending=false;CyrusMeshMaskPreviewError=getCurrentException();redrawViews();throw())
 )
+
 global CyrusTimeOwners=#(),CyrusRegisterTimeOwner,CyrusResetTimeOwners,CyrusPruneTimeOwners
 fn CyrusRegisterTimeOwner node = (
     if isValidNode node and classof node.baseObject==AminScatterObject do appendIfUnique CyrusTimeOwners node
@@ -2244,9 +2460,9 @@ fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").Mous
 global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
 fn CyrusFallPack values = (local s=stringStream "";for i=1 to values.count do format "% %" values[i] (if i<values.count then "," else "") to:s;s as string)
 fn CyrusFallUnpack data = (for v in filterString data "," collect (v as float))
-global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0,CyrusFallGraphMeshMask=false
+global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0,CyrusFallGraphMeshMask=false,CyrusFallGraphImageMask=false
 global CyrusFallGraphOwnerRoot,CyrusFallGraphOwnerNode
-fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
+fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMask:false = (
     local bandRoot=undefined,bandNode=undefined
     if bandID>0 and findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
     for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject do (
@@ -2259,7 +2475,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
     if bandRoot==undefined do throw "The curve controller is no longer in this scene."
     if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
     rollout editor "Area Falloff - Edit Graph" width:760 height:505 (
-        local obj,area,isDensity=false,isMeshMask=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
+        local obj,area,isDensity=false,isMeshMask=false,isImageMask=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
         curveControl graph "" pos:[8,8] width:744 height:396 numCurves:1 x_range:[0,1] y_range:[0,100] commandMode:#move_xy asPopup:false
         button presetsButton "Presets..." pos:[12,464] width:120
         button applyButton "Apply" pos:[538,424] width:100
@@ -2309,10 +2525,10 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
                         invalidated=true;applyButton.enabled=false;help.text="This mesh mask owner was removed. Close and reopen its graph.";return false
                     )
                     if identity==lastGraphTrace do return true
-                    local changed=(CyrusFallPack (obj.meshMaskCurve()))!=packedValues
+                    local changed=(CyrusFallPack (if isImageMask then (if obj.densityResponseSamples.count==0 then #(0.0,1.0) else obj.densityResponseSamples as array) else obj.meshMaskCurve()))!=packedValues
                     undo "Cyrus mesh density curve" on (
-                        if changed do obj.meshMaskSamples=values
-                        obj.meshMaskGraph=packedGraph
+                        if isImageMask then (if changed do obj.densityResponseSamples=values;obj.densityResponseGraph=packedGraph)
+                        else (if changed do obj.meshMaskSamples=values;obj.meshMaskGraph=packedGraph)
                     )
                     lastGraphTrace=identity
                     if changed do CyrusViewportRedraw()
@@ -2431,7 +2647,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
         )
         on presetsButton pressed do try(CyrusOpenPresets ownerRoot obj (if isDensity then "density_curve" else "scale_curve") editor:editor)catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on editor open do (
-            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID;isMeshMask=CyrusFallGraphMeshMask
+            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID;isImageMask=CyrusFallGraphImageMask;isMeshMask=CyrusFallGraphMeshMask or isImageMask
             ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode;ownerLayerID=obj.layerID
             if ownerBandID>0 do (
                 local row=findItem obj.strokeIDs ownerBandID
@@ -2441,10 +2657,10 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
             editor.title=(if isDensity then "Area Density Falloff" else "Area Scale Falloff")+" - "+(if area==undefined then (if obj.isPaintArea then obj.paintSetName+" / Vector Border" else "Analyzer Boundary") else area.name)
             local row=bandTargetRow(),cfg=if ownerBandID>0 or isMeshMask then undefined else obj.getFallConfig area
             if ownerBandID>0 do (editor.title=(if isDensity then "Band Density - " else "Band Scale - ")+obj.bandName row;help.text="Band "+(ownerBandID as string)+". X: normalized Start to End. Y: "+(if isDensity then "density 0-100%." else "size percent; 100% = unchanged.")+" Drag applies on release.")
-            local packed=CyrusFallUnpack (if isMeshMask then obj.meshMaskGraph else if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity)
-            local values=if isMeshMask then obj.meshMaskCurve() else if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[row]) else cfg[if isDensity then 8 else 5]
+            local packed=CyrusFallUnpack (if isMeshMask then (if isImageMask then obj.densityResponseGraph else obj.meshMaskGraph) else if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity)
+            local values=if isMeshMask then (if isImageMask then (if obj.densityResponseSamples.count==0 then #(0.0,1.0) else obj.densityResponseSamples as array) else obj.meshMaskCurve()) else if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[row]) else cfg[if isDensity then 8 else 5]
             if isMeshMask do (
-                editor.title="Mesh Channel Density - "+(ownerRoot.layerCaption obj)
+                editor.title=(if isImageMask then "Image Density - " else "Mesh Channel Density - ")+(ownerRoot.layerCaption obj)
                 help.text="X: remapped channel value (after Invert). Y: planting eligibility 0-100%. Apply or release to update."
                 presetsButton.enabled=false
             )
@@ -2501,7 +2717,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
         on doneButton pressed do (storeCurve();destroyDialog editor)
         on editor close do (if curveTimer!=undefined do (curveTimer.Stop();dotNet.removeEventHandler curveTimer "Tick" flushCurve;curveTimer.Dispose();curveTimer=undefined);pendingCurve=false;storeCurve();CyrusFalloffGraph=undefined)
     )
-    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density;CyrusFallGraphBandID=bandID;CyrusFallGraphMeshMask=meshMask
+    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density;CyrusFallGraphBandID=bandID;CyrusFallGraphMeshMask=meshMask;CyrusFallGraphImageMask=imageMask
     CyrusFalloffGraph=editor
     CyrusFallGraphOwnerRoot=bandRoot;CyrusFallGraphOwnerNode=bandNode
     try(createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_minimizebox) pos:[200,160])catch(
@@ -2565,7 +2781,12 @@ global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskCo
 AminScatterOrientationFields=#(#alignNormal,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#sourceForwardAxes)
 global AminScatterGridFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter)
 AminScatterLayerFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterImageDensityFields=#(#densityCoordinateMode,#densityWrapMode,#densityTileXWU,#densityTileYWU,#densityTileLock,#densityRepeatX,#densityRepeatY,#densityHeading,#densityOffsetXWU,#densityOffsetYWU,#densityUOffset,#densityVOffset,#densityPatternID,#densityPatternRevision,#densityResponseSamples,#densityResponseGraph,#densityMapProvenance,#densityFrameBasis,#densityFrameOriginWU)
+join AminScatterLayerFields AminScatterImageDensityFields
 AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
+appendIfUnique AminScatterLayerTabs #densityResponseSamples
+appendIfUnique AminScatterLayerTabs #densityFrameBasis
+appendIfUnique AminScatterLayerTabs #densityFrameOriginWU
 fn CyrusReceiverVariationDomains owner = (
     local ids=owner.procReceiverIDs as array,domains=owner.procReceiverVariationIDs as array
     if ids.count>128 or ids.count!=owner.procReceiverNodes.count do throw "Receiver correspondence history is incomplete."
@@ -3472,11 +3693,11 @@ initialRollupState:0x8
         invertDensity type:#boolean default:false
         densityUVChannel type:#integer default:1
         densityResolution type:#integer default:128
-        on densityUVChannel postSet v do markInputDirty()
-        on densityResolution postSet v do markInputDirty()
-        on distributionMode postSet v do markInputDirty()
-        on densityMap postSet v do markInputDirty()
-        on invertDensity postSet v do markInputDirty()
+        on densityUVChannel postSet v do this.imageDensityChanged()
+        on densityResolution postSet v do this.imageDensityChanged()
+        on distributionMode postSet v do this.imageDensityChanged()
+        on densityMap postSet v do this.imageDensityChanged()
+        on invertDensity postSet v do this.imageDensityChanged()
 
         on distributionMode preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=distributionMode and not (cyrusLicenseAllows()) then distributionMode else value)
         on densityMap preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityMap and not (cyrusLicenseAllows()) then densityMap else value)
@@ -3511,7 +3732,7 @@ initialRollupState:0x8
     )
     fn meshMaskCurve = (if meshMaskSamples.count==0 then #(0.0,1.0) else meshMaskSamples as array)
     fn meshMaskPayload = (#(meshMaskEnabled,meshMaskChannel,meshMaskComponent,meshMaskMinimum,meshMaskMaximum,meshMaskInvert,this.meshMaskCurve()))
-    fn meshMaskChanged = (CyrusClearMeshMaskPreview this;markInputDirty())
+    fn meshMaskChanged = (CyrusInvalidateMeshMaskPreview this;markInputDirty())
     parameters diversitySettings (
         diversityMode type:#integer default:1
         diversitySize type:#worldUnits default:10
@@ -4392,7 +4613,7 @@ initialRollupState:0x8
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry
                 if cached!=undefined then (receiverRows=cached[3];receiverNormals=cached[4];procReceiverHits+=1)
                 else if receiverCount>0 do (
-                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if distributionMode==3 then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined))
+                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if this.requiresDensityUV() then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined),this.densityMappingPayload())
                     local generated
                     generated=cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     receiverRows=generated[1];receiverNormals=generated[2]
@@ -4439,7 +4660,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.86.0"
+    fn uiVersion = "0.86.2"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -4515,16 +4736,16 @@ initialRollupState:0x8
         altitudeMaximum type:#worldUnits default:1000
         altitudeLowerFade type:#worldUnits default:0
         altitudeUpperFade type:#worldUnits default:0
-        on slopeEnabled postSet value do markInputDirty()
-        on slopeMinimum postSet value do markInputDirty()
-        on slopeMaximum postSet value do markInputDirty()
-        on slopeLowerFade postSet value do markInputDirty()
-        on slopeUpperFade postSet value do markInputDirty()
-        on altitudeEnabled postSet value do markInputDirty()
-        on altitudeMinimum postSet value do markInputDirty()
-        on altitudeMaximum postSet value do markInputDirty()
-        on altitudeLowerFade postSet value do markInputDirty()
-        on altitudeUpperFade postSet value do markInputDirty()
+        on slopeEnabled postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeMinimum postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeMaximum postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeLowerFade postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeUpperFade postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeEnabled postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeMinimum postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeMaximum postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeLowerFade postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeUpperFade postSet value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
 
         on slopeEnabled preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=slopeEnabled and not (cyrusLicenseAllows()) then slopeEnabled else value)
         on slopeMinimum preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=slopeMinimum and not (cyrusLicenseAllows()) then slopeMinimum else value)
@@ -4642,6 +4863,87 @@ initialRollupState:0x8
         on gridHeading preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=gridHeading and not (cyrusLicenseAllows()) then gridHeading else value)
         on gridJitter preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=gridJitter and not (cyrusLicenseAllows()) then gridJitter else value)
     )
+    -- Append a parameter block: existing saved parameter block IDs stay intact.
+    parameters imageDensitySettings (
+        densityCoordinateMode type:#integer default:0
+        densityWrapMode type:#integer default:0
+        densityTileXWU type:#worldunits default:100
+        densityTileYWU type:#worldunits default:100
+        densityTileLock type:#boolean default:true
+        densityRepeatX type:#float default:1
+        densityRepeatY type:#float default:1
+        densityHeading type:#float default:0
+        densityOffsetXWU type:#worldunits default:0
+        densityOffsetYWU type:#worldunits default:0
+        densityUOffset type:#float default:0
+        densityVOffset type:#float default:0
+        densityPatternID type:#string default:""
+        densityPatternRevision type:#string default:""
+        densityResponseSamples type:#floatTab tabSize:0 tabSizeVariable:true
+        densityResponseGraph type:#string default:""
+        densityMapProvenance type:#string default:""
+        densityFrameBasis type:#floatTab tabSize:0 tabSizeVariable:true
+        densityFrameOriginWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        on densityCoordinateMode postSet v do this.imageDensityChanged()
+        on densityWrapMode postSet v do this.imageDensityChanged()
+        on densityTileXWU postSet v do this.imageDensityChanged()
+        on densityTileYWU postSet v do this.imageDensityChanged()
+        on densityTileLock postSet v do this.imageDensityChanged()
+        on densityRepeatX postSet v do this.imageDensityChanged()
+        on densityRepeatY postSet v do this.imageDensityChanged()
+        on densityHeading postSet v do this.imageDensityChanged()
+        on densityOffsetXWU postSet v do this.imageDensityChanged()
+        on densityOffsetYWU postSet v do this.imageDensityChanged()
+        on densityUOffset postSet v do this.imageDensityChanged()
+        on densityVOffset postSet v do this.imageDensityChanged()
+        on densityResponseSamples set v i do this.imageDensityChanged()
+        on densityFrameBasis set v i do this.imageDensityChanged()
+        on densityFrameOriginWU set v i do this.imageDensityChanged()
+
+        on densityCoordinateMode preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityCoordinateMode and not (cyrusLicenseAllows()) then densityCoordinateMode else value)
+        on densityWrapMode preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityWrapMode and not (cyrusLicenseAllows()) then densityWrapMode else value)
+        on densityTileXWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityTileXWU and not (cyrusLicenseAllows()) then densityTileXWU else value)
+        on densityTileYWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityTileYWU and not (cyrusLicenseAllows()) then densityTileYWU else value)
+        on densityTileLock preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityTileLock and not (cyrusLicenseAllows()) then densityTileLock else value)
+        on densityRepeatX preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityRepeatX and not (cyrusLicenseAllows()) then densityRepeatX else value)
+        on densityRepeatY preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityRepeatY and not (cyrusLicenseAllows()) then densityRepeatY else value)
+        on densityHeading preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityHeading and not (cyrusLicenseAllows()) then densityHeading else value)
+        on densityOffsetXWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityOffsetXWU and not (cyrusLicenseAllows()) then densityOffsetXWU else value)
+        on densityOffsetYWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityOffsetYWU and not (cyrusLicenseAllows()) then densityOffsetYWU else value)
+        on densityUOffset preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityUOffset and not (cyrusLicenseAllows()) then densityUOffset else value)
+        on densityVOffset preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityVOffset and not (cyrusLicenseAllows()) then densityVOffset else value)
+        on densityPatternID preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityPatternID and not (cyrusLicenseAllows()) then densityPatternID else value)
+        on densityPatternRevision preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityPatternRevision and not (cyrusLicenseAllows()) then densityPatternRevision else value)
+        on densityResponseGraph preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityResponseGraph and not (cyrusLicenseAllows()) then densityResponseGraph else value)
+        on densityMapProvenance preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityMapProvenance and not (cyrusLicenseAllows()) then densityMapProvenance else value)
+    )
+    local densityNotifiedFrame=undefined
+    fn imageDensityChanged = (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+    fn densityFrameChanged = (
+        if distributionMode!=3 or densityCoordinateMode!=2 do return false
+        local frame=(this.densityMappingPayload())[10]
+        if densityNotifiedFrame!=undefined and frame==densityNotifiedFrame do return false
+        densityNotifiedFrame=copy frame
+        this.imageDensityChanged();true
+    )
+    fn requiresDensityUV = (distributionMode==3 and densityCoordinateMode==0)
+    fn densityProjectionFrame = (
+        local controller=if overlapOwner==undefined then this else overlapOwner
+        local node=CyrusRecipeOwnerNode controller,offset=matrix3 1
+        if densityFrameBasis.count!=0 or densityFrameOriginWU.count!=0 do (
+            if densityFrameBasis.count!=9 or densityFrameOriginWU.count!=3 do throw "Image projection frame is incomplete."
+            local b=densityFrameBasis,o=densityFrameOriginWU
+            offset=matrix3 [b[1],b[2],b[3]] [b[4],b[5],b[6]] [b[7],b[8],b[9]] [o[1],o[2],o[3]]
+        )
+        local frame=offset*node.objectTransform
+        if abs(dot frame.row1 (cross frame.row2 frame.row3))<1e-12 do throw "Image projection frame is singular."
+        frame
+    )
+    fn densityMappingPayload = (
+        local frame=if densityCoordinateMode==2 then inverse (this.densityProjectionFrame()) else matrix3 1
+        #(densityCoordinateMode,densityWrapMode,densityTileXWU,(if densityTileLock then densityTileXWU else densityTileYWU),densityRepeatX,(if densityTileLock then densityRepeatX else densityRepeatY),densityHeading,(if densityCoordinateMode==0 then densityUOffset else densityOffsetXWU),(if densityCoordinateMode==0 then densityVOffset else densityOffsetYWU),frame,(if densityResponseSamples.count==0 then #(0.0,1.0) else densityResponseSamples as array))
+    )
+
     local procGridCache=#()
     fn gridPayload = (for key in AminScatterGridFields collect getProperty this key)
     fn gridKey = (cyrusGridKey (this.gridPayload()))
@@ -4703,7 +5005,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -4975,7 +5277,7 @@ initialRollupState:0x8
         for area in paintAreas do (area.setOverlapOwner overlapOwner;area.checkPaintRevision())
         if paintDocument!=undefined do (
             local state=cyrusBrushStats paintDocument
-            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];markInputDirty();if isPaintArea and overlapOwner!=undefined do (overlapOwner.logicalParent this).markInputDirty())
+            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];markInputDirty();if isPaintArea and overlapOwner!=undefined do (local parent=overlapOwner.logicalParent this;CyrusInvalidateMeshMaskPreview parent;parent.markInputDirty()))
         )
     )
     fn paintKey = (
@@ -4995,6 +5297,7 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
+            if distributionMode==3 do format "ImageMapping:%|" (this.densityMappingPayload()) to:stream
             format "MeshMask:%|" (if meshMaskEnabled then this.meshMaskPayload() else #(false)) to:stream
             for key in AminScatterLayerFields where findItem AminScatterGridFields key==0 and (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterOrientationFields key==0 and findItem AminScatterSurfaceFilterFields key==0 and findItem AminScatterMeshMaskFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and ((not receiverLocal and placementMode==1) or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
@@ -5070,7 +5373,7 @@ initialRollupState:0x8
 
     -- One bounded map-only bake, independent of receiver geometry and selected UVs.
     -- A failed successor never replaces a complete sampled image.
-    fn densityCacheStats = (#(procDensityBakes,procDensityHits,procDensityInversions,procDensityBakeMs,if procDensityCache.count==0 then 0 else procDensityCache[5].count+(if procDensityCache[6]==undefined then 0 else procDensityCache[6].count)))
+    fn densityCacheStats = (#(procDensityBakes,procDensityHits,procDensityInversions,procDensityBakeMs,if procDensityCache.count==0 then 0 else (cyrusDensityImageCount procDensityCache[5])+(if procDensityCache[6]==undefined then 0 else cyrusDensityImageCount procDensityCache[6])))
     fn procDensityWeights = (
         if densityMap==undefined do throw "Choose a density texture map."
         if densityUVChannel<1 or densityUVChannel>99 do throw "Density UV channel must be 1..99."
@@ -5084,11 +5387,7 @@ initialRollupState:0x8
             try (
                 image=renderMap densityMap size:[densityResolution,densityResolution]
                 if image==undefined do throw "Density map could not be sampled."
-                weights.count=densityResolution*densityResolution
-                local index=1
-                for y=0 to densityResolution-1 do for c in (getPixels image [0,y] densityResolution) do (
-                    weights[index]=amin 1.0 (amax 0.0 ((c.r*0.2126+c.g*0.7152+c.b*0.0722)/255.0));index+=1
-                )
+                weights=cyrusCaptureDensityImage image
                 close image;image=undefined
             )catch(CyrusMeasureEnd measurement layerID procEpoch "map_bake_failed" failed:true;if image!=undefined do try(close image)catch();throw())
             CyrusMeasureEnd measurement layerID procEpoch "map_baked"
@@ -5096,7 +5395,7 @@ initialRollupState:0x8
             procDensityCache=cached;procDensityBakes+=1;procDensityBakeMs=timeStamp()-started
         )
         if not invertDensity do return cached[5]
-        if cached[6]==undefined do (cached[6]=for weight in cached[5] collect (1-weight);procDensityInversions+=1)
+        if cached[6]==undefined do (cached[6]=cyrusDensityImageInvert cached[5];procDensityInversions+=1)
         cached[6]
     )
     fn procWatchDensity = (
@@ -5386,13 +5685,13 @@ initialRollupState:0x8
         procReceiverGeometry=#()
         for node in this.validSurfaces() do (
             local slot=findItem procReceiverNodes node
-            local geometry=cyrusProceduralSurfaceKey #(node) (distributionMode==3) densityUVChannel
+            local geometry=cyrusProceduralSurfaceKey #(node) (this.requiresDensityUV()) densityUVChannel
             append procReceiverGeometry #(slot,geometry,(if meshMaskEnabled then cyrusMeshDensityKey node (this.meshMaskPayload()) else "off"))
             if placementMode==1 then append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
             else (
                 local key=geometry+"|UV:"+(distributionMode as string)+":"+(densityUVChannel as string)+"|"+placementKey+"|"+domains[slot]+"|"+((this.effectiveSeed()) as string),snapshot=undefined
                 for entry in procGridCache where entry[1]==slot and entry[2]==key do snapshot=entry[3]
-                if snapshot==undefined do snapshot=cyrusGridPrepare node (this.gridPayload()) (this.effectiveSeed()) domains[slot] (distributionMode==3) densityUVChannel (remaining-gridCells)
+                if snapshot==undefined do snapshot=cyrusGridPrepare node (this.gridPayload()) (this.effectiveSeed()) domains[slot] (this.requiresDensityUV()) densityUVChannel (remaining-gridCells)
                 local info=cyrusGridSnapshotInfo snapshot
                 gridCells+=info[1]
                 if gridCells>remaining do throw "Grid cells exceed this setup's remaining candidate budget. Increase spacing or reduce the terrain domain. The previous result is retained."
@@ -5625,7 +5924,7 @@ initialRollupState:0x8
                 if orientationTargetObserved[1]==getHandleByAnim orientationTarget and orientationTargetObserved[2]==orientationTarget.transform.row4 do targetAffected=false
             )
         )
-        if affected then (CyrusClearMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
+        if affected then (CyrusInvalidateMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
         else if targetAffected do markInputDirty()
         CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else if targetAffected then "orientation_target" else "unrelated") correlation:(if affected or targetAffected then diagnosticCauseID else 0L)
         affected or targetAffected
@@ -5735,21 +6034,22 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.2 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.0 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.0 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.2 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.2 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.2 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -6260,14 +6560,15 @@ initialRollupState:0x8
         local syncingColorLists=false
         dotNetControl flow_layersUI_layerList_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
         local flow_layersUI_layerList_colored_configured=false,flow_layersUI_layerList_colored_colors=#(),flow_layersUI_layerList_colored_scale=1.0
+        local flow_layersUI_layerList_colored_tip=undefined,flow_layersUI_layerList_colored_tipRow=-1
         listbox flow_layersUI_layerList "" pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/58))))) height:6
         label flow_layersUI_layerList_caption "Layer | placed | status" pos:[6,6] width:(managerUI.width-12) height:18
         button flow_layersUI_addButton "+" pos:[8,8] width:((managerUI.width-16-((amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))-1)*4)/(amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))) tooltip:"Add a layer and edit its controls below. Layers calculate from top to bottom." height:22
         button flow_layersUI_copyButton "⧉" pos:[8,8] width:((managerUI.width-16-((amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))-1)*4)/(amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))) tooltip:"Copy this layer, its models, surfaces and Paint Areas." height:22
         button flow_layersUI_removeButton "×" pos:[8,8] width:((managerUI.width-16-((amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))-1)*4)/(amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))) tooltip:"Remove this layer and its Paint Areas. Undo restores them." height:22
         colorpicker flow_layersUI_layerColor "" color:(color 100 220 120) pos:[8,8] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Identification color for this layer. Choose Layer colors in Viewport & render to display it."
-        edittext flow_layersUI_nameEdit "" pos:[8,8] width:((managerUI.width-16-((amin 2 (amax 1 (floor ((managerUI.width-8)/114))))-1)*4)/(amin 2 (amax 1 (floor ((managerUI.width-8)/114))))) tooltip:"Rename the selected layer without changing its identity."
-        label flow_layersUI_nameEdit_caption "Name:" pos:[6,6] width:(managerUI.width-12) height:18
+        label flow_layersUI_nameLabel "Name:" pos:[8,8] width:80
+        edittext flow_layersUI_nameEdit "" pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/88))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/88))))) tooltip:"Rename the selected layer without changing its identity."
         checkbox flow_layersUI_visibleCheck "Visible" pos:[8,8] width:((managerUI.width-16-((amin 2 (amax 1 (floor ((managerUI.width-8)/62.4))))-1)*4)/(amin 2 (amax 1 (floor ((managerUI.width-8)/62.4))))) tooltip:"Hide display only. Hidden layers still calculate and affect spacing."
         checkbox flow_layersUI_enabledCheck "Enabled" pos:[8,8] width:((managerUI.width-16-((amin 2 (amax 1 (floor ((managerUI.width-8)/62.4))))-1)*4)/(amin 2 (amax 1 (floor ((managerUI.width-8)/62.4))))) tooltip:"Include this layer in calculation and final output."
         button flow_layersUI_upButton "▲" pos:[8,8] width:((managerUI.width-16-((amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))-1)*4)/(amin 5 (amax 1 (floor ((managerUI.width-8)/23.2))))) tooltip:"Evaluate earlier; earlier layers occupy space first." height:22
@@ -6452,6 +6753,15 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
+        on flow_layersUI_layerList_colored MouseMove view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
+            local row=view.IndexFromPoint args.Location
+            if row!=flow_layersUI_layerList_colored_tipRow do (
+                flow_layersUI_layerList_colored_tipRow=row
+                if flow_layersUI_layerList_colored_tip==undefined do flow_layersUI_layerList_colored_tip=dotNetObject "System.Windows.Forms.ToolTip"
+                flow_layersUI_layerList_colored_tip.SetToolTip view (if row>=0 then root.layerCaption flow_layersUI_members[row+1] else "")
+            )
+        )
+        on flow_layersUI_layerList_colored HandleDestroyed view args do (if flow_layersUI_layerList_colored_tip!=undefined do (flow_layersUI_layerList_colored_tip.Dispose();flow_layersUI_layerList_colored_tip=undefined);flow_layersUI_layerList_colored_tipRow=-1)
         on flow_layersUI_layerList_colored SelectedIndexChanged view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
             local action=CyrusBeginAction root "flow_layersUI_layerList_colored.selection"
             try (
@@ -6468,7 +6778,15 @@ initialRollupState:0x8
             local inset=(ceil (3*flow_layersUI_layerList_colored_scale)) as integer,swatch=(ceil (10*flow_layersUI_layerList_colored_scale)) as integer
             args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
             ink.Dispose()
-            (dotNetClass "System.Windows.Forms.TextRenderer").DrawText args.Graphics (view.Items.Item[args.Index] as string) view.Font (dotNetObject "System.Drawing.Point" (rectangle.X+(ceil (17*flow_layersUI_layerList_colored_scale))) rectangle.Y) args.ForeColor
+            local fullText=view.Items.Item[args.Index] as string,fullName=root.layerCaption flow_layersUI_members[args.Index+1]
+            local suffix=substring fullText (fullName.count+1) -1
+            local textRenderer=dotNetClass "System.Windows.Forms.TextRenderer",flags=dotNetClass "System.Windows.Forms.TextFormatFlags"
+            local plain=dotNet.combineEnums flags.SingleLine flags.VerticalCenter flags.NoPrefix flags.NoPadding
+            local start=rectangle.X+(ceil (17*flow_layersUI_layerList_colored_scale)),available=amax 1 (rectangle.Right-start-2)
+            local suffixWidth=amin available ((textRenderer.MeasureText suffix view.Font (dotNetObject "System.Drawing.Size" 32767 rectangle.Height) plain).Width)
+            local nameWidth=amax 0 (available-suffixWidth)
+            if nameWidth>0 do textRenderer.DrawText args.Graphics fullName view.Font (dotNetObject "System.Drawing.Rectangle" start rectangle.Y nameWidth rectangle.Height) args.ForeColor (dotNet.combineEnums plain flags.EndEllipsis)
+            textRenderer.DrawText args.Graphics suffix view.Font (dotNetObject "System.Drawing.Rectangle" (start+nameWidth) rectangle.Y suffixWidth rectangle.Height) args.ForeColor plain
             args.DrawFocusRectangle()
         )
         fn syncColorLists = (
@@ -6509,7 +6827,7 @@ initialRollupState:0x8
                     local selected=flow_layersUI_layerList.selection==i+1
                     if (flow_layersUI_layerList_colored.GetSelected i)!=selected do flow_layersUI_layerList_colored.SetSelected i selected
                 )
-                if colorsChanged or itemsChanged do (flow_layersUI_layerList_colored.Invalidate())
+                if colorsChanged or itemsChanged do (flow_layersUI_layerList_colored_tipRow=-1;flow_layersUI_layerList_colored.Invalidate())
                 syncingColorLists=false;CyrusMeasureEnd measurement measuredOwner measuredEpoch "color_lists";true
             )catch(syncingColorLists=false;CyrusMeasureEnd measurement measuredOwner measuredEpoch "color_lists" failed:true;throw())
         )
@@ -6599,7 +6917,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -6613,7 +6931,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos managerUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos managerUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             rowControls=#(heading_0);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -6656,17 +6974,24 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_layersUI_nameEdit,flow_layersUI_layerColor);show=(true and (true))
+            rowControls=#(flow_layersUI_nameLabel,flow_layersUI_layerColor);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
-            if flow_layersUI_nameEdit_caption.visible!=show do flow_layersUI_nameEdit_caption.visible=show
             if show do (
                 columns=2;cellWidth=widthValue-40
-                fitLabel flow_layersUI_nameEdit_caption 18 cellWidth
-                stackedCaption=cellWidth<110;captionHeight=amax 0 (if stackedCaption then (amax #(flow_layersUI_nameEdit_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
+                fitLabel flow_layersUI_nameLabel 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(flow_layersUI_nameLabel.height,22))+2+captionHeight
                 rowControls[1].pos=[6,y+captionHeight];fitWidth rowControls[1] cellWidth;rowControls[2].pos=[widthValue-28,y]
-                if not stackedCaption then (flow_layersUI_nameEdit_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];flow_layersUI_nameEdit_caption.width=amin (cellWidth/2) 38;flow_layersUI_nameEdit.pos=[6+(mod 0 columns)*(cellWidth+4)+flow_layersUI_nameEdit_caption.width+4,y+(floor (0/columns))*rowHeight];flow_layersUI_nameEdit.width=cellWidth-flow_layersUI_nameEdit_caption.width-4) else (flow_layersUI_nameEdit_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_layersUI_nameEdit_caption.width=cellWidth);flow_layersUI_nameEdit_caption.enabled=flow_layersUI_nameEdit.enabled
                 y+=rowHeight
+            )
+            rowControls=#(flow_layersUI_nameEdit);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_layersUI_enabledCheck,flow_layersUI_visibleCheck);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -6746,7 +7071,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on managerUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos managerUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on managerUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos managerUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on managerUI open do (controlsReady=false)
         on managerUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_layersUI_controlsReady=false;flow_layersUI_root=undefined;flow_layersUI_owner=undefined)
 
@@ -6992,7 +7317,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -7006,7 +7331,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos surfacesUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos surfacesUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             flow_surfaceUI_containersToggle.visible=false;flow_surfaceUI_containerInfo.visible=false
             rowControls=#(flow_surfaceUI_receiversList);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -7145,7 +7470,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on surfacesUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos surfacesUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on surfacesUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos surfacesUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on surfacesUI open do (controlsReady=false)
         on surfacesUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_surfaceUI_controlsReady=false;flow_surfaceUI_root=undefined;flow_surfaceUI_owner=undefined)
 
@@ -7162,8 +7487,8 @@ initialRollupState:0x8
         dotNetControl sourceUI_plantList_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
         local sourceUI_plantList_colored_configured=false,sourceUI_plantList_colored_colors=#(),sourceUI_plantList_colored_scale=1.0
         local sourceUI_plantList_colored_tip=undefined,sourceUI_plantList_colored_tipRow=-1
-        edittext sourceUI_sourceName "" text:"" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/114))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/114))))) tooltip:"Label inside Scatter only. Clear it to use the scene object's name."
-        label sourceUI_sourceName_caption "Name:" pos:[6,6] width:(modelsUI.width-12) height:18
+        label sourceUI_sourceNameLabel "Name:" width:80
+        edittext sourceUI_sourceName "" text:"" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/88))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/88))))) tooltip:"Full model label inside Scatter. Clear it to use the scene object's name. Long list names are shortened for display only."
         colorpicker sourceUI_idColor "" color:(color 100 220 120) pos:[8,8] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Viewport identification color. This does not change clustering or model frequency."
         multiListBox sourceUI_plantList "" items:#() pos:[8,8] height:6 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         label sourceUI_plantList_caption "Sources (Ctrl/Shift)" pos:[6,6] width:(modelsUI.width-12) height:18
@@ -7505,7 +7830,7 @@ initialRollupState:0x8
             sourceUI_binding=true;sourceUI_controlsReady=false
             if sourceUI_obj!=next do (sourceUI_plantList.selection=#{};)
             sourceUI_obj=next;sourceUI_parentView=(CyrusContainerPanel sourceUI_root)
-            for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
+            for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((sourceUI_controlsReady=true;(sourceUI_updateList();sourceUI_showSelectedColor())))) catch(sourceUI_binding=false;sourceUI_controlsReady=true;throw())
             sourceUI_controlsReady=true;sourceUI_binding=false
         )
@@ -7552,7 +7877,7 @@ initialRollupState:0x8
             if row!=sourceUI_plantList_colored_tipRow do (
                 sourceUI_plantList_colored_tipRow=row
                 if sourceUI_plantList_colored_tip==undefined do sourceUI_plantList_colored_tip=dotNetObject "System.Windows.Forms.ToolTip"
-                sourceUI_plantList_colored_tip.SetToolTip view (if row>=0 then sourceUI_obj.sourceBandDetails (row+1) else "")
+                sourceUI_plantList_colored_tip.SetToolTip view (if row>=0 then (sourceUI_obj.sourceLabel (row+1))+"\n"+(sourceUI_obj.sourceBandDetails (row+1)) else "")
             )
         )
         on sourceUI_plantList_colored HandleDestroyed view args do (if sourceUI_plantList_colored_tip!=undefined do (sourceUI_plantList_colored_tip.Dispose();sourceUI_plantList_colored_tip=undefined);sourceUI_plantList_colored_tipRow=-1)
@@ -7572,7 +7897,15 @@ initialRollupState:0x8
             local inset=(ceil (3*sourceUI_plantList_colored_scale)) as integer,swatch=(ceil (10*sourceUI_plantList_colored_scale)) as integer
             args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
             ink.Dispose()
-            (dotNetClass "System.Windows.Forms.TextRenderer").DrawText args.Graphics (view.Items.Item[args.Index] as string) view.Font (dotNetObject "System.Drawing.Point" (rectangle.X+(ceil (17*sourceUI_plantList_colored_scale))) rectangle.Y) args.ForeColor
+            local fullText=view.Items.Item[args.Index] as string,fullName=sourceUI_obj.sourceLabel (args.Index+1)
+            local suffix=substring fullText (fullName.count+1) -1
+            local textRenderer=dotNetClass "System.Windows.Forms.TextRenderer",flags=dotNetClass "System.Windows.Forms.TextFormatFlags"
+            local plain=dotNet.combineEnums flags.SingleLine flags.VerticalCenter flags.NoPrefix flags.NoPadding
+            local start=rectangle.X+(ceil (17*sourceUI_plantList_colored_scale)),available=amax 1 (rectangle.Right-start-2)
+            local suffixWidth=amin available ((textRenderer.MeasureText suffix view.Font (dotNetObject "System.Drawing.Size" 32767 rectangle.Height) plain).Width)
+            local nameWidth=amax 0 (available-suffixWidth)
+            if nameWidth>0 do textRenderer.DrawText args.Graphics fullName view.Font (dotNetObject "System.Drawing.Rectangle" start rectangle.Y nameWidth rectangle.Height) args.ForeColor (dotNet.combineEnums plain flags.EndEllipsis)
+            textRenderer.DrawText args.Graphics suffix view.Font (dotNetObject "System.Drawing.Rectangle" (start+nameWidth) rectangle.Y suffixWidth rectangle.Height) args.ForeColor plain
             args.DrawFocusRectangle()
         )
         fn syncColorLists = (
@@ -7703,7 +8036,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -7717,7 +8050,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos modelsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos modelsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             sourceUI_colorHelp.visible=false;sourceUI_weightHelp.visible=false;sourceUI_sourceTransformHelp.visible=false;sourceUI_radiusModeHelp.visible=false;sourceUI_detailsToggle.visible=false
             rowControls=#(sourceUI_addPoint,sourceUI_addPlant);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -7759,17 +8092,24 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_sourceName,sourceUI_idColor);show=(true and (true))
+            rowControls=#(sourceUI_sourceNameLabel,sourceUI_idColor);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
-            if sourceUI_sourceName_caption.visible!=show do sourceUI_sourceName_caption.visible=show
             if show do (
                 columns=2;cellWidth=widthValue-40
-                fitLabel sourceUI_sourceName_caption 18 cellWidth
-                stackedCaption=cellWidth<110;captionHeight=amax 0 (if stackedCaption then (amax #(sourceUI_sourceName_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
+                fitLabel sourceUI_sourceNameLabel 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(sourceUI_sourceNameLabel.height,22))+2+captionHeight
                 rowControls[1].pos=[6,y+captionHeight];fitWidth rowControls[1] cellWidth;rowControls[2].pos=[widthValue-28,y]
-                if not stackedCaption then (sourceUI_sourceName_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_sourceName_caption.width=amin (cellWidth/2) 38;sourceUI_sourceName.pos=[6+(mod 0 columns)*(cellWidth+4)+sourceUI_sourceName_caption.width+4,y+(floor (0/columns))*rowHeight];sourceUI_sourceName.width=cellWidth-sourceUI_sourceName_caption.width-4) else (sourceUI_sourceName_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_sourceName_caption.width=cellWidth);sourceUI_sourceName_caption.enabled=sourceUI_sourceName.enabled
                 y+=rowHeight
+            )
+            rowControls=#(sourceUI_sourceName);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(sourceUI_replacePoint,sourceUI_makePoint);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -7929,7 +8269,7 @@ initialRollupState:0x8
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
                 sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
                 sourceUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
 
@@ -7953,7 +8293,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on modelsUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos modelsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on modelsUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos modelsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on modelsUI open do (controlsReady=false)
         on modelsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined)
 
@@ -8168,7 +8508,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -8182,7 +8522,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos containersUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos containersUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             sourceContainersUI_helpInfo.visible=false
             rowControls=#(sourceContainersUI_modeList);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -8284,7 +8624,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on containersUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos containersUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on containersUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos containersUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on containersUI open do (controlsReady=false)
         on containersUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined)
 
@@ -9389,7 +9729,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -9403,7 +9743,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos layoutUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos layoutUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             diversityUI_layoutHelp.visible=false;diversityUI_groupHint.visible=false;diversityUI_fixedHint.visible=false;diversityUI_fieldLegend.visible=false;diversityUI_strokeHelp.visible=false;diversityUI_edgeRowHelp.visible=false;diversityUI_cornerHelp.visible=false;diversityUI_streetLayoutHelp.visible=false
             rowControls=#(placementUI_generatorList);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -10126,7 +10466,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on layoutUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos layoutUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on layoutUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos layoutUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on layoutUI open do (controlsReady=false)
         on layoutUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;placementUI_controlsReady=false;placementUI_root=undefined;placementUI_owner=undefined;placementUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
 
@@ -10151,7 +10491,8 @@ initialRollupState:0x8
         spinner distributionUI_seedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/113.2))))) pos:[8,8] tooltip:"Deterministic generation seed. Changing it can invalidate existing Edit bindings."
         label distributionUI_seedSpin_caption "Seed: " pos:[6,6] width:(populationUI.width-12) height:18
         label distributionUI_densityHeading "Texture density" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
-        mapbutton distributionUI_densityButton "Choose density map" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/111.60000000000001))))) tooltip:"Use the selected receiver UV channel: white permits candidates; black excludes them. UVs clamp to 0..1." height:22
+        mapbutton distributionUI_densityButton "Map" pos:[8,8] width:70 tooltip:"Choose a 3ds Max texture map such as Noise or Bitmap, or drag one from the Material Editor. A material itself is not a density mask." height:22
+        button distributionUI_mapBrowseButton "Map" width:70 tooltip:"Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor." height:22
         checkbox distributionUI_invertCheck "Invert density" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/98.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/98.8))))) tooltip:"Reverse the density map's white and black eligibility."
         spinner distributionUI_uvChannelSpin "" type:#integer range:[1,99,1] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result."
         label distributionUI_uvChannelSpin_caption "UV channel:" pos:[6,6] width:(populationUI.width-12) height:18
@@ -10159,7 +10500,46 @@ initialRollupState:0x8
         label distributionUI_resolutionList_caption "Map resolution" pos:[6,6] width:(populationUI.width-12) height:18
         label distributionUI_uvHint "UVs clamp to 0..1" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
         label distributionUI_mapHint "White: dense / Black: empty" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
-        checkbox distributionUI_meshCheck "Use mesh channel mask" tooltip:"Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters."
+        checkbox distributionUI_imageCheck "Use image" tooltip:"Enable the chosen pattern, image or texture map. White permits plants; black excludes them. Independent of the mesh-channel mask."
+        button distributionUI_patternButton "Choose pattern..." width:100 tooltip:"Browse original Cyrus masks. Choosing one changes only image density." height:22
+        button distributionUI_imageButton "Image" width:70 tooltip:"Choose an image file, read as linear density data." height:22
+        imgTag distributionUI_imageThumbnail "" width:72 height:72 style:#bmp_stretch transparent:(color 255 0 255) tooltip:"Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field."
+        label distributionUI_imageState "" width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:36
+        dropdownlist distributionUI_coordinatesList "" items:#("World XY","Scatter local XY","Receiver UV") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"World and Scatter-local use physical tile sizes without receiver UVs. Receiver UV reads the UV channel chosen below."
+        label distributionUI_coordinatesList_caption "Coordinates" pos:[6,6] width:(populationUI.width-12) height:18
+        checkbox distributionUI_tileLockCheck "Lock X / Y size" checked:true tooltip:"Use equal physical sizes or UV repeats in both axes."
+        dropdownlist distributionUI_wrappingList "" items:#("Clamp","Repeat") selection:2 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Repeat wraps the pattern across seams. Clamp extends its outside pixels."
+        label distributionUI_wrappingList_caption "Tile edges" pos:[6,6] width:(populationUI.width-12) height:18
+        button distributionUI_imageCurveButton "Density curve..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))) tooltip:"Remap image values after inversion. Height is planting eligibility." height:22
+        button distributionUI_bakeImageButton "Bake portable snapshot..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/148))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/148))))) tooltip:"Explicitly replace a live map with a saved 2D image tile for portable recipes. Undo restores the original graph." height:22
+        dropdownlist distributionUI_maskViewList "" items:#("Image only","Mesh channel only","Combined density") selection:3 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Combined includes image, mesh density, Paint, include/exclude areas and terrain eligibility before collisions, spacing and count limits."
+        label distributionUI_maskViewList_caption "Mask view" pos:[6,6] width:(populationUI.width-12) height:18
+        dropdownlist distributionUI_maskDetailList "" items:#("Low","Medium","High") selection:2 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Bounded surface tessellation independent of plant count. Increase for dense meshes."
+        label distributionUI_maskDetailList_caption "Preview detail" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_opacitySpin "" range:[0,100,80] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/134))))) tooltip:"Change mask visibility only; plants are unchanged."
+        label distributionUI_opacitySpin_caption "Opacity %:" pos:[6,6] width:(populationUI.width-12) height:18
+        checkbox distributionUI_markersCheck "Show sample markers" tooltip:"Diagnostic samples in place of the continuous surface mask. Does not change planting."
+        dropdownlist distributionUI_markerSizeList "" items:#("Tiny pixel","Small dot","Large dot") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Diagnostic marker size only. Does not resample the field or recalculate plants."
+        label distributionUI_markerSizeList_caption "Marker size" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_tileXSpin "" type:#worldunits range:[0.0001,1e9,100] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))) tooltip:"Physical width of one tile. Image resolution changes detail, not size."
+        label distributionUI_tileXSpin_caption "Tile X:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_tileYSpin "" type:#worldunits range:[0.0001,1e9,100] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))) tooltip:"Physical height when size is unlocked."
+        label distributionUI_tileYSpin_caption "Tile Y:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_repeatXSpin "" type:#float range:[0.0001,1e6,1] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"Image repetitions per UV unit."
+        label distributionUI_repeatXSpin_caption "Repeat U:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_repeatYSpin "" type:#float range:[0.0001,1e6,1] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"V repetitions when unlocked."
+        label distributionUI_repeatYSpin_caption "Repeat V:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_headingSpin "" type:#float range:[-36000,36000,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"Pattern rotation in degrees about the projection origin."
+        label distributionUI_headingSpin_caption "Rotation:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_offsetXSpin "" type:#worldunits range:[-1e9,1e9,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"Shift the projection origin in scene units before rotation."
+        label distributionUI_offsetXSpin_caption "Offset X:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_offsetYSpin "" type:#worldunits range:[-1e9,1e9,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"Shift the projection origin in scene units before rotation."
+        label distributionUI_offsetYSpin_caption "Offset Y:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_offsetUSpin "" type:#float range:[-1e6,1e6,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"Shift the UV origin before rotation and repeats."
+        label distributionUI_offsetUSpin_caption "Offset U:" pos:[6,6] width:(populationUI.width-12) height:18
+        spinner distributionUI_offsetVSpin "" type:#float range:[-1e6,1e6,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"Shift the UV origin before rotation and repeats."
+        label distributionUI_offsetVSpin_caption "Offset V:" pos:[6,6] width:(populationUI.width-12) height:18
+        checkbox distributionUI_meshCheck "Use mesh channel" tooltip:"Use numeric data from Data Channel or VertexPaint on the terrain. Channel 0 reads vertex colors; numbered channels read their stored values. White permits; black excludes."
         spinner distributionUI_meshChannelSpin "" type:#integer range:[0,99,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))) tooltip:"0 reads vertex colors; 1..99 read numbered mesh map channels. These are values, independent of density UV coordinates."
         label distributionUI_meshChannelSpin_caption "Channel:" pos:[6,6] width:(populationUI.width-12) height:18
         dropdownlist distributionUI_meshComponentList "" items:#("R / X","G / Y","B / Z") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Read one component of the selected mesh channel. Match Data Channel's Vertex Output component."
@@ -10170,8 +10550,8 @@ initialRollupState:0x8
         label distributionUI_meshMaxSpin_caption "Input max:" pos:[6,6] width:(populationUI.width-12) height:18
         checkbox distributionUI_meshInvertCheck "Invert mesh mask" tooltip:"Reverse the normalized channel values before applying the Density curve."
         button distributionUI_meshCurveButton "Density curve..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))) tooltip:"Remap normalized mesh values into planting eligibility. Left is 0; right is 1." height:22
-        button distributionUI_meshPreviewButton "Preview mask" width:82 tooltip:"Read a snapshot of the current mask as at most 2,048 grayscale face-centre markers. White permits plants; black excludes. Refresh after edits." height:22
-        button distributionUI_meshHideButton "Hide preview" width:82 tooltip:"Hide the cached mesh mask markers without recalculating plants." height:22
+        button distributionUI_meshPreviewButton "Show mask" width:82 tooltip:"Show the density mask. Relevant edits refresh it while enabled; Manual plants wait for Update." height:22
+        button distributionUI_meshHideButton "Hide mask" width:82 tooltip:"Hide the density mask without recalculating plants." height:22
         label distributionUI_meshHint "Data Channel / VertexPaint. White: permitted; black: excluded. Preview shows current inputs; Manual plants wait for Update." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:48
         dropdownlist populationPolicyUI_populationList "" items:#("Candidate budget","Accepted target") pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Budget evaluates the generated candidates; target makes bounded replacement attempts."
         label populationPolicyUI_populationList_caption "Layer population" pos:[6,6] width:(populationUI.width-12) height:18
@@ -10181,9 +10561,13 @@ initialRollupState:0x8
         label populationPolicyUI_roundSpin_caption "Max rounds:" pos:[6,6] width:(populationUI.width-12) height:18
         checkbox populationPolicyUI_repairCheck "Retry cleanup gaps" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/119.60000000000001))))) tooltip:"Allow bounded retries for plants removed by final cleanup."
         label populationPolicyUI_info "Candidate budget makes one bounded population. Accepted target retries rejected candidates up to these limits; it can finish short." pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:64
-        label heading_0 "Population and seed" pos:[6,6] width:(populationUI.width-12) height:18
-        label heading_1 "Mesh channel density" pos:[6,6] width:(populationUI.width-12) height:18
-        checkbutton advancedToggle "Advanced" pos:[6,6] width:(populationUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        label heading_0 "Image density" pos:[6,6] width:(populationUI.width-12) height:18
+        label heading_1 "Mesh-channel density" pos:[6,6] width:(populationUI.width-12) height:18
+        label heading_2 "Mask preview" pos:[6,6] width:(populationUI.width-12) height:18
+        label heading_3 "Image sampling & portability" pos:[6,6] width:(populationUI.width-12) height:18
+        label heading_4 "Mask display" pos:[6,6] width:(populationUI.width-12) height:18
+        label heading_5 "Population & retries" pos:[6,6] width:(populationUI.width-12) height:18
+        checkbutton advancedToggle "More settings" pos:[6,6] width:(populationUI.width-12) height:22 tooltip:"Show image sampling and baking, mask display options, and population retry controls below."
         local distributionUI_bodyHeight=0
         local distributionUI_controlsReady=false
         local distributionUI_root=undefined,distributionUI_owner=undefined,distributionUI_panel=undefined
@@ -10197,8 +10581,187 @@ initialRollupState:0x8
             distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_uvChannelSpin.value=distributionUI_obj.densityUVChannel;distributionUI_resolutionList.selection=findItem #(64,128,256,512) distributionUI_obj.densityResolution
             distributionUI_meshCheck.checked=distributionUI_obj.meshMaskEnabled;distributionUI_meshChannelSpin.value=distributionUI_obj.meshMaskChannel;distributionUI_meshComponentList.selection=distributionUI_obj.meshMaskComponent
             distributionUI_meshMinSpin.value=distributionUI_obj.meshMaskMinimum;distributionUI_meshMaxSpin.value=distributionUI_obj.meshMaskMaximum;distributionUI_meshInvertCheck.checked=distributionUI_obj.meshMaskInvert
-            for c in #(distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton) do c.enabled=distributionUI_obj.meshMaskEnabled
+            for c in #(distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton) do c.enabled=distributionUI_obj.meshMaskEnabled
+            distributionUI_imageCheck.checked=distributionUI_obj.distributionMode==3;distributionUI_coordinatesList.selection=findItem #(1,2,0) distributionUI_obj.densityCoordinateMode
+            distributionUI_tileLockCheck.checked=distributionUI_obj.densityTileLock;distributionUI_wrappingList.selection=distributionUI_obj.densityWrapMode+1
+            distributionUI_densityButton.text="Map"
+            distributionUI_imageState.text=if distributionUI_obj.densityMap==undefined then "" else distributionUI_obj.densityMap.name
+            distributionUI_imageState.tooltip=if distributionUI_obj.densityMap==undefined then "Choose a pattern, Image or Map." else distributionUI_obj.densityMap.name+". Use Show mask to inspect the evaluated density. More settings contains portable snapshot baking."
+            -- ImgTag supports clearing with undefined and scales the entire tile.
+            -- Browsing must not render procedural maps or create resized pixel copies.
+            distributionUI_imageThumbnail.bitmap=if classof distributionUI_obj.densityMap==Bitmaptexture then try(distributionUI_obj.densityMap.bitmap)catch(undefined) else undefined
+            distributionUI_maskViewList.selection=CyrusMaskView;distributionUI_maskDetailList.selection=CyrusMaskDetail;distributionUI_opacitySpin.value=CyrusMaskOpacity;distributionUI_markersCheck.checked=CyrusMaskMarkers;distributionUI_markerSizeList.selection=CyrusMaskMarkerSize
+            distributionUI_tileXSpin.value=distributionUI_obj.densityTileXWU
+            distributionUI_tileYSpin.value=distributionUI_obj.densityTileYWU
+            distributionUI_repeatXSpin.value=distributionUI_obj.densityRepeatX
+            distributionUI_repeatYSpin.value=distributionUI_obj.densityRepeatY
+            distributionUI_headingSpin.value=distributionUI_obj.densityHeading
+            distributionUI_offsetXSpin.value=distributionUI_obj.densityOffsetXWU
+            distributionUI_offsetYSpin.value=distributionUI_obj.densityOffsetYWU
+            distributionUI_offsetUSpin.value=distributionUI_obj.densityUOffset
+            distributionUI_offsetVSpin.value=distributionUI_obj.densityVOffset
             distributionUI_arrangePopulation()
+        )
+        fn distributionUI_setImage key value = (
+            if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
+                local target=distributionUI_obj
+                undo "Cyrus image density" on setProperty target key value
+                distributionUI_binding=true;distributionUI_syncControls();distributionUI_binding=false;CyrusViewportRedraw()
+            )
+        )
+        on distributionUI_imageCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_imageCheck"
+            try (distributionUI_setImage #distributionMode (if value then 3 else 1)
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_patternButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_patternButton"
+            try (if distributionUI_controlsReady and not distributionUI_binding do try(CyrusChooseDensityPattern distributionUI_obj)catch(messageBox (getCurrentException()) title:"Cyrus patterns")
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_imageButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_imageButton"
+            try (if distributionUI_controlsReady and not distributionUI_binding do try(CyrusLoadDensityImage distributionUI_obj)catch(messageBox (getCurrentException()) title:"Cyrus image")
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_bakeImageButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_bakeImageButton"
+            try (if distributionUI_controlsReady and not distributionUI_binding do try(CyrusBakeDensityImage distributionUI_obj)catch(messageBox (getCurrentException()) title:"Cyrus snapshot")
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_coordinatesList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_coordinatesList"
+            try (distributionUI_setImage #densityCoordinateMode #(1,2,0)[value]
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_tileLockCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_tileLockCheck"
+            try (distributionUI_setImage #densityTileLock value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_wrappingList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_wrappingList"
+            try (distributionUI_setImage #densityWrapMode (value-1)
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_imageCurveButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_imageCurveButton"
+            try (if distributionUI_controlsReady and not distributionUI_binding do CyrusOpenFalloffGraph distributionUI_obj undefined true imageMask:true
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_maskViewList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_maskViewList"
+            try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskView=value;CyrusInvalidateMeshMaskPreview distributionUI_obj)
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_maskDetailList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_maskDetailList"
+            try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskDetail=value;CyrusInvalidateMeshMaskPreview distributionUI_obj)
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_opacitySpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_opacitySpin"
+            try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskOpacity=value;redrawViews())
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_markersCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_markersCheck"
+            try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskMarkers=value;redrawViews())
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_markerSizeList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_markerSizeList"
+            try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskMarkerSize=value;redrawViews())
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_tileXSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_tileXSpin"
+            try (distributionUI_setImage #densityTileXWU value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_tileYSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_tileYSpin"
+            try (distributionUI_setImage #densityTileYWU value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_repeatXSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_repeatXSpin"
+            try (distributionUI_setImage #densityRepeatX value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_repeatYSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_repeatYSpin"
+            try (distributionUI_setImage #densityRepeatY value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_headingSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_headingSpin"
+            try (distributionUI_setImage #densityHeading value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_offsetXSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_offsetXSpin"
+            try (distributionUI_setImage #densityOffsetXWU value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_offsetYSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_offsetYSpin"
+            try (distributionUI_setImage #densityOffsetYWU value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_offsetUSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_offsetUSpin"
+            try (distributionUI_setImage #densityUOffset value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_offsetVSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_offsetVSpin"
+            try (distributionUI_setImage #densityVOffset value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
         )
         fn distributionUI_setMeshMask key value = (
             if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
@@ -10305,9 +10868,28 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
+        fn distributionUI_assignDensityMap target v = (
+            undo "Cyrus density map" on (
+                target.densityMap=v
+                if v!=undefined do target.distributionMode=3
+                target.densityPatternID="";target.densityPatternRevision="";target.densityMapProvenance=""
+                target.markInputDirty()
+            )
+            distributionUI_binding=true;distributionUI_syncControls();distributionUI_binding=false;CyrusViewportRedraw()
+        )
         on distributionUI_densityButton picked v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
             local action=CyrusBeginAction root "distributionUI_densityButton"
-            try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.densityMap=v;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
+            try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do distributionUI_assignDensityMap distributionUI_obj v
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
+        on distributionUI_mapBrowseButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_mapBrowseButton"
+            try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
+            local target=distributionUI_obj,value=materialBrowseDlg #maps #instanceOnly
+            if value!=undefined do distributionUI_assignDensityMap target value
+        )
                 if controlsReady and root!=undefined do layout()
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
@@ -10346,7 +10928,7 @@ initialRollupState:0x8
             distributionUI_binding=true;distributionUI_controlsReady=false
             if distributionUI_obj!=next do ()
             distributionUI_obj=next;distributionUI_parentView=(CyrusContainerPanel distributionUI_root)
-            for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_meshCheck,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
+            for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_mapBrowseButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_imageCheck,distributionUI_patternButton,distributionUI_imageButton,distributionUI_imageThumbnail,distributionUI_imageState,distributionUI_coordinatesList,distributionUI_tileLockCheck,distributionUI_wrappingList,distributionUI_imageCurveButton,distributionUI_bakeImageButton,distributionUI_maskViewList,distributionUI_maskDetailList,distributionUI_opacitySpin,distributionUI_markersCheck,distributionUI_markerSizeList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_meshCheck,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_uvChannelSpin.value=distributionUI_obj.densityUVChannel;distributionUI_resolutionList.selection=findItem #(64,128,256,512) distributionUI_obj.densityResolution;distributionUI_controlsReady=true;(distributionUI_countSpin.value=distributionUI_obj.amount;distributionUI_seedSpin.value=distributionUI_obj.randomSeed;distributionUI_modeRadio.state=if distributionUI_obj.distributionMode==3 then 2 else 1)))) catch(distributionUI_binding=false;distributionUI_controlsReady=true;throw())
             distributionUI_controlsReady=true;distributionUI_binding=false
         )
@@ -10510,7 +11092,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -10524,19 +11106,8 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
-            distributionUI_uvHint.visible=false;distributionUI_mapHint.visible=false;populationPolicyUI_info.visible=false
-            rowControls=#(heading_0);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_0 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_0.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            distributionUI_modeRadio.visible=false;distributionUI_modeRadio_caption.visible=false;distributionUI_densityHeading.visible=false;distributionUI_uvHint.visible=false;distributionUI_mapHint.visible=false;distributionUI_imageState.visible=false;distributionUI_meshHint.visible=false;populationPolicyUI_info.visible=false
             rowControls=#(distributionUI_presetsButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -10595,6 +11166,233 @@ initialRollupState:0x8
                 if not stackedCaption then (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_seedSpin_caption.width=cellWidth-78) else (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_seedSpin_caption.width=cellWidth);distributionUI_seedSpin_caption.enabled=distributionUI_seedSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(heading_0);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_0 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_imageCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/72.80000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck distributionUI_imageCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_patternButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_imageButton,distributionUI_mapBrowseButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/44))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_imageThumbnail);show=(true and (distributionUI_imageThumbnail.bitmap!=undefined))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(distributionUI_imageThumbnail.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] (amin 72 cellWidth))
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_densityButton);show=(true and (distributionUI_obj!=undefined and distributionUI_obj.densityMap!=undefined))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/33.6))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_coordinatesList);show=(true and (distributionUI_imageCheck.checked and (true)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_coordinatesList_caption.visible!=show do distributionUI_coordinatesList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_coordinatesList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_coordinatesList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_coordinatesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_coordinatesList_caption.width=cellWidth;distributionUI_coordinatesList_caption.enabled=distributionUI_coordinatesList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_uvChannelSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_uvChannelSpin_caption.visible!=show do distributionUI_uvChannelSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_uvChannelSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_uvChannelSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_uvChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_uvChannelSpin_caption.width=cellWidth-78) else (distributionUI_uvChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_uvChannelSpin_caption.width=cellWidth);distributionUI_uvChannelSpin_caption.enabled=distributionUI_uvChannelSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_tileXSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_tileXSpin_caption.visible!=show do distributionUI_tileXSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/118.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_tileXSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<114.4;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_tileXSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_tileXSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_tileXSpin_caption.width=cellWidth-78) else (distributionUI_tileXSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_tileXSpin_caption.width=cellWidth);distributionUI_tileXSpin_caption.enabled=distributionUI_tileXSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_tileYSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3 and not distributionUI_tileLockCheck.checked)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_tileYSpin_caption.visible!=show do distributionUI_tileYSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/118.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_tileYSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<114.4;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_tileYSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_tileYSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_tileYSpin_caption.width=cellWidth-78) else (distributionUI_tileYSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_tileYSpin_caption.width=cellWidth);distributionUI_tileYSpin_caption.enabled=distributionUI_tileYSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_tileLockCheck);show=(true and (distributionUI_imageCheck.checked and (true)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck distributionUI_tileLockCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_repeatXSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_repeatXSpin_caption.visible!=show do distributionUI_repeatXSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/128.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_repeatXSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<124.80000000000001;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_repeatXSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_repeatXSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_repeatXSpin_caption.width=cellWidth-78) else (distributionUI_repeatXSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_repeatXSpin_caption.width=cellWidth);distributionUI_repeatXSpin_caption.enabled=distributionUI_repeatXSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_repeatYSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3 and not distributionUI_tileLockCheck.checked)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_repeatYSpin_caption.visible!=show do distributionUI_repeatYSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/128.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_repeatYSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<124.80000000000001;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_repeatYSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_repeatYSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_repeatYSpin_caption.width=cellWidth-78) else (distributionUI_repeatYSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_repeatYSpin_caption.width=cellWidth);distributionUI_repeatYSpin_caption.enabled=distributionUI_repeatYSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_headingSpin);show=(true and (distributionUI_imageCheck.checked and (true)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_headingSpin_caption.visible!=show do distributionUI_headingSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/128.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_headingSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<124.80000000000001;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_headingSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_headingSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_headingSpin_caption.width=cellWidth-78) else (distributionUI_headingSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_headingSpin_caption.width=cellWidth);distributionUI_headingSpin_caption.enabled=distributionUI_headingSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_offsetXSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_offsetXSpin_caption.visible!=show do distributionUI_offsetXSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/128.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_offsetXSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<124.80000000000001;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_offsetXSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_offsetXSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_offsetXSpin_caption.width=cellWidth-78) else (distributionUI_offsetXSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_offsetXSpin_caption.width=cellWidth);distributionUI_offsetXSpin_caption.enabled=distributionUI_offsetXSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_offsetYSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_offsetYSpin_caption.visible!=show do distributionUI_offsetYSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/128.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_offsetYSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<124.80000000000001;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_offsetYSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_offsetYSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_offsetYSpin_caption.width=cellWidth-78) else (distributionUI_offsetYSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_offsetYSpin_caption.width=cellWidth);distributionUI_offsetYSpin_caption.enabled=distributionUI_offsetYSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_offsetUSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_offsetUSpin_caption.visible!=show do distributionUI_offsetUSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/128.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_offsetUSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<124.80000000000001;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_offsetUSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_offsetUSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_offsetUSpin_caption.width=cellWidth-78) else (distributionUI_offsetUSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_offsetUSpin_caption.width=cellWidth);distributionUI_offsetUSpin_caption.enabled=distributionUI_offsetUSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_offsetVSpin);show=(true and (distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_offsetVSpin_caption.visible!=show do distributionUI_offsetVSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/128.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_offsetVSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<124.80000000000001;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_offsetVSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_offsetVSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_offsetVSpin_caption.width=cellWidth-78) else (distributionUI_offsetVSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_offsetVSpin_caption.width=cellWidth);distributionUI_offsetVSpin_caption.enabled=distributionUI_offsetVSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_wrappingList);show=(true and (distributionUI_imageCheck.checked and (true)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_wrappingList_caption.visible!=show do distributionUI_wrappingList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_wrappingList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_wrappingList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_wrappingList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_wrappingList_caption.width=cellWidth;distributionUI_wrappingList_caption.enabled=distributionUI_wrappingList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_invertCheck);show=(true and (distributionUI_imageCheck.checked and (distributionUI_modeRadio.state==2)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/98.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck distributionUI_invertCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_imageCurveButton);show=(true and (distributionUI_imageCheck.checked and (true)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(heading_1);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -10609,13 +11407,13 @@ initialRollupState:0x8
             rowControls=#(distributionUI_meshCheck);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/135.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/109.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(fitCheck distributionUI_meshCheck cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshChannelSpin);show=(true and (true))
+            rowControls=#(distributionUI_meshChannelSpin);show=(true and (distributionUI_meshCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_meshChannelSpin_caption.visible!=show do distributionUI_meshChannelSpin_caption.visible=show
             if show do (
@@ -10627,7 +11425,7 @@ initialRollupState:0x8
                 if not stackedCaption then (distributionUI_meshChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_meshChannelSpin_caption.width=cellWidth-78) else (distributionUI_meshChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_meshChannelSpin_caption.width=cellWidth);distributionUI_meshChannelSpin_caption.enabled=distributionUI_meshChannelSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshComponentList);show=(true and (true))
+            rowControls=#(distributionUI_meshComponentList);show=(true and (distributionUI_meshCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_meshComponentList_caption.visible!=show do distributionUI_meshComponentList_caption.visible=show
             if show do (
@@ -10639,7 +11437,7 @@ initialRollupState:0x8
                 distributionUI_meshComponentList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_meshComponentList_caption.width=cellWidth;distributionUI_meshComponentList_caption.enabled=distributionUI_meshComponentList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshMinSpin);show=(true and (true))
+            rowControls=#(distributionUI_meshMinSpin);show=(true and (distributionUI_meshCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_meshMinSpin_caption.visible!=show do distributionUI_meshMinSpin_caption.visible=show
             if show do (
@@ -10651,7 +11449,7 @@ initialRollupState:0x8
                 if not stackedCaption then (distributionUI_meshMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_meshMinSpin_caption.width=cellWidth-78) else (distributionUI_meshMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_meshMinSpin_caption.width=cellWidth);distributionUI_meshMinSpin_caption.enabled=distributionUI_meshMinSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshMaxSpin);show=(true and (true))
+            rowControls=#(distributionUI_meshMaxSpin);show=(true and (distributionUI_meshCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_meshMaxSpin_caption.visible!=show do distributionUI_meshMaxSpin_caption.visible=show
             if show do (
@@ -10663,7 +11461,7 @@ initialRollupState:0x8
                 if not stackedCaption then (distributionUI_meshMaxSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_meshMaxSpin_caption.width=cellWidth-78) else (distributionUI_meshMaxSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_meshMaxSpin_caption.width=cellWidth);distributionUI_meshMaxSpin_caption.enabled=distributionUI_meshMaxSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshInvertCheck);show=(true and (true))
+            rowControls=#(distributionUI_meshInvertCheck);show=(true and (distributionUI_meshCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/109.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -10672,7 +11470,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshCurveButton);show=(true and (true))
+            rowControls=#(distributionUI_meshCurveButton);show=(true and (distributionUI_meshCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -10681,39 +11479,51 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(heading_2);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_2 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_2.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_maskViewList);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_maskViewList_caption.visible!=show do distributionUI_maskViewList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_maskViewList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_maskViewList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_maskViewList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_maskViewList_caption.width=cellWidth;distributionUI_maskViewList_caption.enabled=distributionUI_maskViewList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(distributionUI_meshPreviewButton,distributionUI_meshHideButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/80.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/64.80000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshHint);show=(true and (true))
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "More settings";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            rowControls=#(heading_3);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
+                if y>6 do y+=4
                 columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel distributionUI_meshHint 18 cellWidth
+                fitLabel heading_3 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(distributionUI_meshHint.height))+2+captionHeight
+                rowHeight=(amax #(heading_3.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
-            rowControls=#(distributionUI_uvChannelSpin);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if distributionUI_uvChannelSpin_caption.visible!=show do distributionUI_uvChannelSpin_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel distributionUI_uvChannelSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_uvChannelSpin_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (distributionUI_uvChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_uvChannelSpin_caption.width=cellWidth-78) else (distributionUI_uvChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_uvChannelSpin_caption.width=cellWidth);distributionUI_uvChannelSpin_caption.enabled=distributionUI_uvChannelSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(distributionUI_resolutionList);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
+            rowControls=#(distributionUI_resolutionList);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_resolutionList_caption.visible!=show do distributionUI_resolutionList_caption.visible=show
             if show do (
@@ -10725,44 +11535,79 @@ initialRollupState:0x8
                 distributionUI_resolutionList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_resolutionList_caption.width=cellWidth;distributionUI_resolutionList_caption.enabled=distributionUI_resolutionList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_modeRadio);show=(advancedToggle.checked and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if distributionUI_modeRadio_caption.visible!=show do distributionUI_modeRadio_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel distributionUI_modeRadio_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(distributionUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(fitRadio distributionUI_modeRadio cellWidth 2 place:false))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                fitRadio distributionUI_modeRadio cellWidth 2 place:true
-                distributionUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_modeRadio_caption.width=cellWidth;distributionUI_modeRadio_caption.enabled=distributionUI_modeRadio.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(distributionUI_densityHeading);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
+            rowControls=#(distributionUI_bakeImageButton);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel distributionUI_densityHeading 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(distributionUI_densityHeading.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(distributionUI_densityButton);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/111.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/148))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_invertCheck);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
+            rowControls=#(heading_4);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/98.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_4 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(fitCheck distributionUI_invertCheck cellWidth))+2+captionHeight
+                rowHeight=(amax #(heading_4.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_maskDetailList);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_maskDetailList_caption.visible!=show do distributionUI_maskDetailList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_maskDetailList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_maskDetailList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_maskDetailList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_maskDetailList_caption.width=cellWidth;distributionUI_maskDetailList_caption.enabled=distributionUI_maskDetailList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_opacitySpin);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_opacitySpin_caption.visible!=show do distributionUI_opacitySpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_opacitySpin_caption 18 cellWidth
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_opacitySpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_opacitySpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_opacitySpin_caption.width=cellWidth-78) else (distributionUI_opacitySpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_opacitySpin_caption.width=cellWidth);distributionUI_opacitySpin_caption.enabled=distributionUI_opacitySpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_markersCheck);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/124.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck distributionUI_markersCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_markerSizeList);show=(advancedToggle.checked and (distributionUI_markersCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_markerSizeList_caption.visible!=show do distributionUI_markerSizeList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_markerSizeList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_markerSizeList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_markerSizeList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_markerSizeList_caption.width=cellWidth;distributionUI_markerSizeList_caption.enabled=distributionUI_markerSizeList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(heading_5);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_5 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_5.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -10830,7 +11675,7 @@ initialRollupState:0x8
                 obj=owner
                 distributionUI_root=root;distributionUI_owner=owner;distributionUI_panel=panel;distributionUI_controlsReady=controlsReady;distributionUI_binding=binding
             populationPolicyUI_root=root;populationPolicyUI_owner=owner;populationPolicyUI_panel=panel;populationPolicyUI_controlsReady=controlsReady;populationPolicyUI_binding=binding
-            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_meshCheck,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) do c.enabled=false;distributionUI_controlsReady=false)
+            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_mapBrowseButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_imageCheck,distributionUI_patternButton,distributionUI_imageButton,distributionUI_imageThumbnail,distributionUI_imageState,distributionUI_coordinatesList,distributionUI_tileLockCheck,distributionUI_wrappingList,distributionUI_imageCurveButton,distributionUI_bakeImageButton,distributionUI_maskViewList,distributionUI_maskDetailList,distributionUI_opacitySpin,distributionUI_markersCheck,distributionUI_markerSizeList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_meshCheck,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) do c.enabled=false;distributionUI_controlsReady=false)
             if owner!=undefined then (populationPolicyUI_bind owner;) else (for c in #(populationPolicyUI_populationList,populationPolicyUI_attemptSpin,populationPolicyUI_roundSpin,populationPolicyUI_repairCheck,populationPolicyUI_info) do c.enabled=false;populationPolicyUI_controlsReady=false)
                 distributionUI_binding=false;populationPolicyUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
@@ -10849,7 +11694,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on populationUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on populationUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on populationUI open do (controlsReady=false)
         on populationUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
 
@@ -11289,7 +12134,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -11303,7 +12148,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos coverageUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos coverageUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             setsUI_info.visible=false;brushUI_brushHelp.visible=false
             rowControls=#(setsUI_paintedCheck);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -11599,7 +12444,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on coverageUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos coverageUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on coverageUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos coverageUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on coverageUI open do (controlsReady=false)
         on coverageUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;setsUI_controlsReady=false;setsUI_root=undefined;setsUI_owner=undefined;brushUI_controlsReady=false;brushUI_root=undefined;brushUI_owner=undefined;brushUI_obj=undefined)
 
@@ -12163,7 +13008,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -12177,7 +13022,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos areasUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos areasUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             areaUI_areaHint.visible=false;areaUI_projectionHint.visible=false;areaUI_aaHelp.visible=false;areaUI_fallHelp.visible=false;areaUI_detailsToggle.visible=false
             rowControls=#(heading_0);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -12566,7 +13411,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on areasUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos areasUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on areasUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos areasUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on areasUI open do (controlsReady=false)
         on areasUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;areaUI_controlsReady=false;areaUI_root=undefined;areaUI_owner=undefined;areaUI_obj=undefined)
 
@@ -13057,7 +13902,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -13071,7 +13916,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos transformsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos transformsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             randomUI_rotMinTitle.visible=false;randomUI_rotMaxTitle.visible=false;randomUI_rotXLabel.visible=false;randomUI_rotYLabel.visible=false;randomUI_rotZLabel.visible=false;randomUI_sclMinTitle.visible=false;randomUI_sclMaxTitle.visible=false;randomUI_sclXLabel.visible=false;randomUI_sclYLabel.visible=false;randomUI_sclZLabel.visible=false;randomUI_wholeMinTitle.visible=false;randomUI_wholeMaxTitle.visible=false;randomUI_movMinTitle.visible=false;randomUI_movMaxTitle.visible=false;randomUI_movXLabel.visible=false;randomUI_movYLabel.visible=false;randomUI_movZLabel.visible=false
             rowControls=#(randomUI_presetsButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -13444,7 +14289,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on transformsUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos transformsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on transformsUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos transformsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on transformsUI open do (controlsReady=false)
         on transformsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;randomUI_controlsReady=false;randomUI_root=undefined;randomUI_owner=undefined;randomUI_obj=undefined)
 
@@ -13880,7 +14725,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -13894,7 +14739,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos spacingUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos spacingUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             proceduralUI_ruleInfo.visible=false;instanceRadiusUI_info.visible=false;spacingUI_orderHint.visible=false;separationUI_helpInfo.visible=false
             rowControls=#(heading_0);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -14217,7 +15062,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on spacingUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos spacingUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on spacingUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos spacingUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on spacingUI open do (controlsReady=false)
         on spacingUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;proceduralUI_controlsReady=false;proceduralUI_root=undefined;proceduralUI_owner=undefined;instanceRadiusUI_controlsReady=false;instanceRadiusUI_root=undefined;instanceRadiusUI_owner=undefined;spacingUI_controlsReady=false;spacingUI_root=undefined;spacingUI_owner=undefined;spacingUI_obj=undefined;separationUI_controlsReady=false;separationUI_root=undefined;separationUI_owner=undefined)
 
@@ -14548,7 +15393,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -14562,7 +15407,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos displayUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos displayUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             flow_previewUI_radiusHint.visible=false
             rowControls=#(flow_previewUI_displayModeDrop);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -14847,7 +15692,7 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on displayUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos displayUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on displayUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos displayUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on displayUI open do (controlsReady=false)
         on displayUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_previewUI_controlsReady=false;flow_previewUI_root=undefined;flow_previewUI_owner=undefined;flow_previewUI_obj=undefined)
 
@@ -15123,7 +15968,7 @@ initialRollupState:0x8
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -15137,7 +15982,7 @@ initialRollupState:0x8
             try (
                 local measuredResult=(
 
-            local widthValue=amax 100 (amin (hostPage.width-8) (windows.getWindowPos statisticsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos statisticsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             workflowUI_steps.visible=false;workflowUI_help.visible=false;diagnosticsUI_scopeInfo.visible=false
             rowControls=#(detailsUI_info);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -15238,14 +16083,14 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
-        on statisticsUI resized size do if controlsReady and not binding and (amax 100 (amin (hostPage.width-8) (windows.getWindowPos statisticsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on statisticsUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos statisticsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on statisticsUI open do (controlsReady=false)
         on statisticsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;detailsUI_controlsReady=false;detailsUI_root=undefined;detailsUI_owner=undefined;workflowUI_controlsReady=false;workflowUI_root=undefined;workflowUI_owner=undefined;diagnosticsUI_controlsReady=false;diagnosticsUI_root=undefined;diagnosticsUI_owner=undefined)
 
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.86.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.86.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -15264,7 +16109,7 @@ initialRollupState:0x8
                 if slot.body.width!=target do slot.body.width=target
                 -- The subrollout has its own margins. Its child HWND gives the
                 -- actual available width in logical UI units at the current DPI.
-                local available=amax 100 (amin (slot.width-8) (windows.getWindowPos section.hwnd removeUIScaling:true).w)
+                local available=amax 64 (amin (slot.width-8) (windows.getWindowPos section.hwnd removeUIScaling:true).w)
                 if section.controlsReady and section.lastLayoutWidth!=available do section.layout()
                 resizing=false;true
             )catch(resizing=false;throw())
@@ -15368,7 +16213,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.2 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
@@ -15879,6 +16724,7 @@ fn AminScatterLiveChanged event handles = (
                 if leaf.procExternalChanged event nodes deletedHandles:handles do redraw=true
             )
             if findItem nodes n>0 do (
+                for leaf in n.baseObject.layerObjects do if leaf.densityFrameChanged() do redraw=true
                 n.baseObject.layerEntries includeDisabled:true
                 CyrusScheduleUI()
                 if n.baseObject.updateMode==2 and (for leaf in n.baseObject.layerObjects where leaf.dirty collect leaf).count>0 do redraw=true
@@ -16100,9 +16946,9 @@ fn CyrusRetainedMeshDrawing enabled = (
 callbacks.removeScripts id:#CyrusRetainedPoints
 callbacks.addScript #filePreSaveProcess "CyrusPointBeforeSave()" id:#CyrusRetainedPoints
 callbacks.addScript #filePostSaveProcess "CyrusPointAfterSave()" id:#CyrusRetainedPoints
-callbacks.addScript #filePreOpenProcess "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
-callbacks.addScript #systemPreReset "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
-callbacks.addScript #systemPreNew "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #filePreOpenProcess "CyrusClearMeshMaskPreview undefined;CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPreReset "CyrusClearMeshMaskPreview undefined;CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPreNew "CyrusClearMeshMaskPreview undefined;CyrusPointBeforeScene()" id:#CyrusRetainedPoints
 callbacks.addScript #filePostOpenProcess "CyrusPointAfterScene()" id:#CyrusRetainedPoints
 callbacks.addScript #systemPostReset "CyrusPointAfterScene()" id:#CyrusRetainedPoints
 callbacks.addScript #systemPostNew "CyrusPointAfterScene()" id:#CyrusRetainedPoints
@@ -16179,7 +17025,7 @@ fn CyrusDensityMapChanged texture = (
     local changed=false
     for node in objects where classof node.baseObject==AminScatterObject do (
         for leaf in (#(node.baseObject)+node.baseObject.layerObjects) where leaf.procDensityMap==texture do (
-            leaf.procDensityRevision+=1;leaf.markInputDirty();changed=true
+            leaf.procDensityRevision+=1;CyrusInvalidateMeshMaskPreview leaf;leaf.markInputDirty();changed=true
         )
     )
     if changed do ((CyrusPointPending=true;CyrusScheduleRelease());CyrusScheduleUI())
@@ -16189,21 +17035,24 @@ callbacks.removeScripts id:#CyrusInputTimeOwners
 callbacks.addScript #filePostOpen "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
 callbacks.addScript #filePostMerge "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
 callbacks.addScript #systemPostReset "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
-callbacks.addScript #sceneUndo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
-callbacks.addScript #sceneRedo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #sceneUndo "CyrusResetTimeOwners();CyrusInvalidateMeshMaskPreview CyrusMeshMaskPreviewTarget" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #sceneRedo "CyrusResetTimeOwners();CyrusInvalidateMeshMaskPreview CyrusMeshMaskPreviewTarget" id:#CyrusInputTimeOwners persistent:false
 callbacks.addScript #nodeCreated "CyrusRegisterTimeOwner (callbacks.notificationParam())" id:#CyrusInputTimeOwners persistent:false
 CyrusResetTimeOwners()
 
 -- Explicit mask-preview snapshots. Redraw only consumes cached numeric markers.
 try(unregisterRedrawViewsCallback CyrusMeshMaskViewportDraw)catch()
 fn CyrusMeshMaskViewportDraw = (
-    if CyrusMeshMaskPreviewRows.count>0 do (
-        local valid=isValidNode CyrusMeshMaskPreviewNode and not CyrusMeshMaskPreviewNode.isHidden
+    if CyrusMeshMaskPreviewTarget!=undefined do (
+        local valid=isValidNode CyrusMeshMaskPreviewNode
         if valid do valid=findItem CyrusMeshMaskPreviewNode.baseObject.layerObjects CyrusMeshMaskPreviewTarget>0
         if valid then (
-            gw.setTransform (matrix3 1)
-            for row in CyrusMeshMaskPreviewRows do (local v=row[2]*255.0;gw.marker row[1] #smallDiamond color:(color v v v))
-            gw.enlargeUpdateRect #whole
+            if not CyrusMeshMaskPreviewNode.isHidden do (
+                gw.setTransform (matrix3 1)
+                if CyrusMeshMaskPreviewRows!=undefined do cyrusDrawDensityOverlay CyrusMeshMaskPreviewRows (CyrusMaskOpacity/100.0) CyrusMaskMarkers CyrusMaskMarkerSize
+                if CyrusMeshMaskPreviewError!="" do gw.text CyrusMeshMaskPreviewNode.pos "Mask refresh failed; cached mask is stale." color:(color 255 140 60)
+                gw.enlargeUpdateRect #whole
+            )
         ) else CyrusClearMeshMaskPreview undefined
     )
 )

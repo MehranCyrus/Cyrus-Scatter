@@ -87,10 +87,10 @@ def require_team_authority(data, header):
     return key_ids[0]
 
 
-def library_payload(folder, version):
+def library_payload(folder, version, year=2027):
     """Only ship the explicitly qualified, hash-pinned example inventory."""
     inventory = json.loads((folder / 'inventory.json').read_text(encoding='utf-8'))
-    if inventory.get('version') != version or inventory.get('max_year') != 2027:
+    if inventory.get('version') != version or inventory.get('max_year') != year or year not in (2024,2026,2027):
         raise ValueError('Bundled examples require the matching qualified version/host inventory.')
     files = inventory.get('files', {})
     if not files or len(files) > 1000:
@@ -113,6 +113,26 @@ def library_payload(folder, version):
     result['Library/inventory.json'] = (folder/'inventory.json').read_bytes()
     names = sorted(name.removeprefix('Library/') for name in result)
     result['LibraryFiles.ms'] = ('#('+','.join('@"'+name+'"' for name in names)+')\n').encode('utf-8')
+    return result
+
+
+def pattern_payload(folder):
+    """Explicit product catalog only; task QA fixtures never enter a release."""
+    index=json.loads((folder/'index.json').read_text(encoding='utf-8'))
+    if index.get('format')!='cyrus.density-patterns' or index.get('version')!=1 or len(index.get('entries',[]))>128:
+        raise ValueError('Unsupported density pattern catalog.')
+    result={};expected=[];total=0
+    for entry in index['entries']:
+        name=entry['file']
+        if not re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,80}\.png',name):raise ValueError('Unsafe pattern filename.')
+        data=(folder/name).read_bytes();total+=len(data)
+        if len(data)>2*1024*1024 or total>32*1024*1024 or sha(data)!=entry['sha256'] or data[:8]!=b'\x89PNG\r\n\x1a\n':
+            raise ValueError('Pattern bytes/hash/bounds differ from the catalog.')
+        if 'Patterns/'+name in result:raise ValueError('Duplicate pattern filename.')
+        result['Patterns/'+name]=data
+        expected.append('\t'.join(entry[key] for key in ('id','name','family','file','sha256')))
+    if (folder/'catalog.tsv').read_text(encoding='utf-8').splitlines()!=expected:raise ValueError('Pattern picker catalog differs from its index.')
+    for name in ('index.json','catalog.tsv','README.md'):result['Patterns/'+name]=(folder/name).read_bytes()
     return result
 
 
@@ -156,7 +176,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         payload['CyrusInstaller.dll'] = installer.read_bytes()
         payload['Clipper2-LICENSE.txt'] = (ROOT / project / 'third_party/clipper2/LICENSE').read_bytes()
         payload['nlohmann-json-LICENSE.txt'] = (ROOT / 'CyrusLicensing/third_party/nlohmann/LICENSE.MIT').read_bytes()
-        payload.update(library_payload(Path(getattr(args, 'library_dir', None) or ROOT / project / 'library'), version))
+        payload.update(library_payload(Path(getattr(args, 'library_dir', None) or ROOT / project / 'library'), version,args.max_year))
+        payload.update(pattern_payload(ROOT/project/'patterns'))
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
@@ -169,11 +190,16 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Completed phases: cached/pending feedback; named settings and curve presets; slope/altitude eligibility; UV-channel/map-resolution controls; Paint/spline snapshots.\n'
            'Presets... is available in Amount, Transforms, Spacing and the curve editor; Apply respects Manual/Live and supports Undo.\n'
            'Include / exclude areas > Surface eligibility offers slope/altitude ranges with inward soft transitions.\n'
-           'Density mapping selects UV channel 1..99 and 64/128/256/512 samples per side; defaults are 1 and 128.\n'
-           'Layers > Recipes saves complete static multi-layer settings including Paint. Review external scene roles, then Add layers or import a new setup as one Undo.\n'
-           'Keep each .csrecipe.json and its paint-<id>.payload folder together. Models/maps/receivers remain external; Paint needs compatible terrain, frame and saved system units.\n'
+           'Image/pattern density supports World XY, Scatter-local XY or explicit receiver UVs, physical size, repeat/clamp, rotation and offsets.\n'
+           'Load image or pick a supported 2D texture output; live procedural/non-PNG maps require an explicit portable PNG snapshot before complete Save.\n'
+           'Image resolution 64/128/256/512 changes detail, independently of pattern size. Numeric mesh channels are a separate density input.\n'
+           'Show mask stays enabled during relevant edits; Hide mask stops it. Combined shows eligibility before spacing/count limits.\n'
+           'Select one terrain mesh, then use Cyrus Library (Customize > Cyrus category), or Layers > Recipes from an existing setup.\n'
+           'Load onto surface imports supported models/materials, creates a setup when needed and adds layers as one Undo. Existing layers are preserved.\n'
+           'Save Recipe includes complete settings and Paint; keep Include models, materials, terrain and paths enabled for a ready preset.\n'
+           'Keep each .csrecipe.json, recipe-data folder and Presets package directory together. Paint requires compatible geometry/frame/units; mesh masks require their numeric channel.\n'
            'Recipes offers search, categories, tags and stored PNG thumbnails. Browse My recipes, Bundled examples or an explicit custom folder.\n'
-           'Bundled examples live in the versioned Library folder beside the installed script. Open an example .max scene, select its Scatter and review the recipe bindings.\n'
+           'Bundled examples live in the versioned Library folder beside the installed script. Open a copy of the matching-host example scene to inspect Paint and channel requirements.\n'
            'User recipes remain in Documents/CyrusScatter/Library, separate from versioned bundled content.\n'
            'Unsupported authored Scatter Edit/radius overrides or nonstatic parameter controllers block Save Everything.\n'
            'Amount > Mesh channel density reads vertex colors (0) or map channels (1..99), with component, range, invert and Density curve controls.\n'
@@ -276,7 +302,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--max-year', type=int, choices=(2026, 2027), required=True)
+    parser.add_argument('--max-year', type=int, choices=(2024, 2026, 2027), required=True)
     parser.add_argument('--sdk-root', type=Path, required=True)
     parser.add_argument('--vs-root', type=Path, default=Path('C:/Program Files/Microsoft Visual Studio/2022/Community'))
     parser.add_argument('--tools-version', default='14.38.33130')

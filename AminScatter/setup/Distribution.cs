@@ -8,12 +8,13 @@ using System.Text;
 namespace Cyrus.Setup {
     // The EXE embeds the exact verified MZP. It does not execute extracted scripts.
     public static class Distribution {
-        public static InstallPaths FromProfile(string ini) {
+        public static InstallPaths FromProfile(string ini,string year="2027") {
+            InstallEngine.CheckYear(year);
             ini=InstallPaths.Full(ini);
             foreach(string part in ini.Split(Path.DirectorySeparatorChar))
-                if(System.Text.RegularExpressions.Regex.IsMatch(part,@"^20[0-9]{2} - 64bit$",System.Text.RegularExpressions.RegexOptions.IgnoreCase)&&part!="2027 - 64bit")
-                    throw new IOException("This installer targets Max 2027 only. Select its profile, not another Max version.");
-            if(!File.Exists(ini)||new FileInfo(ini).Length>2*1024*1024)throw new IOException("Select an initialized Max 2027 profile INI.");
+                if(System.Text.RegularExpressions.Regex.IsMatch(part,@"^20[0-9]{2} - 64bit$",System.Text.RegularExpressions.RegexOptions.IgnoreCase)&&part!=year+" - 64bit")
+                    throw new IOException("Select the profile for Max "+year+", or change the host selection.");
+            if(!File.Exists(ini)||new FileInfo(ini).Length>2*1024*1024)throw new IOException("Select an initialized Max "+year+" profile INI.");
             var values=new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);
             using(var reader=new StreamReader(ini,Encoding.UTF8,true)) {
                 string line;bool directories=false;
@@ -28,20 +29,21 @@ namespace Cyrus.Setup {
                 }
             }
             foreach(string name in new[]{"Additional Scripts","Additional Startup Scripts","Additional Macros"})
-                if(!values.ContainsKey(name))throw new IOException("Profile directory missing: "+name+". Open Max 2027 once before installing, or run the MZP inside Max.");
+                if(!values.ContainsKey(name))throw new IOException("Profile directory missing: "+name+". Open Max "+year+" once before installing, or run the matching MZP inside Max.");
             return new InstallPaths(values["Additional Scripts"],values["Additional Startup Scripts"],values["Additional Macros"],Path.GetDirectoryName(ini));
         }
-        public static string DetectMax2027() {
-            string standard=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),@"Autodesk\3ds Max 2027\3dsmax.exe");
-            if(File.Exists(standard)&&System.Diagnostics.FileVersionInfo.GetVersionInfo(standard).FileMajorPart==29)return standard;
+        public static string DetectMax(string year) {
+            InstallEngine.CheckYear(year);
+            string standard=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),@"Autodesk\3ds Max "+year+@"\3dsmax.exe");
+            if(File.Exists(standard)&&System.Diagnostics.FileVersionInfo.GetVersionInfo(standard).FileMajorPart==Int32.Parse(year)-1998)return standard;
             // Do not search drives or infer a host from an old profile alone.
-            throw new IOException("Max 2027 was not found in its standard installation folder. For a custom Max installation, use Scripting > Run Script with the companion Max 2027 MZP.");
+            throw new IOException("Max "+year+" was not found in its standard installation folder. For a custom installation, use Scripting > Run Script with the matching Max "+year+" MZP.");
         }
-        public static string Extract(Assembly assembly,string parent,string packageHash,Action<string> checkpoint) {
+        public static string Extract(Assembly assembly,string parent,string packageHash,Action<string> checkpoint,string resource="Cyrus.Payload.mzp") {
             parent=InstallPaths.Full(parent);Directory.CreateDirectory(parent);
             string destination=Path.Combine(parent,"payload-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(destination);
             try {
-                using(var payload=assembly.GetManifestResourceStream("Cyrus.Payload.mzp")) {
+                using(var payload=assembly.GetManifestResourceStream(resource)) {
                     if(payload==null||payload.Length>512L*1024*1024)throw new IOException("Embedded payload is missing or too large.");
                     using(var sha=System.Security.Cryptography.SHA256.Create()) {
                         string actual=BitConverter.ToString(sha.ComputeHash(payload)).Replace("-","").ToLowerInvariant();

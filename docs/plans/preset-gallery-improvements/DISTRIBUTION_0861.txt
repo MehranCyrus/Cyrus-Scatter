@@ -1,0 +1,57 @@
+PASS: One EXE has three distinct host descriptors
+PASS: Installer exposes three hosts and labels unqualified 2024 preview
+PASS: Host selector changes the profile to 2024
+PASS: Host selector changes the profile to 2026
+PASS: Host selector changes the profile to 2027
+PASS: Installer control fits at scripted scale 1: Label
+PASS: Installer control fits at scripted scale 1: Label
+PASS: Installer control fits at scripted scale 1: ComboBox
+PASS: Installer control fits at scripted scale 1: Label
+PASS: Installer control fits at scripted scale 1: TextBox
+PASS: Installer control fits at scripted scale 1: Button
+PASS: Installer control fits at scripted scale 1: TextBox
+PASS: Installer control fits at scripted scale 1: Label
+PASS: Installer control fits at scripted scale 1: FlowLayoutPanel
+PASS: Installer control fits at scripted scale 1.5: Label
+PASS: Installer control fits at scripted scale 1.5: Label
+PASS: Installer control fits at scripted scale 1.5: ComboBox
+PASS: Installer control fits at scripted scale 1.5: Label
+PASS: Installer control fits at scripted scale 1.5: TextBox
+PASS: Installer control fits at scripted scale 1.5: Button
+PASS: Installer control fits at scripted scale 1.5: TextBox
+PASS: Installer control fits at scripted scale 1.5: Label
+PASS: Installer control fits at scripted scale 1.5: FlowLayoutPanel
+PASS: Embedded payload/inventory host matches 2024
+PASS: Actual native payload stages for 2024
+PASS: Bundled presets stage for 2024
+PASS: Host-specific registration preserves unrelated settings 2024
+PASS: Identical repair retains registration 2024
+PASS: Unregister removes only this host registration 2024
+PASS: Personal recipe/activation sentinels survive 2024
+PASS: Wrong host profile rejected 2024
+PASS: Changed inventory identity rejected 2024
+PASS: Cancellation rolls back publication 2024
+PASS: Owned extraction cleanup 2024
+PASS: Embedded payload/inventory host matches 2026
+PASS: Actual native payload stages for 2026
+PASS: Bundled presets stage for 2026
+PASS: Host-specific registration preserves unrelated settings 2026
+PASS: Identical repair retains registration 2026
+PASS: Unregister removes only this host registration 2026
+PASS: Personal recipe/activation sentinels survive 2026
+PASS: Wrong host profile rejected 2026
+PASS: Changed inventory identity rejected 2026
+PASS: Cancellation rolls back publication 2026
+PASS: Owned extraction cleanup 2026
+PASS: Embedded payload/inventory host matches 2027
+PASS: Actual native payload stages for 2027
+PASS: Bundled presets stage for 2027
+PASS: Host-specific registration preserves unrelated settings 2027
+PASS: Identical repair retains registration 2027
+PASS: Unregister removes only this host registration 2027
+PASS: Personal recipe/activation sentinels survive 2027
+PASS: Wrong host profile rejected 2027
+PASS: Changed inventory identity rejected 2027
+PASS: Cancellation rolls back publication 2027
+PASS: Owned extraction cleanup 2027
+PASSED 56 universal distribution checks; artist profiles untouched

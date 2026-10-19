@@ -1,4 +1,4 @@
-    rollout mainUI "Cyrus Scatter 0.86.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.86.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -17,7 +17,7 @@
                 if slot.body.width!=target do slot.body.width=target
                 -- The subrollout has its own margins. Its child HWND gives the
                 -- actual available width in logical UI units at the current DPI.
-                local available=amax 100 (amin (slot.width-8) (windows.getWindowPos section.hwnd removeUIScaling:true).w)
+                local available=amax 64 (amin (slot.width-8) (windows.getWindowPos section.hwnd removeUIScaling:true).w)
                 if section.controlsReady and section.lastLayoutWidth!=available do section.layout()
                 resizing=false;true
             )catch(resizing=false;throw())
@@ -121,7 +121,7 @@
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.2 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()

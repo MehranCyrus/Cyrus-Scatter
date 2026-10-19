@@ -974,3 +974,8 @@ website/sources/README.md,preserved-excluded,"Research/website, independent lice
 website/verification/BROWSER_REVIEW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 website/verification/COMBINED_BROWSER_REVIEW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 website/verification/FINAL_IMPLEMENTATION_CHECKS.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
+docs/plans/preset-gallery-improvements/DELIVERY_0862.md,maintained,Current 0.86.2 delivery and installer navigation; earlier evidence explicitly historical; knowledge activation separate.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862.json,retained-history,0.86.2 scoped qualification and exact artifact identities; current navigation links here; historical receipts retained; knowledge activation separate.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862_CORRECTION.json,retained-history,Earlier same-version Amount correction receipt; superseded installer pair retained without rewriting hashes.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862_UI.json,retained-history,Current same-version UI follow-up qualification and exact artifact identities; report owns current navigation; knowledge activation remains paused.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862_COMPATIBILITY.json,retained-history,Exact 0.86.2 universal installer and older-host qualification; Max 2024 runtime unverified; knowledge activation remains paused.

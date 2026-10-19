@@ -1,12 +1,38 @@
 # Cyrus Scatter — current execution ledger
 
-This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current task: consolidate documentation and update the knowledge index; no plugin implementation is authorized by this maintenance task.** P, I, PG and N identify different work groups, not release versions.
+This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.2 D01–D11 scoped qualification is complete; see the [delivery report](../preset-gallery-improvements/DELIVERY_0862.md). Unrelated roadmap work and knowledge activation remain paused.** P, I, PG, N and local D tasks are not release versions.
 
 ## Current delivery
+
+**0.86.2** implements the D01–D11 image/mesh density, persistent field visualization, recipe recovery and UI follow-up. The [delivery report](../preset-gallery-improvements/DELIVERY_0862.md) pins the host-specific MZPs, universal EXE, editable demo and qualification limits. The explicit compatibility follow-up qualifies Max 2026 alongside the unchanged Max 2027 payload; Max 2024 remains SDK/managed preview. The same-version corrections fix empty/procedural-map Amount errors, whole-image thumbnail display and dropdown focus. The current UI follow-up simplifies Amount, installs three starter masks and ellipsizes Layer/Model names while retaining metadata; all eight examples and actual panel workflows were rechecked. No artist installation or Git push was performed.
+
+### Retained 0.86.1 compatibility delivery
+
+**0.86.1** adds selected-terrain loading with automatic setup creation or additive layers, numeric mesh-mask/Paint compatibility checks, readable dropdown states and matching host payloads in one EXE. A later source review identified the texture-density UV preflight gap B28; the earlier qualification does not establish every dependency failing before mutation. See the [delivery report](../preset-gallery-improvements/DELIVERY_0861.md) for exact tests and packages. Max 2026/2027 are runtime qualified within that scope. Max 2024 has SDK/native and net48 gallery checks, with no installed runnable host; it is labeled preview. No new P/I/PG/N phase or renderer/animation adapter is implied.
+
+The retained native foundation is:
 
 **0.86.0 / schema 58 / Max 2027** is scoped-qualified and packaged; implementation checkpoint `e3e81a6d204063efd9b77771ad9b0268ad2ea578` was pushed and verified. The [delivery report](../native-placement/DELIVERY_0860.md), [qualification](../native-placement/QUALIFICATION_0860.json) and [package record](../native-placement/PACKAGE_0860.json) pin exact identities and limits. N01–N09 are complete within that scope. MZP and unsigned EXE are ready for artist testing and were not installed. Analyzer, MCP and licensing retain independent versions.
 
 Bulk placement storage/calculation, acceptance, Edit history and bounded consumers are native. UI/authored orchestration, Particle Flow Script Operator access and real Bake-node creation remain scripted where described by the report. One-million candidate admission, synchronous heavy operations, renderer scope and physical-display limits remain explicit. Slope/altitude behavior was not changed.
+
+## Delivered 0.86.2 density and recipe follow-up
+
+The [delivery report](../preset-gallery-improvements/DELIVERY_0862.md) and its qualification receipt own the exact current pair and limits. D04 follows the latest 19 October steering: install three original grayscale starter patterns so Choose pattern works immediately; final product artwork still comes later from the user. The final source passed native, generated, Python, managed, installer and owned Max 2027 tests. Earlier failed candidates and their original identities remain in task evidence; they are not current acceptance.
+
+| Task | Status | Delivered scope |
+| --- | --- | --- |
+| D01 | Complete | Persistent mask visibility; side-by-side Show mask / Hide mask; relevant-edit refresh |
+| D02 | Complete | Separate image/pattern and numeric mesh-channel inputs; independently enabled and combinable |
+| D03 | Complete | Native physical pattern size/projection, rotation/offset, repeat/clamp and explicit UV sampling |
+| D04 | Complete | Three original installed starter masks; user-supplied final artwork remains later |
+| D05 | Complete | Compact picker, custom images and qualified Max texture maps |
+| D06 | Complete | Bounded surface overlay; Image/Mesh/Combined views and readable DPI layouts |
+| D07 | Complete | Complete new settings/assets/Paint persistence and explicit portable-map capabilities |
+| D08 | Complete | Unified early validation, accurate errors and late-failure/Undo recovery |
+| D09 | Complete | Audit/revise ordinary/specialized library recipes and readiness presentation |
+| D10 | Complete | Max 2027 correctness/performance, demo scene and matching MZP/EXE |
+| D11 | Complete | Layer/Model Name label/color row followed by full-width inputs; names ellipsize without hiding metadata; DPI, dropdown and navigation regression |
 
 ## Original phase status
 
@@ -32,7 +58,7 @@ Completed checkpoints: I01/I02 [panel performance](../panel-performance-0826/PRO
 | I09 | Shared terrain snapshots only after profiling demonstrates duplicate extraction cost | Source/revision/units ownership, extraction counts, memory coexistence and last-owner release; same-frame channel edits |
 | I10 | Finer intermediate reuse only for measured unnecessary work | Dependency-specific edits, unchanged stages/IDs and buffers, Manual pending edits, failed successor and exact output parity |
 | I11 / P11 | Complete adaptive viewport and final heavy-scene/lifecycle acceptance | Equal geometry/settings, solve/preparation/upload/draw/presentation measured separately; actual input, physical DPI, heavy assets, long history and renderer scope |
-| I12 | UV pattern/projection rules with explicit seams and overlaps | Independent numeric domain oracle, transformed/missing UVs, projected eligibility, bounded work and persistence |
+| I12 | 0.86.2 D03 delivers World/local/UV image mapping, physical size, rotation/offsets and Repeat/Clamp; retain broader seam/overlap and production qualification | Current numeric/UV/recipe oracles are in the 0.86.2 report; expand with explicit complex seams/overlaps and real-scene requirements before new projection work |
 | I13 / PG10a | Authored Edit/radius recipe codec and explicit Keep/Append/Replace/remaps | Full-width IDs, source reorder/deletion, units/terrain compatibility, protection, exact records, Undo/reopen and memory/failure retention |
 | I14 / PG10b | Typed ordered effects with declared dependencies and stable definition/instance IDs | Same-ID changed content, values/defaults, bindings, compile/validation failure, cache reuse, Undo/reopen; no passive compilation |
 | I15 / PG09 | Extend the delivered static mesh/Standard/PNG and explicit scene-reuse subset with declared Share/XRef/material adapters | Shared dependents, deletion/reload, same-path changed bytes, nested assets/variation, units, materials and explicit renderer/plugin matrix |

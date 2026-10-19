@@ -20,7 +20,7 @@ def digest(path):
 
 
 def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027,silent_startup=False,preview_fault_lab=False,script_assets=(),placement_qualification=False):
-    if max_year not in (2026,2027):
+    if max_year not in (2024,2026,2027):
         raise ValueError('Use a supported Max host year')
     folder=Path(folder).resolve();script=Path(script).resolve();native=Path(native).resolve()
     if not folder.is_relative_to(ROOT/'build'):

@@ -17,7 +17,8 @@ def test_every_saved_controller_parameter_has_an_explicit_recipe_disposition():
     }
     assert not captured & separate
     assert declared == captured | separate, 'New persistent parameters require an explicit full-save policy.'
-    assert len(declared)==273 and len(captured)==242
+    # 0.86.2 appends nineteen authored image mapping/response/frame fields.
+    assert len(declared)==292 and len(captured)==261
 
 def test_recipe_distances_follow_authoritative_parameter_types():
     source=(ROOT/'AminScatter/tools/ui/templates/unified-core.ms').read_text(encoding='utf-8')

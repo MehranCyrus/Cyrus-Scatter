@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
+#include "density_image.h"
 
 namespace cyrus::bands { class Field; }
 
@@ -52,6 +53,8 @@ struct Settings {
     int distribution{0}; // 0 random, 2 UV density; clustering is source diversity.
     std::uint32_t densityWidth{}, densityHeight{};
     std::vector<double> density; // rows from v=1 to v=0; clamped UVs
+    cyrus::density::Mapping densityMapping;
+    std::shared_ptr<const cyrus::density::ImageData> densityImage;
     std::vector<std::uint32_t> sourceGroups; // optional stable keys, one per source
     bool clusterEnabled{false}; // diversity only; never changes placement
     double clusterSize{10}, clusterRoughness{0}, clusterBlur{0}, clusterNoise{0};

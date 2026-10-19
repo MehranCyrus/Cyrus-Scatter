@@ -1,9 +1,8 @@
 // Compose presentation only. The existing component handlers remain the sole
 // writers of authored settings; namespacing lets several owners share a page.
 const fs=require('fs'), blocks=require('./maxscript-blocks.cjs');
-const controlKinds='label|groupBox|button|checkbox|checkbutton|colorpicker|dropdownlist|edittext|listbox|mapbutton|multiListBox|pickbutton|radiobuttons|spinner';
+const controlKinds='label|groupBox|bitmap|imgTag|button|checkbox|checkbutton|colorpicker|dropdownlist|edittext|listbox|mapbutton|multiListBox|pickbutton|radiobuttons|spinner';
 const layouts=require('./approved-layout-rows.cjs');
-const identifier=/[A-Za-z_][A-Za-z_0-9]*/g;
 function caption(c){
  const label=layouts.labels[c.key+'.'+c.name];
  if(label!==undefined)return label;
@@ -23,10 +22,15 @@ function cellMinimum(c){
 }
 function rename(text,names){
  // Do not rename property names, strings, comments or symbols (#property).
+ let cursor=0,previousSyntax='';
  return text.replace(/--[^\n]*|\/\*[\s\S]*?\*\/|"(?:\\.|[^"\\])*"|[A-Za-z_][A-Za-z_0-9]*/g,(token,at)=>{
-  if(!identifier.test(token[0])){identifier.lastIndex=0;return token;}
-  identifier.lastIndex=0;
-  const previous=text.slice(0,at).trimEnd().slice(-1);
+  const gap=text.slice(cursor,at).trimEnd();
+  if(gap)previousSyntax=gap.slice(-1);
+  cursor=at+token.length;
+  // A period in a preceding comment is not a property-access operator.
+  if(token.startsWith('--')||token.startsWith('/*'))return token;
+  if(token[0]==='"'){previousSyntax='"';return token;}
+  const previous=previousSyntax;previousSyntax=token.slice(-1);
   return previous==='.'||previous==='#'||/^\s*:/.test(text.slice(at+token.length))?token:(names.get(token.toLowerCase())||token);
  });
 }
@@ -44,7 +48,7 @@ function statements(body){
   if(c==='('||c==='['||c==='{')depth++;
   if(c===')'||c===']'||c==='}')depth--;
   if((i===0||body[i-1]==='\n')&&depth===0){
-   const m=/^[ \t]+(local|fn|on|label|groupBox|button|checkbox|checkbutton|colorpicker|dropdownlist|edittext|listbox|mapbutton|multiListBox|pickbutton|radiobuttons|spinner)\b/.exec(body.slice(i));
+   const m=/^[ \t]+(local|fn|on|label|groupBox|bitmap|imgTag|button|checkbox|checkbutton|colorpicker|dropdownlist|edittext|listbox|mapbutton|multiListBox|pickbutton|radiobuttons|spinner)\b/.exec(body.slice(i));
    if(m)starts.push(i);
   }
  }
@@ -156,7 +160,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
  const disclosures=rows.filter(r=>r.toggle);
  for(const r of disclosures)declarations+='\n        checkbutton '+r.toggle+' '+JSON.stringify(r.caption)+' pos:[6,6] width:('+name+'.width-12) height:22';
  for(const c of lists)declarations+='\n        dotNetControl '+c.id+'_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8';
- declarations+='\n        checkbutton advancedToggle "Advanced" pos:[6,6] width:('+name+'.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."';
+ declarations+='\n        checkbutton advancedToggle '+JSON.stringify(definition.advancedLabel||'Advanced')+' pos:[6,6] width:('+name+'.width-12) height:22 tooltip:'+JSON.stringify(definition.advancedTooltip||'Show less-used controls. Expanding this section does not calculate or change saved settings.');
  let code=components.map(p=>'        local '+p.key+'_bodyHeight=0\n'+p.code.replaceAll('__PAGE__',name)).join('\n');
  const reset=components.map(p=>['root','owner','panel','controlsReady','binding'].map(v=>p.key+'_'+v+'='+v).join(';')).join('\n            ');
  const binding=components.map(p=>{
@@ -191,7 +195,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
   const top=captioned.filter(c=>!c.inlineCaption);
   const minimum=Math.max(...items.map(cellMinimum));
   const heights=items.map(c=>{
-   if(c.kind==='label'||c.kind==='listbox'||c.kind==='multiListBox')return c.id+'.height';
+   if(c.kind==='bitmap'||c.kind==='imgTag'||c.kind==='label'||c.kind==='listbox'||c.kind==='multiListBox')return c.id+'.height';
    if(c.kind==='radiobuttons'){
     const count=(/labels:#\(([^\n]*?)\)/.exec(c.declaration)?.[1].match(/"(?:\\.|[^"\\])*"/g)||[]).length;
     const columns=Number(/columns:(\d+)/.exec(c.declaration)?.[1]||1);
@@ -202,6 +206,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
   const dynamic=r.height||'(amax #('+heights.join(',')+'))';
   const table=items.length===3&&items[0].kind==='label';
   const swatch=items.length===2&&items[1].kind==='colorpicker';
+  const bitmapOnly=items.length===1&&['bitmap','imgTag'].includes(items[0].kind);
   const columns=r.pair?2:swatch?2:table?items.length:labels.length===items.length?items.length:'(amin rowControls.count (amax 1 (floor ((widthValue-8)/'+(minimum+4)+'))))';
   const captions=captioned.map(c=>`if ${c.captionID}.visible!=show do ${c.captionID}.visible=show`).join(';');
   const fitCaptions=captioned.map(c=>`fitLabel ${c.captionID} 18 cellWidth`).join(';');
@@ -220,11 +225,11 @@ function page(s,definition,{name=definition.name,category=0}={}){
    ? `rowControls[1].pos=[6,y+captionHeight];fitWidth rowControls[1] cellWidth;rowControls[2].pos=[widthValue-28,y]`
    : table
    ? `rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)`
-   : `for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)`;
+   : `for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] ${bitmapOnly?'(amin 72 cellWidth)':'cellWidth'})`;
   const radioPositions=items.filter(c=>c.kind==='radiobuttons').map(c=>`fitRadio ${c.id} cellWidth ${Number(/columns:(\d+)/.exec(c.declaration)?.[1]||1)} place:true`).join(';');
   return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls where c.visible!=show do c.visible=show\n${items.filter(c=>c.kind==='dotNetControl').map(c=>'            setHostedVisible '+c.id+' show\n').join('')}${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${r.pair?'cellWidth<70':inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${radioPositions?'                '+radioPositions+'\n':''}${r.pair?'                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption\n':''}${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
  }).join('\n');
- const folded=controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle'||(definition.hidden||[]).includes(c.key+'.'+c.name)).map(c=>c.id+'.visible=false').join(';');
+ const folded=controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle'||(definition.hidden||[]).includes(c.key+'.'+c.name)).flatMap(c=>[c.id+'.visible=false',...(c.captionID?[c.captionID+'.visible=false']:[])]).join(';');
  // Insert Advanced between basic rows and advanced rows, never as a page.
  const basicEnd=rows.findIndex(r=>r.advanced);
  const parts=rowText.split(/(?=            rowControls=#)/);
@@ -270,7 +275,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
                     if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
                 )
             ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
-            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
                     local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
@@ -337,6 +342,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
         on ${c.id}_grip Paint sender args do paintListGrip sender args`).join('\n')}
 `;
  let final=require('./colored-lists.cjs')(out,components).replace('        fn layout = (',presentation+widthHelper+'        fn layout = (').replace('        on advancedToggle changed value do layout()',disclosures.map(r=>'        on '+r.toggle+' changed value do (layout();'+remember+'true)').join('\n')+'\n        on advancedToggle changed value do (layout();'+remember+'true)');
+ if(definition.advancedLabel)final=final.replace('advancedToggle.visible=true;advancedToggle.pos=', 'advancedToggle.text=if advancedToggle.checked then "Fewer settings" else '+JSON.stringify(definition.advancedLabel)+';advancedToggle.visible=true;advancedToggle.pos=');
  final=final.replace('            binding=true;controlsReady=false','            stopListDrag();binding=true;controlsReady=false').replace('on '+name+' close do (','on '+name+' close do (stopListDrag();');
  // The parent blocks all events throughout bind. Release each copied guard
  // afterwards as well: components without their own binding local otherwise

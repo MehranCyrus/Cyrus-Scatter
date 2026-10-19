@@ -1,6 +1,6 @@
-# Cyrus planting presets — 0.85.3
+# Cyrus planting presets — 0.86.1
 
-Eight ready-to-use procedural examples for 3ds Max 2027. Open **Layers > Recipes > Bundled examples**, select a preset and use **Load + Update**. Its models and materials load with its layers. Model picking is unnecessary.
+Select one terrain mesh and run **Cyrus Library** (Customize > Cyrus category), or open **Layers > Recipes** from an existing setup. Choose a preset and **Load onto surface**. Browsing creates no scene objects. Loading imports its supported models/materials and creates a setup when needed. Otherwise it adds layers to the captured setup, preserving existing layers and Manual/Live mode, then explicitly updates once. One Undo removes the added preset; Redo restores it.
 
 | Example | Demonstrates |
 | --- | --- |
@@ -13,15 +13,15 @@ Eight ready-to-use procedural examples for 3ds Max 2027. Open **Layers > Recipes
 | Four garden rooms | Topiary, soft painted flower beds and gravel |
 | Valley moss and rocky crests | Included channel-2 numeric mask, inversion, curves and slope fading |
 
-Load adds new layers, preserving existing authored planting and Manual/Live mode. It explicitly updates the setup once, including any pending Manual edits. Ordinary presets use an unambiguous compatible current terrain. If the preset needs saved Paint, channel data or spline context that the destination cannot provide, its included terrain is used and reported. Existing terrain is preserved. Shared viewport budgets distribute across the resulting layers.
+Changing scene selection after opening the browser does not redirect loading. Reopen the library to choose another terrain. If several setups use the same terrain, open Recipes from the intended setup. No saved terrain is substituted automatically. Shared viewport budgets distribute across the resulting layers. The explicit Update also applies pending Manual edits.
 
 **Save Recipe** includes supported models, materials, evaluated terrain, static paths and complete Paint by default. A progress window confirms ready saving. Uncheck **Include models, materials, terrain and paths** for an advanced settings-only recipe. Ready terrain is a baked snapshot of evaluated geometry and channels, not an editable modifier stack. Rename/tag edits preserve ready package linkage through a file worker. Unsupported dependencies report the adapter needed; they are never silently omitted from a complete preset.
 
-Each ready package lives under `Presets/<full-recipe-SHA256>/`. Keep the library entries, immutable Paint/thumbnail payloads and corresponding package directories together when copying a library. Save personal copies in **My recipes** (`Documents/CyrusScatter/Library`) or a custom folder. Bundled examples are read-only. **Recipe actions > Review bindings (advanced)** retains explicit settings/package substitution workflows.
+Each ready package lives under `Presets/<full-recipe-SHA256>/`. Keep library entries, immutable Paint/thumbnail payloads and corresponding package directories together when copying a library. Save personal copies in **My recipes** (`Documents/CyrusScatter/Library`) or a custom folder. Bundled examples are read-only. Settings-only recipes must be saved with their assets before direct loading.
 
-The matching `.max` scenes preserve their original bytes and remain useful for inspection. Open a copy, select the controller, change a layer and press **Update scatter**. The original thumbnails are renders of those saved placements; a ready Load uses a new variation and does not promise the identical arrangement. Models are original procedural placeholders to replace with your own assets. No Forest/Chaos vegetation is bundled.
+Source `.max` scenes retain their original bytes. Older-host distributions contain copies saved in the target format. Back-saving does not establish runtime qualification; consult the release report, including the Max 2024 host limitation. Open a copy, select the controller, change a layer and press **Update scatter**. Thumbnails depict those saved placements; loading uses a new variation and may produce a different arrangement. Models are original procedural placeholders. No Forest/Chaos vegetation is bundled.
 
-Paint is receiver-bound. Included compatible terrain permits its saved geometry/frame/units to be restored safely; arbitrary replacement terrain does not acquire that footprint automatically. The valley field is authored numeric channel data, not an automatic curvature engine. Grids use explicit world-XY origins. Direct avenue/sequencing tools remain outside this delivery.
+Paint requires compatible evaluated geometry, frame and saved system units. Valley moss requires numeric channel 2 on the selected terrain; it does not generate curvature data. Missing channels and incompatible Paint are explained before adding layers. Saved spline paths transfer through the saved terrain's local frame, retaining authored dimensions; they do not stretch to fit a different mesh. Grids retain explicit world-XY origins. Direct avenue/sequencing tools remain outside this delivery.
 
 The static asset adapter supports the documented standalone meshes, Standard/Blinn materials and static PNG maps. XRefs, arbitrary renderer proxies/shaders, animated dependencies and authored Edit/radius codecs remain separate work. Package and memory admission limits can reject work while preserving the previous complete result.
 

@@ -16,6 +16,7 @@
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>
 #include <maxscript/foundation/numbers.h>
+#include "maxscript_number_types.h"
 #include <maxscript/foundation/strings.h>
 #include <maxscript/foundation/name.h>
 #include <maxscript/foundation/3dmath.h>
@@ -49,8 +50,8 @@ r::Json recipeTree(Value* value,int depth=0){
     if(value==&undefined)return nullptr;
     if(value==&true_value||value==&false_value)return value==&true_value;
     if(is_string(value))return recipeUTF8(value);
-    if(Number::is_integer_number(value))return value->to_int64();
-    if(Number::is_float_number(value)){const double n=value->to_double();if(!std::isfinite(n))throw RuntimeError(_T("Nonfinite recipe number"));return n;}
+    if(cyrus::host::integerNumber(value))return value->to_int64();
+    if(cyrus::host::floatNumber(value)){const double n=value->to_double();if(!std::isfinite(n))throw RuntimeError(_T("Nonfinite recipe number"));return n;}
     type_check(value,Array,_T("recipe data array"));auto* input=static_cast<Array*>(value);if(input->size>65536)throw RuntimeError(_T("Recipe array exceeds bounds"));
     if(input->size==2&&input->data[0]==Name::intern(_T("recipeObject"))){
         type_check(input->data[1],Array,_T("recipe object fields"));auto* rows=static_cast<Array*>(input->data[1]);if(rows->size>4096)throw RuntimeError(_T("Recipe object field limit"));auto result=r::Json::object();
@@ -64,7 +65,7 @@ std::uint64_t recipeHeapBytes(const r::Json& value){
     // Native geometry/bitmap storage and scene objects are accounted separately.
     if(value.is_null()||value.is_boolean())return 0;
     if(value.type()==r::Json::value_t::string)return 2*(sizeof(String)+64+2*(value.get_ref<const std::string&>().size()+1));
-    if(value.is_number())return 2*(sizeof(Double)+32);
+    if((value.is_number)())return 2*(sizeof(Double)+32);
     auto array=[](std::size_t count){return 2*(sizeof(Array)+64+count*sizeof(Value*));};
     std::uint64_t bytes=array(value.size());
     if(value.is_object()){
@@ -78,7 +79,7 @@ Value* recipeValue(const r::Json& value,bool admitted=false){
     if(value.is_null())return &undefined;if(value.is_boolean())return value.get<bool>()?&true_value:&false_value;
     if(value.type()==r::Json::value_t::string)return recipeString(value.get<std::string>());
     if(value.is_number_integer())return Integer64::intern(value.get<std::int64_t>());
-    if(value.is_number())return Double::intern(value.get<double>());
+    if((value.is_number)())return Double::intern(value.get<double>());
     three_typed_value_locals(Array* result,Array* rows,Array* pair);
     if(value.is_object()){
         vl.result=new Array(2);vl.result->append(Name::intern(_T("recipeObject")));vl.rows=new Array(static_cast<int>(value.size()));vl.result->append(vl.rows);
@@ -349,7 +350,7 @@ Value* cyrusAssetPreparedMeshCreate_cf(Value** a,int n){check_arg_count(cyrusAss
 });}
 
 def_visible_primitive(cyrusRecipeVersion,"cyrusRecipeVersion");
-Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(5);}
+Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(6);}
 def_visible_primitive(cyrusRecipeTrackCreated,"cyrusRecipeTrackCreated");
 def_visible_primitive(cyrusPresetTrackPublication,"cyrusPresetTrackPublication");
 Value* cyrusPresetTrackPublication_cf(Value** a,int n){check_arg_count(cyrusPresetTrackPublication,1,n);type_check(a[0],Array,_T("Preset publication owners"));
@@ -437,8 +438,8 @@ Value* cyrusRecipePublicationFingerprint_cf(Value** a,int n){check_arg_count(cyr
             type_check(row->data[0],Matrix3Value,_T("published transform"));const Matrix3& transform=row->data[0]->to_matrix3();
             auto vector=[](const Point3& v){if(!std::isfinite(v.x)||!std::isfinite(v.y)||!std::isfinite(v.z))throw RuntimeError(_T("Nonfinite capture transform"));return r::Json::array({v.x,v.y,v.z});};
             auto matrix=r::Json::array();for(int j=0;j<4;++j)for(const auto& component:vector(transform.GetRow(j)))matrix.push_back(component);
-            for(int field:{1,3,5,7})if(!Number::is_integer_number(row->data[field]))throw RuntimeError(_T("Invalid capture row integer"));
-            if(!is_string(row->data[2])&&!Number::is_integer_number(row->data[2]))throw RuntimeError(_T("Invalid capture row identity"));
+            for(int field:{1,3,5,7})if(!cyrus::host::integerNumber(row->data[field]))throw RuntimeError(_T("Invalid capture row integer"));
+            if(!is_string(row->data[2])&&!cyrus::host::integerNumber(row->data[2]))throw RuntimeError(_T("Invalid capture row identity"));
             if(row->data[6]!=&true_value&&row->data[6]!=&false_value)throw RuntimeError(_T("Invalid capture row flag"));
             type_check(row->data[4],Point3Value,_T("published anchor"));
             const auto identity=is_string(row->data[2])?r::Json(recipeUTF8(row->data[2],256)):recipeTree(row->data[2]);
@@ -450,7 +451,7 @@ namespace {
 r::Json placementMetadata(Value* v,std::size_t& nodes,std::size_t& characters,int depth=0) {
     if(depth>8||nodes==0)throw RuntimeError(_T("Publication metadata exceeds bounded depth/values"));--nodes;
     if(is_string(v)){auto text=recipeUTF8(v,4096);if(text.size()>characters)throw RuntimeError(_T("Publication metadata text exceeds one MiB"));characters-=text.size();return text;}
-    if(v==&undefined||v==&true_value||v==&false_value||Number::is_integer_number(v)||Number::is_float_number(v))return recipeTree(v);
+    if(v==&undefined||v==&true_value||v==&false_value||cyrus::host::integerNumber(v)||cyrus::host::floatNumber(v))return recipeTree(v);
     type_check(v,Array,_T("frozen publication metadata"));auto* a=static_cast<Array*>(v);if(a->size>4096)throw RuntimeError(_T("Publication metadata array exceeds bounds"));
     auto json=r::Json::array();for(int i=0;i<a->size;++i)json.push_back(placementMetadata(a->data[i],nodes,characters,depth+1));return json;
 }
@@ -514,7 +515,7 @@ void cyrusRecipeLibraryShutdown(){
 extern "C" __declspec(dllexport) int LibShutdown(){cyrusRecipeLibraryShutdown();return TRUE;}
 #endif
 def_visible_primitive(cyrusRecipeLibraryVersion,"cyrusRecipeLibraryVersion");
-Value* cyrusRecipeLibraryVersion_cf(Value**,int n){check_arg_count(cyrusRecipeLibraryVersion,0,n);return Integer::intern(3);}
+Value* cyrusRecipeLibraryVersion_cf(Value**,int n){check_arg_count(cyrusRecipeLibraryVersion,0,n);return Integer::intern(4);}
 def_visible_primitive(cyrusRecipeLibraryStart,"cyrusRecipeLibraryStart");
 Value* cyrusRecipeLibraryStart_cf(Value** a,int n){check_arg_count(cyrusRecipeLibraryStart,1,n);return recipeAPI([&]()->Value*{
     type_check(a[0],Array,_T("library folders"));auto* rows=static_cast<Array*>(a[0]);if(rows->size<1||rows->size>4)throw RuntimeError(_T("Choose one to four library folders"));

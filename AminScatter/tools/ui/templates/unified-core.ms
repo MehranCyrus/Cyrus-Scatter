@@ -1,24 +1,58 @@
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
-global CyrusMeshMaskPreviewTarget=undefined,CyrusMeshMaskPreviewNode=undefined,CyrusMeshMaskPreviewRows=#()
+try(CyrusMeshMaskPreviewTimer.Stop())catch()
+global CyrusMeshMaskPreviewTarget=undefined,CyrusMeshMaskPreviewNode=undefined,CyrusMeshMaskPreviewRows=undefined
+global CyrusMaskView=3,CyrusMaskDetail=2,CyrusMaskOpacity=80.0,CyrusMaskMarkers=false,CyrusMaskMarkerSize=1
+global CyrusMeshMaskPreviewTimer=undefined,CyrusMeshMaskPreviewPending=false,CyrusMeshMaskPreviewError=""
+global CyrusShowMeshMaskPreview,CyrusInvalidateMeshMaskPreview,CyrusMeshMaskPreviewTick
 fn CyrusClearMeshMaskPreview target = (
     if target==undefined or target==CyrusMeshMaskPreviewTarget do (
-        CyrusMeshMaskPreviewRows=#();CyrusMeshMaskPreviewTarget=undefined;CyrusMeshMaskPreviewNode=undefined
+        CyrusMeshMaskPreviewRows=undefined;CyrusMeshMaskPreviewTarget=undefined;CyrusMeshMaskPreviewNode=undefined
+        CyrusMeshMaskPreviewPending=false;CyrusMeshMaskPreviewError=""
+        if CyrusMeshMaskPreviewTimer!=undefined do CyrusMeshMaskPreviewTimer.Stop()
+    )
+)
+fn CyrusMeshMaskPreviewTick sender args = (
+    sender.Stop()
+    if CyrusMeshMaskPreviewPending and CyrusMeshMaskPreviewTarget!=undefined do (
+        local target=CyrusMeshMaskPreviewTarget
+        CyrusMeshMaskPreviewPending=false
+        try(CyrusShowMeshMaskPreview target)catch(CyrusMeshMaskPreviewError=getCurrentException();redrawViews())
+    )
+)
+fn CyrusInvalidateMeshMaskPreview target = (
+    if target==CyrusMeshMaskPreviewTarget and target!=undefined do (
+        CyrusMeshMaskPreviewPending=true;CyrusMeshMaskPreviewError=""
+        if CyrusMeshMaskPreviewTimer==undefined do (
+            CyrusMeshMaskPreviewTimer=dotNetObject "System.Windows.Forms.Timer"
+            CyrusMeshMaskPreviewTimer.Interval=180
+            dotNet.addEventHandler CyrusMeshMaskPreviewTimer "Tick" CyrusMeshMaskPreviewTick
+        )
+        CyrusMeshMaskPreviewTimer.Stop();CyrusMeshMaskPreviewTimer.Start()
     )
 )
 fn CyrusShowMeshMaskPreview target = (
-    if not target.meshMaskEnabled do throw "Enable the mesh channel density mask first."
-    local node=undefined
-    for candidate in refs.dependentNodes target where isValidNode candidate and classof candidate.baseObject==AminScatterObject do node=candidate
-    if node==undefined do throw "The mesh mask owner is no longer in this scene."
-    local targets=target.validSurfaces(),rows=#()
+    local root=if target.overlapOwner==undefined then target else target.overlapOwner,node=CyrusRecipeOwnerNode root
+    CyrusRecipeCheckRoot root node
+    if findItem root.layerObjects target==0 do throw "The density layer is no longer in this scene."
+    -- A failed switch must never label another layer's cached field as this one.
+    if CyrusMeshMaskPreviewTarget!=target do CyrusMeshMaskPreviewRows=undefined
+    CyrusMeshMaskPreviewTarget=target;CyrusMeshMaskPreviewNode=node
+    try (
+    local targets=target.validSurfaces()
     if targets.count==0 do throw "Add a receiving surface first."
-    local perReceiver=amax 1 ((2048/targets.count) as integer),cfg=target.meshMaskPayload()
-    for receiver in targets do join rows (cyrusMeshDensityPreview receiver cfg perReceiver)
-    CyrusMeshMaskPreviewTarget=target;CyrusMeshMaskPreviewNode=node;CyrusMeshMaskPreviewRows=rows
-    redrawViews();rows.count
+    local image=if target.distributionMode==3 and CyrusMaskView!=2 then target.procDensityWeights() else undefined
+    local paint=#()
+    if target.paintEnabled and CyrusMaskView==3 do for area in target.paintAreas where area.paintSetEnabled and area.paintDocument!=undefined and findItem targets area.areaTarget>0 do (
+        append paint #(area.areaTarget,(cyrusBrushRecipeExport area.paintDocument)[1],area.paintDensity)
+    )
+    local rows=cyrusPrepareDensityOverlay targets (target.meshMaskPayload()) image (target.densityMappingPayload()) target.densityUVChannel (CyrusMaskView-1) #(4096,32768,131072)[CyrusMaskDetail] true (target.surfaceFilterPayload()) target.paintEnabled paint (target.areaInputs())
+    CyrusMeshMaskPreviewRows=rows;CyrusMeshMaskPreviewPending=false;CyrusMeshMaskPreviewError=""
+    redrawViews();(cyrusDensityOverlayInfo rows)[1]
+    )catch(CyrusMeshMaskPreviewPending=false;CyrusMeshMaskPreviewError=getCurrentException();redrawViews();throw())
 )
+
 global CyrusTimeOwners=#(),CyrusRegisterTimeOwner,CyrusResetTimeOwners,CyrusPruneTimeOwners
 fn CyrusRegisterTimeOwner node = (
     if isValidNode node and classof node.baseObject==AminScatterObject do appendIfUnique CyrusTimeOwners node
@@ -221,9 +255,9 @@ fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").Mous
 global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
 fn CyrusFallPack values = (local s=stringStream "";for i=1 to values.count do format "% %" values[i] (if i<values.count then "," else "") to:s;s as string)
 fn CyrusFallUnpack data = (for v in filterString data "," collect (v as float))
-global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0,CyrusFallGraphMeshMask=false
+global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0,CyrusFallGraphMeshMask=false,CyrusFallGraphImageMask=false
 global CyrusFallGraphOwnerRoot,CyrusFallGraphOwnerNode
-fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
+fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMask:false = (
     local bandRoot=undefined,bandNode=undefined
     if bandID>0 and findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
     for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject do (
@@ -236,7 +270,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
     if bandRoot==undefined do throw "The curve controller is no longer in this scene."
     if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
     rollout editor "Area Falloff - Edit Graph" width:760 height:505 (
-        local obj,area,isDensity=false,isMeshMask=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
+        local obj,area,isDensity=false,isMeshMask=false,isImageMask=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
         curveControl graph "" pos:[8,8] width:744 height:396 numCurves:1 x_range:[0,1] y_range:[0,100] commandMode:#move_xy asPopup:false
         button presetsButton "Presets..." pos:[12,464] width:120
         button applyButton "Apply" pos:[538,424] width:100
@@ -286,10 +320,10 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
                         invalidated=true;applyButton.enabled=false;help.text="This mesh mask owner was removed. Close and reopen its graph.";return false
                     )
                     if identity==lastGraphTrace do return true
-                    local changed=(CyrusFallPack (obj.meshMaskCurve()))!=packedValues
+                    local changed=(CyrusFallPack (if isImageMask then (if obj.densityResponseSamples.count==0 then #(0.0,1.0) else obj.densityResponseSamples as array) else obj.meshMaskCurve()))!=packedValues
                     undo "Cyrus mesh density curve" on (
-                        if changed do obj.meshMaskSamples=values
-                        obj.meshMaskGraph=packedGraph
+                        if isImageMask then (if changed do obj.densityResponseSamples=values;obj.densityResponseGraph=packedGraph)
+                        else (if changed do obj.meshMaskSamples=values;obj.meshMaskGraph=packedGraph)
                     )
                     lastGraphTrace=identity
                     if changed do CyrusViewportRedraw()
@@ -408,7 +442,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
         )
         on presetsButton pressed do try(CyrusOpenPresets ownerRoot obj (if isDensity then "density_curve" else "scale_curve") editor:editor)catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on editor open do (
-            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID;isMeshMask=CyrusFallGraphMeshMask
+            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID;isImageMask=CyrusFallGraphImageMask;isMeshMask=CyrusFallGraphMeshMask or isImageMask
             ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode;ownerLayerID=obj.layerID
             if ownerBandID>0 do (
                 local row=findItem obj.strokeIDs ownerBandID
@@ -418,10 +452,10 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
             editor.title=(if isDensity then "Area Density Falloff" else "Area Scale Falloff")+" - "+(if area==undefined then (if obj.isPaintArea then obj.paintSetName+" / Vector Border" else "Analyzer Boundary") else area.name)
             local row=bandTargetRow(),cfg=if ownerBandID>0 or isMeshMask then undefined else obj.getFallConfig area
             if ownerBandID>0 do (editor.title=(if isDensity then "Band Density - " else "Band Scale - ")+obj.bandName row;help.text="Band "+(ownerBandID as string)+". X: normalized Start to End. Y: "+(if isDensity then "density 0-100%." else "size percent; 100% = unchanged.")+" Drag applies on release.")
-            local packed=CyrusFallUnpack (if isMeshMask then obj.meshMaskGraph else if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity)
-            local values=if isMeshMask then obj.meshMaskCurve() else if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[row]) else cfg[if isDensity then 8 else 5]
+            local packed=CyrusFallUnpack (if isMeshMask then (if isImageMask then obj.densityResponseGraph else obj.meshMaskGraph) else if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity)
+            local values=if isMeshMask then (if isImageMask then (if obj.densityResponseSamples.count==0 then #(0.0,1.0) else obj.densityResponseSamples as array) else obj.meshMaskCurve()) else if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[row]) else cfg[if isDensity then 8 else 5]
             if isMeshMask do (
-                editor.title="Mesh Channel Density - "+(ownerRoot.layerCaption obj)
+                editor.title=(if isImageMask then "Image Density - " else "Mesh Channel Density - ")+(ownerRoot.layerCaption obj)
                 help.text="X: remapped channel value (after Invert). Y: planting eligibility 0-100%. Apply or release to update."
                 presetsButton.enabled=false
             )
@@ -478,7 +512,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
         on doneButton pressed do (storeCurve();destroyDialog editor)
         on editor close do (if curveTimer!=undefined do (curveTimer.Stop();dotNet.removeEventHandler curveTimer "Tick" flushCurve;curveTimer.Dispose();curveTimer=undefined);pendingCurve=false;storeCurve();CyrusFalloffGraph=undefined)
     )
-    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density;CyrusFallGraphBandID=bandID;CyrusFallGraphMeshMask=meshMask
+    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density;CyrusFallGraphBandID=bandID;CyrusFallGraphMeshMask=meshMask;CyrusFallGraphImageMask=imageMask
     CyrusFalloffGraph=editor
     CyrusFallGraphOwnerRoot=bandRoot;CyrusFallGraphOwnerNode=bandNode
     try(createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_minimizebox) pos:[200,160])catch(
@@ -542,7 +576,12 @@ global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskCo
 AminScatterOrientationFields=#(#alignNormal,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#sourceForwardAxes)
 global AminScatterGridFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter)
 AminScatterLayerFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterImageDensityFields=#(#densityCoordinateMode,#densityWrapMode,#densityTileXWU,#densityTileYWU,#densityTileLock,#densityRepeatX,#densityRepeatY,#densityHeading,#densityOffsetXWU,#densityOffsetYWU,#densityUOffset,#densityVOffset,#densityPatternID,#densityPatternRevision,#densityResponseSamples,#densityResponseGraph,#densityMapProvenance,#densityFrameBasis,#densityFrameOriginWU)
+join AminScatterLayerFields AminScatterImageDensityFields
 AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
+appendIfUnique AminScatterLayerTabs #densityResponseSamples
+appendIfUnique AminScatterLayerTabs #densityFrameBasis
+appendIfUnique AminScatterLayerTabs #densityFrameOriginWU
 fn CyrusReceiverVariationDomains owner = (
     local ids=owner.procReceiverIDs as array,domains=owner.procReceiverVariationIDs as array
     if ids.count>128 or ids.count!=owner.procReceiverNodes.count do throw "Receiver correspondence history is incomplete."
@@ -1322,11 +1361,11 @@ initialRollupState:0x8
         invertDensity type:#boolean default:false
         densityUVChannel type:#integer default:1
         densityResolution type:#integer default:128
-        on densityUVChannel set v do markInputDirty()
-        on densityResolution set v do markInputDirty()
-        on distributionMode set v do markInputDirty()
-        on densityMap set v do markInputDirty()
-        on invertDensity set v do markInputDirty()
+        on densityUVChannel set v do this.imageDensityChanged()
+        on densityResolution set v do this.imageDensityChanged()
+        on distributionMode set v do this.imageDensityChanged()
+        on densityMap set v do this.imageDensityChanged()
+        on invertDensity set v do this.imageDensityChanged()
     )
     parameters meshDensitySettings (
         meshMaskEnabled type:#boolean default:false
@@ -1347,7 +1386,7 @@ initialRollupState:0x8
     )
     fn meshMaskCurve = (if meshMaskSamples.count==0 then #(0.0,1.0) else meshMaskSamples as array)
     fn meshMaskPayload = (#(meshMaskEnabled,meshMaskChannel,meshMaskComponent,meshMaskMinimum,meshMaskMaximum,meshMaskInvert,this.meshMaskCurve()))
-    fn meshMaskChanged = (CyrusClearMeshMaskPreview this;markInputDirty())
+    fn meshMaskChanged = (CyrusInvalidateMeshMaskPreview this;markInputDirty())
     parameters diversitySettings (
         diversityMode type:#integer default:1
         diversitySize type:#worldUnits default:10
@@ -2192,7 +2231,7 @@ initialRollupState:0x8
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry
                 if cached!=undefined then (receiverRows=cached[3];receiverNormals=cached[4];procReceiverHits+=1)
                 else if receiverCount>0 do (
-                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if distributionMode==3 then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined))
+                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if this.requiresDensityUV() then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined),this.densityMappingPayload())
                     local generated
                     generated=cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     receiverRows=generated[1];receiverNormals=generated[2]
@@ -2239,7 +2278,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.86.0"
+    fn uiVersion = "0.86.2"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2315,16 +2354,16 @@ initialRollupState:0x8
         altitudeMaximum type:#worldUnits default:1000
         altitudeLowerFade type:#worldUnits default:0
         altitudeUpperFade type:#worldUnits default:0
-        on slopeEnabled set value do markInputDirty()
-        on slopeMinimum set value do markInputDirty()
-        on slopeMaximum set value do markInputDirty()
-        on slopeLowerFade set value do markInputDirty()
-        on slopeUpperFade set value do markInputDirty()
-        on altitudeEnabled set value do markInputDirty()
-        on altitudeMinimum set value do markInputDirty()
-        on altitudeMaximum set value do markInputDirty()
-        on altitudeLowerFade set value do markInputDirty()
-        on altitudeUpperFade set value do markInputDirty()
+        on slopeEnabled set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeMinimum set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeMaximum set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeLowerFade set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on slopeUpperFade set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeEnabled set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeMinimum set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeMaximum set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeLowerFade set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+        on altitudeUpperFade set value do (CyrusInvalidateMeshMaskPreview this;markInputDirty())
     )
     fn surfaceFilterPayload = (for key in AminScatterSurfaceFilterFields collect getProperty this key)
     fn surfaceFilterKey = (
@@ -2407,6 +2446,70 @@ initialRollupState:0x8
         on gridHeading set value do markInputDirty()
         on gridJitter set value do markInputDirty()
     )
+    -- Append a parameter block: existing saved parameter block IDs stay intact.
+    parameters imageDensitySettings (
+        densityCoordinateMode type:#integer default:0
+        densityWrapMode type:#integer default:0
+        densityTileXWU type:#worldunits default:100
+        densityTileYWU type:#worldunits default:100
+        densityTileLock type:#boolean default:true
+        densityRepeatX type:#float default:1
+        densityRepeatY type:#float default:1
+        densityHeading type:#float default:0
+        densityOffsetXWU type:#worldunits default:0
+        densityOffsetYWU type:#worldunits default:0
+        densityUOffset type:#float default:0
+        densityVOffset type:#float default:0
+        densityPatternID type:#string default:""
+        densityPatternRevision type:#string default:""
+        densityResponseSamples type:#floatTab tabSize:0 tabSizeVariable:true
+        densityResponseGraph type:#string default:""
+        densityMapProvenance type:#string default:""
+        densityFrameBasis type:#floatTab tabSize:0 tabSizeVariable:true
+        densityFrameOriginWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        on densityCoordinateMode set v do this.imageDensityChanged()
+        on densityWrapMode set v do this.imageDensityChanged()
+        on densityTileXWU set v do this.imageDensityChanged()
+        on densityTileYWU set v do this.imageDensityChanged()
+        on densityTileLock set v do this.imageDensityChanged()
+        on densityRepeatX set v do this.imageDensityChanged()
+        on densityRepeatY set v do this.imageDensityChanged()
+        on densityHeading set v do this.imageDensityChanged()
+        on densityOffsetXWU set v do this.imageDensityChanged()
+        on densityOffsetYWU set v do this.imageDensityChanged()
+        on densityUOffset set v do this.imageDensityChanged()
+        on densityVOffset set v do this.imageDensityChanged()
+        on densityResponseSamples set v i do this.imageDensityChanged()
+        on densityFrameBasis set v i do this.imageDensityChanged()
+        on densityFrameOriginWU set v i do this.imageDensityChanged()
+    )
+    local densityNotifiedFrame=undefined
+    fn imageDensityChanged = (CyrusInvalidateMeshMaskPreview this;markInputDirty())
+    fn densityFrameChanged = (
+        if distributionMode!=3 or densityCoordinateMode!=2 do return false
+        local frame=(this.densityMappingPayload())[10]
+        if densityNotifiedFrame!=undefined and frame==densityNotifiedFrame do return false
+        densityNotifiedFrame=copy frame
+        this.imageDensityChanged();true
+    )
+    fn requiresDensityUV = (distributionMode==3 and densityCoordinateMode==0)
+    fn densityProjectionFrame = (
+        local controller=if overlapOwner==undefined then this else overlapOwner
+        local node=CyrusRecipeOwnerNode controller,offset=matrix3 1
+        if densityFrameBasis.count!=0 or densityFrameOriginWU.count!=0 do (
+            if densityFrameBasis.count!=9 or densityFrameOriginWU.count!=3 do throw "Image projection frame is incomplete."
+            local b=densityFrameBasis,o=densityFrameOriginWU
+            offset=matrix3 [b[1],b[2],b[3]] [b[4],b[5],b[6]] [b[7],b[8],b[9]] [o[1],o[2],o[3]]
+        )
+        local frame=offset*node.objectTransform
+        if abs(dot frame.row1 (cross frame.row2 frame.row3))<1e-12 do throw "Image projection frame is singular."
+        frame
+    )
+    fn densityMappingPayload = (
+        local frame=if densityCoordinateMode==2 then inverse (this.densityProjectionFrame()) else matrix3 1
+        #(densityCoordinateMode,densityWrapMode,densityTileXWU,(if densityTileLock then densityTileXWU else densityTileYWU),densityRepeatX,(if densityTileLock then densityRepeatX else densityRepeatY),densityHeading,(if densityCoordinateMode==0 then densityUOffset else densityOffsetXWU),(if densityCoordinateMode==0 then densityVOffset else densityOffsetYWU),frame,(if densityResponseSamples.count==0 then #(0.0,1.0) else densityResponseSamples as array))
+    )
+
     local procGridCache=#()
     fn gridPayload = (for key in AminScatterGridFields collect getProperty this key)
     fn gridKey = (cyrusGridKey (this.gridPayload()))
@@ -2468,7 +2571,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -2740,7 +2843,7 @@ initialRollupState:0x8
         for area in paintAreas do (area.setOverlapOwner overlapOwner;area.checkPaintRevision())
         if paintDocument!=undefined do (
             local state=cyrusBrushStats paintDocument
-            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];markInputDirty();if isPaintArea and overlapOwner!=undefined do (overlapOwner.logicalParent this).markInputDirty())
+            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];markInputDirty();if isPaintArea and overlapOwner!=undefined do (local parent=overlapOwner.logicalParent this;CyrusInvalidateMeshMaskPreview parent;parent.markInputDirty()))
         )
     )
     fn paintKey = (
@@ -2760,6 +2863,7 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
+            if distributionMode==3 do format "ImageMapping:%|" (this.densityMappingPayload()) to:stream
             format "MeshMask:%|" (if meshMaskEnabled then this.meshMaskPayload() else #(false)) to:stream
             for key in AminScatterLayerFields where findItem AminScatterGridFields key==0 and (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterOrientationFields key==0 and findItem AminScatterSurfaceFilterFields key==0 and findItem AminScatterMeshMaskFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and ((not receiverLocal and placementMode==1) or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
@@ -2835,7 +2939,7 @@ initialRollupState:0x8
 
     -- One bounded map-only bake, independent of receiver geometry and selected UVs.
     -- A failed successor never replaces a complete sampled image.
-    fn densityCacheStats = (#(procDensityBakes,procDensityHits,procDensityInversions,procDensityBakeMs,if procDensityCache.count==0 then 0 else procDensityCache[5].count+(if procDensityCache[6]==undefined then 0 else procDensityCache[6].count)))
+    fn densityCacheStats = (#(procDensityBakes,procDensityHits,procDensityInversions,procDensityBakeMs,if procDensityCache.count==0 then 0 else (cyrusDensityImageCount procDensityCache[5])+(if procDensityCache[6]==undefined then 0 else cyrusDensityImageCount procDensityCache[6])))
     fn procDensityWeights = (
         if densityMap==undefined do throw "Choose a density texture map."
         if densityUVChannel<1 or densityUVChannel>99 do throw "Density UV channel must be 1..99."
@@ -2849,11 +2953,7 @@ initialRollupState:0x8
             try (
                 image=renderMap densityMap size:[densityResolution,densityResolution]
                 if image==undefined do throw "Density map could not be sampled."
-                weights.count=densityResolution*densityResolution
-                local index=1
-                for y=0 to densityResolution-1 do for c in (getPixels image [0,y] densityResolution) do (
-                    weights[index]=amin 1.0 (amax 0.0 ((c.r*0.2126+c.g*0.7152+c.b*0.0722)/255.0));index+=1
-                )
+                weights=cyrusCaptureDensityImage image
                 close image;image=undefined
             )catch(CyrusMeasureEnd measurement layerID procEpoch "map_bake_failed" failed:true;if image!=undefined do try(close image)catch();throw())
             CyrusMeasureEnd measurement layerID procEpoch "map_baked"
@@ -2861,7 +2961,7 @@ initialRollupState:0x8
             procDensityCache=cached;procDensityBakes+=1;procDensityBakeMs=timeStamp()-started
         )
         if not invertDensity do return cached[5]
-        if cached[6]==undefined do (cached[6]=for weight in cached[5] collect (1-weight);procDensityInversions+=1)
+        if cached[6]==undefined do (cached[6]=cyrusDensityImageInvert cached[5];procDensityInversions+=1)
         cached[6]
     )
     fn procWatchDensity = (
@@ -3151,13 +3251,13 @@ initialRollupState:0x8
         procReceiverGeometry=#()
         for node in this.validSurfaces() do (
             local slot=findItem procReceiverNodes node
-            local geometry=cyrusProceduralSurfaceKey #(node) (distributionMode==3) densityUVChannel
+            local geometry=cyrusProceduralSurfaceKey #(node) (this.requiresDensityUV()) densityUVChannel
             append procReceiverGeometry #(slot,geometry,(if meshMaskEnabled then cyrusMeshDensityKey node (this.meshMaskPayload()) else "off"))
             if placementMode==1 then append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
             else (
                 local key=geometry+"|UV:"+(distributionMode as string)+":"+(densityUVChannel as string)+"|"+placementKey+"|"+domains[slot]+"|"+((this.effectiveSeed()) as string),snapshot=undefined
                 for entry in procGridCache where entry[1]==slot and entry[2]==key do snapshot=entry[3]
-                if snapshot==undefined do snapshot=cyrusGridPrepare node (this.gridPayload()) (this.effectiveSeed()) domains[slot] (distributionMode==3) densityUVChannel (remaining-gridCells)
+                if snapshot==undefined do snapshot=cyrusGridPrepare node (this.gridPayload()) (this.effectiveSeed()) domains[slot] (this.requiresDensityUV()) densityUVChannel (remaining-gridCells)
                 local info=cyrusGridSnapshotInfo snapshot
                 gridCells+=info[1]
                 if gridCells>remaining do throw "Grid cells exceed this setup's remaining candidate budget. Increase spacing or reduce the terrain domain. The previous result is retained."
@@ -3390,7 +3490,7 @@ initialRollupState:0x8
                 if orientationTargetObserved[1]==getHandleByAnim orientationTarget and orientationTargetObserved[2]==orientationTarget.transform.row4 do targetAffected=false
             )
         )
-        if affected then (CyrusClearMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
+        if affected then (CyrusInvalidateMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
         else if targetAffected do markInputDirty()
         CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else if targetAffected then "orientation_target" else "unrelated") correlation:(if affected or targetAffected then diagnosticCauseID else 0L)
         affected or targetAffected
@@ -3500,21 +3600,22 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.2 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.0 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.0 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.2 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.2 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.2 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -4293,7 +4394,8 @@ initialRollupState:0x8
         button copyButton "Copy" pos:[8,204] width:((flow_layersUI.width-22)/2) tooltip:"Copy this layer, its models, surfaces and Paint Areas."
         button removeButton "Remove" pos:[(flow_layersUI.width/2+3),204] width:((flow_layersUI.width-22)/2) tooltip:"Remove this layer and its Paint Areas. Undo restores them."
         colorpicker layerColor "" color:(color 100 220 120) pos:[8,238] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Identification color for this layer. Choose Layer colors in Viewport & render to display it."
-        edittext nameEdit "Name:" pos:[8,236] width:(flow_layersUI.width-16) tooltip:"Rename the selected layer without changing its identity."
+        label nameLabel "Name:" pos:[8,236] width:80
+        edittext nameEdit "" pos:[8,262] width:(flow_layersUI.width-16) tooltip:"Rename the selected layer without changing its identity."
         checkbox visibleCheck "Visible in viewport" pos:[8,264] width:(flow_layersUI.width-16) tooltip:"Hide display only. Hidden layers still calculate and affect spacing."
         checkbox enabledCheck "Enabled in output" pos:[8,288] width:(flow_layersUI.width-16) tooltip:"Include this layer in calculation and final output."
         button upButton "Move up" pos:[8,318] width:((flow_layersUI.width-22)/2) tooltip:"Evaluate earlier; earlier layers occupy space first."
@@ -4425,7 +4527,8 @@ initialRollupState:0x8
         local groupPalette=#()
         local loadingColor=false
         local focusedRow=0
-        edittext sourceName "Name:" text:"" pos:[4,116] width:(selected_sourceUI.width-8) tooltip:"Label inside Scatter only. Clear it to use the scene object's name."
+        label sourceNameLabel "Name:" width:80
+        edittext sourceName "" text:"" pos:[4,116] width:(selected_sourceUI.width-8) tooltip:"Full model label inside Scatter. Clear it to use the scene object's name. Long list names are shortened for display only."
         colorpicker idColor "" color:(color 100 220 120) pos:[4,118] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Viewport identification color. This does not change clustering or model frequency."
         multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(selected_sourceUI.width-8)
         button selectFromScene "Choose from list..." pos:[4,170] width:((selected_sourceUI.width-12)/2) tooltip:"Choose one or more source models by name."
@@ -4719,21 +4822,46 @@ initialRollupState:0x8
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Requested plants per square metre; capped at 1,000,000 per layer. All layers and retries share the Scatter's 1,000,000 candidate limit."
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,92] tooltip:"Deterministic generation seed. Changing it can invalidate existing Edit bindings."
         label densityHeading "Texture density" pos:[4,180] width:(selected_distributionUI.width-8)
-        mapbutton densityButton "Choose density map" pos:[4,204] width:(selected_distributionUI.width-8) tooltip:"Use the selected receiver UV channel: white permits candidates; black excludes them. UVs clamp to 0..1."
+        mapbutton densityButton "Map" pos:[4,204] width:70 tooltip:"Choose a 3ds Max texture map such as Noise or Bitmap, or drag one from the Material Editor. A material itself is not a density mask."
+        button mapBrowseButton "Map" width:70 tooltip:"Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor."
         checkbox invertCheck "Invert density" pos:[4,234] width:(selected_distributionUI.width-8) tooltip:"Reverse the density map's white and black eligibility."
         spinner uvChannelSpin "UV channel:" type:#integer range:[1,99,1] width:(selected_distributionUI.width-8) fieldWidth:82 tooltip:"Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result."
         dropdownlist resolutionList "Map resolution" items:#("64 x 64","128 x 128","256 x 256","512 x 512") selection:2 width:(selected_distributionUI.width-8) tooltip:"Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128."
         label uvHint "UVs clamp to 0..1" pos:[4,260] width:(selected_distributionUI.width-8)
         label mapHint "White: dense / Black: empty" pos:[4,282] width:(selected_distributionUI.width-8)
-        checkbox meshCheck "Use mesh channel mask" tooltip:"Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters."
+        checkbox imageCheck "Use image" tooltip:"Enable the chosen pattern, image or texture map. White permits plants; black excludes them. Independent of the mesh-channel mask."
+        button patternButton "Choose pattern..." width:100 tooltip:"Browse original Cyrus masks. Choosing one changes only image density."
+        button imageButton "Image" width:70 tooltip:"Choose an image file, read as linear density data."
+        imgTag imageThumbnail "" width:72 height:72 style:#bmp_stretch transparent:(color 255 0 255) tooltip:"Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field."
+        label imageState "" width:(selected_distributionUI.width-8) height:36
+        dropdownlist coordinatesList "Coordinates" items:#("World XY","Scatter local XY","Receiver UV") selection:1 width:(selected_distributionUI.width-8) tooltip:"World and Scatter-local use physical tile sizes without receiver UVs. Receiver UV reads the UV channel chosen below."
+        checkbox tileLockCheck "Lock X / Y size" checked:true tooltip:"Use equal physical sizes or UV repeats in both axes."
+        dropdownlist wrappingList "Tile edges" items:#("Clamp","Repeat") selection:2 width:(selected_distributionUI.width-8) tooltip:"Repeat wraps the pattern across seams. Clamp extends its outside pixels."
+        button imageCurveButton "Density curve..." width:(selected_distributionUI.width-8) tooltip:"Remap image values after inversion. Height is planting eligibility."
+        button bakeImageButton "Bake portable snapshot..." width:(selected_distributionUI.width-8) tooltip:"Explicitly replace a live map with a saved 2D image tile for portable recipes. Undo restores the original graph."
+        dropdownlist maskViewList "Mask view" items:#("Image only","Mesh channel only","Combined density") selection:3 width:(selected_distributionUI.width-8) tooltip:"Combined includes image, mesh density, Paint, include/exclude areas and terrain eligibility before collisions, spacing and count limits."
+        dropdownlist maskDetailList "Preview detail" items:#("Low","Medium","High") selection:2 width:(selected_distributionUI.width-8) tooltip:"Bounded surface tessellation independent of plant count. Increase for dense meshes."
+        spinner opacitySpin "Opacity %:" range:[0,100,80] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Change mask visibility only; plants are unchanged."
+        checkbox markersCheck "Show sample markers" tooltip:"Diagnostic samples in place of the continuous surface mask. Does not change planting."
+        dropdownlist markerSizeList "Marker size" items:#("Tiny pixel","Small dot","Large dot") selection:1 width:(selected_distributionUI.width-8) tooltip:"Diagnostic marker size only. Does not resample the field or recalculate plants."
+        spinner tileXSpin "Tile X:" type:#worldunits range:[0.0001,1e9,100] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Physical width of one tile. Image resolution changes detail, not size."
+        spinner tileYSpin "Tile Y:" type:#worldunits range:[0.0001,1e9,100] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Physical height when size is unlocked."
+        spinner repeatXSpin "Repeat U:" type:#float range:[0.0001,1e6,1] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Image repetitions per UV unit."
+        spinner repeatYSpin "Repeat V:" type:#float range:[0.0001,1e6,1] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"V repetitions when unlocked."
+        spinner headingSpin "Rotation:" type:#float range:[-36000,36000,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Pattern rotation in degrees about the projection origin."
+        spinner offsetXSpin "Offset X:" type:#worldunits range:[-1e9,1e9,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Shift the projection origin in scene units before rotation."
+        spinner offsetYSpin "Offset Y:" type:#worldunits range:[-1e9,1e9,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Shift the projection origin in scene units before rotation."
+        spinner offsetUSpin "Offset U:" type:#float range:[-1e6,1e6,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Shift the UV origin before rotation and repeats."
+        spinner offsetVSpin "Offset V:" type:#float range:[-1e6,1e6,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Shift the UV origin before rotation and repeats."
+        checkbox meshCheck "Use mesh channel" tooltip:"Use numeric data from Data Channel or VertexPaint on the terrain. Channel 0 reads vertex colors; numbered channels read their stored values. White permits; black excludes."
         spinner meshChannelSpin "Channel:" type:#integer range:[0,99,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"0 reads vertex colors; 1..99 read numbered mesh map channels. These are values, independent of density UV coordinates."
         dropdownlist meshComponentList "Component" items:#("R / X","G / Y","B / Z") selection:1 width:(selected_distributionUI.width-8) tooltip:"Read one component of the selected mesh channel. Match Data Channel's Vertex Output component."
         spinner meshMinSpin "Input min:" range:[-1e9,1e9,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max."
         spinner meshMaxSpin "Input max:" range:[-1e9,1e9,1] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp."
         checkbox meshInvertCheck "Invert mesh mask" tooltip:"Reverse the normalized channel values before applying the Density curve."
         button meshCurveButton "Density curve..." width:(selected_distributionUI.width-8) tooltip:"Remap normalized mesh values into planting eligibility. Left is 0; right is 1."
-        button meshPreviewButton "Preview mask" width:82 tooltip:"Read a snapshot of the current mask as at most 2,048 grayscale face-centre markers. White permits plants; black excludes. Refresh after edits."
-        button meshHideButton "Hide preview" width:82 tooltip:"Hide the cached mesh mask markers without recalculating plants."
+        button meshPreviewButton "Show mask" width:82 tooltip:"Show the density mask. Relevant edits refresh it while enabled; Manual plants wait for Update."
+        button meshHideButton "Hide mask" width:82 tooltip:"Hide the density mask without recalculating plants."
         label meshHint "Data Channel / VertexPaint. White: permitted; black: excluded. Preview shows current inputs; Manual plants wait for Update." width:(selected_distributionUI.width-8) height:48
 
         fn arrangePopulation = (
@@ -4747,9 +4875,56 @@ initialRollupState:0x8
             populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;uvChannelSpin.value=obj.densityUVChannel;resolutionList.selection=findItem #(64,128,256,512) obj.densityResolution
             meshCheck.checked=obj.meshMaskEnabled;meshChannelSpin.value=obj.meshMaskChannel;meshComponentList.selection=obj.meshMaskComponent
             meshMinSpin.value=obj.meshMaskMinimum;meshMaxSpin.value=obj.meshMaskMaximum;meshInvertCheck.checked=obj.meshMaskInvert
-            for c in #(meshChannelSpin,meshComponentList,meshMinSpin,meshMaxSpin,meshInvertCheck,meshCurveButton,meshPreviewButton) do c.enabled=obj.meshMaskEnabled
+            for c in #(meshChannelSpin,meshComponentList,meshMinSpin,meshMaxSpin,meshInvertCheck,meshCurveButton) do c.enabled=obj.meshMaskEnabled
+            imageCheck.checked=obj.distributionMode==3;coordinatesList.selection=findItem #(1,2,0) obj.densityCoordinateMode
+            tileLockCheck.checked=obj.densityTileLock;wrappingList.selection=obj.densityWrapMode+1
+            densityButton.text="Map"
+            imageState.text=if obj.densityMap==undefined then "" else obj.densityMap.name
+            imageState.tooltip=if obj.densityMap==undefined then "Choose a pattern, Image or Map." else obj.densityMap.name+". Use Show mask to inspect the evaluated density. More settings contains portable snapshot baking."
+            -- ImgTag supports clearing with undefined and scales the entire tile.
+            -- Browsing must not render procedural maps or create resized pixel copies.
+            imageThumbnail.bitmap=if classof obj.densityMap==Bitmaptexture then try(obj.densityMap.bitmap)catch(undefined) else undefined
+            maskViewList.selection=CyrusMaskView;maskDetailList.selection=CyrusMaskDetail;opacitySpin.value=CyrusMaskOpacity;markersCheck.checked=CyrusMaskMarkers;markerSizeList.selection=CyrusMaskMarkerSize
+            tileXSpin.value=obj.densityTileXWU
+            tileYSpin.value=obj.densityTileYWU
+            repeatXSpin.value=obj.densityRepeatX
+            repeatYSpin.value=obj.densityRepeatY
+            headingSpin.value=obj.densityHeading
+            offsetXSpin.value=obj.densityOffsetXWU
+            offsetYSpin.value=obj.densityOffsetYWU
+            offsetUSpin.value=obj.densityUOffset
+            offsetVSpin.value=obj.densityVOffset
             arrangePopulation()
         )
+        fn setImage key value = (
+            if controlsReady and not binding and obj!=undefined do (
+                local target=obj
+                undo "Cyrus image density" on setProperty target key value
+                binding=true;syncControls();binding=false;CyrusViewportRedraw()
+            )
+        )
+        on imageCheck changed value do setImage #distributionMode (if value then 3 else 1)
+        on patternButton pressed do if controlsReady and not binding do try(CyrusChooseDensityPattern obj)catch(messageBox (getCurrentException()) title:"Cyrus patterns")
+        on imageButton pressed do if controlsReady and not binding do try(CyrusLoadDensityImage obj)catch(messageBox (getCurrentException()) title:"Cyrus image")
+        on bakeImageButton pressed do if controlsReady and not binding do try(CyrusBakeDensityImage obj)catch(messageBox (getCurrentException()) title:"Cyrus snapshot")
+        on coordinatesList selected value do setImage #densityCoordinateMode #(1,2,0)[value]
+        on tileLockCheck changed value do setImage #densityTileLock value
+        on wrappingList selected value do setImage #densityWrapMode (value-1)
+        on imageCurveButton pressed do if controlsReady and not binding do CyrusOpenFalloffGraph obj undefined true imageMask:true
+        on maskViewList selected value do if controlsReady and not binding do (CyrusMaskView=value;CyrusInvalidateMeshMaskPreview obj)
+        on maskDetailList selected value do if controlsReady and not binding do (CyrusMaskDetail=value;CyrusInvalidateMeshMaskPreview obj)
+        on opacitySpin changed value do if controlsReady and not binding do (CyrusMaskOpacity=value;redrawViews())
+        on markersCheck changed value do if controlsReady and not binding do (CyrusMaskMarkers=value;redrawViews())
+        on markerSizeList selected value do if controlsReady and not binding do (CyrusMaskMarkerSize=value;redrawViews())
+        on tileXSpin changed value do setImage #densityTileXWU value
+        on tileYSpin changed value do setImage #densityTileYWU value
+        on repeatXSpin changed value do setImage #densityRepeatX value
+        on repeatYSpin changed value do setImage #densityRepeatY value
+        on headingSpin changed value do setImage #densityHeading value
+        on offsetXSpin changed value do setImage #densityOffsetXWU value
+        on offsetYSpin changed value do setImage #densityOffsetYWU value
+        on offsetUSpin changed value do setImage #densityUOffset value
+        on offsetVSpin changed value do setImage #densityVOffset value
         fn setMeshMask key value = (
             if controlsReady and not binding and obj!=undefined do (
                 local target=obj
@@ -4772,7 +4947,20 @@ initialRollupState:0x8
 
         on populationRadio changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.populationMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on densitySpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.plantsPerM2=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on densityButton picked v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.densityMap=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        fn assignDensityMap target v = (
+            undo "Cyrus density map" on (
+                target.densityMap=v
+                if v!=undefined do target.distributionMode=3
+                target.densityPatternID="";target.densityPatternRevision="";target.densityMapProvenance=""
+                target.markInputDirty()
+            )
+            binding=true;syncControls();binding=false;CyrusViewportRedraw()
+        )
+        on densityButton picked v do if controlsReady and not binding and obj!=undefined do assignDensityMap obj v
+        on mapBrowseButton pressed do if controlsReady and not binding and obj!=undefined do (
+            local target=obj,value=materialBrowseDlg #maps #instanceOnly
+            if value!=undefined do assignDensityMap target value
+        )
         on invertCheck changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.invertDensity=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on uvChannelSpin changed v do if controlsReady and not binding and obj!=undefined do (
             local target=obj
@@ -6323,6 +6511,7 @@ fn AminScatterLiveChanged event handles = (
                 if leaf.procExternalChanged event nodes deletedHandles:handles do redraw=true
             )
             if findItem nodes n>0 do (
+                for leaf in n.baseObject.layerObjects do if leaf.densityFrameChanged() do redraw=true
                 n.baseObject.layerEntries includeDisabled:true
                 CyrusScheduleUI()
                 if n.baseObject.updateMode==2 and (for leaf in n.baseObject.layerObjects where leaf.dirty collect leaf).count>0 do redraw=true
@@ -6544,9 +6733,9 @@ fn CyrusRetainedMeshDrawing enabled = (
 callbacks.removeScripts id:#CyrusRetainedPoints
 callbacks.addScript #filePreSaveProcess "CyrusPointBeforeSave()" id:#CyrusRetainedPoints
 callbacks.addScript #filePostSaveProcess "CyrusPointAfterSave()" id:#CyrusRetainedPoints
-callbacks.addScript #filePreOpenProcess "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
-callbacks.addScript #systemPreReset "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
-callbacks.addScript #systemPreNew "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #filePreOpenProcess "CyrusClearMeshMaskPreview undefined;CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPreReset "CyrusClearMeshMaskPreview undefined;CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPreNew "CyrusClearMeshMaskPreview undefined;CyrusPointBeforeScene()" id:#CyrusRetainedPoints
 callbacks.addScript #filePostOpenProcess "CyrusPointAfterScene()" id:#CyrusRetainedPoints
 callbacks.addScript #systemPostReset "CyrusPointAfterScene()" id:#CyrusRetainedPoints
 callbacks.addScript #systemPostNew "CyrusPointAfterScene()" id:#CyrusRetainedPoints
@@ -6623,7 +6812,7 @@ fn CyrusDensityMapChanged texture = (
     local changed=false
     for node in objects where classof node.baseObject==AminScatterObject do (
         for leaf in (#(node.baseObject)+node.baseObject.layerObjects) where leaf.procDensityMap==texture do (
-            leaf.procDensityRevision+=1;leaf.markInputDirty();changed=true
+            leaf.procDensityRevision+=1;CyrusInvalidateMeshMaskPreview leaf;leaf.markInputDirty();changed=true
         )
     )
     if changed do ((CyrusPointPending=true;CyrusScheduleRelease());CyrusScheduleUI())
@@ -6633,21 +6822,24 @@ callbacks.removeScripts id:#CyrusInputTimeOwners
 callbacks.addScript #filePostOpen "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
 callbacks.addScript #filePostMerge "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
 callbacks.addScript #systemPostReset "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
-callbacks.addScript #sceneUndo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
-callbacks.addScript #sceneRedo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #sceneUndo "CyrusResetTimeOwners();CyrusInvalidateMeshMaskPreview CyrusMeshMaskPreviewTarget" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #sceneRedo "CyrusResetTimeOwners();CyrusInvalidateMeshMaskPreview CyrusMeshMaskPreviewTarget" id:#CyrusInputTimeOwners persistent:false
 callbacks.addScript #nodeCreated "CyrusRegisterTimeOwner (callbacks.notificationParam())" id:#CyrusInputTimeOwners persistent:false
 CyrusResetTimeOwners()
 
 -- Explicit mask-preview snapshots. Redraw only consumes cached numeric markers.
 try(unregisterRedrawViewsCallback CyrusMeshMaskViewportDraw)catch()
 fn CyrusMeshMaskViewportDraw = (
-    if CyrusMeshMaskPreviewRows.count>0 do (
-        local valid=isValidNode CyrusMeshMaskPreviewNode and not CyrusMeshMaskPreviewNode.isHidden
+    if CyrusMeshMaskPreviewTarget!=undefined do (
+        local valid=isValidNode CyrusMeshMaskPreviewNode
         if valid do valid=findItem CyrusMeshMaskPreviewNode.baseObject.layerObjects CyrusMeshMaskPreviewTarget>0
         if valid then (
-            gw.setTransform (matrix3 1)
-            for row in CyrusMeshMaskPreviewRows do (local v=row[2]*255.0;gw.marker row[1] #smallDiamond color:(color v v v))
-            gw.enlargeUpdateRect #whole
+            if not CyrusMeshMaskPreviewNode.isHidden do (
+                gw.setTransform (matrix3 1)
+                if CyrusMeshMaskPreviewRows!=undefined do cyrusDrawDensityOverlay CyrusMeshMaskPreviewRows (CyrusMaskOpacity/100.0) CyrusMaskMarkers CyrusMaskMarkerSize
+                if CyrusMeshMaskPreviewError!="" do gw.text CyrusMeshMaskPreviewNode.pos "Mask refresh failed; cached mask is stale." color:(color 255 140 60)
+                gw.enlargeUpdateRect #whole
+            )
         ) else CyrusClearMeshMaskPreview undefined
     )
 )

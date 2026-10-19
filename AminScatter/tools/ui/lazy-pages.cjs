@@ -23,7 +23,9 @@ module.exports=function(page,index){
  let body=page.text.replace(new RegExp('rollout '+name+' "[^"\\n]*"'), 'rollout '+name+' ""');
  body=body.replace('local layout,lastLayoutWidth=0','local hostPage=undefined\n        local layout,lastLayoutWidth=0');
  body=body.replace('panel=this.mainUI;root=undefined;controlsReady=false','controlsReady=false');
- body=body.replaceAll('amax 140 '+name+'.width','amax 100 (amin (hostPage.width-8) (windows.getWindowPos '+name+'.hwnd removeUIScaling:true).w)');
+ // The inner #cmdPanel HWND can exceed its visible subrollout clipping area.
+ // Respect the shell's usable width as well as the child's logical UI width.
+ body=body.replaceAll('amax 140 '+name+'.width','amax 64 (amin (hostPage.width-8) (windows.getWindowPos '+name+'.hwnd removeUIScaling:true).w)');
  body=body.replace(new RegExp('        on '+name+' rolledUp[^\\n]*'), '');
  body=body.replace(name+'.open,#(', '(if hostPage==undefined then false else hostPage.open),#(');
  body=body.replace(name+'.open=state[1]', 'if state[2]==undefined do return true');

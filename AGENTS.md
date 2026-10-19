@@ -26,6 +26,13 @@ performance measurements and Computer Use. Do not build for, launch or test Max
 dual-version plans and checklists. Preserve historical Max 2026 receipts; new
 Max 2027 passes establish qualification for Max 2027 only.
 
+**Explicit exception — 0.86.1 and 0.86.2 compatibility deliveries:** the user requests installer compatibility
+with Max 2024, 2026 and 2027. Build distinct matched SDK/native/managed payloads
+and qualify this delivery in owned profiles for those three hosts. Do not infer
+Max 2025 or earlier-version support. Preserve the default Max 2027 development
+rule outside this requested compatibility scope and do not install into artist
+profiles or restart their sessions.
+
 From the repository root:
 
 ```powershell

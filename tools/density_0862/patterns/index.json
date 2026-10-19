@@ -1,0 +1,42 @@
+{
+  "format": "cyrus.density-patterns",
+  "version": 1,
+  "generator": "generate_density_patterns.py/1",
+  "ownership": "Original Cyrus mathematical generation; no vendor image inputs.",
+  "interpretation": "linear scalar density; image top is v=1",
+  "entries": [
+    {
+      "id": "uniform",
+      "name": "Uniform",
+      "family": "Uniform",
+      "file": "uniform.png",
+      "sha256": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+      "width": 256,
+      "height": 256,
+      "minimum": 1.0,
+      "maximum": 1.0
+    },
+    {
+      "id": "soft-patches",
+      "name": "Soft patches",
+      "family": "Patches",
+      "file": "soft-patches.png",
+      "sha256": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+      "width": 256,
+      "height": 256,
+      "minimum": 0.09019607843137255,
+      "maximum": 1.0
+    },
+    {
+      "id": "wide-bands",
+      "name": "Wide bands",
+      "family": "Bands",
+      "file": "wide-bands.png",
+      "sha256": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+      "width": 256,
+      "height": 256,
+      "minimum": 0.0,
+      "maximum": 1.0
+    }
+  ]
+}

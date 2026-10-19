@@ -1,10 +1,10 @@
-# Cyrus Library — 0.85.3 workflow
+# Cyrus Library â€” 0.86.2 workflow
 
-This retains the [0.85.2 navigation/scale correction](UI_CORRECTION_0852.md) and adds [0.85.3 ready presets](LOAD_0853.md). Its handoff contains the current package, tests and artist checklist.
+The [current delivery report](DELIVERY_0862.md) owns package identities, qualification and limits. Earlier navigation and static asset contracts remain supported where not superseded here.
 
 ## Browse collections
 
-Open **Layers > Recipes**. The left tree chooses **My recipes**, **Bundled examples** or a **Custom library**. A library opens its collection tiles; open a tile or choose **All recipes** to see individual previews. Search, compact-list/thumbnail view and three tile sizes are in the toolbar. The window resizes. Max’s default scale uses normal-size text and tiles; configured 150% also scales the library. Choose Small, Medium or Large tiles in the toolbar. Physical monitor transitions remain separate acceptance. **Load + Update**, double-click and Enter open a collection or load a ready preset. Ready presets supply their own supported models/materials and add layers; the loader identifies current or included terrain. The existing Modify navigation and scale fixes are retained.
+Select one terrain mesh and open **Cyrus Library** from the Cyrus action category, or **Layers > Recipes** from an existing setup with one selected-layer receiver. The browser captures this terrain; later scene selection does not redirect loading. The left tree separates My recipes, Bundled examples and Custom library. Open a collection tile or All recipes, search, choose thumbnail/list view and tile size. Max default scaling and explicit 150% use readable controls. Physical mixed-monitor transitions remain separately qualified.
 
 Browsing reads saved metadata and images. It does not calculate plants, capture previews, merge models or change the scene. **Refresh** explicitly discovers file changes; there is no idle folder scan. Missing images show placeholders. The gallery displays at most 128 items per page and keeps a bounded decoded-image cache.
 
@@ -18,11 +18,11 @@ Choose an existing PNG or explicitly capture the current published viewport. A p
 
 ## Load or apply a style
 
-For a ready preset, select its thumbnail and use **Load + Update**. It adds new layers and calculates once, keeping the existing authored planting and Manual/Live mode. This explicit Update also applies pending setup edits. Compatible current terrain is used when unambiguous; Paint/channel/path context uses the included receiver when required. Shared viewport preparation still distributes the controller's budget across the resulting layers. Undo/Redo restores complete publications and asset ownership.
+For a ready preset, select its thumbnail and use **Load onto surface**, double-click or Enter. It creates a Scatter setup if none uses the captured terrain, or adds layers to its unambiguous existing setup. If several setups use the terrain, open Recipes from the intended setup. Existing layers, identities and Manual/Live mode are retained. Loading explicitly updates once, also applying pending Manual edits. One Undo/Redo includes imported assets, layers and complete publication.
 
-For a settings-only recipe, use **Recipe actions > Review bindings (advanced)**. For a settings recipe, **Load selected** opens terrain/model/map/path/spacing bindings. **Match unique scene names** supplies suggestions; missing or ambiguous roles remain unbound. Review them before loading. **Add layers** retains the selected setup's controller preferences. **New setup** creates a separate controller with the saved preferences. Both use fresh ownership identities. **Saved variation** keeps saved random inputs; **New variation** is the default. Exact arrangements also require matching geometry, source order, quotas, masks and spacing context.
+The captured surface is authoritative: no included terrain is substituted and no mask is silently disabled. Missing numeric channels or incompatible receiver-bound Paint are reported before scene mutation. Paint requires matching evaluated geometry, frame and saved system units. Static spline paths transfer relative to the saved terrain frame while retaining authored dimensions; this is not arbitrary reprojection or fit-to-bounds scaling. Grids keep their explicit world-space origin.
 
-Native Paint needs compatible receiver geometry, frame and saved system units. It is preserved in the file; an arbitrary replacement terrain does not automatically make the footprint compatible. Import is one authored Undo operation. Manual mode waits for **Update scatter**.
+Settings-only recipes have no packaged models. Save them from a valid setup with Include models, materials, terrain and paths enabled before direct loading. The old advanced binding dialog is retired from the default browser. Typed internal import/reuse contracts remain available for qualified engineering workflows; they are not another normal loading step.
 
 **Apply Style** copies only chosen supported setting groups into the captured layer. It keeps the layer's models, receivers and Paint by default. Review any explicit map/target binding and the Keep/Saved/New variation policy. Applying identical effective settings does not create another Undo or calculation. Authored Edit/radius records and unsupported controllers are rejected by this bounded style adapter.
 
@@ -30,12 +30,17 @@ Native Paint needs compatible receiver geometry, frame and saved system units. I
 
 Choose **Export portable package** on a saved recipe. Bind the sources/maps to capture, choose a new destination folder and confirm permission to distribute those assets. A package includes the recipe, Paint and a verified dependency manifest. The current adapter supports static standalone meshes, supported Standard/Blinn materials and static PNG maps. Terrain, paths and other declared external roles still need destination bindings.
 
-When loading a package, choose independent packaged models/materials or explicitly bind existing scene models/maps for reuse. Reuse keeps those models' current materials and their other scene users. It is deliberate substitution, not a claim that equal names mean equal assets. A change after Review requires another review. Imported bitmap files are kept in a persistent owned asset store so Redo and saved scenes do not depend on the original package folder.
+The default browser imports independent packaged models/materials. Explicit scene reuse remains an internal qualified adapter; it is not exposed by direct loading. Imported bitmap files persist so Redo and saved scenes do not depend on the package folder. Unsupported external dependencies must be resolved when saving a ready preset.
 
 XRefs, nested populations, renderer-specific shaders/proxies, material-variant browsing, animated dependencies and automatic arbitrary-terrain Paint transfer are not supported by this adapter. Complete save also rejects authored Scatter Edit/per-instance radius content until its required codec exists; it never silently omits those records.
 
 ## Examples and installation
 
-The [eight examples](../../../AminScatter/library/README.md) include matching editable Max 2027 scenes and rendered previews. The geometry is intentionally simple and replaceable. Open a copy of the matching scene to examine compatible bindings, then make your own variation.
+The [eight examples](../../../AminScatter/library/README.md) include matching-host editable scene copies and rendered previews. The geometry is intentionally simple and replaceable. Open a copy of the matching scene to examine compatible bindings, then make your own variation.
 
-The 0.85.3 handoff links the MZP and unsigned Windows EXE after qualification. Both use a versioned plugin/library folder and preserve personal recipes and activation. Neither starts or restarts Max. Run the MZP through **Scripting > Run Script**, then restart Max 2027. The EXE's Unregister action removes owned registration while retaining personal recipes, imported assets and versioned recovery files.
+The [current delivery report](DELIVERY_0862.md) links the qualified MZP and unsigned Windows EXE. Both use a versioned plugin/library folder and preserve personal recipes and activation. Neither starts or restarts Max. Run the MZP through **Scripting > Run Script**, then restart the selected Max version. Max 2024 is preview only; consult the report before team testing. The EXE's Unregister action removes owned registration while retaining personal recipes, imported assets and versioned recovery files.
+
+
+## Density and portable images
+
+The [artist guide](../../ARTIST_GUIDE.md) owns image mapping, Show/Hide mask and explicit portable snapshots. Recipes preserve image bytes/settings and required mesh/UV channels; they do not recreate Data Channel or VertexPaint producers on arbitrary terrain. The library details distinguish settings-only, incomplete and packaged entries and show channel/Paint requirements before Load. Load validates required data before adding layers. A failure in the first calculation rolls back the staged recipe and retains previous output/history.

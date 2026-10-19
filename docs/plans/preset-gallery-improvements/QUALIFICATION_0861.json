@@ -1,0 +1,146 @@
+{
+  "version": "0.86.1",
+  "baseline_commit": "56b6e09db2b7e53f30fd60b6e4f51ea19296075f",
+  "schema": 58,
+  "artist_installed": false,
+  "qualification": {
+    "2024": {
+      "sdk_build": "pass",
+      "native_tests": 44,
+      "native_receipt_sha256": "d21f553ae627d5729dff66d2f3f72b89e199e992145d0c293e3727754d9cc933",
+      "gallery_sha256": "edf804d7ca35688d1b62e4ba4976994d45a25547e0147f14f71bd895c0234cdc",
+      "native": {
+        "AminScatter.dlx": "783e90826fd5a91e49ebc3614d21f344fd864a5c1e86f82175636d122aed6ccc",
+        "CyrusBrush.dlx": "13efa3f3c9c8c3cd0c00a6d13a9481f3593282a229e3c6c8e756c647ec57c746",
+        "CyrusBrushStorage.dlh": "fa97bc21923632a4933ea7d5a5b7c527cc8946e1bc0e36d54c201285367651af",
+        "CyrusGallery.dll": "edf804d7ca35688d1b62e4ba4976994d45a25547e0147f14f71bd895c0234cdc",
+        "CyrusScatterEdit.dlm": "dec0719a45aff2e20012804c3d582b6e04379b3c19d0d206c42a111ec84ba7a0"
+      },
+      "host": "not tested; executable absent",
+      "status": "preview; not runtime qualified",
+      "managed": "net48; 30 standalone checks"
+    },
+    "2026": {
+      "sdk_build": "pass",
+      "native_tests": 44,
+      "native_receipt_sha256": "34fde65728fe899b8ed313c2fcc50b762e829d88ce865dd97c89ed36e1777801",
+      "gallery_sha256": "285a9bec6db80b22156dc78e5ddf3e5b303ba6854353aad6af38b52c42afee6c",
+      "native": {
+        "AminScatter.dlx": "d8ba373749d6dbeb47d0915ad0406848b335299cb12f8a7a7cb3a6d88b7e2217",
+        "CyrusBrush.dlx": "020a9356743d2828c12965302b39c899426758327ddc8cbadaf4828a88367917",
+        "CyrusBrushStorage.dlh": "4b8a0210e5b37e06323a189f037d86df8c53420d199f8d210c283ffb68ef27c1",
+        "CyrusGallery.dll": "285a9bec6db80b22156dc78e5ddf3e5b303ba6854353aad6af38b52c42afee6c",
+        "CyrusScatterEdit.dlm": "ef9a619d4f9507be64b83a6bfed14c7ad05cc78876545c8121eb9a8dc34c022e"
+      },
+      "host": "pass",
+      "status": "scoped runtime qualified",
+      "profile": "build/mcp-qualification/library-surface0861-max2026-05",
+      "pid": 9588,
+      "campaign": [
+        {
+          "script": "run_workflow.py",
+          "exit_code": 0,
+          "seconds": 53.29700000002049
+        },
+        {
+          "script": "run_examples.py",
+          "exit_code": 0,
+          "seconds": 133.3279999999795
+        },
+        {
+          "script": "run_save.py",
+          "exit_code": 0,
+          "seconds": 25.51600000000326
+        },
+        {
+          "script": "run_extra.py",
+          "exit_code": 0,
+          "seconds": 55.625
+        }
+      ],
+      "pass_lines": 296,
+      "loaded_identity": [
+        "0.86.1",
+        "b0f864953727fb3c1956e397ad8b2a87e62f53a295ee79cc03469665d9bb76b7",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\library-surface0861-max2026-05\\scripts\\",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\library-surface0861-max2026-05\\scripts\\CyrusGallery.dll",
+        "0.86.1.0"
+      ]
+    },
+    "2027": {
+      "sdk_build": "pass",
+      "native_tests": 44,
+      "native_receipt_sha256": "04807405fcc5e2f2bd2e205f9e353376cad1e5cebf2c50e5ae5652a75f96b90a",
+      "gallery_sha256": "c3cff14299b4850d385c85912c792c9f7c8febd9b1efe195575e7499859dd6d1",
+      "native": {
+        "AminScatter.dlx": "7033bd5d4510dec3ba114dda3b5860d407ccd8379a0e636b02163a9ec8c7f604",
+        "CyrusBrush.dlx": "e64d80741f95d1bbdf5966cf89eb7c94309c89999ab683a38c010b8528b08e42",
+        "CyrusBrushStorage.dlh": "cffff3430f10f3211c8f03c87297887dd60a91fb26ee1122c1acffb09b58e637",
+        "CyrusGallery.dll": "c3cff14299b4850d385c85912c792c9f7c8febd9b1efe195575e7499859dd6d1",
+        "CyrusScatterEdit.dlm": "9d8fa5d7778184fa5115cd144324e20484aa5b77e4abcf72314c4ac9054b08f5"
+      },
+      "host": "pass",
+      "status": "scoped runtime qualified",
+      "profile": "build/mcp-qualification/library-surface0861-max2027-05",
+      "pid": 32024,
+      "campaign": [
+        {
+          "script": "run_workflow.py",
+          "exit_code": 0,
+          "seconds": 70.15600000001723
+        },
+        {
+          "script": "run_examples.py",
+          "exit_code": 0,
+          "seconds": 127.73399999999674
+        },
+        {
+          "script": "run_save.py",
+          "exit_code": 0,
+          "seconds": 28.89100000000326
+        },
+        {
+          "script": "run_extra.py",
+          "exit_code": 0,
+          "seconds": 56.81199999997625
+        }
+      ],
+      "pass_lines": 296,
+      "loaded_identity": [
+        "0.86.1",
+        "b0f864953727fb3c1956e397ad8b2a87e62f53a295ee79cc03469665d9bb76b7",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\library-surface0861-max2027-05\\scripts\\",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\library-surface0861-max2027-05\\scripts\\CyrusGallery.dll",
+        "0.86.1.0"
+      ]
+    }
+  },
+  "artifacts": {
+    "CyrusScatter-0.86.1-Max2024.mzp": {
+      "sha256": "41a8fb1ef4251bbc8c1b99962c7e9a81e87ee6a7c48626ad61bbe692c38c9e5e",
+      "bytes": 10172809
+    },
+    "CyrusScatter-0.86.1-Max2026.mzp": {
+      "sha256": "d6810e4c891d5d6e4db5063274660669da0e5bc08b3ee7ba07bb1592c6e892d8",
+      "bytes": 10268624
+    },
+    "CyrusScatter-0.86.1-Max2027.mzp": {
+      "sha256": "8182ac67179cc1fd82d8d4ca3fe09e71f9108e1c33e9b8bad07a4d2ab495a56a",
+      "bytes": 10586655
+    },
+    "CyrusScatter-0.86.1-Setup.exe": {
+      "sha256": "21db3fd49a89105dfccb3ce0c86cf3f2086c3b0e472a6c215351dae113207cf0",
+      "bytes": 31066112
+    }
+  },
+  "source_script_sha256": "8ea60d06a06dd93c82a2abd8561dd3c48740094e1c7266dee0779e936c9fca42",
+  "managed_checks": 30,
+  "distribution_checks": 56,
+  "python_tests": 171,
+  "retained_scroll_sources": {
+    "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+    "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418"
+  },
+  "payload_pairs_verified": true,
+  "installer_notice": "Unsigned EXE; three exact MZPs. Transactions exercised only in disposable paths, not artist profiles. Max 2024 remains a preview."
+}

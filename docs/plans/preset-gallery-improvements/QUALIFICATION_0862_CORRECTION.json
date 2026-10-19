@@ -1,0 +1,493 @@
+{
+  "version": "0.86.2",
+  "delivery": "correction01",
+  "reason": "User requested fixes without a version bump. Use native ImgTag for safe empty/procedural thumbnail binding and whole-image scaling.",
+  "git_head": "56b6e09db2b7e53f30fd60b6e4f51ea19296075f",
+  "source_script_sha256": "b7a9cec8a66db340e86d4c1bc141f5e7048a812aab06e6c644cf2286f6debf71",
+  "native_receipt": {
+    "path": "D:/CyrusScatterBuilds/density-0862-correction-20261019/pair03/receipt.json",
+    "sha256": "457c550a9232332a3c6232fd987cdc46adf94bce0105fcaee77f25e0267dad49"
+  },
+  "sources": {
+    "AminScatter/CMakeLists.txt": "32e52df57144b145d146e88d5468f31e3720ee9065daddf9c8b6de7fac24c866",
+    "AminScatter/scripts/AminScatterObject.ms": "b7a9cec8a66db340e86d4c1bc141f5e7048a812aab06e6c644cf2286f6debf71",
+    "cmake/CyrusMaxSDK.cmake": "6b6919710b62fd50cf7b58f09f4bca01088a2f188b0766b5d0f1d763e1598904",
+    "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+    "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+    "AminScatter/ui/LibraryGallery.cs": "265ea0d7f1561df10e96b0b93a5963fb8c7dc25437c4188d38708d350e52d16d",
+    "AminScatter/tools/build_gallery.py": "732ac64052289e06c28a08ad1f9aca3a6b055d703ec337abb84653d9caf95ac9",
+    "AminScatter/src/analyzer_area_bridge.inc": "4eac0f0d53b3bd41f8de394e3fc6c285d4353b7bc967d0e360f0e63bcf467be8",
+    "AminScatter/src/asset_bitmap.cpp": "76be12a8be96357afad9ed1ec618f0b0cbd4695798d7599fa7c438fe8ff8bdc7",
+    "AminScatter/src/asset_mesh.cpp": "47ba4eabe61a9257d08dc0634d82ca000cadfc513b9a39b450c8923e241bbd0b",
+    "AminScatter/src/asset_package.cpp": "69d88041ca3b5950549eb4a6c0443cc2943a1ee139fca2f5d398176eb6ab27a0",
+    "AminScatter/src/authored_revision.inc": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+    "AminScatter/src/boundary_falloff.inc": "3072288bc0c425de48623b21156b17bad552621a3f84b11428da592c7dde1d8b",
+    "AminScatter/src/boundary_falloff_bridge.inc": "9d6d3fda48f118de45af70b13fcd8d8251da8460a143acc65d51c669550f465d",
+    "AminScatter/src/brush.cpp": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+    "AminScatter/src/brush_host.cpp": "123e377d1538af2df0dcbeb0940dd15dafa960bbc80e676fab07b14a5259ecaf",
+    "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+    "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+    "AminScatter/src/cluster.inc": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+    "AminScatter/src/cyrus_edit.cpp": "5fa23a7b44e1d07dae8202b057bfc45e23dc7622d68eb0aa6afce9e195c888a0",
+    "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+    "AminScatter/src/cyrus_edit_data.inc": "18811043d849b30d7578483a8f597aea7960b124ea8854c7846a5f84419f2390",
+    "AminScatter/src/cyrus_edit_stack.inc": "ab7181ed112d23519d3564bde60fc24c91e1770119f871178d6943768401698c",
+    "AminScatter/src/cyrus_edit_storage.inc": "653a765d23a159ba521f02d66b9a2f39d4aa65e6136b49df93a227948b358751",
+    "AminScatter/src/density_image.cpp": "d95ad8e8cfa778560d8eba9f74036fc1308c5da5da25212eed930a06139bdc23",
+    "AminScatter/src/density_image_bridge.inc": "21762d69265c25471c39ae9a76c063a4d8f3c8f2783a40478789b3fb48623049",
+    "AminScatter/src/density_overlay_bridge.inc": "93ffd55bf90acddfc221534f5d23d04da36bd0d89ea56614dee2e0fdc1f3774d",
+    "AminScatter/src/diagnostics.cpp": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+    "AminScatter/src/diagnostics_bridge.cpp": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+    "AminScatter/src/direction_orientation_bridge.inc": "c7bae7b0bc621fb18a0386f3eb9493ca04b2e95f769f5f3e5b310881e9388637",
+    "AminScatter/src/direction_orientation_value.inc": "3f3ced9aecf90e0fdce2fce8741ab7f14384ea117e0839c4832595d56a22eb7d",
+    "AminScatter/src/edge_border.inc": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+    "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+    "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+    "AminScatter/src/final.inc": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+    "AminScatter/src/geometry_preview.inc": "c57ecb50090d391e26ed9d6a28fb75e31e01f698419d6692bc81cd970965351b",
+    "AminScatter/src/grid.cpp": "8c1babc895f2294ef156d75a063e1d81f15e49466b22e407df5ce530da1afba9",
+    "AminScatter/src/grid_bridge.inc": "dfde74276cf5c911bbba74cc85d31d8b842da6507b7258016af818e3744fc559",
+    "AminScatter/src/grid_value.inc": "0cedd161155510222687b7fa19007598710d83f0dc6fccc9f5168463114251cb",
+    "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+    "AminScatter/src/group_spacing_bridge.inc": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+    "AminScatter/src/input_validity.cpp": "a4ff5a6e53b21c4bcc6eff954ddef108036f0d2dedd99c49485fed0c171cb52d",
+    "AminScatter/src/max_bridge.cpp": "112f96e21ee67a95e20eff5f8ad93f5ac34e577a40759e0bdf545cb1470f27e5",
+    "AminScatter/src/mesh_density.cpp": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+    "AminScatter/src/mesh_density_bridge.inc": "8aa1fefad3289a8de43713b9702183411c3115ab61e288e45e944fde106bdb00",
+    "AminScatter/src/mesh_display.inc": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+    "AminScatter/src/orientation.cpp": "7ca86521e02e3dd16f4afd02720d0f2564040f858fd5d1c9e4af5727f5265d3a",
+    "AminScatter/src/orientation.inc": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+    "AminScatter/src/orientation_bridge.inc": "91840d903564644fe5fba1fc746056ce1dcac9ba2d9f9ac344dd4cfa32083467",
+    "AminScatter/src/placement_api.cpp": "b5f675861a00c7f4e36cb7457eaff11fd1e063510eeb734219e609619dd7f7bb",
+    "AminScatter/src/placement_binding.cpp": "4f986d96432538b1139a2e77a3eec3281ee71652ba777ab212e9550deef2756a",
+    "AminScatter/src/placement_hold_qualification.cpp": "cf595b251978fed88921cf3fe273551022075ce0b6c298af5b7a500df290155a",
+    "AminScatter/src/placement_identity.inc": "5134fd60f3a338957160fa5ae4130acbe25ee78ce6d94ba5dd9a8e90d90fa67e",
+    "AminScatter/src/placement_materialization.cpp": "917868e70cced1ae5b4213ff90f4f5f00f8af7dacbb0fb5ff48884a83ec62218",
+    "AminScatter/src/placement_observation.cpp": "d96577a38c8971fcfd12f9a3e98ffc4824338d2d46f63e6338e6856de2afee3c",
+    "AminScatter/src/placement_publication.cpp": "79d27b49e7f798cb1f9c093cf9a32c00ac3ce5662f6db8a71055ab098667cc22",
+    "AminScatter/src/placement_publication_value.cpp": "ff66e2469fb80b1af01147b100d973988a6586297df56f0c19faad38bb27dbd7",
+    "AminScatter/src/placement_store.cpp": "21376a46c0d9d53d6424d2bb33a9f04d7d5bbbc781498460ba581672d692c170",
+    "AminScatter/src/placement_value.cpp": "ae32b22ca26948882d008b1f783445c1f842b1d3a3a401d6bff2524c3d6bf692",
+    "AminScatter/src/point_display.cpp": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+    "AminScatter/src/point_publication.inc": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+    "AminScatter/src/prepared_band.inc": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+    "AminScatter/src/presets.cpp": "84edeb4557b083fe81f637ab736c79adb1a95722a18eabdac56969b68285184e",
+    "AminScatter/src/presets_bridge.cpp": "8fd0b86f736ec9fe08885b54a19b1f6ede9191652fd2d21af8d0cf59bd4b3245",
+    "AminScatter/src/preview.cpp": "d46c4b540529c4dd2541eb20932cdd5d954ba261febeb999e22e8f98a6de762d",
+    "AminScatter/src/preview_compare.inc": "f6d0d444bf496f887653fdc396b49743c3c539840afd3211f0711b5d93923fb4",
+    "AminScatter/src/preview_palette.inc": "c8b06143363b809e315679f9a6125e2adad750c63db18d2d33273f645e287222",
+    "AminScatter/src/preview_rows.inc": "0b0a986c45882e73b42cee34189aebf33303fd65d750fcdfb69708796bfb890f",
+    "AminScatter/src/procedural.cpp": "7e6490833d54bf97ef19b0d1a0bfa33c592f96b3c3e7f0d4278ff6ef9d70792d",
+    "AminScatter/src/procedural_bridge.inc": "6e1db0b0b350f0bd9c5301f50a5afa41a4b0aaad65cbe20cf12b471ed72af8e9",
+    "AminScatter/src/radius_preview.inc": "300da761730f9d1ea7e5997a970abbc74464054babcec9c6e62c594b45c65def",
+    "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+    "AminScatter/src/receiver_bridge.inc": "2736997e507258bde5106ce914febec029bf821a119c5204447ded5f565aece2",
+    "AminScatter/src/receiver_plan.cpp": "eb4907eeba7e8f0e4b5d73039a7dcbf14f8d504e2b9b5c81cc51f995bcb8a0b8",
+    "AminScatter/src/recipe_fields.inc": "a46c6986a049c4be5ec0abc055b6528959be53bcbfcf93738cecff0d370c3689",
+    "AminScatter/src/recipe_library.cpp": "fb90502a9c2aedd8d934ab9430ad6f0df186c66c027d4c7189a20dce35e550eb",
+    "AminScatter/src/recipe_store.cpp": "5428e1308b72b52a290501a46209021c78dace1fc638d3330c82feaddbdc269d",
+    "AminScatter/src/recipes.cpp": "a0aa9055c6986a09c22d2dd81015ad184dcd27982c79dbbf5f3b295db0beabfb",
+    "AminScatter/src/recipes_bridge.cpp": "cca4c9660511e16f40dacb5cd372e8bd4f0050ec5aec07f13c5837de7fd5c14e",
+    "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+    "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+    "AminScatter/src/scatter.cpp": "3316aeec6c4354ec8de175d145078bde328a9aa9799ca6fafe20b2c8607acbb3",
+    "AminScatter/src/script_buffers.cpp": "2d0c21119191e335cf38acc6d81dceccfa1f491b3e65041c52660981e3627e7a",
+    "AminScatter/src/source_container.cpp": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+    "AminScatter/src/source_geometry.inc": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+    "AminScatter/src/spacing.inc": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+    "AminScatter/src/spline_bands.cpp": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+    "AminScatter/src/spline_field_bridge.inc": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+    "AminScatter/src/spline_overlay.cpp": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+    "AminScatter/src/spline_overlay_bridge.inc": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+    "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+    "AminScatter/src/surface_filter_bridge.inc": "2391d5a14e9aa9f6bc614b62384547a9b81e3d3db4a9955e94f0b4d87b5b0e76",
+    "AminScatter/src/team_license.cpp": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+    "AminScatter/src/whole_scale_bridge.inc": "a70bbe77a2c7e10f283df61d37044865c7503e5b79304c365dbb9b21b52affcd",
+    "AminScatter/include/area_mask.h": "d196dc216d4a0042db717a7f8e777ea99efbdfafd33aba3c361139e83fa36b26",
+    "AminScatter/include/asset_bitmap.h": "bf9521a56cc97a9b3ca3c354c748813411db27148b54e3c719aaae44ee45ecd8",
+    "AminScatter/include/asset_mesh.h": "bafa89f7731971a18e070fb0d18aded4bbcaf7609c0d5482237ec7344613fa95",
+    "AminScatter/include/asset_package.h": "bae423820fdfb6194cff671bf88b49fdb713a7868b76f19b82d3151f23c22c17",
+    "AminScatter/include/brush.h": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+    "AminScatter/include/density_image.h": "265af140e42b347474f5d123ed5611a3b704b078809fd8a1272d6bc5478c92d7",
+    "AminScatter/include/diagnostics.h": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+    "AminScatter/include/edit_blocks.h": "cf45bb03123c4d7e4ffc1188aef22597e15a7d944848c789a5c54f0235c1ae36",
+    "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+    "AminScatter/include/grid.h": "98ac2390235f798fb2d7aeda183913d267be54fc9619e7b2c0fd4f96e46f3f65",
+    "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+    "AminScatter/include/license_boundary.h": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+    "AminScatter/include/maxscript_heap.h": "ed040d8a74c576d495f34e7f63253651a4f372dfca4f88866621897e39ced6cf",
+    "AminScatter/include/maxscript_number_types.h": "4f4069c597237cae6d6bb6c0f06f64193a989731a639bdcfeab109b7cd395768",
+    "AminScatter/include/mesh_density.h": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+    "AminScatter/include/native_fault_qualification.h": "e89c6cbb78fd774ab09dbd6e0b432b110ed511e4aa8f1c3326133c198dfd85af",
+    "AminScatter/include/orientation.h": "514e8bdb9adebd10eb3ce4317fd83681070b72b3ba92ede239bb2e1e5be18930",
+    "AminScatter/include/placement_api.h": "18d70c37965ebc589ebda0322d1a2bdb65749038abddc591cb61eb8859a3c891",
+    "AminScatter/include/placement_binding.h": "cb14b0195b3c40563c4c84c9fd29640bcd854d734263813191cfbfab4839e230",
+    "AminScatter/include/placement_host_text.h": "74876c70fb9465f7b75e3bf0b6321763bfafc83111cd1db7a970c095445e34d7",
+    "AminScatter/include/placement_materialization.h": "4c61fb8783c9403c70ed8f58425c8f885853e7b5132facc72edacef8543da029",
+    "AminScatter/include/placement_publication.h": "53b6aa7296e622ada5ea9c273cebaff2cc982f6c9336cd91f1256ddc2b809e5b",
+    "AminScatter/include/placement_store.h": "a11b1663aac89f18a173253b0bc0a7025fcddfd85b3d915e455eba88165ac70c",
+    "AminScatter/include/placement_transport.h": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+    "AminScatter/include/placement_value.h": "d20dc61de4f3b2488a7f86bdceb4eef521e70fdfca22797eb846935abdfae058",
+    "AminScatter/include/point_preview.h": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+    "AminScatter/include/presets.h": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+    "AminScatter/include/preview_budget.h": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+    "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+    "AminScatter/include/procedural.h": "4e96c632f1fc8ba44da699e42b194ca9f1d447ea2b5c46eeefdd671ada3331d1",
+    "AminScatter/include/receiver_plan.h": "f0616163138d83af9bc24bf3bba4e4d79bdec052da9ff4b3d657182e8d5d1b55",
+    "AminScatter/include/recipe_library.h": "f7a84c3da0de59568131da7fb94f6907dcde19c6fe57c9c27c2e171dfef4e57c",
+    "AminScatter/include/recipe_store.h": "06f0afe90e942f4b43d6e990df84864827d10925552014658b2e438ddee17cfb",
+    "AminScatter/include/recipes.h": "fba0b0ac753361da2f0c61d67d86a6f67591cfdf312eec7ad8f7ab75e39307a1",
+    "AminScatter/include/scatter.h": "4f2299d16c1dce872e42095d01703b745afc3bb0143e180dc771bccdf6e1c9b7",
+    "AminScatter/include/script_buffers.h": "17035a5e660d9ad0cbb0b88af1922fd03bf6accb81abcba0e90721da7857d7eb",
+    "AminScatter/include/script_memory_budget.h": "7f597d6fbd01eaa36688fe08eb34c7baea16b42af0683a8950d08a4855a12a5a",
+    "AminScatter/include/spline_bands.h": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+    "AminScatter/include/spline_field_value.h": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+    "AminScatter/include/spline_overlay.h": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+    "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+    "AminScatter/include/viewport_policy.h": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+    "AminScatter/tests/asset_mesh_tests.cpp": "b05a56854210eb7a2a5ddd2df11651a7b02cfa0388b7f5a963a0436e44a24adc",
+    "AminScatter/tests/asset_package_tests.cpp": "ae732d7a814dca5d5f7a1905a00d669dec48ed485ccde156607dbffef24fccee",
+    "AminScatter/tests/boundary_falloff_tests.cpp": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+    "AminScatter/tests/brush_conversion_tests.cpp": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+    "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+    "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+    "AminScatter/tests/compute_benchmark.cpp": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+    "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+    "AminScatter/tests/data/recipe_v1_defaults.json": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+    "AminScatter/tests/data/recipe_v2_defaults.json": "27be9fc368e48cc5002125abadca5d70c6eb0a48fda121e558f3f9184dd362ab",
+    "AminScatter/tests/data/recipe_v3_defaults.json": "5fbe1bdc1e116cae020b136663ea5118ce7f10411da95353ef7811d21861fc25",
+    "AminScatter/tests/data/recipe_v4_defaults.json": "a770a5240e4730d2e128ce2ebd9be5130750d2b5bf59d3b370a46c7ad9ce633b",
+    "AminScatter/tests/data/recipe_v6_defaults.json": "3d4be6689539dfaf5df918dd8a11fcbbcd31efc89b4b174e6e6f95f6c9670e25",
+    "AminScatter/tests/density_image_tests.cpp": "773ec1506e4fbd88f55ecb572a0c64c6bc4a32ea1ac3df10d6c81bd33eb2b300",
+    "AminScatter/tests/diagnostics_tests.cpp": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+    "AminScatter/tests/direction_orientation_tests.cpp": "c1fcab5234137fc3be723b57a125da2f90f87c8e277f0aba023c7b1deb93d693",
+    "AminScatter/tests/edge_border_tests.cpp": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+    "AminScatter/tests/edit_blocks_tests.cpp": "b3a441a75fec8a58697c0e0ab5ebed22730dd433b7abf46960d134c4d4c476ef",
+    "AminScatter/tests/grid_tests.cpp": "756eb16ebf851a73e9790418acfe10cd2cee76f383b7eb1696844a51f9ab3665",
+    "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+    "AminScatter/tests/mesh_density_tests.cpp": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+    "AminScatter/tests/orientation_tests.cpp": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+    "AminScatter/tests/placement_publication_tests.cpp": "98f82bd58a7e6b57a028115169664c893ef01bfc17a5aa651014e1ecb0036a8a",
+    "AminScatter/tests/placement_store_failure_tests.cpp": "ba196f3ebb0fb5e3e80bdaef57ab40444e17ba461fead4769919ea89265b4906",
+    "AminScatter/tests/placement_store_tests.cpp": "38157b4569ea8bcc85d717c24de15b46d5135771f236dad7fc52885b8b2ebf99",
+    "AminScatter/tests/prepared_band_tests.cpp": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+    "AminScatter/tests/preset_tests.cpp": "9dec8c828b652581e404f183438dd8c1b2eec3f8f8afdbd054ffaf2f44429bbf",
+    "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+    "AminScatter/tests/procedural_tests.cpp": "09fb42d91be64374c4c8b5b46e128fce9d3376af4d7c7b63eb3c07baab4085db",
+    "AminScatter/tests/publication_tests.cpp": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+    "AminScatter/tests/receiver_tests.cpp": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+    "AminScatter/tests/recipe_library_tests.cpp": "4ccafc5d0e0562792faca1392041166d47b30c85c4ebf4384ba0cd12d887527f",
+    "AminScatter/tests/recipe_store_tests.cpp": "bfd77313cd694b596528cfa1199e9843a4e47ae342dfcacb71d4018cbaadae2f",
+    "AminScatter/tests/recipe_tests.cpp": "f0391a520c48b05f795e4019ae26624f68d5762da4016ac496a1e7bac0261e0c",
+    "AminScatter/tests/scatter_tests.cpp": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+    "AminScatter/tests/script_memory_tests.cpp": "1d1a10e1bd45b82495805dba844769a95232976d4d49c48496e102ed3f0f5144",
+    "AminScatter/tests/spacing_tests.cpp": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+    "AminScatter/tests/spline_band_tests.cpp": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+    "AminScatter/tests/spline_overlay_tests.cpp": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+    "AminScatter/tests/surface_filter_tests.cpp": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+    "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+    "AminScatter/tests/viewport_policy_tests.cpp": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+    "AminScatter/tests/weight_tests.cpp": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+    "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+    "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+    "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+    "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+    "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+  },
+  "binaries": {
+    "D:/CyrusScatterBuilds/density-0862-correction-20261019/pair03/AminScatter.dlx": "7d0c5e73efd42f40f52c71f1e91c2a7309c5925a62e989d3d319f9c1b998f5e5",
+    "D:/CyrusScatterBuilds/density-0862-correction-20261019/pair03/CyrusScatterEdit.dlm": "67af11517c52e0903740e8c312a6860dee41308c945cc0e1fee84b3736c648d5",
+    "D:/CyrusScatterBuilds/density-0862-correction-20261019/pair03/CyrusBrush.dlx": "9bb1bffe2d4815c8497448b05a00a816a25d1691b2c4587000ee2d703347657a",
+    "D:/CyrusScatterBuilds/density-0862-correction-20261019/pair03/CyrusBrushStorage.dlh": "f3ff7ee27f60398e213f3f4739ae3486fd8cf94afc1c6f5c4ea1245324eea766",
+    "D:/CyrusScatterBuilds/density-0862-correction-20261019/pair03/CyrusGallery.dll": "ee4dc4cf512d2856aa5dfafea8b2905e5f06bc983c37654beefd02f374e401c1"
+  },
+  "artifacts": {
+    "CyrusScatter-0.86.2-Max2027.mzp": {
+      "path": "dist/CyrusScatter-0.86.2-20261019-correction01/CyrusScatter-0.86.2-Max2027.mzp",
+      "bytes": 10634526,
+      "sha256": "045a2dc9c0f9779a408e7c1d26a55961f8bbbcba69e8822608d1b3f082b09124"
+    },
+    "CyrusScatter-0.86.2-Setup.exe": {
+      "path": "dist/CyrusScatter-0.86.2-20261019-correction01/CyrusScatter-0.86.2-Setup.exe",
+      "bytes": 10671616,
+      "sha256": "462d12b6f1ba710cdaaf48743e57734ec39d549fa429d324fe2e65b807ea879f"
+    }
+  },
+  "evidence": [
+    {
+      "path": "build/mcp-qualification/density0862-s/extended.log",
+      "sha256": "dff9af57116cfe9e0901f602cade436f04b49363f4ae6dde30e26395ca35c837",
+      "pass_lines": 32
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/field-numeric.txt",
+      "sha256": "d53828ea1cd7cf22b13a66ed5ecea3f003a80a63a51b1b42c12d0c2371529657",
+      "pass_lines": 6
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/channels.txt",
+      "sha256": "b2ddbe5b0ce3d80a51b6779b87a9142945756ff56a9626b36e4072ded1c96456",
+      "pass_lines": 12
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/workflow.log",
+      "sha256": "8456bf182a2ed18910c7c05b15ef7287661685217fea328699386f44f8fa3f2f",
+      "pass_lines": 74
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/examples.log",
+      "sha256": "87e322661404a5edff5581162476a822105db04ee2ed606abcf32b6224c581d0",
+      "pass_lines": 248
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/save.log",
+      "sha256": "58624c3b81162a4add1ad52584526075384710ce4785753ea88f1c3572dc6929",
+      "pass_lines": 29
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/demo-verify.txt",
+      "sha256": "7845f412d47325f138437b9fe426b45e9f243af4c05b2bfdfac6cde3cfbc296b",
+      "pass_lines": 12
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/lifecycle-liveIdle.txt",
+      "sha256": "c875edccd684389e40e4b647bfb33b3e657b8fa3fafc74b7d662c7c43bec5cca",
+      "pass_lines": 2
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/lifecycle-unrelatedTime.txt",
+      "sha256": "853188ad62991f6df4cf79d0cc1522ee56cc6657ddd8718b44b52313a18e3df1",
+      "pass_lines": 2
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/lifecycle-staleField.txt",
+      "sha256": "2fcd3e5fcb89a54131c157b2da0874c9f4aa230ae115567380b3608e029a2084",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/relocated-demo-result.txt",
+      "sha256": "29c38dbfb2805e2ad84c27df8b6b4237834dc27bcdab48682396f0ed0a890d02",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/demo-curvatureVerify.txt",
+      "sha256": "c0639d83d0fff35d89aef7176730e62e48243e5e507486684241bfa154b6808e",
+      "pass_lines": 4
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/demo-curvatureUndo.txt",
+      "sha256": "75365e5a6d3799bc7a11c1fb648d2009b55ae7aa0403cbc160b57d5ece8aab40",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-meadow.txt",
+      "sha256": "5c982557ad68b18fd78a1f0dc23d0bb1470f8ea9d0911b3b2fa13666635082ab",
+      "pass_lines": 8
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-woodland.txt",
+      "sha256": "b4648abf093adbb42ba64e541fa1b42963a3fbd37991b0130c184faacd44e2bc",
+      "pass_lines": 8
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-mountain.txt",
+      "sha256": "e0b0c80791ffe08d38f93f40849b370b239b06a3700d6189916cc00ef2dd8d2e",
+      "pass_lines": 6
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-borders.txt",
+      "sha256": "6d053ee212cb08fdb1c6ae084058e58f923f66edfa97758226066649c88388e8",
+      "pass_lines": 6
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-orchard.txt",
+      "sha256": "1e3f8a1fbc7516e782a2ff7617e4eab91a8fab85d068c29db1553cd6b750d14c",
+      "pass_lines": 6
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-hexagonal.txt",
+      "sha256": "351be58db770f36da03c2a0dc7463485bba4ac359e8cce53982ff9bcdfd14798",
+      "pass_lines": 6
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-formal.txt",
+      "sha256": "4df2bd78c6a331c3af9214e2048ea130262f3be86250246b0c6158147a900685",
+      "pass_lines": 8
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-example-valley.txt",
+      "sha256": "a84e80bea7026566d29037d97f87edcf6021bd5cec52849faf38ac01b9c5b411",
+      "pass_lines": 8
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-library-new.txt",
+      "sha256": "18d90ae4319b799c427f72428c3f8c2113bcf99ca3a1a89fe58c4d2e763bdd83",
+      "pass_lines": 5
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-library-append.txt",
+      "sha256": "5c982557ad68b18fd78a1f0dc23d0bb1470f8ea9d0911b3b2fa13666635082ab",
+      "pass_lines": 8
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-saved-image-paint.txt",
+      "sha256": "9422366742302e61032fd98755a795351d7ba8b8191c46a6a98398758af9fa6f",
+      "pass_lines": 6
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/thumbnail-campaign.txt",
+      "sha256": "4778d9c10cb6b7d7f0b2b6caeed575eb07626aed31adaf4cb2dca83e5a95674b",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/thumbnail-checks.txt",
+      "sha256": "34cac94239e304aa0214dc0dfa921075e6eaf45c5b2e8e5b036cd615cb47f311",
+      "pass_lines": 28
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-fresh-blank.txt",
+      "sha256": "ff1848f4431c84ebb597711322ab9b88ab93c2e3ba8b00d2bfdb21cd135d7c5f",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-fresh-blank-reopened.txt",
+      "sha256": "ff1848f4431c84ebb597711322ab9b88ab93c2e3ba8b00d2bfdb21cd135d7c5f",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/panels-fresh-blank-scene-reopened.txt",
+      "sha256": "ff1848f4431c84ebb597711322ab9b88ab93c2e3ba8b00d2bfdb21cd135d7c5f",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-s/layout-26437978.txt",
+      "sha256": "990421ef343a50a4c717c5a8905615ab6c64a486fe861696404e5d6defbc6319",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-t/thumbnail-campaign.txt",
+      "sha256": "4778d9c10cb6b7d7f0b2b6caeed575eb07626aed31adaf4cb2dca83e5a95674b",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-t/thumbnail-checks.txt",
+      "sha256": "4ece7394dc0bf5fa5c111265488c933a12381a39ee01c024231e721419d55502",
+      "pass_lines": 28
+    },
+    {
+      "path": "build/mcp-qualification/density0862-t/panels-fresh-blank.txt",
+      "sha256": "ff1848f4431c84ebb597711322ab9b88ab93c2e3ba8b00d2bfdb21cd135d7c5f",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-t/panels-fresh-blank-reopened.txt",
+      "sha256": "ff1848f4431c84ebb597711322ab9b88ab93c2e3ba8b00d2bfdb21cd135d7c5f",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-t/panels-fresh-blank-scene-reopened.txt",
+      "sha256": "ff1848f4431c84ebb597711322ab9b88ab93c2e3ba8b00d2bfdb21cd135d7c5f",
+      "pass_lines": 3
+    },
+    {
+      "path": "build/mcp-qualification/density0862-t/layout-26082478.txt",
+      "sha256": "71d597e9ccdb5612532c206b1f5de5b43d8c93baae317c450bdfc5ddb3a25956",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/density-0862-correction-20261019/managed02/result.txt",
+      "sha256": "9e149ea92b871a0777f61c6da440f69d4f981f006ef241d82e22739daf0c5732",
+      "pass_lines": 41
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/thumbnail-campaign.txt",
+      "sha256": "4778d9c10cb6b7d7f0b2b6caeed575eb07626aed31adaf4cb2dca83e5a95674b",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/thumbnail-checks.txt",
+      "sha256": "58ecbcb12b420b01f4da6848e1552fcfecd5d9d30d854391828730455ebd379b",
+      "pass_lines": 28
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/physical-library-load.txt",
+      "sha256": "ce152e903d98e1356e4ff7e2e067c81a17384b31b48ea30f05ce9d5a1f60057b",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/physical-pattern-load.txt",
+      "sha256": "a5e6c72d612b32d2d5c3e3f4e46863bbaeeee3608501527d3c92365d3cc95a5a",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/physical-idle.txt",
+      "sha256": "11e1450a5bce18cf7c8a349a4152e1bdf7f0f2c5b5a1cf5298dbc87be78cec65",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/physical-mask-shown.txt",
+      "sha256": "ee5b8b08c058f49e2853d28af475eae5c177a8333bebd3b58c86679144d29f1f",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/physical-mask-inverted.txt",
+      "sha256": "1295669a0e85208e291d3e4bb3ebb0d821bd878f51d34d9adb7f688c382e8f34",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/mcp-qualification/density0862-u/physical-mask-hidden.txt",
+      "sha256": "d6776092b96432a7037f5d77e36101a604e44ec724e9f8bba61d20f458b4e51d",
+      "pass_lines": 1
+    },
+    {
+      "path": "build/density-0862-correction-20261019/python-final-result.json",
+      "sha256": "3f2dc2db9fb0ea541669e18b384e2c45d4ec86640985b033cd34fc7ac63cd788"
+    },
+    {
+      "path": "build/density-recipes-0862-20261018-01/distribution-correction03/result.txt",
+      "sha256": "623460e48aedc82a441025906bef2994175129829fcdabe8a5ea51772a555ce2",
+      "pass_lines": 35
+    },
+    {
+      "path": "build/density-0862-correction-20261019/physical-library.png",
+      "sha256": "ec9f6e43a1479713d85a155fa0e189ea27113a5c1da81925c7a173c3547d3c7f",
+      "scope": "Observed owned Max 2027 screenshot"
+    },
+    {
+      "path": "build/density-0862-correction-20261019/physical-pattern.png",
+      "sha256": "544c7e60ec8c4407e3ce078cf5d223436568b9b57c9fd9bb8467a9de4ae2318c",
+      "scope": "Observed owned Max 2027 screenshot"
+    }
+  ],
+  "supersedes_installers_only": "QUALIFICATION_0862.json",
+  "original_qualification_sha256": "a71499a9efd0a61cbb63cba0480882c55bdbb13d60f2347e0593da42c61a9974",
+  "artist_installation_performed": false,
+  "knowledge_activation_performed": false,
+  "limitations": [
+    "Scoped Max 2027 qualification only",
+    "Final product pattern artwork remains pending; three existing QA masks only",
+    "Physical mixed-monitor transitions and every third-party renderer/map are not qualified"
+  ],
+  "native_build_provenance": {
+    "native_build_receipt": "D:/CyrusScatterBuilds/density-0862-correction-20261019/native02/receipt.json",
+    "native_build_receipt_sha256": "990bd334956a09877676ae17d5b24321f22645f157cc33674cf0608a0d433bfe",
+    "original_script_sha256": "1a5228129200ad5af63f4cc32798a08116f6b20e88b8f4fe543c78ffe6019ba4",
+    "revised_script_sha256": "b7a9cec8a66db340e86d4c1bc141f5e7048a812aab06e6c644cf2286f6debf71",
+    "native_tests_log_sha256": "7719bb5da69ed393b9a65d5b650c3b88e81351f987b89762d73be9421597c000"
+  },
+  "native_test_scope": "45 native tests ran for native02. Final pair03 changes only the generated script; native source and binary hashes were verified unchanged. Fresh final-script host tests are listed separately.",
+  "final_host_profiles": [
+    "density0862-s (100%, matching-binary script staging)",
+    "density0862-t (150%, matching-binary script staging)",
+    "density0862-u (100%, cold start with final pair)"
+  ]
+}

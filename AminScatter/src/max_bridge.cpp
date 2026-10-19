@@ -1,4 +1,5 @@
 #include <max.h>
+#include <filesystem>
 #include "native_fault_qualification.h"
 #include <triobj.h>
 #include <shape.h>
@@ -7,7 +8,11 @@
 #include <maxscript/foundation/numbers.h>
 #include <maxscript/foundation/3dmath.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
+#include <maxscript/maxwrapper/bitmaps.h>
+#include <mtl.h>
 #include "scatter.h"
+#include "brush.h"
+#include "area_mask.h"
 #include "diagnostics.h"
 #include "surface_filter.h"
 #include "mesh_density.h"
@@ -43,6 +48,7 @@
 #include "spline_field_bridge.inc"
 #include "direction_orientation_value.inc"
 #include "grid_value.inc"
+#include "density_image_bridge.inc"
 
 extern "C" __declspec(dllexport) const TCHAR* LibDescription() {
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
@@ -230,16 +236,46 @@ std::string surfaceRevision(const std::vector<amin::Triangle>& triangles,bool uv
         }}
     return std::to_string(triangles.size())+":"+std::to_string(hash);
 }
+std::vector<amin::Area> densityAreas(Value* nodeValue,Value* modeValue){
+    std::vector<amin::Area> result;
+        type_check(nodeValue,Array,_T("area nodes"));type_check(modeValue,Array,_T("area modes"));
+        auto* nodes=static_cast<Array*>(nodeValue);auto* modes=static_cast<Array*>(modeValue);
+        if(nodes->size!=modes->size) throw RuntimeError(_T("One Include/Exclude mode per area required."));
+        auto time=GetCOREInterface()->GetTime();
+        for(int i=0;i<nodes->size;++i) {
+            auto* node=nodes->data[i]->to_node();
+            if(!node) throw RuntimeError(_T("Area node was deleted. Remove it from the Area list."));
+            auto* object=node->EvalWorldState(time).obj;
+            if(!object||object->SuperClassID()!=SHAPE_CLASS_ID) throw RuntimeError(_T("Area must be a closed spline shape."));
+            auto* shape=static_cast<ShapeObject*>(object);amin::Area area;
+            const int mode=modes->data[i]->to_int();
+            if(mode!=1&&mode!=2) throw RuntimeError(_T("Area mode must be Include or Exclude."));
+            area.include=mode==1;
+            const auto tm=node->GetObjectTM(time);
+            for(int curve=0;curve<shape->NumberOfCurves(time);++curve) {
+                if(!shape->CurveClosed(time,curve)) throw RuntimeError(_T("Every spline in an Area shape must be closed."));
+                const int steps=std::max(3,shape->NumberOfPieces(time,curve)*16);
+                if(steps>65536) throw RuntimeError(_T("Area spline is too complex."));
+                std::vector<amin::Vec3> loop;loop.reserve(steps);
+                for(int k=0;k<steps;++k) loop.push_back(vec(shape->InterpCurve3D(time,curve,static_cast<float>(k)/steps,PARAM_SIMPLE)*tm));
+                area.loops.push_back(std::move(loop));
+            }
+            result.push_back(std::move(area));
+        }
+
+    return result;
+}
 Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t nativeOwner=0,std::shared_ptr<const cyrus::placements::SourceCohort> nativeCohort={},const std::string& receiverID={}) {
     if(count!=29) throw RuntimeError(_T("Cyrus generation requires its current 29-field contract."));
     type_check(args[28],Array,_T("generation options"));
     auto* v1=static_cast<Array*>(args[28]);
-    if(v1->size!=12&&v1->size!=13)throw RuntimeError(_T("Expected keyed generation options including density UV channel and optional grid snapshot"));
+    if(v1->size!=12&&v1->size!=13&&v1->size!=14)throw RuntimeError(_T("Expected keyed generation options including density mapping and optional grid snapshot"));
     const CyrusGridSnapshot* grid=nullptr;
-    if(v1->size==13&&v1->data[12]!=&undefined){type_check(v1->data[12],CyrusGridSnapshot,_T("grid receiver snapshot"));grid=static_cast<CyrusGridSnapshot*>(v1->data[12]);}
+    if(v1->size>=13&&v1->data[12]!=&undefined){type_check(v1->data[12],CyrusGridSnapshot,_T("grid receiver snapshot"));grid=static_cast<CyrusGridSnapshot*>(v1->data[12]);}
     const int uvChannel=v1->data[11]->to_int();
     if(uvChannel<1||uvChannel>=MAX_MESHMAPS)throw RuntimeError(_T("Density UV channel must be 1..99"));
     amin::Settings s;
+    if(v1->size==14)s.densityMapping=densityMapping(v1->data[13]);
     {
         if(v1->data[7]->to_int()!=1)throw RuntimeError(_T("Unsupported procedural sampler version"));
         const auto start=v1->data[8]->to_int64();
@@ -314,41 +350,21 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
         s.clusterRoughness=args[19]->to_float();s.clusterBlur=args[20]->to_float();s.clusterNoise=args[21]->to_float();
     }
     {
-        type_check(args[22],Array,_T("area nodes"));type_check(args[23],Array,_T("area modes"));
-        auto* nodes=static_cast<Array*>(args[22]);auto* modes=static_cast<Array*>(args[23]);
-        if(nodes->size!=modes->size) throw RuntimeError(_T("One Include/Exclude mode per area required."));
-        auto time=GetCOREInterface()->GetTime();
-        for(int i=0;i<nodes->size;++i) {
-            auto* node=nodes->data[i]->to_node();
-            if(!node) throw RuntimeError(_T("Area node was deleted. Remove it from the Area list."));
-            auto* object=node->EvalWorldState(time).obj;
-            if(!object||object->SuperClassID()!=SHAPE_CLASS_ID) throw RuntimeError(_T("Area must be a closed spline shape."));
-            auto* shape=static_cast<ShapeObject*>(object);amin::Area area;
-            const int mode=modes->data[i]->to_int();
-            if(mode!=1&&mode!=2) throw RuntimeError(_T("Area mode must be Include or Exclude."));
-            area.include=mode==1;
-            const auto tm=node->GetObjectTM(time);
-            for(int curve=0;curve<shape->NumberOfCurves(time);++curve) {
-                if(!shape->CurveClosed(time,curve)) throw RuntimeError(_T("Every spline in an Area shape must be closed."));
-                const int steps=std::max(3,shape->NumberOfPieces(time,curve)*16);
-                if(steps>65536) throw RuntimeError(_T("Area spline is too complex."));
-                std::vector<amin::Vec3> loop;loop.reserve(steps);
-                for(int k=0;k<steps;++k) loop.push_back(vec(shape->InterpCurve3D(time,curve,static_cast<float>(k)/steps,PARAM_SIMPLE)*tm));
-                area.loops.push_back(std::move(loop));
-            }
-            s.areas.push_back(std::move(area));
-        }
+        s.areas=densityAreas(args[22],args[23]);
     }
     const auto sl=args[4]->to_point3(),sh=args[5]->to_point3(),rl=args[6]->to_point3(),rh=args[7]->to_point3(),ml=args[8]->to_point3(),mh=args[9]->to_point3();
     for(int i=0;i<3;++i) {s.axisScale[i]={sl[i],sh[i]};s.rotationDegrees[i]={rl[i],rh[i]};s.movement[i]={ml[i],mh[i]};}
     s.alignToNormal=!canonical&&args[10]->to_bool()!=FALSE;s.projectMovement=args[11]->to_bool()!=FALSE;
     s.distribution=args[12]->to_int();
     if(s.distribution==2) {
+        if(args[13]->is_kind_of(class_tag(CyrusDensityImage)))s.densityImage=static_cast<CyrusDensityImage*>(args[13])->image;
+        else {
         type_check(args[13],Array,_T("density array"));
         const auto* pixels=static_cast<Array*>(args[13]);const int width=args[14]->to_int();
         if(width<2||width>512||pixels->size!=width*width) throw RuntimeError(_T("Density image must be a square 2..512 grid."));
         s.densityWidth=s.densityHeight=width;s.density.reserve(pixels->size);
         for(int i=0;i<pixels->size;++i) s.density.push_back(pixels->data[i]->to_float());
+        }
     }
     // Preserve the existing non-advanced randomization when adding a Brush to
     // a layer. The general path must not quietly substitute XYZ defaults.
@@ -364,17 +380,17 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
         if(grid){
             type_check(args[0],Array,_T("grid receiver"));const auto* targets=static_cast<Array*>(args[0]);
             if(targets->size!=1||!targets->data[0]->to_node()||targets->data[0]->to_node()->GetHandle()!=grid->receiverHandle||
-               grid->seed!=s.seed||grid->salt!=s.receiverSalt||grid->uv!=(s.distribution==2)||(grid->uv&&grid->uvChannel!=uvChannel)||s.candidateStart!=0||s.count!=grid->projection.anchors.size())
+               grid->seed!=s.seed||grid->salt!=s.receiverSalt||grid->uv!=(s.distribution==2&&s.densityMapping.coordinates==cyrus::density::Coordinates::UV)||(grid->uv&&grid->uvChannel!=uvChannel)||s.candidateStart!=0||s.count!=grid->projection.anchors.size())
                 throw RuntimeError(_T("Grid snapshot does not match receiver, variation, mapping or candidate schedule"));
         }
-        const auto evaluated=grid?std::vector<amin::Triangle>{}:surfaceMeshes(args[0],s.distribution==2,uvChannel);
+        const auto evaluated=grid?std::vector<amin::Triangle>{}:surfaceMeshes(args[0],s.distribution==2&&s.densityMapping.coordinates==cyrus::density::Coordinates::UV,uvChannel);
         const auto& mesh=grid?grid->mesh:evaluated;
         if(!receiverID.empty()){
             if(!nativeCohort)throw RuntimeError(_T("Bound generation requires frozen source correspondence"));
             type_check(args[0],Array,_T("bound receiver"));const auto* targets=static_cast<Array*>(args[0]);
             if(targets->size!=1||!targets->data[0]->to_node())throw RuntimeError(_T("Bound generation requires exactly one receiver"));
             if(mesh.size()>10000000)throw RuntimeError(_T("Bound receiver face range exceeds existing work bounds"));
-            nativeReceivers=cyrus::placements::ReceiverCohort::create(nativeOwner,{{receiverSlot,0,static_cast<std::uint32_t>(mesh.size()),receiverID,surfaceRevision(mesh,s.distribution==2),std::uint64_t(Animatable::GetHandleByAnim(targets->data[0]->to_node()))}});
+            nativeReceivers=cyrus::placements::ReceiverCohort::create(nativeOwner,{{receiverSlot,0,static_cast<std::uint32_t>(mesh.size()),receiverID,surfaceRevision(mesh,s.distribution==2&&s.densityMapping.coordinates==cyrus::density::Coordinates::UV),std::uint64_t(Animatable::GetHandleByAnim(targets->data[0]->to_node()))}});
         }
         if(canonical)orientationNormals=cyrus::orientation::normals(mesh);
         if(args[27]!=&undefined) {
@@ -457,6 +473,7 @@ Value* cyrusScatterCanonicalBound_cf(Value** args,int count){
 #include "direction_orientation_bridge.inc"
 #include "surface_filter_bridge.inc"
 #include "mesh_density_bridge.inc"
+#include "density_overlay_bridge.inc"
 def_visible_primitive(cyrusDensityMapVersion,"cyrusDensityMapVersion");
 Value* cyrusDensityMapVersion_cf(Value** a,int n){check_arg_count(cyrusDensityMapVersion,0,n);return Integer::intern(1);}
 def_visible_primitive(cyrusProceduralSurfaceKey,"cyrusProceduralSurfaceKey");

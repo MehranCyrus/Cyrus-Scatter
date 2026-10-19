@@ -14,6 +14,7 @@ namespace {
 struct ScrollBinding {
     HWND root;
     bool background;
+    bool combo;
 };
 
 constexpr UINT_PTR subclassId = 0x43595343; // CYSC
@@ -29,12 +30,38 @@ HWND gestureTargetFor(HWND root) {
     return panel && panel->GetHWnd()==root ? GetParent(root) : nullptr;
 }
 
+HWND comboFocusHost(HWND combo, HWND root) {
+    // The outer Qt child of the nested RollupWindow owns its focus chain.
+    // Focusing only the innermost Qt child is insufficient: on the first
+    // click from outside this chain Max subsequently focuses the outer host,
+    // sending WM_KILLFOCUS to the just-opened Win32 combo and closing it.
+    HWND host = nullptr;
+    for (HWND h = GetParent(combo); h && h != root; h = GetParent(h)) {
+        wchar_t name[128]{};
+        GetClassNameW(h, name, 128);
+        if (wcscmp(name, L"RollupWindow") == 0) return host;
+        if (wcsncmp(name, L"Qt", 2) == 0) host = h;
+    }
+    return nullptr;
+}
+
 LRESULT CALLBACK scrollProc(HWND window, UINT message, WPARAM wp, LPARAM lp,
                             UINT_PTR id, DWORD_PTR data) {
     auto* binding = reinterpret_cast<ScrollBinding*>(data);
     if (message == WM_NCDESTROY) {
         RemoveWindowSubclass(window, scrollProc, id);
         delete binding;
+        return DefSubclassProc(window, message, wp, lp);
+    }
+    if (binding->combo) {
+        if (message == WM_LBUTTONDOWN && IsWindow(binding->root) && IsChild(binding->root, window)) {
+            const HWND host = comboFocusHost(window, binding->root);
+            const HWND focus = GetFocus();
+            // Establish the host focus chain synchronously, before the combo
+            // opens. Its original handler still owns clicks, selection, wheel,
+            // keyboard and dismissal. No delayed reopen or polling is needed.
+            if (host && focus != host && !IsChild(host, focus)) SetFocus(host);
+        }
         return DefSubclassProc(window, message, wp, lp);
     }
     const bool mouseGesture = binding->background && (message == WM_LBUTTONDOWN ||
@@ -70,7 +97,8 @@ BOOL CALLBACK installChild(HWND window, LPARAM parameter) {
     // Qt-owned rollup headers also receive wheel messages. Their click/drag
     // handling is deliberately untouched, so headers still expand/reorder.
     const bool qt = wcsncmp(name, L"Qt", 2) == 0;
-    if (!background && !rollup && !qt) return TRUE;
+    const bool combo = wcscmp(name, L"ComboBox") == 0;
+    if (!background && !rollup && !qt && !combo) return TRUE;
     DWORD_PTR existing = 0;
     if (GetWindowSubclass(window, scrollProc, subclassId, &existing)) {
         auto* binding = reinterpret_cast<ScrollBinding*>(existing);
@@ -78,7 +106,7 @@ BOOL CALLBACK installChild(HWND window, LPARAM parameter) {
         ++context.count;
         return TRUE;
     }
-    auto* binding = new (std::nothrow) ScrollBinding{context.root, background};
+    auto* binding = new (std::nothrow) ScrollBinding{context.root, background, combo};
     if (!binding) return FALSE;
     if (SetWindowSubclass(window, scrollProc, subclassId,
                           reinterpret_cast<DWORD_PTR>(binding))) ++context.count;
