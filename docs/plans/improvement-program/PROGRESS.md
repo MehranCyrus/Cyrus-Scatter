@@ -1,6 +1,55 @@
 # Cyrus Scatter — current execution ledger
 
-This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.8 source-local clearance, independent inheritance, conflict priority and corrected spacing UI, qualified for Max 2027; see the [delivery report](../source-clearance/DELIVERY_0868.md). Historical three-host packages retain their prior versions. Unrelated roadmap work remains outside this delivery.** [Knowledge maintenance](../../../tools/rag/README.md) records the separate documentation/index work. P, I, PG, N and local D tasks are not release versions.
+This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.8.1 clearance corrections, viewport material/geometry reuse and colored-Mesh opacity, with separately qualified Max 2024/2026/2027 packages; see the [delivery report](../source-clearance/DELIVERY_08681.md). Historical packages retain their prior versions. Unrelated roadmap work remains outside this delivery.** [Knowledge maintenance](../../../tools/rag/README.md) records the separate documentation/index work. P, I, PG, N and local D tasks are not release versions.
+
+## 0.86.8.1 clearance and viewport correction — 20 October 2026
+
+The user authorized correction of the independent review, scoped performance
+improvement and the third real leaf's rectangular Mesh appearance, with version
+0.86.8.1. F1 now rechecks stale blockers within the same prefix; F2 compiles only
+participating sources; F3 shares compiled context and bounds across classification
+and acceptance. Count admission and schema/recipe boundaries remain unchanged.
+
+Colored Mesh now preserves supported opacity silhouettes. Appearance and GPU
+source resources survive radius-only changes; relevant maps, UVs, geometry and
+animation invalidate their consumers. A fixed 200-leaf scene measured a median
+Textured mesh radius update of 186.688 ms versus 921.322 ms on 0.86.8. This is a
+scoped wall-clock result, not an FPS or all-feature claim.
+
+Final qualification: 49 native and 176 Python tests, generated/layout checks,
+240 single-pass plus 500 refill oracle cases, exact F1/F2 reproductions, source
+metadata probes, real three-leaf imports, color/opacity/UV changes, Manual/Live,
+shared animated maps, layer lifecycle and installed-byte save/reopen checks.
+The user explicitly added Max 2024 and 2026 compatibility. Each matched SDK
+build passes the 49 native tests. Installed-byte layer lifecycle, opacity-card
+material/caching and shared animated-map tests pass in both additional hosts,
+using Standard materials and existing leaf images. Real Corona material and
+performance qualification remains Max 2027. The combined three-host EXE,
+individual MZPs and existing unchanged content ZIP are together in
+`dist/CyrusScatter-0.86.8.1-20261020/`. Source/package/loaded hashes and installer
+reuse checks pass. See the delivery for exact receipts and limits. No artist
+profile or original content was modified; unrelated website work is preserved.
+Compiled component acceptance caching and broader roadmap work remain open.
+The Git backup includes 16 unchanged pinned JPEG configure templates previously
+excluded by the generic `Release/` ignore rule; product payloads are unchanged.
+
+## Independent 0.86.8 review — 20 October 2026
+
+Historical review status below is preserved. Its F1/F2 findings are corrected
+and F3 is improved by the 0.86.8.1 successor above.
+
+The user requested a detailed review and code-quality assessment, not product
+changes. The [independent review](../source-clearance/REVIEW_0868_20261020.md)
+reruns the sealed 49 native and 176 Python tests plus generated/layout checks,
+verifies 479 source hashes, package/embedded-payload/loaded identities and the
+remote commit, and reproduces two additional native solver failures: a displaced
+previous-round blocker can retain a stale rejection; preference on a source with
+no candidates can change another layer through schedule selection. Both are P1
+findings and remain unfixed. A source-metadata compilation cost is also recorded.
+No plugin code, version, installer or artist session was changed. Existing scoped
+delivery receipts remain valid for their tested inputs. The next corrective scope
+is to fix those reproductions and add stateful acceptance regressions before
+resealing a new user-testing pair; implementation is not part of this review.
 
 ## 0.86.8 source clearance implementation — 20 October 2026
 

@@ -69,6 +69,7 @@ struct SourceAppearance {
     int width=0,tiles=0;
     std::size_t cpuBytes=0;
     std::wstring status;
+    bool textureColor=false;
 };
 struct MeshAppearance {
     std::vector<std::shared_ptr<const SourceAppearance>> sources;

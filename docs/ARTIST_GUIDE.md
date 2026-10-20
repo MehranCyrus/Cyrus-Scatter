@@ -1,4 +1,4 @@
-# Cyrus Scatter 0.86.7.2 — current artist workflow
+# Cyrus Scatter 0.86.8.1 — current artist workflow
 
 The private **0.86.7 individual library** replaces the bundled example designs
 with 96 individual assets covering all 104 original catalog cards. Open **Layers >
@@ -11,8 +11,8 @@ receivers and distribution yourself, then **Update scatter** in Manual mode.
 Corona is required for the supplied materials. Personal recipes remain separate.
 Successful model additions now show a banner naming the model and destination
 layer. Failed imports show an error banner and retain the previous scene.
-The **0.86.7.2** installer detects Max and your existing library.
-Select Max 2024, 2026 and/or 2027, then **Install** or **Update**.
+The **0.86.8.1** installer detects Max 2024, 2026 and 2027 and your existing
+library. Select the versions you want, then **Install** or **Update**.
 **Uninstall** removes the selected host registration while keeping your library
 and scenes. To install or update the library, put
 **CyrusScatter-Content-0.86.7.zip** beside the EXE and check
@@ -32,11 +32,15 @@ including adding layers, removing sources and returning to the controller.
 
 Library thumbnails now load as you scroll. In **Viewport & render**, choose
 **Textured mesh** in **Display mode** to preview supported source materials,
-source UV channels and leaf cutout opacity. **Mesh** uses identification colors.
+source UV channels and leaf cutout opacity. **Mesh** uses identification colors
+while retaining supported opacity cutouts, so an opacity-card leaf keeps its
+outline. Point Cloud and Proxy retain their lightweight representations.
 **Color by** is available for nontextured modes; it changes marker/geometry
 identification colors and does not offer textures for Point Cloud.
 **Placement points** shows one marker per accepted placement. Material edits
 update appearance without applying pending Manual placement changes.
+Radius and spacing edits reuse unchanged source textures and geometry. Changes
+to source materials, their maps or UVs refresh the affected appearance.
 
 Select receiving surfaces in **Surfaces**, then use **Hide surface** or
 **Show surface**. This hides their viewport drawing while keeping them available
@@ -134,7 +138,7 @@ Multi-select shows **Mixed** for differing dropdown values and blank differing n
 
 **Spacing & cleanup > Edit default rule** edits independent Within this layer and Between layers defaults; switching this dropdown does not disable the other saved rule. Candidate Relax, accepted-placement cleanup and per-instance radius overrides keep their separate meanings.
 
-Scenes saved with schema 58 show **Upgrade scene to 0.86.8** before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; the previous runtime rejects the new schema. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
+Scenes saved with schema 58 show **Upgrade scene to 0.86.8.1** before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Scenes already upgraded to schema 59 in 0.86.8 need no additional upgrade. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
 
 ## Layout and Amount
 

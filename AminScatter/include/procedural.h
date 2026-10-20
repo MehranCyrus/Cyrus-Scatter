@@ -1,6 +1,7 @@
 #pragma once
 #include "group_spacing.h"
 #include <string>
+#include <memory>
 
 namespace cyrus::procedural {
 using DistanceRule=groups::DistanceRule;
@@ -69,7 +70,10 @@ Result evaluate(const Plan&);
 // Internal source-aware scheduling; inherited components use the established
 // ordered settlement. These functions consume copied data only.
 std::vector<int> clearanceComponents(const Plan&);
-void evaluateClearanceComponents(const Plan&,const std::vector<int>&,Result&,std::uint64_t& visits);
+struct CompiledClearance;
+std::shared_ptr<const CompiledClearance> compileClearance(const Plan&);
+const std::vector<int>& clearanceComponents(const CompiledClearance&);
+void evaluateClearanceComponents(const CompiledClearance&,Result&,std::uint64_t& visits);
 // Conservative spectral bound from the row Gram matrix; handles shear without
 // a decomposition and is tight for orthogonal rotation/scale rows.
 double transformScaleBound(const std::array<amin::Vec3,3>& rows);

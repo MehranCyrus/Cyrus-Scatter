@@ -233,3 +233,6 @@
 /AminScatter/tests/data/recipe_v4_defaults.json -text whitespace=cr-at-eol
 /AminScatter/tests/preset_tests.cpp -text whitespace=cr-at-eol
 /AminScatter/third_party/clipper2/PROVENANCE.json -text whitespace=cr-at-eol
+
+# Preserve pinned upstream configure templates needed by the qualified JPEG build.
+/AminScatter/third_party/libjpeg-turbo-3.2.0/release/** -text whitespace=cr-at-eol

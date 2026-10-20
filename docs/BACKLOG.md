@@ -1,6 +1,14 @@
 # Current work and acceptance
 
-Current delivery: [0.86.8 source clearance and priority](plans/source-clearance/DELIVERY_0868.md), Max 2027. Earlier correction records below retain their original scope.
+Current delivery: [0.86.8.1 clearance corrections and viewport reuse](plans/source-clearance/DELIVERY_08681.md), with separately matched Max 2024/2026/2027 packages. Earlier correction records below retain their original scope.
+
+The independent 0.86.8 review's F1 stale refill blocker and F2 unused-source
+schedule regressions are fixed with stateful native regressions. F3 compilation
+now uses participating policy cohorts once per evaluation. Colored Mesh retains
+supported opacity-card silhouettes, and warm radius edits reuse source material
+and geometry resources. The delivery records same-scene timing and invalidation
+checks; separately cached component acceptance and broad all-feature performance
+qualification remain open.
 
 The [0.86.7.2 Hide surface correction](plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md)
 repairs the single-receiver fallback when no list row is selected. The previous

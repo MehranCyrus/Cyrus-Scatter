@@ -8,7 +8,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.8"
+fn CyrusLibraryVersion = "0.86.8.1"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -223,7 +223,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.8 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.8.1 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -815,7 +815,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.8 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.8.1 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -991,11 +991,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.8 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.8.1 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.8.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.8 gallery package."
+    if assemblyName.Version.ToString()!="0.86.8.1" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.8.1 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (

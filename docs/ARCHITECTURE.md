@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.86.8, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/source-clearance/DELIVERY_0868.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to Cyrus Scatter 0.86.8.1, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/source-clearance/DELIVERY_08681.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
 
 ## Ownership
 
@@ -23,6 +23,27 @@ The **0.85.1 delivery** extends the preceding 0.85.0 foundation with the [galler
 The current scene model has owning layers and receiver-bound Paint Areas. Model-owning paint sets, shared-receiver inheritance, old paint adoption and stroke-history evaluation have been removed. Schema 58 and vector payload version 1 reject unsupported saved data. Schema-55/56 migration and old internal placement readers are removed. Removing a receiver preserves its inactive area; a replacement node with the same name is a different identity.
 
 ## Native storage and lifetime
+
+The 0.86.8.1 correction compiles clearance metadata once per evaluation. All
+authored policies are validated, but only protected and authorized candidate
+sources select schedules and spatial bounds. Equivalent policies share bounded
+witness cohorts. A previous-round blocker is provisional: ranked settlement
+removes stale rejection hints and settles the same candidate prefix before
+cleanup or extension. Fifty million examined settlement rows bound this work
+separately from the existing neighbor-visit limit. No intermediate result is
+published.
+
+Viewport source appearance is independent of instance transforms. Weak snapshot
+ownership plus exact triangle correspondence permits material/UV reuse across
+radius changes without pinning retired geometry. Relevant source, map and UV
+revisions invalidate appearance; consumed animated map validity advances a
+shared time revision for every consumer. Unrelated material validity does not
+rebake static bitmap inputs. Colored Mesh prepares supported opacity only;
+Textured mesh also prepares color. Immutable GPU geometry, UV and texture
+resources can be retained while changed instance transforms are uploaded.
+Existing conservative memory admission, host-thread preparation, Manual guards
+and atomic generation publication remain. This is scoped reuse, not a cache
+of every independent component's acceptance output.
 
 0.86.0 stores immutable placement generations as 96-byte native records, with numeric generated identities, bounded authored keys and explicit source/receiver cohorts. Flat index views share storage. High-rejection accepted views compact when the base exceeds 1 MiB and accepted record bytes are at most one eighth of the base; a retained accepted publication then need not pin the rejected pool. Candidate schedules/radii remain native. The exact eight-field representation is an explicit inspection/comparison boundary, not the internal hot-path representation. Native placement capability 2, Brush POD API 2, procedural publication capability 3, saved schema 58 and `CyrusUnified1` must match their intended boundaries. Internal class IDs remain unchanged.
 

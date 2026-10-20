@@ -1,11 +1,11 @@
 # Install and build Cyrus Scatter
 
-The **0.86.8 / schema 59** delivery provides a matched Max 2027 MZP and Windows EXE. See the [delivery report](plans/source-clearance/DELIVERY_0868.md) for exact evidence and limits. Historical Max 2024/2026 deliveries keep their previous versions. Artist profiles and sessions were not modified or restarted by qualification.
+The **0.86.8.1 / schema 59** delivery provides separate matched Max 2024, 2026 and 2027 MZPs and one Windows EXE containing all three. See the [delivery report](plans/source-clearance/DELIVERY_08681.md) for exact evidence and limits. Artist profiles and sessions were not modified or restarted by qualification.
 
 ## Install
 
-Run `dist/CyrusScatter-0.86.8-20261020/CyrusScatter-0.86.8-Setup.exe`.
-Close Max 2027, select its card, then click
+Run `dist/CyrusScatter-0.86.8.1-20261020/CyrusScatter-0.86.8.1-Setup.exe`.
+Close the Max versions you want to update, select their cards, then click
 **Install** or **Update**. Detection, validation and storage checks run
 automatically. **Uninstall** keeps shared content and other hosts. Success shows
 **Installation completed**. **Error details** is available only after a failure.
@@ -20,7 +20,9 @@ Identical installed content is reused. Content remains revision 0.86.7 because
 the models, materials and previews have not been regenerated.
 
 Alternatively use **Scripting > Run Script** with the matching
-`CyrusScatter-0.86.8-Max2027.mzp`, then **Install/Update** and restart Max.
+`CyrusScatter-0.86.8.1-Max2024.mzp`, `CyrusScatter-0.86.8.1-Max2026.mzp` or
+`CyrusScatter-0.86.8.1-Max2027.mzp` in its matching Max version, then
+**Install/Update** and restart that Max version.
 The hosted route resolves an existing shared or legacy library. For a fresh
 recipient, use the EXE with the content ZIP and its library checkbox.
 There is no automatic online content download.
@@ -40,7 +42,7 @@ the implemented P01–P07 features and the preceding
 The scripts and native modules must be installed and loaded together.
 
 1. Save the scene and use a copy for development-build acceptance.
-2. Run [CyrusScatter-0.86.8-Setup.exe](../dist/CyrusScatter-0.86.8-20261020/CyrusScatter-0.86.8-Setup.exe), select Max 2027 and click **Install/Update**. Alternatively use **Scripting > Run Script** with the matching MZP from that folder. Follow the installer result before restarting.
+2. Run [CyrusScatter-0.86.8.1-Setup.exe](../dist/CyrusScatter-0.86.8.1-20261020/CyrusScatter-0.86.8.1-Setup.exe), select Max 2024, 2026 and/or 2027 and click **Install/Update**. Alternatively use **Scripting > Run Script** with the matching MZP from that folder. Follow the installer result before restarting.
 3. Restart Max so both scripts and their native modules load together. Do not load a loose new script over older DLLs.
 4. Open **Layers > Recipes** or the **Cyrus Library** action. Plant models offers **Merge model** or **Add to selected layer**. Personal recipes remain separate. Manual setup remains **Geometry > Cyrus > Cyrus Scatter**, then Layer → Surfaces → Models → Amount → Update scatter.
 

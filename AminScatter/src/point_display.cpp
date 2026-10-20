@@ -202,7 +202,7 @@ struct Generation {
                     scratch+=std::max<std::size_t>(faces,12)*3*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
                 }
             std::size_t appearanceBytes=0;
-            for(const auto& layer:layers)if(layer.appearance&&layer.palette&&layer.palette->mode==4)
+            for(const auto& layer:layers)if(layer.appearance)
                 appearanceBytes+=3*layer.appearance->gpuBytes;
             return 2*buffer+scratch+meshGroups*4096+appearanceBytes;
         };

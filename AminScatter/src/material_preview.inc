@@ -2,6 +2,7 @@
 // shared; edits replace only these bounded UV/texture snapshots.
 namespace {
 constexpr int materialTileSize=256,materialSlotLimit=64;
+std::uint64_t materialBakeCount=0,materialReuseCount=0;
 struct MaterialParameter {
     IParamBlock2* block=nullptr;ParamID id=0;
     explicit operator bool() const {return block!=nullptr;}
@@ -113,6 +114,8 @@ using MaterialBitmap=std::unique_ptr<Bitmap,void(*)(Bitmap*)>;
 MaterialBitmap materialBitmap(Texmap* map,TimeValue t) {
     MaterialBitmap result(nullptr,[](Bitmap* b){if(b)b->DeleteThis();});
     if(!map)return result;
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::MapBake);
+    ++materialBakeCount;
     Interval validity=FOREVER;map->Update(t,validity);
     if(!map->LoadMapFiles(t))throw RuntimeError(_T("A viewport material texture could not be loaded"));
     BitmapInfo info;info.SetWidth(materialTileSize);info.SetHeight(materialTileSize);info.SetType(BMM_FLOAT_RGBA_32);info.SetGamma(1.f);
@@ -132,11 +135,14 @@ struct AppearanceDependency : MaxSDK::SingleWeakRefMaker {
 };
 struct AppearanceWatch : MaxSDK::SingleWeakRefMaker {
     std::uint64_t revision=1,use=0;
+    std::uint64_t timeRevision=0;
+    TimeValue timeAnchor=0;
     bool dependenciesDirty=true;
     Mtl* material=nullptr;
     std::vector<std::unique_ptr<AppearanceDependency>> dependencies;
     std::weak_ptr<const cyrus::SourceAppearance> cached;
-    const cyrus::MeshSnapshot* geometry=nullptr;
+    std::weak_ptr<const cyrus::MeshSnapshot> geometry;
+    std::size_t geometrySource=0;
     std::wstring cacheKey;
     explicit AppearanceWatch(INode* n):SingleWeakRefMaker(n){}
     RefResult NotifyRefChanged(const Interval& interval,RefTargetHandle target,PartID& part,RefMessage message,BOOL propagate) override {
@@ -193,15 +199,53 @@ AppearanceWatch& appearanceWatch(INode* node) {
     appearanceWatches.push_back(std::make_unique<AppearanceWatch>(node));
     appearanceWatches.back()->use=++appearanceUse;return *appearanceWatches.back();
 }
+std::wstring appearanceTimeKey(Mtl* root,TimeValue t,Interval fallback,TimeValue anchor,bool& timeChanged){
+    // The preview consumes diffuse/opacity only. A renderer's parent material
+    // may report instantaneous validity for unrelated shading properties.
+    // Sample our exact scalar inputs and honor each consumed map's validity;
+    // do not assume that a procedural map is static because it has no keys.
+    std::wstring key;
+    const auto number=[&](float value){std::uint32_t bits;std::memcpy(&bits,&value,sizeof(bits));key+=std::to_wstring(bits)+L",";};
+    // A validity range expanding from an instant to FOREVER is not a change
+    // when it still covers the sample anchor. Animated ranges leaving that
+    // anchor advance a shared revision, so all owners see the same invalidation.
+    const auto interval=[&](Interval v){if(t!=anchor&&!v.InInterval(anchor))timeChanged=true;};
+    std::vector<Mtl*> materials;if(root)materials.push_back(root);
+    for(std::size_t i=0;i<materials.size();++i){
+        auto* material=materials[i];
+        if(material->ClassID()==Class_ID(MULTI_CLASS_ID,0)){
+            if(material->NumSubMtls()>materialSlotLimit||materials.size()+material->NumSubMtls()>128){
+                interval(fallback);return key;
+            }
+            for(int n=0;n<material->NumSubMtls();++n)if(auto* child=material->GetSubMtl(n))
+                if(std::find(materials.begin(),materials.end(),child)==materials.end())materials.push_back(child);
+            continue;
+        }
+        const auto input=materialInputs(material,t);
+        if(!input.supported){interval(material->Validity(t));continue;}
+        for(float v:{input.color.r,input.color.g,input.color.b,input.opacity.r,input.opacity.g,input.opacity.b,
+                     input.level,input.opacityLevel,input.colorAmount,input.opacityAmount})number(v);
+        for(auto* map:{input.colorMap,input.opacityMap}){
+            std::wstring status;map=previewMap(map,t,status);
+            key+=std::to_wstring(reinterpret_cast<std::uintptr_t>(map))+L":";
+            Interval valid=FOREVER;if(map)map->Update(t,valid);
+            interval(valid);
+        }
+    }
+    return key;
+}
 std::wstring appearanceSourceKey(INode* node,TimeValue t) {
     static AppearanceColorWatch colors;
     auto& watch=appearanceWatch(node);auto* material=node->GetMtl();
     Interval validity=FOREVER;if(material)material->Update(t,validity);
     syncAppearanceDependencies(watch,material);
+    bool timeChanged=false;
+    const auto inputs=appearanceTimeKey(material,t,validity,watch.timeAnchor,timeChanged);
+    if(timeChanged){watch.timeAnchor=t;++watch.timeRevision;}
     const auto space=MaxSDK::ColorManagement::IColorPipelineMgr::GetInstance()->Settings()->GetCurrentRenderingColorSpace();
     return std::to_wstring(node->GetHandle())+L":"+std::to_wstring(watch.revision)+L":"+
-        std::to_wstring(reinterpret_cast<std::uintptr_t>(material))+L":"+std::to_wstring(validity.Start())+L":"+
-        std::to_wstring(validity.End())+L":"+space.data()+L":"+std::to_wstring(colors.revision);
+        std::to_wstring(reinterpret_cast<std::uintptr_t>(material))+L":"+std::to_wstring(watch.timeRevision)+L":"+inputs+
+        L":"+space.data()+L":"+std::to_wstring(colors.revision);
 }
 std::wstring appearanceKey(Array* sources) {
     if(sources->size>512)throw RuntimeError(_T("Viewport materials support at most 512 sources"));
@@ -213,11 +257,17 @@ std::wstring appearanceKey(Array* sources) {
     }
     return key;
 }
-std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* node,const cyrus::MeshSnapshot& snapshot,std::size_t source) {
-    const auto& group=snapshot.groups[source];
+std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* node,const std::shared_ptr<const cyrus::MeshSnapshot>& snapshot,std::size_t source,bool textureColor) {
+    const auto& group=snapshot->groups[source];
     if(group.placeholder||group.reducedBox||group.faces.empty()||group.instances.empty())return {};
     const auto t=GetCOREInterface()->GetTime();auto key=appearanceSourceKey(node,t);auto& watch=appearanceWatch(node);
-    if(watch.geometry==&snapshot&&watch.cacheKey==key)if(auto cached=watch.cached.lock())return cached;
+    // Instance transforms and radius decisions do not change source UVs or
+    // materials. Verify the immutable source triangles, not the whole placement
+    // snapshot's address. Weak ownership keeps retired geometry reclaimable.
+    if(watch.cacheKey==key)if(auto cached=watch.cached.lock())if(auto previous=watch.geometry.lock())
+        if((!textureColor||cached->textureColor)&&watch.geometrySource<previous->groups.size()&&previous->groups[watch.geometrySource].faces==group.faces){
+            watch.geometry=snapshot;watch.geometrySource=source;++materialReuseCount;return cached;
+        }
     auto* object=node->EvalWorldState(t).obj;
     auto* tri=object?static_cast<TriObject*>(object->ConvertToType(t,Class_ID(TRIOBJ_CLASS_ID,0))):nullptr;
     if(!tri)throw RuntimeError(_T("Viewport material source has no triangle mesh"));
@@ -238,7 +288,15 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
         if(found==materials.end()){if(materials.size()>=materialSlotLimit)throw RuntimeError(_T("Viewport materials exceed 64 submaterials per source"));materials.push_back(material);slots.push_back(int(materials.size()-1));}
         else slots.push_back(int(found-materials.begin()));
     }
+    if(!textureColor){
+        bool cutout=false;
+        for(auto* material:materials){const auto in=materialInputs(material,t);
+            cutout|=in.supported&&(in.opacityMap||in.opacityLevel*(in.opacity.r+in.opacity.g+in.opacity.b)/3<1.f);
+        }
+        if(!cutout)return {}; // Ordinary opaque Mesh needs no atlas or UV stream.
+    }
     auto result=std::make_shared<cyrus::SourceAppearance>();
+    result->textureColor=textureColor;
     result->tiles=int(std::ceil(std::sqrt(double(materials.size()))));result->width=result->tiles*materialTileSize;
     const auto pixels=std::size_t(result->width)*result->width;
     result->cpuBytes=sizeof(*result)+pixels*4+group.faces.size()*3*sizeof(cyrus::MaterialUV);
@@ -251,6 +309,7 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
     auto converter=pipeline->GetColorConverter<Color,BMM_Color_32>();
     for(std::size_t slot=0;slot<materials.size();++slot) {
         auto input=materialInputs(materials[slot],t);
+        if(!textureColor)input.colorMap=nullptr;
         input.colorMap=previewMap(input.colorMap,t,result->status);input.opacityMap=previewMap(input.opacityMap,t,result->status);
         input.colorChannel=materialMapChannel(input.colorMap,t,result->status);input.opacityChannel=materialMapChannel(input.opacityMap,t,result->status);
         if(!input.supported){result->status=L"Unsupported material: base color fallback";input.colorMap=nullptr;input.opacityMap=nullptr;}
@@ -287,7 +346,7 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
         target.color=uv(input.colorChannel,f,c,input.colorMap!=nullptr);target.color.z=float(slots[f]);
         target.opacity=uv(input.opacityChannel,f,c,input.opacityMap!=nullptr);target.opacity.z=float(slots[f]);
     }
-    watch.geometry=&snapshot;watch.cacheKey=appearanceSourceKey(node,t);watch.cached=result;return result;
+    watch.geometry=snapshot;watch.geometrySource=source;watch.cacheKey=appearanceSourceKey(node,t);watch.cached=result;return result;
 }
 }
 def_visible_primitive(cyrusMaterialPreviewKey,"cyrusMaterialPreviewKey");
@@ -299,21 +358,33 @@ def_visible_primitive(cyrusTexturePreview,"cyrusTexturePreview");
 Value* cyrusTexturePreview_cf(Value** args,int count) {
     check_arg_count(cyrusTexturePreview,2,count);type_check(args[0],AminPointCache,_T("material preview"));type_check(args[1],Array,_T("material sources"));
     auto* cache=static_cast<AminPointCache*>(args[0]);auto* sources=static_cast<Array*>(args[1]);
-    if(!cache->meshSnapshot||cache->geometryMode!=4||cache->palette->mode!=4)return args[0];
-    const auto key=appearanceKey(sources);
+    if(!cache->meshSnapshot||cache->geometryMode!=4)return args[0];
+    const bool textureColor=cache->palette&&cache->palette->mode==4;
+    const auto prefix=textureColor?L"color:":L"cutout:";
+    const auto key=prefix+appearanceKey(sources);
     if(cache->appearance&&cache->appearance->key==key)return args[0];
     if(std::size_t(sources->size)!=cache->meshSnapshot->groups.size())throw RuntimeError(_T("Material source correspondence differs"));
     auto appearance=std::make_shared<cyrus::MeshAppearance>();appearance->key=key;appearance->sources.resize(sources->size);
     for(int i=0;i<sources->size;++i)if(!cyrus::rows::integer(sources->data[i])) {
-        auto data=prepareSourceAppearance(sources->data[i]->to_node(),*cache->meshSnapshot,i);appearance->sources[i]=data;
+        auto data=prepareSourceAppearance(sources->data[i]->to_node(),cache->meshSnapshot,i,textureColor);appearance->sources[i]=data;
         if(data){appearance->cpuBytes+=data->cpuBytes;appearance->gpuBytes+=data->pixels.size()*4+data->uv.size()*sizeof(cyrus::MaterialUV);if(!data->status.empty())appearance->status=data->status;}
         if(appearance->cpuBytes+2*appearance->gpuBytes>cyrus::meshPreviewOwnerLimit/2)throw RuntimeError(_T("Viewport material resources exceed the appearance allowance"));
     }
-    appearance->key=appearanceKey(sources);
+    appearance->key=prefix+appearanceKey(sources);
     auto result=std::make_unique<AminPointCache>();
     result->pointSnapshot=cache->pointSnapshot;result->meshSnapshot=cache->meshSnapshot;result->palette=cache->palette;
     result->size=cache->size;result->faceCount=cache->faceCount;result->geometryMode=cache->geometryMode;result->appearance=appearance;
     return result.release();
+}
+
+def_visible_primitive(cyrusMaterialPreviewStats,"cyrusMaterialPreviewStats");
+Value* cyrusMaterialPreviewStats_cf(Value** args,int count) {
+    check_arg_count(cyrusMaterialPreviewStats,0,count);
+    auto* result=new Array(3);
+    result->append(Integer::intern(1));
+    result->append(Integer64::intern(materialBakeCount));
+    result->append(Integer64::intern(materialReuseCount));
+    return result;
 }
 def_visible_primitive(cyrusMaterialPreviewStatus,"cyrusMaterialPreviewStatus");
 Value* cyrusMaterialPreviewStatus_cf(Value** args,int count) {

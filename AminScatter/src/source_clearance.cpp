@@ -38,15 +38,21 @@ struct Rules {
     }
 };
 struct Ref {unsigned layer,set,index;};
+Reason spacingReason(Ref a,Ref b){
+    return a.layer!=b.layer?Reason::LayerSpacing:a.set!=b.set?Reason::SetSpacing:Reason::SelfSpacing;
+}
 struct Context {
     const Plan& plan;
     std::vector<std::vector<std::vector<Policy>>> policies;
+    std::vector<std::vector<std::vector<unsigned>>> participating;
     std::map<std::tuple<unsigned,unsigned,unsigned,unsigned>,DistanceRule> defaults;
     Context(const Plan& p):plan(p){
         std::map<std::string,unsigned> layers;for(unsigned l=0;l<p.layers.size();++l)layers.emplace(p.layers[l].id,l);
         policies.resize(p.layers.size());
+        participating.resize(p.layers.size());
         for(unsigned l=0;l<p.layers.size();++l){
             policies[l].resize(p.layers[l].sets.size());std::set<std::string> ids;
+            participating[l].resize(p.layers[l].sets.size());
             for(unsigned s=0;s<p.layers[l].sets.size();++s){const auto& pop=p.layers[l].sets[s];
                 require(pop.sources.size()<=512,"Clearance supports at most 512 active source rows per population");
                 for(const auto& src:pop.sources){
@@ -63,9 +69,24 @@ struct Context {
                     policies[l][s].push_back(q);
                 }
                 if(pop.sources.empty())policies[l][s].push_back({});
+                std::vector<bool> used(policies[l][s].size(),false);
+                // Include the whole authorized refill pool, not just survivors
+                // or the initial prefix. Cached excess suffixes are dormant.
+                const auto limit=p.layers[l].acceptedTarget&&p.layers[l].rounds>1?pop.attemptLimit:pop.budget;
                 for(const auto& row:pop.samples){
                     require(row.source<policies[l][s].size(),"Placement source does not match its clearance policy cohort");
                     require(std::max({std::abs(row.position.x),std::abs(row.position.y),std::abs(row.position.z)})<=1e150,"Clearance coordinates exceed numeric range");
+                    if(row.protectedEdit||row.ordinal<limit)used[row.source]=true;
+                }
+                // Equivalent source policies need only two witnesses: one for
+                // own-copy interaction, one for distinct-source interaction.
+                // Keep exact values (including metric), never hash-only equality.
+                using Key=std::tuple<unsigned,unsigned,unsigned,unsigned,bool,double,double,bool,bool>;
+                std::map<Key,unsigned> cohorts;
+                for(unsigned i=0;i<used.size();++i)if(used[i]){
+                    const auto& q=policies[l][s][i];const auto& d=q.distance;
+                    const Key key{q.copies,q.others,q.external,q.targets,d.enabled,d.multiplier,d.gap,d.planar,q.preferred};
+                    if(cohorts[key]++<2)participating[l][s].push_back(i);
                 }
             }
         }
@@ -115,37 +136,55 @@ struct Grid {
     }
 };
 }
-std::vector<int> clearanceComponents(const Plan& plan){
-    Context context(plan);const auto n=plan.layers.size();
+struct CompiledClearance {
+    Context context;
+    std::vector<int> components;
+    struct Bounds {double factor[2]{},gap[2]{};};
+    std::vector<std::vector<Bounds>> bounds;
+    explicit CompiledClearance(const Plan& plan):context(plan){}
+};
+std::shared_ptr<const CompiledClearance> compileClearance(const Plan& plan){
+    auto compiled=std::make_shared<CompiledClearance>(plan);
+    const auto& context=compiled->context;const auto n=plan.layers.size();
+    compiled->bounds.resize(n,std::vector<CompiledClearance::Bounds>(n));
     std::vector<unsigned> parent(n);std::iota(parent.begin(),parent.end(),0);
     const auto root=[&](unsigned i){while(parent[i]!=i)i=parent[i];return i;};
     std::vector<bool> changed(n,false);
     // Compare effective constraints, never the UI's Defaults/Custom label.
-    // Maximum: ten populations x 512 sources; no placement-sized pair table.
+    // Only actual/authorized source cohorts affect scheduling. Empty populations
+    // still validate their metadata, but do no source-pair work.
     for(unsigned l=0;l<n;++l)for(unsigned ol=l;ol<n;++ol)
     for(unsigned s=0;s<context.policies[l].size();++s)for(unsigned os=0;os<context.policies[ol].size();++os){
         Rules inherited;inherited.add(context.defaults.at({l,s,ol,os}));bool interacts=false,different=false;
         const auto& a=context.policies[l][s];const auto& b=context.policies[ol][os];
-        for(unsigned i=0;i<a.size();++i)for(unsigned j=0;j<b.size();++j){
+        auto& bounds=compiled->bounds[l][ol];
+        for(unsigned i:context.participating[l][s])for(unsigned j:context.participating[ol][os]){
             const auto r=context.rule(l,s,i,ol,os,j);interacts|=r.count>0;
             different|=!r.same(inherited)||(r.count>0&&(a[i].preferred||b[j].preferred));
+            for(unsigned k=0;k<r.count;++k){
+                const auto& d=r.values[k];const auto m=d.planar?0:1;
+                bounds.factor[m]=std::max(bounds.factor[m],d.multiplier);bounds.gap[m]=std::max(bounds.gap[m],d.gap);
+            }
         }
         if(interacts){parent[root(ol)]=root(l);}
         if(different){changed[l]=true;changed[ol]=true;}
     }
     std::vector<bool> ranked(n,false);for(unsigned l=0;l<n;++l)if(changed[l])ranked[root(l)]=true;
     std::vector<int> result(n,-1);for(unsigned l=0;l<n;++l)if(ranked[root(l)])result[l]=int(root(l));
-    return result;
+    compiled->components=std::move(result);return compiled;
 }
-void evaluateClearanceComponents(const Plan& plan,const std::vector<int>& components,Result& output,std::uint64_t& visits){
+const std::vector<int>& clearanceComponents(const CompiledClearance& compiled){return compiled.components;}
+std::vector<int> clearanceComponents(const Plan& plan){return compileClearance(plan)->components;}
+void evaluateClearanceComponents(const CompiledClearance& compiled,Result& output,std::uint64_t& visits){
+    const auto& context=compiled.context;const auto& plan=context.plan;const auto& components=compiled.components;
     if(std::none_of(components.begin(),components.end(),[](int c){return c>=0;}))return;
-    Context context(plan);std::set<int> groups;for(int c:components)if(c>=0)groups.insert(c);
+    std::set<int> groups;for(int c:components)if(c>=0)groups.insert(c);
+    std::uint64_t settlementRows=0;
     for(int group:groups){
         std::vector<Ref> rows;std::vector<std::vector<std::vector<unsigned>>> indices(plan.layers.size());
         std::vector<std::vector<std::uint64_t>> prefixes(plan.layers.size());
         unsigned maxRounds=1;
         double maxRadius[2]{},maxFactor[2]{},maxGap[2]{};
-        const auto admitRule=[&](DistanceRule r){if(r.enabled){const unsigned m=r.planar?0:1;maxFactor[m]=std::max(maxFactor[m],r.multiplier);maxGap[m]=std::max(maxGap[m],r.gap);}};
         for(unsigned l=0;l<plan.layers.size();++l)if(components[l]==group){
             const auto& layer=plan.layers[l];maxRounds=std::max(maxRounds,(layer.acceptedTarget||layer.repair)?layer.rounds:1u);
             indices[l].resize(layer.sets.size());output.layers[l].sets.resize(layer.sets.size());
@@ -153,7 +192,10 @@ void evaluateClearanceComponents(const Plan& plan,const std::vector<int>& compon
                 const auto& set=layer.sets[s];prefixes[l].push_back(set.budget);
                 for(unsigned i=0;i<set.samples.size();++i){
                     indices[l][s].push_back(unsigned(rows.size()));rows.push_back({l,s,i});
-                    maxRadius[0]=std::max(maxRadius[0],set.samples[i].radii.xy);maxRadius[1]=std::max(maxRadius[1],set.samples[i].radii.spatial);
+                    const auto limit=layer.acceptedTarget&&layer.rounds>1?set.attemptLimit:set.budget;
+                    if(set.samples[i].protectedEdit||set.samples[i].ordinal<limit){
+                        maxRadius[0]=std::max(maxRadius[0],set.samples[i].radii.xy);maxRadius[1]=std::max(maxRadius[1],set.samples[i].radii.spatial);
+                    }
                 }
                 std::stable_sort(indices[l][s].begin(),indices[l][s].end(),[&](auto a,auto b){return context.sample(rows[a]).ordinal<context.sample(rows[b]).ordinal;});
             }
@@ -162,22 +204,30 @@ void evaluateClearanceComponents(const Plan& plan,const std::vector<int>& compon
         // Bound the grids using only compiled effective interactions.
         for(unsigned l=0;l<plan.layers.size();++l)if(components[l]==group)
         for(unsigned ol=l;ol<plan.layers.size();++ol)if(components[ol]==group)
-        for(unsigned s=0;s<context.policies[l].size();++s)
-        for(unsigned os=0;os<context.policies[ol].size();++os)
-        for(unsigned a=0;a<context.policies[l][s].size();++a)
-        for(unsigned b=0;b<context.policies[ol][os].size();++b){
-            const auto rules=context.rule(l,s,a,ol,os,b);
-            for(unsigned i=0;i<rules.count;++i)admitRule(rules.values[i]);
+        {
+            const auto& bounds=compiled.bounds[l][ol];
+            for(unsigned m=0;m<2;++m){maxFactor[m]=std::max(maxFactor[m],bounds.factor[m]);maxGap[m]=std::max(maxGap[m],bounds.gap[m]);}
         }
         const unsigned none=unsigned(rows.size());
         std::vector<bool> suppressed(rows.size(),false),previousKept(rows.size(),false);
         std::vector<unsigned> blockers(rows.size(),none);
         for(unsigned round=0;round<maxRounds;++round){
             std::vector<bool> kept(rows.size(),false);std::vector<unsigned> nextBlockers(rows.size(),none),active;
+            for(unsigned l=0;l<plan.layers.size();++l)if(components[l]==group){
+                ++output.layers[l].rounds;output.layers[l].limitReached=false;
+            }
+            bool stale;
+            do {
+            // A previous-round blocker is a hint, never a final rejection.
+            // Disabling invalid hints is monotonic; this same-prefix settlement
+            // cannot oscillate or consume a layer's refill allowance.
+            require(settlementRows+rows.size()<=50000000,"Clearance settlement work limit exceeded");
+            settlementRows+=rows.size();std::fill(kept.begin(),kept.end(),false);
+            std::fill(nextBlockers.begin(),nextBlockers.end(),none);active.clear();
             Grid xy{2*maxRadius[0]*maxFactor[0]+maxGap[0],true,{}},spatial{2*maxRadius[1]*maxFactor[1]+maxGap[1],false,{}};
             require(std::isfinite(xy.width)&&std::isfinite(spatial.width)&&std::max(xy.width,spatial.width)<=1e150,"Clearance radius overflow");
             for(unsigned l=0;l<plan.layers.size();++l)if(components[l]==group){
-                const auto& layer=plan.layers[l];auto& out=output.layers[l];++out.rounds;
+                const auto& layer=plan.layers[l];auto& out=output.layers[l];
                 for(unsigned s=0;s<layer.sets.size();++s){
                     const auto& pop=layer.sets[s];auto& r=out.sets[s];r.kept.clear();r.conflicts.clear();r.reasons.assign(pop.samples.size(),Reason::NotConsumed);r.attempts=prefixes[l][s];
                     std::size_t pins=0;for(auto j:indices[l][s])if(context.sample(rows[j]).protectedEdit)++pins;
@@ -189,7 +239,7 @@ void evaluateClearanceComponents(const Plan& plan,const std::vector<int>& compon
                         if(suppressed[j]){r.reasons[rows[j].index]=Reason::Cleanup;continue;}
                         if(p.protectedEdit){kept[j]=true;active.push_back(j);continue;}
                         if(p.ordinal>=prefixes[l][s])continue;
-                        if(blockers[j]!=none&&previousKept[blockers[j]]){nextBlockers[j]=blockers[j];r.reasons[rows[j].index]=rows[j].layer==rows[blockers[j]].layer?Reason::SelfSpacing:Reason::LayerSpacing;continue;}
+                        if(blockers[j]!=none&&previousKept[blockers[j]]){nextBlockers[j]=blockers[j];r.reasons[rows[j].index]=spacingReason(rows[j],rows[blockers[j]]);continue;}
                         if(layer.acceptedTarget&&admitted>=pop.budget)continue;
                         ++admitted;active.push_back(j);
                     }
@@ -213,9 +263,15 @@ void evaluateClearanceComponents(const Plan& plan,const std::vector<int>& compon
                 });};
                 const bool collision=query(xy)||query(spatial);
                 if(a.protectedEdit){r.reasons[ref.index]=Reason::Protected;if(collision)r.conflicts.push_back(ref.index);}
-                else if(collision){nextBlockers[j]=blocker;r.reasons[ref.index]=ref.layer==rows[blocker].layer?Reason::SelfSpacing:Reason::LayerSpacing;}
+                else if(collision){nextBlockers[j]=blocker;r.reasons[ref.index]=spacingReason(ref,rows[blocker]);}
                 else{kept[j]=true;r.reasons[ref.index]=Reason::Accepted;xy.add(a.position,j);spatial.add(a.position,j);}
             }
+            stale=false;
+            for(unsigned j=0;j<rows.size();++j)if(nextBlockers[j]!=none&&!kept[nextBlockers[j]]){
+                require(blockers[j]!=none,"Invalid current-round clearance blocker");
+                blockers[j]=none;stale=true;
+            }
+            } while(stale);
             bool removed=false,more=false;
             for(unsigned l=0;l<plan.layers.size();++l)if(components[l]==group){
                 const auto& layer=plan.layers[l];bool layerRemoved=false;

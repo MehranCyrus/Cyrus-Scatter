@@ -2,12 +2,12 @@
 
 Native C++ scattering and generated MAXScript UI for 3ds Max.
 
-**Current delivery: Scatter 0.86.8 / schema 59 / CyrusUnified2, qualified for Max 2027.** See the [source clearance delivery, packages and limits](docs/plans/source-clearance/DELIVERY_0868.md). Models independently choose clearance for their own copies, other models in the layer and other layers, with explicit conflict priority. Existing schema-58 scenes require an Undoable upgrade. Historical [corrected 0.86.7.2 Max 2024/2026/2027 deliveries](docs/plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) retain their original versions and receipts. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) owns remaining work; unrelated roadmap work is outside this delivery.
+**Current delivery: Scatter 0.86.8.1 / schema 59 / CyrusUnified2, with matched Max 2024, 2026 and 2027 packages.** See the [clearance corrections, viewport performance, packages and qualification limits](docs/plans/source-clearance/DELIVERY_08681.md). This patch fixes stale refill blockers and unused-source scheduling, retains unchanged source materials/geometry across radius edits, and preserves supported leaf opacity in colored Mesh. Models retain independent clearance scopes and conflict priority. Existing schema-58 scenes require an Undoable upgrade. Historical [corrected 0.86.7.2 Max 2024/2026/2027 deliveries](docs/plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) retain their original versions and receipts. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) owns remaining work; unrelated roadmap work is outside this delivery.
 
 | Need | Maintained source |
 | --- | --- |
 | Use the plugin | [Artist guide](docs/ARTIST_GUIDE.md), [Layout and falloff](docs/LAYOUT_AND_FALLOFF.md) |
-| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [0.86.8 installers, checks and limits](docs/plans/source-clearance/DELIVERY_0868.md) |
+| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [0.86.8.1 installers, checks and limits](docs/plans/source-clearance/DELIVERY_08681.md) |
 | Understand implementation | [Architecture](docs/ARCHITECTURE.md), [engineering contracts](docs/ENGINEERING_FOUNDATION.md) |
 | Find remaining work | [Execution ledger](docs/plans/improvement-program/PROGRESS.md), [defects and acceptance](docs/BACKLOG.md) |
 | Work in this repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md), [version policy](docs/Release_Versioning.md) |
@@ -23,7 +23,7 @@ selected layer's current surfaces.
 point**, and lets **Pick object** replace either a Point or a model.
 Put `CyrusScatter-Content-0.86.7.zip` beside the EXE and check **Install / update
 plant library** to install content. The EXE and ZIP are together under
-`dist/CyrusScatter-0.86.8-20261020/`. Leave the option unchecked to keep existing
+`dist/CyrusScatter-0.86.8.1-20261020/`. Leave the option unchecked to keep existing
 content. Content keeps its independent revision and is shared by standard profiles
 across all three hosts. Plugin-only updates do not copy the models. The ZIP streams
 into one shared store, reusing verified existing bytes; success shows a brief

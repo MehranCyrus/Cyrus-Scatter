@@ -1,6 +1,6 @@
 # Source clearance and layer calculation implementation plan
 
-20 October 2026. **Status: implemented in 0.86.8 with scoped Max 2027 qualification; see [delivery evidence](DELIVERY_0868.md).** The user authorized code, documentation, packaging and Git backup. RC identifiers below are local work packages, not P/I/PG/N roadmap identifiers. Installation into artist profiles, restarting artist sessions and website deployment remain outside this task.
+20 October 2026. **Status: implemented in 0.86.8, corrected in 0.86.8.1 with the user's additional Max 2024/2026 compatibility request; see [current delivery evidence and host scopes](DELIVERY_08681.md).** The user authorized code, documentation, packaging and Git backup. RC identifiers below are local work packages, not P/I/PG/N roadmap identifiers. Installation into artist profiles, restarting artist sessions and website deployment remain outside this task.
 
 The intended artist action is: select a model in a layer, give its scattered copies a footprint, choose which placements must respect it, and give that model precedence when desired. A leaf can clear other models in its own layer and selected other layers without changing independent layers. The layer continues to own one population; source clearance does not create another count, density domain or Paint population.
 
@@ -182,14 +182,19 @@ Compile a **ranked component schedule** only when effective constraints differ o
 
 For a ranked component:
 
+0.86.8.1 compiles these schedules once from participating source-policy cohorts.
+All metadata is validated; protected placements and the authorized refill pool
+contribute, while unused sources and unauthorized cached suffixes do not.
+Equivalent cohorts retain witnesses for own-copy and distinct-source rules.
+
 1. Initialize each layer's consumed prefix from its existing budget/receiver schedule, and include valid protected requirements independently of ordinary quota.
-2. Freeze the current round's prefixes. Admit Count slots in stable candidate order, reserving protected placements first. Then sort only the admitted ordinary indices by conflict priority and greedily resolve clearance. A rejected candidate waits while its accepted blocker survives; bounded refill can admit later candidates to the vacated slots. Candidate-budget mode considers its consumed pool without a new source quota.
+2. Freeze the current round's prefixes. Admit Count slots in stable candidate order, reserving protected placements first. Then sort only the admitted ordinary indices by conflict priority and greedily resolve clearance. A rejected candidate waits while its accepted blocker survives; bounded refill can admit later candidates to the vacated slots. If a previous-round blocker disappears during this pass, clear that stale hint and settle the same prefix again before cleanup. Invalid hints are removed monotonically; this does not consume a new retry round or authorize new candidates. Candidate-budget mode considers its consumed pool without a new source quota.
 3. Apply cleanup to the accepted union of each layer; preserve protected rows. Mark removed candidate identities suppressed for this evaluation so retry cannot repeatedly resurrect the same cleanup failures.
 4. Accepted-target policy may extend its scheduled prefix within its attempt/round allowance. Explicit cleanup repair may reconsider previously rejected candidates from the consumed pool. Candidate-budget mode without repair does not request new work to fill cleanup holes.
 5. If permitted retry, changed blockers or extended prefixes require replay, recompute acceptance from the cached pool in the same total order. A newly consumed preferred candidate can displace a lower-ranked provisional placement. No provisional round is published.
 6. Stop when no authorized extension/repair makes progress, or the round allowance is exhausted. Publish the final clearance-checked, post-cleanup result with truthful shortfall/limit reasons. Unused free space is permitted; this is bounded greedy acceptance, not maximal packing.
 
-Component replay may revisit a dependent layer whose own attempt limit is already reached; that layer gains no new suffix. Freeze its permitted pool and still apply the current blockers. Bound component replays by the maximum member round allowance, no greater than the existing 16, and charge all replays to one shared work budget. Cleanup without retry may leave intentional holes. Define per-layer consumed/attempt counts separately from component replay count.
+Component replay may revisit a dependent layer whose own attempt limit is already reached; that layer gains no new suffix. Freeze its permitted pool and still apply the current blockers. Bound component rounds by the maximum member round allowance, no greater than the existing 16. Same-prefix settlement and rounds share a fifty-million examined-row ceiling, separate from the fifty-million neighbor-visit ceiling. Cleanup without retry may leave intentional holes. Define per-layer consumed/attempt counts separately from component replay count. Recompute limit status for the latest settled result so later fulfillment clears an earlier provisional shortfall.
 
 The native inherited schedule and ranked schedule share radius evaluation, pair matching, spatial queries, protection, reasons and publication. RC04 must prove inherited parity including cleanup/refill; a failure blocks release until the scheduler is corrected. Do not bypass parity by silently converting old output to a new schedule.
 

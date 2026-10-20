@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.8 | Independent source clearance scopes, conflict preference and scaled UI; historical receipts retain their identities |
-| Scatter native/package | 0.86.8 / Max 2027 | Matched SDK/managed payload; [delivery scope](plans/source-clearance/DELIVERY_0868.md). Older-host deliveries retain their original versions |
+| Scatter UI | 0.86.8.1 | Clearance correctness, viewport reuse and colored-Mesh opacity correction; historical receipts retain their identities |
+| Scatter native/package | 0.86.8.1 / Max 2024, 2026, 2027 | Separately matched SDK/managed payloads under the user's explicit compatibility request; [delivery scope](plans/source-clearance/DELIVERY_08681.md) |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
@@ -15,6 +15,15 @@
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
 
 ## Choosing the next version
+
+**20 October 2026 authorized correction: 0.86.8.1.** The user explicitly selected
+this patch for the two source-clearance review defects, relevant viewport reuse
+and the opacity-card Mesh correction. It corrects the intended existing
+semantics without changing saved schema 59, recipe 8, placement 2 or publication
+bridge 4. The user subsequently explicitly requested Max 2024 and 2026 alongside
+2027; matched payloads and scoped host evidence are required for this delivery.
+Content remains 0.86.7 and is reused unchanged. See the
+[delivery evidence and limitations](plans/source-clearance/DELIVERY_08681.md).
 
 **20 October 2026 authorized successor: 0.86.8.** The user chose this label for source-local clearance and conflict priority. These user-visible calculation semantics require schema 59 / recipe 8 / bridge 4, with explicit schema-58 conversion. Max 2027 is the current development and qualification scope. Content stays 0.86.7; Analyzer, MCP and Licensing keep independent versions. See the [receipt and limits](plans/source-clearance/DELIVERY_0868.md).
 

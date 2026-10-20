@@ -43,6 +43,10 @@ constexpr const char* texturedMeshShader=R"fx(
 float4x4 CyrusViewProjection : WORLDVIEWPROJ;
 float CyrusTiles;
 float CyrusTileSize;
+float3 CyrusColor;
+bool CyrusUseBands;
+bool CyrusUseTextureColor;
+float4 CyrusPalette[65];
 Texture2D CyrusTexture;
 SamplerState CyrusSampler { Filter=MIN_MAG_MIP_LINEAR; AddressU=Clamp; AddressV=Clamp; };
 struct Input {
@@ -50,13 +54,14 @@ struct Input {
     float3 r0 : TEXCOORD2;float3 r1 : TEXCOORD3;float3 r2 : TEXCOORD4;float3 r3 : TEXCOORD5;
     float owner : TEXCOORD6;float3 uv : TEXCOORD7;float3 opacityUV : TEXCOORD8;
 };
-struct Output {float4 p:SV_POSITION;float3 uv:TEXCOORD0;float3 opacityUV:TEXCOORD1;float shade:TEXCOORD2;};
+struct Output {float4 p:SV_POSITION;float3 uv:TEXCOORD0;float3 opacityUV:TEXCOORD1;float shade:TEXCOORD2;float3 color:COLOR0;};
 float3 vt(float3 p,Input i){return p.x*i.r0+p.y*i.r1+p.z*i.r2;}
 Output textureVS(Input i) {
     Output o;o.p=mul(float4(vt(i.p,i)+i.r3,1),CyrusViewProjection);
     float3 n=cross(vt(i.a,i),vt(i.b,i));float len=length(n);
     o.shade=.35+.65*abs(dot(len>0?n/len:float3(0,0,0),normalize(float3(.3,-.5,.8))));
-    o.uv=i.uv;o.opacityUV=i.opacityUV;return o;
+    o.uv=i.uv;o.opacityUV=i.opacityUV;
+    o.color=CyrusUseBands?CyrusPalette[(int)i.owner].rgb:CyrusColor;return o;
 }
 float2 atlas(float3 uv) {
     float2 tile=float2(fmod(floor(uv.z+.5),CyrusTiles),floor((uv.z+.5)/CyrusTiles));
@@ -67,7 +72,8 @@ float2 atlas(float3 uv) {
 float4 texturePS(Output i):SV_Target {
     float alpha=CyrusTexture.Sample(CyrusSampler,atlas(i.opacityUV)).a;
     clip(alpha-.5);
-    return float4(CyrusTexture.Sample(CyrusSampler,atlas(i.uv)).rgb*i.shade,1);
+    float3 color=CyrusUseTextureColor?CyrusTexture.Sample(CyrusSampler,atlas(i.uv)).rgb:i.color;
+    return float4(color*i.shade,1);
 }
 technique11 CyrusTextureMesh {pass P0 {
     SetVertexShader(CompileShader(vs_5_0,textureVS()));SetGeometryShader(NULL);
@@ -84,10 +90,13 @@ class MeshItem final : public ICustomRenderItem {
     HLSLMaterialHandle material;
     HLSLMaterialHandle textureMaterial;
     TextureHandle texture;
+    VertexBufferHandle retainedUV;
     VertexBufferHandleArray textureBuffers;
     MaterialRequiredStreams textureFormat;
     bool textured=false;
     bool sharedBuffers=false;
+    bool sharedGeometry=false,sharedAppearance=false;
+    bool sharedMaterial=false,sharedTextureMaterial=false;
     bool fullGeometry=false;
     std::atomic<bool> ready{false};
     std::mutex realizeMutex;
@@ -96,8 +105,20 @@ public:
         :generation(std::move(value)),layerIndex(layer),groupIndex(group) {
         fullGeometry=generation->meshPlan[layer][group].full;
         if(previous && previous->fullGeometry==fullGeometry) {
-            buffers=previous->buffers;boxBuffers=previous->boxBuffers;format=previous->format;sharedBuffers=true;++bufferReuses;
-            if(sameStyle(previous->generation->layers[previous->layerIndex],generation->layers[layerIndex]) &&
+            const auto& before=previous->generation->layers[previous->layerIndex];
+            const auto& after=generation->layers[layerIndex];
+            sharedBuffers=before.mesh==after.mesh;sharedGeometry=true;format=previous->format;++bufferReuses;
+            if(sharedBuffers){buffers=previous->buffers;boxBuffers=previous->boxBuffers;}
+            else for(int i=0;i<3;++i){if(fullGeometry)buffers.append(previous->buffers[i]);boxBuffers.append(previous->boxBuffers[i]);}
+            sharedMaterial=sameStyle(before,after)&&before.mesh->groups[group].color==after.mesh->groups[group].color;
+            if(sharedMaterial)material=previous->material;
+            if(before.appearance&&after.appearance&&
+               group<before.appearance->sources.size()&&group<after.appearance->sources.size()&&
+               before.appearance->sources[group]&&before.appearance->sources[group]==after.appearance->sources[group]){
+                texture=previous->texture;retainedUV=previous->retainedUV;sharedAppearance=previous->textured;
+                if(sharedAppearance&&sharedMaterial){textureMaterial=previous->textureMaterial;sharedTextureMaterial=true;}
+            }
+            if(sharedBuffers&&sameStyle(previous->generation->layers[previous->layerIndex],generation->layers[layerIndex]) &&
                previous->generation->layers[previous->layerIndex].appearance==generation->layers[layerIndex].appearance) {
                 textureMaterial=previous->textureMaterial;texture=previous->texture;textureBuffers=previous->textureBuffers;
                 textureFormat=previous->textureFormat;textured=previous->textured;
@@ -110,7 +131,10 @@ public:
     bool reusable(const PointLayer& next,std::size_t group) const {
         const auto& previous=generation->layers[layerIndex];
         return ready.load(std::memory_order_acquire) && !generation->failed.load() && groupIndex==group &&
-            previous.mesh==next.mesh;
+            (previous.mesh==next.mesh||(previous.geometryMode==next.geometryMode&&
+             previous.mesh->groups[group].faces==next.mesh->groups[group].faces&&
+             previous.mesh->localBounds[group].Min()==next.mesh->localBounds[group].Min()&&
+             previous.mesh->localBounds[group].Max()==next.mesh->localBounds[group].Max()));
     }
     void Realize(DrawContext& dc) override {
         if(ready.load(std::memory_order_acquire) || generation->failed.load()) return;
@@ -121,9 +145,9 @@ public:
             const auto& group=layer.mesh->groups[groupIndex];
             DeviceCaps caps;GetIDisplayManager()->GetDeviceCaps(caps);
             previewFault(3);
-            if(caps.FeatureLevel!=Level5_0 || !material.InitializeWithString(CStr(meshShader)))
+            if(caps.FeatureLevel!=Level5_0 || (!sharedMaterial&&!material.InitializeWithString(CStr(meshShader))))
                 throw std::runtime_error("Mesh shader unavailable");
-            setIdentification(material,layer,groupIndex,group.color);
+            if(!sharedMaterial)setIdentification(material,layer,groupIndex,group.color);
             if(!sharedBuffers) {
             amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Upload);
             auto addField=[&](MeshChannelCategory category,int usage,int stream,int offset,bool instance) {
@@ -149,6 +173,7 @@ public:
                     upload(target,sizeof(Point3),vertices,stream.data());geometryUploadBytes+=sizeof(Point3)*vertices;
                 }
             };
+            if(!sharedGeometry){
             if(fullGeometry)geometry(group.faces,buffers);
             const auto& box=layer.mesh->localBounds[groupIndex];const auto lo=box.Min(),hi=box.Max();
             Point3 corners[8];for(int i=0;i<8;++i)corners[i]=Point3(i&1?hi.x:lo.x,i&2?hi.y:lo.y,i&4?hi.z:lo.z);
@@ -158,6 +183,7 @@ public:
             geometry(boxFaces,boxBuffers);
             for(int field=0;field<3;++field) {
                 addField(field==0?MeshChannelPosition:MeshChannelTexcoord,field==0?0:field-1,field,0,false);
+            }
             }
             // Nitrous permits instance data in the final vertex buffer only.
             // Ownership is a separate logical field in that immutable payload.
@@ -174,30 +200,39 @@ public:
             upload(boxBuffers,sizeof(instances[0]),instances.size(),instances.data());
             if(fullGeometry)buffers.append(boxBuffers[3]);
             transformUploadBytes+=4*sizeof(Point3)*instances.size();ownerUploadBytes+=sizeof(float)*instances.size();
+            if(!sharedGeometry){
             for(int row=0;row<4;++row) addField(MeshChannelTexcoord,2+row,3,row*sizeof(Point3),true);
             MaterialRequiredStreamElement owner;
             owner.SetChannelCategory(MeshChannelTexcoord);owner.SetType(VertexFieldFloat1);owner.SetUsageIndex(6);
             owner.SetStreamIndex(3);owner.SetOffset(4*sizeof(Point3));owner.SetIsInstanceStream(true);format.AddStream(owner);
             }
-            if(fullGeometry&&layer.palette&&layer.palette->mode==4&&layer.appearance&&
+            }
+            if(fullGeometry&&layer.appearance&&
                groupIndex<layer.appearance->sources.size()&&layer.appearance->sources[groupIndex]) {
                 const auto& data=*layer.appearance->sources[groupIndex];
                 if(data.uv.size()!=group.faces.size()*3)throw std::runtime_error("Material UV correspondence differs");
-                if(!textureMaterial.InitializeWithString(CStr(texturedMeshShader))||
-                   !texture.Initialize(data.width,data.width,TargetFormatA8R8G8B8))
+                if(!sharedTextureMaterial&&!textureMaterial.InitializeWithString(CStr(texturedMeshShader)))
+                    throw std::runtime_error("Material shader allocation failed");
+                if(!sharedAppearance){
+                if(!texture.Initialize(data.width,data.width,TargetFormatA8R8G8B8))
                     throw std::runtime_error("Material texture/shader allocation failed");
                 LockedRect rect{};
                 if(!texture.WriteOnlyLockRectangle(0,rect,nullptr))throw std::runtime_error("Material texture lock failed");
                 for(int y=0;y<data.width;++y)std::memcpy(rect.pBits+std::size_t(y)*rect.pitch,data.pixels.data()+std::size_t(y)*data.width,std::size_t(data.width)*4);
                 if(!texture.WriteOnlyUnlockRectangle())throw std::runtime_error("Material texture upload failed");
+                if(!retainedUV.Initialize(sizeof(MaterialUV),data.uv.size(),const_cast<MaterialUV*>(data.uv.data()))||!retainedUV.RealizeToHWMemory(true))
+                    throw std::runtime_error("Material UV allocation failed");
+                uploadBytes+=data.uv.size()*sizeof(MaterialUV)+data.pixels.size()*4;uploads+=2;
+                }
+                if(!sharedTextureMaterial){
                 textureMaterial.SetTextureParameter(_T("CyrusTexture"),texture);
                 textureMaterial.SetFloatParameter(_T("CyrusTiles"),float(data.tiles));
                 textureMaterial.SetFloatParameter(_T("CyrusTileSize"),256.f);
-                VertexBufferHandle uvBuffer;
-                if(!uvBuffer.Initialize(sizeof(MaterialUV),data.uv.size(),const_cast<MaterialUV*>(data.uv.data()))||!uvBuffer.RealizeToHWMemory(true))
-                    throw std::runtime_error("Material UV allocation failed");
+                setIdentification(textureMaterial,layer,groupIndex,group.color);
+                textureMaterial.SetBoolParameter(_T("CyrusUseTextureColor"),layer.palette&&layer.palette->mode==4);
+                }
                 for(int i=0;i<3;++i)textureBuffers.append(buffers[i]);
-                textureBuffers.append(uvBuffer);textureBuffers.append(buffers[3]);
+                textureBuffers.append(retainedUV);textureBuffers.append(buffers[3]);
                 auto add=[&](MeshChannelCategory category,int usage,int stream,int offset,bool instance,VertexFieldType type) {
                     MaterialRequiredStreamElement field;field.SetChannelCategory(category);field.SetType(type);
                     field.SetUsageIndex(static_cast<unsigned short>(usage));field.SetStreamIndex(static_cast<unsigned char>(stream));
@@ -207,7 +242,7 @@ public:
                 add(MeshChannelTexcoord,7,3,0,false,VertexFieldFloat3);add(MeshChannelTexcoord,8,3,sizeof(Point3),false,VertexFieldFloat3);
                 for(int i=0;i<4;++i)add(MeshChannelTexcoord,2+i,4,i*sizeof(Point3),true,VertexFieldFloat3);
                 add(MeshChannelTexcoord,6,4,4*sizeof(Point3),true,VertexFieldFloat1);
-                uploadBytes+=data.uv.size()*sizeof(MaterialUV)+data.pixels.size()*4;uploads+=2;textured=true;
+                textured=true;
             }
             ready.store(true,std::memory_order_release);++generation->ready;
         } catch(...) { generation->failed=true;++failures; }

@@ -69,7 +69,67 @@ void limits(){
     s.sources[0].distance.multiplier=-1;rejects([&]{evaluate(p);});s.sources[0].distance.multiplier=1;
     s.sources[1].id=s.sources[0].id;rejects([&]{evaluate(p);});
 }
+void displacedBlockerAndDormantSource(){
+    for(unsigned rounds:{2u,16u})for(bool accepted:{false,true}){
+        Plan p;p.layers={layer("A",{row(0,0),row(1.5,1)}),
+            layer("P",{row(100,0),row(-1.5,1)}),layer("PIN",{row(100,0,0,1,true)})};
+        for(auto& l:p.layers)l.sets[0].self={true,1,0,false};
+        p.layers[0].acceptedTarget=accepted; // No retry allowance in this dependent layer.
+        auto& pref=p.layers[1];pref.acceptedTarget=true;pref.rounds=rounds;
+        pref.sets[0].budget=1;pref.sets[0].attemptLimit=2;
+        pref.sets[0].sources[0].preferred=true;pref.sets[0].sources[0].external=3;
+        const auto result=evaluate(p);const auto& a=result.layers[0].sets[0];
+        check(a.kept==std::vector<std::size_t>{1},"Displaced previous-round blocker left a valid candidate rejected");
+        check(a.reasons[1]==Reason::Accepted,"Released candidate retained a stale spacing reason");
+        check(result.layers[1].sets[0].kept==std::vector<std::size_t>{1},"Refill preference lost its admitted slot");
+        check(result.layers[2].sets[0].kept==std::vector<std::size_t>{0},"Protected blocker was displaced");
+        check(evaluate(p).layers[0].sets[0].kept==a.kept,"Stateful replay is not deterministic");
+    }
+    Plan p;p.layers={layer("A",{row(0,0)}),layer("B",{row(0,0)})};
+    p.rules={{Scope::Layers,"A","B",{true,1,0,false}}};
+    auto& first=p.layers[0];first.cleanup.cleanup=true;first.cleanup.radius=1;
+    first.cleanup.minNeighbors=1;first.cleanup.minIsland=0;
+    const auto baseline=evaluate(p);
+    first.sets[0].sources[1].preferred=true;
+    const auto dormant=evaluate(p);
+    for(unsigned l=0;l<2;++l){
+        check(baseline.layers[l].sets[0].kept==dormant.layers[l].sets[0].kept,"Unused preference changed another layer");
+        check(baseline.layers[l].sets[0].reasons==dormant.layers[l].sets[0].reasons,"Unused preference changed reasons");
+    }
+    // A cached suffix outside all authorized work is also dormant.
+    first.sets[0].samples.push_back(row(50,999,1));
+    check(clearanceComponents(p)==std::vector<int>({-1,-1}),"Unauthorized suffix changed scheduling");
+    // Protected edits participate regardless of their candidate ordinal.
+    first.sets[0].samples.back().protectedEdit=true;
+    check(clearanceComponents(p)[0]>=0,"Protected-only source was omitted from compilation");
+    first.sets[0].samples.back().protectedEdit=false;
+    first.sets[0].samples.back().ordinal=1;first.acceptedTarget=true;first.rounds=2;first.sets[0].attemptLimit=2;
+    check(clearanceComponents(p)[0]>=0,"Eligible refill source was omitted from compilation");
+    Plan released;released.layers={layer("blocker",{row(0,0)}),layer("dependent",{row(1.5,0),row(10,1)}),
+        layer("refill",{row(100,0),row(-1.5,1)}),layer("pin",{row(100,0,0,1,true)})};
+    released.layers[0].sets[0].sources[0].external=3;
+    released.layers[1].acceptedTarget=true;
+    auto& refill=released.layers[2];refill.acceptedTarget=true;refill.rounds=2;refill.sets[0].budget=1;
+    refill.sets[0].sources[0].preferred=true;refill.sets[0].sources[0].external=3;
+    const auto settled=evaluate(released);
+    check(settled.layers[1].sets[0].kept.size()==2&&!settled.layers[1].limitReached,
+        "Satisfied dependent layer retained an obsolete retry-limit warning");
+}
 void dormantValuesAndBoundedWork(){
+    for(bool populated:{false,true})for(unsigned sourceCount:{1u,32u,128u,512u}){
+        Plan metadata;
+        for(unsigned l=0;l<10;++l){
+            std::vector<Sample> candidates;
+            if(populated)for(unsigned s=0;s<sourceCount;++s)candidates.push_back(row(s*4.,s,s));
+            auto owner=layer(std::to_string(l),std::move(candidates),sourceCount);
+            owner.sets[0].self={true,1,0,false};metadata.layers.push_back(std::move(owner));
+        }
+        const auto start=std::chrono::steady_clock::now();
+        const auto compiled=compileClearance(metadata);
+        check(clearanceComponents(*compiled)==std::vector<int>(10,-1),"Equivalent source cohorts changed schedule");
+        std::cout<<"compile 10 layers, sources="<<sourceCount<<", populated="<<populated<<": "
+            <<std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count()<<" ms\n";
+    }
     Plan p;p.layers={layer("A",{row(0,0),row(.5,1,1),row(10,2)})};
     auto& s=p.layers[0].sets[0];s.sources[0].others=2;
     const auto baseline=evaluate(p);
@@ -131,4 +191,29 @@ void independentOracle(){
         }
     }
 }
-int main(){try{scopesAndPriority();countAdmission();inheritanceAndEquivalence();crossLayerAndCleanup();limits();dormantValuesAndBoundedWork();independentOracle();std::cout<<"Source clearance: scopes, independent inheritance, Count admission, effective-rule equivalence, protected priority, cleanup/refill, limits and 240 oracle scenes passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+void refillOracle(){
+    std::mt19937 rng(8681001);
+    for(unsigned trial=0;trial<500;++trial){
+        std::vector<Sample> ordinary;
+        for(unsigned i=0;i<30;++i)ordinary.push_back(row(double(rng()%100)/5-10,i));
+        const double replacement=double(rng()%60)/5-6;
+        Plan p;p.layers={layer("A",ordinary),layer("P",{row(100,0),row(replacement,1)}),
+            layer("PIN",{row(100,0,0,1,true)})};
+        p.layers[0].sets[0].self={true,1,0,false};
+        p.layers[0].acceptedTarget=trial%2==0;
+        auto& pref=p.layers[1];pref.acceptedTarget=true;pref.rounds=trial%2?2:16;
+        pref.sets[0].budget=1;pref.sets[0].sources[0].preferred=true;pref.sets[0].sources[0].external=3;
+        const auto result=evaluate(p);
+        // Exhaustive final-pool oracle: the pin rejects P0, P1 fills its slot;
+        // all ordinary candidates are within the unchanged authorized prefix.
+        std::vector<std::size_t> expected;
+        for(unsigned i=0;i<ordinary.size();++i){
+            bool blocked=std::abs(ordinary[i].position.x-replacement)<2;
+            for(auto j:expected)blocked|=std::abs(ordinary[i].position.x-ordinary[j].position.x)<2;
+            if(!blocked)expected.push_back(i);
+        }
+        check(result.layers[0].sets[0].kept==expected,"Refill settlement differs from exhaustive final-pool oracle");
+        check(result.layers[1].sets[0].kept==std::vector<std::size_t>{1},"Refill oracle lost preferred candidate");
+    }
+}
+int main(){try{scopesAndPriority();countAdmission();inheritanceAndEquivalence();crossLayerAndCleanup();limits();displacedBlockerAndDormantSource();dormantValuesAndBoundedWork();independentOracle();refillOracle();std::cout<<"Source clearance: scopes, independent inheritance, Count admission, effective-rule equivalence, protected priority, displaced blockers, dormant sources, cleanup/refill, limits, 240 single-pass and 500 refill oracle scenes passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
