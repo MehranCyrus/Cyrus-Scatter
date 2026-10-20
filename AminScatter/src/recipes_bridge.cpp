@@ -392,7 +392,7 @@ Value* cyrusAssetReceiverBounds_cf(Value** a,int n){check_arg_count(cyrusAssetRe
 });}
 
 def_visible_primitive(cyrusRecipeVersion,"cyrusRecipeVersion");
-Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(7);}
+Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(8);}
 def_visible_primitive(cyrusRecipeTrackCreated,"cyrusRecipeTrackCreated");
 def_visible_primitive(cyrusPresetTrackPublication,"cyrusPresetTrackPublication");
 Value* cyrusPresetTrackPublication_cf(Value** a,int n){check_arg_count(cyrusPresetTrackPublication,1,n);type_check(a[0],Array,_T("Preset publication owners"));

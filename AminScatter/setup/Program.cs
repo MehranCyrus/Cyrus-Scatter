@@ -3,112 +3,119 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 [assembly: System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.8")]
-
 namespace Cyrus.Setup {
     sealed class SetupWindow : Form {
-        readonly TextBox profile=new TextBox(),details=new TextBox();
-        readonly Button browse=new Button(),install=new Button(),remove=new Button(),close=new Button(),copy=new Button();
-        readonly LinkLabel more=new LinkLabel();
-        readonly Label status=new Label();
-        readonly ComboBox host=new ComboBox {DropDownStyle=ComboBoxStyle.DropDownList,Dock=DockStyle.Fill};
-        readonly TableLayoutPanel layout=new TableLayoutPanel(),advanced=new TableLayoutPanel();
-        readonly List<string> years=new List<string>();
-        string Year {get{return years[host.SelectedIndex];}}
-        CancellationTokenSource cancellation;bool busy,expanded;string failure="";
+        readonly Dictionary<string,string> profiles=new Dictionary<string,string>();
+        readonly Dictionary<string,CheckBox> hosts=new Dictionary<string,CheckBox>();
+        readonly Dictionary<string,Label> states=new Dictionary<string,Label>();
+        readonly InstallerView view=new InstallerView();
+        readonly TableLayoutPanel cards=new TableLayoutPanel {Dock=DockStyle.Top,Height=112,ColumnCount=3};
+        bool busy;CancellationTokenSource cancellation;
+        internal Func<string,bool> hostRunning=HostRunning;
         public SetupWindow() {
-            AppContext.SetSwitch("Switch.System.IO.UseLegacyPathHandling",false);
-            AppContext.SetSwitch("Switch.System.IO.BlockLongPaths",false);
-            Text="Cyrus Scatter "+BuildIdentity.Version;StartPosition=FormStartPosition.CenterScreen;
-            Font=new Font("Segoe UI",10);AutoScaleMode=AutoScaleMode.Dpi;ClientSize=new Size(600,264);MinimumSize=new Size(540,295);
-            layout.Dock=DockStyle.Fill;layout.Padding=new Padding(16);layout.ColumnCount=1;layout.RowCount=6;
-            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));
-            foreach(int height in new[]{40,36,38,62,0,44})layout.RowStyles.Add(new RowStyle(SizeType.Absolute,height));
-            layout.Controls.Add(new Label {Text="Install Cyrus Scatter "+BuildIdentity.Version,Font=new Font(Font,FontStyle.Bold),AutoSize=true,Dock=DockStyle.Fill},0,0);
-            layout.Controls.Add(new Label {Text="Choose your 3ds Max version. Includes the library and starter patterns.",AutoSize=true,Dock=DockStyle.Fill},0,1);
-            foreach(string year in BuildIdentity.Years)try{Distribution.DetectMax(year);years.Add(year);host.Items.Add("3ds Max "+year);}catch(IOException){}
-            layout.Controls.Add(host,0,2);host.SelectedIndex=years.Count-1;
-            status.Dock=DockStyle.Fill;layout.Controls.Add(status,0,3);
-            advanced.ColumnCount=2;advanced.RowCount=3;advanced.Dock=DockStyle.Fill;
-            advanced.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));advanced.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            advanced.RowStyles.Add(new RowStyle(SizeType.Absolute,26));advanced.RowStyles.Add(new RowStyle(SizeType.Absolute,34));advanced.RowStyles.Add(new RowStyle(SizeType.Percent,100));
-            advanced.Controls.Add(new Label {Text="Detected Max configuration",AutoSize=true,Dock=DockStyle.Fill},0,0);advanced.SetColumnSpan(advanced.Controls[0],2);
-            profile.Dock=DockStyle.Fill;profile.ReadOnly=true;advanced.Controls.Add(profile,0,1);
-            browse.Text="Browse…";browse.AutoSize=true;advanced.Controls.Add(browse,1,1);
-            details.Multiline=true;details.ReadOnly=true;details.ScrollBars=ScrollBars.Both;details.WordWrap=false;details.Dock=DockStyle.Fill;
-            advanced.Controls.Add(details,0,2);advanced.SetColumnSpan(details,2);advanced.Visible=false;layout.Controls.Add(advanced,0,4);
-            var footer=new TableLayoutPanel {Dock=DockStyle.Fill,ColumnCount=2,RowCount=1};footer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));footer.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
-            more.Text="Details";more.AutoSize=true;more.Anchor=AnchorStyles.Left;footer.Controls.Add(more,0,0);
-            var buttons=new FlowLayoutPanel {AutoSize=true,Dock=DockStyle.Fill,FlowDirection=FlowDirection.RightToLeft,WrapContents=false};
-            close.Text="Close";install.Text="Install / Repair";remove.Text="Unregister";copy.Text="Copy details";
-            foreach(var button in new[]{close,install,remove,copy}){button.AutoSize=true;buttons.Controls.Add(button);}
-            remove.Visible=copy.Visible=false;footer.Controls.Add(buttons,1,0);layout.Controls.Add(footer,0,5);Controls.Add(layout);
-            host.SelectedIndexChanged+=(s,e)=>{failure="";SetProfile();RefreshDestination();};
-            more.LinkClicked+=(s,e)=>SetExpanded(!expanded);
-            copy.Click+=(s,e)=>{if(details.Text.Length>0)Clipboard.SetText(details.Text);};
-            browse.Click+=(s,e)=>{using(var dialog=new OpenFileDialog {Filter="Max configuration (*.ini)|*.ini",Title="Choose Max "+Year+" configuration"})if(dialog.ShowDialog(this)==DialogResult.OK){profile.Text=dialog.FileName;failure="";RefreshDestination();}};
-            install.Click+=async(s,e)=>await Run(false);remove.Click+=async(s,e)=>await Run(true);
-            close.Click+=(s,e)=>{if(busy){cancellation.Cancel();status.Text="Cancelling safely…";}else Close();};
-            FormClosing+=(s,e)=>{if(busy){e.Cancel=true;cancellation.Cancel();status.Text="Cancelling safely…";}};
-            SetProfile();RefreshDestination();
-        }
-        void SetExpanded(bool value) {
-            if(expanded==value)return;
-            expanded=value;float scale=Font.SizeInPoints/10f;
-            layout.RowStyles[4].Height=value?230*scale:0;advanced.Visible=value;remove.Visible=copy.Visible=value;
-            ClientSize=new Size(ClientSize.Width,ClientSize.Height+(int)((value?230:-230)*scale));more.Text=value?"Hide details":"Details";
-        }
-        void SetProfile() {
-            profile.Text="";if(host.SelectedIndex<0)return;
-            try{profile.Text=Distribution.FindProfile(Year);}catch(IOException error){status.Text=error.Message;}
-        }
-        void RefreshDestination(bool updateStatus=true) {
-            try {
-                if(host.SelectedIndex<0)throw new IOException("No supported Max installation found. Install and open Max 2024, 2026 or 2027 first.");
-                string executable=Distribution.DetectMax(Year);
-                if(profile.Text.Length==0)profile.Text=Distribution.FindProfile(Year);
-                var paths=Distribution.FromProfile(profile.Text,Year);
-                string destination="Max: "+executable+"\r\nPlugin and library: "+paths.RuntimeRoot+"\r\nStartup: "+paths.Startup+"\r\nMacros: "+paths.Macros;
-                details.Text=failure.Length>0?failure+"\r\n\r\n"+destination:destination;
-                if(updateStatus)status.Text="Ready for Max "+Year+". Close that Max version before installing.\nRestart it after installation.";
-                install.Enabled=remove.Enabled=true;
-            }catch(Exception error){details.Text=failure.Length>0?failure:error.Message;if(updateStatus)status.Text=error.Message;install.Enabled=remove.Enabled=false;}
-        }
-        async Task Run(bool unregister) {
-            InstallPaths paths;string year=Year;int index=Array.IndexOf(BuildIdentity.Years,year);
-            try{Distribution.DetectMax(year);paths=Distribution.FromProfile(profile.Text,year);}catch(Exception error){status.Text=error.Message;return;}
-            if(unregister&&MessageBox.Show(this,"Remove Cyrus Scatter registration? Personal recipes, activation and recovery files will be retained.","Unregister Cyrus Scatter",MessageBoxButtons.OKCancel)!=DialogResult.OK)return;
-            busy=true;failure="";cancellation=new CancellationTokenSource();host.Enabled=browse.Enabled=install.Enabled=remove.Enabled=false;close.Text="Cancel";
-            var progress=new Progress<string>(value=>status.Text=value);
-            try {
-                string result=await Task.Run(()=>{
-                    if(unregister){cancellation.Token.ThrowIfCancellationRequested();InstallEngine.RemoveRegistration(paths,year);return "Registration removed. Restart Max. Personal content was retained.";}
-                    string parent=Path.Combine(Path.GetTempPath(),"CyrusSetup"),extracted=null;
-                    Action<string> checkpoint=value=>{cancellation.Token.ThrowIfCancellationRequested();((IProgress<string>)progress).Report(value.StartsWith("extracting:")?"Unpacking plugin and library…":"Installing verified files…");};
-                    try {
-                        extracted=Distribution.Extract(Assembly.GetExecutingAssembly(),parent,BuildIdentity.PackageHashes[index],checkpoint,BuildIdentity.Resources[index]);
-                        var engine=new InstallEngine(extracted,BuildIdentity.InventoryHashes[index]);if(engine.Year!=year)throw new IOException("Selected Max version and payload differ.");engine.Install(paths,checkpoint);
-                    }catch {
-                        if(extracted!=null)try{Distribution.Cleanup(parent,extracted);}catch(IOException){}
-                        throw;
-                    }
-                    try{Distribution.Cleanup(parent,extracted);}catch(IOException error){
-                        string log=InstallEngine.SaveFailure(paths,"Installation completed; temporary extraction retained.\r\n"+error);
-                        return "Installed for Max "+year+". Restart Max.\nTemporary files were retained; details: "+log;
-                    }
-                    return "Installed for Max "+year+". Restart Max to use Cyrus Scatter.\nSelect terrain, then open Cyrus Library.";
-                });
-                status.Text=result;
-            }catch(OperationCanceledException){status.Text="Cancelled. Previous registration was retained.";}
-            catch(Exception error){
-                string log=InstallEngine.SaveFailure(paths,error.ToString());failure=error+"\r\n\r\nLog: "+log;
-                status.Text="Installation did not complete. Full error details are shown below.";SetExpanded(true);
+            AppContext.SetSwitch("Switch.System.IO.UseLegacyPathHandling",false);AppContext.SetSwitch("Switch.System.IO.BlockLongPaths",false);
+            Text="Cyrus Scatter "+BuildIdentity.Version;Font=new Font("Segoe UI",10);AutoScaleMode=AutoScaleMode.Dpi;
+            StartPosition=FormStartPosition.CenterScreen;ClientSize=new Size(760,475);MinimumSize=new Size(700,505);Padding=new Padding(24);BackColor=Color.White;
+            var title=new Label {Text="Cyrus Scatter",Dock=DockStyle.Top,Height=39,Font=new Font("Segoe UI",22,FontStyle.Bold),ForeColor=Color.FromArgb(26,47,52)};
+            var subtitle=new Label {Text="Version "+BuildIdentity.Version+"   ·   Select your 3ds Max versions",Dock=DockStyle.Top,Height=40,ForeColor=Color.FromArgb(89,103,111)};
+            foreach(string year in BuildIdentity.Years) {
+                cards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100f/BuildIdentity.Years.Length));
+                var card=new Panel {Dock=DockStyle.Fill,BackColor=Color.FromArgb(244,247,248),Padding=new Padding(14),Margin=new Padding(0,0,12,12)};
+                var pick=new CheckBox {Text="3ds Max "+year,Dock=DockStyle.Top,Height=32,Font=new Font("Segoe UI",12,FontStyle.Bold),Cursor=Cursors.Hand};
+                var state=new Label {Dock=DockStyle.Fill,Padding=new Padding(0,5,0,0),ForeColor=Color.FromArgb(85,100,108)};
+                try{
+                    Distribution.DetectMax(year);
+                    try{profiles.Add(year,Distribution.FindProfile(year));pick.Checked=true;}
+                    catch(IOException){pick.Enabled=false;state.Text="Open Max once to set up";}
+                }catch(IOException){pick.Enabled=false;state.Text="Not installed";}
+                hosts.Add(year,pick);states.Add(year,state);pick.CheckedChanged+=(s,e)=>RefreshSelection();
+                card.Controls.Add(state);card.Controls.Add(pick);cards.Controls.Add(card);
             }
-            finally{busy=false;cancellation.Dispose();cancellation=null;close.Text="Close";host.Enabled=browse.Enabled=true;RefreshDestination(false);}
+            Controls.Add(view);Controls.Add(cards);Controls.Add(subtitle);Controls.Add(title);
+            view.Primary.Click+=async(s,e)=>await Run(false);
+            view.Uninstall.Click+=async(s,e)=>{if(MessageBox.Show(this,"Uninstall Cyrus Scatter from the selected Max versions? Your shared library and scenes will be kept.","Uninstall Cyrus Scatter",MessageBoxButtons.OKCancel)==DialogResult.OK)await Run(true);};
+            view.CloseButton.Click+=(s,e)=>{if(busy)cancellation.Cancel();else Close();};
+            FormClosing+=(s,e)=>{if(busy){e.Cancel=true;cancellation.Cancel();}};
+            RefreshSelection();view.Status.Text="Close the selected Max versions, then click Install or Update.";
+        }
+        static bool HostRunning(string year) {
+            foreach(var process in Process.GetProcessesByName("3dsmax"))using(process) {
+                try{if(FileVersionInfo.GetVersionInfo(process.MainModule.FileName).FileMajorPart==Int32.Parse(year)-1998)return true;}
+                catch(System.ComponentModel.Win32Exception){throw new IOException("Close running 3ds Max sessions before updating.");}
+                catch(InvalidOperationException){}
+            }
+            return false;
+        }
+        void RefreshSelection() {
+            if(busy)return;
+            bool any=false,installed=false,missing=false;
+            foreach(var pair in hosts) {
+                if(!profiles.ContainsKey(pair.Key))continue;
+                string version;
+                try{version=InstallEngine.InstalledVersion(Distribution.FromProfile(profiles[pair.Key],pair.Key));}
+                catch(IOException){states[pair.Key].Text="Profile unavailable";pair.Value.Enabled=false;continue;}
+                states[pair.Key].Text=version.Length==0?"Ready to install":"Installed "+version;
+                if(pair.Value.Checked){any=true;installed|=version.Length>0;missing|=version.Length==0;}
+                pair.Value.Parent.BackColor=pair.Value.Checked?Color.FromArgb(228,243,237):Color.FromArgb(244,247,248);
+            }
+            view.Primary.Text=installed?(missing?"Install / Update":"Update"):"Install";
+            view.Primary.Enabled=any;view.Uninstall.Enabled=installed;
+        }
+        async Task Run(bool remove) {
+            if(busy)return;
+            var selected=new List<string>();foreach(var pair in hosts)if(pair.Value.Checked&&profiles.ContainsKey(pair.Key))selected.Add(pair.Key);
+            if(selected.Count==0){view.Status.Text="Select a Max version to continue.";return;}
+            var targets=new Dictionary<string,InstallPaths>();
+            bool installContent=view.InstallContent.Checked;
+            string companion=Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            try {
+                foreach(string year in selected) {
+                    if(hostRunning(year))throw new IOException("Close 3ds Max "+year+", then click "+(remove?"Uninstall":"Install / Update")+" again. Your installation has not changed.");
+                    targets.Add(year,Distribution.FromProfile(profiles[year],year));
+                }
+            }catch(Exception error){view.Status.Text=error.Message;view.Details.Text=error.ToString();view.SetFailure(true);return;}
+            busy=true;cancellation=new CancellationTokenSource();cards.Enabled=false;view.SetBusy(true);view.Report("Checking your installation…");view.Details.Text="";
+            var log=new System.Text.StringBuilder();var notes=new List<string>();
+            try {
+                await Task.Run(()=>{
+                    string parent=Path.Combine(Path.GetTempPath(),"CyrusSetup");var extracted=new List<string>();var engines=new Dictionary<string,InstallEngine>();
+                    Action<string> check=value=>cancellation.Token.ThrowIfCancellationRequested();
+                    try {
+                        foreach(string year in selected) {
+                            check("preflight");
+                            if(remove)continue;
+                            int index=Array.IndexOf(BuildIdentity.Years,year);
+                            string folder=Distribution.Extract(Assembly.GetExecutingAssembly(),parent,BuildIdentity.PackageHashes[index],check,BuildIdentity.Resources[index]);extracted.Add(folder);
+                            var engine=new InstallEngine(folder,BuildIdentity.InventoryHashes[index]);if(engine.Year!=year)throw new IOException("Selected host and package differ.");
+                            notes.Add("Max "+year+": "+engine.ConfigureLibraryChoice(targets[year],installContent,companion));
+                            engines.Add(year,engine);log.AppendLine(engine.Plan(targets[year],check));
+                        }
+                        var publishedStates=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                        foreach(string year in selected) {
+                            check("host:"+year);view.Report((remove?"Uninstalling":"Updating")+" Cyrus Scatter for Max "+year+"…");
+                            if(remove) {
+                                if(InstallEngine.InstalledVersion(targets[year]).Length>0)InstallEngine.RemoveRegistration(targets[year],year);
+                                log.AppendLine("Uninstalled Max "+year+"; shared content retained.");continue;
+                            }
+                            var engine=engines[year];string state=InstallEngine.StatePath(targets[year]);
+                            if(publishedStates.Contains(state))engine.LibraryAction="Keep";
+                            engine.Install(targets[year],check);
+                            if(engine.LibraryAction!="Keep")publishedStates.Add(state);
+                            log.AppendLine("Completed Max "+year+".");
+                        }
+                    }finally{foreach(string folder in extracted)try{Distribution.Cleanup(parent,folder);}catch(IOException error){log.AppendLine(error.Message);}}
+                });
+                view.Details.Text=log+"\r\n"+String.Join("\r\n",notes);
+                view.SetFailure(false);
+                view.Status.Text=remove?"Uninstall completed. Your library is kept.":"Installation completed. You can now open Max.";
+            }catch(OperationCanceledException){view.Status.Text="Cancelled. Completed updates are retained; incomplete registration is rolled back.";view.Details.Text=log.ToString();}
+            catch(Exception error){view.Status.Text="Could not finish: "+error.Message.Split('\r','\n')[0];view.Details.Text=log+"\r\n"+error+"\r\nLog: "+InstallEngine.SaveFailure(targets[selected[0]],error.ToString());view.SetFailure(true);}
+            finally{busy=false;cancellation.Dispose();cancellation=null;cards.Enabled=true;view.SetBusy(false);RefreshSelection();}
         }
     }
     static class Program {

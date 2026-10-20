@@ -10,11 +10,187 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Globalization;
 
-[assembly: AssemblyVersion("0.86.6.1")]
-[assembly: AssemblyFileVersion("0.86.6.1")]
+[assembly: AssemblyVersion("0.86.8.0")]
+[assembly: AssemblyFileVersion("0.86.8.0")]
 namespace CyrusScatter.UI
 {
+    // Bounded data-only JSON reader shared by the three supported managed runtimes.
+    // No serializer assembly deployment or executable catalog content.
+    internal sealed class CatalogJson
+    {
+        readonly object value;
+        CatalogJson(object value){this.value=value;}
+        internal CatalogJson GetProperty(string key)=>((Dictionary<string,CatalogJson>)value)[key];
+        internal string GetString()=>value as string??throw new InvalidDataException("Expected catalog text.");
+        internal long GetInt64()=>value is long number?number:throw new InvalidDataException("Expected catalog integer.");
+        internal int GetInt32()=>checked((int)GetInt64());
+        internal bool IsArray=>value is List<CatalogJson>;
+        internal int GetArrayLength()=>((List<CatalogJson>)value).Count;
+        internal IEnumerable<CatalogJson> EnumerateArray()=>(List<CatalogJson>)value;
+        internal static CatalogJson Parse(byte[] bytes)
+        {
+            string text=new UTF8Encoding(false,true).GetString(bytes);int at=0,nodes=0;
+            void Space(){while(at<text.Length&&" \r\n\t".IndexOf(text[at])>=0)at++;}
+            InvalidDataException Invalid()=>new("Invalid model catalog JSON.");
+            void Take(char c){Space();if(at>=text.Length||text[at++]!=c)throw Invalid();}
+            string ReadString(){
+                Take('"');var result=new StringBuilder();
+                while(at<text.Length){char c=text[at++];if(c=='"')return result.ToString();if(c<32)throw Invalid();
+                    if(c=='\\'){if(at>=text.Length)throw Invalid();c=text[at++];
+                        switch(c){case '"':case '\\':case '/':break;case 'n':c='\n';break;case 'r':c='\r';break;case 't':c='\t';break;case 'b':c='\b';break;case 'f':c='\f';break;
+                        case 'u':if(at+4>text.Length||!UInt16.TryParse(text.Substring(at,4),NumberStyles.HexNumber,CultureInfo.InvariantCulture,out ushort code))throw Invalid();c=(char)code;at+=4;break;
+                        default:throw Invalid();}
+                    }result.Append(c);
+                }throw Invalid();
+            }
+            CatalogJson Read(int depth){
+                if(depth>16||++nodes>32768)throw Invalid();Space();if(at>=text.Length)throw Invalid();
+                if(text[at]=='"')return new(ReadString());
+                if(text[at]=='{'){
+                    at++;var result=new Dictionary<string,CatalogJson>(StringComparer.Ordinal);Space();
+                    if(at<text.Length&&text[at]=='}'){at++;return new(result);}
+                    while(true){string key=ReadString();Take(':');if(result.ContainsKey(key))throw Invalid();result.Add(key,Read(depth+1));Space();
+                        if(at>=text.Length)throw Invalid();char end=text[at++];if(end=='}')return new(result);if(end!=',')throw Invalid();}
+                }
+                if(text[at]=='['){
+                    at++;var result=new List<CatalogJson>();Space();if(at<text.Length&&text[at]==']'){at++;return new(result);}
+                    while(true){result.Add(Read(depth+1));Space();if(at>=text.Length)throw Invalid();char end=text[at++];if(end==']')return new(result);if(end!=',')throw Invalid();}
+                }
+                foreach(string word in new[]{"true","false","null"})if(at+word.Length<=text.Length&&text.Substring(at,word.Length)==word){at+=word.Length;return new(word=="null"?DBNull.Value:(object)(word=="true"));}
+                int start=at;if(text[at]=='-')at++;if(at>=text.Length||text[at]<'0'||text[at]>'9')throw Invalid();
+                bool zero=text[at++]=='0';if(!zero)while(at<text.Length&&text[at]>='0'&&text[at]<='9')at++;
+                // Metadata may contain dimensions. Follow JSON's number grammar;
+                // integer-only fields still reject decimal/exponent forms.
+                bool realToken=false;
+                if(at<text.Length&&text[at]=='.'){
+                    realToken=true;at++;int digits=at;
+                    while(at<text.Length&&text[at]>='0'&&text[at]<='9')at++;
+                    if(at==digits)throw Invalid();
+                }
+                if(at<text.Length&&(text[at]=='e'||text[at]=='E')){
+                    realToken=true;at++;if(at<text.Length&&(text[at]=='+'||text[at]=='-'))at++;
+                    int digits=at;while(at<text.Length&&text[at]>='0'&&text[at]<='9')at++;
+                    if(at==digits)throw Invalid();
+                }
+                string token=text.Substring(start,at-start);
+                if(!realToken&&Int64.TryParse(token,NumberStyles.AllowLeadingSign,CultureInfo.InvariantCulture,out long number))return new(number);
+                if(Double.TryParse(token,NumberStyles.Float,CultureInfo.InvariantCulture,out double real)&&!Double.IsNaN(real)&&!Double.IsInfinity(real))return new(real);
+                throw Invalid();
+            }
+            if(text.Length>0&&text[0]=='\ufeff')at++;
+            var root=Read(0);Space();if(at!=text.Length)throw Invalid();return root;
+        }
+    }
+    // Data-only installed models. Reading a catalog never opens a Max scene or runs code.
+    public sealed class IndividualModelEntry
+    {
+        public string Id {get;internal set;}="";
+        public string Name {get;internal set;}="";
+        public string Category {get;internal set;}="";
+        public string Scene {get;internal set;}="";
+        public string NodeName {get;internal set;}="";
+        public string SceneHash {get;internal set;}="";
+        public long SceneBytes {get;internal set;}
+        public string Thumbnail {get;internal set;}="";
+        public string ThumbnailHash {get;internal set;}="";
+        public int ThumbnailBytes {get;internal set;}
+    }
+    public sealed class IndividualModelCatalog
+    {
+        const long MaximumSceneBytes=2L*1024*1024*1024;
+        readonly List<IndividualModelEntry> entries=new();
+        readonly List<string> categories=new();
+        public string Root {get;private set;}="";
+        public int Count=>entries.Count;
+        public int CategoryCount=>categories.Count;
+        public string CategoryAt(int index)=>categories[index];
+        static string Hash(string path)
+        {using var stream=File.OpenRead(path);using var sha=SHA256.Create();return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-","").ToLowerInvariant();}
+        static string Text(CatalogJson item,string key,int maximum)
+        {
+            string value=item.GetProperty(key).GetString()??"";
+            if(value.Length<1||value.Length>maximum||value.Trim()!=value)throw new InvalidDataException("Invalid model field: "+key);
+            foreach(char c in value)if(Char.IsControl(c))throw new InvalidDataException("Invalid model field: "+key);
+            return value;
+        }
+        static void NoLinks(string path)
+        {
+            for(string? at=path;!String.IsNullOrEmpty(at);at=Path.GetDirectoryName(at))
+                if((File.Exists(at)||Directory.Exists(at))&&(File.GetAttributes(at)&FileAttributes.ReparsePoint)!=0)
+                    throw new IOException("Model content cannot use linked folders or files.");
+        }
+        public string ContentPath(string relative)
+        {
+            if(relative.Length<1||relative.Length>220||relative.IndexOf(':')>=0||relative.IndexOf('\\')>=0||relative.StartsWith("/",StringComparison.Ordinal))throw new InvalidDataException("Invalid model content path.");
+            foreach(string part in relative.Split('/'))
+                if(part.Length==0||part=="."||part==".."||part.TrimEnd(' ','.')!=part||part.IndexOfAny(Path.GetInvalidFileNameChars())>=0)
+                    throw new InvalidDataException("Invalid model content path.");
+            string result=Path.GetFullPath(Path.Combine(Root,relative.Replace('/',Path.DirectorySeparatorChar)));
+            if(!result.StartsWith(Root+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase)||result.Length>=260)throw new IOException("Model path exceeds the installed content root.");
+            NoLinks(result);return result;
+        }
+        public string MapPath(string relative)
+        {
+            relative=relative.Replace('\\','/');
+            if(!relative.StartsWith("Maps/",StringComparison.Ordinal))throw new IOException("Model image is outside its installed Maps folder.");
+            string path=ContentPath(relative);
+            if(!File.Exists(path))throw new IOException("Installed model image is missing: "+relative);
+            return path;
+        }
+        public void Load(string root,string version,int hostYear)
+        {
+            entries.Clear();categories.Clear();
+            Root=Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar);NoLinks(Root);
+            string manifest=ContentPath("model-catalog.json");var info=new FileInfo(manifest);
+            if(!info.Exists||info.Length<1||info.Length>2*1024*1024)throw new IOException("Installed model catalog is missing or exceeds its bound.");
+            using var stream=new FileStream(manifest,FileMode.Open,FileAccess.Read,FileShare.Read);
+            if(stream.Length!=info.Length)throw new IOException("Model catalog changed while opening.");
+            byte[] bytes=new byte[(int)info.Length];int offset=0,read;
+            while(offset<bytes.Length&&(read=stream.Read(bytes,offset,bytes.Length-offset))>0)offset+=read;
+            if(offset!=bytes.Length)throw new IOException("Model catalog ended while reading.");
+            if(stream.ReadByte()!=-1)throw new IOException("Model catalog grew beyond its admitted size.");
+            var document=CatalogJson.Parse(bytes);
+            if(Text(document,"format",80)!="cyrus.individual-model-library"||document.GetProperty("formatVersion").GetInt32()!=1||
+               (hostYear!=2024&&hostYear!=2026&&hostYear!=2027)||document.GetProperty("max_year").GetInt32()>hostYear||document.GetProperty("max_year").GetInt32()<2024||document.GetProperty("source_cards").GetInt32()!=104)
+                throw new InvalidDataException("Model library format or required Max host is unsupported.");
+            var rows=document.GetProperty("entries");
+            if(!rows.IsArray||rows.GetArrayLength()<1||rows.GetArrayLength()>104)throw new InvalidDataException("Invalid individual model count.");
+            var ids=new HashSet<string>(StringComparer.OrdinalIgnoreCase);var paths=new HashSet<string>(StringComparer.OrdinalIgnoreCase);long total=0;
+            foreach(var row in rows.EnumerateArray())
+            {
+                var entry=new IndividualModelEntry{Id=Text(row,"id",80),Name=Text(row,"name",160),Category=Text(row,"category",80),NodeName=Text(row,"node_name",100),SceneHash=Text(row,"scene_sha256",64),SceneBytes=row.GetProperty("scene_bytes").GetInt64()};
+                if(!ids.Add(entry.Id)||entry.NodeName!="CyrusModel_"+entry.Id||entry.SceneHash.Length!=64||row.GetProperty("geometry_count").GetInt32()!=1||entry.SceneBytes<1||entry.SceneBytes>MaximumSceneBytes)
+                    throw new InvalidDataException("Invalid independent model record.");
+                foreach(char c in entry.Id)if(!(c>='A'&&c<='Z'||c>='a'&&c<='z'||c>='0'&&c<='9'||c=='_'||c=='-'))throw new InvalidDataException("Invalid model identity.");
+                foreach(char c in entry.SceneHash)if(!(c>='0'&&c<='9'||c>='a'&&c<='f'))throw new InvalidDataException("Invalid model identity hash.");
+                string scene=Text(row,"scene",220),thumbnail=Text(row,"thumbnail",220);
+                if(!scene.StartsWith("Models/",StringComparison.Ordinal)||!scene.EndsWith("/model.max",StringComparison.Ordinal)||thumbnail!=scene.Substring(0,scene.Length-9)+"preview.jpg")throw new InvalidDataException("Invalid model folder layout.");
+                entry.Scene=ContentPath(scene);entry.Thumbnail=ContentPath(thumbnail);
+                if(!paths.Add(entry.Scene)||!File.Exists(entry.Scene)||new FileInfo(entry.Scene).Length!=entry.SceneBytes)throw new IOException("Installed model bytes differ: "+entry.Name);
+                var image=new FileInfo(entry.Thumbnail);
+                if(!image.Exists||image.Length<33||image.Length>2*1024*1024)throw new IOException("Installed model preview is missing or too large: "+entry.Name);
+                entry.ThumbnailBytes=(int)image.Length;entry.ThumbnailHash=Hash(entry.Thumbnail);
+                total+=entry.SceneBytes;if(total>16L*1024*1024*1024)throw new IOException("Installed model library exceeds its declared size bound.");
+                entries.Add(entry);if(!categories.Contains(entry.Category))categories.Add(entry.Category);
+            }
+            entries.Sort((a,b)=>StringComparer.CurrentCultureIgnoreCase.Compare(a.Name,b.Name));categories.Sort(StringComparer.CurrentCultureIgnoreCase);
+        }
+        bool Matches(IndividualModelEntry item,string search,string category)=>
+            (category.Length==0||item.Category==category)&&(search.Length==0||(item.Name+" "+item.Category+" "+item.Id).IndexOf(search,StringComparison.CurrentCultureIgnoreCase)>=0);
+        public int MatchingCount(string search,string category)
+        {int count=0;foreach(var entry in entries)if(Matches(entry,search,category))count++;return count;}
+        public IndividualModelEntry MatchingAt(string search,string category,int index)
+        {foreach(var entry in entries)if(Matches(entry,search,category)&&index--==0)return entry;throw new ArgumentOutOfRangeException(nameof(index));}
+        public void VerifyScene(IndividualModelEntry entry)
+        {
+            if(!entries.Contains(entry))throw new InvalidDataException("Model is outside this catalog.");
+            NoLinks(entry.Scene);
+            if(!File.Exists(entry.Scene)||new FileInfo(entry.Scene).Length!=entry.SceneBytes||Hash(entry.Scene)!=entry.SceneHash)throw new IOException("Installed model changed. Reinstall the matching content: "+entry.Name);
+        }
+    }
     // Restore the owned Max dialog itself, not its embedded WinForms panel.
     public static class LibraryWindow
     {
@@ -75,11 +251,14 @@ namespace CyrusScatter.UI
         private readonly ToolStripDropDownButton view=new(){AutoSize=false};
         private readonly ToolStripDropDownButton zoom=new(){AutoSize=false};
         private readonly Label location=new(){AutoEllipsis=true},status=new(){AutoEllipsis=true},detail=new(){AutoEllipsis=true};
-        private readonly ToolStripButton previous=new("Previous"),next=new("Next"),load=new("Load Selected"),refresh=new("Refresh"),cancel=new("Cancel scan");
+        private readonly Label notice=new(){AutoEllipsis=true,Visible=false,Padding=new Padding(9,5,9,5)};
+        private bool noticeActive;
+        private readonly ToolStripButton previous=new("Previous"),next=new("Next"),load=new("Load Selected"),merge=new("Merge model"),refresh=new("Refresh"),cancel=new("Cancel scan");
         private readonly ToolStripDropDownButton actions=new("Recipe actions...");
         private readonly ToolStripMenuItem edit=new("Edit details..."),update=new("Update selected..."),style=new("Apply Style..."),export=new("Export portable package...");
         private readonly ToolStripButton save=new("Save Recipe...");
         public bool HasSetup {get;set;}
+        public bool IndividualModels {get;set;}
         private readonly ToolStripLabel page=new();
         private bool binding;
         private int viewIndex,zoomIndex=1;
@@ -92,6 +271,17 @@ namespace CyrusScatter.UI
         public bool CollectionsView {get;private set;}=true;
         public string SearchText {get=>search.Text;set{search.Text=value;}}
         public string StatusText {get=>status.Text;set=>status.Text=value;}
+        public string NoticeText=>notice.Text;
+        public void ShowNotice(string message,bool success)
+        {
+            notice.Text=message;notice.BackColor=success?Color.FromArgb(38,88,61):Color.FromArgb(112,48,43);
+            notice.ForeColor=Color.White;noticeActive=true;notice.Visible=true;status.Text=message;Arrange();notice.Refresh();
+        }
+        public void ShowProgress(string message)
+        {
+            notice.Text=message;notice.BackColor=Color.FromArgb(67,74,88);notice.ForeColor=Color.White;
+            noticeActive=true;notice.Visible=true;Arrange();notice.Refresh();
+        }
         public string DetailText {get=>detail.Text;set=>detail.Text=value;}
         public string LocationText {get=>location.Text;set=>location.Text=value;}
         public int ViewIndex {get=>viewIndex;set{viewIndex=GalleryLimits.Clamp(value,0,1);view.Text=new[]{"Thumbnails","Compact list"}[viewIndex];Gallery.ListMode=viewIndex==1;Request("view");}}
@@ -123,24 +313,25 @@ namespace CyrusScatter.UI
             refresh.Click+=(_,_)=>Request("refresh");cancel.Click+=(_,_)=>Request("cancel");
             actions.DropDownItems.AddRange(new ToolStripItem[]{edit,update,style,export});
             save.Click+=(_,_)=>Request("save");footer.Items.Add(save);footer.Items.Add(actions);footer.Items.Add(new ToolStripSeparator());footer.Items.Add(previous);footer.Items.Add(next);footer.Items.Add(page);
-            load.Alignment=ToolStripItemAlignment.Right;footer.Items.Add(load);
+            load.Alignment=ToolStripItemAlignment.Right;merge.Alignment=ToolStripItemAlignment.Right;merge.Visible=false;footer.Items.Add(load);footer.Items.Add(merge);
+            merge.Click+=(_,_)=>Request("merge");
             previous.Click+=(_,_)=>Request("previous");next.Click+=(_,_)=>Request("next");load.Click+=(_,_)=>Request("load");edit.Click+=(_,_)=>Request("edit");update.Click+=(_,_)=>Request("update");style.Click+=(_,_)=>Request("style");export.Click+=(_,_)=>Request("export");
-            for(int i=1;i<=3;i++){var node=new TreeNode(new[]{"My recipes","Bundled examples","Custom library"}[i-1]){Tag=i};node.Nodes.Add(new TreeNode("All recipes"){Tag=""});tree.Nodes.Add(node);}
+            for(int i=1;i<=3;i++){var node=new TreeNode(new[]{"My recipes","Plant models","Custom library"}[i-1]){Tag=i};node.Nodes.Add(new TreeNode(i==2?"All models":"All recipes"){Tag=""});tree.Nodes.Add(node);}
             tree.AfterSelect+=(_,e)=>{
                 if(binding||e.Node==null)return;
                 var owner=e.Node.Parent??e.Node;int index=(int)owner.Tag!;bool changed=index!=LibraryIndex;
-                LibraryIndex=index;CollectionsView=e.Node.Parent==null;Category=CollectionsView?"":(string)e.Node.Tag!;
+                LibraryIndex=index;CollectionsView=index!=2&&e.Node.Parent==null;Category=e.Node.Parent==null?"":(string)e.Node.Tag!;
                 Request(changed?"library":"collection");
             };
             Gallery.SelectionChanged+=(_,_)=>Request("selection");Gallery.ItemActivated+=(_,_)=>Request("load");
-            Controls.AddRange(new Control[]{toolbar,tree,Gallery,location,detail,footer,status});
+            Controls.AddRange(new Control[]{toolbar,tree,Gallery,location,notice,detail,footer,status});
             SetNavigation(1,"",true);Arrange();
         }
         public void SetNavigation(int index,string category,bool overview)
         {
-            binding=true;LibraryIndex=GalleryLimits.Clamp(index,1,3);Category=category;CollectionsView=overview;
+            binding=true;LibraryIndex=GalleryLimits.Clamp(index,1,3);Category=category;CollectionsView=overview&&LibraryIndex!=2;
             var owner=tree.Nodes[LibraryIndex-1];TreeNode choice=owner;
-            if(!overview){choice=owner.Nodes[0];foreach(TreeNode n in owner.Nodes)if((string)n.Tag! == category){choice=n;break;}}
+            if(!CollectionsView){choice=owner.Nodes[0];foreach(TreeNode n in owner.Nodes)if((string)n.Tag! == category){choice=n;break;}}
             tree.SelectedNode=choice;owner.Expand();binding=false;
         }
         public void BeginCollections(){binding=true;var nodes=tree.Nodes[LibraryIndex-1].Nodes;while(nodes.Count>1)nodes.RemoveAt(nodes.Count-1);}
@@ -152,7 +343,12 @@ namespace CyrusScatter.UI
             refresh.Enabled=!scanning;cancel.Enabled=scanning;tree.Enabled=!scanning;
         }
         public void SetSelectionActions(bool selected,bool writable,bool scanning)
-        {load.Enabled=selected&&!scanning;load.Text=CollectionsView?"Open Collection":"Load onto surface";actions.Enabled=edit.Enabled=selected&&!CollectionsView&&!scanning;update.Enabled=edit.Enabled&&writable&&HasSetup;style.Enabled=export.Enabled=edit.Enabled&&HasSetup;save.Enabled=HasSetup&&!scanning;}
+        {
+            merge.Visible=IndividualModels;merge.Enabled=IndividualModels&&selected&&!scanning;
+            load.Enabled=selected&&!scanning&&(!IndividualModels||HasSetup);load.Text=IndividualModels?"Add to selected layer":CollectionsView?"Open Collection":"Load onto surface";
+            actions.Enabled=edit.Enabled=!IndividualModels&&selected&&!CollectionsView&&!scanning;
+            update.Enabled=edit.Enabled&&writable&&HasSetup;style.Enabled=export.Enabled=edit.Enabled&&HasSetup;save.Enabled=HasSetup&&!scanning;
+        }
         private int S(int n)=>Math.Max(1,(int)Math.Round(n*DeviceDpi/96.0*userScale));
         private void Arrange()
         {
@@ -165,7 +361,9 @@ namespace CyrusScatter.UI
             int x=left+2*gap,w=Math.Max(1,Width-x-gap);
             location.SetBounds(x,top+gap,w,caption);
             detail.SetBounds(x,Math.Max(top+caption,footer.Top-details-gap),w,details);
-            Gallery.SetBounds(x,top+gap+caption,w,Math.Max(1,detail.Top-top-caption-2*gap));
+            int noticeHeight=noticeActive?S(52):0;
+            notice.SetBounds(x,top+gap+caption,w,Math.Max(1,noticeHeight-gap));
+            Gallery.SetBounds(x,top+gap+caption+noticeHeight,w,Math.Max(1,detail.Top-top-caption-2*gap-noticeHeight));
         }
         protected override void OnResize(EventArgs e){base.OnResize(e);Arrange();}
         protected override void OnDpiChangedAfterParent(EventArgs e){base.OnDpiChangedAfterParent(e);Arrange();}
@@ -313,6 +511,15 @@ namespace CyrusScatter.UI
         protected override void OnResize(EventArgs e) { base.OnResize(e); LayoutItems(); }
         protected override void OnDpiChangedAfterParent(EventArgs e) { base.OnDpiChangedAfterParent(e); LayoutItems(); }
         protected override void OnScroll(ScrollEventArgs e) { base.OnScroll(e); Invalidate(); Schedule(); }
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            // ScrollableControl moves its display rectangle directly for wheel input;
+            // it does not raise OnScroll. Restart the queue after the offset changes,
+            // including when the previous visible set finished and stopped the pump.
+            base.OnMouseWheel(e);
+            Invalidate();
+            Schedule();
+        }
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e); Focus();
@@ -400,10 +607,7 @@ namespace CyrusScatter.UI
               if(offset!=data.Length||input.ReadByte()!=-1)throw new IOException("Thumbnail changed."); }
             if (cancelled()) return null;
             using(var sha=SHA256.Create())if(!BitConverter.ToString(sha.ComputeHash(data)).Replace("-","").Equals(entry.Hash,StringComparison.OrdinalIgnoreCase))throw new IOException("Thumbnail hash changed.");
-            byte[] signature = {137,80,78,71,13,10,26,10};
-            for(int i=0;i<signature.Length;i++)if(data[i]!=signature[i])throw new IOException("Invalid PNG.");
-            if(data[12]!=73||data[13]!=72||data[14]!=68||data[15]!=82)throw new IOException("Invalid PNG.");
-            int width=ReadBigEndian(data,16),height=ReadBigEndian(data,20);
+            var dimensions=ImageDimensions(data);int width=dimensions.Width,height=dimensions.Height;
             if (width < 1 || height < 1 || width > 1024 || height > 1024) throw new IOException("Thumbnail dimensions exceed bounds.");
             using var stream = new MemoryStream(data, false);
             using var source = Image.FromStream(stream, false, true);
@@ -411,6 +615,38 @@ namespace CyrusScatter.UI
             Bitmap output = new(Math.Max(1, (int)(width * ratio)), Math.Max(1, (int)(height * ratio)), PixelFormat.Format32bppPArgb);
             try { using var g = Graphics.FromImage(output); g.InterpolationMode = InterpolationMode.HighQualityBicubic; g.DrawImage(source, new Rectangle(0, 0, output.Width, output.Height)); return output; }
             catch { output.Dispose(); throw; }
+        }
+        // Read dimensions before asking the decoder to allocate pixels. The original
+        // Corona catalog uses JPEG; personal recipe captures continue to use PNG.
+        private static Size ImageDimensions(byte[] data)
+        {
+            if(data.Length<33)throw new IOException("Invalid thumbnail.");
+            byte[] signature={137,80,78,71,13,10,26,10};bool png=true;
+            for(int i=0;i<signature.Length;i++)if(data[i]!=signature[i])png=false;
+            if(png)
+            {
+                if(data[12]!=73||data[13]!=72||data[14]!=68||data[15]!=82)throw new IOException("Invalid PNG header.");
+                return new Size(ReadBigEndian(data,16),ReadBigEndian(data,20));
+            }
+            if(data[0]!=255||data[1]!=216)throw new IOException("Unsupported thumbnail image.");
+            int at=2,segments=0;
+            while(at<data.Length&&segments++<1024)
+            {
+                if(data[at++]!=255)throw new IOException("Invalid JPEG marker.");
+                while(at<data.Length&&data[at]==255)at++;
+                if(at>=data.Length)break;int marker=data[at++];
+                if(marker==217||marker==218)break;
+                if(marker==216||marker==1||marker>=208&&marker<=215)continue;
+                if(at+2>data.Length)break;int length=(data[at]<<8)|data[at+1];
+                if(length<2||at+length>data.Length)break;
+                if(marker==192||marker==193||marker==194)
+                {
+                    if(length<8)break;
+                    return new Size((data[at+5]<<8)|data[at+6],(data[at+3]<<8)|data[at+4]);
+                }
+                at+=length;
+            }
+            throw new IOException("Invalid JPEG dimensions.");
         }
         private static int ReadBigEndian(byte[] data,int at)=>(data[at]<<24)|(data[at+1]<<16)|(data[at+2]<<8)|data[at+3];
         private void Drain()

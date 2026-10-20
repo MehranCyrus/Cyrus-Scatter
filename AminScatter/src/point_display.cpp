@@ -181,6 +181,7 @@ struct Generation {
             for(const auto& group:layer.snapshot->groups) if(!group.points.empty()) {++groups;++pointGroups;}
             if(layer.mesh) {
                 hasMesh=true;meshCPU+=layer.mesh->cpuBytes;
+                if(layer.appearance)meshCPU+=layer.appearance->cpuBytes;
                 if(layer.mesh->faces) bounds+=layer.mesh->bounds;
                 for(const auto& group:layer.mesh->groups) if(!group.faces.empty() && !group.instances.empty()) {++groups;++meshGroups;}
             }
@@ -200,7 +201,10 @@ struct Generation {
                     buffer+=(faces+12)*9*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
                     scratch+=std::max<std::size_t>(faces,12)*3*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
                 }
-            return 2*buffer+scratch+meshGroups*4096;
+            std::size_t appearanceBytes=0;
+            for(const auto& layer:layers)if(layer.appearance&&layer.palette&&layer.palette->mode==4)
+                appearanceBytes+=3*layer.appearance->gpuBytes;
+            return 2*buffer+scratch+meshGroups*4096+appearanceBytes;
         };
         auto meshBytes=meshBytesForPlan();
         if(meshCPU+meshBytes>meshOwnerByteLimit || meshBytes>meshProcessByteLimit-std::min(meshProcessByteLimit,meshPreviewBudget.used())) {
@@ -219,7 +223,7 @@ struct Generation {
 bool sameLayers(const std::vector<PointLayer>& a,const std::vector<PointLayer>& b) {
     if(a.size()!=b.size()) return false;
     for(std::size_t i=0;i<a.size();++i)
-        if(a[i].snapshot!=b[i].snapshot || a[i].mesh!=b[i].mesh || a[i].geometryMode!=b[i].geometryMode || a[i].limits!=b[i].limits || a[i].solid!=b[i].solid || (a[i].solid && a[i].color!=b[i].color) || !samePalette(a[i].palette,b[i].palette)) return false;
+        if(a[i].snapshot!=b[i].snapshot || a[i].mesh!=b[i].mesh || a[i].appearance!=b[i].appearance || a[i].geometryMode!=b[i].geometryMode || a[i].limits!=b[i].limits || a[i].solid!=b[i].solid || (a[i].solid && a[i].color!=b[i].color) || !samePalette(a[i].palette,b[i].palette)) return false;
     return true;
 }
 

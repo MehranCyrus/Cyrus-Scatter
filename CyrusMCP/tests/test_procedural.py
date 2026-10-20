@@ -13,7 +13,7 @@ def fixture_controller():
              procStatistics=lambda:[[30,10,2,1,4,5,6,3,2,40,10,120],[3,True],4,2,17])
     parent=Obj(layerID="layer_a",procPopulation=2,procAttemptFactor=8,procRounds=8,procRepair=True,
                procLayerSelfEnabled=False,procLayerSelfMultiplier=1,procLayerSelfGap=0,procLayerSelfPlanar=False,procSiblingEnabled=True,procSiblingMultiplier=1,procSiblingGap=20,procSiblingPlanar=False)
-    controller=Obj(calculationModel=lambda:"CyrusUnified1",logicalLayers=lambda:[parent],layerSets=lambda _:[leaf],
+    controller=Obj(calculationModel=lambda:"CyrusUnified2",logicalLayers=lambda:[parent],layerSets=lambda _:[leaf],
                    procRuleScope=[2],procRuleA=["layer_a"],procRuleB=["layer_b"],procRuleEnabled=[True],
                    procRuleMultiplier=[.8],procRuleGapWU=[100],procRulePlanar=[True])
     return controller,leaf
@@ -68,6 +68,28 @@ def test_old_script_does_not_claim_container_support():
     assert result["layers_in_order"][0]["sets_in_order"][0]["source_pool"] is None
 
 
+def test_clearance_snapshot_preserves_independent_scopes_and_missing_targets():
+    controller, leaf = fixture_controller()
+    leaf.clearanceSourceIDs = ["model-a"]
+    leaf.clearanceCopies = [0]
+    leaf.clearanceOthers = [2]
+    leaf.clearanceExternal = [2]
+    leaf.clearanceTargets = ["deleted-layer|"]
+    leaf.clearancePreferred = [True]
+    leaf.clearanceFactors = [.5]
+    leaf.clearanceGapsWU = [20]
+    leaf.clearancePlanar = [True]
+    leaf.clearanceRow = lambda *_: pytest.fail("Passive inspection reconciled authored rows")
+    data = read_procedural(controller, .001)["layers_in_order"][0]["sets_in_order"][0]["source_clearance"]
+    assert data["rows"] == [dict(source_row_id="model-a", own_copies="inherit",
+        other_models="keep_apart", other_layers="selected_layers",
+        target_layer_ids=["deleted-layer"], preferred=True, radius_factor=.5,
+        gap_m=.02, metric="xy")]
+    leaf.clearanceCopies = []
+    invalid = read_procedural(controller, 1)["layers_in_order"][0]["sets_in_order"][0]["source_clearance"]
+    assert invalid == {"status": "invalid_authored_records", "rows": []}
+
+
 def test_container_helper_metadata_is_bounded_cached_presentation_only():
     controller,leaf=fixture_controller()
     class Helper:
@@ -112,8 +134,8 @@ def test_cached_membership_preserves_parked_and_missing_rows_without_reconciliat
 
 def test_apply_requires_the_sole_explicit_model_and_rejects_retired_schemas():
     require_unified_mutation(None)
-    require_unified_mutation(Obj(calculationModel=lambda:"CyrusUnified1"))
-    for controller in (Obj(groupPolicy=1),Obj(groupPolicy=2),Obj(calculationModel=lambda:"other")):
+    require_unified_mutation(Obj(calculationModel=lambda:"CyrusUnified2"))
+    for controller in (Obj(groupPolicy=1),Obj(groupPolicy=2),Obj(calculationModel=lambda:"CyrusUnified1"),Obj(calculationModel=lambda:"other")):
         with pytest.raises(Fault,match="Only a matching"):
             require_unified_mutation(controller)
     caps=capability_manifest()

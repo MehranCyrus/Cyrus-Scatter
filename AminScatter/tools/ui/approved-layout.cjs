@@ -342,6 +342,22 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
         on ${c.id}_grip Paint sender args do paintListGrip sender args`).join('\n')}
 `;
  let final=require('./colored-lists.cjs')(out,components).replace('        fn layout = (',presentation+widthHelper+'        fn layout = (').replace('        on advancedToggle changed value do layout()',disclosures.map(r=>'        on '+r.toggle+' changed value do (layout();'+remember+'true)').join('\n')+'\n        on advancedToggle changed value do (layout();'+remember+'true)');
+ // Layout depends on presentation geometry, not spinner values or enablement.
+ // Keep every explicit visibility condition and every wrapped caption in the
+ // signature; list contents still synchronize on a geometry cache hit.
+ const conditions=[...new Set(rows.map(r=>r.when).filter(Boolean))].map(value=>{
+  for(const p of components)for(const [a,b] of p.names)value=value.replace(new RegExp('\\b'+p.key+'\\.'+a+'\\b','gi'),b);
+  return '('+value+')';
+ });
+ const texts=[...controls.filter(c=>['label','checkbox','radiobuttons','button','checkbutton','pickbutton','mapbutton'].includes(c.kind)).map(c=>c.id+'.text'),
+  ...controls.filter(c=>c.captionID).map(c=>c.captionID+'.text')];
+ const stamp=['widthValue','GetUIScaleFactor()','advancedToggle.checked',...disclosures.map(r=>r.toggle+'.checked'),...conditions,...texts,...lists.map(c=>c.id+'.height'),
+  ...controls.filter(c=>!['listbox','multiListBox'].includes(c.kind)).map(c=>c.id+'.visible'),
+  ...controls.filter(c=>c.kind==='label').map(c=>c.id+'.height')];
+ final=final.replace('        local layout\n','        local layout,lastLayoutStamp=undefined\n')
+  .replace('        fn layout = (','        fn geometryStamp widthValue = #('+stamp.join(',')+')\n        fn layout = (')
+  .replace('stackedCaption=false\n','stackedCaption=false\n            local nextLayoutStamp=geometryStamp widthValue\n            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do ('+(final.includes('fn syncColorLists')?'syncColorLists();':'')+'return true)\n')
+  .replace(name+'.height=y+4;', 'lastLayoutStamp=geometryStamp widthValue;'+name+'.height=y+4;');
  if(definition.advancedLabel)final=final.replace('advancedToggle.visible=true;advancedToggle.pos=', 'advancedToggle.text=if advancedToggle.checked then "Fewer settings" else '+JSON.stringify(definition.advancedLabel)+';advancedToggle.visible=true;advancedToggle.pos=');
  final=final.replace('            binding=true;controlsReady=false','            stopListDrag();binding=true;controlsReady=false').replace('on '+name+' close do (','on '+name+' close do (stopListDrag();');
  // The parent blocks all events throughout bind. Release each copied guard
@@ -351,8 +367,8 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
  final=final.replace('do panel.bindSection '+name,'do (panel.bindSection '+name+';panel.rememberViews())');
  // Max may allocate a scrollbar after the parent layout finishes. Reflow
  // only on a real width change; our own height update must not recurse.
- final=final.replace('        local layout\n','        local layout,lastLayoutWidth=0\n')
-  .replace('            '+name+'.height=y+4','            lastLayoutWidth=widthValue;'+name+'.height=y+4')
+ final=final.replace('        local layout,lastLayoutStamp=undefined\n','        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0\n')
+  .replace(name+'.height=y+4','lastLayoutWidth=widthValue;'+name+'.height=y+4')
   .replace('        on '+name+' open do','        on '+name+' resized size do if controlsReady and not binding and (amax 140 '+name+'.width)!=lastLayoutWidth do layout()\n        on '+name+' open do');
  // Each control event has one guarded expression. The action can close the
  // rollout, so its follow-up layout must check the current lifetime again.
@@ -375,7 +391,8 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
     ['displayUI','statisticsUI'].includes(name) ||
     /(?:advancedToggle|_more|_advanced|_toggle)$/.test(event[1]);
   const license=inspect?'true':'CyrusLicenseCanEdit()';
-  final=final.replace(part,event[0]+'if controlsReady and not binding and root!=undefined and '+ready+license+' do (\n            local action=CyrusBeginAction root "'+event[1]+'"\n            try ('+expression+'\n                if controlsReady and root!=undefined do layout()\n                CyrusEndAction action\n            )catch(CyrusEndAction action;throw())\n        )');
+  // Capture the panel before callbacks can replace/close this body.
+  final=final.replace(part,event[0]+'if controlsReady and not binding and root!=undefined and '+ready+license+' do (\n            local eventPanel=panel,action=CyrusBeginAction root "'+event[1]+'"\n            if eventPanel!=undefined do eventPanel.beginPageEdit '+name+' refresh:'+(!inspect)+'\n            try ('+expression.replaceAll('(CyrusEndAction action;return false)','(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;return false)')+'\n                if controlsReady and root!=undefined do layout()\n                if eventPanel!=undefined do eventPanel.endPageEdit()\n                CyrusEndAction action\n            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())\n        )');
  }
  return {text:final,components,controls,rows,name,scope};
 }

@@ -95,7 +95,7 @@ const std::vector<Field>& fields(){static const std::vector<Field> result={
 };return result;}
 
 void validateSettings(const Json& s){
-    require(s.is_object()&&s.size()==fields().size(),"complete settings field count differs from recipe v6");
+    require(s.is_object()&&s.size()==fields().size(),"complete settings field count differs from recipe v8");
     for(const auto& f:fields()){
         require(s.contains(f.name),std::string("missing authored field ")+f.name);const auto& v=s.at(f.name);std::string kind=f.type;
         if(kind.size()>3&&kind.substr(kind.size()-3)=="tab"){
@@ -140,6 +140,18 @@ void validateSettings(const Json& s){
             require(!identity.empty()&&identities.insert(identity).second,std::string("empty or duplicate correspondence identity: ")+field);
         }
     }
+    const auto& policies=s["clearanceSourceIDs"];require(policies.size()<=1024,"too many clearance records");
+    for(const auto* name:{"clearanceCopies","clearanceOthers","clearanceExternal","clearanceTargets","clearancePreferred","clearanceFactors","clearanceGapsWU","clearancePlanar"})
+        require(s[name].size()==policies.size(),"incomplete clearance record");
+    std::set<std::string> policyIDs;
+    for(std::size_t i=0;i<policies.size();++i){
+        const auto identity=text(policies[i],256);
+        require(!identity.empty()&&policyIDs.insert(identity).second&&std::find(s["sourceRowIDs"].begin(),s["sourceRowIDs"].end(),policies[i])!=s["sourceRowIDs"].end(),"invalid clearance source identity");
+        for(const auto* name:{"clearanceCopies","clearanceOthers"})require(number(s[name][i])>=0&&number(s[name][i])<=2,"invalid local clearance scope");
+        require(number(s["clearanceExternal"][i])>=0&&number(s["clearanceExternal"][i])<=3,"invalid external clearance scope");
+        require(number(s["clearanceFactors"][i])>=0&&number(s["clearanceGapsWU"][i])>=0,"negative clearance distance");
+        require(text(s["clearanceTargets"][i],4096).size()<=4096,"clearance targets too long");
+    }
     const auto& domains=s["procReceiverVariationIDs"];
     require(domains.size()==s["procReceiverIDs"].size(),"incomplete receiver variation history");
     std::set<std::string> uniqueDomains;
@@ -176,9 +188,26 @@ void validateSettings(const Json& s){
 
 Json currentDocument(const Json& document){
     auto result=document;
-    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3&&result["formatVersion"]!=4&&result["formatVersion"]!=5&&result["formatVersion"]!=6))return result;
+    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3&&result["formatVersion"]!=4&&result["formatVersion"]!=5&&result["formatVersion"]!=6&&result["formatVersion"]!=7))return result;
     require(result["formatVersion"].is_number_integer(),"recipe version must be an integer");
     const int version=result["formatVersion"].get<int>();
+    if(version==7){
+        require(result["evaluationContract"]=="CyrusUnified1"&&result["sceneSchema"]==58,"invalid legacy recipe engine/schema");
+        const auto extend=[](Json& settings){
+            require(settings.is_object(),"invalid format 7 settings");
+            for(const auto* name:{"clearanceSourceIDs","clearanceCopies","clearanceOthers","clearanceExternal","clearanceTargets","clearancePreferred","clearanceFactors","clearanceGapsWU","clearancePlanar"}){
+                require(!settings.contains(name),"source clearance requires recipe format 8");
+                settings[name]=Json::array();
+            }
+        };
+        extend(result.at("rootSettings"));
+        require(result.at("layers").is_array()&&result.at("layers").size()<=10,"invalid layers");
+        for(auto& layer:result.at("layers")){
+            extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
+            for(auto& area:layer.at("areas"))extend(area.at("settings"));
+        }
+        result["formatVersion"]=8;result["evaluationContract"]="CyrusUnified2";result["sceneSchema"]=59;return result;
+    }
     if(version==6){
         // Existing recipes explicitly retain their artist-authored channel dependency.
         // Only newly authored presets may select receiver-relative elevation.
@@ -193,7 +222,7 @@ Json currentDocument(const Json& document){
             extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
             for(auto& area:layer.at("areas"))extend(area.at("settings"));
         }
-        result["formatVersion"]=7;return result;
+        result["formatVersion"]=7;return currentDocument(result);
     }
     if(version==5){
         // Format 5 used only clamped UV density. Preserve its behavior explicitly.
@@ -240,9 +269,9 @@ Json currentDocument(const Json& document){
 }
 
 void validate(const Json& d,bool hydrated){
-    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3||d["formatVersion"]==4||d["formatVersion"]==5||d["formatVersion"]==6)){validate(currentDocument(d),hydrated);return;}
+    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3||d["formatVersion"]==4||d["formatVersion"]==5||d["formatVersion"]==6||d["formatVersion"]==7)){validate(currentDocument(d),hydrated);return;}
     keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships","revision","presentation"});
-    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==7&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"].is_number_integer()&&(d["hostYear"]==2024||d["hostYear"]==2026||d["hostYear"]==2027),"unsupported recipe version/engine/host");
+    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==8&&d["evaluationContract"]=="CyrusUnified2"&&d["sceneSchema"]==59&&d["hostYear"].is_number_integer()&&(d["hostYear"]==2024||d["hostYear"]==2026||d["hostYear"]==2027),"unsupported recipe version/engine/host");
     require(d["revision"].is_number_integer()&&number(d["revision"])>=1&&number(d["revision"])<=2147483647,"invalid recipe revision");validateEntryPresentation(d["presentation"]);
     id(d["id"]);const auto name=text(d["name"],320);require(!name.empty(),"empty name");require(number(d["unitsPerMetre"])>0,"invalid saved unit scale");require(d["exportScope"]=="complete-setup","only complete authored recipes are supported");validateSettings(d["rootSettings"]);
     require(d["roles"].is_array()&&d["roles"].size()<=4096,"too many roles");std::map<std::string,std::string> roles;
@@ -266,6 +295,21 @@ void validate(const Json& d,bool hydrated){
     };
     for(const auto& l:d["layers"]){keys(l,{"id","name","enabled","visible","settings","paint","areas"});require(owners.insert(id(l["id"])).second,"duplicate owner");layerOwners.insert(id(l["id"]));require(!text(l["name"],320).empty()&&l["enabled"].is_boolean()&&l["visible"].is_boolean(),"invalid layer label/state");validateSettings(l["settings"]);references(l["settings"]);paint(l["paint"]);require(l["areas"].is_array()&&l["areas"].size()<=128,"Paint Area count limit");
         for(const auto& a:l["areas"]){keys(a,{"id","settings","receiverRole","paint"});require(owners.insert(id(a["id"])).second,"duplicate area identity");validateSettings(a["settings"]);references(a["settings"]);if(!a["receiverRole"].is_null()){const auto found=roles.find(id(a["receiverRole"]));require(found!=roles.end()&&found->second=="node","missing Paint receiver role");}paint(a["paint"]);}
+    }
+    const auto clearanceReferences=[&](const Json& settings,const std::string& owner){
+        for(const auto& packed:settings["clearanceTargets"]){
+            std::istringstream stream(packed.get<std::string>());std::string target;std::set<std::string> targets;
+            while(std::getline(stream,target,'|')){
+                require(!target.empty(),"empty clearance target");id(target);
+                require(target!=owner&&targets.insert(target).second&&targets.size()<=10,"duplicate, self or excessive clearance targets");
+                require(layerOwners.count(target)||(roles.count(target)&&roles.at(target)=="layer"),"missing clearance target layer binding");
+            }
+        }
+    };
+    clearanceReferences(d["rootSettings"],"");
+    for(const auto& layer:d["layers"]){
+        clearanceReferences(layer["settings"],layer["id"].get<std::string>());
+        for(const auto& area:layer["areas"])clearanceReferences(area["settings"],layer["id"].get<std::string>());
     }
     require(d["spacingRelationships"].is_array()&&d["spacingRelationships"].size()<=256,"spacing relation limit");std::set<std::string> rules;
     for(const auto& r:d["spacingRelationships"]){keys(r,{"scope","a","b","enabled","multiplier","gap","planar"});require(r["scope"]==1||r["scope"]==2,"invalid spacing scope");auto a=id(r["a"]),b=id(r["b"]);require(a!=b,"self pair");for(const auto& endpoint:{a,b})require(layerOwners.count(endpoint)||(roles.count(endpoint)&&roles.at(endpoint)=="layer"),"missing spacing layer endpoint");if(a>b)std::swap(a,b);require(rules.insert(r["scope"].dump()+":"+a+":"+b).second,"duplicate spacing relation");require(r["enabled"].is_boolean()&&r["planar"].is_boolean()&&number(r["multiplier"])>=0&&number(r["gap"])>=0,"invalid spacing settings");}

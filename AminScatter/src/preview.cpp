@@ -18,6 +18,11 @@
 #include <atomic>
 #include <new>
 #include <string>
+#include <stdmat.h>
+#include <iparamb2.h>
+#include <bitmap.h>
+#include <ColorManagement/IColorPipelineMgr.h>
+#include <notify.h>
 #include "point_preview.h"
 #include "diagnostics.h"
 #include "preview_sampling.h"
@@ -51,6 +56,7 @@ public:
     using Geometry=cyrus::PreviewGeometry;
     std::shared_ptr<const cyrus::MeshSnapshot> meshSnapshot;
     std::shared_ptr<const cyrus::PreviewPalette> palette;
+    std::shared_ptr<const cyrus::MeshAppearance> appearance;
     std::shared_ptr<const FieldPreviewDetails> fieldDetails;
     const std::vector<Geometry>& geometryGroups() const { static const std::vector<Geometry> empty;return meshSnapshot?meshSnapshot->groups:empty; }
     std::size_t faceCount=0;
@@ -71,6 +77,7 @@ public:
 visible_class_instance(AminPointCache,"AminPointCache");
 #include "preview_compare.inc"
 #include "geometry_preview.inc"
+#include "material_preview.inc"
 #include "spline_overlay_bridge.inc"
 #include "radius_preview.inc"
 
@@ -175,6 +182,7 @@ Value* cyrusRecolorPreview_cf(Value** args,int count) {
     if(cyrus::samePalette(cache->palette,palette))return args[0];
     auto result=std::make_unique<AminPointCache>();
     result->pointSnapshot=cache->pointSnapshot;result->meshSnapshot=cache->meshSnapshot;result->palette=std::move(palette);
+    result->appearance=cache->appearance;
     result->size=cache->size;result->faceCount=cache->faceCount;result->geometryMode=cache->geometryMode;
     return result.release();
 }
@@ -337,6 +345,7 @@ std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesVa
            (cache->geometryMode!=0 && !cache->meshSnapshot) || (style->size!=2 && style->size!=8))
             throw RuntimeError(_T("Retained drawing requires a point-cloud or geometry cache"));
         layers.push_back({cache->pointSnapshot,style->data[0]->to_bool()!=FALSE,style->data[1]->to_point3()/255.f,cache->meshSnapshot,cache->palette});
+        layers.back().appearance=cache->appearance;
         layers.back().geometryMode=cache->geometryMode;
         if(style->size==8)for(int setting=0;setting<6;++setting) {
             const auto limit=style->data[setting+2]->to_int64();

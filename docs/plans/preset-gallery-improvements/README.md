@@ -1,13 +1,26 @@
 # Preset and gallery contracts
 
-**Current 0.86.6 delivery:** [Max 2027 MZP and scoped qualification](DELIVERY_0866.md). See [format 7](FORMAT_7.md) for receiver maps, relative elevation and reusable Paint. Historical contracts below retain their original scope unless superseded by that contract.
+**Current delivery: 0.86.7.1.** See the [shared content, panel changes and matched 2024/2026/2027 installers](DELIVERY_08671.md). The [0.86.7 material/library delivery](DELIVERY_0867.md), [0.86.6 surface brush](DELIVERY_0866.md) and [format 7](FORMAT_7.md) retain their behavior and original evidence.
 
-**Planned real-model collection:** [guideline and AI handoff](real-model-library/README.md),
-[24 proposed presets](real-model-library/PRESETS.md), [milestones](real-model-library/ROADMAP.md)
-and [validation requirements](real-model-library/VALIDATION.md). Eight pilots precede
-the full collection and retirement of the bundled demonstrations. This is planning,
-not implemented Corona/proxy adapter support or a new qualification; status is in
-the [execution ledger](../improvement-program/PROGRESS.md#real-model-library-planning).
+**Implementation roadmap:** [shared content and panel plan](UI_AND_CONTENT_IMPLEMENTATION_PLAN.md),
+with [source, disk-space and official vendor research](SHARED_CONTENT_RESEARCH_20261020.md).
+The patch implements B35's independent updates/shared location and a bounded
+B21 panel improvement. Residual cold latency, fully lazy Advanced controls and
+safe retirement of old scene paths remain separate.
+
+**Historical individual-model candidate: 0.86.6.2.** The user superseded mixed
+default planting presets with 96 individual assets covering the original 104
+catalog cards, simple categories and original Corona previews. Native MAX content
+is distinct from portable recipe adapters. The artist confirms installation and
+demonstrates working leaf materials/rendering. Automatic thumbnail progress
+(B33) and textured/opacity-aware Mesh display (B34) were open at that handoff;
+the 0.86.7 delivery supersedes their status within its recorded scope. Read the
+[full source/evidence handoff](INDIVIDUAL_LIBRARY_08662_HANDOFF.md) and
+[execution ledger](../improvement-program/PROGRESS.md#real-model-library-planning).
+The earlier [guideline](real-model-library/README.md), [24-preset proposal](real-model-library/PRESETS.md),
+[milestones](real-model-library/ROADMAP.md) and [validation plan](real-model-library/VALIDATION.md)
+retain their historical/proposed scope; they do not authorize restarting mixed
+preset expansion or broad qualification.
 
 ## 0.86.1 delivery contract
 

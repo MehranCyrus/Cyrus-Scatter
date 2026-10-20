@@ -43,7 +43,7 @@ namespace Cyrus.Setup {
                 foreach(string child in children) {
                     string candidate=Path.Combine(child,"3dsMax.ini");if(!File.Exists(candidate))continue;
                     FromProfile(candidate,year);
-                    if(found!=null)throw new IOException("Multiple Max profiles found. Use Details to choose one, or run the matching MZP inside Max.");
+                    if(found!=null)throw new IOException("Multiple Max language profiles found. Run the matching MZP inside the Max profile you use.");
                     found=candidate;
                 }
             }
@@ -52,10 +52,19 @@ namespace Cyrus.Setup {
         }
         public static string DetectMax(string year) {
             InstallEngine.CheckYear(year);
+            // Read the host's registered installation before the conventional
+            // folder so installations on another drive are discovered as well.
+            using(var key=Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Autodesk\3dsMax\"+(Int32.Parse(year)-1998)+".0")) {
+                string registered=key==null?null:key.GetValue("Installdir") as string;
+                if(!String.IsNullOrWhiteSpace(registered)) {
+                    string executable=Path.Combine(registered,"3dsmax.exe");
+                    if(File.Exists(executable)&&System.Diagnostics.FileVersionInfo.GetVersionInfo(executable).FileMajorPart==Int32.Parse(year)-1998)return executable;
+                }
+            }
             string standard=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),@"Autodesk\3ds Max "+year+@"\3dsmax.exe");
             if(File.Exists(standard)&&System.Diagnostics.FileVersionInfo.GetVersionInfo(standard).FileMajorPart==Int32.Parse(year)-1998)return standard;
             // Do not search drives or infer a host from an old profile alone.
-            throw new IOException("Max "+year+" was not found in its standard installation folder. For a custom installation, use Scripting > Run Script with the matching Max "+year+" MZP.");
+            throw new IOException("Max "+year+" was not found. For an unregistered installation, use Scripting > Run Script with the matching Max "+year+" MZP.");
         }
         public static string Extract(Assembly assembly,string parent,string packageHash,Action<string> checkpoint,string resource="Cyrus.Payload.mzp") {
             parent=InstallPaths.Full(parent);Directory.CreateDirectory(parent);
@@ -70,6 +79,14 @@ namespace Cyrus.Setup {
                     payload.Position=0;
                     using(var archive=new ZipArchive(payload,ZipArchiveMode.Read,true)) {
                         if(archive.Entries.Count>520)throw new IOException("Package exceeds its file limit.");
+                        long expanded=0;
+                        foreach(var entry in archive.Entries) {
+                            expanded=checked(expanded+entry.Length);
+                            if(entry.Length>128L*1024*1024||expanded>512L*1024*1024)throw new IOException("Extracted package exceeds its size limit.");
+                        }
+                        var temporaryDrive=new DriveInfo(Path.GetPathRoot(parent));
+                        if(temporaryDrive.AvailableFreeSpace<expanded+16L*1024*1024)
+                            throw new IOException(String.Format("Windows temporary storage {0} needs {1:N0} bytes for the plugin payload and working space; available {2:N0}. No model or texture content is extracted here.",parent,expanded+16L*1024*1024,temporaryDrive.AvailableFreeSpace));
                         var names=new HashSet<string>(StringComparer.OrdinalIgnoreCase);long total=0;
                         foreach(var entry in archive.Entries) {
                             string name=entry.FullName;

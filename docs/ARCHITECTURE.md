@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.86.6, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/preset-gallery-improvements/DELIVERY_0866.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 7, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to Cyrus Scatter 0.86.8, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/source-clearance/DELIVERY_0868.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
 
 ## Ownership
 
@@ -97,6 +97,15 @@ In 0.79.5 each preview also retains a layer display key: publication epoch, owne
 Explicit Update enters root evaluation once: that evaluation stages and installs every layer atomically. Installed previews remember their Analyzer publication revision. Scatter validates enabled Analyzer dependencies before a successor solve and preserves its last complete publication on stale-input failure. An unchanged cached read continues to consume the published guides even when the Manual Analyzer has pending edits. Analyzer stores publication freshness, linked input references, a settings/transform signature and the published time-validity interval; a drainable source-event queue invalidates the saved freshness flag. Validation, Analyze and save drain pending geometry notifications; delayed notification still schedules Live work after mouse release. Parameter replay during scene loading/merging must not overwrite the saved flag. Older guides without a freshness record require explicit Analyze.
 
 ## Cached feedback
+
+The 0.86.6.2 custom Mesh display remains identification-only: Model/Layer/Bands
+colors are shaded by `mesh_display.inc`, with alpha 1. `PreviewGeometry` retains
+positions/instances, not material UV or texture descriptors. The original-material
+and opacity-aware viewport requested in B34 therefore requires a native display
+extension, not a color-dropdown rename or another material conversion. Keep its
+future material/UV/texture invalidation separate from unchanged placements and
+existing geometry reuse. [Current source findings and implementation boundaries](plans/preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md#5-b34-original-material-textures-and-cutout-opacity-in-mesh-preview)
+describe requested behavior, not an implemented feature.
 
 The 0.81.8 presentation reads existing owner/result snapshots. A completed
 calculation epoch distinguishes a result from an empty preview staged for a new
@@ -203,6 +212,16 @@ Snapshot keys use evaluated geometry, exact grid settings, required UV mapping, 
 
 ## Ready preset loading
 
+The separate 0.86.6.2 **individual model** catalog is not a Ready recipe. It
+describes 96 prepared single-source MAX files and rendered JPEGs. The managed
+gallery reads bounded metadata/preview files; explicit Merge/Add verifies and
+imports only the selected model. A verified external Content payload installs
+alongside the versioned runtime. B33 records artist-observed automatic thumbnail
+progress stalling until selection; the selected-first worker queue, UI completion
+pump and visibility calculations need a causal reproduction. The prior 12-visible-
+preview check did not qualify large-window scrolling. See the
+[full handoff](plans/preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md).
+
 The 0.86.2 loader uses `preset-loading.ms` over the recipes/assets templates. Browsing remains metadata/image work only. Explicit Load captures one selected terrain and an unambiguous destination, validates required numeric/UV channels, Paint compatibility, frames, assets and paths, then stages supported models/materials/paths and adds layers in one authored hold. A new setup is created only when required. Existing layers and Manual/Live mode remain. First calculation and display preparation run inside that hold; failure rolls back staged content and retains the preceding complete publication/history. A native publication restorer retains immutable generations for one Undo/Redo without package reads or solves. Post-Undo presentation restores display from the complete publication.
 
 Ready Save captures exact role references, supported assets, evaluated receiver/static spline context, image bytes/mapping/frame/provenance and complete Paint in a content-bound data package. It does not save arbitrary scene scripts, modifier producers or procedural graphs. A compatible projected 2D map can be explicitly baked into a linear 16-bit PNG scalar snapshot; receiver-aware maps reject context-free baking. Local image frames rebase against the destination setup without moving existing layers. In the 0.86.5 reliability baseline (original receipts labeled 0.87.0), complete terrain presets fit Paint contours and spline positions between referenced local-XY footprints. Physical distances convert units, original Paint remains immutable and unsupported folded/stacked projection rejects before scene mutation. Exact settings-only Paint retains geometry/frame/unit guards. See [format 7](plans/preset-gallery-improvements/FORMAT_7.md).
@@ -240,3 +259,13 @@ snapshots carry exact coverage guarded by knot/frame/receiver identity; edited
 curves reconstruct coverage on the surface. Complete curved preset transfer uses
 matching indexed topology and physical-unit conversion. See the delivery report
 for measured scope, approximation limits and explicit unsupported geometry.
+
+## Source clearance (0.86.8)
+
+`source_clearance.cpp` consumes copied native samples with validated source ordinals and sparse authored policies. The bridge verifies correspondence against the immutable source cohort; authored row UUIDs and native correspondence IDs remain distinct. Policies inherit independently for own copies, other models in the layer and other layers. Effective rules determine component scheduling, so equivalent explicit/default settings preserve inherited cleanup/order behavior.
+
+Changed components use candidate-order Count admission followed by protected/preferred/layer/candidate conflict ordering, XY and 3D spatial indexes, union cleanup and bounded replay. Only accepted placements reserve space. Missing target UUIDs are inactive. Limits remain ten populations, one million prepared candidates, sixteen rounds and fifty million neighbor visits; policies allow 512 active source rows per population. Native admission adds a conservative 384 bytes per candidate for solver coexistence. No host calls or placement-sized script arrays are introduced.
+
+The first delivery conservatively settles the complete setup after a changed calculation key. Candidate preparation is reused for policy-only edits; disconnected output remains deterministic. It does not cache compiled components or guarantee zero acceptance work for unrelated layers. Equivalent keys avoid calculation during browsing and unrelated animation. No new worker scheduler or asynchronous cancellation contract is introduced.
+
+Schema 59 appends one authored parameter block. Sparse rows are keyed by source UUID, copied/imported identities remap together, and recipes use format 8. Schema 58 requires an explicit Undoable upgrade. Publication capability 4 extends the bounded bridge payload with source policies; native placement capability stays 2. Failed successors retain the preceding full publication. MAXScript owns authoring/UI and bounded orchestration; C++ owns matching, acceptance and work-sized memory.

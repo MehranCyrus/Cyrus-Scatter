@@ -1,6 +1,64 @@
-# Cyrus Scatter 0.86.6 — current artist workflow
+# Cyrus Scatter 0.86.7.2 — current artist workflow
 
-This Max 2027 delivery fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. The [delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) records the exact MZP, tests and limits; earlier host deliveries retain their original scope.
+The private **0.86.7 individual library** replaces the bundled example designs
+with 96 individual assets covering all 104 original catalog cards. Open **Layers >
+Recipes** or **Cyrus Library**; **Plant models > All models** opens by default.
+Filter Trees, Shrubs, Flowers, Groundcover, Grasses, Leaves or Ground Details.
+Each tile uses its original Corona render. **Merge model** places a visible model
+in the scene. **Add to selected layer** adds that complete model as a hidden
+source to the current Scatter layer, preserving its planting settings. Choose
+receivers and distribution yourself, then **Update scatter** in Manual mode.
+Corona is required for the supplied materials. Personal recipes remain separate.
+Successful model additions now show a banner naming the model and destination
+layer. Failed imports show an error banner and retain the previous scene.
+The **0.86.7.2** installer detects Max and your existing library.
+Select Max 2024, 2026 and/or 2027, then **Install** or **Update**.
+**Uninstall** removes the selected host registration while keeping your library
+and scenes. To install or update the library, put
+**CyrusScatter-Content-0.86.7.zip** beside the EXE and check
+**Install / update plant library**. Leave it unchecked for a plugin-only update.
+The installer reports a missing ZIP before installation and extracts a valid
+ZIP directly into shared storage. Existing compatible bytes are reused.
+Standard profiles share one library; models do not need a new copy when the
+plugin version changes. See the
+[installation guide](Max_2027_Installation.md), then restart Max after installation.
+
+Common parameter edits now refresh affected sections and reuse unchanged layout.
+When many sections are saved open, later sections appear in queued batches.
+Open/closed preferences are preserved. Hidden Advanced controls within a mounted
+section are still created; large all-open panels can still take time.
+The correction keeps Layers and Models lists visible during cached refreshes,
+including adding layers, removing sources and returning to the controller.
+
+Library thumbnails now load as you scroll. In **Viewport & render**, choose
+**Textured mesh** in **Display mode** to preview supported source materials,
+source UV channels and leaf cutout opacity. **Mesh** uses identification colors.
+**Color by** is available for nontextured modes; it changes marker/geometry
+identification colors and does not offer textures for Point Cloud.
+**Placement points** shows one marker per accepted placement. Material edits
+update appearance without applying pending Manual placement changes.
+
+Select receiving surfaces in **Surfaces**, then use **Hide surface** or
+**Show surface**. This hides their viewport drawing while keeping them available
+for painting and rendering. The choice belongs to the scene node, so every
+setup sharing that surface sees the same visibility. Undo and saved scenes retain
+it. Ordinary Max Hide and Freeze still prevent painting.
+
+Adding a layer inherits the selected layer's current receiving surfaces and
+starts with its own source and mask settings. Removing a surface from the new
+layer does not remove it from the original layer. A layer with no receiving
+surface says **No surface** and explains where to add one.
+
+The preview uses bounded 256-pixel material tiles and two-sided alpha cutouts;
+it is not a Corona render. Standard and Corona Legacy/Physical base color and
+opacity, Multi/Sub IDs, Bitmap, Checker and supported UV map chains are covered.
+Forest Color uses a preview without per-instance Forest variation. World/vertex
+dependent maps and unsupported shaders use a stated fallback. Missing source UV
+channels retain the previous complete display until repaired. Source render
+materials remain intact. The supplied library requires compatible Corona and,
+where used, Forest map plug-ins in each Max version.
+
+The retained 0.86.5 library/Amount baseline fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. Its [historical delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) retains the original 0.87.0 labels, tests and limits. The [0.86.7.2 report](plans/preset-gallery-improvements/DELIVERY_08672.md) records current packages and host qualification; [0.86.7](plans/preset-gallery-improvements/DELIVERY_0867.md) retains the textured-preview delivery details.
 
 Placement computation and storage remain native C++. The one-million controller work limit still applies, and failed updates retain the previous complete result and Undo. Existing grids, Bands, orientation, Paint and slope/altitude controls remain available. The [library workflow](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md) explains selected-terrain loading and complete Save. Further roadmap work remains paused.
 
@@ -44,15 +102,39 @@ Models are source scene objects. Their Scatter label can differ from the scene o
 
 Visible Source settings expose weight, scale, radius mode, vertical offset, Follow Scale and radius display. Weight controls relative selection frequency. **Manual** uses your saved radius and optional Follow Scale. **Auto** bounds supported model geometry around its pivot after final instance scale and orientation, computing both XY and 3D radii. It can be conservative for tall, asymmetric or off-center geometry. Follow Scale is disabled in Auto because final scaling is already included; returning to Manual restores its settings. Points, Empty rows and unqualified source types expose Manual only. Neither mode is exact mesh collision or whole-model containment inside a Band. Forward axis controls orientation conventions.
 
-**Models & Points** starts with Add Point and Add Model. Names, identification colors, weight, scale, collision radius, Follow Scale and orientation are visible in this section. **Pick object** is enabled for one selected Point; **Make point** is enabled for one selected model. Both keep the source row identity, labels, colors, weights, transforms and Band assignments. Make point retains the registered scene object reference to prevent automatic containers from registering a duplicate; the Point uses no model geometry, and the scene object is not deleted. Stored Auto settings are inactive for Points; Manual radius remains editable. Pick object can restore the same registered model or choose another unused model. Assignment groups has its own disclosure. Point and Empty rows are distinct placeholder source kinds. A Point row creates accepted placement markers without final rendered geometry; replacing it with a model turns that row into an ordinary model source. An Empty row is an intentional weighted gap in Candidate budget mode. Accepted target rejects positive-weight Empty rows rather than endlessly refilling gaps: use Candidate budget, Point placeholders, or zero/remove the Empty weight. Points are permitted in Accepted target, so accepted counts are not necessarily visible-model counts. These source rows are different from Analyzer sample points.
+**Models & Points** uses the **+** below the source list to add a model. **Add Point** sits beside **Make point**. The former Add currently selected scene objects action is removed. Names, identification colors, weight, scale, collision radius, Follow Scale and orientation are visible in this section. **Pick object** is enabled for one selected Point or model and replaces that row with the picked object; **Make point** is enabled for one selected model. Both keep the source row identity, labels, colors, weights, transforms and Band assignments. Make point retains the registered scene object reference to prevent automatic containers from registering a duplicate; the Point uses no model geometry, and the scene object is not deleted. Stored Auto settings are inactive for Points; Manual radius remains editable. Pick object can restore the same registered model or choose another unused model. Assignment groups has its own disclosure. Point and Empty rows are distinct placeholder source kinds. A Point row creates accepted placement markers without final rendered geometry; replacing it with a model turns that row into an ordinary model source. An Empty row is an intentional weighted gap in Candidate budget mode. Accepted target rejects positive-weight Empty rows rather than endlessly refilling gaps: use Candidate budget, Point placeholders, or zero/remove the Empty weight. Points are permitted in Accepted target, so accepted counts are not necessarily visible-model counts. These source rows are different from Analyzer sample points.
 
-For point-only Spline bands, add and name Point rows in Models & Points, then select them under Layout > Spline bands > Assign by **Models / Points**. Assignment groups remain available for choosing several source types together. Use **Plant centres** display for one marker per accepted point. No model or Paint Area is required; a receiver and closed spline still define the placement domain. Point placeholders do not produce final rendered geometry. Point names, identification colors and explicit band choices use saved row identities. Replacing a Point preserves its row; removing another row cannot redirect the choice. Copying a layer includes its band settings and explicit choices.
+For point-only Spline bands, add and name Point rows in Models & Points, then select them under Layout > Spline bands > Assign by **Models / Points**. Assignment groups remain available for choosing several source types together. Use **Placement points** display for one marker per accepted point. No model or Paint Area is required; a receiver and closed spline still define the placement domain. Point placeholders do not produce final rendered geometry. Point names, identification colors and explicit band choices use saved row identities. Replacing a Point preserves its row; removing another row cannot redirect the choice. Copying a layer includes its band settings and explicit choices.
 
 **Source containers** is a separate collapsible section. Choose Manual models, Layer containers or Shared containers. Containers are optional palettes. Point and Empty rows stay active independently of rectangles; actual models are activated by their pivots. Collection is distinct from layout assignment groups. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Source containers or in the rectangle’s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The selected-container Modify view edits collection properties; select the Scatter controller for full layer and planting settings. The floating layer editor and source-to-Band navigation button have been removed. Band membership labels and tooltips remain informational.
 
 Selecting a source rectangle opens its compact collection, dimensions and ownership properties. Select the Scatter controller to edit the full planting settings. Moving an enabled rectangle carries its eligible owned models; resizing its boundary leaves model transforms unchanged. Label refresh reuses the existing movement setup.
 
 In a Band, choose **Models used by this Band** directly below its width/range, before density and field settings. The **Scale** controls sit directly below the density curve, with **Min** and **Max** on one row. Click a selected model, Point or assignment group again to remove it from the Band. Clearing the last selection leaves an empty Band and preserves its interval.
+
+## Model radius and clearance (0.86.8)
+
+Select a model or Point under **Models & Points**. **Radius and clearance** keeps the footprint and the rules that use it together. Radius is measured around the instance pivot. Showing its circle does not turn clearance on.
+
+| Control | Meaning |
+| --- | --- |
+| Own copies | Separation between instances of this model entry |
+| Other models in this layer | Separation from the other model entries in the selected layer |
+| Other layers | Inherit layer defaults, turn this request off, choose specific layers, or include all other layers in this setup |
+| Conflict priority | Normal, or Prefer this model when an eligible placement conflicts with a normal model |
+| Clearance distance | Advanced factor, extra gap and world XY/3D metric for this model's explicit requests |
+
+Each scope inherits independently. Changing **Other models in this layer** leaves **Other layers** unchanged. **Use layer defaults** uses the relevant rule under **Spacing & cleanup**. **Off** removes this model's request in that scope; another model can still request clearance from it. Selecting particular other layers follows their identities through renaming. Deleted targets remain inactive until restored by Undo; a new layer with the same name is a different target.
+
+The minimum distance is **factor × (radius A + radius B) + extra gap**. With radius 20 mm for A and 0 mm for B, factor 1 and gap 0, their pivots need 20 mm of clearance; two copies of A need 40 mm when Own copies is enabled. Both models can request a constraint. The stricter evaluated distance applies for each metric, and both XY and 3D constraints are checked if requested. Exact tangency is allowed. This is pivot-based clearance, not an exact leaf outline or surface-geodesic distance.
+
+**Prefer this model** wins clearance conflicts after protected edits; ties use layer order and stable candidate order. It does not reserve extra Count slots ahead of distant models. Count admission occurs before preference, and bounded refill can replace rejected candidates. Coverage, masks and cleanup can still remove a preferred ordinary placement. Protecting a model does not force it through an ineligible surface or an impossible Count target.
+
+Multi-select shows **Mixed** for differing dropdown values and blank differing numeric values. Editing one setting changes only that setting for the selected entries. **Pick object**, **Make point**, copy and recipe import preserve or remap the intended source identities. Manual retains the previous completed result until **Update scatter**; Live reacts to relevant edits.
+
+**Spacing & cleanup > Edit default rule** edits independent Within this layer and Between layers defaults; switching this dropdown does not disable the other saved rule. Candidate Relax, accepted-placement cleanup and per-instance radius overrides keep their separate meanings.
+
+Scenes saved with schema 58 show **Upgrade scene to 0.86.8** before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; the previous runtime rejects the new schema. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
 
 ## Layout and Amount
 
@@ -256,7 +338,7 @@ Transforms show X Min/Max, Y Min/Max and Z Min/Max side by side for rotation, sc
 
 **Align to normal / Normal %** chooses preferred up: disabled or 0% uses world +Z, 100% uses the geometric face normal, and intermediate values blend angularly. In direction modes this controls roll while preserving the heading. Slope eligibility stays independent. Coincident targets and parallel heading/up have deterministic fallbacks. Missing targets/zero vectors report an error and keep the last complete plants. Manual waits for Update; Live follows relevant target/parent or orientation animation. Target geometry changes with an unchanged pivot do not recalculate scatter. See the [orientation guide and limits](plans/improvement-program/I04_0830.md).
 
-New complete recipes use format 5; numeric settings presets use format 3. Earlier complete formats retain their versioned defaults: formats 1/2/3 receive Surface random, formats 1/2 retain their original receiver variation, and format 1 receives neutral orientation. Reading never rewrites files or Paint. Grid distances convert with scene units. Explicit target bindings still apply.
+New complete recipes use format 8; numeric settings presets remain format 3 and edit their existing layer-owned categories. Source clearance does not add a numeric-preset category. Earlier complete formats retain their versioned defaults: formats 1/2/3 receive Surface random, formats 1/2 retain their original receiver variation, and format 1 receives neutral orientation. Reading never rewrites files or Paint. Grid distances convert with scene units. Explicit target bindings still apply.
 
 Fresh ordinary layers expose Within this layer and Between layers spacing. Clearance is **factor × (radius A + radius B) + gap**. XY ignores vertical distance; 3D includes it. Each relationship has its own settings. Per-instance radius overrides belong to stable instance identities; generator changes can require an explicit clear instead of silently rebinding edits.
 

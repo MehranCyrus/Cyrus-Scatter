@@ -2,29 +2,54 @@
 
 Native C++ scattering and generated MAXScript UI for 3ds Max.
 
-**Current delivery: Scatter 0.86.6 / schema 58 / CyrusUnified1, qualified within scope for Max 2027.** The [surface brush delivery](docs/plans/preset-gallery-improvements/DELIVERY_0866.md) owns the exact MZP/EXE and evidence. It restores painting on spheres, boxes and manifold curved receivers. The preceding library/Amount feature baseline is 0.86.5 by user correction; its original [0.87.0 receipts](docs/plans/preset-gallery-improvements/DELIVERY_0870.md) retain their actual labels and hashes. It adds receiver-aware maps, reusable Paint across units/footprints, relative-elevation presets and Clear/source/window lifecycle fixes. Earlier [0.86.2 older-host deliveries](docs/plans/preset-gallery-improvements/DELIVERY_0862.md) retain their original scope. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) owns remaining work; unrelated roadmap work is outside this delivery.
+**Current delivery: Scatter 0.86.8 / schema 59 / CyrusUnified2, qualified for Max 2027.** See the [source clearance delivery, packages and limits](docs/plans/source-clearance/DELIVERY_0868.md). Models independently choose clearance for their own copies, other models in the layer and other layers, with explicit conflict priority. Existing schema-58 scenes require an Undoable upgrade. Historical [corrected 0.86.7.2 Max 2024/2026/2027 deliveries](docs/plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) retain their original versions and receipts. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) owns remaining work; unrelated roadmap work is outside this delivery.
 
 | Need | Maintained source |
 | --- | --- |
 | Use the plugin | [Artist guide](docs/ARTIST_GUIDE.md), [Layout and falloff](docs/LAYOUT_AND_FALLOFF.md) |
-| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [qualified Max 2027 MZP/EXE and artist tests](docs/plans/preset-gallery-improvements/DELIVERY_0866.md) |
+| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [0.86.8 installers, checks and limits](docs/plans/source-clearance/DELIVERY_0868.md) |
 | Understand implementation | [Architecture](docs/ARCHITECTURE.md), [engineering contracts](docs/ENGINEERING_FOUNDATION.md) |
 | Find remaining work | [Execution ledger](docs/plans/improvement-program/PROGRESS.md), [defects and acceptance](docs/BACKLOG.md) |
 | Work in this repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md), [version policy](docs/Release_Versioning.md) |
 | Find current documents and research | [Documentation index](docs/README.md) |
 | Find older results | [History and evidence](docs/HISTORY.md), [archive](docs/archive/README.md) |
 
-The separate private real-plant artist-test delivery uses **0.86.6.1**, explicitly
-selected by the user to correct its original 0.88.0 label. The eight presets and
-rendered previews are unchanged; historical receipts retain their original
-identities. See the [current library handoff](docs/plans/improvement-program/PROGRESS.md#real-model-library-planning).
-Its [Max 2027 installer](dist/CyrusScatter-0.86.6.1-20261020/CyrusScatter-0.86.6.1-Max2027.mzp)
-lives in the repository's `dist/` folder alongside previous releases.
-The qualified 0.86.6 baseline above remains separately identified.
+The private **0.86.7 individual library** retains 96 prepared models and their
+original previews, covering all 104 catalog cards. **Display mode > Textured
+mesh** previews supported materials and leaf opacity. **Surfaces > Hide surface**
+keeps receivers available for painting and rendering. New layers inherit the
+selected layer's current surfaces.
+**Models & Points** uses **+** to add objects, places **Add Point** beside **Make
+point**, and lets **Pick object** replace either a Point or a model.
+Put `CyrusScatter-Content-0.86.7.zip` beside the EXE and check **Install / update
+plant library** to install content. The EXE and ZIP are together under
+`dist/CyrusScatter-0.86.8-20261020/`. Leave the option unchecked to keep existing
+content. Content keeps its independent revision and is shared by standard profiles
+across all three hosts. Plugin-only updates do not copy the models. The ZIP streams
+into one shared store, reusing verified existing bytes; success shows a brief
+completion message. Prepared files were saved back to Max 2024 format; model geometry and image
+assets were reused. Corona/Forest material dependencies still require matching
+host plug-ins. Actual Corona leaf material tests were performed in Max 2027;
+the older local hosts lack those dependencies. See the delivery report for
+exact scope and receipts. Private content and installers remain outside Git.
+
+The separate [panel loading/threading investigation](docs/plans/panel-performance-0826/PANEL_THREADING_20261020.md)
+records existing lazy controls, a small frozen Max 2027 timing probe, safe worker
+boundaries and a recommended optimization order. It introduces no UI rewrite or
+new performance delivery by itself. The patch report records the later implementation.
+
+The [shared-library and panel implementation plan](docs/plans/preset-gallery-improvements/UI_AND_CONTENT_IMPLEMENTATION_PLAN.md)
+combines independent plugin/content updates, one selectable library location
+for all three hosts, migration/storage accounting and scoped panel optimization.
+Its [research](docs/plans/preset-gallery-improvements/SHARED_CONTENT_RESEARCH_20261020.md)
+records the artist's disk-space failure and official Chaos/ITOOSOFT workflows.
+The authorized 0.86.7.1 implementation covers independent updates, verified
+adoption/managed storage and scoped panel work. Automatic retirement of old
+scene-dependent paths and fully lazy Advanced controls remain future work.
 
 The current controller keeps bulk placement generation, masks/Paint, transforms, Edit, acceptance and preview preparation in native storage. MAXScript retains authored parameter blocks, UI and bounded coordination. Particle Flow still uses a Script Operator over native transforms; Bake creates real scene nodes through bounded pages. Heavy operations remain synchronous and the one-million candidate cap remains. Read the delivery report for measurements rather than assuming every operation is native or instantaneous.
 
-Layers own receivers, models and population rules. Paint Areas retain receiver-bound vector coverage; overlapping areas union coverage. Painting keeps the terrain vector path and adds surface-attached vector regions for spheres, boxes and manifold curved receivers. Curved strokes follow surface distance; disconnected sheets stay independent. Current schema 58 is required; older development schemas are not migrated. Preserve original scenes and saved units for guarded Paint/Edit bindings.
+Layers own receivers, models and population rules. Paint Areas retain receiver-bound vector coverage; overlapping areas union coverage. Painting keeps the terrain vector path and adds surface-attached vector regions for spheres, boxes and manifold curved receivers. Curved strokes follow surface distance; disconnected sheets stay independent. Current schema 59 is required. Schema 58 has an explicit Undoable upgrade; earlier development schemas remain unsupported. Preserve original scenes and saved units for guarded Paint/Edit bindings.
 
 | Path | Purpose |
 | --- | --- |

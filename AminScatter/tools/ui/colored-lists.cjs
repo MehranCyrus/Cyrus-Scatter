@@ -13,7 +13,7 @@ module.exports=function(text,components){
  for(const s of specs){
   const id=s.id+'_colored';
   declarations+=`        dotNetControl ${id} "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100\n`;
-  declarations+=`        local ${id}_configured=false,${id}_colors=#(),${id}_scale=1.0\n`;
+  declarations+=`        local ${id}_configured=false,${id}_colors=#(),${id}_scale=1.0,${id}_layoutVisible=false\n`;
   if(s.open)methods+=`        on ${id} DoubleClick view args do if controlsReady and not binding and root!=undefined do (${s.open})\n`;
   if(s.tip){
    declarations+=`        local ${id}_tip=undefined,${id}_tipRow=-1\n`;
@@ -57,12 +57,15 @@ module.exports=function(text,components){
         )
 `;
  }
- methods+=`        fn syncColorLists = (
+ methods+=`        fn syncColorLists layoutChanged:false = (
             if syncingColorLists do return false
             local measurement=CyrusMeasureBegin 15,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             syncingColorLists=true
             try (
-${specs.map(s=>{const id=s.id+'_colored';return `                setHostedVisible ${id} ${s.id}.visible;${id}.enabled=${s.id}.enabled
+${specs.map(s=>{const id=s.id+'_colored';return `                -- The native list is always hidden after synchronization. Only
+                -- a completed geometry layout supplies new visibility intent.
+                if layoutChanged do ${id}_layoutVisible=${s.id}.visible
+                setHostedVisible ${id} ${id}_layoutVisible;${id}.enabled=${s.id}.enabled
                 if ${id}.pos!=${s.id}.pos do ${id}.pos=${s.id}.pos
                 if ${id}.width!=${s.id}.width do ${id}.width=${s.id}.width
                 if ${id}.height!=${s.id}.height do ${id}.height=${s.id}.height
@@ -102,5 +105,5 @@ ${specs.map(s=>{const id=s.id+'_colored';return `                setHostedVisibl
 `;
  return text.replace('        local layout\n','        local layout\n'+declarations)
   .replace('        fn layout = (',methods+'        fn layout = (')
-  .replace(/(            \w+\.height=y\+4);true/,'$1;syncColorLists();true');
+  .replace(/(            \w+\.height=y\+4);true/,'$1;syncColorLists layoutChanged:true;true');
 };

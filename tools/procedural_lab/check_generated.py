@@ -52,6 +52,7 @@ def port_rows(inventory):
     assert len(baseline)==245 and len({r['control_key'] for r in baseline})==245
     replacements={
         'general/surface/policyButton':[],
+        'layer/sourceUI/addSelected':[],  # Explicitly removed by the 0.86.7 UI request.
         'layer/diversityUI/pathsDrop':['layer/diversityUI/pathsList'],
         'general/editor/setList':[],
         'layer/brushUI/strengthSpin':[],
@@ -111,7 +112,7 @@ def main():
     assert text.count('rollout mainUI "Cyrus Scatter '+version+'"')==1
     container=text[text.index('plugin helper CyrusSourceContainer'):]
     assert re.findall(r'rollout (\w+) "',container)==['containerUI']
-    assert 'version:58\ninitialRollupState' in text and 'CyrusUnified1' in text
+    assert 'version:59\ninitialRollupState' in text and 'CyrusUnified2' in text
     for obsolete in ('groupPolicy','procUpgrade','paintIdentity','Layer priority','legacyUI','if true then','if false then'):
         assert obsolete not in text,obsolete
     for name in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations',
@@ -119,7 +120,7 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==321  # Includes the explicit surface density field selector.
+    assert len(current)==329  # 0.86.8 adds eight source clearance controls.
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
     assert len(layout['sections'])==12
     for section in layout['sections']:
@@ -146,7 +147,7 @@ def main():
     schema=json.loads((ROOT/'CyrusMCP/cyrus_mcp/plan.schema.json').read_text())
     assert schema['properties']['schema_version']['const']=='0.73'
     catalog=json.loads((ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json').read_text())
-    assert catalog['development_version']==version and catalog['calculation_model']=='CyrusUnified1'
+    assert catalog['development_version']==version and catalog['calculation_model']=='CyrusUnified2'
     assert len(catalog['controls'])==len(current) and len(catalog['features'])==36
     assert catalog['control_inventory_sha256']==hashlib.sha256(products[1].read_bytes()).hexdigest()
     assert catalog['capability_source_sha256']==hashlib.sha256((ROOT/'docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md').read_bytes()).hexdigest()

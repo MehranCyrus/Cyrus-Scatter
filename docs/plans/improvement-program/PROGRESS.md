@@ -1,8 +1,195 @@
 # Cyrus Scatter — current execution ledger
 
-This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.6 surface painting and installer qualification; see the [delivery report](../preset-gallery-improvements/DELIVERY_0866.md). The earlier library/Amount feature baseline is 0.86.5 by user correction. Unrelated roadmap work remains outside this delivery.** [Knowledge maintenance](../../../tools/rag/README.md) records the separate documentation/index work. P, I, PG, N and local D tasks are not release versions.
+This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.8 source-local clearance, independent inheritance, conflict priority and corrected spacing UI, qualified for Max 2027; see the [delivery report](../source-clearance/DELIVERY_0868.md). Historical three-host packages retain their prior versions. Unrelated roadmap work remains outside this delivery.** [Knowledge maintenance](../../../tools/rag/README.md) records the separate documentation/index work. P, I, PG, N and local D tasks are not release versions.
+
+## 0.86.8 source clearance implementation — 20 October 2026
+
+The user authorized the [source clearance plan](../source-clearance/IMPLEMENTATION_PLAN.md),
+UI ordering, native implementation, testing, packaging and code/docs Git backup.
+The review decisions are adopted: independent inheritance per scope, equivalent
+rules retain the same calculation schedule, and Count admission precedes conflict
+preference. Schema 59 / CyrusUnified2 / recipe 8 / bridge 4 are implemented.
+The Between layers exception has an isolated reproduction and separate correction.
+Native tests (including 240 exhaustive-oracle scenes and 100,000 candidates),
+176 Python tests and generated-source checks pass. The frozen SDK build passes
+49 tests. Cold final/installed pairs pass the scoped Max 2027 campaign at 150%/100%,
+including lifecycle, real leaf geometry on three receiver types, Bake and Undo.
+The exact EXE/MZP and unchanged content ZIP pass the final seal. See the
+[delivery report](../source-clearance/DELIVERY_0868.md) for hashes, driver corrections
+and remaining acceptance. Compiled component caches, independent acceptance
+reuse, generic source numeric presets and broad physical/renderer qualification
+remain outside this first delivery. The authorized backup includes accumulated
+Scatter code/docs; Git publication has a separate receipt. No artist session or
+profile was changed.
+
+## 0.86.7.2 final usability follow-up — 20 October 2026
+
+**Corrected successor:** the [Hide surface report](../preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md)
+supersedes the first installer artifacts. The no-selected-row fallback now
+references its single receiver without cloning it. Seventeen assertions pass
+in each of Max 2024/2026/2027; additional Max 2027 painting/render/save and
+installer reuse checks pass. Native and content bytes are unchanged.
+
+The user selected 0.86.7.2. EXE content is an explicit checkbox with a matching
+adjacent ZIP, shared incremental storage and concise success. Display mode has
+Textured mesh and Placement points. Selected receivers can be hidden in viewports
+while preserving paint/render behavior. Add Layer inherits the selected layer's
+current receivers; missing receivers have an actionable diagnosis.
+
+The [delivery report](../preset-gallery-improvements/DELIVERY_08672.md) owns exact
+payloads, fresh three-host acceptance, real-leaf/20,000-placement testing and
+limits. Content remains 0.86.7 with unchanged asset hashes. No artist installation,
+restart, source-model recreation or old scene-path deletion is included. B21's
+remaining latency and B35's old-path retirement remain open.
+
+## 0.86.7.1 artist correction — 20 October 2026
+
+The user requested current-version repairs for disappearing lists, clear model
+load feedback and a simple automatic EXE. These are implemented and scoped-tested
+in Max 2024/2026/2027. See the [correction report](../preset-gallery-improvements/DELIVERY_08671_CORRECTION.md)
+for actual visibility checks, real Max 2027 leaf/Live results, older-host missing
+renderer rollback, automatic existing-content discovery, installer UI execution
+and exact corrected hashes. The original artifacts remain historical. No models
+were recreated or copied. B21's remaining latency/Advanced work stays open.
+
+## 0.86.7.1 shared content and panel follow-up — 20 October 2026
+
+The user subsequently authorized implementation and selected **0.86.7.1**.
+See the [patch report](../preset-gallery-improvements/DELIVERY_08671.md) for
+independent plugin/content updates, shared location resolution, scoped panel
+refreshes, queued body creation and scoped three-host qualification.
+The original planning receipt below remains historical; it is not a statement
+that the later implementation has not occurred.
+
+Historical planning receipt: the user requested a plan for one reusable library across Max 2024/2026/2027,
+independent plugin/content updates and the panel responsiveness work.
+The [implementation plan](../preset-gallery-improvements/UI_AND_CONTENT_IMPLEMENTATION_PLAN.md)
+sequences content identity/resolution, plugin-only EXE/MZP updates, configurable
+shared storage and migration, then scoped UI optimization and combined qualification.
+The [research](../preset-gallery-improvements/SHARED_CONTENT_RESEARCH_20261020.md)
+checks current source, the artist's actual disk-space log and official
+Chaos/ITOOSOFT documentation. The old installed images are reusable, but
+96 changed MAX files require approximately 4.478 GiB before runtime overhead;
+the observed C: free space was approximately 2.98 GiB.
+
+B21 remains open and B35 records content/update coupling and retirement.
+Only planning/navigation documents changed in that preceding research task.
+The later authorized patch supersedes its implementation status. It retains
+old paths for saved scenes, reuses the existing content revision and keeps
+residual cold latency/fully lazy Advanced controls open under B21.
+
+## 0.86.7 library, appearance and compatibility — 20 October 2026
+
+The user-authorized B33/B34 and Models & Points changes are implemented.
+See [delivery scope and receipts](../preset-gallery-improvements/DELIVERY_0867.md).
+Thumbnail wheel scheduling, native material appearance, source replacement,
+shared content installation and distinct 2024/2026/2027 SDK payloads are covered.
+The 96 existing model files were saved back, not rebuilt; original maps/previews
+remain byte-identical. Corona leaf + Color Correction acceptance is Max 2027;
+older hosts qualify native Standard/Multi/Sub behavior and missing-dependency
+rollback, not installed Corona rendering. No artist profile/session, Git push,
+website publication or unrelated panel rewrite is part of this delivery.
+The dated 0.86.6.2 handoff below is historical, not current open status.
+
+## Panel selection and threading investigation — 20 October 2026
+
+The user requested deeper understanding of panel loading and possible parallel
+work, without authorizing a UI rewrite. The
+[research report](../panel-performance-0826/PANEL_THREADING_20261020.md) records
+current-source inspection, Max/Qt/WinForms threading contracts and one isolated
+Max 2027 probe of the frozen delivered 0.86.6.2 pair. On one empty controller
+with no plant models, two-section readiness was 1.4–1.6 seconds; restoring all
+twelve sections took 9.2–12.4 seconds. Explicit warm full binds took 68–69 ms
+versus 0.82–1.35 seconds. Four exploratory samples on a concurrently used machine
+are not controlled performance qualification. Recorded non-UI stages stayed at
+zero and the epoch was unchanged during binds. The owned host exited normally.
+
+Existing I01/I02 lazy construction and diagnostics remain implemented. Future
+work should reduce repeated bind/layout/list work and costly initial controls,
+then offload measured pure-data preparation if worthwhile. Max controls and scene
+access remain host-thread work. B21 stays open; no plugin code, package, version
+or artist-session changes were made by this investigation. Concurrent 0.86.7
+thumbnail/material/compatibility work is separate and preserved.
 
 ## Real-model library planning
+
+**20 October 2026 — artist feedback and next-model handoff:** the artist
+successfully installed 0.86.6.2 after selecting the parent Content folder and
+confirms model loading, textures and a Sycamore leaf Corona render work. A
+read-only installed script/gallery/catalog hash check matches the delivered
+candidate. This is not a check of the running process's loaded modules or all
+96 assets. **B33 remains open:** visible gallery images can stay Loading until
+clicked; current evidence identifies scheduling/presentation as the investigation
+area but does not prove the exact cause. **B34 is requested and unimplemented:**
+Mesh preview needs an explicit original-material/texture/opacity option; its
+current custom shader supplies identification colors with alpha 1 only.
+The [full review/implementation handoff](../preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md)
+records the completed delivery, artist screenshots, source symbols, hypotheses,
+constraints and focused acceptance. Investigation and this documentation update
+changed no plugin code, built no successor and launched no host. No claim that
+either follow-up is fixed; no broad campaign or new plant conversion is needed.
+
+**20 October 2026 — active individual-model replacement (0.86.6.2):** the user
+supersedes the eight mixed planting pilots as default library content. Replace
+the active bundled demos with individual entries from the original 104-card
+catalog, using existing Corona renders and simple flat categories. Source audit
+resolves those cards to 96 unique individual assets: eight cards are collections,
+composites or alternate-renderer duplicates of separately listed individuals.
+All 104 cards remain accounted for in the source mapping. Categories are Trees
+(24), Shrubs (7), Flowers (6), Groundcover (5), Grasses (3), Leaves (49), and Ground
+Details (2). No designed planting recipes are added. Personal recipes remain
+artist-owned. The user freed project-drive space after being asked; all new
+heavy preparation and delivery output belongs on F: in project build/dist.
+
+**Completed within the requested scope:** all 96 individual scenes and existing
+Corona JPEGs are prepared, including complete proxy geometry and joined trunk/
+foliage parts. The 1,204-file Content payload is 5,850,789,633 bytes. Seven initial
+preparation failures (corrected-map basename collisions and grouped tree cleanup)
+were repaired without repeating the other 89 assets. All models are one static
+mesh, with portable shared maps and preserved natural physical size. Old active
+source library files were moved reversibly into the ignored
+`build/individual-model-library-20261020/retired-library-0866` archive after the
+bulk deletion command was blocked by automatic approval review; none enters the
+new package or browser. Historical releases and personal recipes remain separate.
+
+The new browser opens Plant models / All models, with seven flat categories and
+96 rendered thumbnail entries. Broadleaf Tree 02 (A073) was the one distinct
+model used for actual owned-host import/source registration: 554,588 triangles,
+490.636 × 493.997 × 607.883 cm, one source with defaults persisted. Its exact name
+is preserved after correcting Max's automatic variant renaming. The same model
+was repeated after that correction; no other runtime model qualification or new
+renders were performed. The final browser decoded 12 visible previews and its
+capture is `MODEL-LIBRARY.png`. Earlier driver errors (node/baseObject binding,
+then a screenshot-expression scope error after successful import) are retained
+in build receipts. All owned hosts exited; artist Max PID 40172 remained running.
+
+The EXE, MZP and complete adjacent Content folder are in
+`dist/CyrusScatter-0.86.6.2-20261020/`. EXE SHA-256:
+`8f2fb27697dfaa90851fa7229f3d836b8506cfb52db5e8211e10fc7aecbe8cdc`;
+MZP SHA-256:
+`f3e6768dfd9318ff2c272ad209587f20e81cf089441f4760fe5ea685d35a2e14`;
+content-manifest SHA-256:
+`d8d8f69e4f0ade1d22487c4aa4db0f97686979d23dc6febeeddb6eb53c811eb0`.
+`DELIVERY.json` pins scope, content, runtime and the single-model result. Managed
+and installer compilation, content identity/category/thumbnail checks, package
+archive hashes, one actual model load and a small isolated installer transaction
+passed. This is an artist-test candidate, not broad qualification. The artist
+installs the EXE with Content beside it, or runs the MZP through Scripting > Run
+Script and selects Content, then restarts Max. Artist scene/design/rendering
+acceptance is next. No artist installation/restart, commit, push or publication
+was performed for this successor.
+
+The implementation uses an explicit bounded native-MAX model catalog
+instead of pretending each model is a scatter preset, preserving each complete
+plant as one source. Import and source enrollment stay on the host thread;
+browsing only reads catalog/thumbnail metadata. The EXE plus its verified Content
+folder stages models/maps atomically with the runtime. F05–F07 and F09–F11 apply:
+finite streamed content bounds, previous-release retention on failure, original
+assets preserved, physical units and source frames retained. Native calculation
+implementation remains unchanged. Scope is metadata/file/category/thumbnail
+verification and **one** actual model load in an owned Max 2027 profile; no broad
+test campaign, artist installation/restart, or new renders. The public Git backup
+checkpoint before this work is `3ec1cbc2b725912e39c2625ceecb648970054050`.
 
 **20 October 2026 — backup checkpoint before bundled-library correction:** the
 user requests committing/pushing the recent codebase and documentation first.

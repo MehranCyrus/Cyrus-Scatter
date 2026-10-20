@@ -84,7 +84,7 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
         auto* populations=groupArray(input->data[6]);originals.emplace_back();
         populationCount+=populations->size;if(populationCount>10)throw RuntimeError(_T("Procedural policy supports ten total populations"));
         for(int s=0;s<populations->size;++s){auto* set=groupArray(populations->data[s]);
-            if(set->size!=7)throw RuntimeError(_T("Procedural population requires its receiver schedule"));
+            if(set->size!=7&&set->size!=8)throw RuntimeError(_T("Procedural population requires its receiver schedule and source policies"));
             ProceduralRows rows(set->data[1]);sampleCount+=rows.size();if(sampleCount>std::size_t(cap))throw RuntimeError(_T("Procedural candidate memory admission limit exceeded"));
             std::unordered_map<std::string,std::uint64_t> schedule;
             std::unordered_map<std::uint64_t,std::uint64_t> numericSchedule;
@@ -94,6 +94,26 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
                     if(id>std::uint64_t(INT64_MAX)||!cyrus::receivers::decodeCandidate(id,slot,local)||
                        !(rows.native?numericSchedule.emplace(id,std::uint64_t(k)).second:schedule.emplace("c:"+std::to_string(id),std::uint64_t(k)).second))throw RuntimeError(_T("Invalid receiver candidate schedule"));}}
             cyrus::procedural::Population p;p.id=proceduralID(set->data[0]);
+            if(set->size==8){
+                auto* policies=groupArray(set->data[7]);
+                if(policies->size>512)throw RuntimeError(_T("Clearance supports 512 active source rows"));
+                if(!rows.native||!rows.native->sourceCohort()||rows.native->sourceCohort()->population()!=p.id||
+                   rows.native->sourceCohort()->sources().size()!=std::size_t(policies->size))
+                    throw RuntimeError(_T("Clearance source cohort does not match the prepared population"));
+                for(int k=0;k<policies->size;++k){
+                    auto* spec=groupArray(policies->data[k]);if(spec->size!=8)throw RuntimeError(_T("Invalid clearance source record"));
+                    cyrus::procedural::SourcePolicy policy;policy.id=proceduralID(spec->data[0]);
+                    if(proceduralID(spec->data[1])!=rows.native->sourceCohort()->sources()[std::size_t(k)].id)
+                        throw RuntimeError(_T("Clearance source correspondence changed; previous result retained"));
+                    const int copies=spec->data[2]->to_int(),others=spec->data[3]->to_int(),external=spec->data[4]->to_int();
+                    if(copies<0||copies>2||others<0||others>2||external<0||external>3)throw RuntimeError(_T("Unknown clearance inheritance setting"));
+                    policy.copies=unsigned(copies);policy.others=unsigned(others);policy.external=unsigned(external);
+                    auto* targets=groupArray(spec->data[5]);if(targets->size>10)throw RuntimeError(_T("Too many clearance target layers"));
+                    for(int t=0;t<targets->size;++t)policy.targets.push_back(proceduralID(targets->data[t]));
+                    policy.preferred=spec->data[6]->to_bool()!=FALSE;policy.distance=proceduralRule(spec->data[7]);
+                    p.sources.push_back(std::move(policy));
+                }
+            }
             originals.back().push_back(rows);auto* radii=set->data[2];
             if(cyrusRadiusCount(radii)!=rows.size())throw RuntimeError(_T("One radius pair per procedural instance required"));
             p.self=proceduralRule(set->data[3]);const int budget=set->data[4]->to_int(),attempts=set->data[5]->to_int();
@@ -115,7 +135,7 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
                     ordinal=found->second;
                 }else if(authored.empty())throw RuntimeError(_T("Invalid native candidate identity"));
                 const auto radius=cyrusRadiusAt(radii,i);
-                p.samples.push_back({{r.transform[9],r.transform[10],r.transform[11]},{float(radius[0]),float(radius[1])},ordinal,std::move(authored),pin,key});
+                p.samples.push_back({{r.transform[9],r.transform[10],r.transform[11]},{float(radius[0]),float(radius[1])},ordinal,std::move(authored),pin,key,set->size==8?r.source-1:0});
             }
             else for(std::size_t i=0;i<rows.size();++i){auto* row=groupArray(rows.rows->data[i]);const auto id=proceduralRowID(row);const auto position=row->data[0]->to_matrix3().GetTrans();
                 const bool pin=groupProtected(row);std::uint64_t ordinal=0;
@@ -162,7 +182,7 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
 def_visible_primitive(cyrusProceduralPublicationVersion,"cyrusProceduralPublicationVersion");
 Value* cyrusProceduralPublicationVersion_cf(Value**,int n){
     check_arg_count(cyrusProceduralPublicationVersion,0,n);
-    return Integer::intern(3);
+    return Integer::intern(4);
 }
 
 def_visible_primitive(cyrusProceduralRadii,"cyrusProceduralRadii");

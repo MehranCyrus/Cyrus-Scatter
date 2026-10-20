@@ -9,19 +9,19 @@ def build(output: Path):
     compiler = Path('C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/csc.exe')
     framework = Path('C:/Windows/Microsoft.NET/Framework64/v4.0.30319')
     source = ROOT / 'AminScatter/setup/InstallEngine.cs'
-    references = [framework / name for name in ('mscorlib.dll', 'System.dll', 'System.Core.dll')]
+    references = [framework / name for name in ('mscorlib.dll', 'System.dll', 'System.Core.dll','System.Drawing.dll','System.Windows.Forms.dll','System.IO.Compression.dll')]
     for path in [compiler, source, *references]:
         if not path.is_file(): raise FileNotFoundError(path)
     output.parent.mkdir(parents=True, exist_ok=True)
     command = [str(compiler), '/nologo', '/noconfig', '/nostdlib+', '/langversion:latest', '/warnaserror+',
                '/target:library', '/optimize+', '/deterministic+', '/platform:x64', '/out:' + str(output),
-               *('/reference:' + str(path) for path in references), str(source)]
+               *('/reference:' + str(path) for path in references), str(source), str(ROOT/'AminScatter/shared/LibraryLocation.cs'),str(ROOT/'AminScatter/setup/LibraryOptions.cs')]
     result = subprocess.run(command, text=True, capture_output=True)
     output.with_suffix('.build.log').write_text(result.stdout + result.stderr, encoding='utf-8')
     if result.returncode: raise RuntimeError(result.stdout + result.stderr)
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     output.with_suffix('.build.json').write_text(json.dumps({'compiler': str(compiler), 'compiler_sha256': sha(compiler),
-        'source_sha256': sha(source), 'artifact_sha256': sha(output), 'framework': 'net48; Max 2027 loading requires host qualification',
+        'source_sha256': sha(source), 'options_source_sha256':sha(ROOT/'AminScatter/setup/LibraryOptions.cs'), 'shared_source_sha256':sha(ROOT/'AminScatter/shared/LibraryLocation.cs'), 'artifact_sha256': sha(output), 'framework': 'net48; Max host loading requires qualification',
         'references': {str(path): sha(path) for path in references}}, indent=2) + '\n', encoding='utf-8')
     print('Built', output)
 
@@ -31,6 +31,8 @@ def build_exe(output: Path, package: Path | list[Path], core: Path):
     receipt=json.loads(core.with_suffix('.build.json').read_text(encoding='utf-8'))
     assert receipt['artifact_sha256']==sha(core)
     assert receipt['source_sha256']==sha(ROOT/'AminScatter/setup/InstallEngine.cs')
+    assert receipt['shared_source_sha256']==sha(ROOT/'AminScatter/shared/LibraryLocation.cs')
+    assert receipt['options_source_sha256']==sha(ROOT/'AminScatter/setup/LibraryOptions.cs')
     packages=[package] if isinstance(package,Path) else package
     descriptors=[]
     for item in packages:
@@ -44,8 +46,10 @@ def build_exe(output: Path, package: Path | list[Path], core: Path):
             marker,version,year,content_id=inventory.decode('utf-8').splitlines()[0].split('\t')
             assert marker in ('CyrusScatterInstall1','CyrusScatterInstall2') and year in ('2024','2026','2027')
             assert manifest['max_year']==int(year)
+            external=json.loads(archive.read('ExternalContent.json')) if 'ExternalContent.json' in archive.namelist() else None
             descriptors.append({'year':year,'version':version,'path':str(item),'package_sha256':sha(item),
-                'inventory_sha256':hashlib.sha256(inventory).hexdigest(),'resource':'Cyrus.Payload.'+year+'.mzp'})
+                'inventory_sha256':hashlib.sha256(inventory).hexdigest(),'resource':'Cyrus.Payload.'+year+'.mzp',
+                'external_content':external})
     descriptors.sort(key=lambda item:item['year'])
     assert len({d['year'] for d in descriptors})==len(descriptors) and len({d['version'] for d in descriptors})==1
     version=descriptors[0]['version']
@@ -63,7 +67,8 @@ def build_exe(output: Path, package: Path | list[Path], core: Path):
     compiler=Path(receipt['compiler'])
     framework=Path('C:/Windows/Microsoft.NET/Framework64/v4.0.30319')
     references=[framework/name for name in ('mscorlib.dll','System.dll','System.Core.dll','System.Drawing.dll','System.Windows.Forms.dll','System.IO.Compression.dll')]
-    sources=[ROOT/'AminScatter/setup'/name for name in ('InstallEngine.cs','Distribution.cs','Program.cs')]
+    sources=[ROOT/'AminScatter/setup'/name for name in ('InstallEngine.cs','Distribution.cs','Program.cs','LibraryOptions.cs')]
+    sources.append(ROOT/'AminScatter/shared/LibraryLocation.cs')
     manifest_path=ROOT/'AminScatter/setup/app.manifest'
     command=[str(compiler),'/nologo','/noconfig','/nostdlib+','/langversion:latest','/warnaserror+',
              '/target:winexe','/optimize+','/deterministic+','/platform:x64','/out:'+str(output),

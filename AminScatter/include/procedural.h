@@ -21,12 +21,23 @@ struct Sample {
     // Native candidates keep their exact key without allocating decimal text.
     // Zero selects the existing authored/text boundary (including test keys).
     std::uint64_t candidateIdentity=0;
+    std::uint32_t source=0;
+};
+// Authored row identity is distinct from native source correspondence. Scope
+// values: inherit/off/on; external: inherit/none/selected/all.
+struct SourcePolicy {
+    std::string id;
+    unsigned copies=0,others=0,external=0;
+    std::vector<std::string> targets;
+    DistanceRule distance{true,1,0,false};
+    bool preferred=false;
 };
 struct Population {
     std::string id;
     std::vector<Sample> samples;
     DistanceRule self;
     std::uint32_t budget=0,attemptLimit=0;
+    std::vector<SourcePolicy> sources;
 };
 struct Layer {
     std::string id;
@@ -55,6 +66,10 @@ struct Result { std::vector<LayerResult> layers; };
 // Pure-data, fixed logical prefix schedule v1. Input cache suffixes are ignored
 // until their scheduled round. No scene API, movement, RNG or publication here.
 Result evaluate(const Plan&);
+// Internal source-aware scheduling; inherited components use the established
+// ordered settlement. These functions consume copied data only.
+std::vector<int> clearanceComponents(const Plan&);
+void evaluateClearanceComponents(const Plan&,const std::vector<int>&,Result&,std::uint64_t& visits);
 // Conservative spectral bound from the row Gram matrix; handles shear without
 // a decomposition and is tight for orthogonal rotation/scale rows.
 double transformScaleBound(const std::array<amin::Vec3,3>& rows);

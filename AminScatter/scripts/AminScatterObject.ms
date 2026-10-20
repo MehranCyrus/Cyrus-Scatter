@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="2f6c189566bbf311eab8a4b31872da3b2da97c94609d0f21c263c55e5b0810fd"
+﻿global CyrusLoadedScriptFingerprint="b26098f455e70c093f75d43d74ec6b2d51385fcffbe8819004234dcd1e5c16ba"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -1726,7 +1726,8 @@ fn CyrusChooseDensityPattern target = (
     createDialog picker style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
 )
 
--- Bounded data-only recipes. Scene mutation is confined to CyrusRecipeImport.
+-- Bounded data-only recipes and installed individual models. Scene mutation is
+-- confined to the explicit recipe import and model merge commands.
 global CyrusRecipeBrowser,CyrusRecipeOpenRoot,CyrusRecipeOpenNode,CyrusRecipeOpenSurface,CyrusRecipeScriptDirectory
 global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusLibraryVersion,CyrusRecipeErrorText
 fn CyrusRecipeErrorText value = (
@@ -1735,7 +1736,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.6.1"
+fn CyrusLibraryVersion = "0.86.8"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -1765,6 +1766,82 @@ global CyrusRecipeResolve,CyrusRecipeValidateBindings,CyrusRecipeApplyValue,Cyru
 global CyrusRecipeRestorePaint,CyrusRecipeDirectory,CyrusRecipeBundledDirectory,CyrusRecipeSuggestBindings,CyrusOpenPresets,CyrusPresetSameValues,CyrusRecipeViewPreferences,CyrusRecipeIsBundled,CyrusRecipeEditDetails,CyrusRecipeDetailEditor,CyrusRecipeDetailOpenData
 global CyrusOpenAssetExport,CyrusOpenAssetImport,CyrusOpenReadyPreset,CyrusPresetPackageDirectory,CyrusPresetSaveReady,CyrusPresetReviseReady
 global CyrusRecipeFields,CyrusRecipeSchemaCache=undefined
+global CyrusModelMerge
+fn CyrusModelMerge catalog entry owner:undefined = (
+    CyrusRequireAuthor()
+    if findItem #(2024,2026,2027) ((maxVersion())[1]/1000+1998)==0 do throw "The individual model library requires Max 2024, 2026 or 2027."
+    if theHold.Holding() do throw "Finish the current scene operation before merging a library model."
+    if owner!=undefined do (
+        if classof owner!=AminScatterObject do throw "Choose a Scatter layer before adding this model."
+        if owner.containerProvider()!=undefined do throw "This layer uses shared source containers. Merge the model, then place it inside its source container."
+        if owner.sources.count>=1024 do throw "The selected layer has reached its source registration limit."
+    )
+    catalog.VerifyScene entry
+    local scene=entry.Scene,expectedName=entry.NodeName,missing=#()
+    -- Header inspection must collect missing dependencies before an abort can
+    -- discard their names. No scene objects are merged by this read-only call.
+    local names=getMAXFileObjectNames scene quiet:true missingDLLsAction:#logmsg missingDLLsList:&missing
+    if missing==undefined do missing=#()
+    if names.count!=1 or names[1]!=expectedName do throw "The installed model does not contain its declared independent mesh. Reinstall the matching content."
+    local merged=#(),model=undefined,oldSuspended=CyrusPointSuspended,failure=undefined,previousSelection=selection as array
+    theHold.Begin();CyrusPointSuspended=true
+    try (
+        with animate off (
+            if not (mergeMAXFile scene #(expectedName) #autoRenameDups #renameMtlDups #neverReparent quiet:true missingDLLsAction:#logmsg) do throw "The model could not be merged."
+            merged=getLastMergedNodes()
+            if merged.count!=1 do throw "The model merged an unexpected number of nodes."
+            model=merged[1]
+            if not isValidNode model or classof model.baseObject!=Editable_Mesh or isGroupHead model or isGroupMember model or model.parent!=undefined or model.children.count!=0 or model.modifiers.count!=0 do throw "The model is not a prepared independent mesh."
+            -- MAX headers also list unused studio/editor plug-ins. Validate the
+            -- actual merged shader graph inside this rollback transaction.
+            local graph=#(),cursor=1
+            if model.material!=undefined do append graph model.material
+            while cursor<=graph.count do (
+                local shader=graph[cursor];cursor+=1
+                if matchPattern ((classof shader) as string) pattern:"Missing_*" do (
+                    local details=""
+                    for i=1 to amin 8 missing.count do details+=((if i>1 then "; " else "")+missing[i])
+                    throw ("This model contains an unavailable material or texture map. Install its matching material/map plug-ins for this Max version, then retry. File dependency report: "+details)
+                )
+                if superclassof shader==material do for i=1 to getNumSubMtls shader do (
+                    local child=getSubMtl shader i
+                    if child!=undefined do appendIfUnique graph child
+                )
+                for i=1 to getNumSubTexmaps shader do (
+                    local child=getSubTexmap shader i
+                    if child!=undefined do appendIfUnique graph child
+                )
+                if graph.count>4096 do throw "The model exceeds the material/map graph limit."
+            )
+            local maps=#()
+            if model.material!=undefined do (
+                join maps (getClassInstances Bitmaptexture target:model.material)
+                if (try(CoronaBitmap!=undefined)catch(false)) do join maps (getClassInstances CoronaBitmap target:model.material)
+            )
+            if maps.count>4096 do throw "The model exceeds the image-map instance limit."
+            for map in maps do map.filename=catalog.MapPath map.filename
+            model.name=if (getNodeByName entry.Name exact:true)==undefined then entry.Name else uniqueName (entry.Name+" - ")
+            setUserProp model "CyrusLibraryModelID" entry.Id
+            setUserProp model "CyrusLibrarySceneSHA256" entry.SceneHash
+            if owner!=undefined then (
+                if not (owner.addModelSource model) do throw "The selected layer could not accept this source."
+                model.renderable=false;hide model
+            ) else (model.renderable=true;unhide model)
+        )
+        theHold.Accept (if owner==undefined then "Cyrus merge library model" else "Cyrus add library model source")
+    )catch(
+        failure=getCurrentException()
+        theHold.Cancel()
+        -- Merge is not restored by the hold on every supported host. Remove
+        -- only this command's captured nodes, never name-matched scene nodes.
+        with undo off (for node in merged where isValidNode node do delete node)
+        select (for node in previousSelection where isValidNode node collect node)
+    )
+    CyrusPointSuspended=oldSuspended
+    if failure!=undefined do throw failure
+    if owner==undefined do select model
+    CyrusViewportRedraw();model
+)
 -- The matching module's fixed schema is read-only for these consumers. Avoid
 -- rebuilding hundreds of rows for every owner on every explicit capture.
 fn CyrusRecipeFields = (
@@ -1837,6 +1914,20 @@ fn CyrusRecipeCaptureSettings context owner = (
     )
     for field in (CyrusRecipeFields()) do (
         local key=field[1],kind=field[2],value=if key=="procReceiverVariationIDs" then CyrusReceiverVariationDomains owner else getProperty owner (key as name)
+        if key=="clearanceTargets" do (
+            local packed=#()
+            for targets in value do (
+                local translated=""
+                for id in filterString targets "|" do (
+                    local target=undefined
+                    for candidate in context.root.logicalLayers() do if candidate.layerID==id do target=candidate
+                    if target==undefined do throw "A model clearance target is unavailable. Restore it or choose target layers before saving this recipe."
+                    translated+=(if findItem context.owners target>0 then id else CyrusRecipeRole context target "layer" "model clearance")+"|"
+                )
+                append packed translated
+            )
+            value=packed
+        )
         if projection!=undefined do (
             if key=="densityFrameBasis" do value=basis
             if key=="densityFrameOriginWU" do value=#(projection.row4.x,projection.row4.y,projection.row4.z)
@@ -1860,7 +1951,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.6.1 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.8 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -1891,7 +1982,7 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",7),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",8),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified2"),#("sceneSchema",59),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -2054,6 +2145,15 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
             )
             local endpoints=for pair in identityMap collect pair
             for pair in bindings do append endpoints pair
+            for owner in imported do for index=1 to owner.clearanceTargets.count do (
+                local translated=""
+                for id in filterString owner.clearanceTargets[index] "|" do (
+                    local target=CyrusRecipeResolve endpoints id
+                    if target==undefined or target==owner do throw "A model clearance target needs a different layer binding."
+                    translated+=target.layerID+"|"
+                )
+                owner.clearanceTargets[index]=translated
+            )
             local metres=(units.decodeValue "1m") as double
             for rule in (CyrusRecipeGet document "spacingRelationships") do root.procSetPair (CyrusRecipeGet rule "scope") (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "a")) (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "b")) (CyrusRecipeGet rule "enabled") (CyrusRecipeGet rule "multiplier") ((CyrusRecipeGet rule "gap")*metres) (CyrusRecipeGet rule "planar")
             root.activeLayer=findItem root.layerObjects imported[1]
@@ -2088,7 +2188,12 @@ fn CyrusRecipeDirectory = (
     pathConfig.appendPath folder "CyrusScatter\\Library"
 )
 fn CyrusRecipeViewPreferences = (pathConfig.appendPath (getDir #plugcfg) "CyrusScatter-Gallery.ini")
-fn CyrusRecipeBundledDirectory version = (pathConfig.appendPath CyrusRecipeScriptDirectory ("Library-"+version))
+fn CyrusRecipeBundledDirectory version = (
+    if not doesFileExist (pathConfig.appendPath CyrusRecipeScriptDirectory "LibraryBinding.txt") do return pathConfig.appendPath CyrusRecipeScriptDirectory ("Library-"+version)
+    dotNet.loadAssembly (pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll")
+    local shared=(dotNetClass "Cyrus.Content.LibraryLocation").ResolveRoot CyrusRecipeScriptDirectory ((maxVersion())[1]/1000+1998)
+    if shared!="" then shared else pathConfig.appendPath CyrusRecipeScriptDirectory ("Library-"+version)
+)
 fn CyrusRecipeSuggestBindings root document = (
     local bindings=#()
     for role in (CyrusRecipeGet document "roles") do (
@@ -2438,7 +2543,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.6.1 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.8 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -2609,14 +2714,16 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             if receivers.count==1 do surface=receivers[1]
         )
     )
-    CyrusLibraryCheckSurface surface
-    root=CyrusLibraryDestination surface root
+    if surface!=undefined do (
+        CyrusLibraryCheckSurface surface
+        root=CyrusLibraryDestination surface root
+    )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.6.1 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.8 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.6.1" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.6.1 gallery package."
+    if assemblyName.Version.ToString()!="0.86.8.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.8 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -2627,7 +2734,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         try(destroyDialog window)catch()
     )
     rollout browser "Cyrus Library" width:1000 height:680 (
-        local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
+        local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false,modelCatalog=undefined,modelEntries=#()
         dotNetControl panel "CyrusScatter.UI.LibraryPanel" pos:[0,0] width:1000 height:680
         timer scanTimer interval:250 active:false
         fn validRoot = (CyrusRecipeCheckRoot root node)
@@ -2639,8 +2746,16 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
         )
         fn selectedEntry = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>entries.count then undefined else entries[i])
+        fn selectedModel = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>modelEntries.count then undefined else modelEntries[i])
+        fn modelsActive = (panel.LibraryIndex==2)
         fn showSelected = (
             panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
+            if modelsActive() do (
+                local entry=selectedModel()
+                panel.DetailText=if entry==undefined then "Choose an individual model." else entry.Name+" | "+entry.Category+"\nMerge this model into the scene, or add it as a source to the selected Scatter layer."
+                panel.SetSelectionActions (entry!=undefined) false false
+                return true
+            )
             local entry=selectedEntry(),i=panel.Gallery.SelectedIndex+1
             if panel.CollectionsView then (
                 panel.DetailText=if i>0 and i<=collections.count then collections[i][1]+" | "+((collections[i][2] as integer) as string)+" recipes" else "Choose a collection, or All recipes in the library tree."
@@ -2651,6 +2766,25 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
         )
         fn showPage = (
+            if modelsActive() do (
+                if modelCatalog==undefined do throw "The installed individual model library is unavailable. Reinstall its matching Content folder."
+                scanTimer.active=false;modelEntries=#();bindingControls=true
+                panel.IndividualModels=true;panel.Gallery.BeginPage()
+                local total=modelCatalog.MatchingCount panel.SearchText panel.Category,pages=amax 1 ((ceil (total/128.0)) as integer)
+                page=amax 1 (amin page pages)
+                local first=(page-1)*128,last=amin total (first+128)
+                if first<last do for i=first to last-1 do (
+                    local entry=modelCatalog.MatchingAt panel.SearchText panel.Category i
+                    append modelEntries entry
+                    panel.Gallery.AddItem entry.Id entry.Name entry.Category entry.Thumbnail entry.ThumbnailHash entry.ThumbnailBytes
+                )
+                panel.Gallery.EndPage (if modelEntries.count>0 then 0 else -1)
+                bindingControls=false;panel.SetPage page pages total false
+                panel.LocationText="Plant models / "+(if panel.Category=="" then "All models" else panel.Category)
+                panel.StatusText="Ready: "+(modelCatalog.Count as string)+" individual models; "+(total as string)+" matching."
+                showSelected();return true
+            )
+            panel.IndividualModels=false
             if scan==0 do return false
             local result=cyrusRecipeLibraryPage scan panel.SearchText panel.Category page
             local pages=if panel.CollectionsView then result[12] else result[8]
@@ -2677,12 +2811,31 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
                 bindingControls=false
             )
             panel.SetPage page (pages as integer) ((if panel.CollectionsView then result[13] else result[7]) as integer) scanTimer.active
-            panel.LocationText=(#("My recipes","Bundled examples","Custom library"))[panel.LibraryIndex]+" / "+(if panel.CollectionsView then "Collections" else if panel.Category=="" then "All recipes" else panel.Category)
+            panel.LocationText=(#("My recipes","Plant models","Custom library"))[panel.LibraryIndex]+" / "+(if panel.CollectionsView then "Collections" else if panel.Category=="" then "All recipes" else panel.Category)
             panel.StatusText=(if scanTimer.active then "Scanning: " else "Ready: ")+((result[3] as integer) as string)+" recipes; "+((result[4] as integer) as string)+" invalid."+(if result[5] then " Catalog limit reached; choose a smaller folder." else "")+(if categories.count>128 then " Tree shows first 128 collections; use the paged collection tiles for all." else "")+(if result[6]!="" then " "+result[6] else "")
             showSelected();true
         )
         fn refresh = (
             page=1;entries=#();collections=#();categories=#()
+            if panel.LibraryIndex==2 do directory=CyrusRecipeBundledDirectory (CyrusLibraryVersion())
+            if modelsActive() do (
+                scanTimer.active=false
+                if scan!=0 do (try(cyrusRecipeLibraryCancel scan)catch();scan=0L)
+                modelEntries=#();modelCatalog=undefined
+                panel.IndividualModels=true;panel.Gallery.BeginPage();panel.Gallery.EndPage -1
+                panel.BeginCollections();panel.EndCollections();showSelected()
+                if not doesFileExist (pathConfig.appendPath directory "model-catalog.json") do (
+                    panel.StatusText="No plant library is configured. Keep the supplied Content folder beside the installer, then run Install or Update."
+                    return false
+                )
+                modelCatalog=dotNetObject "CyrusScatter.UI.IndividualModelCatalog"
+                modelCatalog.Load directory (CyrusLibraryVersion()) ((maxVersion())[1]/1000+1998)
+                panel.BeginCollections()
+                if modelCatalog.CategoryCount>0 do for i=0 to modelCatalog.CategoryCount-1 do panel.AddCollection (modelCatalog.CategoryAt i)
+                panel.EndCollections();panel.IndividualModels=true
+                return showPage()
+            )
+            panel.IndividualModels=false;modelEntries=#()
             panel.BeginCollections();panel.EndCollections()
             scan=cyrusRecipeLibraryStart #(directory);scanTimer.active=true;showPage()
         )
@@ -2698,6 +2851,19 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             true
         )
         fn loadSelected = (
+            if modelsActive() do (
+                local entry=selectedModel()
+                if entry==undefined do throw "Select an individual model."
+                if root==undefined do throw "Select a Cyrus Scatter setup and its destination layer, then open the library again. Use Merge model to place a model directly in the scene."
+                validRoot()
+                local owner=root.selectedLayer()
+                if owner==undefined do throw "Select the destination Scatter layer first."
+                panel.ShowProgress ("Adding "+entry.Name+"...")
+                CyrusModelMerge modelCatalog entry owner:owner
+                root.bindNativeUI()
+                panel.ShowNotice ("Added "+entry.Name+" to "+(root.layerCaption owner)+". "+(if root.updateMode==1 then "Press Update scatter when ready." else "The layer will update in Live mode.")) true
+                return true
+            )
             if scanTimer.active do throw "Wait for the library scan or cancel it before loading."
             if panel.CollectionsView then (
                 local i=panel.Gallery.SelectedIndex+1
@@ -2720,6 +2886,14 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             case name of (
                 "selection":showSelected()
                 "load":loadSelected()
+                "merge":(
+                    if not (modelsActive()) do throw "Select an individual model."
+                    local entry=selectedModel()
+                    if entry==undefined do throw "Select an individual model."
+                    panel.ShowProgress ("Merging "+entry.Name+"...")
+                    CyrusModelMerge modelCatalog entry
+                    panel.ShowNotice ("Merged "+entry.Name+" into the scene.") true
+                )
                 "home":(bindingControls=true;panel.SearchText="";bindingControls=false;navigate "" true)
                 "search":(if panel.SearchText!="" and panel.CollectionsView do panel.SetNavigation panel.LibraryIndex "" false;entries=#();collections=#();page=1;showPage())
                 "collection":(entries=#();collections=#();page=1;showPage())
@@ -2756,7 +2930,8 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
         )
         on browser open do (
-            root=CyrusRecipeOpenRoot;node=CyrusRecipeOpenNode;surface=CyrusRecipeOpenSurface;sessionID=CyrusNewLayerID();directory=CyrusRecipeDirectory()
+            root=CyrusRecipeOpenRoot;node=CyrusRecipeOpenNode;surface=CyrusRecipeOpenSurface;sessionID=CyrusNewLayerID();directory=CyrusRecipeBundledDirectory (CyrusLibraryVersion())
+            panel.SetNavigation 2 "" false;panel.IndividualModels=true
             -- Max may restore a previous smaller dialog size without a resized
             -- event. Bind the control to that actual size before its first scan.
             local size=getDialogSize browser
@@ -2766,7 +2941,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             bindingControls=true;panel.ViewIndex=if mode=="list" then 1 else 0;panel.ZoomIndex=if size=="large" then 2 else if size=="small" then 0 else 1;bindingControls=false
             try(refresh())catch(panel.StatusText=getCurrentException())
         )
-        on panel ActionRequested sender args do if not bindingControls do try(action panel.RequestedAction)catch(panel.StatusText=getCurrentException())
+        on panel ActionRequested sender args do if not bindingControls do try(action panel.RequestedAction)catch(panel.ShowNotice (getCurrentException()) false)
         on scanTimer tick do try(showPage())catch(scanTimer.active=false;try(cyrusRecipeLibraryCancel scan)catch();panel.StatusText=getCurrentException())
         on browser resized size do (panel.width=amax 1 size.x;panel.height=amax 1 size.y)
         on browser close do (
@@ -3182,7 +3357,7 @@ fn CyrusNewLayerID = (local value=(dotNetClass "System.Guid").NewGuid();value.To
 global CyrusLayerStatusData,CyrusUICount,CyrusUILayerState,CyrusUIPreviewLabel,CyrusUIResultText
 struct CyrusLayerStatusData (
     hasResult=false,placements=0,previewCount=0,mode=0,buildMs=0,
-    needsUpdate=true,errorText="",densityCapped=false,inputOff=false
+    needsUpdate=true,errorText="",densityCapped=false,inputOff=false,noSurface=false
 )
 fn CyrusUICount value compact:false = (
     if compact and value>=1000000 do return ((formattedPrint (value/1000000.0) format:".1f")+"m")
@@ -3200,6 +3375,7 @@ fn CyrusUILayerState stats enabled controllerEnabled previewVisible = (
     if stats.inputOff do return #("Off","Analyzer input disabled")
     if stats.errorText!="" do return #("Error",if stats.hasResult then "Update / preview failed; previous result retained" else "Update / preview failed; no calculated result")
     if not previewVisible do return #("Hidden",if stats.needsUpdate then "Preview hidden; needs Update" else "Preview hidden")
+    if stats.noSurface do return #("No surface","No receiving surface assigned to this layer")
     if not stats.hasResult do return #("--","No calculated result")
     if stats.needsUpdate do return #("Pending","Marked for Update")
     if stats.mode>1 and stats.previewCount<stats.placements do return #("Limited","Prepared preview is sampled")
@@ -3229,6 +3405,7 @@ fn CyrusUIResultText root owner = (
     else if not enabled then text+="\nEnable this layer to include it in calculation."
     else if state.inputOff then text+="\nEnable the linked Analyzer input before updating."
     else if state.errorText!="" then text+="\nResolve the error below, then retry Update scatter."
+    else if state.noSurface then text+="\nAdd a receiving surface in Surfaces. Models and Points need a surface to scatter on."
     else if not state.hasResult then text+="\nChoose surfaces and models or Points, then Update scatter."
     else if state.needsUpdate then text+=(if root.updateMode==1 then "\nManual: press Update scatter to apply pending settings." else "\nLive: a relevant update is pending.")
     else if state.placements==0 then text+="\nCheck Amount, coverage, source weights and spacing."
@@ -3610,6 +3787,9 @@ fn CyrusReceiverVariationDomains owner = (
     )
     domains
 )
+global CyrusClearanceFields=#(#clearanceSourceIDs,#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar)
+join AminScatterLayerFields CyrusClearanceFields
+join AminScatterLayerTabs CyrusClearanceFields
 fn CyrusRemapLayerCorrespondence owner variation:#same = (
     if findItem #(#same,#new) variation==0 do throw "Choose Same or New variation."
     for key in #(#sourceRowIDs,#procSourceIDs,#procReceiverIDs) do (
@@ -3620,7 +3800,7 @@ fn CyrusRemapLayerCorrespondence owner variation:#same = (
         )
     )
     local domains=CyrusReceiverVariationDomains owner,before=#(),after=#()
-    for key in #(#sourceRowIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
+    for key in #(#sourceRowIDs,#clearanceSourceIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
         local values=(getProperty owner key) as array
         for i=1 to values.count do if not matchPattern values[i] pattern:"placeholder:*" do (
             local index=findItem before values[i]
@@ -3712,7 +3892,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:58
+version:59
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -4665,6 +4845,22 @@ initialRollupState:0x8
     fn usableSource n = (
         isValidNode n and findItem (validSurfaces()) n==0 and classof n.baseObject!=AminScatterObject
     )
+    -- Shared explicit source enrollment for model picking and the installed model
+    -- library. It adds no layers, receivers, distribution settings or publication.
+    fn addModelSource node tint:undefined = (
+        if not (this.usableSource node) or findItem sources node>0 do return false
+        if sources.count>=1024 do throw "Source registration is full (1,024 rows). Remove unused rows explicitly."
+        this.ensureSourceRows();this.syncColors()
+        local count=sources.count,value=if tint==undefined then this.sourceColor (count+1) else tint
+        for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceAutoRadius,false),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
+            local values=getProperty this spec[1]
+            while values.count<count do append values spec[2]
+            append values spec[2]
+            setProperty this spec[1] values
+        )
+        append sources node;append sourceRowIDs (CyrusNewLayerID());append sourceColors value
+        this.markInputDirty();true
+    )
     fn isPointSource i = (i>0 and i<=sourcePoint.count and sourcePoint[i])
     fn isEmptySource i = (i>0 and i<=sourceEmpty.count and sourceEmpty[i])
     fn sourceRow n = (if classof n==Integer then -n else findItem sources n)
@@ -4696,9 +4892,12 @@ initialRollupState:0x8
         markInputDirty();i
     )
     fn replacePointSource row node = (CyrusRequireAuthor();
-        if not (isPointSource row) or not (usableSource node) or (findItem sources node>0 and findItem sources node!=row) do return false
+        if row<1 or row>sources.count or (this.isEmptySource row and not this.isPointSource row) or not (usableSource node) or (findItem sources node>0 and findItem sources node!=row) do return false
+        if sources[row]==node and not this.isPointSource row do return true
         this.ensureSourceRows()
-        undo "Cyrus Scatter replace point" on (
+        undo "Cyrus Scatter replace source" on (
+            while sourcePoint.count<sources.count do append sourcePoint false
+            while sourceEmpty.count<sources.count do append sourceEmpty false
             sources[row]=node;sourcePoint[row]=false;sourceEmpty[row]=false
         )
         containerConfigKey="";containerUIChanged=true
@@ -5475,10 +5674,10 @@ initialRollupState:0x8
     fn uiLayerStats = (
         -- Display can stage an empty cache for a newly authored Manual layer.
         -- Only a committed calculation epoch establishes its first result.
-        CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
+        CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.6.1"
-    fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
+    fn uiVersion = "0.86.8"
+    fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
@@ -5735,6 +5934,90 @@ initialRollupState:0x8
         on densityMapProvenance preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityMapProvenance and not (cyrusLicenseAllows()) then densityMapProvenance else value)
     )
     local densityNotifiedFrame=undefined
+    -- Append only: the saved IDs of every preceding parameter block are stable.
+    parameters sourceClearanceSettings (
+        clearanceUpgradePending type:#boolean default:false
+        clearanceSourceIDs type:#stringTab tabSize:0 tabSizeVariable:true
+        clearanceCopies type:#intTab tabSize:0 tabSizeVariable:true
+        clearanceOthers type:#intTab tabSize:0 tabSizeVariable:true
+        clearanceExternal type:#intTab tabSize:0 tabSizeVariable:true
+        clearanceTargets type:#stringTab tabSize:0 tabSizeVariable:true
+        clearancePreferred type:#boolTab tabSize:0 tabSizeVariable:true
+        clearanceFactors type:#floatTab tabSize:0 tabSizeVariable:true
+        clearanceGapsWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        clearancePlanar type:#boolTab tabSize:0 tabSizeVariable:true
+        on clearanceSourceIDs set v i do markInputDirty()
+        on clearanceCopies set v i do markInputDirty()
+        on clearanceOthers set v i do markInputDirty()
+        on clearanceExternal set v i do markInputDirty()
+        on clearanceTargets set v i do markInputDirty()
+        on clearancePreferred set v i do markInputDirty()
+        on clearanceFactors set v i do markInputDirty()
+        on clearanceGapsWU set v i do markInputDirty()
+        on clearancePlanar set v i do markInputDirty()
+
+        on clearanceUpgradePending preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=clearanceUpgradePending and not (cyrusLicenseAllows()) then clearanceUpgradePending else value)
+    )
+    fn clearanceRow row = (
+        local index=if row>0 and row<=sourceRowIDs.count then findItem clearanceSourceIDs sourceRowIDs[row] else 0
+        if index==0 then #(0,0,0,"",false,1.0,0.0,false)
+        else #(clearanceCopies[index],clearanceOthers[index],clearanceExternal[index],clearanceTargets[index],clearancePreferred[index],clearanceFactors[index],clearanceGapsWU[index],clearancePlanar[index])
+    )
+    fn validateClearance = (
+        if clearanceSourceIDs.count>1024 do throw "Too many saved model clearance policies."
+        for key in #(#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) do
+            if (getProperty this key).count!=clearanceSourceIDs.count do throw "Model clearance settings are incomplete."
+        local seen=#()
+        for id in clearanceSourceIDs do (
+            if id=="" or findItem seen id>0 or findItem sourceRowIDs id==0 do throw "Model clearance has an invalid source identity."
+            append seen id
+        )
+        true
+    )
+    fn setSourceClearance rows field value = (
+        if findItem #(#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) field==0 do throw "Unknown model clearance field."
+        local selectedIDs=for row in rows where row>0 and row<=sourceRowIDs.count collect sourceRowIDs[row]
+        this.validateClearance()
+        undo "Cyrus model clearance" on (
+            for id in selectedIDs do (
+                local index=findItem clearanceSourceIDs id
+                if index==0 do (
+                    append clearanceSourceIDs id;append clearanceCopies 0;append clearanceOthers 0;append clearanceExternal 0
+                    append clearanceTargets "";append clearancePreferred false;append clearanceFactors 1.0;append clearanceGapsWU 0.0;append clearancePlanar false
+                    index=clearanceSourceIDs.count
+                )
+                (getProperty this field)[index]=value
+            )
+        )
+        this.markInputDirty();true
+    )
+    fn removeSourceClearance id = (
+        local index=findItem clearanceSourceIDs id
+        if index>0 do for key in #(#clearanceSourceIDs,#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) do deleteItem (getProperty this key) index
+    )
+    fn procClearanceSpecs plants = (
+        this.validateClearance()
+        if plants.count==0 do return #(#("unassigned:1","unassigned:1",0,0,0,#(),false,#(true,1.0,0.0,false)))
+        for plant in plants collect (
+            local row=this.sourceRow plant,policy=this.clearanceRow row
+            if row<1 or row>sourceRowIDs.count or row>procSourceSlots.count do throw "Clearance source correspondence is incomplete."
+            #(sourceRowIDs[row],procSourceSlots[row],policy[1],policy[2],policy[3],filterString policy[4] "|",policy[5],#(true,policy[6],policy[7],policy[8]))
+        )
+    )
+    fn needsClearanceUpgrade = (
+        if clearanceUpgradePending do return true
+        for leaf in layerObjects where leaf.clearanceUpgradePending do return true
+        false
+    )
+    fn upgradeClearanceScene = (
+        if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
+        for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
+        undo "Upgrade Cyrus scene to 0.86.8" on (
+            clearanceUpgradePending=false
+            for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
+        )
+        this.markInputDirty();this.bindNativeUI();true
+    )
     fn imageDensityChanged = (CyrusInvalidateMeshMaskPreview this;markInputDirty())
     fn densityFrameChanged = (
         if distributionMode!=3 or densityCoordinateMode!=2 do return false
@@ -5823,7 +6106,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -5965,11 +6248,15 @@ initialRollupState:0x8
     fn newLayer = (CyrusRequireAuthor();
         this.syncLayerIdentity()
         if layerObjects.count>=10 do throw "A scatter controller supports up to 10 layers."
+        -- Receivers belong to layers. The old controller-level slots no longer
+        -- follow assignment edits, so inherit the selected layer's current set.
+        local previous=this.selectedLayer()
+        local receivers=if previous==undefined then this.validSurfaces() else (this.logicalParent previous).validSurfaces()
         undo "Cyrus Scatter add layer" on (
             cyrusEditOwnerLayers (this.procModifiers()) (for leaf in layerObjects collect leaf.editLayerKey)
             local obj=createInstance AminScatterObject
             if theHold.Holding() do cyrusRecipeTrackCreated obj
-            obj.surfaceNodes=this.surfaceNodes as array;obj.surface=this.surface
+            obj.surfaceNodes=receivers as array;obj.surface=undefined
             obj.editLayerKey=nextEditLayerKey;nextEditLayerKey+=1
 
             obj.randomSeed=42+layerObjects.count*101
@@ -6104,6 +6391,7 @@ initialRollupState:0x8
     fn applyPaint rows = (this.procApplyPaint rows)
     fn paintBaseInputKey plants previewOnly receiverLocal:false = (
         local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
+        join post CyrusClearanceFields
         join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
@@ -6349,6 +6637,15 @@ initialRollupState:0x8
             for s=1 to copies.count do (
                 local leaf=copies[s]
                 leaf.procRadiusIDs=#();leaf.procRadiusModes=#();leaf.procRadiusValues=#();leaf.procRadiusDistances=#();leaf.procRadiusBinding=""
+                for index=1 to leaf.clearanceTargets.count do (
+                    local targets=filterString leaf.clearanceTargets[index] "|",packed=""
+                    for id in targets do (
+                        local targetID=id
+                        for j=1 to originals.count do if id==originals[j].layerID do targetID=copies[j].layerID
+                        packed+=targetID+"|"
+                    )
+                    leaf.clearanceTargets[index]=packed
+                )
             )
             local count=procRuleA.count
             for i=1 to count do (
@@ -6818,6 +7115,7 @@ initialRollupState:0x8
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
                 for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) where leaf.placementMode==1 or findItem #(#procPopulation,#procAttemptFactor,#procRounds,#procRepair) key==0 do format "%:%|" key (getProperty leaf key) to:stream
+                for key in CyrusClearanceFields do format "%:%|" key (getProperty leaf key) to:stream
             )
         )
         stream as string
@@ -6866,23 +7164,26 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.6.1 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.8 setup; earlier schemas are unsupported."
+        if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.6.1 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.6.1 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.6.1 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.6.1 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.8 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined do throw "Cyrus 0.86.8 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.8 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.8 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.8 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.8 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.6.1 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.8 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -6929,6 +7230,10 @@ initialRollupState:0x8
         local stream=stringStream ""
         with printAllElements on (
             format "Display:%:%|" (if epoch==undefined then procEpoch else epoch) identificationMode to:stream
+            if identificationMode==4 and leaf.viewportMode==3 do (
+                local slot=findItem procPublishedOwners leaf
+                if slot>0 do format "Materials:%|" (cyrusMaterialPreviewKey procPublishedSources[slot]) to:stream
+            )
             format "%:%:%|" leaf.layerID (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
             format "%:%|" leaf.strokeIDs leaf.strokeDisplayColors to:stream
             format "Field:%:%:%:%:%:%|" leaf.fieldFalloff leaf.fieldBoundaries leaf.fieldCombined leaf.fieldSamples (leaf.fieldSelectedID()) (if leaf.fieldPreviewEnabled() then leaf.procFieldInputKey() else "") to:stream
@@ -7027,6 +7332,7 @@ initialRollupState:0x8
             local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i] sampleSeed:metadata[6]))
             cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette previewBudget else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) (if viewportMode==2 then viewportPreparationLimit viewportInstances viewportNavigationInstances else 0) 0
         )
+        if controller.identificationMode==4 and viewportMode==3 and data.count>0 do cache=cyrusTexturePreview cache plants
         local field=this.procStageField metadata[5],inspection=inspectionCache
         local inspectionKey=this.procInspectionKey plants field[2] (if displayEpoch==undefined then controller.procEpoch else displayEpoch)
         local reuseInspection=procPreviewInspectionKey==inspectionKey
@@ -7206,7 +7512,7 @@ initialRollupState:0x8
                     )
                     local geometry=leaf.procRadiusGeometry plants rows:rows enabled:(cyrusEnabled and this.enabledLayer i)
                     publishedMetadata[i]=leaf.procPreviewMetadata plants geometry:geometry
-                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()))
+                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()),(leaf.procClearanceSpecs plants))
                     append indices i
                 )
                 append layers #(parent.layerID,(parent.placementMode==1 and parent.procPopulation==2),(parent.placementMode==1 and parent.procRepair),(if parent.placementMode==1 then parent.procRounds else 1),#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)
@@ -7370,7 +7676,7 @@ initialRollupState:0x8
         )
     )
     fn bindNativeUI = (
-        if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
+        if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).requestBind()
         true
     )
     local managerUI=undefined
@@ -7389,10 +7695,10 @@ initialRollupState:0x8
     rollout managerUI "" width:#cmdPanel category:10 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         local syncingColorLists=false
         dotNetControl flow_layersUI_layerList_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
-        local flow_layersUI_layerList_colored_configured=false,flow_layersUI_layerList_colored_colors=#(),flow_layersUI_layerList_colored_scale=1.0
+        local flow_layersUI_layerList_colored_configured=false,flow_layersUI_layerList_colored_colors=#(),flow_layersUI_layerList_colored_scale=1.0,flow_layersUI_layerList_colored_layoutVisible=false
         local flow_layersUI_layerList_colored_tip=undefined,flow_layersUI_layerList_colored_tipRow=-1
         listbox flow_layersUI_layerList "" pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/58))))) height:6
         label flow_layersUI_layerList_caption "Layer | placed | status" pos:[6,6] width:(managerUI.width-12) height:18
@@ -7418,11 +7724,13 @@ initialRollupState:0x8
         local flow_layersUI_root=undefined,flow_layersUI_controlsReady=false,flow_layersUI_binding=false,flow_layersUI_members=#()
         fn flow_layersUI_currentLayer = (local leaf=flow_layersUI_root.selectedLayer();if leaf==undefined then undefined else flow_layersUI_root.logicalParent leaf)
         on flow_layersUI_recipesButton pressed do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_recipesButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_recipesButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (try(CyrusOpenRecipeLibrary flow_layersUI_root)catch(messageBox (getCurrentException()) title:"Cyrus recipes")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn flow_layersUI_refreshStats = (
             if not flow_layersUI_controlsReady do return false
@@ -7452,28 +7760,35 @@ initialRollupState:0x8
             flow_layersUI_controlsReady=true;flow_layersUI_binding=false;flow_layersUI_refreshStats()
         )
         on flow_layersUI_layerColor changed value do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_layerColor"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_layerColor"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (if not flow_layersUI_binding do (local controller=flow_layersUI_root,layer=flow_layersUI_currentLayer();undo "Cyrus layer identification color" on layer.layerIDColor=value;controller.refreshIdentification())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_layerList selected i do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (
-            local action=CyrusBeginAction root "flow_layersUI_layerList"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_layerList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:false
             try (if not flow_layersUI_binding and i>0 do ((CyrusContainerPanel flow_layersUI_root).selectLayerView flow_layersUI_members[i];flow_layersUI_bind undefined)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_layerList doubleClicked i do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (
-            local action=CyrusBeginAction root "flow_layersUI_layerList"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_layerList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:false
             try (if not flow_layersUI_binding and i>0 do (CyrusContainerPanel flow_layersUI_root).selectLayerView flow_layersUI_members[i]
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_addButton pressed do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_addButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_addButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try ((
             -- Max can close/recreate this rollout during the refresh. The
             -- command owns its controller reference until the action ends.
@@ -7485,72 +7800,87 @@ initialRollupState:0x8
             if targetPanel.controlsReady and targetPanel.root==controller do targetPanel.selectLayerView added
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_copyButton pressed do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_copyButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_copyButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (try(
             local controller=flow_layersUI_root,policy=if flow_layersUI_copyVariation.selection==2 then #new else #same,parent=controller.copyLogicalLayer (flow_layersUI_currentLayer()) variation:policy
             local targetPanel=CyrusContainerPanel controller
             if targetPanel.controlsReady and targetPanel.root==controller do targetPanel.selectLayerView parent
         )catch(messageBox (getCurrentException()) title:"Cyrus layer")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_removeButton pressed do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_removeButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_removeButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (try(flow_layersUI_root.removeLogicalLayer (flow_layersUI_currentLayer()))catch(messageBox (getCurrentException()) title:"Cyrus layer")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_nameEdit entered value do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_nameEdit"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_nameEdit"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (if not flow_layersUI_binding and value!="" do (
             undo "Cyrus layer name" on flow_layersUI_root.layerNames[findItem flow_layersUI_root.layerObjects (flow_layersUI_currentLayer())]=value
             (CyrusContainerPanel flow_layersUI_root).refreshTitles();flow_layersUI_refreshStats()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_visibleCheck changed value do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_visibleCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_visibleCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (if not flow_layersUI_binding do (
             undo "Cyrus layer visibility" on flow_layersUI_root.layerVisible[findItem flow_layersUI_root.layerObjects (flow_layersUI_currentLayer())]=value
             flow_layersUI_root.procSyncEditVisibility();CyrusViewportRedraw();(CyrusContainerPanel flow_layersUI_root).refreshStats()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_enabledCheck changed value do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_enabledCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_enabledCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (if not flow_layersUI_binding do (
             undo "Cyrus layer enabled" on flow_layersUI_root.layerEnabled[findItem flow_layersUI_root.layerObjects (flow_layersUI_currentLayer())]=value
             flow_layersUI_root.invalidateGroups();(CyrusContainerPanel flow_layersUI_root).refreshStats()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_upButton pressed do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_upButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_upButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (try(flow_layersUI_root.procMove (flow_layersUI_currentLayer()) -1)catch(messageBox (getCurrentException()) title:"Cyrus order")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_downButton pressed do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_downButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_downButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (try(flow_layersUI_root.procMove (flow_layersUI_currentLayer()) 1)catch(messageBox (getCurrentException()) title:"Cyrus order")
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -7580,11 +7910,13 @@ initialRollupState:0x8
             height
         )
         on flow_layersUI_layerList_colored DoubleClick view args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_layersUI_layerList_colored"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_layersUI_layerList_colored"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:true
             try (if controlsReady and not binding and root!=undefined do (if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1])
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_layersUI_layerList_colored MouseMove view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
             local row=view.IndexFromPoint args.Location
@@ -7622,12 +7954,15 @@ initialRollupState:0x8
             textRenderer.DrawText args.Graphics suffix view.Font (dotNetObject "System.Drawing.Rectangle" (start+nameWidth) rectangle.Y suffixWidth rectangle.Height) args.ForeColor plain
             args.DrawFocusRectangle()
         )
-        fn syncColorLists = (
+        fn syncColorLists layoutChanged:false = (
             if syncingColorLists do return false
             local measurement=CyrusMeasureBegin 15,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             syncingColorLists=true
             try (
-                setHostedVisible flow_layersUI_layerList_colored flow_layersUI_layerList.visible;flow_layersUI_layerList_colored.enabled=flow_layersUI_layerList.enabled
+                -- The native list is always hidden after synchronization. Only
+                -- a completed geometry layout supplies new visibility intent.
+                if layoutChanged do flow_layersUI_layerList_colored_layoutVisible=flow_layersUI_layerList.visible
+                setHostedVisible flow_layersUI_layerList_colored flow_layersUI_layerList_colored_layoutVisible;flow_layersUI_layerList_colored.enabled=flow_layersUI_layerList.enabled
                 if flow_layersUI_layerList_colored.pos!=flow_layersUI_layerList.pos do flow_layersUI_layerList_colored.pos=flow_layersUI_layerList.pos
                 if flow_layersUI_layerList_colored.width!=flow_layersUI_layerList.width do flow_layersUI_layerList_colored.width=flow_layersUI_layerList.width
                 if flow_layersUI_layerList_colored.height!=flow_layersUI_layerList.height do flow_layersUI_layerList_colored.height=flow_layersUI_layerList.height
@@ -7759,12 +8094,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,flow_layersUI_addButton.text,flow_layersUI_copyButton.text,flow_layersUI_removeButton.text,flow_layersUI_nameLabel.text,flow_layersUI_visibleCheck.text,flow_layersUI_enabledCheck.text,flow_layersUI_upButton.text,flow_layersUI_downButton.text,flow_layersUI_recipesButton.text,flow_layersUI_countInfo.text,flow_layersUI_layerList_caption.text,flow_layersUI_copyVariation_caption.text,flow_layersUI_layerList.height,flow_layersUI_addButton.visible,flow_layersUI_copyButton.visible,flow_layersUI_removeButton.visible,flow_layersUI_layerColor.visible,flow_layersUI_nameLabel.visible,flow_layersUI_nameEdit.visible,flow_layersUI_visibleCheck.visible,flow_layersUI_enabledCheck.visible,flow_layersUI_upButton.visible,flow_layersUI_downButton.visible,flow_layersUI_copyVariation.visible,flow_layersUI_recipesButton.visible,flow_layersUI_countInfo.visible,flow_layersUI_nameLabel.height,flow_layersUI_countInfo.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos managerUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (syncColorLists();return true)
             rowControls=#(heading_0);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -7868,7 +8206,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutWidth=widthValue;managerUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists();true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;managerUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists layoutChanged:true;true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "managerUI.layout"
@@ -7898,11 +8236,13 @@ initialRollupState:0x8
         fn refreshStats = (if flow_layersUI_controlsReady do flow_layersUI_refreshStats();if controlsReady do layout();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit managerUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on managerUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos managerUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on managerUI open do (controlsReady=false)
@@ -7916,13 +8256,14 @@ initialRollupState:0x8
     rollout surfacesUI "" width:#cmdPanel category:20 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         multiListBox flow_surfaceUI_receiversList "" items:#() pos:[8,8] width:((surfacesUI.width-16-((amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))) height:6
         label flow_surfaceUI_receiversList_caption "Surfaces" pos:[6,6] width:(surfacesUI.width-12) height:18
         button flow_surfaceUI_removeSurfaces "×" pos:[8,8] width:((surfacesUI.width-16-((amin 3 (amax 1 (floor ((surfacesUI.width-8)/23.2))))-1)*4)/(amin 3 (amax 1 (floor ((surfacesUI.width-8)/23.2))))) tooltip:"Remove highlighted assignments from this setup. Scene objects are kept." height:22
         pickbutton flow_surfaceUI_sharedPick "+" filter:AminScatterSourceFilter pos:[8,8] width:((surfacesUI.width-16-((amin 3 (amax 1 (floor ((surfacesUI.width-8)/23.2))))-1)*4)/(amin 3 (amax 1 (floor ((surfacesUI.width-8)/23.2))))) tooltip:"Add a receiving surface without replacing existing assignments." height:22
         label flow_surfaceUI_sharedInfo "Choose a receiving surface." pos:[8,8] width:((surfacesUI.width-16-((amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))) height:32
         button flow_surfaceUI_surfacesButton "☷" pos:[8,8] width:((surfacesUI.width-16-((amin 3 (amax 1 (floor ((surfacesUI.width-8)/23.2))))-1)*4)/(amin 3 (amax 1 (floor ((surfacesUI.width-8)/23.2))))) tooltip:"Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting." height:22
+        button flow_surfaceUI_surfaceVisibility "Hide surface" pos:[8,8] width:((surfacesUI.width-16-((amin 1 (amax 1 (floor ((surfacesUI.width-8)/80.4))))-1)*4)/(amin 1 (amax 1 (floor ((surfacesUI.width-8)/80.4))))) tooltip:"Hide or show the selected receiving surfaces in viewports. Painting and render settings are kept. Shared surfaces change in every setup; Undo restores visibility." height:22
         label flow_surfaceUI_countInfo "Add a layer in Layer Manager." pos:[8,8] width:((surfacesUI.width-16-((amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))) height:42
         checkbutton flow_surfaceUI_containersToggle "Global source containers" pos:[8,8] width:((surfacesUI.width-16-((amin 1 (amax 1 (floor ((surfacesUI.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((surfacesUI.width-8)/142.8))))) height:22 tooltip:"Optional shared source pool. Enable Global containers in a layer's Assets tab."
         listbox flow_surfaceUI_globalContainers "" items:#() pos:[8,8] width:((surfacesUI.width-16-((amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))) height:4
@@ -7951,6 +8292,11 @@ initialRollupState:0x8
             CyrusRetainListItems flow_surfaceUI_receiversList (for node in flow_surfaceUI_receiverRows collect node.name)
             flow_surfaceUI_receiversList.selection=for node in selected where findItem flow_surfaceUI_receiverRows node>0 collect findItem flow_surfaceUI_receiverRows node
             flow_surfaceUI_removeSurfaces.enabled=flow_surfaceUI_receiversList.selection.numberSet>0
+            flow_surfaceUI_surfaceVisibility.enabled=targets.count>0
+            local chosen=for i in flow_surfaceUI_receiversList.selection where i<=flow_surfaceUI_receiverRows.count collect flow_surfaceUI_receiverRows[i]
+            if chosen.count==0 and targets.count==1 do chosen=targets
+            flow_surfaceUI_surfaceVisibility.enabled=chosen.count>0
+            flow_surfaceUI_surfaceVisibility.text=if chosen.count>0 and (for node in chosen where not cyrusSurfaceHidden node collect node).count==0 then "Show surface" else "Hide surface"
             flow_surfaceUI_sharedInfo.text=if targets.count==1 then targets[1].name else (targets.count as string)+" surfaces in this layer"
             CyrusRetainListItems flow_surfaceUI_globalContainers (for node in flow_surfaceUI_root.containerGlobalNodes collect (if isValidNode node then node.name else "<deleted rectangle>"))
             for control in #(flow_surfaceUI_globalContainers,flow_surfaceUI_createContainer,flow_surfaceUI_pickContainer,flow_surfaceUI_removeContainer) do control.enabled=true
@@ -7972,65 +8318,97 @@ initialRollupState:0x8
             flow_surfaceUI_setSurfaces remaining
         )
         on flow_surfaceUI_containersToggle changed value do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_surfaceUI_containersToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_containersToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
             try (flow_surfaceUI_arrangeContainers()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_surfaceUI_sharedPick picked node do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_surfaceUI_sharedPick"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_sharedPick"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
             try (flow_surfaceUI_addSurfaces #(node)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_surfaceUI_receiversList selectionEnd do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (
-            local action=CyrusBeginAction root "flow_surfaceUI_receiversList"
-            try (flow_surfaceUI_removeSurfaces.enabled=flow_surfaceUI_receiversList.selection.numberSet>0
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_receiversList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:false
+            try (flow_surfaceUI_bind undefined
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on flow_surfaceUI_surfaceVisibility pressed do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_surfaceVisibility"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
+            try (if flow_surfaceUI_controlsReady and not flow_surfaceUI_binding do (
+            local nodes=for i in flow_surfaceUI_receiversList.selection where i<=flow_surfaceUI_receiverRows.count collect flow_surfaceUI_receiverRows[i]
+            -- copy maps over scene nodes and clones them; retain only the target reference.
+            if nodes.count==0 and flow_surfaceUI_receiverRows.count==1 do nodes=#(flow_surfaceUI_receiverRows[1])
+            local hideValue=(for node in nodes where not cyrusSurfaceHidden node collect node).count>0
+            undo "Cyrus surface visibility" on for node in nodes where isValidNode node do cyrusSetSurfaceHidden node hideValue
+            flow_surfaceUI_bind undefined
+        )
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_surfaceUI_removeSurfaces pressed do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_surfaceUI_removeSurfaces"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_removeSurfaces"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
             try (flow_surfaceUI_removeSelectedSurfaces()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_surfaceUI_surfacesButton pressed do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_surfaceUI_surfacesButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_surfacesButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
             try ((
             local controller=flow_surfaceUI_root,nodes=selectByName title:"Add receiving surfaces" buttonText:"Add selected" filter:AminScatterSourceFilter single:false
             if flow_surfaceUI_controlsReady and flow_surfaceUI_root==controller and nodes!=undefined and nodes.count>0 do flow_surfaceUI_addSurfaces nodes
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_surfaceUI_createContainer pressed do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_surfaceUI_createContainer"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_createContainer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
             try (try(flow_surfaceUI_root.containerCreate globalPool:true;flow_surfaceUI_bind undefined)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_surfaceUI_pickContainer picked node do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_surfaceUI_pickContainer"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_pickContainer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
             try (try(flow_surfaceUI_root.containerAdd node globalPool:true;flow_surfaceUI_bind undefined)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_surfaceUI_removeContainer pressed do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "flow_surfaceUI_removeContainer"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_surfaceUI_removeContainer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:true
             try (try(flow_surfaceUI_root.containerRemove flow_surfaceUI_globalContainers.selection globalPool:true;flow_surfaceUI_bind undefined)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -8159,12 +8537,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,flow_surfaceUI_removeSurfaces.text,flow_surfaceUI_sharedPick.text,flow_surfaceUI_sharedInfo.text,flow_surfaceUI_surfacesButton.text,flow_surfaceUI_surfaceVisibility.text,flow_surfaceUI_countInfo.text,flow_surfaceUI_containersToggle.text,flow_surfaceUI_createContainer.text,flow_surfaceUI_pickContainer.text,flow_surfaceUI_removeContainer.text,flow_surfaceUI_containerInfo.text,flow_surfaceUI_receiversList_caption.text,flow_surfaceUI_globalContainers_caption.text,flow_surfaceUI_receiversList.height,flow_surfaceUI_globalContainers.height,flow_surfaceUI_removeSurfaces.visible,flow_surfaceUI_sharedPick.visible,flow_surfaceUI_sharedInfo.visible,flow_surfaceUI_surfacesButton.visible,flow_surfaceUI_surfaceVisibility.visible,flow_surfaceUI_countInfo.visible,flow_surfaceUI_containersToggle.visible,flow_surfaceUI_createContainer.visible,flow_surfaceUI_pickContainer.visible,flow_surfaceUI_removeContainer.visible,flow_surfaceUI_containerInfo.visible,flow_surfaceUI_sharedInfo.height,flow_surfaceUI_countInfo.height,flow_surfaceUI_containerInfo.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos surfacesUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             flow_surfaceUI_containersToggle.visible=false;flow_surfaceUI_containerInfo.visible=false
             rowControls=#(flow_surfaceUI_receiversList);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -8194,6 +8575,15 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/23.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(flow_surfaceUI_surfaceVisibility);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/80.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -8267,7 +8657,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;surfacesUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;surfacesUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "surfacesUI.layout"
@@ -8297,11 +8687,13 @@ initialRollupState:0x8
         fn refreshStats = (if flow_surfaceUI_controlsReady do flow_surfaceUI_refreshStats();if controlsReady do layout();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit surfacesUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on surfacesUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos surfacesUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on surfacesUI open do (controlsReady=false)
@@ -8315,10 +8707,10 @@ initialRollupState:0x8
     rollout modelsUI "" width:#cmdPanel category:30 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         local syncingColorLists=false
         dotNetControl sourceUI_plantList_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
-        local sourceUI_plantList_colored_configured=false,sourceUI_plantList_colored_colors=#(),sourceUI_plantList_colored_scale=1.0
+        local sourceUI_plantList_colored_configured=false,sourceUI_plantList_colored_colors=#(),sourceUI_plantList_colored_scale=1.0,sourceUI_plantList_colored_layoutVisible=false
         local sourceUI_plantList_colored_tip=undefined,sourceUI_plantList_colored_tipRow=-1
         label sourceUI_sourceNameLabel "Name:" width:80
         edittext sourceUI_sourceName "" text:"" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/88))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/88))))) tooltip:"Full model label inside Scatter. Clear it to use the scene object's name. Long list names are shortened for display only."
@@ -8326,14 +8718,13 @@ initialRollupState:0x8
         multiListBox sourceUI_plantList "" items:#() pos:[8,8] height:6 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         label sourceUI_plantList_caption "Sources (Ctrl/Shift)" pos:[6,6] width:(modelsUI.width-12) height:18
         button sourceUI_selectFromScene "☷" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Choose one or more source models by name." height:22
-        pickbutton sourceUI_addPlant "Add Model" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))) tooltip:"Pick a scene model for this layer." height:22
-        button sourceUI_addSelected "⊕" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Add the currently selected scene objects to this layer." height:22
+        pickbutton sourceUI_addPlant "+" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Pick a scene model for this layer." height:22
         button sourceUI_removePlant "×" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead." height:22
         button sourceUI_selectPlant "⌖" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Select the highlighted source models in the scene." height:22
-        button sourceUI_addPoint "Add Point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model." height:22
+        button sourceUI_addPoint "Add Point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model." height:22
         button sourceUI_addEmpty "Add Empty (gap)" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/96))))) tooltip:"Add a weighted empty source for intentional gaps in candidate-budget mode." height:22
-        pickbutton sourceUI_replacePoint "Pick object" filter:AminScatterSourceFilter pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Use a scene model for the selected Point; keep its identity, settings and Band assignments." height:22
-        button sourceUI_makePoint "Make point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object." height:22
+        pickbutton sourceUI_replacePoint "Pick object" filter:AminScatterSourceFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments." height:22
+        button sourceUI_makePoint "Make point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))) tooltip:"Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object." height:22
         label sourceUI_groupHeading "Assignment group" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         dropdownlist sourceUI_existingGroups "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"Assign highlighted sources to an existing color group for clustering."
         label sourceUI_existingGroups_caption "Use group" pos:[6,6] width:(modelsUI.width-12) height:18
@@ -8344,12 +8735,12 @@ initialRollupState:0x8
         spinner sourceUI_weightSpin "" range:[0,1,1] scale:0.01 pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/118.4))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/118.4))))) fieldWidth:58 tooltip:"Relative model frequency in this layer. Zero disables the model."
         label sourceUI_weightSpin_caption "Weight:" pos:[6,6] width:(modelsUI.width-12) height:18
         label sourceUI_weightHelp "0 = off; relative share" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        spinner sourceUI_sourceZSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/134))))) fieldWidth:58 tooltip:"Offset instances of highlighted models along world Z."
+        spinner sourceUI_sourceZSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))) fieldWidth:58 tooltip:"Offset instances of highlighted models along world Z."
         label sourceUI_sourceZSpin_caption "Z Offset: " pos:[6,6] width:(modelsUI.width-12) height:18
         spinner sourceUI_sourceScaleSpin "" range:[0,10000,1] scale:0.01 pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/118.4))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/118.4))))) fieldWidth:58 tooltip:"Per-model scale multiplier. 1 keeps the model's original scale."
         label sourceUI_sourceScaleSpin_caption "Scale: " pos:[6,6] width:(modelsUI.width-12) height:18
         label sourceUI_sourceTransformHelp "Scale: 1 = original" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        spinner sourceUI_radiusSourceSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/134))))) fieldWidth:58 tooltip:"Collision footprint radius for highlighted source rows, in scene units."
+        spinner sourceUI_radiusSourceSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/118.4))))) fieldWidth:58 tooltip:"Collision footprint radius for highlighted source rows, in scene units."
         label sourceUI_radiusSourceSpin_caption "Radius:" pos:[6,6] width:(modelsUI.width-12) height:18
         dropdownlist sourceUI_radiusModeDrop "" items:#("Manual","Auto") pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"Auto bounds supported model geometry around its pivot after final instance scale and orientation. This is conservative spacing, not mesh collision or Band containment."
         label sourceUI_radiusModeDrop_caption "Radius mode" pos:[6,6] width:(modelsUI.width-12) height:18
@@ -8358,10 +8749,30 @@ initialRollupState:0x8
         checkbox sourceUI_showRadiusCheck "Show Radius" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/88.4))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/88.4))))) tooltip:"Show this source's radius in the viewport; does not change collision rules."
         dropdownlist sourceUI_forwardAxis "" items:#("+Y","-Y","+X","-X") pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"The model's local forward direction, used for orientation."
         label sourceUI_forwardAxis_caption "Forward axis:" pos:[6,6] width:(modelsUI.width-12) height:18
+        dropdownlist sourceUI_clearanceCopiesList "" items:#("Use layer defaults","Off","Keep apart") width:180 tooltip:"Clearance between instances of this source. Off removes this source's request; another model can still request clearance."
+        label sourceUI_clearanceCopiesList_caption "Own copies" pos:[6,6] width:(modelsUI.width-12) height:18
+        dropdownlist sourceUI_clearanceOthersList "" items:#("Use layer defaults","Off","Keep apart") width:180 tooltip:"Choose this independently of other layers. Keep apart uses this model's radius together with the other model's radius."
+        label sourceUI_clearanceOthersList_caption "Other models in this layer" pos:[6,6] width:(modelsUI.width-12) height:18
+        dropdownlist sourceUI_clearanceExternalList "" items:#("Use layer defaults","Off","Selected layers","All other layers") width:180 tooltip:"Request clearance from selected layers or all other layers in this Scatter setup. Other Scatter setups are unaffected."
+        label sourceUI_clearanceExternalList_caption "Other layers" pos:[6,6] width:(modelsUI.width-12) height:18
+        multiListBox sourceUI_clearanceLayerList "" items:#() width:180 height:4 tooltip:"Select target layers by their persistent identity. Renaming does not change the relationship. Removed targets remain inactive until restored by Undo."
+        label sourceUI_clearanceLayerList_caption "Target layers (Ctrl/Shift)" pos:[6,6] width:(modelsUI.width-12) height:18
+        dropdownlist sourceUI_clearancePriorityList "" items:#("Normal","Prefer this model") width:180 tooltip:"Prefer wins clearance conflicts against normal models. Protected edits win first. Count slots are admitted in stable candidate order, so preference does not take extra slots from distant models."
+        label sourceUI_clearancePriorityList_caption "Conflict priority" pos:[6,6] width:(modelsUI.width-12) height:18
+        label sourceUI_clearanceSummary "" width:180 height:42
+        spinner sourceUI_clearanceFactorSpin "" range:[0,1000,1] scale:0.01 width:180 tooltip:"For this model's explicit Keep apart requests: factor times the sum of both radii, plus Extra gap. Inherited rules keep their layer settings."
+        label sourceUI_clearanceFactorSpin_caption "Radius factor:" pos:[6,6] width:(modelsUI.width-12) height:18
+        spinner sourceUI_clearanceGapSpin "" type:#worldunits range:[0,1e9,0] width:180 tooltip:"Additional distance for this model's explicit clearance requests. Stored in scene units."
+        label sourceUI_clearanceGapSpin_caption "Extra gap:" pos:[6,6] width:(modelsUI.width-12) height:18
+        dropdownlist sourceUI_clearanceMetricList "" items:#("3D distance","XY distance") width:180 tooltip:"3D compares positions in space. XY compares the ground-plane projection, even across different heights."
+        label sourceUI_clearanceMetricList_caption "Measure distance" pos:[6,6] width:(modelsUI.width-12) height:18
         checkbutton sourceUI_detailsToggle "Point / Empty sources and color groups" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))) height:22 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
         label heading_0 "Source settings" pos:[6,6] width:(modelsUI.width-12) height:18
+        label heading_1 "Radius and clearance" pos:[6,6] width:(modelsUI.width-12) height:18
+        checkbutton clearanceToggle "Clearance distance" pos:[6,6] width:(modelsUI.width-12) height:22
         checkbutton groupsToggle "Assignment groups" pos:[6,6] width:(modelsUI.width-12) height:22
         dotNetControl sourceUI_plantList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        dotNetControl sourceUI_clearanceLayerList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(modelsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local sourceUI_bodyHeight=0
         local sourceUI_controlsReady=false
@@ -8373,6 +8784,132 @@ initialRollupState:0x8
         local sourceUI_groupPalette=#()
         local sourceUI_loadingColor=false
         local sourceUI_focusedRow=0
+        local sourceUI_clearanceLayerOwners=#()
+        fn sourceUI_bindClearanceChoice control choices value = (
+            if value==undefined do append choices "Mixed"
+            CyrusRetainListItems control choices
+            control.selection=if value==undefined then choices.count else value
+        )
+        fn sourceUI_bindClearance = (
+            local rows=sourceUI_plantList.selection as array,ready=rows.count>0
+            sourceUI_loadingColor=true
+            for control in #(sourceUI_clearanceCopiesList,sourceUI_clearanceOthersList,sourceUI_clearanceExternalList,sourceUI_clearancePriorityList,sourceUI_clearanceLayerList,sourceUI_clearanceFactorSpin,sourceUI_clearanceGapSpin,sourceUI_clearanceMetricList) do control.enabled=ready
+            sourceUI_clearanceLayerOwners=#()
+            local captions=#()
+            for candidate in sourceUI_root.logicalLayers() do if candidate!=sourceUI_obj do (append sourceUI_clearanceLayerOwners candidate;append captions (sourceUI_root.layerCaption candidate))
+            CyrusRetainListItems sourceUI_clearanceLayerList captions
+            if ready then (
+                local first=sourceUI_obj.clearanceRow rows[1],mixed=false,values=#()
+                for item in first do append values item
+                for row in rows do (
+                    local next=sourceUI_obj.clearanceRow row
+                    for i=1 to values.count do if next[i]!=first[i] do (values[i]=undefined;mixed=true)
+                )
+                sourceUI_bindClearanceChoice sourceUI_clearanceCopiesList #("Use layer defaults","Off","Keep apart") (if values[1]==undefined then undefined else values[1]+1)
+                sourceUI_bindClearanceChoice sourceUI_clearanceOthersList #("Use layer defaults","Off","Keep apart") (if values[2]==undefined then undefined else values[2]+1)
+                sourceUI_bindClearanceChoice sourceUI_clearanceExternalList #("Use layer defaults","Off","Selected layers","All other layers") (if values[3]==undefined then undefined else values[3]+1)
+                sourceUI_bindClearanceChoice sourceUI_clearancePriorityList #("Normal","Prefer this model") (if values[5]==undefined then undefined else if values[5] then 2 else 1)
+                sourceUI_bindClearanceChoice sourceUI_clearanceMetricList #("3D distance","XY distance") (if values[8]==undefined then undefined else if values[8] then 2 else 1)
+                sourceUI_clearanceFactorSpin.value=first[6];sourceUI_clearanceGapSpin.value=first[7]
+                sourceUI_clearanceFactorSpin.indeterminate=values[6]==undefined
+                sourceUI_clearanceGapSpin.indeterminate=values[7]==undefined
+                local selected=#(),missing=0
+                if values[4]!=undefined do for id in filterString values[4] "|" do (
+                    local found=false
+                    for i=1 to sourceUI_clearanceLayerOwners.count do if sourceUI_clearanceLayerOwners[i].layerID==id do (append selected i;found=true)
+                    if not found do missing+=1
+                )
+                sourceUI_clearanceLayerList.selection=selected as bitarray
+                sourceUI_clearanceSummary.text=if mixed then "Mixed settings. Each edit changes only that setting." else if missing>0 then ((missing as string)+" saved target(s) unavailable. Other relationships are retained.") else if first[1]==0 and first[2]==0 and first[3]==0 then "Uses layer spacing defaults." else "Model rules override only their selected scope."
+            ) else (
+                sourceUI_clearanceSummary.text="Select a model or Point to edit clearance."
+                sourceUI_clearanceCopiesList.selection=0;sourceUI_clearanceOthersList.selection=0;sourceUI_clearanceExternalList.selection=0;sourceUI_clearancePriorityList.selection=0;sourceUI_clearanceMetricList.selection=0;sourceUI_clearanceLayerList.selection=#{}
+            )
+            sourceUI_loadingColor=false
+        )
+        fn sourceUI_editClearance field value = (
+            if not sourceUI_controlsReady or sourceUI_binding or sourceUI_loadingColor or sourceUI_obj==undefined do return false
+            local target=sourceUI_obj,controller=sourceUI_root,rows=sourceUI_plantList.selection
+            try(target.setSourceClearance rows field value;controller.bindNativeUI();CyrusViewportRedraw())
+            catch(messageBox (getCurrentException()) title:"Cyrus model clearance")
+            true
+        )
+        on sourceUI_clearanceCopiesList selected value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearanceCopiesList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if value>0 and value<=3 do sourceUI_editClearance #clearanceCopies (value-1)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_clearanceOthersList selected value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearanceOthersList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if value>0 and value<=3 do sourceUI_editClearance #clearanceOthers (value-1)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_clearanceExternalList selected value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearanceExternalList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if value>0 and value<=4 do sourceUI_editClearance #clearanceExternal (value-1)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_clearancePriorityList selected value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearancePriorityList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if value>0 and value<=2 do sourceUI_editClearance #clearancePreferred (value==2)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_clearanceMetricList selected value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearanceMetricList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if value>0 and value<=2 do sourceUI_editClearance #clearancePlanar (value==2)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_clearanceFactorSpin changed value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearanceFactorSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (sourceUI_editClearance #clearanceFactors value
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_clearanceGapSpin changed value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearanceGapSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (sourceUI_editClearance #clearanceGapsWU value
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_clearanceLayerList selectionEnd do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_clearanceLayerList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:false
+            try (if not sourceUI_loadingColor do (
+            local ids=""
+            for i in sourceUI_clearanceLayerList.selection where i<=sourceUI_clearanceLayerOwners.count do ids+=sourceUI_clearanceLayerOwners[i].layerID+"|"
+            sourceUI_editClearance #clearanceTargets ids
+        )
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         fn sourceUI_updateList = (
             local selectedRows=sourceUI_plantList.selection
             if selectedRows.numberSet==0 and sourceUI_obj.sources.count>0 do selectedRows=#{1}
@@ -8388,12 +8925,10 @@ initialRollupState:0x8
             CyrusRetainListItems sourceUI_existingGroups (for i=1 to sourceUI_groupPalette.count collect ("Group "+(i as string)))
         )
         fn sourceUI_addSource n = (
-            if sourceUI_obj.usableSource n and (findItem sourceUI_obj.sources n)==0 do (
-                sourceUI_obj.ensureSourceRows()
-                sourceUI_obj.syncColors();while sourceUI_obj.sourceEmpty.count<sourceUI_obj.sources.count do append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sources n;append sourceUI_obj.sourceRowIDs (CyrusNewLayerID());append sourceUI_obj.sourceColors sourceUI_groupColor.color;if sourceUI_obj.sourceWeights.count>0 do append sourceUI_obj.sourceWeights 1.0;if sourceUI_obj.sourceZOffsetsWU.count>0 do append sourceUI_obj.sourceZOffsetsWU 0.0;if sourceUI_obj.sourceScales.count>0 do append sourceUI_obj.sourceScales 1.0;sourceUI_obj.markInputDirty()
-            )
+            sourceUI_obj.addModelSource n tint:sourceUI_groupColor.color
         )
         fn sourceUI_showSelectedColor = (
+            sourceUI_bindClearance()
             local rows=sourceUI_plantList.selection
             sourceUI_weightSpin.enabled=rows.numberSet>0;sourceUI_sourceZSpin.enabled=rows.numberSet>0;sourceUI_sourceScaleSpin.enabled=rows.numberSet>0;sourceUI_forwardAxis.enabled=rows.numberSet>0
             if rows.numberSet>0 then (
@@ -8418,7 +8953,7 @@ initialRollupState:0x8
                 sourceUI_loadingColor=true;sourceUI_groupColor.color=sourceUI_obj.sourceColor 1;sourceUI_existingGroups.selection=0;sourceUI_focusedRow=0;sourceUI_loadingColor=false
             )
             sourceUI_radiusModeDrop.tooltip=sourceUI_radiusModeHelp.text
-            sourceUI_replacePoint.enabled=rows.numberSet==1 and sourceUI_obj.isPointSource sourceUI_focusedRow
+            sourceUI_replacePoint.enabled=rows.numberSet==1 and sourceUI_focusedRow>0 and (sourceUI_obj.isPointSource sourceUI_focusedRow or not sourceUI_obj.isEmptySource sourceUI_focusedRow)
             sourceUI_makePoint.enabled=rows.numberSet==1 and sourceUI_focusedRow>0 and not sourceUI_obj.isEmptySource sourceUI_focusedRow and sourceUI_obj.usableSource sourceUI_obj.sources[sourceUI_focusedRow]
         )
         fn sourceUI_addSources nodes = (
@@ -8433,139 +8968,172 @@ initialRollupState:0x8
             sourceUI_showSelectedColor();CyrusViewportRedraw()
         )
         on sourceUI_sourceName entered value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_sourceName"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_sourceName"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if not sourceUI_loadingColor and sourceUI_focusedRow>0 do (sourceUI_obj.setSourceLabel sourceUI_focusedRow value;sourceUI_updateList())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_idColor changed value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_idColor"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_idColor"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if not sourceUI_loadingColor do (sourceUI_obj.setSourceIDColor sourceUI_plantList.selection value;sourceUI_updateList())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_addPoint pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_addPoint"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_addPoint"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             local i=sourceUI_obj.addPointSource();sourceUI_updateList();sourceUI_plantList.selection=#{i};sourceUI_focusedRow=i;sourceUI_showSelectedColor();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_replacePoint picked n do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_replacePoint"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_replacePoint"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             local rows=sourceUI_plantList.selection as array
-            if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
-            else if not (sourceUI_obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this set's source list." title:"Cyrus Scatter"
+            if rows.count!=1 then messageBox "Select one Point or model row to replace." title:"Cyrus Scatter"
+            else if not (sourceUI_obj.replacePointSource rows[1] n) do messageBox "Select a Point or model row and an object that is not already in another source row." title:"Cyrus Scatter"
             sourceUI_replacePoint.text="Pick object";sourceUI_updateList();sourceUI_showSelectedColor();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_makePoint pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_makePoint"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_makePoint"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             local rows=sourceUI_plantList.selection as array
             if rows.count==1 and sourceUI_obj.makePointSource rows[1] do (sourceUI_updateList();sourceUI_showSelectedColor();CyrusViewportRedraw())
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_addEmpty pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_addEmpty"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_addEmpty"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             local i=sourceUI_obj.addEmptySource();sourceUI_updateList();sourceUI_plantList.selection=#{i};sourceUI_focusedRow=i;sourceUI_showSelectedColor();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_radiusSourceSpin changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_radiusSourceSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_radiusSourceSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_radiusModeDrop selected v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_radiusModeDrop"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_radiusModeDrop"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined and not sourceUI_loadingColor do (
             try(sourceUI_obj.setSourceRadius sourceUI_plantList.selection (v==2) kind:4)catch(messageBox (getCurrentException()) title:"Cyrus Scatter")
             sourceUI_showSelectedColor();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_followRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_followRadiusCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_followRadiusCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:2;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_showRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_showRadiusCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_showRadiusCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (
             local controller=if sourceUI_obj.overlapOwner==undefined then sourceUI_obj else sourceUI_obj.overlapOwner
             sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:3;controller.refreshDisplay()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_forwardAxis selected v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_forwardAxis"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_forwardAxis"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.assignSourceForward sourceUI_plantList.selection v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_sourceZSpin changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_sourceZSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_sourceZSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.assignSourceTransform sourceUI_plantList.selection v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_sourceScaleSpin changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_sourceScaleSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_sourceScaleSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.assignSourceTransform sourceUI_plantList.selection v scaling:true;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_weightSpin changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_weightSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_weightSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.assignWeight sourceUI_plantList.selection v;sourceUI_updateList();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_plantList selected i do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (
-            local action=CyrusBeginAction root "sourceUI_plantList"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_plantList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:false
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             if i>0 and sourceUI_plantList.selection[i] do sourceUI_focusedRow=i
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_plantList selectionEnd do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (
-            local action=CyrusBeginAction root "sourceUI_plantList"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_plantList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:false
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do sourceUI_showSelectedColor()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_existingGroups selected i do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_existingGroups"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_existingGroups"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             if i>0 and i<=sourceUI_groupPalette.count do (
                 local c=sourceUI_groupPalette[i]
@@ -8574,11 +9142,13 @@ initialRollupState:0x8
             )
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_groupColor changed c do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_groupColor"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_groupColor"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             if not sourceUI_loadingColor and sourceUI_plantList.selection.numberSet>0 do (
                 sourceUI_obj.assignGroup sourceUI_plantList.selection c
@@ -8586,51 +9156,53 @@ initialRollupState:0x8
             )
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_applyColor pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_applyColor"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_applyColor"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             sourceUI_obj.assignGroup sourceUI_plantList.selection sourceUI_groupColor.color
             sourceUI_updateList();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_selectFromScene pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_selectFromScene"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_selectFromScene"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
             sourceUI_addSources picked
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_addPlant picked n do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_addPlant"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_addPlant"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do sourceUI_addSources #(n)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
-        )
-        on sourceUI_addSelected pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_addSelected"
-            try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do sourceUI_addSources (selection as array)
-                if controlsReady and root!=undefined do layout()
-                CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_removePlant pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_removePlant"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_removePlant"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             sourceUI_obj.syncColors()
             sourceUI_obj.syncStrokes()
             local rows=sourceUI_plantList.selection as array
             undo "Cyrus Scatter remove sources" on (
                 for k=rows.count to 1 by -1 do (
+                    sourceUI_obj.removeSourceClearance sourceUI_obj.sourceRowIDs[rows[k]]
                     deleteItem sourceUI_obj.sourceRowIDs rows[k]
                     for key in #(#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
                     if rows[k]<=sourceUI_obj.sourcePoint.count do deleteItem sourceUI_obj.sourcePoint rows[k]
@@ -8645,38 +9217,43 @@ initialRollupState:0x8
             sourceUI_plantList.selection=#{};sourceUI_obj.markInputDirty();sourceUI_updateList();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceUI_selectPlant pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_selectPlant"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_selectPlant"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
             local nodes=for i in sourceUI_plantList.selection where i<=sourceUI_obj.sources.count and isValidNode sourceUI_obj.sources[i] collect sourceUI_obj.sources[i]
             if nodes.count>0 do select nodes
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn sourceUI_bindFeatures layer = (
             local next=layer
             sourceUI_binding=true;sourceUI_controlsReady=false
             if sourceUI_obj!=next do (sourceUI_plantList.selection=#{};)
             sourceUI_obj=next;sourceUI_parentView=(CyrusContainerPanel sourceUI_root)
-            for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
+            for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_clearanceCopiesList,sourceUI_clearanceOthersList,sourceUI_clearanceExternalList,sourceUI_clearanceLayerList,sourceUI_clearancePriorityList,sourceUI_clearanceSummary,sourceUI_clearanceFactorSpin,sourceUI_clearanceGapSpin,sourceUI_clearanceMetricList,sourceUI_detailsToggle) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((sourceUI_controlsReady=true;(sourceUI_updateList();sourceUI_showSelectedColor())))) catch(sourceUI_binding=false;sourceUI_controlsReady=true;throw())
             sourceUI_controlsReady=true;sourceUI_binding=false
         )
         fn sourceUI_arrangeDetails = true
         fn sourceUI_bind layer = (sourceUI_bindFeatures layer;sourceUI_arrangeDetails())
         on sourceUI_detailsToggle changed value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceUI_detailsToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_detailsToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (sourceUI_arrangeDetails()
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -8741,12 +9318,15 @@ initialRollupState:0x8
             textRenderer.DrawText args.Graphics suffix view.Font (dotNetObject "System.Drawing.Rectangle" (start+nameWidth) rectangle.Y suffixWidth rectangle.Height) args.ForeColor plain
             args.DrawFocusRectangle()
         )
-        fn syncColorLists = (
+        fn syncColorLists layoutChanged:false = (
             if syncingColorLists do return false
             local measurement=CyrusMeasureBegin 15,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             syncingColorLists=true
             try (
-                setHostedVisible sourceUI_plantList_colored sourceUI_plantList.visible;sourceUI_plantList_colored.enabled=sourceUI_plantList.enabled
+                -- The native list is always hidden after synchronization. Only
+                -- a completed geometry layout supplies new visibility intent.
+                if layoutChanged do sourceUI_plantList_colored_layoutVisible=sourceUI_plantList.visible
+                setHostedVisible sourceUI_plantList_colored sourceUI_plantList_colored_layoutVisible;sourceUI_plantList_colored.enabled=sourceUI_plantList.enabled
                 if sourceUI_plantList_colored.pos!=sourceUI_plantList.pos do sourceUI_plantList_colored.pos=sourceUI_plantList.pos
                 if sourceUI_plantList_colored.width!=sourceUI_plantList.width do sourceUI_plantList_colored.width=sourceUI_plantList.width
                 if sourceUI_plantList_colored.height!=sourceUI_plantList.height do sourceUI_plantList_colored.height=sourceUI_plantList.height
@@ -8784,11 +9364,11 @@ initialRollupState:0x8
             )catch(syncingColorLists=false;CyrusMeasureEnd measurement measuredOwner measuredEpoch "color_lists" failed:true;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
-        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,groupsToggle.checked),#(sourceUI_plantList.height))
+        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,clearanceToggle.checked,groupsToggle.checked),#(sourceUI_plantList.height,sourceUI_clearanceLayerList.height))
         fn restoreView state = (
             if state[2]==undefined do return true
-            advancedToggle.checked=state[2][1];groupsToggle.checked=state[2][2]
-            sourceUI_plantList.height=state[3][1]
+            advancedToggle.checked=state[2][1];clearanceToggle.checked=state[2][2];groupsToggle.checked=state[2][3]
+            sourceUI_plantList.height=state[3][1];sourceUI_clearanceLayerList.height=state[3][2]
             true
         )
         fn stopListDrag = (
@@ -8824,7 +9404,7 @@ initialRollupState:0x8
         )
         fn setupGrips = (
             if gripsReady do return true
-            for grip in #(sourceUI_plantList_grip) do (
+            for grip in #(sourceUI_plantList_grip,sourceUI_clearanceLayerList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
                 grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
                 grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
@@ -8837,6 +9417,11 @@ initialRollupState:0x8
         on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
+        on sourceUI_clearanceLayerList_grip MouseDown sender args do beginListDrag sender args sourceUI_clearanceLayerList
+        on sourceUI_clearanceLayerList_grip MouseMove sender args do moveListDrag sender args
+        on sourceUI_clearanceLayerList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on sourceUI_clearanceLayerList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on sourceUI_clearanceLayerList_grip Paint sender args do paintListGrip sender args
         fn fitRadio control available desiredColumns place:false = (
             local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
             if buttons.count==0 do return 20
@@ -8878,22 +9463,16 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,clearanceToggle.checked,groupsToggle.checked,(sourceUI_clearanceExternalList.selection==3),(clearanceToggle.checked),(groupsToggle.checked),sourceUI_sourceNameLabel.text,sourceUI_selectFromScene.text,sourceUI_addPlant.text,sourceUI_removePlant.text,sourceUI_selectPlant.text,sourceUI_addPoint.text,sourceUI_addEmpty.text,sourceUI_replacePoint.text,sourceUI_makePoint.text,sourceUI_groupHeading.text,sourceUI_applyColor.text,sourceUI_colorHelp.text,sourceUI_weightHelp.text,sourceUI_sourceTransformHelp.text,sourceUI_radiusModeHelp.text,sourceUI_followRadiusCheck.text,sourceUI_showRadiusCheck.text,sourceUI_clearanceSummary.text,sourceUI_detailsToggle.text,sourceUI_plantList_caption.text,sourceUI_existingGroups_caption.text,sourceUI_groupColor_caption.text,sourceUI_weightSpin_caption.text,sourceUI_sourceZSpin_caption.text,sourceUI_sourceScaleSpin_caption.text,sourceUI_radiusSourceSpin_caption.text,sourceUI_radiusModeDrop_caption.text,sourceUI_forwardAxis_caption.text,sourceUI_clearanceCopiesList_caption.text,sourceUI_clearanceOthersList_caption.text,sourceUI_clearanceExternalList_caption.text,sourceUI_clearanceLayerList_caption.text,sourceUI_clearancePriorityList_caption.text,sourceUI_clearanceFactorSpin_caption.text,sourceUI_clearanceGapSpin_caption.text,sourceUI_clearanceMetricList_caption.text,sourceUI_plantList.height,sourceUI_clearanceLayerList.height,sourceUI_sourceNameLabel.visible,sourceUI_sourceName.visible,sourceUI_idColor.visible,sourceUI_selectFromScene.visible,sourceUI_addPlant.visible,sourceUI_removePlant.visible,sourceUI_selectPlant.visible,sourceUI_addPoint.visible,sourceUI_addEmpty.visible,sourceUI_replacePoint.visible,sourceUI_makePoint.visible,sourceUI_groupHeading.visible,sourceUI_existingGroups.visible,sourceUI_groupColor.visible,sourceUI_applyColor.visible,sourceUI_colorHelp.visible,sourceUI_weightSpin.visible,sourceUI_weightHelp.visible,sourceUI_sourceZSpin.visible,sourceUI_sourceScaleSpin.visible,sourceUI_sourceTransformHelp.visible,sourceUI_radiusSourceSpin.visible,sourceUI_radiusModeDrop.visible,sourceUI_radiusModeHelp.visible,sourceUI_followRadiusCheck.visible,sourceUI_showRadiusCheck.visible,sourceUI_forwardAxis.visible,sourceUI_clearanceCopiesList.visible,sourceUI_clearanceOthersList.visible,sourceUI_clearanceExternalList.visible,sourceUI_clearancePriorityList.visible,sourceUI_clearanceSummary.visible,sourceUI_clearanceFactorSpin.visible,sourceUI_clearanceGapSpin.visible,sourceUI_clearanceMetricList.visible,sourceUI_detailsToggle.visible,sourceUI_sourceNameLabel.height,sourceUI_groupHeading.height,sourceUI_colorHelp.height,sourceUI_weightHelp.height,sourceUI_sourceTransformHelp.height,sourceUI_radiusModeHelp.height,sourceUI_clearanceSummary.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos modelsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (syncColorLists();return true)
             sourceUI_colorHelp.visible=false;sourceUI_weightHelp.visible=false;sourceUI_sourceTransformHelp.visible=false;sourceUI_radiusModeHelp.visible=false;sourceUI_detailsToggle.visible=false
-            rowControls=#(sourceUI_addPoint,sourceUI_addPlant);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/64.80000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(sourceUI_plantList);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_plantList_caption.visible!=show do sourceUI_plantList_caption.visible=show
@@ -8916,7 +9495,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_removePlant,sourceUI_selectFromScene,sourceUI_addSelected,sourceUI_selectPlant);show=(true and (true))
+            rowControls=#(sourceUI_addPlant,sourceUI_removePlant,sourceUI_selectFromScene,sourceUI_selectPlant);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/23.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -8944,10 +9523,19 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_replacePoint,sourceUI_makePoint);show=(true and (true))
+            rowControls=#(sourceUI_replacePoint);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_addPoint,sourceUI_makePoint);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -8976,37 +9564,16 @@ initialRollupState:0x8
                 if not stackedCaption then (sourceUI_weightSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_weightSpin_caption.width=cellWidth-78) else (sourceUI_weightSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_weightSpin_caption.width=cellWidth);sourceUI_weightSpin_caption.enabled=sourceUI_weightSpin.enabled;if not stackedCaption then (sourceUI_sourceScaleSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];sourceUI_sourceScaleSpin_caption.width=cellWidth-78) else (sourceUI_sourceScaleSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];sourceUI_sourceScaleSpin_caption.width=cellWidth);sourceUI_sourceScaleSpin_caption.enabled=sourceUI_sourceScaleSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_radiusModeDrop);show=(true and (true))
+            rowControls=#(sourceUI_sourceZSpin);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
-            if sourceUI_radiusModeDrop_caption.visible!=show do sourceUI_radiusModeDrop_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel sourceUI_radiusModeDrop_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(sourceUI_radiusModeDrop_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                sourceUI_radiusModeDrop_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_radiusModeDrop_caption.width=cellWidth;sourceUI_radiusModeDrop_caption.enabled=sourceUI_radiusModeDrop.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(sourceUI_radiusSourceSpin,sourceUI_sourceZSpin);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if sourceUI_radiusSourceSpin_caption.visible!=show do sourceUI_radiusSourceSpin_caption.visible=show;if sourceUI_sourceZSpin_caption.visible!=show do sourceUI_sourceZSpin_caption.visible=show
+            if sourceUI_sourceZSpin_caption.visible!=show do sourceUI_sourceZSpin_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel sourceUI_radiusSourceSpin_caption 18 cellWidth;fitLabel sourceUI_sourceZSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(sourceUI_radiusSourceSpin_caption.height,sourceUI_sourceZSpin_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
+                fitLabel sourceUI_sourceZSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(sourceUI_sourceZSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (sourceUI_radiusSourceSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_radiusSourceSpin_caption.width=cellWidth-78) else (sourceUI_radiusSourceSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_radiusSourceSpin_caption.width=cellWidth);sourceUI_radiusSourceSpin_caption.enabled=sourceUI_radiusSourceSpin.enabled;if not stackedCaption then (sourceUI_sourceZSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];sourceUI_sourceZSpin_caption.width=cellWidth-78) else (sourceUI_sourceZSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];sourceUI_sourceZSpin_caption.width=cellWidth);sourceUI_sourceZSpin_caption.enabled=sourceUI_sourceZSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(sourceUI_followRadiusCheck,sourceUI_showRadiusCheck);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(fitCheck sourceUI_followRadiusCheck cellWidth,fitCheck sourceUI_showRadiusCheck cellWidth))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (sourceUI_sourceZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_sourceZSpin_caption.width=cellWidth-78) else (sourceUI_sourceZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_sourceZSpin_caption.width=cellWidth);sourceUI_sourceZSpin_caption.enabled=sourceUI_sourceZSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(sourceUI_forwardAxis);show=(true and (true))
@@ -9019,6 +9586,175 @@ initialRollupState:0x8
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 sourceUI_forwardAxis_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_forwardAxis_caption.width=cellWidth;sourceUI_forwardAxis_caption.enabled=sourceUI_forwardAxis.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(heading_1);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_1 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_1.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_radiusModeDrop);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_radiusModeDrop_caption.visible!=show do sourceUI_radiusModeDrop_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_radiusModeDrop_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_radiusModeDrop_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_radiusModeDrop_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_radiusModeDrop_caption.width=cellWidth;sourceUI_radiusModeDrop_caption.enabled=sourceUI_radiusModeDrop.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_radiusSourceSpin);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_radiusSourceSpin_caption.visible!=show do sourceUI_radiusSourceSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/118.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_radiusSourceSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<114.4;captionHeight=amax 0 (if stackedCaption then (amax #(sourceUI_radiusSourceSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (sourceUI_radiusSourceSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_radiusSourceSpin_caption.width=cellWidth-78) else (sourceUI_radiusSourceSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_radiusSourceSpin_caption.width=cellWidth);sourceUI_radiusSourceSpin_caption.enabled=sourceUI_radiusSourceSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_followRadiusCheck,sourceUI_showRadiusCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck sourceUI_followRadiusCheck cellWidth,fitCheck sourceUI_showRadiusCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceSummary);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceSummary 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(sourceUI_clearanceSummary.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceCopiesList);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearanceCopiesList_caption.visible!=show do sourceUI_clearanceCopiesList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceCopiesList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_clearanceCopiesList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_clearanceCopiesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceCopiesList_caption.width=cellWidth;sourceUI_clearanceCopiesList_caption.enabled=sourceUI_clearanceCopiesList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceOthersList);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearanceOthersList_caption.visible!=show do sourceUI_clearanceOthersList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceOthersList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_clearanceOthersList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_clearanceOthersList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceOthersList_caption.width=cellWidth;sourceUI_clearanceOthersList_caption.enabled=sourceUI_clearanceOthersList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceExternalList);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearanceExternalList_caption.visible!=show do sourceUI_clearanceExternalList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceExternalList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_clearanceExternalList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_clearanceExternalList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceExternalList_caption.width=cellWidth;sourceUI_clearanceExternalList_caption.enabled=sourceUI_clearanceExternalList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceLayerList);show=(true and (sourceUI_clearanceExternalList.selection==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearanceLayerList_caption.visible!=show do sourceUI_clearanceLayerList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceLayerList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_clearanceLayerList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(sourceUI_clearanceLayerList.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_clearanceLayerList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceLayerList_caption.width=cellWidth;sourceUI_clearanceLayerList_caption.enabled=sourceUI_clearanceLayerList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceLayerList_grip);show=(true and (sourceUI_clearanceExternalList.selection==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            setHostedVisible sourceUI_clearanceLayerList_grip show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearancePriorityList);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearancePriorityList_caption.visible!=show do sourceUI_clearancePriorityList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearancePriorityList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_clearancePriorityList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_clearancePriorityList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearancePriorityList_caption.width=cellWidth;sourceUI_clearancePriorityList_caption.enabled=sourceUI_clearancePriorityList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(clearanceToggle);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceFactorSpin);show=(true and (clearanceToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearanceFactorSpin_caption.visible!=show do sourceUI_clearanceFactorSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/154.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceFactorSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<150.8;captionHeight=amax 0 (if stackedCaption then (amax #(sourceUI_clearanceFactorSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (sourceUI_clearanceFactorSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_clearanceFactorSpin_caption.width=cellWidth-78) else (sourceUI_clearanceFactorSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceFactorSpin_caption.width=cellWidth);sourceUI_clearanceFactorSpin_caption.enabled=sourceUI_clearanceFactorSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceGapSpin);show=(true and (clearanceToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearanceGapSpin_caption.visible!=show do sourceUI_clearanceGapSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceGapSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(sourceUI_clearanceGapSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (sourceUI_clearanceGapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_clearanceGapSpin_caption.width=cellWidth-78) else (sourceUI_clearanceGapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceGapSpin_caption.width=cellWidth);sourceUI_clearanceGapSpin_caption.enabled=sourceUI_clearanceGapSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_clearanceMetricList);show=(true and (clearanceToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if sourceUI_clearanceMetricList_caption.visible!=show do sourceUI_clearanceMetricList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_clearanceMetricList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_clearanceMetricList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_clearanceMetricList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceMetricList_caption.width=cellWidth;sourceUI_clearanceMetricList_caption.enabled=sourceUI_clearanceMetricList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(sourceUI_addEmpty);show=(true and (true))
@@ -9084,7 +9820,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutWidth=widthValue;modelsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists();true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;modelsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists layoutChanged:true;true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "modelsUI.layout"
@@ -9102,7 +9838,7 @@ initialRollupState:0x8
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
                 sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_clearanceCopiesList,sourceUI_clearanceOthersList,sourceUI_clearanceExternalList,sourceUI_clearanceLayerList,sourceUI_clearancePriorityList,sourceUI_clearanceSummary,sourceUI_clearanceFactorSpin,sourceUI_clearanceGapSpin,sourceUI_clearanceMetricList,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
                 sourceUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
 
@@ -9112,19 +9848,32 @@ initialRollupState:0x8
             )catch(CyrusMeasureEnd measurement measuredOwner measuredEpoch "modelsUI.bind" failed:true;throw())
         )
 
-        on groupsToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "groupsToggle"
+        on clearanceToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "clearanceToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on groupsToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "groupsToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on modelsUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos modelsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on modelsUI open do (controlsReady=false)
@@ -9138,7 +9887,7 @@ initialRollupState:0x8
     rollout containersUI "" width:#cmdPanel category:40 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         dropdownlist sourceContainersUI_modeList "" items:#() pos:[8,8] width:((containersUI.width-16-((amin 1 (amax 1 (floor ((containersUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((containersUI.width-8)/58))))) tooltip:"Use the model list directly, or optionally collect models from source rectangles."
         label sourceContainersUI_modeList_caption "Model collection" pos:[6,6] width:(containersUI.width-12) height:18
         listbox sourceContainersUI_containersList "" items:#() pos:[8,8] width:((containersUI.width-16-((amin 1 (amax 1 (floor ((containersUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((containersUI.width-8)/58))))) height:4
@@ -9181,52 +9930,64 @@ initialRollupState:0x8
             sourceContainersUI_controlsReady=true;sourceContainersUI_binding=false
         )
         on sourceContainersUI_containersList selected index do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (
-            local action=CyrusBeginAction root "sourceContainersUI_containersList"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceContainersUI_containersList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit containersUI refresh:false
             try (sourceContainersUI_refreshCollection()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceContainersUI_enabledCheck changed value do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceContainersUI_enabledCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceContainersUI_enabledCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit containersUI refresh:true
             try (if not sourceContainersUI_binding do (
             local node=sourceContainersUI_selectedContainer(),layer=sourceContainersUI_owner
             if node!=undefined do undo "Cyrus container collection" on node.collectEnabled=value
             sourceContainersUI_bind layer
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceContainersUI_modeList selected index do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceContainersUI_modeList"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceContainersUI_modeList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit containersUI refresh:true
             try (if not sourceContainersUI_binding do try((sourceContainersUI_currentSet()).containerSetMode sourceContainersUI_modes[index];sourceContainersUI_bind sourceContainersUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceContainersUI_createContainer pressed do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceContainersUI_createContainer"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceContainersUI_createContainer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit containersUI refresh:true
             try (try((sourceContainersUI_currentSet()).containerCreate();sourceContainersUI_bind sourceContainersUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceContainersUI_pickContainer picked node do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceContainersUI_pickContainer"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceContainersUI_pickContainer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit containersUI refresh:true
             try (try((sourceContainersUI_currentSet()).containerAdd node;sourceContainersUI_bind sourceContainersUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on sourceContainersUI_removeContainer pressed do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "sourceContainersUI_removeContainer"
+            local eventPanel=panel,action=CyrusBeginAction root "sourceContainersUI_removeContainer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit containersUI refresh:true
             try (try((sourceContainersUI_currentSet()).containerRemove sourceContainersUI_containersList.selection;sourceContainersUI_bind sourceContainersUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -9350,12 +10111,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(sourceContainersUI_modeList.selection>1),sourceContainersUI_enabledCheck.text,sourceContainersUI_createContainer.text,sourceContainersUI_pickContainer.text,sourceContainersUI_removeContainer.text,sourceContainersUI_membershipInfo.text,sourceContainersUI_helpInfo.text,sourceContainersUI_modeList_caption.text,sourceContainersUI_containersList_caption.text,sourceContainersUI_containersList.height,sourceContainersUI_modeList.visible,sourceContainersUI_enabledCheck.visible,sourceContainersUI_createContainer.visible,sourceContainersUI_pickContainer.visible,sourceContainersUI_removeContainer.visible,sourceContainersUI_membershipInfo.visible,sourceContainersUI_helpInfo.visible,sourceContainersUI_membershipInfo.height,sourceContainersUI_helpInfo.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos containersUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             sourceContainersUI_helpInfo.visible=false
             rowControls=#(sourceContainersUI_modeList);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -9421,7 +10185,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutWidth=widthValue;containersUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;containersUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "containersUI.layout"
@@ -9451,11 +10215,13 @@ initialRollupState:0x8
 
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit containersUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on containersUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos containersUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on containersUI open do (controlsReady=false)
@@ -9469,12 +10235,12 @@ initialRollupState:0x8
     rollout layoutUI "" width:#cmdPanel category:50 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         local syncingColorLists=false
         dotNetControl diversityUI_strokesList_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
-        local diversityUI_strokesList_colored_configured=false,diversityUI_strokesList_colored_colors=#(),diversityUI_strokesList_colored_scale=1.0
+        local diversityUI_strokesList_colored_configured=false,diversityUI_strokesList_colored_colors=#(),diversityUI_strokesList_colored_scale=1.0,diversityUI_strokesList_colored_layoutVisible=false
         dotNetControl diversityUI_strokeChoices_colored "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100
-        local diversityUI_strokeChoices_colored_configured=false,diversityUI_strokeChoices_colored_colors=#(),diversityUI_strokeChoices_colored_scale=1.0
+        local diversityUI_strokeChoices_colored_configured=false,diversityUI_strokeChoices_colored_colors=#(),diversityUI_strokeChoices_colored_scale=1.0,diversityUI_strokeChoices_colored_layoutVisible=false
         dropdownlist placementUI_generatorList "" items:#("Surface random","Rectangular","Staggered","Hexagonal") selection:1 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) tooltip:"Choose how planting positions are generated. Grids project downward onto the highest world-Z hit of each receiver; source assignment below remains independent."
         label placementUI_generatorList_caption "Planting positions" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner placementUI_columnSpin "" type:#worldunits range:[0.0001,1e9,100] fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/123.6))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/123.6))))) tooltip:"Column spacing in scene units. In Hexagonal mode this is the nearest-neighbor distance; row pitch is calculated automatically."
@@ -9612,53 +10378,67 @@ initialRollupState:0x8
             controller.bindNativeUI();CyrusViewportRedraw();true
         )
         on placementUI_generatorList selected value do if controlsReady and not binding and root!=undefined and placementUI_controlsReady and not placementUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "placementUI_generatorList"
+            local eventPanel=panel,action=CyrusBeginAction root "placementUI_generatorList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (placementUI_changePlacement #placementMode value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on placementUI_columnSpin changed value do if controlsReady and not binding and root!=undefined and placementUI_controlsReady and not placementUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "placementUI_columnSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "placementUI_columnSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (placementUI_changePlacement #gridColumnWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on placementUI_rowSpin changed value do if controlsReady and not binding and root!=undefined and placementUI_controlsReady and not placementUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "placementUI_rowSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "placementUI_rowSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (placementUI_changePlacement #gridRowWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on placementUI_originXSpin changed value do if controlsReady and not binding and root!=undefined and placementUI_controlsReady and not placementUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "placementUI_originXSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "placementUI_originXSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (placementUI_changePlacement #gridOriginXWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on placementUI_originYSpin changed value do if controlsReady and not binding and root!=undefined and placementUI_controlsReady and not placementUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "placementUI_originYSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "placementUI_originYSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (placementUI_changePlacement #gridOriginYWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on placementUI_headingSpin changed value do if controlsReady and not binding and root!=undefined and placementUI_controlsReady and not placementUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "placementUI_headingSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "placementUI_headingSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (placementUI_changePlacement #gridHeading value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on placementUI_jitterSpin changed value do if controlsReady and not binding and root!=undefined and placementUI_controlsReady and not placementUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "placementUI_jitterSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "placementUI_jitterSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (placementUI_changePlacement #gridJitter value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         local diversityUI_bodyHeight=0
         local diversityUI_controlsReady=false
@@ -9671,52 +10451,64 @@ initialRollupState:0x8
         local diversityUI_pathRows=#(),diversityUI_strokeRows=#(),diversityUI_choiceValues=#(),diversityUI_loadingStroke=false,diversityUI_selectedPathID=0,diversityUI_selectedBandID=0
         fn diversityUI_syncControls = (diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;)
         on diversityUI_faceOutCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_faceOutCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_faceOutCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut=v else diversityUI_obj.borderFaceOut=v
             diversityUI_cornerRadiusSpin.enabled=v;diversityUI_obj.markInputDirty();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_cornerRadiusSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_cornerRadiusSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_cornerRadiusSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius=v else diversityUI_obj.borderCornerRadius=v
             diversityUI_obj.markInputDirty();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_streetStartSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_streetStartSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_streetStartSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimStart=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_streetEndSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_streetEndSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_streetEndSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimEnd=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_centerStreetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_centerStreetSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_centerStreetSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_straightStreet changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_straightStreet"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_straightStreet"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.streetStraight=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn diversityUI_selectedPathSlot = (findItem diversityUI_obj.pathIDs diversityUI_selectedPathID)
         fn diversityUI_selectedPathNode = (local slot=diversityUI_selectedPathSlot();if slot>0 then diversityUI_obj.patternPaths[slot] else undefined)
@@ -9842,17 +10634,20 @@ initialRollupState:0x8
             )
         )
         on diversityUI_selectAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_selectAnalyzer"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_selectAnalyzer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             local guide=diversityUI_obj.analyzerNode
             if isValidNode guide do (select guide;max modify mode)
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_updateAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_updateAnalyzer"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_updateAnalyzer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             local savedOwner=diversityUI_obj,guide=diversityUI_obj.analyzerNode
             if isValidNode guide do try (
@@ -9862,8 +10657,9 @@ initialRollupState:0x8
             )catch(if diversityUI_controlsReady and diversityUI_obj==savedOwner do diversityUI_analyzerStatus.text="Analysis failed: "+getCurrentException())
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn diversityUI_updatePattern = (
             diversityUI_updateAnalyzerStatus()
@@ -9913,48 +10709,59 @@ initialRollupState:0x8
 
         )
         on diversityUI_pathsList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (
-            local action=CyrusBeginAction root "diversityUI_pathsList"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_pathsList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:false
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (diversityUI_selectedPathID=if i>0 and i<=diversityUI_pathRows.count then diversityUI_pathRows[i] else 0;diversityUI_selectedBandID=0;diversityUI_showPath();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_analyzerChannel selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_analyzerChannel"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_analyzerChannel"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_pickAnalyzer picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_pickAnalyzer"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_pickAnalyzer"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             if CyrusAnalyzerFilter n do (diversityUI_obj.analyzerNode=n;diversityUI_obj.markInputDirty();diversityUI_updatePattern();CyrusViewportRedraw())
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_strokesList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (
-            local action=CyrusBeginAction root "diversityUI_strokesList"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_strokesList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:false
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (diversityUI_selectedBandID=if i>0 and i<=diversityUI_strokeRows.count then diversityUI_obj.strokeIDs[diversityUI_strokeRows[i]] else 0;diversityUI_showStroke();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_pickPath picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_pickPath"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_pickPath"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined and diversityUI_obj.diversityMode==3 do (
             local savedOwner=diversityUI_obj,id=0
             if isValidNode n do undo "Cyrus add Path" on (id=savedOwner.addBandPath n)
             if diversityUI_controlsReady and diversityUI_obj==savedOwner do (diversityUI_selectedPathID=id;diversityUI_selectedBandID=0;diversityUI_updatePattern())
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_removePath pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_removePath"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_removePath"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             local savedOwner=diversityUI_obj,id=diversityUI_selectedPathID
             if savedOwner.diversityMode==4 then (
@@ -9968,35 +10775,41 @@ initialRollupState:0x8
             savedOwner.markInputDirty();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_addOutside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_addOutside"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_addOutside"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do (CyrusEndAction action;return false)
+            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do (if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;return false)
             local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_selectedPathNode()
             local types=#(1,3,4)
             local side=if diversityUI_obj.diversityMode==4 then types[diversityUI_analyzerChannel.selection] else 1
             local savedOwner=diversityUI_obj,row=0;undo "Cyrus add Band" on (row=savedOwner.addStroke path side:side);if diversityUI_controlsReady and diversityUI_obj==savedOwner do (diversityUI_selectedBandID=savedOwner.strokeIDs[row];diversityUI_updatePattern());CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_addInside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_addInside"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_addInside"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_selectedPathNode()
             local side=if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5 then 7 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4 then 6 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==3 then 5 else 2
             local savedOwner=diversityUI_obj,row=0;undo "Cyrus add Band" on (row=savedOwner.addStroke path side:side);if diversityUI_controlsReady and diversityUI_obj==savedOwner do (diversityUI_selectedBandID=savedOwner.strokeIDs[row];diversityUI_updatePattern());CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_removeStrokeButton"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_removeStrokeButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
             local savedOwner=diversityUI_obj,row=diversityUI_selectedStroke()
             if row>0 do undo "Cyrus remove Band" on (savedOwner.removeStroke row)
@@ -10004,18 +10817,22 @@ initialRollupState:0x8
             CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_cornerMode selected v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_cornerMode"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_cornerMode"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (local slot=diversityUI_selectedPathSlot();if slot>0 do undo "Cyrus Path corners" on (diversityUI_obj.pathJoins[slot]=v);CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_arrangementMode selected v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_arrangementMode"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_arrangementMode"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (
             local savedOwner=diversityUI_obj,approved=true
             if v==1 and savedOwner.bandArrangement==2 do (
@@ -10031,36 +10848,45 @@ initialRollupState:0x8
             CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandStart changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandStart"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandStart"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do (diversityUI_obj.strokeStarts[row]=v;diversityUI_showPath());CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandEnd changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandEnd"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandEnd"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do (diversityUI_obj.strokeEnds[row]=v;diversityUI_showPath());CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandStrength changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandStrength"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandStrength"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeStrengths[row]=v/100.0;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandCurveCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandCurveCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandCurveCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeCurveEnabled[row]=v;diversityUI_showStroke();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn diversityUI_setBandScaleProfile v = (
             if not diversityUI_controlsReady or diversityUI_binding or diversityUI_loadingStroke or diversityUI_obj==undefined do return false
@@ -10071,60 +10897,76 @@ initialRollupState:0x8
             diversityUI_showStroke();CyrusViewportRedraw();true
         )
         on diversityUI_bandScaleMode selected v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandScaleMode"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandScaleMode"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (diversityUI_setBandScaleProfile v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandScaleEdit pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandScaleEdit"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandScaleEdit"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined and diversityUI_selectedStroke()>0 and diversityUI_obj.strokeScaleModes[diversityUI_selectedStroke()]==3 do CyrusOpenFalloffGraph diversityUI_obj undefined false bandID:diversityUI_selectedBandID
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandCurveEdit pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandCurveEdit"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandCurveEdit"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined and diversityUI_selectedStroke()>0 do CyrusOpenFalloffGraph diversityUI_obj undefined true bandID:diversityUI_selectedBandID
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandColor changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandColor"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandColor"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeDisplayColors[row]=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_fieldFalloffCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_fieldFalloffCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_fieldFalloffCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do diversityUI_changeFieldDisplay #fieldFalloff v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_fieldBoundaryCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_fieldBoundaryCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_fieldBoundaryCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do diversityUI_changeFieldDisplay #fieldBoundaries v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_fieldView selected v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_fieldView"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_fieldView"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do diversityUI_changeFieldDisplay #fieldCombined (v==2)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_fieldSampleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_fieldSampleSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_fieldSampleSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and not diversityUI_loadingStroke and diversityUI_obj!=undefined do diversityUI_changeFieldDisplay #fieldSamples v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn diversityUI_moveSelectedBand direction = (
             local row=diversityUI_selectedStroke(),rank=findItem diversityUI_strokeRows row,savedOwner=diversityUI_obj
@@ -10134,95 +10976,121 @@ initialRollupState:0x8
             CyrusViewportRedraw();true
         )
         on diversityUI_bandUp pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandUp"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandUp"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_moveSelectedBand -1
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_bandDown pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_bandDown"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_bandDown"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_moveSelectedBand 1
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_edgeOffsetSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_edgeOffsetSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsetsWU[row]=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_edgeAlongSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_edgeAlongSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlongWU[row]=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_edgeAcrossSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_edgeAcrossSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcrossWU[row]=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_keepCornerCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_keepCornerCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_cornerAngleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_cornerAngleSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_cornerAngleSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerAngle=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_cornerCountSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_cornerCountSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_cornerCountSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerCount=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_edgeRotXSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_edgeRotXSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_edgeRotXSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotX[row]=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_edgeRotYSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_edgeRotYSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_edgeRotYSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotY[row]=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_edgeRotZSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_edgeRotZSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_edgeRotZSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotZ[row]=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_strokeWidth changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_strokeWidth"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_strokeWidth"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.patternWidths[row]=v;diversityUI_obj.markInputDirty();diversityUI_showPath();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_strokeMode"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_strokeMode"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn diversityUI_setBandChoices indices = (
             if not diversityUI_controlsReady or diversityUI_binding or diversityUI_loadingStroke or diversityUI_obj==undefined do return false
@@ -10234,76 +11102,96 @@ initialRollupState:0x8
             CyrusViewportRedraw();true
         )
         on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (
-            local action=CyrusBeginAction root "diversityUI_strokeChoices"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_strokeChoices"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:false
             try (diversityUI_setBandChoices diversityUI_strokeChoices.selection
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_strokeScaleMin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_strokeScaleMin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_strokeScaleMax changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_strokeScaleMax"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_strokeScaleMax"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMax[row]=v;if v<diversityUI_obj.strokeMin[row] do diversityUI_obj.strokeMin[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_refreshGroups pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_refreshGroups"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_refreshGroups"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
         -- The composed page owns mode visibility and lays out once after this
         -- event. Do not show/hide obsolete component rows or reflow other pages.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_diversityRadio changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_diversityRadio"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_diversityRadio"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityMode=v;diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_sizeSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_sizeSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_sizeSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySize=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_divSeedSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_divSeedSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_divSeedSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySeed=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_roughSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_roughSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_roughSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.roughness=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_blurSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_blurSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_blurSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.blurryEdge=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diversityUI_noiseSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "diversityUI_noiseSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "diversityUI_noiseSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:true
             try (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityNoise=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn diversityUI_bind layer = (
             local next=layer
@@ -10390,12 +11278,15 @@ initialRollupState:0x8
             (dotNetClass "System.Windows.Forms.TextRenderer").DrawText args.Graphics (view.Items.Item[args.Index] as string) view.Font (dotNetObject "System.Drawing.Point" (rectangle.X+(ceil (17*diversityUI_strokeChoices_colored_scale))) rectangle.Y) args.ForeColor
             args.DrawFocusRectangle()
         )
-        fn syncColorLists = (
+        fn syncColorLists layoutChanged:false = (
             if syncingColorLists do return false
             local measurement=CyrusMeasureBegin 15,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             syncingColorLists=true
             try (
-                setHostedVisible diversityUI_strokesList_colored diversityUI_strokesList.visible;diversityUI_strokesList_colored.enabled=diversityUI_strokesList.enabled
+                -- The native list is always hidden after synchronization. Only
+                -- a completed geometry layout supplies new visibility intent.
+                if layoutChanged do diversityUI_strokesList_colored_layoutVisible=diversityUI_strokesList.visible
+                setHostedVisible diversityUI_strokesList_colored diversityUI_strokesList_colored_layoutVisible;diversityUI_strokesList_colored.enabled=diversityUI_strokesList.enabled
                 if diversityUI_strokesList_colored.pos!=diversityUI_strokesList.pos do diversityUI_strokesList_colored.pos=diversityUI_strokesList.pos
                 if diversityUI_strokesList_colored.width!=diversityUI_strokesList.width do diversityUI_strokesList_colored.width=diversityUI_strokesList.width
                 if diversityUI_strokesList_colored.height!=diversityUI_strokesList.height do diversityUI_strokesList_colored.height=diversityUI_strokesList.height
@@ -10429,7 +11320,10 @@ initialRollupState:0x8
                     if (diversityUI_strokesList_colored.GetSelected i)!=selected do diversityUI_strokesList_colored.SetSelected i selected
                 )
                 if colorsChanged or itemsChanged do (diversityUI_strokesList_colored.Invalidate())
-                setHostedVisible diversityUI_strokeChoices_colored diversityUI_strokeChoices.visible;diversityUI_strokeChoices_colored.enabled=diversityUI_strokeChoices.enabled
+                -- The native list is always hidden after synchronization. Only
+                -- a completed geometry layout supplies new visibility intent.
+                if layoutChanged do diversityUI_strokeChoices_colored_layoutVisible=diversityUI_strokeChoices.visible
+                setHostedVisible diversityUI_strokeChoices_colored diversityUI_strokeChoices_colored_layoutVisible;diversityUI_strokeChoices_colored.enabled=diversityUI_strokeChoices.enabled
                 if diversityUI_strokeChoices_colored.pos!=diversityUI_strokeChoices.pos do diversityUI_strokeChoices_colored.pos=diversityUI_strokeChoices.pos
                 if diversityUI_strokeChoices_colored.width!=diversityUI_strokeChoices.width do diversityUI_strokeChoices_colored.width=diversityUI_strokeChoices.width
                 if diversityUI_strokeChoices_colored.height!=diversityUI_strokeChoices.height do diversityUI_strokeChoices_colored.height=diversityUI_strokeChoices.height
@@ -10571,12 +11465,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(placementUI_generatorList.selection>1),(placementUI_generatorList.selection==2 or placementUI_generatorList.selection==3),(diversityUI_diversityRadio.state==2),(diversityUI_diversityRadio.state==3),(diversityUI_diversityRadio.state>=3),(diversityUI_diversityRadio.state==4),(diversityUI_diversityRadio.state==4 or (diversityUI_diversityRadio.state==3 and diversityUI_arrangementMode.selection==1)),(diversityUI_diversityRadio.state==3 and diversityUI_arrangementMode.selection==2),(diversityUI_diversityRadio.state==4 and diversityUI_analyzerChannel.selection==4),(diversityUI_diversityRadio.state==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection>=4)),(diversityUI_diversityRadio.state==4 and diversityUI_analyzerChannel.selection==5),(diversityUI_diversityRadio.state==4 and diversityUI_analyzerChannel.selection==2),placementUI_gridInfo.text,diversityUI_diversityRadio.text,diversityUI_layoutHelp.text,diversityUI_analyzerStatus.text,diversityUI_selectAnalyzer.text,diversityUI_updateAnalyzer.text,diversityUI_groupHint.text,diversityUI_fixedHint.text,diversityUI_strokeTitle.text,diversityUI_pickAnalyzer.text,diversityUI_pickPath.text,diversityUI_removePath.text,diversityUI_addOutside.text,diversityUI_addInside.text,diversityUI_removeStrokeButton.text,diversityUI_bandCurveCheck.text,diversityUI_bandScaleEdit.text,diversityUI_bandCurveEdit.text,diversityUI_fieldFalloffCheck.text,diversityUI_fieldBoundaryCheck.text,diversityUI_fieldLegend.text,diversityUI_fieldInfo.text,diversityUI_bandUp.text,diversityUI_bandDown.text,diversityUI_bandAssignmentHelp.text,diversityUI_strokeMode.text,diversityUI_refreshGroups.text,diversityUI_strokeHelp.text,diversityUI_edgeRowHelp.text,diversityUI_keepCornerCheck.text,diversityUI_cornerHelp.text,diversityUI_streetLayoutHelp.text,diversityUI_faceOutCheck.text,diversityUI_straightStreet.text,placementUI_generatorList_caption.text,placementUI_columnSpin_caption.text,placementUI_rowSpin_caption.text,placementUI_originXSpin_caption.text,placementUI_originYSpin_caption.text,placementUI_headingSpin_caption.text,placementUI_jitterSpin_caption.text,diversityUI_diversityRadio_caption.text,diversityUI_sizeSpin_caption.text,diversityUI_divSeedSpin_caption.text,diversityUI_roughSpin_caption.text,diversityUI_blurSpin_caption.text,diversityUI_noiseSpin_caption.text,diversityUI_pathsList_caption.text,diversityUI_cornerMode_caption.text,diversityUI_arrangementMode_caption.text,diversityUI_analyzerChannel_caption.text,diversityUI_strokesList_caption.text,diversityUI_strokeWidth_caption.text,diversityUI_bandStart_caption.text,diversityUI_bandEnd_caption.text,diversityUI_bandStrength_caption.text,diversityUI_bandScaleMode_caption.text,diversityUI_bandColor_caption.text,diversityUI_fieldView_caption.text,diversityUI_fieldSampleSpin_caption.text,diversityUI_strokeMode_caption.text,diversityUI_strokeChoices_caption.text,diversityUI_strokeScaleMin_caption.text,diversityUI_strokeScaleMax_caption.text,diversityUI_edgeOffsetSpin_caption.text,diversityUI_edgeAlongSpin_caption.text,diversityUI_edgeAcrossSpin_caption.text,diversityUI_cornerAngleSpin_caption.text,diversityUI_cornerCountSpin_caption.text,diversityUI_edgeRotXSpin_caption.text,diversityUI_edgeRotYSpin_caption.text,diversityUI_edgeRotZSpin_caption.text,diversityUI_streetStartSpin_caption.text,diversityUI_streetEndSpin_caption.text,diversityUI_centerStreetSpin_caption.text,diversityUI_cornerRadiusSpin_caption.text,diversityUI_pathsList.height,diversityUI_strokesList.height,diversityUI_strokeChoices.height,placementUI_generatorList.visible,placementUI_columnSpin.visible,placementUI_rowSpin.visible,placementUI_originXSpin.visible,placementUI_originYSpin.visible,placementUI_headingSpin.visible,placementUI_jitterSpin.visible,placementUI_gridInfo.visible,diversityUI_diversityRadio.visible,diversityUI_layoutHelp.visible,diversityUI_analyzerStatus.visible,diversityUI_selectAnalyzer.visible,diversityUI_updateAnalyzer.visible,diversityUI_sizeSpin.visible,diversityUI_divSeedSpin.visible,diversityUI_roughSpin.visible,diversityUI_blurSpin.visible,diversityUI_noiseSpin.visible,diversityUI_groupHint.visible,diversityUI_fixedHint.visible,diversityUI_strokeTitle.visible,diversityUI_cornerMode.visible,diversityUI_arrangementMode.visible,diversityUI_analyzerChannel.visible,diversityUI_pickAnalyzer.visible,diversityUI_pickPath.visible,diversityUI_removePath.visible,diversityUI_addOutside.visible,diversityUI_addInside.visible,diversityUI_removeStrokeButton.visible,diversityUI_strokeWidth.visible,diversityUI_bandStart.visible,diversityUI_bandEnd.visible,diversityUI_bandStrength.visible,diversityUI_bandCurveCheck.visible,diversityUI_bandScaleMode.visible,diversityUI_bandScaleEdit.visible,diversityUI_bandCurveEdit.visible,diversityUI_bandColor.visible,diversityUI_fieldFalloffCheck.visible,diversityUI_fieldBoundaryCheck.visible,diversityUI_fieldView.visible,diversityUI_fieldSampleSpin.visible,diversityUI_fieldLegend.visible,diversityUI_fieldInfo.visible,diversityUI_bandUp.visible,diversityUI_bandDown.visible,diversityUI_bandAssignmentHelp.visible,diversityUI_strokeMode.visible,diversityUI_strokeScaleMin.visible,diversityUI_strokeScaleMax.visible,diversityUI_refreshGroups.visible,diversityUI_strokeHelp.visible,diversityUI_edgeOffsetSpin.visible,diversityUI_edgeAlongSpin.visible,diversityUI_edgeAcrossSpin.visible,diversityUI_edgeRowHelp.visible,diversityUI_keepCornerCheck.visible,diversityUI_cornerAngleSpin.visible,diversityUI_cornerCountSpin.visible,diversityUI_cornerHelp.visible,diversityUI_edgeRotXSpin.visible,diversityUI_edgeRotYSpin.visible,diversityUI_edgeRotZSpin.visible,diversityUI_streetStartSpin.visible,diversityUI_streetEndSpin.visible,diversityUI_centerStreetSpin.visible,diversityUI_streetLayoutHelp.visible,diversityUI_faceOutCheck.visible,diversityUI_cornerRadiusSpin.visible,diversityUI_straightStreet.visible,placementUI_gridInfo.height,diversityUI_layoutHelp.height,diversityUI_analyzerStatus.height,diversityUI_groupHint.height,diversityUI_fixedHint.height,diversityUI_strokeTitle.height,diversityUI_fieldLegend.height,diversityUI_fieldInfo.height,diversityUI_bandAssignmentHelp.height,diversityUI_strokeHelp.height,diversityUI_edgeRowHelp.height,diversityUI_cornerHelp.height,diversityUI_streetLayoutHelp.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos layoutUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (syncColorLists();return true)
             diversityUI_layoutHelp.visible=false;diversityUI_groupHint.visible=false;diversityUI_fixedHint.visible=false;diversityUI_fieldLegend.visible=false;diversityUI_strokeHelp.visible=false;diversityUI_edgeRowHelp.visible=false;diversityUI_cornerHelp.visible=false;diversityUI_streetLayoutHelp.visible=false
             rowControls=#(placementUI_generatorList);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -11261,7 +12158,7 @@ initialRollupState:0x8
                 if not stackedCaption then (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_edgeRotZSpin_caption.width=cellWidth-78) else (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_edgeRotZSpin_caption.width=cellWidth);diversityUI_edgeRotZSpin_caption.enabled=diversityUI_edgeRotZSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;layoutUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists();true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;layoutUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));syncColorLists layoutChanged:true;true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "layoutUI.layout"
@@ -11293,11 +12190,13 @@ initialRollupState:0x8
 
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit layoutUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on layoutUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos layoutUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on layoutUI open do (controlsReady=false)
@@ -11311,7 +12210,7 @@ initialRollupState:0x8
     rollout populationUI "" width:#cmdPanel category:60 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         button distributionUI_presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named population settings. Assets and receiver references are preserved."
         radiobuttons distributionUI_modeRadio "" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
         label distributionUI_modeRadio_caption "Method" pos:[6,6] width:(populationUI.width-12) height:18
@@ -11449,158 +12348,202 @@ initialRollupState:0x8
             )
         )
         on distributionUI_imageCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_imageCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_imageCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #distributionMode (if value then 3 else 1)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_patternButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_patternButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_patternButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do try(CyrusChooseDensityPattern distributionUI_obj)catch(messageBox (getCurrentException()) title:"Cyrus patterns")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_imageButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_imageButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_imageButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do try(CyrusLoadDensityImage distributionUI_obj)catch(messageBox (getCurrentException()) title:"Cyrus image")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_bakeImageButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_bakeImageButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_bakeImageButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do try(CyrusBakeDensityImage distributionUI_obj)catch(messageBox (getCurrentException()) title:"Cyrus snapshot")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_coordinatesList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_coordinatesList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_coordinatesList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityCoordinateMode #(1,2,0,3)[value]
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_tileLockCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_tileLockCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_tileLockCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityTileLock value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_wrappingList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_wrappingList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_wrappingList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityWrapMode (value-1)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_imageCurveButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_imageCurveButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_imageCurveButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do CyrusOpenFalloffGraph distributionUI_obj undefined true imageMask:true
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_maskViewList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_maskViewList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_maskViewList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskView=value;CyrusInvalidateMeshMaskPreview distributionUI_obj)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_maskDetailList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_maskDetailList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_maskDetailList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskDetail=value;CyrusInvalidateMeshMaskPreview distributionUI_obj)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_opacitySpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_opacitySpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_opacitySpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskOpacity=value;redrawViews())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_markersCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_markersCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_markersCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskMarkers=value;redrawViews())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_markerSizeList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_markerSizeList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_markerSizeList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding do (CyrusMaskMarkerSize=value;redrawViews())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_tileXSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_tileXSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_tileXSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityTileXWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_tileYSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_tileYSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_tileYSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityTileYWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_repeatXSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_repeatXSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_repeatXSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityRepeatX value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_repeatYSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_repeatYSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_repeatYSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityRepeatY value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_headingSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_headingSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_headingSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityHeading value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_offsetXSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_offsetXSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_offsetXSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityOffsetXWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_offsetYSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_offsetYSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_offsetYSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityOffsetYWU value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_offsetUSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_offsetUSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_offsetUSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityUOffset value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_offsetVSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_offsetVSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_offsetVSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setImage #densityVOffset value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn distributionUI_setMeshMask key value = (
             if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
@@ -11610,109 +12553,139 @@ initialRollupState:0x8
             )
         )
         on distributionUI_meshCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setMeshMask #meshMaskEnabled value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshSourceList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshSourceList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshSourceList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setMeshMask #meshMaskSource value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshChannelSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshChannelSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshChannelSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setMeshMask #meshMaskChannel value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshComponentList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshComponentList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshComponentList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setMeshMask #meshMaskComponent value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshMinSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setMeshMask #meshMaskMinimum value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshMaxSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setMeshMask #meshMaskMaximum value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshInvertCheck changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshInvertCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshInvertCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (distributionUI_setMeshMask #meshMaskInvert value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshCurveButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshCurveButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshCurveButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do CyrusOpenFalloffGraph distributionUI_obj undefined true meshMask:true
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshPreviewButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshPreviewButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshPreviewButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do try(CyrusShowMeshMaskPreview distributionUI_obj)catch(messageBox (getCurrentException()) title:"Mesh density preview")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_meshHideButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_meshHideButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshHideButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try ((CyrusClearMeshMaskPreview undefined;redrawViews())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_modeRadio changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_modeRadio"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_modeRadio"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.distributionMode=if v==2 then 3 else 1;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_countSpin changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_countSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_countSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.amount=v;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_seedSpin changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_seedSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_seedSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.randomSeed=v;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_populationRadio changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_populationRadio"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_populationRadio"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.populationMode=v;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_densitySpin changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_densitySpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_densitySpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.plantsPerM2=v;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn distributionUI_assignDensityMap target v = (
             undo "Cyrus density map" on (
@@ -11727,50 +12700,60 @@ initialRollupState:0x8
             distributionUI_binding=true;distributionUI_syncControls();distributionUI_binding=false;CyrusViewportRedraw()
         )
         on distributionUI_densityButton picked v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_densityButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_densityButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do distributionUI_assignDensityMap distributionUI_obj v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_mapBrowseButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_mapBrowseButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_mapBrowseButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
             local target=distributionUI_obj,value=materialBrowseDlg #maps #instanceOnly
             if value!=undefined do distributionUI_assignDensityMap target value
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_invertCheck changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_invertCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_invertCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.invertDensity=v;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_uvChannelSpin changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_uvChannelSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_uvChannelSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
             local target=distributionUI_obj
             undo "Cyrus density UV channel" on (target.densityUVChannel=v;target.markInputDirty())
             distributionUI_syncControls();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on distributionUI_resolutionList selected v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_resolutionList"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_resolutionList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined and v>=1 and v<=4 do (
             local target=distributionUI_obj,value=#(64,128,256,512)[v]
             undo "Cyrus density resolution" on (target.densityResolution=value;target.markInputDirty())
             distributionUI_syncControls();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn distributionUI_bindFeatures layer = (
             local next=layer
@@ -11783,11 +12766,13 @@ initialRollupState:0x8
         )
         fn distributionUI_bind layer = (distributionUI_bindFeatures layer;distributionUI_binding=true;distributionUI_syncControls();distributionUI_binding=false)
         on distributionUI_presetsButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "distributionUI_presetsButton"
+            local eventPanel=panel,action=CyrusBeginAction root "distributionUI_presetsButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (try(CyrusOpenPresets distributionUI_root distributionUI_owner "population")catch(messageBox (getCurrentException()) title:"Cyrus presets")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         local populationPolicyUI_bodyHeight=0
         local populationPolicyUI_controlsReady=false
@@ -11803,34 +12788,42 @@ initialRollupState:0x8
         )
         fn populationPolicyUI_changeLayer key value = (if not populationPolicyUI_binding do (undo "Cyrus procedural settings" on setProperty populationPolicyUI_owner key value;populationPolicyUI_root.invalidateGroups();populationPolicyUI_bind populationPolicyUI_owner))
         on populationPolicyUI_populationList selected i do if controlsReady and not binding and root!=undefined and populationPolicyUI_controlsReady and not populationPolicyUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "populationPolicyUI_populationList"
+            local eventPanel=panel,action=CyrusBeginAction root "populationPolicyUI_populationList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (populationPolicyUI_changeLayer #procPopulation i
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on populationPolicyUI_attemptSpin changed v do if controlsReady and not binding and root!=undefined and populationPolicyUI_controlsReady and not populationPolicyUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "populationPolicyUI_attemptSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "populationPolicyUI_attemptSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (populationPolicyUI_changeLayer #procAttemptFactor v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on populationPolicyUI_roundSpin changed v do if controlsReady and not binding and root!=undefined and populationPolicyUI_controlsReady and not populationPolicyUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "populationPolicyUI_roundSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "populationPolicyUI_roundSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (populationPolicyUI_changeLayer #procRounds v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on populationPolicyUI_repairCheck changed v do if controlsReady and not binding and root!=undefined and populationPolicyUI_controlsReady and not populationPolicyUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "populationPolicyUI_repairCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "populationPolicyUI_repairCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
             try (populationPolicyUI_changeLayer #procRepair v
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -11950,12 +12943,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(distributionUI_populationRadio.state==1),(distributionUI_populationRadio.state==2),(distributionUI_imageThumbnail.bitmap!=undefined),(distributionUI_obj!=undefined and distributionUI_obj.densityMap!=undefined),(distributionUI_imageCheck.checked and (true)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3 and not distributionUI_tileLockCheck.checked)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3 and not distributionUI_tileLockCheck.checked)),(distributionUI_imageCheck.checked and (distributionUI_modeRadio.state==2)),(distributionUI_meshCheck.checked),(distributionUI_meshCheck.checked and distributionUI_meshSourceList.selection==1),(true),(distributionUI_markersCheck.checked),distributionUI_presetsButton.text,distributionUI_modeRadio.text,distributionUI_populationRadio.text,distributionUI_densityHeading.text,distributionUI_densityButton.text,distributionUI_mapBrowseButton.text,distributionUI_invertCheck.text,distributionUI_uvHint.text,distributionUI_mapHint.text,distributionUI_imageCheck.text,distributionUI_patternButton.text,distributionUI_imageButton.text,distributionUI_imageState.text,distributionUI_tileLockCheck.text,distributionUI_imageCurveButton.text,distributionUI_bakeImageButton.text,distributionUI_markersCheck.text,distributionUI_meshCheck.text,distributionUI_meshInvertCheck.text,distributionUI_meshCurveButton.text,distributionUI_meshPreviewButton.text,distributionUI_meshHideButton.text,distributionUI_meshHint.text,populationPolicyUI_repairCheck.text,populationPolicyUI_info.text,distributionUI_modeRadio_caption.text,distributionUI_populationRadio_caption.text,distributionUI_countSpin_caption.text,distributionUI_densitySpin_caption.text,distributionUI_seedSpin_caption.text,distributionUI_uvChannelSpin_caption.text,distributionUI_resolutionList_caption.text,distributionUI_coordinatesList_caption.text,distributionUI_wrappingList_caption.text,distributionUI_maskViewList_caption.text,distributionUI_maskDetailList_caption.text,distributionUI_opacitySpin_caption.text,distributionUI_markerSizeList_caption.text,distributionUI_tileXSpin_caption.text,distributionUI_tileYSpin_caption.text,distributionUI_repeatXSpin_caption.text,distributionUI_repeatYSpin_caption.text,distributionUI_headingSpin_caption.text,distributionUI_offsetXSpin_caption.text,distributionUI_offsetYSpin_caption.text,distributionUI_offsetUSpin_caption.text,distributionUI_offsetVSpin_caption.text,distributionUI_meshSourceList_caption.text,distributionUI_meshChannelSpin_caption.text,distributionUI_meshComponentList_caption.text,distributionUI_meshMinSpin_caption.text,distributionUI_meshMaxSpin_caption.text,populationPolicyUI_populationList_caption.text,populationPolicyUI_attemptSpin_caption.text,populationPolicyUI_roundSpin_caption.text,distributionUI_presetsButton.visible,distributionUI_modeRadio.visible,distributionUI_populationRadio.visible,distributionUI_countSpin.visible,distributionUI_densitySpin.visible,distributionUI_seedSpin.visible,distributionUI_densityHeading.visible,distributionUI_densityButton.visible,distributionUI_mapBrowseButton.visible,distributionUI_invertCheck.visible,distributionUI_uvChannelSpin.visible,distributionUI_resolutionList.visible,distributionUI_uvHint.visible,distributionUI_mapHint.visible,distributionUI_imageCheck.visible,distributionUI_patternButton.visible,distributionUI_imageButton.visible,distributionUI_imageThumbnail.visible,distributionUI_imageState.visible,distributionUI_coordinatesList.visible,distributionUI_tileLockCheck.visible,distributionUI_wrappingList.visible,distributionUI_imageCurveButton.visible,distributionUI_bakeImageButton.visible,distributionUI_maskViewList.visible,distributionUI_maskDetailList.visible,distributionUI_opacitySpin.visible,distributionUI_markersCheck.visible,distributionUI_markerSizeList.visible,distributionUI_tileXSpin.visible,distributionUI_tileYSpin.visible,distributionUI_repeatXSpin.visible,distributionUI_repeatYSpin.visible,distributionUI_headingSpin.visible,distributionUI_offsetXSpin.visible,distributionUI_offsetYSpin.visible,distributionUI_offsetUSpin.visible,distributionUI_offsetVSpin.visible,distributionUI_meshCheck.visible,distributionUI_meshSourceList.visible,distributionUI_meshChannelSpin.visible,distributionUI_meshComponentList.visible,distributionUI_meshMinSpin.visible,distributionUI_meshMaxSpin.visible,distributionUI_meshInvertCheck.visible,distributionUI_meshCurveButton.visible,distributionUI_meshPreviewButton.visible,distributionUI_meshHideButton.visible,distributionUI_meshHint.visible,populationPolicyUI_populationList.visible,populationPolicyUI_attemptSpin.visible,populationPolicyUI_roundSpin.visible,populationPolicyUI_repairCheck.visible,populationPolicyUI_info.visible,distributionUI_densityHeading.height,distributionUI_uvHint.height,distributionUI_mapHint.height,distributionUI_imageState.height,distributionUI_meshHint.height,populationPolicyUI_info.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             distributionUI_modeRadio.visible=false;distributionUI_modeRadio_caption.visible=false;distributionUI_densityHeading.visible=false;distributionUI_uvHint.visible=false;distributionUI_mapHint.visible=false;distributionUI_imageState.visible=false;distributionUI_meshHint.visible=false;populationPolicyUI_info.visible=false
             rowControls=#(distributionUI_presetsButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -12517,7 +13513,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;populationUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;populationUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "populationUI.layout"
@@ -12549,11 +13545,13 @@ initialRollupState:0x8
 
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on populationUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on populationUI open do (controlsReady=false)
@@ -12567,7 +13565,7 @@ initialRollupState:0x8
     rollout coverageUI "" width:#cmdPanel category:70 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         checkbox setsUI_paintedCheck "Use Paint Areas" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
         dropdownlist setsUI_setList "" items:#() pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
         button setsUI_addButton "+" pos:[8,8] width:60 tooltip:"Create a named area. Painting again edits the selected area." height:22
@@ -12638,57 +13636,71 @@ initialRollupState:0x8
             CyrusStopBrush();parent.uiAreaID=setsUI_members[i].layerID;controller.bindNativeUI();true
         )
         on setsUI_setList selected i do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "setsUI_setList"
+            local eventPanel=panel,action=CyrusBeginAction root "setsUI_setList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (setsUI_selectSet i
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on setsUI_addButton pressed do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "setsUI_addButton"
+            local eventPanel=panel,action=CyrusBeginAction root "setsUI_addButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (try(setsUI_root.addPaintArea setsUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus Paint Area")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on setsUI_removeButton pressed do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "setsUI_removeButton"
+            local eventPanel=panel,action=CyrusBeginAction root "setsUI_removeButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (try(setsUI_root.removePaintArea setsUI_owner (setsUI_currentSet()))catch(messageBox (getCurrentException()) title:"Cyrus Paint Area")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on setsUI_nameEdit entered value do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "setsUI_nameEdit"
+            local eventPanel=panel,action=CyrusBeginAction root "setsUI_nameEdit"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if not setsUI_binding and value!="" and setsUI_currentSet()!=undefined do (undo "Cyrus area name" on (setsUI_currentSet()).paintSetName=value;setsUI_root.bindNativeUI())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on setsUI_paintedCheck changed value do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "setsUI_paintedCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "setsUI_paintedCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if not setsUI_binding do (
             local controller=setsUI_root,parent=setsUI_owner
             CyrusStopBrush();undo "Cyrus coverage mode" on (parent.paintEnabled=value)
             parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on setsUI_enabledCheck changed value do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "setsUI_enabledCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "setsUI_enabledCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if not setsUI_binding and setsUI_currentSet()!=undefined do (undo "Cyrus area enabled" on (setsUI_currentSet()).paintSetEnabled=value;setsUI_owner.markInputDirty();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on setsUI_targetList selected i do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "setsUI_targetList"
+            local eventPanel=panel,action=CyrusBeginAction root "setsUI_targetList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if not setsUI_binding and i>0 do try(setsUI_root.setPaintAreaTarget setsUI_owner (setsUI_currentSet()) setsUI_targets[i])catch(messageBox (getCurrentException()) title:"Cyrus Paint Area";setsUI_root.bindNativeUI())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         local brushUI_bodyHeight=0
         local brushUI_controlsReady=false
@@ -12736,7 +13748,8 @@ initialRollupState:0x8
             brushUI_controlsReady=true;brushUI_binding=false;brushUI_status()
         )
         on brushUI_beginButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_beginButton"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_beginButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_obj!=undefined do try (
             local controller=brushUI_root,area=brushUI_obj,options=#(brushUI_radiusSpin.value,brushUI_modeRadio.state)
             controller.setGroupCoverage area true
@@ -12745,133 +13758,169 @@ initialRollupState:0x8
             CyrusStartBrush controller area
         )catch(messageBox (getCurrentException()) title:"Cyrus Brush")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_stopButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_stopButton"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_stopButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try ((CyrusStopBrush();brushUI_status())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_modeRadio changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_modeRadio"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_modeRadio"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveOptions()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_radiusSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_radiusSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_radiusSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveOptions()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_insideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_insideSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_insideSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveFalloff()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_outsideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_outsideSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_outsideSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveFalloff()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_densityFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_densityFade"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_densityFade"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveFalloff()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_scaleFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_scaleFade"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_scaleFade"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveFalloff()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_scaleMin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_scaleMin"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_scaleMin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveFalloff()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_scaleMax changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_scaleMax"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_scaleMax"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (brushUI_saveFalloff()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_densityCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_densityCurve"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_densityCurve"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined true
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_scaleCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_scaleCurve"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_scaleCurve"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined false
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_densitySpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_densitySpin"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_densitySpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if not brushUI_binding and brushUI_obj!=undefined do (undo "Cyrus area density" on brushUI_obj.paintDensity=value/100.0;brushUI_owner.markInputDirty();brushUI_obj.publishPaint())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_overlayMode selected value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_overlayMode"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_overlayMode"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if not brushUI_binding and brushUI_obj!=undefined do (undo "Cyrus paint feedback" on brushUI_obj.paintView=(#(2,1,0))[value];brushUI_saveOptions();redrawViews())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_overlayColor changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_overlayColor"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_overlayColor"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if not brushUI_binding and brushUI_obj!=undefined do (undo "Cyrus paint color" on brushUI_obj.paintColor=value;brushUI_saveOptions();redrawViews())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_fillButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_fillButton"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_fillButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (cyrusBrushFill brushUI_obj.paintDocument 1.0;brushUI_obj.publishPaint();brushUI_status())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_emptyButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_emptyButton"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_emptyButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (cyrusBrushFill brushUI_obj.paintDocument 0.0;brushUI_obj.publishPaint();brushUI_status())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_exportSpline pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_exportSpline"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_exportSpline"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_controlsReady and not brushUI_binding and brushUI_obj!=undefined do (
             local controller=brushUI_root,area=brushUI_obj
             try(controller.exportPaintSpline area)catch(messageBox (getCurrentException()) title:"Paint to spline")
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on brushUI_importSpline pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "brushUI_importSpline"
+            local eventPanel=panel,action=CyrusBeginAction root "brushUI_importSpline"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_controlsReady and not brushUI_binding and brushUI_obj!=undefined do (
             local controller=brushUI_root,area=brushUI_obj,add=(brushUI_importMode.state==2),tolerance=brushUI_splineTolerance.value
             try (
@@ -12883,8 +13932,9 @@ initialRollupState:0x8
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -13004,12 +14054,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(setsUI_paintedCheck.checked),setsUI_paintedCheck.text,setsUI_addButton.text,setsUI_removeButton.text,setsUI_enabledCheck.text,setsUI_info.text,brushUI_targetInfo.text,brushUI_modeRadio.text,brushUI_beginButton.text,brushUI_stopButton.text,brushUI_fillButton.text,brushUI_emptyButton.text,brushUI_brushState.text,brushUI_brushHelp.text,brushUI_densityFade.text,brushUI_densityCurve.text,brushUI_scaleFade.text,brushUI_scaleCurve.text,brushUI_exportSpline.text,brushUI_importMode.text,brushUI_importSpline.text,setsUI_nameEdit_caption.text,setsUI_targetList_caption.text,brushUI_modeRadio_caption.text,brushUI_radiusSpin_caption.text,brushUI_densitySpin_caption.text,brushUI_overlayMode_caption.text,brushUI_insideSpin_caption.text,brushUI_outsideSpin_caption.text,brushUI_scaleMin_caption.text,brushUI_scaleMax_caption.text,brushUI_importMode_caption.text,brushUI_splineTolerance_caption.text,setsUI_paintedCheck.visible,setsUI_setList.visible,setsUI_addButton.visible,setsUI_removeButton.visible,setsUI_nameEdit.visible,setsUI_targetList.visible,setsUI_enabledCheck.visible,setsUI_info.visible,brushUI_targetInfo.visible,brushUI_modeRadio.visible,brushUI_radiusSpin.visible,brushUI_beginButton.visible,brushUI_stopButton.visible,brushUI_fillButton.visible,brushUI_emptyButton.visible,brushUI_brushState.visible,brushUI_densitySpin.visible,brushUI_overlayMode.visible,brushUI_overlayColor.visible,brushUI_brushHelp.visible,brushUI_insideSpin.visible,brushUI_outsideSpin.visible,brushUI_densityFade.visible,brushUI_densityCurve.visible,brushUI_scaleFade.visible,brushUI_scaleMin.visible,brushUI_scaleMax.visible,brushUI_scaleCurve.visible,brushUI_exportSpline.visible,brushUI_importMode.visible,brushUI_splineTolerance.visible,brushUI_importSpline.visible,setsUI_info.height,brushUI_targetInfo.height,brushUI_brushState.height,brushUI_brushHelp.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos coverageUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             setsUI_info.visible=false;brushUI_brushHelp.visible=false
             rowControls=#(setsUI_paintedCheck);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -13266,7 +14319,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutWidth=widthValue;coverageUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;coverageUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "coverageUI.layout"
@@ -13299,11 +14352,13 @@ initialRollupState:0x8
         fn status = (if brushUI_controlsReady do brushUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on coverageUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos coverageUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on coverageUI open do (controlsReady=false)
@@ -13317,7 +14372,7 @@ initialRollupState:0x8
     rollout areasUI "" width:#cmdPanel category:80 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         multiListBox areaUI_areaList "" items:#() pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:6
         label areaUI_areaList_caption "Closed lines / shapes" pos:[6,6] width:(areasUI.width-12) height:18
         button areaUI_addAreaScene "Select From Scene..." pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Choose closed Area shapes by name." height:22
@@ -13419,74 +14474,94 @@ initialRollupState:0x8
             )
         )
         on areaUI_slopeCheck changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_slopeCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_slopeCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #slopeEnabled value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_slopeMinSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_slopeMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_slopeMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #slopeMinimum value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_slopeMaxSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_slopeMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_slopeMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #slopeMaximum value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_slopeLowerSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_slopeLowerSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_slopeLowerSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #slopeLowerFade value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_slopeUpperSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_slopeUpperSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_slopeUpperSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #slopeUpperFade value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_altitudeCheck changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_altitudeCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_altitudeCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #altitudeEnabled value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_altitudeMinSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_altitudeMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_altitudeMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #altitudeMinimum value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_altitudeMaxSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_altitudeMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_altitudeMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #altitudeMaximum value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_altitudeLowerSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_altitudeLowerSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_altitudeLowerSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #altitudeLowerFade value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_altitudeUpperSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_altitudeUpperSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_altitudeUpperSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_setSurfaceFilter #altitudeUpperFade value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn areaUI_syncAnalyzerArea = (
             areaUI_loadingAnalyzerArea=true
@@ -13498,60 +14573,76 @@ initialRollupState:0x8
             areaUI_loadingAnalyzerArea=false
         )
         on areaUI_aaPick picked n do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaPick"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaPick"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (areaUI_obj.areaAnalyzer=n;areaUI_syncAnalyzerArea();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_aaRemove pressed do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaRemove"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaRemove"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (areaUI_obj.areaUseLine=false;areaUI_obj.areaUsePoints=false;areaUI_obj.areaAnalyzer=undefined;areaUI_syncAnalyzerArea();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_aaLine changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaLine"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaLine"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do if not areaUI_loadingAnalyzerArea do (areaUI_obj.areaUseLine=v;areaUI_syncAnalyzerArea();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_aaPoints changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaPoints"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaPoints"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do if not areaUI_loadingAnalyzerArea do (areaUI_obj.areaUsePoints=v;areaUI_syncAnalyzerArea();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_aaStreetOffset changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaStreetOffset"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaStreetOffset"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do if not areaUI_loadingAnalyzerArea do (areaUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_aaWidth changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaWidth"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaWidth"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do if not areaUI_loadingAnalyzerArea do (areaUI_obj.areaLineWidth=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_aaRadius changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaRadius"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaRadius"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do if not areaUI_loadingAnalyzerArea do (areaUI_obj.areaPointRadius=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_aaCaps selected v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_aaCaps"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_aaCaps"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do if not areaUI_loadingAnalyzerArea do (areaUI_obj.areaLineCaps=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn areaUI_fallNode = (
             if areaUI_fallTarget.selection==1 then undefined else (
@@ -13581,81 +14672,103 @@ initialRollupState:0x8
             )
         )
         on areaUI_fallTarget selected v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallTarget"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallTarget"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do areaUI_syncFalloff()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallPick picked n do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallPick"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallPick"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (if CyrusAnalyzerFilter n do areaUI_obj.fallAnalyzer=n;areaUI_syncFalloff();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallRemove pressed do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallRemove"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallRemove"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (areaUI_obj.fallAnalyzer=undefined;areaUI_obj.fallDelete=false;areaUI_obj.fallScale=false;areaUI_obj.fallDensity=false;areaUI_syncFalloff();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallDeleteCheck changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallDeleteCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallDeleteCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do areaUI_setFallValue 1 v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallDeleteSpin changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallDeleteSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallDeleteSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do areaUI_setFallValue 2 v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallScaleCheck changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallScaleCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallScaleCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do areaUI_setFallValue 3 v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallScaleSpin changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallScaleSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallScaleSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do areaUI_setFallValue 4 v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallDensityCheck changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallDensityCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallDensityCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do areaUI_setFallValue 6 v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallDensitySpin changed v do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallDensitySpin"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallDensitySpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do areaUI_setFallValue 7 v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallScaleEdit pressed do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallScaleEdit"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallScaleEdit"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do CyrusOpenFalloffGraph areaUI_obj (areaUI_fallNode()) false
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_fallDensityEdit pressed do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_fallDensityEdit"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_fallDensityEdit"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do CyrusOpenFalloffGraph areaUI_obj (areaUI_fallNode()) true
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn areaUI_updateAreas = (
             local selectedRows=areaUI_areaList.selection
@@ -13677,45 +14790,54 @@ initialRollupState:0x8
             )
         )
         on areaUI_pickArea picked n do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_pickArea"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_pickArea"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (areaUI_addArea n;areaUI_updateAreas();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_addAreaScene pressed do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_addAreaScene"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_addAreaScene"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do areaUI_addArea n
             areaUI_updateAreas();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_areaList selectionEnd do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (
-            local action=CyrusBeginAction root "areaUI_areaList"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_areaList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:false
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (
             if areaUI_areaList.selection.numberSet==1 do areaUI_fallTarget.selection=2
             areaUI_updateAreas()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_areaMode changed mode do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_areaMode"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_areaMode"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (
             undo "Cyrus Scatter area mode" on (for i in areaUI_areaList.selection do areaUI_obj.areaModes[i]=mode)
             areaUI_obj.markInputDirty();areaUI_updateAreas();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_removeArea pressed do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_removeArea"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_removeArea"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
             local rows=areaUI_areaList.selection as array
@@ -13726,15 +14848,18 @@ initialRollupState:0x8
             areaUI_areaList.selection=#{};areaUI_obj.markInputDirty();areaUI_updateAreas();CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areaUI_refreshAreas pressed do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_refreshAreas"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_refreshAreas"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (areaUI_obj.markInputDirty();(if areaUI_obj.overlapOwner==undefined then areaUI_obj else areaUI_obj.overlapOwner).refreshAll();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn areaUI_bindFeatures layer = (
             local next=layer
@@ -13748,13 +14873,15 @@ initialRollupState:0x8
         fn areaUI_arrangeDetails = true
         fn areaUI_bind layer = (areaUI_bindFeatures layer;areaUI_arrangeDetails())
         on areaUI_detailsToggle changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "areaUI_detailsToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "areaUI_detailsToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:true
             try (areaUI_arrangeDetails()
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -13878,12 +15005,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,areaUI_addAreaScene.text,areaUI_pickArea.text,areaUI_removeArea.text,areaUI_areaMode.text,areaUI_areaHint.text,areaUI_projectionHint.text,areaUI_refreshAreas.text,areaUI_aaTitle.text,areaUI_aaPick.text,areaUI_aaRemove.text,areaUI_aaLine.text,areaUI_aaPoints.text,areaUI_aaHelp.text,areaUI_slopeCheck.text,areaUI_altitudeCheck.text,areaUI_filterInfo.text,areaUI_fallPick.text,areaUI_fallRemove.text,areaUI_fallTargetName.text,areaUI_fallDeleteCheck.text,areaUI_fallScaleCheck.text,areaUI_fallScaleEdit.text,areaUI_fallDensityCheck.text,areaUI_fallDensityEdit.text,areaUI_fallHelp.text,areaUI_detailsToggle.text,areaUI_areaList_caption.text,areaUI_areaMode_caption.text,areaUI_aaWidth_caption.text,areaUI_aaCaps_caption.text,areaUI_aaStreetOffset_caption.text,areaUI_aaRadius_caption.text,areaUI_slopeMinSpin_caption.text,areaUI_slopeMaxSpin_caption.text,areaUI_slopeLowerSpin_caption.text,areaUI_slopeUpperSpin_caption.text,areaUI_altitudeMinSpin_caption.text,areaUI_altitudeMaxSpin_caption.text,areaUI_altitudeLowerSpin_caption.text,areaUI_altitudeUpperSpin_caption.text,areaUI_fallTarget_caption.text,areaUI_fallDeleteSpin_caption.text,areaUI_fallScaleSpin_caption.text,areaUI_fallDensitySpin_caption.text,areaUI_areaList.height,areaUI_addAreaScene.visible,areaUI_pickArea.visible,areaUI_removeArea.visible,areaUI_areaMode.visible,areaUI_areaHint.visible,areaUI_projectionHint.visible,areaUI_refreshAreas.visible,areaUI_aaTitle.visible,areaUI_aaPick.visible,areaUI_aaRemove.visible,areaUI_aaLine.visible,areaUI_aaWidth.visible,areaUI_aaCaps.visible,areaUI_aaStreetOffset.visible,areaUI_aaPoints.visible,areaUI_aaRadius.visible,areaUI_aaHelp.visible,areaUI_slopeCheck.visible,areaUI_slopeMinSpin.visible,areaUI_slopeMaxSpin.visible,areaUI_slopeLowerSpin.visible,areaUI_slopeUpperSpin.visible,areaUI_altitudeMinSpin.visible,areaUI_altitudeMaxSpin.visible,areaUI_altitudeLowerSpin.visible,areaUI_altitudeUpperSpin.visible,areaUI_altitudeCheck.visible,areaUI_filterInfo.visible,areaUI_fallTarget.visible,areaUI_fallPick.visible,areaUI_fallRemove.visible,areaUI_fallTargetName.visible,areaUI_fallDeleteCheck.visible,areaUI_fallDeleteSpin.visible,areaUI_fallScaleCheck.visible,areaUI_fallScaleSpin.visible,areaUI_fallScaleEdit.visible,areaUI_fallDensityCheck.visible,areaUI_fallDensitySpin.visible,areaUI_fallDensityEdit.visible,areaUI_fallHelp.visible,areaUI_detailsToggle.visible,areaUI_areaHint.height,areaUI_projectionHint.height,areaUI_aaTitle.height,areaUI_aaHelp.height,areaUI_filterInfo.height,areaUI_fallTargetName.height,areaUI_fallHelp.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos areasUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             areaUI_areaHint.visible=false;areaUI_projectionHint.visible=false;areaUI_aaHelp.visible=false;areaUI_fallHelp.visible=false;areaUI_detailsToggle.visible=false
             rowControls=#(heading_0);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -14236,7 +15366,7 @@ initialRollupState:0x8
                 if not stackedCaption then (areaUI_aaRadius_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_aaRadius_caption.width=cellWidth-78) else (areaUI_aaRadius_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_aaRadius_caption.width=cellWidth);areaUI_aaRadius_caption.enabled=areaUI_aaRadius.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;areasUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;areasUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "areasUI.layout"
@@ -14266,11 +15396,13 @@ initialRollupState:0x8
 
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit areasUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on areasUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos areasUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on areasUI open do (controlsReady=false)
@@ -14284,7 +15416,7 @@ initialRollupState:0x8
     rollout transformsUI "" width:#cmdPanel category:90 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         button randomUI_presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named transforms settings. Assets and receiver references are preserved."
         label randomUI_rotTitle "Rotation (degrees)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
@@ -14377,50 +15509,62 @@ initialRollupState:0x8
         randomUI_obj=undefined,randomUI_parentView=undefined
         local randomUI_controlsReady=false
         on randomUI_wholeMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_wholeMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_wholeMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.wholeScaleMin=v;if v>randomUI_obj.wholeScaleMax do (randomUI_obj.wholeScaleMax=v;randomUI_wholeMaxSpin.value=v);CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_wholeMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_wholeMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_wholeMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.wholeScaleMax=v;if v<randomUI_obj.wholeScaleMin do (randomUI_obj.wholeScaleMin=v;randomUI_wholeMinSpin.value=v);CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn randomUI_resetBoundRandomization kind = (
             undo "Cyrus reset layer transforms" on randomUI_owner.resetRandomization kind
             transformsUI.bind randomUI_owner;randomUI_root.invalidateGroups();true
         )
         on randomUI_resetRotation pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_resetRotation"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_resetRotation"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_resetBoundRandomization #rotation
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_resetScale pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_resetScale"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_resetScale"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_resetBoundRandomization #scale
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_resetWholeScale pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_resetWholeScale"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_resetWholeScale"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_resetBoundRandomization #wholeScale
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_resetMovement pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_resetMovement"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_resetMovement"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_resetBoundRandomization #movement
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn randomUI_bindOrientation = (
             if randomUI_obj==undefined do return false
@@ -14439,49 +15583,62 @@ initialRollupState:0x8
             transformsUI.bind layer;controller.invalidateGroups();CyrusViewportRedraw();true
         )
         on randomUI_orientationList selected v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_orientationList"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_orientationList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_changeOrientation #orientationMode v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_normalBlendSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_normalBlendSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_normalBlendSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_changeOrientation #orientationBlend v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_directionXSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_directionXSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_directionXSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_changeOrientation #orientationX v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_directionYSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_directionYSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_directionYSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_changeOrientation #orientationY v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_directionZSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_directionZSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_directionZSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_changeOrientation #orientationZ v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_targetClearButton pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_targetClearButton"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_targetClearButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_changeOrientation #orientationTarget undefined
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_targetPickButton pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_targetPickButton"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_targetPickButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do try (
             local captured=CyrusPresetMakeBinding randomUI_root randomUI_obj "transforms"
             local target=pickObject message:"Pick the orientation target pivot"
@@ -14492,149 +15649,190 @@ initialRollupState:0x8
             )
         )catch(messageBox (getCurrentException()) title:"Cyrus orientation")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn randomUI_syncControls = (randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;)
         on randomUI_alignCheck changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_alignCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_alignCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (randomUI_changeOrientation #alignNormal v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_projectCheck changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_projectCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_projectCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.projectMove=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_rotXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_rotXMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_rotXMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.rotXMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_rotXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_rotXMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_rotXMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.rotXMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_rotYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_rotYMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_rotYMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.rotYMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_rotYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_rotYMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_rotYMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.rotYMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_rotZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_rotZMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_rotZMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.rotZMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_rotZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_rotZMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_rotZMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.rotZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_sclXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_sclXMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_sclXMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclXMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_sclXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_sclXMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_sclXMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclXMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_sclYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_sclYMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_sclYMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclYMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_sclYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_sclYMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_sclYMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclYMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_sclZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_sclZMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_sclZMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclZMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_sclZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_sclZMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_sclZMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_movXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_movXMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_movXMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_movXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_movXMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_movXMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_movYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_movYMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_movYMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_movYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_movYMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_movYMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_movZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_movZMinSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_movZMinSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on randomUI_movZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_movZMaxSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_movZMaxSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn randomUI_bind layer = (
             local next=layer
@@ -14646,13 +15844,15 @@ initialRollupState:0x8
             randomUI_bindOrientation();randomUI_controlsReady=true;randomUI_binding=false
         )
         on randomUI_presetsButton pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "randomUI_presetsButton"
+            local eventPanel=panel,action=CyrusBeginAction root "randomUI_presetsButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
             try (try(CyrusOpenPresets randomUI_root randomUI_owner "transforms")catch(messageBox (getCurrentException()) title:"Cyrus presets")
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -14772,12 +15972,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,randomUI_presetsButton.text,randomUI_rotTitle.text,randomUI_rotMinTitle.text,randomUI_rotMaxTitle.text,randomUI_rotXLabel.text,randomUI_rotYLabel.text,randomUI_rotZLabel.text,randomUI_sclTitle.text,randomUI_sclMinTitle.text,randomUI_sclMaxTitle.text,randomUI_sclXLabel.text,randomUI_sclYLabel.text,randomUI_sclZLabel.text,randomUI_wholeTitle.text,randomUI_wholeMinTitle.text,randomUI_wholeMaxTitle.text,randomUI_movTitle.text,randomUI_movMinTitle.text,randomUI_movMaxTitle.text,randomUI_movXLabel.text,randomUI_movYLabel.text,randomUI_movZLabel.text,randomUI_projectCheck.text,randomUI_alignCheck.text,randomUI_targetPickButton.text,randomUI_targetClearButton.text,randomUI_targetInfo.text,randomUI_orientationHelp.text,randomUI_resetRotation.text,randomUI_resetScale.text,randomUI_resetWholeScale.text,randomUI_resetMovement.text,randomUI_rotXMinSpin_caption.text,randomUI_rotXMaxSpin_caption.text,randomUI_rotYMinSpin_caption.text,randomUI_rotYMaxSpin_caption.text,randomUI_rotZMinSpin_caption.text,randomUI_rotZMaxSpin_caption.text,randomUI_sclXMinSpin_caption.text,randomUI_sclXMaxSpin_caption.text,randomUI_sclYMinSpin_caption.text,randomUI_sclYMaxSpin_caption.text,randomUI_sclZMinSpin_caption.text,randomUI_sclZMaxSpin_caption.text,randomUI_wholeMinSpin_caption.text,randomUI_wholeMaxSpin_caption.text,randomUI_movXMinSpin_caption.text,randomUI_movXMaxSpin_caption.text,randomUI_movYMinSpin_caption.text,randomUI_movYMaxSpin_caption.text,randomUI_movZMinSpin_caption.text,randomUI_movZMaxSpin_caption.text,randomUI_orientationList_caption.text,randomUI_normalBlendSpin_caption.text,randomUI_directionXSpin_caption.text,randomUI_directionYSpin_caption.text,randomUI_directionZSpin_caption.text,randomUI_presetsButton.visible,randomUI_rotTitle.visible,randomUI_rotMinTitle.visible,randomUI_rotMaxTitle.visible,randomUI_rotXLabel.visible,randomUI_rotXMinSpin.visible,randomUI_rotXMaxSpin.visible,randomUI_rotYLabel.visible,randomUI_rotYMinSpin.visible,randomUI_rotYMaxSpin.visible,randomUI_rotZLabel.visible,randomUI_rotZMinSpin.visible,randomUI_rotZMaxSpin.visible,randomUI_sclTitle.visible,randomUI_sclMinTitle.visible,randomUI_sclMaxTitle.visible,randomUI_sclXLabel.visible,randomUI_sclXMinSpin.visible,randomUI_sclXMaxSpin.visible,randomUI_sclYLabel.visible,randomUI_sclYMinSpin.visible,randomUI_sclYMaxSpin.visible,randomUI_sclZLabel.visible,randomUI_sclZMinSpin.visible,randomUI_sclZMaxSpin.visible,randomUI_wholeTitle.visible,randomUI_wholeMinTitle.visible,randomUI_wholeMaxTitle.visible,randomUI_wholeMinSpin.visible,randomUI_wholeMaxSpin.visible,randomUI_movTitle.visible,randomUI_movMinTitle.visible,randomUI_movMaxTitle.visible,randomUI_movXLabel.visible,randomUI_movXMinSpin.visible,randomUI_movXMaxSpin.visible,randomUI_movYLabel.visible,randomUI_movYMinSpin.visible,randomUI_movYMaxSpin.visible,randomUI_movZLabel.visible,randomUI_movZMinSpin.visible,randomUI_movZMaxSpin.visible,randomUI_projectCheck.visible,randomUI_alignCheck.visible,randomUI_orientationList.visible,randomUI_normalBlendSpin.visible,randomUI_directionXSpin.visible,randomUI_directionYSpin.visible,randomUI_directionZSpin.visible,randomUI_targetPickButton.visible,randomUI_targetClearButton.visible,randomUI_targetInfo.visible,randomUI_orientationHelp.visible,randomUI_resetRotation.visible,randomUI_resetScale.visible,randomUI_resetWholeScale.visible,randomUI_resetMovement.visible,randomUI_rotTitle.height,randomUI_rotMinTitle.height,randomUI_rotMaxTitle.height,randomUI_rotXLabel.height,randomUI_rotYLabel.height,randomUI_rotZLabel.height,randomUI_sclTitle.height,randomUI_sclMinTitle.height,randomUI_sclMaxTitle.height,randomUI_sclXLabel.height,randomUI_sclYLabel.height,randomUI_sclZLabel.height,randomUI_wholeTitle.height,randomUI_wholeMinTitle.height,randomUI_wholeMaxTitle.height,randomUI_movTitle.height,randomUI_movMinTitle.height,randomUI_movMaxTitle.height,randomUI_movXLabel.height,randomUI_movYLabel.height,randomUI_movZLabel.height,randomUI_targetInfo.height,randomUI_orientationHelp.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos transformsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             randomUI_rotMinTitle.visible=false;randomUI_rotMaxTitle.visible=false;randomUI_rotXLabel.visible=false;randomUI_rotYLabel.visible=false;randomUI_rotZLabel.visible=false;randomUI_sclMinTitle.visible=false;randomUI_sclMaxTitle.visible=false;randomUI_sclXLabel.visible=false;randomUI_sclYLabel.visible=false;randomUI_sclZLabel.visible=false;randomUI_wholeMinTitle.visible=false;randomUI_wholeMaxTitle.visible=false;randomUI_movMinTitle.visible=false;randomUI_movMaxTitle.visible=false;randomUI_movXLabel.visible=false;randomUI_movYLabel.visible=false;randomUI_movZLabel.visible=false
             rowControls=#(randomUI_presetsButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -15114,7 +16317,7 @@ initialRollupState:0x8
             )
             advancedToggle.visible=false
 
-            lastLayoutWidth=widthValue;transformsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;transformsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "transformsUI.layout"
@@ -15144,11 +16347,13 @@ initialRollupState:0x8
 
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on transformsUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos transformsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on transformsUI open do (controlsReady=false)
@@ -15162,12 +16367,12 @@ initialRollupState:0x8
     rollout spacingUI "" width:#cmdPanel category:100 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         button proceduralUI_presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named spacing settings. Assets and receiver references are preserved."
         dropdownlist proceduralUI_scopeList "" items:#("Within this layer","Between layers") pos:[8,8] width:(spacingUI.width-8) selection:1 tooltip:"Choose spacing within the selected layer or between it and another layer."
-        label proceduralUI_scopeList_caption "Spacing scope" pos:[6,6] width:(spacingUI.width-12) height:18
+        label proceduralUI_scopeList_caption "Edit default rule" pos:[6,6] width:(spacingUI.width-12) height:18
         dropdownlist proceduralUI_peerList "" items:#() pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/58)))))
-        label proceduralUI_peerList_caption "Other owner" pos:[6,6] width:(spacingUI.width-12) height:18
+        label proceduralUI_peerList_caption "Other layer" pos:[6,6] width:(spacingUI.width-12) height:18
         checkbox proceduralUI_enabledCheck "Enable this spacing" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/124.8))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/124.8)))))
         spinner proceduralUI_multiplierSpin "" range:[0,10000,1] pos:[8,8] width:((spacingUI.width-16-((amin 2 (amax 1 (floor ((spacingUI.width-8)/154.8))))-1)*4)/(amin 2 (amax 1 (floor ((spacingUI.width-8)/154.8))))) fieldWidth:58
         label proceduralUI_multiplierSpin_caption "Radius factor:" pos:[6,6] width:(spacingUI.width-12) height:18
@@ -15208,7 +16413,7 @@ initialRollupState:0x8
         label separationUI_minIslandSpin_caption "Minimum island size:" pos:[6,6] width:(spacingUI.width-12) height:18
         checkbox separationUI_planarCheck "XY neighborhoods (off = 3D)" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/166.4)))))
         label separationUI_helpInfo "Cleanup releases space before bounded refill. Spacing rules are in the selected-scope section." pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))) height:54
-        label heading_0 "Spacing - selected scope" pos:[6,6] width:(spacingUI.width-12) height:18
+        label heading_0 "Layer spacing defaults" pos:[6,6] width:(spacingUI.width-12) height:18
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(spacingUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local proceduralUI_bodyHeight=0
         local proceduralUI_controlsReady=false
@@ -15220,8 +16425,16 @@ initialRollupState:0x8
             if not resetPeer and proceduralUI_peerList.selection>0 and proceduralUI_peerList.selection<=proceduralUI_peers.count do previous=proceduralUI_peers[proceduralUI_peerList.selection]
             proceduralUI_binding=true
             try (
-                proceduralUI_peers=case scope of (3:(for p in proceduralUI_root.layerSets proceduralUI_owner where p!=leaf collect p);4:(for p in proceduralUI_root.logicalLayers() where p!=proceduralUI_owner collect p);default:#())
-                CyrusRetainListItems proceduralUI_peerList (for p in proceduralUI_peers collect (if scope==4 then proceduralUI_root.layerCaption p else p.paintSetName))
+                -- A collect expression inside the lazy rollout's nested function
+                -- captured a retired local thunk for scope in Max 2027. Keep the
+                -- bounded peer snapshot explicit; no comprehension captures it.
+                proceduralUI_peers=#()
+                if scope==3 do for candidate in proceduralUI_root.layerSets proceduralUI_owner do if candidate!=leaf do append proceduralUI_peers candidate
+                if scope==4 do for candidate in proceduralUI_root.logicalLayers() do if candidate!=proceduralUI_owner do append proceduralUI_peers candidate
+                local peerNames=#()
+                if scope==4 then (for candidate in proceduralUI_peers do append peerNames (proceduralUI_root.layerCaption candidate))
+                else (for candidate in proceduralUI_peers do append peerNames candidate.paintSetName)
+                CyrusRetainListItems proceduralUI_peerList peerNames
                 proceduralUI_peerList.selection=if proceduralUI_peers.count==0 then 0 else amax 1 (findItem proceduralUI_peers previous)
                 local editable=not pair or proceduralUI_peers.count>0
                 proceduralUI_peerList.enabled=pair and editable
@@ -15251,7 +16464,8 @@ initialRollupState:0x8
             proceduralUI_bindRule();proceduralUI_controlsReady=true;proceduralUI_binding=false
         )
         on proceduralUI_presetsButton pressed do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_presetsButton"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_presetsButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (try(
             local peer=undefined
             if proceduralUI_currentScope()==4 do (
@@ -15261,8 +16475,9 @@ initialRollupState:0x8
             CyrusOpenPresets proceduralUI_root proceduralUI_owner "spacing" peer:peer
         )catch(messageBox (getCurrentException()) title:"Cyrus presets")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn proceduralUI_saveRule = (
             if proceduralUI_binding or not proceduralUI_controlsReady do return false
@@ -15279,49 +16494,62 @@ initialRollupState:0x8
             )catch(proceduralUI_bindRule();messageBox (getCurrentException()) title:"Cyrus spacing";false)
         )
         on proceduralUI_scopeList selected i do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_scopeList"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_scopeList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (if not proceduralUI_binding do proceduralUI_bindRule resetPeer:true
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on proceduralUI_peerList selected i do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_peerList"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_peerList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (if not proceduralUI_binding and i>0 do proceduralUI_bindRule()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on proceduralUI_enabledCheck changed value do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_enabledCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_enabledCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (proceduralUI_saveRule()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on proceduralUI_multiplierSpin changed value do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_multiplierSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_multiplierSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (proceduralUI_saveRule()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on proceduralUI_gapSpin changed value do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_gapSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_gapSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (proceduralUI_saveRule()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on proceduralUI_planarCheck changed value do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_planarCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_planarCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (proceduralUI_saveRule()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on proceduralUI_resetRule pressed do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "proceduralUI_resetRule"
+            local eventPanel=panel,action=CyrusBeginAction root "proceduralUI_resetRule"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (try(
             local leaf=proceduralUI_currentSet(),scope=proceduralUI_currentScope()
             undo "Cyrus spacing inheritance" on case scope of (
@@ -15333,8 +16561,9 @@ initialRollupState:0x8
             proceduralUI_root.invalidateGroups();proceduralUI_bind proceduralUI_owner
         )catch(messageBox (getCurrentException()) title:"Cyrus spacing")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         local instanceRadiusUI_bodyHeight=0
         local instanceRadiusUI_controlsReady=false,instanceRadiusUI_binding=false
@@ -15342,25 +16571,31 @@ initialRollupState:0x8
         fn instanceRadiusUI_currentSet = (instanceRadiusUI_owner)
         fn instanceRadiusUI_bind layer = (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=true;instanceRadiusUI_controlsReady=true)
         on instanceRadiusUI_applyRadius pressed do if controlsReady and not binding and root!=undefined and instanceRadiusUI_controlsReady and not instanceRadiusUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "instanceRadiusUI_applyRadius"
+            local eventPanel=panel,action=CyrusBeginAction root "instanceRadiusUI_applyRadius"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (try((instanceRadiusUI_currentSet()).procSelectedRadius instanceRadiusUI_radiusMode.selection instanceRadiusUI_radiusSpin.value;instanceRadiusUI_bind instanceRadiusUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on instanceRadiusUI_resetRadius pressed do if controlsReady and not binding and root!=undefined and instanceRadiusUI_controlsReady and not instanceRadiusUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "instanceRadiusUI_resetRadius"
+            local eventPanel=panel,action=CyrusBeginAction root "instanceRadiusUI_resetRadius"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (try((instanceRadiusUI_currentSet()).procSelectedRadius instanceRadiusUI_radiusMode.selection instanceRadiusUI_radiusSpin.value reset:true;instanceRadiusUI_bind instanceRadiusUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on instanceRadiusUI_clearRadius pressed do if controlsReady and not binding and root!=undefined and instanceRadiusUI_controlsReady and not instanceRadiusUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "instanceRadiusUI_clearRadius"
+            local eventPanel=panel,action=CyrusBeginAction root "instanceRadiusUI_clearRadius"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (try((instanceRadiusUI_currentSet()).procClearRadii();instanceRadiusUI_bind instanceRadiusUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         local spacingUI_bodyHeight=0
         local spacingUI_controlsReady=false
@@ -15375,60 +16610,76 @@ initialRollupState:0x8
         )
         fn spacingUI_save key value = (if spacingUI_controlsReady and not spacingUI_binding do (undo "Cyrus layer Relax" on setProperty spacingUI_owner key value;spacingUI_root.invalidateGroups()))
         on spacingUI_relaxCheck changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_relaxCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_relaxCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try ((spacingUI_save #relaxEnabled value;spacingUI_bind spacingUI_owner)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI_spacingSpin changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_spacingSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_spacingSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (spacingUI_save #relaxSpacing value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI_iterationsSpin changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_iterationsSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_iterationsSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (spacingUI_save #relaxIterations value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI_strengthSpin changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_strengthSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_strengthSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (spacingUI_save #relaxStrength (value/100.0)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI_boundaryRelaxCheck changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_boundaryRelaxCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_boundaryRelaxCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try ((spacingUI_save #finalRelax value;spacingUI_bind spacingUI_owner)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI_finalStrengthSpin changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_finalStrengthSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_finalStrengthSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (spacingUI_save #finalStrength value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI_finalIterSpin changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_finalIterSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_finalIterSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (spacingUI_save #finalIterations value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI_finalMoveSpin changed value do if controlsReady and not binding and root!=undefined and spacingUI_controlsReady and not spacingUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "spacingUI_finalMoveSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "spacingUI_finalMoveSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (spacingUI_save #finalMaxMove value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         local separationUI_bodyHeight=0
         local separationUI_controlsReady=false
@@ -15441,41 +16692,51 @@ initialRollupState:0x8
         )
         fn separationUI_save key value = (if separationUI_controlsReady and not separationUI_binding do (undo "Cyrus layer cleanup" on setProperty separationUI_owner key value;separationUI_root.invalidateGroups()))
         on separationUI_cleanCheck changed value do if controlsReady and not binding and root!=undefined and separationUI_controlsReady and not separationUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "separationUI_cleanCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "separationUI_cleanCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try ((separationUI_save #finalCleanup value;separationUI_bind separationUI_owner)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on separationUI_neighborSpin changed value do if controlsReady and not binding and root!=undefined and separationUI_controlsReady and not separationUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "separationUI_neighborSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "separationUI_neighborSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (separationUI_save #finalNeighborRadius value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on separationUI_minNeighborSpin changed value do if controlsReady and not binding and root!=undefined and separationUI_controlsReady and not separationUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "separationUI_minNeighborSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "separationUI_minNeighborSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (separationUI_save #finalMinNeighbors value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on separationUI_minIslandSpin changed value do if controlsReady and not binding and root!=undefined and separationUI_controlsReady and not separationUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "separationUI_minIslandSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "separationUI_minIslandSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (separationUI_save #finalMinIsland value
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on separationUI_planarCheck changed value do if controlsReady and not binding and root!=undefined and separationUI_controlsReady and not separationUI_binding and CyrusLicenseCanEdit() do (
-            local action=CyrusBeginAction root "separationUI_planarCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "separationUI_planarCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:true
             try (separationUI_save #cleanupPlanar value
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -15595,12 +16856,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,proceduralUI_presetsButton.text,proceduralUI_enabledCheck.text,proceduralUI_planarCheck.text,proceduralUI_ruleInfo.text,proceduralUI_resetRule.text,instanceRadiusUI_applyRadius.text,instanceRadiusUI_resetRadius.text,instanceRadiusUI_clearRadius.text,instanceRadiusUI_info.text,spacingUI_relaxCheck.text,spacingUI_boundaryRelaxCheck.text,spacingUI_orderHint.text,separationUI_cleanCheck.text,separationUI_planarCheck.text,separationUI_helpInfo.text,proceduralUI_scopeList_caption.text,proceduralUI_peerList_caption.text,proceduralUI_multiplierSpin_caption.text,proceduralUI_gapSpin_caption.text,instanceRadiusUI_radiusMode_caption.text,instanceRadiusUI_radiusSpin_caption.text,spacingUI_spacingSpin_caption.text,spacingUI_iterationsSpin_caption.text,spacingUI_strengthSpin_caption.text,spacingUI_finalStrengthSpin_caption.text,spacingUI_finalIterSpin_caption.text,spacingUI_finalMoveSpin_caption.text,separationUI_neighborSpin_caption.text,separationUI_minNeighborSpin_caption.text,separationUI_minIslandSpin_caption.text,proceduralUI_presetsButton.visible,proceduralUI_scopeList.visible,proceduralUI_peerList.visible,proceduralUI_enabledCheck.visible,proceduralUI_multiplierSpin.visible,proceduralUI_gapSpin.visible,proceduralUI_planarCheck.visible,proceduralUI_ruleInfo.visible,proceduralUI_resetRule.visible,instanceRadiusUI_radiusMode.visible,instanceRadiusUI_radiusSpin.visible,instanceRadiusUI_applyRadius.visible,instanceRadiusUI_resetRadius.visible,instanceRadiusUI_clearRadius.visible,instanceRadiusUI_info.visible,spacingUI_relaxCheck.visible,spacingUI_spacingSpin.visible,spacingUI_iterationsSpin.visible,spacingUI_strengthSpin.visible,spacingUI_boundaryRelaxCheck.visible,spacingUI_finalStrengthSpin.visible,spacingUI_finalIterSpin.visible,spacingUI_finalMoveSpin.visible,spacingUI_orderHint.visible,separationUI_cleanCheck.visible,separationUI_neighborSpin.visible,separationUI_minNeighborSpin.visible,separationUI_minIslandSpin.visible,separationUI_planarCheck.visible,separationUI_helpInfo.visible,proceduralUI_ruleInfo.height,instanceRadiusUI_info.height,spacingUI_orderHint.height,separationUI_helpInfo.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos spacingUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             proceduralUI_ruleInfo.visible=false;instanceRadiusUI_info.visible=false;spacingUI_orderHint.visible=false;separationUI_helpInfo.visible=false
             rowControls=#(heading_0);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -15881,7 +17145,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;spacingUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;spacingUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "spacingUI.layout"
@@ -15917,11 +17181,13 @@ initialRollupState:0x8
 
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit spacingUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on spacingUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos spacingUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on spacingUI open do (controlsReady=false)
@@ -15935,9 +17201,9 @@ initialRollupState:0x8
     rollout displayUI "" width:#cmdPanel category:110 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         checkbox flow_previewUI_previewCheck "Show preview" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/88.4)))))
-        dropdownlist flow_previewUI_displayModeDrop "" items:#("Point Cloud","Proxy","Mesh","Plant centres") pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        dropdownlist flow_previewUI_displayModeDrop "" items:#("Point Cloud","Proxy","Mesh","Placement points","Textured mesh") pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58))))) tooltip:"Placement points shows one point per placement. Textured mesh uses instanced geometry with source materials and leaf cutouts. Display limits affect preview only."
         label flow_previewUI_displayModeDrop_caption "Display mode" pos:[6,6] width:(displayUI.width-12) height:18
         dropdownlist flow_previewUI_proxyShapeDrop "" items:#("Box","Sphere","Pyramid") pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
         label flow_previewUI_proxyShapeDrop_caption "Proxy shape" pos:[6,6] width:(displayUI.width-12) height:18
@@ -15945,7 +17211,7 @@ initialRollupState:0x8
         label flow_previewUI_instancesLimitSpin_caption "Idle instances:" pos:[6,6] width:(displayUI.width-12) height:18
         spinner flow_previewUI_faceLimitSpin "" range:[0,2147483647,2000000] type:#integer fieldWidth:58 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/160))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/160)))))
         label flow_previewUI_faceLimitSpin_caption "Idle triangles:" pos:[6,6] width:(displayUI.width-12) height:18
-        dropdownlist flow_previewUI_identificationDrop "" items:#("Model","Layer","Bands") pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58))))) tooltip:"Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged."
+        dropdownlist flow_previewUI_identificationDrop "" items:#("Model","Layer","Bands") pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58))))) tooltip:"Identification colors for simplified previews. Choose Textured mesh in Display mode for source materials, UV textures and leaf cutouts."
         label flow_previewUI_identificationDrop_caption "Color by" pos:[6,6] width:(displayUI.width-12) height:18
         radiobuttons flow_previewUI_pointColorRadio "" labels:#("Solid Color","Identification Colors") columns:1 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
         label flow_previewUI_pointColorRadio_caption "Preview color" pos:[6,6] width:(displayUI.width-12) height:18
@@ -15983,7 +17249,7 @@ initialRollupState:0x8
         local flow_previewUI_controlsReady=false
         fn flow_previewUI_syncDisplay = (
             flow_previewUI_radiusMetricDrop.selection=flow_previewUI_obj.radiusDisplayMetric
-            flow_previewUI_displayModeDrop.selection=if flow_previewUI_obj.groupCenters then 4 else flow_previewUI_obj.viewportMode;flow_previewUI_proxyShapeDrop.selection=flow_previewUI_obj.proxyShape
+            flow_previewUI_displayModeDrop.selection=if flow_previewUI_obj.groupCenters then 4 else if flow_previewUI_obj.viewportMode==3 and flow_previewUI_obj.identificationMode==4 then 5 else flow_previewUI_obj.viewportMode;flow_previewUI_proxyShapeDrop.selection=flow_previewUI_obj.proxyShape
             flow_previewUI_proxyShapeDrop.visible=flow_previewUI_obj.viewportMode==2
             flow_previewUI_instancesLimitSpin.visible=flow_previewUI_obj.viewportMode==2;flow_previewUI_faceLimitSpin.visible=flow_previewUI_obj.viewportMode==3
             flow_previewUI_navigationPointsSpin.visible=flow_previewUI_obj.viewportMode==1;flow_previewUI_navigationInstancesSpin.visible=flow_previewUI_obj.viewportMode==2;flow_previewUI_navigationFacesSpin.visible=flow_previewUI_obj.viewportMode==3
@@ -15992,147 +17258,194 @@ initialRollupState:0x8
             flow_previewUI_instancesLimitSpin.value=flow_previewUI_obj.viewportInstances;flow_previewUI_faceLimitSpin.value=flow_previewUI_obj.viewportFaces
             flow_previewUI_budgetSpin.enabled=flow_previewUI_obj.viewportMode==1;flow_previewUI_pointsSpin.enabled=flow_previewUI_obj.viewportMode==1 and not flow_previewUI_obj.groupCenters
         )
-        fn flow_previewUI_syncControls = (flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;)
+        fn flow_previewUI_syncControls = (flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=if flow_previewUI_obj.identificationMode==4 then 1 else flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;)
         on flow_previewUI_radiusLimitSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_radiusLimitSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_radiusLimitSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayLimit=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_radiusMetricDrop selected v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_radiusMetricDrop"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_radiusMetricDrop"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayMetric=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_radiusAllCheck changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_radiusAllCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_radiusAllCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayAll=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_displayModeDrop selected v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_displayModeDrop"
-            try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.setGroupDisplay v;flow_previewUI_syncControls();flow_previewUI_status.text=flow_previewUI_obj.allStatus();CyrusViewportRedraw())
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_displayModeDrop"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
+            try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (
+            local controller=flow_previewUI_obj
+            undo "Cyrus preview display" on (
+                if v==5 then controller.identificationMode=4 else if controller.identificationMode==4 do controller.identificationMode=1
+                controller.setGroupDisplay (if v==5 then 3 else v)
+            )
+            flow_previewUI_syncControls();flow_previewUI_status.text=controller.allStatus();CyrusViewportRedraw()
+        )
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_proxyShapeDrop selected v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_proxyShapeDrop"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_proxyShapeDrop"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.proxyShape=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();flow_previewUI_status.text=flow_previewUI_obj.allStatus();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_navigationPointsSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_navigationPointsSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_navigationPointsSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.viewportNavigationPoints=v;flow_previewUI_obj.refreshDisplay();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_navigationInstancesSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_navigationInstancesSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_navigationInstancesSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.viewportNavigationInstances=v;flow_previewUI_obj.refreshDisplay();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_navigationFacesSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_navigationFacesSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_navigationFacesSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.viewportNavigationFaces=v;flow_previewUI_obj.refreshDisplay();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_instancesLimitSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_instancesLimitSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_instancesLimitSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.viewportInstances=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();flow_previewUI_status.text=flow_previewUI_obj.allStatus();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_faceLimitSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_faceLimitSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_faceLimitSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.viewportFaces=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();flow_previewUI_status.text=flow_previewUI_obj.allStatus();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_previewCheck changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_previewCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_previewCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.showPoints=v;CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_pointsSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_pointsSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_pointsSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.pointsPerPlant=v;flow_previewUI_obj.markInputDirty();flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_iconSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_iconSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_iconSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do flow_previewUI_obj.iconSize=v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_refreshButton pressed do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_refreshButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_refreshButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.refreshAll();flow_previewUI_status.text=flow_previewUI_obj.allStatus();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_clearBakedButton pressed do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_clearBakedButton"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_clearBakedButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do flow_previewUI_obj.clearAllBaked()
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_autoRenderCheck changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_autoRenderCheck"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_autoRenderCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.autoRender=v;flow_previewUI_obj.markInputDirty();flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_budgetSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_budgetSpin"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_budgetSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.previewBudget=v;flow_previewUI_obj.markInputDirty();flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
-        fn flow_previewUI_selectIdentification value = (flow_previewUI_obj.identificationMode=value;flow_previewUI_identificationDrop.selection=value;flow_previewUI_obj.refreshIdentification())
+        fn flow_previewUI_selectIdentification value = (flow_previewUI_obj.identificationMode=value;flow_previewUI_obj.refreshIdentification();flow_previewUI_syncControls())
         on flow_previewUI_identificationDrop selected v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_identificationDrop"
-            try (flow_previewUI_selectIdentification v
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_identificationDrop"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
+            try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do flow_previewUI_selectIdentification v
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_pointColorRadio changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_pointColorRadio"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_pointColorRadio"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.pointColorMode=v;flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on flow_previewUI_solidColorPicker changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
-            local action=CyrusBeginAction root "flow_previewUI_solidColorPicker"
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_solidColorPicker"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.solidPointColor=v;flow_previewUI_obj.markInputDirty();flow_previewUI_syncControls();CyrusViewportRedraw())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn flow_previewUI_bind layer = (
             local next=flow_previewUI_root
@@ -16140,7 +17453,7 @@ initialRollupState:0x8
             if flow_previewUI_obj!=next do ()
             flow_previewUI_obj=next;flow_previewUI_parentView=(CyrusContainerPanel flow_previewUI_root)
             for c in #(flow_previewUI_previewCheck,flow_previewUI_displayModeDrop,flow_previewUI_proxyShapeDrop,flow_previewUI_instancesLimitSpin,flow_previewUI_faceLimitSpin,flow_previewUI_identificationDrop,flow_previewUI_pointColorRadio,flow_previewUI_solidColorPicker,flow_previewUI_budgetSpin,flow_previewUI_navigationPointsSpin,flow_previewUI_navigationInstancesSpin,flow_previewUI_navigationFacesSpin,flow_previewUI_limitsHint,flow_previewUI_pointsSpin,flow_previewUI_radiusLimitSpin,flow_previewUI_radiusMetricDrop,flow_previewUI_radiusAllCheck,flow_previewUI_radiusHint,flow_previewUI_iconSpin,flow_previewUI_refreshButton,flow_previewUI_autoRenderCheck,flow_previewUI_clearBakedButton,flow_previewUI_status) do c.enabled=true
-            try (undo off ((flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;flow_previewUI_controlsReady=true;(flow_previewUI_previewCheck.checked=flow_previewUI_obj.showPoints;flow_previewUI_pointsSpin.value=flow_previewUI_obj.pointsPerPlant;flow_previewUI_iconSpin.value=flow_previewUI_obj.iconSize)))) catch(flow_previewUI_binding=false;flow_previewUI_controlsReady=true;throw())
+            try (undo off ((flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=if flow_previewUI_obj.identificationMode==4 then 1 else flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;flow_previewUI_controlsReady=true;(flow_previewUI_previewCheck.checked=flow_previewUI_obj.showPoints;flow_previewUI_pointsSpin.value=flow_previewUI_obj.pointsPerPlant;flow_previewUI_iconSpin.value=flow_previewUI_obj.iconSize)))) catch(flow_previewUI_binding=false;flow_previewUI_controlsReady=true;throw())
             flow_previewUI_controlsReady=true;flow_previewUI_binding=false
         )
         -- A dotNetControl has both a managed child and a native rollout host.
@@ -16263,12 +17576,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(flow_previewUI_displayModeDrop.selection==1 or flow_previewUI_displayModeDrop.selection==4),(flow_previewUI_displayModeDrop.selection==2),(flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5),(flow_previewUI_displayModeDrop.selection!=5),(flow_previewUI_pointColorRadio.state==1),flow_previewUI_previewCheck.text,flow_previewUI_pointColorRadio.text,flow_previewUI_limitsHint.text,flow_previewUI_radiusAllCheck.text,flow_previewUI_radiusHint.text,flow_previewUI_refreshButton.text,flow_previewUI_autoRenderCheck.text,flow_previewUI_clearBakedButton.text,flow_previewUI_status.text,flow_previewUI_displayModeDrop_caption.text,flow_previewUI_proxyShapeDrop_caption.text,flow_previewUI_instancesLimitSpin_caption.text,flow_previewUI_faceLimitSpin_caption.text,flow_previewUI_identificationDrop_caption.text,flow_previewUI_pointColorRadio_caption.text,flow_previewUI_solidColorPicker_caption.text,flow_previewUI_budgetSpin_caption.text,flow_previewUI_navigationPointsSpin_caption.text,flow_previewUI_navigationInstancesSpin_caption.text,flow_previewUI_navigationFacesSpin_caption.text,flow_previewUI_pointsSpin_caption.text,flow_previewUI_radiusLimitSpin_caption.text,flow_previewUI_radiusMetricDrop_caption.text,flow_previewUI_iconSpin_caption.text,flow_previewUI_previewCheck.visible,flow_previewUI_displayModeDrop.visible,flow_previewUI_proxyShapeDrop.visible,flow_previewUI_instancesLimitSpin.visible,flow_previewUI_faceLimitSpin.visible,flow_previewUI_identificationDrop.visible,flow_previewUI_pointColorRadio.visible,flow_previewUI_solidColorPicker.visible,flow_previewUI_budgetSpin.visible,flow_previewUI_navigationPointsSpin.visible,flow_previewUI_navigationInstancesSpin.visible,flow_previewUI_navigationFacesSpin.visible,flow_previewUI_limitsHint.visible,flow_previewUI_pointsSpin.visible,flow_previewUI_radiusLimitSpin.visible,flow_previewUI_radiusMetricDrop.visible,flow_previewUI_radiusAllCheck.visible,flow_previewUI_radiusHint.visible,flow_previewUI_iconSpin.visible,flow_previewUI_refreshButton.visible,flow_previewUI_autoRenderCheck.visible,flow_previewUI_clearBakedButton.visible,flow_previewUI_status.visible,flow_previewUI_limitsHint.height,flow_previewUI_radiusHint.height,flow_previewUI_status.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos displayUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             flow_previewUI_radiusHint.visible=false
             rowControls=#(flow_previewUI_displayModeDrop);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -16330,7 +17646,7 @@ initialRollupState:0x8
                 if not stackedCaption then (flow_previewUI_instancesLimitSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];flow_previewUI_instancesLimitSpin_caption.width=cellWidth-78) else (flow_previewUI_instancesLimitSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_instancesLimitSpin_caption.width=cellWidth);flow_previewUI_instancesLimitSpin_caption.enabled=flow_previewUI_instancesLimitSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_previewUI_navigationFacesSpin);show=(true and (flow_previewUI_displayModeDrop.selection==3))
+            rowControls=#(flow_previewUI_navigationFacesSpin);show=(true and (flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5))
             for c in rowControls where c.visible!=show do c.visible=show
             if flow_previewUI_navigationFacesSpin_caption.visible!=show do flow_previewUI_navigationFacesSpin_caption.visible=show
             if show do (
@@ -16342,7 +17658,7 @@ initialRollupState:0x8
                 if not stackedCaption then (flow_previewUI_navigationFacesSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];flow_previewUI_navigationFacesSpin_caption.width=cellWidth-78) else (flow_previewUI_navigationFacesSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_navigationFacesSpin_caption.width=cellWidth);flow_previewUI_navigationFacesSpin_caption.enabled=flow_previewUI_navigationFacesSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_previewUI_faceLimitSpin);show=(true and (flow_previewUI_displayModeDrop.selection==3))
+            rowControls=#(flow_previewUI_faceLimitSpin);show=(true and (flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5))
             for c in rowControls where c.visible!=show do c.visible=show
             if flow_previewUI_faceLimitSpin_caption.visible!=show do flow_previewUI_faceLimitSpin_caption.visible=show
             if show do (
@@ -16364,7 +17680,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_previewUI_identificationDrop);show=(true and (true))
+            rowControls=#(flow_previewUI_identificationDrop);show=(true and (flow_previewUI_displayModeDrop.selection!=5))
             for c in rowControls where c.visible!=show do c.visible=show
             if flow_previewUI_identificationDrop_caption.visible!=show do flow_previewUI_identificationDrop_caption.visible=show
             if show do (
@@ -16517,7 +17833,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;displayUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;displayUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "displayUI.layout"
@@ -16547,11 +17863,13 @@ initialRollupState:0x8
         fn status = (if flow_previewUI_controlsReady do flow_previewUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on displayUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos displayUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on displayUI open do (controlsReady=false)
@@ -16565,7 +17883,7 @@ initialRollupState:0x8
     rollout statisticsUI "" width:#cmdPanel category:120 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
         local hostPage=undefined
-        local layout,lastLayoutWidth=0
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
         label detailsUI_info "Statistics describe the last build." pos:[8,8] width:((statisticsUI.width-16-((amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))) height:300
         button detailsUI_refreshButton "Read cached statistics" pos:[8,8] width:((statisticsUI.width-16-((amin 2 (amax 1 (floor ((statisticsUI.width-8)/132.4))))-1)*4)/(amin 2 (amax 1 (floor ((statisticsUI.width-8)/132.4))))) tooltip:"Read the existing calculation statistics without regenerating placements." height:22
         button detailsUI_helpButton "Layer / display help" pos:[8,8] width:((statisticsUI.width-16-((amin 2 (amax 1 (floor ((statisticsUI.width-8)/132.4))))-1)*4)/(amin 2 (amax 1 (floor ((statisticsUI.width-8)/132.4))))) tooltip:"Explain settings ownership, display budgets, evaluation order and policy limits." height:22
@@ -16589,18 +17907,22 @@ initialRollupState:0x8
         )
         fn detailsUI_bind layer = (detailsUI_refreshStats();detailsUI_controlsReady=true)
         on detailsUI_refreshButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (
-            local action=CyrusBeginAction root "detailsUI_refreshButton"
+            local eventPanel=panel,action=CyrusBeginAction root "detailsUI_refreshButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit statisticsUI refresh:false
             try (detailsUI_bind detailsUI_owner
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (
-            local action=CyrusBeginAction root "detailsUI_helpButton"
+            local eventPanel=panel,action=CyrusBeginAction root "detailsUI_helpButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit statisticsUI refresh:false
             try (messageBox (detailsUI_info.text+"\n\nLayers own surfaces, models, population and transforms. Paint Areas bind individual surfaces and union vector coverage. Feather curves control density and multiply random scale. Include/Exclude and collision rules still apply.\n\nManual retains the previous complete build until Update. Live updates relevant edits. Failed builds preserve the last complete result. Vector painting supports terrain, spheres, boxes and manifold curved meshes. Curved strokes follow the surface without painting through to the opposite side. Degenerate or nonmanifold geometry requires repair.") title:"Cyrus layer help"
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         local workflowUI_bodyHeight=0
         local workflowUI_controlsReady=false,workflowUI_binding=false
@@ -16688,37 +18010,45 @@ initialRollupState:0x8
             )
         )
         on diagnosticsUI_startButton pressed do if controlsReady and not binding and root!=undefined and diagnosticsUI_controlsReady and not diagnosticsUI_binding and true do (
-            local action=CyrusBeginAction root "diagnosticsUI_startButton"
+            local eventPanel=panel,action=CyrusBeginAction root "diagnosticsUI_startButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit statisticsUI refresh:false
             try (try(diagnosticsUI_startRecording())catch(messageBox (getCurrentException()) title:"Cyrus diagnostics")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diagnosticsUI_stopButton pressed do if controlsReady and not binding and root!=undefined and diagnosticsUI_controlsReady and not diagnosticsUI_binding and true do (
-            local action=CyrusBeginAction root "diagnosticsUI_stopButton"
+            local eventPanel=panel,action=CyrusBeginAction root "diagnosticsUI_stopButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit statisticsUI refresh:false
             try ((cyrusDiagnosticStop();diagnosticsUI_refresh())
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diagnosticsUI_saveButton pressed do if controlsReady and not binding and root!=undefined and diagnosticsUI_controlsReady and not diagnosticsUI_binding and true do (
-            local action=CyrusBeginAction root "diagnosticsUI_saveButton"
+            local eventPanel=panel,action=CyrusBeginAction root "diagnosticsUI_saveButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit statisticsUI refresh:false
             try (try(
             local path=getSaveFileName caption:"Save Cyrus engineering report" types:"JSON report (*.json)|*.json|" filename:"Cyrus-diagnostics.json"
             diagnosticsUI_saveReport path
         )catch(messageBox (getCurrentException()) title:"Cyrus diagnostics")
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on diagnosticsUI_refreshButton pressed do if controlsReady and not binding and root!=undefined and diagnosticsUI_controlsReady and not diagnosticsUI_binding and true do (
-            local action=CyrusBeginAction root "diagnosticsUI_refreshButton"
+            local eventPanel=panel,action=CyrusBeginAction root "diagnosticsUI_refreshButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit statisticsUI refresh:false
             try (diagnosticsUI_refresh()
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
@@ -16838,12 +18168,15 @@ initialRollupState:0x8
             )
             true
         )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,detailsUI_info.text,detailsUI_refreshButton.text,detailsUI_helpButton.text,workflowUI_steps.text,workflowUI_help.text,diagnosticsUI_startButton.text,diagnosticsUI_stopButton.text,diagnosticsUI_saveButton.text,diagnosticsUI_refreshButton.text,diagnosticsUI_statusInfo.text,diagnosticsUI_scopeInfo.text,detailsUI_info.visible,detailsUI_refreshButton.visible,detailsUI_helpButton.visible,workflowUI_steps.visible,workflowUI_help.visible,diagnosticsUI_startButton.visible,diagnosticsUI_stopButton.visible,diagnosticsUI_saveButton.visible,diagnosticsUI_refreshButton.visible,diagnosticsUI_statusInfo.visible,diagnosticsUI_scopeInfo.visible,detailsUI_info.height,workflowUI_steps.height,workflowUI_help.height,diagnosticsUI_statusInfo.height,diagnosticsUI_scopeInfo.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
                 local measuredResult=(
 
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos statisticsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
             workflowUI_steps.visible=false;workflowUI_help.visible=false;diagnosticsUI_scopeInfo.visible=false
             rowControls=#(detailsUI_info);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
@@ -16904,7 +18237,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;statisticsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;statisticsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
 
                 )
                 CyrusMeasureEnd measurement measuredOwner measuredEpoch "statisticsUI.layout"
@@ -16938,11 +18271,13 @@ initialRollupState:0x8
         fn refreshStats = (if detailsUI_controlsReady do detailsUI_refreshStats();if controlsReady do layout();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
-            local action=CyrusBeginAction root "advancedToggle"
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit statisticsUI refresh:false
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
-            )catch(CyrusEndAction action;throw())
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
         on statisticsUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos statisticsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on statisticsUI open do (controlsReady=false)
@@ -16951,15 +18286,40 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.86.6.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.86.8" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
+        button upgradeButton "Upgrade scene to 0.86.8" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
+        timer bindTimer interval:1 active:false
+        timer pageTimer interval:16 active:false
+        local mountQueue=#(),deferBodies=false
+        local bind,requestBind,eventPage=0,eventDepth=0,eventRefresh=false,pendingPages=#(),pendingAll=false,pendingOwner=undefined
+        fn beginPageEdit section refresh:true = (
+            eventDepth+=1
+            if eventDepth==1 do (eventPage=findItem editors section;eventRefresh=refresh)
+            true
+        )
+        fn endPageEdit = (
+            if eventDepth==1 and eventRefresh and findItem #(6,8,9,11) eventPage>0 do requestBind()
+            eventDepth=amax 0 (eventDepth-1)
+            if eventDepth==0 do (eventPage=0;eventRefresh=false;if pendingAll or pendingPages.count>0 do bindTimer.active=controlsReady)
+            true
+        )
+        fn requestBind = (
+            if not controlsReady do return false
+            if eventDepth==0 do return bind()
+            -- These pages change authored fields without changing layer identity.
+            -- Selection/structure actions and unknown callers retain a full bind.
+            if findItem #(6,8,9,11) eventPage==0 then pendingAll=true
+            else for index in #(eventPage,1,2,12) where findItem pendingPages index==0 do append pendingPages index
+            pendingOwner=owner;true
+        )
         fn layoutPanels = (for i=1 to editors.count where editors[i].controlsReady and slots[i].open do editors[i].layout();true)
         fn resizeSection index = (
             if resizing or index>editors.count do return false
@@ -17029,7 +18389,7 @@ initialRollupState:0x8
             ) else section.controlsReady=false
             true
         )
-        fn bindEditors = (
+        fn bindEditors pages:undefined = (
             if not controlsReady or layerBinding do return false
             layerBinding=true
             try (
@@ -17038,25 +18398,31 @@ initialRollupState:0x8
                     if CyrusBrushSessionRoot==root do CyrusStopBrush()
                     max select
                     owner=nextOwner
+                    pages=undefined
                     for r in editors do (r.root=root;r.owner=owner;r.panel=mainUI;r.controlsReady=false;r.obj=undefined)
                 )
                 local showPages=owner!=undefined
                 for i=1 to editors.count do (
                     local visible=not editors[i].layerPage or showPages
                     if not pagesArranged or layerPagesVisible!=showPages do if not (cyrusSetRolloutVisible slots[i].hwnd visible (i*10)) do throw "Cannot arrange Cyrus settings."
-                    if visible do bindSection editors[i]
+                    if visible and (pages==undefined or findItem pages i>0 or not editors[i].controlsReady) do (
+                        if deferBodies and i>2 and slots[i].open and not editors[i].isDisplayed then (
+                            if findItem mountQueue i==0 do append mountQueue i
+                        ) else bindSection editors[i]
+                    )
                 )
                 pagesArranged=true;layerPagesVisible=showPages;refreshTitles();layerBinding=false;true
             )catch(layerBinding=false;throw())
         )
-        fn bind = (
+        fn bind pages:undefined = (
             if binding or not controlsReady or root==undefined do return false
             binding=true
             try (
                 enabledCheck.checked=root.cyrusEnabled;updateRadio.state=root.updateMode
+                upgradeButton.visible=root.needsClearanceUpgrade()
+                mainUI.height=ceil ((if upgradeButton.visible then 168 else 140)*GetUIScaleFactor())
                 updateHint.text=if root.updateMode==1 then "Pending edits wait for Update." else "Updates after relevant edits."
-                bindEditors();binding=false;refreshStats()
-                if mainUI.isDisplayed do cyrusSetRolloutVisible mainUI.hwnd true 0
+                bindEditors pages:pages;binding=false;refreshStats()
                 true
             )catch(binding=false;throw())
         )
@@ -17074,7 +18440,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.6.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.8 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
@@ -17097,18 +18463,46 @@ initialRollupState:0x8
                 slots[2].open=(root.validSurfaces()).count==0;slots[1].open=true
             )
             cyrusSetRolloutVisible mainUI.hwnd true 0
+            deferBodies=true;mountQueue=#()
             controlsReady=true;bind();rememberViews()
+            pageTimer.active=mountQueue.count>0
+            if not pageTimer.active do deferBodies=false
             -- Max measured these pages before bind assigned their final heights.
             -- Reflow once after all bodies, including the container, are ready.
             cyrusSetRolloutVisible mainUI.hwnd true 0
         )
         on mainUI close do (
-            controlsReady=false;statusTimer.active=false;mountTimer.active=false
+            controlsReady=false;statusTimer.active=false;mountTimer.active=false;bindTimer.active=false;pageTimer.active=false
+            mountQueue=#();deferBodies=false
+            pendingPages=#();pendingAll=false;pendingOwner=undefined;eventPage=0;eventDepth=0;eventRefresh=false
             for slot in slots do cyrusReleaseRolloutScroll slot.hwnd
             for r in editors do (r.controlsReady=false;r.root=undefined;r.owner=undefined;r.obj=undefined)
             roots=#();editors=#();slots=#();owner=undefined;layerPagesVisible=false
             if root!=undefined do root.updateUI=root.surfaceUI=root.previewUI=root.layersUI=undefined
             root=undefined
+        )
+        on pageTimer tick do (
+            if not controlsReady or root==undefined do (pageTimer.active=false;return false)
+            if CyrusInteractionHeld() do return false
+            pageTimer.active=false
+            -- Two complete sections per dispatch avoids a full twelve-section
+            -- freeze without paying a host rollup reflow for every small page.
+            for step=1 to 2 while mountQueue.count>0 do (
+                local index=mountQueue[1];deleteItem mountQueue 1
+                -- Resolve the current owner at dispatch; a queued body must never
+                -- write/bind the layer captured before a selection change.
+                if slots[index].open and (not editors[index].layerPage or owner!=undefined) do bindSection editors[index]
+            )
+            if mountQueue.count>0 then pageTimer.active=true
+            else (deferBodies=false;rememberViews())
+            true
+        )
+        on bindTimer tick do (
+            bindTimer.active=false
+            if not controlsReady or root==undefined do return false
+            local pages=if pendingAll or pendingOwner!=owner then undefined else pendingPages
+            pendingPages=#();pendingAll=false;pendingOwner=undefined
+            bind pages:pages
         )
         on statusTimer tick do (
             statusTimer.active=false
@@ -17119,6 +18513,7 @@ initialRollupState:0x8
             if sourceChanges then root.bindNativeUI() else refreshStats()
         )
         on licenseButton pressed do CyrusOpenLicenseDialog()
+        on upgradeButton pressed do try(root.upgradeClearanceScene())catch(messageBox (getCurrentException()) title:"Cyrus scene upgrade")
         on enabledCheck changed value do if controlsReady and root!=undefined and not binding and CyrusLicenseCanEdit() do (local action=CyrusBeginAction root "setup_enabled";try(undo "Cyrus enabled" on root.cyrusEnabled=value;root.invalidateGroups();bind();CyrusEndAction action)catch(CyrusEndAction action;throw()))
         on updateNow pressed do if controlsReady and root!=undefined and not binding and CyrusLicenseCanEdit() do (local action=CyrusBeginAction root "explicit_update";try(root.refreshAll();CyrusViewportRedraw();CyrusEndAction action)catch(CyrusEndAction action;throw()))
         on updateRadio changed value do if controlsReady and root!=undefined and not binding and CyrusLicenseCanEdit() do (local action=CyrusBeginAction root "update_mode";try(root.updateMode=value;root.markInputDirty();bind();CyrusViewportRedraw();CyrusEndAction action)catch(CyrusEndAction action;throw()))
@@ -17272,8 +18667,8 @@ initialRollupState:0x8
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version!=58 do procSchemaValid=false
-        this.procAssertSchema()
+        if version==58 then clearanceUpgradePending=true else if version!=59 do procSchemaValid=false
+        if not procSchemaValid do throw "Unsupported Cyrus scene schema; the scene is preserved."
         syncColors();markInputDirty()
     )
     on attachedToNode n do (n.renderable=false;n.wirecolor=red;timeOwnerRegistered=false;CyrusRegisterTimeOwner n)
@@ -17743,6 +19138,10 @@ fn CyrusPointSync = (
                     local detail=cyrusRetainedViewportStats owner
                     if detail[10]!=0 then detailStatus="Preview memory allowance reached; showing cached boxes."
                     else if detail[8]>0 do detailStatus="Mesh preview uses cached boxes to fit the triangle limit."
+                    if n.baseObject.identificationMode==4 do for cache in caches do (
+                        local materialStatus=cyrusMaterialPreviewStatus cache
+                        if materialStatus!="" do detailStatus=materialStatus
+                    )
                 )
             )
             append records #(n,owner,caches,styles,fallback,2)

@@ -2,6 +2,21 @@
 
 Status: Max 2027 qualification and installer verification passed. Delivered without installation. Phase 6 remains paused.
 
+**20 October follow-up investigation:** [panel loading and threading research](PANEL_THREADING_20261020.md)
+inspects the retained architecture and adds a small frozen 0.86.6.2 / Max 2027
+timing probe. It separates two-section/all-open construction from warm binding,
+documents safe worker boundaries and recommends reduced UI work before thread
+offloading. It implements no performance correction and does not relabel the
+historical qualification below. B21 remains open.
+
+**20 October planning follow-up:** the [combined UI/content implementation plan](../preset-gallery-improvements/UI_AND_CONTENT_IMPLEMENTATION_PLAN.md)
+defines current-baseline measurement, affected-page updates, independent layout,
+deeper lazy construction and conditional queued work, with lifecycle and
+three-host delivery gates. That planning report claims no new speedup by itself.
+The later [0.86.7.1 delivery](../preset-gallery-improvements/DELIVERY_08671.md)
+records scoped refresh/layout caching, queued section creation, measured results
+and remaining cold construction limits. It preserves the historical evidence below.
+
 ## Scope and delivery identity
 
 The user authorized I01/I02, panel clipping/scaling corrections, Max 2027 testing

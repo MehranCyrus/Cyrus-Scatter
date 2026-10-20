@@ -1,8 +1,37 @@
 # Install and build Cyrus Scatter
 
-The **0.86.6 / schema 58** delivery provides a matched Max 2027 MZP and shareable Windows EXE with eight revised examples and three starter masks. See the [current delivery](plans/preset-gallery-improvements/DELIVERY_0866.md). The earlier [0.86.2 multi-host delivery](plans/preset-gallery-improvements/DELIVERY_0862.md) retains its distinct Max 2024/2026/2027 scope. No artist installation/restart was performed.
+The **0.86.8 / schema 59** delivery provides a matched Max 2027 MZP and Windows EXE. See the [delivery report](plans/source-clearance/DELIVERY_0868.md) for exact evidence and limits. Historical Max 2024/2026 deliveries keep their previous versions. Artist profiles and sessions were not modified or restarted by qualification.
 
 ## Install
+
+Run `dist/CyrusScatter-0.86.8-20261020/CyrusScatter-0.86.8-Setup.exe`.
+Close Max 2027, select its card, then click
+**Install** or **Update**. Detection, validation and storage checks run
+automatically. **Uninstall** keeps shared content and other hosts. Success shows
+**Installation completed**. **Error details** is available only after a failure.
+
+Leave **Install / update plant library** unchecked to update only the plugin
+and reuse the registered library or recognized older runtime's library.
+For new content, place **CyrusScatter-Content-0.86.7.zip** beside the EXE and
+check that option. A missing or mismatched ZIP produces an error before install.
+The installer streams verified files directly into one shared library; it does
+not unpack an extra temporary library or create a copy for each Max version.
+Identical installed content is reused. Content remains revision 0.86.7 because
+the models, materials and previews have not been regenerated.
+
+Alternatively use **Scripting > Run Script** with the matching
+`CyrusScatter-0.86.8-Max2027.mzp`, then **Install/Update** and restart Max.
+The hosted route resolves an existing shared or legacy library. For a fresh
+recipient, use the EXE with the content ZIP and its library checkbox.
+There is no automatic online content download.
+
+Standard profiles for Max 2024, 2026 and 2027 share one selected library.
+Content revision is independent of the plugin revision. Share the content
+separately with recipients who do not have it; the EXE/MZPs contain the plugin.
+Save your work and restart Max after installation. Old paths are retained
+because saved scenes may still reference their textures.
+Corona/Forest plug-ins matching the host are required by the supplied materials.
+The instructions below retain the separate historical 0.86.6 build evidence.
 
 0.86.2 retains the native foundation, Modify-panel scrolling/dragging and library scale corrections. It simplifies [library loading](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md): select terrain, open Cyrus Library and Load onto surface. It retains eight examples, revisioned recipes, selective style, bounded portable assets, grids/orientation, lazy panels, complete supported Paint and mesh-channel density.
 It retains the [0.82.3 idle/panel correction](plans/eleven-phase-roadmap/PERFORMANCE_0823.md),
@@ -11,9 +40,9 @@ the implemented P01–P07 features and the preceding
 The scripts and native modules must be installed and loaded together.
 
 1. Save the scene and use a copy for development-build acceptance.
-2. Run [CyrusScatter-0.86.6-Setup.exe](../dist/CyrusScatter-0.86.6-20261019/CyrusScatter-0.86.6-Setup.exe), choose Max 2027, then Install / Repair. Alternatively, in Max 2027, use **Scripting > Run Script** and select [CyrusScatter-0.86.6-Max2027.mzp](../dist/CyrusScatter-0.86.6-20261019/CyrusScatter-0.86.6-Max2027.mzp). Follow the installer result before restarting.
+2. Run [CyrusScatter-0.86.8-Setup.exe](../dist/CyrusScatter-0.86.8-20261020/CyrusScatter-0.86.8-Setup.exe), select Max 2027 and click **Install/Update**. Alternatively use **Scripting > Run Script** with the matching MZP from that folder. Follow the installer result before restarting.
 3. Restart Max so both scripts and their native modules load together. Do not load a loose new script over older DLLs.
-4. For presets, add **Cyrus Library** from Customize > Cyrus actions to a toolbar/menu, select one terrain mesh and run it. Load onto surface creates the setup or adds layers. Manual creation remains **Geometry > Cyrus > Cyrus Scatter**, then Layer → Surfaces → Models → Amount → Update scatter.
+4. Open **Layers > Recipes** or the **Cyrus Library** action. Plant models offers **Merge model** or **Add to selected layer**. Personal recipes remain separate. Manual setup remains **Geometry > Cyrus > Cyrus Scatter**, then Layer → Surfaces → Models → Amount → Update scatter.
 
 The [0.86.6 package record](plans/preset-gallery-improvements/DELIVERY_0866.md)
 pins the exact archive and qualified bytes. Manual installation, restart and
@@ -40,7 +69,7 @@ Existing Analyzer guides without the new saved freshness record need one explici
 
 ## Installed files and recovery
 
-Standard Max profiles install the immutable runtime under `%LOCALAPPDATA%/CyrusScatter/<year>/r/<content-id>`. An explicitly relocated profile uses `<profile>/cs/r/<content-id>`. The short archive names are mapped back to their full logical library paths during verified installation. The release contains the matching script, native modules, managed gallery and immutable `Library-0.86.2`. Startup, macros, the install receipt and plugin registration remain in the selected Max profile and point to that complete release. Personal recipes in `Documents/CyrusScatter/Library` and activation are preserved. Older `userScripts/CyrusScatter/Releases/` directories remain recovery content. Analyzer uses its separate installer and directory. No compiler or SDK is required to use either built Scatter installer.
+Standard Max profiles install the immutable runtime under `%LOCALAPPDATA%/CyrusScatter/<year>/r/<content-id>`. An explicitly relocated profile uses `<profile>/cs/r/<content-id>`. The release contains the matching script, native modules, managed gallery and a small `LibraryBinding.txt`. Standard profiles resolve `%LOCALAPPDATA%/CyrusScatter/library-state.txt` to the selected shared library. Startup, macros, the install receipt and plugin registration remain in the selected Max profile and point to that complete release. Personal recipes in `Documents/CyrusScatter/Library` and activation are preserved. Older runtime/library paths remain recovery content. Analyzer uses its separate installer and directory. No compiler or SDK is required to use either built Scatter installer.
 
 Both routes use the same hash-verified staging and journal recovery engine. A locked file or changed registration can reject installation while preserving the preceding bindings. Save your work and follow the reported recovery/restart guidance. Old release folders, imported texture storage and personal recipes are intentionally retained; unregistering is not a general disk cleanup.
 

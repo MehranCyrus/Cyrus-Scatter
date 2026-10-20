@@ -1,15 +1,19 @@
 # Cyrus Scatter documentation
 
 Current standalone Physics Lab: [0.2.1 small baked collider repair](Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md), [artist guide](Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md) and [bake/checkbox/material qualification](Scatter_Physics_Research_2026-10-16/BAKE_WORKFLOW_020.md). Earlier Physics Lab reports retain their versioned scope.
-**Current delivery: 0.86.6, schema 58, scoped Max 2027 qualification.** [Exact MZP/EXE and evidence](plans/preset-gallery-improvements/DELIVERY_0866.md). Earlier deliveries and independent Physics Lab reports retain their own scope. The execution ledger records remaining work.
+**Current delivery: 0.86.8, schema 59, Max 2027.** [Source clearance, UI, packages and qualification](plans/source-clearance/DELIVERY_0868.md). Historical [0.86.7.2 three-host receipts](plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) and independent Physics Lab reports retain their own scope. The execution ledger records remaining work.
 
 | Need | Current source |
 | --- | --- |
 | Use the plugin | [Artist guide](ARTIST_GUIDE.md), [Layout and falloff](LAYOUT_AND_FALLOFF.md) |
-| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.6 delivery and artist checklist](plans/preset-gallery-improvements/DELIVERY_0866.md) |
+| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.8 delivery and artist checklist](plans/source-clearance/DELIVERY_0868.md) |
 | Understand source and behavioral guarantees | [Architecture](ARCHITECTURE.md), [engineering foundation](ENGINEERING_FOUNDATION.md) |
+| Plan source radius, clearance and layer priority | [Implementation plan](plans/source-clearance/IMPLEMENTATION_PLAN.md) and [validation matrix](plans/source-clearance/VALIDATION.md) — implemented hierarchy, native C++ rules, deterministic priority, cleanup/refill, persistence and UI; the delivery report distinguishes exercised checks from the broader matrix |
+| Understand panel latency and possible threading | [20 October investigation and measured baseline](plans/panel-performance-0826/PANEL_THREADING_20261020.md) — UI-thread boundaries, existing laziness, fresh bounded probe and implementation recommendation; B21 remains open |
+| Follow shared content and panel work | [0.86.7.2 implementation/evidence](plans/preset-gallery-improvements/DELIVERY_08672.md), [remaining plan](plans/preset-gallery-improvements/UI_AND_CONTENT_IMPLEMENTATION_PLAN.md), [installer/source and Chaos/ITOOSOFT research](plans/preset-gallery-improvements/SHARED_CONTENT_RESEARCH_20261020.md) |
 | Find next features or unresolved defects | [Execution ledger](plans/improvement-program/PROGRESS.md), [backlog](BACKLOG.md) |
 | Review preset/library support | [Current gallery contract map and remaining adapters](plans/preset-gallery-improvements/README.md), [artist workflow](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md) |
+| Review the individual library's current changes | [0.86.7 thumbnail, material viewport and source controls](plans/preset-gallery-improvements/DELIVERY_0867.md); the [0.86.6.2 handoff](plans/preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md) preserves the original findings |
 | Prepare the real-model plant library | [Guideline and AI handoff](plans/preset-gallery-improvements/real-model-library/README.md), [24-preset catalog](plans/preset-gallery-improvements/real-model-library/PRESETS.md), [roadmap](plans/preset-gallery-improvements/real-model-library/ROADMAP.md) and [validation](plans/preset-gallery-improvements/real-model-library/VALIDATION.md) — planned work; no new presets qualified |
 | Follow product and automation direction | [Product/AI roadmap](PRODUCT_AND_AI_ROADMAP.md), [MCP guide](../CyrusMCP/README.md), [maintained capability matrix](Current_System_2026-10-05/CAPABILITY_MATRIX.md) |
 | Develop consistently | [Agent workflow](AGENT_WORKFLOW.md), [versioning](Release_Versioning.md), [documentation policy](DOCUMENTATION.md) |

@@ -1,4 +1,5 @@
--- Bounded data-only recipes. Scene mutation is confined to CyrusRecipeImport.
+-- Bounded data-only recipes and installed individual models. Scene mutation is
+-- confined to the explicit recipe import and model merge commands.
 global CyrusRecipeBrowser,CyrusRecipeOpenRoot,CyrusRecipeOpenNode,CyrusRecipeOpenSurface,CyrusRecipeScriptDirectory
 global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusLibraryVersion,CyrusRecipeErrorText
 fn CyrusRecipeErrorText value = (
@@ -7,7 +8,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.6.1"
+fn CyrusLibraryVersion = "0.86.8"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -37,6 +38,82 @@ global CyrusRecipeResolve,CyrusRecipeValidateBindings,CyrusRecipeApplyValue,Cyru
 global CyrusRecipeRestorePaint,CyrusRecipeDirectory,CyrusRecipeBundledDirectory,CyrusRecipeSuggestBindings,CyrusOpenPresets,CyrusPresetSameValues,CyrusRecipeViewPreferences,CyrusRecipeIsBundled,CyrusRecipeEditDetails,CyrusRecipeDetailEditor,CyrusRecipeDetailOpenData
 global CyrusOpenAssetExport,CyrusOpenAssetImport,CyrusOpenReadyPreset,CyrusPresetPackageDirectory,CyrusPresetSaveReady,CyrusPresetReviseReady
 global CyrusRecipeFields,CyrusRecipeSchemaCache=undefined
+global CyrusModelMerge
+fn CyrusModelMerge catalog entry owner:undefined = (
+    CyrusRequireAuthor()
+    if findItem #(2024,2026,2027) ((maxVersion())[1]/1000+1998)==0 do throw "The individual model library requires Max 2024, 2026 or 2027."
+    if theHold.Holding() do throw "Finish the current scene operation before merging a library model."
+    if owner!=undefined do (
+        if classof owner!=AminScatterObject do throw "Choose a Scatter layer before adding this model."
+        if owner.containerProvider()!=undefined do throw "This layer uses shared source containers. Merge the model, then place it inside its source container."
+        if owner.sources.count>=1024 do throw "The selected layer has reached its source registration limit."
+    )
+    catalog.VerifyScene entry
+    local scene=entry.Scene,expectedName=entry.NodeName,missing=#()
+    -- Header inspection must collect missing dependencies before an abort can
+    -- discard their names. No scene objects are merged by this read-only call.
+    local names=getMAXFileObjectNames scene quiet:true missingDLLsAction:#logmsg missingDLLsList:&missing
+    if missing==undefined do missing=#()
+    if names.count!=1 or names[1]!=expectedName do throw "The installed model does not contain its declared independent mesh. Reinstall the matching content."
+    local merged=#(),model=undefined,oldSuspended=CyrusPointSuspended,failure=undefined,previousSelection=selection as array
+    theHold.Begin();CyrusPointSuspended=true
+    try (
+        with animate off (
+            if not (mergeMAXFile scene #(expectedName) #autoRenameDups #renameMtlDups #neverReparent quiet:true missingDLLsAction:#logmsg) do throw "The model could not be merged."
+            merged=getLastMergedNodes()
+            if merged.count!=1 do throw "The model merged an unexpected number of nodes."
+            model=merged[1]
+            if not isValidNode model or classof model.baseObject!=Editable_Mesh or isGroupHead model or isGroupMember model or model.parent!=undefined or model.children.count!=0 or model.modifiers.count!=0 do throw "The model is not a prepared independent mesh."
+            -- MAX headers also list unused studio/editor plug-ins. Validate the
+            -- actual merged shader graph inside this rollback transaction.
+            local graph=#(),cursor=1
+            if model.material!=undefined do append graph model.material
+            while cursor<=graph.count do (
+                local shader=graph[cursor];cursor+=1
+                if matchPattern ((classof shader) as string) pattern:"Missing_*" do (
+                    local details=""
+                    for i=1 to amin 8 missing.count do details+=((if i>1 then "; " else "")+missing[i])
+                    throw ("This model contains an unavailable material or texture map. Install its matching material/map plug-ins for this Max version, then retry. File dependency report: "+details)
+                )
+                if superclassof shader==material do for i=1 to getNumSubMtls shader do (
+                    local child=getSubMtl shader i
+                    if child!=undefined do appendIfUnique graph child
+                )
+                for i=1 to getNumSubTexmaps shader do (
+                    local child=getSubTexmap shader i
+                    if child!=undefined do appendIfUnique graph child
+                )
+                if graph.count>4096 do throw "The model exceeds the material/map graph limit."
+            )
+            local maps=#()
+            if model.material!=undefined do (
+                join maps (getClassInstances Bitmaptexture target:model.material)
+                if (try(CoronaBitmap!=undefined)catch(false)) do join maps (getClassInstances CoronaBitmap target:model.material)
+            )
+            if maps.count>4096 do throw "The model exceeds the image-map instance limit."
+            for map in maps do map.filename=catalog.MapPath map.filename
+            model.name=if (getNodeByName entry.Name exact:true)==undefined then entry.Name else uniqueName (entry.Name+" - ")
+            setUserProp model "CyrusLibraryModelID" entry.Id
+            setUserProp model "CyrusLibrarySceneSHA256" entry.SceneHash
+            if owner!=undefined then (
+                if not (owner.addModelSource model) do throw "The selected layer could not accept this source."
+                model.renderable=false;hide model
+            ) else (model.renderable=true;unhide model)
+        )
+        theHold.Accept (if owner==undefined then "Cyrus merge library model" else "Cyrus add library model source")
+    )catch(
+        failure=getCurrentException()
+        theHold.Cancel()
+        -- Merge is not restored by the hold on every supported host. Remove
+        -- only this command's captured nodes, never name-matched scene nodes.
+        with undo off (for node in merged where isValidNode node do delete node)
+        select (for node in previousSelection where isValidNode node collect node)
+    )
+    CyrusPointSuspended=oldSuspended
+    if failure!=undefined do throw failure
+    if owner==undefined do select model
+    CyrusViewportRedraw();model
+)
 -- The matching module's fixed schema is read-only for these consumers. Avoid
 -- rebuilding hundreds of rows for every owner on every explicit capture.
 fn CyrusRecipeFields = (
@@ -109,6 +186,20 @@ fn CyrusRecipeCaptureSettings context owner = (
     )
     for field in (CyrusRecipeFields()) do (
         local key=field[1],kind=field[2],value=if key=="procReceiverVariationIDs" then CyrusReceiverVariationDomains owner else getProperty owner (key as name)
+        if key=="clearanceTargets" do (
+            local packed=#()
+            for targets in value do (
+                local translated=""
+                for id in filterString targets "|" do (
+                    local target=undefined
+                    for candidate in context.root.logicalLayers() do if candidate.layerID==id do target=candidate
+                    if target==undefined do throw "A model clearance target is unavailable. Restore it or choose target layers before saving this recipe."
+                    translated+=(if findItem context.owners target>0 then id else CyrusRecipeRole context target "layer" "model clearance")+"|"
+                )
+                append packed translated
+            )
+            value=packed
+        )
         if projection!=undefined do (
             if key=="densityFrameBasis" do value=basis
             if key=="densityFrameOriginWU" do value=#(projection.row4.x,projection.row4.y,projection.row4.z)
@@ -132,7 +223,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.6.1 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.8 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -163,7 +254,7 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",7),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",8),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified2"),#("sceneSchema",59),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -326,6 +417,15 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
             )
             local endpoints=for pair in identityMap collect pair
             for pair in bindings do append endpoints pair
+            for owner in imported do for index=1 to owner.clearanceTargets.count do (
+                local translated=""
+                for id in filterString owner.clearanceTargets[index] "|" do (
+                    local target=CyrusRecipeResolve endpoints id
+                    if target==undefined or target==owner do throw "A model clearance target needs a different layer binding."
+                    translated+=target.layerID+"|"
+                )
+                owner.clearanceTargets[index]=translated
+            )
             local metres=(units.decodeValue "1m") as double
             for rule in (CyrusRecipeGet document "spacingRelationships") do root.procSetPair (CyrusRecipeGet rule "scope") (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "a")) (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "b")) (CyrusRecipeGet rule "enabled") (CyrusRecipeGet rule "multiplier") ((CyrusRecipeGet rule "gap")*metres) (CyrusRecipeGet rule "planar")
             root.activeLayer=findItem root.layerObjects imported[1]
@@ -360,7 +460,12 @@ fn CyrusRecipeDirectory = (
     pathConfig.appendPath folder "CyrusScatter\\Library"
 )
 fn CyrusRecipeViewPreferences = (pathConfig.appendPath (getDir #plugcfg) "CyrusScatter-Gallery.ini")
-fn CyrusRecipeBundledDirectory version = (pathConfig.appendPath CyrusRecipeScriptDirectory ("Library-"+version))
+fn CyrusRecipeBundledDirectory version = (
+    if not doesFileExist (pathConfig.appendPath CyrusRecipeScriptDirectory "LibraryBinding.txt") do return pathConfig.appendPath CyrusRecipeScriptDirectory ("Library-"+version)
+    dotNet.loadAssembly (pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll")
+    local shared=(dotNetClass "Cyrus.Content.LibraryLocation").ResolveRoot CyrusRecipeScriptDirectory ((maxVersion())[1]/1000+1998)
+    if shared!="" then shared else pathConfig.appendPath CyrusRecipeScriptDirectory ("Library-"+version)
+)
 fn CyrusRecipeSuggestBindings root document = (
     local bindings=#()
     for role in (CyrusRecipeGet document "roles") do (
@@ -710,7 +815,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.6.1 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.8 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -881,14 +986,16 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             if receivers.count==1 do surface=receivers[1]
         )
     )
-    CyrusLibraryCheckSurface surface
-    root=CyrusLibraryDestination surface root
+    if surface!=undefined do (
+        CyrusLibraryCheckSurface surface
+        root=CyrusLibraryDestination surface root
+    )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.6.1 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.8 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.6.1" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.6.1 gallery package."
+    if assemblyName.Version.ToString()!="0.86.8.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.8 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -899,7 +1006,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         try(destroyDialog window)catch()
     )
     rollout browser "Cyrus Library" width:1000 height:680 (
-        local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
+        local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false,modelCatalog=undefined,modelEntries=#()
         dotNetControl panel "CyrusScatter.UI.LibraryPanel" pos:[0,0] width:1000 height:680
         timer scanTimer interval:250 active:false
         fn validRoot = (CyrusRecipeCheckRoot root node)
@@ -911,8 +1018,16 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
         )
         fn selectedEntry = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>entries.count then undefined else entries[i])
+        fn selectedModel = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>modelEntries.count then undefined else modelEntries[i])
+        fn modelsActive = (panel.LibraryIndex==2)
         fn showSelected = (
             panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
+            if modelsActive() do (
+                local entry=selectedModel()
+                panel.DetailText=if entry==undefined then "Choose an individual model." else entry.Name+" | "+entry.Category+"\nMerge this model into the scene, or add it as a source to the selected Scatter layer."
+                panel.SetSelectionActions (entry!=undefined) false false
+                return true
+            )
             local entry=selectedEntry(),i=panel.Gallery.SelectedIndex+1
             if panel.CollectionsView then (
                 panel.DetailText=if i>0 and i<=collections.count then collections[i][1]+" | "+((collections[i][2] as integer) as string)+" recipes" else "Choose a collection, or All recipes in the library tree."
@@ -923,6 +1038,25 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
         )
         fn showPage = (
+            if modelsActive() do (
+                if modelCatalog==undefined do throw "The installed individual model library is unavailable. Reinstall its matching Content folder."
+                scanTimer.active=false;modelEntries=#();bindingControls=true
+                panel.IndividualModels=true;panel.Gallery.BeginPage()
+                local total=modelCatalog.MatchingCount panel.SearchText panel.Category,pages=amax 1 ((ceil (total/128.0)) as integer)
+                page=amax 1 (amin page pages)
+                local first=(page-1)*128,last=amin total (first+128)
+                if first<last do for i=first to last-1 do (
+                    local entry=modelCatalog.MatchingAt panel.SearchText panel.Category i
+                    append modelEntries entry
+                    panel.Gallery.AddItem entry.Id entry.Name entry.Category entry.Thumbnail entry.ThumbnailHash entry.ThumbnailBytes
+                )
+                panel.Gallery.EndPage (if modelEntries.count>0 then 0 else -1)
+                bindingControls=false;panel.SetPage page pages total false
+                panel.LocationText="Plant models / "+(if panel.Category=="" then "All models" else panel.Category)
+                panel.StatusText="Ready: "+(modelCatalog.Count as string)+" individual models; "+(total as string)+" matching."
+                showSelected();return true
+            )
+            panel.IndividualModels=false
             if scan==0 do return false
             local result=cyrusRecipeLibraryPage scan panel.SearchText panel.Category page
             local pages=if panel.CollectionsView then result[12] else result[8]
@@ -949,12 +1083,31 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
                 bindingControls=false
             )
             panel.SetPage page (pages as integer) ((if panel.CollectionsView then result[13] else result[7]) as integer) scanTimer.active
-            panel.LocationText=(#("My recipes","Bundled examples","Custom library"))[panel.LibraryIndex]+" / "+(if panel.CollectionsView then "Collections" else if panel.Category=="" then "All recipes" else panel.Category)
+            panel.LocationText=(#("My recipes","Plant models","Custom library"))[panel.LibraryIndex]+" / "+(if panel.CollectionsView then "Collections" else if panel.Category=="" then "All recipes" else panel.Category)
             panel.StatusText=(if scanTimer.active then "Scanning: " else "Ready: ")+((result[3] as integer) as string)+" recipes; "+((result[4] as integer) as string)+" invalid."+(if result[5] then " Catalog limit reached; choose a smaller folder." else "")+(if categories.count>128 then " Tree shows first 128 collections; use the paged collection tiles for all." else "")+(if result[6]!="" then " "+result[6] else "")
             showSelected();true
         )
         fn refresh = (
             page=1;entries=#();collections=#();categories=#()
+            if panel.LibraryIndex==2 do directory=CyrusRecipeBundledDirectory (CyrusLibraryVersion())
+            if modelsActive() do (
+                scanTimer.active=false
+                if scan!=0 do (try(cyrusRecipeLibraryCancel scan)catch();scan=0L)
+                modelEntries=#();modelCatalog=undefined
+                panel.IndividualModels=true;panel.Gallery.BeginPage();panel.Gallery.EndPage -1
+                panel.BeginCollections();panel.EndCollections();showSelected()
+                if not doesFileExist (pathConfig.appendPath directory "model-catalog.json") do (
+                    panel.StatusText="No plant library is configured. Keep the supplied Content folder beside the installer, then run Install or Update."
+                    return false
+                )
+                modelCatalog=dotNetObject "CyrusScatter.UI.IndividualModelCatalog"
+                modelCatalog.Load directory (CyrusLibraryVersion()) ((maxVersion())[1]/1000+1998)
+                panel.BeginCollections()
+                if modelCatalog.CategoryCount>0 do for i=0 to modelCatalog.CategoryCount-1 do panel.AddCollection (modelCatalog.CategoryAt i)
+                panel.EndCollections();panel.IndividualModels=true
+                return showPage()
+            )
+            panel.IndividualModels=false;modelEntries=#()
             panel.BeginCollections();panel.EndCollections()
             scan=cyrusRecipeLibraryStart #(directory);scanTimer.active=true;showPage()
         )
@@ -970,6 +1123,19 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             true
         )
         fn loadSelected = (
+            if modelsActive() do (
+                local entry=selectedModel()
+                if entry==undefined do throw "Select an individual model."
+                if root==undefined do throw "Select a Cyrus Scatter setup and its destination layer, then open the library again. Use Merge model to place a model directly in the scene."
+                validRoot()
+                local owner=root.selectedLayer()
+                if owner==undefined do throw "Select the destination Scatter layer first."
+                panel.ShowProgress ("Adding "+entry.Name+"...")
+                CyrusModelMerge modelCatalog entry owner:owner
+                root.bindNativeUI()
+                panel.ShowNotice ("Added "+entry.Name+" to "+(root.layerCaption owner)+". "+(if root.updateMode==1 then "Press Update scatter when ready." else "The layer will update in Live mode.")) true
+                return true
+            )
             if scanTimer.active do throw "Wait for the library scan or cancel it before loading."
             if panel.CollectionsView then (
                 local i=panel.Gallery.SelectedIndex+1
@@ -992,6 +1158,14 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             case name of (
                 "selection":showSelected()
                 "load":loadSelected()
+                "merge":(
+                    if not (modelsActive()) do throw "Select an individual model."
+                    local entry=selectedModel()
+                    if entry==undefined do throw "Select an individual model."
+                    panel.ShowProgress ("Merging "+entry.Name+"...")
+                    CyrusModelMerge modelCatalog entry
+                    panel.ShowNotice ("Merged "+entry.Name+" into the scene.") true
+                )
                 "home":(bindingControls=true;panel.SearchText="";bindingControls=false;navigate "" true)
                 "search":(if panel.SearchText!="" and panel.CollectionsView do panel.SetNavigation panel.LibraryIndex "" false;entries=#();collections=#();page=1;showPage())
                 "collection":(entries=#();collections=#();page=1;showPage())
@@ -1028,7 +1202,8 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
         )
         on browser open do (
-            root=CyrusRecipeOpenRoot;node=CyrusRecipeOpenNode;surface=CyrusRecipeOpenSurface;sessionID=CyrusNewLayerID();directory=CyrusRecipeDirectory()
+            root=CyrusRecipeOpenRoot;node=CyrusRecipeOpenNode;surface=CyrusRecipeOpenSurface;sessionID=CyrusNewLayerID();directory=CyrusRecipeBundledDirectory (CyrusLibraryVersion())
+            panel.SetNavigation 2 "" false;panel.IndividualModels=true
             -- Max may restore a previous smaller dialog size without a resized
             -- event. Bind the control to that actual size before its first scan.
             local size=getDialogSize browser
@@ -1038,7 +1213,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             bindingControls=true;panel.ViewIndex=if mode=="list" then 1 else 0;panel.ZoomIndex=if size=="large" then 2 else if size=="small" then 0 else 1;bindingControls=false
             try(refresh())catch(panel.StatusText=getCurrentException())
         )
-        on panel ActionRequested sender args do if not bindingControls do try(action panel.RequestedAction)catch(panel.StatusText=getCurrentException())
+        on panel ActionRequested sender args do if not bindingControls do try(action panel.RequestedAction)catch(panel.ShowNotice (getCurrentException()) false)
         on scanTimer tick do try(showPage())catch(scanTimer.active=false;try(cyrusRecipeLibraryCancel scan)catch();panel.StatusText=getCurrentException())
         on browser resized size do (panel.width=amax 1 size.x;panel.height=amax 1 size.y)
         on browser close do (

@@ -2,19 +2,72 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.6.1 artist-test candidate; 0.86.6 qualified | User-selected correction of the real-model delivery label; historical 0.88.0 receipts retain their original identities |
-| Scatter native/package | 0.86.6.1 candidate / Max 2027; [qualified 0.86.6 acceptance](plans/preset-gallery-improvements/DELIVERY_0866.md) | Exact loaded/package identities required; earlier host deliveries retain their own scope |
+| Scatter UI | 0.86.8 | Independent source clearance scopes, conflict preference and scaled UI; historical receipts retain their identities |
+| Scatter native/package | 0.86.8 / Max 2027 | Matched SDK/managed payload; [delivery scope](plans/source-clearance/DELIVERY_0868.md). Older-host deliveries retain their original versions |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
-| Recipe / numeric-settings format and capability | 7 / 3 | 262 typed authored fields; explicit older recipe conversion; relative-elevation source appended |
+| Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
-| Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
-| Calculation model | CyrusUnified1 | Current procedural model |
+| Saved MAXScript schema | 59 | Appended source-clearance block; explicit Undoable schema-58 upgrade; earlier schemas remain unsupported |
+| Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
 | Surface Analyzer | 0.14 | Independently versioned product |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
 
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
 
 ## Choosing the next version
+
+**20 October 2026 authorized successor: 0.86.8.** The user chose this label for source-local clearance and conflict priority. These user-visible calculation semantics require schema 59 / recipe 8 / bridge 4, with explicit schema-58 conversion. Max 2027 is the current development and qualification scope. Content stays 0.86.7; Analyzer, MCP and Licensing keep independent versions. See the [receipt and limits](plans/source-clearance/DELIVERY_0868.md).
+
+**20 October 2026 correction within 0.86.7.2.** The reported Hide surface failure
+is repaired within the current delivery label. This is a one-path script fix,
+with unchanged native modules, schema and independently versioned content.
+Corrected artifacts live separately; the [correction report](plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md)
+records fresh host evidence and exact replacement hashes.
+
+**20 October 2026 authorized successor: 0.86.7.2.** The user selects this patch
+for simplified successful installation, an optional adjacent content ZIP,
+viewport display choices and receiver hiding. The new-layer receiver correction
+is included. This is a bounded follow-up to 0.86.7.1, retaining scene schema 58
+and native placement/Brush POD identities. The node-owned viewport flag is an
+additive namespaced app-data record. Native Brush binaries are rebuilt for all
+three requested hosts. Content remains independently versioned **0.86.7** with
+unchanged asset hashes; packaging it in a ZIP does not create a new asset revision.
+
+**20 October 2026 correction within 0.86.7.1.** The user explicitly requests
+fixes in the current version: list visibility, model-import feedback and an
+automatic installer. Keep **0.86.7.1**, schema 58 and native identities. Package
+the corrected script/managed components separately, preserving the first
+delivery's hashes. The [correction report](plans/preset-gallery-improvements/DELIVERY_08671_CORRECTION.md)
+identifies the exact successor artifacts and their acceptance.
+
+**20 October 2026 authorized successor: 0.86.7.1.** The user explicitly selects
+this label for independent plugin/content updates, shared three-host library
+storage and scoped panel responsiveness improvements. The
+[delivery report](plans/preset-gallery-improvements/DELIVERY_08671.md) owns the
+exact EXE and Max 2024/2026/2027 MZPs, acceptance and remaining limits.
+Scene schema 58 and independent products remain unchanged. Existing content
+keeps its own revision and hashes; a plugin bump does not resave library assets.
+
+**20 October 2026 user-selected delivery: 0.86.7.** This is the explicitly
+requested successor to 0.86.6.2. It adds bounded native material/UV/opacity Mesh
+preview, fixes thumbnail scheduling, revises source controls and shares existing
+content across matched 2024/2026/2027 installers. Saved scene schema 58, recipe 7,
+and independently versioned products stay unchanged. The external content
+manifest adds schema 2 with an explicit three-host set; models use Max 2024 file
+format. This choice records the user's label and full delivery scope rather
+than applying an unrelated roadmap milestone. Historical qualification stays
+with its original artifacts.
+
+**20 October 2026 individual-model successor: 0.86.6.2.** The user replaces the
+active demonstration/eight-preset bundle with the original individual plant
+catalog. This patch follows the user-selected 0.86.6.1 label. It adds a distinct
+model catalog and on-demand native MAX import, rendered JPEG thumbnails, and
+streamed installer content. It does not change scene schema 58, recipe format 7
+or native calculation contracts. Native binaries remain the exact unchanged
+0.86.6.1 implementation; managed UI, script and package identities advance.
+The requested evidence is structural content checks and one Max 2027 model load,
+not broad qualification. The execution ledger records actual completion and
+remaining artist acceptance. Historical packages remain identified separately.
 
 **20 October 2026 explicit user correction:** the real-model library delivery is
 **0.86.6.1**, superseding the 0.88.0 selection below. This changes the delivery

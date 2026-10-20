@@ -9,7 +9,7 @@ def test_every_saved_controller_parameter_has_an_explicit_recipe_disposition():
     declared=set(re.findall(r'^\s*(\w+)\s+type:#\w+',source,re.M))
     captured=set(re.findall(r'\{"(\w+)"', (ROOT/'AminScatter/src/recipe_fields.inc').read_text(encoding='utf-8')))
     separate={
-        'procSchemaValid','procOrder','procSetOrder',
+        'procSchemaValid','clearanceUpgradePending','procOrder','procSetOrder',
         'procRadiusIDs','procRadiusModes','procRadiusValues','procRadiusDistances','procRadiusBinding',
         'procRuleScope','procRuleA','procRuleB','procRuleEnabled','procRuleMultiplier','procRuleGapWU','procRulePlanar',
         'paintDocument','editLayerKey','nextEditLayerKey','bakedNodes','nextPathID','nextBandID','logicalParentID',
@@ -17,8 +17,8 @@ def test_every_saved_controller_parameter_has_an_explicit_recipe_disposition():
     }
     assert not captured & separate
     assert declared == captured | separate, 'New persistent parameters require an explicit full-save policy.'
-    # 0.87.0 appends the explicit surface density source.
-    assert len(declared)==293 and len(captured)==262
+    # Upgrade state belongs to the saved scene; recipes capture nine policy tabs.
+    assert len(declared)==303 and len(captured)==271
 
 def test_recipe_distances_follow_authoritative_parameter_types():
     source=(ROOT/'AminScatter/tools/ui/templates/unified-core.ms').read_text(encoding='utf-8')

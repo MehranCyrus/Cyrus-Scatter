@@ -93,11 +93,11 @@ Identical relevant numeric inputs repeat choices in the tested environment. Rece
 
 **Contract:** F03 Dependencies — Established
 
-Editing independent B preserves A's IDs/transforms. Coverage affects eligibility, not a second quota. Pair distance rules are symmetric; ordinary winners follow evaluation order, but later protected edits reserve space. This preserves explicit artist edits as well as predictable priority.
+Editing independent B preserves A's IDs/transforms. Coverage affects eligibility, not a second quota. Pair distance rules are symmetric. In 0.86.8, each source independently inherits or overrides its own-copy, same-layer and cross-layer scopes. Protected edits reserve space first; eligible preferred sources win conflicts before normal sources; equal-priority winners follow layer and stable candidate order. Count admission precedes conflict preference. Equivalent effective rules retain equivalent scheduling. See the [source-clearance contract](plans/source-clearance/IMPLEMENTATION_PLAN.md).
 
 **Limits:** Independence concerns results, not zero controller work: shared admission may reject a whole successor. Overlaps use max density; strongest area controls scale, ties use area order. Implicit collision across independent layers or an area creating its own quota falsifies the rule. Fresh host independence remains pending.
 
-**Implementation:** U: procCoverageKey, procApplyPaint, procPair; [acceptance](../AminScatter/src/procedural.cpp): pairRule, protected blockers; [Brush filter](../AminScatter/src/brush_host.cpp).
+**Implementation:** U: procCoverageKey, procApplyPaint, procPair, procClearanceSpecs; [source-aware acceptance](../AminScatter/src/source_clearance.cpp); [acceptance](../AminScatter/src/procedural.cpp): pairRule, protected blockers; [Brush filter](../AminScatter/src/brush_host.cpp).
 
 **Evidence:** N: procedural exhaustive compares 240 cases with an independent oracle; targetAndOrdering, refill. W: append protected point to independent B, reorder, enable/disable pair and compare A by ID/position.
 

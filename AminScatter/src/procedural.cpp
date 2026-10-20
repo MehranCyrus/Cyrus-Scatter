@@ -95,8 +95,10 @@ Result evaluate(const Plan& plan){
         return found==rules.end()?(sibling?plan.layers[l].siblings:DistanceRule{}):found->second;
     };
     Result output;output.layers.resize(plan.layers.size());
+    const auto components=clearanceComponents(plan);
     for(std::size_t l=0;l<plan.layers.size();++l){const auto& layer=plan.layers[l];auto& result=output.layers[l];
         result.sets.resize(layer.sets.size());
+        if(components[l]>=0)continue;
         std::vector<std::uint64_t> prefixes;std::vector<std::vector<bool>> suppressed;
         for(const auto& set:layer.sets){prefixes.push_back(set.budget);suppressed.emplace_back(set.samples.size(),false);}
         const unsigned maxRounds=(layer.acceptedTarget||layer.repair)?layer.rounds:1;
@@ -176,6 +178,7 @@ Result evaluate(const Plan& plan){
             if(round+1==maxRounds)result.limitReached=true;
         }
     }
+    evaluateClearanceComponents(plan,components,output,visits);
     return output;
 }
 }

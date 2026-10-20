@@ -3,12 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
+using System.Runtime.InteropServices;
+using Cyrus.Content;
 
 namespace Cyrus.Setup {
     public sealed class InstallPaths {
-        public string Scripts, Startup, Macros, Profile, RuntimeRoot;
+        public string Scripts, Startup, Macros, Profile, RuntimeRoot, SharedContentRoot, LibraryStatePath;
         public InstallPaths(string scripts, string startup, string macros, string profile) {
             Scripts = Full(scripts); Startup = Full(startup); Macros = Full(macros); Profile = Full(profile);
         }
@@ -20,9 +23,13 @@ namespace Cyrus.Setup {
             string standard=Full(Path.Combine(local,@"Autodesk\3dsMax\"+year+" - 64bit"));
             // Explicitly relocated Max profiles keep their runtime in that profile.
             // The normal Windows profile uses a short per-user, per-host root.
-            string runtime=ownedProfile.StartsWith(standard+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase)
+            bool standardProfile=ownedProfile.StartsWith(standard+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase);
+            string runtime=standardProfile
                 ? Path.Combine(local,"CyrusScatter",year) : Path.Combine(ownedProfile,"cs");
-            return new InstallPaths(scripts,startup,macros,ownedProfile,runtime);
+            var result=new InstallPaths(scripts,startup,macros,ownedProfile,runtime);
+            result.SharedContentRoot=standardProfile?Path.Combine(local,"CyrusScatter","Library"):Path.Combine(runtime,"Library");
+            result.LibraryStatePath=standardProfile?Path.Combine(local,"CyrusScatter","library-state.txt"):Path.Combine(runtime,"library-state.txt");
+            return result;
         }
         internal static string Full(string path) {
             if (String.IsNullOrWhiteSpace(path) || !Path.IsPathRooted(path)) throw new IOException("An absolute destination is required.");
@@ -35,7 +42,7 @@ namespace Cyrus.Setup {
         }
     }
     public sealed class Entry {
-        public string Name, Source, Hash; public long Bytes;
+        public string Name, Source, Hash; public long Bytes; public bool External;
     }
     public sealed class InstallEngine {
         const string Marker = "CyrusScatterInstall1";
@@ -46,6 +53,30 @@ namespace Cyrus.Setup {
         public long PayloadBytes { get; private set; }
         readonly string source;
         readonly List<Entry> files = new List<Entry>();
+        readonly List<Entry> externalFiles = new List<Entry>();
+        string contentDirectory, contentLibrary, contentManifestHash, selectedManifestHash, contentRevision;
+        string contentArchive;
+        ZipArchive activeArchive;
+        int contentMinimumHost;
+        long corePayloadBytes;
+        // Keep is deliberately the default: a plugin update never admits/copies
+        // a multi-gigabyte optional library merely because a sidecar exists.
+        public string LibraryAction { get; set; } = "Keep";
+        public string LibraryDestination { get; set; }
+        public bool RequiresExternalContent { get { return contentManifestHash != null; } }
+        public string PackageDirectory { get { return source; } }
+        public void SetContentDirectory(string directory) {
+            contentArchive=null;
+            string candidate=InstallPaths.Full(directory);
+            // Both the delivery folder and its Library child are common selections.
+            if(!File.Exists(Path.Combine(candidate,"content-manifest.json"))&&File.Exists(Path.Combine(candidate,"Content","content-manifest.json")))
+                candidate=InstallPaths.Full(Path.Combine(candidate,"Content"));
+            if(String.Equals(Path.GetFileName(candidate),"Library",StringComparison.OrdinalIgnoreCase)&&File.Exists(Path.Combine(Path.GetDirectoryName(candidate),"content-manifest.json")))
+                candidate=InstallPaths.Full(Path.GetDirectoryName(candidate));
+            contentDirectory=candidate;
+            contentLibrary=Directory.Exists(Path.Combine(candidate,"Library"))?Child(candidate,"Library"):candidate;
+        }
+        IEnumerable<Entry> AllFiles { get { foreach(var item in files)yield return item;foreach(var item in externalFiles)yield return item; } }
         static readonly HashSet<string> Runtime = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
             "AminScatter.dlx", "CyrusBrush.dlx", "CyrusBrushStorage.dlh", "CyrusScatterEdit.dlm", "CyrusScatter.ms", "CyrusGallery.dll",
             "CyrusInstaller.dll", "Clipper2-LICENSE.txt", "SurfaceGeodesic-LICENSE.txt", "SurfaceGeodesic-NOTICE.txt", "nlohmann-json-LICENSE.txt",
@@ -56,7 +87,17 @@ namespace Cyrus.Setup {
             "AminScatter.dlx", "CyrusBrush.dlx", "CyrusBrushStorage.dlh", "CyrusScatterEdit.dlm"
         };
         public static string Hash(byte[] bytes) { using (var sha = SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant(); }
-        static string FileHash(string path) { using (var stream = File.OpenRead(path)) using (var sha = SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant(); }
+        static string FileHash(string path,Action<string> checkpoint=null) {
+            using(var stream=File.OpenRead(path))using(var sha=SHA256.Create()) {
+                var buffer=new byte[262144];int count;long next=0;
+                while((count=stream.Read(buffer,0,buffer.Length))>0) {
+                    sha.TransformBlock(buffer,0,count,buffer,0);
+                    if(stream.Position>=next){if(checkpoint!=null)checkpoint("checking:"+Path.GetFileName(path));next=stream.Position+8*1024*1024;}
+                }
+                sha.TransformFinalBlock(new byte[0],0,0);
+                return BitConverter.ToString(sha.Hash).Replace("-","").ToLowerInvariant();
+            }
+        }
         static bool Hex(string value, int length) {
             if (value.Length != length) return false;
             foreach (char c in value) if (!(c >= '0' && c <= '9') && !(c >= 'a' && c <= 'f')) return false;
@@ -88,7 +129,7 @@ namespace Cyrus.Setup {
                 string[] row = lines[i].Split('\t'); long size;
                 if (row.Length != (mapped?4:3) || !Hex(row[1], 64) || !Int64.TryParse(row[2], out size) || size < 0 || size > 128L * 1024 * 1024 || !names.Add(row[0])) throw new IOException("Invalid inventory entry.");
                 bool pattern = System.Text.RegularExpressions.Regex.IsMatch(row[0], @"^Patterns/(catalog\.tsv|index\.json|README\.md|[a-z0-9][a-z0-9_-]{0,80}\.png)$");
-                if (!Runtime.Contains(row[0]) && !row[0].StartsWith("Library/", StringComparison.Ordinal) && !pattern) throw new IOException("Unsupported installer file: " + row[0]);
+                if (!Runtime.Contains(row[0]) && row[0]!="ExternalContent.json" && !row[0].StartsWith("Library/", StringComparison.Ordinal) && !pattern) throw new IOException("Unsupported installer file: " + row[0]);
                 string sourceName=mapped?row[3]:row[0];
                 if(mapped && sourceName!=row[0] && !(row[0].StartsWith("Library/",StringComparison.Ordinal) && System.Text.RegularExpressions.Regex.IsMatch(sourceName,@"^p/[0-9]{4}\.[a-z0-9]{1,12}$")))throw new IOException("Invalid mapped package source.");
                 if(!sourceNames.Add(sourceName))throw new IOException("Duplicate mapped package source.");
@@ -99,9 +140,250 @@ namespace Cyrus.Setup {
             }
             if (files.Count > 512 || PayloadBytes > 512L * 1024 * 1024) throw new IOException("Installer payload exceeds its bound.");
             foreach (string name in Runtime) if (!names.Contains(name)) throw new IOException("Missing runtime file: " + name);
+            corePayloadBytes=PayloadBytes;
+            if(names.Contains("ExternalContent.json")) {
+                Entry pin=files.Find(item=>item.Name=="ExternalContent.json");Verify(Child(source,pin.Source),pin);
+                var identity=ReadObject(ReadBounded(Child(source,pin.Source),16384));
+                CheckContentIdentity(identity);
+                object hash;if(!identity.TryGetValue("manifest_sha256",out hash)||!(hash is string)||!Hex((string)hash,64))throw new IOException("Invalid external content identity.");
+                contentManifestHash=(string)hash;contentDirectory=Path.Combine(source,"Content");
+                foreach(var item in files)if(item.Name.StartsWith("Library/",StringComparison.Ordinal))throw new IOException("External and embedded libraries cannot be mixed.");
+            }
         }
-        void Verify(string path, Entry item) {
-            if (!File.Exists(path) || new FileInfo(path).Length != item.Bytes || FileHash(path) != item.Hash) throw new IOException("Payload differs: " + item.Name);
+        static Dictionary<string,object> ReadObject(byte[] bytes) {
+            return new ContentJson(new UTF8Encoding(false,true).GetString(bytes)).Read();
+        }
+        // The manifest contract contains objects, strings and integral numbers only.
+        // Keep this bounded reader self-contained: Max and the EXE do not need a
+        // legacy web serializer or a separately deployed JSON assembly.
+        sealed class ContentJson {
+            readonly string text;int at;
+            public ContentJson(string value){text=value;if(text.Length>1048576)throw new IOException("Content manifest exceeds its bound.");if(text.Length>0&&text[0]=='\uFEFF')at=1;}
+            void Space(){while(at<text.Length&&(text[at]==' '||text[at]=='\t'||text[at]=='\r'||text[at]=='\n'))++at;}
+            IOException Invalid(){return new IOException("Invalid content manifest JSON at character "+at+".");}
+            void Take(char expected){Space();if(at>=text.Length||text[at++]!=expected)throw Invalid();}
+            string String(){
+                Take('"');var value=new StringBuilder();
+                while(at<text.Length){char c=text[at++];if(c=='"')return value.ToString();if(c<32)throw Invalid();
+                    if(c=='\\'){
+                        if(at>=text.Length)throw Invalid();c=text[at++];
+                        switch(c){case '"':case '\\':case '/':break;case 'b':c='\b';break;case 'f':c='\f';break;case 'n':c='\n';break;case 'r':c='\r';break;case 't':c='\t';break;
+                        case 'u':int number=0;for(int i=0;i<4;++i){if(at>=text.Length)throw Invalid();char hex=text[at++];int digit=hex>='0'&&hex<='9'?hex-'0':hex>='a'&&hex<='f'?hex-'a'+10:hex>='A'&&hex<='F'?hex-'A'+10:-1;if(digit<0)throw Invalid();number=number*16+digit;}c=(char)number;break;
+                        default:throw Invalid();}
+                    }
+                    value.Append(c);
+                }
+                throw Invalid();
+            }
+            object Number(){
+                Space();int start=at;if(at<text.Length&&text[at]=='-')++at;
+                if(at>=text.Length||text[at]<'0'||text[at]>'9')throw Invalid();
+                bool zero=text[at]=='0';++at;if(!zero)while(at<text.Length&&text[at]>='0'&&text[at]<='9')++at;
+                long value;if(at-start>20||!Int64.TryParse(text.Substring(start,at-start),System.Globalization.NumberStyles.AllowLeadingSign,System.Globalization.CultureInfo.InvariantCulture,out value))throw Invalid();
+                if(value>=Int32.MinValue&&value<=Int32.MaxValue)return (int)value;return value;
+            }
+            Dictionary<string,object> Object(int depth){
+                if(depth>16)throw new IOException("Content manifest nesting exceeds its bound.");
+                Take('{');var result=new Dictionary<string,object>(StringComparer.Ordinal);Space();if(at<text.Length&&text[at]=='}'){++at;return result;}
+                while(true){string name=String();Take(':');Space();if(at>=text.Length)throw Invalid();object value=text[at]=='{'?(object)Object(depth+1):text[at]=='"'?(object)String():Number();
+                    if(result.ContainsKey(name))throw new IOException("Duplicate content manifest key: "+name);result.Add(name,value);Space();if(at>=text.Length)throw Invalid();char delimiter=text[at++];if(delimiter=='}')return result;if(delimiter!=',')throw Invalid();
+                }
+            }
+            public Dictionary<string,object> Read(){var result=Object(1);Space();if(at!=text.Length)throw Invalid();return result;}
+        }
+        void CheckContentIdentity(Dictionary<string,object> value) {
+            object format,schema,version,year;
+            bool identity=value.TryGetValue("format",out format)&&Object.Equals(format,"cyrus.scatter.content")&&value.TryGetValue("version",out version)&&version is string&&System.Text.RegularExpressions.Regex.IsMatch((string)version,@"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$");
+            value.TryGetValue("schema",out schema);value.TryGetValue("max_year",out year);
+            bool host=Object.Equals(schema,1)&&year is int&&((int)year==2024||(int)year==2026||(int)year==2027)&&(int)year<=Int32.Parse(Year);
+            if(Object.Equals(schema,2)&&Object.Equals(year,2024)) {
+                object raw;value.TryGetValue("hosts",out raw);var hosts=raw as Dictionary<string,object>;
+                object a,b,c;
+                host=hosts!=null&&hosts.Count==3&&hosts.TryGetValue("2024",out a)&&Object.Equals(a,1)&&hosts.TryGetValue("2026",out b)&&Object.Equals(b,1)&&hosts.TryGetValue("2027",out c)&&Object.Equals(c,1);
+            }
+            if(!identity||!host)throw new IOException("The library format or Max host is unsupported. Max 2027-only content cannot be used in an older host.");
+        }
+        void LoadExternalContent() {
+            externalFiles.Clear();PayloadBytes=corePayloadBytes;
+            if(contentDirectory==null)throw new IOException("Choose an existing library or the supplied Content folder.");
+            if(contentLibrary==null&&contentArchive==null)SetContentDirectory(contentDirectory);
+            string manifest=Child(contentDirectory,"content-manifest.json");
+            if(contentArchive==null&&!File.Exists(manifest))throw new IOException("No content manifest in the selected library: "+manifest);
+            byte[] bytes=contentArchive==null?ReadBounded(manifest,1048576):ReadArchiveManifest();selectedManifestHash=Hash(bytes);
+            var value=ReadObject(bytes);CheckContentIdentity(value);object listed;
+            contentRevision=(string)value["version"];contentMinimumHost=Convert.ToInt32(value["max_year"]);
+            if(!value.TryGetValue("files",out listed))throw new IOException("Missing content file inventory.");
+            var inventory=listed as Dictionary<string,object>;if(inventory==null||inventory.Count==0||inventory.Count>4096)throw new IOException("Content file count exceeds its bound.");
+            var names=new HashSet<string>(StringComparer.OrdinalIgnoreCase);long total=0;
+            foreach(var row in inventory) {
+                if(!row.Key.StartsWith("Library/",StringComparison.Ordinal)||row.Key=="Library/content-manifest.json"||!names.Add(row.Key))throw new IOException("Invalid or duplicate content destination.");
+                Child(contentDirectory,row.Key);
+                var descriptor=row.Value as Dictionary<string,object>;object length,digest;
+                if(descriptor==null||!descriptor.TryGetValue("bytes",out length)||!(length is int||length is long)||!descriptor.TryGetValue("sha256",out digest)||!(digest is string)||!Hex((string)digest,64))throw new IOException("Invalid content file descriptor.");
+                long size=Convert.ToInt64(length);if(size<0||size>2L*1024*1024*1024)throw new IOException("Content file exceeds the 2 GiB bound.");
+                total+=size;if(total>16L*1024*1024*1024)throw new IOException("Content library exceeds the 16 GiB bound.");
+                externalFiles.Add(new Entry { Name=row.Key,Source=row.Key,Bytes=size,Hash=(string)digest,External=true });
+            }
+            externalFiles.Add(new Entry {Name="Library/content-manifest.json",Source="content-manifest.json",Bytes=bytes.Length,Hash=selectedManifestHash,External=true});PayloadBytes+=total+bytes.Length;
+            if(externalFiles.Find(item=>item.Name=="Library/model-catalog.json")==null)throw new IOException("The library has no model catalog.");
+        }
+        string SourcePath(Entry item) { return item.External?(item.Source=="content-manifest.json"?Child(contentDirectory,item.Source):Child(contentLibrary,item.Name.Substring(8))):Child(source,item.Source); }
+        byte[] ReadArchiveManifest() {
+            using(var zip=new ZipArchive(File.OpenRead(contentArchive),ZipArchiveMode.Read)) {
+                if(zip.Entries.Count>4097)throw new IOException("Content ZIP has too many entries.");
+                var names=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                long total=0;
+                foreach(var entry in zip.Entries) {
+                    Child(contentDirectory,entry.FullName);
+                    if(entry.FullName.Contains("\\")||!names.Add(entry.FullName)||entry.Length>2L*1024*1024*1024)
+                        throw new IOException("Invalid or duplicate content ZIP entry.");
+                    total=checked(total+entry.Length);
+                    if(total>16L*1024*1024*1024)throw new IOException("Content ZIP exceeds its expanded size limit.");
+                }
+                var manifest=zip.GetEntry("content-manifest.json");
+                if(manifest==null||manifest.Length>1048576)throw new IOException("Content ZIP is missing its manifest.");
+                using(var input=manifest.Open())using(var output=new MemoryStream()) {
+                    var buffer=new byte[65536];int count;
+                    while((count=input.Read(buffer,0,buffer.Length))>0) {
+                        if(output.Length+count>1048576)throw new IOException("Content manifest exceeds its limit.");
+                        output.Write(buffer,0,count);
+                    }
+                    byte[] bytes=output.ToArray();
+                    if(Hash(bytes)!=contentManifestHash)throw new IOException("This content ZIP does not match this installer. Download the matching plant library ZIP.");
+                    var value=ReadObject(bytes);CheckContentIdentity(value);
+                    var listed=value["files"] as Dictionary<string,object>;
+                    if(listed==null||listed.Count+1!=zip.Entries.Count)throw new IOException("Content ZIP inventory differs.");
+                    foreach(var row in listed) {
+                        var entry=zip.GetEntry(row.Key);var spec=row.Value as Dictionary<string,object>;
+                        if(entry==null||spec==null||entry.Length!=Convert.ToInt64(spec["bytes"]))throw new IOException("Content ZIP is incomplete: "+row.Key);
+                        // Reject links, devices and other non-regular Unix entries.
+                        int kind=(entry.ExternalAttributes>>16)&0xf000;
+                        if(kind!=0&&kind!=0x8000)throw new IOException("Content ZIP contains a linked or special file.");
+                    }
+                    return bytes;
+                }
+            }
+        }
+        public string ConfigureLibraryChoice(InstallPaths paths,bool installContent,string companionDirectory) {
+            LibraryAction="Keep";LibraryDestination=null;contentArchive=null;
+            if(!installContent) {
+                // Only preserve/adopt an already installed library; do not adopt a
+                // download merely because it happens to sit beside the installer.
+                var retained=LibraryLocation.Read(StatePath(paths));
+                if(retained!=null&&!retained.Supports(Int32.Parse(Year)))
+                    return "Plugin only. The retained library requires Max "+retained.MinimumHost+". Use the library option to install compatible content.";
+                string previous=SuggestContentDirectory(paths);
+                if(previous.Length==0)return "Plugin only. Existing content is kept.";
+                return ConfigureAutomaticLibrary(paths,new string[0]);
+            }
+            string folder=InstallPaths.Full(companionDirectory),selected=null;int count=0;
+            foreach(string path in Directory.EnumerateFiles(folder,"CyrusScatter-Content-*.zip")) {
+                if(++count>32)throw new IOException("Too many content ZIPs beside the installer.");
+                InstallPaths.Full(path);contentArchive=path;contentDirectory=folder;
+                try{ReadArchiveManifest();if(selected==null)selected=path;}catch(IOException){continue;}
+            }
+            if(selected==null)throw new IOException("Matching content ZIP not found. Place CyrusScatter-Content-0.86.7.zip beside the EXE, or uncheck Install plant library.");
+            contentArchive=selected;contentDirectory=folder;
+            contentLibrary=SuggestContentDirectory(paths);
+            if(contentLibrary.Length==0)contentLibrary=null;
+            LoadExternalContent();LibraryAction="Install";
+            // An identical complete installed revision remains in place. Verify
+            // every file at install time; corrupt files are never silently reused.
+            if(contentLibrary!=null&&File.Exists(Path.Combine(contentLibrary,"content-manifest.json"))&&
+                FileHash(Path.Combine(contentLibrary,"content-manifest.json"))==selectedManifestHash) {
+                bool complete=true;
+                foreach(var item in externalFiles) {
+                    string path=PreviousFile(contentLibrary,item);
+                    if(!File.Exists(path)||new FileInfo(path).Length!=item.Bytes){complete=false;break;}
+                }
+                if(complete){string previous=contentLibrary;SetContentDirectory(previous);LoadExternalContent();LibraryAction="UseExisting";}
+            }
+            return "Plant library selected.";
+        }
+        // Copy and hash in bounded chunks. Multi-gigabyte model files never become byte arrays.
+        void CopyVerified(string from,string destination,Entry item,Action<string> checkpoint) {
+            using(var input=new FileStream(from,FileMode.Open,FileAccess.Read,FileShare.Read)) {
+                if(input.Length!=item.Bytes)throw new IOException("Content file size differs: "+item.Name);
+                CopyVerified(input,destination,item,checkpoint);
+            }
+        }
+        void CopyVerified(Stream input,string destination,Entry item,Action<string> checkpoint) {
+            Directory.CreateDirectory(Path.GetDirectoryName(destination));string temporary=Path.Combine(Path.GetDirectoryName(destination),".c-"+Guid.NewGuid().ToString("N").Substring(0,12));
+            try {
+                using(var output=new FileStream(temporary,FileMode.CreateNew,FileAccess.Write,FileShare.None))using(var hash=SHA256.Create()) {
+                    var buffer=new byte[262144];int count;long written=0,nextCheckpoint=8*1024*1024;
+                    while((count=input.Read(buffer,0,buffer.Length))!=0) {
+                        written+=count;if(written>item.Bytes)throw new IOException("Content file grew while copying: "+item.Name);
+                        output.Write(buffer,0,count);hash.TransformBlock(buffer,0,count,buffer,0);
+                        if(written>=nextCheckpoint){if(checkpoint!=null)checkpoint("copying:"+item.Name);nextCheckpoint=written+8*1024*1024;}
+                    }
+                    hash.TransformFinalBlock(new byte[0],0,0);
+                    if(written!=item.Bytes||BitConverter.ToString(hash.Hash).Replace("-","").ToLowerInvariant()!=item.Hash)throw new IOException("Content file hash differs: "+item.Name);
+                    output.Flush(true);
+                }
+                File.Move(temporary,destination);
+            }finally{if(File.Exists(temporary))File.Delete(temporary);}
+        }
+        void Verify(string path, Entry item,Action<string> checkpoint=null) {
+            if (!File.Exists(path) || new FileInfo(path).Length != item.Bytes || FileHash(path,checkpoint) != item.Hash) throw new IOException("Payload differs: " + item.Name);
+        }
+        [DllImport("kernel32.dll",CharSet=CharSet.Unicode,SetLastError=true)]
+        static extern bool CreateHardLink(string destination,string existing,IntPtr reserved);
+        static void Link(string existing,string destination) {
+            InstallPaths.Full(existing);InstallPaths.Full(destination);
+            Directory.CreateDirectory(Path.GetDirectoryName(destination));
+            if(!CreateHardLink(destination,existing,IntPtr.Zero))
+                throw new IOException("Could not reuse installed content. Windows error "+Marshal.GetLastWin32Error()+": "+destination);
+        }
+        string PreviousContent(InstallPaths paths,string runtime,string root,byte[] receipt) {
+            if(receipt==null)return null;
+            string[] record=Decode(receipt).Replace("\r","").Split('\n');
+            if(record.Length!=6||record[0]!=Marker||!System.Text.RegularExpressions.Regex.IsMatch(record[1],@"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$"))return null;
+            string previous=InstallPaths.Full(record[2]);
+            bool owned=previous.StartsWith(Path.Combine(root,"Releases")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase)
+                ||previous.StartsWith(Path.Combine(runtime,"r")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase);
+            return owned?Child(previous,"Library-"+record[1]):null;
+        }
+        static bool Matches(string path,Entry item,Action<string> checkpoint=null) {
+            return File.Exists(path)&&new FileInfo(path).Length==item.Bytes&&FileHash(path,checkpoint)==item.Hash;
+        }
+        string PreviousFile(string previous,Entry item) {
+            return previous==null?null:Child(previous,item.Name.Substring("Library/".Length));
+        }
+        long MissingContentBytes(string store,string previous,Action<string> checkpoint=null) {
+            long total=0;var hashes=new HashSet<string>(StringComparer.Ordinal);
+            foreach(var item in externalFiles)if(hashes.Add(item.Hash)) {
+                string blob=Child(store,item.Hash),old=PreviousFile(previous,item);
+                if(checkpoint!=null)checkpoint("checking:"+item.Name);
+                if(File.Exists(blob)){Verify(blob,item,checkpoint);continue;}
+                if(old!=null&&String.Equals(Path.GetPathRoot(old),Path.GetPathRoot(store),StringComparison.OrdinalIgnoreCase)&&Matches(old,item,checkpoint))continue;
+                total=checked(total+item.Bytes);
+            }
+            return total;
+        }
+        void InstallFile(Entry item,string destination,string store,string previous,Action<string> checkpoint) {
+            if(!item.External){CopyVerified(SourcePath(item),destination,item,checkpoint);return;}
+            string blob=Child(store,item.Hash);
+            if(!File.Exists(blob)) {
+                string old=PreviousFile(previous,item);
+                // Keep previous releases usable by open Max processes. NTFS names
+                // share immutable bytes instead of making another library copy.
+                if(old!=null&&File.Exists(old)&&String.Equals(Path.GetPathRoot(old),Path.GetPathRoot(store),StringComparison.OrdinalIgnoreCase)) {
+                    using(var guard=new FileStream(old,FileMode.Open,FileAccess.Read,FileShare.Read)) {
+                        if(Matches(old,item,checkpoint))Link(old,blob);
+                    }
+                }
+                if(!File.Exists(blob)) {
+                    if(activeArchive!=null) {
+                        var entry=activeArchive.GetEntry(item.Source);
+                        if(entry==null||entry.Length!=item.Bytes)throw new IOException("Content ZIP changed: "+item.Name);
+                        using(var input=entry.Open())CopyVerified(input,blob,item,checkpoint);
+                    }else CopyVerified(SourcePath(item),blob,item,checkpoint);
+                }
+            }
+            using(var guard=new FileStream(blob,FileMode.Open,FileAccess.Read,FileShare.Read)) {
+                Verify(blob,item,checkpoint);Link(blob,destination);
+            }
         }
         static byte[] ReadBounded(string path, long limit) {
             using(var stream=File.OpenRead(path)) {
@@ -205,16 +487,228 @@ namespace Cyrus.Setup {
             }catch(IOException){return "";}catch(UnauthorizedAccessException){return "";}
         }
         void CheckDestination(string root) {
-            foreach(var entry in files) {
+            foreach(var entry in AllFiles) {
                 string path=Path.Combine(root,Relative(entry).Replace('/',Path.DirectorySeparatorChar));
                 if(path.Length>=260||Path.GetDirectoryName(path).Length>=248)
                     throw new IOException("The installation folder is too long for this Max version. No registration was changed. Destination: "+path);
+            }
+        }
+        public static string StatePath(InstallPaths paths) {
+            return InstallPaths.Full(paths.LibraryStatePath??Path.Combine(paths.RuntimeRoot??Path.Combine(paths.Scripts,"CyrusScatter"),"library-state.txt"));
+        }
+        public static string SuggestContentDirectory(InstallPaths paths) {
+            var shared=LibraryLocation.Read(StatePath(paths));
+            if(shared!=null)return shared.Root;
+            string root=InstallPaths.Full(Path.Combine(paths.Scripts,"CyrusScatter"));
+            var receipt=ReadOptional(Path.Combine(root,"installed.txt"));
+            if(receipt==null)return "";
+            string[] rows=Decode(receipt).Replace("\r","").Split('\n');
+            if(rows.Length!=6||rows[0]!=Marker||!System.Text.RegularExpressions.Regex.IsMatch(rows[1],@"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$"))return "";
+            string release=InstallPaths.Full(rows[2]),runtime=paths.RuntimeRoot??root;
+            if(!release.StartsWith(Path.Combine(runtime,"r")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase)&&!release.StartsWith(Path.Combine(root,"Releases")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))return "";
+            if(File.Exists(Path.Combine(release,"LibraryBinding.txt"))) {
+                var binding=LibraryLocation.Resolve(release,2027);
+                if(binding!=null)return binding.Root;
+            }
+            string content=Child(release,"Library-"+rows[1]);
+            return File.Exists(Path.Combine(content,"content-manifest.json"))?content:"";
+        }
+        public static string InstalledVersion(InstallPaths paths) {
+            var data=ReadOptional(Path.Combine(paths.Scripts,"CyrusScatter","installed.txt"));
+            if(data==null)return "";
+            var rows=Decode(data).Replace("\r","").Split('\n');
+            return rows.Length==6&&rows[0]==Marker&&System.Text.RegularExpressions.Regex.IsMatch(rows[1],@"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$")?rows[1]:"";
+        }
+        // Artist-facing installers resolve known locations automatically. No drive
+        // crawl, asset re-export or copying merely to match the plugin version.
+        public string ConfigureAutomaticLibrary(InstallPaths paths,IEnumerable<string> candidates) {
+            LibraryAction="Keep";LibraryDestination=null;
+            var shared=LibraryLocation.Read(StatePath(paths));
+            if(shared!=null&&shared.Supports(Int32.Parse(Year))) {
+                shared.VerifyCatalog();return "Existing plant library will be reused.";
+            }
+            var locations=new List<string>();string existing=SuggestContentDirectory(paths);
+            if(existing.Length>0)locations.Add(existing);
+            if(candidates!=null)foreach(string candidate in candidates)if(!locations.Contains(candidate)&&locations.Count<80)locations.Add(candidate);
+            var rejected=new List<string>();
+            foreach(string location in locations) {
+                try {
+                    SetContentDirectory(location);
+                    if(!File.Exists(Path.Combine(contentDirectory,"content-manifest.json")))continue;
+                    LoadExternalContent();
+                    LibraryAction="UseExisting";
+                    return "Plant library found. Its existing files will be shared without copying models.";
+                }catch(IOException error){rejected.Add(error.Message);}
+            }
+            if(existing.Length>0||shared!=null||rejected.Count>0)
+                throw new IOException("The existing plant library is unavailable or incompatible with Max "+Year+". Restore its Content folder beside the installer and try again.\r\n"+String.Join("\r\n",rejected));
+            return "Plant library not found. The plugin will work with your scene models. Keep the supplied Content folder beside this installer to add the library automatically.";
+        }
+        LibraryRegistration ContentRegistration(string root,string managed) {
+            var catalog=externalFiles.Find(item=>item.Name=="Library/model-catalog.json");
+            return new LibraryRegistration { Root=InstallPaths.Full(root),Revision=contentRevision,CatalogHash=catalog.Hash,
+                ManifestHash=selectedManifestHash,MinimumHost=contentMinimumHost,ManagedRoot=managed??"",PackId="cyrus-plants" };
+        }
+        LibraryRegistration LegacyRegistration(InstallPaths paths,string runtime,string root,byte[] receipt) {
+            string previous=PreviousContent(paths,runtime,root,receipt);
+            if(previous==null)return null;
+            string release=Path.GetDirectoryName(previous);
+            if(File.Exists(Path.Combine(release,"LibraryBinding.txt")))return LibraryLocation.Resolve(release,Int32.Parse(Year));
+            string manifest=Path.Combine(previous,"content-manifest.json");
+            if(!File.Exists(manifest))return null;
+            byte[] bytes=ReadBounded(manifest,1048576);var value=ReadObject(bytes);CheckContentIdentity(value);
+            var inventory=value["files"] as Dictionary<string,object>;
+            object raw;if(inventory==null||!inventory.TryGetValue("Library/model-catalog.json",out raw))throw new IOException("The previous content manifest has no catalog.");
+            var catalog=raw as Dictionary<string,object>;
+            if(catalog==null||!catalog.ContainsKey("sha256")||!(catalog["sha256"] is string)||!Hex((string)catalog["sha256"],64))throw new IOException("Invalid previous catalog identity.");
+            var registration=new LibraryRegistration {Root=previous,Revision=(string)value["version"],CatalogHash=(string)catalog["sha256"],
+                ManifestHash=Hash(bytes),MinimumHost=Convert.ToInt32(value["max_year"]),ManagedRoot="",PackId="cyrus-plants"};
+            registration.VerifyCatalog();return registration;
+        }
+        internal static void CheckFreeSpace(string volume,long available,long bytes) {
+            long required=checked(bytes+16L*1024*1024);
+            if(available<required)throw new IOException(String.Format("Not enough free space on {0}. Required {1:N0} bytes (including 16 MiB working space); available {2:N0}. Choose another library drive or Update plugin only.",volume,required,available));
+        }
+        static void RequireSpace(string destination,long bytes) {
+            var drive=new DriveInfo(Path.GetPathRoot(destination));
+            if(!drive.DriveFormat.Equals("NTFS",StringComparison.OrdinalIgnoreCase))throw new IOException("Use local NTFS storage: "+drive.Name);
+            CheckFreeSpace(drive.Name,drive.AvailableFreeSpace,bytes);
+        }
+        static void MoveDirectory(string from,string to) {
+            // Windows scanners can briefly retain a freshly written directory.
+            // Retry only sharing/access conflicts; never replace a destination.
+            for(int attempt=0;;++attempt) {
+                try{Directory.Move(from,to);return;}
+                catch(IOException error) {
+                    int code=error.HResult&65535;
+                    if(attempt>=4||Directory.Exists(to)||(code!=5&&code!=32&&code!=33))throw;
+                    System.Threading.Thread.Sleep(100);
+                }
+                catch(UnauthorizedAccessException) {
+                    if(attempt>=4||Directory.Exists(to))throw;
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+        }
+        string LibraryBase(InstallPaths paths) {return InstallPaths.Full(String.IsNullOrWhiteSpace(LibraryDestination)?(paths.SharedContentRoot??Path.Combine(paths.RuntimeRoot??paths.Profile,"Library")):LibraryDestination);}
+        void CheckLibraryPaths(string root) {
+            string pack=Child(root,"packs/"+selectedManifestHash.Substring(0,16));
+            foreach(var item in externalFiles) {
+                string target=Path.Combine(pack,item.Name.Replace('/',Path.DirectorySeparatorChar));
+                if(target.Length>=260||Path.GetDirectoryName(target).Length>=248)throw new IOException("Choose a shorter shared library folder. This content path exceeds the supported Windows path length: "+target);
+            }
+        }
+        void CheckAction() {if(LibraryAction!="Keep"&&LibraryAction!="UseExisting"&&LibraryAction!="Install")throw new IOException("Unknown library action.");}
+        // Read-only preflight. It deliberately hashes only content participating in
+        // an explicitly selected content action, never during a plugin-only update.
+        public string Plan(InstallPaths paths) {return Plan(paths,null,true);}
+        public string Plan(InstallPaths paths,Action<string> checkpoint) {return Plan(paths,checkpoint,true);}
+        public string Plan(InstallPaths paths,Action<string> checkpoint,bool includePlugin) {
+            CheckAction();
+            string runtime=paths.RuntimeRoot??Path.Combine(paths.Scripts,"CyrusScatter");
+            string release=Child(runtime,paths.RuntimeRoot==null?"Releases/"+Version+"-"+ContentID:"r/"+ContentID);
+            long pluginBytes=0;if(includePlugin)foreach(var item in files) {
+                string target=Child(release,Relative(item));
+                if(File.Exists(target))Verify(target,item,checkpoint);else pluginBytes+=item.Bytes;
+            }
+            var result=new StringBuilder();
+            var needed=new Dictionary<string,long>(StringComparer.OrdinalIgnoreCase);
+            foreach(string destination in includePlugin?new[]{runtime,paths.Scripts,paths.Startup,paths.Macros,paths.Profile,StatePath(paths)}:new[]{StatePath(paths)})
+                needed[Path.GetPathRoot(destination)]=0;
+            if(includePlugin)needed[Path.GetPathRoot(runtime)]=pluginBytes;
+            result.AppendLine("Plugin "+Version+" / Max "+Year+": "+(includePlugin?runtime:"not selected"));
+            result.AppendLine(String.Format("Plugin new bytes: {0:N0}; free on {1}: {2:N0}",pluginBytes,Path.GetPathRoot(runtime),new DriveInfo(Path.GetPathRoot(runtime)).AvailableFreeSpace));
+            result.AppendLine("Library registration: "+StatePath(paths));
+            if(LibraryAction=="Keep") {
+                var registered=LibraryLocation.Read(StatePath(paths));
+                string existing=SuggestContentDirectory(paths);
+                result.AppendLine(existing.Length==0?"No library configured; choose content later.":"Keep existing library: "+existing);
+                if(registered!=null&&!registered.Supports(Int32.Parse(Year)))result.AppendLine("The selected shared library requires Max "+registered.MinimumHost+". This host needs compatible content or its existing fallback.");
+                result.AppendLine("Library new bytes: 0. No model or texture copies.");
+            }else {
+                LoadExternalContent();
+                string root=LibraryAction=="Install"?LibraryBase(paths):contentLibrary,store=Child(root,"objects");
+                if(LibraryAction=="Install")CheckLibraryPaths(root);
+                long bytes=LibraryAction=="UseExisting"?0:MissingContentBytes(store,contentLibrary,checkpoint);
+                if(LibraryAction=="Install") {
+                    string drive=Path.GetPathRoot(root);
+                    if(!needed.ContainsKey(drive))needed.Add(drive,0);
+                    needed[drive]=checked(needed[drive]+bytes);
+                }
+                result.AppendLine("Library "+contentRevision+" / minimum Max "+contentMinimumHost+": "+contentLibrary);
+                result.AppendLine(LibraryAction=="UseExisting"?"Use these verified files in their current folder.":"Shared destination: "+root);
+                result.AppendLine(String.Format("Library new bytes: {0:N0}; free on {1}: {2:N0}",bytes,Path.GetPathRoot(root),new DriveInfo(Path.GetPathRoot(root)).AvailableFreeSpace));
+            }
+            foreach(var drive in needed)result.AppendLine(String.Format("Drive {0}: {1:N0} new bytes + 16 MiB working allowance; {2:N0} bytes free.",drive.Key,drive.Value,new DriveInfo(drive.Key).AvailableFreeSpace));
+            result.AppendLine("16 MiB working allowance per destination volume. Existing releases and old texture paths are retained.");
+            return result.ToString();
+        }
+        public string InstallLibrary(InstallPaths paths,Action<string> checkpoint) {
+            if(contentArchive!=null) {
+                using(var zip=new ZipArchive(File.OpenRead(contentArchive),ZipArchiveMode.Read)) {
+                    activeArchive=zip;
+                    try{return InstallLibraryCore(paths,checkpoint);}finally{activeArchive=null;}
+                }
+            }
+            return InstallLibraryCore(paths,checkpoint);
+        }
+        string InstallLibraryCore(InstallPaths paths,Action<string> checkpoint) {
+            CheckAction();if(LibraryAction=="Keep")return "";
+            LoadExternalContent();
+            string state=StatePath(paths),root=LibraryAction=="Install"?LibraryBase(paths):contentLibrary;
+            RequireSpace(state,16384);Directory.CreateDirectory(Path.GetDirectoryName(state));
+            using(var stateLock=new FileStream(state+".lock",FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)) {
+                LibraryRegistration registration;
+                if(LibraryAction=="UseExisting") {
+                    foreach(var item in externalFiles) {
+                        if(checkpoint!=null)checkpoint("verify-content:"+item.Name);
+                        Verify(SourcePath(item),item,checkpoint);
+                    }
+                    registration=ContentRegistration(contentLibrary,"");
+                }else {
+                    CheckLibraryPaths(root);
+                    string store=Child(root,"objects"),pack=Child(root,"packs/"+selectedManifestHash.Substring(0,16));
+                    RequireSpace(root,MissingContentBytes(store,contentLibrary,checkpoint));
+                    Directory.CreateDirectory(root);
+                    using(var contentLock=new FileStream(Path.Combine(root,"content.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)) {
+                        RequireSpace(root,MissingContentBytes(store,contentLibrary,checkpoint));
+                        bool exists=Directory.Exists(pack);
+                        string stage=exists?pack:Child(root,"staging/"+Guid.NewGuid().ToString("N").Substring(0,12));
+                        try {
+                            foreach(var item in externalFiles) {
+                                string target=Child(stage,item.Name);
+                                if(File.Exists(target))Verify(target,item,checkpoint);
+                            }
+                            foreach(var item in externalFiles) {
+                                string target=Child(stage,item.Name);
+                                if(!File.Exists(target))InstallFile(item,target,store,contentLibrary,checkpoint);
+                                if(checkpoint!=null)checkpoint("content:"+item.Name);
+                            }
+                            if(!exists){Directory.CreateDirectory(Path.GetDirectoryName(pack));MoveDirectory(stage,pack);}
+                        }finally {
+                            if(!exists&&Directory.Exists(stage)) {
+                                if(Path.GetDirectoryName(InstallPaths.Full(stage))!=Child(root,"staging"))throw new IOException("Content staging ownership changed.");
+                                Directory.Delete(stage,true);
+                            }
+                        }
+                    }
+                    registration=ContentRegistration(Child(pack,"Library"),root);
+                }
+                registration.VerifyCatalog();
+                if(checkpoint!=null)checkpoint("content-ready");
+                // Only a complete verified library becomes active. This independent
+                // transaction also supports managing content without a plugin update.
+                WriteAtomic(state,new UTF8Encoding(false).GetBytes(registration.Serialize()));
+                return registration.Root;
             }
         }
         public string Install(InstallPaths paths) { return Install(paths, null); }
         // Checkpoints support bounded cancellation and the owned failure fixture.
         // Callbacks never arrive from an installed library entry or package data.
         public string Install(InstallPaths paths, Action<string> checkpoint) {
+            CheckAction();
+            if(LibraryAction!="Keep")InstallLibrary(paths,checkpoint);
+            externalFiles.Clear();PayloadBytes=corePayloadBytes;
             string root=InstallPaths.Full(Path.Combine(paths.Scripts,"CyrusScatter")); Directory.CreateDirectory(root);
             using(var installLock=new FileStream(Path.Combine(root,"install.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)) {
                 Recover(paths);
@@ -227,13 +721,18 @@ namespace Cyrus.Setup {
                 // A previous current receipt owns only the registered wrapper files.
                 // Unknown custom startup/macros cannot silently be replaced.
                 CheckWrappers(before);
+                string contentStore=null,previous=null;
+                var fallback=LegacyRegistration(paths,runtime,root,before[2]);
+                string statePath=StatePath(paths);
+                var registered=LibraryLocation.Read(statePath);
+                if(registered!=null&&registered.Supports(Int32.Parse(Year)))registered.VerifyCatalog();
+                byte[] bindingBytes=new UTF8Encoding(false).GetBytes(LibraryLocation.BindingText(statePath,fallback));
+                long requiredPayload=bindingBytes.Length;
+                foreach(var item in files)if(!File.Exists(Child(release,Relative(item))))requiredPayload+=item.Bytes;
                 var volumes=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach(string destination in new[]{root,runtime,paths.Startup,paths.Macros,paths.Profile})volumes.Add(Path.GetPathRoot(destination));
                 foreach(string volume in volumes) {
-                    var drive=new DriveInfo(volume);
-                    if(!drive.DriveFormat.Equals("NTFS",StringComparison.OrdinalIgnoreCase))throw new IOException("This installer currently requires local NTFS storage: "+volume);
-                    long required=16*1024*1024+(volume.Equals(Path.GetPathRoot(runtime),StringComparison.OrdinalIgnoreCase)?PayloadBytes:0);
-                    if(drive.AvailableFreeSpace<required)throw new IOException("Not enough free disk space for staged installation: "+volume);
+                    RequireSpace(volume,volume.Equals(Path.GetPathRoot(runtime),StringComparison.OrdinalIgnoreCase)?requiredPayload:0);
                 }
                 bool staged=false;
                 try {
@@ -241,18 +740,26 @@ namespace Cyrus.Setup {
                     if(checkpoint!=null)checkpoint("verified");
                     if(Directory.Exists(release)) {
                         // Repair missing owned files; never overwrite changed bytes.
-                        foreach(var entry in files) { string path=Child(release,Relative(entry)); if(File.Exists(path))Verify(path,entry); }
-                        foreach(var entry in files) { string path=Child(release,Relative(entry)); if(!File.Exists(path)) { Directory.CreateDirectory(Path.GetDirectoryName(path)); WriteAtomic(path,File.ReadAllBytes(Child(source,entry.Source))); Verify(path,entry); } }
+                        foreach(var entry in AllFiles) { string path=Child(release,Relative(entry)); if(File.Exists(path))Verify(path,entry); }
+                        foreach(var entry in AllFiles) { string path=Child(release,Relative(entry)); if(!File.Exists(path))InstallFile(entry,path,contentStore,previous,checkpoint); }
+                        string binding=Child(release,"LibraryBinding.txt");
+                        // Preserve the release's fallback after repeated plugin-only
+                        // repairs. Its stable state path must still be the same.
+                        if(File.Exists(binding)) {
+                            string[] lines=File.ReadAllLines(binding);
+                            if(lines.Length<2||lines[0]!="CyrusLibraryBinding1"||lines[1]!=statePath)throw new IOException("The installed library binding was edited; it was preserved.");
+                        }else WriteAtomic(binding,bindingBytes);
                     }
                     else {
                         Directory.CreateDirectory(stage); staged=true;
-                        foreach(var entry in files) {
-                            string path=Child(stage,Relative(entry)),from=Child(source,entry.Source);
-                            try { Directory.CreateDirectory(Path.GetDirectoryName(path)); File.Copy(from,path,false); Verify(path,entry); }
+                        foreach(var entry in AllFiles) {
+                            string path=Child(stage,Relative(entry)),from=SourcePath(entry);
+                            try { InstallFile(entry,path,contentStore,previous,checkpoint); }
                             catch(IOException error){throw new IOException("Copy failed. Source: "+from+" Destination: "+path+". "+error.Message,error);}
                             if(checkpoint!=null)checkpoint("copied:"+entry.Name);
                         }
-                        Directory.CreateDirectory(Path.GetDirectoryName(release)); Directory.Move(stage,release); staged=false;
+                        WriteAtomic(Child(stage,"LibraryBinding.txt"),bindingBytes);
+                        Directory.CreateDirectory(Path.GetDirectoryName(release)); MoveDirectory(stage,release); staged=false;
                     }
                     // The stable loader follows the module that Max actually loaded,
                     // so a publication interruption cannot mix loose script/native pairs.

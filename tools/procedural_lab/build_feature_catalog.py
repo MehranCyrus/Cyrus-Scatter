@@ -49,6 +49,7 @@ def build():
                 elif section=='brushUI':owner='Selected Paint Area and its receiver; shared layer models'
                 elif section in ('sourceUI','sourceContainersUI'):owner='Selected layer model collection'
                 elif section=='surface' and entry['name'] in ('sharedPick','removeSurfaces','surfacesButton','receiversList'):owner='Selected layer receiving surfaces'
+                elif section=='surface' and entry['name']=='surfaceVisibility':owner='Selected receiving scene nodes; viewport visibility shared by every referencing setup'
                 controls.append(dict(group=group,section=section,**entry,capabilities=caps,owner_context=owner,
                     help=tooltips.get(section,{}).get(entry['name']),
                     view='Modify selected layer and selected container' if group=='layer' else 'Local setup controls',
@@ -56,7 +57,7 @@ def build():
     return dict(schema='cyrus.feature-catalog/1.0',authority='Help only. Tool dispatch, closed schema and local approval determine authority.',
                 capability_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                 control_inventory_sha256=hashlib.sha256(inventory_path.read_bytes()).hexdigest(),
-                development_version=re.search(r'project\(CyrusScatter VERSION ([0-9.]+)',(ROOT/'AminScatter/CMakeLists.txt').read_text())[1],mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
+                development_version=re.search(r'project\(CyrusScatter VERSION ([0-9.]+)',(ROOT/'AminScatter/CMakeLists.txt').read_text())[1],mcp_version='0.73.0',calculation_model='CyrusUnified2',features=rows,controls=controls)
 
 if __name__=='__main__':
     target=ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json'

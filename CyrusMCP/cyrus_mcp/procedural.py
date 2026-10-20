@@ -98,13 +98,39 @@ def _cached_membership(leaf,mode):
 
 def require_unified_mutation(controller):
     from .contracts import require
-    require(controller is None or str(getattr(controller,"calculationModel",lambda:"")())=="CyrusUnified1",
+    require(controller is None or str(getattr(controller,"calculationModel",lambda:"")())=="CyrusUnified2",
             "Only a matching unified controller may be refined. Retired scene schemas are unsupported.",
             "UNSUPPORTED_CAPABILITY")
 
 
+def _source_clearance(leaf, metres_per_unit):
+    """Bounded authored metadata only; never reconcile or read placements."""
+    ids = list(getattr(leaf, "clearanceSourceIDs", []))
+    names = ("clearanceCopies", "clearanceOthers", "clearanceExternal", "clearanceTargets",
+             "clearancePreferred", "clearanceFactors", "clearanceGapsWU", "clearancePlanar")
+    values = [list(getattr(leaf, name, [])) for name in names]
+    if len(ids) > 1024 or any(len(column) != len(ids) for column in values):
+        return {"status": "invalid_authored_records", "rows": []}
+    local = ("inherit", "off", "keep_apart")
+    external = ("inherit", "off", "selected_layers", "all_other_layers")
+    rows = []
+    for i, identity in enumerate(ids):
+        copies, others, scope = (int(values[c][i]) for c in range(3))
+        if not (0 <= copies < 3 and 0 <= others < 3 and 0 <= scope < 4):
+            return {"status": "invalid_authored_records", "rows": []}
+        rows.append({"source_row_id": str(identity), "own_copies": local[copies],
+                     "other_models": local[others], "other_layers": external[scope],
+                     "target_layer_ids": [v for v in str(values[3][i]).split("|") if v],
+                     "preferred": bool(values[4][i]), "radius_factor": float(values[5][i]),
+                     "gap_m": float(values[6][i]) * metres_per_unit,
+                     "metric": "xy" if values[7][i] else "xyz"})
+    return {"status": "authored", "rows": rows,
+            "default": "Unlisted source rows inherit each scope independently; normal priority.",
+            "authority": "Read only; the closed authoring plan does not edit source clearance."}
+
+
 def read_procedural(controller, metres_per_unit):
-    if str(getattr(controller,"calculationModel",lambda:"")()) != "CyrusUnified1":
+    if str(getattr(controller,"calculationModel",lambda:"")()) != "CyrusUnified2":
         return None
     parents = list(controller.logicalLayers())
     layers = []
@@ -131,6 +157,7 @@ def read_procedural(controller, metres_per_unit):
                                        "metric": "xy" if self_rule[3] else "xyz"},
                          "source_entry_ids": list(map(str, leaf.procSourceSlots)), "radius_overrides": overrides,
                          "source_pool": _container_pool(leaf),
+                         "source_clearance": _source_clearance(leaf, metres_per_unit),
                          "last_published": last, "prepared_builds": int(stats[2]), "prepared_hits": int(stats[3])})
         layers.append({"layer_id": str(parent.layerID), "population": "accepted_target" if int(parent.procPopulation) == 2 else "candidate_budget",
                        "attempt_factor": int(parent.procAttemptFactor), "round_limit": int(parent.procRounds),
@@ -145,7 +172,7 @@ def read_procedural(controller, metres_per_unit):
               "enabled": bool(controller.procRuleEnabled[i]), "radius_factor": float(controller.procRuleMultiplier[i]),
               "gap_m": float(controller.procRuleGapWU[i]) * metres_per_unit,
               "metric": "xy" if controller.procRulePlanar[i] else "xyz"} for i in range(len(controller.procRuleA))]
-    return {"schema": "cyrus.procedural-configuration/1.0", "calculation_model": "CyrusUnified1",
+    return {"schema": "cyrus.procedural-configuration/1.0", "calculation_model": "CyrusUnified2",
             "global_source_containers": _container_refs(controller, "containerGlobalNodes"),
             "layers_in_order": layers, "pair_rules": pairs, "mutation_supported": False,
             "freshness": "Recipe values are current; last_published describes the last completed epoch. No solve is performed."}

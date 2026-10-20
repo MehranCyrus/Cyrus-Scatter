@@ -80,7 +80,7 @@ def capability_manifest():
         return {key:{"type":value[0],"default":value[1],"bounds_or_choices":value[2],
                      "units":"metres" if key.endswith("_m") else "degrees" if key.endswith("_degrees") else "unitless"}
                 for key,value in entries.items()}
-    return {"schema_version":"1.0","plan_versions":["0.73"],"calculation_model":"CyrusUnified1",
+    return {"schema_version":"1.0","plan_versions":["0.73"],"calculation_model":"CyrusUnified2",
             "layer_settings":registry(LAYER_SETTINGS),"source_settings":registry(SOURCE_SETTINGS),"display_settings":registry(DISPLAY_SETTINGS),
             "supported":["count","seed","source_weights","uniform_scale_yaw","xyz_scale_xy_tilt","projected_xy_movement",
                          "enrolled_convex_include_exclude","ordered_layer_pair_spacing","set_self_spacing","cleanup","visibility","enable","cached_configuration","published_layout_export","unified_recipe_read_only"],

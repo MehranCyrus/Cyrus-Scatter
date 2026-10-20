@@ -1,5 +1,27 @@
 # Current work and acceptance
 
+Current delivery: [0.86.8 source clearance and priority](plans/source-clearance/DELIVERY_0868.md), Max 2027. Earlier correction records below retain their original scope.
+
+The [0.86.7.2 Hide surface correction](plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md)
+repairs the single-receiver fallback when no list row is selected. The previous
+handler cloned the surface and then tried to iterate `OK`. Fresh native button
+notifications pass in Max 2024/2026/2027 without creating nodes, including
+Undo/Redo, multiple receivers and panel remounting.
+
+The [0.86.7.2 follow-up](plans/preset-gallery-improvements/DELIVERY_08672.md)
+adds an explicit optional adjacent content ZIP and concise successful installation,
+Textured mesh in Display mode, viewport-only receiver hiding with Brush support,
+and selected-layer receiver inheritance on Add Layer. A genuinely missing receiver
+now reports No surface. The preceding list-visibility correction remains covered
+by three-host regression checks. B21 and old-path retirement remain open.
+
+The [corrected 0.86.7.1 delivery](plans/preset-gallery-improvements/DELIVERY_08671_CORRECTION.md)
+fixes the cached-list visibility regression and adds model load/error banners.
+It replaces the first installer UI with automatic discovery and Install/Update/
+Uninstall, including discovery of an older runtime's library fallback. B21 remains
+open for the separately documented latency and fully lazy Advanced work; B35's
+old-path retirement remains deferred. Original receipts below retain their scope.
+
 This is the maintained Scatter defect and acceptance register. Update it in place when a finding is resolved; feature sequencing lives in the execution ledger. The [dated 0.75 checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md) records the completed audit; an old unchecked roadmap item is not automatically a current defect or an instruction to implement it.
 
 ## Feature program and current evidence
@@ -19,6 +41,24 @@ production-scene stress remain separate. The prior reliability feature baseline
 is corrected to 0.86.5; original 0.87.0 evidence below retains its actual label.
 
 ## Next engineering work
+
+The [0.86.8 source clearance delivery](plans/source-clearance/DELIVERY_0868.md) implements independent model scopes, effective-rule scheduling and conflict preference with Count admission first. The [plan](plans/source-clearance/IMPLEMENTATION_PLAN.md) and [validation matrix](plans/source-clearance/VALIDATION.md) retain the broader acceptance scope. Compiled-policy/component acceptance caching, a generic source numeric-preset category and exhaustive physical/renderer campaigns are not claimed by this first delivery. B36 is fixed.
+
+The [combined UI/content plan](plans/preset-gallery-improvements/UI_AND_CONTENT_IMPLEMENTATION_PLAN.md)
+adds the user's independent plugin/content update and shared three-host library
+request. Its [research](plans/preset-gallery-improvements/SHARED_CONTENT_RESEARCH_20261020.md)
+records the actual 0.86.6.2-to-0.86.7 disk-space rejection and public vendor
+workflows. The [0.86.7.1 patch](plans/preset-gallery-improvements/DELIVERY_08671.md)
+implements independent content updates, verified shared storage and scoped panel
+refresh/layout work. Old-path retirement and remaining cold construction costs
+remain outside the completed patch scope.
+
+The [20 October panel/threading investigation](plans/panel-performance-0826/PANEL_THREADING_20261020.md)
+adds current-source analysis and a small frozen 0.86.6.2 Max 2027 empty-controller
+probe for residual B21 latency. It demonstrates costs scaling with open section
+count, without placement work in that fixture. It recommends revision-aware
+binding/layout and reduced control construction before background preparation;
+the later patch report owns implementation measurements and their limits.
 
 Use the [maintained native/performance and physics/animation contracts](ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) for new designs. Foundation upkeep is continuous, but each implementation needs a bounded user-authorized task and measured acceptance. The standalone Physics Lab is separate evidence, not a completed Scatter integration. Current docs/knowledge maintenance is recorded in the [17 October audit](../tools/rag/FOUNDATION_REFRESH_2026-10-17.md).
 
@@ -53,7 +93,7 @@ Slope/altitude are unchanged; no later roadmap feature is included here.
 | B18 | Fixed in [0.79.2](Layer_Navigation_0.79.2_2026-10-11/README.md): radius limit, Show All and per-source Show Radius use display-only refresh; Manual display Undo/Redo reconstructs the published snapshot | Both hosts preserve pending amount/footprint edits, publication epochs and positions while correctly changing/restoring circle counts. Explicit Update applies the pending recipe |
 | B19 | Fixed in [0.79.5](Terrace_Workflow_0.79.5_2026-10-11/README.md): a local identification-color change rebuilt all eight garden layer previews | Layer-local keys and one root refresh retain unchanged previews. Both hosts pass failure retention/recovery and Manual pending-edit checks |
 | B20 | Fixed in [0.79.5](Terrace_Workflow_0.79.5_2026-10-11/README.md): native display re-uploaded unchanged sibling snapshots after a local display edit | Exact unchanged snapshots share ready SDK handles in new generation-owned items. Garden upload volume falls 304.1→150.7 MB per tested heavy-layer edit; 48 edit cycles on each host keep native reservations constant. Device loss and long sessions remain open |
-| B21 | Rectangle portion corrected in the [0.81.5 candidate](plans/terrace-0815/PROGRESS.md): selection constructs compact properties only, after the user explicitly removed full Scatter editing from rectangles. The preceding [0.81.3 investigation](Source_Containers_Performance_2026-10-13.md) measured 5.91 s median full remounts; the compact witness measured 169 ms | [0.82.6 I01/I02](plans/panel-performance-0826/PROGRESS.md) reduces full-controller reselection in the owned 40,000-placement fixture from 10.11 s to 1.41 s median through lazy controls. B21 remains open for residual latency and physical artist acceptance. Preserve cold/warm, native upload and actual-scene distinctions; scripted compact-selection tests do not certify every physical gesture/DPI combination |
+| B21 | Rectangle portion corrected in the [0.81.5 candidate](plans/terrace-0815/PROGRESS.md). [0.86.7.1](plans/preset-gallery-improvements/DELIVERY_08671.md) adds scoped refresh, unchanged-layout caching and queued complete sections, with configured 100/150/200% layout checks | Historical [0.82.6 I01/I02](plans/panel-performance-0826/PROGRESS.md) retains its own 40,000-placement timing evidence. The new patch reports first-ready, all-open completion and warm-bind timings separately. B21 remains open for cold control-construction costs, fully lazy Advanced controls and physical artist acceptance. Empty-controller probes do not certify arbitrary production scenes or every physical gesture/DPI combination |
 | B22 | Fixed in the [0.79.5 creation correction](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md): a new controller's icon was absent from cached placement/display records, making sizing look frozen | Icons now draw from registered nodes without placement publication, including held sizing. Creation, abort, visibility, Undo/Redo, reopen and navigation are covered by the focused host receipts. Physical artist acceptance remains required; this does not resolve B21 |
 | B23 | Corrected in [0.79.6](Foundation_0.79.6_2026-10-12/README.md): native allocation/item preparation could release the prior generation, and the script committed Edit before finishing the publication tail | Production-body failures plus actual Max 2026/2027 script fault/recovery checks pass. GPU/device loss, notification exceptions and physical long-session acceptance remain distinct limits |
 | B24 | Reduced in the [0.81.5 candidate](plans/terrace-0815/PROGRESS.md): labels use a presentation-only native update, unchanged memberships retain weak references and creation removes a redundant full refresh. Initial layer/global Create medians fell from 353/410 ms to 160/176 ms in bounded fixtures | Full reconciliation still validates movement ownership and can cost more with large hierarchies. Keep membership/Manual/Live and native movement/Undo witnesses; cold physical Undo B05 and broad heavy-asset/DPI acceptance remain separate |
@@ -70,6 +110,10 @@ Slope/altitude are unchanged; no later roadmap feature is included here.
 | B30 | Fixed in the [same-version 0.86.2 correction](plans/preset-gallery-improvements/DELIVERY_0862.md#same-version-correction--19-october-2026): Amount assigned undefined to BitmapControl for no map/procedural maps; its thumbnail also cropped images. Native ImgTag now clears safely and shows the complete tile | Reproduced original failure, actual generated picker/panel callbacks, blank setup/reopen, Undo/Redo, all eight library examples and per-layer Amount checks at 100/150% pass; physical mixed-monitor transitions remain separate |
 | B31 | Fixed in [0.87.0](plans/preset-gallery-improvements/DELIVERY_0870.md): Clear disables image density and removes its map | Final Manual/Live, patterns/channels, preview, Undo/Redo and scene-reopen tests pass |
 | B32 | Fixed within [0.87.0](plans/preset-gallery-improvements/DELIVERY_0870.md): native receiver-aware context supplies supported map graphs with their own channels/frame/time | Final channel/UV, nested edits, animation, multiple receivers, bounds and preview agreement pass. Arbitrary graph export and third-party/renderer contexts remain outside support |
+| B33 | Fixed within 0.86.7: wheel scrolling now schedules newly visible thumbnails after idle | Actual control regression and hosted Max 2024/2026/2027 checks cover wheel without clicks, warm revisit, resize, category/search replacement and disposal. See [delivery](plans/preset-gallery-improvements/DELIVERY_0867.md) |
+| B34 | Implemented in 0.86.7: explicit Materials / Textures Mesh appearance | Native Standard/Multi/Sub/UV checks in three hosts; actual Corona leaf + Color Correction in Max 2027. Bounded maps, independent opacity, Manual retention and fallbacks are documented in the [delivery](plans/preset-gallery-improvements/DELIVERY_0867.md). Full renderer fidelity and arbitrary map graphs remain outside scope |
+| B35 | Independent revisions, plugin-only EXE/MZP, selectable three-host shared library, verified adoption, incremental storage planning and recovery implemented in [0.86.7.1](plans/preset-gallery-improvements/DELIVERY_08671.md). The original disk rejection remains historical evidence | Passed inert, real EXE, managed-content and hosted installer checks. Old paths are preserved for saved scenes. Automatic retirement/garbage collection remains deferred; this release prevents unnecessary new copies without claiming every old path can be removed |
+| B36 | Fixed in 0.86.8: Between layers lazy callback exception | Reproduced previous callback failure, replaced nested collection with bounded explicit loops, and passed actual dropdown notifications, owner binding and Undo in final Max 2027 profiles. [Receipt](plans/source-clearance/DELIVERY_0868.md). |
 
 ## Adaptive viewport follow-up
 

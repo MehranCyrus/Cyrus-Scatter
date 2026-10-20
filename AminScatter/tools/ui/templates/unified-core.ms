@@ -167,7 +167,7 @@ fn CyrusNewLayerID = (local value=(dotNetClass "System.Guid").NewGuid();value.To
 global CyrusLayerStatusData,CyrusUICount,CyrusUILayerState,CyrusUIPreviewLabel,CyrusUIResultText
 struct CyrusLayerStatusData (
     hasResult=false,placements=0,previewCount=0,mode=0,buildMs=0,
-    needsUpdate=true,errorText="",densityCapped=false,inputOff=false
+    needsUpdate=true,errorText="",densityCapped=false,inputOff=false,noSurface=false
 )
 fn CyrusUICount value compact:false = (
     if compact and value>=1000000 do return ((formattedPrint (value/1000000.0) format:".1f")+"m")
@@ -185,6 +185,7 @@ fn CyrusUILayerState stats enabled controllerEnabled previewVisible = (
     if stats.inputOff do return #("Off","Analyzer input disabled")
     if stats.errorText!="" do return #("Error",if stats.hasResult then "Update / preview failed; previous result retained" else "Update / preview failed; no calculated result")
     if not previewVisible do return #("Hidden",if stats.needsUpdate then "Preview hidden; needs Update" else "Preview hidden")
+    if stats.noSurface do return #("No surface","No receiving surface assigned to this layer")
     if not stats.hasResult do return #("--","No calculated result")
     if stats.needsUpdate do return #("Pending","Marked for Update")
     if stats.mode>1 and stats.previewCount<stats.placements do return #("Limited","Prepared preview is sampled")
@@ -214,6 +215,7 @@ fn CyrusUIResultText root owner = (
     else if not enabled then text+="\nEnable this layer to include it in calculation."
     else if state.inputOff then text+="\nEnable the linked Analyzer input before updating."
     else if state.errorText!="" then text+="\nResolve the error below, then retry Update scatter."
+    else if state.noSurface then text+="\nAdd a receiving surface in Surfaces. Models and Points need a surface to scatter on."
     else if not state.hasResult then text+="\nChoose surfaces and models or Points, then Update scatter."
     else if state.needsUpdate then text+=(if root.updateMode==1 then "\nManual: press Update scatter to apply pending settings." else "\nLive: a relevant update is pending.")
     else if state.placements==0 then text+="\nCheck Amount, coverage, source weights and spacing."
@@ -595,6 +597,9 @@ fn CyrusReceiverVariationDomains owner = (
     )
     domains
 )
+global CyrusClearanceFields=#(#clearanceSourceIDs,#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar)
+join AminScatterLayerFields CyrusClearanceFields
+join AminScatterLayerTabs CyrusClearanceFields
 fn CyrusRemapLayerCorrespondence owner variation:#same = (
     if findItem #(#same,#new) variation==0 do throw "Choose Same or New variation."
     for key in #(#sourceRowIDs,#procSourceIDs,#procReceiverIDs) do (
@@ -605,7 +610,7 @@ fn CyrusRemapLayerCorrespondence owner variation:#same = (
         )
     )
     local domains=CyrusReceiverVariationDomains owner,before=#(),after=#()
-    for key in #(#sourceRowIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
+    for key in #(#sourceRowIDs,#clearanceSourceIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
         local values=(getProperty owner key) as array
         for i=1 to values.count do if not matchPattern values[i] pattern:"placeholder:*" do (
             local index=findItem before values[i]
@@ -697,7 +702,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:58
+version:59
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -1493,6 +1498,22 @@ initialRollupState:0x8
     fn usableSource n = (
         isValidNode n and findItem (validSurfaces()) n==0 and classof n.baseObject!=AminScatterObject
     )
+    -- Shared explicit source enrollment for model picking and the installed model
+    -- library. It adds no layers, receivers, distribution settings or publication.
+    fn addModelSource node tint:undefined = (
+        if not (this.usableSource node) or findItem sources node>0 do return false
+        if sources.count>=1024 do throw "Source registration is full (1,024 rows). Remove unused rows explicitly."
+        this.ensureSourceRows();this.syncColors()
+        local count=sources.count,value=if tint==undefined then this.sourceColor (count+1) else tint
+        for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceAutoRadius,false),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
+            local values=getProperty this spec[1]
+            while values.count<count do append values spec[2]
+            append values spec[2]
+            setProperty this spec[1] values
+        )
+        append sources node;append sourceRowIDs (CyrusNewLayerID());append sourceColors value
+        this.markInputDirty();true
+    )
     fn isPointSource i = (i>0 and i<=sourcePoint.count and sourcePoint[i])
     fn isEmptySource i = (i>0 and i<=sourceEmpty.count and sourceEmpty[i])
     fn sourceRow n = (if classof n==Integer then -n else findItem sources n)
@@ -1524,9 +1545,12 @@ initialRollupState:0x8
         markInputDirty();i
     )
     fn replacePointSource row node = (
-        if not (isPointSource row) or not (usableSource node) or (findItem sources node>0 and findItem sources node!=row) do return false
+        if row<1 or row>sources.count or (this.isEmptySource row and not this.isPointSource row) or not (usableSource node) or (findItem sources node>0 and findItem sources node!=row) do return false
+        if sources[row]==node and not this.isPointSource row do return true
         this.ensureSourceRows()
-        undo "Cyrus Scatter replace point" on (
+        undo "Cyrus Scatter replace source" on (
+            while sourcePoint.count<sources.count do append sourcePoint false
+            while sourceEmpty.count<sources.count do append sourceEmpty false
             sources[row]=node;sourcePoint[row]=false;sourceEmpty[row]=false
         )
         containerConfigKey="";containerUIChanged=true
@@ -2282,10 +2306,10 @@ initialRollupState:0x8
     fn uiLayerStats = (
         -- Display can stage an empty cache for a newly authored Manual layer.
         -- Only a committed calculation epoch establishes its first result.
-        CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
+        CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.6.1"
-    fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
+    fn uiVersion = "0.86.8"
+    fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
@@ -2490,6 +2514,88 @@ initialRollupState:0x8
         on densityFrameOriginWU set v i do this.imageDensityChanged()
     )
     local densityNotifiedFrame=undefined
+    -- Append only: the saved IDs of every preceding parameter block are stable.
+    parameters sourceClearanceSettings (
+        clearanceUpgradePending type:#boolean default:false
+        clearanceSourceIDs type:#stringTab tabSize:0 tabSizeVariable:true
+        clearanceCopies type:#intTab tabSize:0 tabSizeVariable:true
+        clearanceOthers type:#intTab tabSize:0 tabSizeVariable:true
+        clearanceExternal type:#intTab tabSize:0 tabSizeVariable:true
+        clearanceTargets type:#stringTab tabSize:0 tabSizeVariable:true
+        clearancePreferred type:#boolTab tabSize:0 tabSizeVariable:true
+        clearanceFactors type:#floatTab tabSize:0 tabSizeVariable:true
+        clearanceGapsWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        clearancePlanar type:#boolTab tabSize:0 tabSizeVariable:true
+        on clearanceSourceIDs set v i do markInputDirty()
+        on clearanceCopies set v i do markInputDirty()
+        on clearanceOthers set v i do markInputDirty()
+        on clearanceExternal set v i do markInputDirty()
+        on clearanceTargets set v i do markInputDirty()
+        on clearancePreferred set v i do markInputDirty()
+        on clearanceFactors set v i do markInputDirty()
+        on clearanceGapsWU set v i do markInputDirty()
+        on clearancePlanar set v i do markInputDirty()
+    )
+    fn clearanceRow row = (
+        local index=if row>0 and row<=sourceRowIDs.count then findItem clearanceSourceIDs sourceRowIDs[row] else 0
+        if index==0 then #(0,0,0,"",false,1.0,0.0,false)
+        else #(clearanceCopies[index],clearanceOthers[index],clearanceExternal[index],clearanceTargets[index],clearancePreferred[index],clearanceFactors[index],clearanceGapsWU[index],clearancePlanar[index])
+    )
+    fn validateClearance = (
+        if clearanceSourceIDs.count>1024 do throw "Too many saved model clearance policies."
+        for key in #(#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) do
+            if (getProperty this key).count!=clearanceSourceIDs.count do throw "Model clearance settings are incomplete."
+        local seen=#()
+        for id in clearanceSourceIDs do (
+            if id=="" or findItem seen id>0 or findItem sourceRowIDs id==0 do throw "Model clearance has an invalid source identity."
+            append seen id
+        )
+        true
+    )
+    fn setSourceClearance rows field value = (
+        if findItem #(#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) field==0 do throw "Unknown model clearance field."
+        local selectedIDs=for row in rows where row>0 and row<=sourceRowIDs.count collect sourceRowIDs[row]
+        this.validateClearance()
+        undo "Cyrus model clearance" on (
+            for id in selectedIDs do (
+                local index=findItem clearanceSourceIDs id
+                if index==0 do (
+                    append clearanceSourceIDs id;append clearanceCopies 0;append clearanceOthers 0;append clearanceExternal 0
+                    append clearanceTargets "";append clearancePreferred false;append clearanceFactors 1.0;append clearanceGapsWU 0.0;append clearancePlanar false
+                    index=clearanceSourceIDs.count
+                )
+                (getProperty this field)[index]=value
+            )
+        )
+        this.markInputDirty();true
+    )
+    fn removeSourceClearance id = (
+        local index=findItem clearanceSourceIDs id
+        if index>0 do for key in #(#clearanceSourceIDs,#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) do deleteItem (getProperty this key) index
+    )
+    fn procClearanceSpecs plants = (
+        this.validateClearance()
+        if plants.count==0 do return #(#("unassigned:1","unassigned:1",0,0,0,#(),false,#(true,1.0,0.0,false)))
+        for plant in plants collect (
+            local row=this.sourceRow plant,policy=this.clearanceRow row
+            if row<1 or row>sourceRowIDs.count or row>procSourceSlots.count do throw "Clearance source correspondence is incomplete."
+            #(sourceRowIDs[row],procSourceSlots[row],policy[1],policy[2],policy[3],filterString policy[4] "|",policy[5],#(true,policy[6],policy[7],policy[8]))
+        )
+    )
+    fn needsClearanceUpgrade = (
+        if clearanceUpgradePending do return true
+        for leaf in layerObjects where leaf.clearanceUpgradePending do return true
+        false
+    )
+    fn upgradeClearanceScene = (
+        if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
+        for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
+        undo "Upgrade Cyrus scene to 0.86.8" on (
+            clearanceUpgradePending=false
+            for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
+        )
+        this.markInputDirty();this.bindNativeUI();true
+    )
     fn imageDensityChanged = (CyrusInvalidateMeshMaskPreview this;markInputDirty())
     fn densityFrameChanged = (
         if distributionMode!=3 or densityCoordinateMode!=2 do return false
@@ -2578,7 +2684,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -2720,11 +2826,15 @@ initialRollupState:0x8
     fn newLayer = (
         this.syncLayerIdentity()
         if layerObjects.count>=10 do throw "A scatter controller supports up to 10 layers."
+        -- Receivers belong to layers. The old controller-level slots no longer
+        -- follow assignment edits, so inherit the selected layer's current set.
+        local previous=this.selectedLayer()
+        local receivers=if previous==undefined then this.validSurfaces() else (this.logicalParent previous).validSurfaces()
         undo "Cyrus Scatter add layer" on (
             cyrusEditOwnerLayers (this.procModifiers()) (for leaf in layerObjects collect leaf.editLayerKey)
             local obj=createInstance AminScatterObject
             if theHold.Holding() do cyrusRecipeTrackCreated obj
-            obj.surfaceNodes=this.surfaceNodes as array;obj.surface=this.surface
+            obj.surfaceNodes=receivers as array;obj.surface=undefined
             obj.editLayerKey=nextEditLayerKey;nextEditLayerKey+=1
             
             obj.randomSeed=42+layerObjects.count*101
@@ -2859,6 +2969,7 @@ initialRollupState:0x8
     fn applyPaint rows = (this.procApplyPaint rows)
     fn paintBaseInputKey plants previewOnly receiverLocal:false = (
         local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
+        join post CyrusClearanceFields
         join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
@@ -3104,6 +3215,15 @@ initialRollupState:0x8
             for s=1 to copies.count do (
                 local leaf=copies[s]
                 leaf.procRadiusIDs=#();leaf.procRadiusModes=#();leaf.procRadiusValues=#();leaf.procRadiusDistances=#();leaf.procRadiusBinding=""
+                for index=1 to leaf.clearanceTargets.count do (
+                    local targets=filterString leaf.clearanceTargets[index] "|",packed=""
+                    for id in targets do (
+                        local targetID=id
+                        for j=1 to originals.count do if id==originals[j].layerID do targetID=copies[j].layerID
+                        packed+=targetID+"|"
+                    )
+                    leaf.clearanceTargets[index]=packed
+                )
             )
             local count=procRuleA.count
             for i=1 to count do (
@@ -3573,6 +3693,7 @@ initialRollupState:0x8
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
                 for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) where leaf.placementMode==1 or findItem #(#procPopulation,#procAttemptFactor,#procRounds,#procRepair) key==0 do format "%:%|" key (getProperty leaf key) to:stream
+                for key in CyrusClearanceFields do format "%:%|" key (getProperty leaf key) to:stream
             )
         )
         stream as string
@@ -3621,23 +3742,26 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.6.1 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.8 setup; earlier schemas are unsupported."
+        if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.6.1 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.6.1 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.6.1 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.6.1 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.8 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined do throw "Cyrus 0.86.8 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.8 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.8 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.8 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.8 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.6.1 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.8 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3684,6 +3808,10 @@ initialRollupState:0x8
         local stream=stringStream ""
         with printAllElements on (
             format "Display:%:%|" (if epoch==undefined then procEpoch else epoch) identificationMode to:stream
+            if identificationMode==4 and leaf.viewportMode==3 do (
+                local slot=findItem procPublishedOwners leaf
+                if slot>0 do format "Materials:%|" (cyrusMaterialPreviewKey procPublishedSources[slot]) to:stream
+            )
             format "%:%:%|" leaf.layerID (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
             format "%:%|" leaf.strokeIDs leaf.strokeDisplayColors to:stream
             format "Field:%:%:%:%:%:%|" leaf.fieldFalloff leaf.fieldBoundaries leaf.fieldCombined leaf.fieldSamples (leaf.fieldSelectedID()) (if leaf.fieldPreviewEnabled() then leaf.procFieldInputKey() else "") to:stream
@@ -3782,6 +3910,7 @@ initialRollupState:0x8
             local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i] sampleSeed:metadata[6]))
             cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette previewBudget else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) (if viewportMode==2 then viewportPreparationLimit viewportInstances viewportNavigationInstances else 0) 0
         )
+        if controller.identificationMode==4 and viewportMode==3 and data.count>0 do cache=cyrusTexturePreview cache plants
         local field=this.procStageField metadata[5],inspection=inspectionCache
         local inspectionKey=this.procInspectionKey plants field[2] (if displayEpoch==undefined then controller.procEpoch else displayEpoch)
         local reuseInspection=procPreviewInspectionKey==inspectionKey
@@ -3961,7 +4090,7 @@ initialRollupState:0x8
                     )
                     local geometry=leaf.procRadiusGeometry plants rows:rows enabled:(cyrusEnabled and this.enabledLayer i)
                     publishedMetadata[i]=leaf.procPreviewMetadata plants geometry:geometry
-                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()))
+                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()),(leaf.procClearanceSpecs plants))
                     append indices i
                 )
                 append layers #(parent.layerID,(parent.placementMode==1 and parent.procPopulation==2),(parent.placementMode==1 and parent.procRepair),(if parent.placementMode==1 then parent.procRounds else 1),#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)
@@ -4125,7 +4254,7 @@ initialRollupState:0x8
         )
     )
     fn bindNativeUI = (
-        if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
+        if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).requestBind()
         true
     )
     rollout mainUI "Cyrus Scatter 0.82.5" width:#cmdPanel height:30 autoLayoutOnResize:true (
@@ -4269,6 +4398,7 @@ initialRollupState:0x8
         pickbutton sharedPick "Pick receiving surface" filter:AminScatterSourceFilter pos:[8,8] width:(flow_surfaceUI.width-16) tooltip:"Add a receiving surface without replacing existing assignments."
         label sharedInfo "Choose a receiving surface." pos:[8,38] width:(flow_surfaceUI.width-16) height:32
         button surfacesButton "Receiving surfaces..." pos:[8,76] width:(flow_surfaceUI.width-16) tooltip:"Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting."
+        button surfaceVisibility "Hide surface" pos:[8,112] width:(flow_surfaceUI.width-16) tooltip:"Hide or show the selected receiving surfaces in viewports. Painting and render settings are kept. Shared surfaces change in every setup; Undo restores visibility."
         label countInfo "Add a layer in Layer Manager." pos:[8,136] width:(flow_surfaceUI.width-16) height:42
         checkbutton containersToggle "Global source containers" pos:[8,188] width:(flow_surfaceUI.width-16) height:26 tooltip:"Optional shared source pool. Enable Global containers in a layer's Assets tab."
         listbox globalContainers "Global source containers" items:#() pos:[8,224] width:(flow_surfaceUI.width-16) height:4
@@ -4293,6 +4423,11 @@ initialRollupState:0x8
             CyrusRetainListItems receiversList (for node in receiverRows collect node.name)
             receiversList.selection=for node in selected where findItem receiverRows node>0 collect findItem receiverRows node
             removeSurfaces.enabled=receiversList.selection.numberSet>0
+            surfaceVisibility.enabled=targets.count>0
+            local chosen=for i in receiversList.selection where i<=receiverRows.count collect receiverRows[i]
+            if chosen.count==0 and targets.count==1 do chosen=targets
+            surfaceVisibility.enabled=chosen.count>0
+            surfaceVisibility.text=if chosen.count>0 and (for node in chosen where not cyrusSurfaceHidden node collect node).count==0 then "Show surface" else "Hide surface"
             sharedInfo.text=if targets.count==1 then targets[1].name else (targets.count as string)+" surfaces in this layer"
             CyrusRetainListItems globalContainers (for node in root.containerGlobalNodes collect (if isValidNode node then node.name else "<deleted rectangle>"))
             for control in #(globalContainers,createContainer,pickContainer,removeContainer) do control.enabled=true
@@ -4317,7 +4452,15 @@ initialRollupState:0x8
         on flow_surfaceUI close do controlsReady=false
         on containersToggle changed value do arrangeContainers()
         on sharedPick picked node do addSurfaces #(node)
-        on receiversList selectionEnd do removeSurfaces.enabled=receiversList.selection.numberSet>0
+        on receiversList selectionEnd do bind undefined
+        on surfaceVisibility pressed do if controlsReady and not binding do (
+            local nodes=for i in receiversList.selection where i<=receiverRows.count collect receiverRows[i]
+            -- copy maps over scene nodes and clones them; retain only the target reference.
+            if nodes.count==0 and receiverRows.count==1 do nodes=#(receiverRows[1])
+            local hideValue=(for node in nodes where not cyrusSurfaceHidden node collect node).count>0
+            undo "Cyrus surface visibility" on for node in nodes where isValidNode node do cyrusSetSurfaceHidden node hideValue
+            bind undefined
+        )
         on removeSurfaces pressed do removeSelectedSurfaces()
         on surfacesButton pressed do (
             local controller=root,nodes=selectByName title:"Add receiving surfaces" buttonText:"Add selected" filter:AminScatterSourceFilter single:false
@@ -4336,11 +4479,11 @@ initialRollupState:0x8
         local controlsReady=false
 
         checkbox previewCheck "Show preview" pos:[6,8] width:(flow_previewUI.width-12)
-        dropdownlist displayModeDrop "Display mode" items:#("Point Cloud","Proxy","Mesh","Plant centres") pos:[6,34] width:(flow_previewUI.width-12)
+        dropdownlist displayModeDrop "Display mode" items:#("Point Cloud","Proxy","Mesh","Placement points","Textured mesh") pos:[6,34] width:(flow_previewUI.width-12) tooltip:"Placement points shows one point per placement. Textured mesh uses instanced geometry with source materials and leaf cutouts. Display limits affect preview only."
         dropdownlist proxyShapeDrop "Proxy shape" items:#("Box","Sphere","Pyramid") pos:[6,82] width:(flow_previewUI.width-12)
         spinner instancesLimitSpin "Idle instances:" range:[0,2147483647,2000] type:#integer fieldWidth:58 pos:[6,138] width:(flow_previewUI.width-12)
         spinner faceLimitSpin "Idle triangles:" range:[0,2147483647,2000000] type:#integer fieldWidth:58 pos:[6,166] width:(flow_previewUI.width-12)
-        dropdownlist identificationDrop "Color by" items:#("Model","Layer","Bands") pos:[6,208] width:(flow_previewUI.width-12) tooltip:"Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged."
+        dropdownlist identificationDrop "Color by" items:#("Model","Layer","Bands") pos:[6,208] width:(flow_previewUI.width-12) tooltip:"Identification colors for simplified previews. Choose Textured mesh in Display mode for source materials, UV textures and leaf cutouts."
         radiobuttons pointColorRadio "Preview color" labels:#("Solid Color","Identification Colors") columns:1 pos:[6,194] width:(flow_previewUI.width-12)
         colorpicker solidColorPicker "Solid: " color:(color 100 220 120) pos:[6,264] width:(flow_previewUI.width-12)
         spinner budgetSpin "Idle points: " range:[0,2147483647,20000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,292]
@@ -4361,7 +4504,7 @@ initialRollupState:0x8
 
         fn syncDisplay = (
             radiusMetricDrop.selection=obj.radiusDisplayMetric
-            displayModeDrop.selection=if obj.groupCenters then 4 else obj.viewportMode;proxyShapeDrop.selection=obj.proxyShape
+            displayModeDrop.selection=if obj.groupCenters then 4 else if obj.viewportMode==3 and obj.identificationMode==4 then 5 else obj.viewportMode;proxyShapeDrop.selection=obj.proxyShape
             proxyShapeDrop.visible=obj.viewportMode==2
             instancesLimitSpin.visible=obj.viewportMode==2;faceLimitSpin.visible=obj.viewportMode==3
             navigationPointsSpin.visible=obj.viewportMode==1;navigationInstancesSpin.visible=obj.viewportMode==2;navigationFacesSpin.visible=obj.viewportMode==3
@@ -4370,11 +4513,18 @@ initialRollupState:0x8
             instancesLimitSpin.value=obj.viewportInstances;faceLimitSpin.value=obj.viewportFaces
             budgetSpin.enabled=obj.viewportMode==1;pointsSpin.enabled=obj.viewportMode==1 and not obj.groupCenters
         )
-        fn syncControls = (syncDisplay();identificationDrop.selection=obj.identificationMode;radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;)
+        fn syncControls = (syncDisplay();identificationDrop.selection=if obj.identificationMode==4 then 1 else obj.identificationMode;radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;)
         on radiusLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayLimit=v;obj.refreshDisplay();syncControls();CyrusViewportRedraw())
         on radiusMetricDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayMetric=v;obj.refreshDisplay();syncControls();CyrusViewportRedraw())
         on radiusAllCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayAll=v;obj.refreshDisplay();syncControls();CyrusViewportRedraw())
-        on displayModeDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.setGroupDisplay v;syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
+        on displayModeDrop selected v do if controlsReady and not binding and obj!=undefined do (
+            local controller=obj
+            undo "Cyrus preview display" on (
+                if v==5 then controller.identificationMode=4 else if controller.identificationMode==4 do controller.identificationMode=1
+                controller.setGroupDisplay (if v==5 then 3 else v)
+            )
+            syncControls();status.text=controller.allStatus();CyrusViewportRedraw()
+        )
         on proxyShapeDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.proxyShape=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on navigationPointsSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationPoints=v;obj.refreshDisplay();CyrusViewportRedraw())
         on navigationInstancesSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationInstances=v;obj.refreshDisplay();CyrusViewportRedraw())
@@ -4389,8 +4539,8 @@ initialRollupState:0x8
 
         on autoRenderCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.autoRender=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on budgetSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.previewBudget=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        fn selectIdentification value = (obj.identificationMode=value;identificationDrop.selection=value;obj.refreshIdentification())
-        on identificationDrop selected v do selectIdentification v
+        fn selectIdentification value = (obj.identificationMode=value;obj.refreshIdentification();syncControls())
+        on identificationDrop selected v do if controlsReady and not binding and obj!=undefined do selectIdentification v
         on pointColorRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.pointColorMode=v;syncControls();CyrusViewportRedraw())
         on solidColorPicker changed v do if controlsReady and not binding and obj!=undefined do (obj.solidPointColor=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
@@ -4402,7 +4552,7 @@ initialRollupState:0x8
             if obj!=next do ()
             obj=next;parentView=(CyrusContainerPanel root)
             for c in flow_previewUI.controls do c.enabled=true
-            try (undo off ((syncDisplay();identificationDrop.selection=obj.identificationMode;radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;controlsReady=true;(previewCheck.checked=obj.showPoints;pointsSpin.value=obj.pointsPerPlant;iconSpin.value=obj.iconSize)))) catch(binding=false;controlsReady=true;throw())
+            try (undo off ((syncDisplay();identificationDrop.selection=if obj.identificationMode==4 then 1 else obj.identificationMode;radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;controlsReady=true;(previewCheck.checked=obj.showPoints;pointsSpin.value=obj.pointsPerPlant;iconSpin.value=obj.iconSize)))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
         on flow_previewUI open do (root=this;(controlsReady=true;bind (root.selectedLayer())))
@@ -4555,12 +4705,11 @@ initialRollupState:0x8
         multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(selected_sourceUI.width-8)
         button selectFromScene "Choose from list..." pos:[4,170] width:((selected_sourceUI.width-12)/2) tooltip:"Choose one or more source models by name."
         pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this layer."
-        button addSelected "Add selection" pos:[(selected_sourceUI.width/2+2),140] width:((selected_sourceUI.width-12)/2) tooltip:"Add the currently selected scene objects to this layer."
         button removePlant "Remove rows" pos:[4,200] width:(selected_sourceUI.width-8) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead."
         button selectPlant "Select sources" pos:[(selected_sourceUI.width/2+2),170] width:((selected_sourceUI.width-12)/2) tooltip:"Select the highlighted source models in the scene."
         button addPoint "Add Point" pos:[4,460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model."
         button addEmpty "Add Empty" pos:[(selected_sourceUI.width/2+2),460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a weighted empty source for intentional gaps in candidate-budget mode."
-        pickbutton replacePoint "Pick object" filter:AminScatterSourceFilter pos:[4,490] width:(selected_sourceUI.width-8) tooltip:"Use a scene model for the selected Point; keep its identity, settings and Band assignments."
+        pickbutton replacePoint "Pick object" filter:AminScatterSourceFilter pos:[4,490] width:(selected_sourceUI.width-8) tooltip:"Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments."
         button makePoint "Make point" pos:[4,514] width:(selected_sourceUI.width-8) tooltip:"Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object."
         label groupHeading "Assignment group" pos:[4,530] width:(selected_sourceUI.width-8)
         dropdownlist existingGroups "Reuse a group" items:#() pos:[4,552] width:(selected_sourceUI.width-8) tooltip:"Assign highlighted sources to an existing color group for clustering."
@@ -4578,6 +4727,77 @@ initialRollupState:0x8
         checkbox followRadiusCheck "Follow Scale" pos:[4,294] width:((selected_sourceUI.width-12)/2) tooltip:"Scale this source's collision footprint with its instance scale."
         checkbox showRadiusCheck "Show Radius" pos:[(selected_sourceUI.width/2+2),294] width:((selected_sourceUI.width-12)/2) tooltip:"Show this source's radius in the viewport; does not change collision rules."
         dropdownlist forwardAxis "Forward axis:" items:#("+Y","-Y","+X","-X") pos:[4,326] width:(selected_sourceUI.width-8) tooltip:"The model's local forward direction, used for orientation."
+        dropdownlist clearanceCopiesList "Own copies" items:#("Use layer defaults","Off","Keep apart") width:180 tooltip:"Clearance between instances of this source. Off removes this source's request; another model can still request clearance."
+        dropdownlist clearanceOthersList "Other models in this layer" items:#("Use layer defaults","Off","Keep apart") width:180 tooltip:"Choose this independently of other layers. Keep apart uses this model's radius together with the other model's radius."
+        dropdownlist clearanceExternalList "Other layers" items:#("Use layer defaults","Off","Selected layers","All other layers") width:180 tooltip:"Request clearance from selected layers or all other layers in this Scatter setup. Other Scatter setups are unaffected."
+        multiListBox clearanceLayerList "Target layers (Ctrl/Shift)" items:#() width:180 height:4 tooltip:"Select target layers by their persistent identity. Renaming does not change the relationship. Removed targets remain inactive until restored by Undo."
+        dropdownlist clearancePriorityList "Conflict priority" items:#("Normal","Prefer this model") width:180 tooltip:"Prefer wins clearance conflicts against normal models. Protected edits win first. Count slots are admitted in stable candidate order, so preference does not take extra slots from distant models."
+        label clearanceSummary "" width:180 height:42
+        spinner clearanceFactorSpin "Radius factor:" range:[0,1000,1] scale:0.01 width:180 tooltip:"For this model's explicit Keep apart requests: factor times the sum of both radii, plus Extra gap. Inherited rules keep their layer settings."
+        spinner clearanceGapSpin "Extra gap:" type:#worldunits range:[0,1e9,0] width:180 tooltip:"Additional distance for this model's explicit clearance requests. Stored in scene units."
+        dropdownlist clearanceMetricList "Measure distance" items:#("3D distance","XY distance") width:180 tooltip:"3D compares positions in space. XY compares the ground-plane projection, even across different heights."
+        local clearanceLayerOwners=#()
+        fn bindClearanceChoice control choices value = (
+            if value==undefined do append choices "Mixed"
+            CyrusRetainListItems control choices
+            control.selection=if value==undefined then choices.count else value
+        )
+        fn bindClearance = (
+            local rows=plantList.selection as array,ready=rows.count>0
+            loadingColor=true
+            for control in #(clearanceCopiesList,clearanceOthersList,clearanceExternalList,clearancePriorityList,clearanceLayerList,clearanceFactorSpin,clearanceGapSpin,clearanceMetricList) do control.enabled=ready
+            clearanceLayerOwners=#()
+            local captions=#()
+            for candidate in root.logicalLayers() do if candidate!=obj do (append clearanceLayerOwners candidate;append captions (root.layerCaption candidate))
+            CyrusRetainListItems clearanceLayerList captions
+            if ready then (
+                local first=obj.clearanceRow rows[1],mixed=false,values=#()
+                for item in first do append values item
+                for row in rows do (
+                    local next=obj.clearanceRow row
+                    for i=1 to values.count do if next[i]!=first[i] do (values[i]=undefined;mixed=true)
+                )
+                bindClearanceChoice clearanceCopiesList #("Use layer defaults","Off","Keep apart") (if values[1]==undefined then undefined else values[1]+1)
+                bindClearanceChoice clearanceOthersList #("Use layer defaults","Off","Keep apart") (if values[2]==undefined then undefined else values[2]+1)
+                bindClearanceChoice clearanceExternalList #("Use layer defaults","Off","Selected layers","All other layers") (if values[3]==undefined then undefined else values[3]+1)
+                bindClearanceChoice clearancePriorityList #("Normal","Prefer this model") (if values[5]==undefined then undefined else if values[5] then 2 else 1)
+                bindClearanceChoice clearanceMetricList #("3D distance","XY distance") (if values[8]==undefined then undefined else if values[8] then 2 else 1)
+                clearanceFactorSpin.value=first[6];clearanceGapSpin.value=first[7]
+                clearanceFactorSpin.indeterminate=values[6]==undefined
+                clearanceGapSpin.indeterminate=values[7]==undefined
+                local selected=#(),missing=0
+                if values[4]!=undefined do for id in filterString values[4] "|" do (
+                    local found=false
+                    for i=1 to clearanceLayerOwners.count do if clearanceLayerOwners[i].layerID==id do (append selected i;found=true)
+                    if not found do missing+=1
+                )
+                clearanceLayerList.selection=selected as bitarray
+                clearanceSummary.text=if mixed then "Mixed settings. Each edit changes only that setting." else if missing>0 then ((missing as string)+" saved target(s) unavailable. Other relationships are retained.") else if first[1]==0 and first[2]==0 and first[3]==0 then "Uses layer spacing defaults." else "Model rules override only their selected scope."
+            ) else (
+                clearanceSummary.text="Select a model or Point to edit clearance."
+                clearanceCopiesList.selection=0;clearanceOthersList.selection=0;clearanceExternalList.selection=0;clearancePriorityList.selection=0;clearanceMetricList.selection=0;clearanceLayerList.selection=#{}
+            )
+            loadingColor=false
+        )
+        fn editClearance field value = (
+            if not controlsReady or binding or loadingColor or obj==undefined do return false
+            local target=obj,controller=root,rows=plantList.selection
+            try(target.setSourceClearance rows field value;controller.bindNativeUI();CyrusViewportRedraw())
+            catch(messageBox (getCurrentException()) title:"Cyrus model clearance")
+            true
+        )
+        on clearanceCopiesList selected value do if value>0 and value<=3 do editClearance #clearanceCopies (value-1)
+        on clearanceOthersList selected value do if value>0 and value<=3 do editClearance #clearanceOthers (value-1)
+        on clearanceExternalList selected value do if value>0 and value<=4 do editClearance #clearanceExternal (value-1)
+        on clearancePriorityList selected value do if value>0 and value<=2 do editClearance #clearancePreferred (value==2)
+        on clearanceMetricList selected value do if value>0 and value<=2 do editClearance #clearancePlanar (value==2)
+        on clearanceFactorSpin changed value do editClearance #clearanceFactors value
+        on clearanceGapSpin changed value do editClearance #clearanceGapsWU value
+        on clearanceLayerList selectionEnd do if not loadingColor do (
+            local ids=""
+            for i in clearanceLayerList.selection where i<=clearanceLayerOwners.count do ids+=clearanceLayerOwners[i].layerID+"|"
+            editClearance #clearanceTargets ids
+        )
         fn updateList = (
             local selectedRows=plantList.selection
             if selectedRows.numberSet==0 and obj.sources.count>0 do selectedRows=#{1}
@@ -4593,13 +4813,11 @@ initialRollupState:0x8
             CyrusRetainListItems existingGroups (for i=1 to groupPalette.count collect ("Group "+(i as string)))
         )
         fn addSource n = (
-            if obj.usableSource n and (findItem obj.sources n)==0 do (
-                obj.ensureSourceRows()
-                obj.syncColors();while obj.sourceEmpty.count<obj.sources.count do append obj.sourceEmpty false;append obj.sourceEmpty false;append obj.sources n;append obj.sourceRowIDs (CyrusNewLayerID());append obj.sourceColors groupColor.color;if obj.sourceWeights.count>0 do append obj.sourceWeights 1.0;if obj.sourceZOffsetsWU.count>0 do append obj.sourceZOffsetsWU 0.0;if obj.sourceScales.count>0 do append obj.sourceScales 1.0;obj.markInputDirty()
-            )
+            obj.addModelSource n tint:groupColor.color
         )
 
         fn showSelectedColor = (
+            bindClearance()
             local rows=plantList.selection
             weightSpin.enabled=rows.numberSet>0;sourceZSpin.enabled=rows.numberSet>0;sourceScaleSpin.enabled=rows.numberSet>0;forwardAxis.enabled=rows.numberSet>0
             if rows.numberSet>0 then (
@@ -4624,7 +4842,7 @@ initialRollupState:0x8
                 loadingColor=true;groupColor.color=obj.sourceColor 1;existingGroups.selection=0;focusedRow=0;loadingColor=false
             )
             radiusModeDrop.tooltip=radiusModeHelp.text
-            replacePoint.enabled=rows.numberSet==1 and obj.isPointSource focusedRow
+            replacePoint.enabled=rows.numberSet==1 and focusedRow>0 and (obj.isPointSource focusedRow or not obj.isEmptySource focusedRow)
             makePoint.enabled=rows.numberSet==1 and focusedRow>0 and not obj.isEmptySource focusedRow and obj.usableSource obj.sources[focusedRow]
         )
 
@@ -4646,8 +4864,8 @@ initialRollupState:0x8
         )
         on replacePoint picked n do if controlsReady and not binding and obj!=undefined do (
             local rows=plantList.selection as array
-            if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
-            else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this set's source list." title:"Cyrus Scatter"
+            if rows.count!=1 then messageBox "Select one Point or model row to replace." title:"Cyrus Scatter"
+            else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point or model row and an object that is not already in another source row." title:"Cyrus Scatter"
             replacePoint.text="Pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on makePoint pressed do if controlsReady and not binding and obj!=undefined do (
@@ -4697,13 +4915,13 @@ initialRollupState:0x8
             addSources picked
         )
         on addPlant picked n do if controlsReady and not binding and obj!=undefined do addSources #(n)
-        on addSelected pressed do if controlsReady and not binding and obj!=undefined do addSources (selection as array)
         on removePlant pressed do if controlsReady and not binding and obj!=undefined do (
             obj.syncColors()
             obj.syncStrokes()
             local rows=plantList.selection as array
             undo "Cyrus Scatter remove sources" on (
                 for k=rows.count to 1 by -1 do (
+                    obj.removeSourceClearance obj.sourceRowIDs[rows[k]]
                     deleteItem obj.sourceRowIDs rows[k]
                     for key in #(#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
                     if rows[k]<=obj.sourcePoint.count do deleteItem obj.sourcePoint rows[k]
@@ -5947,8 +6165,16 @@ initialRollupState:0x8
             if not resetPeer and peerList.selection>0 and peerList.selection<=peers.count do previous=peers[peerList.selection]
             binding=true
             try (
-                peers=case scope of (3:(for p in root.layerSets owner where p!=leaf collect p);4:(for p in root.logicalLayers() where p!=owner collect p);default:#())
-                CyrusRetainListItems peerList (for p in peers collect (if scope==4 then root.layerCaption p else p.paintSetName))
+                -- A collect expression inside the lazy rollout's nested function
+                -- captured a retired local thunk for scope in Max 2027. Keep the
+                -- bounded peer snapshot explicit; no comprehension captures it.
+                peers=#()
+                if scope==3 do for candidate in root.layerSets owner do if candidate!=leaf do append peers candidate
+                if scope==4 do for candidate in root.logicalLayers() do if candidate!=owner do append peers candidate
+                local peerNames=#()
+                if scope==4 then (for candidate in peers do append peerNames (root.layerCaption candidate))
+                else (for candidate in peers do append peerNames candidate.paintSetName)
+                CyrusRetainListItems peerList peerNames
                 peerList.selection=if peers.count==0 then 0 else amax 1 (findItem peers previous)
                 local editable=not pair or peers.count>0
                 peerList.enabled=pair and editable
@@ -6229,8 +6455,8 @@ initialRollupState:0x8
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version!=58 do procSchemaValid=false
-        this.procAssertSchema()
+        if version==58 then clearanceUpgradePending=true else if version!=59 do procSchemaValid=false
+        if not procSchemaValid do throw "Unsupported Cyrus scene schema; the scene is preserved."
         syncColors();markInputDirty()
     )
     on attachedToNode n do (n.renderable=false;n.wirecolor=red;timeOwnerRegistered=false;CyrusRegisterTimeOwner n)
@@ -6700,6 +6926,10 @@ fn CyrusPointSync = (
                     local detail=cyrusRetainedViewportStats owner
                     if detail[10]!=0 then detailStatus="Preview memory allowance reached; showing cached boxes."
                     else if detail[8]>0 do detailStatus="Mesh preview uses cached boxes to fit the triangle limit."
+                    if n.baseObject.identificationMode==4 do for cache in caches do (
+                        local materialStatus=cyrusMaterialPreviewStatus cache
+                        if materialStatus!="" do detailStatus=materialStatus
+                    )
                 )
             )
             append records #(n,owner,caches,styles,fallback,2)

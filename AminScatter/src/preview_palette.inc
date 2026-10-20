@@ -7,7 +7,7 @@ std::shared_ptr<const cyrus::PreviewPalette> previewPalette(Value* value,std::si
         throw RuntimeError(_T("Expected preview palette version 1 with five fields"));
     auto palette=std::make_shared<cyrus::PreviewPalette>();
     palette->mode=data->data[1]->to_int();
-    if(palette->mode<1||palette->mode>3)throw RuntimeError(_T("Unknown identification mode"));
+    if(palette->mode<1||palette->mode>4)throw RuntimeError(_T("Unknown identification mode"));
     if(data->data[4]!=&true_value&&data->data[4]!=&false_value)
         throw RuntimeError(_T("Band ownership requirement must be Boolean"));
     palette->requireBand=data->data[4]==&true_value;

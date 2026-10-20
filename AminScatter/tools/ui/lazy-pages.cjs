@@ -21,7 +21,7 @@ ${body}
 module.exports=function(page,index){
  const name=page.name,slot=name+'Slot',factory='create'+name;
  let body=page.text.replace(new RegExp('rollout '+name+' "[^"\\n]*"'), 'rollout '+name+' ""');
- body=body.replace('local layout,lastLayoutWidth=0','local hostPage=undefined\n        local layout,lastLayoutWidth=0');
+ body=body.replace('local layout,lastLayoutStamp=undefined,lastLayoutWidth=0','local hostPage=undefined\n        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0');
  body=body.replace('panel=this.mainUI;root=undefined;controlsReady=false','controlsReady=false');
  // The inner #cmdPanel HWND can exceed its visible subrollout clipping area.
  // Respect the shell's usable width as well as the child's logical UI width.

@@ -120,6 +120,10 @@
         "name": "surfacesButton"
       },
       {
+        "kind": "button",
+        "name": "surfaceVisibility"
+      },
+      {
         "kind": "checkbutton",
         "name": "containersToggle"
       },
@@ -263,10 +267,6 @@
       },
       {
         "kind": "button",
-        "name": "addSelected"
-      },
-      {
-        "kind": "button",
         "name": "removePlant"
       },
       {
@@ -332,6 +332,38 @@
       {
         "kind": "dropdownlist",
         "name": "forwardAxis"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "clearanceCopiesList"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "clearanceOthersList"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "clearanceExternalList"
+      },
+      {
+        "kind": "multiListBox",
+        "name": "clearanceLayerList"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "clearancePriorityList"
+      },
+      {
+        "kind": "spinner",
+        "name": "clearanceFactorSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "clearanceGapSpin"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "clearanceMetricList"
       },
       {
         "kind": "checkbutton",

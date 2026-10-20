@@ -2,10 +2,10 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "7b3b0a258ddf7e521f990fec238b75c89f450bd3a31f0e9cea4c83adeaf95301",
-  "control_inventory_sha256": "2879ff45918bbd1cddc4da0a5e2151e0e3c07c29c2b1a38791f9be97a5776e4a",
-  "development_version": "0.86.6.1",
+  "control_inventory_sha256": "fa985531e5c4d86401fb1f467fa258f6ef6df1b6d6e3024182ba302fad4354ac",
+  "development_version": "0.86.8",
   "mcp_version": "0.73.0",
-  "calculation_model": "CyrusUnified1",
+  "calculation_model": "CyrusUnified2",
   "features": [
     {
       "feature_id": "C01",
@@ -339,7 +339,7 @@
         "C29"
       ],
       "owner_context": "Setup display/output",
-      "help": null,
+      "help": "Placement points shows one point per placement. Textured mesh uses instanced geometry with source materials and leaf cutouts. Display limits affect preview only.",
       "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -399,7 +399,7 @@
         "C29"
       ],
       "owner_context": "Controller / local view",
-      "help": "Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged.",
+      "help": "Identification colors for simplified previews. Choose Textured mesh in Display mode for source materials, UV textures and leaf cutouts.",
       "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -666,6 +666,20 @@
       ],
       "owner_context": "Selected layer receiving surfaces",
       "help": "Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting.",
+      "view": "Local setup controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "kind": "button",
+      "name": "surfaceVisibility",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Selected receiving scene nodes; viewport visibility shared by every referencing setup",
+      "help": "Hide or show the selected receiving surfaces in viewports. Painting and render settings are kept. Shared surfaces change in every setup; Undo restores visibility.",
       "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1119,21 +1133,6 @@
       "group": "layer",
       "section": "sourceUI",
       "kind": "button",
-      "name": "addSelected",
-      "capabilities": [
-        "C05",
-        "C06",
-        "C08"
-      ],
-      "owner_context": "Selected layer model collection",
-      "help": "Add the currently selected scene objects to this layer.",
-      "view": "Modify selected layer and selected container",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "sourceUI",
-      "kind": "button",
       "name": "removePlant",
       "capabilities": [
         "C05",
@@ -1201,7 +1200,7 @@
         "C08"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Use a scene model for the selected Point; keep its identity, settings and Band assignments.",
+      "help": "Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1382,6 +1381,126 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "The model's local forward direction, used for orientation.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "dropdownlist",
+      "name": "clearanceCopiesList",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Clearance between instances of this source. Off removes this source's request; another model can still request clearance.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "dropdownlist",
+      "name": "clearanceOthersList",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Choose this independently of other layers. Keep apart uses this model's radius together with the other model's radius.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "dropdownlist",
+      "name": "clearanceExternalList",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Request clearance from selected layers or all other layers in this Scatter setup. Other Scatter setups are unaffected.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "multiListBox",
+      "name": "clearanceLayerList",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Select target layers by their persistent identity. Renaming does not change the relationship. Removed targets remain inactive until restored by Undo.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "dropdownlist",
+      "name": "clearancePriorityList",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Prefer wins clearance conflicts against normal models. Protected edits win first. Count slots are admitted in stable candidate order, so preference does not take extra slots from distant models.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "spinner",
+      "name": "clearanceFactorSpin",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "For this model's explicit Keep apart requests: factor times the sum of both radii, plus Extra gap. Inherited rules keep their layer settings.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "spinner",
+      "name": "clearanceGapSpin",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Additional distance for this model's explicit clearance requests. Stored in scene units.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "dropdownlist",
+      "name": "clearanceMetricList",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "3D compares positions in space. XY compares the ground-plane projection, even across different heights.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

@@ -5,6 +5,8 @@
 #include <triobj.h>
 #include <splshape.h>
 #include <AppDataChunk.h>
+#include <INodeLayerProperties.h>
+#include <ILayerProperties.h>
 #include <IPainterInterface.h>
 #include <notify.h>
 #include <maxscript/maxscript.h>
@@ -28,6 +30,7 @@
 namespace {
 namespace b=cyrus::brush;
 const Class_ID documentID(0x5c743810,0x229f3ab6);
+bool brushTargetHidden(INode*);
 HINSTANCE instance=nullptr;
 std::string storageTrace;
 b::Vec3 vec(Point3 p){return {p.x,p.y,p.z};}
@@ -143,7 +146,7 @@ public:
     void requireAuthor(){if(!cyrusBoundaryAllows(this))throw std::runtime_error("Cyrus authoring license required; completed Brush work is preserved");}
     void prepare(INode* node,bool requirePaintable=false){
         if(painting)throw std::runtime_error("End painting before binding the surface");
-        if(!node||(requirePaintable&&(node->IsHidden()||node->IsFrozen())))throw std::runtime_error("Choose a visible unfrozen mesh target for painting");
+        if(!node||(requirePaintable&&(brushTargetHidden(node)||node->IsFrozen())))throw std::runtime_error("Choose an unfrozen mesh target; use Cyrus Hide surface for viewport-only hiding");
         const auto t=GetCOREInterface()->GetTime();const auto state=node->EvalWorldState(t);Object* obj=state.obj;
         Interval nextValidity=state.Validity(t);node->GetObjectTM(t,&nextValidity);
         if(!obj||!obj->CanConvertToType(triObjectClassID))throw std::runtime_error("Target cannot be triangulated");
@@ -176,7 +179,7 @@ public:
     }
     void pollTarget(){if(target&&targetValidity.InInterval(GetCOREInterface()->GetTime()))return;
         invalid=true;error="Target lifetime or time changed; validate before painting";}
-    void valid(bool requirePaintable=true){pollTarget();if(!target||invalid||!surface)throw std::runtime_error("Brush target requires validation");if(requirePaintable&&(target->IsHidden()||target->IsFrozen()))throw std::runtime_error("Painting requires a visible unfrozen target");}
+    void valid(bool requirePaintable=true){pollTarget();if(!target||invalid||!surface)throw std::runtime_error("Brush target requires validation");if(requirePaintable&&(brushTargetHidden(target)||target->IsFrozen()))throw std::runtime_error("Painting requires an unfrozen target; use Cyrus Hide surface for viewport-only hiding");}
     void ensureSurface(bool requirePaintable=false){pollTarget();if((invalid||!surface)&&!painting)prepare(target,requirePaintable);valid(requirePaintable);
         if(document.attached&&!atlas)atlas=std::make_shared<b::SurfaceAtlas>(*surface,b::Basis{vec(objectTM.GetRow(0)),vec(objectTM.GetRow(1)),vec(objectTM.GetRow(2))});}
     b::Ray ray(IPoint2 mouse){
@@ -394,6 +397,7 @@ extern "C" __declspec(dllexport) ClassDesc* CyrusBrushDocumentDesc(){return LibC
 extern "C" __declspec(dllexport) ULONG CanAutoDefer(){return 0;}
 BOOL WINAPI DllMain(HINSTANCE module,DWORD reason,LPVOID){if(reason==DLL_PROCESS_ATTACH)instance=module;return TRUE;}
 static_assert(MAX_PRODUCT_YEAR_NUMBER==CYRUS_MAX_YEAR,"Brush SDK mismatch");
+#include "surface_visibility.inc"
 
 static const CyrusPlacementApi* placementBoundary(){
     const auto module=GetModuleHandleW(L"AminScatter.dlx");
@@ -512,7 +516,7 @@ Value* cyrusBrushDisplay_cf(Value** a,int n){check_arg_count(cyrusBrushDisplay,3
     if(p->painting)p->evaluate();return &ok;
 });}
 def_visible_primitive(cyrusBrushStats,"cyrusBrushStats");
-Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);const auto& current=p->gesture?p->pending:p->document;std::size_t samples=b::vertexCount(current);for(auto v:{p->revision,std::uint64_t(current.attached?current.faces.size():current.contours.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(0.f));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
+Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||brushTargetHidden(p->target)||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);const auto& current=p->gesture?p->pending:p->document;std::size_t samples=b::vertexCount(current);for(auto v:{p->revision,std::uint64_t(current.attached?current.faces.size():current.contours.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(0.f));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
 def_visible_primitive(cyrusBrushRefreshMask,"cyrusBrushRefreshMask");
 Value* cyrusBrushRefreshMask_cf(Value** a,int n){check_arg_count(cyrusBrushRefreshMask,1,n);return api([&]()->Value*{return doc(a[0])->evaluate()?&true_value:&false_value;});}
 def_visible_primitive(cyrusBrushDab,"cyrusBrushDab");

@@ -1,4 +1,23 @@
-# Cyrus planting presets — 0.86.6 / Max 2027
+# Individual model library — 0.86.6.2 / Max 2027
+
+The active bundle uses 96 unique individual assets covering the original 104
+catalog cards. Eight redundant collection/composite/renderer cards resolve to
+separately listed models. Simple categories and original Corona JPEG previews
+replace the old demonstration and pilot presets in the installed library.
+
+Prepared private models/maps/previews live outside Git in local build/dist
+`Content/Library`. The data-only `model-catalog.json` supplies stable IDs, names,
+categories, scene hashes and preview paths. `tools/build_individual_content.py`
+verifies this inventory and writes the bounded installer content manifest.
+Keep the EXE and adjacent `Content` folder together. Installation streams the
+verified content into a versioned release before publishing its registration.
+Personal recipes remain artist-owned; importing an individual creates no scatter
+design. The old active files have been moved to the local ignored
+`build/individual-model-library-20261020/retired-library-0866` archive and are
+excluded completely from the new sidecar packaging path. Historical fixture tools
+must explicitly select that archive if they are used again.
+
+## Historical 0.86.6 fixture documentation
 
 Select one terrain mesh and run **Cyrus Library** (Customize > Cyrus category), or open **Layers > Recipes** from an existing setup. Choose a preset and **Load onto surface**. Browsing creates no scene objects. Loading imports its supported models/materials and creates a setup when needed. Otherwise it adds layers to the captured setup, preserving existing layers and Manual/Live mode, then explicitly updates once. One Undo removes the added preset; Redo restores it.
 

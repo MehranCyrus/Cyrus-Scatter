@@ -109,7 +109,7 @@ class MaxHost:
         from .publication import manifest
         obj=self.controllers.get(controller_id)
         require(obj is not None and rt.isValidNode(obj), "Scoped controller is unavailable", "STALE_CONTEXT")
-        require(str(obj.calculationModel())=="CyrusUnified1" and getattr(obj,"procPublicationInfo",None) is not None,
+        require(str(obj.calculationModel())=="CyrusUnified2" and getattr(obj,"procPublicationInfo",None) is not None,
                 "This controller has no procedural publication reader; use the matching script/native pair", "UNSUPPORTED_CAPABILITY")
         try:
             info=frozen(obj.procPublicationInfo())

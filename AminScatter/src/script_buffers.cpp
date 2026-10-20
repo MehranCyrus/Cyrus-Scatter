@@ -107,8 +107,10 @@ Value* cyrusNativeMemoryAdmit_cf(Value** a,int n){
     if(pool<0||pool>1000000)throw RuntimeError(_T("Invalid native successor population"));
     // Simultaneous receiver/base/prepared/output buffers, generator/Relax
     // scratch, acceptance Sample plus schedule/index/hash/neighbor allowance.
+    // Clearance adds two metric grids, candidate admission/replay indices and
+    // blocker state. Charge their coexistence before preparing any successor.
     // A conservative admission model, not reported physical allocation.
-    constexpr std::uint64_t perCandidate=6*sizeof(cyrus::placements::Record)+4*sizeof(amin::Instance)+sizeof(cyrus::procedural::Sample)+256;
+    constexpr std::uint64_t perCandidate=6*sizeof(cyrus::placements::Record)+4*sizeof(amin::Instance)+sizeof(cyrus::procedural::Sample)+384;
     const auto additional=std::uint64_t(pool)*perCandidate+64ULL*1024*1024;
     MEMORYSTATUSEX status{};status.dwLength=sizeof(status);
     if(!GlobalMemoryStatusEx(&status))throw RuntimeError(_T("Cannot read native commit headroom"));

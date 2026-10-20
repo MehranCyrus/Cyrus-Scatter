@@ -131,6 +131,12 @@
         },
         {
           "component": "flow_surfaceUI",
+          "control": "surfaceVisibility",
+          "presentation": "flow_surfaceUI_surfaceVisibility",
+          "advanced": false
+        },
+        {
+          "component": "flow_surfaceUI",
           "control": "countInfo",
           "presentation": "flow_surfaceUI_countInfo",
           "advanced": false
@@ -212,12 +218,6 @@
           "component": "sourceUI",
           "control": "addPlant",
           "presentation": "sourceUI_addPlant",
-          "advanced": false
-        },
-        {
-          "component": "sourceUI",
-          "control": "addSelected",
-          "presentation": "sourceUI_addSelected",
           "advanced": false
         },
         {
@@ -350,6 +350,60 @@
           "component": "sourceUI",
           "control": "forwardAxis",
           "presentation": "sourceUI_forwardAxis",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceCopiesList",
+          "presentation": "sourceUI_clearanceCopiesList",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceOthersList",
+          "presentation": "sourceUI_clearanceOthersList",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceExternalList",
+          "presentation": "sourceUI_clearanceExternalList",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceLayerList",
+          "presentation": "sourceUI_clearanceLayerList",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearancePriorityList",
+          "presentation": "sourceUI_clearancePriorityList",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceSummary",
+          "presentation": "sourceUI_clearanceSummary",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceFactorSpin",
+          "presentation": "sourceUI_clearanceFactorSpin",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceGapSpin",
+          "presentation": "sourceUI_clearanceGapSpin",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "clearanceMetricList",
+          "presentation": "sourceUI_clearanceMetricList",
           "advanced": false
         },
         {

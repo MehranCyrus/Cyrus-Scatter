@@ -56,6 +56,24 @@ struct PointLayer {
     std::shared_ptr<const PreviewPalette> palette;
     int geometryMode=0;
     ViewportLimits limits;
+    std::shared_ptr<const struct MeshAppearance> appearance;
+};
+
+// Host-prepared material data. No scene pointers survive into the draw thread.
+// RGB and alpha use independent source UV channels in one bounded atlas.
+struct MaterialUV { Point3 color,opacity; };
+struct SourceAppearance {
+    std::shared_ptr<PreviewMemory> memory;
+    std::vector<MaterialUV> uv;
+    std::vector<std::uint32_t> pixels;
+    int width=0,tiles=0;
+    std::size_t cpuBytes=0;
+    std::wstring status;
+};
+struct MeshAppearance {
+    std::vector<std::shared_ptr<const SourceAppearance>> sources;
+    std::wstring key,status;
+    std::size_t cpuBytes=0,gpuBytes=0;
 };
 
 struct PreviewGeometry {

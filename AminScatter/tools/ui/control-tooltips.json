@@ -7,13 +7,15 @@
     "updateNow": "Calculate enabled layers in order."
   },
   "previewUI": {
-    "identificationDrop": "Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged.",
+    "displayModeDrop": "Placement points shows one point per placement. Textured mesh uses instanced geometry with source materials and leaf cutouts. Display limits affect preview only.",
+    "identificationDrop": "Identification colors for simplified previews. Choose Textured mesh in Display mode for source materials, UV textures and leaf cutouts.",
     "radiusMetricDrop": "Inspect the published radius pair. This display choice does not change any spacing rule. 3D uses three orthogonal rings."
   },
   "surface": {
     "removeSurfaces": "Remove highlighted assignments from this setup. Scene objects are kept.",
     "sharedPick": "Add a receiving surface without replacing existing assignments.",
     "surfacesButton": "Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting.",
+    "surfaceVisibility": "Hide or show the selected receiving surfaces in viewports. Painting and render settings are kept. Shared surfaces change in every setup; Undo restores visibility.",
     "containersToggle": "Optional shared source pool. Enable Global containers in a layer's Assets tab.",
     "createContainer": "Create a source rectangle shared by owners that explicitly use the global pool.",
     "pickContainer": "Link an existing Cyrus Source Container to the global pool.",
@@ -50,12 +52,11 @@
     "idColor": "Viewport identification color. This does not change clustering or model frequency.",
     "selectFromScene": "Choose one or more source models by name.",
     "addPlant": "Pick a scene model for this layer.",
-    "addSelected": "Add the currently selected scene objects to this layer.",
     "removePlant": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
     "selectPlant": "Select the highlighted source models in the scene.",
     "addPoint": "Add a named placeholder type. Scatter points now, then replace this row with a model.",
     "addEmpty": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
-    "replacePoint": "Use a scene model for the selected Point; keep its identity, settings and Band assignments.",
+    "replacePoint": "Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments.",
     "makePoint": "Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object.",
     "existingGroups": "Assign highlighted sources to an existing color group for clustering.",
     "groupColor": "Assign a color group to highlighted sources when the color is accepted.",
@@ -68,6 +69,14 @@
     "followRadiusCheck": "Scale this source's collision footprint with its instance scale.",
     "showRadiusCheck": "Show this source's radius in the viewport; does not change collision rules.",
     "forwardAxis": "The model's local forward direction, used for orientation.",
+    "clearanceCopiesList": "Clearance between instances of this source. Off removes this source's request; another model can still request clearance.",
+    "clearanceOthersList": "Choose this independently of other layers. Keep apart uses this model's radius together with the other model's radius.",
+    "clearanceExternalList": "Request clearance from selected layers or all other layers in this Scatter setup. Other Scatter setups are unaffected.",
+    "clearanceLayerList": "Select target layers by their persistent identity. Renaming does not change the relationship. Removed targets remain inactive until restored by Undo.",
+    "clearancePriorityList": "Prefer wins clearance conflicts against normal models. Protected edits win first. Count slots are admitted in stable candidate order, so preference does not take extra slots from distant models.",
+    "clearanceFactorSpin": "For this model's explicit Keep apart requests: factor times the sum of both radii, plus Extra gap. Inherited rules keep their layer settings.",
+    "clearanceGapSpin": "Additional distance for this model's explicit clearance requests. Stored in scene units.",
+    "clearanceMetricList": "3D compares positions in space. XY compares the ground-plane projection, even across different heights.",
     "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
   },
   "sourceContainersUI": {

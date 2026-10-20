@@ -116,6 +116,58 @@ def library_payload(folder, version, year=2027):
     return result
 
 
+def external_content_payload(folder, version, year=2027):
+    """Pin a bounded sidecar; large library models stay outside the MZP/EXE."""
+    folder = folder.resolve()
+    manifest_path = folder / 'content-manifest.json'
+    if manifest_path.stat().st_size > 1024 * 1024:
+        raise ValueError('External content manifest exceeds 1 MiB.')
+    raw = manifest_path.read_bytes()
+    manifest = json.loads(raw.decode('utf-8'))
+    content_version = manifest.get('version')
+    if not isinstance(content_version,str) or not re.fullmatch(r'0\.\d{1,3}\.\d{1,3}(?:\.\d{1,3})?',content_version):
+        raise ValueError('Invalid independent content revision.')
+    identity = dict(format='cyrus.scatter.content', schema=1, version=content_version, max_year=year)
+    if manifest.get('schema') == 2 and year in (2024,2026,2027):
+        identity = dict(format='cyrus.scatter.content', schema=2, version=content_version, max_year=2024,
+                        hosts={'2024':1,'2026':1,'2027':1})
+    if any(manifest.get(key) != value for key, value in identity.items()):
+        raise ValueError('External content version/host/schema differs.')
+    files = manifest.get('files')
+    if not isinstance(files, dict) or not 1 <= len(files) <= 4096:
+        raise ValueError('External content requires 1-4096 declared files.')
+    total, names = 0, set()
+    for name, descriptor in files.items():
+        parts = name.split('/')
+        if (not name.startswith('Library/') or name == 'Library/content-manifest.json' or
+                any(not part or part in ('.', '..') or part.rstrip(' .') != part or
+                    re.search(r'[<>:"\\|?*\x00-\x1f]', part) for part in parts) or name.casefold() in names):
+            raise ValueError('Unsafe/duplicate external content path: ' + name)
+        names.add(name.casefold())
+        size, expected = descriptor.get('bytes'), descriptor.get('sha256')
+        if type(size) is not int or not 0 <= size <= 2 * 1024**3 or not isinstance(expected, str) or not re.fullmatch('[0-9a-f]{64}', expected):
+            raise ValueError('Invalid external content descriptor: ' + name)
+        total += size
+        if total > 16 * 1024**3:
+            raise ValueError('External content exceeds 16 GiB.')
+        path = (folder / name).resolve()
+        if not path.is_relative_to(folder) or path.stat().st_size != size:
+            raise ValueError('External content path/size differs: ' + name)
+        digest = hashlib.sha256()
+        with path.open('rb') as stream:
+            for block in iter(lambda: stream.read(1024 * 1024), b''):
+                digest.update(block)
+        if digest.hexdigest() != expected:
+            raise ValueError('External content hash differs: ' + name)
+    identity['manifest_sha256'] = sha(raw)
+    relative_names = sorted(name.removeprefix('Library/') for name in files)
+    relative_names.append('content-manifest.json')
+    # This legacy uninstall inventory contains names only, never large payloads.
+    listing = '#(' + ','.join('@"' + name + '"' for name in relative_names) + ')\n'
+    return {'ExternalContent.json': (json.dumps(identity, indent=2) + '\n').encode('utf-8'),
+            'LibraryFiles.ms': listing.encode('utf-8')}
+
+
 def pattern_payload(folder):
     """Explicit product catalog only; task QA fixtures never enter a release."""
     index=json.loads((folder/'index.json').read_text(encoding='utf-8'))
@@ -182,7 +234,13 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         payload['libjpeg-turbo-LICENSE.txt'] = (jpeg / 'LICENSE.md').read_bytes()
         payload['libjpeg-turbo-IJG-README.txt'] = (jpeg / 'README.ijg').read_bytes()
         payload['libjpeg-turbo-NOTICE.txt'] = (jpeg / 'CYRUS-NOTICE.txt').read_bytes()
-        payload.update(library_payload(Path(getattr(args, 'library_dir', None) or ROOT / project / 'library'), version,args.max_year))
+        content_dir = getattr(args, 'content_dir', None)
+        if version == '0.86.6.2' and not content_dir:
+            raise ValueError('The individual-model delivery requires --content-dir; legacy bundled examples cannot be shipped in 0.86.6.2.')
+        if content_dir:
+            payload.update(external_content_payload(Path(content_dir), version, args.max_year))
+        else:
+            payload.update(library_payload(Path(getattr(args, 'library_dir', None) or ROOT / project / 'library'), version,args.max_year))
         payload.update(pattern_payload(ROOT/project/'patterns'))
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
@@ -204,9 +262,11 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Load onto surface imports supported models/materials, creates a setup when needed and adds layers as one Undo. Existing layers are preserved.\n'
            'Save Recipe includes complete settings and Paint; keep Include models, materials, terrain and paths enabled for a ready preset.\n'
            'Keep each .csrecipe.json, recipe-data folder and Presets package directory together. Paint requires compatible geometry/frame/units; mesh masks require their numeric channel.\n'
-           'Recipes offers search, categories, tags and stored PNG thumbnails. Browse My recipes, Bundled examples or an explicit custom folder.\n'
-           'Bundled examples live in the versioned Library folder beside the installed script. Open a copy of the matching-host example scene to inspect Paint and channel requirements.\n'
-           'User recipes remain in Documents/CyrusScatter/Library, separate from versioned bundled content.\n'
+           'Cyrus Library offers Plant models, personal recipes and a custom library. Model imports display success or failure feedback.\n'
+           'The installer detects Max and existing content automatically. Select Max versions, then Install or Update; Uninstall retains shared content and scenes.\n'
+           'To install content, place CyrusScatter-Content-0.86.7.zip beside the EXE and check Install / update plant library. Unchecked updates keep existing content. All compatible Max versions share one library.\n'
+           'Library content has its own revision; a plugin patch does not require recreating it. Existing releases and old scene texture paths are retained.\n'
+           'User recipes remain in Documents/CyrusScatter/Library, separate from the shared plant content.\n'
            'Unsupported authored Scatter Edit/radius overrides or nonstatic parameter controllers block Save Everything.\n'
            'Amount > Mesh channel density reads vertex colors (0) or map channels (1..99), with component, range, invert and Density curve controls.\n'
            'Use Data Channel Curvature > Vertex Output or VertexPaint to author values. White permits plants; black excludes them.\n'
@@ -229,7 +289,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Individual CS Edit plants/clones can have world-radius or multiplier overrides.\n'
            'Painting: add/select a Paint Area and its Surface, then Paint/Erase, Fill/Clear or Undo. Repeated gestures edit the same area.\n'
            'Spacing uses accepted plants and protected reservations; conflicting manual overrides are preserved and reported.\n'
-           'Vector areas support projected local-XY terrain/planes. Closed, vertical, folded or stacked projected receivers are rejected.\n'
+           'Vector areas retain terrain painting and support spheres, boxes and manifold curved surfaces through surface-attached coverage. Degenerate/nonmanifold geometry requires repair.\n'
            'Inside/outside fade widths and independent density/scale curves operate on the final border.\n'
            'Removing a receiver keeps its area inactive; restoring the same node restores eligibility.\n'
            'Manual mode updates the mask immediately and publishes plants when Update is pressed.\n'
@@ -322,6 +382,7 @@ def main():
     parser.add_argument('--tools-version', default='14.38.33130')
     parser.add_argument('--windows-sdk', default='10.0.19041.0')
     parser.add_argument('--output', type=Path, default=ROOT / 'dist')
+    parser.add_argument('--content-dir', type=Path, help='Hash-pinned Content sidecar; replaces embedded legacy library examples')
     parser.add_argument('--node', default='node', help='Node.js executable for regenerating the owned Scatter script')
     parser.add_argument('--team-trust-header', type=Path, default=ROOT / 'CyrusLicensing/team/team_public_key.h')
     args = parser.parse_args()
