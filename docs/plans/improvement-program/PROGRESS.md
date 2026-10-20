@@ -1,6 +1,22 @@
 # Cyrus Scatter — current execution ledger
 
-This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.8.1 clearance corrections, viewport material/geometry reuse and colored-Mesh opacity, with separately qualified Max 2024/2026/2027 packages; see the [delivery report](../source-clearance/DELIVERY_08681.md). Historical packages retain their prior versions. Unrelated roadmap work remains outside this delivery.** [Knowledge maintenance](../../../tools/rag/README.md) records the separate documentation/index work. P, I, PG, N and local D tasks are not release versions.
+This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.8.2 clearance UI and visible Relax, with separately qualified Max 2024/2026/2027 packages; see the [delivery report](../source-clearance/DELIVERY_08682.md). Historical packages retain their prior versions. Unrelated roadmap work remains outside this delivery.** [Knowledge maintenance](../../../tools/rag/README.md) records the separate documentation/index work. P, I, PG, N and local D tasks are not release versions.
+
+## 0.86.8.2 clearance UI and Relax correction — 21 October 2026
+
+The reported source-spinner clipping is repaired in the authoritative generator.
+Point Relax and Boundary Relax are directly visible above Advanced, with
+conditional settings and a shared distance editable for either mode. Existing
+native algorithms and schema/recipe contracts are unchanged. All three SDK builds
+passed 49 native tests each; 176 Python tests and generated/layout checks passed.
+Owned hosts passed deterministic Relax, bounded movement, post-Relax within/cross
+layer clearance, Manual/Live, Undo/Redo and saved-scene tests. Actual numeric edits
+and a wider generated-page probe passed in Max 2027. Installed bytes, payload
+hashes and zero-new-content reuse were verified for all three hosts.
+
+See the delivery for exact evidence, installer paths and limits. Existing content
+was reused unchanged; artist installations and unrelated website work were left
+untouched. The earlier solver/material performance report remains historical.
 
 ## 0.86.8.1 clearance and viewport correction — 20 October 2026
 

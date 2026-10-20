@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.8.1 | Clearance correctness, viewport reuse and colored-Mesh opacity correction; historical receipts retain their identities |
-| Scatter native/package | 0.86.8.1 / Max 2024, 2026, 2027 | Separately matched SDK/managed payloads under the user's explicit compatibility request; [delivery scope](plans/source-clearance/DELIVERY_08681.md) |
+| Scatter UI | 0.86.8.2 | Clearance field sizing, visible Relax and independent Boundary Relax distance editing; historical receipts retain their identities |
+| Scatter native/package | 0.86.8.2 / Max 2024, 2026, 2027 | Separately matched SDK/managed payloads under the user's explicit compatibility request; [delivery scope](plans/source-clearance/DELIVERY_08682.md) |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
@@ -13,6 +13,14 @@
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
 
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
+
+**21 October 2026 correction: 0.86.8.2.** The user requested repair of clipped
+source-clearance controls, visible Relax controls and verification of the
+existing calculations. A patch is appropriate: no new solver contract or saved
+schema is introduced. Keep schema 59, recipe 8, native placement 2, publication
+bridge 4 and content 0.86.7. Preserve the user's three-host compatibility scope;
+the [correction report](plans/source-clearance/DELIVERY_08682.md) records the
+matched build and host evidence separately from prior material-performance work.
 
 ## Choosing the next version
 

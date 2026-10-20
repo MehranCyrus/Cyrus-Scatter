@@ -44,6 +44,14 @@ assert.equal(gripMoves.length,10,'Ten lists, including model target layers, have
 for(const name of ['clearanceCopiesList','clearanceOthersList','clearanceExternalList','clearancePriorityList'])
  assert.ok(script.includes('sourceUI_'+name),name+': model clearance control remains reachable');
 assert.ok(script.includes('sourceUI_clearanceExternalList.selection==3'),'Selected target list only accompanies Selected layers');
+for(const declaration of script.matchAll(/^\s*spinner\s+\w+[^\n]*/gm))
+ assert.ok(/\bfieldWidth:/.test(declaration[0]),'Every composed spinner needs a bounded native edit width: '+declaration[0]);
+const relaxControls=layout.sections.find(s=>s.name==='spacingUI').controls.filter(c=>c.component==='spacingUI');
+assert.ok(relaxControls.filter(c=>c.control!=='orderHint').every(c=>!c.advanced),'Relax must be discoverable before Advanced');
+for(const control of ['relaxCheck','boundaryRelaxCheck']){
+ const row=presentation.pages.find(p=>p.name==='spacingUI').rows.find(r=>r.controls?.includes('spacingUI.'+control));
+ assert.ok(row&&!row.advanced&&!row.when,control+': the enable control stays directly visible');
+}
 for(const [,id,body] of gripMoves)assert.equal(body,'moveListDrag sender args',id+': idle mouse moves must not trigger an unconditional layout');
 assert.ok(script.includes('close do (stopListDrag();'),'Closing a view must release mouse capture');
 assert.equal((script.match(/if changed and controlsReady do layout\(\);true\)/g)||[]).length,1,'The Scatter editor skip unchanged status layout');

@@ -1,12 +1,12 @@
 # Cyrus Scatter documentation
 
 Current standalone Physics Lab: [0.2.1 small baked collider repair](Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md), [artist guide](Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md) and [bake/checkbox/material qualification](Scatter_Physics_Research_2026-10-16/BAKE_WORKFLOW_020.md). Earlier Physics Lab reports retain their versioned scope.
-**Current delivery: 0.86.8.1, schema 59, Max 2024/2026/2027 packages.** [Clearance corrections, viewport reuse, packages and qualification](plans/source-clearance/DELIVERY_08681.md). Historical [0.86.7.2 three-host receipts](plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) and independent Physics Lab reports retain their own scope. The execution ledger records remaining work.
+**Current delivery: 0.86.8.2, schema 59, Max 2024/2026/2027 packages.** [Clearance UI, visible Relax, packages and qualification](plans/source-clearance/DELIVERY_08682.md). Historical [0.86.7.2 three-host receipts](plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) and independent Physics Lab reports retain their own scope. The execution ledger records remaining work.
 
 | Need | Current source |
 | --- | --- |
 | Use the plugin | [Artist guide](ARTIST_GUIDE.md), [Layout and falloff](LAYOUT_AND_FALLOFF.md) |
-| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.8.1 delivery and artist checklist](plans/source-clearance/DELIVERY_08681.md) |
+| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.8.2 delivery and artist checklist](plans/source-clearance/DELIVERY_08682.md) |
 | Understand source and behavioral guarantees | [Architecture](ARCHITECTURE.md), [engineering foundation](ENGINEERING_FOUNDATION.md) |
 | Plan source radius, clearance and layer priority | [Implementation plan](plans/source-clearance/IMPLEMENTATION_PLAN.md) and [validation matrix](plans/source-clearance/VALIDATION.md) — implemented hierarchy, native C++ rules, deterministic priority, cleanup/refill, persistence and UI; the delivery report distinguishes exercised checks from the broader matrix |
 | Review the 0.86.8 implementation | [Independent code and delivery review](plans/source-clearance/REVIEW_0868_20261020.md) — historical findings preserved; [0.86.8.1 correction evidence](plans/source-clearance/DELIVERY_08681.md) resolves F1/F2 and measures F3 |

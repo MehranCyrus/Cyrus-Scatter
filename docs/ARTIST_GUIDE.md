@@ -1,4 +1,4 @@
-# Cyrus Scatter 0.86.8.1 — current artist workflow
+# Cyrus Scatter 0.86.8.2 — current artist workflow
 
 The private **0.86.7 individual library** replaces the bundled example designs
 with 96 individual assets covering all 104 original catalog cards. Open **Layers >
@@ -11,7 +11,7 @@ receivers and distribution yourself, then **Update scatter** in Manual mode.
 Corona is required for the supplied materials. Personal recipes remain separate.
 Successful model additions now show a banner naming the model and destination
 layer. Failed imports show an error banner and retain the previous scene.
-The **0.86.8.1** installer detects Max 2024, 2026 and 2027 and your existing
+The **0.86.8.2** installer detects Max 2024, 2026 and 2027 and your existing
 library. Select the versions you want, then **Install** or **Update**.
 **Uninstall** removes the selected host registration while keeping your library
 and scenes. To install or update the library, put
@@ -126,7 +126,7 @@ Select a model or Point under **Models & Points**. **Radius and clearance** keep
 | Other models in this layer | Separation from the other model entries in the selected layer |
 | Other layers | Inherit layer defaults, turn this request off, choose specific layers, or include all other layers in this setup |
 | Conflict priority | Normal, or Prefer this model when an eligible placement conflicts with a normal model |
-| Clearance distance | Advanced factor, extra gap and world XY/3D metric for this model's explicit requests |
+| Clearance distance | Expand to edit factor, extra gap and world XY/3D metric for this model's explicit requests |
 
 Each scope inherits independently. Changing **Other models in this layer** leaves **Other layers** unchanged. **Use layer defaults** uses the relevant rule under **Spacing & cleanup**. **Off** removes this model's request in that scope; another model can still request clearance from it. Selecting particular other layers follows their identities through renaming. Deleted targets remain inactive until restored by Undo; a new layer with the same name is a different target.
 
@@ -138,7 +138,25 @@ Multi-select shows **Mixed** for differing dropdown values and blank differing n
 
 **Spacing & cleanup > Edit default rule** edits independent Within this layer and Between layers defaults; switching this dropdown does not disable the other saved rule. Candidate Relax, accepted-placement cleanup and per-instance radius overrides keep their separate meanings.
 
-Scenes saved with schema 58 show **Upgrade scene to 0.86.8.1** before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Scenes already upgraded to schema 59 in 0.86.8 need no additional upgrade. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
+In **0.86.8.2**, **Point Relax** and **Boundary Relax** appear directly under
+**Spacing & cleanup > Relax - move candidates**, above Advanced. Enable either
+option to reveal its settings. Both belong to the selected layer:
+
+- **Point Relax** separates nearby candidate positions toward the Relax distance.
+  Iterations and Strength control the amount of relaxation.
+- **Boundary Relax** smooths candidate neighborhoods. Its Strength, Iterations
+  and Max movement limit the adjustment while retaining receiver eligibility.
+- **Relax distance** is shared: Point Relax uses it as the desired separation;
+  Boundary Relax uses it as the neighbor search radius. It remains editable when
+  only Boundary Relax is enabled.
+
+Relax moves candidate positions; subsequent radius/clearance rules reject
+conflicting placements. Relax alone does not guarantee that model geometry will
+not overlap. Set each model's **Radius and clearance** scopes for that purpose;
+those checks use pivot distances rather than exact mesh collision. **Advanced**
+keeps selected-instance radius overrides and accepted-placement cleanup.
+
+Scenes saved with schema 58 show **Upgrade scene to 0.86.8.2** before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Scenes already upgraded to schema 59 in 0.86.8 need no additional upgrade. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
 
 ## Layout and Amount
 

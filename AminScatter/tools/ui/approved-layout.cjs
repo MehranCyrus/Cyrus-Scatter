@@ -124,7 +124,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
  let declarations=controls.map(c=>{
   let line=rename(c.declaration,components.find(p=>p.key===c.key).names).replaceAll('__PAGE__',name);
   // Layout is event driven. Remove the old absolute coordinates and widths.
-  line=line.replace(/pos:\[[^\]]+\]/,'pos:[8,8]').replace(/width:\([^\n]+?\)(?=\s+(?:height|fieldWidth|tooltip|range|type|scale|modal|notifyAfterAccept|checked|items|columns|labels|color)|$)/,'width:('+name+'.width-16)');
+  line=line.replace(/pos:\[[^\]]+\]/,'pos:[8,8]').replace(/\bwidth:\d+(?:\.\d+)?\b/,'width:('+name+'.width-16)').replace(/width:\([^\n]+?\)(?=\s+(?:height|fieldWidth|tooltip|range|type|scale|modal|notifyAfterAccept|checked|items|columns|labels|color)|$)/,'width:('+name+'.width-16)');
   const row=rows.find(r=>r.controls?.some(item=>item.id===c.id));
   const count=row?.controls.length||1;
   const table=count===3&&row.controls[0].kind==='label';
@@ -132,6 +132,10 @@ function page(s,definition,{name=definition.name,category=0}={}){
   const columns=table?count:'(amin '+count+' (amax 1 (floor (('+name+'.width-8)/'+(minimum+4)+'))))';
   line=line.replace(/width:\([^\n]+?\)(?=\s+(?:height|fieldWidth|tooltip|range|type|scale|modal|notifyAfterAccept|checked|items|columns|labels|color|pos)|$)/,'width:(('+name+'.width-16-('+columns+'-1)*4)/'+columns+')');
   line=line.replace(/fieldWidth:\d+/g,'fieldWidth:58');
+  // A spinner without fieldWidth lets Max derive the edit field from its
+  // original width. Moving its arrows later does not resize that field, so
+  // literal-width source controls can cover captions or escape a narrow page.
+  if(c.kind==='spinner'&&!/\bfieldWidth:/.test(line))line+=' fieldWidth:58';
   if(['button','pickbutton','checkbutton','mapbutton'].includes(c.kind)){
    line=/\bheight:\d+/.test(line)?line.replace(/\bheight:\d+/,'height:22'):line+' height:22';
   }

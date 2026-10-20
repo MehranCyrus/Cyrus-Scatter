@@ -1,6 +1,6 @@
 # Current work and acceptance
 
-Current delivery: [0.86.8.1 clearance corrections and viewport reuse](plans/source-clearance/DELIVERY_08681.md), with separately matched Max 2024/2026/2027 packages. Earlier correction records below retain their original scope.
+Current delivery: [0.86.8.2 clearance UI and visible Relax](plans/source-clearance/DELIVERY_08682.md), with separately matched Max 2024/2026/2027 packages. Expanded source fields now fit narrow panels; both Relax modes are visible before Advanced, and Boundary-only distance is editable. Native, host, lifecycle and installer checks passed within the report's scope. Earlier correction records below retain their original scope.
 
 The independent 0.86.8 review's F1 stale refill blocker and F2 unused-source
 schedule regressions are fixed with stateful native regressions. F3 compilation

@@ -2163,49 +2163,49 @@
           "component": "spacingUI",
           "control": "relaxCheck",
           "presentation": "spacingUI_relaxCheck",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
           "control": "spacingSpin",
           "presentation": "spacingUI_spacingSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
           "control": "iterationsSpin",
           "presentation": "spacingUI_iterationsSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
           "control": "strengthSpin",
           "presentation": "spacingUI_strengthSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
           "control": "boundaryRelaxCheck",
           "presentation": "spacingUI_boundaryRelaxCheck",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
           "control": "finalStrengthSpin",
           "presentation": "spacingUI_finalStrengthSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
           "control": "finalIterSpin",
           "presentation": "spacingUI_finalIterSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
           "control": "finalMoveSpin",
           "presentation": "spacingUI_finalMoveSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",

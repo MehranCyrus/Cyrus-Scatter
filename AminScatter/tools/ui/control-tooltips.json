@@ -264,6 +264,7 @@
   },
   "spacingUI": {
     "relaxCheck": "Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed.",
+    "spacingSpin": "Shared distance for this layer: Point Relax separates candidates toward this distance; Boundary Relax searches for neighbors inside this radius. Clearance runs afterwards.",
     "boundaryRelaxCheck": "Smooth candidate neighborhoods with bounded movement. Eligibility is checked before publication; author edits run afterwards."
   },
   "separationUI": {
