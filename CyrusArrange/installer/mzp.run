@@ -1,0 +1,4 @@
+name "Cyrus Arrange __VERSION__"
+version 0.11
+run "install.ms"
+clear temp on MAX exit

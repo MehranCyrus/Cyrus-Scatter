@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="00e97a2de418d985afd796b7564a05e837cb45dd7bea7920b64e5f25b19f79cb"
+﻿global CyrusLoadedScriptFingerprint="2f6c189566bbf311eab8a4b31872da3b2da97c94609d0f21c263c55e5b0810fd"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -62,7 +62,7 @@ global CyrusRecipeGet,CyrusRecipeObject,CyrusRecipeResolve,CyrusRecipeCheckRoot,
 global CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetImportPlan,CyrusAssetImport,CyrusAssetCapture,CyrusAssetOwnStage,CyrusAssetWatch,CyrusAssetRemoveStage,CyrusAssetBitmapDirectory
 global CyrusRequireAuthor,CyrusViewportRedraw,CyrusPresetSameValues
 global CyrusPointSuspended
-global CyrusLibraryCheckSurface,CyrusLibraryDestination
+global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusRecipeErrorText
 global CyrusAssetBoundNode
 fn CyrusPresetPackageDirectory path digest = (
     -- Keep native file paths short while retaining the full content identity.
@@ -105,7 +105,7 @@ fn CyrusPresetReviseReady path previous digest = (
     CyrusPresetReviseOpenData=#(path,source,destination,digest,job);CyrusPresetReviseEditor=editor
     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow);true
 )
-fn CyrusPresetPlan root directory package document surface:undefined = (
+fn CyrusPresetPlan root directory package document surface:undefined preparedToken:0L = (
     CyrusLibraryCheckSurface surface
     if root!=undefined do CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
     local graph=CyrusRecipeGet package "graph",roles=CyrusRecipeGet document "roles",bindings=#(),receiverRoles=#(),receiverData=#(),pathTransform=undefined
@@ -123,6 +123,18 @@ fn CyrusPresetPlan root directory package document surface:undefined = (
         )
     )
     if receiverData.count!=1 do throw "Direct loading requires one saved terrain. Save each terrain as its own preset."
+    local hasPaint=false,hasPaths=(CyrusRecipeGet graph "version")>=2 and (CyrusRecipeGet graph "splines").count>0,sourceBounds=undefined
+    for record in (CyrusRecipeGet document "layers") do (
+        if (CyrusRecipeGet record "paint")!=undefined do hasPaint=true
+        for area in (CyrusRecipeGet record "areas") where (CyrusRecipeGet area "paint")!=undefined do hasPaint=true
+    )
+    if hasPaint or hasPaths do (
+        if preparedToken<=0 do throw "Prepare this complete preset before transferring its Paint or paths. Nothing was added."
+        local receiverMeshID=CyrusRecipeGet receiverData[1] "mesh",receiverMeshFile=undefined
+        for meshData in (CyrusRecipeGet graph "meshes") where (CyrusRecipeGet meshData "id")==receiverMeshID do receiverMeshFile=CyrusRecipeGet meshData "file"
+        if receiverMeshFile==undefined do throw "The preset is missing its saved receiver mesh. Nothing was added."
+        sourceBounds=cyrusAssetPreparedMeshBounds preparedToken receiverMeshFile
+    )
     -- Validate required channels and receiver-bound Paint before staging any models or layers.
     for record in (CyrusRecipeGet document "layers") do (
         local records=#(CyrusRecipeGet record "settings")
@@ -136,8 +148,8 @@ fn CyrusPresetPlan root directory package document surface:undefined = (
             local curve=CyrusRecipeGet settings "meshMaskSamples"
             if curve.count==0 do curve=#(0.0,1.0)
             local channelError=""
-            try(cyrusMeshDensityKey surface #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve))
-            catch(channelError=getCurrentException())
+            try(cyrusMeshDensityKey surface #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve,(CyrusRecipeGet settings "meshMaskSource")))
+            catch(channelError=CyrusRecipeErrorText (getCurrentException()))
             if channelError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+channelError+" No preset layers were added.")
         )
         if (CyrusRecipeGet settings "distributionMode")==3 and (CyrusRecipeGet settings "densityCoordinateMode")==0 do (
@@ -145,31 +157,36 @@ fn CyrusPresetPlan root directory package document surface:undefined = (
             -- Capture here, before the asset/layer transaction, not at final Update.
             local uvError=""
             try(cyrusProceduralSurfaceKey #(surface) true (CyrusRecipeGet settings "densityUVChannel"))
-            catch(uvError=getCurrentException())
+            catch(uvError=CyrusRecipeErrorText (getCurrentException()))
             if uvError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+uvError+" No preset layers were added.")
         )
         )
         local paintError=""
         try (
             local paint=CyrusRecipeGet record "paint"
-            if paint!=undefined do CyrusRecipeRestorePaint paint surface document
+            if paint!=undefined do CyrusRecipeRestorePaint paint surface document footprint:sourceBounds
             for area in (CyrusRecipeGet record "areas") do (
                 local data=CyrusRecipeGet area "paint"
-                if data!=undefined do CyrusRecipeRestorePaint data surface document
+                if data!=undefined do CyrusRecipeRestorePaint data surface document footprint:sourceBounds
             )
-        )catch(paintError=getCurrentException())
-        if paintError!="" do throw ("Saved Paint does not match the selected terrain's geometry, frame or system units. Use compatible terrain or save a preset without that coverage. Nothing was added. "+paintError)
+        )catch(paintError=CyrusRecipeErrorText (getCurrentException()))
+        if paintError!="" do throw ("Cannot transfer Paint in layer '"+(CyrusRecipeGet record "name")+"' onto this terrain. "+paintError+" Nothing was added.")
     )
-    if (CyrusRecipeGet graph "version")==2 and (CyrusRecipeGet graph "splines").count>0 do (
+    if hasPaths do (
         local values=CyrusRecipeGet receiverData[1] "transform",metres=(units.decodeValue "1m") as double
         local saved=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
         if abs(dot saved.row1 (cross saved.row2 saved.row3))<1e-12 do throw "Saved terrain has a singular frame; its paths cannot be transferred."
-        -- Paths retain authored dimensions in the saved terrain's local frame; no arbitrary reprojection.
-        pathTransform=(inverse saved)*surface.objectTransform
+        -- Match the same local XY footprint as Paint. Path heights and band
+        -- widths remain physical; the receiving mesh supplies final placement Z.
+        local destinationBounds=cyrusAssetReceiverBounds surface
+        local sx=(destinationBounds[3]-destinationBounds[1])/((sourceBounds[3]-sourceBounds[1])*metres)
+        local sy=(destinationBounds[4]-destinationBounds[2])/((sourceBounds[4]-sourceBounds[2])*metres)
+        local fit=matrix3 [sx,0,0] [0,sy,0] [0,0,1] [destinationBounds[1]-sourceBounds[1]*metres*sx,destinationBounds[2]-sourceBounds[2]*metres*sy,0]
+        pathTransform=(inverse saved)*fit*surface.objectTransform
     )
     CyrusRecipeValidateBindings root (CyrusRecipeObject #(#("roles",receiverRoles))) bindings
     local manifest=CyrusRecipeGet package "manifest",descriptor=CyrusRecipeGet manifest "recipe"
-    #(CyrusAssetImportPlan root:root node:(if root==undefined then undefined else CyrusRecipeOwnerNode root) inputKey:(if root==undefined then undefined else root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:(root==undefined) variation:#new assets:#clone preset:true pathTransform:pathTransform,"Selected terrain: "+surface.name)
+    #(CyrusAssetImportPlan root:root node:(if root==undefined then undefined else CyrusRecipeOwnerNode root) inputKey:(if root==undefined then undefined else root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:(root==undefined) variation:#new assets:#clone preset:true pathTransform:pathTransform paintFootprint:sourceBounds,"Selected terrain: "+surface.name+(if hasPaint or hasPaths then " / saved layout fitted to terrain footprint" else ""))
 )
 fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
     CyrusRequireAuthor();CyrusLibraryCheckSurface surface
@@ -191,7 +208,7 @@ fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
             if root!=undefined do CyrusRecipeCheckRoot root node
             local package=cyrusAssetPackagePrepared job false,document=cyrusAssetPackagePrepared job true
             if expected!="" and (CyrusRecipeGet (CyrusRecipeGet (CyrusRecipeGet package "manifest") "recipe") "sha256")!=expected do throw "The ready preset does not match this gallery entry. Refresh the library."
-            local proposed=CyrusPresetPlan root directory package document surface:surface
+            local proposed=CyrusPresetPlan root directory package document surface:surface preparedToken:job
             plan=proposed[1];terrainNote=proposed[2]
             status.text="Adding preset layers. "+terrainNote
             -- Import owns assets, authored changes and the initial calculation
@@ -238,7 +255,7 @@ fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
         )catch(
             resumeDisplay()
             progress.active=false;finished=true;closeButton.text="Close"
-            status.text=(if result==undefined then "Preset was not added. " else "Preset layers were added, but Update failed. The last complete preview is retained; Undo removes the added preset. ")+getCurrentException()
+            status.text=(if result==undefined then "Preset was not added. " else "Preset layers were added, but Update failed. The last complete preview is retained; Undo removes the added preset. ")+(CyrusRecipeErrorText (getCurrentException()))
             if job!=0L do (cyrusAssetPackageRelease job;job=0L)
         )
         on closeButton pressed do destroyDialog editor
@@ -288,6 +305,583 @@ fn CyrusPresetSaveReady root path digest bindings = (
     true
 )
 
+-- Generated finite adapter tables; constructors are authored in asset-shaders.ms.
+global CyrusAssetAdapterFields,CyrusAssetAdapterLinks,CyrusAssetAdapterClassID,CyrusAssetAdapterProfile
+global CyrusAssetAdapterCategory,CyrusAssetAdapterKinds,CyrusAssetAdapterOutput,CyrusAssetSubobjectFields
+global CyrusAssetAdapterArrayLinks,CyrusAssetAdapterAlignedArrays,CyrusAssetAdapterCoordinates
+fn CyrusAssetAdapterFields kind = (
+    local result=case kind of (
+        "corona-physical-v1": #(#("metalnessMode","integer"),#("roughnessMode","integer"),#("baseColor","color"),#("baseLevel","number"),#("baseMapAmount","number"),#("baseTexmapOn","boolean"),#("opacityColor","color"),#("opacityLevel","number"),#("opacityMapAmount","number"),#("opacityTexmapOn","boolean"),#("opacityCutout","boolean"),#("baseRoughnessMapAmount","number"),#("baseRoughnessTexmapOn","boolean"),#("baseIor","number"),#("baseBumpMapAmount","number"),#("baseBumpTexmapOn","boolean"),#("useThinMode","boolean"),#("translucencyFraction","number"),#("translucencyFractionMapAmount","number"),#("translucencyFractionTexmapOn","boolean"),#("translucencyColor","color"),#("translucencyColorMapAmount","number"),#("translucencyColorTexmapOn","boolean"),#("dispersion","number"),#("clearcoatIor","number"),#("sheenColor","color"),#("volumetricAbsorptionColor","color"),#("attenuationDistance","distance"),#("sssScatterColor","color"),#("selfIllumColor","color"),#("selfIllumLevel","number"),#("thinAbsorptionColor","color"),#("clearcoatBumpMapAmount","number"),#("metalnessTexmapOn","boolean"),#("edgeColor","color"),#("complexIorNRed","number"),#("complexIorNGreen","number"),#("complexIorNBlue","number"),#("complexIorKRed","number"),#("complexIorKGreen","number"),#("complexIorKBlue","number"),#("volumetricScatteringColor","color"),#("sssRadius","distance"),#("baseRoughness","number"),#("sheenRoughness","number"),#("glintsRoughness","number"),#("displacementMaximum","distance"))
+        "corona-normal-v1": #(#("multiplier","number"),#("addGamma","boolean"),#("flipred","boolean"),#("flipgreen","boolean"),#("swapRedGreen","boolean"),#("additionalBumpOn","boolean"),#("additionalBumpStrength","number"))
+        "corona-legacy-v1": #(#("bsdf","integer"),#("pbrMode","boolean"),#("legacyMode","boolean"),#("thin","boolean"),#("opacityCutout","boolean"),#("colorDiffuse","color"),#("colorReflect","color"),#("colorRefract","color"),#("colorOpacity","color"),#("colorTranslucency","color"),#("colorSelfIllum","color"),#("levelDiffuse","number"),#("levelReflect","number"),#("levelRefract","number"),#("levelOpacity","number"),#("levelTranslucency","number"),#("levelSelfIllum","number"),#("reflectGlossiness","number"),#("refractGlossiness","number"),#("fresnelIor","number"),#("ior","number"),#("texmapOnDiffuse","boolean"),#("texmapOnReflect","boolean"),#("texmapOnRefract","boolean"),#("texmapOnReflectGlossiness","boolean"),#("texmapOnRefractGlossiness","boolean"),#("texmapOnOpacity","boolean"),#("texmapOnBump","boolean"),#("texmapOnTranslucency","boolean"),#("mapamountDiffuse","number"),#("mapamountReflect","number"),#("mapamountRefract","number"),#("mapamountReflectGlossiness","number"),#("mapamountRefractGlossiness","number"),#("mapamountOpacity","number"),#("mapamountBump","number"),#("mapamountTranslucency","number"),#("sssScatterColor","color"),#("sssRadius","distance"),#("displacementMaximum","distance"))
+        "multi-sub-v1": #()
+        "max-color-correction-v1": #(#("rewireMode","integer"),#("rewireR","integer"),#("rewireG","integer"),#("rewireB","integer"),#("rewireA","integer"),#("lightnessMode","integer"),#("exposureMode","integer"),#("enableR","boolean"),#("enableG","boolean"),#("enableB","boolean"),#("color","color"),#("hueShift","number"),#("saturation","number"),#("tint","color"),#("tintStrength","number"),#("contrast","number"),#("brightness","number"),#("gainRGB","number"),#("gainR","number"),#("gainG","number"),#("gainB","number"),#("gammaRGB","number"),#("gammaR","number"),#("gammaG","number"),#("gammaB","number"),#("pivotRGB","number"),#("pivotR","number"),#("pivotG","number"),#("pivotB","number"),#("liftRGB","number"),#("liftR","number"),#("liftG","number"),#("liftB","number"),#("printerLights","number"))
+        "max-vertex-color-v1": #(#("map","integer"),#("subid","integer"))
+        "corona-front-back-v1": #(#("frontColor","color"),#("backColor","color"),#("frontTexmapOn","boolean"),#("backTexmapOn","boolean"))
+        "max-mix-v1": #(#("useCurve","boolean"),#("mixAmount","number"),#("lower","number"),#("upper","number"),#("color1","color"),#("color2","color"),#("map1Enabled","boolean"),#("map2Enabled","boolean"),#("maskEnabled","boolean"))
+        "corona-color-v1": #(#("method","integer"),#("colorSpace","integer"),#("color","color"),#("colorHdr","point3"),#("alpha","number"),#("multiplier","number"),#("temperature","number"),#("hexColor","string"))
+        "corona-mix-v1": #(#("mixOperation","integer"),#("mixAmount","number"),#("multiplierTop","number"),#("multiplierBottom","number"),#("offsetTop","number"),#("offsetBottom","number"),#("colorBottom","color"),#("colorTop","color"),#("texmapMixOn","boolean"),#("texmapTopOn","boolean"),#("texmapBottomOn","boolean"),#("mixInSRgb","boolean"),#("mixAlpha","boolean"))
+        "corona-color-correct-v1": #(#("controlsSource","integer"),#("additionalOutputs","integer"),#("affectedByColorMapping","boolean"),#("brightness","number"),#("contrast","number"),#("saturation","number"),#("lutOpacity","number"),#("lutEnable","boolean"),#("lutLog","boolean"),#("lutFile","absent-filename"),#("invert","boolean"),#("tint","color"),#("exposure","number"),#("gamma","number"),#("showAffectedByColorMapping","boolean"),#("curveEnabled","boolean"),#("hue","number"),#("temperature","number"),#("greenMagentaTint","number"),#("showCopiedMap","boolean"),#("enableNegative","boolean"),#("curveMasterInterpol","integer"),#("curveMasterNodes","empty-array"),#("curveMasterLeftPoints","empty-array"),#("curveMasterRightPoints","empty-array"),#("curveRedInterpol","integer"),#("curveRedNodes","empty-array"),#("curveRedLeftPoints","empty-array"),#("curveRedRightPoints","empty-array"),#("curveGreenInterpol","integer"),#("curveGreenNodes","empty-array"),#("curveGreenLeftPoints","empty-array"),#("curveGreenRightPoints","empty-array"),#("curveBlueInterpol","integer"),#("curveBlueNodes","empty-array"),#("curveBlueLeftPoints","empty-array"),#("curveBlueRightPoints","empty-array"),#("additionalInputTexmap","null-array"))
+        "max-composite-v1": #(#("mapEnabled","boolean-array"),#("maskEnabled","boolean-array"),#("blendMode","integer-array"),#("layername","string-array"),#("dlgOpened","boolean-array"),#("opacity","number-array"))
+        "forest-color-v1": #(#("mapidmode","integer"),#("colorbase","color"),#("maponlist","boolean-array"),#("colorList","color-array"),#("problist","number-array"),#("tintmixmode","integer"),#("tintvariation","number"),#("override","boolean"),#("tintcolor1","color"),#("tintcolor2","color"),#("tintmin","integer"),#("tintmax","integer"),#("tintmode","integer"),#("tintmapmode","integer"),#("applycor","boolean"))
+        "forest-edge-v1": #()
+        "corona-bitmap-v1": #(#("useLegacyGamma","boolean"),#("showLegacyGamma","boolean"),#("gamma","number"),#("colorSpace","integer"),#("colorSpaceStr","string"),#("filteringBlur","number"),#("interpolation","integer"),#("alphaSource","integer"),#("monoChannelOutput","integer"),#("rgbChannelOutput","integer"),#("aspectRatioLock","boolean"))
+        "max-gradient-v1": #(#("color1","color"),#("color2","color"),#("color3","color"),#("map1Enabled","boolean"),#("map2Enabled","boolean"),#("map3Enabled","boolean"),#("color2Pos","number"),#("gradientType","integer"),#("noiseAmount","number"),#("noiseType","integer"),#("noiseSize","number"),#("noisePhase","number"),#("noiseLevels","number"),#("noiseThresholdLow","number"),#("noiseThresholdHigh","number"),#("noiseThresholdSMooth","number"))
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterLinks kind = (
+    local result=case kind of (
+        "corona-physical-v1": #("baseTexmap","opacityTexmap","baseRoughnessTexmap","baseBumpTexmap","translucencyFractionTexmap","translucencyColorTexmap","edgeColorTexmap","volumetricScatteringTexmap","baseIorTexmap")
+        "corona-normal-v1": #("normalMap","additionalBump")
+        "corona-legacy-v1": #("texmapDiffuse","texmapReflect","texmapRefract","texmapReflectGlossiness","texmapRefractGlossiness","texmapOpacity","texmapBump","texmapTranslucency")
+        "multi-sub-v1": #()
+        "max-color-correction-v1": #("map")
+        "max-vertex-color-v1": #()
+        "corona-front-back-v1": #("frontTexmap","backTexmap")
+        "max-mix-v1": #("map1","map2","Mask")
+        "corona-color-v1": #()
+        "corona-mix-v1": #("texmapTop","texmapBottom","texmapMix")
+        "corona-color-correct-v1": #("inputTexmap","copiedMap")
+        "max-composite-v1": #()
+        "forest-color-v1": #("mapbase","tintmap")
+        "forest-edge-v1": #("mapbase")
+        "corona-bitmap-v1": #()
+        "max-gradient-v1": #("map1","map2","map3")
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterArrayLinks kind = (
+    local result=case kind of (
+        "corona-physical-v1": #()
+        "corona-normal-v1": #()
+        "corona-legacy-v1": #()
+        "multi-sub-v1": #()
+        "max-color-correction-v1": #()
+        "max-vertex-color-v1": #()
+        "corona-front-back-v1": #()
+        "max-mix-v1": #()
+        "corona-color-v1": #()
+        "corona-mix-v1": #()
+        "corona-color-correct-v1": #()
+        "max-composite-v1": #("mapList","Mask")
+        "forest-color-v1": #("mapList")
+        "forest-edge-v1": #()
+        "corona-bitmap-v1": #()
+        "max-gradient-v1": #()
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterAlignedArrays kind = (
+    local result=case kind of (
+        "corona-physical-v1": #()
+        "corona-normal-v1": #()
+        "corona-legacy-v1": #()
+        "multi-sub-v1": #()
+        "max-color-correction-v1": #()
+        "max-vertex-color-v1": #()
+        "corona-front-back-v1": #()
+        "max-mix-v1": #()
+        "corona-color-v1": #()
+        "corona-mix-v1": #()
+        "corona-color-correct-v1": #()
+        "max-composite-v1": #("mapEnabled","maskEnabled","blendMode","layername","dlgOpened","opacity","mapList","Mask")
+        "forest-color-v1": #()
+        "forest-edge-v1": #()
+        "corona-bitmap-v1": #()
+        "max-gradient-v1": #()
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterClassID kind = (
+    local result=case kind of (
+        "corona-physical-v1": #(1762831241L,2266306336L)
+        "corona-normal-v1": #(678481578L,3424142204L)
+        "corona-legacy-v1": #(1891525894L,1149841885L)
+        "multi-sub-v1": #(512L,0L)
+        "max-color-correction-v1": #(720L,0L)
+        "max-vertex-color-v1": #(9652305L,0L)
+        "corona-front-back-v1": #(2882347111L,2267239517L)
+        "max-mix-v1": #(560L,0L)
+        "corona-color-v1": #(1749183946L,925065940L)
+        "corona-mix-v1": #(1749493871L,1073719988L)
+        "corona-color-correct-v1": #(2168614345L,931412224L)
+        "max-composite-v1": #(640L,0L)
+        "forest-color-v1": #(1613723927L,104154128L)
+        "forest-edge-v1": #(1568227357L,1783892597L)
+        "corona-bitmap-v1": #(2881116036L,1699234372L)
+        "max-gradient-v1": #(624L,0L)
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterCategory kind = (
+    local result=case kind of (
+        "corona-physical-v1": "material"
+        "corona-normal-v1": "map"
+        "corona-legacy-v1": "material"
+        "multi-sub-v1": "material"
+        "max-color-correction-v1": "map"
+        "max-vertex-color-v1": "map"
+        "corona-front-back-v1": "map"
+        "max-mix-v1": "map"
+        "corona-color-v1": "map"
+        "corona-mix-v1": "map"
+        "corona-color-correct-v1": "map"
+        "max-composite-v1": "map"
+        "forest-color-v1": "map"
+        "forest-edge-v1": "map"
+        "corona-bitmap-v1": "map"
+        "max-gradient-v1": "map"
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterCoordinates kind = (
+    local result=case kind of (
+        "corona-bitmap-v1": "corona-uvw-v1"
+        "max-gradient-v1": "ordinary-gradient-uv-v1"
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterOutput kind = (
+    local result=case kind of (
+        "max-mix-v1": "standard-output-v1"
+        "corona-bitmap-v1": "standard-output-v1"
+        "max-gradient-v1": "standard-output-v1"
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetSubobjectFields kind = (
+    local result=case kind of (
+        "standard-output-v1": #(#("invert","boolean"),#("clamp","boolean"),#("alphaFromRGB","boolean"),#("enableColorMap","boolean"),#("useRGBColorMap","boolean"),#("Bump_Amount","number"),#("RGB_Level","number"),#("RGB_Offset","number"),#("Output_Amount","number"))
+        "corona-uvw-v1": #(#("uvwChannel","integer"),#("enviroMapping","integer"),#("realWorldScale","boolean"),#("triplanarMapping","boolean"),#("useObjectTransform","boolean"),#("uvwOffset","point3"),#("tilingU","integer"),#("tilingV","integer"),#("clippingOn","boolean"),#("clippingMode","integer"),#("clippingU","number"),#("clippingV","number"),#("clippingWidth","number"),#("clippingHeight","number"),#("domeOrigin","point3-distance"),#("domeRadius","distance"),#("domeCameraHeight","distance"),#("wAngle","number"),#("uAngle","number"),#("triplanarBlending","number"),#("triplanarScale","distance"),#("uvwScale","point3"))
+        "ordinary-gradient-uv-v1": #(#("realWorldScale","boolean"),#("mappingType","integer"),#("mapping","integer"),#("mapChannel","integer"),#("UVW_Type","integer"),#("U_Mirror","boolean"),#("V_Mirror","boolean"),#("U_Tile","boolean"),#("V_Tile","boolean"),#("showMapOnBack","boolean"),#("Noise_On","boolean"),#("Noise_Animate","boolean"),#("phase","number"),#("U_Angle","number"),#("V_Angle","number"),#("Noise_Amount","number"),#("Noise_Size","number"),#("Noise_Levels","integer"),#("W_Angle","number"),#("Blur_Offset","number"),#("U_Offset","number"),#("V_Offset","number"),#("blur","number"),#("U_Tiling","number"),#("V_Tiling","number"))
+        default: undefined
+    )
+    result
+)
+fn CyrusAssetAdapterKinds = (#("corona-physical-v1","corona-normal-v1","corona-legacy-v1","multi-sub-v1","max-color-correction-v1","max-vertex-color-v1","corona-front-back-v1","max-mix-v1","corona-color-v1","corona-mix-v1","corona-color-correct-v1","max-composite-v1","forest-color-v1","forest-edge-v1","corona-bitmap-v1","max-gradient-v1"))
+fn CyrusAssetAdapterProfile = (CyrusRecipeObject #(#("id","corona-max2027-15.0.671720-v1"),#("hostYear",2027),#("pluginVersion","15.0.671720")))
+
+-- Finite renderer adapters. Package strings never select constructors or classes.
+-- Material/map records are staged in dependency order; this file publishes no nodes.
+global CyrusAssetShaderKind,CyrusAssetCheckRenderer,CyrusAssetCaptureShader,CyrusAssetRestoreShader
+global CyrusAssetNewShader,CyrusAssetShaderEncode,CyrusAssetShaderDecode,CyrusAssetShaderApply,CyrusAssetShaderGuard
+-- This template is emitted before assets.ms. Declare every later-defined helper
+-- here so fresh-session compilation binds global functions, not undefined locals.
+global CyrusRecipeObject,CyrusRecipeGet,CyrusRecipePut,CyrusRecipeResolve,CyrusPresetSameValues
+global CyrusAssetSettingsEqual,CyrusAssetCheckDefaults,CyrusAssetMap,CyrusAssetMaterial
+global cyrusAssetRendererModule,cyrusAssetForestModule,CyrusAssetCheckForest
+global CyrusAssetAdapterFields,CyrusAssetAdapterLinks,CyrusAssetAdapterClassID,CyrusAssetAdapterProfile
+global CyrusAssetAdapterCategory,CyrusAssetAdapterKinds,CyrusAssetAdapterOutput,CyrusAssetSubobjectFields
+global CyrusAssetAdapterArrayLinks,CyrusAssetAdapterAlignedArrays,CyrusAssetAdapterCoordinates
+global CyrusAssetShaderOutput,CyrusAssetShaderApplyOutput,cyrusAssetDefaultCurves,CyrusAssetShaderMetres
+global CyrusAssetShaderCoordinates,CyrusAssetShaderApplyCoordinates,CyrusAssetCoronaImagePreflight,CyrusAssetCaptureCoronaImage
+global CyrusAssetShaderCoordinateOwner,CyrusAssetShaderReadbackEqual,cyrusAssetRefreshCoronaBitmap
+
+fn CyrusAssetShaderKind value = (
+    if value==undefined do return undefined
+    local identity=value.classID
+    for kind in (CyrusAssetAdapterKinds()) do (
+        local expected=CyrusAssetAdapterClassID kind
+        if expected!=undefined and CyrusPresetSameValues identity expected do return kind
+    )
+    undefined
+)
+fn CyrusAssetCheckRenderer = (
+    local profile=CyrusAssetAdapterProfile()
+    if (maxVersion())[8]!=(CyrusRecipeGet profile "hostYear") do throw "This portable Corona profile requires Max 2027."
+    if cyrusAssetRendererModule==undefined do throw "Load the complete matching renderer-adapter native build."
+    local path=cyrusAssetRendererModule()
+    if path==undefined or path=="" or not doesFileExist path do throw "The registered Corona Physical renderer module is unavailable."
+    local version=((dotNetClass "System.Diagnostics.FileVersionInfo").GetVersionInfo path).FileVersion
+    if version!=(CyrusRecipeGet profile "pluginVersion") do throw ("Portable Corona assets require renderer "+(CyrusRecipeGet profile "pluginVersion")+"; registered module is "+version+".")
+    true
+)
+fn CyrusAssetCheckForest = (
+    if cyrusAssetForestModule==undefined do throw "Load the matching native Forest adapter build."
+    local path=cyrusAssetForestModule()
+    if path==undefined or path=="" or not doesFileExist path do throw "The registered Forest Color/Edge module is unavailable."
+    local version=((dotNetClass "System.Diagnostics.FileVersionInfo").GetVersionInfo path).FileVersion
+    if version!="9,4,3,766" do throw ("Portable Forest maps require the measured Forest Pack Lite 9,4,3,766 module; registered version is "+version)
+    true
+)
+fn CyrusAssetNewShader kind = (
+    if kind=="forest-color-v1" or kind=="forest-edge-v1" do CyrusAssetCheckForest()
+
+    local value=case kind of (
+        "corona-physical-v1": CoronaPhysicalMtl()
+        "corona-legacy-v1": CoronaLegacyMtl()
+        "corona-normal-v1": CoronaNormal()
+        "multi-sub-v1": multiMaterial numsubs:1
+        "max-color-correction-v1": Color_Correction()
+        "max-vertex-color-v1": Vertex_Color()
+        "corona-front-back-v1": CoronaFrontBack()
+        "max-mix-v1": Mix()
+        "corona-color-v1": CoronaColor()
+        "corona-mix-v1": CoronaMix()
+        "corona-color-correct-v1": CoronaColorCorrect()
+        "max-composite-v1": CompositeTexturemap()
+        "forest-color-v1": Forest_Color()
+        "forest-edge-v1": Forest_Edge()
+        "corona-bitmap-v1": CoronaBitmap()
+        "max-gradient-v1": Gradient()
+        default: throw "Unknown closed portable shader adapter."
+    )
+    if not (CyrusPresetSameValues value.classID (CyrusAssetAdapterClassID kind)) do throw ("The installed shader class differs from the qualified adapter: "+kind)
+    value
+)
+fn CyrusAssetShaderMetres = (
+    local scale=(units.decodeValue "1m") as double
+    if not (scale>0 and scale<1e12) do throw "Portable shader scene units are outside their supported bounds."
+    scale
+)
+fn CyrusAssetShaderEncode value type = (
+    if findString type "-array"!=undefined and type!="empty-array" and type!="null-array" do (
+        if classof value!=Array and classof value!=ArrayParameter do throw "Portable shader array has the wrong host type."
+        local values=value as array
+        if values.count<1 or values.count>128 do throw "Portable shader array exceeds its bound."
+        local element=substring type 1 (type.count-6)
+        return (for item in values collect CyrusAssetShaderEncode item element)
+    )
+
+    case type of (
+        "color": (
+            if classof value!=Color do throw "Portable shader color has the wrong host type."
+            #(value.r as double,value.g as double,value.b as double)
+        )
+        "point3-distance": (
+            if classof value!=Point3 do throw "Portable shader distance vector has the wrong host type."
+            local scale=CyrusAssetShaderMetres()
+            #((value.x as double)/scale,(value.y as double)/scale,(value.z as double)/scale)
+        )
+        "point3": (
+            if classof value!=Point3 do throw "Portable shader vector has the wrong host type."
+            #(value.x as double,value.y as double,value.z as double)
+        )
+        "empty-array": (if (value as array).count!=0 do throw "Active portable shader curves require a separate adapter.";#())
+        "null-array": (local values=value as array;if values.count!=100 do throw "Portable shader absent input array has the wrong count.";for item in values where item!=undefined do throw "Additional portable shader inputs require a separate adapter.";values)
+        "absent-filename": (if value!=undefined and value!="" do throw "External portable shader LUTs require a separate adapter.";undefined)
+        "distance": (
+            if not isKindOf value Number do throw "Portable shader distance has the wrong host type."
+            (value as double)/(CyrusAssetShaderMetres())
+        )
+        "number": (
+            if not isKindOf value Number do throw "Portable shader number has the wrong host type."
+            value as double
+        )
+        "integer": (
+            if classof value!=Integer and classof value!=Integer64 do throw "Portable shader integer has the wrong host type."
+            value as integer64
+        )
+        "boolean": (
+            if classof value!=classof true do throw "Portable shader boolean has the wrong host type."
+            value
+        )
+        "string": (
+            if classof value!=String do throw "Portable shader string has the wrong host type."
+            value
+        )
+        default: throw "Unknown closed portable shader field type."
+    )
+)
+fn CyrusAssetShaderDecode value type = (
+    if findString type "-array"!=undefined and type!="empty-array" and type!="null-array" do (
+        local element=substring type 1 (type.count-6)
+        return (for item in value collect CyrusAssetShaderDecode item element)
+    )
+
+    case type of (
+        "color": color value[1] value[2] value[3]
+        "integer": value as integer
+        "distance": value*(CyrusAssetShaderMetres())
+        "point3": point3 value[1] value[2] value[3]
+        "point3-distance": (point3 value[1] value[2] value[3])*(CyrusAssetShaderMetres())
+        "absent-filename": ""
+        default: value
+    )
+)
+-- SI is serialized as double; host parameter blocks store float32. Compare
+-- decoded host values exactly, without a second SI rounding or a new epsilon.
+fn CyrusAssetShaderReadbackEqual actual encoded type = (
+    case type of (
+        "distance": ((actual as float)==((CyrusAssetShaderDecode encoded type) as float))
+        "point3-distance": (
+            local expected=CyrusAssetShaderDecode encoded type
+            actual.x==expected.x and actual.y==expected.y and actual.z==expected.z
+        )
+        default: CyrusAssetSettingsEqual (CyrusAssetShaderEncode actual type) encoded
+    )
+)
+fn CyrusAssetShaderOutput value kind = (
+    local outputKind=CyrusAssetAdapterOutput kind
+    if outputKind==undefined do return undefined
+    local properties=CyrusRecipeObject #()
+    for field in (CyrusAssetSubobjectFields outputKind) do CyrusRecipePut properties field[1] (CyrusAssetShaderEncode (getProperty value.output (field[1] as name)) field[2])
+    CyrusRecipeObject #(#("kind",outputKind),#("properties",properties))
+)
+fn CyrusAssetShaderApplyOutput value data kind = (
+    local outputKind=CyrusAssetAdapterOutput kind
+    if outputKind==undefined do (if data!=undefined do throw "Unexpected portable shader output adapter.";return true)
+    if data==undefined or (CyrusRecipeGet data "kind")!=outputKind do throw "Missing or incompatible portable shader output adapter."
+    local expected=CyrusAssetNewShader kind
+    if classof value.output!=classof expected.output do throw "Unsupported portable shader output class."
+    local properties=CyrusRecipeGet data "properties"
+    for field in (CyrusAssetSubobjectFields outputKind) do setProperty value.output (field[1] as name) (CyrusAssetShaderDecode (CyrusRecipeGet properties field[1]) field[2])
+    for field in (CyrusAssetSubobjectFields outputKind) do (
+        local actual=getProperty value.output (field[1] as name)
+        if not (CyrusAssetShaderReadbackEqual actual (CyrusRecipeGet properties field[1]) field[2]) do throw ("The host changed portable shader output setting: "+field[1])
+    )
+    cyrusAssetDefaultCurves value.output expected.output
+    true
+)
+fn CyrusAssetCoronaImagePreflight value = (
+    if value.useLegacyGamma or value.showLegacyGamma or value.gamma!=1 or value.colorSpace!=4 or findItem #("Raw","Gamma 2.2 / Rec.709") value.colorSpaceStr==0 do throw "Prepare an explicit modern OCIO CoronaBitmap derivative before packaging: gamma1, OCIO input space, legacy flags off."
+    if value.realWorldScale or value.enviroMapping!=0 or value.triplanarMapping or value.useObjectTransform or value.objecttransform!=undefined or value.aspectRatioLock do throw "This CoronaBitmap profile supports explicit UV channel mapping without real-world, environment, triplanar or object-transform modes."
+    true
+)
+fn CyrusAssetShaderCoordinateOwner value kind = (
+    if kind=="corona-bitmap-v1" do return value
+    if kind=="max-gradient-v1" do (
+        local expected=Gradient()
+        if classof value.coords!=classof expected.coords or not (CyrusPresetSameValues value.coords.classID #(256L,0L)) do throw "Unsupported ordinary Gradient coordinate class."
+        if value.coords.realWorldScale do throw "Prepare an explicit ordinary-UV Gradient derivative before packaging; active real-world coordinates require a separate contract."
+        return value.coords
+    )
+    throw "Unsupported portable shader coordinate owner."
+)
+fn CyrusAssetShaderCoordinates value kind = (
+    local coordinateKind=CyrusAssetAdapterCoordinates kind
+    if coordinateKind==undefined do return undefined
+    local owner=CyrusAssetShaderCoordinateOwner value kind
+    local properties=CyrusRecipeObject #()
+    for field in (CyrusAssetSubobjectFields coordinateKind) do CyrusRecipePut properties field[1] (CyrusAssetShaderEncode (getProperty owner (field[1] as name)) field[2])
+    CyrusRecipeObject #(#("kind",coordinateKind),#("properties",properties))
+)
+fn CyrusAssetShaderApplyCoordinates value data kind = (
+    local coordinateKind=CyrusAssetAdapterCoordinates kind
+    if coordinateKind==undefined do (if data!=undefined do throw "Unexpected portable shader coordinates.";return true)
+    if data==undefined or (CyrusRecipeGet data "kind")!=coordinateKind do throw "Missing or incompatible portable shader coordinates."
+    local owner=CyrusAssetShaderCoordinateOwner value kind
+    local properties=CyrusRecipeGet data "properties"
+    -- Mapping mode setters can invert/reset UVW scale. The finite table puts
+    -- them first and UVW scale last; verify after every coordinate setter.
+    for field in (CyrusAssetSubobjectFields coordinateKind) do setProperty owner (field[1] as name) (CyrusAssetShaderDecode (CyrusRecipeGet properties field[1]) field[2])
+    for field in (CyrusAssetSubobjectFields coordinateKind) do (
+        local actual=getProperty owner (field[1] as name)
+        if not (CyrusAssetShaderReadbackEqual actual (CyrusRecipeGet properties field[1]) field[2]) do throw ("The renderer changed portable shader coordinates: "+field[1])
+    )
+    if kind=="max-gradient-v1" do CyrusAssetShaderCoordinateOwner value kind
+    true
+)
+fn CyrusAssetShaderApply value properties links kind maps outputData:undefined coordinateData:undefined = (
+    -- Table order puts mode controls ahead of the numeric values they can reset.
+    for field in (CyrusAssetAdapterFields kind) do (
+        local key=field[1] as name
+        setProperty value key (CyrusAssetShaderDecode (CyrusRecipeGet properties field[1]) field[2])
+    )
+    for field in (CyrusAssetAdapterLinks kind) do setProperty value (field as name) (CyrusRecipeResolve maps (CyrusRecipeGet links field))
+    for field in (CyrusAssetAdapterArrayLinks kind) do setProperty value (field as name) (for child in (CyrusRecipeGet links field) collect CyrusRecipeResolve maps child)
+    CyrusAssetShaderApplyCoordinates value coordinateData kind
+    -- Read every supported setting after all setters, including derived aliases.
+    for field in (CyrusAssetAdapterFields kind) do (
+        local actual=getProperty value (field[1] as name)
+        if not (CyrusAssetShaderReadbackEqual actual (CyrusRecipeGet properties field[1]) field[2]) do throw ("The renderer changed portable shader setting: "+field[1])
+    )
+    for field in (CyrusAssetAdapterLinks kind) where (getProperty value (field as name))!=(CyrusRecipeResolve maps (CyrusRecipeGet links field)) do throw ("The renderer changed portable shader link: "+field)
+    for field in (CyrusAssetAdapterArrayLinks kind) do (
+        local actual=(getProperty value (field as name)) as array,expected=CyrusRecipeGet links field
+        if actual.count!=expected.count do throw "The renderer changed portable shader array link count."
+        for i=1 to actual.count where actual[i]!=(CyrusRecipeResolve maps expected[i]) do throw ("The renderer changed portable shader array link: "+field)
+    )
+    CyrusAssetShaderApplyOutput value outputData kind
+    if kind=="corona-bitmap-v1" do (
+        -- Evaluate only the admitted fixed image class after all its controls.
+        -- Its lazy gamma cache must settle before a Normal dependant is checked.
+        if cyrusAssetRefreshCoronaBitmap==undefined do throw "Load the matching native CoronaBitmap cache adapter."
+        cyrusAssetRefreshCoronaBitmap value
+        for field in (CyrusAssetAdapterFields kind) where not (CyrusAssetShaderReadbackEqual (getProperty value (field[1] as name)) (CyrusRecipeGet properties field[1]) field[2]) do throw ("Image update changed portable shader setting: "+field[1])
+        for field in (CyrusAssetSubobjectFields (CyrusAssetAdapterCoordinates kind)) where not (CyrusAssetShaderReadbackEqual (getProperty value (field[1] as name)) (CyrusRecipeGet (CyrusRecipeGet coordinateData "properties") field[1]) field[2]) do throw ("Image update changed portable coordinates: "+field[1])
+        for field in (CyrusAssetSubobjectFields (CyrusAssetAdapterOutput kind)) where not (CyrusAssetShaderReadbackEqual (getProperty value.output (field[1] as name)) (CyrusRecipeGet (CyrusRecipeGet outputData "properties") field[1]) field[2]) do throw ("Image update changed portable output: "+field[1])
+    )
+    true
+)
+fn CyrusAssetShaderGuard value baseline kind = (
+    local supported=#(#name)
+    for field in (CyrusAssetAdapterFields kind) do append supported (field[1] as name)
+    for field in (CyrusAssetAdapterLinks kind) do append supported (field as name)
+    for field in (CyrusAssetAdapterArrayLinks kind) do append supported (field as name)
+    local alignedCount=undefined
+    for field in (CyrusAssetAdapterAlignedArrays kind) do (
+        local count=((getProperty value (field as name)) as array).count
+        if alignedCount==undefined then alignedCount=count else if count!=alignedCount do throw "Portable Composite layer arrays have inconsistent lengths."
+    )
+    if kind=="corona-color-correct-v1" do (
+        -- Corona 15's published computed interface alias dereferences null even
+        -- on a detached fresh instance. Its authored output controls remain closed.
+        if value.additionalOutputs!=0 or value.controlsSource!=0 or value.copiedMap!=undefined or value.showCopiedMap or value.lutEnable or value.curveEnabled do throw "Unsupported Corona Color Correct output, curve or LUT mode."
+        if (value.additionalInputTexmap as array).count!=100 do throw "Unsupported Corona Color Correct input array."
+        for item in (value.additionalInputTexmap as array) where item!=undefined do throw "Additional Corona Color Correct inputs are unsupported."
+        append supported #numIMultipleOutputChannels
+    )
+    local coordinateKind=CyrusAssetAdapterCoordinates kind
+    if coordinateKind!=undefined do (
+        local coordinateFields=#()
+        for field in (CyrusAssetSubobjectFields coordinateKind) do append coordinateFields (field[1] as name)
+        if kind=="max-gradient-v1" then (
+            append supported #coords
+            -- UVTransform is a known read-only lazy cache: setters reject it;
+            -- identical authored fields produce identity until evaluation, then
+            -- match the reopened matrix exactly (gradient-ordinary-helper1/
+            -- matrix-evaluation.json). Only its value equality is excluded;
+            -- CheckDefaults still checks its controller and all unknown fields.
+            append coordinateFields #UVTransform
+            -- Inactive physical width/height remain strict derived aliases.
+            CyrusAssetCheckDefaults (CyrusAssetShaderCoordinateOwner value kind) (CyrusAssetShaderCoordinateOwner baseline kind) coordinateFields
+        )else join supported coordinateFields
+    )
+    -- The resource hook has already verified/copies the source bytes and bounds.
+    -- Filename is never a serialized arbitrary property or compared as a path alias.
+    if kind=="corona-bitmap-v1" do (CyrusAssetCoronaImagePreflight value;append supported #filename)
+    local outputKind=CyrusAssetAdapterOutput kind
+    if outputKind!=undefined do (
+        append supported #output
+        if classof value.output!=classof baseline.output do throw "Unsupported portable shader output class."
+        local outputFields=#()
+        for field in (CyrusAssetSubobjectFields outputKind) do append outputFields (field[1] as name)
+        CyrusAssetCheckDefaults value.output baseline.output outputFields
+        cyrusAssetDefaultCurves value.output baseline.output
+    )
+    -- Compare every unsupported property and controller against the material
+    -- reconstructed from captured settings. preSet is derived by Corona setters;
+    -- materialLibraryId is read-only and must still equal the fresh default.
+    CyrusAssetCheckDefaults value baseline supported
+    if kind=="corona-normal-v1" and (value.gammaWarning or baseline.gammaWarning) do throw "Resolve the Corona normal-map input gamma warning before packaging."
+    true
+)
+fn CyrusAssetCaptureShader context value kind = (
+    if kind==undefined or (CyrusAssetShaderKind value)!=kind do throw "Unsupported portable shader class identity."
+    context.rendererMode=true
+    if not context.rendererChecked do (CyrusAssetCheckRenderer();context.rendererChecked=true)
+    local category=CyrusAssetAdapterCategory kind
+    if category!="map" and category!="material" do throw "Unsupported portable shader category."
+    local isMap=category=="map",visiting=if isMap then context.mapVisiting else context.materialVisiting
+    local countLimit=if isMap then 256 else 128
+    if findItem visiting value>0 do throw "Portable material/map dependency cycles are unsupported."
+    if context.mapVisiting.count+context.materialVisiting.count>=8 do throw "Portable shader graph exceeds its depth bound of 8."
+    if (if isMap then context.maps.count+context.mapVisiting.count else context.materials.count+context.materialVisiting.count)>=countLimit do throw "Portable material/map count exceeds its profile bound."
+    append visiting value
+    try (
+        local baseline=CyrusAssetNewShader kind,data=undefined
+        if kind=="multi-sub-v1" then (
+            local count=value.materialList.count,slots=#()
+            if count<1 or count>128 or value.materialIDList.count!=count or value.names.count!=count or value.mapEnabled.count!=count do throw "Portable Multi/Sub materials require 1 to 128 consistent slots; Max cannot represent an empty slot array."
+            baseline.numsubs=count
+            for i=1 to count do (
+                local child=value.materialList[i]
+                baseline.materialList[i]=child;baseline.materialIDList[i]=value.materialIDList[i];baseline.names[i]=value.names[i];baseline.mapEnabled[i]=value.mapEnabled[i]
+                append slots (CyrusRecipeObject #(#("materialID",value.materialIDList[i]),#("name",value.names[i]),#("enabled",value.mapEnabled[i]),#("material",CyrusAssetMaterial context child)))
+            )
+            baseline.showPreviews=value.showPreviews
+            CyrusAssetCheckDefaults value baseline #(#name,#materialList,#materialIDList,#names,#mapEnabled,#showPreviews)
+            data=CyrusRecipeObject #(#("id","material-"+((context.materials.count+1) as string)),#("kind",kind),#("name",value.name),#("slots",slots),#("showPreviews",value.showPreviews))
+        )else (
+            local properties=CyrusRecipeObject #(),links=CyrusRecipeObject #(),references=#(),imageResource=undefined
+            if kind=="corona-bitmap-v1" do (
+                CyrusAssetCoronaImagePreflight value
+                if CyrusAssetCaptureCoronaImage==undefined do throw "Load the complete matching Corona image resource adapter."
+                local image=CyrusAssetCaptureCoronaImage context value
+                if classof image!=Array or image.count!=2 or classof image[2]!=String or image[2]=="" do throw "The Corona image resource adapter returned an invalid staged image."
+                imageResource=image[1]
+                -- Resource admission above verifies bytes and bounds before
+                -- evaluating this source map's fixed-class lazy cache.
+                if cyrusAssetRefreshCoronaBitmap==undefined do throw "Load the matching native CoronaBitmap cache adapter."
+                cyrusAssetRefreshCoronaBitmap value
+                if (CyrusRecipeGet (CyrusRecipeGet imageResource "color") "inputSpace")!=value.colorSpaceStr do throw "The Corona image resource input space changed during capture."
+                -- Filename MUST precede every interpretation/mapping setting.
+                baseline.filename=image[2]
+            )
+            for field in (CyrusAssetAdapterFields kind) do CyrusRecipePut properties field[1] (CyrusAssetShaderEncode (getProperty value (field[1] as name)) field[2])
+            for field in (CyrusAssetAdapterLinks kind) do (
+                local child=getProperty value (field as name),identity=CyrusAssetMap context child
+                CyrusRecipePut links field identity
+                if identity!=undefined do append references #(identity,child)
+            )
+            for field in (CyrusAssetAdapterArrayLinks kind) do (
+                local identities=#()
+                local children=(getProperty value (field as name)) as array
+                if children.count<1 or children.count>128 do throw "Portable shader array links exceed their bound."
+                for child in children do (
+                    local identity=CyrusAssetMap context child
+                    append identities identity
+                    if identity!=undefined do append references #(identity,child)
+                )
+                CyrusRecipePut links field identities
+            )
+            local outputData=CyrusAssetShaderOutput value kind,coordinateData=CyrusAssetShaderCoordinates value kind
+            CyrusAssetShaderApply baseline properties links kind references outputData:outputData coordinateData:coordinateData
+            CyrusAssetShaderGuard value baseline kind
+            data=CyrusRecipeObject #(#("id",(if isMap then "map-"+((context.maps.count+1) as string) else "material-"+((context.materials.count+1) as string))),#("kind",kind),#("name",value.name),#("properties",properties),#("links",links))
+            if isMap do CyrusRecipePut data "roles" #()
+            if outputData!=undefined do CyrusRecipePut data "output" outputData
+            if coordinateData!=undefined do CyrusRecipePut data "coordinates" coordinateData
+            if imageResource!=undefined do for key in #("file","size","color") do CyrusRecipePut data key (CyrusRecipeGet imageResource key)
+        )
+        -- Children were captured first, so IDs and backing value arrays align.
+        if (if isMap then context.maps.count+context.mapVisiting.count else context.materials.count+context.materialVisiting.count)>countLimit do throw "Portable shader children exhausted the reserved graph capacity."
+        if isMap then (append context.maps data;append context.mapValues value) else (append context.materials data;append context.materialValues value)
+        deleteItem visiting visiting.count
+        CyrusRecipeGet data "id"
+    )catch(
+        local index=findItem visiting value
+        if index>0 do deleteItem visiting index
+        throw()
+    )
+)
+fn CyrusAssetRestoreShader data maps materials imagePath:undefined = (
+    local kind=CyrusRecipeGet data "kind"
+    CyrusAssetCheckRenderer()
+    if kind=="multi-sub-v1" and (CyrusRecipeGet data "slots").count<1 do throw "Max cannot restore a Multi/Sub material with zero slots."
+    local value=CyrusAssetNewShader kind
+    value.name=CyrusRecipeGet data "name"
+    if kind=="corona-bitmap-v1" do (
+        if classof imagePath!=String or imagePath=="" or not doesFileExist imagePath do throw "A validated cached image path is required for CoronaBitmap restoration."
+        value.filename=imagePath
+    )
+    if kind=="multi-sub-v1" then (
+        local slots=CyrusRecipeGet data "slots"
+        value.numsubs=slots.count
+        for i=1 to slots.count do (
+            local slot=slots[i]
+            value.materialIDList[i]=CyrusRecipeGet slot "materialID"
+            value.names[i]=CyrusRecipeGet slot "name"
+            value.mapEnabled[i]=CyrusRecipeGet slot "enabled"
+            value.materialList[i]=CyrusRecipeResolve materials (CyrusRecipeGet slot "material")
+        )
+        value.showPreviews=CyrusRecipeGet data "showPreviews"
+        if value.materialList.count!=slots.count or value.materialIDList.count!=slots.count or value.names.count!=slots.count or value.mapEnabled.count!=slots.count do throw "The host changed the portable Multi/Sub slot count."
+        for i=1 to slots.count do (
+            local slot=slots[i]
+            if value.materialIDList[i]!=(CyrusRecipeGet slot "materialID") or value.names[i]!=(CyrusRecipeGet slot "name") or value.mapEnabled[i]!=(CyrusRecipeGet slot "enabled") or value.materialList[i]!=(CyrusRecipeResolve materials (CyrusRecipeGet slot "material")) do throw "The host changed a portable Multi/Sub slot."
+        )
+        if value.showPreviews!=(CyrusRecipeGet data "showPreviews") do throw "The host changed Multi/Sub preview settings."
+    )else (
+        local outputData=if (CyrusAssetAdapterOutput kind)==undefined then undefined else CyrusRecipeGet data "output"
+        local coordinateData=if (CyrusAssetAdapterCoordinates kind)==undefined then undefined else CyrusRecipeGet data "coordinates"
+        CyrusAssetShaderApply value (CyrusRecipeGet data "properties") (CyrusRecipeGet data "links") kind maps outputData:outputData coordinateData:coordinateData
+        if kind=="corona-bitmap-v1" do CyrusAssetCoronaImagePreflight value
+        if kind=="corona-normal-v1" and value.gammaWarning do throw "Restored Corona normal input has an incompatible gamma interpretation."
+    )
+    value
+)
+
 -- Explicit portable export. This template uses only closed built-in adapters.
 -- Catalog browsing never calls these functions or inspects scene dependencies.
 global CyrusAssetCapture,CyrusAssetCaptureContext,CyrusAssetMaterial,CyrusAssetMap,CyrusAssetSettingsEqual,CyrusAssetCheckDefaults,CyrusAssetRoleIsSource,CyrusAssetExportEditor,CyrusAssetExportOpenData,CyrusOpenAssetExport
@@ -298,9 +892,31 @@ global CyrusAssetStage,CyrusAssetImport,CyrusAssetImportPlan,CyrusAssetReview,Cy
 global CyrusOpenAssetImport,CyrusAssetImportEditor,CyrusAssetImportOpenData,CyrusRecipeValidateBindings
 global CyrusAssetColorContext,CyrusAssetCheckColor,CyrusAssetBitmapDirectory,CyrusAssetRestoreMap
 global CyrusAssetSharedSnapshot,CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetCaptureSpline,CyrusAssetBoundNode
-struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false,pathTransform=undefined)
+global CyrusAssetShaderKind,CyrusAssetCheckRenderer,CyrusAssetCheckForest,CyrusAssetCaptureShader,CyrusAssetRestoreShader,CyrusAssetAdapterArrayLinks
+global cyrusAssetOpenImage,cyrusAssetImageInfo,cyrusAssetImageEqual,cyrusAssetImageAdmission,cyrusAssetRendererModule
+global cyrusAssetMeshProfile,cyrusAssetPlantMeshExport,cyrusAssetPlantSceneAdmission
+global CyrusAssetCheckImageBuild
+global CyrusAssetCaptureCoronaImage,CyrusAssetRestoreCoronaImage
+global CyrusAssetUsesRenderer
+fn CyrusAssetCheckImageBuild = (
+    if cyrusAssetOpenImage==undefined or cyrusAssetImageInfo==undefined or cyrusAssetImageEqual==undefined or cyrusAssetImageAdmission==undefined or cyrusAssetRendererModule==undefined do throw "Load the complete matching plant-image native build."
+    true
+)
+fn CyrusAssetUsesRenderer value depth:0 = (
+    if value==undefined do return false
+    if depth>8 do throw "Portable shader dependency depth exceeds eight."
+    if (CyrusAssetShaderKind value)!=undefined do return true
+    -- These are the only map slots admitted by the existing Standard adapter.
+    -- Detect their finite nested adapters before any image copy, independent of
+    -- role/slot order. Unsupported other slots are still rejected by its guard.
+    if classof value==StandardMaterial do for key in #(#ambientMap,#diffuseMap,#opacityMap) do (
+        if CyrusAssetUsesRenderer (getProperty value key) depth:(depth+1) do return true
+    )
+    false
+)
+struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false,pathTransform=undefined,paintFootprint=undefined)
 if CyrusAssetJobs==undefined do CyrusAssetJobs=#()
-struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined)
+struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined,rendererMode=false,rendererChecked=false,plantMeshes=false,mapVisiting=#(),materialVisiting=#())
 fn CyrusAssetBitmapDirectory = (pathConfig.appendPath (getDir #userScripts) "CyrusScatter\\ImportedAssets")
 fn CyrusAssetColorContext inputSpace = (
     if ColorPipelineMgr.Mode!=#OCIO_Default or ColorPipelineMgr.Status!=#normal do throw "Portable bitmap maps currently require Max's normal default OCIO colour pipeline."
@@ -342,18 +958,54 @@ fn CyrusAssetCheckDefaults value baseline supported = (
 fn CyrusAssetCheckController control depth:0 = (
     if control==undefined do return true
     if depth>8 do throw "Portable source controller depth exceeds its bound."
-    if findItem #(PRS,Position_XYZ,Euler_XYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 or (numKeys control)>0 do throw "Portable assets require supported static parameter and transform controllers."
+    if findItem #(PRS,Position_XYZ,Euler_XYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 do throw ("Portable assets require supported static parameter and transform controllers. Unsupported class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
+    if (numKeys control)>0 do throw ("Portable assets require supported static parameter and transform controllers. Keyed class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
     for i=1 to control.numSubs do (
         local child=(getSubAnim control i).controller
         if child!=undefined do CyrusAssetCheckController child depth:(depth+1)
     )
     true
 )
+-- CoronaBitmap owns a file-backed image, not an editable MAXBitMap value. Only
+-- the measured modern interpretation is admitted. The shader adapter owns all
+-- typed controls; this helper owns verified bytes, colour context and lifetime.
+fn CyrusAssetCaptureCoronaImage context value = (
+    if (CyrusAssetShaderKind value)!="corona-bitmap-v1" do throw "Unsupported Corona image class identity."
+    CyrusAssetCheckImageBuild()
+    if value.useLegacyGamma or value.showLegacyGamma or value.gamma!=1.0 or value.colorSpace!=4 or findItem #("Raw","Gamma 2.2 / Rec.709") value.colorSpaceStr==0 do throw "Prepare an explicitly authored modern OCIO CoronaBitmap before packaging; the source was preserved."
+    local path=value.filename,info=cyrusAssetImageInfo path,pixels=(info[3] as Integer64)*info[4]
+    if context.bitmapPixels+pixels>536870912L do throw "Portable bitmap map instances exceed the 512-Mpixel plant profile."
+    -- Existing source/staged allocations are reflected in current free memory.
+    -- Admit this next image before opening either a BMM or plugin-side copy.
+    cyrusAssetImageAdmission pixels
+    local colorData=CyrusAssetColorContext value.colorSpaceStr
+    if context.colorContext==undefined then context.colorContext=deepCopy colorData else CyrusAssetCheckColor colorData context.colorContext
+    local suffix=toLower(getFilenameType path),fileID="corona-bitmap-file-"+((context.maps.count+1) as string)
+    local staged=pathConfig.appendPath context.directory (fileID+suffix),opened=undefined
+    (dotNetClass "System.IO.File").Copy path staged false
+    try (
+        if not (CyrusPresetSameValues info (cyrusAssetImageInfo staged)) do throw "Corona image bytes changed during capture."
+        opened=cyrusAssetOpenImage staged value.colorSpaceStr 1.0
+        if opened==undefined or opened.numframes!=1 or opened.aspect!=1.0 or opened.width!=info[3] or opened.height!=info[4] or opened.colorSpaceStatus!=#normal or opened.colorSpace!=value.colorSpaceStr do throw "The copied Corona image has an unresolved or unsupported colour interpretation."
+        close opened;opened=undefined
+    )catch(if opened!=undefined do close opened;throw())
+    context.bitmapPixels+=pixels
+    append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","bitmap"),#("sha256",info[1]),#("bytes",info[2]),#("suffix",substring suffix 2 (suffix.count-1))))
+    append context.fileBindings #(fileID,staged)
+    #(CyrusRecipeObject #(#("file",fileID),#("size",#(info[3],info[4])),#("color",colorData)),staged)
+)
 fn CyrusAssetMap context value = (
     if value==undefined do return undefined
     local found=findItem context.mapValues value
     if found>0 do return (CyrusRecipeGet context.maps[found] "id")
-    if classof value!=Bitmaptexture or context.maps.count>=128 do throw "Portable maps require a supported static Bitmap texture; map limit is 128."
+    if classof value!=Bitmaptexture do (
+        local kind=CyrusAssetShaderKind value
+        if kind==undefined do throw ("Unsupported portable map: "+(classof value as string)+". The source is preserved.")
+        return CyrusAssetCaptureShader context value kind
+    )
+    local mapLimit=if context.rendererMode then 256 else 128
+    if classof value!=Bitmaptexture or context.maps.count+context.mapVisiting.count>=mapLimit do throw "Portable maps exceed their finite profile count or use an unsupported class."
+    if context.mapVisiting.count+context.materialVisiting.count>=8 do throw "Portable shader dependency depth exceeds eight."
     local defaults=bitmaptexture(),coords=value.coords,output=value.output
     if classof coords!=classof defaults.coords or classof output!=classof defaults.output do throw "This bitmap uses an unsupported coordinate/output adapter."
     CyrusAssetCheckDefaults value defaults #(#name,#filename,#bitmap,#coords,#output,#filtering,#monoOutput,#rgbOutput,#alphaSource,#preMultAlpha)
@@ -364,35 +1016,57 @@ fn CyrusAssetMap context value = (
     CyrusAssetCheckDefaults coords defaults.coords #(#UVTransform)
     CyrusAssetCheckDefaults output defaults.output #(#invert,#clamp,#alphaFromRGB,#RGB_Level,#RGB_Offset,#Output_Amount)
     cyrusAssetDefaultCurves output defaults.output
-    local path=value.filename,info=cyrusAssetFileInfo path true,pixels=info[3]*info[4]
-    if context.bitmapPixels+pixels>16777216 do throw "Portable bitmap maps exceed the 16 Mpixel aggregate limit."
+    local path=value.filename,info=(if context.rendererMode then cyrusAssetImageInfo path else cyrusAssetFileInfo path true),pixels=info[3]*info[4]
+    local pixelLimit=if context.rendererMode then 536870912 else 16777216
+    if context.bitmapPixels+pixels>pixelLimit do throw "Portable bitmap map instances exceed their profile's aggregate pixel bound."
+    if context.rendererMode do cyrusAssetImageAdmission pixels
     context.bitmapPixels+=pixels
     local source=value.bitmap
     if source==undefined or source.numframes!=1 or source.width!=info[3] or source.height!=info[4] or source.aspect!=1.0 do throw "Portable bitmap requires a current single-frame image with square pixels."
     if source.colorSpaceStatus!=#normal do throw "This bitmap's input colour space is unresolved."
     if context.colorContext==undefined do context.colorContext=CyrusAssetColorContext source.colorSpace
     local colorData=deepCopy context.colorContext;CyrusRecipePut colorData "inputSpace" source.colorSpace
-    local id="bitmap-"+((context.maps.count+1) as string),fileID="bitmap-file-"+((context.maps.count+1) as string),staged=pathConfig.appendPath context.directory (fileID+".png"),opened=undefined
+    local inputGamma=source.inputGamma
+    if context.rendererMode do (
+        if classof inputGamma==Name then (
+            if inputGamma!=#auto do throw "This bitmap input-gamma mode has no portable renderer adapter."
+            CyrusRecipePut colorData "inputGamma" "auto"
+        )else (
+            if not (isKindOf inputGamma Number) do throw "This bitmap input-gamma value has no portable renderer adapter."
+            CyrusRecipePut colorData "inputGamma" (inputGamma as double)
+        )
+        CyrusRecipePut colorData "effectiveGamma" (source.gamma as double)
+    )
+    local suffix=if context.rendererMode then toLower (getFilenameType path) else ".png"
+    local id="bitmap-"+((context.maps.count+1) as string),fileID="bitmap-file-"+((context.maps.count+1) as string),staged=pathConfig.appendPath context.directory (fileID+suffix),opened=undefined
     (dotNetClass "System.IO.File").Copy path staged false
     try (
-        local copied=cyrusAssetFileInfo staged true
+        local copied=if context.rendererMode then cyrusAssetImageInfo staged else cyrusAssetFileInfo staged true
         if not (CyrusPresetSameValues info copied) do throw "Bitmap changed during capture."
-        opened=openBitmap staged colorSpace:source.colorSpace
-        if opened==undefined or opened.colorSpaceStatus!=#normal or opened.colorSpace!=source.colorSpace or not (cyrusAssetBitmapEqual source opened) do throw "The in-memory bitmap differs from its file or colour interpretation. Save it before exporting."
+        opened=if context.rendererMode then cyrusAssetOpenImage staged source.colorSpace (CyrusRecipeGet colorData "inputGamma") else openBitmap staged colorSpace:source.colorSpace
+        if opened==undefined or opened.colorSpaceStatus!=#normal or opened.colorSpace!=source.colorSpace do throw "The copied bitmap could not retain its input colour interpretation."
+        if context.rendererMode and (abs (opened.gamma-source.gamma)>0.000002 or opened.inputGamma!=source.inputGamma) do throw "The copied bitmap changed its saved gamma interpretation."
+        if not (if context.rendererMode then cyrusAssetImageEqual source opened else cyrusAssetBitmapEqual source opened) do throw "The in-memory bitmap differs from its file or colour interpretation. Save it before exporting."
         close opened;opened=undefined
     )catch(if opened!=undefined do close opened;throw())
     local sampler=CyrusRecipeObject #(#("filtering",value.filtering),#("monoOutput",value.monoOutput),#("rgbOutput",value.rgbOutput),#("alphaSource",value.alphaSource),#("preMultAlpha",value.preMultAlpha),#("uMirror",coords.U_Mirror),#("vMirror",coords.V_Mirror),#("uTile",coords.U_Tile),#("vTile",coords.V_Tile),#("blur",coords.blur),#("blurOffset",coords.Blur_Offset))
     local outputData=CyrusRecipeObject #(#("invert",output.invert),#("clamp",output.clamp),#("alphaFromRGB",output.alphaFromRGB),#("rgbLevel",output.RGB_Level),#("rgbOffset",output.RGB_Offset),#("outputAmount",output.Output_Amount))
     local data=CyrusRecipeObject #(#("id",id),#("kind","bitmap"),#("name",value.name),#("file",fileID),#("channel",coords.mapChannel),#("uv",#(coords.U_Offset,coords.V_Offset,coords.U_Tiling,coords.V_Tiling,coords.W_Angle)),#("size",#(info[3],info[4])),#("color",colorData),#("sampler",sampler),#("output",outputData),#("roles",#()))
     append context.maps data;append context.mapValues value
-    append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","bitmap"),#("sha256",info[1]),#("bytes",info[2]),#("suffix","png")))
+    append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","bitmap"),#("sha256",info[1]),#("bytes",info[2]),#("suffix",substring suffix 2 (suffix.count-1))))
     append context.fileBindings #(fileID,staged);id
 )
 fn CyrusAssetMaterial context value = (
     if value==undefined do return undefined
     local found=findItem context.materialValues value
     if found>0 do return (CyrusRecipeGet context.materials[found] "id")
-    if context.materials.count>=128 do throw "Package material limit is 128."
+    if context.materials.count+context.materialVisiting.count>=128 do throw "Package material limit is 128."
+    if context.mapVisiting.count+context.materialVisiting.count>=8 do throw "Portable shader dependency depth exceeds eight."
+    if classof value!=StandardMaterial do (
+        local kind=CyrusAssetShaderKind value
+        if kind==undefined do throw ("Unsupported portable material: "+(classof value as string)+". The source is preserved.")
+        return CyrusAssetCaptureShader context value kind
+    )
     if classof value!=StandardMaterial do throw ("Unsupported portable material: "+(classof value as string)+". The source is preserved.")
     local defaults=standardMaterial(),supported=#(#name,#diffuse,#ambient,#specular,#specularLevel,#glossiness,#soften,#selfIllumAmount,#selfIllumColor,#useSelfIllumColor,#adLock,#dsLock,#adTextureLock,#opacity,#twoSided)
     defaults.adTextureLock=false
@@ -435,24 +1109,51 @@ fn CyrusAssetRoleIsPath role = (
 )
 fn CyrusAssetCaptureSpline source roleID metres index = (
     if not isValidNode source or superclassof source!=Shape or source.modifiers.count>0 or source.parent!=undefined or source.children.count>0 do throw "Ready presets require independent static spline paths."
-    CyrusAssetCheckController source.transform.controller;cyrusRecipeCheckStatic source.baseObject
+    local controllerError=undefined
+    try(CyrusAssetCheckController source.transform.controller)catch(controllerError=getCurrentException())
+    if controllerError!=undefined do throw ("Source "+source.name+": "+controllerError)
+    cyrusRecipeCheckStatic source.baseObject
     local curves=cyrusAssetSplineSnapshot source metres,values=#(),transform=source.objectTransform
     for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
     CyrusRecipeObject #(#("id","spline-"+(index as string)),#("name",source.name),#("transform",values),#("wireColor",#(source.wireColor.r as double,source.wireColor.g as double,source.wireColor.b as double)),#("roles",#(roleID)),#("curves",curves))
 )
 fn CyrusAssetCapture root recipePath digest bindings directory includeContext:false = (
     CyrusRequireAuthor();CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=3 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed. Review it again before export."
     local document=if includeContext then cyrusRecipeRead recipePath else cyrusRecipeReadMetadata recipePath
     local roles=CyrusRecipeGet document "roles",context=CyrusAssetCaptureContext directory:directory,nodes=#(),nodeValues=#(),meshes=#(),splines=#(),external=#(),metres=(units.decodeValue "1m") as double
     if not (doesDirectoryExist directory) do throw "Owned asset staging folder is missing."
+    -- Choose the finite profile before copying any bitmap, independent of role
+    -- order. A Standard/Bitmap-only graph retains the exact legacy admission.
+    for role in roles do (
+        local value=CyrusRecipeResolve bindings (CyrusRecipeGet role "id")
+        if (CyrusRecipeGet role "kind")=="node" and isValidNode value do value=value.material
+        if CyrusAssetUsesRenderer value do context.rendererMode=true
+    )
+    if context.rendererMode do (CyrusAssetCheckImageBuild();CyrusAssetCheckRenderer();cyrusAssetImageAdmission 0L;context.rendererChecked=true)
+    if context.rendererMode do (
+        if cyrusAssetMeshProfile==undefined or cyrusAssetPlantMeshExport==undefined do throw "Load the complete matching plant-mesh native build."
+        -- Inspect the selected cohort before copying images. Any later evaluated
+        -- terrain change is inspected again by the actual exporter.
+        local inspected=#()
+        for role in roles where (CyrusAssetRoleIsSource role) or (includeContext and (CyrusAssetRoleIsReceiver role)) do (
+            local source=CyrusRecipeResolve bindings (CyrusRecipeGet role "id")
+            if isValidNode source and findItem inspected source==0 do (
+                if (cyrusAssetMeshProfile source)[1]=="plant" do context.plantMeshes=true
+                append inspected source
+            )
+        )
+    )
     for role in roles do (
         local roleID=CyrusRecipeGet role "id"
         if (CyrusRecipeGet role "kind")=="texture" then (
             local value=CyrusRecipeResolve bindings roleID,id=CyrusAssetMap context value
             if id==undefined do throw "Bind every texture role before portable export."
-            for row in context.maps where (CyrusRecipeGet row "id")==id do append (CyrusRecipeGet row "roles") roleID
+            for row in context.maps where (CyrusRecipeGet row "id")==id do (
+                if (CyrusRecipeGet row "kind")!="bitmap" do throw "Renderer shader maps are not qualified as density-map roles."
+                append (CyrusRecipeGet row "roles") roleID
+            )
         ) else if includeContext and (CyrusAssetRoleIsPath role) then append splines (CyrusAssetCaptureSpline (CyrusRecipeResolve bindings roleID) roleID metres (splines.count+1))
         else if not (CyrusAssetRoleIsSource role) and not (includeContext and (CyrusAssetRoleIsReceiver role)) then append external roleID
         else (
@@ -464,7 +1165,9 @@ fn CyrusAssetCapture root recipePath digest bindings directory includeContext:fa
                 if nodes.count>=128 do throw "Package source limit is 128."
                 if isGroupHead source or isGroupMember source or source.children.count>0 or source.parent!=undefined do throw "Portable sources must be independent objects; groups and hierarchies need their own adapter."
                 if source.modifiers.count>0 and not (includeContext and (CyrusAssetRoleIsReceiver role)) do throw "Portable sources currently require static geometry without modifiers. The source is preserved."
-                CyrusAssetCheckController source.transform.controller
+                local controllerError=undefined
+                try(CyrusAssetCheckController source.transform.controller)catch(controllerError=getCurrentException())
+                if controllerError!=undefined do throw ("Source "+source.name+": "+controllerError)
                 cyrusRecipeCheckStatic source.baseObject
                 if includeContext and (CyrusAssetRoleIsReceiver role) do (
                     -- Terrain is an evaluated snapshot, including produced mesh
@@ -481,7 +1184,15 @@ fn CyrusAssetCapture root recipePath digest bindings directory includeContext:fa
                 )
                 if findItem #(Box,Sphere,Cylinder,Cone,Pyramid,GeoSphere,Editable_Mesh,Editable_Poly,Plane) (classof source.baseObject)==0 do throw "This geometry class has no qualified portable adapter."
                 local materialID=CyrusAssetMaterial context source.material,number=(nodes.count+1) as string,meshID="mesh-"+number,fileID="mesh-file-"+number,path=pathConfig.appendPath directory (fileID+".cmesh")
-                local info=cyrusAssetMeshExport source path metres,transform=source.transform,values=#()
+                local meshPlan=if context.rendererMode then cyrusAssetMeshProfile source else undefined
+                local needsPlant=if context.rendererMode then meshPlan[1]=="plant" else false
+                if needsPlant do (
+                    if cyrusAssetPlantSceneAdmission==undefined do throw "Load the complete matching plant-mesh native build."
+                    cyrusAssetPlantSceneAdmission (meshPlan[2] as Integer64) 0L
+                    context.plantMeshes=true
+                )
+                local info=if needsPlant then cyrusAssetPlantMeshExport source path metres else cyrusAssetMeshExport source path metres
+                local transform=source.transform,values=#()
                 for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
                 append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","mesh"),#("sha256",info[1]),#("bytes",info[2]),#("suffix","cmesh")))
                 append context.fileBindings #(fileID,path)
@@ -494,6 +1205,11 @@ fn CyrusAssetCapture root recipePath digest bindings directory includeContext:fa
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed during asset capture. Export was cancelled."
     local graph=CyrusRecipeObject #(#("format","cyrus.library-assets"),#("version",1),#("nodes",nodes),#("meshes",meshes),#("materials",context.materials),#("maps",context.maps),#("files",context.files),#("externalRoles",external))
     if includeContext do (CyrusRecipePut graph "version" 2;CyrusRecipePut graph "splines" splines)
+    if context.rendererMode do (
+        CyrusRecipePut graph "version" 3;CyrusRecipePut graph "splines" splines
+        CyrusRecipePut graph "rendererProfile" (CyrusAssetAdapterProfile())
+        CyrusRecipePut graph "resourceProfile" (if context.plantMeshes or context.maps.count>128 then "plant-assets-v1" else "plant-images-v1")
+    )
     #(graph,context.fileBindings)
 )
 
@@ -533,7 +1249,7 @@ fn CyrusAssetWatch token stage = (
 fn CyrusOpenAssetExport root path digest = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=3 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo path)[11]!=digest do throw "Recipe changed. Refresh before export."
     local document=cyrusRecipeReadMetadata path
     if CyrusAssetExportEditor!=undefined do try(destroyDialog CyrusAssetExportEditor)catch()
@@ -648,16 +1364,18 @@ fn CyrusAssetReview root directory bindings newSetup:false variation:#new verifi
     local snapshot=if assets==#share then CyrusAssetSharedSnapshot root directory digest bindings else undefined
     CyrusAssetImportPlan root:root node:node inputKey:(root.procInputKey()) directory:directory package:package recipeHash:digest bindings:(for pair in bindings collect #(pair[1],pair[2])) newSetup:newSetup variation:variation assets:assets sharedSnapshot:snapshot
 )
-fn CyrusAssetRestoreMap data fileData token currentColor = (
+fn CyrusAssetRestoreMap data fileData token currentColor plantImages:false = (
     if token==0 do throw "Bitmap import requires background package preparation. Use Load package."
     local colorData=CyrusRecipeGet data "color"
     CyrusAssetCheckColor colorData currentColor
-    local path=cyrusAssetPreparedBitmap token (CyrusRecipeGet data "file"),info=cyrusAssetFileInfo path true,dimensions=CyrusRecipeGet data "size"
+    local path=cyrusAssetPreparedBitmap token (CyrusRecipeGet data "file"),info=(if plantImages then cyrusAssetImageInfo path else cyrusAssetFileInfo path true),dimensions=CyrusRecipeGet data "size"
     if info[1]!=(CyrusRecipeGet fileData "sha256") or info[2]!=(CyrusRecipeGet fileData "bytes") or info[3]!=dimensions[1] or info[4]!=dimensions[2] do throw "Owned bitmap content changed after preparation."
     local opened=undefined,result=undefined
     try (
-        opened=openBitmap path colorSpace:(CyrusRecipeGet colorData "inputSpace")
+        local savedGamma=if plantImages then CyrusRecipeGet colorData "inputGamma" else undefined
+        opened=if plantImages then cyrusAssetOpenImage path (CyrusRecipeGet colorData "inputSpace") savedGamma else openBitmap path colorSpace:(CyrusRecipeGet colorData "inputSpace")
         if opened==undefined or opened.colorSpaceStatus!=#normal or opened.colorSpace!=(CyrusRecipeGet colorData "inputSpace") or opened.width!=dimensions[1] or opened.height!=dimensions[2] or opened.numframes!=1 do throw "The bitmap could not be restored in its saved colour space."
+        if plantImages and abs (opened.gamma-(CyrusRecipeGet colorData "effectiveGamma"))>0.000002 do throw "The bitmap's resolved gamma differs from its saved interpretation."
         result=bitmaptexture name:(CyrusRecipeGet data "name") bitmap:opened
         local uv=CyrusRecipeGet data "uv",sampler=CyrusRecipeGet data "sampler",output=CyrusRecipeGet data "output"
         result.coords.mapChannel=CyrusRecipeGet data "channel"
@@ -667,6 +1385,16 @@ fn CyrusAssetRestoreMap data fileData token currentColor = (
         for pair in #(#("invert",#invert),#("clamp",#clamp),#("alphaFromRGB",#alphaFromRGB),#("rgbLevel",#RGB_Level),#("rgbOffset",#RGB_Offset),#("outputAmount",#Output_Amount)) do setProperty result.output pair[2] (CyrusRecipeGet output pair[1])
         opened=undefined;result
     )catch(if opened!=undefined do close opened;throw())
+)
+fn CyrusAssetRestoreCoronaImage data fileData token currentColor = (
+    if token==0 or fileData==undefined do throw "Corona image import requires a prepared, declared bitmap resource."
+    local colorData=CyrusRecipeGet data "color",dimensions=CyrusRecipeGet data "size",properties=CyrusRecipeGet data "properties"
+    CyrusAssetCheckColor colorData currentColor
+    if (CyrusRecipeGet colorData "inputSpace")!=(CyrusRecipeGet properties "colorSpaceStr") do throw "Corona image colour space disagrees with its shader controls."
+    cyrusAssetImageAdmission ((dimensions[1] as Integer64)*dimensions[2])
+    local path=cyrusAssetPreparedBitmap token (CyrusRecipeGet data "file"),info=cyrusAssetImageInfo path
+    if info[1]!=(CyrusRecipeGet fileData "sha256") or info[2]!=(CyrusRecipeGet fileData "bytes") or info[3]!=dimensions[1] or info[4]!=dimensions[2] do throw "Owned Corona image content changed after preparation."
+    CyrusAssetRestoreShader data #() #() imagePath:path
 )
 fn CyrusAssetBoundNode data bindings = (
     local roles=CyrusRecipeGet data "roles",found=0,node=undefined
@@ -681,15 +1409,62 @@ fn CyrusAssetStage package bindings = (
     if not theHold.Holding() do throw "Portable source staging requires the recipe's authored transaction."
     local graph=package[1],directory=package[2],metres=(units.decodeValue "1m") as double,materials=#(),maps=#(),files=CyrusRecipeGet graph "files",meshes=CyrusRecipeGet graph "meshes",resolved=for pair in bindings collect #(pair[1],pair[2])
     fn colorValue values = (color values[1] values[2] values[3])
+    fn hasBinding values identity = (
+        if identity==undefined do return true
+        for pair in values where pair[1]==identity do return true
+        false
+    )
+    local plantImages=(CyrusRecipeGet graph "version")==3
+    if plantImages do (
+        CyrusAssetCheckImageBuild()
+        CyrusAssetCheckRenderer()
+        local expectedProfile=CyrusAssetAdapterProfile(),savedProfile=CyrusRecipeGet graph "rendererProfile"
+        for key in #("id","hostYear","pluginVersion") where (CyrusRecipeGet savedProfile key)!=(CyrusRecipeGet expectedProfile key) do throw "The renderer adapter profile differs from this build."
+        local forestUsed=false
+        for data in (CyrusRecipeGet graph "maps") where findItem #("forest-color-v1","forest-edge-v1") (CyrusRecipeGet data "kind")>0 do forestUsed=true
+        if forestUsed do CyrusAssetCheckForest()
+        local pixels=0L
+        for data in (CyrusRecipeGet graph "maps") where findItem #("bitmap","corona-bitmap-v1") (CyrusRecipeGet data "kind")>0 do (
+            local size=CyrusRecipeGet data "size";pixels+=(size[1] as Integer64)*size[2]
+        )
+        if (CyrusRecipeGet graph "resourceProfile")=="plant-assets-v1" then (
+            if cyrusAssetPlantSceneAdmission==undefined do throw "Load the complete matching plant-mesh native build."
+            local meshBytes=0L
+            for file in files where (CyrusRecipeGet file "kind")=="mesh" do meshBytes+=(CyrusRecipeGet file "bytes") as Integer64
+            cyrusAssetPlantSceneAdmission meshBytes pixels
+        )else cyrusAssetImageAdmission pixels
+    )
     local currentColor=if (CyrusRecipeGet graph "maps").count>0 then CyrusAssetColorContext "raw" else undefined
-    for data in (CyrusRecipeGet graph "maps") do (
+    for data in (CyrusRecipeGet graph "maps") where findItem #("bitmap","corona-bitmap-v1") (CyrusRecipeGet data "kind")>0 do (
         local fileData=undefined;for row in files where (CyrusRecipeGet row "id")==(CyrusRecipeGet data "file") do fileData=row
-        local value=CyrusAssetRestoreMap data fileData (if package.count>2 then package[3] else 0L) currentColor
+        local value=undefined
+        if (CyrusRecipeGet data "kind")=="bitmap" then value=CyrusAssetRestoreMap data fileData (if package.count>2 then package[3] else 0L) currentColor plantImages:plantImages else value=CyrusAssetRestoreCoronaImage data fileData (if package.count>2 then package[3] else 0L) currentColor
         append maps #((CyrusRecipeGet data "id"),value)
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,value)
     )
-    for data in (CyrusRecipeGet graph "materials") do (
-        local material=standardMaterial name:(CyrusRecipeGet data "name")
+    -- Native validation admits a DAG, independent of serialization order. Create
+    -- dependency leaves first and retain each completed graph in these arrays.
+    local pending=for data in (CyrusRecipeGet graph "maps") where findItem #("bitmap","corona-bitmap-v1") (CyrusRecipeGet data "kind")==0 collect data
+    while pending.count>0 do (
+        local progressed=false
+        for i=pending.count to 1 by -1 do (
+            local data=pending[i],ready=true
+            local links=CyrusRecipeGet data "links"
+            for field in (CyrusAssetAdapterLinks (CyrusRecipeGet data "kind")) where not (hasBinding maps (CyrusRecipeGet links field)) do ready=false
+            for field in (CyrusAssetAdapterArrayLinks (CyrusRecipeGet data "kind")) do (
+                for identity in (CyrusRecipeGet links field) where not (hasBinding maps identity) do ready=false
+            )
+            if ready do (
+                append maps #((CyrusRecipeGet data "id"),CyrusAssetRestoreShader data maps materials)
+                deleteItem pending i;progressed=true
+            )
+        )
+        if not progressed do throw "Renderer map dependencies could not be restored."
+    )
+    for data in (CyrusRecipeGet graph "materials") where (CyrusRecipeGet data "kind")!="multi-sub-v1" do (
+        local material=undefined
+        if (CyrusRecipeGet data "kind")=="standard-blinn" then (
+        material=standardMaterial name:(CyrusRecipeGet data "name")
         material.adLock=false;material.dsLock=false;material.adTextureLock=false
         for pair in #(#("ambient",#ambient),#("diffuse",#diffuse),#("specular",#specular),#("selfIllumColor",#selfIllumColor)) do setProperty material pair[2] (colorValue (CyrusRecipeGet data pair[1]))
         for pair in #(#("opacity",#opacity),#("twoSided",#twoSided),#("specularLevel",#specularLevel),#("glossiness",#glossiness),#("soften",#soften),#("selfIllumAmount",#selfIllumAmount),#("useSelfIllumColor",#useSelfIllumColor),#("ambientDiffuseLock",#adLock),#("diffuseSpecularLock",#dsLock)) do setProperty material pair[2] (CyrusRecipeGet data pair[1])
@@ -700,7 +1475,21 @@ fn CyrusAssetStage package bindings = (
             setProperty material ((key+"MapEnable") as name) (CyrusRecipeGet slot "enabled")
         )
         material.adTextureLock=CyrusRecipeGet data "textureLock"
+        ) else material=CyrusAssetRestoreShader data maps materials
         append materials #((CyrusRecipeGet data "id"),material)
+    )
+    pending=for data in (CyrusRecipeGet graph "materials") where (CyrusRecipeGet data "kind")=="multi-sub-v1" collect data
+    while pending.count>0 do (
+        local progressed=false
+        for i=pending.count to 1 by -1 do (
+            local data=pending[i],ready=true
+            for slot in (CyrusRecipeGet data "slots") where not (hasBinding materials (CyrusRecipeGet slot "material")) do ready=false
+            if ready do (
+                append materials #((CyrusRecipeGet data "id"),CyrusAssetRestoreShader data maps materials)
+                deleteItem pending i;progressed=true
+            )
+        )
+        if not progressed do throw "Multi/Sub material dependencies could not be restored."
     )
     for data in (CyrusRecipeGet graph "nodes") where (CyrusAssetBoundNode data bindings)==undefined do (
         local meshID=CyrusRecipeGet data "mesh",meshData=undefined,fileData=undefined
@@ -718,7 +1507,7 @@ fn CyrusAssetStage package bindings = (
         )
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
     )
-    if (CyrusRecipeGet graph "version")==2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
+    if (CyrusRecipeGet graph "version")>=2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
         local node=splineShape name:(CyrusRecipeGet data "name"),values=CyrusRecipeGet data "transform",index=0
         fn pointValue value metres = [value[1]*metres,value[2]*metres,value[3]*metres]
         for curve in (CyrusRecipeGet data "curves") do (
@@ -755,7 +1544,7 @@ fn CyrusAssetImport plan preparedToken:0L = (
     ) else (
         if plan.assets!=#clone do throw "Unsupported asset reuse policy."
         local packagedReceivers=#()
-        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"),plan.pathTransform)) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined) calculate:plan.preset
+        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"),plan.pathTransform)) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined) paintFootprint:plan.paintFootprint calculate:plan.preset
     )
 )
 
@@ -882,6 +1671,7 @@ fn CyrusLoadDensityImage target = (
 )
 fn CyrusBakeDensityImage target directory:undefined = (
     if target.densityMap==undefined do throw "Choose a texture map first."
+    if target.densityCoordinateMode==3 do throw "Receiver-aware maps cannot be saved as a context-free image tile. Choose an explicit image projection before baking a tile."
     local root=if target.overlapOwner==undefined then target else target.overlapOwner,node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if findItem root.layerObjects target==0 do throw "The density layer was removed."
@@ -938,9 +1728,14 @@ fn CyrusChooseDensityPattern target = (
 
 -- Bounded data-only recipes. Scene mutation is confined to CyrusRecipeImport.
 global CyrusRecipeBrowser,CyrusRecipeOpenRoot,CyrusRecipeOpenNode,CyrusRecipeOpenSurface,CyrusRecipeScriptDirectory
-global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusLibraryVersion
+global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusLibraryVersion,CyrusRecipeErrorText
+fn CyrusRecipeErrorText value = (
+    local message=trimLeft (value as string),prefix="-- Runtime error: "
+    while findString message prefix==1 do message=trimLeft (substring message (prefix.count+1) -1)
+    message
+)
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.2"
+fn CyrusLibraryVersion = "0.86.6.1"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -1065,7 +1860,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.2 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.6.1 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -1096,7 +1891,7 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",6),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",7),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -1177,15 +1972,16 @@ fn CyrusRecipeApplySettings owner settings bindings variation:#new projectionRoo
     owner.fieldFalloff=false;owner.fieldBoundaries=false
     true
 )
-fn CyrusRecipeRestorePaint data target document packaged:false = (
+fn CyrusRecipeRestorePaint data target document packaged:false footprint:undefined = (
     if data==undefined do return undefined
     local unitsNow=(units.decodeValue "1m") as double,unitsSaved=CyrusRecipeGet document "unitsPerMetre"
+    if footprint!=undefined do return (cyrusBrushPresetTransfer (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") unitsSaved unitsNow footprint)
     if packaged do return (cyrusBrushPresetRestore (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame") (unitsNow/unitsSaved))
     if target!=undefined and abs(unitsNow-unitsSaved)>1e-9*(amax 1.0 (abs unitsSaved)) do throw "Native Paint requires its saved system-unit context. Original coverage is retained; use matching units before binding."
     cyrusBrushRecipeImport (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame")
 )
 
-fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined calculate:false = (
+fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined paintFootprint:undefined calculate:false = (
     if findItem #(#same,#new) variation==0 do throw "Choose Saved or New variation."
     CyrusRequireAuthor()
     if theHold.Holding() do throw "Finish the current undoable operation before importing a recipe."
@@ -1231,7 +2027,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                 owner.paintAreas=#()
                 local paint=CyrusRecipeGet record "paint"
                 local paintTarget=if paint==undefined then undefined else CyrusRecipeResolve bindings (CyrusRecipeGet paint "receiverRole")
-                owner.paintDocument=CyrusRecipeRestorePaint paint paintTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers paintTarget>0)
+                owner.paintDocument=CyrusRecipeRestorePaint paint paintTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers paintTarget>0) footprint:paintFootprint
                 for areaRecord in (CyrusRecipeGet record "areas") do (
                     local area=createInstance AminScatterObject
                     cyrusRecipeTrackCreated area
@@ -1240,7 +2036,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")
                     local areaPaint=CyrusRecipeGet areaRecord "paint"
                     if areaPaint!=undefined and (CyrusRecipeResolve bindings (CyrusRecipeGet areaPaint "receiverRole"))!=area.areaTarget do throw "Paint document and area binding disagree."
-                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers area.areaTarget>0)
+                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers area.areaTarget>0) footprint:paintFootprint
                     area.setLayerTransfer false;append owner.paintAreas area
                     append identityMap #((CyrusRecipeGet areaRecord "id"),area)
                 )
@@ -1610,7 +2406,7 @@ fn CyrusStyleFields group = (
         "Grid layout":#("placementMode","gridColumnWU","gridRowWU","gridOriginXWU","gridOriginYWU","gridHeading","gridJitter")
         "Transforms":(join (for field in cyrusPresetSchema "transforms" collect field[1]) #("orientationTarget"))
         "Slope and altitude":#("slopeEnabled","slopeMinimum","slopeMaximum","slopeLowerFade","slopeUpperFade","altitudeEnabled","altitudeMinimum","altitudeMaximum","altitudeLowerFade","altitudeUpperFade")
-        "Mesh channel mask":#("meshMaskEnabled","meshMaskChannel","meshMaskComponent","meshMaskMinimum","meshMaskMaximum","meshMaskInvert","meshMaskSamples","meshMaskGraph")
+        "Surface density":#("meshMaskSource","meshMaskEnabled","meshMaskChannel","meshMaskComponent","meshMaskMinimum","meshMaskMaximum","meshMaskInvert","meshMaskSamples","meshMaskGraph")
         "Density texture":(join #("distributionMode","densityMap","invertDensity","densityUVChannel","densityResolution") (for key in AminScatterImageDensityFields collect key as string))
         "Area falloff":#("fallAnalyzer","fallDelete","fallDeleteWidth","fallScale","fallScaleWidth","fallScaleCurve","fallScaleGraph","fallDensity","fallDensityWidth","fallDensityCurve","fallDensityGraph")
         default:throw "Unsupported style group."
@@ -1642,7 +2438,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.2 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.6.1 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -1732,7 +2528,7 @@ fn CyrusOpenRecipeStyle root path digest = (
         local root,node,owner,path,digest,document,records=#(),roles=#(),bindings=#(),plan=undefined,bindingControls=false,bindControls
         label destination "" pos:[12,12] width:636 height:32
         dropdownlist sourceLayer "Saved layer:" items:#() pos:[12,50] width:636
-        multiListBox groups "Setting groups" items:#("Amount","Grid layout","Transforms","Slope and altitude","Mesh channel mask","Density texture","Area falloff") pos:[12,106] width:290 height:7
+        multiListBox groups "Setting groups" items:#("Amount","Grid layout","Transforms","Slope and altitude","Surface density","Density texture","Area falloff") pos:[12,106] width:290 height:7
         label retained "Keep: terrain, models, Paint, layer order, Bands, spacing relationships and source/receiver identities.\n\nOnly selected setting groups change. Static destination layers are supported." pos:[322,122] width:326 height:136
         dropdownlist seeds "Seeds:" items:#("Keep destination seeds","Use saved seeds","Choose new seeds") selection:1 pos:[12,266] width:636
         label seedsNote "Seed choices cover sampling and model-assignment seeds. Receiver variation domains stay with the destination." pos:[12,316] width:636 height:36
@@ -1816,18 +2612,32 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
     CyrusLibraryCheckSurface surface
     root=CyrusLibraryDestination surface root
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.2 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.6.1 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.2.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.2 gallery package."
-    if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
+    if assemblyName.Version.ToString()!="0.86.6.1" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.6.1 gallery package."
+    if CyrusRecipeBrowser!=undefined do (
+        local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
+        if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
+            window.bindContext root node surface
+            CyrusRecipeOpenRoot=root;CyrusRecipeOpenNode=node;CyrusRecipeOpenSurface=surface
+            return true
+        )
+        try(destroyDialog window)catch()
+    )
     rollout browser "Cyrus Library" width:1000 height:680 (
         local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
         dotNetControl panel "CyrusScatter.UI.LibraryPanel" pos:[0,0] width:1000 height:680
         timer scanTimer interval:250 active:false
         fn validRoot = (CyrusRecipeCheckRoot root node)
         fn bindDestination owner ownerNode = (root=owner;node=ownerNode;panel.HasSetup=true)
+        fn bindContext owner ownerNode receiver = (
+            if root!=owner or node!=ownerNode or surface!=receiver do (
+                root=owner;node=ownerNode;surface=receiver;sessionID=CyrusNewLayerID()
+                panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
+            )
+        )
         fn selectedEntry = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>entries.count then undefined else entries[i])
         fn showSelected = (
             panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
@@ -1966,7 +2776,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         )
     )
     CyrusRecipeOpenRoot=root;CyrusRecipeOpenNode=node;CyrusRecipeOpenSurface=surface;CyrusRecipeBrowser=browser
-    createDialog browser style:#(#style_titlebar,#style_sysmenu,#style_resizing,#style_minimizebox,#style_maximizebox)
+    createDialog browser width:1000 height:680 style:#(#style_titlebar,#style_sysmenu,#style_resizing,#style_minimizebox,#style_maximizebox)
     true
 )
 
@@ -2777,12 +3587,13 @@ fn CyrusReserveScriptWorkspace required = (
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
 global CyrusReceiverVariationDomains,CyrusRemapLayerCorrespondence
-global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph)
+global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#meshMaskSource)
 AminScatterOrientationFields=#(#alignNormal,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#sourceForwardAxes)
 global AminScatterGridFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter)
 AminScatterLayerFields=#(#placementMode,#gridColumnWU,#gridRowWU,#gridOriginXWU,#gridOriginYWU,#gridHeading,#gridJitter,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
 AminScatterImageDensityFields=#(#densityCoordinateMode,#densityWrapMode,#densityTileXWU,#densityTileYWU,#densityTileLock,#densityRepeatX,#densityRepeatY,#densityHeading,#densityOffsetXWU,#densityOffsetYWU,#densityUOffset,#densityVOffset,#densityPatternID,#densityPatternRevision,#densityResponseSamples,#densityResponseGraph,#densityMapProvenance,#densityFrameBasis,#densityFrameOriginWU)
 join AminScatterLayerFields AminScatterImageDensityFields
+append AminScatterLayerFields #meshMaskSource
 AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverVariationIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 appendIfUnique AminScatterLayerTabs #densityResponseSamples
 appendIfUnique AminScatterLayerTabs #densityFrameBasis
@@ -3714,6 +4525,7 @@ initialRollupState:0x8
         meshMaskInvert type:#boolean default:false
         meshMaskSamples type:#floatTab tabSize:0 tabSizeVariable:true
         meshMaskGraph type:#string default:""
+        meshMaskSource type:#integer default:1
         on meshMaskEnabled postSet v do this.meshMaskChanged()
         on meshMaskChannel postSet v do this.meshMaskChanged()
         on meshMaskComponent postSet v do this.meshMaskChanged()
@@ -3721,6 +4533,7 @@ initialRollupState:0x8
         on meshMaskMaximum postSet v do this.meshMaskChanged()
         on meshMaskInvert postSet v do this.meshMaskChanged()
         on meshMaskSamples set v i do this.meshMaskChanged()
+        on meshMaskSource postSet v do this.meshMaskChanged()
 
         on meshMaskEnabled preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=meshMaskEnabled and not (cyrusLicenseAllows()) then meshMaskEnabled else value)
         on meshMaskChannel preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=meshMaskChannel and not (cyrusLicenseAllows()) then meshMaskChannel else value)
@@ -3729,9 +4542,10 @@ initialRollupState:0x8
         on meshMaskMaximum preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=meshMaskMaximum and not (cyrusLicenseAllows()) then meshMaskMaximum else value)
         on meshMaskInvert preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=meshMaskInvert and not (cyrusLicenseAllows()) then meshMaskInvert else value)
         on meshMaskGraph preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=meshMaskGraph and not (cyrusLicenseAllows()) then meshMaskGraph else value)
+        on meshMaskSource preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=meshMaskSource and not (cyrusLicenseAllows()) then meshMaskSource else value)
     )
     fn meshMaskCurve = (if meshMaskSamples.count==0 then #(0.0,1.0) else meshMaskSamples as array)
-    fn meshMaskPayload = (#(meshMaskEnabled,meshMaskChannel,meshMaskComponent,meshMaskMinimum,meshMaskMaximum,meshMaskInvert,this.meshMaskCurve()))
+    fn meshMaskPayload = (#(meshMaskEnabled,meshMaskChannel,meshMaskComponent,meshMaskMinimum,meshMaskMaximum,meshMaskInvert,this.meshMaskCurve(),meshMaskSource))
     fn meshMaskChanged = (CyrusInvalidateMeshMaskPreview this;markInputDirty())
     parameters diversitySettings (
         diversityMode type:#integer default:1
@@ -4579,18 +5393,20 @@ initialRollupState:0x8
     fn cspImpl_placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         this.procAssertSchema()
         if not rawOnly and finalPass==undefined and overlapOwner!=undefined do return overlapOwner.groupPlacements this plants previewOnly
-        if not cyrusEnabled or disabledAnalyzerInput() do return (this.procNativeEmpty 1 plants)
-        if (this.brushMaskActive() or meshMaskEnabled) and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Paint and mesh density masks require Keep on surface for nonzero movement."
+        -- No authored sources is a valid empty layer. Explicit Point and gap
+        -- sources remain in plants; an internal context slot is not a source.
+        if not cyrusEnabled or plants.count==0 or disabledAnalyzerInput() do return (this.procNativeEmpty 1 plants)
+        if (this.brushMaskActive() or meshMaskEnabled or this.requiresReceiverMap()) and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Paint, mesh channels and receiver maps require Keep on surface for nonzero movement."
         local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count,variationDomains=CyrusReceiverVariationDomains this
         if targets.count==0 do return (this.procNativeEmpty 1 plants)
-        if plants.count==0 and not previewOnly do throw "Add a plant model."
         requestedCount=if procCandidateCount==undefined then (this.effectivePopulation())[1] else procCandidateCount
         if requestedCount<=0 do return (this.procNativeEmpty 1 plants)
         local baseKey=(this.paintBaseInputKey plants previewOnly)+"|StablePool:"+(requestedCount as string)+"|Native:1"+(this.procFieldKey())
         local result
         if finalPass==undefined and baseKey==paintBaseKey and paintBaseRows!=undefined then (result=paintBaseRows;paintBaseHits+=1)
         else (
-            local weights=if distributionMode==3 then this.procDensityWeights() else #()
+            local mapCoordinates=this.requiresReceiverMap(),nativeDistribution=if mapCoordinates then 0 else distributionMode-1
+            local weights=if distributionMode==3 and not mapCoordinates then this.procDensityWeights() else #()
             local areas=this.areaInputs(),line=this.lineInputs plants previewOnly:previewOnly
             local groups=if plants.count==0 then #(0) else for n in plants collect colorKey (sourceColor (sourceRow n))
             local shares=if plants.count==0 then #(1.0) else for n in plants collect sourceWeight (sourceRow n)
@@ -4605,7 +5421,7 @@ initialRollupState:0x8
             for receiverIndex=1 to targets.count do (
                 local receiver=targets[receiverIndex],slot=findItem procReceiverNodes receiver,request=undefined,geometryKey=""
                 for entry in procReceiverPlanData[1] where entry[1]==slot do request=entry
-                for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]+"|MeshMask:"+entry[3]
+                for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]+"|MeshMask:"+entry[3]+"|MapChannels:"+entry[4]
                 if request==undefined do throw "Receiver allocation is missing."
                 local receiverCount=request[4],receiverRows=(this.procNativeEmpty 1 plants),receiverNormals=undefined
                 local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+variationDomains[slot]+"|"+geometryKey+"|"+(receiverCount as string)
@@ -4615,15 +5431,16 @@ initialRollupState:0x8
                 else if receiverCount>0 do (
                     local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,variationDomains[slot],slot,(if this.requiresDensityUV() then densityUVChannel else 1),(if this.placementMode>1 then this.gridSnapshot slot else undefined),this.densityMappingPayload())
                     local generated
-                    generated=cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    generated=cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove nativeDistribution weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     receiverRows=generated[1];receiverNormals=generated[2]
                     generated=undefined
                     CyrusNativeWorkingSetCheckpoint()
                     if finalRelax and receiverRows.count>0 do (
                         local relaxPass=#(receiverRows,#(),undefined,#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
-                    receiverRows=(cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options)[1]
+                    receiverRows=(cyrusScatterCanonicalBound procNativeContext procReceiverIDs[slot] #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove nativeDistribution weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options)[1]
                     )
                     if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed
+                    if mapCoordinates do receiverRows=cyrusReceiverMapFilter receiverRows receiver densityMap (this.densityMappingPayload()) invertDensity seed variationDomains[slot]
                     if meshMaskEnabled do receiverRows=cyrusMeshDensityFilter receiverRows receiver (this.meshMaskPayload()) seed variationDomains[slot]
                     receiverRows=this.applyAnalyzerArea receiverRows
                     receiverRows=this.applyFalloff receiverRows
@@ -4660,7 +5477,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.86.2"
+    fn uiVersion = "0.86.6.1"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -4927,6 +5744,7 @@ initialRollupState:0x8
         this.imageDensityChanged();true
     )
     fn requiresDensityUV = (distributionMode==3 and densityCoordinateMode==0)
+    fn requiresReceiverMap = (distributionMode==3 and densityCoordinateMode==3)
     fn densityProjectionFrame = (
         local controller=if overlapOwner==undefined then this else overlapOwner
         local node=CyrusRecipeOwnerNode controller,offset=matrix3 1
@@ -5005,7 +5823,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -5376,6 +6194,7 @@ initialRollupState:0x8
     fn densityCacheStats = (#(procDensityBakes,procDensityHits,procDensityInversions,procDensityBakeMs,if procDensityCache.count==0 then 0 else (cyrusDensityImageCount procDensityCache[5])+(if procDensityCache[6]==undefined then 0 else cyrusDensityImageCount procDensityCache[6])))
     fn procDensityWeights = (
         if densityMap==undefined do throw "Choose a density texture map."
+        if this.requiresReceiverMap() do return #(densityMap,invertDensity)
         if densityUVChannel<1 or densityUVChannel>99 do throw "Density UV channel must be 1..99."
         if findItem #(64,128,256,512) densityResolution==0 do throw "Density resolution must be 64, 128, 256 or 512."
         local revision=this.procWatchDensity(),tick=currentTime as integer,cached=procDensityCache
@@ -5679,14 +6498,27 @@ initialRollupState:0x8
 
     fn receiverCacheStats = (#(procReceiverBuilds,procReceiverHits,procReceiverCache.count))
     fn procPlanReceivers active remaining:1000000 = (
+        -- Removing the last authored source publishes an empty successor even
+        -- when a retained mask/channel or grid cannot evaluate on the receiver.
+        -- Keep the authored inputs for a later replacement model; do not allocate
+        -- candidates or retain their previous receiver/grid snapshots.
+        if (this.validSources()).count==0 do (
+            procReceiverGeometry=#();procGridCache=#();procReceiverCache=#()
+            procReceiverPlanData=#(#(),#(),0,0,false,0);densityCapped=false
+            return procReceiverPlanData
+        )
         local parent=overlapOwner.logicalParent this,allocation=this.effectivePopulation(),meters=units.decodeValue "1m"
         local requirements=cyrusEditReceiverRequirements active editLayerKey,inputs=#(),nextGrid=#(),gridInputs=#(),gridCells=0
         local domains=CyrusReceiverVariationDomains this,placementKey=this.gridKey()
         procReceiverGeometry=#()
         for node in this.validSurfaces() do (
             local slot=findItem procReceiverNodes node
-            local geometry=cyrusProceduralSurfaceKey #(node) (this.requiresDensityUV()) densityUVChannel
-            append procReceiverGeometry #(slot,geometry,(if meshMaskEnabled then cyrusMeshDensityKey node (this.meshMaskPayload()) else "off"))
+            local geometry=cyrusProceduralSurfaceKey #(node) (this.requiresDensityUV()) densityUVChannel,mapKey="off"
+            if this.requiresReceiverMap() do (
+                if densityMap==undefined do throw "Choose a density texture map."
+                mapKey=cyrusReceiverMapKey node densityMap
+            )
+            append procReceiverGeometry #(slot,geometry,(if meshMaskEnabled then cyrusMeshDensityKey node (this.meshMaskPayload()) else "off"),mapKey)
             if placementMode==1 then append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
             else (
                 local key=geometry+"|UV:"+(distributionMode as string)+":"+(densityUVChannel as string)+"|"+placementKey+"|"+domains[slot]+"|"+((this.effectiveSeed()) as string),snapshot=undefined
@@ -5823,7 +6655,7 @@ initialRollupState:0x8
     )
     fn containerFilter rows plants = (
         if this.containerProvider()==undefined do return rows
-        if plants.count==0 do return #()
+        if plants.count==0 do return rows
         local keep=for node in plants collect (
             local i=this.sourceRow node
             i>0 and i<=containerActive.count and containerActive[i]
@@ -6002,10 +6834,10 @@ initialRollupState:0x8
         -- Receiver planning samples actual selected channel values only during
         -- a relevant successor calculation. Record that bounded field proof in
         -- raw/prepared caches without evaluating meshes from passive key reads.
-        if not meshMaskEnabled do return ""
+        if not meshMaskEnabled and not this.requiresReceiverMap() do return ""
         local stream=stringStream ""
         format "ReceiverFields:" to:stream
-        for entry in procReceiverGeometry do format "%:%|" entry[1] entry[3] to:stream
+        for entry in procReceiverGeometry do format "%:%:%|" entry[1] entry[4] entry[3] to:stream
         stream as string
     )
     fn procPreparationKey pool plants = (
@@ -6034,22 +6866,23 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.2 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.86.6.1 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.2 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.2 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.2 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.6.1 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.6.1 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.6.1 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.6.1 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=3 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.6.1 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -10505,14 +11338,14 @@ initialRollupState:0x8
         button distributionUI_imageButton "Image" width:70 tooltip:"Choose an image file, read as linear density data." height:22
         imgTag distributionUI_imageThumbnail "" width:72 height:72 style:#bmp_stretch transparent:(color 255 0 255) tooltip:"Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field."
         label distributionUI_imageState "" width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:36
-        dropdownlist distributionUI_coordinatesList "" items:#("World XY","Scatter local XY","Receiver UV") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"World and Scatter-local use physical tile sizes without receiver UVs. Receiver UV reads the UV channel chosen below."
+        dropdownlist distributionUI_coordinatesList "" items:#("World XY","Scatter local XY","Receiver UV","Map coordinates") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Map coordinates uses each map's own UV/data channels on the receiver. Other modes project a sampled image using Scatter's controls."
         label distributionUI_coordinatesList_caption "Coordinates" pos:[6,6] width:(populationUI.width-12) height:18
         checkbox distributionUI_tileLockCheck "Lock X / Y size" checked:true tooltip:"Use equal physical sizes or UV repeats in both axes."
         dropdownlist distributionUI_wrappingList "" items:#("Clamp","Repeat") selection:2 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Repeat wraps the pattern across seams. Clamp extends its outside pixels."
         label distributionUI_wrappingList_caption "Tile edges" pos:[6,6] width:(populationUI.width-12) height:18
         button distributionUI_imageCurveButton "Density curve..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))) tooltip:"Remap image values after inversion. Height is planting eligibility." height:22
         button distributionUI_bakeImageButton "Bake portable snapshot..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/148))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/148))))) tooltip:"Explicitly replace a live map with a saved 2D image tile for portable recipes. Undo restores the original graph." height:22
-        dropdownlist distributionUI_maskViewList "" items:#("Image only","Mesh channel only","Combined density") selection:3 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Combined includes image, mesh density, Paint, include/exclude areas and terrain eligibility before collisions, spacing and count limits."
+        dropdownlist distributionUI_maskViewList "" items:#("Image only","Surface field only","Combined density") selection:3 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Combined includes image, mesh density, Paint, include/exclude areas and terrain eligibility before collisions, spacing and count limits."
         label distributionUI_maskViewList_caption "Mask view" pos:[6,6] width:(populationUI.width-12) height:18
         dropdownlist distributionUI_maskDetailList "" items:#("Low","Medium","High") selection:2 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Bounded surface tessellation independent of plant count. Increase for dense meshes."
         label distributionUI_maskDetailList_caption "Preview detail" pos:[6,6] width:(populationUI.width-12) height:18
@@ -10539,16 +11372,18 @@ initialRollupState:0x8
         label distributionUI_offsetUSpin_caption "Offset U:" pos:[6,6] width:(populationUI.width-12) height:18
         spinner distributionUI_offsetVSpin "" type:#float range:[-1e6,1e6,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/128.8))))) tooltip:"Shift the UV origin before rotation and repeats."
         label distributionUI_offsetVSpin_caption "Offset V:" pos:[6,6] width:(populationUI.width-12) height:18
-        checkbox distributionUI_meshCheck "Use mesh channel" tooltip:"Use numeric data from Data Channel or VertexPaint on the terrain. Channel 0 reads vertex colors; numbered channels read their stored values. White permits; black excludes."
+        checkbox distributionUI_meshCheck "Use surface density" tooltip:"Use an authored mesh channel or relative local elevation. White permits; black excludes."
+        dropdownlist distributionUI_meshSourceList "" items:#("Mesh channel","Relative elevation") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Relative elevation uses the receiver's local height: 0 at its lowest point, 1 at its highest. Flat receivers use 0. No channel or modifier is added."
+        label distributionUI_meshSourceList_caption "Field" pos:[6,6] width:(populationUI.width-12) height:18
         spinner distributionUI_meshChannelSpin "" type:#integer range:[0,99,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))) tooltip:"0 reads vertex colors; 1..99 read numbered mesh map channels. These are values, independent of density UV coordinates."
         label distributionUI_meshChannelSpin_caption "Channel:" pos:[6,6] width:(populationUI.width-12) height:18
         dropdownlist distributionUI_meshComponentList "" items:#("R / X","G / Y","B / Z") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Read one component of the selected mesh channel. Match Data Channel's Vertex Output component."
         label distributionUI_meshComponentList_caption "Component" pos:[6,6] width:(populationUI.width-12) height:18
-        spinner distributionUI_meshMinSpin "" range:[-1e9,1e9,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/134))))) tooltip:"Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max."
+        spinner distributionUI_meshMinSpin "" range:[-1e9,1e9,0] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/134))))) tooltip:"Field value mapped to 0 before Invert and the Density curve. Must be less than Input max."
         label distributionUI_meshMinSpin_caption "Input min:" pos:[6,6] width:(populationUI.width-12) height:18
-        spinner distributionUI_meshMaxSpin "" range:[-1e9,1e9,1] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/134))))) tooltip:"Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp."
+        spinner distributionUI_meshMaxSpin "" range:[-1e9,1e9,1] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/134))))) tooltip:"Field value mapped to 1 before Invert and the Density curve. Values outside the range clamp."
         label distributionUI_meshMaxSpin_caption "Input max:" pos:[6,6] width:(populationUI.width-12) height:18
-        checkbox distributionUI_meshInvertCheck "Invert mesh mask" tooltip:"Reverse the normalized channel values before applying the Density curve."
+        checkbox distributionUI_meshInvertCheck "Invert field" tooltip:"Reverse the normalized field values before applying the Density curve."
         button distributionUI_meshCurveButton "Density curve..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))) tooltip:"Remap normalized mesh values into planting eligibility. Left is 0; right is 1." height:22
         button distributionUI_meshPreviewButton "Show mask" width:82 tooltip:"Show the density mask. Relevant edits refresh it while enabled; Manual plants wait for Update." height:22
         button distributionUI_meshHideButton "Hide mask" width:82 tooltip:"Hide the density mask without recalculating plants." height:22
@@ -10562,7 +11397,7 @@ initialRollupState:0x8
         checkbox populationPolicyUI_repairCheck "Retry cleanup gaps" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/119.60000000000001))))) tooltip:"Allow bounded retries for plants removed by final cleanup."
         label populationPolicyUI_info "Candidate budget makes one bounded population. Accepted target retries rejected candidates up to these limits; it can finish short." pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:64
         label heading_0 "Image density" pos:[6,6] width:(populationUI.width-12) height:18
-        label heading_1 "Mesh-channel density" pos:[6,6] width:(populationUI.width-12) height:18
+        label heading_1 "Surface density" pos:[6,6] width:(populationUI.width-12) height:18
         label heading_2 "Mask preview" pos:[6,6] width:(populationUI.width-12) height:18
         label heading_3 "Image sampling & portability" pos:[6,6] width:(populationUI.width-12) height:18
         label heading_4 "Mask display" pos:[6,6] width:(populationUI.width-12) height:18
@@ -10580,9 +11415,13 @@ initialRollupState:0x8
             for c in #(distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin) do c.enabled=distributionUI_obj.placementMode==1
             distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_uvChannelSpin.value=distributionUI_obj.densityUVChannel;distributionUI_resolutionList.selection=findItem #(64,128,256,512) distributionUI_obj.densityResolution
             distributionUI_meshCheck.checked=distributionUI_obj.meshMaskEnabled;distributionUI_meshChannelSpin.value=distributionUI_obj.meshMaskChannel;distributionUI_meshComponentList.selection=distributionUI_obj.meshMaskComponent
+            distributionUI_meshSourceList.selection=distributionUI_obj.meshMaskSource;distributionUI_meshSourceList.enabled=distributionUI_obj.meshMaskEnabled
             distributionUI_meshMinSpin.value=distributionUI_obj.meshMaskMinimum;distributionUI_meshMaxSpin.value=distributionUI_obj.meshMaskMaximum;distributionUI_meshInvertCheck.checked=distributionUI_obj.meshMaskInvert
             for c in #(distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton) do c.enabled=distributionUI_obj.meshMaskEnabled
-            distributionUI_imageCheck.checked=distributionUI_obj.distributionMode==3;distributionUI_coordinatesList.selection=findItem #(1,2,0) distributionUI_obj.densityCoordinateMode
+            distributionUI_meshChannelSpin.enabled=distributionUI_obj.meshMaskEnabled and distributionUI_obj.meshMaskSource==1;distributionUI_meshComponentList.enabled=distributionUI_meshChannelSpin.enabled
+            distributionUI_imageCheck.checked=distributionUI_obj.distributionMode==3;distributionUI_coordinatesList.selection=findItem #(1,2,0,3) distributionUI_obj.densityCoordinateMode
+            local projected=distributionUI_obj.densityCoordinateMode!=3
+            for c in #(distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_tileLockCheck,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_wrappingList,distributionUI_bakeImageButton) do c.enabled=projected
             distributionUI_tileLockCheck.checked=distributionUI_obj.densityTileLock;distributionUI_wrappingList.selection=distributionUI_obj.densityWrapMode+1
             distributionUI_densityButton.text="Map"
             distributionUI_imageState.text=if distributionUI_obj.densityMap==undefined then "" else distributionUI_obj.densityMap.name
@@ -10639,7 +11478,7 @@ initialRollupState:0x8
         )
         on distributionUI_coordinatesList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
             local action=CyrusBeginAction root "distributionUI_coordinatesList"
-            try (distributionUI_setImage #densityCoordinateMode #(1,2,0)[value]
+            try (distributionUI_setImage #densityCoordinateMode #(1,2,0,3)[value]
                 if controlsReady and root!=undefined do layout()
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
@@ -10777,6 +11616,13 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
         )
+        on distributionUI_meshSourceList selected value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+            local action=CyrusBeginAction root "distributionUI_meshSourceList"
+            try (distributionUI_setMeshMask #meshMaskSource value
+                if controlsReady and root!=undefined do layout()
+                CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
+        )
         on distributionUI_meshChannelSpin changed value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
             local action=CyrusBeginAction root "distributionUI_meshChannelSpin"
             try (distributionUI_setMeshMask #meshMaskChannel value
@@ -10871,7 +11717,10 @@ initialRollupState:0x8
         fn distributionUI_assignDensityMap target v = (
             undo "Cyrus density map" on (
                 target.densityMap=v
-                if v!=undefined do target.distributionMode=3
+                -- Explicit Clear removes the image rule as one undoable edit.
+                -- The independent mesh-channel mask remains authored and enabled.
+                target.distributionMode=if v==undefined then 1 else 3
+                if v!=undefined do target.densityCoordinateMode=3
                 target.densityPatternID="";target.densityPatternRevision="";target.densityMapProvenance=""
                 target.markInputDirty()
             )
@@ -10928,7 +11777,7 @@ initialRollupState:0x8
             distributionUI_binding=true;distributionUI_controlsReady=false
             if distributionUI_obj!=next do ()
             distributionUI_obj=next;distributionUI_parentView=(CyrusContainerPanel distributionUI_root)
-            for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_mapBrowseButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_imageCheck,distributionUI_patternButton,distributionUI_imageButton,distributionUI_imageThumbnail,distributionUI_imageState,distributionUI_coordinatesList,distributionUI_tileLockCheck,distributionUI_wrappingList,distributionUI_imageCurveButton,distributionUI_bakeImageButton,distributionUI_maskViewList,distributionUI_maskDetailList,distributionUI_opacitySpin,distributionUI_markersCheck,distributionUI_markerSizeList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_meshCheck,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
+            for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_mapBrowseButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_imageCheck,distributionUI_patternButton,distributionUI_imageButton,distributionUI_imageThumbnail,distributionUI_imageState,distributionUI_coordinatesList,distributionUI_tileLockCheck,distributionUI_wrappingList,distributionUI_imageCurveButton,distributionUI_bakeImageButton,distributionUI_maskViewList,distributionUI_maskDetailList,distributionUI_opacitySpin,distributionUI_markersCheck,distributionUI_markerSizeList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_meshCheck,distributionUI_meshSourceList,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_uvChannelSpin.value=distributionUI_obj.densityUVChannel;distributionUI_resolutionList.selection=findItem #(64,128,256,512) distributionUI_obj.densityResolution;distributionUI_controlsReady=true;(distributionUI_countSpin.value=distributionUI_obj.amount;distributionUI_seedSpin.value=distributionUI_obj.randomSeed;distributionUI_modeRadio.state=if distributionUI_obj.distributionMode==3 then 2 else 1)))) catch(distributionUI_binding=false;distributionUI_controlsReady=true;throw())
             distributionUI_controlsReady=true;distributionUI_binding=false
         )
@@ -11407,13 +12256,25 @@ initialRollupState:0x8
             rowControls=#(distributionUI_meshCheck);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/109.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/124.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(fitCheck distributionUI_meshCheck cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshChannelSpin);show=(true and (distributionUI_meshCheck.checked))
+            rowControls=#(distributionUI_meshSourceList);show=(true and (distributionUI_meshCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_meshSourceList_caption.visible!=show do distributionUI_meshSourceList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_meshSourceList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_meshSourceList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_meshSourceList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_meshSourceList_caption.width=cellWidth;distributionUI_meshSourceList_caption.enabled=distributionUI_meshSourceList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_meshChannelSpin);show=(true and (distributionUI_meshCheck.checked and distributionUI_meshSourceList.selection==1))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_meshChannelSpin_caption.visible!=show do distributionUI_meshChannelSpin_caption.visible=show
             if show do (
@@ -11425,7 +12286,7 @@ initialRollupState:0x8
                 if not stackedCaption then (distributionUI_meshChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_meshChannelSpin_caption.width=cellWidth-78) else (distributionUI_meshChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_meshChannelSpin_caption.width=cellWidth);distributionUI_meshChannelSpin_caption.enabled=distributionUI_meshChannelSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshComponentList);show=(true and (distributionUI_meshCheck.checked))
+            rowControls=#(distributionUI_meshComponentList);show=(true and (distributionUI_meshCheck.checked and distributionUI_meshSourceList.selection==1))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_meshComponentList_caption.visible!=show do distributionUI_meshComponentList_caption.visible=show
             if show do (
@@ -11464,7 +12325,7 @@ initialRollupState:0x8
             rowControls=#(distributionUI_meshInvertCheck);show=(true and (distributionUI_meshCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/109.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(fitCheck distributionUI_meshInvertCheck cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -11675,7 +12536,7 @@ initialRollupState:0x8
                 obj=owner
                 distributionUI_root=root;distributionUI_owner=owner;distributionUI_panel=panel;distributionUI_controlsReady=controlsReady;distributionUI_binding=binding
             populationPolicyUI_root=root;populationPolicyUI_owner=owner;populationPolicyUI_panel=panel;populationPolicyUI_controlsReady=controlsReady;populationPolicyUI_binding=binding
-            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_mapBrowseButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_imageCheck,distributionUI_patternButton,distributionUI_imageButton,distributionUI_imageThumbnail,distributionUI_imageState,distributionUI_coordinatesList,distributionUI_tileLockCheck,distributionUI_wrappingList,distributionUI_imageCurveButton,distributionUI_bakeImageButton,distributionUI_maskViewList,distributionUI_maskDetailList,distributionUI_opacitySpin,distributionUI_markersCheck,distributionUI_markerSizeList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_meshCheck,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) do c.enabled=false;distributionUI_controlsReady=false)
+            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_mapBrowseButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint,distributionUI_imageCheck,distributionUI_patternButton,distributionUI_imageButton,distributionUI_imageThumbnail,distributionUI_imageState,distributionUI_coordinatesList,distributionUI_tileLockCheck,distributionUI_wrappingList,distributionUI_imageCurveButton,distributionUI_bakeImageButton,distributionUI_maskViewList,distributionUI_maskDetailList,distributionUI_opacitySpin,distributionUI_markersCheck,distributionUI_markerSizeList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_meshCheck,distributionUI_meshSourceList,distributionUI_meshChannelSpin,distributionUI_meshComponentList,distributionUI_meshMinSpin,distributionUI_meshMaxSpin,distributionUI_meshInvertCheck,distributionUI_meshCurveButton,distributionUI_meshPreviewButton,distributionUI_meshHideButton,distributionUI_meshHint) do c.enabled=false;distributionUI_controlsReady=false)
             if owner!=undefined then (populationPolicyUI_bind owner;) else (for c in #(populationPolicyUI_populationList,populationPolicyUI_attemptSpin,populationPolicyUI_roundSpin,populationPolicyUI_repairCheck,populationPolicyUI_info) do c.enabled=false;populationPolicyUI_controlsReady=false)
                 distributionUI_binding=false;populationPolicyUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
@@ -11745,12 +12606,12 @@ initialRollupState:0x8
         spinner brushUI_scaleMax "" range:[0,1000,1] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58 tooltip:"Interior size multiplier with the default curve. 1 means unchanged; 2 means double size. Must be at least Edge scale."
         label brushUI_scaleMax_caption "Inner scale:" pos:[6,6] width:(coverageUI.width-12) height:18
         button brushUI_scaleCurve "Scale curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Shape the size transition. Left is the outer end; right is the fully interior end." height:22
-        button brushUI_exportSpline "Export spline" width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))) tooltip:"Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first." height:22
+        button brushUI_exportSpline "Export spline" width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))) tooltip:"Export an independent editable border spline. Terrain uses local XY; curved receivers keep their 3D surface border. An unchanged surface snapshot restores exact coverage. Keeps the Paint Area. Stop the brush first." height:22
         radiobuttons brushUI_importMode "" labels:#("Replace","Add") columns:2 width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) tooltip:"Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved."
         label brushUI_importMode_caption "Spline import" pos:[6,6] width:(coverageUI.width-12) height:18
         spinner brushUI_splineTolerance "" type:#worldunits range:[1e-9,1e9,0.1] fieldWidth:58 width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/165.2))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/165.2))))) tooltip:"Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum."
         label brushUI_splineTolerance_caption "Curve tolerance:" pos:[6,6] width:(coverageUI.width-12) height:18
-        button brushUI_importSpline "Pick spline..." width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Pick one closed spline shape to apply to this Paint Area using Replace or Add. One Undo; Manual waits for Update. Stop the brush first." height:22
+        button brushUI_importSpline "Pick spline..." width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Apply closed spline coverage using Replace or Add. Curved borders must lie on the receiver within Curve tolerance; edited closed-surface borders select the smaller enclosed region. One Undo; Manual waits for Update. Stop the brush first." height:22
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(coverageUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local setsUI_bodyHeight=0
         local setsUI_controlsReady=false
@@ -15736,7 +16597,7 @@ initialRollupState:0x8
         )
         on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (
             local action=CyrusBeginAction root "detailsUI_helpButton"
-            try (messageBox (detailsUI_info.text+"\n\nLayers own surfaces, models, population and transforms. Paint Areas bind individual surfaces and union vector coverage. Feather curves control density and multiply random scale. Include/Exclude and collision rules still apply.\n\nManual retains the previous complete build until Update. Live updates relevant edits. Failed builds preserve the last complete result. Vector painting supports local XY terrain and planes; closed or overlapping receivers are rejected.") title:"Cyrus layer help"
+            try (messageBox (detailsUI_info.text+"\n\nLayers own surfaces, models, population and transforms. Paint Areas bind individual surfaces and union vector coverage. Feather curves control density and multiply random scale. Include/Exclude and collision rules still apply.\n\nManual retains the previous complete build until Update. Live updates relevant edits. Failed builds preserve the last complete result. Vector painting supports terrain, spheres, boxes and manifold curved meshes. Curved strokes follow the surface without painting through to the opposite side. Degenerate or nonmanifold geometry requires repair.") title:"Cyrus layer help"
                 if controlsReady and root!=undefined do layout()
                 CyrusEndAction action
             )catch(CyrusEndAction action;throw())
@@ -16090,7 +16951,7 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.86.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.86.6.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -16213,7 +17074,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.2 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.6.1 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()

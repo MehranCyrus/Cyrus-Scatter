@@ -262,3 +262,4 @@
     {"densityMapProvenance","string",false},
     {"densityFrameBasis","floattab",false},
     {"densityFrameOriginWU","worldunitstab",true},
+    {"meshMaskSource","integer",false},

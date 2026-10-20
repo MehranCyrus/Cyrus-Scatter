@@ -61,7 +61,7 @@ struct Reader{
     template<class T>T get(){if(sizeof(T)>data.size()-pos)throw std::invalid_argument("Truncated vector document");T v;std::memcpy(&v,data.data()+pos,sizeof(v));pos+=sizeof(v);return v;}
 };
 }
-std::size_t vertexCount(const Document& d){std::size_t n=0;for(const auto& c:d.contours)n+=c.size();return n;}
+std::size_t vertexCount(const Document& d){std::size_t n=0;for(const auto& c:d.contours)n+=c.size();for(const auto& r:d.faces){if(r.full)n+=3;else for(const auto& c:r.contours)n+=c.size();}return n;}
 Metric Metric::fromBasis(Vec3 x,Vec3 y){
     Metric m;m.xx=amin::length(x);if(!std::isfinite(m.xx)||m.xx<1.e-9)throw std::invalid_argument("Singular vector projection metric");
     m.xy=amin::dot(x,y)/m.xx;m.yy=std::sqrt(std::max(0.,amin::dot(y,y)-m.xy*m.xy));
@@ -86,9 +86,44 @@ void validateProjection(const Surface& s){
 }
 Contours domain(const Surface& s){validateProjection(s);return unpack(combine(ClipType::Union,triangles(s)));}
 Document constrain(const Document& d,const Contours& receiverDomain){
+    if(d.attached)throw std::invalid_argument("Surface Paint cannot be flattened to local XY");
     Document next=d;next.contours=unpack(combine(ClipType::Intersection,pack(d.contours),pack(receiverDomain)));return next;
 }
+Document transfer(const Document& original,const Surface& destination,const std::array<double,4>& sourceBounds,
+                  double sourceUnits,double destinationUnits){
+    for(double value:{sourceUnits,destinationUnits})if(!std::isfinite(value)||value<=0||value>1e12)
+        throw std::invalid_argument("Paint transfer requires finite positive source and destination system units");
+    for(double value:sourceBounds)if(!std::isfinite(value))throw std::invalid_argument("Saved Paint footprint contains nonfinite bounds");
+    if(original.attached){
+        SurfaceAtlas atlas(destination);
+        if(atlas.topology()!=original.topology)throw std::invalid_argument("Surface Paint preset needs matching mesh topology; source coverage is preserved");
+        encode(original);Document next=original;next.surface=destination.fingerprint();
+        next.falloff.inside*=destinationUnits/sourceUnits;next.falloff.outside*=destinationUnits/sourceUnits;encode(next);return next;
+    }
+    if(sourceBounds[2]<=sourceBounds[0]||sourceBounds[3]<=sourceBounds[1])
+        throw std::invalid_argument("Saved Paint receiver has no usable local XY footprint");
+    const auto region=domain(destination);
+    if(region.empty())throw std::invalid_argument("Paint destination has no usable local XY footprint");
+    std::array<double,4> bounds{INFINITY,INFINITY,-INFINITY,-INFINITY};
+    for(const auto& face:destination.mesh().faces)for(const auto index:face){
+        const auto& point=destination.mesh().vertices[index];
+        bounds[0]=std::min(bounds[0],point.x);bounds[1]=std::min(bounds[1],point.y);
+        bounds[2]=std::max(bounds[2],point.x);bounds[3]=std::max(bounds[3],point.y);
+    }
+    if(bounds[2]<=bounds[0]||bounds[3]<=bounds[1])throw std::invalid_argument("Paint destination has no usable local XY footprint");
+    // Validate before copying and again after conversion; no partially converted
+    // document can escape on overflow, clipping or unsupported projection.
+    encode(original);Document next=original;next.surface=destination.fingerprint();
+    for(auto& contour:next.contours)for(auto& point:contour)for(int axis=0;axis<2;++axis){
+        const double normalized=(point[axis]/sourceUnits-sourceBounds[axis])/(sourceBounds[axis+2]-sourceBounds[axis]);
+        point[axis]=bounds[axis]+normalized*(bounds[axis+2]-bounds[axis]);check(point);
+    }
+    const double factor=destinationUnits/sourceUnits;
+    next.falloff.inside*=factor;next.falloff.outside*=factor;validate(next.falloff);
+    next=constrain(next,region);encode(next);return next;
+}
 Document importContours(const Document& d,const Contours& contours,const Contours& receiverDomain,bool add){
+    if(d.attached)throw std::invalid_argument("Surface Paint requires surface-aware contour import");
     if(contours.empty())throw std::invalid_argument("Import needs at least one closed spline contour");
     // Normalize all loops together: winding and ordering do not determine holes.
     auto packed=pack(contours);
@@ -107,6 +142,7 @@ Document importContours(const Document& d,const Contours& contours,const Contour
     Document next=d;next.contours=unpack(result);return next;
 }
 Document paint(const Document& d,Point center,double radius,bool erase,Metric metric,const Point* previous){
+    if(d.attached)throw std::invalid_argument("Surface Paint requires a face anchor");
     check(center);if(!std::isfinite(radius)||radius<=quantum||radius>1.e7)throw std::invalid_argument("Vector brush radius outside supported range");
     if(!std::isfinite(metric.xx)||!std::isfinite(metric.xy)||!std::isfinite(metric.yy)||metric.xx<=0||metric.yy<=0)throw std::invalid_argument("Invalid vector metric");
     auto disk=[&](Point p){Path64 out;const auto world=metric.map(p);constexpr int count=96;
@@ -125,10 +161,12 @@ Document paint(const Document& d,Point center,double radius,bool erase,Metric me
 }
 struct Field::Impl{
     Surface surface;Falloff falloff;Metric metric;
+    std::shared_ptr<SurfaceAtlas::Prepared> attached;
     struct Segment{Point a,b;};struct Node{Box box;std::size_t begin=0,end=0,left=0,right=0;};
     std::vector<Segment> segments;std::vector<Node> nodes;
-    Impl(const Surface& s,const Document& d,Metric m):surface(s),falloff(d.falloff),metric(m){
+    Impl(const Surface& s,const Document& d,Metric m,std::shared_ptr<const SurfaceAtlas> atlas):surface(s),falloff(d.falloff),metric(m){
         validate(falloff);if(d.surface!=s.fingerprint())throw std::invalid_argument("Vector receiver shape changed; restore it or create a new Paint Area");
+        if(d.attached){if(!atlas)atlas=std::make_shared<SurfaceAtlas>(s);attached=atlas->prepare(d);return;}
         pack(d.contours);
         for(const auto& c:d.contours)for(std::size_t i=0;i<c.size();++i)segments.push_back({m.map(c[i]),m.map(c[(i+1)%c.size()])});
         if(!segments.empty())build(0,segments.size());
@@ -161,11 +199,13 @@ struct Field::Impl{
         }return std::sqrt(best);
     }
 };
-Field::Field(const Surface& s,const Document& d,Metric m):impl(std::make_shared<Impl>(s,d,m)){}
+Field::Field(const Surface& s,const Document& d,Metric m,std::shared_ptr<const SurfaceAtlas> atlas):impl(std::make_shared<Impl>(s,d,m,std::move(atlas))){}
 double Field::signedDistance(Point p,QueryStats* stats)const{
+    if(impl->attached)throw std::invalid_argument("Surface Paint distance requires a face anchor");
     check(p);if(impl->segments.empty())return -INFINITY;p=impl->metric.map(p);double d=impl->distance(p,stats);return impl->inside(p,stats)?d:-d;
 }
 Evaluation Field::queryPoint(Point p,QueryStats* stats)const{
+    if(impl->attached)throw std::invalid_argument("Surface Paint evaluation requires a face anchor");
     if(stats)++stats->fieldQueries;check(p);if(impl->segments.empty())return {};
     const auto& f=impl->falloff;const double width=f.inside+f.outside;
     const double d=signedDistance(p,stats);
@@ -173,9 +213,11 @@ Evaluation Field::queryPoint(Point p,QueryStats* stats)const{
     const double t=width>0?std::clamp((d+f.outside)/width,0.,1.):1.;
     return {width>0&&f.density?curve(f.densityCurve,t):1.,f.scale?f.scaleMin+(f.scaleMax-f.scaleMin)*curve(f.scaleCurve,t):1.};
 }
-Evaluation Field::query(Anchor a,QueryStats* stats)const{auto p=impl->surface.position(a);return queryPoint({p.x,p.y},stats);}
+Evaluation Field::query(Anchor a,QueryStats* stats)const{if(impl->attached)return querySurface(*impl->attached,a,stats);auto p=impl->surface.position(a);return queryPoint({p.x,p.y},stats);}
 bool Field::accepts(Anchor a,double u,double density,QueryStats* stats)const{return u<std::clamp(evaluate(a,stats)*density,0.,1.);}
 std::vector<std::array<Vec3,2>> boundary(const Surface& s,const Document& d,std::size_t budget){
+    if(d.attached){SurfaceAtlas atlas(s);std::vector<std::array<Vec3,2>> out;for(auto line:atlas.boundary(d)){
+        if(out.size()>=budget)throw std::runtime_error("Surface border feedback capacity exceeded");auto n=s.normal(line[0].face)*1e-4;out.push_back({s.position(line[0])+n,s.position(line[1])+n});}return out;}
     std::vector<std::array<Vec3,2>> out;double lo=INFINITY,hi=-INFINITY,extent=0;
     for(auto v:s.mesh().vertices){lo=std::min(lo,v.z);hi=std::max(hi,v.z);extent=std::max({extent,std::abs(v.x),std::abs(v.y)});}
     const double step=std::max(1.e-3,extent/256.);const double top=hi+std::max(1.,hi-lo),offset=std::max(1.e-4,extent*1.e-6);
@@ -191,19 +233,24 @@ double threshold(std::uint64_t population,std::uint64_t candidate){
 }
 bool accepted(std::uint64_t p,std::uint64_t c,double mask,double density){return threshold(p,c)<std::clamp(mask*density,0.,1.);}
 std::vector<std::uint8_t> encode(const Document& d){
-    validate(d.falloff);pack(d.contours);std::vector<std::uint8_t> out;put(out,std::uint64_t(0x31524f5443455653ULL));put(out,d.surface);
+    validate(d.falloff);validateAttached(d);pack(d.contours);std::vector<std::uint8_t> out;put(out,std::uint64_t(d.attached?0x32524f5443455653ULL:0x31524f5443455653ULL));put(out,d.surface);
     const auto& f=d.falloff;for(double v:{f.inside,f.outside,f.scaleMin,f.scaleMax})put(out,v);
     put(out,std::uint32_t(f.density));put(out,std::uint32_t(f.scale));
     for(const auto* c:{&f.densityCurve,&f.scaleCurve}){put(out,std::uint32_t(c->size()));for(double v:*c)put(out,v);}
-    put(out,std::uint32_t(d.contours.size()));for(const auto& c:d.contours){put(out,std::uint32_t(c.size()));for(auto p:c){put(out,p[0]);put(out,p[1]);}}return out;
+    put(out,std::uint32_t(d.contours.size()));for(const auto& c:d.contours){put(out,std::uint32_t(c.size()));for(auto p:c){put(out,p[0]);put(out,p[1]);}}
+    if(d.attached){put(out,d.topology);put(out,std::uint32_t(d.faces.size()));for(const auto& r:d.faces){put(out,r.face);put(out,std::uint32_t(r.full));put(out,std::uint32_t(r.contours.size()));for(const auto& c:r.contours){put(out,std::uint32_t(c.size()));for(auto p:c){put(out,p[0]);put(out,p[1]);}}}}return out;
 }
 Document decode(const std::vector<std::uint8_t>& bytes){
-    Reader r{bytes};if(r.get<std::uint64_t>()!=0x31524f5443455653ULL)throw std::invalid_argument("Unsupported retired Brush format; 0.78 requires a new vector setup");
-    Document d;d.surface=r.get<std::uint64_t>();auto& f=d.falloff;f.inside=r.get<double>();f.outside=r.get<double>();f.scaleMin=r.get<double>();f.scaleMax=r.get<double>();
+    if(bytes.size()>8*1024*1024)throw std::invalid_argument("Paint payload capacity exceeded");
+    Reader r{bytes};const auto magic=r.get<std::uint64_t>();if(magic!=0x31524f5443455653ULL&&magic!=0x32524f5443455653ULL)throw std::invalid_argument("Unsupported retired Brush format; create a current vector setup");
+    Document d;d.attached=magic==0x32524f5443455653ULL;d.surface=r.get<std::uint64_t>();auto& f=d.falloff;f.inside=r.get<double>();f.outside=r.get<double>();f.scaleMin=r.get<double>();f.scaleMax=r.get<double>();
     const auto density=r.get<std::uint32_t>(),scale=r.get<std::uint32_t>();if(density>1||scale>1)throw std::invalid_argument("Invalid vector flags");f.density=density!=0;f.scale=scale!=0;
     for(auto* c:{&f.densityCurve,&f.scaleCurve}){auto count=r.get<std::uint32_t>();if(count<2||count>257)throw std::invalid_argument("Invalid vector curve");c->clear();for(std::uint32_t i=0;i<count;++i)c->push_back(r.get<double>());}
     const auto count=r.get<std::uint32_t>();if(count>maxVertices/3)throw std::invalid_argument("Vector contour capacity");std::size_t total=0;
     for(std::uint32_t i=0;i<count;++i){auto size=r.get<std::uint32_t>();if(size<3||size>maxVertices-total)throw std::invalid_argument("Vector vertex capacity");total+=size;Contour c;for(std::uint32_t k=0;k<size;++k)c.push_back({r.get<double>(),r.get<double>()});d.contours.push_back(std::move(c));}
-    if(r.pos!=bytes.size())throw std::invalid_argument("Trailing vector payload");validate(f);pack(d.contours);return d;
+    if(d.attached){d.topology=r.get<std::uint64_t>();auto faces=r.get<std::uint32_t>();if(faces>maxSurfaceFaces)throw std::invalid_argument("Surface Paint face capacity");
+        for(std::uint32_t i=0;i<faces;++i){FaceRegion face;face.face=r.get<std::uint32_t>();auto full=r.get<std::uint32_t>();if(full>1)throw std::invalid_argument("Invalid surface Paint flags");face.full=full!=0;auto contours=r.get<std::uint32_t>();if(contours>maxVertices/3)throw std::invalid_argument("Surface Paint contour capacity");
+            for(std::uint32_t j=0;j<contours;++j){auto size=r.get<std::uint32_t>();if(size<3||size>maxVertices-total)throw std::invalid_argument("Surface Paint vertex capacity");total+=size;Contour c;for(std::uint32_t k=0;k<size;++k)c.push_back({r.get<double>(),r.get<double>()});face.contours.push_back(std::move(c));}d.faces.push_back(std::move(face));}}
+    if(r.pos!=bytes.size())throw std::invalid_argument("Trailing vector payload");validate(f);validateAttached(d);pack(d.contours);return d;
 }
 }

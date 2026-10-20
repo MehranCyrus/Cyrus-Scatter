@@ -51,5 +51,28 @@ int main(){try{
     Contour huge(maxVertices+1,{0,0});rejects([&]{importContours(imported,{huge},receiver,true);});
     check(encode(imported)==frozen,"failed successor mutated source");
     auto serialized=decode(encode(added));check(encode(serialized)==encode(added),"converted document storage round trip");
+    // A 10 m source saved in centimetres transfers a quarter-footprint layout
+    // to a differently sized, translated local domain stored in metres.
+    Document source;source.surface=17;source.contours={{{0,0},{500,0},{500,500},{0,500}}};
+    source.falloff.inside=100;source.falloff.outside=200;
+    const auto saved=encode(source);
+    Surface target({{{-20,10,0},{0,10,0},{0,50,0},{-20,50,0}},{{0,1,2},{0,2,3}}});
+    auto fitted=transfer(source,target,{0,0,10,10},100,1);
+    check(fitted.surface==target.fingerprint(),"transfer binds the new receiver identity");
+    check(fitted.falloff.inside==1&&fitted.falloff.outside==2,"falloff converts units without footprint stretching");
+    Field fittedField(target,fitted);
+    check(fittedField.queryPoint({-15,20}).density==1,"quarter layout fits new local footprint");
+    check(fittedField.queryPoint({-5,40}).density==0,"outside quarter remains excluded");
+    auto orphanMesh=target.mesh();orphanMesh.vertices.push_back({10000,10000,0});Surface orphanTarget(orphanMesh);
+    const auto orphanFitted=transfer(source,orphanTarget,{0,0,10,10},100,1);
+    check(orphanFitted.contours==fitted.contours,"unreferenced construction vertices do not stretch Paint coverage");
+    check(encode(source)==saved,"transfer preserves original Paint bytes");
+    Document empty=source;empty.contours.clear();
+    check(transfer(empty,target,{0,0,10,10},100,1).contours.empty(),"empty Paint remains empty after transfer");
+    rejects([&]{transfer(source,target,{0,0,0,10},100,1);});
+    rejects([&]{transfer(source,target,{0,0,10,10},0,1);});
+    Surface stacked({{{0,0,0},{10,0,0},{0,10,0},{0,0,1},{10,0,1},{0,10,1}},{{0,1,2},{3,4,5}}});
+    rejects([&]{transfer(source,stacked,{0,0,10,10},100,1);});
+    check(encode(source)==saved,"failed transfer preserves original Paint bytes");
     std::cout<<"PASS "<<checks<<" Paint/spline normalization assertions\n";return 0;
 }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}}

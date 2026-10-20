@@ -1,0 +1,16 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { Box3 } from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { inspectGLB } from '../src/assets/glb';
+const [sourcePath, preparedPath] = process.argv.slice(2); if (!sourcePath || !preparedPath) throw new Error('Usage: npx tsx tools/check-prepared.ts source.glb prepared.glb');
+const original = new Uint8Array(await readFile(sourcePath)), prepared = new Uint8Array(await readFile(preparedPath));
+const before = await inspectGLB(original, 'source'), after = await inspectGLB(prepared, 'prepared');
+const ids = (asset: typeof before) => asset.nodes.flatMap(n => n.externalId ? [n.externalId] : []).sort();
+if (JSON.stringify(ids(before)) !== JSON.stringify(ids(after))) throw new Error('Persistent IDs changed during preparation');
+const loader = new GLTFLoader(), a = await loader.parseAsync(original.slice().buffer, ''), b = await loader.parseAsync(prepared.slice().buffer, ''); a.scene.updateMatrixWorld(true); b.scene.updateMatrixWorld(true);
+const boxA = new Box3().setFromObject(a.scene), boxB = new Box3().setFromObject(b.scene), error = Math.max(boxA.min.distanceTo(boxB.min), boxA.max.distanceTo(boxB.max));
+if (error > 0.02 || before.triangles !== after.triangles) throw new Error('Prepared scene exceeds the 2cm fixture bound or changed triangle counts');
+const instances = (scene: typeof a.scene) => { let count = 0; scene.traverse((o: any) => { if (o.isInstancedMesh) count += o.count; }); return count; };
+if (instances(a.scene) !== instances(b.scene)) throw new Error('Prepared plant instance count changed');
+const report = { persistentIds: ids(before).length, instancedRows: instances(a.scene), boundsErrorMetres: error, triangles: before.triangles, sourceBytes: original.length, preparedBytes: prepared.length, sourceSha256: before.hash, preparedSha256: after.hash };
+await writeFile(`${preparedPath}.geometry-verification.json`, JSON.stringify(report, null, 2)); console.log(JSON.stringify(report, null, 2));

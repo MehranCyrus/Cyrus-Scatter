@@ -6,6 +6,7 @@
 #include <chrono>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 using namespace cyrus;
 using recipes::Json;
@@ -16,6 +17,36 @@ template<class F>void rejects(F f){bool failed=false;try{f();}catch(const std::e
 std::string load(const std::filesystem::path& path){std::ifstream in(path,std::ios::binary);return {std::istreambuf_iterator<char>(in),std::istreambuf_iterator<char>()};}
 void put(const std::filesystem::path& path,const std::string& bytes){std::filesystem::create_directories(path.parent_path());std::ofstream out(path,std::ios::binary);out<<bytes;if(!out)throw std::runtime_error("Fixture write");}
 std::string sha(const std::string& bytes){return recipes::digest({bytes.begin(),bytes.end()});}
+const Json& shaderTable(){static const auto table=Json::parse(
+#include "asset_adapter_schema.inc"
+);return table;}
+Json subobject(const char* kind){
+    for(const auto& spec:shaderTable().at("subobjects"))if(spec.at("kind")==kind){
+        Json values=Json::object();
+        for(auto field=spec.at("fields").begin();field!=spec.at("fields").end();++field){
+            const auto& rule=field.value();const auto type=rule.at("type").get<std::string>();Json value;
+            if(rule.contains("members"))value=rule.at("members")[0];
+            else if(type=="boolean")value=false;
+            else if(type=="color"||type=="point3"||type=="point3-distance"){const auto lo=rule.value("lo",0.);value={lo,lo,lo};}
+            else if(type=="integer")value=static_cast<std::int64_t>(rule.value("lo",0.));
+            else value=rule.value("lo",0.);
+            values[field.key()]=value;
+        }
+        return {{"kind",kind},{"properties",values}};
+    }
+    throw std::runtime_error("Unknown fixture subobject");
+}
+Json shader(const char* kind,const char* id){
+    Json result={{"id",id},{"kind",kind},{"name","Renderer fixture"},{"properties",Json::object()},{"links",Json::object()}};bool found=false;
+    for(const auto& adapter:shaderTable().at("adapters"))if(adapter.at("kind")==kind){found=true;
+        for(auto field=adapter.at("fields").begin();field!=adapter.at("fields").end();++field){const auto& spec=field.value();const auto type=spec.at("type").get<std::string>();Json value;
+            if(spec.contains("members"))value=spec.at("members")[0];else if(type=="boolean")value=false;else if(type=="color"){const auto number=spec.value("lo",0.);value={number,number,number};}else if(type=="integer")value=static_cast<std::int64_t>(spec.value("lo",0.));else value=spec.value("lo",0.);
+            result["properties"][field.key()]=value;
+        }
+        for(const auto& link:adapter.at("links"))result["links"][link.get<std::string>()]=nullptr;
+        if(adapter.at("category")=="map")result["roles"]=Json::array();
+    }check(found);return result;
+}
 }
 int main(){std::filesystem::path folder;try{
     const auto settings=recipes::parse(load(CYRUS_RECIPE_DEFAULTS));
@@ -58,6 +89,14 @@ int main(){std::filesystem::path folder;try{
     const auto result=assets::writePackage(out,path,recipeSHA,graph,files,"Owned test assets",[](const char* at,std::uint64_t){if(std::string(at)=="complete")throw std::runtime_error("After commit");});
     check(result==out/"cyrus.package.json");check(load(out/"entry.csrecipe.json")==load(path));
     const auto loaded=assets::readPackage(out);check(loaded["graph"]==graph);check(recipes::read(out/"entry.csrecipe.json")["layers"][0]["paint"]==paint);
+    // A recipient can identify and repair the exact missing dependency. Existing
+    // complete package/output bytes are not rewritten by the rejected read.
+    const auto missingRelative="assets/"+sha(load(mesh))+".cmesh";
+    const auto missingPayload=out/missingRelative,movedPayload=folder/"missing-mesh-held.cmesh";
+    std::filesystem::rename(missingPayload,movedPayload);bool namedMissing=false;
+    try{assets::readPackage(out);}catch(const std::invalid_argument& failure){const std::string message=failure.what();namedMissing=message.find(missingRelative)!=std::string::npos&&message.find("re-export")!=std::string::npos;}
+    check(namedMissing&&load(movedPayload)==load(mesh));std::filesystem::rename(movedPayload,missingPayload);
+    check(assets::readPackage(out)==loaded);
     const auto prepared=assets::preparePackage(out);check(prepared.metadata==loaded);check(prepared.document["layers"][0]["paint"]==paint);check(prepared.meshes.size()==2&&prepared.payloadBytes>0);check(prepared.meshes.at("file-1")->vertices[1][0]==1&&prepared.meshes.at("file-2")->vertices[1][0]==2);
     for(const auto* stage:{"file-chunk","preparing-paint","preparing-mesh","prepared"})rejects([&]{assets::preparePackage(out,[&](const char* name,std::uint64_t){if(std::string(name)==stage)throw std::runtime_error("Import cancelled");});});
     const auto held=folder/"temporarily-moved";std::filesystem::rename(out,held);check(prepared.meshes.at("file-1")->faces.size()==1&&prepared.document["layers"][0]["paint"]==paint);std::filesystem::rename(held,out);
@@ -84,6 +123,117 @@ int main(){std::filesystem::path folder;try{
     bad=textured;bad["maps"][0]["size"]={4096,4096};auto duplicateMap=bad["maps"][0];duplicateMap["id"]="another-map";bad["maps"].push_back(duplicateMap);rejects([&]{assets::validateGraph(bad,data);});
     bad=textured;bad["maps"][0]["color"]["mode"]="OCIO_Custom";rejects([&]{assets::validateGraph(bad,data);});
     bad=textured;bad["maps"][0]["output"]["code"]="arbitrary";rejects([&]{assets::validateGraph(bad,data);});
+    // Graph 3 adds a closed, version-pinned renderer/image profile. Its mixed
+    // graph retains the old Standard/Bitmap shape, global IDs and role rules.
+    auto plant=textured;plant["version"]=3;plant["splines"]=Json::array();plant["rendererProfile"]=shaderTable().at("profile");plant["resourceProfile"]="plant-images-v1";
+    plant["maps"][0]["color"]["inputGamma"]="auto";plant["maps"][0]["color"]["effectiveGamma"]=2.2;
+    auto physical=shader("corona-physical-v1","physical"),normal=shader("corona-normal-v1","normal"),legacy=shader("corona-legacy-v1","legacy");
+    physical["links"]["baseTexmap"]="image";physical["links"]["baseBumpTexmap"]="normal";normal["links"]["normalMap"]="image";legacy["links"]["texmapDiffuse"]="image";
+    Json standard={{"id","standard"},{"kind","standard-blinn"},{"name","Standard"},{"diffuse",{255,255,255}},{"ambient",{255,255,255}},{"specular",{255,255,255}},{"specularLevel",0},{"glossiness",0},{"soften",0},{"selfIllumAmount",0},{"selfIllumColor",{0,0,0}},{"useSelfIllumColor",false},{"ambientDiffuseLock",false},{"diffuseSpecularLock",false},{"textureLock",false},{"opacity",100},{"twoSided",true},{"maps",Json::array()}};
+    for(const auto* slot:{"ambient","diffuse","opacity"})standard["maps"].push_back({{"slot",slot},{"map","image"},{"amount",100},{"enabled",true}});
+    Json multi={{"id","multi"},{"kind","multi-sub-v1"},{"name","Mixed"},{"showPreviews",true},{"slots",Json::array({{{"materialID",1},{"name","Physical"},{"enabled",true},{"material","physical"}},{{"materialID",7},{"name","Legacy"},{"enabled",true},{"material","legacy"}},{{"materialID",12},{"name","Standard"},{"enabled",false},{"material","standard"}},{{"materialID",31},{"name","Unused"},{"enabled",false},{"material",nullptr}}})}};
+    plant["materials"]={multi,physical,legacy,standard};plant["maps"].push_back(normal);plant["nodes"][0]["material"]="multi";
+    assets::validateGraph(plant,data);
+    for(const auto* key:{"splines","rendererProfile","resourceProfile"}){bad=plant;bad.erase(key);rejects([&]{assets::validateGraph(bad,data);});}
+    bad=plant;bad["resourceProfile"]="unbounded";rejects([&]{assets::validateGraph(bad,data);});
+    bad=plant;bad["rendererProfile"]["pluginVersion"]="unqualified";rejects([&]{assets::validateGraph(bad,data);});
+    bad=plant;bad["maps"][1]["id"]="file-1";rejects([&]{assets::validateGraph(bad,data);});
+    bad=plant;bad["materials"][0]["id"]="mesh-1";rejects([&]{assets::validateGraph(bad,data);});
+    bad=plant;bad["nodes"][0]["material"]="normal";rejects([&]{assets::validateGraph(bad,data);});
+    bad=plant;bad["maps"][1]["roles"]={"terrain"};rejects([&]{assets::validateGraph(bad,data);});
+    bad=plant;bad["materials"][1]["properties"]["unsupported"]=0;rejects([&]{assets::validateGraph(bad,data);});
+    bad=plant;bad["files"][2]["suffix"]="tiff";rejects([&]{assets::validateGraph(bad,data);});
+    for(const auto* key:{"inputGamma","effectiveGamma"}){
+        bad=plant;bad["maps"][0]["color"].erase(key);rejects([&]{assets::validateGraph(bad,data);});
+        for(const auto& value:Json::array({nullptr,false,"linear",0,11})){bad=plant;bad["maps"][0]["color"][key]=value;rejects([&]{assets::validateGraph(bad,data);});}
+        bad=plant;bad["maps"][0]["color"][key]=std::numeric_limits<double>::infinity();rejects([&]{assets::validateGraph(bad,data);});
+        bad=plant;bad["maps"][0]["color"][key]=std::numeric_limits<double>::quiet_NaN();rejects([&]{assets::validateGraph(bad,data);});
+    }
+    bad=plant;bad["maps"][0]["color"]["inputGamma"]=1.;bad["maps"][0]["color"]["effectiveGamma"]=1.;assets::validateGraph(bad,data);check(true);
+    bad=textured;bad["maps"][0]["color"]["inputGamma"]="auto";rejects([&]{assets::validateGraph(bad,data);});
+    auto wrongHost=data;wrongHost["hostYear"]=2024;rejects([&]{assets::validateGraph(plant,wrongHost);});
+    for(int version:{1,2}){
+        bad=plant;bad["version"]=version;bad.erase("rendererProfile");bad.erase("resourceProfile");if(version==1)bad.erase("splines");rejects([&]{assets::validateGraph(bad,data);});
+        bad=graph;bad["version"]=version;if(version==2)bad["splines"]=Json::array();bad["rendererProfile"]=shaderTable().at("profile");rejects([&]{assets::validateGraph(bad,data);});
+    }
+    // Per-image and aggregate INSTANCE admission are independent from file
+    // hash sharing. Eight 64-Mpixel instances fit; the ninth does not.
+    auto pixels=plant;pixels["maps"][0]["size"]={8192,8192};for(unsigned i=1;i<8;++i){auto map=pixels["maps"][0];map["id"]="large-image-"+std::to_string(i);pixels["maps"].push_back(map);}assets::validateGraph(pixels,data);check(assets::maxPlantBitmapPixels==512ull*1024ull*1024ull);
+    auto ninth=pixels["maps"][0];ninth["id"]="ninth";pixels["maps"].push_back(ninth);rejects([&]{assets::validateGraph(pixels,data);});
+    bad=plant;bad["maps"][0]["size"]={8193,1};rejects([&]{assets::validateGraph(bad,data);});
+    // Real-model PNG/JPEG uses its own decoder profile. Original encoded
+    // bytes and validated suffix survive export, cache staging and relocation.
+    const std::vector<unsigned char> rgb8PNG={137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,2,0,0,0,3,8,2,0,0,0,54,136,73,214,0,0,0,11,73,68,65,84,120,156,99,96,192,2,0,0,21,0,1,170,101,151,196,0,0,0,0,73,69,78,68,174,66,96,130};
+    const auto image8=folder/"source8.PNG";const auto sha8=recipes::digest(rgb8PNG);put(image8,{rgb8PNG.begin(),rgb8PNG.end()});check(assets::imageFileInfo(image8)==Json::array({sha8,rgb8PNG.size(),2,3}));
+    plant["files"][2]["sha256"]=sha8;plant["files"][2]["bytes"]=rgb8PNG.size();plant["maps"][0]["size"]={2,3};auto plantFiles=files;plantFiles.emplace("image-file",image8);
+    // CoronaBitmap has a distinct typed shader envelope but participates in the
+    // same file namespace, strict decoder, instance-pixel bound and owned cache.
+    auto corona=shader("corona-bitmap-v1","corona-image");corona["file"]="image-file";corona["size"]={2,3};
+    corona["color"]=plant["maps"][0]["color"];corona["color"].erase("inputGamma");corona["color"].erase("effectiveGamma");corona["color"]["inputSpace"]="Raw";
+    corona["coordinates"]=subobject("corona-uvw-v1");corona["output"]=subobject("standard-output-v1");
+    auto coronaGraph=plant;coronaGraph["maps"].push_back(corona);coronaGraph["materials"][1]["links"]["baseTexmap"]="corona-image";
+    assets::validateGraph(coronaGraph,data);
+    for(const auto* invalid:{"file-1","missing-image"}){bad=coronaGraph;bad["maps"].back()["file"]=invalid;rejects([&]{assets::validateGraph(bad,data);});}
+    for(const auto* key:{"file","size","color","coordinates","output"}){bad=coronaGraph;bad["maps"].back().erase(key);rejects([&]{assets::validateGraph(bad,data);});}
+    bad=coronaGraph;bad["maps"].back()["color"]["inputGamma"]="auto";rejects([&]{assets::validateGraph(bad,data);});
+    bad=coronaGraph;bad["maps"].back()["color"]["inputSpace"]="Gamma 2.2 / Rec.709";rejects([&]{assets::validateGraph(bad,data);});
+    bad=coronaGraph;bad["maps"].back()["filename"]="outside.png";rejects([&]{assets::validateGraph(bad,data);});
+    bad=coronaGraph;bad["maps"].back()["size"]={8193,1};rejects([&]{assets::validateGraph(bad,data);});
+    auto combinedPixels=plant;combinedPixels["maps"][0]["size"]={8192,8192};
+    for(unsigned i=0;i<7;++i){auto map=corona;map["id"]="corona-pixels-"+std::to_string(i);map["size"]={8192,8192};combinedPixels["maps"].push_back(map);}
+    assets::validateGraph(combinedPixels,data);check(true);auto extraCorona=corona;extraCorona["id"]="corona-over-budget";extraCorona["size"]={8192,8192};combinedPixels["maps"].push_back(extraCorona);rejects([&]{assets::validateGraph(combinedPixels,data);});
+    const auto coronaPackage=folder/"corona-bitmap-package",coronaCache=folder/"corona-bitmap-cache";
+    assets::writePackage(coronaPackage,path,recipeSHA,coronaGraph,plantFiles,"Owned mixed Standard/Corona image fixture");
+    const auto preparedCorona=assets::preparePackage(coronaPackage,{},coronaCache);check(preparedCorona.metadata["graph"]==coronaGraph&&preparedCorona.bitmapPaths.size()==1&&load(preparedCorona.bitmapPaths.at("image-file"))==std::string(rgb8PNG.begin(),rgb8PNG.end()));
+    const auto movedCorona=folder/recipes::pathFromUTF8("Corona bitmap moved \xC3\xA9");std::filesystem::rename(coronaPackage,movedCorona);
+    check(assets::preparePackage(movedCorona,{},coronaCache).bitmapPaths.at("image-file")==preparedCorona.bitmapPaths.at("image-file"));
+    bad=coronaGraph;bad["maps"].back()["size"]={3,2};const auto wrongCoronaDimensions=folder/"wrong-corona-dimensions";
+    rejects([&]{assets::writePackage(wrongCoronaDimensions,path,recipeSHA,bad,plantFiles,"Owned rejected Corona dimensions");});check(!std::filesystem::exists(wrongCoronaDimensions));
+    const auto coronaCancelled=folder/"corona-cancel-cache";rejects([&]{assets::preparePackage(movedCorona,[](const char* stage,std::uint64_t){if(std::string(stage)=="bitmap-staged")throw std::runtime_error("Cancel Corona image");},coronaCancelled);});check(std::filesystem::is_empty(coronaCancelled));
+    // The finite large-plant profile is additive. Per-image and material/node
+    // admission remain unchanged; only map nodes and typed mesh/package budgets
+    // opt in. Metadata boundary tests do not allocate these declared payloads.
+    auto expanded=plant;expanded["resourceProfile"]="plant-assets-v1";
+    auto declared=expanded;declared["files"][0]["bytes"]=assets::maxPlantMeshFileBytes;assets::validateGraph(declared,data);check(true);
+    declared["resourceProfile"]="plant-images-v1";rejects([&]{assets::validateGraph(declared,data);});
+    declared=expanded;declared["files"][0]["bytes"]=assets::maxPlantMeshFileBytes+1;rejects([&]{assets::validateGraph(declared,data);});
+    declared=expanded;declared["files"][2]["bytes"]=assets::maxFileBytes+1;rejects([&]{assets::validateGraph(declared,data);});
+    declared=expanded;declared["files"][0]["bytes"]=224ull*1024*1024;declared["files"][1]["bytes"]=224ull*1024*1024;
+    auto extra=declared["files"][0];extra["id"]="third-mesh-file";extra["bytes"]=192ull*1024*1024-1;declared["files"].push_back(extra);
+    // The existing PNG consumes more than the remaining one byte.
+    rejects([&]{assets::validateGraph(declared,data);});declared["files"][3]["bytes"]=192ull*1024*1024-rgb8PNG.size();assets::validateGraph(declared,data);check(true);
+    for(unsigned i=2;i<256;++i){auto map=expanded["maps"][0];map["id"]="expanded-image-"+std::to_string(i);map["roles"]=Json::array();expanded["maps"].push_back(map);}
+    assets::validateGraph(expanded,data);check(expanded["maps"].size()==256);
+    declared=expanded;declared["resourceProfile"]="plant-images-v1";rejects([&]{assets::validateGraph(declared,data);});
+    auto tooMany=expanded["maps"][0];tooMany["id"]="map-257";expanded["maps"].push_back(tooMany);rejects([&]{assets::validateGraph(expanded,data);});
+    expanded["maps"].erase(expanded["maps"].end()-1);expanded["resourceProfile"]="plant-assets-v2";rejects([&]{assets::validateGraph(expanded,data);});
+    // One explicit-normal M02 and one unchanged M01 share a package. Only the
+    // opted-in profile may decode M02; prepared accounting includes normals.
+    auto normalMesh=triangle;assets::MeshNormals stored;stored.flags=3;stored.vectors={{0,0,1},{0,0,1},{0,0,1}};stored.explicitFlags={1,1,1};stored.faces.push_back({{0,1,2},{1,1,1}});normalMesh.normals=stored;
+    const auto normalBytes=assets::encodeMesh(normalMesh,assets::MeshProfile::Plant);const auto normalFile=folder/"plant-normal.cmesh";
+    put(normalFile,{normalBytes.begin(),normalBytes.end()});const auto normalSHA=recipes::digest(normalBytes);
+    auto normalGraph=plant;normalGraph["resourceProfile"]="plant-assets-v1";normalGraph["files"][0]["sha256"]=normalSHA;normalGraph["files"][0]["bytes"]=normalBytes.size();auto normalFiles=plantFiles;normalFiles["file-1"]=normalFile;
+    const auto normalPackage=folder/"normal-plant";assets::writePackage(normalPackage,path,recipeSHA,normalGraph,normalFiles,"Owned M02 fixture");
+    const auto normalPrepared=assets::preparePackage(normalPackage,{},folder/"normal-cache");
+    check(normalPrepared.meshes.at("file-1")->profile==assets::MeshProfile::Plant&&normalPrepared.meshes.at("file-1")->normals.has_value());
+    check(normalPrepared.meshes.at("file-2")->profile==assets::MeshProfile::Legacy);
+    check(normalPrepared.payloadBytes>=assets::meshStorageBytes(*normalPrepared.meshes.at("file-1"))+assets::meshStorageBytes(*normalPrepared.meshes.at("file-2")));
+    auto forbidden=normalGraph;forbidden["resourceProfile"]="plant-images-v1";const auto wrongProfile=folder/"normal-wrong-profile";
+    rejects([&]{assets::writePackage(wrongProfile,path,recipeSHA,forbidden,normalFiles,"Owned rejected M02 fixture");});check(!std::filesystem::exists(wrongProfile));
+    const auto cancelledNormal=folder/"cancelled-normal";rejects([&]{assets::writePackage(cancelledNormal,path,recipeSHA,normalGraph,normalFiles,"Owned cancelled M02 fixture",[](const char* stage,std::uint64_t){if(std::string(stage)=="asset-staged")throw std::runtime_error("Cancel M02");});});check(!std::filesystem::exists(cancelledNormal));
+    const auto plantPackage=folder/"plant-package",plantCache=folder/"plant-cache";assets::writePackage(plantPackage,path,recipeSHA,plant,plantFiles,"Owned renderer fixture");check(assets::readPackage(plantPackage)["graph"]==plant);
+    const auto preparedPlant=assets::preparePackage(plantPackage,{},plantCache);const auto preparedImage=preparedPlant.bitmapPaths.at("image-file");check(preparedImage.extension()==".png"&&load(preparedImage)==std::string(rgb8PNG.begin(),rgb8PNG.end()));
+    const auto relocated=folder/"moved-plant";std::filesystem::rename(plantPackage,relocated);check(assets::readPackage(relocated)["graph"]==plant);check(assets::preparePackage(relocated,{},plantCache).bitmapPaths.at("image-file")==preparedImage);
+    const auto plantManifestPath=relocated/"cyrus.package.json";const auto plantManifestBytes=load(plantManifestPath);auto alteredManifest=recipes::parse(plantManifestBytes);alteredManifest["hostYear"]=2024;put(plantManifestPath,alteredManifest.dump());rejects([&]{assets::readPackage(relocated);});put(plantManifestPath,plantManifestBytes);
+    const auto cancelledPlant=folder/"cancelled-plant-cache";rejects([&]{assets::preparePackage(relocated,[](const char* stage,std::uint64_t){if(std::string(stage)=="bitmap-staged")throw std::runtime_error("Cancel plant cache");},cancelledPlant);});check(std::filesystem::is_empty(cancelledPlant));
+    bad=plant;bad["maps"][0]["size"]={3,2};const auto wrongDimensions=folder/"wrong-dimensions";rejects([&]{assets::writePackage(wrongDimensions,path,recipeSHA,bad,plantFiles,"Owned malformed fixture");});check(!std::filesystem::exists(wrongDimensions));
+    bad=plant;bad["files"][2]["suffix"]="jpg";const auto wrongSuffix=folder/"wrong-suffix";rejects([&]{assets::writePackage(wrongSuffix,path,recipeSHA,bad,plantFiles,"Owned malformed fixture");});check(!std::filesystem::exists(wrongSuffix));
+    const auto jpeg=recipes::unhex("ffd8ffe000104a46494600010100000100010000ffdb004300080606070605080707070909080a0c140d0c0b0b0c1912130f141d1a1f1e1d1a1c1c20242e2720222c231c1c2837292c30313434341f27393d38323c2e333432ffc0000b080003000201011100ffc4001f0000010501010101010100000000000000000102030405060708090a0bffc400b5100002010303020403050504040000017d01020300041105122131410613516107227114328191a1082342b1c11552d1f02433627282090a161718191a25262728292a3435363738393a434445464748494a535455565758595a636465666768696a737475767778797a838485868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3b4b5b6b7b8b9bac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae1e2e3e4e5e6e7e8e9eaf1f2f3f4f5f6f7f8f9faffda0008010100003f00f9febfffd9");const auto jpegImage=folder/"source-gray.JpEg";put(jpegImage,{jpeg.begin(),jpeg.end()});const auto jpegSHA=recipes::digest(jpeg);check(assets::imageFileInfo(jpegImage)==Json::array({jpegSHA,jpeg.size(),2,3}));
+    auto jpegPlant=plant;jpegPlant["files"][2]["sha256"]=jpegSHA;jpegPlant["files"][2]["bytes"]=jpeg.size();jpegPlant["files"][2]["suffix"]="jpeg";auto jpegFiles=files;jpegFiles.emplace("image-file",jpegImage);const auto jpegPackage=folder/"jpeg-plant";assets::writePackage(jpegPackage,path,recipeSHA,jpegPlant,jpegFiles,"Owned JPEG fixture");
+    const auto jpegPrepared=assets::preparePackage(jpegPackage,{},plantCache);const auto cachedJPEG=jpegPrepared.bitmapPaths.at("image-file");check(cachedJPEG.extension()==".jpeg"&&load(cachedJPEG)==std::string(jpeg.begin(),jpeg.end()));check(assets::preparePackage(jpegPackage,{},plantCache).bitmapPaths.at("image-file")==cachedJPEG);
+    const auto misleading=folder/"not-jpeg.png";put(misleading,{jpeg.begin(),jpeg.end()});rejects([&]{assets::imageFileInfo(misleading);});
+    rejects([&]{assets::imageFileInfo(image);}); // Existing 16-bit PNG remains legacy-only.
+    rejects([&]{assets::imageFileInfo("relative.png");});
     check(std::filesystem::directory_iterator(out/"assets")!=std::filesystem::directory_iterator());
 #ifdef _WIN32
     // Max's process need not opt in to long paths: all native file operations

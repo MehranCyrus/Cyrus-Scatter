@@ -5,6 +5,7 @@
 
 namespace cyrus::mesh_density {
 void validate(const Settings& s) {
+    if(s.source<1||s.source>2)throw std::invalid_argument("Surface density: choose Mesh channel or Relative elevation");
     if(s.channel<0||s.channel>99||s.component<0||s.component>2)
         throw std::invalid_argument("Mesh density: choose channel 0..99 and component R/X, G/Y or B/Z");
     if(!std::isfinite(s.minimum)||!std::isfinite(s.maximum)||s.minimum>=s.maximum||!std::isfinite(s.maximum-s.minimum))
@@ -13,6 +14,15 @@ void validate(const Settings& s) {
         throw std::invalid_argument("Mesh density: curve requires 2..257 samples");
     for(double v:s.curve)if(!std::isfinite(v)||v<0||v>1)
         throw std::invalid_argument("Mesh density: curve values must be finite and within 0..1");
+}
+double relativeElevation(double z,double minimum,double maximum){
+    if(!std::isfinite(z)||!std::isfinite(minimum)||!std::isfinite(maximum)||maximum<minimum)
+        throw std::invalid_argument("Relative elevation requires finite ordered receiver heights");
+    // A flat receiver is explicitly the lowest elevation, independent of units
+    // and world translation. Invert/response then determine its eligibility.
+    if(maximum==minimum)return 0.;
+    const double span=maximum-minimum;if(!std::isfinite(span))throw std::invalid_argument("Receiver elevation range exceeds supported precision");
+    return std::clamp((z-minimum)/span,0.0,1.0);
 }
 double weight(double value,const Settings& s) {
     if(!std::isfinite(value))throw std::invalid_argument("Mesh density: nonfinite channel value");

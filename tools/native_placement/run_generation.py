@@ -9,7 +9,16 @@ def send(host,script,command):
         assert previous in state and state.startswith(('SUCCESS','ERROR')),'Observe prior request; never duplicate a pending command'
     (host/'generation-command.txt').write_text(command)
     request=host/f'generation-{uuid.uuid4().hex}.ms';request.write_text(script.read_text(encoding='utf-8-sig'),encoding='utf-8-sig')
-    pending=host/f'pointer-{uuid.uuid4().hex}.tmp';pending.write_text(request.as_posix(),encoding='utf-8-sig');os.replace(pending,pointer)
+    pending=host/f'pointer-{uuid.uuid4().hex}.tmp';pending.write_text(request.as_posix(),encoding='utf-8-sig')
+    publish_deadline=time.monotonic()+5
+    while True:
+        try:os.replace(pending,pointer);break
+        except PermissionError:
+            # The host's short ReadAllText can deny replacement on Windows.
+            # Retry only publication of this same, still-unpublished pointer;
+            # never create/replay a request after the host may have observed it.
+            if not pending.exists() or time.monotonic()>publish_deadline:raise
+            time.sleep(.05)
     end=time.monotonic()+180
     while time.monotonic()<end:
         try:state=response.read_text(encoding='utf-8-sig') if response.exists() else ''

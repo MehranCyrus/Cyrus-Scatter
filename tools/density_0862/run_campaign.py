@@ -4,7 +4,7 @@ import argparse,json,sys,time
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tools/native_placement'));from run_generation import send,ready
 p=argparse.ArgumentParser();p.add_argument('host');p.add_argument('campaign',choices=('workflow','examples','save'))
-p.add_argument('--year',type=int,choices=(2026,2027),default=2027);p.add_argument('--library',type=Path);a=p.parse_args()
+p.add_argument('--year',type=int,choices=(2024,2026,2027),default=2027);p.add_argument('--library',type=Path);a=p.parse_args()
 assert a.host.startswith('density0862-');host=ROOT/'build/mcp-qualification'/a.host;ready(host)
 assert json.loads((host/'launch.json').read_text())['max_year']==a.year
 library=(a.library or ROOT/'AminScatter/library').resolve();inventory=json.loads((library/'inventory.json').read_text(encoding='utf-8'))

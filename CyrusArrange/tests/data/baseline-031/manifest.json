@@ -1,0 +1,91 @@
+{
+  "status": "preserved_released_schema4_migration_input_not_current_host_qualified",
+  "source_archive": "dist/CyrusArrange-0.3.1/CyrusArrange-0.3.1-Source-and-Examples.zip",
+  "source_archive_sha256": "742607fc546854ee447e2dbd3921d7ead3a501201999949667b3112fa81aa2ec",
+  "source_archive_bytes": 193909279,
+  "archive_member": "examples/book-rows-0.1.3/CyrusArrange-BookRows-Balance-Off.max",
+  "released_in": "0.3.1 Source-and-Examples ZIP",
+  "original_authoring_release": "0.1.3",
+  "original_authoring_host": "build/host-final-46-book-rows",
+  "source_manifest_sha256": "0414d908005f4608b09ff7001f0e53113c3df90210a501f207a398b055575823",
+  "original_example_manifest_sha256": "22b0f093c9b28651fd1cbb081a9acd67df9de0e90eaa285f335f67e7879f1dff",
+  "original_example_host_receipt_sha256": "66cb999f31b6d34b4ff8a23fba42d1dd7abb50b95019c2275152b6a00e0d9ab4",
+  "matching_031_installer_sha256": "0fce2ca16fc47d026337039ee72115de9cca5943e3561e02e45226e4397077d8",
+  "files": {
+    "CyrusArrange-BookRows-Balance-Off.max": {
+      "sha256": "03820ebf35cef8b8bd409a804ae942af2539265e2f70dd2fbc00096909aacae7",
+      "bytes": 1101824
+    }
+  },
+  "native_document_payloads": [
+    {
+      "guid": "{0668748D-7E12-4FD6-8A17-1C9239BFC1CA}",
+      "schema": 4,
+      "encoded_sha256": "2c1f13025bfd6eee623ba75fbdda7ef88777654de04aa7d5272c735d681b42db",
+      "encoded_bytes": 107009,
+      "revision": 19,
+      "frame_origin": [
+        -1900.0,
+        400.0,
+        0.0
+      ],
+      "composition": [
+        true,
+        3,
+        3,
+        3.0,
+        0.0
+      ],
+      "placements": 16,
+      "groups": 3
+    },
+    {
+      "guid": "{0DCB304C-78A1-44F3-A15A-A6B2D197A708}",
+      "schema": 4,
+      "encoded_sha256": "92a3709af3ac660210b8f375deeeed58e1d3974fe7f543c31f520e10c60f90ae",
+      "encoded_bytes": 105159,
+      "revision": 22,
+      "frame_origin": [
+        1600.0,
+        650.0,
+        0.0
+      ],
+      "composition": [
+        true,
+        3,
+        3,
+        3.0,
+        0.0
+      ],
+      "placements": 25,
+      "groups": 5
+    },
+    {
+      "guid": "{64FD666D-93C2-4FC2-8672-3374BF581624}",
+      "schema": 4,
+      "encoded_sha256": "c3e42defccc6bb948a37aad7d7c0e56d1b83419417071939b7a9bae244ad2e0e",
+      "encoded_bytes": 38154,
+      "revision": 71,
+      "frame_origin": [
+        0.0,
+        -1500.0,
+        0.0
+      ],
+      "composition": [
+        true,
+        3,
+        3,
+        3.0,
+        0.0
+      ],
+      "placements": 4,
+      "groups": 1
+    }
+  ],
+  "scope": [
+    "Exact old scene bytes; do not overwrite, regenerate or resave this input.",
+    "Three encoded native Document chunks directly decoded read-only as schema4.",
+    "This is an actual older-authored scene distributed unchanged with0.3.1, not a scene authored by0.3.1 native modules.",
+    "Independent source-derived byte decoder is diagnostic evidence; actual Max migration/geometry/material/ref validation is required."
+  ]
+}

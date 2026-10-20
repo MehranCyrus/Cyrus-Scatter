@@ -25,7 +25,11 @@ Value* cyrusPrepareDensityOverlay_cf(Value** a,int n){check_arg_count(cyrusPrepa
         const bool imageEnabled=a[2]!=&undefined&&mode!=1,meshEnabled=meshSettings.enabled&&mode!=0;
         const auto filters=surfaceFilterSettings(a[8]);
         std::optional<cyrus::density::ImageSampler> image;
-        if(imageEnabled){type_check(a[2],CyrusDensityImage,_T("density image"));const auto& data=*static_cast<CyrusDensityImage*>(a[2])->image;image.emplace(data.pixels,data.width,data.height,mapping);}
+        Texmap* texture=nullptr;bool invertTexture=false;
+        if(imageEnabled&&mapping.coordinates==cyrus::density::Coordinates::Map){
+            auto* spec=groupArray(a[2]);if(spec->size!=2)throw RuntimeError(_T("Map preview requires a texture and invert flag"));
+            texture=spec->data[0]->to_texmap();invertTexture=spec->data[1]->to_bool()!=FALSE;
+        }else if(imageEnabled){type_check(a[2],CyrusDensityImage,_T("density image"));const auto& data=*static_cast<CyrusDensityImage*>(a[2])->image;image.emplace(data.pixels,data.width,data.height,mapping);}
         const bool filtered=a[7]->to_bool()!=FALSE&&mode==2;
         const bool paintEnabled=filtered&&a[9]->to_bool()!=FALSE;
         auto* paint=groupArray(a[10]);if(paint->size>128)throw RuntimeError(_T("Mask overlay Paint Area limit exceeded"));
@@ -34,9 +38,9 @@ Value* cyrusPrepareDensityOverlay_cf(Value** a,int n){check_arg_count(cyrusPrepa
         std::vector<amin::AreaMask> masks;std::size_t edgeCount=0;bool hasInclude=false;
         for(const auto& area:areas){masks.emplace_back(area);hasInclude|=area.include;for(const auto& loop:area.loops)edgeCount+=loop.size();}
         struct Region {cyrus::brush::Field field;double density;};
-        struct Receiver {std::vector<amin::Triangle> mesh;MeshDensitySnapshot data;std::vector<Region> regions;Matrix3 worldToLocal;};
+        struct Receiver {std::vector<amin::Triangle> mesh;MeshDensitySnapshot data;std::vector<Region> regions;Matrix3 worldToLocal;std::unique_ptr<ReceiverMapContext> texture;};
         std::vector<Receiver> receivers;std::size_t faces=0;double totalArea=0;
-        std::size_t paintBytes=0;
+        std::size_t paintBytes=0,textureMeshBytes=0;
         const auto cross=[](amin::Vec3 x,amin::Vec3 y){return amin::Vec3{x.y*y.z-x.z*y.y,x.z*y.x-x.x*y.z,x.x*y.y-x.y*y.x};};
         const auto area=[&](const amin::Triangle& t){return amin::length(cross(t.b-t.a,t.c-t.a))*.5;};
         for(int i=0;i<nodes->size;++i){
@@ -44,6 +48,7 @@ Value* cyrusPrepareDensityOverlay_cf(Value** a,int n){check_arg_count(cyrusPrepa
             r.mesh=meshOf(node,true,imageEnabled&&mapping.coordinates==cyrus::density::Coordinates::UV,std::size_t(budget),channel);
             faces+=r.mesh.size();if(faces>std::size_t(budget))throw RuntimeError(_T("Mask overlay detail is below the receiver face count. Increase detail or use marker diagnostics."));
             if(meshEnabled)r.data=meshDensitySnapshot(node,meshSettings);
+            if(texture){r.texture=std::make_unique<ReceiverMapContext>(node,texture,std::size_t(budget)*3,256ULL*1024*1024-textureMeshBytes);textureMeshBytes+=r.texture->meshBytes();}
             if(paintEnabled){
                 const auto time=GetCOREInterface()->GetTime();const auto tm=node->GetObjectTM(time);
                 if(std::abs(DotProd(tm.GetRow(0),CrossProd(tm.GetRow(1),tm.GetRow(2))))<1e-12)throw RuntimeError(_T("Paint preview receiver frame is singular"));
@@ -98,6 +103,7 @@ Value* cyrusPrepareDensityOverlay_cf(Value** a,int n){check_arg_count(cyrusPrepa
                 const amin::Vec3 bary{1-b-c,b,c},position=t.a*bary.x+t.b*bary.y+t.c*bary.z;
                 const auto uv=t.uvA*bary.x+t.uvB*bary.y+t.uvC*bary.z;double weight=1;
                 if(image)weight*=image->sample(uv.x,uv.y,position.x,position.y,position.z);
+                if(receiver.texture)weight*=receiver.texture->sample(int(f),Point3(float(bary.x),float(bary.y),float(bary.z)),invertTexture,mapping.curve);
                 if(meshEnabled)weight*=cyrus::mesh_density::weight(cyrus::mesh_density::sample(receiver.data.corners[f],bary),meshSettings);
                 if(filtered)weight*=cyrus::surface_filter::intervalWeight(slope,filters.slope)*cyrus::surface_filter::intervalWeight(position.z,filters.altitude);
                 if(paintEnabled){

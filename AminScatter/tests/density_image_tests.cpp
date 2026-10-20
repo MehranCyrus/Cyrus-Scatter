@@ -43,6 +43,10 @@ int main(){try {
     rejects([&]{ImageSampler s(ramp,2,3,m);});
     rejects([&]{ImageSampler s(std::vector<double>{NAN},1,1,m);});
     rejects([&]{legacy.sample(NAN,0,0,0,0);});
+    // A receiver map is a valid authored mode, but must never silently become a
+    // context-free tile in a worker or portable image path.
+    auto receiver=m;receiver.coordinates=Coordinates::Map;validate(receiver);
+    rejects([&]{ImageSampler sampled(ramp,2,2,receiver);});
     const auto png=encodeLinearPNG({2,2,{0.,.2,.65,1.}});
     const auto info=cyrus::assets::inspectPNG(png);
     check(info.width==2&&info.height==2&&png[24]==16&&png[25]==2,"Linear scalar snapshot is a valid portable 16-bit RGB PNG");

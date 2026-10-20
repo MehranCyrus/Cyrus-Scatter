@@ -112,7 +112,7 @@ void validateSettings(const Json& s){
     require(s["distributionMode"]==1||s["distributionMode"]==3,"unsupported distributionMode");
     require(s["densityUVChannel"].get<int>()>=1&&s["densityUVChannel"].get<int>()<=99,"UV channel outside 1..99");
     require(s["densityResolution"]==64||s["densityResolution"]==128||s["densityResolution"]==256||s["densityResolution"]==512,"unsupported texture resolution");
-    range(s,"densityCoordinateMode",0,2);range(s,"densityWrapMode",0,1);
+    range(s,"densityCoordinateMode",0,3);range(s,"densityWrapMode",0,1);
     cyrus::density::Mapping mapping;
     mapping.sizeX=number(s["densityTileXWU"]);mapping.sizeY=number(s["densityTileYWU"]);
     mapping.repeatX=number(s["densityRepeatX"]);mapping.repeatY=number(s["densityRepeatY"]);
@@ -167,7 +167,7 @@ void validateSettings(const Json& s){
     for(auto key:{"sourceWeights","sourceScales","sourceRadiiWU","sourceZOffsetsWU"})require(s[key].size()<=s["sources"].size(),std::string("excess source row data ")+key);
     for(auto key:{"sourceWeights","sourceScales","sourceRadiiWU"})for(const auto& v:s[key])require(number(v)>=0,"negative source weight/size/radius");
     require(number(s["paintDensity"])>=0&&number(s["paintDensity"])<=1,"invalid Paint density");
-    cyrus::mesh_density::Settings mesh;mesh.channel=s["meshMaskChannel"].get<int>();mesh.component=s["meshMaskComponent"].get<int>()-1;mesh.minimum=number(s["meshMaskMinimum"]);mesh.maximum=number(s["meshMaskMaximum"]);mesh.curve=s["meshMaskSamples"].empty()?std::vector<double>{0,1}:s["meshMaskSamples"].get<std::vector<double>>();cyrus::mesh_density::validate(mesh);
+    cyrus::mesh_density::Settings mesh;mesh.source=s["meshMaskSource"].get<int>();mesh.channel=s["meshMaskChannel"].get<int>();mesh.component=s["meshMaskComponent"].get<int>()-1;mesh.minimum=number(s["meshMaskMinimum"]);mesh.maximum=number(s["meshMaskMaximum"]);mesh.curve=s["meshMaskSamples"].empty()?std::vector<double>{0,1}:s["meshMaskSamples"].get<std::vector<double>>();cyrus::mesh_density::validate(mesh);
     cyrus::surface_filter::Settings filter;
     filter.slope={s["slopeEnabled"].get<bool>(),number(s["slopeMinimum"]),number(s["slopeMaximum"]),number(s["slopeLowerFade"]),number(s["slopeUpperFade"])};
     filter.altitude={s["altitudeEnabled"].get<bool>(),number(s["altitudeMinimum"]),number(s["altitudeMaximum"]),number(s["altitudeLowerFade"]),number(s["altitudeUpperFade"])};cyrus::surface_filter::validate(filter);
@@ -176,9 +176,25 @@ void validateSettings(const Json& s){
 
 Json currentDocument(const Json& document){
     auto result=document;
-    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3&&result["formatVersion"]!=4&&result["formatVersion"]!=5))return result;
+    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3&&result["formatVersion"]!=4&&result["formatVersion"]!=5&&result["formatVersion"]!=6))return result;
     require(result["formatVersion"].is_number_integer(),"recipe version must be an integer");
     const int version=result["formatVersion"].get<int>();
+    if(version==6){
+        // Existing recipes explicitly retain their artist-authored channel dependency.
+        // Only newly authored presets may select receiver-relative elevation.
+        const auto extend=[](Json& settings){
+            require(settings.is_object(),"invalid format 6 settings");
+            require(!settings.contains("meshMaskSource"),"surface density source requires recipe format 7");
+            settings["meshMaskSource"]=1;
+        };
+        extend(result.at("rootSettings"));
+        require(result.at("layers").is_array()&&result.at("layers").size()<=10,"invalid layers");
+        for(auto& layer:result.at("layers")){
+            extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
+            for(auto& area:layer.at("areas"))extend(area.at("settings"));
+        }
+        result["formatVersion"]=7;return result;
+    }
     if(version==5){
         // Format 5 used only clamped UV density. Preserve its behavior explicitly.
         const Json defaults={{"densityCoordinateMode",0},{"densityWrapMode",0},{"densityTileXWU",100.},{"densityTileYWU",100.},{"densityTileLock",true},{"densityRepeatX",1.},{"densityRepeatY",1.},{"densityHeading",0.},{"densityOffsetXWU",0.},{"densityOffsetYWU",0.},{"densityUOffset",0.},{"densityVOffset",0.},{"densityPatternID",""},{"densityPatternRevision",""},{"densityResponseSamples",Json::array()},{"densityResponseGraph",""},{"densityMapProvenance",""},{"densityFrameBasis",Json::array()},{"densityFrameOriginWU",Json::array()}};
@@ -195,7 +211,7 @@ Json currentDocument(const Json& document){
             extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
             for(auto& area:layer.at("areas"))extend(area.at("settings"));
         }
-        result["formatVersion"]=6;return result;
+        result["formatVersion"]=6;return currentDocument(result);
     }
     if(version==4){
         require(!result.contains("revision")&&!result.contains("presentation"),"revision/presentation require recipe format 5");
@@ -224,9 +240,9 @@ Json currentDocument(const Json& document){
 }
 
 void validate(const Json& d,bool hydrated){
-    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3||d["formatVersion"]==4||d["formatVersion"]==5)){validate(currentDocument(d),hydrated);return;}
+    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3||d["formatVersion"]==4||d["formatVersion"]==5||d["formatVersion"]==6)){validate(currentDocument(d),hydrated);return;}
     keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships","revision","presentation"});
-    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==6&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"].is_number_integer()&&(d["hostYear"]==2024||d["hostYear"]==2026||d["hostYear"]==2027),"unsupported recipe version/engine/host");
+    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==7&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"].is_number_integer()&&(d["hostYear"]==2024||d["hostYear"]==2026||d["hostYear"]==2027),"unsupported recipe version/engine/host");
     require(d["revision"].is_number_integer()&&number(d["revision"])>=1&&number(d["revision"])<=2147483647,"invalid recipe revision");validateEntryPresentation(d["presentation"]);
     id(d["id"]);const auto name=text(d["name"],320);require(!name.empty(),"empty name");require(number(d["unitsPerMetre"])>0,"invalid saved unit scale");require(d["exportScope"]=="complete-setup","only complete authored recipes are supported");validateSettings(d["rootSettings"]);
     require(d["roles"].is_array()&&d["roles"].size()<=4096,"too many roles");std::map<std::string,std::string> roles;

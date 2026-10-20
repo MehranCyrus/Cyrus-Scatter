@@ -6,7 +6,17 @@ This is the maintained Scatter defect and acceptance register. Update it in plac
 
 The [single execution ledger](plans/improvement-program/PROGRESS.md) owns P/I/PG/N feature status and remaining sequence; this backlog owns defect IDs and acceptance gates. P01–P07 and the supported recipe/gallery subset are implemented. The [0.86.0 native delivery](plans/native-placement/DELIVERY_0860.md) is the retained native-foundation qualification, retaining the preceding ready-preset, navigation and static asset contracts. Earlier B26/library results below keep their original scope; the native delivery's Count/history/lifetime matrix is their measured successor, not a promise of unlimited memory or all-scene acceptance.
 
-The [0.86.2 delivery](plans/preset-gallery-improvements/DELIVERY_0862.md) qualifies the density/recipe D01–D11 follow-up in Max 2027. The [execution ledger](plans/improvement-program/PROGRESS.md#delivered-0862-density-and-recipe-follow-up) owns completion and limits. Further roadmap work and deferred knowledge activation remain paused.
+The [0.86.2 delivery](plans/preset-gallery-improvements/DELIVERY_0862.md) qualifies the density/recipe D01–D11 follow-up and its installer within the recorded Max 2024/2026/2027 scopes. The [execution ledger](plans/improvement-program/PROGRESS.md#delivered-0862-density-and-recipe-follow-up) owns completion and limits. Further roadmap work remains paused; [knowledge maintenance](../tools/rag/README.md) records its separate status.
+
+## Surface brush restoration — 0.86.6
+
+The terrain-only restriction introduced in 0.78 is superseded by the
+[0.86.6 delivery](plans/preset-gallery-improvements/DELIVERY_0866.md): spheres,
+boxes and manifold curved receivers retain vector Paint/Erase, fade curves,
+history and persistence. Native assertions, actual Max Painter callbacks and
+generated UI handlers qualify the listed scope. Physical tablet/mouse and
+production-scene stress remain separate. The prior reliability feature baseline
+is corrected to 0.86.5; original 0.87.0 evidence below retains its actual label.
 
 ## Next engineering work
 
@@ -58,6 +68,8 @@ Slope/altitude are unchanged; no later roadmap feature is included here.
 | B28 | Fixed within [0.86.2](plans/preset-gallery-improvements/DELIVERY_0862.md): enabled UV requirements are checked before staging, and first Ready calculation/display now participates in the import transaction | Valid/missing UV7 and numeric 0/2/7, actual post-staging calculation failure, complete output/history retention, and successful Add Undo/Redo without package files pass in Max 2027; arbitrary third-party/allocator failures remain separate |
 | B29 | Open diagnostic/readiness issue: absent package and settings-only entry share an error; broad mesh capture errors share the missing-channel message and can show `2L`. Settings Save can precede failed asset packaging | D07–D09: distinguish incomplete/moved/stale packages, underlying geometry/channel/resource failures, plain numeric labels, packaging cancel/failure and truthful readiness; preserve authored masks/Paint/terrain |
 | B30 | Fixed in the [same-version 0.86.2 correction](plans/preset-gallery-improvements/DELIVERY_0862.md#same-version-correction--19-october-2026): Amount assigned undefined to BitmapControl for no map/procedural maps; its thumbnail also cropped images. Native ImgTag now clears safely and shows the complete tile | Reproduced original failure, actual generated picker/panel callbacks, blank setup/reopen, Undo/Redo, all eight library examples and per-layer Amount checks at 100/150% pass; physical mixed-monitor transitions remain separate |
+| B31 | Fixed in [0.87.0](plans/preset-gallery-improvements/DELIVERY_0870.md): Clear disables image density and removes its map | Final Manual/Live, patterns/channels, preview, Undo/Redo and scene-reopen tests pass |
+| B32 | Fixed within [0.87.0](plans/preset-gallery-improvements/DELIVERY_0870.md): native receiver-aware context supplies supported map graphs with their own channels/frame/time | Final channel/UV, nested edits, animation, multiple receivers, bounds and preview agreement pass. Arbitrary graph export and third-party/renderer contexts remain outside support |
 
 ## Adaptive viewport follow-up
 
@@ -114,3 +126,7 @@ Historical gates were reconciled from the [unified roadmap](Unified_System_0.73_
 MCP expansion, learning and commercial licensing are separate workstreams. Their existing component contracts remain; research proposals and website work are outside this cleanup and do not authorize additional implementation.
 
 The [courtyard design study](Courtyard_Study_0.75_2026-10-09/README.md) records layer-local paint preparation, one erase taking about 754 ms, and the ten-layer design limit. The [subsequent fixes](Courtyard_Fixes_0.75_2026-10-10/README.md) address Proxy drawing and stale Analyzer visibility and distinguish cold Update, forced warm Update and unchanged cached reads. B04 and the physical artist gates remain open; B02 now has bounded receiver-stability evidence.
+
+## Library and source lifecycle — 0.87.0
+
+The [delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) records revised reusable examples, physical units/Paint transfer, valid empty-source publication, minimized Library restoration, and atomic invalid-dependency recovery. Windows foreground focus, physical mixed-monitor use and arbitrary production sessions remain separate acceptance; restored window bounds and safe owner rebinding pass.

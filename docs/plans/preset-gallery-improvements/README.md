@@ -1,6 +1,13 @@
 # Preset and gallery contracts
 
-**Current 0.86.2 delivery:** [qualification, installers and demo](DELIVERY_0862.md). The universal EXE includes Max 2026/2027 runtime-qualified payloads and a clearly labeled Max 2024 preview. D01–D11 are complete within their recorded scope; D04 final artwork is explicitly user-supplied later. Further roadmap work remains paused.
+**Current 0.86.6 delivery:** [Max 2027 MZP and scoped qualification](DELIVERY_0866.md). See [format 7](FORMAT_7.md) for receiver maps, relative elevation and reusable Paint. Historical contracts below retain their original scope unless superseded by that contract.
+
+**Planned real-model collection:** [guideline and AI handoff](real-model-library/README.md),
+[24 proposed presets](real-model-library/PRESETS.md), [milestones](real-model-library/ROADMAP.md)
+and [validation requirements](real-model-library/VALIDATION.md). Eight pilots precede
+the full collection and retirement of the bundled demonstrations. This is planning,
+not implemented Corona/proxy adapter support or a new qualification; status is in
+the [execution ledger](../improvement-program/PROGRESS.md#real-model-library-planning).
 
 ## 0.86.1 delivery contract
 

@@ -1,8 +1,13 @@
 -- Bounded data-only recipes. Scene mutation is confined to CyrusRecipeImport.
 global CyrusRecipeBrowser,CyrusRecipeOpenRoot,CyrusRecipeOpenNode,CyrusRecipeOpenSurface,CyrusRecipeScriptDirectory
-global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusLibraryVersion
+global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusLibraryVersion,CyrusRecipeErrorText
+fn CyrusRecipeErrorText value = (
+    local message=trimLeft (value as string),prefix="-- Runtime error: "
+    while findString message prefix==1 do message=trimLeft (substring message (prefix.count+1) -1)
+    message
+)
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.2"
+fn CyrusLibraryVersion = "0.86.6.1"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -127,7 +132,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=6 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.2 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=7 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.6.1 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -158,7 +163,7 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",6),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",7),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified1"),#("sceneSchema",58),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -239,15 +244,16 @@ fn CyrusRecipeApplySettings owner settings bindings variation:#new projectionRoo
     owner.fieldFalloff=false;owner.fieldBoundaries=false
     true
 )
-fn CyrusRecipeRestorePaint data target document packaged:false = (
+fn CyrusRecipeRestorePaint data target document packaged:false footprint:undefined = (
     if data==undefined do return undefined
     local unitsNow=(units.decodeValue "1m") as double,unitsSaved=CyrusRecipeGet document "unitsPerMetre"
+    if footprint!=undefined do return (cyrusBrushPresetTransfer (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") unitsSaved unitsNow footprint)
     if packaged do return (cyrusBrushPresetRestore (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame") (unitsNow/unitsSaved))
     if target!=undefined and abs(unitsNow-unitsSaved)>1e-9*(amax 1.0 (abs unitsSaved)) do throw "Native Paint requires its saved system-unit context. Original coverage is retained; use matching units before binding."
     cyrusBrushRecipeImport (CyrusRecipeGet data "payload") target (CyrusRecipeGet data "radius") (CyrusRecipeGet data "erase") (CyrusRecipeGet data "frame")
 )
 
-fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined calculate:false = (
+fn CyrusRecipeImport destination document bindings newSetup:false variation:#new prepareAssets:undefined packagedPaintReceivers:undefined paintFootprint:undefined calculate:false = (
     if findItem #(#same,#new) variation==0 do throw "Choose Saved or New variation."
     CyrusRequireAuthor()
     if theHold.Holding() do throw "Finish the current undoable operation before importing a recipe."
@@ -293,7 +299,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                 owner.paintAreas=#()
                 local paint=CyrusRecipeGet record "paint"
                 local paintTarget=if paint==undefined then undefined else CyrusRecipeResolve bindings (CyrusRecipeGet paint "receiverRole")
-                owner.paintDocument=CyrusRecipeRestorePaint paint paintTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers paintTarget>0)
+                owner.paintDocument=CyrusRecipeRestorePaint paint paintTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers paintTarget>0) footprint:paintFootprint
                 for areaRecord in (CyrusRecipeGet record "areas") do (
                     local area=createInstance AminScatterObject
                     cyrusRecipeTrackCreated area
@@ -302,7 +308,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                     area.areaTarget=CyrusRecipeResolve bindings (CyrusRecipeGet areaRecord "receiverRole")
                     local areaPaint=CyrusRecipeGet areaRecord "paint"
                     if areaPaint!=undefined and (CyrusRecipeResolve bindings (CyrusRecipeGet areaPaint "receiverRole"))!=area.areaTarget do throw "Paint document and area binding disagree."
-                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers area.areaTarget>0)
+                    area.paintDocument=CyrusRecipeRestorePaint areaPaint area.areaTarget document packaged:(packagedPaintReceivers!=undefined and findItem packagedPaintReceivers area.areaTarget>0) footprint:paintFootprint
                     area.setLayerTransfer false;append owner.paintAreas area
                     append identityMap #((CyrusRecipeGet areaRecord "id"),area)
                 )
@@ -672,7 +678,7 @@ fn CyrusStyleFields group = (
         "Grid layout":#("placementMode","gridColumnWU","gridRowWU","gridOriginXWU","gridOriginYWU","gridHeading","gridJitter")
         "Transforms":(join (for field in cyrusPresetSchema "transforms" collect field[1]) #("orientationTarget"))
         "Slope and altitude":#("slopeEnabled","slopeMinimum","slopeMaximum","slopeLowerFade","slopeUpperFade","altitudeEnabled","altitudeMinimum","altitudeMaximum","altitudeLowerFade","altitudeUpperFade")
-        "Mesh channel mask":#("meshMaskEnabled","meshMaskChannel","meshMaskComponent","meshMaskMinimum","meshMaskMaximum","meshMaskInvert","meshMaskSamples","meshMaskGraph")
+        "Surface density":#("meshMaskSource","meshMaskEnabled","meshMaskChannel","meshMaskComponent","meshMaskMinimum","meshMaskMaximum","meshMaskInvert","meshMaskSamples","meshMaskGraph")
         "Density texture":(join #("distributionMode","densityMap","invertDensity","densityUVChannel","densityResolution") (for key in AminScatterImageDensityFields collect key as string))
         "Area falloff":#("fallAnalyzer","fallDelete","fallDeleteWidth","fallScale","fallScaleWidth","fallScaleCurve","fallScaleGraph","fallDensity","fallDensityWidth","fallDensityCurve","fallDensityGraph")
         default:throw "Unsupported style group."
@@ -704,7 +710,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.2 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.6.1 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -794,7 +800,7 @@ fn CyrusOpenRecipeStyle root path digest = (
         local root,node,owner,path,digest,document,records=#(),roles=#(),bindings=#(),plan=undefined,bindingControls=false,bindControls
         label destination "" pos:[12,12] width:636 height:32
         dropdownlist sourceLayer "Saved layer:" items:#() pos:[12,50] width:636
-        multiListBox groups "Setting groups" items:#("Amount","Grid layout","Transforms","Slope and altitude","Mesh channel mask","Density texture","Area falloff") pos:[12,106] width:290 height:7
+        multiListBox groups "Setting groups" items:#("Amount","Grid layout","Transforms","Slope and altitude","Surface density","Density texture","Area falloff") pos:[12,106] width:290 height:7
         label retained "Keep: terrain, models, Paint, layer order, Bands, spacing relationships and source/receiver identities.\n\nOnly selected setting groups change. Static destination layers are supported." pos:[322,122] width:326 height:136
         dropdownlist seeds "Seeds:" items:#("Keep destination seeds","Use saved seeds","Choose new seeds") selection:1 pos:[12,266] width:636
         label seedsNote "Seed choices cover sampling and model-assignment seeds. Receiver variation domains stay with the destination." pos:[12,316] width:636 height:36
@@ -878,18 +884,32 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
     CyrusLibraryCheckSurface surface
     root=CyrusLibraryDestination surface root
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.2 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.6.1 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.2.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.2 gallery package."
-    if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
+    if assemblyName.Version.ToString()!="0.86.6.1" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.6.1 gallery package."
+    if CyrusRecipeBrowser!=undefined do (
+        local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
+        if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
+            window.bindContext root node surface
+            CyrusRecipeOpenRoot=root;CyrusRecipeOpenNode=node;CyrusRecipeOpenSurface=surface
+            return true
+        )
+        try(destroyDialog window)catch()
+    )
     rollout browser "Cyrus Library" width:1000 height:680 (
         local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false
         dotNetControl panel "CyrusScatter.UI.LibraryPanel" pos:[0,0] width:1000 height:680
         timer scanTimer interval:250 active:false
         fn validRoot = (CyrusRecipeCheckRoot root node)
         fn bindDestination owner ownerNode = (root=owner;node=ownerNode;panel.HasSetup=true)
+        fn bindContext owner ownerNode receiver = (
+            if root!=owner or node!=ownerNode or surface!=receiver do (
+                root=owner;node=ownerNode;surface=receiver;sessionID=CyrusNewLayerID()
+                panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
+            )
+        )
         fn selectedEntry = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>entries.count then undefined else entries[i])
         fn showSelected = (
             panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
@@ -1028,6 +1048,6 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         )
     )
     CyrusRecipeOpenRoot=root;CyrusRecipeOpenNode=node;CyrusRecipeOpenSurface=surface;CyrusRecipeBrowser=browser
-    createDialog browser style:#(#style_titlebar,#style_sysmenu,#style_resizing,#style_minimizebox,#style_maximizebox)
+    createDialog browser width:1000 height:680 style:#(#style_titlebar,#style_sysmenu,#style_resizing,#style_minimizebox,#style_maximizebox)
     true
 )

@@ -1,0 +1,27 @@
+{
+  "patch_id": "cyrus-exception-ownership-001",
+  "date": "2026-10-18",
+  "upstream_repository": "https://github.com/AngusJohnson/Clipper2",
+  "upstream_commit": "f9c5eb6e14a59f6f5d65fbfb3564519a561cf4fd",
+  "original_provenance_file": "PROVENANCE.json",
+  "modified_files": {
+    "src/clipper.engine.cpp": {
+      "upstream_sha256": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "local_sha256": "6251b237d2083bed8e1716bf6670499e1325a0ab786c2d5d60e9ee8e71bd9f3a"
+    }
+  },
+  "scope": [
+    "AddPaths_: own pending Vertex[] until registration; remove newly owned minima on exception",
+    "InsertLocalMinimaIntoAEL: own pending descending/ascending Active objects through swaps until AEL linkage",
+    "NewOutRec: own pending record until outrec_list_ registration"
+  ],
+  "success_behavior": "Geometry, allocation order/count and numerical work unchanged; exception cleanup only",
+  "license_file": "LICENSE",
+  "license_sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+  "evidence": [
+    "../../build/query-accounting-diagnostics-01/baseline-stack-run.log",
+    "../../build/query-accounting-diagnostics-01/baseline-only86-run.log",
+    "../../build/query-accounting-diagnostics-02/baseline-only88-run.log",
+    "../../build/query-accounting-diagnostics-03/run.log"
+  ]
+}

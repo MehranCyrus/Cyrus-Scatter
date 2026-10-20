@@ -1,0 +1,1035 @@
+{
+  "schema": 1,
+  "title": "Continuous Physics Brush follow-up research evidence",
+  "date": "2026-10-17",
+  "kind": "research_and_proposal_only",
+  "root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "branch": "codex/workflow-0.75",
+  "head_at_start": "8645c6cc4878a05e8fa6f835610872b2da1359ea",
+  "head_at_verification": "8645c6cc4878a05e8fa6f835610872b2da1359ea",
+  "authorization_scope": "Further web/Houdini investigation and a report for the separate Physics Lab. No implementation or integration.",
+  "executed": [
+    "Read current repository handoff/contracts and relevant lab sources",
+    "Read supplied artist-log analysis and its evidence",
+    "Browsed primary SideFX, pinned Jolt and Max 2027 documentation",
+    "Created research report and added pointers in existing research README and phased plan",
+    "Checked document formatting, source fingerprints and prior package identity"
+  ],
+  "not_executed": [
+    "Feature code changes",
+    "New native build or engine benchmark",
+    "Max launch, scene interaction or runtime tests",
+    "Computer Use",
+    "Houdini HIP/HDA execution",
+    "New tyFlow reverse engineering",
+    "Preset/library work",
+    "Main Scatter integration",
+    "Version change, package creation, installation, restart, commit or push"
+  ],
+  "evidence_categories": {
+    "vendor_docs": "Documented public capabilities, not local runtime witnesses",
+    "local_source": "Current directly inspected source identities",
+    "artist_log": "Previously captured 0.1.3 witness and analysis; not a test of the continuous proposal",
+    "proposal": "Architecture, numeric experiment targets and CB1-CB6 acceptance gates are unexecuted"
+  },
+  "documents": [
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/README.md",
+      "bytes": 8156,
+      "sha256": "053237615cf8fbde7b9de7833350ba04e9e5a7157a861179014027e2e4069342"
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/PHASED_PLAN.md",
+      "bytes": 39994,
+      "sha256": "4da6fc9882385881c82af12b8ba1809b3c24a081ae565c319bca7e147ab55dcb"
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/CONTINUOUS_BRUSH_RESEARCH_20261017.md",
+      "bytes": 29718,
+      "sha256": "fc5d6f02f152d279da2fc832aeb259bf3d1edfe498a587f97d4bbfbae196db06"
+    }
+  ],
+  "source_identities_at_start": [
+    {
+      "path": "CyrusPhysicsLab/include/core.h",
+      "bytes": 3718,
+      "sha256": "d27e8c839c89df9cd940bb77b21085aa2a04b3d8720d814f90a09a83038b7000"
+    },
+    {
+      "path": "CyrusPhysicsLab/src/core.cpp",
+      "bytes": 23828,
+      "sha256": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200"
+    },
+    {
+      "path": "CyrusPhysicsLab/src/max_host.cpp",
+      "bytes": 52277,
+      "sha256": "3ab5a91d07d8b7e3a286fc54a1c97cb00bb731c45b9496458158886251dcb54e"
+    },
+    {
+      "path": "CyrusPhysicsLab/src/jolt_world.cpp",
+      "bytes": 9008,
+      "sha256": "0c91fc3e5e05bf837e33257186869c07bf1e32c984a3b689c1117e1c92d27d42"
+    },
+    {
+      "path": "CyrusPhysicsLab/scripts/CyrusPhysicsLab.ms",
+      "bytes": 31931,
+      "sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d"
+    },
+    {
+      "path": "CyrusPhysicsLab/README.md",
+      "bytes": 14101,
+      "sha256": "a52552525dd61bd789d7ea98a8fc26e03e0845777927d200cf58465c144bd0b7"
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "bytes": 29424,
+      "sha256": "3a0908705a9b79eb852307235789ff456ee487cdf175446e3263a59a0e74adbf"
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/ARTIST_LOG_013_20261017.md",
+      "bytes": 7604,
+      "sha256": "4ed1ae716f5bd05b11bade063a3bb7365cc25ffce2e727f96b98ca02bd395641"
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/ARTIST_LOG_013_20261017_EVIDENCE.json",
+      "bytes": 26490,
+      "sha256": "cd11af51080ed57d8738b458a99e08b1b3da215e3c094b78fc0b0ce59e24af40"
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/PROPOSED_DESIGN.md",
+      "bytes": 11748,
+      "sha256": "17652f8df6e86e8a8f701dcca2af7d1addaa4861d4f2540a4cae73f2eeff5285"
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/README.md",
+      "bytes": 7242,
+      "sha256": "5141ba26f9651fdd92cdb81c1f8c474bd79cfe351c3da0fb0e22f68dcb40ebe3"
+    },
+    {
+      "path": "build/physics-lab-dependencies/jolt-1b2e77e3c6c09709e5edc79dc208459b8ff32051/Docs/Architecture.md",
+      "bytes": 109784,
+      "sha256": "3bdc4a9fd7f37302b42299269be9df90531c286a2410a88b52f0462fbc63ec5f"
+    },
+    {
+      "path": "build/physics-lab-dependencies/jolt-1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Body/BodyInterface.h",
+      "bytes": 19440,
+      "sha256": "d6ea48d9a97456f6b88c64ece2721b9b29e78f9be962926ce7ddd8f65ef29115"
+    },
+    {
+      "path": "build/physics-lab-dependencies/jolt-1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/PhysicsSystem.h",
+      "bytes": 25971,
+      "sha256": "fcb6f9500c59535c86d8823c4b9f31863e272df5d4646e33e4d745d171986bd4"
+    }
+  ],
+  "plan_before_sha256": "0b06f06220f668ffe68d5b6445da5e9bf111d2bf65e8287e2f16775091c2fe82",
+  "physics_tree_preservation": {
+    "before": [
+      {
+        "path": "CyrusPhysicsLab/CMakeLists.txt",
+        "sha256": "c1ca94ed61b0236bc856c924fcbac53d0b9c6d950ebcb43a8d2f10521b68602f"
+      },
+      {
+        "path": "CyrusPhysicsLab/include/core.h",
+        "sha256": "d27e8c839c89df9cd940bb77b21085aa2a04b3d8720d814f90a09a83038b7000"
+      },
+      {
+        "path": "CyrusPhysicsLab/include/diagnostics.h",
+        "sha256": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0"
+      },
+      {
+        "path": "CyrusPhysicsLab/installer/CyrusPhysicsLabStartup.ms",
+        "sha256": "a9d31803d3c2434d12bb6d0813fb7f4bd550a0735b523cd73956ecb4501b16c9"
+      },
+      {
+        "path": "CyrusPhysicsLab/README.md",
+        "sha256": "a52552525dd61bd789d7ea98a8fc26e03e0845777927d200cf58465c144bd0b7"
+      },
+      {
+        "path": "CyrusPhysicsLab/scripts/CyrusPhysicsLab.ms",
+        "sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/core.cpp",
+        "sha256": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/crash_watch.cpp",
+        "sha256": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/diagnostics.cpp",
+        "sha256": "5c401905d27c675ff06e66e670b74bd6929f20587b2ffdd04dc99e7d96e487aa"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/jolt_world.cpp",
+        "sha256": "0c91fc3e5e05bf837e33257186869c07bf1e32c984a3b689c1117e1c92d27d42"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/max_host.cpp",
+        "sha256": "3ab5a91d07d8b7e3a286fc54a1c97cb00bb731c45b9496458158886251dcb54e"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/physx_world.cpp",
+        "sha256": "0f966570a65f40f0be0e8e2fbf81658f75c1cd7c4cce0b1cdd8fa846c139e00e"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/storage_plugin.cpp",
+        "sha256": "1fd142acd4cd5aab9aabf83193bec8742b25bcd5e2272bf48e931279a78c54ee"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/__pycache__/ui_layout.cpython-311.pyc",
+        "sha256": "c15a37c578332bb1a1c98f5d5e08ad65dc5a443958c51fa0fffdebd74822494c"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/compare.cpp",
+        "sha256": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/core_tests.cpp",
+        "sha256": "975be38e04da2ef9bf2840fd5f0f00369bbbe6737c044d77cbe49a79ac812457"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/demo.ms",
+        "sha256": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/fixtures/pyramid_append_plane.json",
+        "sha256": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host.ms",
+        "sha256": "dcd15b87209af23cf1c8a617b10367065f00d3f6486fae90649d6466218db96f"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_brush_ui.ms",
+        "sha256": "2cf24f76d2a45f28ddba9e892b36060d20f9403f0b80e3377c2aaab8ea694f89"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_extended.ms",
+        "sha256": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_faults.ms",
+        "sha256": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_previous_scene.ms",
+        "sha256": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_proxy_previous_scene.ms",
+        "sha256": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_proxy_ui.ms",
+        "sha256": "a85f99f4d920fd00acf503331b700b30bffdd589c7bc92234a477ae86c339091"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_regression.ms",
+        "sha256": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_scaled_ui.ms",
+        "sha256": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_timeout_ui.ms",
+        "sha256": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_transforms.ms",
+        "sha256": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_ui_layout.ms",
+        "sha256": "b2664f68fcdb93ef0c20a4b56eacdb7eb15a178fc214bd0c6cb392987a6b44d1"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/paint_probe/CMakeLists.txt",
+        "sha256": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/paint_probe/probe.cpp",
+        "sha256": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/ui_layout.py",
+        "sha256": "e61ce676fe0238957bd76646b612addcbcc94b0e8397b5a962cd0152d310eb4d"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/build.cpython-311.pyc",
+        "sha256": "e864b1c45e1a7c4be1c28b3b1ee238d2c5671a0e964b229cbf922c2d034b5fe3"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/compare.cpython-311.pyc",
+        "sha256": "18e717e47179c6c8840cc886a5588db9d29c5cdad606b0a85904fb09aca200fc"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/host_test.cpython-311.pyc",
+        "sha256": "87a400de31299a12a13a1054a03b5e1be0c70248c4a0b1a508b94e3b4dbbc819"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/installer_test.cpython-311.pyc",
+        "sha256": "377fe730e71fe1cbb914d90942c19c528e5f35541925a04d67a14a37fb6e55ff"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/package.cpython-311.pyc",
+        "sha256": "b15e00c500e05907b9ae5c6561bae457fb401cd5bdd8e9aae61081fcb8438c95"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/build.py",
+        "sha256": "e5b68b2157095202810654f0ba3bc589bdf481020c164c3499fdfc4091a12768"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/build_probe.py",
+        "sha256": "dd7cff0e5b651d116c0996f7d745ab0453d575050b0d8821698bc191eef8588a"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/compare.py",
+        "sha256": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/host_test.py",
+        "sha256": "645b7ba2d16233dc3aabac87828f78863bcbbe904f6686fddf1508495d06072b"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/installer_test.py",
+        "sha256": "4d9d9dbc54ab859c7413cf0fba3e1309e6271553012f987ffa4880ac4aaf1a1e"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/package.py",
+        "sha256": "397c9ccd7f57d575c300277482b65d3a88ef51260219a1940b226018425308c0"
+      }
+    ],
+    "after": [
+      {
+        "path": "CyrusPhysicsLab/CMakeLists.txt",
+        "sha256": "c1ca94ed61b0236bc856c924fcbac53d0b9c6d950ebcb43a8d2f10521b68602f"
+      },
+      {
+        "path": "CyrusPhysicsLab/include/core.h",
+        "sha256": "d27e8c839c89df9cd940bb77b21085aa2a04b3d8720d814f90a09a83038b7000"
+      },
+      {
+        "path": "CyrusPhysicsLab/include/diagnostics.h",
+        "sha256": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0"
+      },
+      {
+        "path": "CyrusPhysicsLab/installer/CyrusPhysicsLabStartup.ms",
+        "sha256": "a9d31803d3c2434d12bb6d0813fb7f4bd550a0735b523cd73956ecb4501b16c9"
+      },
+      {
+        "path": "CyrusPhysicsLab/README.md",
+        "sha256": "a52552525dd61bd789d7ea98a8fc26e03e0845777927d200cf58465c144bd0b7"
+      },
+      {
+        "path": "CyrusPhysicsLab/scripts/CyrusPhysicsLab.ms",
+        "sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/core.cpp",
+        "sha256": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/crash_watch.cpp",
+        "sha256": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/diagnostics.cpp",
+        "sha256": "5c401905d27c675ff06e66e670b74bd6929f20587b2ffdd04dc99e7d96e487aa"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/jolt_world.cpp",
+        "sha256": "0c91fc3e5e05bf837e33257186869c07bf1e32c984a3b689c1117e1c92d27d42"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/max_host.cpp",
+        "sha256": "3ab5a91d07d8b7e3a286fc54a1c97cb00bb731c45b9496458158886251dcb54e"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/physx_world.cpp",
+        "sha256": "0f966570a65f40f0be0e8e2fbf81658f75c1cd7c4cce0b1cdd8fa846c139e00e"
+      },
+      {
+        "path": "CyrusPhysicsLab/src/storage_plugin.cpp",
+        "sha256": "1fd142acd4cd5aab9aabf83193bec8742b25bcd5e2272bf48e931279a78c54ee"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/__pycache__/ui_layout.cpython-311.pyc",
+        "sha256": "c15a37c578332bb1a1c98f5d5e08ad65dc5a443958c51fa0fffdebd74822494c"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/compare.cpp",
+        "sha256": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/core_tests.cpp",
+        "sha256": "975be38e04da2ef9bf2840fd5f0f00369bbbe6737c044d77cbe49a79ac812457"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/demo.ms",
+        "sha256": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/fixtures/pyramid_append_plane.json",
+        "sha256": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host.ms",
+        "sha256": "dcd15b87209af23cf1c8a617b10367065f00d3f6486fae90649d6466218db96f"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_brush_ui.ms",
+        "sha256": "2cf24f76d2a45f28ddba9e892b36060d20f9403f0b80e3377c2aaab8ea694f89"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_extended.ms",
+        "sha256": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_faults.ms",
+        "sha256": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_previous_scene.ms",
+        "sha256": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_proxy_previous_scene.ms",
+        "sha256": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_proxy_ui.ms",
+        "sha256": "a85f99f4d920fd00acf503331b700b30bffdd589c7bc92234a477ae86c339091"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_regression.ms",
+        "sha256": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_scaled_ui.ms",
+        "sha256": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_timeout_ui.ms",
+        "sha256": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_transforms.ms",
+        "sha256": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/host_ui_layout.ms",
+        "sha256": "b2664f68fcdb93ef0c20a4b56eacdb7eb15a178fc214bd0c6cb392987a6b44d1"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/paint_probe/CMakeLists.txt",
+        "sha256": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/paint_probe/probe.cpp",
+        "sha256": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a"
+      },
+      {
+        "path": "CyrusPhysicsLab/tests/ui_layout.py",
+        "sha256": "e61ce676fe0238957bd76646b612addcbcc94b0e8397b5a962cd0152d310eb4d"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/build.cpython-311.pyc",
+        "sha256": "e864b1c45e1a7c4be1c28b3b1ee238d2c5671a0e964b229cbf922c2d034b5fe3"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/compare.cpython-311.pyc",
+        "sha256": "18e717e47179c6c8840cc886a5588db9d29c5cdad606b0a85904fb09aca200fc"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/host_test.cpython-311.pyc",
+        "sha256": "87a400de31299a12a13a1054a03b5e1be0c70248c4a0b1a508b94e3b4dbbc819"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/installer_test.cpython-311.pyc",
+        "sha256": "377fe730e71fe1cbb914d90942c19c528e5f35541925a04d67a14a37fb6e55ff"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/__pycache__/package.cpython-311.pyc",
+        "sha256": "b15e00c500e05907b9ae5c6561bae457fb401cd5bdd8e9aae61081fcb8438c95"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/build.py",
+        "sha256": "e5b68b2157095202810654f0ba3bc589bdf481020c164c3499fdfc4091a12768"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/build_probe.py",
+        "sha256": "dd7cff0e5b651d116c0996f7d745ab0453d575050b0d8821698bc191eef8588a"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/compare.py",
+        "sha256": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/host_test.py",
+        "sha256": "645b7ba2d16233dc3aabac87828f78863bcbbe904f6686fddf1508495d06072b"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/installer_test.py",
+        "sha256": "4d9d9dbc54ab859c7413cf0fba3e1309e6271553012f987ffa4880ac4aaf1a1e"
+      },
+      {
+        "path": "CyrusPhysicsLab/tools/package.py",
+        "sha256": "397c9ccd7f57d575c300277482b65d3a88ef51260219a1940b226018425308c0"
+      }
+    ],
+    "unchanged": true,
+    "files_checked": 44
+  },
+  "prior_package_verification": {
+    "path": "dist/CyrusPhysicsLab-0.1.3-20261017-02/CyrusPhysicsLab-0.1.3-Max2027.mzp",
+    "bytes": 718695,
+    "sha256": "10756869ba3542fcfc4a7d994bba6b03d11d3de4ba0539a338383bc666006720",
+    "matches_013_delivery_receipt": true,
+    "no_package_written": true
+  },
+  "primary_sources": [
+    {
+      "title": "SideFX Stroke SOP",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/sop/stroke.html",
+      "scope": "Authored position/hit/time/pressure/radius records; no smoothing or physics implementation implied.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX RBD Bullet Solver SOP",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/sop/rbdbulletsolver.html",
+      "scope": "Ongoing RBD emission; exact input ports; separate proxy/collider roles, sleep, substeps and emission cache.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX RBD Configure SOP",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/sop/rbdconfigure.html",
+      "scope": "Piece roles and emission configuration.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX EmittingObjects example",
+      "url": "https://www.sidefx.com/docs/houdini/examples/nodes/dop/rbdpackedobject/EmittingObjects.html",
+      "scope": "Description of adding RBDs to an existing packed object; example not executed.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX DeleteObjects example",
+      "url": "https://www.sidefx.com/docs/houdini/examples/nodes/dop/rbdpackedobject/DeleteObjects.html",
+      "scope": "Description of simulation-object removal by bounds; example not executed.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX DOP Network object",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/obj/dopnet.html",
+      "scope": "Simulation checkpoint continuation and retention; correct object-node URL.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX File Cache SOP",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/sop/filecache.html",
+      "scope": "Sequential simulation caching versus independent frame cooking and cached geometry.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX Simulating in SOPs",
+      "url": "https://www.sidefx.com/docs/houdini/destruction/sop_sim.html",
+      "scope": "General emission workflow; exact input numbering taken from specific solver node reference.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX RBD Packed Object DOP",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/dop/rbdpackedobject.html",
+      "scope": "Packed-body roles and links to official emission/deletion examples.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "SideFX POP Kill DOP",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/dop/popkill.html",
+      "scope": "Particle dead/removal policy only; not treated as an arbitrary packed-RBD deletion implementation.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "Jolt pinned architecture",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Docs/Architecture.md",
+      "scope": "Sleeping/waking, callback restrictions, rollback topology and ordering constraints.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "Jolt pinned BodyInterface",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Body/BodyInterface.h",
+      "scope": "Batch insertion, removal/destruction and explicit body-ID creation API.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "Jolt pinned PhysicsSystem",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/PhysicsSystem.h",
+      "scope": "Fixed update interval, collision substeps and state recording API.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "Autodesk Max 2027 Painter canvas V5",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_painter_canvas_interface___v5.html",
+      "scope": "Separate stroke/paint-session callbacks; interactive or batched input.",
+      "read_date": "2026-10-17"
+    },
+    {
+      "title": "Autodesk Max 2027 IRenderingProcess",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_rendering_a_p_i_1_1_i_rendering_process.html",
+      "scope": "General Max scene-update main-thread restriction; renderer interface not proposed as brush scheduler.",
+      "read_date": "2026-10-17"
+    }
+  ],
+  "upstream_identity": {
+    "repository": "jrouwe/JoltPhysics",
+    "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+    "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+  },
+  "knowledge": {
+    "status": {
+      "action": "Review source issues and publish a fresh compatible successor; retain this generation.",
+      "all_sources_verified": false,
+      "compatible": true,
+      "configuration_identities": {
+        "audit_manifest_sha256": "89c7a9dfbc092a9ea7935c1191633df6084018a353d282624ccc2d1f39d9c94c",
+        "audit_run_sha256": "d28e6abb5c93ae933f550ba398a1104d3cc42091b14b14d295804c59fe77f0ae",
+        "audit_schema": "cyrus.file-catalog/2",
+        "build_receipt": {
+          "identities_sha256": "d36ca8957d91b545a4dcb143c9addc6a82375e75159ca485e5cf73a509ae6e2b",
+          "path": "logical.json",
+          "relative_to": "explicit_selected_index_directory",
+          "sha256": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100"
+        },
+        "corpus_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\rag\\corpus-v13.json",
+        "corpus_sha256": "9d62ad9e20cfc66cffe1198f3cd2230acc1bf77f59592d4109a8c79efdcec491",
+        "extraction_version": "bounded-lines/3",
+        "git_state": {
+          "branch": "codex/workflow-0.75",
+          "head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+          "index_sha256": "2e07625bc3d3e0913473b592dd2a0162ea2dbaca35229eed599a9267d0b94866"
+        },
+        "normalization_version": "unicode-persian/1",
+        "ranking": {
+          "bm25_weights": [
+            1,
+            1,
+            0.25
+          ],
+          "default_profile": "terminology",
+          "max_artifact_bytes": 67108864,
+          "max_response_bytes": 4194304,
+          "review_status": "Selected using development evidence; human terminology review pending",
+          "schema": "cyrus.lexical-config/1",
+          "version": "2.1.0"
+        },
+        "root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+        "runtime_sha256": {
+          "adapter-requirements.lock.txt": "2de014a74de456914d1395bf730b3bee84eab31a2b2ba962b4c7199e21cce2fb",
+          "adapter.py": "c2759568525b126040998d15b7e2e83b552a1e63aa63540019735ac51e8d1f70",
+          "adapter_process.py": "440d40d1a4ec2c2e4be20f34883f12136c83e443787adb236947e0bb1d6865ee",
+          "adapter_worker.py": "f4de5aa7b218a21daaaa748cdc8d9be7ee05907a9fc302c687d3935974c921c1",
+          "build_index.py": "ee3df98345ffab7e93abc6315bb59b0141ea1e0709cfc46e923ee0bb51502861",
+          "catalog.py": "625c449ccae22009ef8df0b38d64792b5e30ac7554284a3e9e9fd18bd39283df",
+          "config.toml": "e4fcabad1a92c518b077138911eb367abf4675e7deaa671f991fc8d2205fecae",
+          "contracts.py": "5a3d9583de9acccf2c167974a718de7852226c8b0157f7440adcb6102f0a9485",
+          "evaluate.py": "55b154581ea8cfce67a07aa2139c3e67a8faa69ac8252da54399d9f270891392",
+          "evaluation.py": "bb469101ebb75d277ca85316e6718621931a53f26fd0609988d265682908f997",
+          "extract.py": "d6941fbdfef51881ee646358efce56b5a283e4b23ca29eb2cdec5a81b61db45a",
+          "glossary-v1.json": "4713e2f201caf5b805bdde3d8005a5aca6cd6b7bdb53c829663b7e4ac6f9f585",
+          "integrity.py": "df732b3692a55c151e588246cedebb1cc5d53c8d7fa9404aa9560b2fcdc1f2ab",
+          "lexical.py": "4b4784c3887a764401212bf5ed2be387720b121992d439b6e279b652428f9b4c",
+          "locations.py": "7cfc6fa69a8fde06410f999c70ba56e4af74e699cab7077e170596108cbb85be",
+          "provenance.py": "5131173086bd6f1e1a8e2fc15387db81724d625d871fafa310e2ead8df39fc17",
+          "ranking-v2.1.json": "f40a6d9e7fa66661be8805fb0eae4ae3b1b5a790079fa9dd74e535909a58cddd",
+          "retrieval.py": "d1508e0fea2b90abf6ee7864d12b2e908092821b7e3f75ec720df145d5ea02ee",
+          "retrieval.toml": "3683500dc37580e4df20e968c4243808fa16df4d1796cc68f6153cfdede0863f",
+          "rules.py": "0e7ff97b45bc8a67f32600b0cce37a89953a4829032eaffbf9322857619cbdcc",
+          "search.py": "2e18db2265b7aae5307779da4b145175dbeae829ed3a0257b44e830243d1f788",
+          "status.py": "5a70e875fcd5b9a4daeaee22a25fbdc89ead3d7860c88a171479a843c32057da",
+          "verify_indexes.py": "9830a6a58f08de693c750d38594524599275a7120cad611f023509408980fb43"
+        },
+        "settings": {
+          "max_chunk_chars": 1800,
+          "max_chunk_lines": 40,
+          "max_chunks": 20000,
+          "max_corpus_bytes": 33554432,
+          "max_query_chars": 1024,
+          "max_query_terms": 64,
+          "max_source_bytes": 16777216,
+          "max_sources": 64,
+          "max_top_k": 100,
+          "overlap_lines": 3,
+          "schema_version": 1
+        },
+        "tool_version": "0.3.0"
+      },
+      "corpus_scope": {
+        "chunk_count": 416,
+        "limits": "Explicit reviewed enrollment only; not the whole repository",
+        "paths": [
+          "AGENTS.md",
+          "README.md",
+          "docs/ARTIST_GUIDE.md",
+          "docs/ARCHITECTURE.md",
+          "docs/DOCUMENTATION.md",
+          "docs/LAYOUT_AND_FALLOFF.md",
+          "docs/AGENT_WORKFLOW.md",
+          "CyrusMCP/README.md",
+          "CyrusSurfaceAnalyzer/README.md",
+          "CyrusLicensing/README.md",
+          "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+          "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "website/README.md",
+          "website/content/README.md",
+          "website/content/source-manifest.json",
+          "docs/System_Qualification_0.75_2026-10-09/README.md",
+          "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+          "docs/Layer_Navigation_0.79.2_2026-10-11/README.md",
+          "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+          "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+          "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+          "AminScatter/tools/ui/generate.cjs",
+          "AminScatter/include/execution.h",
+          "AminScatter/include/receiver_plan.h",
+          "AminScatter/tools/ui/templates/unified-core.ms",
+          "AminScatter/scripts/AminScatterObject.ms",
+          "AminScatter/tests/receiver_tests.cpp",
+          "CyrusMCP/tests/test_publication.py",
+          "CyrusMCP/tests/test_feature_catalog.py",
+          "docs/ENGINEERING_FOUNDATION.md",
+          "docs/BACKLOG.md",
+          "docs/Foundation_0.79.6_2026-10-12/README.md",
+          "AminScatter/src/point_publication.inc",
+          "AminScatter/src/cyrus_edit_stack.inc",
+          "AminScatter/tests/publication_tests.cpp",
+          "tools/foundation_validation/publication.py"
+        ],
+        "source_count": 36
+      },
+      "error_type": "stale_evidence",
+      "exit_code": 3,
+      "freshness_scope": "All enrolled parents individually rehashed; no filesystem transaction",
+      "index_generation": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100",
+      "index_schema": "cyrus.lexical-index/2",
+      "ok": false,
+      "rebuild_required": true,
+      "schema": "cyrus.index-status/2",
+      "source_issues": [
+        {
+          "error": "changed source AGENTS.md: hash/identity mismatch; review evidence and rebuild",
+          "path": "AGENTS.md",
+          "source_status": "changed"
+        },
+        {
+          "error": "changed source README.md: hash/identity mismatch; review evidence and rebuild",
+          "path": "README.md",
+          "source_status": "changed"
+        },
+        {
+          "error": "changed source AminScatter/src/cyrus_edit_stack.inc: hash/identity mismatch; review evidence and rebuild",
+          "path": "AminScatter/src/cyrus_edit_stack.inc",
+          "source_status": "changed"
+        }
+      ],
+      "source_verification_requested": true,
+      "sources_checked": 36,
+      "sources_verified": 33,
+      "stale": true,
+      "verification_checks": {
+        "all_artifact_fingerprints_and_chunk_export": true,
+        "all_searchable_rows_against_export": true,
+        "complete_generation_metadata": true,
+        "corpus_definition_identity": true,
+        "logical_generation_fingerprint": true,
+        "runtime_configuration_and_repository": true,
+        "sqlite_metadata_identity": true,
+        "sqlite_quick_check_and_counts": true
+      },
+      "selection": {
+        "mode": "project_registration",
+        "request_generation": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100"
+      },
+      "refresh": {
+        "configured": true,
+        "state": "watching",
+        "process_running": true,
+        "last_observation": {
+          "state": "review_required",
+          "issue": "evidence_review",
+          "observed_utc": "2026-10-17T17:06:25.553042+00:00",
+          "watcher_running": true
+        }
+      }
+    },
+    "search": {
+      "advanced": false,
+      "all_sources_verified": false,
+      "configuration_identities": {
+        "audit_manifest_sha256": "89c7a9dfbc092a9ea7935c1191633df6084018a353d282624ccc2d1f39d9c94c",
+        "audit_run_sha256": "d28e6abb5c93ae933f550ba398a1104d3cc42091b14b14d295804c59fe77f0ae",
+        "audit_schema": "cyrus.file-catalog/2",
+        "build_receipt": {
+          "identities_sha256": "d36ca8957d91b545a4dcb143c9addc6a82375e75159ca485e5cf73a509ae6e2b",
+          "path": "logical.json",
+          "relative_to": "explicit_selected_index_directory",
+          "sha256": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100"
+        },
+        "corpus_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\rag\\corpus-v13.json",
+        "corpus_sha256": "9d62ad9e20cfc66cffe1198f3cd2230acc1bf77f59592d4109a8c79efdcec491",
+        "extraction_version": "bounded-lines/3",
+        "git_state": {
+          "branch": "codex/workflow-0.75",
+          "head": "5aee4ef2242307b92e16c96e0106ee095d6a4215",
+          "index_sha256": "2e07625bc3d3e0913473b592dd2a0162ea2dbaca35229eed599a9267d0b94866"
+        },
+        "normalization_version": "unicode-persian/1",
+        "ranking": {
+          "bm25_weights": [
+            1,
+            1,
+            0.25
+          ],
+          "default_profile": "terminology",
+          "max_artifact_bytes": 67108864,
+          "max_response_bytes": 4194304,
+          "review_status": "Selected using development evidence; human terminology review pending",
+          "schema": "cyrus.lexical-config/1",
+          "version": "2.1.0"
+        },
+        "root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+        "runtime_sha256": {
+          "adapter-requirements.lock.txt": "2de014a74de456914d1395bf730b3bee84eab31a2b2ba962b4c7199e21cce2fb",
+          "adapter.py": "c2759568525b126040998d15b7e2e83b552a1e63aa63540019735ac51e8d1f70",
+          "adapter_process.py": "440d40d1a4ec2c2e4be20f34883f12136c83e443787adb236947e0bb1d6865ee",
+          "adapter_worker.py": "f4de5aa7b218a21daaaa748cdc8d9be7ee05907a9fc302c687d3935974c921c1",
+          "build_index.py": "ee3df98345ffab7e93abc6315bb59b0141ea1e0709cfc46e923ee0bb51502861",
+          "catalog.py": "625c449ccae22009ef8df0b38d64792b5e30ac7554284a3e9e9fd18bd39283df",
+          "config.toml": "e4fcabad1a92c518b077138911eb367abf4675e7deaa671f991fc8d2205fecae",
+          "contracts.py": "5a3d9583de9acccf2c167974a718de7852226c8b0157f7440adcb6102f0a9485",
+          "evaluate.py": "55b154581ea8cfce67a07aa2139c3e67a8faa69ac8252da54399d9f270891392",
+          "evaluation.py": "bb469101ebb75d277ca85316e6718621931a53f26fd0609988d265682908f997",
+          "extract.py": "d6941fbdfef51881ee646358efce56b5a283e4b23ca29eb2cdec5a81b61db45a",
+          "glossary-v1.json": "4713e2f201caf5b805bdde3d8005a5aca6cd6b7bdb53c829663b7e4ac6f9f585",
+          "integrity.py": "df732b3692a55c151e588246cedebb1cc5d53c8d7fa9404aa9560b2fcdc1f2ab",
+          "lexical.py": "4b4784c3887a764401212bf5ed2be387720b121992d439b6e279b652428f9b4c",
+          "locations.py": "7cfc6fa69a8fde06410f999c70ba56e4af74e699cab7077e170596108cbb85be",
+          "provenance.py": "5131173086bd6f1e1a8e2fc15387db81724d625d871fafa310e2ead8df39fc17",
+          "ranking-v2.1.json": "f40a6d9e7fa66661be8805fb0eae4ae3b1b5a790079fa9dd74e535909a58cddd",
+          "retrieval.py": "d1508e0fea2b90abf6ee7864d12b2e908092821b7e3f75ec720df145d5ea02ee",
+          "retrieval.toml": "3683500dc37580e4df20e968c4243808fa16df4d1796cc68f6153cfdede0863f",
+          "rules.py": "0e7ff97b45bc8a67f32600b0cce37a89953a4829032eaffbf9322857619cbdcc",
+          "search.py": "2e18db2265b7aae5307779da4b145175dbeae829ed3a0257b44e830243d1f788",
+          "status.py": "5a70e875fcd5b9a4daeaee22a25fbdc89ead3d7860c88a171479a843c32057da",
+          "verify_indexes.py": "9830a6a58f08de693c750d38594524599275a7120cad611f023509408980fb43"
+        },
+        "settings": {
+          "max_chunk_chars": 1800,
+          "max_chunk_lines": 40,
+          "max_chunks": 20000,
+          "max_corpus_bytes": 33554432,
+          "max_query_chars": 1024,
+          "max_query_terms": 64,
+          "max_source_bytes": 16777216,
+          "max_sources": 64,
+          "max_top_k": 100,
+          "overlap_lines": 3,
+          "schema_version": 1
+        },
+        "tool_version": "0.3.0"
+      },
+      "diagnostics": {
+        "applied_expansions": [],
+        "expansion_bound_reached": false,
+        "fts_expression": "\"cyrusphysicslab\"",
+        "glossary_bypassed": false,
+        "normalized_query": "cyrusphysicslab",
+        "original_terms": [
+          "cyrusphysicslab"
+        ],
+        "profile": "terminology",
+        "search_terms": [
+          "cyrusphysicslab"
+        ]
+      },
+      "duration_seconds": 0.153266,
+      "filters": {},
+      "freshness_scope": "Returned sources and duplicate provenance only; not a filesystem transaction",
+      "fts_expression": "\"cyrusphysicslab\"",
+      "index_generation": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100",
+      "index_schema": "cyrus.lexical-index/2",
+      "mode": "keyword",
+      "ok": true,
+      "query": "CyrusPhysicsLab",
+      "results": [
+        {
+          "chunk_id": "47aaae6ae1e0ec94f24d0890c68a400e469d74a73840e3fea819453d0ee90bed",
+          "context": "Physics and animation extension contract",
+          "equivalent_sources": [],
+          "excerpt": "## Physics and animation extension contract\r\n\r\n**Required design constraints for future integration; not delivered Scatter capabilities.** The independently versioned [Physics Lab](../CyrusPhysicsLab/README.md) has experimental implementation and its own evidence. It does not qualify integration into Scatter. The [physics design](Scatter_Physics_Research_2026-10-16/PROPOSED_DESIGN.md) remains the integration proposal; the [execution ledger](Scatter_Physics_Research_2026-10-16/README.md) distinguishes later lab work from the original research. Further roadmap implementation requires a current u",
+          "excerpt_truncated": true,
+          "extraction_version": "bounded-lines/3",
+          "locator": {
+            "end_column_exclusive": 3,
+            "end_line": 53,
+            "end_offset": 10330,
+            "start_column": 1,
+            "start_line": 41,
+            "start_offset": 6821
+          },
+          "match": {
+            "exact_identifier": true,
+            "exact_path": false,
+            "fts_bm25": -5.660002004217655
+          },
+          "matched_chunk_id": "515e90178cb101faca80b7106bc70cc729c752b86b81301589f402282af5593a",
+          "matched_locator": {
+            "end_column_exclusive": 3,
+            "end_line": 44,
+            "end_offset": 7501,
+            "start_column": 1,
+            "start_line": 42,
+            "start_offset": 6866
+          },
+          "method": "reviewed-contract-section",
+          "method_limits": "Complete explicitly enrolled section, ranked by its best matching fragment. Surrounding document and external evidence are separate; requirements are not proof of implementation or acceptance.",
+          "normalization_version": "unicode-persian/1",
+          "original_text": "## Physics and animation extension contract\r\n\r\n**Required design constraints for future integration; not delivered Scatter capabilities.** The independently versioned [Physics Lab](../CyrusPhysicsLab/README.md) has experimental implementation and its own evidence. It does not qualify integration into Scatter. The [physics design](Scatter_Physics_Research_2026-10-16/PROPOSED_DESIGN.md) remains the integration proposal; the [execution ledger](Scatter_Physics_Research_2026-10-16/README.md) distinguishes later lab work from the original research. Further roadmap implementation requires a current user instruction; completed P06 grids and P07 orientation remain implemented.\r\n\r\n1. Separate static scattering, animated evaluation and stateful simulation. Animated transforms, deforming receiver/proxy geometry, animated masks and solver state have different invalidation costs. Completed static planting and settled results remain reusable while unrelated objects animate.\r\n2. Keep authored emission/coverage, stable body IDs, solver state, completed transforms and display buffers distinct. Solver handles, point-array order and viewport timing cannot define persistent identity. Stable IDs do not guarantee unchanged transforms when physically coupled bodies interact.\r\n3. Declare time semantics before implementation: start/reset state, fixed simulation steps/substeps, frame rate and units, birth schedule, forward/backward seeking, checkpoints, missing-cache behavior and subframe render evaluation. Resuming simulation may require velocities/contact or solver state; final transforms alone do not establish resumability. Do not silently recook a whole simulation during a preview/render read.\r\n4. Separate render meshes, collision proxies, receivers and colliders. Validate source-pivot/center-of-mass mapping and scale once. Cache proxy preparation by relevant geometry/settings revisions. Physically settled results need a dedicated publication inlet; ordinary projection/alignment/spacing cleanup must not move or delete their support afterward without an explicit policy.\r\n5. Keep workers isolated from Max. Any future asynchronous scheduler needs owned snapshots, session/revision checks, bounded progress, cancellation and join/retirement on owner deletion, scene reset/load and shutdown. The present synchronous executor does not supply that guarantee. A cancelled or stale solve cannot publish late or hold an ordinary Undo transaction open indefinitely.\r\n6. Bound bodies, contact pairs, proxy geometry, scratch, history, checkpoints and render caches separately. Show incomplete/stale results honestly. Scene save/load, missing assets, engine-version changes and recipe portability need explicit contracts; solver memory dumps are not portable recipes.\r\n\r\nPrimary reference lessons checked on 17 October 2026: SideFX documents separate render/proxy/collider inputs and simulation cache limits in [RBD Bullet Solver](https://www.sidefx.com/docs/houdini/nodes/sop/rbdbulletsolver.html), explicit saved-output reuse in [File Cache](https://www.sidefx.com/docs/houdini/nodes/sop/filecache.html), and changing point distributions on changing surfaces in [Scatter](https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html). These are workflow references, not evidence of Cyrus behavior or a claim about Houdini's private implementation. Forest's [inspected memory paths](plans/native-placement/SOURCE_MAP.md) also show why native storage alone does not prove compact Undo or failure retention.\r\n\r\n",
+          "parent_sha256": "3a0908705a9b79eb852307235789ff456ee487cdf175446e3263a59a0e74adbf",
+          "path": "docs/ENGINEERING_FOUNDATION.md",
+          "rank": 1,
+          "search_text": "## physics and animation extension contract **required design constraints for future integration; not delivered scatter capabilities.** the independently versioned [physics lab](../cyrusphysicslab/readme.md) has experimental implementation and its own evidence. it does not qualify integration into scatter. the [physics design](scatter_physics_research_2026-10-16/proposed_design.md) remains the integration proposal; the [execution ledger](scatter_physics_research_2026-10-16/readme.md) distinguishes later lab work from the original research. further roadmap implementation requires a current user instruction; completed p06 grids and p07 orientation remain implemented. 1. separate static scattering, animated evaluation and stateful simulation. animated transforms, deforming receiver/proxy geometry, animated masks and solver state have different invalidation costs. completed static planting and settled results remain reusable while unrelated objects animate. 2. keep authored emission/coverage, stable body ids, solver state, completed transforms and display buffers distinct. solver handles, point-array order and viewport timing cannot define persistent identity. stable ids do not guarantee unchanged transforms when physically coupled bodies interact. 3. declare time semantics before implementation: start/reset state, fixed simulation steps/substeps, frame rate and units, birth schedule, forward/backward seeking, checkpoints, missing-cache behavior and subframe render evaluation. resuming simulation may require velocities/contact or solver state; final transforms alone do not establish resumability. do not silently recook a whole simulation during a preview/render read. 4. separate render meshes, collision proxies, receivers and colliders. validate source-pivot/center-of-mass mapping and scale once. cache proxy preparation by relevant geometry/settings revisions. physically settled results need a dedicated publication inlet; ordinary projection/alignment/spacing cleanup must not move or delete their support afterward without an explicit policy. 5. keep workers isolated from max. any future asynchronous scheduler needs owned snapshots, session/revision checks, bounded progress, cancellation and join/retirement on owner deletion, scene reset/load and shutdown. the present synchronous executor does not supply that guarantee. a cancelled or stale solve cannot publish late or hold an ordinary undo transaction open indefinitely. 6. bound bodies, contact pairs, proxy geometry, scratch, history, checkpoints and render caches separately. show incomplete/stale results honestly. scene save/load, missing assets, engine-version changes and recipe portability need explicit contracts; solver memory dumps are not portable recipes. primary reference lessons checked on 17 october 2026: sidefx documents separate render/proxy/collider inputs and simulation cache limits in [rbd bullet solver](https://www.sidefx.com/docs/houdini/nodes/sop/rbdbulletsolver.html), explicit saved-output reuse in [file cache](https://www.sidefx.com/docs/houdini/nodes/sop/filecache.html), and changing point distributions on changing surfaces in [scatter](https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html). these are workflow references, not evidence of cyrus behavior or a claim about houdini's private implementation. forest's [inspected memory paths](plans/native-placement/source_map.md) also show why native storage alone does not prove compact undo or failure retention.",
+          "source": {
+            "applicability": {
+              "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass",
+              "previous_index_snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities",
+              "snapshot": "Maintained engineering direction reviewed 17 October 2026 against Scatter 0.85.4/schema 58; individual historical witnesses retain their original builds and limits."
+            },
+            "canonical": {
+              "evidence": "Required F01-F12 behavior, conditional guarantees, evidence and limits",
+              "preferred_path": "docs/ENGINEERING_FOUNDATION.md",
+              "relationship": "selected-original"
+            },
+            "component": "docs",
+            "contract_sections": [
+              [
+                13,
+                30
+              ],
+              [
+                31,
+                40
+              ],
+              [
+                41,
+                53
+              ],
+              [
+                54,
+                61
+              ],
+              [
+                66,
+                77
+              ],
+              [
+                78,
+                89
+              ],
+              [
+                90,
+                101
+              ],
+              [
+                102,
+                113
+              ],
+              [
+                114,
+                125
+              ],
+              [
+                126,
+                137
+              ],
+              [
+                138,
+                149
+              ],
+              [
+                150,
+                161
+              ],
+              [
+                162,
+                173
+              ],
+              [
+                174,
+                185
+              ],
+              [
+                186,
+                197
+              ],
+              [
+                198,
+                210
+              ]
+            ],
+            "current_reference_sources": [
+              "README.md"
+            ],
+            "generated": false,
+            "generated_source": null,
+            "inventory_decision": null,
+            "inventory_reason": null,
+            "knowledge_status": "current",
+            "path": "docs/ENGINEERING_FOUNDATION.md",
+            "ranges": [
+              [
+                1,
+                227
+              ]
+            ],
+            "referenced_by_current_docs": true,
+            "review_status": "Agent reviewed 17 October 2026: current phase-status wording and navigation; no new product qualification or authority promotion.",
+            "role": "maintained_guide",
+            "selection_reason": "Complete document, partitioned at explicit contract boundaries so every guarantee, limit and evidence cell stays together; no omitted lines.",
+            "sha256": "3a0908705a9b79eb852307235789ff456ee487cdf175446e3263a59a0e74adbf",
+            "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md"
+          },
+          "text_group": "7ab3f84b6426b87f18f5e2fcf2d33c72d7fed1f72cb8b9074580b30eae37b382"
+        }
+      ],
+      "schema": "cyrus.search-response/2",
+      "sources_checked": 1,
+      "stale": false,
+      "top_k": 1,
+      "verification_checks": {
+        "all_artifact_fingerprints_and_chunk_export": true,
+        "complete_generation_metadata": true,
+        "corpus_definition_identity": true,
+        "logical_generation_fingerprint": true,
+        "runtime_configuration_and_repository": true,
+        "sqlite_metadata_identity": true,
+        "sqlite_quick_check_and_counts": true
+      }
+    },
+    "routing": "Full source verification was stale (33/36); narrow successful evidence search retained in full. Direct originals used for the current design. No refresh, enrollment change or activation."
+  },
+  "lookup_limits": [
+    "Attempted Autodesk 2027 developer thread_safety page returned InternalError; equivalent general restriction verified in official 2027 IRenderingProcess API page.",
+    "An attempted DOP-node dopnet URL failed; correct official obj/dopnet page used.",
+    "General SideFX SOP-simulation overview is not the authority for exact current RBD Bullet Solver port numbering."
+  ],
+  "verification": {
+    "scoped_tracked_diff_check": "git diff --check passed for the two edited existing research documents",
+    "report_trailing_whitespace": [],
+    "physics_tree_unchanged": true,
+    "head_unchanged": true,
+    "limitations": "Read/hash checks are sequential observations, not a filesystem transaction. No product/runtime acceptance established."
+  },
+  "git_status_at_start": " M AminScatter/CMakeLists.txt\n M AminScatter/include/placement_store.h\n M AminScatter/include/placement_value.h\n M AminScatter/src/cyrus_edit.cpp\n M AminScatter/src/cyrus_edit_stack.inc\n M AminScatter/src/direction_orientation_bridge.inc\n M AminScatter/src/max_bridge.cpp\n M AminScatter/src/placement_identity.inc\n M AminScatter/src/placement_store.cpp\n M AminScatter/src/placement_value.cpp\n M AminScatter/src/recipes_bridge.cpp\n M AminScatter/tests/placement_store_tests.cpp\n M docs/README.md\n M tools/procedural_lab/offline_build.py\n?? AminScatter/include/placement_materialization.h\n?? AminScatter/src/placement_hold_qualification.cpp\n?? AminScatter/src/placement_materialization.cpp\n?? CyrusPhysicsLab/CMakeLists.txt\n?? CyrusPhysicsLab/include/\n?? CyrusPhysicsLab/installer/\n?? CyrusPhysicsLab/scripts/\n?? CyrusPhysicsLab/src/\n?? CyrusPhysicsLab/tests/\n?? CyrusPhysicsLab/tools/\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/Scatter_Physics_Research_2026-10-16/ARTIST_LOG_013_20261017.md\n?? docs/Scatter_Physics_Research_2026-10-16/ARTIST_LOG_013_20261017_EVIDENCE.json\n?? docs/Scatter_Physics_Research_2026-10-16/crash-diagnostics-fixtures/\n?? docs/Scatter_Physics_Research_2026-10-16/outside-brush-fixtures/\n?? docs/plans/landscape-presentation/\n?? presentation-studio/\n?? website/prototypes/\n",
+  "git_status_before_evidence_write": " M AminScatter/CMakeLists.txt\n M AminScatter/include/placement_store.h\n M AminScatter/include/placement_value.h\n M AminScatter/src/cyrus_edit.cpp\n M AminScatter/src/cyrus_edit_stack.inc\n M AminScatter/src/direction_orientation_bridge.inc\n M AminScatter/src/max_bridge.cpp\n M AminScatter/src/placement_identity.inc\n M AminScatter/src/placement_store.cpp\n M AminScatter/src/placement_value.cpp\n M AminScatter/src/recipes_bridge.cpp\n M AminScatter/tests/placement_store_tests.cpp\n M docs/README.md\n M docs/Scatter_Physics_Research_2026-10-16/PHASED_PLAN.md\n M docs/Scatter_Physics_Research_2026-10-16/README.md\n M tools/procedural_lab/offline_build.py\n?? AminScatter/include/placement_materialization.h\n?? AminScatter/src/placement_hold_qualification.cpp\n?? AminScatter/src/placement_materialization.cpp\n?? CyrusPhysicsLab/CMakeLists.txt\n?? CyrusPhysicsLab/include/\n?? CyrusPhysicsLab/installer/\n?? CyrusPhysicsLab/scripts/\n?? CyrusPhysicsLab/src/\n?? CyrusPhysicsLab/tests/\n?? CyrusPhysicsLab/tools/\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/Scatter_Physics_Research_2026-10-16/ARTIST_LOG_013_20261017.md\n?? docs/Scatter_Physics_Research_2026-10-16/ARTIST_LOG_013_20261017_EVIDENCE.json\n?? docs/Scatter_Physics_Research_2026-10-16/CONTINUOUS_BRUSH_RESEARCH_20261017.md\n?? docs/Scatter_Physics_Research_2026-10-16/crash-diagnostics-fixtures/\n?? docs/Scatter_Physics_Research_2026-10-16/outside-brush-fixtures/\n?? docs/plans/landscape-presentation/\n?? presentation-studio/\n?? tools/native_placement/generation.ms\n?? tools/native_placement/run_generation.py\n?? website/prototypes/\n"
+}

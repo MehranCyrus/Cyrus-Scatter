@@ -1,0 +1,39 @@
+{
+  "repository": "https://github.com/mhogg/pygeodesic",
+  "commit": "8106598e5575c44ec2d74965362459e1c421896a",
+  "original_author": "Danil Kirsanov, 2008, MIT",
+  "files": {
+    "geodesic_algorithm_base.h": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/pygeodesic/geodesic_kirsanov/geodesic_algorithm_base.h",
+      "sha256": "a03f565d56da77949a763b7db6522757e61e1e1b0e0c6934af2e2168b87fe4d0"
+    },
+    "geodesic_algorithm_exact.h": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/pygeodesic/geodesic_kirsanov/geodesic_algorithm_exact.h",
+      "sha256": "1243103a01c3348902a7437032e39a04083eb2c121f0b727303bc2e2f40a28f1"
+    },
+    "geodesic_algorithm_exact_elements.h": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/pygeodesic/geodesic_kirsanov/geodesic_algorithm_exact_elements.h",
+      "sha256": "5bcafe47d0f47b35e45b80673fcf5176666de55a05f9915b3f4b34a504de0d2b"
+    },
+    "geodesic_constants_and_simple_functions.h": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/pygeodesic/geodesic_kirsanov/geodesic_constants_and_simple_functions.h",
+      "sha256": "0670cbd2e78ea6a112572592da61d8d787e496755a3b355825f11b060430a0cb"
+    },
+    "geodesic_memory.h": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/pygeodesic/geodesic_kirsanov/geodesic_memory.h",
+      "sha256": "ee75bcef3573f716f74ebc06be9b0c2d4b5fa83927682bb444b74ac9665ce79d"
+    },
+    "geodesic_mesh.h": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/pygeodesic/geodesic_kirsanov/geodesic_mesh.h",
+      "sha256": "223a17cd66f7aaf5f7669c5db6f52b056b833235ed7d89f8742891fd2bc129df"
+    },
+    "geodesic_mesh_elements.h": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/pygeodesic/geodesic_kirsanov/geodesic_mesh_elements.h",
+      "sha256": "7059c8cab1a732753e2475f79701f2797a1d8968d6082be51d172a47dc30033f"
+    },
+    "LICENSE": {
+      "url": "https://raw.githubusercontent.com/mhogg/pygeodesic/8106598e5575c44ec2d74965362459e1c421896a/LICENSE",
+      "sha256": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52"
+    }
+  }
+}

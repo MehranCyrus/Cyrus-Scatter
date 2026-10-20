@@ -1,6 +1,56 @@
 # Scatter Physics phased development plan
 
+**Authorized successor, 18 October 2026: standalone 0.2.0.** Finish/Freeze will
+bake each completed session into an independent Editable Poly, registered as a
+static triangle-mesh collider. Current source quality then governs new births
+only. This is an explicit workflow change from 0.1.9's retained procedural rows;
+Scatter versions and registration identities remain unchanged. Native host-thread
+publication owns mesh conversion, scene creation, collider references and result
+retirement in one Max Undo operation. Workers continue consuming copied numeric
+inputs. The baked node owns its geometry/material assignment, independent of later
+palette changes; edits to that node are recaptured on the next Start. Clear/Rebuild
+operate on retained procedural results only, never silently delete baked geometry.
+The existing 64 collider / 200,000 combined collision-triangle and 2,000,000 output
+mesh bounds remain: baking preflights the next collider input and retains the
+pending preview on failure. Peak publication includes the prior state, solved
+state, one assembled triangle mesh and its converted poly; Undo retains the
+created node and immutable before/after state, not a per-body script copy.
+Checkbox hit testing must reject row/blank/keyboard toggles; unassigned materials
+receive a source-wire-colour fallback. Acceptance includes actual UI handlers,
+continuous/outside strokes, quality changes, static stacking, atomic failure,
+Undo/Redo, deletion/edit recapture, clone, save/reopen and mountain fixtures.
+No Computer Use or artist-profile installation is authorized by this delivery.
+
+**Current standalone successor:** [0.2.1 small baked collider repair](COLLIDER_COOK_021.md),
+retaining the [0.2.0 baked geometry workflow](BAKE_WORKFLOW_020.md).
+Earlier [0.1.9 hull/UI and model-lifecycle repair](STABILITY_UI_019.md),
+with [ready-scene testing instructions](TEST_SCENE_019.md). The original phases
+and earlier receipts below remain historical; they do not qualify new source.
+
 16 October 2026. **Original planning status: experiments and implementation were NOT STARTED when this plan was written.** The user subsequently authorized building and testing a separate Max 2027 node, without integrating it into Scatter and without Computer Use. [IMPLEMENTATION.md](IMPLEMENTATION.md) tracks that execution. The original plan and its unchecked checklist remain a planning baseline, not a current completion receipt. A later request supplies its own scope; this document does not require repeated approval for routine work already authorized within it.
+
+**17 October research continuation:** [Continuous Brush research](CONTINUOUS_BRUSH_RESEARCH_20261017.md)
+defines proposed CB1–CB6 work packages for the separate lab after the artist's
+0.1.3 recording exposed the wait-between-strokes limitation. Its live session
+spans multiple interacting gestures, replacing this original plan's completed
+gesture boundary for that experiment. Finish, lost bodies, history, scheduling
+and recovery have explicit proposed gates. This is research only; the historical
+checklist below is preserved and no Scatter integration is authorized by it.
+
+**Subsequent implementation authorization:** the user requested CB1–CB6 execution
+in the independent lab, including continuous brush, Undo and outside-surface
+tests while retaining crash recording. See [the 0.1.4 execution ledger](CONTINUOUS_BRUSH_014.md).
+The original unchecked gates below are historical; no main Scatter integration
+or artist-session installation is included in this work.
+
+**18 October collision correction:** [the 0.1.6 investigation and qualification](COLLISION_BINDINGS_016.md)
+tracks the artist's sphere/plane report after the separate 0.1.5 surface-grip
+delivery. It preserves the solver and corrects model/receiver proxy assignment;
+it does not resume the proposed main-plugin integration phases below.
+
+**18 October mountain follow-up:** [the 0.1.7 investigation](MOUNTAIN_BRUSH_017.md)
+adds collision-shape inspection and investigates the actual tall-pyramid/mountain
+scene. Its Max 2027 receipts and limits remain scoped to the standalone lab.
 
 The objective is an artist-controlled tool for spraying rigid leaves, stones and debris, letting them collide and settle, and retaining the result as efficient instances. Start with a controlled **Jolt CPU versus PhysX CPU comparison and real Max 2027 brush tests**. Select the engine and host scheduling approach from those results before product integration.
 
@@ -270,3 +320,31 @@ All boxes below intentionally remain unchecked. Completing this document does no
 - [ ] 8: qualify the exact Max 2027 pair and deliver its verified MZP.
 
 The recommended first future execution request is **Phase 1A + Phase 1B only**: comparison harnesses and owned Max 2027 brush experiments, with reports as the deliverable. Start with analytic single-body and small leaf fixtures plus the current brush lifecycle. Increase load only after those pass. Return the engine recommendation, host constraints and unresolved decisions; product implementation follows the Phase 2 contract gate under the user's subsequent scope.
+
+## 19 October 2026 — 0.2.1 small baked collider correction
+
+Authorized standalone defect repair after delivered 0.2.0. The artist's Fast
+teapot → Finish → Detailed → Start session baked 21 millimetre-scale teapots;
+Detailed source cooking succeeded, but Jolt removed all 84,672 recaptured static
+triangles with its absolute near-zero area test. The old generic error hid this.
+
+Select **0.2.1**: patch to mesh-collider cooking, bake admission and failed-start
+cleanup; retain saved schema/input format and Finish ownership. Normalize copied
+static triangles for cooking and apply inverse scale/offset, with finite bounds
+and no replacement hull/box. Validate the actual staged Editable Poly collider
+before publication. Keep original geometry/materials and atomic Undo. Host APIs
+remain on the host thread; workers own numeric copies. Cooking uses bounded
+O(vertices + triangles) copies within existing 200k admission; no retained cache
+or unbounded retries. Release failed new workers without destroying recovery or
+previous baked nodes. Acceptance: exact captured input; tiny/default/large teapot,
+sphere/pyramid and mountain repeated Fast/Finish/Detailed strokes, outside/Undo,
+save/reopen and failed publication retention. Record measured limits honestly.
+
+Measured expansion: cook-only repair preserved the exact captured mesh but a
+2 mm box initially landed then leaked through a 0.5 mm tessellated slope.
+A diagnostic 100x internal solver frame retained contact. Add a bounded
+power-of-two solver length scale (up to 1024) for source diagonals below 2 cm,
+scaling geometry/positions/linear velocity/gravity and physical thresholds
+consistently. Keep angles, time, mass and all external metre data unchanged;
+normal-sized scenes stay at scale 1. Checkpoints remain solver-fingerprinted.
+This is a measured numerical correction, not a user-facing unit change.

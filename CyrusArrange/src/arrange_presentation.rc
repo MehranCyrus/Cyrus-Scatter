@@ -1,0 +1,8 @@
+#include <windows.h>
+#include "presentation_resource.h"
+IDD_CYRUS_ARRANGE_UI_UNAVAILABLE DIALOGEX 0, 0, 198, 57
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD
+FONT 9, "Segoe UI"
+BEGIN
+    LTEXT "Cyrus Arrange controls are not loaded. Open Cyrus Arrange from its toolbar action, then select this modifier again. After installing a new version, restart Max.", -1, 5, 4, 188, 48
+END

@@ -1,0 +1,2 @@
+#pragma once
+#define IDD_CYRUS_ARRANGE_UI_UNAVAILABLE 801

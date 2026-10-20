@@ -1,0 +1,942 @@
+{
+  "scope": "Read-only artist log analysis; no product implementation/build/install/host interaction.",
+  "source_directory": "C:\\Users\\Mehran\\AppData\\Local\\Cyrus\\PhysicsLab\\Diagnostics\\20261017-133334-933-pid26456",
+  "snapshot_directory": "build\\physics-lab-013-artist-log-20261017-01",
+  "source_files": [
+    {
+      "name": "build-identity.json",
+      "bytes": 4251,
+      "sha256": "06b9b983aa392d16cec04585f7fea02381431a10fd01a612a45686ed85e3b29c"
+    },
+    {
+      "name": "context-0.json",
+      "bytes": 195772,
+      "sha256": "4c74c5efd8efe370b3dcff35084cbf6412db5d9b922cd1e5568d0ce545a96cc6"
+    },
+    {
+      "name": "context-1.json",
+      "bytes": 294924,
+      "sha256": "1d9cd9cdcdc51b17cfa2a60e86997897bfb925203063e52835b38aba231e4f41"
+    },
+    {
+      "name": "context-2.json",
+      "bytes": 295009,
+      "sha256": "c7252c0697753fea0986103f4f77774cfab1b95321784a6ae4a7d2e84a91e3ee"
+    },
+    {
+      "name": "context-3.json",
+      "bytes": 294299,
+      "sha256": "22e342ff938bf290fcea9e26b932f8750a019b8a03611eaa3c5548d0f4d6cffc"
+    },
+    {
+      "name": "context-4.json",
+      "bytes": 195772,
+      "sha256": "4c74c5efd8efe370b3dcff35084cbf6412db5d9b922cd1e5568d0ce545a96cc6"
+    },
+    {
+      "name": "context-5.json",
+      "bytes": 297374,
+      "sha256": "fd2df70ea989699617bbd1c51ff695914927317f3a55f935875c3b7d37e9c981"
+    },
+    {
+      "name": "context-6.json",
+      "bytes": 297679,
+      "sha256": "751d86919f71f05268bbbd246055c37122acccfa85e4a4ebdc71d1382b17aeea"
+    },
+    {
+      "name": "context-7.json",
+      "bytes": 195772,
+      "sha256": "4c74c5efd8efe370b3dcff35084cbf6412db5d9b922cd1e5568d0ce545a96cc6"
+    },
+    {
+      "name": "events-0.jsonl",
+      "bytes": 2289331,
+      "sha256": "88ca3853cb790aca6da866b58de3269828a00dbf3e10ef40d86da66bcdc9e989"
+    },
+    {
+      "name": "exception.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "modules.json",
+      "bytes": 167383,
+      "sha256": "88899570924880be97708f18c3561e94dc6cbe7b84b70a240b309e602a775c47"
+    }
+  ],
+  "original_files_edited_by_analysis": false,
+  "source_still_equals_snapshot": false,
+  "source_advanced_files": [
+    "events-0.jsonl"
+  ],
+  "later_events_observed": [
+    {
+      "data": {
+        "document": 2327191532720,
+        "ending": false,
+        "error": "",
+        "gesture_active": false,
+        "owner": 4,
+        "painting": false,
+        "preview_count": 0,
+        "rejected_gesture": false,
+        "released": false,
+        "revision": 2,
+        "saved_count": 10,
+        "session": false,
+        "staged": false
+      },
+      "event": "stop.enter",
+      "qpc": 2862729577431,
+      "seq": 4915,
+      "thread": 44824,
+      "utc_filetime": 134367177713866457
+    },
+    {
+      "data": {
+        "document": 2327191532720,
+        "ending": true,
+        "error": "",
+        "gesture_active": false,
+        "owner": 4,
+        "painting": false,
+        "preview_count": 0,
+        "rejected_gesture": false,
+        "released": false,
+        "revision": 2,
+        "saved_count": 10,
+        "session": false,
+        "staged": false
+      },
+      "event": "cancel.enter",
+      "qpc": 2862729602417,
+      "seq": 4916,
+      "thread": 44824,
+      "utc_filetime": 134367177713900741
+    },
+    {
+      "data": {
+        "document": 2327191532720,
+        "ending": true,
+        "error": "",
+        "gesture_active": false,
+        "owner": 4,
+        "painting": false,
+        "preview_count": 0,
+        "rejected_gesture": false,
+        "released": false,
+        "revision": 2,
+        "saved_count": 10,
+        "session": false,
+        "staged": false
+      },
+      "event": "cancel.exit",
+      "qpc": 2862729622254,
+      "seq": 4917,
+      "thread": 44824,
+      "utc_filetime": 134367177713920660
+    },
+    {
+      "data": {
+        "document": 2327191532720,
+        "ending": false,
+        "error": "",
+        "gesture_active": false,
+        "owner": 4,
+        "painting": false,
+        "preview_count": 0,
+        "rejected_gesture": false,
+        "released": false,
+        "revision": 2,
+        "saved_count": 10,
+        "session": false,
+        "staged": false
+      },
+      "event": "stop.exit",
+      "qpc": 2862729642318,
+      "seq": 4918,
+      "thread": 44824,
+      "utc_filetime": 134367177713931665
+    }
+  ],
+  "version": "0.1.3",
+  "loaded_pair": [
+    {
+      "base": 140721091051520,
+      "name": "CyrusPhysicsStorage.dlh",
+      "path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusPhysicsLab\\0.1.3\\9004653a153d\\native\\CyrusPhysicsStorage.dlh",
+      "size": 28672,
+      "on_disk_sha256": "85c14398f6912b572becdba65c22b4971bff28ad355cce1804c63c650613df0b"
+    },
+    {
+      "base": 140716920799232,
+      "name": "CyrusPhysicsLab.dlx",
+      "path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusPhysicsLab\\0.1.3\\9004653a153d\\native\\CyrusPhysicsLab.dlx",
+      "size": 1560576,
+      "on_disk_sha256": "8131bb1af5985d8413339b36e4c923f970e66dcdf7a6ddd1f8a2e3b6f5cb52a7"
+    }
+  ],
+  "build_identity_matches_delivered_receipt": true,
+  "source_identity": {
+    "CyrusPhysicsLab/src/max_host.cpp": {
+      "current_sha256": "3ab5a91d07d8b7e3a286fc54a1c97cb00bb731c45b9496458158886251dcb54e",
+      "delivered_sha256": "3ab5a91d07d8b7e3a286fc54a1c97cb00bb731c45b9496458158886251dcb54e"
+    },
+    "CyrusPhysicsLab/src/core.cpp": {
+      "current_sha256": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200",
+      "delivered_sha256": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200"
+    },
+    "CyrusPhysicsLab/include/core.h": {
+      "current_sha256": "d27e8c839c89df9cd940bb77b21085aa2a04b3d8720d814f90a09a83038b7000",
+      "delivered_sha256": "d27e8c839c89df9cd940bb77b21085aa2a04b3d8720d814f90a09a83038b7000"
+    },
+    "CyrusPhysicsLab/scripts/CyrusPhysicsLab.ms": {
+      "current_sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d",
+      "delivered_sha256": "b04e42cf5378007ea31ed6a78f267014cccf565f41da263de3e2f0678de8394d"
+    }
+  },
+  "event_count": 4914,
+  "sequence_contiguous": true,
+  "span_s": 51.6035776,
+  "event_counts": {
+    "snapshot.written": 13,
+    "diagnostics.start": 1,
+    "ui.start.enter": 2,
+    "begin.enter": 2,
+    "prepare.enter": 5,
+    "prepare.exit": 5,
+    "painter.initialize.enter": 2,
+    "begin.exit": 2,
+    "ui.start.exit": 2,
+    "stroke.start.enter": 21,
+    "stroke.start.exit": 3,
+    "paint.enter": 358,
+    "paint.ray": 87,
+    "emission.enter": 87,
+    "emission.exit": 87,
+    "paint.exit": 87,
+    "stroke.end.enter": 21,
+    "stroke.end.exit": 3,
+    "ui.timer.enter": 760,
+    "tick.enter": 760,
+    "tick.exit": 760,
+    "ui.redraw.enter": 760,
+    "ui.timer.exit": 760,
+    "stroke.start.rejected.settling": 18,
+    "paint.ignored.closed": 271,
+    "stroke.end.ignored.rejected": 18,
+    "ui.logs.open": 1,
+    "commit.enter": 1,
+    "commit.exit": 1,
+    "ui.stop.enter": 2,
+    "stop.enter": 2,
+    "cancel.enter": 2,
+    "cancel.exit": 2,
+    "painter.end_session.enter": 2,
+    "painter.end_session.exit": 2,
+    "stop.exit": 2,
+    "ui.stop.exit": 2
+  },
+  "errors": {
+    "Wait for settling before another stroke": 2525
+  },
+  "no_exception_notification_or_dump_in_this_recording": true,
+  "final_event": {
+    "data": {
+      "document": 2327191532720,
+      "ending": false,
+      "error": "",
+      "gesture_active": false,
+      "maxscript_heap_free_bytes": 52146772,
+      "message": "",
+      "owner": 4,
+      "painting": false,
+      "preview_count": 0,
+      "process_memory": {
+        "available": true,
+        "peak_working_set_bytes": 3114344448,
+        "private_bytes": 4753698816,
+        "working_set_bytes": 3104890880
+      },
+      "rejected_gesture": false,
+      "released": false,
+      "revision": 2,
+      "saved_count": 10,
+      "session": false,
+      "staged": false
+    },
+    "event": "ui.stop.exit",
+    "qpc": 2861681734870,
+    "seq": 4914,
+    "thread": 44824,
+    "utc_filetime": 134367176666031557
+  },
+  "timings": {
+    "first_release_s": 2.6464888,
+    "first_commit_s": 21.3791775,
+    "first_release_to_commit_s": 18.7326887,
+    "first_completed_body_count": 10,
+    "second_release_s": 22.2759926,
+    "first_stop_s": 37.5415036,
+    "second_pending_cancelled": 8,
+    "third_release_s": 44.1627951,
+    "second_stop_s": 51.5766705,
+    "third_pending_cancelled": 2
+  },
+  "rejected_attempts": [
+    {
+      "seq": 561,
+      "seconds": 5.0927083,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 915,
+      "seconds": 7.4372124,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1001,
+      "seconds": 8.2772381,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1122,
+      "seconds": 10.0934476,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1202,
+      "seconds": 10.8096655,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1230,
+      "seconds": 11.4081528,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1282,
+      "seconds": 11.8131799,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1330,
+      "seconds": 12.2021098,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1380,
+      "seconds": 12.7330421,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1424,
+      "seconds": 13.215943,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1450,
+      "seconds": 13.5562584,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1493,
+      "seconds": 13.7980302,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 1629,
+      "seconds": 14.5535075,
+      "saved": 0,
+      "pending": 10
+    },
+    {
+      "seq": 4243,
+      "seconds": 45.0671869,
+      "saved": 10,
+      "pending": 2
+    },
+    {
+      "seq": 4294,
+      "seconds": 45.5108906,
+      "saved": 10,
+      "pending": 2
+    },
+    {
+      "seq": 4350,
+      "seconds": 45.9927494,
+      "saved": 10,
+      "pending": 2
+    },
+    {
+      "seq": 4393,
+      "seconds": 46.3899418,
+      "saved": 10,
+      "pending": 2
+    },
+    {
+      "seq": 4426,
+      "seconds": 46.7067824,
+      "saved": 10,
+      "pending": 2
+    }
+  ],
+  "memory": {
+    "samples": 2289,
+    "heap_free_bytes_min": 52146772,
+    "heap_free_bytes_max": 62892940,
+    "private_bytes_min": 4741378048,
+    "private_bytes_max": 4789264384
+  },
+  "contexts": [
+    {
+      "file": "context-0.json",
+      "sha256": "4c74c5efd8efe370b3dcff35084cbf6412db5d9b922cd1e5568d0ce545a96cc6",
+      "phase": "prepared",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      }
+    },
+    {
+      "file": "context-1.json",
+      "sha256": "1d9cd9cdcdc51b17cfa2a60e86997897bfb925203063e52835b38aba231e4f41",
+      "phase": "released",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      },
+      "pending_rows": 2,
+      "motion": {
+        "active": 2,
+        "max_angular_radps": 0.0,
+        "max_linear_mps": 0.9710496664047241,
+        "quiet_steps": 0,
+        "steps": 12
+      },
+      "pending_min_z_m": 0.3502742052078247,
+      "fallen_outside_receiver": []
+    },
+    {
+      "file": "context-2.json",
+      "sha256": "c7252c0697753fea0986103f4f77774cfab1b95321784a6ae4a7d2e84a91e3ee",
+      "phase": "cancelled",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      },
+      "pending_rows": 2,
+      "motion": {
+        "active": 1,
+        "max_angular_radps": 7.369154307663501,
+        "max_linear_mps": 11.741350985448946,
+        "quiet_steps": 0,
+        "steps": 300
+      },
+      "pending_min_z_m": -8.350007057189941,
+      "fallen_outside_receiver": [
+        {
+          "row": {
+            "gesture": 2,
+            "id": 12,
+            "p": [
+              -1.1983548402786255,
+              0.2773835361003876,
+              -8.350007057189941
+            ],
+            "q": [
+              0.8382194638252258,
+              0.1522086262702942,
+              -0.5103375911712646,
+              0.11737244576215744
+            ],
+            "scale": 1.1132547237529409,
+            "source": 0
+          },
+          "birth": {
+            "gesture": 2,
+            "id": 12,
+            "p": [
+              -0.14840039777875713,
+              0.6233714665723558,
+              0.4000000059604645
+            ],
+            "q": [
+              0.0,
+              0.0,
+              0.9757238340178518,
+              -0.21900456554488437
+            ],
+            "scale": 1.1132547237529409,
+            "source": 0,
+            "spin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "step": 0,
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "file": "context-3.json",
+      "sha256": "22e342ff938bf290fcea9e26b932f8750a019b8a03611eaa3c5548d0f4d6cffc",
+      "phase": "committed",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      },
+      "pending_rows": 10,
+      "motion": {
+        "active": 2,
+        "max_angular_radps": 1.2249732489998185e-08,
+        "max_linear_mps": 6.189455804207991e-10,
+        "quiet_steps": 59,
+        "steps": 603
+      },
+      "pending_min_z_m": 0.04613516107201576,
+      "fallen_outside_receiver": []
+    },
+    {
+      "file": "context-4.json",
+      "sha256": "4c74c5efd8efe370b3dcff35084cbf6412db5d9b922cd1e5568d0ce545a96cc6",
+      "phase": "prepared",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      }
+    },
+    {
+      "file": "context-5.json",
+      "sha256": "fd2df70ea989699617bbd1c51ff695914927317f3a55f935875c3b7d37e9c981",
+      "phase": "released",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      },
+      "pending_rows": 8,
+      "motion": {
+        "active": 2,
+        "max_angular_radps": 0.0,
+        "max_linear_mps": 0.1631937474012375,
+        "quiet_steps": 0,
+        "steps": 2
+      },
+      "pending_min_z_m": 0.39846929907798767,
+      "fallen_outside_receiver": []
+    },
+    {
+      "file": "context-6.json",
+      "sha256": "751d86919f71f05268bbbd246055c37122acccfa85e4a4ebdc71d1382b17aeea",
+      "phase": "cancelled",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      },
+      "pending_rows": 8,
+      "motion": {
+        "active": 2,
+        "max_angular_radps": 4.8079777195776625,
+        "max_linear_mps": 24.912156830342624,
+        "quiet_steps": 0,
+        "steps": 616
+      },
+      "pending_min_z_m": -49.33794403076172,
+      "fallen_outside_receiver": [
+        {
+          "row": {
+            "gesture": 2,
+            "id": 16,
+            "p": [
+              -0.2600247859954834,
+              -0.46230432391166687,
+              -44.110443115234375
+            ],
+            "q": [
+              -0.013397547416388988,
+              0.4085889756679535,
+              0.8856560587882996,
+              -0.2202022820711136
+            ],
+            "scale": 1.0517320890134592,
+            "source": 0
+          },
+          "birth": {
+            "gesture": 2,
+            "id": 16,
+            "p": [
+              -0.19668413819658478,
+              0.5864305434735837,
+              0.4000000059604646
+            ],
+            "q": [
+              0.0,
+              0.0,
+              0.9754052906501326,
+              0.22041896236878147
+            ],
+            "scale": 1.0517320890134592,
+            "source": 0,
+            "spin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "step": 2,
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "row": {
+            "gesture": 2,
+            "id": 18,
+            "p": [
+              -1.633958339691162,
+              0.5974287390708923,
+              -49.33794403076172
+            ],
+            "q": [
+              0.6345641016960144,
+              -0.3070949614048004,
+              -0.7091608047485352,
+              -0.010584963485598564
+            ],
+            "scale": 1.0113143659769002,
+            "source": 0
+          },
+          "birth": {
+            "gesture": 2,
+            "id": 18,
+            "p": [
+              -0.2139858779540486,
+              0.7002096444581647,
+              0.6430048241430396
+            ],
+            "q": [
+              0.0,
+              0.0,
+              0.9380457548238768,
+              -0.3465114166328483
+            ],
+            "scale": 1.0113143659769002,
+            "source": 0,
+            "spin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "step": 2,
+            "velocity": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "file": "context-7.json",
+      "sha256": "4c74c5efd8efe370b3dcff35084cbf6412db5d9b922cd1e5568d0ce545a96cc6",
+      "phase": "prepared",
+      "saved_rows": 10,
+      "receiver_bounds_m": [
+        [
+          -0.648424759399901,
+          0.4384846467642044,
+          0.0
+        ],
+        [
+          0.8803945054122355,
+          1.2232921519604514,
+          0.0
+        ]
+      ],
+      "settings": {
+        "bounce": 0.05000000074505806,
+        "ccd": true,
+        "collisionSteps": 4,
+        "damping": 0.2,
+        "dt": 0.008333333333333333,
+        "friction": 0.6000000238418579,
+        "gravity": 9.81,
+        "height": 0.4000000059604645,
+        "maxBodies": 1000,
+        "maxContacts": 65536,
+        "maxPairs": 65536,
+        "maxSteps": 3600,
+        "quietAngular": 0.05,
+        "quietLinear": 0.002,
+        "quietSteps": 60,
+        "radius": 0.25,
+        "scaleMax": 1.2000000476837158,
+        "scaleMin": 0.800000011920929,
+        "seed": 42,
+        "spacing": 0.07999999821186066,
+        "thickness": 0.0020000000949949026
+      }
+    }
+  ],
+  "native_tick_ms": {
+    "mean": 0.46947105263157896,
+    "max": 14.9372
+  },
+  "interpretation": {
+    "observed": "18 deliberate settling rejections; one 10-body commit; Stop cancels an 8-body and then a 2-body pending stroke. Three pending bodies were outside receiver XY and below Z=0 at cancellation.",
+    "inference": "Positions are consistent with bodies escaping a finite plane and continuing to fall; the snapshot is not a complete contact trajectory and does not prove roll-off versus tunnelling.",
+    "source_explanation": "0.1.3 has one pending native Session. Mouse-up releases/closes emission, then future StartStroke rejects until settle/publication. Session requires quiet bodies for 60 fixed steps, max3600. UI schedules two dt=1/120 steps per40ms timer: nominal 0.417 simulated seconds per wall second before overhead.",
+    "recommendation_only": "Separate mouse gestures from a longer live simulation session; accept births while previous bodies move; make Finish/Freeze and Cancel explicit; define how bodies lost below all colliders leave the active solve. Do not simply remove the rejection guard."
+  },
+  "knowledge": {
+    "status": "fully_verified_enrolled_corpus_36_of_36",
+    "generation": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100",
+    "initial_search": "response_too_large",
+    "narrowed_search": "CyrusPhysicsLab/top_k1 returned full physics-extension contract; guidance only, not runtime evidence."
+  }
+}

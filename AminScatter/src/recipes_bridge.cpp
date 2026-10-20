@@ -6,6 +6,8 @@
 #include "placement_value.h"
 #include "script_buffers.h"
 #include <max.h>
+#include <plugin.h>
+#include <ColorManagement/IColorPipelineMgr.h>
 #include <triobj.h>
 #include <splshape.h>
 #include <MeshNormalSpec.h>
@@ -225,23 +227,35 @@ public:
 PackageTask* packageTask=nullptr;
 r::Library& recipeLibrary();
 PackageTask& packages(){recipeLibrary();if(!packageTask)packageTask=new PackageTask;return *packageTask;}
-Value* createAssetMesh(const cyrus::assets::Mesh& data,double metres,const MCHAR* sourceName){
-    if(!theHold.Holding())throw RuntimeError(_T("Portable mesh creation requires its owning authored transaction"));
-    if(!std::isfinite(metres)||metres<=0||metres>1e12)throw RuntimeError(_T("Invalid destination units"));
-    const auto cleanup=[](TriObject* p){if(p)p->DeleteThis();};std::unique_ptr<TriObject,decltype(cleanup)> tri(CreateNewTriObject(),cleanup);if(!tri)throw RuntimeError(_T("Cannot allocate portable mesh"));auto& mesh=tri->GetMesh();
-    if(!mesh.setNumVerts(static_cast<int>(data.vertices.size()))||!mesh.setNumFaces(static_cast<int>(data.faces.size())))throw RuntimeError(_T("Cannot allocate mesh topology"));
-    auto point=[metres](const cyrus::assets::Vertex& v,bool distance){Point3 p;for(int i=0;i<3;++i){const auto d=v[i]*(distance?metres:1.);if(!std::isfinite(d)||std::abs(d)>1e20)throw RuntimeError(_T("Portable geometry exceeds destination units"));p[i]=static_cast<float>(d);}return p;};
-    for(std::size_t i=0;i<data.vertices.size();++i)mesh.verts[i]=point(data.vertices[i],true);
-    for(std::size_t i=0;i<data.faces.size();++i){const auto& f=data.faces[i];auto& target=mesh.faces[i];target.setVerts(f.vertices[0],f.vertices[1],f.vertices[2]);target.smGroup=f.smoothing;target.setMatID(static_cast<MtlID>(f.material));target.setEdgeVisFlags((f.edges&1)!=0,(f.edges&2)!=0,(f.edges&4)!=0);}
-    int mapCount=2;for(const auto& mapping:data.maps)mapCount=std::max(mapCount,mapping.channel+1);mesh.setNumMaps(mapCount);
-    for(const auto& mapping:data.maps){mesh.setMapSupport(mapping.channel,TRUE);mesh.setNumMapVerts(mapping.channel,static_cast<int>(mapping.vertices.size()));mesh.setNumMapFaces(mapping.channel,static_cast<int>(mapping.faces.size()));if(mesh.getNumMapVerts(mapping.channel)!=static_cast<int>(mapping.vertices.size())||mesh.getNumMapFaces(mapping.channel)!=static_cast<int>(mapping.faces.size()))throw RuntimeError(_T("Cannot allocate portable mapping channel"));for(std::size_t i=0;i<mapping.vertices.size();++i)mesh.mapVerts(mapping.channel)[i]=point(mapping.vertices[i],false);for(std::size_t i=0;i<mapping.faces.size();++i)for(int j=0;j<3;++j)mesh.mapFaces(mapping.channel)[i].t[j]=mapping.faces[i][j];}
-    mesh.InvalidateGeomCache();mesh.buildNormals();mesh.buildBoundingBox();auto* ip=GetCOREInterface();MSTR name(sourceName);if(name.Length()<1||name.Length()>160)throw RuntimeError(_T("Portable source name exceeds bounds"));ip->MakeNameUnique(name);
-    auto* node=ip->CreateObjectNode(tri.get());if(!node)throw RuntimeError(_T("Cannot create portable source node"));tri.release();node->SetName(name);node->Hide(TRUE);
-    return MAXNode::intern(node);
 }
-}
+
+#include "asset_mesh_host.inc"
+
 def_visible_primitive(cyrusAssetPackageVersion,"cyrusAssetPackageVersion");
-Value* cyrusAssetPackageVersion_cf(Value**,int n){check_arg_count(cyrusAssetPackageVersion,0,n);return Integer::intern(2);}
+Value* cyrusAssetPackageVersion_cf(Value**,int n){check_arg_count(cyrusAssetPackageVersion,0,n);return Integer::intern(3);}
+// This resolves the actual registered renderer class, not a guessed installation
+// path or the active renderer caption. The host adapter checks the module version
+// before constructing/staging any renderer graph. No module path is serialized.
+def_visible_primitive(cyrusAssetRendererModule,"cyrusAssetRendererModule");
+Value* cyrusAssetRendererModule_cf(Value**,int n){check_arg_count(cyrusAssetRendererModule,0,n);return recipeAPI([&]()->Value*{
+    auto* descriptor=GetCOREInterface()->GetDllDir().ClassDir().FindClass(MATERIAL_CLASS_ID,Class_ID(1762831241u,2266306336u));
+    if(!descriptor||!descriptor->HInstance())throw RuntimeError(_T("The qualified Corona material plugin is unavailable"));
+    std::vector<wchar_t> path(32768);const auto size=GetModuleFileNameW(descriptor->HInstance(),path.data(),static_cast<DWORD>(path.size()));
+    if(size==0||size>=path.size())throw RuntimeError(_T("Cannot identify the loaded Corona material module"));
+    return new String(path.data());
+});}
+// Fixed Forest map identities only. Both classes must belong to the same actual
+// registered module; authored names, search paths and package strings are unused.
+def_visible_primitive(cyrusAssetForestModule,"cyrusAssetForestModule");
+Value* cyrusAssetForestModule_cf(Value**,int n){check_arg_count(cyrusAssetForestModule,0,n);return recipeAPI([&]()->Value*{
+    auto& classes=GetCOREInterface()->GetDllDir().ClassDir();
+    auto* color=classes.FindClass(TEXMAP_CLASS_ID,Class_ID(1613723927u,104154128u));
+    auto* edge=classes.FindClass(TEXMAP_CLASS_ID,Class_ID(1568227357u,1783892597u));
+    if(!color||!edge||!color->HInstance()||color->HInstance()!=edge->HInstance())throw RuntimeError(_T("The qualified Forest map plugin is unavailable or inconsistent"));
+    std::vector<wchar_t> path(32768);const auto size=GetModuleFileNameW(color->HInstance(),path.data(),static_cast<DWORD>(path.size()));
+    if(size==0||size>=path.size())throw RuntimeError(_T("Cannot identify the loaded Forest map module"));
+    return new String(path.data());
+});}
 def_visible_primitive(cyrusAssetSplineSnapshot,"cyrusAssetSplineSnapshot");
 Value* cyrusAssetSplineSnapshot_cf(Value** a,int n){check_arg_count(cyrusAssetSplineSnapshot,2,n);return recipeAPI([&]()->Value*{
     auto* node=a[0]->to_node();const double metres=a[1]->to_double();if(!node||!std::isfinite(metres)||metres<=0)throw RuntimeError(_T("Invalid preset spline input"));
@@ -281,18 +295,56 @@ def_visible_primitive(cyrusAssetPackageRelease,"cyrusAssetPackageRelease");
 Value* cyrusAssetPackageRelease_cf(Value** a,int n){check_arg_count(cyrusAssetPackageRelease,1,n);return recipeAPI([&]()->Value*{packages().release(a[0]->to_int64());return &ok;});}
 def_visible_primitive(cyrusAssetFileInfo,"cyrusAssetFileInfo");
 Value* cyrusAssetFileInfo_cf(Value** a,int n){check_arg_count(cyrusAssetFileInfo,2,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("asset filename"));return recipeValue(cyrus::assets::fileInfo(std::filesystem::path(a[0]->to_string()),a[1]->to_bool()));});}
+def_visible_primitive(cyrusAssetImageInfo,"cyrusAssetImageInfo");
+Value* cyrusAssetImageInfo_cf(Value** a,int n){check_arg_count(cyrusAssetImageInfo,1,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("asset image filename"));return recipeValue(cyrus::assets::imageFileInfo(std::filesystem::path(a[0]->to_string())));});}
+def_visible_primitive(cyrusAssetImageAdmission,"cyrusAssetImageAdmission");
+Value* cyrusAssetImageAdmission_cf(Value** a,int n){check_arg_count(cyrusAssetImageAdmission,1,n);return recipeAPI([&]()->Value*{
+    const auto pixels=a[0]->to_int64();if(pixels<0||static_cast<std::uint64_t>(pixels)>cyrus::assets::maxPlantBitmapPixels)throw RuntimeError(_T("Plant image map instances exceed the bounded profile"));
+    // Conservative admission for the new profile, not a renderer allocation
+    // measurement: two RGBA32F equivalents per map instance, plus 768 MiB for
+    // admitted small meshes/material/staging overhead. Existing old state and
+    // Undo allocations are already reflected in current available memory.
+    const auto estimate=static_cast<std::uint64_t>(pixels)*32+768ull*1024*1024;
+    constexpr auto reserve=2ull*1024*1024*1024;MEMORYSTATUSEX memory{};memory.dwLength=sizeof(memory);
+    if(!GlobalMemoryStatusEx(&memory))throw RuntimeError(_T("Cannot check plant-image memory admission"));
+    if(memory.ullAvailPhys<estimate+reserve||memory.ullAvailPageFile<estimate+reserve)throw RuntimeError(_T("Insufficient available physical/commit memory for the plant-image profile and its 2 GiB reserve. Existing planting is retained."));
+    return recipeValue(r::Json::array({estimate,memory.ullAvailPhys,memory.ullAvailPageFile}));
+});}
+// Candidate large-plant host admission is separate from the existing image tier.
+// Current free memory already includes retained output, source objects and Undo.
+def_visible_primitive(cyrusAssetPlantSceneAdmission,"cyrusAssetPlantSceneAdmission");
+Value* cyrusAssetPlantSceneAdmission_cf(Value** a,int n){check_arg_count(cyrusAssetPlantSceneAdmission,2,n);return recipeAPI([&]()->Value*{
+    if(!cyrus::host::integerNumber(a[0])||!cyrus::host::integerNumber(a[1]))throw RuntimeError(_T("Plant resource counts require integers"));
+    const auto meshes=a[0]->to_int64(),pixels=a[1]->to_int64();
+    if(meshes<0||static_cast<std::uint64_t>(meshes)>cyrus::assets::maxPlantPackageBytes||pixels<0||static_cast<std::uint64_t>(pixels)>cyrus::assets::maxPlantBitmapPixels)throw RuntimeError(_T("Plant resources exceed the bounded profile"));
+    // Six encoded mesh equivalents reserve SDK source/conversion/prototype and
+    // publication overlap; two RGBA32F equivalents reserve bitmap map instances.
+    // This conservative candidate plan requires actual workload qualification.
+    const auto estimate=static_cast<std::uint64_t>(meshes)*6+static_cast<std::uint64_t>(pixels)*32+1024ull*1024ull*1024ull;
+    constexpr auto reserve=2ull*1024ull*1024ull*1024ull;MEMORYSTATUSEX memory{};memory.dwLength=sizeof(memory);
+    if(!GlobalMemoryStatusEx(&memory))throw RuntimeError(_T("Cannot check plant-asset memory admission"));
+    if(memory.ullAvailPhys<estimate+reserve||memory.ullAvailPageFile<estimate+reserve)throw RuntimeError(_T("Insufficient available physical/commit memory for plant assets and their 2 GiB reserve. Existing planting is retained."));
+    return recipeValue(r::Json::array({estimate,memory.ullAvailPhys,memory.ullAvailPageFile}));
+});}
+
 def_visible_primitive(cyrusAssetPreparedBitmap,"cyrusAssetPreparedBitmap");
 Value* cyrusAssetPreparedBitmap_cf(Value** a,int n){check_arg_count(cyrusAssetPreparedBitmap,2,n);return recipeAPI([&]()->Value*{const auto snapshot=packages().prepared(a[0]->to_int64());const auto found=snapshot->bitmapPaths.find(recipeUTF8(a[1],80));if(found==snapshot->bitmapPaths.end())throw RuntimeError(_T("Bitmap is absent from the prepared package"));return new String(found->second.c_str());});}
-def_visible_primitive(cyrusAssetBitmapEqual,"cyrusAssetBitmapEqual");
-Value* cyrusAssetBitmapEqual_cf(Value** a,int n){check_arg_count(cyrusAssetBitmapEqual,2,n);return recipeAPI([&]()->Value*{
-    type_check(a[0],MAXBitMap,_T("source bitmap"));type_check(a[1],MAXBitMap,_T("file bitmap"));auto* source=static_cast<MAXBitMap*>(a[0])->bm;auto* file=static_cast<MAXBitMap*>(a[1])->bm;
+#include "asset_bitmap_host.inc"
+namespace {
+Value* compareAssetBitmaps(Value* leftValue,Value* rightValue,int edge){
+    type_check(leftValue,MAXBitMap,_T("source bitmap"));type_check(rightValue,MAXBitMap,_T("file bitmap"));auto* source=static_cast<MAXBitMap*>(leftValue)->bm;auto* file=static_cast<MAXBitMap*>(rightValue)->bm;
     if(!source||!file)throw RuntimeError(_T("Bitmap was closed"));const int width=source->Width(),height=source->Height();
-    if(width<1||height<1||width>4096||height>4096)throw RuntimeError(_T("Bitmap comparison exceeds portable pixel bounds"));if(width!=file->Width()||height!=file->Height())return &false_value;
+    if(width<1||height<1||width>edge||height>edge||static_cast<std::uint64_t>(width)*height>static_cast<std::uint64_t>(edge)*edge)throw RuntimeError(_T("Bitmap comparison exceeds portable pixel bounds"));if(width!=file->Width()||height!=file->Height())return &false_value;
     std::vector<BMM_Color_fl> left(static_cast<std::size_t>(width)),right(static_cast<std::size_t>(width));
     for(int y=0;y<height;++y){if(!source->GetLinearPixels(0,y,width,left.data())||!file->GetLinearPixels(0,y,width,right.data()))throw RuntimeError(_T("Cannot verify bitmap pixels"));
         for(int x=0;x<width;++x){const auto& p=left[x];const auto& q=right[x];const float av[]={p.r,p.g,p.b,p.a},bv[]={q.r,q.g,q.b,q.a};for(int c=0;c<4;++c)if(!std::isfinite(av[c])||!std::isfinite(bv[c])||std::abs(av[c]-bv[c])>2e-6f)return &false_value;}}
     return &true_value;
-});}
+}
+}
+def_visible_primitive(cyrusAssetBitmapEqual,"cyrusAssetBitmapEqual");
+Value* cyrusAssetBitmapEqual_cf(Value** a,int n){check_arg_count(cyrusAssetBitmapEqual,2,n);return recipeAPI([&]()->Value*{return compareAssetBitmaps(a[0],a[1],4096);});}
+def_visible_primitive(cyrusAssetImageEqual,"cyrusAssetImageEqual");
+Value* cyrusAssetImageEqual_cf(Value** a,int n){check_arg_count(cyrusAssetImageEqual,2,n);return recipeAPI([&]()->Value*{return compareAssetBitmaps(a[0],a[1],8192);});}
 def_visible_primitive(cyrusAssetDefaultCurves,"cyrusAssetDefaultCurves");
 Value* cyrusAssetDefaultCurves_cf(Value** a,int n){check_arg_count(cyrusAssetDefaultCurves,2,n);return recipeAPI([&]()->Value*{
     auto collect=[](ReferenceTarget* root){std::vector<ICurveCtl*> curves;std::set<ReferenceTarget*> seen;
@@ -304,53 +356,43 @@ Value* cyrusAssetDefaultCurves_cf(Value** a,int n){check_arg_count(cyrusAssetDef
             for(int k=0;same&&k<p->GetNumPts();++k){const auto u=p->GetPoint(GetCOREInterface()->GetTime(),k),v=q->GetPoint(GetCOREInterface()->GetTime(),k);same=!p->IsAnimated(k)&&u.p==v.p&&u.in==v.in&&u.out==v.out&&((u.flags^v.flags)&~CURVEP_SELECTED)==0;}}}
     if(!same)throw RuntimeError(_T("Authored texture-output curves require a separate portable adapter, including disabled curves"));return &ok;
 });}
-def_visible_primitive(cyrusAssetMeshExport,"cyrusAssetMeshExport");
-Value* cyrusAssetMeshExport_cf(Value** a,int n){check_arg_count(cyrusAssetMeshExport,3,n);return recipeAPI([&]()->Value*{
-    auto* node=a[0]->to_node();if(!node)throw RuntimeError(_T("Package source was deleted"));type_check(a[1],String,_T("mesh staging filename"));const std::filesystem::path path(a[1]->to_string());
-    const double metres=a[2]->to_double();if(!std::isfinite(metres)||metres<=0||metres>1e12)throw RuntimeError(_T("Invalid scene units"));if(!path.is_absolute()||std::filesystem::exists(path))throw RuntimeError(_T("Mesh export needs a new absolute filename"));
-    const auto time=GetCOREInterface()->GetTime();auto* object=node->EvalWorldState(time).obj;if(!object||!object->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID,0)))throw RuntimeError(_T("Source cannot provide a static triangle mesh"));
-    if(object->IsAnimated())throw RuntimeError(_T("Animated source geometry requires a separate portable adapter"));
-    auto* tri=static_cast<TriObject*>(object->ConvertToType(time,Class_ID(TRIOBJ_CLASS_ID,0)));if(!tri)throw RuntimeError(_T("Source mesh conversion failed"));const auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};std::unique_ptr<TriObject,decltype(cleanup)> holder(tri,cleanup);
-    const auto& mesh=tri->GetMesh();using namespace cyrus::assets;
-    if(mesh.getNumVerts()<1||mesh.getNumVerts()>static_cast<int>(maxMeshVertices)||mesh.getNumFaces()<1||mesh.getNumFaces()>static_cast<int>(maxMeshFaces))throw RuntimeError(_T("Portable mesh limit is 100000 vertices and faces per source"));
-    auto* normals=tri->GetMesh().GetSpecifiedNormals();if(normals&&normals->GetNumNormals()>0)throw RuntimeError(_T("Explicit normals need a separately qualified asset adapter. This source is preserved."));
-    const auto nodeTM=node->GetNodeTM(time);double m[3][3],lengthProduct=1.;
-    for(int i=0;i<4;++i){const auto row=nodeTM.GetRow(i);double squared=0.;for(int j=0;j<3;++j){if(!std::isfinite(row[j]))throw RuntimeError(_T("Source transform is not finite"));if(i<3){m[i][j]=row[j];squared+=m[i][j]*m[i][j];}}if(i<3)lengthProduct*=std::sqrt(squared);}
-    const auto determinant=m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])-m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])+m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
-    if(lengthProduct==0.||std::abs(determinant)/lengthProduct<1e-8)throw RuntimeError(_T("Source transform is singular or too close to singular for portable capture"));
-    const auto offset=node->GetObjectTM(time)*Inverse(nodeTM);cyrus::assets::Mesh result;result.vertices.reserve(mesh.getNumVerts());result.faces.reserve(mesh.getNumFaces());
-    for(int i=0;i<mesh.getNumVerts();++i){const auto point=mesh.verts[i]*offset;result.vertices.push_back({point.x/metres,point.y/metres,point.z/metres});}
-    for(int i=0;i<mesh.getNumFaces();++i){auto face=mesh.faces[i];result.faces.push_back({{face.v[0],face.v[1],face.v[2]},face.smGroup,face.getMatID(),static_cast<std::uint32_t>((face.getEdgeVis(0)?1:0)|(face.getEdgeVis(1)?2:0)|(face.getEdgeVis(2)?4:0))});}
-    for(int channel=-2;channel<mesh.getNumMaps();++channel)if(mesh.mapSupport(channel)){
-        if(mesh.getNumMapVerts(channel)==0)continue;
-        if(channel>99||result.maps.size()>=maxMeshChannels||mesh.getNumMapVerts(channel)>static_cast<int>(maxMapVertices)||mesh.getNumMapFaces(channel)!=mesh.getNumFaces()||!mesh.mapVerts(channel)||!mesh.mapFaces(channel))throw RuntimeError(_T("Source mapping channels exceed the portable adapter bounds"));
-        Mapping map;map.channel=channel;map.vertices.reserve(mesh.getNumMapVerts(channel));map.faces.reserve(mesh.getNumFaces());
-        for(int i=0;i<mesh.getNumMapVerts(channel);++i){const auto& v=mesh.mapVerts(channel)[i];map.vertices.push_back({v.x,v.y,v.z});}
-        for(int i=0;i<mesh.getNumFaces();++i){const auto& f=mesh.mapFaces(channel)[i];map.faces.push_back({f.t[0],f.t[1],f.t[2]});}result.maps.push_back(std::move(map));
+// Read the admitted immutable mesh without creating a temporary scene node.
+def_visible_primitive(cyrusAssetPreparedMeshBounds,"cyrusAssetPreparedMeshBounds");
+Value* cyrusAssetPreparedMeshBounds_cf(Value** a,int n){check_arg_count(cyrusAssetPreparedMeshBounds,2,n);return recipeAPI([&]()->Value*{
+    const auto snapshot=packages().prepared(a[0]->to_int64());const auto id=recipeUTF8(a[1],80);
+    const auto found=snapshot->meshes.find(id);if(found==snapshot->meshes.end())throw RuntimeError(_T("Saved receiver mesh is absent from the prepared package"));
+    std::array<double,4> bounds{INFINITY,INFINITY,-INFINITY,-INFINITY};
+    for(const auto& face:found->second->faces)for(const auto index:face.vertices){
+        const auto& point=found->second->vertices[index];
+        bounds[0]=std::min(bounds[0],point[0]);bounds[1]=std::min(bounds[1],point[1]);
+        bounds[2]=std::max(bounds[2],point[0]);bounds[3]=std::max(bounds[3],point[1]);
     }
-    const auto bytes=encodeMesh(result);std::ofstream out(path,std::ios::binary);if(!out)throw RuntimeError(_T("Cannot create owned mesh staging file"));out.write(reinterpret_cast<const char*>(bytes.data()),static_cast<std::streamsize>(bytes.size()));out.flush();if(!out)throw RuntimeError(_T("Mesh staging write failed"));out.close();
-    return recipeValue(r::Json::array({r::digest(bytes),bytes.size(),result.vertices.size(),result.faces.size(),result.maps.size()}));
-});}
-def_visible_primitive(cyrusAssetMeshCreate,"cyrusAssetMeshCreate");
-Value* cyrusAssetMeshCreate_cf(Value** a,int n){check_arg_count(cyrusAssetMeshCreate,4,n);return recipeAPI([&]()->Value*{
-    if(!theHold.Holding())throw RuntimeError(_T("Portable mesh creation requires its owning authored transaction"));
-    type_check(a[0],String,_T("mesh payload"));type_check(a[3],String,_T("mesh name"));const std::filesystem::path path(a[0]->to_string());
-    if(!path.is_absolute()||std::filesystem::is_symlink(path))throw RuntimeError(_T("Mesh payload requires an absolute regular path"));
-    const auto expected=recipeUTF8(a[1],64);const double metres=a[2]->to_double();if(!std::isfinite(metres)||metres<=0||metres>1e12)throw RuntimeError(_T("Invalid destination units"));
-    std::ifstream in(path,std::ios::binary|std::ios::ate);if(!in)throw RuntimeError(_T("Mesh payload is missing"));const auto length=in.tellg();if(length<0||static_cast<std::uint64_t>(length)>cyrus::assets::maxFileBytes)throw RuntimeError(_T("Mesh payload exceeds admission"));
-    std::vector<unsigned char> bytes(static_cast<std::size_t>(length));in.seekg(0);if(length>0)in.read(reinterpret_cast<char*>(bytes.data()),length);if(!in||r::digest(bytes)!=expected)throw RuntimeError(_T("Mesh payload changed since review"));const auto data=cyrus::assets::decodeMesh(bytes);
-    return createAssetMesh(data,metres,a[3]->to_string());
+    if(!(bounds[2]>bounds[0])||!(bounds[3]>bounds[1]))throw RuntimeError(_T("Saved receiver has no usable local XY footprint"));
+    return recipeValue(r::Json::array({bounds[0],bounds[1],bounds[2],bounds[3]}));
 });}
 
-def_visible_primitive(cyrusAssetPreparedMeshCreate,"cyrusAssetPreparedMeshCreate");
-Value* cyrusAssetPreparedMeshCreate_cf(Value** a,int n){check_arg_count(cyrusAssetPreparedMeshCreate,4,n);return recipeAPI([&]()->Value*{
-    type_check(a[3],String,_T("mesh name"));const auto snapshot=packages().prepared(a[0]->to_int64());const auto id=recipeUTF8(a[1],80);
-    const auto found=snapshot->meshes.find(id);if(found==snapshot->meshes.end())throw RuntimeError(_T("Mesh is absent from the prepared package"));
-    return createAssetMesh(*found->second,a[2]->to_double(),a[3]->to_string());
+def_visible_primitive(cyrusAssetReceiverBounds,"cyrusAssetReceiverBounds");
+Value* cyrusAssetReceiverBounds_cf(Value** a,int n){check_arg_count(cyrusAssetReceiverBounds,1,n);return recipeAPI([&]()->Value*{
+    auto* node=a[0]->to_node();if(!node)throw RuntimeError(_T("Preset receiver is missing"));const auto time=GetCOREInterface()->GetTime();
+    auto* object=node->EvalWorldState(time).obj;
+    if(!object||!object->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID,0)))throw RuntimeError(_T("Preset receiver must provide a mesh"));
+    auto* tri=static_cast<TriObject*>(object->ConvertToType(time,Class_ID(TRIOBJ_CLASS_ID,0)));
+    if(!tri)throw RuntimeError(_T("Preset receiver mesh evaluation failed"));
+    const auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};std::unique_ptr<TriObject,decltype(cleanup)> holder(tri,cleanup);
+    const auto& mesh=tri->GetMesh();if(mesh.getNumVerts()>2000000||mesh.getNumFaces()>2000000)throw RuntimeError(_T("Preset receiver exceeds 2 million vertices or faces"));
+    std::array<double,4> bounds{INFINITY,INFINITY,-INFINITY,-INFINITY};
+    for(int i=0;i<mesh.getNumFaces();++i)for(int k=0;k<3;++k){
+        const auto index=mesh.faces[i].v[k];if(index>=DWORD(mesh.getNumVerts()))throw RuntimeError(_T("Preset receiver contains an invalid face"));const auto& point=mesh.verts[index];
+        if(!std::isfinite(point.x)||!std::isfinite(point.y))throw RuntimeError(_T("Preset receiver contains nonfinite coordinates"));
+        bounds[0]=std::min(bounds[0],double(point.x));bounds[1]=std::min(bounds[1],double(point.y));
+        bounds[2]=std::max(bounds[2],double(point.x));bounds[3]=std::max(bounds[3],double(point.y));
+    }
+    if(!(bounds[2]>bounds[0])||!(bounds[3]>bounds[1]))throw RuntimeError(_T("Preset receiver has no usable local XY footprint"));
+    return recipeValue(r::Json::array({bounds[0],bounds[1],bounds[2],bounds[3]}));
 });}
 
 def_visible_primitive(cyrusRecipeVersion,"cyrusRecipeVersion");
-Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(6);}
+Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(7);}
 def_visible_primitive(cyrusRecipeTrackCreated,"cyrusRecipeTrackCreated");
 def_visible_primitive(cyrusPresetTrackPublication,"cyrusPresetTrackPublication");
 Value* cyrusPresetTrackPublication_cf(Value** a,int n){check_arg_count(cyrusPresetTrackPublication,1,n);type_check(a[0],Array,_T("Preset publication owners"));

@@ -536,6 +536,10 @@
         "name": "meshCheck"
       },
       {
+        "kind": "dropdownlist",
+        "name": "meshSourceList"
+      },
+      {
         "kind": "spinner",
         "name": "meshChannelSpin"
       },

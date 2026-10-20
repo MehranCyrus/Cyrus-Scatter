@@ -1,0 +1,771 @@
+{
+  "scope": "Supplemental unchanged-development-pair scene experiment; not release qualification",
+  "created_utc": "2026-10-19T11:30:16.284805+00:00",
+  "placements": 590,
+  "editable_arrangements": 15,
+  "artist_install_changed": false,
+  "product_code_changed": false,
+  "requires": {
+    "max": "2027",
+    "editable_arrange": "matching 0.3.2 development pair/scripts",
+    "materials": "Corona",
+    "view_only": "ordinary meshes; no Arrange owners/modifiers"
+  },
+  "relocation_qualified": false,
+  "older_artist_runtime_executed": false,
+  "scenes": [
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/CyrusArrange-Large-Showroom.max",
+      "bytes": 53776384,
+      "sha256": "684bb9d6601e388bbcfae16d356c7aaeacb42623ee57d67d19fb914444a06fbd"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/CyrusArrange-Large-Showroom-ViewOnly.max",
+      "bytes": 223780864,
+      "sha256": "68d2c3fcbadb7f49baae2ae8db0435c4ed09dc85660b9decf607a14ef5a459fa"
+    }
+  ],
+  "maps": [
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_001.jpg",
+      "bytes": 485295,
+      "sha256": "20b9afb3f627af50cbcf8eda709c3fc5061563ddea22626a61f2b364f1ecd5ab"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_002.jpg",
+      "bytes": 275019,
+      "sha256": "af3f02de36fe62f54a7f227ac71e092220148aa9485b396ca27e2a689899b455"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_003.jpg",
+      "bytes": 417359,
+      "sha256": "9ce224fc9e9d7beafeffd3d8a2e6572376e0e96c95377207231d9901c34c0fec"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_004.jpg",
+      "bytes": 331771,
+      "sha256": "9aca16528b27e99bc2d1117a7946e4c2f99722c88607521bde1f3b0a52d6df77"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_005.jpg",
+      "bytes": 144338,
+      "sha256": "dfea308ab7a30425ba4d59ea26d65b4a73a1199349b048ae494dd8968c0fa65d"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_006.jpg",
+      "bytes": 167762,
+      "sha256": "f80a7eeddb405157ac9eb9c7725e83291e46c366e719e1c921d5bff1b91c90cb"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_007.jpg",
+      "bytes": 146423,
+      "sha256": "93f96aa0d82049363a1395b8ab0be56b92725cfc99e868f4b814d1b2fce631f1"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_008.jpg",
+      "bytes": 89228,
+      "sha256": "d6bc62700796ed2b4c08d219c3570023e3c8f84d620fa47a05cbf038d45eae8e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_009.jpg",
+      "bytes": 550151,
+      "sha256": "8d6ee0c9639c48d7a52d07c5718f0d4df4798e6c13ab59d558966d5f5f08b2b7"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_010.jpg",
+      "bytes": 160586,
+      "sha256": "307fb72554ed7f3f409bd19b7e4eade68102e8cfd329c952e605a97de1f9e373"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_011.jpg",
+      "bytes": 206966,
+      "sha256": "0282e348aa13965e2daced673b80dd6bacfbdd578d33acd3f12dac7ed39e929a"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_012.jpg",
+      "bytes": 69774,
+      "sha256": "dcbe3afe4e274596e7aa779eff07ae09325c46faa51959bf15ef6d501b81aee4"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_013.jpg",
+      "bytes": 39693,
+      "sha256": "3b0558f12539a12a260fa317e51570d8ded2ac9ed6cf9695f3c2283f4a170d1e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_014.jpg",
+      "bytes": 194192,
+      "sha256": "e96f067137b174e14691320ecb83b979d9b1f3ff02b8709437bb03743b099ebf"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_015.jpg",
+      "bytes": 141600,
+      "sha256": "e1b3b006a21ed441b776f3d51ed2a0640ce6fc2bd4f9aa5d03a27f61f2e3ee33"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_016.jpg",
+      "bytes": 187375,
+      "sha256": "78ab1d5f0f2dda999218c4747198b93ad7174789ea346f263f8bd2a14dc6ef5e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_017.jpg",
+      "bytes": 219211,
+      "sha256": "67c3593d858e780dc47df060f5387cc95a4557adbb0c777a5bcbad4808bd2c43"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_018.jpg",
+      "bytes": 247740,
+      "sha256": "e6178a37e7fdde4e684106380adccefac98beb4a574862f0e495e49add040689"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_019.jpg",
+      "bytes": 59627,
+      "sha256": "6f01a43279db73f14b1af75add1aa7e8bf7860c59284452ea93c8257084dbd9f"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_020.jpg",
+      "bytes": 238239,
+      "sha256": "1aeb0b59cdba43362c4be39af875b5ce38fb8febd79b8e041127eaaf1bc9347d"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_021.jpg",
+      "bytes": 183343,
+      "sha256": "6606f2bb5a1e138bf05c53202b053460a8f1c8863d6a59df9a6dcc2460d1da36"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_022.jpg",
+      "bytes": 192194,
+      "sha256": "bdc454a9f91d33e3a461fd7d4249d412757cf00bace62b6cb835a02783171bf6"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_023.jpg",
+      "bytes": 156407,
+      "sha256": "888dfcf9bcd05246accb0fcbdddbd36e3486f159ad4007afb24a7ea777e6ccb2"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_024.jpg",
+      "bytes": 86996,
+      "sha256": "ffb4d5af97097e8a035517c60ffb9c2d03b4efd19e0c202008a53c5f44702dd5"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_025.jpg",
+      "bytes": 112023,
+      "sha256": "870a46a92d408609c7abaab32b4bdedc83aaa228d9595d3a2295e7d609c87fa9"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_026.jpg",
+      "bytes": 415668,
+      "sha256": "2a3ae7d3ed637dbe00d0fa4ffe2e4867264db8f128f684fd721c5d6055384980"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_027.jpg",
+      "bytes": 168573,
+      "sha256": "c6e9647f9ad5354d40c20c5e86188d1c4e1755d7ebced2b21de73f9b344fd2b8"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_028.jpg",
+      "bytes": 338573,
+      "sha256": "cef39e759a7155da2c0f311f086a43e0081aa3e52814f8efaca05d51eb31d68b"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_029.jpg",
+      "bytes": 275684,
+      "sha256": "59cd37955352983bf3c273a8820126249ba9b7c8cd71f72db856e415fa2b83d8"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_030.jpg",
+      "bytes": 430624,
+      "sha256": "ac7b25a1e54cd812c8f63bd9c81cd82fbee45c3acd0b135bafb35f0eaceaf971"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_031.jpg",
+      "bytes": 121887,
+      "sha256": "a8c0d7e84ba5c4a5a5a1078f536622152df178714767ab9423b71e72bbcf9e93"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_032.jpg",
+      "bytes": 235146,
+      "sha256": "4a15bd5a308c88e72032e11c0282c5390e0c87a75963821a9fa2e9df3fc1b99e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_033.jpg",
+      "bytes": 304998,
+      "sha256": "87a767d7b77aa1523ced5e86a72780b35a290b15b32e4b96a092b0d328a953a3"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_034.jpg",
+      "bytes": 259413,
+      "sha256": "c78ca189fb53e332c8e5037187ac62f0d9e1ad87750ff28353ee3f49ceaa549e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_035.jpg",
+      "bytes": 274332,
+      "sha256": "3a22aa5b8e2ad90953332eb9bccd91382df5ef42c56dc3ab994784cb91df48dd"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_036.jpg",
+      "bytes": 244347,
+      "sha256": "5088f5b2a77a89d3ddc7472a8f6d7dbc5f87b3266f5c2d8e727252da1d21c6e4"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_037.jpg",
+      "bytes": 110694,
+      "sha256": "80e46a713d3f975186d7baee5593d782d32635122ab7da2edbebf3c7118a767c"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_038.jpg",
+      "bytes": 209876,
+      "sha256": "42976a4d7feb414d1fb8b49852650f48c53c9942af5577b003a9cc90f98547da"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_039.jpg",
+      "bytes": 254005,
+      "sha256": "a4ae2971982b5ab031f4c58fa3336629bc98172918940be6f4b7e7bab0057977"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_040.jpg",
+      "bytes": 451484,
+      "sha256": "6363f4958cbe17057097b1b0563e05dee0a851b8d4bbac99632113d9caabd3ab"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_041.jpg",
+      "bytes": 341386,
+      "sha256": "2f499024b70ae23f03e3677005a9424ec900a0de9327328828704b4cf0bf460f"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_042.jpg",
+      "bytes": 525076,
+      "sha256": "a75cad1f348b1e51fba2d93b1ecb373c6cb67c37b17ffb0bcbacdecbc013879b"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_043.jpg",
+      "bytes": 57651,
+      "sha256": "724b561ec42021bb703f476ee4ba2bf2337031ee37276ec2ec033a7a1d8af1ff"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_044.jpg",
+      "bytes": 13507725,
+      "sha256": "75e6c1c0e471b2fe63a6215cf66e3c408de5932b165416d68cf0c809f20af055"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_045.jpg",
+      "bytes": 555801,
+      "sha256": "083ebd09405bf9b90b122414effcf73f566b3a014773cfb292aa7d2ce94d0bcf"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_046.jpg",
+      "bytes": 369913,
+      "sha256": "3330f83de169947ac01cf42819f932dba62a7d7ab2509d02d283287f32ac008f"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_047.jpg",
+      "bytes": 133280,
+      "sha256": "cae5755979e5b035017a4d3c199ef50642f7abebfd3f6504d49d575e0f0acc39"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_048.jpg",
+      "bytes": 105067,
+      "sha256": "d36aca9d53c03755470a507cd59a40d696e266517232b49472530564d638ffa8"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_049.jpg",
+      "bytes": 177752,
+      "sha256": "233d0fa40a662f210eb0331464d0ec6d2e62187fbdbc46df5b8fd021bea960cd"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_050.jpg",
+      "bytes": 285182,
+      "sha256": "c356117fbf44b403950d420dbbdc12a349b291bc50b366eb32a911959dd33645"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_051.jpg",
+      "bytes": 298817,
+      "sha256": "4ec8e95fc327f32db3448c6e1a08c2442b968e830249383119d2d74b137e054c"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_052.jpg",
+      "bytes": 174191,
+      "sha256": "c157ef43802ffeb1e4d42fa828a7eab353a6e5cc2fb2f6bfa9dd7e84262fbaf0"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_053.jpg",
+      "bytes": 307549,
+      "sha256": "638d84867a93d6ebdd09c1f20ffcf50c644480dadb81eaf85d3f90576ec58163"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_054.jpg",
+      "bytes": 174155,
+      "sha256": "0a2718b93ba3ef2071cd8b52ab78dde089628032d443e15250dda73b6dbf3f05"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_055.jpg",
+      "bytes": 215422,
+      "sha256": "f8969772813787ed4937c8b4d7c672d8842fdec3fc2846196556f976e3a6f04c"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_056.jpg",
+      "bytes": 257249,
+      "sha256": "07a0a9884c7cc9f1e50c50ee882567536394b6104cd49c0e145afc5dd59daef1"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_057.jpg",
+      "bytes": 196926,
+      "sha256": "5669cd2de144d546c0b1f203b36ad1aa3d332221745dd79de2b7dac2c3a2be2e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_058.jpg",
+      "bytes": 274410,
+      "sha256": "00ddb88b21a49d08dadec46d349deb15d0f4a791f81d0795a098b736d416be97"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_059.jpg",
+      "bytes": 430661,
+      "sha256": "d3d3a868c73bdd9a9cdffd20fe71bbc403b421dd197100379c910146dce78fb7"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_060.jpg",
+      "bytes": 387765,
+      "sha256": "910b47f29b1433392a1acfc749523545d217d3e2976c764d1a9be6ca3c96083a"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_061.jpg",
+      "bytes": 150871,
+      "sha256": "87f6ede466b20878dc442a006c07ba1402e752eee1ed5fda8023b210f0e081d3"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_062.jpg",
+      "bytes": 302758,
+      "sha256": "3f37814e9b37f1b6c6c1a9bab12ec72c9db36148c73fbf47bf8552e1cc5a117a"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_063.jpg",
+      "bytes": 275304,
+      "sha256": "17aec3edddc1f8d30219ab39a24a25728f731b2af85eb7328067f9980a471dfb"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_064.jpg",
+      "bytes": 277652,
+      "sha256": "ffeb5d5e1278b6dac6e0bf82ecd31a5798a68b72c57da2625d96bd4bec09ed8e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_065.jpg",
+      "bytes": 336897,
+      "sha256": "f1ddb2a03d6fdc355c9028166ea3f502f1be36f5acbe011901c25d97b6d567c3"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_066.jpg",
+      "bytes": 491483,
+      "sha256": "b1bc3134635b8f8eebc1beab77972f52f85a8f364d97e5060286cf3103b4f920"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_067.jpg",
+      "bytes": 452412,
+      "sha256": "df715fb13aeb0c7cec837b07f9dcb9f257773a2d6e6f961fdde92dff0f21bfc0"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_068.jpg",
+      "bytes": 403663,
+      "sha256": "e9d64801dadef0171b203076e8ace889edc0e0c0d54d4dd33b0031e77e4b714a"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_069.jpg",
+      "bytes": 595016,
+      "sha256": "c1d6d4d6b864de780b07746cd7d36642ee45d93cf231f5e71ef177c55945fd01"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_070.jpg",
+      "bytes": 489553,
+      "sha256": "0580466b400c698e170d49ea6fb6aab3d7ceef7c52d97817e3cd52365edbfb25"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_071.jpg",
+      "bytes": 290813,
+      "sha256": "ecb5b6309c5a9038bd69586ea85efb24173217dc9dcce9d3d32437fad147b1f6"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_072.jpg",
+      "bytes": 397840,
+      "sha256": "a92433629c58c2f731964b18291d0f92822bea59fe955c4a2f688431e74bff5a"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_073.jpg",
+      "bytes": 565309,
+      "sha256": "64a3cc0e2166d1c8d38f07241316948b3813cd37878731eef142549840b8d947"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_074.jpg",
+      "bytes": 74873,
+      "sha256": "78d9c0d6f2bdd48421bc1762b7c5ff9c1a0c312ec6bc338b8dfe43bef0c7e5e2"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_075.jpg",
+      "bytes": 95663,
+      "sha256": "3b917d5dfb03bfb20b3ceb32a332168fcac61ce955ae8718cd2f1467ad7bf1a6"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_076.jpg",
+      "bytes": 91945,
+      "sha256": "07f4318887256711fc21155ff6b5f6cd571ff6f68cd75d93789a7d5a58c0b334"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_077.jpg",
+      "bytes": 106135,
+      "sha256": "842460c7cbebec4fd38900c6b7dd5739f8c1660ff8c63d51008ab2dc22a45fc7"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_078.jpg",
+      "bytes": 127785,
+      "sha256": "17daa714964e6fce1cff3bc467b7c6b606d64c4475f1165d88ce14848f27bd3d"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_079.jpg",
+      "bytes": 65702,
+      "sha256": "0010b402de562f58d77f1897730f799c70a426c2696f516da6925ee265adb512"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_080.jpg",
+      "bytes": 636321,
+      "sha256": "79e372ea182ea953c20e89f9a6d4ffeea46911533f100279e2191e47a0bbb2f4"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_081.jpg",
+      "bytes": 469333,
+      "sha256": "ef6a80197e01805b42be67d877d28ebf04ad6036de2bfe957fb4ca0b7508e4ea"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_082.jpg",
+      "bytes": 552888,
+      "sha256": "14fe8e3af148ef8aa8b5da3f191289f628548317e8383a171c01b961912de247"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_083.jpg",
+      "bytes": 618051,
+      "sha256": "18b60144283c0b49410d2949af58b848c8a24f12f5b1805ec9831611016c9e42"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_084.jpg",
+      "bytes": 307509,
+      "sha256": "4c77b3431caa7241902ee615a06de4548e10f1f0bb72110b87056175b7a5f275"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_085.jpg",
+      "bytes": 290192,
+      "sha256": "eb343dbacf5d1f61b4a389d72df605c1688ddb841e3873ad7671475bc85b90d4"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_086.jpg",
+      "bytes": 312726,
+      "sha256": "01cc63afc8f75369e9b32b208b68af0adcacfc9f0d8cd6693da6dd359e611855"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_087.jpg",
+      "bytes": 501819,
+      "sha256": "ce5e2f6bfb8d366121b236077023cc804df95e8eb06ff7159c9ca901a370a976"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_088.jpg",
+      "bytes": 107957,
+      "sha256": "fda6936a0dd79b440e76cee37301a03bb5c4fd82d906ff894ac5f15c80f2b830"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_089.jpg",
+      "bytes": 228056,
+      "sha256": "1d9047bada7ee7238311a3d01df6b5cd4d44bc77d79a8a62f170959dc0422725"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_090.jpg",
+      "bytes": 118997,
+      "sha256": "ab7890d1ec83f93361c9d3f3b012bbefaef611e0168ce06d1e6eb1db8bdb57ce"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_091.jpg",
+      "bytes": 237876,
+      "sha256": "74f6ba7f871e677ad5441bc4c69e8f9c2d31b4179e44d8032c87973dbeb6ce10"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_092.jpg",
+      "bytes": 533817,
+      "sha256": "31770a3ff7e2747187ffec216c352fac37b8dab34cea469e376b158bba3ab45e"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_093.jpg",
+      "bytes": 171729,
+      "sha256": "563b12385a9b909fb3e5b534a089a425579cbd65799878de0eecb2a5e6228d4d"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_094.jpg",
+      "bytes": 342885,
+      "sha256": "41da5e795380bacea26c51798affcfa5ccce26affa5e44a2897c93b37931ebdf"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_095.jpg",
+      "bytes": 56448,
+      "sha256": "61853078721b527aaf43ecf24c7054dcc89c07cb1ec095896840853f95c753df"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_096.jpg",
+      "bytes": 105576,
+      "sha256": "526f715b7c4b7d45396d834345a5fe8cf09b16324512bfd95c7eabd09d719eea"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_097.jpg",
+      "bytes": 428247,
+      "sha256": "fd82f825e40c79b2a4d506300925cc4444bd308d9e420e118d081d987d4bc309"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_098.jpg",
+      "bytes": 520658,
+      "sha256": "cdee608476992437f613821ff580289b196bb4bc6ae6e443f450c7b53c322e00"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_099.jpg",
+      "bytes": 428334,
+      "sha256": "0ce688b034f330ec7e64ed4965b55e06d2d0c91878078a1e3b24b66cb01e0e9c"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Books_01_Cover_100.jpg",
+      "bytes": 311815,
+      "sha256": "f7ebc59988ee3668ff721e4e2e8a3db6017574ade7e12273ab86bec40023d806"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Coffee_Table_04_Texture_001.jpg",
+      "bytes": 676897,
+      "sha256": "657ba0f3a36d8972bf79419ec10c862dd20bfc8565b852da81e10721f544a6d7"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_001.png",
+      "bytes": 739692,
+      "sha256": "5a6eabe7d81796ce054ff1eac8fd9619f7cc95c7b4d5380530426d6b96b31566"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_002.jpg",
+      "bytes": 111937,
+      "sha256": "6d2bb3a7261752fc5cf0d2f4920ce605963f274833bb8d6778fb81000c40f550"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_003.jpg",
+      "bytes": 627315,
+      "sha256": "50210da5940c7d13b274ccdb81da73d4b06b16b20f02a31aaf92812f2c9b8559"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_004.jpg",
+      "bytes": 937696,
+      "sha256": "6404490ae6e8a97f0f3f973ed9150f73a460f2ad5dd774a71c920d010844b7da"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_005.png",
+      "bytes": 947100,
+      "sha256": "25dd085cecfd4f37799faace71e14396a48b00380dfef6f33b1c0f236a789f4c"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_006.png",
+      "bytes": 2032421,
+      "sha256": "af6eea35ceb47295b1ccc83e1b9f01617030ebb53274a46886f7fc6d5cc1de53"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_007.jpg",
+      "bytes": 847153,
+      "sha256": "c4e3016c911198df6d9d094702a8e4dd616114a3d9d1056241380a2393b631ba"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_008.jpg",
+      "bytes": 613385,
+      "sha256": "80b509b453eac5a48187b0d07b12f0af0c0fdb1c38b416d51684ff24af535fb7"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_009.jpg",
+      "bytes": 136615,
+      "sha256": "9f96e54b7f0b867adff6c8531fd5035fdc96b41bb29e2e47cabd828b7b658dce"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_010.jpg",
+      "bytes": 264105,
+      "sha256": "fa87dcfb862d5a5abc529f6fce3c1240eebd42256ac12a426d1f529e6b9b4205"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_011.jpg",
+      "bytes": 187208,
+      "sha256": "faf990d4f322d0c969b70cf4d6f192a570b573da6bc28d8ef9cf6cbef699bbb5"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_012.jpg",
+      "bytes": 169320,
+      "sha256": "c7d122151c63a6df30a19ee1c6df206e49c5ff5dace777000e96a43928715970"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_013.jpg",
+      "bytes": 1651735,
+      "sha256": "2c57b788864cf20cadf350be98866628ddc012f5c6d49e7c382de425da013b15"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_014.png",
+      "bytes": 851144,
+      "sha256": "236c8c67b747d1fe948928cac9c497b2c25d0d83a1ca20b35842d445e295071a"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_015.jpg",
+      "bytes": 101418,
+      "sha256": "464b6a21becce431db65a25bfb6dcac161530c0d29dbfa1d644f38c0ac79ee34"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_016.jpg",
+      "bytes": 84275,
+      "sha256": "3c21bbbab4d7c640e4afffdb74544fd0a7abb210c06a78781339cc6e60359caf"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_017.png",
+      "bytes": 1365174,
+      "sha256": "00201aad9be670376077f13d08da8faca2cd92deac1bc1b863b73180fb01c2a5"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_018.png",
+      "bytes": 479151,
+      "sha256": "0f0601ad7741edbb05799b0fe432ff8f558bfc426e602a8e5ebcb9eb76e951ca"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_019.jpg",
+      "bytes": 110450,
+      "sha256": "89d451845ad3547f476cb01ad2b4855eecc38f650262fddd593108fcea00ff26"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_020.jpg",
+      "bytes": 300389,
+      "sha256": "8370ee8b3ca79d4d89810d2dfed321f02572f485225b38d1139e57db63d7a897"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_021.jpg",
+      "bytes": 454512,
+      "sha256": "2d763c4ddb841e17acaaee63f72735219b110672be411db14d27817a485bcf2a"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_022.jpg",
+      "bytes": 351061,
+      "sha256": "6b578985827b7cdb58cfbe27aa33a5e7b87da2caa60bc8c0bc12fd0cddce342c"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_023.jpg",
+      "bytes": 1467706,
+      "sha256": "afca39c006bf243b6881a399a4ba13bc7ba462d8dea7896e6ea6925bdba9df86"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_024.jpg",
+      "bytes": 895743,
+      "sha256": "c204129ebac31209357cfa5d345d147b95bcdeeaf3d953ca712a618da90951f9"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_025.jpg",
+      "bytes": 465318,
+      "sha256": "ae9e67aea048a02d0ac48f7c6bfe1f09f1e0e37622f4c6ad5400f571e972a6cd"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_026.png",
+      "bytes": 1694958,
+      "sha256": "8429b3af11c89d527e09009846843d5d19791c8124e7a4338e96712b91d2b5c5"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_027.jpg",
+      "bytes": 199419,
+      "sha256": "6b94cac0b11dff04fcc84bf6bf02563f307db2737487f4232ff0ed56db7ab2b9"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_028.png",
+      "bytes": 866752,
+      "sha256": "434694c386ab56be01a0568ce611e6f5f60041106e292bac83b118f0d4e52486"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_Texture_029.png",
+      "bytes": 917116,
+      "sha256": "90c5071404a644b1c9d44434ff16b7459e154219a09df57902e6abba04a0b204"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/maps/Decor_Set_01_UV_Checker_001.png",
+      "bytes": 623172,
+      "sha256": "e1cc1c97713df2306a81bddb8ae8847ae97ac76f14dada7ca02c02e15ff14d68"
+    }
+  ],
+  "renders": [
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment03/Showroom-Overview.png",
+      "bytes": 3334583,
+      "sha256": "ae51633b0f61bed8cba8168759947d972e6b960aca76fd955e3501a8248557ce"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment03/Library-Detail.png",
+      "bytes": 7942064,
+      "sha256": "142c5185fcf4988c8ea090361eb7d2528e23fbfb44e77d551f4c767bf0364515"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment03/Road-Overview.png",
+      "bytes": 2801090,
+      "sha256": "091b0d1cb16cc4ba29ef73bdb572bda5d14218046084d1a5918bbf0052a7cf92"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment03/Whole-Scene.png",
+      "bytes": 994354,
+      "sha256": "8e642bb3bc90f0d40560c8eb39adf05cf5569753b35051056f8dc6938f52e0e2"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment03/receipt.json",
+      "bytes": 72238,
+      "sha256": "aeb91f2166ad486a379eb81d6ca77f94c424c9bf1d76c8094b148bdfd2f94ec2"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/receipt.json",
+      "bytes": 184653,
+      "sha256": "76e3b28302273b7caef9053ffd5e546ed98d9550ef3e933f9722282d5d6bcdae"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/stage2-report.json",
+      "bytes": 140178,
+      "sha256": "65c8a07bd74acdbb36fbcba6f90dd0cb19ff55a4fabb33323176954d071c90b2"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-01/runs/experiment05/minimum-counts.json",
+      "bytes": 269,
+      "sha256": "719ab28e7d7a284cbd61b18fc17931183cf34c57c1590298642c89a4461d8630"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-review01/actual-review01.json",
+      "bytes": 975640,
+      "sha256": "dd5b0e65473424d0603cc02842264d0d0c7e84f31b5be98decef777276b2b3a1"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-review01/actual-component-review01.json",
+      "bytes": 21843,
+      "sha256": "c757f38d59159b7e11d5945851f4deecb625a7ccddb87cedadec059db3b0b4a5"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-review01/execution-receipt01.json",
+      "bytes": 4001,
+      "sha256": "c786873bce952afcf897566327640b10e9301f953a414a8dd747ea556f24bdc7"
+    },
+    {
+      "path": "build/large-scene-lab-20261019-review01/integrated-road-review01.json",
+      "bytes": 4833,
+      "sha256": "2de55ae0b4ab6c45be02f42c2f5141ee46531ba5baeced7ca4da3311ffdc29d6"
+    }
+  ],
+  "documents": [
+    {
+      "path": "docs/LARGE_SCENE_LAB_2026-10-19/FEATURE_COVERAGE.md",
+      "bytes": 5120,
+      "sha256": "d0fe6042e809501435e45746ede06e6e3b7489b757165e58c99524cc1ea71b0d"
+    },
+    {
+      "path": "docs/LARGE_SCENE_LAB_2026-10-19/FINDINGS_AND_NEXT_ROUND.md",
+      "bytes": 8151,
+      "sha256": "88c6c44d6c4a9914a4776f8ad76a1e7a68e641388815db216e82c3d82ca21ec2"
+    },
+    {
+      "path": "docs/LARGE_SCENE_LAB_2026-10-19/README.md",
+      "bytes": 4827,
+      "sha256": "0697c8d83350804bee5bdd225083837eae1131f3306ded8cff9b233759a22e34"
+    },
+    {
+      "path": "docs/LARGE_SCENE_LAB_2026-10-19/TECHNICAL_RESULTS.md",
+      "bytes": 12996,
+      "sha256": "eab004e8f898f1b5e38aee10ddaa66837bfcd33a952cd23f7c4f9d4f93ae6077"
+    }
+  ]
+}

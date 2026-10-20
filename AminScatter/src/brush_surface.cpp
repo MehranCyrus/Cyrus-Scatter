@@ -15,6 +15,7 @@ double axis(Vec3 a,int i){return i==0?a.x:i==1?a.y:a.z;}
 struct Box {
     Vec3 lo{INFINITY,INFINITY,INFINITY},hi{-INFINITY,-INFINITY,-INFINITY};
     void add(Vec3 v){lo={std::min(lo.x,v.x),std::min(lo.y,v.y),std::min(lo.z,v.z)};hi={std::max(hi.x,v.x),std::max(hi.y,v.y),std::max(hi.z,v.z)};}
+    double distance2(Vec3 p)const{double d=0;for(int i=0;i<3;++i){double q=std::max({axis(lo,i)-axis(p,i),0.,axis(p,i)-axis(hi,i)});d+=q*q;}return d;}
     bool contains(Vec3 p)const{
         for(int i=0;i<3;++i){const double low=axis(lo,i),high=axis(hi,i),v=axis(p,i);
             const double pad=1e-9+32*std::numeric_limits<double>::epsilon()*std::max({1.,std::abs(v),std::abs(low),std::abs(high)});
@@ -91,4 +92,17 @@ bool Surface::hit(Ray r,Hit& result,double limit,QueryStats* stats)const{
     }return found;
 }
 bool Surface::hitReference(Ray r,Hit& result,double limit)const{bool found=false;for(std::uint32_t f=0;f<mesh().faces.size();++f){Hit h;if(triangleHit(mesh(),f,r,h,limit)&&(!found||h.distance<result.distance)){result=h;limit=h.distance;found=true;}}return found;}
+bool Surface::closest(Vec3 p,Hit& result,double maxDistance)const{
+    if(!finite(p)||!std::isfinite(maxDistance)||maxDistance<0)throw std::invalid_argument("Invalid surface nearest-point query");
+    double best=maxDistance*maxDistance;bool found=false;std::vector<std::uint32_t> stack{0};
+    while(!stack.empty()){auto id=stack.back();stack.pop_back();auto& node=impl->nodes[id];if(node.box.distance2(p)>best)continue;
+        if(node.right){stack.push_back(node.left);stack.push_back(node.right);continue;}
+        for(auto k=node.begin;k<node.end;++k){auto fi=impl->order[k];const auto f=mesh().faces[fi];Vec3 a=mesh().vertices[f[0]],u=mesh().vertices[f[1]]-a,v=mesh().vertices[f[2]]-a,w=p-a;
+            const double uu=amin::dot(u,u),uv=amin::dot(u,v),vv=amin::dot(v,v),wu=amin::dot(w,u),wv=amin::dot(w,v),den=uu*vv-uv*uv;
+            auto accept=[&](Vec3 bary){Anchor anchor{fi,bary};double d=norm2(position(anchor)-p);if(d<=best&&(!found||d<best||fi<result.anchor.face)){best=d;result={anchor,std::sqrt(d)};found=true;}};
+            if(den>0){double y=(wu*vv-wv*uv)/den,z=(wv*uu-wu*uv)/den;if(y>=0&&z>=0&&y+z<=1)accept({1-y-z,y,z});}
+            for(int e=0;e<3;++e){auto start=mesh().vertices[f[e]],delta=mesh().vertices[f[(e+1)%3]]-start;double len=norm2(delta),t=len>0?std::clamp(amin::dot(p-start,delta)/len,0.,1.):0;double bary[3]{};bary[e]=1-t;bary[(e+1)%3]=t;accept({bary[0],bary[1],bary[2]});}
+        }
+    }return found;
+}
 }

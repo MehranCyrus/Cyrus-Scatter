@@ -1,0 +1,16 @@
+{
+  "format": "cyrus.library-package",
+  "graph": {
+    "bytes": 4201,
+    "file": "assets.json",
+    "sha256": "fca8c38a4da09578ac311ff9a08562edfe7ccc70d15aeadff4e4d1e2eb925cbf"
+  },
+  "hostYear": 2027,
+  "recipe": {
+    "bytes": 37119,
+    "file": "entry.csrecipe.json",
+    "sha256": "a8cff3d4738b9a8ba34f5d95669377cbbe0a42359be992c022c65470cfdf4ae0"
+  },
+  "redistribution": "Original Cyrus procedural demonstration assets; redistribution permitted.",
+  "version": 1
+}

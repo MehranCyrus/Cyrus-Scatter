@@ -1,16 +1,16 @@
 {
   "schema": "cyrus.public-guide/3.0",
-  "developmentVersion": "0.86.0",
+  "developmentVersion": "0.86.6",
   "artistWorkflowVersion": "0.78.3",
   "analyzerVersion": "0.14",
   "mcpVersion": "0.73.0",
-  "reviewed": "2026-10-18",
+  "reviewed": "2026-10-19",
   "documents": [
     {
       "id": "artist-guide",
       "title": "The artist's guide",
       "description": "Your complete workflow, from the first surface to the final refinement.",
-      "html": "<h2 id=\"start-with-a-layer\">Start with a layer<a class=\"heading-permalink\" href=\"#/guide/artist-guide/start-with-a-layer\" aria-label=\"Link to Start with a layer\">#</a></h2>\n<p>Create a Cyrus Scatter controller, add a layer, assign its receiving surfaces and add models or Points. Set Amount, then press <strong>Update scatter</strong> in Manual mode. Live responds to relevant edits.</p>\n<p>In Geometry &gt; Cyrus &gt; Cyrus Scatter, click to place, move to size the icon, and click to finish. Right-click to exit Create mode. Each layer owns its surfaces, sources, amount, layout, transforms and spacing. Layer order matters when between-layer spacing is enabled.</p>\n<p>Use Add, Copy, Remove, Up and Down to organize layers. Copy includes independent Paint Areas. Visible controls viewport display; Enabled controls the layer contribution. Removing an assignment does not delete the source scene object.</p>\n<p>In 0.82.6, closed sections create controls on first opening and reuse them while the command panel remains mounted. Switching layers rebinds those controls. Browsing does not apply pending Manual edits.</p>\n<h2 id=\"surfaces-models-and-optional-containers\">Surfaces, models and optional containers<a class=\"heading-permalink\" href=\"#/guide/artist-guide/surfaces-models-and-optional-containers\" aria-label=\"Link to Surfaces, models and optional containers\">#</a></h2>\n<p>Add receivers to the selected layer. Unchanged receivers retain their base random streams when another receiver is added, renamed or reordered. Density gives each receiver its own count below the cap; Fixed Total redistributes the same total, so some existing candidates may be removed. Geometry changes, Relax, masks and shared spacing can change accepted output.</p>\n<p>Add Point makes placement markers without final model geometry. Pick object turns a selected Point into a model. Make point turns a selected model into a Point while preserving its registration, settings and Band assignments; the scene model is not deleted. Both actions preserve the source row identity. An Empty choice creates weighted gaps in Candidate budget mode; positive-weight Empty is rejected by Accepted target. A Point and an Empty are different source kinds.</p>\n<p>Source controls include label, identification color, weight, scale, Manual/Auto radius, vertical offset and forward axis. Manual preserves its radius and optional Follow Scale. Auto bounds supported geometry around the pivot after final instance scale and orientation; it is conservative spacing, not exact mesh collision. Points, Empty and unqualified source families remain Manual. Assignment-group colors are separate from identification colors.</p>\n<p>Source containers are optional palettes. New rectangles start with <strong>Enable collection</strong> off. Position and resize first, then enable collection to collect eligible source pivots. Selecting a rectangle opens compact collection and dimension controls; select the Scatter controller for full planting settings. Moving an enabled rectangle carries its owned models; resizing its boundary leaves their transforms unchanged. Disabling collection parks models while retaining settings. Manual waits for Update; Live applies relevant membership changes.</p>\n<h2 id=\"layout-and-amount\">Layout and Amount<a class=\"heading-permalink\" href=\"#/guide/artist-guide/layout-and-amount\" aria-label=\"Link to Layout and Amount\">#</a></h2>\n<p><strong>Planting positions</strong> chooses Surface random, Rectangular, Staggered or Hexagonal. Grids expose world-unit spacing, fixed Origin X/Y, Heading and stable Jitter. They project down onto the highest receiver hit. Hexagonal calculates row pitch from its nearest-neighbor distance. Count/Density and refill are inactive; masks and collision rules thin the lattice. Source assignment below is independent. Entirely vertical receivers and Analyzer Single/EdgeRow positions are unsupported with grids.</p>\n<p>Random mix chooses weighted sources. Clusters choose assignment groups across space. Spline Bands use closed world-XY Paths, explicit Models / Points or Assignment groups, and Consecutive or Independent ranges. Surface Analyzer consumes separately analyzed boundary, path and point channels.</p>\n<p>Consecutive accumulates widths separately on each Path/side and preserves unassigned intervals as gaps. Independent exposes each Band&#x27;s Start/End and combines eligible contributions. New Bands start unassigned. Scaling a Path changes its outline, not its world-space Band distances.</p>\n<p>Density and its optional curve shape a Band&#x27;s contribution from Start to End. Independent contributions cap total occupancy at 100%, then choose the Band proportionally. A 100% Sphere plus 25% Box gives approximately 80% Sphere/20% Box in the overlap and 25% occupancy where only Box contributes, before other masks/spacing.</p>\n<p>Rounded uses distance to original border segments. Sharp uses bounded miter offsets; acute corners have limits and narrow/complex requests can require simplification. The preview shows admitted geometry.</p>\n<p>Amount supports Count or area Density, up to 1,000,000 per population. A controller shares a 1,000,000-candidate work limit across its populations, including retry and protected-edit requirements. Exceeding that limit reports an error and retains the preceding result. Candidate budget can underfill after restrictions. Independent ranges and nontrivial Band density require Candidate budget; Accepted target is rejected so retries cannot erase the fade. Use a fixed seed for repeatable comparisons. Texture Density uses a selected UV channel (1..99, default 1) on each receiver. Choose 64, 128, 256 or 512 samples per side (default 128). Higher resolution helps capture narrow mask details at a greater preparation cost. UVs clamp to 0..1; white permits and black excludes. Unchanged maps reuse their sampled data across receiver edits. Errors identify the invalid receiver/channel and retain the previous complete result.</p>\n<p>0.86.0 keeps placement-sized calculation and storage in native memory. Count changes no longer reserve MAXScript heap proportional to every plant. Undo remains available; a failed successor preserves the last complete result. The one-million controller work limit and memory safeguards remain. Large calculations, complex source geometry and Bake can still block Max while they finish.</p>\n<h2 id=\"mesh-channel-density\">Mesh channel density<a class=\"heading-permalink\" href=\"#/guide/artist-guide/mesh-channel-density\" aria-label=\"Link to Mesh channel density\">#</a></h2>\n<p>In Amount, enable <strong>Use mesh channel mask</strong>. Channel 0 reads vertex colors; channels 1..99 read numbered mesh map channels from the evaluated receiver. Choose R/X, G/Y or B/Z to match the component written by Data Channel or VertexPaint. Every assigned receiver needs that channel.</p>\n<p>For terrain curvature, place Data Channel above the deformation, add Curvature, then Vertex Output to an unused Map Channel and component X. Select the same channel and R/X in Scatter. The rainbow display colors are visualization; planting reads stored numeric values. Curvature describes bending, while slope describes steepness.</p>\n<p>Input min/max map the chosen values into 0..1 and clamp outside values. Min must be below max. Invert reverses the normalized value before the Density curve: 0 excludes plants, 1 permits them, and gray values thin stable candidates. Triangle map-face interpolation respects channel seams. The mask has mesh detail rather than a sampled bitmap resolution.</p>\n<p>The mask combines with texture density, slope/altitude and Paint without creating Paint strokes. It runs after candidate movement/Relax and before CS Edit. Masked base edits remain dormant until eligibility returns; existing explicitly moved or cloned protected edits follow the established replay rules. Channel-only changes preserve geometry bindings. Nonzero movement requires Keep on surface.</p>\n<p>Preview mask reads current inputs into at most 2,048 grayscale face-centre markers across the layer. It shows only this mask and may differ from pending Manual plants. Relevant edits clear the snapshot; click Preview again to refresh, or Hide preview to clear it. Redraw uses cached markers without channel reads. Each receiver supports up to two million evaluated faces; VData, selection and negative map channels are outside this version.</p>\n<p>Manual waits for Update scatter; Live follows relevant channel/modifier edits and animation. Missing or invalid channels identify the receiver and retain the previous complete result. The layer owns its mask and curve, and copied layers retain independent settings. Named presets for this new curve are not available in this version.</p>\n<h2 id=\"band-scale-profiles\">Band scale profiles<a class=\"heading-permalink\" href=\"#/guide/artist-guide/band-scale-profiles\" aria-label=\"Link to Band scale profiles\">#</a></h2>\n<p>In Layout, Scale sits directly below the density curve. Min/Max supplies random size variation. Scale profile selects Off, Follow Density or Custom. Custom enables Edit scale curve. X runs from Band Start to End; Y is size percent, where 100% preserves size.</p>\n<p>Density and scale have independent curves. Follow Density uses the effective density curve shape, without the Density % strength; disabling that density curve gives a flat 100% scale profile. Switching modes keeps the Custom graph. Zero size does not remove a candidate.</p>\n<p>Scale curves multiply existing source, Band and layer size once. Auto Radius follows final size; Manual radius needs Follow Scale. Size-dependent spacing can change accepted counts. Manual requires Update scatter. Steep Sharp profiles can exceed the bounded precision and retain the previous result; simplify the curve or choose Rounded.</p>\n<h2 id=\"slope-and-altitude-filters\">Slope and altitude filters<a class=\"heading-permalink\" href=\"#/guide/artist-guide/slope-and-altitude-filters\" aria-label=\"Link to Slope and altitude filters\">#</a></h2>\n<p>Enable Filter slope or Filter altitude in Include / exclude areas ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Surface eligibility. Slope is measured from world up using the evaluated geometric normal: 0Ãƒâ€šÃ‚Â° upward, 90Ãƒâ€šÃ‚Â° vertical, 180Ãƒâ€šÃ‚Â° downward. Altitude is world Z at the final receiver anchor, before source pivot offsets.</p>\n<p>Lower and Upper fade soften density inside the range. For a 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“35Ãƒâ€šÃ‚Â° slope interval, a 10Ãƒâ€šÃ‚Â° upper fade thins between 25Ãƒâ€šÃ‚Â° and 35Ãƒâ€šÃ‚Â°. Zero fade includes the endpoint. Fades cannot overlap; invalid settings retain the previous complete result.</p>\n<p>Filters preserve surviving candidate IDs, model choices and transforms. Paint overlap still uses max-union density; explicitly moved or cloned CS Edit plants bypass these filters. Spacing and cleanup follow filtering. Use Candidate budget to retain the visible density fade; Accepted target can refill within its finite work budget.</p>\n<p>Manual waits for Update; Live follows relevant edits and receiver animation. The status describes the last calculated prepared pool, separately from accepted plants. Heights use scene units and survive scene-unit conversion.</p>\n<h2 id=\"named-settings-and-curve-presets\">Named settings and curve presets<a class=\"heading-permalink\" href=\"#/guide/artist-guide/named-settings-and-curve-presets\" aria-label=\"Link to Named settings and curve presets\">#</a></h2>\n<p>Use Presets... in Amount, Transforms or Spacing &amp; cleanup. Curve presets are available from Paint, Analyzer and Band density/scale graphs. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer.</p>\n<p>Population includes amount, density, seed and retry policy. Transforms include the layer rotation, scale, movement, normal alignment and projection. Assets, surfaces, IDs, maps and layout remain linked to the scene. Physical distances convert across system units; density stays per square metre.</p>\n<p>Spacing stores the effective rule and applies an explicit override in the chosen Within this layer or Between layers scope. It does not store peer identities or change Relax/cleanup. Reset inheritance remains a separate control.</p>\n<p>Curve presets preserve samples and editable handles while retaining enable flags, widths and scale ranges. Density and Paint scale use zero-to-one values; other scale curves support multipliers. Invalid or incompatible curves are rejected. One Undo/Redo restores Apply, and closing a graph after Undo does not reapply the preset.</p>\n<p>Manual waits for Update scatter; Live follows normal update callbacks. Browsing, saving and renaming do not calculate plants. Animated or expression-controlled targets are rejected. Static shared controllers are detached so another owner is preserved.</p>\n<p>The local library is CyrusScatter/Presets inside the per-user Max PlugCFG directory. Share the .cspreset.json files. Limits are 512 files, 64 KiB per file and 80-character names. Rename changes the library name; Delete confirms removal of the selected file. Invalid files and failed writes report errors. Complete static recipes and explicit role substitution are available through Layers &gt; Recipes.</p>\n<h2 id=\"vector-painting\">Vector painting<a class=\"heading-permalink\" href=\"#/guide/artist-guide/vector-painting\" aria-label=\"Link to Vector painting\">#</a></h2>\n<p>Turn on <strong>Use Paint Areas</strong>, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session.</p>\n<p>Areas share the layer models and population. Overlap contributes coverage once per candidate. Turning Paint Areas off retains the areas and uses the full receiver. Fill and Clear operate on the selected area; keep a saved copy before major edits.</p>\n<p>Inward/outward feather widths and separate density/scale curves shape the edge. Density changes acceptance; scale multiplies model size. A 100 mm radius has a 200 mm diameter. Borders describe coverage, not guaranteed accepted plants.</p>\n<p>Hover over Paint controls for short descriptions. Fade density changes plant acceptance; Fade scale changes size independently. Inside and Outside fade define the transition width. With the default curve, Edge scale is the outer-end size multiplier and Inner scale is the interior multiplier: 0.5 means half size, 1 unchanged and 2 double. Edge scale cannot exceed Inner scale. The graph shapes the transition between them.</p>\n<p>Vector painting supports planes and terrain single-valued in receiver-local XY, including transformed receivers. Closed, vertical, folded and overlapping projected receivers are rejected. General scattering on curved receivers is a separate supported workflow.</p>\n<p>The vector format introduced in 0.78 does not convert earlier stroke setups. Preserve older scenes with their matching build and create a new setup for the vector workflow.</p>\n<h2 id=\"paint-and-spline-snapshots\">Paint and spline snapshots<a class=\"heading-permalink\" href=\"#/guide/artist-guide/paint-and-spline-snapshots\" aria-label=\"Link to Paint and spline snapshots\">#</a></h2>\n<p>Stop the brush and select a Paint Area. Export spline creates and selects an independent Editable Spline with its closed contours and holes. Edit the border in Max, reselect the Scatter and Paint Area, choose Replace or Add, then press Pick spline... and choose the shape. Escape cancels picking.</p>\n<p>Export uses the receiver&#x27;s local XY plane at local Z=0 with its scene transform. On terrain the spline is a planar editing guide. Import projects along receiver-local Z, clips to the receiver and requires every contour to be closed. Nested loops and self-intersections use even-odd fill regardless of winding or order.</p>\n<p>Replace sets coverage; Add unions it with the existing region without erasing paint. Density, fades, models and area identity stay unchanged. A changed import and each export are one Undo. Manual waits for Update; Live follows changed coverage. There is no live source link: later spline edits require another import.</p>\n<p>Curve tolerance is a world-unit approximation distance, initially 1 mm. Smaller values need more samples. A shape is limited to 8,192 input knots and 8,192 sampled vertices. Paint precision imposes a minimum tolerance; very large local coordinates can prevent accurate Max spline export. Invalid conversion retains existing paint. Reopen using the saved scene units; native Paint geometry conversion guards still apply.</p>\n<h2 id=\"area-limits-transforms-and-spacing\">Area limits, transforms and spacing<a class=\"heading-permalink\" href=\"#/guide/artist-guide/area-limits-transforms-and-spacing\" aria-label=\"Link to Area limits, transforms and spacing\">#</a></h2>\n<p>Closed Include shapes union their eligible domains. Exclude takes precedence. Area masks test placement support rather than trimming model geometry. <a href=\"#/guide/layout-falloff\">Layout &amp; soft boundaries</a> explains guide widths and edge curves.</p>\n<p>Rotation, XYZ scale, whole scale and movement have independent ranges and reset buttons. Projection and orientation settings affect final placement. Within-layer and between-layer spacing are independent rules; radius, factor, gap and Follow Scale determine simplified clearance.</p>\n<p>CS Edit uses stable instance identities. Generation changes can invalidate bindings; preserve the scene before clearing edits. Radius overlays are inspection aids, not exact mesh collision volumes.</p>\n<h2 id=\"preview-updates-output-and-diagnostics\">Preview, updates, output and diagnostics<a class=\"heading-permalink\" href=\"#/guide/artist-guide/preview-updates-output-and-diagnostics\" aria-label=\"Link to Preview, updates, output and diagnostics\">#</a></h2>\n<p>Plant centres shows one marker per accepted placement. Point Cloud, Proxy and Mesh have their own display budgets, so shown counts can be lower than accepted output. Mesh uses evaluated viewport geometry and preview coloring; renderer materials are a separate output concern.</p>\n<p>Color by Bands follows the accepted owner even when Bands share a model. Preview Falloff shows selected contribution or Combined density on receiver surfaces: blue is zero and red is 100%. Show Boundaries adds white contours. Sample/face counts describe approximate coverage at the Band stage before other masks, spacing and cleanup. These overlays are not final plants or render output.</p>\n<p>Manual retains the last completed result until Update scatter. Live updates relevant dependencies. A failed successor retains the previous complete result and reports the failure. If an Analyzer is stale, Analyze it first and then update Manual Scatter.</p>\n<p>In Manual, enabled field feedback follows relevant authored/animated inputs while published plants and radii stay frozen. The label reads <strong>Pending field; plants from last Update</strong>. Field toggles, selection and XY/3D radius display do not solve placements. An uncached display mode cannot use changed source geometry alongside the preceding publication; Update is required.</p>\n<p>Local identification-color edits retain unchanged sibling previews. Unchanged navigation reuses prepared display data. Heavy changed layers, cold loading and first panel construction can still take time.</p>\n<p>Statistics identifies the selected layer and its last completed calculation. Requested and accepted placements are separate from prepared cloud points, centres or preview instances. Prepared samples are not current-frame draw counts. Marked for Update reports pending invalidation; Read cached statistics does not apply Manual edits. Empty successful results and failed updates have separate feedback. Optional diagnostics record local bounded events; recording is separate from sharing or permission to train.</p>\n<p>In Viewport &amp; render, Navigating and Idle set separate limits for Point Cloud points, Proxy instances or Mesh triangles across visible layers. Use 0 for unlimited. A short pause restores Idle detail; final rendering retains the full accepted planting. Expensive Mesh sources can use cached boxes to fit the triangle or memory allowance. Oversized Point Cloud requests use a bounded sample and report the memory reduction, including at zero limits; switching modes reuses the current planting snapshots. Zero removes artist draw caps but keeps memory safeguards. Graphics failure uses bounded centre markers. Display changes preserve pending Manual edits.</p>\n<p>From 0.82.6, saved reports include call counts, total time, longest time and failed-stage counts for input extraction, candidates, masks, transforms/radii, spacing, preview preparation, uploads, publication and panel work. Times are inclusive: a parent can contain another measured stage, so do not add all totals together. Action IDs connect an edit to invalidation and its deferred publication; unrelated host activity can have no action ID. The selected-setup snapshot reads cached requested/accepted/prepared counts and pending flags without evaluating the scene. These timings do not measure presented viewport FPS.</p>\n<h2 id=\"final-artist-acceptance\">Final artist acceptance<a class=\"heading-permalink\" href=\"#/guide/artist-guide/final-artist-acceptance\" aria-label=\"Link to Final artist acceptance\">#</a></h2>\n<p>Use the qualified 0.85.3 Max 2027 MZP through <strong>Scripting &gt; Run Script</strong>, or the companion Windows EXE, then restart Max so script and native modules match. The EXE is unsigned and uses Windows .NET Framework 4.8. Personal recipes and activation are preserved. Neither route starts or restarts Max for you.</p>\n<p>Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.</p>\n<p>Development source 0.85.3 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and production-session acceptance remain open.</p>\n<p><a href=\"#/changelog\">View the changelog</a> for additions and fixes, or use the <a href=\"#/checklist\">testing walkthrough</a> to record your own observations.</p>\n<h2 id=\"complete-planting-recipes\">Complete planting recipes<a class=\"heading-permalink\" href=\"#/guide/artist-guide/complete-planting-recipes\" aria-label=\"Link to Complete planting recipes\">#</a></h2>\n<p>Open <strong>Layers &gt; Recipes</strong> for the collection tree and large thumbnail gallery. Choose My recipes, Bundled examples or a custom library. Open a collection or choose All recipes; search names, layers, tags and descriptions. The toolbar controls thumbnail/list view and tile size. Refresh explicitly rereads files; ordinary browsing does not calculate plants or capture images.</p>\n<p><strong>Save Recipe</strong> saves selected layers, names, collections, tags, description, optional thumbnail and complete supported native Paint. Include models, materials, terrain and paths is checked by default for a ready preset. Terrain is an evaluated geometry/channel snapshot, not an editable modifier stack. Captured references exclude unrelated same-name objects. Saving pending Manual settings does not calculate plants. My recipes is Documents/CyrusScatter/Library; bundled examples remain separate.</p>\n<p>Use a PNG up to 1024 pixels per axis and 2 MiB, or explicitly capture the published viewport. A stale preview after a Manual edit requires a valid capture choice; Update-and-capture runs only when requested. Update selected advances the recipe revision, Save Copy creates another identity, and Edit details changes presentation without touching the scene. Keep the manifest and all referenced recipe-data payloads together when copying.</p>\n<p><strong>Load + Update</strong> loads a ready preset with its supported models/materials and adds new layers. Existing planting and Manual/Live mode are retained. An unambiguous compatible current terrain is used; required Paint, channel or spline context can use included terrain, clearly reported. The explicit Update also applies pending Manual edits. Delayed node notifications settle before the one final solve. One Undo/Redo restores complete publication and imported ownership.</p>\n<p>Paint requires compatible receiver geometry, frame and saved units. Unsupported authored Edit/per-instance radius records and parameter controllers reject complete save rather than being omitted. There is no automatic Paint projection onto an unrelated mountain. Memory admission can reject an operation while preserving the previous complete result and history; arbitrary heavy-session reliability remains separate acceptance.</p>\n<p><strong>Apply Style</strong> copies chosen supported setting groups to a captured layer, retaining its receivers, sources and Paint by default. Keep/Saved/New variation and explicit map/target bindings are reviewed. Applying identical effective values creates no additional Undo or calculation.</p>\n<p><strong>Export portable package</strong> collects permitted static standalone meshes, supported Standard/Blinn materials and static PNG maps, along with recipe and Paint data. Bind external terrain/path roles on import. Create independent assets or explicitly reuse chosen scene models with their current materials. Reuse transfers no ownership. XRefs, nested populations, renderer-specific proxies/shaders and material-variant browsing are outside this adapter.</p>\n<p>Eight examples provide editable scenes and actual-result previews: meadow, woodland, mountain, painted spline borders, orchard, hexagonal hillside, four garden rooms and valley moss/rocky crests. Open a copy of a matching scene for compatible bindings. The new valley example uses authored numeric mesh-channel data, not a new automatic curvature engine.</p>\n<p>For a settings-only recipe or deliberate substitution, use <strong>Recipe actions &gt; Review bindings (advanced)</strong>. Ready metadata revisions retain their asset linkage. Keep the recipe-data payloads and Presets/&lt;recipe content identity&gt; package folder together when copying a ready library. The eight bundled presets use original procedural demonstration models; unsupported XRefs, animated dependencies, renderer-specific proxies/shaders and authored Edit/radius data remain separate work.</p>\n<h2 id=\"direction-and-normal-blending\">Direction and normal blending<a class=\"heading-permalink\" href=\"#/guide/artist-guide/direction-and-normal-blending\" aria-label=\"Link to Direction and normal blending\">#</a></h2>\n<p>In Transforms &gt; Orientation, choose Random, World direction or Look at target. World direction aims along a nonzero XYZ vector. Look at target aims toward a picked objectÃ¢â‚¬â„¢s world pivot. Models use local +Z up and the Forward axis set in Models &amp; Points. Local random rotations still apply; zero their ranges to check exact aim.</p>\n<p>Align to normal and Normal % set preferred up: disabled or 0% uses world +Z; 100% uses the geometric face normal, with angular blending between. Direction modes use this to control roll while preserving heading. Slope eligibility is independent. Coincident targets and parallel heading/up use deterministic fallbacks.</p>\n<p>Manual waits for Update. Live follows relevant target/parent or orientation animation. Missing targets and zero vectors retain the last complete plants and report failure. Editing the targetÃ¢â‚¬â„¢s shape or rotating it around an unchanged pivot does not calculate scatter.</p>\n<p>Complete recipes bind orientation targets as external roles. Numeric Transform presets preserve the destination target and require it for Look at target. New complete recipes use format 5 and numeric settings presets use format 3. Grid distances convert with scene units; earlier complete formats receive neutral Surface random defaults. Complete recipe formats 1/2 retain original receiver random inputs when read; format 1 also receives neutral orientation defaults. Reading never rewrites Paint or files. Physical picker, 4K and mixed-monitor testing remains artist acceptance.</p>\n<h2 id=\"copy-and-import-variation\">Copy and import variation<a class=\"heading-permalink\" href=\"#/guide/artist-guide/copy-and-import-variation\" aria-label=\"Link to Copy and import variation\">#</a></h2>\n<p>Choose Same variation (default) or New variation before copying a layer. Both create independent layer ownership and Paint. Same retains receiver random inputs; New chooses fresh inputs once. Changing the choice is passive.</p>\n<p>Recipes default to New variation. Choose Saved variation to retain the saved random inputs, then Add layers or Create new setup. Exact matching requires identical evaluated terrain, receiver history, quotas, source order/weights, masks, Relax and collision context. Paint requires compatible geometry, frame and saved units.</p>\n<p>Amount settings presets separately offer Saved seed, Keep current seed or New seed. These numeric presets do not contain complete arrangements. Redo restores the chosen variation rather than rerolling.</p>\n<p>Named layer Copy currently rejects authored Scatter Edit and per-instance radius data; use Max object Copy for a complete setup. The native foundation preserves tested Count/copy/preset/Edit history without full script placement arrays. Resource rejection retains the previous complete result. Arbitrary low-memory conditions and sustained artist production acceptance remain separate.</p>",
+      "html": "<h2 id=\"start-with-a-layer\">Start with a layer<a class=\"heading-permalink\" href=\"#/guide/artist-guide/start-with-a-layer\" aria-label=\"Link to Start with a layer\">#</a></h2>\n<p>Create a Cyrus Scatter controller, add a layer, assign its receiving surfaces and add models or Points. Set Amount, then press <strong>Update scatter</strong> in Manual mode. Live responds to relevant edits.</p>\n<p>In Geometry &gt; Cyrus &gt; Cyrus Scatter, click to place, move to size the icon, and click to finish. Right-click to exit Create mode. Each layer owns its surfaces, sources, amount, layout, transforms and spacing. Layer order matters when between-layer spacing is enabled.</p>\n<p>Use Add, Copy, Remove, Up and Down to organize layers. Copy includes independent Paint Areas. Visible controls viewport display; Enabled controls the layer contribution. Removing an assignment does not delete the source scene object.</p>\n<p>In 0.82.6, closed sections create controls on first opening and reuse them while the command panel remains mounted. Switching layers rebinds those controls. Browsing does not apply pending Manual edits.</p>\n<h2 id=\"surfaces-models-and-optional-containers\">Surfaces, models and optional containers<a class=\"heading-permalink\" href=\"#/guide/artist-guide/surfaces-models-and-optional-containers\" aria-label=\"Link to Surfaces, models and optional containers\">#</a></h2>\n<p>Add receivers to the selected layer. Unchanged receivers retain their base random streams when another receiver is added, renamed or reordered. Density gives each receiver its own count below the cap; Fixed Total redistributes the same total, so some existing candidates may be removed. Geometry changes, Relax, masks and shared spacing can change accepted output.</p>\n<p>Add Point makes placement markers without final model geometry. Pick object turns a selected Point into a model. Make point turns a selected model into a Point while preserving its registration, settings and Band assignments; the scene model is not deleted. Both actions preserve the source row identity. An Empty choice creates weighted gaps in Candidate budget mode; positive-weight Empty is rejected by Accepted target. A Point and an Empty are different source kinds.</p>\n<p>Source controls include label, identification color, weight, scale, Manual/Auto radius, vertical offset and forward axis. Manual preserves its radius and optional Follow Scale. Auto bounds supported geometry around the pivot after final instance scale and orientation; it is conservative spacing, not exact mesh collision. Points, Empty and unqualified source families remain Manual. Assignment-group colors are separate from identification colors.</p>\n<p>Source containers are optional palettes. New rectangles start with <strong>Enable collection</strong> off. Position and resize first, then enable collection to collect eligible source pivots. Selecting a rectangle opens compact collection and dimension controls; select the Scatter controller for full planting settings. Moving an enabled rectangle carries its owned models; resizing its boundary leaves their transforms unchanged. Disabling collection parks models while retaining settings. Manual waits for Update; Live applies relevant membership changes.</p>\n<p>Removing the last model clears its scattered output after Update in Manual, or automatically in Live. The empty layer remains valid when Amount changes. Adding a replacement restores planting. Point and intentional Empty gap rows retain their distinct behavior.</p>\n<h2 id=\"layout-and-amount\">Layout and Amount<a class=\"heading-permalink\" href=\"#/guide/artist-guide/layout-and-amount\" aria-label=\"Link to Layout and Amount\">#</a></h2>\n<p><strong>Planting positions</strong> chooses Surface random, Rectangular, Staggered or Hexagonal. Grids expose world-unit spacing, fixed Origin X/Y, Heading and stable Jitter. They project down onto the highest receiver hit. Hexagonal calculates row pitch from its nearest-neighbor distance. Count/Density and refill are inactive; masks and collision rules thin the lattice. Source assignment below is independent. Entirely vertical receivers and Analyzer Single/EdgeRow positions are unsupported with grids.</p>\n<p>Random mix chooses weighted sources. Clusters choose assignment groups across space. Spline Bands use closed world-XY Paths, explicit Models / Points or Assignment groups, and Consecutive or Independent ranges. Surface Analyzer consumes separately analyzed boundary, path and point channels.</p>\n<p>Consecutive accumulates widths separately on each Path/side and preserves unassigned intervals as gaps. Independent exposes each Band&#x27;s Start/End and combines eligible contributions. New Bands start unassigned. Scaling a Path changes its outline, not its world-space Band distances.</p>\n<p>Density and its optional curve shape a Band&#x27;s contribution from Start to End. Independent contributions cap total occupancy at 100%, then choose the Band proportionally. A 100% Sphere plus 25% Box gives approximately 80% Sphere/20% Box in the overlap and 25% occupancy where only Box contributes, before other masks/spacing.</p>\n<p>Rounded uses distance to original border segments. Sharp uses bounded miter offsets; acute corners have limits and narrow/complex requests can require simplification. The preview shows admitted geometry.</p>\n<p>Amount supports Count or area Density, up to 1,000,000 per population. A controller shares a 1,000,000-candidate work limit across its populations, including retry and protected-edit requirements. Exceeding that limit reports an error and retains the preceding result. Candidate budget can underfill after restrictions. Independent ranges and nontrivial Band density require Candidate budget; Accepted target is rejected so retries cannot erase the fade. Use a fixed seed for repeatable comparisons. Texture Density uses a selected UV channel (1..99, default 1) on each receiver. Choose 64, 128, 256 or 512 samples per side (default 128). Higher resolution helps capture narrow mask details at a greater preparation cost. UVs clamp to 0..1; white permits and black excludes. Unchanged maps reuse their sampled data across receiver edits. Errors identify the invalid receiver/channel and retain the previous complete result.</p>\n<p>0.86.0 keeps placement-sized calculation and storage in native memory. Count changes no longer reserve MAXScript heap proportional to every plant. Undo remains available; a failed successor preserves the last complete result. The one-million controller work limit and memory safeguards remain. Large calculations, complex source geometry and Bake can still block Max while they finish.</p>\n<h2 id=\"image-map-and-surface-density\">Image, map and surface density<a class=\"heading-permalink\" href=\"#/guide/artist-guide/image-map-and-surface-density\" aria-label=\"Link to Image, map and surface density\">#</a></h2>\n<p><strong>Image / pattern density</strong> and <strong>Surface density</strong> are independent. White permits plants, black excludes them and gray thins them. Their enabled fields multiply with Paint and terrain eligibility before spacing.</p>\n<p><strong>Choose pattern</strong> selects Uniform, Soft patches or Wide bands. <strong>Image</strong> selects a file. Both choose projected World XY. Physical tile size, rotation, offsets and Repeat/Clamp control the image footprint. Scatter local XY follows the setup frame; Receiver UV reads the explicitly selected UV channel.</p>\n<p><strong>Map</strong> selects Map coordinates and evaluates supported graphs against each receiver. Vertex Color reads its own numeric channel, and Checker reads its own UV channel. Color Correction and Output chains retain those inputs. Supported classes also include Bitmap, Mix, Noise, RGB Multiply and Gradient. A surface material is not a density map; renderer/camera-dependent graphs reject with a useful explanation.</p>\n<p><strong>Clear</strong> removes the map and disables image density. The independent surface field stays enabled if it was enabled. Disabling Use image alone preserves its map for later. Image or pattern selection restores projected coordinates; Map restores receiver-aware coordinates.</p>\n<p>Enable <strong>Use surface density</strong> and choose Mesh channel to read stored numeric values from the evaluated receiver. Channel 0 reads vertex colors; channels 1..99 select numbered map data. Choose R/X, G/Y or B/Z, then Input min/max, Invert and the response curve. Every receiver must contain the requested channel. Data Channel or VertexPaint can author it; Scatter does not invent missing data.</p>\n<p><strong>Relative elevation</strong> uses evaluated local height: low is 0, high is 1 and flat terrain is 0. Node translation, rotation and scale preserve this field. It creates no mesh channel. Valley moss and Mountain planting use it so their library entries no longer depend on channel 2 or the original world altitude.</p>\n<p><strong>Show mask</strong> displays Image, Surface field or Combined density and follows relevant edits. Manual plants remain at the last Update while the preview can show current inputs. Live follows relevant map/channel edits and animation. Idle and unrelated animation do not evaluate maps or solve Scatter. A failed update retains the complete previous result.</p>\n<p>Native map sampling uses unfiltered scalar values. The map graph and receiver work are bounded; unsupported requirements and oversized inputs reject cleanly. Projected maps can use an explicit portable image snapshot. Receiver-aware graphs remain editable in Max scenes but cannot be exported as arbitrary procedural packages or baked into a context-free tile.</p>\n<h2 id=\"band-scale-profiles\">Band scale profiles<a class=\"heading-permalink\" href=\"#/guide/artist-guide/band-scale-profiles\" aria-label=\"Link to Band scale profiles\">#</a></h2>\n<p>In Layout, Scale sits directly below the density curve. Min/Max supplies random size variation. Scale profile selects Off, Follow Density or Custom. Custom enables Edit scale curve. X runs from Band Start to End; Y is size percent, where 100% preserves size.</p>\n<p>Density and scale have independent curves. Follow Density uses the effective density curve shape, without the Density % strength; disabling that density curve gives a flat 100% scale profile. Switching modes keeps the Custom graph. Zero size does not remove a candidate.</p>\n<p>Scale curves multiply existing source, Band and layer size once. Auto Radius follows final size; Manual radius needs Follow Scale. Size-dependent spacing can change accepted counts. Manual requires Update scatter. Steep Sharp profiles can exceed the bounded precision and retain the previous result; simplify the curve or choose Rounded.</p>\n<h2 id=\"slope-and-altitude-filters\">Slope and altitude filters<a class=\"heading-permalink\" href=\"#/guide/artist-guide/slope-and-altitude-filters\" aria-label=\"Link to Slope and altitude filters\">#</a></h2>\n<p>Enable Filter slope or Filter altitude in Include / exclude areas ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Surface eligibility. Slope is measured from world up using the evaluated geometric normal: 0Ãƒâ€šÃ‚Â° upward, 90Ãƒâ€šÃ‚Â° vertical, 180Ãƒâ€šÃ‚Â° downward. Altitude is world Z at the final receiver anchor, before source pivot offsets.</p>\n<p>Lower and Upper fade soften density inside the range. For a 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“35Ãƒâ€šÃ‚Â° slope interval, a 10Ãƒâ€šÃ‚Â° upper fade thins between 25Ãƒâ€šÃ‚Â° and 35Ãƒâ€šÃ‚Â°. Zero fade includes the endpoint. Fades cannot overlap; invalid settings retain the previous complete result.</p>\n<p>Filters preserve surviving candidate IDs, model choices and transforms. Paint overlap still uses max-union density; explicitly moved or cloned CS Edit plants bypass these filters. Spacing and cleanup follow filtering. Use Candidate budget to retain the visible density fade; Accepted target can refill within its finite work budget.</p>\n<p>Manual waits for Update; Live follows relevant edits and receiver animation. The status describes the last calculated prepared pool, separately from accepted plants. Heights use scene units and survive scene-unit conversion.</p>\n<h2 id=\"named-settings-and-curve-presets\">Named settings and curve presets<a class=\"heading-permalink\" href=\"#/guide/artist-guide/named-settings-and-curve-presets\" aria-label=\"Link to Named settings and curve presets\">#</a></h2>\n<p>Use Presets... in Amount, Transforms or Spacing &amp; cleanup. Curve presets are available from Paint, Analyzer and Band density/scale graphs. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer.</p>\n<p>Population includes amount, density, seed and retry policy. Transforms include the layer rotation, scale, movement, normal alignment and projection. Assets, surfaces, IDs, maps and layout remain linked to the scene. Physical distances convert across system units; density stays per square metre.</p>\n<p>Spacing stores the effective rule and applies an explicit override in the chosen Within this layer or Between layers scope. It does not store peer identities or change Relax/cleanup. Reset inheritance remains a separate control.</p>\n<p>Curve presets preserve samples and editable handles while retaining enable flags, widths and scale ranges. Density and Paint scale use zero-to-one values; other scale curves support multipliers. Invalid or incompatible curves are rejected. One Undo/Redo restores Apply, and closing a graph after Undo does not reapply the preset.</p>\n<p>Manual waits for Update scatter; Live follows normal update callbacks. Browsing, saving and renaming do not calculate plants. Animated or expression-controlled targets are rejected. Static shared controllers are detached so another owner is preserved.</p>\n<p>The local library is CyrusScatter/Presets inside the per-user Max PlugCFG directory. Share the .cspreset.json files. Limits are 512 files, 64 KiB per file and 80-character names. Rename changes the library name; Delete confirms removal of the selected file. Invalid files and failed writes report errors. Complete static recipes and explicit role substitution are available through Layers &gt; Recipes.</p>\n<h2 id=\"vector-painting\">Vector painting<a class=\"heading-permalink\" href=\"#/guide/artist-guide/vector-painting\" aria-label=\"Link to Vector painting\">#</a></h2>\n<p>Turn on <strong>Use Paint Areas</strong>, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session.</p>\n<p>Areas share the layer models and population. Overlap contributes coverage once per candidate. Turning Paint Areas off retains the areas and uses the full receiver. Fill and Clear operate on the selected area; keep a saved copy before major edits.</p>\n<p>Inward/outward feather widths and separate density/scale curves shape the edge. Density changes acceptance; scale multiplies model size. A 100 mm radius has a 200 mm diameter. Borders describe coverage, not guaranteed accepted plants.</p>\n<p>Hover over Paint controls for short descriptions. Fade density changes plant acceptance; Fade scale changes size independently. Inside and Outside fade define the transition width. With the default curve, Edge scale is the outer-end size multiplier and Inner scale is the interior multiplier: 0.5 means half size, 1 unchanged and 2 double. Edge scale cannot exceed Inner scale. The graph shapes the transition between them.</p>\n<p>Vector painting supports terrain, spheres, boxes, vertical sides and manifold curved meshes. Curved strokes follow surface distance across connected edges without painting through to the opposite side or disconnected sheets. Degenerate faces and nonmanifold connections require repair.</p>\n<p>The vector format introduced in 0.78 does not convert earlier stroke setups. Preserve older scenes with their matching build and create a new setup for the vector workflow.</p>\n<p>Curved Paint retains Paint/Erase, Fill/Clear, independent density and scale fade curves, Undo/Redo and saved scenes. Curved mesh distance includes nonuniform receiver scaling. Surface coverage uses vector face regions with bounded work: up to 100,000 triangles and 200,000 vertices, with separate contour and solver limits. Terrain keeps its existing projected vector behavior.</p>\n<h2 id=\"paint-and-spline-snapshots\">Paint and spline snapshots<a class=\"heading-permalink\" href=\"#/guide/artist-guide/paint-and-spline-snapshots\" aria-label=\"Link to Paint and spline snapshots\">#</a></h2>\n<p>Stop the brush and select a Paint Area. Export spline creates and selects an independent Editable Spline with its closed contours and holes. Edit the border in Max, reselect the Scatter and Paint Area, choose Replace or Add, then press Pick spline... and choose the shape. Escape cancels picking.</p>\n<p>For terrain, export uses the receiver&#x27;s local XY plane at local Z=0 with its scene transform. On terrain the spline is a planar editing guide. Import projects along receiver-local Z, clips to the receiver and requires every contour to be closed. Nested loops and self-intersections use even-odd fill regardless of winding or order.</p>\n<p>Replace sets coverage; Add unions it with the existing region without erasing paint. Density, fades, models and area identity stay unchanged. A changed import and each export are one Undo. Manual waits for Update; Live follows changed coverage. There is no live source link: later spline edits require another import.</p>\n<p>Curve tolerance is a world-unit approximation distance, initially 1 mm. Smaller values need more samples. An edited shape is limited to 8,192 input knots and 8,192 sampled vertices; unchanged guarded surface snapshots use the canonical contour budget. Paint precision imposes a minimum tolerance; very large local coordinates can prevent accurate Max spline export. Invalid conversion retains existing paint. Reopen using the saved scene units; native Paint geometry conversion guards still apply.</p>\n<p>Curved receivers export a 3D surface border. An unchanged exported snapshot restores exact coverage, including holes and large regions. Edited closed curves must lie on the receiver within Curve tolerance and select the smaller enclosed region on a closed component. A fully filled closed object has no border to export. The generic 8,192-knot import limit applies to edited curves; exact guarded snapshots use the native contour limit.</p>\n<h2 id=\"area-limits-transforms-and-spacing\">Area limits, transforms and spacing<a class=\"heading-permalink\" href=\"#/guide/artist-guide/area-limits-transforms-and-spacing\" aria-label=\"Link to Area limits, transforms and spacing\">#</a></h2>\n<p>Closed Include shapes union their eligible domains. Exclude takes precedence. Area masks test placement support rather than trimming model geometry. <a href=\"#/guide/layout-falloff\">Layout &amp; soft boundaries</a> explains guide widths and edge curves.</p>\n<p>Rotation, XYZ scale, whole scale and movement have independent ranges and reset buttons. Projection and orientation settings affect final placement. Within-layer and between-layer spacing are independent rules; radius, factor, gap and Follow Scale determine simplified clearance.</p>\n<p>CS Edit uses stable instance identities. Generation changes can invalidate bindings; preserve the scene before clearing edits. Radius overlays are inspection aids, not exact mesh collision volumes.</p>\n<h2 id=\"preview-updates-output-and-diagnostics\">Preview, updates, output and diagnostics<a class=\"heading-permalink\" href=\"#/guide/artist-guide/preview-updates-output-and-diagnostics\" aria-label=\"Link to Preview, updates, output and diagnostics\">#</a></h2>\n<p>Plant centres shows one marker per accepted placement. Point Cloud, Proxy and Mesh have their own display budgets, so shown counts can be lower than accepted output. Mesh uses evaluated viewport geometry and preview coloring; renderer materials are a separate output concern.</p>\n<p>Color by Bands follows the accepted owner even when Bands share a model. Preview Falloff shows selected contribution or Combined density on receiver surfaces: blue is zero and red is 100%. Show Boundaries adds white contours. Sample/face counts describe approximate coverage at the Band stage before other masks, spacing and cleanup. These overlays are not final plants or render output.</p>\n<p>Manual retains the last completed result until Update scatter. Live updates relevant dependencies. A failed successor retains the previous complete result and reports the failure. If an Analyzer is stale, Analyze it first and then update Manual Scatter.</p>\n<p>In Manual, enabled field feedback follows relevant authored/animated inputs while published plants and radii stay frozen. The label reads <strong>Pending field; plants from last Update</strong>. Field toggles, selection and XY/3D radius display do not solve placements. An uncached display mode cannot use changed source geometry alongside the preceding publication; Update is required.</p>\n<p>Local identification-color edits retain unchanged sibling previews. Unchanged navigation reuses prepared display data. Heavy changed layers, cold loading and first panel construction can still take time.</p>\n<p>Statistics identifies the selected layer and its last completed calculation. Requested and accepted placements are separate from prepared cloud points, centres or preview instances. Prepared samples are not current-frame draw counts. Marked for Update reports pending invalidation; Read cached statistics does not apply Manual edits. Empty successful results and failed updates have separate feedback. Optional diagnostics record local bounded events; recording is separate from sharing or permission to train.</p>\n<p>In Viewport &amp; render, Navigating and Idle set separate limits for Point Cloud points, Proxy instances or Mesh triangles across visible layers. Use 0 for unlimited. A short pause restores Idle detail; final rendering retains the full accepted planting. Expensive Mesh sources can use cached boxes to fit the triangle or memory allowance. Oversized Point Cloud requests use a bounded sample and report the memory reduction, including at zero limits; switching modes reuses the current planting snapshots. Zero removes artist draw caps but keeps memory safeguards. Graphics failure uses bounded centre markers. Display changes preserve pending Manual edits.</p>\n<p>From 0.82.6, saved reports include call counts, total time, longest time and failed-stage counts for input extraction, candidates, masks, transforms/radii, spacing, preview preparation, uploads, publication and panel work. Times are inclusive: a parent can contain another measured stage, so do not add all totals together. Action IDs connect an edit to invalidation and its deferred publication; unrelated host activity can have no action ID. The selected-setup snapshot reads cached requested/accepted/prepared counts and pending flags without evaluating the scene. These timings do not measure presented viewport FPS.</p>\n<h2 id=\"final-artist-acceptance\">Final artist acceptance<a class=\"heading-permalink\" href=\"#/guide/artist-guide/final-artist-acceptance\" aria-label=\"Link to Final artist acceptance\">#</a></h2>\n<p>Use the qualified 0.86.6 Max 2027 MZP or Windows EXE through <strong>Scripting &gt; Run Script</strong>, then restart Max so script and native modules match. The EXE is unsigned and uses Windows .NET Framework 4.8. Personal recipes and activation are preserved. Neither route starts or restarts Max for you.</p>\n<p>Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.</p>\n<p>Development source 0.85.3 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and production-session acceptance remain open.</p>\n<p><a href=\"#/changelog\">View the changelog</a> for additions and fixes, or use the <a href=\"#/checklist\">testing walkthrough</a> to record your own observations.</p>\n<h2 id=\"complete-planting-recipes\">Complete planting recipes<a class=\"heading-permalink\" href=\"#/guide/artist-guide/complete-planting-recipes\" aria-label=\"Link to Complete planting recipes\">#</a></h2>\n<p>Select one terrain and open <strong>Cyrus Library</strong>, or open <strong>Layers &gt; Recipes</strong> from the intended setup. Browse My recipes, Bundled examples or Custom library. Opening a collection, searching or selecting thumbnails does not calculate plants or modify the scene.</p>\n<p>Pressing Recipes restores a minimized Library at its normal size. X closes it; Recipes reopens it normally. Opening Recipes for another owner or terrain updates the captured destination. Later scene selection alone does not redirect loading.</p>\n<p><strong>Save Recipe</strong> saves supported settings, optional preview and complete Paint. Include models, materials, terrain and paths is checked by default. Terrain is an evaluated geometry/channel snapshot. Saving pending Manual settings does not calculate plants. My recipes is Documents/CyrusScatter/Library; bundled examples are read-only.</p>\n<p><strong>Load onto surface</strong> imports independent supported models/materials and adds layers to the captured setup, creating one if needed. It preserves existing layers and Manual/Live mode, then updates once. One Undo removes the imported layers and assets; Redo restores them. If several setups share a terrain, open Recipes from the intended setup.</p>\n<p>Complete presets convert physical sizes and distances into destination system units. Paint contours and static guide positions fit the saved local-XY footprint to the destination footprint. Brush radius, falloff, path widths and model dimensions remain physical. Terrain Paint presets transfer between single-valued local-XY footprints. Curved Paint presets require matching indexed topology; arbitrary remeshing does not preserve face correspondence. Settings-only exact Paint restoration keeps its compatible-receiver requirement.</p>\n<p>The eight revised examples include meadow, woodland, mountain, painted borders, orchard, hexagonal hillside, garden rooms and valley. Valley and Mountain use relative local elevation. Explicit artist-authored mesh-channel requirements remain requirements; missing data is explained before adding layers.</p>\n<p><strong>Update selected</strong> writes a new revision, Save Copy creates a new recipe identity, and Edit details changes presentation without touching the scene. Keep recipes, recipe-data payloads and Presets package folders together when copying a library. Settings-only recipes need supported assets saved before direct loading.</p>\n<p>The static adapter supports standalone meshes, Standard/Blinn materials and static PNG maps. XRefs, arbitrary renderer shaders/proxies, animated dependencies and authored Scatter Edit/per-instance radius codecs remain outside this adapter. Missing or corrupt assets and capacity errors retain the existing planting.</p>\n<h2 id=\"direction-and-normal-blending\">Direction and normal blending<a class=\"heading-permalink\" href=\"#/guide/artist-guide/direction-and-normal-blending\" aria-label=\"Link to Direction and normal blending\">#</a></h2>\n<p>In Transforms &gt; Orientation, choose Random, World direction or Look at target. World direction aims along a nonzero XYZ vector. Look at target aims toward a picked objectÃ¢â‚¬â„¢s world pivot. Models use local +Z up and the Forward axis set in Models &amp; Points. Local random rotations still apply; zero their ranges to check exact aim.</p>\n<p>Align to normal and Normal % set preferred up: disabled or 0% uses world +Z; 100% uses the geometric face normal, with angular blending between. Direction modes use this to control roll while preserving heading. Slope eligibility is independent. Coincident targets and parallel heading/up use deterministic fallbacks.</p>\n<p>Manual waits for Update. Live follows relevant target/parent or orientation animation. Missing targets and zero vectors retain the last complete plants and report failure. Editing the targetÃ¢â‚¬â„¢s shape or rotating it around an unchanged pivot does not calculate scatter.</p>\n<p>Complete recipes bind orientation targets as external roles. Numeric Transform presets preserve the destination target and require it for Look at target. New complete recipes use format 5 and numeric settings presets use format 3. Grid distances convert with scene units; earlier complete formats receive neutral Surface random defaults. Complete recipe formats 1/2 retain original receiver random inputs when read; format 1 also receives neutral orientation defaults. Reading never rewrites Paint or files. Physical picker, 4K and mixed-monitor testing remains artist acceptance.</p>\n<h2 id=\"copy-and-import-variation\">Copy and import variation<a class=\"heading-permalink\" href=\"#/guide/artist-guide/copy-and-import-variation\" aria-label=\"Link to Copy and import variation\">#</a></h2>\n<p>Choose Same variation (default) or New variation before copying a layer. Both create independent layer ownership and Paint. Same retains receiver random inputs; New chooses fresh inputs once. Changing the choice is passive.</p>\n<p>Recipes default to New variation. Choose Saved variation to retain the saved random inputs, then Add layers or Create new setup. Exact matching requires identical evaluated terrain, receiver history, quotas, source order/weights, masks, Relax and collision context. Complete presets transfer supported Paint across units and local-XY footprints; exact settings-only Paint retains compatible geometry/frame/unit requirements.</p>\n<p>Amount settings presets separately offer Saved seed, Keep current seed or New seed. These numeric presets do not contain complete arrangements. Redo restores the chosen variation rather than rerolling.</p>\n<p>Named layer Copy currently rejects authored Scatter Edit and per-instance radius data; use Max object Copy for a complete setup. The native foundation preserves tested Count/copy/preset/Edit history without full script placement arrays. Resource rejection retains the previous complete result. Arbitrary low-memory conditions and sustained artist production acceptance remain separate.</p>",
       "headings": [
         {
           "title": "Start with a layer",
@@ -28,8 +28,8 @@
           "level": 2
         },
         {
-          "title": "Mesh channel density",
-          "anchor": "mesh-channel-density",
+          "title": "Image, map and surface density",
+          "anchor": "image-map-and-surface-density",
           "level": 2
         },
         {
@@ -139,6 +139,12 @@
         },
         {
           "doc": "artist-guide",
+          "anchor": "surfaces-models-and-optional-containers",
+          "title": "Surfaces, models and optional containers",
+          "text": "Removing the last model clears its scattered output after Update in Manual, or automatically in Live. The empty layer remains valid when Amount changes. Adding a replacement restores planting. Point and intentional Empty gap rows retain their distinct behavior."
+        },
+        {
+          "doc": "artist-guide",
           "anchor": "layout-and-amount",
           "title": "Layout and Amount",
           "text": "Planting positions chooses Surface random, Rectangular, Staggered or Hexagonal. Grids expose world-unit spacing, fixed Origin X/Y, Heading and stable Jitter. They project down onto the highest receiver hit. Hexagonal calculates row pitch from its nearest-neighbor distance. Count/Density and refill are inactive; masks and collision rules thin the lattice. Source assignment below is independent. Entirely vertical receivers and Analyzer Single/EdgeRow positions are unsupported with grids."
@@ -181,39 +187,51 @@
         },
         {
           "doc": "artist-guide",
-          "anchor": "mesh-channel-density",
-          "title": "Mesh channel density",
-          "text": "In Amount, enable Use mesh channel mask. Channel 0 reads vertex colors; channels 1..99 read numbered mesh map channels from the evaluated receiver. Choose R/X, G/Y or B/Z to match the component written by Data Channel or VertexPaint. Every assigned receiver needs that channel."
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Image / pattern density and Surface density are independent. White permits plants, black excludes them and gray thins them. Their enabled fields multiply with Paint and terrain eligibility before spacing."
         },
         {
           "doc": "artist-guide",
-          "anchor": "mesh-channel-density",
-          "title": "Mesh channel density",
-          "text": "For terrain curvature, place Data Channel above the deformation, add Curvature, then Vertex Output to an unused Map Channel and component X. Select the same channel and R/X in Scatter. The rainbow display colors are visualization; planting reads stored numeric values. Curvature describes bending, while slope describes steepness."
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Choose pattern selects Uniform, Soft patches or Wide bands. Image selects a file. Both choose projected World XY. Physical tile size, rotation, offsets and Repeat/Clamp control the image footprint. Scatter local XY follows the setup frame; Receiver UV reads the explicitly selected UV channel."
         },
         {
           "doc": "artist-guide",
-          "anchor": "mesh-channel-density",
-          "title": "Mesh channel density",
-          "text": "Input min/max map the chosen values into 0..1 and clamp outside values. Min must be below max. Invert reverses the normalized value before the Density curve: 0 excludes plants, 1 permits them, and gray values thin stable candidates. Triangle map-face interpolation respects channel seams. The mask has mesh detail rather than a sampled bitmap resolution."
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Map selects Map coordinates and evaluates supported graphs against each receiver. Vertex Color reads its own numeric channel, and Checker reads its own UV channel. Color Correction and Output chains retain those inputs. Supported classes also include Bitmap, Mix, Noise, RGB Multiply and Gradient. A surface material is not a density map; renderer/camera-dependent graphs reject with a useful explanation."
         },
         {
           "doc": "artist-guide",
-          "anchor": "mesh-channel-density",
-          "title": "Mesh channel density",
-          "text": "The mask combines with texture density, slope/altitude and Paint without creating Paint strokes. It runs after candidate movement/Relax and before CS Edit. Masked base edits remain dormant until eligibility returns; existing explicitly moved or cloned protected edits follow the established replay rules. Channel-only changes preserve geometry bindings. Nonzero movement requires Keep on surface."
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Clear removes the map and disables image density. The independent surface field stays enabled if it was enabled. Disabling Use image alone preserves its map for later. Image or pattern selection restores projected coordinates; Map restores receiver-aware coordinates."
         },
         {
           "doc": "artist-guide",
-          "anchor": "mesh-channel-density",
-          "title": "Mesh channel density",
-          "text": "Preview mask reads current inputs into at most 2,048 grayscale face-centre markers across the layer. It shows only this mask and may differ from pending Manual plants. Relevant edits clear the snapshot; click Preview again to refresh, or Hide preview to clear it. Redraw uses cached markers without channel reads. Each receiver supports up to two million evaluated faces; VData, selection and negative map channels are outside this version."
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Enable Use surface density and choose Mesh channel to read stored numeric values from the evaluated receiver. Channel 0 reads vertex colors; channels 1..99 select numbered map data. Choose R/X, G/Y or B/Z, then Input min/max, Invert and the response curve. Every receiver must contain the requested channel. Data Channel or VertexPaint can author it; Scatter does not invent missing data."
         },
         {
           "doc": "artist-guide",
-          "anchor": "mesh-channel-density",
-          "title": "Mesh channel density",
-          "text": "Manual waits for Update scatter; Live follows relevant channel/modifier edits and animation. Missing or invalid channels identify the receiver and retain the previous complete result. The layer owns its mask and curve, and copied layers retain independent settings. Named presets for this new curve are not available in this version."
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Relative elevation uses evaluated local height: low is 0, high is 1 and flat terrain is 0. Node translation, rotation and scale preserve this field. It creates no mesh channel. Valley moss and Mountain planting use it so their library entries no longer depend on channel 2 or the original world altitude."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Show mask displays Image, Surface field or Combined density and follows relevant edits. Manual plants remain at the last Update while the preview can show current inputs. Live follows relevant map/channel edits and animation. Idle and unrelated animation do not evaluate maps or solve Scatter. A failed update retains the complete previous result."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "image-map-and-surface-density",
+          "title": "Image, map and surface density",
+          "text": "Native map sampling uses unfiltered scalar values. The map graph and receiver work are bounded; unsupported requirements and oversized inputs reject cleanly. Projected maps can use an explicit portable image snapshot. Receiver-aware graphs remain editable in Max scenes but cannot be exported as arbitrary procedural packages or baked into a context-free tile."
         },
         {
           "doc": "artist-guide",
@@ -321,13 +339,19 @@
           "doc": "artist-guide",
           "anchor": "vector-painting",
           "title": "Vector painting",
-          "text": "Vector painting supports planes and terrain single-valued in receiver-local XY, including transformed receivers. Closed, vertical, folded and overlapping projected receivers are rejected. General scattering on curved receivers is a separate supported workflow."
+          "text": "Vector painting supports terrain, spheres, boxes, vertical sides and manifold curved meshes. Curved strokes follow surface distance across connected edges without painting through to the opposite side or disconnected sheets. Degenerate faces and nonmanifold connections require repair."
         },
         {
           "doc": "artist-guide",
           "anchor": "vector-painting",
           "title": "Vector painting",
           "text": "The vector format introduced in 0.78 does not convert earlier stroke setups. Preserve older scenes with their matching build and create a new setup for the vector workflow."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "vector-painting",
+          "title": "Vector painting",
+          "text": "Curved Paint retains Paint/Erase, Fill/Clear, independent density and scale fade curves, Undo/Redo and saved scenes. Curved mesh distance includes nonuniform receiver scaling. Surface coverage uses vector face regions with bounded work: up to 100,000 triangles and 200,000 vertices, with separate contour and solver limits. Terrain keeps its existing projected vector behavior."
         },
         {
           "doc": "artist-guide",
@@ -339,7 +363,7 @@
           "doc": "artist-guide",
           "anchor": "paint-and-spline-snapshots",
           "title": "Paint and spline snapshots",
-          "text": "Export uses the receiver's local XY plane at local Z=0 with its scene transform. On terrain the spline is a planar editing guide. Import projects along receiver-local Z, clips to the receiver and requires every contour to be closed. Nested loops and self-intersections use even-odd fill regardless of winding or order."
+          "text": "For terrain, export uses the receiver's local XY plane at local Z=0 with its scene transform. On terrain the spline is a planar editing guide. Import projects along receiver-local Z, clips to the receiver and requires every contour to be closed. Nested loops and self-intersections use even-odd fill regardless of winding or order."
         },
         {
           "doc": "artist-guide",
@@ -351,7 +375,13 @@
           "doc": "artist-guide",
           "anchor": "paint-and-spline-snapshots",
           "title": "Paint and spline snapshots",
-          "text": "Curve tolerance is a world-unit approximation distance, initially 1 mm. Smaller values need more samples. A shape is limited to 8,192 input knots and 8,192 sampled vertices. Paint precision imposes a minimum tolerance; very large local coordinates can prevent accurate Max spline export. Invalid conversion retains existing paint. Reopen using the saved scene units; native Paint geometry conversion guards still apply."
+          "text": "Curve tolerance is a world-unit approximation distance, initially 1 mm. Smaller values need more samples. An edited shape is limited to 8,192 input knots and 8,192 sampled vertices; unchanged guarded surface snapshots use the canonical contour budget. Paint precision imposes a minimum tolerance; very large local coordinates can prevent accurate Max spline export. Invalid conversion retains existing paint. Reopen using the saved scene units; native Paint geometry conversion guards still apply."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "paint-and-spline-snapshots",
+          "title": "Paint and spline snapshots",
+          "text": "Curved receivers export a 3D surface border. An unchanged exported snapshot restores exact coverage, including holes and large regions. Edited closed curves must lie on the receiver within Curve tolerance and select the smaller enclosed region on a closed component. A fully filled closed object has no border to export. The generic 8,192-knot import limit applies to edited curves; exact guarded snapshots use the native contour limit."
         },
         {
           "doc": "artist-guide",
@@ -423,7 +453,7 @@
           "doc": "artist-guide",
           "anchor": "final-artist-acceptance",
           "title": "Final artist acceptance",
-          "text": "Use the qualified 0.85.3 Max 2027 MZP through Scripting > Run Script, or the companion Windows EXE, then restart Max so script and native modules match. The EXE is unsigned and uses Windows .NET Framework 4.8. Personal recipes and activation are preserved. Neither route starts or restarts Max for you."
+          "text": "Use the qualified 0.86.6 Max 2027 MZP or Windows EXE through Scripting > Run Script, then restart Max so script and native modules match. The EXE is unsigned and uses Windows .NET Framework 4.8. Personal recipes and activation are preserved. Neither route starts or restarts Max for you."
         },
         {
           "doc": "artist-guide",
@@ -447,55 +477,49 @@
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Open Layers > Recipes for the collection tree and large thumbnail gallery. Choose My recipes, Bundled examples or a custom library. Open a collection or choose All recipes; search names, layers, tags and descriptions. The toolbar controls thumbnail/list view and tile size. Refresh explicitly rereads files; ordinary browsing does not calculate plants or capture images."
+          "text": "Select one terrain and open Cyrus Library, or open Layers > Recipes from the intended setup. Browse My recipes, Bundled examples or Custom library. Opening a collection, searching or selecting thumbnails does not calculate plants or modify the scene."
         },
         {
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Save Recipe saves selected layers, names, collections, tags, description, optional thumbnail and complete supported native Paint. Include models, materials, terrain and paths is checked by default for a ready preset. Terrain is an evaluated geometry/channel snapshot, not an editable modifier stack. Captured references exclude unrelated same-name objects. Saving pending Manual settings does not calculate plants. My recipes is Documents/CyrusScatter/Library; bundled examples remain separate."
+          "text": "Pressing Recipes restores a minimized Library at its normal size. X closes it; Recipes reopens it normally. Opening Recipes for another owner or terrain updates the captured destination. Later scene selection alone does not redirect loading."
         },
         {
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Use a PNG up to 1024 pixels per axis and 2 MiB, or explicitly capture the published viewport. A stale preview after a Manual edit requires a valid capture choice; Update-and-capture runs only when requested. Update selected advances the recipe revision, Save Copy creates another identity, and Edit details changes presentation without touching the scene. Keep the manifest and all referenced recipe-data payloads together when copying."
+          "text": "Save Recipe saves supported settings, optional preview and complete Paint. Include models, materials, terrain and paths is checked by default. Terrain is an evaluated geometry/channel snapshot. Saving pending Manual settings does not calculate plants. My recipes is Documents/CyrusScatter/Library; bundled examples are read-only."
         },
         {
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Load + Update loads a ready preset with its supported models/materials and adds new layers. Existing planting and Manual/Live mode are retained. An unambiguous compatible current terrain is used; required Paint, channel or spline context can use included terrain, clearly reported. The explicit Update also applies pending Manual edits. Delayed node notifications settle before the one final solve. One Undo/Redo restores complete publication and imported ownership."
+          "text": "Load onto surface imports independent supported models/materials and adds layers to the captured setup, creating one if needed. It preserves existing layers and Manual/Live mode, then updates once. One Undo removes the imported layers and assets; Redo restores them. If several setups share a terrain, open Recipes from the intended setup."
         },
         {
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Paint requires compatible receiver geometry, frame and saved units. Unsupported authored Edit/per-instance radius records and parameter controllers reject complete save rather than being omitted. There is no automatic Paint projection onto an unrelated mountain. Memory admission can reject an operation while preserving the previous complete result and history; arbitrary heavy-session reliability remains separate acceptance."
+          "text": "Complete presets convert physical sizes and distances into destination system units. Paint contours and static guide positions fit the saved local-XY footprint to the destination footprint. Brush radius, falloff, path widths and model dimensions remain physical. Terrain Paint presets transfer between single-valued local-XY footprints. Curved Paint presets require matching indexed topology; arbitrary remeshing does not preserve face correspondence. Settings-only exact Paint restoration keeps its compatible-receiver requirement."
         },
         {
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Apply Style copies chosen supported setting groups to a captured layer, retaining its receivers, sources and Paint by default. Keep/Saved/New variation and explicit map/target bindings are reviewed. Applying identical effective values creates no additional Undo or calculation."
+          "text": "The eight revised examples include meadow, woodland, mountain, painted borders, orchard, hexagonal hillside, garden rooms and valley. Valley and Mountain use relative local elevation. Explicit artist-authored mesh-channel requirements remain requirements; missing data is explained before adding layers."
         },
         {
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Export portable package collects permitted static standalone meshes, supported Standard/Blinn materials and static PNG maps, along with recipe and Paint data. Bind external terrain/path roles on import. Create independent assets or explicitly reuse chosen scene models with their current materials. Reuse transfers no ownership. XRefs, nested populations, renderer-specific proxies/shaders and material-variant browsing are outside this adapter."
+          "text": "Update selected writes a new revision, Save Copy creates a new recipe identity, and Edit details changes presentation without touching the scene. Keep recipes, recipe-data payloads and Presets package folders together when copying a library. Settings-only recipes need supported assets saved before direct loading."
         },
         {
           "doc": "artist-guide",
           "anchor": "complete-planting-recipes",
           "title": "Complete planting recipes",
-          "text": "Eight examples provide editable scenes and actual-result previews: meadow, woodland, mountain, painted spline borders, orchard, hexagonal hillside, four garden rooms and valley moss/rocky crests. Open a copy of a matching scene for compatible bindings. The new valley example uses authored numeric mesh-channel data, not a new automatic curvature engine."
-        },
-        {
-          "doc": "artist-guide",
-          "anchor": "complete-planting-recipes",
-          "title": "Complete planting recipes",
-          "text": "For a settings-only recipe or deliberate substitution, use Recipe actions > Review bindings (advanced). Ready metadata revisions retain their asset linkage. Keep the recipe-data payloads and Presets/<recipe content identity> package folder together when copying a ready library. The eight bundled presets use original procedural demonstration models; unsupported XRefs, animated dependencies, renderer-specific proxies/shaders and authored Edit/radius data remain separate work."
+          "text": "The static adapter supports standalone meshes, Standard/Blinn materials and static PNG maps. XRefs, arbitrary renderer shaders/proxies, animated dependencies and authored Scatter Edit/per-instance radius codecs remain outside this adapter. Missing or corrupt assets and capacity errors retain the existing planting."
         },
         {
           "doc": "artist-guide",
@@ -531,7 +555,7 @@
           "doc": "artist-guide",
           "anchor": "copy-and-import-variation",
           "title": "Copy and import variation",
-          "text": "Recipes default to New variation. Choose Saved variation to retain the saved random inputs, then Add layers or Create new setup. Exact matching requires identical evaluated terrain, receiver history, quotas, source order/weights, masks, Relax and collision context. Paint requires compatible geometry, frame and saved units."
+          "text": "Recipes default to New variation. Choose Saved variation to retain the saved random inputs, then Add layers or Create new setup. Exact matching requires identical evaluated terrain, receiver history, quotas, source order/weights, masks, Relax and collision context. Complete presets transfer supported Paint across units and local-XY footprints; exact settings-only Paint retains compatible geometry/frame/unit requirements."
         },
         {
           "doc": "artist-guide",
@@ -546,7 +570,7 @@
           "text": "Named layer Copy currently rejects authored Scatter Edit and per-instance radius data; use Max object Copy for a complete setup. The native foundation preserves tested Count/copy/preset/Edit history without full script placement arrays. Resource rejection retains the previous complete result. Arbitrary low-memory conditions and sustained artist production acceptance remain separate."
         }
       ],
-      "words": 3808
+      "words": 3910
     },
     {
       "id": "layout-falloff",
@@ -991,6 +1015,54 @@
     }
   ],
   "changelog": [
+    {
+      "version": "0.86.6",
+      "date": "2026-10-19",
+      "title": "Surface painting restored",
+      "era": "recent",
+      "legacy": false,
+      "note": "Max 2027 development delivery with matched MZP and shareable Windows EXE; scoped native and host qualification.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Paint on spheres, boxes, vertical sides and manifold curved receivers again, with surface-following strokes and opposite-side isolation."
+        },
+        {
+          "kind": "Improved",
+          "text": "Retains vector borders, Paint/Erase, Fill/Clear, fade curves, independent copies, Undo/Redo and scene persistence. Curved borders export as 3D spline snapshots."
+        },
+        {
+          "kind": "Improved",
+          "text": "Includes all corrected 0.86.5 library, Amount, receiver-map and lifecycle fixes. Installer and visible release labels consistently use 0.86.6."
+        }
+      ]
+    },
+    {
+      "version": "0.86.5",
+      "date": "2026-10-19",
+      "title": "Reusable library and density maps",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-corrected reliability baseline. Original build receipts labeled 0.87.0 retain their actual labels and hashes. The complete feature set is included in 0.86.6.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Complete library presets convert physical units and fit supported Paint/path layouts to the selected terrain. Valley and Mountain use relative local elevation."
+        },
+        {
+          "kind": "Added",
+          "text": "Map coordinates reads the receiver's actual UV/data channels through supported Vertex Color, Checker, Color Correction and Output graphs."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Clear removes image density, last-model removal publishes a valid empty layer, and Recipes restores a minimized Library window."
+        },
+        {
+          "kind": "Improved",
+          "text": "Invalid dependencies reject with contextual messages and preserve existing planting. Repeated imports, unit conversion and scene history have reproducible tests."
+        }
+      ]
+    },
     {
       "version": "0.86.0",
       "date": "2026-10-18",
@@ -2491,7 +2563,7 @@
     {
       "feature_id": "C02",
       "title": "Receiver and units / layer",
-      "native": "Layers own static flat/curved receivers. Vector Paint Areas require single-valued local-XY terrain/planes; geometry changes are guarded",
+      "native": "Layers own static flat/curved receivers. Vector Paint Areas support terrain and manifold curved receivers; indexed geometry changes are guarded",
       "mcp": "Design enrollment remains a horizontal convex static site with restricted geometry",
       "qualification_or_extension": "Wider typed receiver enrollment and geometry/units qualification"
     },
@@ -2554,9 +2626,9 @@
     {
       "feature_id": "C11",
       "title": "Density masks / layer",
-      "native": "UV texture density with 64/128/256/512 sampled images; direct mesh channels 0..99 with component/range/invert/curve controls, stable eligibility and bounded explicit grayscale preview",
+      "native": "Independent projected image, receiver-aware procedural map and surface fields. Map coordinates supplies actual receiver UV/data channels to supported graphs. Surface field chooses explicit channel 0..99 or relative local elevation. Shared bounded placement/preview scalars; Clear removes only the image rule",
       "mcp": "No map/channel enrollment or write contract",
-      "qualification_or_extension": "Mesh channel 0.82.4 qualification is tracked in its handoff; bounded references and evaluation remain required"
+      "qualification_or_extension": "[0.87.0 scoped qualification](../plans/preset-gallery-improvements/RELIABILITY_0870.md); supported classes and resource limits in [format 7](../plans/preset-gallery-improvements/FORMAT_7.md). No arbitrary procedural graph portability or renderer context"
     },
     {
       "feature_id": "C12",
@@ -2575,9 +2647,9 @@
     {
       "feature_id": "C14",
       "title": "Vector Brush / Paint Area",
-      "native": "Canonical Boolean Paint/Erase on projected terrain; cached borders; inward/outward feather and separate density/scale curves",
+      "native": "Canonical Boolean Paint/Erase on terrain or surface-attached face regions; cached 3D borders; surface-distance feather and separate density/scale curves",
       "mcp": "No Brush authoring",
-      "qualification_or_extension": "Physical input, heavy assets, sustained memory/latency and wider surface representations"
+      "qualification_or_extension": "Physical mouse/tablet input, heavier assets and sustained stress beyond the scoped 0.86.6 tests"
     },
     {
       "feature_id": "C15",
@@ -2722,9 +2794,9 @@
     {
       "feature_id": "C35",
       "title": "Settings presets and complete static recipes",
-      "native": "Multi-layer recipes with complete supported Paint, revisions, collection thumbnails and selective style application. 0.85.3 ready presets supply supported models/materials, evaluated receivers and static splines; Load + Update adds layers with current compatible or included terrain. Ready Save captures exact references",
+      "native": "Multi-layer recipes retain supported Paint/assets/paths, revisions, thumbnails, image bytes/mapping/frame/response and selective style. Selected-terrain Load creates a setup only when needed and adds layers. Complete preset Paint/path transfer fits local XY, with physical unit conversion and early dependency checks",
       "mcp": "Catalog help only; no preset/recipe filesystem or application tool",
-      "qualification_or_extension": "Recipe format 5, settings 3, library capability 3, asset capability/graph 2 (package manifest 1). One authored Undo restores publication and owned assets. Unsupported Edit/radius/controllers, animated assets, XRefs and renderer-specific adapters remain outside this scope; Paint cannot automatically transfer to arbitrary terrain. See the 0.85.3 handoff"
+      "qualification_or_extension": "Recipe 7, settings 3, library 4, asset capability/graph 2 (manifest 1). One Undo/Redo restores output/assets. Terrain preset transfer requires a single-valued XY footprint; curved preset transfer requires matching indexed topology; settings-only exact Paint keeps its compatibility contract. Broader Edit/effects/animation/XRef/renderer adapters remain outside scope. See [0.87.0](../plans/preset-gallery-improvements/RELIABILITY_0870.md)"
     },
     {
       "feature_id": "C36",
@@ -3805,7 +3877,7 @@
         "C08"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Label inside Scatter only. Clear it to use the scene object's name.",
+      "help": "Full model label inside Scatter. Clear it to use the scene object's name. Long list names are shortened for display only.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-sourceui-sourcename",
@@ -4631,7 +4703,7 @@
         "C11"
       ],
       "owner_context": "Layer defaults",
-      "help": "Use the selected receiver UV channel: white permits candidates; black excludes them. UVs clamp to 0..1.",
+      "help": "Choose a 3ds Max texture map such as Noise or Bitmap, or drag one from the Material Editor. A material itself is not a density mask.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-distributionui-densitybutton",
@@ -4639,6 +4711,25 @@
       "label": "Choose density map",
       "description": "Use the selected receiver UV channel: white permits candidates, black excludes them, and gray thins them. UVs clamp to 0..1.",
       "displayOwner": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "mapBrowseButton",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-mapbrowsebutton",
+      "sourceKey": "layer.distributionUI.mapBrowseButton",
+      "label": "Map",
+      "description": "Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor.",
+      "displayOwner": "Selected layer recipe"
     },
     {
       "group": "layer",
@@ -4701,19 +4792,474 @@
       "group": "layer",
       "section": "distributionUI",
       "kind": "checkbox",
+      "name": "imageCheck",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Enable the chosen pattern, image or texture map. White permits plants; black excludes them. Independent of the mesh-channel mask.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-imagecheck",
+      "sourceKey": "layer.distributionUI.imageCheck",
+      "label": "Use image",
+      "description": "Enable the chosen pattern, image or texture map. White permits plants; black excludes them. Independent of the mesh-channel mask.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "patternButton",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Browse original Cyrus masks. Choosing one changes only image density.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-patternbutton",
+      "sourceKey": "layer.distributionUI.patternButton",
+      "label": "Choose pattern...",
+      "description": "Browse original Cyrus masks. Choosing one changes only image density.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "imageButton",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Choose an image file, read as linear density data.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-imagebutton",
+      "sourceKey": "layer.distributionUI.imageButton",
+      "label": "Image",
+      "description": "Choose an image file, read as linear density data.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "imgTag",
+      "name": "imageThumbnail",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-imagethumbnail",
+      "sourceKey": "layer.distributionUI.imageThumbnail",
+      "label": "Image preview",
+      "description": "Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "coordinatesList",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Map coordinates uses each map's own UV/data channels on the receiver. Other modes project a sampled image using Scatter's controls.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-coordinateslist",
+      "sourceKey": "layer.distributionUI.coordinatesList",
+      "label": "Coordinates",
+      "description": "Map coordinates uses the texture graph’s own receiver UV/data channels. Other modes project a sampled image.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "checkbox",
+      "name": "tileLockCheck",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Use equal physical sizes or UV repeats in both axes.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-tilelockcheck",
+      "sourceKey": "layer.distributionUI.tileLockCheck",
+      "label": "Lock X / Y size",
+      "description": "Use equal physical sizes or UV repeats in both axes.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "wrappingList",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Repeat wraps the pattern across seams. Clamp extends its outside pixels.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-wrappinglist",
+      "sourceKey": "layer.distributionUI.wrappingList",
+      "label": "Tile edges",
+      "description": "Repeat wraps the pattern across seams. Clamp extends its outside pixels.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "imageCurveButton",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Remap image values after inversion. Height is planting eligibility.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-imagecurvebutton",
+      "sourceKey": "layer.distributionUI.imageCurveButton",
+      "label": "Density curve...",
+      "description": "Remap image values after inversion. Height is planting eligibility.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "bakeImageButton",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Explicitly replace a live map with a saved 2D image tile for portable recipes. Undo restores the original graph.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-bakeimagebutton",
+      "sourceKey": "layer.distributionUI.bakeImageButton",
+      "label": "Bake portable snapshot...",
+      "description": "Explicitly replace a live map with a saved 2D image tile for portable recipes. Undo restores the original graph.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "maskViewList",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Combined includes image, mesh density, Paint, include/exclude areas and terrain eligibility before collisions, spacing and count limits.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-maskviewlist",
+      "sourceKey": "layer.distributionUI.maskViewList",
+      "label": "Mask view",
+      "description": "Combined includes image, mesh density, Paint, include/exclude areas and terrain eligibility before collisions, spacing and count limits.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "maskDetailList",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Bounded surface tessellation independent of plant count. Increase for dense meshes.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-maskdetaillist",
+      "sourceKey": "layer.distributionUI.maskDetailList",
+      "label": "Preview detail",
+      "description": "Bounded surface tessellation independent of plant count. Increase for dense meshes.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "opacitySpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Change mask visibility only; plants are unchanged.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-opacityspin",
+      "sourceKey": "layer.distributionUI.opacitySpin",
+      "label": "Opacity %:",
+      "description": "Change mask visibility only; plants are unchanged.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "checkbox",
+      "name": "markersCheck",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Diagnostic samples in place of the continuous surface mask. Does not change planting.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-markerscheck",
+      "sourceKey": "layer.distributionUI.markersCheck",
+      "label": "Show sample markers",
+      "description": "Diagnostic samples in place of the continuous surface mask. Does not change planting.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "markerSizeList",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Diagnostic marker size only. Does not resample the field or recalculate plants.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-markersizelist",
+      "sourceKey": "layer.distributionUI.markerSizeList",
+      "label": "Marker size",
+      "description": "Diagnostic marker size only. Does not resample the field or recalculate plants.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "tileXSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Physical width of one tile. Image resolution changes detail, not size.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-tilexspin",
+      "sourceKey": "layer.distributionUI.tileXSpin",
+      "label": "Tile X:",
+      "description": "Physical width of one tile. Image resolution changes detail, not size.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "tileYSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Physical height when size is unlocked.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-tileyspin",
+      "sourceKey": "layer.distributionUI.tileYSpin",
+      "label": "Tile Y:",
+      "description": "Physical height when size is unlocked.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "repeatXSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Image repetitions per UV unit.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-repeatxspin",
+      "sourceKey": "layer.distributionUI.repeatXSpin",
+      "label": "Repeat U:",
+      "description": "Image repetitions per UV unit.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "repeatYSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "V repetitions when unlocked.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-repeatyspin",
+      "sourceKey": "layer.distributionUI.repeatYSpin",
+      "label": "Repeat V:",
+      "description": "V repetitions when unlocked.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "headingSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Pattern rotation in degrees about the projection origin.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-headingspin",
+      "sourceKey": "layer.distributionUI.headingSpin",
+      "label": "Heading:",
+      "description": "Pattern rotation in degrees about the projection origin.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "offsetXSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Shift the projection origin in scene units before rotation.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-offsetxspin",
+      "sourceKey": "layer.distributionUI.offsetXSpin",
+      "label": "Offset X:",
+      "description": "Shift the projection origin in scene units before rotation.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "offsetYSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Shift the projection origin in scene units before rotation.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-offsetyspin",
+      "sourceKey": "layer.distributionUI.offsetYSpin",
+      "label": "Offset Y:",
+      "description": "Shift the projection origin in scene units before rotation.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "offsetUSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Shift the UV origin before rotation and repeats.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-offsetuspin",
+      "sourceKey": "layer.distributionUI.offsetUSpin",
+      "label": "Offset U:",
+      "description": "Shift the UV origin before rotation and repeats.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "offsetVSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Shift the UV origin before rotation and repeats.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-offsetvspin",
+      "sourceKey": "layer.distributionUI.offsetVSpin",
+      "label": "Offset V:",
+      "description": "Shift the UV origin before rotation and repeats.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "checkbox",
       "name": "meshCheck",
       "capabilities": [
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters.",
+      "help": "Use an authored mesh channel or relative local elevation. White permits; black excludes.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-distributionui-meshcheck",
       "sourceKey": "layer.distributionUI.meshCheck",
-      "label": "Use mesh channel mask",
-      "description": "Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters.",
+      "label": "Use surface density",
+      "description": "Enable the independent channel or relative-elevation field.",
       "displayOwner": "Selected layer and its receiving surfaces"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "meshSourceList",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Relative elevation uses the receiver's local height: 0 at its lowest point, 1 at its highest. Flat receivers use 0. No channel or modifier is added.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-meshsourcelist",
+      "sourceKey": "layer.distributionUI.meshSourceList",
+      "label": "Field",
+      "description": "Choose an authored mesh channel or relative local elevation. Elevation uses 0 at the lowest referenced vertex and 1 at the highest; flat terrain is 0.",
+      "displayOwner": "Selected layer recipe"
     },
     {
       "group": "layer",
@@ -4760,7 +5306,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max.",
+      "help": "Field value mapped to 0 before Invert and the Density curve. Must be less than Input max.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-distributionui-meshminspin",
@@ -4778,7 +5324,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp.",
+      "help": "Field value mapped to 1 before Invert and the Density curve. Values outside the range clamp.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-distributionui-meshmaxspin",
@@ -4796,7 +5342,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Reverse the normalized channel values before applying the Density curve.",
+      "help": "Reverse the normalized field values before applying the Density curve.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-distributionui-meshinvertcheck",
@@ -4832,7 +5378,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Read a snapshot of the current mask as at most 2,048 grayscale face-centre markers. White permits plants; black excludes. Refresh after edits.",
+      "help": "Show the density mask. Relevant edits refresh it while enabled; Manual plants wait for Update.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-distributionui-meshpreviewbutton",
@@ -4850,7 +5396,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Hide the cached mesh mask markers without recalculating plants.",
+      "help": "Hide the density mask without recalculating plants.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-distributionui-meshhidebutton",
@@ -5659,7 +6205,7 @@
       "id": "control-layer-brushui-beginbutton",
       "sourceKey": "layer.brushUI.beginButton",
       "label": "Start Brush",
-      "description": "Start painting the selected area on its explicit receiver and enable painted coverage for the layer. The receiver must be linked to this layer and supported single-valued local-XY terrain; Manual planting still waits for Update.",
+      "description": "Start painting the selected area on its explicit receiver and enable painted coverage for the layer. The receiver must be linked to this layer and supported terrain or manifold curved geometry; Manual planting still waits for Update.",
       "displayOwner": "Selected Paint Area and its receiver; shared layer models"
     },
     {
@@ -5938,13 +6484,13 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": "Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first.",
+      "help": "Export an independent editable border spline. Terrain uses local XY; curved receivers keep their 3D surface border. An unchanged surface snapshot restores exact coverage. Keeps the Paint Area. Stop the brush first.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-brushui-exportspline",
       "sourceKey": "layer.brushUI.exportSpline",
       "label": "Export spline",
-      "description": "Create and select an independent closed Editable Spline with this Paint Area's contours and holes. Uses receiver-local XY at Z=0, so terrain exports a planar guide. Stop the brush first; area coverage is preserved.",
+      "description": "Export an independent editable border spline. Terrain uses local XY; curved receivers keep their 3D surface border. An unchanged surface snapshot restores exact coverage. Keeps the Paint Area. Stop the brush first.",
       "displayOwner": "Selected Paint Area and its receiver; shared layer models"
     },
     {
@@ -5995,13 +6541,13 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": "Pick one closed spline shape to apply to this Paint Area using Replace or Add. One Undo; Manual waits for Update. Stop the brush first.",
+      "help": "Apply closed spline coverage using Replace or Add. Curved borders must lie on the receiver within Curve tolerance; edited closed-surface borders select the smaller enclosed region. One Undo; Manual waits for Update. Stop the brush first.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
       "id": "control-layer-brushui-importspline",
       "sourceKey": "layer.brushUI.importSpline",
       "label": "Pick spline...",
-      "description": "Pick one closed shape for the captured Paint Area. Escape cancels. A changed import is one Undo; Manual waits for Update. The source is preserved, with no live link.",
+      "description": "Apply closed spline coverage using Replace or Add. Curved borders must lie on the receiver within Curve tolerance; edited closed-surface borders select the smaller enclosed region. One Undo; Manual waits for Update. Stop the brush first.",
       "displayOwner": "Selected Paint Area and its receiver; shared layer models"
     },
     {

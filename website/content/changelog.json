@@ -1,7 +1,61 @@
 {
-  "reviewed": "2026-10-18",
+  "reviewed": "2026-10-19",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. Historical work-state notes retain their original review date. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.86.6",
+      "date": "2026-10-19",
+      "title": "Surface painting restored",
+      "era": "recent",
+      "legacy": false,
+      "note": "Max 2027 development delivery with matched MZP and shareable Windows EXE; scoped native and host qualification.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Paint on spheres, boxes, vertical sides and manifold curved receivers again, with surface-following strokes and opposite-side isolation."
+        },
+        {
+          "kind": "Improved",
+          "text": "Retains vector borders, Paint/Erase, Fill/Clear, fade curves, independent copies, Undo/Redo and scene persistence. Curved borders export as 3D spline snapshots."
+        },
+        {
+          "kind": "Improved",
+          "text": "Includes all corrected 0.86.5 library, Amount, receiver-map and lifecycle fixes. Installer and visible release labels consistently use 0.86.6."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/DELIVERY_0866.md"
+      ]
+    },
+    {
+      "version": "0.86.5",
+      "date": "2026-10-19",
+      "title": "Reusable library and density maps",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-corrected reliability baseline. Original build receipts labeled 0.87.0 retain their actual labels and hashes. The complete feature set is included in 0.86.6.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Complete library presets convert physical units and fit supported Paint/path layouts to the selected terrain. Valley and Mountain use relative local elevation."
+        },
+        {
+          "kind": "Added",
+          "text": "Map coordinates reads the receiver's actual UV/data channels through supported Vertex Color, Checker, Color Correction and Output graphs."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Clear removes image density, last-model removal publishes a valid empty layer, and Recipes restores a minimized Library window."
+        },
+        {
+          "kind": "Improved",
+          "text": "Invalid dependencies reject with contextual messages and preserve existing planting. Repeated imports, unit conversion and scene history have reproducible tests."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/RELIABILITY_0870.md"
+      ]
+    },
     {
       "version": "0.86.0",
       "date": "2026-10-18",

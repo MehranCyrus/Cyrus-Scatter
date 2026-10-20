@@ -1,0 +1,1552 @@
+{
+  "title": "3ds Max Interior Styling Research",
+  "date": "2026-10-17",
+  "chapters": [
+    {
+      "title": "Decision and feasibility",
+      "strap": "Recommended direction",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Build a native C++ analysis and arrangement engine, expose a small command interface through Autodesk Function Publishing, and use MAXScript rollouts for the first UI. This matches the requested architecture and provides room for efficient geometry processing without requiring Python, a cloud service, an LLM, or GPU inference at runtime.",
+          "sources": [
+            "S01"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The product should combine three capabilities: geometry determines where an object can fit; categories determine which objects belong on a piece of furniture; recipes determine how those objects form a coherent arrangement. A TV console category can permit books, frames and vases while preserving a television zone and equipment access.",
+          "sources": []
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Decision",
+            "Recommended starting point"
+          ],
+          "rows": [
+            [
+              "Target furniture",
+              "Static TV consoles, open shelves and coffee tables with rigid, predominantly horizontal supports."
+            ],
+            [
+              "Generation",
+              "Library-driven native instances, with a saved seed, locked groups and editable region overrides."
+            ],
+            [
+              "Geometry",
+              "Support polygons with holes, local overhead clearance, accessibility flags and collision representations."
+            ],
+            [
+              "Visual quality",
+              "A small, authored recipe library with deliberate empty space and bounded variation."
+            ],
+            [
+              "Reliability",
+              "Main-thread snapshot, worker-only computation, main-thread validation and commit."
+            ],
+            [
+              "Initial platform",
+              "One chosen Max release; validate other releases as separate builds."
+            ]
+          ],
+          "widths": [
+            0.25,
+            0.75
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The idea has substantial prior art. Scatter Tools already documents furniture population, and research systems study support hierarchies and small-object arrangements. The strongest product hypothesis is the integration of dependable detection, reusable categories, composition recipes and artist-controlled regeneration. Its value must be tested against those existing workflows.",
+          "sources": [
+            "S09",
+            "S17"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "This is a feasibility and architecture report dated 17 October 2026. Three research subagents investigated the SDK, geometry algorithms and existing products; the main agent reconciled their findings and checked asset/integration issues. Vendor claims below are documented capabilities, not independent performance results. No Max plugin was compiled, no product trial was run and no scene benchmark was performed.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "Existing products and the competitive baseline",
+      "strap": "What is already documented",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Product",
+            "Documented capability",
+            "Relevance and unresolved detail"
+          ],
+          "rows": [
+            [
+              "Spline Dynamics Scatter Tools [S09 S10]",
+              "Auto-populates flat horizontal furniture surfaces; handles groups and collision checks. Redistributes selected existing objects.",
+              "Closest verified Max reference. Explicit semantic categories, stored clearance maps and recipe systems are not established by the cited manual."
+            ],
+            [
+              "model+model Bookmanager 2 [S11]",
+              "Places books on shelf polygons; horizontal, leaning and flipped poses; seeds, cloning, presets and pivot checks.",
+              "A strong reference for book preparation and shelf controls. General accessory styling is outside the cited description."
+            ],
+            [
+              "Chaos Scatter [S12]",
+              "Surface and volume distribution, randomized transforms and overlap controls.",
+              "Established general scatter behavior. Approximate bounding regions do not establish compartment interpretation."
+            ],
+            [
+              "ForestPack [S13]",
+              "Multiple surfaces, projection, filters and refresh controls.",
+              "Reference for large-scene distribution infrastructure. Semantic furniture interpretation is unverified here."
+            ],
+            [
+              "RailClone [S14]",
+              "Procedural shelf/book construction with randomization and generators.",
+              "Useful when shelf structure is known parametrically; arbitrary imported-model interpretation is not demonstrated by that tutorial."
+            ],
+            [
+              "SiNi Disperse [S15]",
+              "Artist painting of geometry and proxies.",
+              "Reference for local placement, direct editing and artist feedback."
+            ]
+          ],
+          "widths": [
+            0.23,
+            0.39,
+            0.38
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Scatter Tools automatically determines orientation/anchor for its furniture mode and documents checks against both other scattered objects and the distribution geometry. If an object cannot be placed, it remains at its original location. Restricting placement to part of a surface is documented through a cloned/cut distribution object. Its manual does not disclose the underlying collision representation.",
+          "sources": [
+            "S10"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "These are evidence boundaries: an undocumented feature is unknown, rather than proven absent. Vendor statements such as collision avoidance still need close-up geometric tests on our own fixtures. The products and manuals were researched, not installed or benchmarked.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "The screenshot supplied in the conversation is an idea reference. Its source has not been established, so no attribution to a particular commercial tool is assumed.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "Published research that informs the design",
+      "strap": "Ideas to study and limits to retain",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "HSM, presented at 3DV 2026, is the closest research reference: it extracts horizontal and vertical mesh regions, derives clearance and compartments, and places compositional motifs through a support hierarchy. Its paper reports imperfect region extraction and discusses geometry quality, inaccessible spaces and limited motif coverage. That supports an editable-detection workflow. Its implementation and research results do not establish production robustness on arbitrary Max imports.",
+          "sources": [
+            "S16",
+            "S17"
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Reference",
+            "Useful concept",
+            "How it informs this product"
+          ],
+          "rows": [
+            [
+              "SceneMotifCoder [S18]",
+              "Recurring arrangements represented by parameterized programs.",
+              "Author compact rules for stacks, rows and object-relative groups; vary approved parameters."
+            ],
+            [
+              "SceneSmith [S19]",
+              "Hierarchical planning with geometric and physical refinement.",
+              "Keep semantic intent separate from exact fitting and final validation."
+            ],
+            [
+              "Make It Home [S20]",
+              "Spatial priors and ergonomic layout objectives.",
+              "Score functional clearance and layout preferences after hard geometric checks."
+            ],
+            [
+              "Clutterpalette [S21]",
+              "Support-aware suggestions for small object categories.",
+              "Treat what belongs here as a separate task from whether it fits."
+            ],
+            [
+              "PlanIT [S22]",
+              "Relation graph followed by concrete scene instantiation.",
+              "Use explicit relationships. Its repository warns that needed models and metadata are unavailable."
+            ]
+          ],
+          "widths": [
+            0.25,
+            0.36,
+            0.39
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Recommended baseline: encode a modest set of recipes directly as validated declarative data consumed by C++. Recipes select prepared assets and permitted poses; a bounded search fits their relationships to a target region. This makes failures explainable and gives artists repeatable results.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "An optional future AI layer can suggest tags, interpret a brief such as \"minimal styling, books, no plants\", or rank approved recipes. The C++ engine should still own support, fitting, collision and commit. AI requests should map to a constrained schema; arbitrary generated scripts are unnecessary for this workflow.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Research code and data have separate permissions. HSM code is MIT licensed, while its dataset and the HSSD model dataset are CC BY-NC 4.0. The code license does not grant rights to bundle those meshes in a commercial accessory library.",
+          "sources": [
+            "S47",
+            "S48",
+            "S49"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "C++ core and MAXScript UI architecture",
+      "strap": "Proposed component boundaries",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Component",
+            "Responsibility"
+          ],
+          "rows": [
+            [
+              "DressingCore C++ library",
+              "Plain-data meshes, region extraction, collision structures, recipes, selection, search, scoring and deterministic results. No Max SDK dependency."
+            ],
+            [
+              "DressingMax native adapter",
+              "Evaluated scene access, transforms, units, references, notifications, instancing, viewport overlays and undo participation."
+            ],
+            [
+              "Published command interface",
+              "Assign profile; register asset; analyze; start/cancel job; query diagnostics; preview; commit; lock; bake."
+            ],
+            [
+              "MAXScript UI",
+              "Node pickers, category/recipe controls, density, seeds, status and command invocation. Keep geometry loops out of the UI."
+            ],
+            [
+              "Scene controller/state",
+              "Per-setup settings, native references, region overrides, ownership and generation revision."
+            ],
+            [
+              "Library and presets",
+              "Versioned asset metadata and recipe data; editable without recompiling geometric algorithms."
+            ]
+          ],
+          "widths": [
+            0.31,
+            0.69
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Function Publishing makes C++ interfaces callable from MAXScript. Pass node references and small settings, then return job IDs and compact summaries. Moving large vertex arrays through MAXScript would defeat this boundary. A dedicated MAXScript extension DLL is not needed solely to expose published functions.",
+          "sources": [
+            "S01"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "A small GUP can host application-level services, caches and callback lifetime. Per-furniture state belongs on scene-owned objects or attributes. Prototype a C++ custom attribute on a built-in controller node and compare it with a custom helper; settle that choice through save/clone/merge and missing-plugin tests. A GUP alone is a poor owner for every setup.",
+          "sources": [
+            "S52",
+            "S33"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Attach instance-specific category overrides, seed and exclusions to the furniture node or setup controller, rather than automatically to its shared base mesh. Two instances of the same cabinet may need different arrangements. Keep reusable asset definitions separate from instance-specific placement state.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "MAXScript rollouts are appropriate initially. Native C++ Qt remains an option for a future thumbnail browser or recipe editor; it introduces target-version Qt requirements and should follow a demonstrated UI need.",
+          "sources": [
+            "S42"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Safe execution and scene lifecycle",
+      "strap": "Threading and transactions",
+      "blocks": [
+        {
+          "type": "pipeline"
+        },
+        {
+          "type": "p",
+          "text": "Autodesk identifies the reference system and node evaluation system as single threaded. A C++ implementation must not call into them concurrently from geometry workers. Locks around our own data do not make the Max scene API thread safe.",
+          "sources": [
+            "S02"
+          ]
+        },
+        {
+          "type": "b",
+          "text": "Snapshot: on the main thread, evaluate the selected furniture and relevant obstacles at an explicit time, copy supported geometry and transforms, and record unit/settings/source revisions."
+        },
+        {
+          "type": "b",
+          "text": "Solve: workers operate on owned vertex/index arrays and value types. Build acceleration structures, extract regions, produce candidate layouts and diagnostics, and check cancellation regularly."
+        },
+        {
+          "type": "b",
+          "text": "Commit: return to the main thread, revalidate references and revisions, and reject stale results if the scene changed. Apply only owned output changes as one undoable action."
+        },
+        {
+          "type": "p",
+          "text": "Do not hold an undo transaction open while solving asynchronously. The UI or command caller should own the short commit transaction; published functions participate in it. Parameter blocks cover their changes, while custom state may need RestoreObj integration. Undo must restore the previous layout and ownership, and redo must restore the same accepted transforms.",
+          "sources": [
+            "S37",
+            "S38"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Callbacks should mark caches dirty and queue work. Debounce repeated geometry/transform events and suppress self-triggered regeneration loops. Transform changes, topology edits, asset revisions, units and time have different invalidation scopes.",
+          "sources": [
+            "S39"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "On scene load, reconnect and validate state before evaluating geometry. Native references are incomplete during Load(); Autodesk documents post-load ordering constraints. Prefer user-triggered analysis or safe deferred work. Cancel jobs on reset, open and shutdown, and avoid a worker/main-thread waiting cycle.",
+          "sources": [
+            "S36"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Reading furniture geometry reliably",
+      "strap": "Main-thread analysis input contract",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Use evaluated geometry at the chosen time so modifier results are represented. Autodesk documents EvalWorldState(), conversion to TriObject when supported, and the rule that a conversion result is deleted only when it is a separately owned temporary. GetObjectRef() alone is not a reliable substitute for the evaluated shape.",
+          "sources": [
+            "S03"
+          ]
+        },
+        {
+          "type": "b",
+          "text": "Resolve the whole furniture assembly: attached mesh, separate boards, nested groups and child nodes. Keep source identities so an artist can diagnose which part produced a region."
+        },
+        {
+          "type": "b",
+          "text": "Normalize physical units through GetSystemUnitScale()/GetSystemUnitInfo(). Work close to the furniture origin in a defined local frame, with explicit up/front axes and unit-aware tolerances."
+        },
+        {
+          "type": "b",
+          "text": "Apply object offsets, parent transforms and the correct evaluated coordinate convention. Test world-space modifiers explicitly. Do not multiply an already transformed mesh twice."
+        },
+        {
+          "type": "b",
+          "text": "Bake nonuniform scale, mirrors and shear into analysis vertices where downstream collision APIs expect rigid transforms. Recompute geometric face normals and winding consistently; shading normals are unsuitable as the sole support test."
+        },
+        {
+          "type": "p",
+          "text": "Max distinguishes node and object transforms, including object offsets and world-space modifier context. Current units APIs differ from older examples that use GetMasterScale. These details should be covered by small labelled fixture scenes before testing elaborate cabinets.",
+          "sources": [
+            "S04",
+            "S05"
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Geometry source",
+            "Required treatment"
+          ],
+          "rows": [
+            [
+              "Ordinary evaluated mesh",
+              "Copy triangles and retain source mapping."
+            ],
+            [
+              "Renderer proxy",
+              "Use a verified adapter or an explicitly supplied analysis mesh."
+            ],
+            [
+              "Display box/point cloud",
+              "Label as approximate; do not infer shelf openings from it."
+            ],
+            [
+              "USD, XRef, procedural object",
+              "Separate compatibility target until its evaluated representation is tested."
+            ],
+            [
+              "Unsupported source",
+              "Explain what is missing and allow authored regions/colliders."
+            ]
+          ],
+          "widths": [
+            0.34,
+            0.66
+          ]
+        },
+        {
+          "type": "p",
+          "text": "V-Ray and Corona document multiple proxy preview modes, including representations that differ greatly from full geometry. Preserve the render asset and its materials; use a separate analysis representation where necessary.",
+          "sources": [
+            "S43",
+            "S44"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Detecting supports and shelf openings",
+      "strap": "Proposed geometry pipeline",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Represent the furniture as multiple usable surfaces and nearby obstacles. A whole-object bounding box loses the empty spaces; a convex hull around a cabinet closes its openings. A single downward ray sees the highest board and can miss every shelf underneath.",
+          "sources": []
+        },
+        {
+          "type": "b",
+          "text": "Diagnose degenerate faces, extreme scales, duplicate geometry, boundaries and inconsistent orientation. Repair only an analysis copy when appropriate; preserve the source model."
+        },
+        {
+          "type": "b",
+          "text": "Find approximately planar, near-horizontal patches using gravity, angular tolerance, plane distance and minimum physical area. Grow adjacency within a mesh and merge separate coplanar parts conservatively."
+        },
+        {
+          "type": "b",
+          "text": "Project each patch into a 2D surface frame. Union its triangles into boundaries with holes. Retain cutouts and gaps instead of filling them through an enclosing rectangle."
+        },
+        {
+          "type": "b",
+          "text": "Query space above the patch, then subtract blocked areas. Reject undersides, tiny ledges and regions that cannot fit any allowed prepared asset. Keep uncertain regions visibly editable."
+        },
+        {
+          "type": "p",
+          "text": "Plane-region growing is an established geometric technique; CGAL documents region thresholds and planar fitting. Clipper2 provides polygon booleans and offsets suitable for the resulting 2D boundaries. These libraries are building blocks, rather than ready-made furniture understanding.",
+          "sources": [
+            "S23",
+            "S26"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Store overhead clearance as a local query or field h(x,y), since a shelf may have a sloped ceiling, supports or protrusions. A single minimum height can be useful for conservative filtering but can reject valid locations; a single maximum can miss collisions. Sampling is only a prefilter, followed by final 3D checks.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "A compartment is a useful grouping of connected support areas with nearby vertical boundaries and usable clearance. It need not be a watertight cavity. Mark whether it is exposed, behind a door or otherwise inaccessible; allow a front-facing accessibility override.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Avoid making closed-solid containment the universal prerequisite. CGAL containment has closed-mesh/self-intersection conditions; winding-number methods improve handling of imperfect geometry but retain assumptions. Open imported shells need surface-based reasoning and explicit uncertainty.",
+          "sources": [
+            "S24",
+            "S25"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Validating a candidate placement",
+      "strap": "Support, containment and collision",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Treat an accessory as three separate representations: visual geometry, supporting contacts and occupied collision volume. For a plant, the pot determines support while the leaves occupy more space. For a tray, the inner surface supports objects while its rim remains an obstacle.",
+          "sources": []
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Check",
+            "Proposed rule"
+          ],
+          "rows": [
+            [
+              "Eligible object",
+              "Furniture category, region role, recipe, pose and physical size must agree."
+            ],
+            [
+              "Footprint",
+              "Contact polygon or pads must lie within the support boundary after the requested edge margin, preserving holes."
+            ],
+            [
+              "Clearance",
+              "Use local overhead/side filtering, followed by 3D validation of the complete candidate."
+            ],
+            [
+              "Collision",
+              "Test furniture, relevant existing objects, locked output and accepted generated objects."
+            ],
+            [
+              "Contact",
+              "Allow only intended support contact within tolerance; keep checking other parts of the supporting object."
+            ],
+            [
+              "Stability",
+              "For upright rigid poses, use actual contacts and an authored or approximate centre of mass with a safety margin."
+            ]
+          ],
+          "widths": [
+            0.25,
+            0.75
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Use a spatial broadphase to reject distant objects, then collision and distance queries with suitable simplified shapes. FCL is a candidate library for these queries; Clipper2 can test whether a footprint leaves any area outside the usable region.",
+          "sources": [
+            "S29",
+            "S26"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Triangle-surface intersection alone does not prove that solids do not overlap: one object can lie entirely inside another without surfaces intersecting. Closed convex/compound colliders and appropriate containment checks are needed where that case is possible. Excessively coarse colliders can also reject arrangements that would fit.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "The entire supporting shelf, tray or book must not be excluded from collision tests. Only the intended contact is permitted; otherwise the solver could push a vase into a shelf side or through a tray rim.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Store stacking as an acyclic support graph, such as shelf to book stack to ornament. Generate and validate parents before children. A change to a stack invalidates its supported ornament. Leaning frames need prepared stable poses or multi-contact logic; upright support rules alone do not validate them.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Physics settling can be evaluated later if it improves visible quality. Bullet is a possible optional dependency. It should not be required for every initial candidate or used to hide an invalid placement search.",
+          "sources": [
+            "S32"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Furniture categories and arrangement recipes",
+      "strap": "What belongs here and how it should look",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Naming should suggest categories, while persistent metadata stores the confirmed assignment. A label such as TV_Console_01 can map to TV console. Geometry supplies measurements and support regions; it cannot reliably infer the intended furniture use or decoration style from a name-free mesh alone.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Separate the furniture category from the surface role. A TV console may have an exposed top, low shelf, side niche and equipment area. Each role can allow a different asset set and different recipes. Give the artist a front direction so frames, book spines and reserved TV zones can align meaningfully.",
+          "sources": []
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Starter recipe",
+            "Relationship and variation"
+          ],
+          "rows": [
+            [
+              "Upright book run",
+              "Approved upright poses, bounded gaps and count; optional bookend."
+            ],
+            [
+              "Flat book stack",
+              "Prepared flat poses; size/order rules; limited rotation."
+            ],
+            [
+              "Stack with ornament",
+              "Ornament supported by the top book region, not merely by stack bounding height."
+            ],
+            [
+              "Tall and low group",
+              "Vase or plant plus a lower accessory; controlled gap and height contrast."
+            ],
+            [
+              "Frame and accessory",
+              "Prepared frame pose and a small nearby group, aligned to furniture front."
+            ],
+            [
+              "Tray group",
+              "Nested arrangement supported inside the tray, with rim clearance."
+            ],
+            [
+              "Console end group",
+              "One or two groups with reserved screen/equipment zones and intentional empty space."
+            ]
+          ],
+          "widths": [
+            0.3,
+            0.7
+          ]
+        },
+        {
+          "type": "p",
+          "text": "A recipe defines required/optional roles, eligible asset tags, pose choices, support links, relative distances, orientation intervals, repetition limits and fallbacks. A style profile supplies recipe weights, palette preferences, occupancy and tidy/relaxed variation. These are proposed product controls, not universal rules of good design.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Choose groups and constrained anchors first, then sample a bounded set of positions and rotations. Reject hard failures before scoring valid candidates for spacing, balance, facing, repetition and empty space. Bounded backtracking or beam search can revise an earlier choice when a later item cannot fit.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Return a valid lower-density arrangement or an explicit incomplete-group reason when fitting fails. Do not silently distort assets or force an impossible count. Large lamps, books and small ornaments should each have explicit scale allowances.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "Asset preparation and library ownership",
+      "strap": "Data work required for reliable placement",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Asset preparation is part of the core product. A detailed mesh with an arbitrary pivot is not automatically ready for placement. Register each asset once, show its measured size and contact frame, and let the artist correct the data before it enters the generation pool.",
+          "sources": []
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Asset field",
+            "Why it is needed"
+          ],
+          "rows": [
+            [
+              "Identity and provenance",
+              "Stable asset/version ID, source path, ownership/license record and variant family."
+            ],
+            [
+              "Physical dimensions",
+              "Known source units and dimensions at the approved scale."
+            ],
+            [
+              "Prepared poses",
+              "Upright/flat/leaning transforms, front axis and support assumptions."
+            ],
+            [
+              "Contacts",
+              "Base polygon or foot pads for each pose; optional centre of mass."
+            ],
+            [
+              "Collision shape",
+              "Box, capsule, convex or compound shape appropriate to the asset."
+            ],
+            [
+              "Child supports",
+              "Approved top region for a book, tray or other supporting asset."
+            ],
+            [
+              "Selection tags",
+              "Category, style/material/color metadata, recipe role and repetition limits."
+            ],
+            [
+              "Presentation",
+              "Thumbnail and original scene hierarchy/material references."
+            ]
+          ],
+          "widths": [
+            0.3,
+            0.7
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Derive a base estimate from bounds when useful, but require review for wide foliage, feet, hollow trays, asymmetric ornaments and leaning assets. Show the collider and contact pads in the viewport so inaccurate metadata can be corrected visibly.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Preserve the original asset hierarchy, renderer objects, materials and mapping. Generate native copies or instances through the Max adapter. Reconstructing a source from its extracted analysis triangles could lose its rendering behavior. Material/color tags should initially be authored; shader interpretation is renderer-specific.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Start with a small owned or commissioned accessory set and allow artists to register their own local assets. Commercial rendering permission does not automatically establish permission to redistribute meshes in a plugin library. Chaos explicitly makes Cosmos use subject to its EULA; the short commercial-use FAQ is insufficient to establish bundling rights.",
+          "sources": [
+            "S50",
+            "S51"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Register library files and proxy/texture dependencies with Max asset tracking rather than keeping important paths only in opaque settings. Autodesk documents asset enumeration and parameter-block file persistence.",
+          "sources": [
+            "S45",
+            "S46"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Persistent data and deterministic regeneration",
+      "strap": "Proposed scene and library schema",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Record",
+            "Authoritative contents"
+          ],
+          "rows": [
+            [
+              "FurnitureProfile",
+              "Furniture/category ID, source assembly, front/up frame and reusable analysis overrides."
+            ],
+            [
+              "SupportRegion",
+              "Host reference, local frame, boundary/holes, source association, clearance, accessibility, confidence and masks."
+            ],
+            [
+              "AssetDefinition",
+              "Source/version, units, poses, contacts, collision shape, child supports, tags and provenance."
+            ],
+            [
+              "RecipeDefinition",
+              "Roles, filters, support links, relative constraints, count/spacing rules, variation and fallbacks."
+            ],
+            [
+              "ScatterSetup",
+              "Native target/source references, recipe/style revision, seed, solver/schema version, overrides and locks."
+            ],
+            [
+              "PlacementResult",
+              "Asset/pose, support parent, local transform, group ID, ownership, accepted revision and lock state."
+            ]
+          ],
+          "widths": [
+            0.29,
+            0.71
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Store scene relationships through native references and parameter blocks. Max persistence and cloning provide contracts for referenced data and remapping. A JSON blob containing names, memory addresses or raw handles does not automatically gain those behaviors. Version the schema and keep accepted transforms so reopening an older scene does not rerun a changed solver.",
+          "sources": [
+            "S33",
+            "S35"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Derive independent random streams from setup, region and recipe-group identities. Sort inputs and resolve scoring ties deterministically. Worker completion order must not decide the winner. Replacing one vase or regenerating one compartment should not reshuffle the entire cabinet.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Detected regions do not have guaranteed identities after arbitrary topology changes. Match previous regions using local position, orientation, shape and source association, then flag ambiguous matches. Raw face indices alone are insufficient across reimport or remodeling.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Specify clone/merge policy: cloning furniture and its setup should remap the target; merging twice should resolve duplicate logical IDs; deleting a host should affect only explicitly owned output. Never find generated objects by a naming prefix and delete everything that matches.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Use real scene-node ownership for persistent metadata. Autodesk warns that AppData attached directly to the scene or root node is not saved. AppData may be a small metadata mirror, while native references own relationships.",
+          "sources": [
+            "S34"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Managed output should already exist as ordinary scene instances. Provide a bake/detach command for delivery, while preserving a separate editable setup. Plugin-free opening, rendering and farm behavior remain explicit tests; source renderers, textures and materials can still be dependencies.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "Artist workflow and diagnostics",
+      "strap": "A correction-friendly first UI",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "The first user flow should be short: pick furniture, confirm category/front, analyze, inspect regions, choose a style/library, generate alternatives, lock useful groups and regenerate the rest. Reusable furniture profiles should reduce repeated setup for the same model.",
+          "sources": []
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Control or view",
+            "Purpose"
+          ],
+          "rows": [
+            [
+              "Detected region overlay",
+              "Show usable, blocked and uncertain regions, with a legend and local clearance."
+            ],
+            [
+              "Region correction",
+              "Exclude, split, merge or author a region; mark closed compartments inaccessible."
+            ],
+            [
+              "Per-region overrides",
+              "Allowed categories, recipe, density and edge margin."
+            ],
+            [
+              "Alternatives and seed",
+              "Repeat an accepted arrangement and compare a few intentionally varied candidates."
+            ],
+            [
+              "Locks",
+              "Lock an asset, recipe group or compartment; preserve it as an obstacle."
+            ],
+            [
+              "Regenerate selection",
+              "Recompute only unlocked affected regions."
+            ],
+            [
+              "Manual edit policy",
+              "Offer explicit adopt, lock or detach behavior when generated output is moved."
+            ],
+            [
+              "Bake/detach",
+              "Deliver ordinary editable scene objects with a defined loss of regeneration."
+            ]
+          ],
+          "widths": [
+            0.33,
+            0.67
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Explain failures in terms an artist can act on: no eligible asset; opening too low; footprint too wide; collision with an existing object; region inaccessible; target changed while solving; or result would violate a lock. Include the relevant node or region and offer a viewport highlight.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "An analysis report should summarize model dimensions, usable area, region count, minimum/variable clearances, questionable geometry and supported representation quality. Avoid displaying a confident success when the adapter analyzed only a display box.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Preserve negative space as a deliberate control. An occupancy target is an upper preference, not a promise that every shelf will be filled. Show when count, minimum gaps or real-world sizes make a request infeasible.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Keep existing scene props in the obstacle set by default within a defined scope. The user should be able to include/exclude an object explicitly. Existing TV bases, speakers and manually styled props should remain part of the geometric and functional context.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "C++ dependencies and distribution",
+      "strap": "Candidate stack with a small initial footprint",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Dependency",
+            "Proposed use",
+            "License finding"
+          ],
+          "rows": [
+            [
+              "Clipper2",
+              "2D boundary union, difference, holes and margins.",
+              "Boost Software License 1.0 [S27]."
+            ],
+            [
+              "Embree",
+              "Accelerated ray queries if benchmark results justify it.",
+              "Apache 2.0 [S28]."
+            ],
+            [
+              "FCL",
+              "Collision/distance and broadphase candidate; evaluate overhead.",
+              "BSD; preserve applicable notices [S30]."
+            ],
+            [
+              "CGAL",
+              "Useful algorithm reference or deliberately licensed option.",
+              "Package-dependent LGPL/GPL/commercial; relevant packages require scrutiny [S31]."
+            ],
+            [
+              "Bullet",
+              "Optional later settling or physics checks.",
+              "Repository default zlib; inspect file-specific exceptions [S32]."
+            ]
+          ],
+          "widths": [
+            0.2,
+            0.46,
+            0.34
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Start with only what the first prototype needs. A compact planar extractor and simple colliders may be enough to validate the concept. Add ray and collision libraries behind interfaces so benchmark results can guide the choice rather than committing to every package researched.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Clipper2 uses integer coordinates internally, including scaled conversions for its double API. Choose a physical quantization/tolerance policy and local coordinates; extreme scaling is not a substitute for numerical design.",
+          "sources": [
+            "S26"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Pin dependency versions, compiler settings and transitive packages. FCL brings dependencies such as Eigen and libccd; their exact shipped versions and notices need review before packaging. Package licenses are not interchangeable with dataset or accessory rights. These findings are an engineering dependency record, not a legal opinion.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Build the geometry core as ordinary C++ and initially link it statically into each target-year Max adapter. This reduces an extra shared C++ ABI boundary. Keep allocations, exceptions and binary interfaces disciplined across any DLL boundaries that remain.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Package native binaries, MAXScript, icons and approved presets with Autodesk ApplicationPlugins and PackageContents.xml. Use release-specific component groups and tested version ranges. Do not assume that sharing v143 makes Max releases binary compatible; Max 2026 explicitly introduced an SDK break relative to 2025.",
+          "sources": [
+            "S40",
+            "S41"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "A MAXScript-only interface can avoid adding managed UI dependencies. If a rich Qt UI is later required, match the Qt build expected by each Max target and use Autodesk integration guidance.",
+          "sources": [
+            "S42"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "SDK targets and the local development environment",
+      "strap": "Verified baselines and unresolved setup details",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Max target",
+            "Published C++ build guidance",
+            "Qt if a native UI is used"
+          ],
+          "rows": [
+            [
+              "2025",
+              "SDK 2025; VS2022 17.8.3, v143; Windows SDK 10.0.19041.0 [S06].",
+              "6.5.3 [S06]."
+            ],
+            [
+              "2026",
+              "SDK 2026; VS2022 17.8.3, v143; Windows SDK 10.0.19041.0 [S06].",
+              "6.5.3 [S06]."
+            ],
+            [
+              "2027",
+              "Autodesk article: VS2022 17.14.13 IDE, v143/v14.38 build tools, C++20, Windows SDK 10.0.19041.0 [S07].",
+              "6.8.3 in the same article [S07]."
+            ]
+          ],
+          "widths": [
+            0.15,
+            0.63,
+            0.22
+          ]
+        },
+        {
+          "type": "p",
+          "text": "The 2027 developer portal exists, but its SDK Requirements target could not be retrieved during this research. The 2027 row therefore uses an Autodesk-authored developer article. Broad Autodesk VFX alignment lists different Windows SDK values in some rows; use installed target SDK sample projects/property sheets and a successful sample build to settle exact pinning.",
+          "sources": [
+            "S07",
+            "S08"
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Do not use settings from a USD-specific build document as the general plugin baseline when they conflict with the SDK-specific table. Separate target-year builds and actual load tests remain necessary. The thin MAXScript UI can be shared only after its commands and controls are validated on each target.",
+          "sources": []
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Local observation on this computer",
+            "What it establishes"
+          ],
+          "rows": [
+            [
+              "Max 2026 executable: 28.3.2.30788",
+              "A read-only file-version check found this installed executable."
+            ],
+            [
+              "Max 2027 executable: 29.1.0.11426",
+              "A read-only file-version check found this installed executable."
+            ],
+            [
+              "Max 2024 installation directory present",
+              "Directory presence only; this report did not validate that application."
+            ],
+            [
+              "No SDK located in the checked installation-root paths",
+              "SDK installation is unconfirmed; this was not an exhaustive disk inventory."
+            ]
+          ],
+          "widths": [
+            0.53,
+            0.47
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Choose one installed release for the first bridge test. The user's preferred production version remains a product decision; installed folders do not settle it. First prove a sample builds, loads, exposes a command and returns correct measurements. Then expand compatibility.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "Scope, difficult cases and risk controls",
+      "strap": "What the first release should promise",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Risk",
+            "Effect",
+            "Control"
+          ],
+          "rows": [
+            [
+              "Dirty or ambiguous furniture",
+              "Missed shelves or false usable surfaces.",
+              "Confidence overlays, authored overrides and a labelled fixture corpus."
+            ],
+            [
+              "Proxy mismatch",
+              "Analysis sees a box or incomplete shape.",
+              "Verified geometry adapters or separate analysis meshes."
+            ],
+            [
+              "Small or irregular geometry",
+              "Clearance sampling misses an obstacle.",
+              "Final 3D validation and tolerance-aware colliders."
+            ],
+            [
+              "Incorrect asset metadata",
+              "Floating, overhang, unstable stacks.",
+              "Contact/collider preview and registration checks."
+            ],
+            [
+              "Random but unattractive output",
+              "Artist cleanup erases time savings.",
+              "Authored recipes and close-up artist evaluation."
+            ],
+            [
+              "Scene state changes",
+              "Stale results, ownership errors or lost edits.",
+              "Revision checks, native references, locks and short commits."
+            ],
+            [
+              "Feature breadth",
+              "Whole-room scope delays a useful tool.",
+              "Rigid horizontal supports and a small asset set first."
+            ]
+          ],
+          "widths": [
+            0.25,
+            0.33,
+            0.42
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Initial supported scope: static local furniture assemblies, known up/front, prepared rigid accessories, exposed tabletops/open shelves, approved book poses and simple stacks. Ordinary native meshes and authored analysis proxies should be first-class inputs.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Separate later work: pillows and soft furnishings, chairs pushed under tables, curtains, sloped/curved supports, arbitrary leaning stability, moving furniture, animated proxies, closed cabinets, door-swing/insertion simulation and fully automatic semantic recognition. These require different constraints and asset representations.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Closed cabinets illustrate a semantic limit: a hidden internal face can geometrically support an object but be irrelevant for styling. A furnished scene may also need screen, appliance, speaker or worktop zones that are not recoverable from mesh dimensions alone. Profiles and explicit markers can express those intentions.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "A large-model performance claim is premature. Mesh evaluation, copying, acceleration-structure construction, solving and scene-node commit all need separate timing. A fast C++ solver cannot compensate for a long main-thread geometry extraction or thousands of slow node operations.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Document representation quality and supported cases precisely. Treat unsupported or uncertain geometry as a request for correction, rather than a silent approximate success.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "Development phases and validation gates",
+      "strap": "Proposed implementation order",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Phase",
+            "Concrete output",
+            "Gate before expanding scope"
+          ],
+          "rows": [
+            [
+              "0. Platform bridge",
+              "Native sample, published commands, minimal rollout, units and measurement.",
+              "Loads on the chosen Max build; command works; no scene-state corruption."
+            ],
+            [
+              "1. Geometry inspector",
+              "Furniture assembly snapshot, usable-region overlay, clearance and diagnostics.",
+              "Compared with artist-labelled regions on varied shelves/tables; corrections persist."
+            ],
+            [
+              "2. Placement kernel",
+              "Prepared upright assets, contact/containment/collision checks and bounded search.",
+              "Known collision/support defects rejected; same inputs give the same result."
+            ],
+            [
+              "3. Recipe prototype",
+              "A few book/accessory groups, style controls and several alternatives.",
+              "Artists prefer useful results and spend less total time including cleanup."
+            ],
+            [
+              "4. Managed workflow",
+              "Save/load, clone/merge, locks, selective regeneration, undo and detach.",
+              "Lifecycle suite passes; ordinary output survives the intended delivery workflow."
+            ],
+            [
+              "5. Compatibility beta",
+              "Actual proxy adapters, large-scene profiling and target-year packages.",
+              "Measured performance and explicit per-renderer/per-year compatibility results."
+            ]
+          ],
+          "widths": [
+            0.23,
+            0.38,
+            0.39
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Suggested initial content budget: roughly 20 varied furniture fixtures, 30-50 prepared accessories and 6-10 recipes. These are planning starting points, not research-derived minimum requirements. Include several sizes in each category so fitting tests do not depend on one convenient model.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "The first engineering milestone should analyze one selected console or open shelf, display editable regions and produce one geometrically valid prepared arrangement. Include a difficult fixture early: separate boards, an internal shelf, a divider and an existing TV base.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Needed capabilities are a Max C++ developer, a geometry/placement developer, an archviz/content artist and QA coverage. Individuals may cover multiple roles. Asset preparation and artist evaluation must run alongside engine development.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Estimate a production schedule after measuring the bridge and region-extraction prototypes. The dominant uncertainty is generalization to real imported models and cleanup time, so a fixed delivery promise based only on algorithm documentation would be unreliable.",
+          "sources": []
+        }
+      ]
+    },
+    {
+      "title": "Benchmark plan and final decisions",
+      "strap": "How to determine whether the product works",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Test family",
+            "Required fixtures or measurements"
+          ],
+          "rows": [
+            [
+              "Geometry truth",
+              "Round/L-shaped tops, holes, bevels, thin boards, staggered shelves, protrusions, sloped ceilings and closed doors."
+            ],
+            [
+              "Import variants",
+              "Attached/separate parts, changed pivots, parent transforms, mirrors, nonuniform scales, inconsistent normals and unit changes."
+            ],
+            [
+              "Placement truth",
+              "Tall vases, wide foliage, narrow bases, multi-foot props, trays, stacks, existing clutter and fully contained colliders."
+            ],
+            [
+              "Lifecycle",
+              "Cancel; edit/delete while solving; save/reopen; clone; merge twice; undo/redo; reset/open; missing plugin; detach."
+            ],
+            [
+              "Performance",
+              "Snapshot/build/solve/commit time, peak memory and cold/cached results on named hardware."
+            ],
+            [
+              "Artist usefulness",
+              "Setup, correction and cleanup time; close-up render defects; blind preferences and variation quality."
+            ]
+          ],
+          "widths": [
+            0.24,
+            0.76
+          ]
+        },
+        {
+          "type": "p",
+          "text": "For scale tests, use increasing input triangle counts such as 100k, 1m and 10m, and output counts such as 50, 500 and 5,000. These define a proposed benchmark envelope, not a performance promise. Report source extraction and commit bottlenecks separately from worker solve time.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Record region precision/recall or overlap against artist labels, accepted-placement defect rate, clearance errors, rejection reasons and lock preservation. Use the same assets/scenes to compare manual placement, Scatter Tools furniture mode and Bookmanager where their workflows overlap. Record total artist time rather than generation time alone.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Before implementation, settle the first Max target, primary renderer/proxy formats, local-asset registration workflow, category list, manual-edit behavior, controller-state ownership and distribution model. Reasonable defaults in this report allow a prototype, while those choices determine production scope.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Recommendation: proceed to a C++ geometry inspector and constrained recipe prototype with a thin MAXScript UI. Keep editable region detection, native scene output, real-scale assets and deterministic regeneration central. Expand beyond rigid horizontal supports only after fixtures and artist trials demonstrate reliable results.",
+          "sources": []
+        },
+        {
+          "type": "p",
+          "text": "Research establishes that the architecture is supported and that directly relevant algorithms and products exist. It does not establish a working implementation, measured speed, renderer compatibility or universal furniture understanding. Those are the explicit outputs of the proposed validation phases.",
+          "sources": []
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Autodesk Function Publishing",
+      "url": "https://help.autodesk.com/cloudhelp/2021/ENU/Max-Developer-Help/developer/3ds_max_sdk_features/function_publishing.html",
+      "supports": "C++ interfaces callable from MAXScript."
+    },
+    {
+      "id": "S02",
+      "title": "Autodesk Thread Safety",
+      "url": "https://help.autodesk.com/cloudhelp/2025/JPN/MAXDEV-Developer/files/best_practices/thread_safety.html",
+      "supports": "Reference and node evaluation systems are single threaded; the page body is English."
+    },
+    {
+      "id": "S03",
+      "title": "Autodesk Extracting the Mesh from a Node",
+      "url": "https://help.autodesk.com/cloudhelp/2025/ENU/MAXDEV-Developer/files/3ds_max_sdk_features/modeling/meshes/extracting_the_mesh_from_a_node.html",
+      "supports": "Evaluated geometry, conversion, and temporary ownership."
+    },
+    {
+      "id": "S04",
+      "title": "Autodesk Object Transformation Matrix",
+      "url": "https://help.autodesk.com/cloudhelp/2025/ENU/MAXDEV-Developer/files/3ds_max_sdk_features/modeling/transformation_and_rotation/object_transformation_matrix.html",
+      "supports": "Object offset and world-space modifier coordinate considerations."
+    },
+    {
+      "id": "S05",
+      "title": "Autodesk units.h API",
+      "url": "https://help.autodesk.com/cloudhelp/2025/ENU/MAXDEV-CPP-API-REF/units_8h.html",
+      "supports": "GetSystemUnitScale and GetSystemUnitInfo."
+    },
+    {
+      "id": "S06",
+      "title": "Autodesk SDK Requirements for 2025 and 2026",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/about_the_3ds_max_sdk/sdk_requirements.html",
+      "supports": "SDK, compiler, Windows SDK, and Qt baselines."
+    },
+    {
+      "id": "S07",
+      "title": "Autodesk Developing for Max 2027 in Visual Studio 2026",
+      "url": "https://blog.autodesk.io/setting-up-3ds-max-2027-sdk-development-with-visual-studio-2026/",
+      "supports": "Autodesk developer article dated 31 July 2026; 2027 compiler and Qt detail."
+    },
+    {
+      "id": "S08",
+      "title": "Autodesk VFX Platform Alignment",
+      "url": "https://aps.autodesk.com/developer/overview/me-vfx-platform-alignment",
+      "supports": "Broad platform matrix; some Windows SDK entries differ from SDK-specific sources."
+    },
+    {
+      "id": "S09",
+      "title": "Spline Dynamics Scatter Tools",
+      "url": "https://www.splinedynamics.com/randomixer-scatter-tools/",
+      "supports": "Furniture population, redistribution of existing objects, and script-based workflow."
+    },
+    {
+      "id": "S10",
+      "title": "Spline Dynamics Scatter Tools Manual",
+      "url": "https://www.splinedynamics.com/randomixer-scatter-tools-manual/",
+      "supports": "Horizontal furniture surfaces, anchors, collision claims, and failure behavior."
+    },
+    {
+      "id": "S11",
+      "title": "model+model Bookmanager 2",
+      "url": "https://www.modelplusmodel.com/plugins/bookmanager.html",
+      "supports": "Shelf polygons, prepared book orientations, seeds, and pivot correction."
+    },
+    {
+      "id": "S12",
+      "title": "Chaos Scatter Scattering Rollout",
+      "url": "https://docs.chaos.com/display/VMAX/Scattering%2BRollout",
+      "supports": "Distribution controls and approximate instance overlap handling."
+    },
+    {
+      "id": "S13",
+      "title": "ForestPack Surfaces",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/surfaces",
+      "supports": "Surface projection, multiple surfaces, filtering, and refresh behavior."
+    },
+    {
+      "id": "S14",
+      "title": "RailClone Bookshelf Tutorial",
+      "url": "https://www.itoosoft.com/tutorials/bookshelf-books",
+      "supports": "Procedural construction and arrangement of shelves and books."
+    },
+    {
+      "id": "S15",
+      "title": "SiNi Disperse Overview",
+      "url": "https://docs.sinisoftware.com/disperse-overview",
+      "supports": "Artist-painted geometry and proxy placement."
+    },
+    {
+      "id": "S16",
+      "title": "HSM Research Paper",
+      "url": "https://arxiv.org/html/2503.16848v3",
+      "supports": "Support extraction, compartments, hierarchy, motifs, and limitations."
+    },
+    {
+      "id": "S17",
+      "title": "HSM Official Project",
+      "url": "https://3dlg-hcvc.github.io/hsm/",
+      "supports": "Hierarchical Scene Motifs, presented at 3DV 2026."
+    },
+    {
+      "id": "S18",
+      "title": "SceneMotifCoder Official Project",
+      "url": "https://3dlg-hcvc.github.io/smc/",
+      "supports": "Example-driven parameterized programs for recurring arrangements."
+    },
+    {
+      "id": "S19",
+      "title": "SceneSmith Research Paper",
+      "url": "https://arxiv.org/html/2602.09153v1",
+      "supports": "Hierarchical planning and geometric/physical refinement."
+    },
+    {
+      "id": "S20",
+      "title": "Make It Home Research Paper",
+      "url": "https://ww3.math.ucla.edu/camreport/cam11-49.pdf",
+      "supports": "Spatial priors and ergonomic objectives for furniture layout."
+    },
+    {
+      "id": "S21",
+      "title": "Clutterpalette Research Paper",
+      "url": "https://www.cs.umb.edu/~craigyu/papers/clutterpalette.pdf",
+      "supports": "Support-aware semantic suggestions for small objects."
+    },
+    {
+      "id": "S22",
+      "title": "PlanIT Author Repository",
+      "url": "https://github.com/brownvc/planit",
+      "supports": "Graph planning and instantiation; repository warns of unavailable models/metadata."
+    },
+    {
+      "id": "S23",
+      "title": "CGAL Shape Detection",
+      "url": "https://doc.cgal.org/latest/Shape_detection/index.html",
+      "supports": "Planar region growing and fitting tolerances."
+    },
+    {
+      "id": "S24",
+      "title": "CGAL Side of Triangle Mesh",
+      "url": "https://doc.cgal.org/5.6.3/Polygon_mesh_processing/classCGAL_1_1Side__of__triangle__mesh.html",
+      "supports": "Closed mesh and self-intersection preconditions for containment."
+    },
+    {
+      "id": "S25",
+      "title": "Generalized Winding Numbers Author Project",
+      "url": "https://igl.ethz.ch/projects/winding-number/",
+      "supports": "Inside/outside reasoning for imperfect meshes and its assumptions."
+    },
+    {
+      "id": "S26",
+      "title": "Clipper2 Overview",
+      "url": "https://angusj.com/clipper2/Docs/Overview.htm",
+      "supports": "Polygon boolean operations, offsets, holes, and integer scaling."
+    },
+    {
+      "id": "S27",
+      "title": "Clipper2 License",
+      "url": "https://github.com/AngusJohnson/Clipper2/blob/main/LICENSE",
+      "supports": "Boost Software License 1.0."
+    },
+    {
+      "id": "S28",
+      "title": "Embree Official Project",
+      "url": "https://www.embree.org/",
+      "supports": "Ray-query acceleration and Apache 2.0 license."
+    },
+    {
+      "id": "S29",
+      "title": "Flexible Collision Library",
+      "url": "https://github.com/flexible-collision-library/fcl",
+      "supports": "Collision/distance queries, broadphase, and dependencies."
+    },
+    {
+      "id": "S30",
+      "title": "FCL License",
+      "url": "https://github.com/flexible-collision-library/fcl/blob/master/LICENSE",
+      "supports": "BSD notice conditions."
+    },
+    {
+      "id": "S31",
+      "title": "CGAL Licensing",
+      "url": "https://www.cgal.org/license.html",
+      "supports": "Package-dependent LGPL/GPL and commercial licensing."
+    },
+    {
+      "id": "S32",
+      "title": "Bullet Official Repository",
+      "url": "https://github.com/bulletphysics/bullet3",
+      "supports": "Optional dynamics; default zlib license with file-specific exceptions."
+    },
+    {
+      "id": "S33",
+      "title": "Autodesk Loading and Saving Plugin Data",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/writing_plug-ins/plug-in_basics/loading_and_saving_plug-in_data.html",
+      "supports": "Referenced data persistence and explicit save/load responsibilities."
+    },
+    {
+      "id": "S34",
+      "title": "Autodesk Application Data",
+      "url": "https://help.autodesk.com/cloudhelp/2024/ENU/Max-Developer-Help/3ds_max_sdk_features/scenes_and_nodes/custom_scene_data/application_data.html",
+      "supports": "Node AppData; warning about scene/root-node ownership."
+    },
+    {
+      "id": "S35",
+      "title": "Autodesk ReferenceTarget API",
+      "url": "https://help.autodesk.com/cloudhelp/2025/ENU/MAXDEV-CPP-API-REF/class_reference_target.html",
+      "supports": "Clone and reference remapping contracts."
+    },
+    {
+      "id": "S36",
+      "title": "Autodesk Post Load Callbacks",
+      "url": "https://help.autodesk.com/cloudhelp/2024/ENU/Max-Developer-Help/3ds_max_sdk_features/miscellaneous_topics/post-load_callbacks.html",
+      "supports": "References and safe ordering of post-load work."
+    },
+    {
+      "id": "S37",
+      "title": "Autodesk Undo and Redo Integration",
+      "url": "https://help.autodesk.com/cloudhelp/2023/ENU/Max-Developer-Help/3ds_max_sdk_features/the_undo_and_redo_system/how_to_enable_undo_and_redo.html",
+      "supports": "Hold/restore rules, including caller-owned Function Publishing transactions."
+    },
+    {
+      "id": "S38",
+      "title": "Autodesk Hold API",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-CPP-API-REF/class_hold.html",
+      "supports": "Matching transaction begin/accept/cancel and parameter-block undo."
+    },
+    {
+      "id": "S39",
+      "title": "Autodesk Scene Event Manager",
+      "url": "https://help.autodesk.com/cloudhelp/2023/ENU/Max-Developer-Help/cpp_ref/class_i_scene_event_manager.html",
+      "supports": "Batched and delayed scene-change notifications."
+    },
+    {
+      "id": "S40",
+      "title": "Autodesk Packaging Plugins",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/writing_plug-ins/plugin_package/packaging_plugins.html",
+      "supports": "ApplicationPlugins, PackageContents.xml, and release-specific components."
+    },
+    {
+      "id": "S41",
+      "title": "Autodesk Max 2026 SDK Changes",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/what_s_new/whats_new_3dsmax_2026_sdk.html",
+      "supports": "SDK break and runtime changes."
+    },
+    {
+      "id": "S42",
+      "title": "Autodesk Qt Plugin Integration",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/writing_plug-ins/using_qt_with_3ds_max_plug-ins.html",
+      "supports": "Optional native C++ Qt UI and version integration."
+    },
+    {
+      "id": "S43",
+      "title": "Chaos VRayProxy",
+      "url": "https://docs-chaos.atlassian.net/wiki/spaces/VMAX/pages/113575423",
+      "supports": "Preview/full mesh distinctions, mesh import, and proxy transforms."
+    },
+    {
+      "id": "S44",
+      "title": "Chaos Corona Proxy",
+      "url": "https://docs.chaos.com/display/CRMAX/Corona%2BProxy",
+      "supports": "Bounding-box, point-cloud, and full-mesh display modes."
+    },
+    {
+      "id": "S45",
+      "title": "Autodesk Enumerating and Exposing Assets",
+      "url": "https://help.autodesk.com/cloudhelp/2024/ENU/Max-Developer-Help/3ds_max_sdk_features/scenes_and_nodes/assets/enumerating_and_exposing_assets.html",
+      "supports": "EnumAuxFiles and external scene dependencies."
+    },
+    {
+      "id": "S46",
+      "title": "Autodesk Saving and Loading Assets",
+      "url": "https://help.autodesk.com/cloudhelp/2022/ENU/Max-Developer-Help/3ds_max_sdk_features/scenes_and_nodes/assets/saving_and_loading_assets.html",
+      "supports": "Parameter-block asset paths and automatic persistence."
+    },
+    {
+      "id": "S47",
+      "title": "HSM Code License",
+      "url": "https://github.com/3dlg-hcvc/hsm/blob/main/LICENSE.txt",
+      "supports": "MIT software license."
+    },
+    {
+      "id": "S48",
+      "title": "HSM Dataset Terms",
+      "url": "https://huggingface.co/datasets/3dlg-hcvc/hsm",
+      "supports": "CC BY-NC 4.0; separate from the code license."
+    },
+    {
+      "id": "S49",
+      "title": "HSSD Models Dataset Terms",
+      "url": "https://huggingface.co/datasets/hssd/hssd-models",
+      "supports": "CC BY-NC 4.0 model dataset."
+    },
+    {
+      "id": "S50",
+      "title": "Chaos Cosmos Commercial Use FAQ",
+      "url": "https://support.chaos.com/hc/en-us/articles/4403292893329-Can-I-use-Cosmos-assets-commercially",
+      "supports": "Commercial use remains subject to the applicable EULA."
+    },
+    {
+      "id": "S51",
+      "title": "Chaos EULA",
+      "url": "https://www.chaos.com/legal/eula",
+      "supports": "Product and content terms; asset redistribution must be separately established."
+    },
+    {
+      "id": "S52",
+      "title": "Autodesk Plugin Base Classes",
+      "url": "https://help.autodesk.com/cloudhelp/2023/ENU/Max-Developer-Help/3ds_max_sdk_features/plug-ins/plug-in_base_classes.html",
+      "supports": "GUP, utility, helper, and other native plugin roles."
+    }
+  ]
+}

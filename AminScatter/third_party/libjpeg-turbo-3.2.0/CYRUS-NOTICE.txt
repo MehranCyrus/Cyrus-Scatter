@@ -1,0 +1,6 @@
+This software is based in part on the work of the Independent JPEG Group.
+
+Cyrus Scatter statically links libjpeg-turbo 3.2.0 for bounded JPEG validation.
+The accompanying libjpeg-turbo-LICENSE.txt and libjpeg-turbo-IJG-README.txt
+preserve the upstream copyright notices and license terms. No JPEG runtime DLL
+is required. These notices do not grant rights to third-party plant assets.

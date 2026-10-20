@@ -1,0 +1,76 @@
+{
+  "status": "PORTABLE_FIXTURE_PROVENANCE_NOT_HOST_QUALIFICATION",
+  "license_checked_date": "2026-10-18",
+  "asset_license": "CC0-1.0",
+  "provider_policy": "https://polyhaven.com/license",
+  "cc0_deed": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "cc0_legal_code": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
+  "manifest": "asset-download-manifest.json",
+  "manifest_sha256": "c222487d78c3ffea0a8dabb15652a0005b83959d6b778981b5273cb652283d5e",
+  "asset_files": 11,
+  "asset_bytes": 5235387,
+  "distribution_scope": "Only original CC0 FBX and diffuse/artwork asset files; no provider example renders, logo, avatar or website prose. Credits are factual and voluntary; no endorsement implied. Offline fixture; no network/download behavior.",
+  "original_manifest_status": "The byte-identical original retrieval manifest keeps its historical research-only status. New runtime qualification is separate.",
+  "assets": [
+    {
+      "asset_id": "modern_wooden_cabinet",
+      "title": "Modern Wooden Cabinet",
+      "authors": [
+        "Patrik Pangerl"
+      ],
+      "primary_asset_page": "https://polyhaven.com/a/modern_wooden_cabinet",
+      "license": "CC0-1.0",
+      "license_evidence": "Primary asset page contains an explicit CC0 License link; provider asset policy applies. API info has no license field.",
+      "catalogue_metadata_source": "https://api.polyhaven.com/info/modern_wooden_cabinet",
+      "original_info_sha256": "2000fc1096831e19af9ac026e64e517b6ea0db234d58fee90510ee5b29652040"
+    },
+    {
+      "asset_id": "wooden_bookshelf_worn",
+      "title": "Wooden Bookshelf Worn",
+      "authors": [
+        "Ulan Cabanilla"
+      ],
+      "primary_asset_page": "https://polyhaven.com/a/wooden_bookshelf_worn",
+      "license": "CC0-1.0",
+      "license_evidence": "Primary asset page contains an explicit CC0 License link; provider asset policy applies. API info has no license field.",
+      "catalogue_metadata_source": "https://api.polyhaven.com/info/wooden_bookshelf_worn",
+      "original_info_sha256": "aa43e8ce729301bc1019f187606a9da0062046448c97441d078e5593e0833548"
+    },
+    {
+      "asset_id": "standing_picture_frame_02",
+      "title": "Standing Picture Frame 02",
+      "authors": [
+        "James Ray Cock"
+      ],
+      "primary_asset_page": "https://polyhaven.com/a/standing_picture_frame_02",
+      "license": "CC0-1.0",
+      "license_evidence": "Primary asset page contains an explicit CC0 License link; provider asset policy applies. API info has no license field.",
+      "catalogue_metadata_source": "https://api.polyhaven.com/info/standing_picture_frame_02",
+      "original_info_sha256": "8c0ed03ac3cee69d66ef37f8818fc85819caabc051b8540e4248cb437c3d8f4c"
+    },
+    {
+      "asset_id": "ceramic_vase_02",
+      "title": "Ceramic Vase 02",
+      "authors": [
+        "James Ray Cock"
+      ],
+      "primary_asset_page": "https://polyhaven.com/a/ceramic_vase_02",
+      "license": "CC0-1.0",
+      "license_evidence": "Primary asset page contains an explicit CC0 License link; provider asset policy applies. API info has no license field.",
+      "catalogue_metadata_source": "https://api.polyhaven.com/info/ceramic_vase_02",
+      "original_info_sha256": "aca68270085fda3d45f4db6b7f7fe6a9d00eb7a095fa4d3d668483132ab94993"
+    },
+    {
+      "asset_id": "wooden_bowl_02",
+      "title": "Wooden Bowl 02",
+      "authors": [
+        "Kuutti Siitonen"
+      ],
+      "primary_asset_page": "https://polyhaven.com/a/wooden_bowl_02",
+      "license": "CC0-1.0",
+      "license_evidence": "Primary asset page contains an explicit CC0 License link; provider asset policy applies. API info has no license field.",
+      "catalogue_metadata_source": "https://api.polyhaven.com/info/wooden_bowl_02",
+      "original_info_sha256": "ddd018afbf44161071b594f3a64154511c86a839bb7658c53d5a86dc07b2ad15"
+    }
+  ]
+}

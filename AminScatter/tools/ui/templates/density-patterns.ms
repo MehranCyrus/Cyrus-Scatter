@@ -28,6 +28,7 @@ fn CyrusLoadDensityImage target = (
 )
 fn CyrusBakeDensityImage target directory:undefined = (
     if target.densityMap==undefined do throw "Choose a texture map first."
+    if target.densityCoordinateMode==3 do throw "Receiver-aware maps cannot be saved as a context-free image tile. Choose an explicit image projection before baking a tile."
     local root=if target.overlapOwner==undefined then target else target.overlapOwner,node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if findItem root.layerObjects target==0 do throw "The density layer was removed."

@@ -8,9 +8,21 @@ using System.Text;
 
 namespace Cyrus.Setup {
     public sealed class InstallPaths {
-        public string Scripts, Startup, Macros, Profile;
+        public string Scripts, Startup, Macros, Profile, RuntimeRoot;
         public InstallPaths(string scripts, string startup, string macros, string profile) {
             Scripts = Full(scripts); Startup = Full(startup); Macros = Full(macros); Profile = Full(profile);
+        }
+        public InstallPaths(string scripts, string startup, string macros, string profile, string runtimeRoot)
+            : this(scripts,startup,macros,profile) { RuntimeRoot=Full(runtimeRoot); }
+        public static InstallPaths ForMax(string scripts,string startup,string macros,string profile,string year) {
+            InstallEngine.CheckYear(year);
+            string ownedProfile=Full(profile),local=Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string standard=Full(Path.Combine(local,@"Autodesk\3dsMax\"+year+" - 64bit"));
+            // Explicitly relocated Max profiles keep their runtime in that profile.
+            // The normal Windows profile uses a short per-user, per-host root.
+            string runtime=ownedProfile.StartsWith(standard+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase)
+                ? Path.Combine(local,"CyrusScatter",year) : Path.Combine(ownedProfile,"cs");
+            return new InstallPaths(scripts,startup,macros,ownedProfile,runtime);
         }
         internal static string Full(string path) {
             if (String.IsNullOrWhiteSpace(path) || !Path.IsPathRooted(path)) throw new IOException("An absolute destination is required.");
@@ -23,7 +35,7 @@ namespace Cyrus.Setup {
         }
     }
     public sealed class Entry {
-        public string Name, Hash; public long Bytes;
+        public string Name, Source, Hash; public long Bytes;
     }
     public sealed class InstallEngine {
         const string Marker = "CyrusScatterInstall1";
@@ -36,7 +48,9 @@ namespace Cyrus.Setup {
         readonly List<Entry> files = new List<Entry>();
         static readonly HashSet<string> Runtime = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
             "AminScatter.dlx", "CyrusBrush.dlx", "CyrusBrushStorage.dlh", "CyrusScatterEdit.dlm", "CyrusScatter.ms", "CyrusGallery.dll",
-            "CyrusInstaller.dll", "Clipper2-LICENSE.txt", "nlohmann-json-LICENSE.txt", "INSTALL.txt", "LibraryFiles.ms", "CyrusScatterStartup.ms", "CyrusScatter.mcr", "Uninstall.ms"
+            "CyrusInstaller.dll", "Clipper2-LICENSE.txt", "SurfaceGeodesic-LICENSE.txt", "SurfaceGeodesic-NOTICE.txt", "nlohmann-json-LICENSE.txt",
+            "libjpeg-turbo-LICENSE.txt", "libjpeg-turbo-IJG-README.txt", "libjpeg-turbo-NOTICE.txt",
+            "INSTALL.txt", "LibraryFiles.ms", "CyrusScatterStartup.ms", "CyrusScatter.mcr", "Uninstall.ms"
         };
         static readonly HashSet<string> Native = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
             "AminScatter.dlx", "CyrusBrush.dlx", "CyrusBrushStorage.dlh", "CyrusScatterEdit.dlm"
@@ -63,17 +77,25 @@ namespace Cyrus.Setup {
             if (data.Length > 262144 || !Hex(inventoryHash, 64) || Hash(data) != inventoryHash) throw new IOException("Installer inventory identity differs.");
             var lines = new UTF8Encoding(false, true).GetString(data).Replace("\r", "").Split('\n');
             string[] header = lines[0].Split('\t');
-            if (header.Length != 4 || header[0] != Marker || !Hex(header[3], 12)) throw new IOException("Invalid Max payload contract.");
+            if (header.Length != 4 || (header[0] != Marker && header[0] != "CyrusScatterInstall2") || !Hex(header[3], 12)) throw new IOException("Invalid Max payload contract.");
+            bool mapped=header[0]=="CyrusScatterInstall2";
             CheckYear(header[2]);Year=header[2];Version = header[1]; ContentID = header[3];
             if (!System.Text.RegularExpressions.Regex.IsMatch(Version, @"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$")) throw new IOException("Invalid development version.");
             var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var sourceNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             for (int i = 1; i < lines.Length; ++i) {
                 if (lines[i].Length == 0) continue;
                 string[] row = lines[i].Split('\t'); long size;
-                if (row.Length != 3 || !Hex(row[1], 64) || !Int64.TryParse(row[2], out size) || size < 0 || size > 128L * 1024 * 1024 || !names.Add(row[0])) throw new IOException("Invalid inventory entry.");
+                if (row.Length != (mapped?4:3) || !Hex(row[1], 64) || !Int64.TryParse(row[2], out size) || size < 0 || size > 128L * 1024 * 1024 || !names.Add(row[0])) throw new IOException("Invalid inventory entry.");
                 bool pattern = System.Text.RegularExpressions.Regex.IsMatch(row[0], @"^Patterns/(catalog\.tsv|index\.json|README\.md|[a-z0-9][a-z0-9_-]{0,80}\.png)$");
                 if (!Runtime.Contains(row[0]) && !row[0].StartsWith("Library/", StringComparison.Ordinal) && !pattern) throw new IOException("Unsupported installer file: " + row[0]);
-                Child(source, row[0]); files.Add(new Entry { Name = row[0], Hash = row[1], Bytes = size }); PayloadBytes += size;
+                string sourceName=mapped?row[3]:row[0];
+                if(mapped && sourceName!=row[0] && !(row[0].StartsWith("Library/",StringComparison.Ordinal) && System.Text.RegularExpressions.Regex.IsMatch(sourceName,@"^p/[0-9]{4}\.[a-z0-9]{1,12}$")))throw new IOException("Invalid mapped package source.");
+                if(!sourceNames.Add(sourceName))throw new IOException("Duplicate mapped package source.");
+                // Validate the logical destination without expanding it under the
+                // (possibly deep) archive extraction directory.
+                foreach(string part in row[0].Split('/'))if(part.Length==0||part=="."||part==".."||part.Contains(":")||part.Contains("\\")||part.TrimEnd(' ','.')!=part||part.IndexOfAny(Path.GetInvalidFileNameChars())>=0)throw new IOException("Invalid logical destination.");
+                Child(source, sourceName); files.Add(new Entry { Name = row[0], Source=sourceName, Hash = row[1], Bytes = size }); PayloadBytes += size;
             }
             if (files.Count > 512 || PayloadBytes > 512L * 1024 * 1024) throw new IOException("Installer payload exceeds its bound.");
             foreach (string name in Runtime) if (!names.Contains(name)) throw new IOException("Missing runtime file: " + name);
@@ -99,7 +121,7 @@ namespace Cyrus.Setup {
         }
         static void WriteAtomic(string path, byte[] value) {
             InstallPaths.Full(path); Directory.CreateDirectory(Path.GetDirectoryName(path));
-            string temp = path + ".cyrus-" + Guid.NewGuid().ToString("N");
+            string temp = Path.Combine(Path.GetDirectoryName(path),".w-"+Guid.NewGuid().ToString("N").Substring(0,12));
             try {
                 using (var stream = new FileStream(temp, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { stream.Write(value, 0, value.Length); stream.Flush(true); }
                 if (File.Exists(path)) File.Replace(temp, path, null); else File.Move(temp, path);
@@ -173,6 +195,22 @@ namespace Cyrus.Setup {
             File.Delete(journal);
         }
         string Relative(Entry item) { return Native.Contains(item.Name)?"bin/"+item.Name:item.Name.StartsWith("Library/",StringComparison.Ordinal)?"Library-"+Version+"/"+item.Name.Substring(8):item.Name; }
+        public static string SaveFailure(InstallPaths paths,string message) {
+            try {
+                string directory=paths==null?Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"CyrusScatter","logs")
+                    : Path.Combine(paths.RuntimeRoot??Path.Combine(paths.Scripts,"CyrusScatter"),"logs");
+                Directory.CreateDirectory(directory);
+                string path=Path.Combine(directory,"install-"+DateTime.UtcNow.ToString("yyyyMMdd-HHmmss")+"-"+Guid.NewGuid().ToString("N").Substring(0,8)+".txt");
+                File.WriteAllText(path,(message??"").Substring(0,Math.Min((message??"").Length,65536)),Encoding.UTF8);return path;
+            }catch(IOException){return "";}catch(UnauthorizedAccessException){return "";}
+        }
+        void CheckDestination(string root) {
+            foreach(var entry in files) {
+                string path=Path.Combine(root,Relative(entry).Replace('/',Path.DirectorySeparatorChar));
+                if(path.Length>=260||Path.GetDirectoryName(path).Length>=248)
+                    throw new IOException("The installation folder is too long for this Max version. No registration was changed. Destination: "+path);
+            }
+        }
         public string Install(InstallPaths paths) { return Install(paths, null); }
         // Checkpoints support bounded cancellation and the owned failure fixture.
         // Callbacks never arrive from an installed library entry or package data.
@@ -180,27 +218,40 @@ namespace Cyrus.Setup {
             string root=InstallPaths.Full(Path.Combine(paths.Scripts,"CyrusScatter")); Directory.CreateDirectory(root);
             using(var installLock=new FileStream(Path.Combine(root,"install.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)) {
                 Recover(paths);
-                string release=Child(root,"Releases/"+Version+"-"+ContentID),stage=Child(root,".install-"+Guid.NewGuid().ToString("N"));
+                string runtime=paths.RuntimeRoot??root;
+                string release=Child(runtime,paths.RuntimeRoot==null?"Releases/"+Version+"-"+ContentID:"r/"+ContentID);
+                string stage=Child(runtime,"s/"+Guid.NewGuid().ToString("N").Substring(0,12));
+                CheckDestination(release);CheckDestination(stage);
                 string[] targets=Targets(paths); var before=new byte[targets.Length][]; var after=new byte[targets.Length][];
                 for(int i=0;i<targets.Length;++i) { InstallPaths.Full(targets[i]); before[i]=ReadOptional(targets[i]); if(before[i]!=null&&before[i].Length>2*1024*1024)throw new IOException("Installation target exceeds bounds."); }
                 // A previous current receipt owns only the registered wrapper files.
                 // Unknown custom startup/macros cannot silently be replaced.
                 CheckWrappers(before);
-                var drive=new DriveInfo(Path.GetPathRoot(root));
-                if(!drive.DriveFormat.Equals("NTFS",StringComparison.OrdinalIgnoreCase))throw new IOException("This installer currently requires local NTFS storage.");
-                if(drive.AvailableFreeSpace<PayloadBytes+16*1024*1024)throw new IOException("Not enough free disk space for staged installation.");
+                var volumes=new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach(string destination in new[]{root,runtime,paths.Startup,paths.Macros,paths.Profile})volumes.Add(Path.GetPathRoot(destination));
+                foreach(string volume in volumes) {
+                    var drive=new DriveInfo(volume);
+                    if(!drive.DriveFormat.Equals("NTFS",StringComparison.OrdinalIgnoreCase))throw new IOException("This installer currently requires local NTFS storage: "+volume);
+                    long required=16*1024*1024+(volume.Equals(Path.GetPathRoot(runtime),StringComparison.OrdinalIgnoreCase)?PayloadBytes:0);
+                    if(drive.AvailableFreeSpace<required)throw new IOException("Not enough free disk space for staged installation: "+volume);
+                }
                 bool staged=false;
                 try {
-                    foreach(var entry in files)Verify(Child(source,entry.Name),entry);
+                    foreach(var entry in files)Verify(Child(source,entry.Source),entry);
                     if(checkpoint!=null)checkpoint("verified");
                     if(Directory.Exists(release)) {
                         // Repair missing owned files; never overwrite changed bytes.
                         foreach(var entry in files) { string path=Child(release,Relative(entry)); if(File.Exists(path))Verify(path,entry); }
-                        foreach(var entry in files) { string path=Child(release,Relative(entry)); if(!File.Exists(path)) { Directory.CreateDirectory(Path.GetDirectoryName(path)); WriteAtomic(path,File.ReadAllBytes(Child(source,entry.Name))); Verify(path,entry); } }
+                        foreach(var entry in files) { string path=Child(release,Relative(entry)); if(!File.Exists(path)) { Directory.CreateDirectory(Path.GetDirectoryName(path)); WriteAtomic(path,File.ReadAllBytes(Child(source,entry.Source))); Verify(path,entry); } }
                     }
                     else {
                         Directory.CreateDirectory(stage); staged=true;
-                        foreach(var entry in files) { string path=Child(stage,Relative(entry)); Directory.CreateDirectory(Path.GetDirectoryName(path)); File.Copy(Child(source,entry.Name),path,false); Verify(path,entry); if(checkpoint!=null)checkpoint("copied:"+entry.Name); }
+                        foreach(var entry in files) {
+                            string path=Child(stage,Relative(entry)),from=Child(source,entry.Source);
+                            try { Directory.CreateDirectory(Path.GetDirectoryName(path)); File.Copy(from,path,false); Verify(path,entry); }
+                            catch(IOException error){throw new IOException("Copy failed. Source: "+from+" Destination: "+path+". "+error.Message,error);}
+                            if(checkpoint!=null)checkpoint("copied:"+entry.Name);
+                        }
                         Directory.CreateDirectory(Path.GetDirectoryName(release)); Directory.Move(stage,release); staged=false;
                     }
                     // The stable loader follows the module that Max actually loaded,
@@ -224,7 +275,7 @@ namespace Cyrus.Setup {
                     if(staged&&Directory.Exists(stage)) {
                         // Only our unique staging path is eligible for recursive removal.
                         string checkedStage=InstallPaths.Full(stage);
-                        if(Path.GetDirectoryName(checkedStage)!=root||!Path.GetFileName(checkedStage).StartsWith(".install-",StringComparison.Ordinal))throw new IOException("Staging ownership changed.");
+                        if(Path.GetDirectoryName(checkedStage)!=Child(runtime,"s"))throw new IOException("Staging ownership changed.");
                         Directory.Delete(checkedStage,true);
                     }
                 }
@@ -241,7 +292,9 @@ namespace Cyrus.Setup {
                 string[] record=Decode(before[2]).Replace("\r","").Split('\n');
                 if(record.Length!=6||record[0]!=Marker||!Hex(record[3],64)||!Hex(record[4],64))throw new IOException("The installation receipt differs. No registration was removed.");
                 string release=InstallPaths.Full(record[2]);
-                if(!release.StartsWith(Path.Combine(root,"Releases")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))throw new IOException("Installation ownership differs.");
+                bool legacy=release.StartsWith(Path.Combine(root,"Releases")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase);
+                bool compact=paths.RuntimeRoot!=null&&release.StartsWith(Path.Combine(paths.RuntimeRoot,"r")+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase);
+                if(!legacy&&!compact)throw new IOException("Installation ownership differs.");
                 for(int i=0;i<2;++i)if(before[i]!=null&&Hash(before[i])!=record[i+3])throw new IOException("A startup/macro file was edited; it was preserved: "+targets[i]);
                 string native=Path.Combine(release,"bin");bool directories=false;int registrations=0;
                 foreach(string raw in Decode(before[3]).Replace("\r","").Split('\n')) {

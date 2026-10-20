@@ -9,11 +9,34 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("0.86.2.0")]
-[assembly: AssemblyFileVersion("0.86.2.0")]
+[assembly: AssemblyVersion("0.86.6.1")]
+[assembly: AssemblyFileVersion("0.86.6.1")]
 namespace CyrusScatter.UI
 {
+    // Restore the owned Max dialog itself, not its embedded WinForms panel.
+    public static class LibraryWindow
+    {
+        [DllImport("user32.dll")] private static extern bool IsWindow(IntPtr window);
+        [DllImport("user32.dll")] private static extern bool IsIconic(IntPtr window);
+        [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr window,int command);
+        [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr window);
+        [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr window,out uint process);
+        [DllImport("kernel32.dll")] private static extern uint GetCurrentProcessId();
+
+        public static bool RestoreAndActivate(long handle)
+        {
+            var window=new IntPtr(handle);
+            uint process;
+            if(!IsWindow(window)||GetWindowThreadProcessId(window,out process)==0) return false;
+            if(process!=GetCurrentProcessId()) return false;
+            if(IsIconic(window)) ShowWindow(window,9); // SW_RESTORE retains normal bounds.
+            SetForegroundWindow(window);
+            return true;
+        }
+    }
+
     internal static class GalleryLimits
     {
         internal static int Clamp(int value,int low,int high)=>Math.Max(low,Math.Min(high,value));

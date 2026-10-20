@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "6eeb85d171089de9e84252961f38efb9eab1facdc914b82bb4f16556ea54561e",
-  "control_inventory_sha256": "656da6b6e7b83dd94bd70a6150dfead1ae75fc2167cc786006c65a9a80684d06",
-  "development_version": "0.86.2",
+  "capability_source_sha256": "7b3b0a258ddf7e521f990fec238b75c89f450bd3a31f0e9cea4c83adeaf95301",
+  "control_inventory_sha256": "2879ff45918bbd1cddc4da0a5e2151e0e3c07c29c2b1a38791f9be97a5776e4a",
+  "development_version": "0.86.6.1",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -17,7 +17,7 @@
     {
       "feature_id": "C02",
       "title": "Receiver and units / layer",
-      "native": "Layers own static flat/curved receivers. Vector Paint Areas require single-valued local-XY terrain/planes; geometry changes are guarded",
+      "native": "Layers own static flat/curved receivers. Vector Paint Areas support terrain and manifold curved receivers; indexed geometry changes are guarded",
       "mcp": "Design enrollment remains a horizontal convex static site with restricted geometry",
       "qualification_or_extension": "Wider typed receiver enrollment and geometry/units qualification"
     },
@@ -80,9 +80,9 @@
     {
       "feature_id": "C11",
       "title": "Density masks / layer",
-      "native": "Independent image and numeric mesh-channel fields. Image World/Scatter-local XY or explicit UV, physical size, rotation/offsets, Repeat/Clamp, 64/128/256/512 native samples; channel 0..99 XYZ/range/invert/curve. Persistent bounded Image/Mesh/Combined surface visualization; explicit portable scalar snapshots",
+      "native": "Independent projected image, receiver-aware procedural map and surface fields. Map coordinates supplies actual receiver UV/data channels to supported graphs. Surface field chooses explicit channel 0..99 or relative local elevation. Shared bounded placement/preview scalars; Clear removes only the image rule",
       "mcp": "No map/channel enrollment or write contract",
-      "qualification_or_extension": "[0.86.2 qualification](../plans/preset-gallery-improvements/DELIVERY_0862.md); user supplies final pattern artwork. No automatic producer reconstruction or arbitrary map-graph portability; work remains bounded"
+      "qualification_or_extension": "[0.87.0 scoped qualification](../plans/preset-gallery-improvements/RELIABILITY_0870.md); supported classes and resource limits in [format 7](../plans/preset-gallery-improvements/FORMAT_7.md). No arbitrary procedural graph portability or renderer context"
     },
     {
       "feature_id": "C12",
@@ -101,9 +101,9 @@
     {
       "feature_id": "C14",
       "title": "Vector Brush / Paint Area",
-      "native": "Canonical Boolean Paint/Erase on projected terrain; cached borders; inward/outward feather and separate density/scale curves",
+      "native": "Canonical Boolean Paint/Erase on terrain or surface-attached face regions; cached 3D borders; surface-distance feather and separate density/scale curves",
       "mcp": "No Brush authoring",
-      "qualification_or_extension": "Physical input, heavy assets, sustained memory/latency and wider surface representations"
+      "qualification_or_extension": "Physical mouse/tablet input, heavier assets and sustained stress beyond the scoped 0.86.6 tests"
     },
     {
       "feature_id": "C15",
@@ -248,9 +248,9 @@
     {
       "feature_id": "C35",
       "title": "Settings presets and complete static recipes",
-      "native": "Multi-layer recipes retain supported Paint/assets/paths, revisions, thumbnails, image bytes/mapping/frame/response and selective style. Selected-terrain Load creates a setup only when needed and adds layers. Required data is preflighted; first calculation joins the transaction",
+      "native": "Multi-layer recipes retain supported Paint/assets/paths, revisions, thumbnails, image bytes/mapping/frame/response and selective style. Selected-terrain Load creates a setup only when needed and adds layers. Complete preset Paint/path transfer fits local XY, with physical unit conversion and early dependency checks",
       "mcp": "Catalog help only; no preset/recipe filesystem or application tool",
-      "qualification_or_extension": "Recipe 6, settings 3, library 4, asset capability/graph 2 (manifest 1). One Undo/Redo restores output/assets without source package files. Paint requires compatible terrain; editable procedural producers require a separate adapter or explicit baked snapshot. Broader Edit/effects/animation/XRef/renderer adapters remain outside scope. See [0.86.2](../plans/preset-gallery-improvements/DELIVERY_0862.md)"
+      "qualification_or_extension": "Recipe 7, settings 3, library 4, asset capability/graph 2 (manifest 1). One Undo/Redo restores output/assets. Terrain preset transfer requires a single-valued XY footprint; curved preset transfer requires matching indexed topology; settings-only exact Paint keeps its compatibility contract. Broader Edit/effects/animation/XRef/renderer adapters remain outside scope. See [0.87.0](../plans/preset-gallery-improvements/RELIABILITY_0870.md)"
     },
     {
       "feature_id": "C36",
@@ -1788,7 +1788,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "World and Scatter-local use physical tile sizes without receiver UVs. Receiver UV reads the UV channel chosen below.",
+      "help": "Map coordinates uses each map's own UV/data channels on the receiver. Other modes project a sampled image using Scatter's controls.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2053,7 +2053,20 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Use numeric data from Data Channel or VertexPaint on the terrain. Channel 0 reads vertex colors; numbered channels read their stored values. White permits; black excludes.",
+      "help": "Use an authored mesh channel or relative local elevation. White permits; black excludes.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "meshSourceList",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Relative elevation uses the receiver's local height: 0 at its lowest point, 1 at its highest. Flat receivers use 0. No channel or modifier is added.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2092,7 +2105,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max.",
+      "help": "Field value mapped to 0 before Invert and the Density curve. Must be less than Input max.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2105,7 +2118,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp.",
+      "help": "Field value mapped to 1 before Invert and the Density curve. Values outside the range clamp.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2118,7 +2131,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Reverse the normalized channel values before applying the Density curve.",
+      "help": "Reverse the normalized field values before applying the Density curve.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2955,7 +2968,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": "Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first.",
+      "help": "Export an independent editable border spline. Terrain uses local XY; curved receivers keep their 3D surface border. An unchanged surface snapshot restores exact coverage. Keeps the Paint Area. Stop the brush first.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2997,7 +3010,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": "Pick one closed spline shape to apply to this Paint Area using Replace or Add. One Undo; Manual waits for Update. Stop the brush first.",
+      "help": "Apply closed spline coverage using Replace or Add. Curved borders must lie on the receiver within Curve tolerance; edited closed-surface borders select the smaller enclosed region. One Undo; Manual waits for Update. Stop the brush first.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

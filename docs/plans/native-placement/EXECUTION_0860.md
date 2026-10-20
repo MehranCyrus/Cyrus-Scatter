@@ -13,7 +13,7 @@ Analyzer fields, transforms, Relax, Edit, radius/acceptance/cleanup, preview,
 PFlow groups and 500-row Bake. Changed-block authored Edit history preserves
 Undo. Native admission replaces Count-scaled MAXScript workspace reservation.
 
-Mixed cycles exposed structural Edit-key reuse (candidate 08), preset epoch/frame
+Mixed cycles exposed s tructural Edit-key reuse (candidate 08), preset epoch/frame
 restoration (09), and abandoned-created-owner cache retention (10). Candidate 11
 adds layer/area copies and all imports to the existing discarded-creation cleanup.
 A four-cycle script-only private iteration kept the same retained bytes at equal

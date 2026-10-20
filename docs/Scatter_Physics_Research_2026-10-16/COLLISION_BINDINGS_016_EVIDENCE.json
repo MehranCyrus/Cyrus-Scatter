@@ -1,0 +1,454 @@
+{
+  "version": "0.1.6",
+  "date": "2026-10-18",
+  "scope": "standalone Physics Lab; no main Scatter integration, Computer Use, artist installation, commit or push",
+  "head": "71d654df7abd9becef53c9e4f177572f6848d5e0",
+  "knowledge": {
+    "source_verification_requested": true,
+    "generation": "70c3934732cfdcec5c56ac5b5cef3b261a25491cce8826b38198a8a42a3e3100",
+    "status": "stale; Physics Lab not enrolled; direct source and fresh receipts used; no refresh"
+  },
+  "build": {
+    "version": "0.1.6",
+    "max_year": 2027,
+    "source_hashes": {
+      "CMakeLists.txt": "184919554abd01fc264bf6a2ddaca7f25836d366fec1d104d20b00c7c6bc5ad6",
+      "README.md": "102a2a6b8136b714577a16619b73d20291c61b714f9cffe10055b0bd67110664",
+      "include/core.h": "9792f129ff55f9c6a06a093a1c2dca71ce9a1cbf300c9d57ff17549443d0a3f3",
+      "include/diagnostics.h": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0",
+      "include/live_session.h": "283ca19b574900db62e20b79a4b65dd9479bd0cd0cfd78a4330b65f20b49526d",
+      "installer/CyrusPhysicsLabStartup.ms": "a9d31803d3c2434d12bb6d0813fb7f4bd550a0735b523cd73956ecb4501b16c9",
+      "scripts/CyrusPhysicsLab.ms": "cb713867545205769f9c8226f6fcff028988b8f2822607a20d4e28f509c7defd",
+      "src/core.cpp": "7c8f50f4871b18319408dda40ee73d5f194ba8c0f12d5d064d37991393c8a027",
+      "src/crash_watch.cpp": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4",
+      "src/diagnostics.cpp": "535d6a1dbdc3c1cb80b824155275239b3831ed0e2be21c1e728ef62275435a39",
+      "src/jolt_world.cpp": "0a93fda9fab9cf9cbc4acdcb5d411ac2d963e22216e95a16210f09cd08a3facc",
+      "src/live_session.cpp": "05e7100bc3c1da1d27e368a49bbdc0153822246763899c676d1466d25510ed2c",
+      "src/max_host.cpp": "6cad5eca3c33c4eda830233fcf4a56e0118315fc7b5249e5903da61d56cb3af6",
+      "src/max_live.inc": "88304ecd7bd2f5e4feb30d919f7652f0d98033af597725b2cc7cbe8ff7208880",
+      "src/physx_world.cpp": "99c79aa3bb230ef89f66cb953da86a560686bd2fca18af2fa606136e3a1fa500",
+      "src/storage_plugin.cpp": "b70291d9009d1200638fa514586385d486c2382cebecb5e1201d488fa6dc5523",
+      "tests/collision_tests.cpp": "cee033d75447c3d8af187e4cacd7d1b77408e300a6928a9055e11873d037101f",
+      "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+      "tests/core_tests.cpp": "51819564cd85f0d29e1ff50db8f60d8d68bba1b58f029e27945b0ddb5a2e4739",
+      "tests/demo.ms": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8",
+      "tests/grip_tests.cpp": "2cf56ed6f20cc21369e9c601bc606282eca7b3f92f58e1e634be6e1deb287757",
+      "tests/host.ms": "dcd15b87209af23cf1c8a617b10367065f00d3f6486fae90649d6466218db96f",
+      "tests/host_brush_ui.ms": "2cf24f76d2a45f28ddba9e892b36060d20f9403f0b80e3377c2aaab8ea694f89",
+      "tests/host_continuous.ms": "174d387d32953e8f26ed3cdf043f17f23dc4e29439db6dbc3c3e6c09add53985",
+      "tests/host_continuous_crash_common.ms": "ab59e31ee11e284e48840b8ce4c434adb00f0c16a2db777c7cd6fcf537ea0c26",
+      "tests/host_continuous_fatal.ms": "7f63e788146330c46d8e73081e41e0a164f41f2d1ac20497f42f9979d46afb24",
+      "tests/host_continuous_faults.ms": "dc14291662e2193fdf9073cc2b72212959e18181da9a9c71c4ed04e9dd6b7c76",
+      "tests/host_continuous_hardkill.ms": "f4dfa68608facfaee9fee7bbd8fe815150f79ed282c094bbcf45206c6e39811a",
+      "tests/host_continuous_lifecycle.ms": "b47466cfa211d7a74b00592487d2cbcf2099da651fe4a33fd16eb27fa0c303a0",
+      "tests/host_continuous_performance.ms": "5d717d40df067e687e3d2acc055435eec2e36c870f2128cfa44ba9a120f9fb8c",
+      "tests/host_continuous_rebuild.ms": "32ff83df1e1cd3b330f996ac3842f79221f9871785394596b2a3c3ae8541ad38",
+      "tests/host_continuous_recover.ms": "475f859c15e3fa74740a77fcd26f5f37a5a0c480e36edd78ba90f735a94e1423",
+      "tests/host_continuous_secondary.ms": "257ac01b18924b8b6ffac4bbde817f7a5b4323846b943b461c9a77bef6630c21",
+      "tests/host_extended.ms": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224",
+      "tests/host_faults.ms": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d",
+      "tests/host_previous_scene.ms": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86",
+      "tests/host_proxy_previous_scene.ms": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564",
+      "tests/host_proxy_ui.ms": "b62e64d69f135c335b0c96fe46b237dd90628b90dcde7e3405b243f7e55b9bdf",
+      "tests/host_regression.ms": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791",
+      "tests/host_scaled_ui.ms": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191",
+      "tests/host_timeout_ui.ms": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992",
+      "tests/host_transforms.ms": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208",
+      "tests/host_ui_layout.ms": "ef94888c06ec253abd88ffba7f7947120d632c390d1bcee4763359f96e3b50f1",
+      "tests/live_stress.cpp": "45d6c06fe3c354dc783ebb24cf688a601cab1f7ca706f1b7c552dcac0dd2402c",
+      "tests/live_tests.cpp": "f2f9a0bf31ae91b965fce87f0bfa635914889273ecbd56f20dfc2177eba2669c",
+      "tests/ui_layout.py": "c23b3e27c369033f42004800fbe028632b59c44d0949abd430423b57ea64e82b",
+      "tests/fixtures/pyramid_append_plane.json": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f",
+      "tests/paint_probe/CMakeLists.txt": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd",
+      "tests/paint_probe/probe.cpp": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a",
+      "tools/build.py": "f69275d39b04e7fc6b6115936fea8f565738cccd913e1c006a7b502f003a62c9",
+      "tools/build_probe.py": "5808b02e35aa6ba9a5576c60b87b400cb91e747ca446c1ab463df582f7f0c31d",
+      "tools/compare.py": "8e93a42a402cf4ea8e92dee3c51cf4c1e050fdc0c2f9e7f3ba420b9e457d082b",
+      "tools/host_test.py": "97a857c86f504b6b77ac54aaad5e83895e43af558800be42ba5e4c81eff877ee",
+      "tools/installer_test.py": "b57550aa168ec5d5219601e5e7fd865649a672e3dac72c77208a9cf7896f9c70",
+      "tools/package.py": "7ea8d9b9b0333093f66c19e4f2403e9a9b9f7ae581e07e10719ad2964a7872c9"
+    },
+    "shared_source_hashes": {
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "tools/build_max.py": "3dfe4fe7643ce78a90335998523e3906de79851863a6c3f81707016b12bcf434",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "pins": {
+      "jolt": [
+        "jrouwe/JoltPhysics",
+        "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+      ],
+      "physx": [
+        "NVIDIA-Omniverse/PhysX",
+        "b97365c6ddb32fda8469bc788ec18024862b0368"
+      ]
+    },
+    "toolchain": {
+      "msvc": "14.38.33130",
+      "windows_sdk": "10.0.19041.0"
+    },
+    "dependency_archives": {
+      "jolt": {
+        "repository": "jrouwe/JoltPhysics",
+        "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+      },
+      "physx": {
+        "repository": "NVIDIA-Omniverse/PhysX",
+        "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+        "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+      }
+    },
+    "host_launched": false,
+    "installed": false,
+    "faults": false,
+    "binaries": {
+      "cpl_collision_tests.exe": "85fb96cbee2955d3134dde4f9a0e97aac78f123744eefd02c7a0f474cfa43838",
+      "cpl_compare.exe": "4d969b4386bd0aae9a0aaa3bb4e8101d9911bf66065ba0fd894981563951fe58",
+      "cpl_grip_tests.exe": "6c8d66aca5cb231b8aa1d98a71a885c33ccb220daa715288a69b82233a645984",
+      "cpl_live_stress.exe": "646fb3deb78ab08c0bbc05388f124616d63654c9761312dbdb50ebbed85ee8d6",
+      "cpl_live_tests.exe": "6acf5ef87d4f8fe5795d0c1b0f41111ce0324c86070badec6b2f1709c9b4e241",
+      "cpl_tests.exe": "da9e4fe74a632fa957f93517fc6c691b19112b7538706142f24cb22144cebc14",
+      "CyrusPhysicsCrashWatch.exe": "5ff3cdd5cf3d5685951cb742dd973f7a14a0627d0e3a376e3e925427c7aba7f4",
+      "CyrusPhysicsLab.dlx": "47054ece02c732b330389b9f2c52fbc42493b8642617a56b33e6da2f87a0269d",
+      "CyrusPhysicsStorage.dlh": "f423bd6f325d8d74b90a3d875e9c3e5c7b3abefc13f541262c0ab370214656c9"
+    }
+  },
+  "native_checks": 6065,
+  "collision_results": {
+    "checks": 579,
+    "continuous": {
+      "bodies": 9,
+      "finished": true,
+      "lost": 0
+    },
+    "edge": {
+      "crossed": true,
+      "fell_after_crossing": true,
+      "minimum_centre_before_crossing_m": 0.01475030742585659
+    },
+    "flat": [
+      {
+        "bodies": 64,
+        "friction": 0.0,
+        "maximum_transient_penetration_m": 0.003225224943483658,
+        "settled_penetration_m": 5.4109579747385617e-08,
+        "slept_at_step": 409,
+        "stickiness": 0.0
+      },
+      {
+        "bodies": 64,
+        "friction": 0.0,
+        "maximum_transient_penetration_m": 0.003225224943483658,
+        "settled_penetration_m": 4.713099427920697e-07,
+        "slept_at_step": 275,
+        "stickiness": 0.8
+      },
+      {
+        "bodies": 64,
+        "friction": 0.6,
+        "maximum_transient_penetration_m": 0.003225224943483658,
+        "settled_penetration_m": 3.734558062847698e-07,
+        "slept_at_step": 287,
+        "stickiness": 0.0
+      },
+      {
+        "bodies": 64,
+        "friction": 0.6,
+        "maximum_transient_penetration_m": 0.003225224943483658,
+        "settled_penetration_m": 4.713099427920697e-07,
+        "slept_at_step": 275,
+        "stickiness": 0.8
+      }
+    ],
+    "pass": true
+  },
+  "grip_summary": {
+    "checks": 1898,
+    "finish_slopes": [
+      {
+        "active": 1,
+        "angle": 15.0,
+        "ball": false,
+        "done": true,
+        "step": 86,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 30.0,
+        "ball": false,
+        "done": true,
+        "step": 81,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 45.0,
+        "ball": false,
+        "done": true,
+        "step": 81,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 60.0,
+        "ball": false,
+        "done": true,
+        "step": 81,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 75.0,
+        "ball": false,
+        "done": true,
+        "step": 176,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 15.0,
+        "ball": true,
+        "done": true,
+        "step": 79,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 30.0,
+        "ball": true,
+        "done": true,
+        "step": 80,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 45.0,
+        "ball": true,
+        "done": true,
+        "step": 113,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 60.0,
+        "ball": true,
+        "done": true,
+        "step": 89,
+        "timeout": false
+      },
+      {
+        "active": 1,
+        "angle": 75.0,
+        "ball": true,
+        "done": false,
+        "step": 3600,
+        "timeout": true
+      }
+    ],
+    "pass": true
+  },
+  "artist_inputs": [
+    {
+      "context_sha256": "efa94cd743e79f6d84718ecc9b16e1057823bf8b61edc4620884234d0f70ccb5",
+      "friction": 0.6000000238418579,
+      "stickiness": 0.0,
+      "render_span_m": [
+        0.03196598985555278,
+        0.03196598985555278,
+        0.03196598985555278
+      ],
+      "hull_span_m": [
+        2.254415268323984,
+        1.4229937650223035,
+        0.0020000000949949026
+      ],
+      "static_collider_count": 1
+    },
+    {
+      "context_sha256": "d3ed3b3f5581f554eea2e09ae22af6e5d86400b3995cc7d3d805c7e1aa56b371",
+      "friction": 0.0,
+      "stickiness": 0.0,
+      "render_span_m": [
+        0.03196598985555278,
+        0.03196598985555278,
+        0.03196598985555278
+      ],
+      "hull_span_m": [
+        2.254415268323984,
+        1.4229937650223035,
+        0.0020000000949949026
+      ],
+      "static_collider_count": 1
+    }
+  ],
+  "comparison": {
+    "015": {
+      "source_sha256": "8f489c22fff3f38417c3742407698c9a2072bf12b561759b1d9eee11686f354b",
+      "core_lib_sha256": "d74c4d674ba3856347622ba2c61e62a401f7f897a6463f6b54a81cf0569bce94",
+      "executable_sha256": "d3a889e78ccd753bca6e9b7db5a8bb893adf8ed5548496e2b07c41ad04c9d658",
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/DNOMINMAX",
+        "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\include",
+        "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusLicensing\\third_party",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\replay.cpp",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-grip-015-20261018-01\\core-01\\cpl_core.lib",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-grip-015-20261018-01\\core-01\\jolt\\Jolt.lib",
+        "/Fe:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-settling-016-20261018-01\\compare-replay-015.exe",
+        "/Fo:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-settling-016-20261018-01\\compare-replay-015.obj"
+      ]
+    },
+    "016": {
+      "source_sha256": "8f489c22fff3f38417c3742407698c9a2072bf12b561759b1d9eee11686f354b",
+      "core_lib_sha256": "f1a70bf3b6d8deab8b5df5524a5527df0ffc8043492cb15666a7e23ee0197ed4",
+      "executable_sha256": "cdfa1e1977c0e2da3201db72656fac34cd9e717599d373ef5cca2f1de80e02d4",
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/O2",
+        "/MD",
+        "/EHsc",
+        "/DNOMINMAX",
+        "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusPhysicsLab\\include",
+        "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusLicensing\\third_party",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\replay.cpp",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-settling-016-20261018-01\\native-01\\cpl_core.lib",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-settling-016-20261018-01\\native-01\\jolt\\Jolt.lib",
+        "/Fe:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-settling-016-20261018-01\\compare-replay-016.exe",
+        "/Fo:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-settling-016-20261018-01\\compare-replay-016.obj"
+      ]
+    },
+    "pass": true,
+    "exact_body_state_comparisons": 384
+  },
+  "host_reports": {
+    "continuous": "PASS 57 continuous Max 2027 checks\n{\"active\":false,\"commits\":2,\"cooks\":3,\"error\":\"\",\"lastTickMs\":0.0,\"live\":{\"epoch\":4,\"history_bytes\":0,\"last_step_ms\":0.0,\"lost\":0,\"lost_z\":0.0,\"moving\":0,\"paused\":false,\"queued\":0,\"ready\":false,\"recovery\":false,\"redo\":0,\"sequence\":0,\"skipped\":0,\"step\":0,\"undo\":0},\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":8,\"schema\":2,\"settled\":true,\"settling\":false,\"solver\":\"5d8300133b2248f7e317843dff8515e8581de2ba7eb98c6f9d7f5e4ca9bced8a\",\"stale\":false,\"stickiness\":0.0,\"ticks\":73,\"timedOut\":false,\"version\":\"0.1.6\"}\n",
+    "collision": "PASS 109 collision-binding/64 sphere/SDK/continuous/outside/Undo/recovery/legacy/layout checks\n",
+    "terrain": "PASS Slope: grip/friction controls, continuous SDK strokes, outside, live Undo/Redo, pending scene replay, Freeze and result Undo/Redo\nPASS hills: grip/friction controls, continuous SDK strokes, outside, live Undo/Redo, pending scene replay, Freeze and result Undo/Redo\nPASS ridge: grip/friction controls, continuous SDK strokes, outside, live Undo/Redo, pending scene replay, Freeze and result Undo/Redo\nPASS valley: grip/friction controls, continuous SDK strokes, outside, live Undo/Redo, pending scene replay, Freeze and result Undo/Redo\nPASS rough: grip/friction controls, continuous SDK strokes, outside, live Undo/Redo, pending scene replay, Freeze and result Undo/Redo\nPASS terraces: grip/friction controls, continuous SDK strokes, outside, live Undo/Redo, pending scene replay, Freeze and result Undo/Redo\nPASS hole: grip/friction controls, continuous SDK strokes, outside, live Undo/Redo, pending scene replay, Freeze and result Undo/Redo\nChecks: 98"
+  },
+  "layouts": {
+    "physics-lab-016-installer-02": {
+      "scale": 1.0,
+      "controls": 72,
+      "all_bounds_fonts_overlaps_pass": true
+    },
+    "physics-lab-016-layout150-02": {
+      "scale": 1.5,
+      "controls": 72,
+      "all_bounds_fonts_overlaps_pass": true
+    }
+  },
+  "crash_recording": {
+    "error": 0,
+    "event_segment_bytes": 8388608,
+    "event_segments": 4,
+    "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-016-layout150-02\\diagnostics\\20261018-040414-339-pid37116",
+    "max_dumps": 2,
+    "memory": {
+      "available": true,
+      "peak_working_set_bytes": 2150035456,
+      "private_bytes": 3293626368,
+      "working_set_bytes": 2148683776
+    },
+    "recording": true,
+    "version": "0.1.6",
+    "watcher_alive": true,
+    "watcher_pid": 41840,
+    "watcher_ready": true
+  },
+  "installed_receipt": {
+    "pass": true,
+    "computer_use": false,
+    "normal_profile_modified": false,
+    "package_sha256": "69aefcbf805a0df5c866bb48012893dbc1aa89430844a8941e578d4a9eec96b7",
+    "installed_pair": {
+      "CyrusPhysicsStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-016-installer-02\\scripts\\CyrusPhysicsLab\\0.1.6\\c1abb7908416\\native\\CyrusPhysicsStorage.dlh",
+        "sha256": "f423bd6f325d8d74b90a3d875e9c3e5c7b3abefc13f541262c0ab370214656c9"
+      },
+      "CyrusPhysicsLab.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-016-installer-02\\scripts\\CyrusPhysicsLab\\0.1.6\\c1abb7908416\\native\\CyrusPhysicsLab.dlx",
+        "sha256": "47054ece02c732b330389b9f2c52fbc42493b8642617a56b33e6da2f87a0269d"
+      }
+    },
+    "installed_script_sha256": "cb713867545205769f9c8226f6fcff028988b8f2822607a20d4e28f509c7defd",
+    "fixture_sha256": "e53c2f6d7940d4b021610e589532bce2d6702e618352b945f3323115aedeed9a",
+    "restart_command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-silent",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-016-installer-02\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-016-installer-02\\restart-plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-016-installer-02\\restart.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-016-installer-02\\restart-listener.log"
+    ]
+  },
+  "package": {
+    "path": "dist\\CyrusPhysicsLab-0.1.6-20261018-01\\CyrusPhysicsLab-0.1.6-Max2027.mzp",
+    "sha256": "69aefcbf805a0df5c866bb48012893dbc1aa89430844a8941e578d4a9eec96b7",
+    "bytes": 803796,
+    "archive_integrity": true,
+    "payload_hashes": {
+      "native/CyrusPhysicsLab.dlx": "47054ece02c732b330389b9f2c52fbc42493b8642617a56b33e6da2f87a0269d",
+      "native/CyrusPhysicsStorage.dlh": "f423bd6f325d8d74b90a3d875e9c3e5c7b3abefc13f541262c0ab370214656c9",
+      "native/CyrusPhysicsCrashWatch.exe": "5ff3cdd5cf3d5685951cb742dd973f7a14a0627d0e3a376e3e925427c7aba7f4",
+      "native/build-identity.json": "a255c85ccc9887e912f9baa2b012fdf5995f5ede5f8fa047ac946e9982e21ef5",
+      "scripts/CyrusPhysicsLab.ms": "cb713867545205769f9c8226f6fcff028988b8f2822607a20d4e28f509c7defd",
+      "README.md": "102a2a6b8136b714577a16619b73d20291c61b714f9cffe10055b0bd67110664",
+      "licenses/Jolt-MIT.txt": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3",
+      "licenses/nlohmann-MIT.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "Uninstall.ms": "ed974125dd5ba550eed71a9ef7903c78c41f55c23494a0935b180e95b693f6d6",
+      "CyrusPhysicsLabStartup.ms": "962f5dc286af0b64dde18fc113c45daec96efe2dda562a303dfdf29ab833de38",
+      "install.ms": "beecd0489815880d37eb3557d40bb1e3e0ed301742b4d719dcbbec0f69ce5a1b",
+      "mzp.run": "765c2c042d6b011f09e6939ad01ba1c12688c9c44544068f87140525d45e4316"
+    },
+    "installed_into_owned_profile_only": true
+  },
+  "limitations": [
+    "Physical pointer input and presented FPS not tested",
+    "Transient small-sphere impact overlap reached 3.225 mm; settled overlap below 0.001 mm in native fixture",
+    "Jolt/grip code unchanged; steeper-slope settling limit from 0.1.5 remains",
+    "Old pending sessions retain preview; exact-build replay guard remains",
+    "Finite surfaces have no invisible edge walls"
+  ],
+  "primary_reference": "https://jrouwe.github.io/JoltPhysics/struct_physics_settings.html",
+  "receipts": {
+    "build\\physics-settling-016-20261018-01\\native-01\\receipt.json": "8cc8375f0d1d3bb1c52c9d088217240e511f97394a06069e7501c9b4bf685341",
+    "build\\physics-settling-016-20261018-01\\native-01\\Testing\\Temporary\\LastTest.log": "1ca41dd4644e4d5094ec35e714d39e4e5a154c35ac5d8ad86689f0a9e4a875cd",
+    "build\\physics-settling-016-20261018-01\\native-01\\collision-results.json": "6db124c1fc55bc7af80ff7b405c7f3e1e10fe3f66b21743fdcf6e1b42531ab09",
+    "build\\physics-settling-016-20261018-01\\native-01\\grip-results.json": "676afde80bc5244a5a36a138ea3ad2a495c0ddd8ba30797255edb90279d5bb9f",
+    "build\\physics-settling-016-20261018-01\\compare-replay-receipt.json": "4d63e7622cf43123a788ab481e294a9bdbd0d3ffd619294511a7ae9dc08535dd",
+    "build\\physics-lab-016-installer-02\\launch.json": "f52a9499869effd8584a30276cf48044d298aee3da11e6e6df72bb48017682c8",
+    "build\\physics-lab-016-installer-02\\installer-receipt.json": "fbacea801994977435a455000ddd55f27f1b0d2cf988e367942434da587c3708",
+    "build\\physics-lab-016-installer-02\\restart-loaded.tsv": "ede9c6e513d3089299715ef0502b8cbd6b1266747aa466fa3f4c3361ab8e7c4a",
+    "build\\physics-lab-016-installer-02\\restart-completed.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "build\\physics-lab-016-installer-02\\assertions.txt": "1dd35fe08c709030f110cc9e8a23de287227c8ee751c7276f2c044ced1cf8258",
+    "build\\physics-lab-016-installer-02\\ui-layout.json": "113634705e3c211417b2acbbc35e343154669b4c89be4b96cdb5090ff2072c3a",
+    "build\\physics-lab-016-layout150-02\\launch.json": "afdec66dacff3580bf82e24b24ca47f75305ea89729f4775b238883ca7d60b5c",
+    "build\\physics-lab-016-layout150-02\\completed.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "build\\physics-lab-016-layout150-02\\ui-layout.json": "acb33c38b38bf8983a5725f745c3ebabaf64a8a6d1e953394c88b081235a8eb7",
+    "build\\physics-lab-016-layout150-02\\diagnostic-status.json": "88ad0dc97015b181663f94b6f37b6dfeda00a1a633afac65e09b11c229171718"
+  },
+  "fixture_hashes": {
+    "docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\collect_evidence.py": "a9b40195dfd3d76772d0081eb0d5fae679d845cd36ec1009e458a515f98e3835",
+    "docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\host_collision.ms": "fbda5e06f715b25acc02cb92551aa2d38e8148d3d3bb55c07afe40d47c4fa0a2",
+    "docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\host_installed.ms": "e53c2f6d7940d4b021610e589532bce2d6702e618352b945f3323115aedeed9a",
+    "docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\host_layout.ms": "9613474b1b2ac0b6f6eea9400771b6abd159307295619aa3c1b34f7b97d8dd98",
+    "docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\host_legacy_setup.ms": "8c61490470ae6f3120e663ff1ca4387eb503c45af76763fe763c6f7f66120c5a",
+    "docs\\Scatter_Physics_Research_2026-10-16\\settling-fixtures\\replay.cpp": "8f489c22fff3f38417c3742407698c9a2072bf12b561759b1d9eee11686f354b"
+  }
+}

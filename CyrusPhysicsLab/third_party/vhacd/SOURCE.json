@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/kmammou/v-hacd",
+  "commit": "f900e42361491f525262d4825e758845e4969897",
+  "license": "BSD-3-Clause",
+  "upstream_status": "Archived; constrained standalone-lab evaluation",
+  "files": {
+    "VHACD.h": "c2b750a41bc6044457c79dc51d196b7bbe5e24bfaec72d409a065434d9651ff2",
+    "LICENSE": "245c933225f5bd28a10336137b26f1f86551b6b1d29f804253eb5e1d73744c2e"
+  }
+}

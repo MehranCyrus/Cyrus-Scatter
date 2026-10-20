@@ -1,0 +1,8 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+src/generated/
+public/player-shell.json
+.vite/
+exports/

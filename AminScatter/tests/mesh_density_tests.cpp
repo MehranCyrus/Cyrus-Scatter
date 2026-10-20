@@ -9,6 +9,14 @@ void require(bool pass){if(!pass)throw std::runtime_error("Mesh density test fai
 template<class F>void rejects(F f){bool rejected=false;try{f();}catch(const std::invalid_argument&){rejected=true;}require(rejected);}
 int main(){
     Settings s;s.enabled=true;validate(s);
+    require(relativeElevation(10,10,30)==0&&relativeElevation(20,10,30)==.5&&relativeElevation(30,10,30)==1);
+    require(relativeElevation(700,700,700)==0); // flat receivers consistently mean lowest elevation
+    require(relativeElevation(10100,10000,10200)==relativeElevation(1,0,2)); // translation and units
+    require(relativeElevation(-4,-3,-1)==0&&relativeElevation(0,-3,-1)==1);
+    rejects([&]{relativeElevation(0,1,-1);});
+    rejects([&]{relativeElevation(std::numeric_limits<double>::infinity(),0,1);});
+    rejects([&]{relativeElevation(0,-std::numeric_limits<double>::max(),std::numeric_limits<double>::max());});
+    auto elevation=s;elevation.source=2;validate(elevation);elevation.source=3;rejects([&]{validate(elevation);});
     require(weight(-1,s)==0&&weight(2,s)==1&&weight(.5,s)==.5);
     require(sample({.3,.3,.3},{.33333334,.33333334,.33333334})==.3);
     require(std::abs(sample({0,1,.5},{.2,.3,.5})-.55)<1e-12);

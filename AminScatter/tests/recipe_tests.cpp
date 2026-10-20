@@ -13,8 +13,9 @@ std::string file(const std::filesystem::path& p){std::ifstream in(p,std::ios::bi
 void put(const std::filesystem::path& p,const std::string& s){std::ofstream out(p,std::ios::binary|std::ios::trunc);out<<s;}
 }
 int main(){std::filesystem::path temporary;try{
-    const auto defaults=parse(file(CYRUS_RECIPE_DEFAULTS));validateSettings(defaults);check(fields().size()==261);
-    auto imageSettings=defaults;imageSettings["densityCoordinateMode"]=3;rejected([&]{validateSettings(imageSettings);});
+    const auto defaults=parse(file(CYRUS_RECIPE_DEFAULTS));validateSettings(defaults);check(fields().size()==262);
+    auto imageSettings=defaults;imageSettings["densityCoordinateMode"]=3;validateSettings(imageSettings);
+    imageSettings["densityCoordinateMode"]=4;rejected([&]{validateSettings(imageSettings);});
     imageSettings=defaults;imageSettings["densityTileXWU"]=0.;rejected([&]{validateSettings(imageSettings);});
     imageSettings=defaults;imageSettings["densityResponseSamples"]={0.,2.};rejected([&]{validateSettings(imageSettings);});
     imageSettings=defaults;imageSettings["densityFrameBasis"]={1.,0.,0.,0.,1.,0.,0.,0.,1.};rejected([&]{validateSettings(imageSettings);});
@@ -40,13 +41,21 @@ int main(){std::filesystem::path temporary;try{
     Json paint={{"payload",hex(bytes)},{"receiverRole",nullptr},{"radius",.5},{"erase",true},{"frame",Json::array({1.,0.,0.,0.,1.,0.,0.,0.,1.,0.,0.,0.})}};
     Json layer={{"id","canopy"},{"name","Canopy"},{"enabled",true},{"visible",false},{"settings",defaults},{"paint",nullptr},{"areas",Json::array()}};
     layer["areas"].push_back({{"id","bed"},{"settings",defaults},{"receiverRole",nullptr},{"paint",paint}});
-    Json d={{"format","cyrus.planting-recipe"},{"formatVersion",6},{"revision",1},{"presentation",nullptr},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","fixture"},{"name","Complete hillside"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
+    Json d={{"format","cyrus.planting-recipe"},{"formatVersion",7},{"revision",1},{"presentation",nullptr},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","fixture"},{"name","Complete hillside"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
     validate(d);
+    auto v6=d;v6["formatVersion"]=6;
+    v6["rootSettings"].erase("meshMaskSource");v6["layers"][0]["settings"].erase("meshMaskSource");v6["layers"][0]["areas"][0]["settings"].erase("meshMaskSource");
+    validate(v6);check(currentDocument(v6)==d);
+    auto channelRecipe=v6;channelRecipe["layers"][0]["settings"]["meshMaskEnabled"]=true;channelRecipe["layers"][0]["settings"]["meshMaskChannel"]=2;
+    check(currentDocument(channelRecipe)["layers"][0]["settings"]["meshMaskSource"]==1);
+    auto smuggled=v6;smuggled["rootSettings"]["meshMaskSource"]=2;rejected([&]{validate(smuggled);});
+    auto elevationRecipe=d;elevationRecipe["layers"][0]["settings"]["meshMaskSource"]=2;validate(elevationRecipe);check(parse(elevationRecipe.dump())==elevationRecipe);
+    elevationRecipe["layers"][0]["settings"]["meshMaskSource"]=3;rejected([&]{validate(elevationRecipe);});
     for(int year:{2024,2026,2027}){auto portable=currentDocument(d);portable["hostYear"]=year;validate(portable);check(portable["hostYear"]==year);}
     for(int year:{2023,2025,2028}){auto unsupported=currentDocument(d);unsupported["hostYear"]=year;rejected([&]{validate(unsupported);});}
     auto stripGrid=[](Json& settings){for(const auto* name:{"placementMode","gridColumnWU","gridRowWU","gridOriginXWU","gridOriginYWU","gridHeading","gridJitter"})settings.erase(name);};
     auto v5=d;v5["formatVersion"]=5;
-    auto stripImage=[](Json& settings){for(const auto* key:{"densityCoordinateMode","densityWrapMode","densityTileXWU","densityTileYWU","densityTileLock","densityRepeatX","densityRepeatY","densityHeading","densityOffsetXWU","densityOffsetYWU","densityUOffset","densityVOffset","densityPatternID","densityPatternRevision","densityResponseSamples","densityResponseGraph","densityMapProvenance","densityFrameBasis","densityFrameOriginWU"})settings.erase(key);};
+    auto stripImage=[](Json& settings){settings.erase("meshMaskSource");for(const auto* key:{"densityCoordinateMode","densityWrapMode","densityTileXWU","densityTileYWU","densityTileLock","densityRepeatX","densityRepeatY","densityHeading","densityOffsetXWU","densityOffsetYWU","densityUOffset","densityVOffset","densityPatternID","densityPatternRevision","densityResponseSamples","densityResponseGraph","densityMapProvenance","densityFrameBasis","densityFrameOriginWU"})settings.erase(key);};
     stripImage(v5["rootSettings"]);stripImage(v5["layers"][0]["settings"]);stripImage(v5["layers"][0]["areas"][0]["settings"]);
     validate(v5);check(currentDocument(v5)==d);auto v4=v5;v4["formatVersion"]=4;v4.erase("revision");v4.erase("presentation");
     auto v3=v4;v3["formatVersion"]=3;stripGrid(v3["rootSettings"]);stripGrid(v3["layers"][0]["settings"]);stripGrid(v3["layers"][0]["areas"][0]["settings"]);
@@ -100,7 +109,7 @@ int main(){std::filesystem::path temporary;try{
     const auto old=file(path);rejected([&]{writeNew(path,d);});check(file(path)==old);
     const auto manifest=read(path,false);check(manifest["layers"][0]["areas"][0]["paint"]["payload"].is_object());
     const auto relative=manifest["layers"][0]["areas"][0]["paint"]["payload"]["file"].get<std::string>();check(file(path.parent_path()/pathFromUTF8(relative))==std::string(bytes.begin(),bytes.end()));
-    auto malformed=manifest;malformed["formatVersion"]=7;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
+    auto malformed=manifest;malformed["formatVersion"]=8;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     malformed=manifest;malformed["layers"][0]["areas"][0]["paint"]["payload"]["file"]="../outside.cspaint";put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     put(path.parent_path()/pathFromUTF8(relative),"corrupt");rejected([&]{read(path);});
     // Metadata browsing never reads/hydrates Paint attachments.

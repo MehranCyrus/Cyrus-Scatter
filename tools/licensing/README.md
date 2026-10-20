@@ -1,8 +1,8 @@
-# Cyrus 0.79 offline team licensing
+# Cyrus Scatter offline team licensing
 
 This is the owner-operated team pilot. It needs no server. The signed deadline is **30 days after issuance**, not 30 days after import. The client remains loadable and can render existing scenes after expiry; supported creation/editing paths require a valid license. See [tested scope and limitations](../../docs/licensing/TEAM_PILOT_0.79_2026-10-11.md).
 
-The candidate still needs an artist acceptance pass before broad team rollout. Long staged strokes and expiry rollback are automated-test covered; physical mouse/tablet interaction and your renderer should also be checked.
+The [current 0.86.2 delivery](../../docs/plans/preset-gallery-improvements/DELIVERY_0862.md) includes matching Max 2024, 2026 and 2027 installers with team licensing enabled. The linked 0.79 pilot report preserves the original licensing qualification; it is not the current installer. Physical mouse/tablet interaction and your renderer still need team acceptance.
 
 ## Mehran: generate a license
 
@@ -17,7 +17,7 @@ The initialized owner store is `%USERPROFILE%\.CyrusScatter\LicenseIssuer`. `iss
 
 ## Teammate: activate
 
-1. Install the MZP matching Max 2026 or 2027, then restart Max.
+1. Run the current universal EXE, select Max 2024, 2026 or 2027 and choose **Install / Repair**, then restart that Max version. Alternatively use **Scripting > Run Script** with the matching-year MZP from the delivery report, then restart.
 2. In Scatter's Modify panel choose **License / activation**. With no scatter selected, run `CyrusOpenLicenseDialog()` in the MAXScript Listener, or assign the **Cyrus License** action from category **Cyrus** to a toolbar/menu.
 3. Choose **Save activation request**, send that JSON to Mehran, and import the returned `.cyruslicense` file.
 4. Check **Active** and the UTC expiry shown in the panel. Importing late does not move the deadline. An already-open second Max process can take up to 60 seconds to observe activation/renewal.

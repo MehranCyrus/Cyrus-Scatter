@@ -6,7 +6,7 @@ global CyrusRecipeGet,CyrusRecipeObject,CyrusRecipeResolve,CyrusRecipeCheckRoot,
 global CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetImportPlan,CyrusAssetImport,CyrusAssetCapture,CyrusAssetOwnStage,CyrusAssetWatch,CyrusAssetRemoveStage,CyrusAssetBitmapDirectory
 global CyrusRequireAuthor,CyrusViewportRedraw,CyrusPresetSameValues
 global CyrusPointSuspended
-global CyrusLibraryCheckSurface,CyrusLibraryDestination
+global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusRecipeErrorText
 global CyrusAssetBoundNode
 fn CyrusPresetPackageDirectory path digest = (
     -- Keep native file paths short while retaining the full content identity.
@@ -49,7 +49,7 @@ fn CyrusPresetReviseReady path previous digest = (
     CyrusPresetReviseOpenData=#(path,source,destination,digest,job);CyrusPresetReviseEditor=editor
     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow);true
 )
-fn CyrusPresetPlan root directory package document surface:undefined = (
+fn CyrusPresetPlan root directory package document surface:undefined preparedToken:0L = (
     CyrusLibraryCheckSurface surface
     if root!=undefined do CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
     local graph=CyrusRecipeGet package "graph",roles=CyrusRecipeGet document "roles",bindings=#(),receiverRoles=#(),receiverData=#(),pathTransform=undefined
@@ -67,6 +67,18 @@ fn CyrusPresetPlan root directory package document surface:undefined = (
         )
     )
     if receiverData.count!=1 do throw "Direct loading requires one saved terrain. Save each terrain as its own preset."
+    local hasPaint=false,hasPaths=(CyrusRecipeGet graph "version")>=2 and (CyrusRecipeGet graph "splines").count>0,sourceBounds=undefined
+    for record in (CyrusRecipeGet document "layers") do (
+        if (CyrusRecipeGet record "paint")!=undefined do hasPaint=true
+        for area in (CyrusRecipeGet record "areas") where (CyrusRecipeGet area "paint")!=undefined do hasPaint=true
+    )
+    if hasPaint or hasPaths do (
+        if preparedToken<=0 do throw "Prepare this complete preset before transferring its Paint or paths. Nothing was added."
+        local receiverMeshID=CyrusRecipeGet receiverData[1] "mesh",receiverMeshFile=undefined
+        for meshData in (CyrusRecipeGet graph "meshes") where (CyrusRecipeGet meshData "id")==receiverMeshID do receiverMeshFile=CyrusRecipeGet meshData "file"
+        if receiverMeshFile==undefined do throw "The preset is missing its saved receiver mesh. Nothing was added."
+        sourceBounds=cyrusAssetPreparedMeshBounds preparedToken receiverMeshFile
+    )
     -- Validate required channels and receiver-bound Paint before staging any models or layers.
     for record in (CyrusRecipeGet document "layers") do (
         local records=#(CyrusRecipeGet record "settings")
@@ -80,8 +92,8 @@ fn CyrusPresetPlan root directory package document surface:undefined = (
             local curve=CyrusRecipeGet settings "meshMaskSamples"
             if curve.count==0 do curve=#(0.0,1.0)
             local channelError=""
-            try(cyrusMeshDensityKey surface #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve))
-            catch(channelError=getCurrentException())
+            try(cyrusMeshDensityKey surface #(true,(CyrusRecipeGet settings "meshMaskChannel"),(CyrusRecipeGet settings "meshMaskComponent"),(CyrusRecipeGet settings "meshMaskMinimum"),(CyrusRecipeGet settings "meshMaskMaximum"),(CyrusRecipeGet settings "meshMaskInvert"),curve,(CyrusRecipeGet settings "meshMaskSource")))
+            catch(channelError=CyrusRecipeErrorText (getCurrentException()))
             if channelError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+channelError+" No preset layers were added.")
         )
         if (CyrusRecipeGet settings "distributionMode")==3 and (CyrusRecipeGet settings "densityCoordinateMode")==0 do (
@@ -89,31 +101,36 @@ fn CyrusPresetPlan root directory package document surface:undefined = (
             -- Capture here, before the asset/layer transaction, not at final Update.
             local uvError=""
             try(cyrusProceduralSurfaceKey #(surface) true (CyrusRecipeGet settings "densityUVChannel"))
-            catch(uvError=getCurrentException())
+            catch(uvError=CyrusRecipeErrorText (getCurrentException()))
             if uvError!="" do throw ("Cannot load layer '"+(CyrusRecipeGet record "name")+"'. "+uvError+" No preset layers were added.")
         )
         )
         local paintError=""
         try (
             local paint=CyrusRecipeGet record "paint"
-            if paint!=undefined do CyrusRecipeRestorePaint paint surface document
+            if paint!=undefined do CyrusRecipeRestorePaint paint surface document footprint:sourceBounds
             for area in (CyrusRecipeGet record "areas") do (
                 local data=CyrusRecipeGet area "paint"
-                if data!=undefined do CyrusRecipeRestorePaint data surface document
+                if data!=undefined do CyrusRecipeRestorePaint data surface document footprint:sourceBounds
             )
-        )catch(paintError=getCurrentException())
-        if paintError!="" do throw ("Saved Paint does not match the selected terrain's geometry, frame or system units. Use compatible terrain or save a preset without that coverage. Nothing was added. "+paintError)
+        )catch(paintError=CyrusRecipeErrorText (getCurrentException()))
+        if paintError!="" do throw ("Cannot transfer Paint in layer '"+(CyrusRecipeGet record "name")+"' onto this terrain. "+paintError+" Nothing was added.")
     )
-    if (CyrusRecipeGet graph "version")==2 and (CyrusRecipeGet graph "splines").count>0 do (
+    if hasPaths do (
         local values=CyrusRecipeGet receiverData[1] "transform",metres=(units.decodeValue "1m") as double
         local saved=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
         if abs(dot saved.row1 (cross saved.row2 saved.row3))<1e-12 do throw "Saved terrain has a singular frame; its paths cannot be transferred."
-        -- Paths retain authored dimensions in the saved terrain's local frame; no arbitrary reprojection.
-        pathTransform=(inverse saved)*surface.objectTransform
+        -- Match the same local XY footprint as Paint. Path heights and band
+        -- widths remain physical; the receiving mesh supplies final placement Z.
+        local destinationBounds=cyrusAssetReceiverBounds surface
+        local sx=(destinationBounds[3]-destinationBounds[1])/((sourceBounds[3]-sourceBounds[1])*metres)
+        local sy=(destinationBounds[4]-destinationBounds[2])/((sourceBounds[4]-sourceBounds[2])*metres)
+        local fit=matrix3 [sx,0,0] [0,sy,0] [0,0,1] [destinationBounds[1]-sourceBounds[1]*metres*sx,destinationBounds[2]-sourceBounds[2]*metres*sy,0]
+        pathTransform=(inverse saved)*fit*surface.objectTransform
     )
     CyrusRecipeValidateBindings root (CyrusRecipeObject #(#("roles",receiverRoles))) bindings
     local manifest=CyrusRecipeGet package "manifest",descriptor=CyrusRecipeGet manifest "recipe"
-    #(CyrusAssetImportPlan root:root node:(if root==undefined then undefined else CyrusRecipeOwnerNode root) inputKey:(if root==undefined then undefined else root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:(root==undefined) variation:#new assets:#clone preset:true pathTransform:pathTransform,"Selected terrain: "+surface.name)
+    #(CyrusAssetImportPlan root:root node:(if root==undefined then undefined else CyrusRecipeOwnerNode root) inputKey:(if root==undefined then undefined else root.procInputKey()) directory:directory package:package recipeHash:(CyrusRecipeGet descriptor "sha256") bindings:bindings newSetup:(root==undefined) variation:#new assets:#clone preset:true pathTransform:pathTransform paintFootprint:sourceBounds,"Selected terrain: "+surface.name+(if hasPaint or hasPaths then " / saved layout fitted to terrain footprint" else ""))
 )
 fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
     CyrusRequireAuthor();CyrusLibraryCheckSurface surface
@@ -135,7 +152,7 @@ fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
             if root!=undefined do CyrusRecipeCheckRoot root node
             local package=cyrusAssetPackagePrepared job false,document=cyrusAssetPackagePrepared job true
             if expected!="" and (CyrusRecipeGet (CyrusRecipeGet (CyrusRecipeGet package "manifest") "recipe") "sha256")!=expected do throw "The ready preset does not match this gallery entry. Refresh the library."
-            local proposed=CyrusPresetPlan root directory package document surface:surface
+            local proposed=CyrusPresetPlan root directory package document surface:surface preparedToken:job
             plan=proposed[1];terrainNote=proposed[2]
             status.text="Adding preset layers. "+terrainNote
             -- Import owns assets, authored changes and the initial calculation
@@ -182,7 +199,7 @@ fn CyrusOpenReadyPreset root directory expected:"" surface:undefined = (
         )catch(
             resumeDisplay()
             progress.active=false;finished=true;closeButton.text="Close"
-            status.text=(if result==undefined then "Preset was not added. " else "Preset layers were added, but Update failed. The last complete preview is retained; Undo removes the added preset. ")+getCurrentException()
+            status.text=(if result==undefined then "Preset was not added. " else "Preset layers were added, but Update failed. The last complete preview is retained; Undo removes the added preset. ")+(CyrusRecipeErrorText (getCurrentException()))
             if job!=0L do (cyrusAssetPackageRelease job;job=0L)
         )
         on closeButton pressed do destroyDialog editor

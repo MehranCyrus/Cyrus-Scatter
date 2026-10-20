@@ -119,7 +119,7 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==320  # Includes the always-available direct Map browser.
+    assert len(current)==321  # Includes the explicit surface density field selector.
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
     assert len(layout['sections'])==12
     for section in layout['sections']:

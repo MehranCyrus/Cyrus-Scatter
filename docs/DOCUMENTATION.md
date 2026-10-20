@@ -6,6 +6,8 @@
 
 The capability matrix and MCP agent workflow remain at their existing `Current_System_2026-10-05` paths because code/catalog generation and external references use them. Their directory date does not make their maintained content obsolete. The semantic inventory, catalog hashes and current control register are functional inputs, not disposable prose.
 
+The 19 October 2026 maintenance check reconciles current installation, licensing and knowledge navigation with the corrected 0.86.2 delivery. The user confirmed that the replacement installer worked; this is a user report, not a new comprehensive host qualification. Earlier package hashes, preview labels and test limits remain historical. Knowledge activation and retrieval evidence are recorded in the existing [knowledge entrypoint](../tools/rag/README.md); plugin changes and further roadmap work are outside this maintenance task.
+
 ## What to keep
 
 - Current usage, engineering contracts, build/testing instructions and one active work list.

@@ -473,6 +473,7 @@ Value* cyrusScatterCanonicalBound_cf(Value** args,int count){
 #include "direction_orientation_bridge.inc"
 #include "surface_filter_bridge.inc"
 #include "mesh_density_bridge.inc"
+#include "receiver_map_bridge.inc"
 #include "density_overlay_bridge.inc"
 def_visible_primitive(cyrusDensityMapVersion,"cyrusDensityMapVersion");
 Value* cyrusDensityMapVersion_cf(Value** a,int n){check_arg_count(cyrusDensityMapVersion,0,n);return Integer::intern(1);}

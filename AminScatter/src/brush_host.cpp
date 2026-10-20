@@ -4,6 +4,7 @@
 #include <iparamb2.h>
 #include <triobj.h>
 #include <splshape.h>
+#include <AppDataChunk.h>
 #include <IPainterInterface.h>
 #include <notify.h>
 #include <maxscript/maxscript.h>
@@ -68,9 +69,11 @@ public:
     std::unique_ptr<TriObject,TriDelete> snapshot;
     std::unique_ptr<b::Surface> surface;
     std::unique_ptr<b::Field> field;
+    std::shared_ptr<const b::SurfaceAtlas> atlas;
     std::vector<std::array<Point3,2>> border;
     b::Metric metric;
     b::Point lastPoint{};
+    b::Anchor lastAnchor{};
     std::uint64_t fieldIndexRevision=0,maskApplications=0;
     Matrix3 objectTM{1};
     bool receiverFrameKnown=false;
@@ -153,7 +156,7 @@ public:
         for(int i=0;i<m.numVerts;++i)mesh.vertices.push_back(vec(m.verts[i]));
         for(int i=0;i<m.numFaces;++i)mesh.faces.push_back({m.faces[i].v[0],m.faces[i].v[1],m.faces[i].v[2]});
         auto next=std::make_unique<b::Surface>(std::move(mesh));
-        if(!document.contours.empty()&&document.surface!=next->fingerprint())throw std::runtime_error("Surface shape/topology changed. Vector regions preserved; restore the original shape or create a new Paint Area");
+        if((!document.contours.empty()||!document.faces.empty())&&document.surface!=next->fingerprint())throw std::runtime_error("Surface shape/topology changed. Vector regions preserved; restore the original shape or create a new Paint Area");
         const auto nextTM=node->GetObjectTM(t);
         bool sameTM=true;for(int i=0;i<4;++i)sameTM=sameTM&&(objectTM.GetRow(i)==nextTM.GetRow(i));
         // Host notifications can be conservative (including a timeline change).
@@ -162,16 +165,20 @@ public:
         if(surface&&target==node&&sameTM&&surface->fingerprint()==next->fingerprint()){
             snapshotTime=t;targetValidity=nextValidity;invalid=false;error.clear();return;
         }
-        auto nextDomain=b::domain(*next);
+        b::Contours nextDomain;bool attached=document.attached;
+        if(!attached){try{nextDomain=b::domain(*next);}catch(const std::invalid_argument&){attached=true;}}
+        std::shared_ptr<const b::SurfaceAtlas> nextAtlas;
+        if(attached)nextAtlas=std::make_shared<b::SurfaceAtlas>(*next,b::Basis{vec(nextTM.GetRow(0)),vec(nextTM.GetRow(1)),vec(nextTM.GetRow(2))});
         objectTM=nextTM;receiverFrameKnown=true;metric=b::Metric::fromBasis(vec(objectTM.GetRow(0)),vec(objectTM.GetRow(1)));snapshotTime=t;targetValidity=nextValidity;
         if(std::abs(DotProd(objectTM.GetRow(0),CrossProd(objectTM.GetRow(1),objectTM.GetRow(2))))<1e-12)throw std::runtime_error("Singular target transform");
-        ReplaceReference(0,node);snapshot=std::move(owned);surface=std::move(next);receiverDomain=std::move(nextDomain);document.surface=surface->fingerprint();invalid=false;error.clear();
+        ReplaceReference(0,node);snapshot=std::move(owned);surface=std::move(next);receiverDomain=std::move(nextDomain);atlas=std::move(nextAtlas);document.surface=surface->fingerprint();document.attached=attached;if(attached)document.topology=atlas->topology();invalid=false;error.clear();
         rebuildCandidates();changed();
     }
     void pollTarget(){if(target&&targetValidity.InInterval(GetCOREInterface()->GetTime()))return;
         invalid=true;error="Target lifetime or time changed; validate before painting";}
     void valid(bool requirePaintable=true){pollTarget();if(!target||invalid||!surface)throw std::runtime_error("Brush target requires validation");if(requirePaintable&&(target->IsHidden()||target->IsFrozen()))throw std::runtime_error("Painting requires a visible unfrozen target");}
-    void ensureSurface(bool requirePaintable=false){pollTarget();if((invalid||!surface)&&!painting)prepare(target,requirePaintable);valid(requirePaintable);}
+    void ensureSurface(bool requirePaintable=false){pollTarget();if((invalid||!surface)&&!painting)prepare(target,requirePaintable);valid(requirePaintable);
+        if(document.attached&&!atlas)atlas=std::make_shared<b::SurfaceAtlas>(*surface,b::Basis{vec(objectTM.GetRow(0)),vec(objectTM.GetRow(1)),vec(objectTM.GetRow(2))});}
     b::Ray ray(IPoint2 mouse){
         auto& view=GetCOREInterface()->GetActiveViewExp();if(!view.IsAlive())throw std::runtime_error("No active viewport");
         ::Ray r;view.MapScreenToWorldRay(float(mouse.x),float(mouse.y),r);
@@ -194,7 +201,7 @@ public:
     const b::Field& fieldForRevision(){
         ensureSurface();
         if(!field||fieldIndexRevision!=revision){
-            auto next=std::make_unique<b::Field>(*surface,gesture?pending:document,metric);
+            auto next=std::make_unique<b::Field>(*surface,gesture?pending:document,metric,atlas);
             field=std::move(next);
             fieldIndexRevision=revision;++fieldBuilds;
         }
@@ -210,7 +217,9 @@ public:
             for(std::size_t i=0;i<anchors.size();++i){const double w=indexed.evaluate(anchors[i]);if(w>0)nextOverlay.push_back({point(candidates[i].position)*objectTM,float(w)});}
             queries+=anchors.size();
         } else if(displayMode==2){
-            for(const auto& line:b::boundary(*surface,gesture?pending:document))nextBorder.push_back({point(line[0])*objectTM,point(line[1])*objectTM});
+            const auto& current=gesture?pending:document;
+            if(current.attached){for(const auto& line:atlas->boundary(current)){auto offset=surface->normal(line[0].face)*1e-4;nextBorder.push_back({point(surface->position(line[0])+offset)*objectTM,point(surface->position(line[1])+offset)*objectTM});}}
+            else for(const auto& line:b::boundary(*surface,current))nextBorder.push_back({point(line[0])*objectTM,point(line[1])*objectTM});
         }
         overlay=std::move(nextOverlay);border=std::move(nextBorder);
         tintFaces=border.size();tintLimited=false;fieldRevision=revision;
@@ -271,8 +280,9 @@ public:
     void addPoint(b::Anchor anchor,bool connected){
         requireAuthor();valid();if(!gesture&&!StartStroke())throw std::runtime_error(error);
         const auto p=surface->position(anchor);b::Point center{p.x,p.y};
-        auto next=b::constrain(b::paint(pending,center,radius,erase,metric,connected&&pathConnected?&lastPoint:nullptr),receiverDomain);
-        pending=std::move(next);lastPoint=center;pathConnected=true;gestureChanged=true;++revision;
+        auto next=pending.attached?atlas->paint(pending,anchor,radius,erase,connected&&pathConnected?&lastAnchor:nullptr):
+            b::constrain(b::paint(pending,center,radius,erase,metric,connected&&pathConnected?&lastPoint:nullptr),receiverDomain);
+        pending=std::move(next);lastPoint=center;lastAnchor=anchor;pathConnected=true;gestureChanged=true;++revision;
     }
     void add(IPoint2,b::Anchor anchor){addPoint(anchor,true);}
     BOOL PaintStroke(BOOL hit,IPoint2 mouse,Point3 world,Point3,Point3,Point3,Point3 bary,int face,BOOL,BOOL,BOOL,float,float,float,INode* node,BOOL,Point3,Point3,Point3,Point3)override{
@@ -366,9 +376,17 @@ public:
     HINSTANCE HInstance()override{return instance;}
 };
 PaintDocument* doc(Value* value){auto* r=value->to_reftarg();if(!r||r->ClassID()!=documentID)throw RuntimeError(_T("Expected Cyrus Brush document"));return static_cast<PaintDocument*>(r);}
+std::uint64_t splineGeometryKey(BezierShape& shape){
+    std::uint64_t key=1469598103934665603ULL;std::size_t total=0;
+    auto hash=[&](const void* data,std::size_t size){auto* bytes=static_cast<const unsigned char*>(data);for(std::size_t k=0;k<size;++k)key=(key^bytes[k])*1099511628211ULL;};
+    int count=shape.SplineCount();hash(&count,sizeof(count));
+    for(int i=0;i<count;++i){auto* curve=shape.GetSpline(i);int knots=curve->KnotCount(),closed=curve->Closed();if(knots<0||static_cast<std::size_t>(knots)>b::maxVertices-total)throw std::runtime_error("Surface spline snapshot exceeds its knot capacity");total+=knots;hash(&knots,sizeof(knots));hash(&closed,sizeof(closed));
+        for(int k=0;k<knots;++k){for(auto p:{curve->GetKnotPoint(k),curve->GetInVec(k),curve->GetOutVec(k)})hash(&p,sizeof(p));int type=curve->GetLineType(k);hash(&type,sizeof(type));}}
+    return key;
+}
 template<class F> Value* api(F f){try{return f();}catch(const std::exception& e){std::string s=e.what();throw RuntimeError(MSTR(std::wstring(s.begin(),s.end()).c_str()));}}
 }
-extern "C" __declspec(dllexport) const MCHAR* LibDescription(){return _T("Cyrus Scatter 0.78 vector Brush");}
+extern "C" __declspec(dllexport) const MCHAR* LibDescription(){return _T("Cyrus Scatter surface/vector Brush");}
 extern "C" __declspec(dllexport) ULONG LibVersion(){return VERSION_3DSMAX;}
 extern "C" __declspec(dllexport) int LibNumberClasses(){return 1;}
 extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){static DocumentDesc desc;return i==0?&desc:nullptr;}
@@ -404,6 +422,28 @@ Value* cyrusBrushPlacementInfo_cf(Value** a,int n){check_arg_count(cyrusBrushPla
 
 // Only the trusted packaged-receiver path uses this explicit unit conversion.
 // Ordinary recipe rebinding retains its strict geometry/frame/unit checks.
+def_visible_primitive(cyrusBrushPresetTransfer,"cyrusBrushPresetTransfer");
+Value* cyrusBrushPresetTransfer_cf(Value** a,int n){check_arg_count(cyrusBrushPresetTransfer,7,n);return api([&]()->Value*{
+    type_check(a[0],String,_T("Saved Paint bytes"));const auto* input=a[0]->to_string();const auto length=wcslen(input);
+    if(length>cyrus::recipes::maxPaintBytes*2)throw std::runtime_error("Saved Paint exceeds its transfer limit");
+    std::string packed;packed.reserve(length);for(std::size_t i=0;i<length;++i){if(input[i]>127)throw std::runtime_error("Invalid Paint hex");packed+=static_cast<char>(input[i]);}
+    const auto original=b::decode(cyrus::recipes::unhex(packed));
+    const double sourceUnits=a[4]->to_double(),destinationUnits=a[5]->to_double();
+    if(!std::isfinite(sourceUnits)||!std::isfinite(destinationUnits)||sourceUnits<=0||destinationUnits<=0||sourceUnits>1e12||destinationUnits>1e12)
+        throw std::runtime_error("Paint transfer requires valid source and destination system units");
+    const double radius=a[2]->to_double()*destinationUnits/sourceUnits;
+    if(!std::isfinite(radius)||radius<=.0001||radius>1e7)throw std::runtime_error("Converted Paint brush radius is outside the supported range");
+    if(a[3]!=&true_value&&a[3]!=&false_value)throw std::runtime_error("Invalid saved Paint brush mode");
+    type_check(a[6],Array,_T("Saved receiver footprint"));auto* inputBounds=static_cast<Array*>(a[6]);
+    if(inputBounds->size!=4)throw std::runtime_error("Saved Paint footprint requires xmin, ymin, xmax and ymax in metres");
+    std::array<double,4> bounds;for(int i=0;i<4;++i)bounds[i]=inputBounds->data[i]->to_double();
+    std::unique_ptr<PaintDocument> result(static_cast<PaintDocument*>(GetCOREInterface()->CreateInstance(REF_TARGET_CLASS_ID,documentID)));
+    if(!result)throw std::runtime_error("Brush storage class unavailable");
+    result->requireAuthor();result->prepare(a[1]->to_node());
+    result->document=b::transfer(original,*result->surface,bounds,sourceUnits,destinationUnits);
+    result->radius=radius;result->erase=a[3]==&true_value;result->changed();
+    return MAXRefTarg::intern(result.release());
+});}
 def_visible_primitive(cyrusBrushPresetRestore,"cyrusBrushPresetRestore");
 Value* cyrusBrushPresetRestore_cf(Value** a,int n){check_arg_count(cyrusBrushPresetRestore,6,n);return api([&]()->Value*{
     type_check(a[0],String,_T("Packaged Paint bytes"));const auto* input=a[0]->to_string();const auto length=wcslen(input);
@@ -472,7 +512,7 @@ Value* cyrusBrushDisplay_cf(Value** a,int n){check_arg_count(cyrusBrushDisplay,3
     if(p->painting)p->evaluate();return &ok;
 });}
 def_visible_primitive(cyrusBrushStats,"cyrusBrushStats");
-Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);const auto& current=p->gesture?p->pending:p->document;std::size_t samples=b::vertexCount(current);for(auto v:{p->revision,std::uint64_t(current.contours.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(0.f));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
+Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);const auto& current=p->gesture?p->pending:p->document;std::size_t samples=b::vertexCount(current);for(auto v:{p->revision,std::uint64_t(current.attached?current.faces.size():current.contours.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(0.f));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
 def_visible_primitive(cyrusBrushRefreshMask,"cyrusBrushRefreshMask");
 Value* cyrusBrushRefreshMask_cf(Value** a,int n){check_arg_count(cyrusBrushRefreshMask,1,n);return api([&]()->Value*{return doc(a[0])->evaluate()?&true_value:&false_value;});}
 def_visible_primitive(cyrusBrushDab,"cyrusBrushDab");
@@ -524,17 +564,19 @@ def_visible_primitive(cyrusBrushFill,"cyrusBrushFill");
 Value* cyrusBrushFill_cf(Value** a,int n){check_arg_count(cyrusBrushFill,2,n);return api([&]()->Value*{
     auto* p=doc(a[0]);p->requireAuthor();if(p->gesture)throw std::runtime_error("Finish the stroke before resetting the field");
     const auto value=a[1]->to_float();if(value!=0&&value!=1)throw std::runtime_error("Vector Fill requires 0 (clear) or 1 (fill)");
-    p->ensureSurface();auto next=p->document;next.contours=value==1?p->receiverDomain:b::Contours{};
+    p->ensureSurface();auto next=p->document;if(next.attached)next=p->atlas->fill(next,value==1);else next.contours=value==1?p->receiverDomain:b::Contours{};
     theHold.Begin();theHold.Put(new PaintRestore(p));p->document=std::move(next);p->changed();theHold.Accept(_T("Cyrus Brush fill"));return &ok;
 });}
 
 def_visible_primitive(cyrusBrushConversionVersion,"cyrusBrushConversionVersion");
 Value* cyrusBrushConversionVersion_cf(Value**,int n){check_arg_count(cyrusBrushConversionVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusBrushSurfaceVersion,"cyrusBrushSurfaceVersion");
+Value* cyrusBrushSurfaceVersion_cf(Value**,int n){check_arg_count(cyrusBrushSurfaceVersion,0,n);return Integer::intern(1);}
 
 def_visible_primitive(cyrusBrushExportSpline,"cyrusBrushExportSpline");
 Value* cyrusBrushExportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushExportSpline,2,n);return api([&]()->Value*{
     auto* p=doc(a[0]);p->requireAuthor();if(p->painting||p->gesture)throw std::runtime_error("Stop the brush before exporting a spline snapshot");
-    p->ensureSurface();if(p->document.contours.empty())throw std::runtime_error("This Paint Area is empty; paint or import coverage first");
+    p->ensureSurface();if(p->document.contours.empty()&&p->document.faces.empty())throw std::runtime_error("This Paint Area is empty; paint or import coverage first");
     type_check(a[1],String,_T("snapshot name"));MSTR name(a[1]->to_string());
     if(name.Length()<1||name.Length()>128)throw std::runtime_error("Spline snapshot name must contain 1..128 characters");
     auto* ip=GetCOREInterface();ip->MakeNameUnique(name);
@@ -542,19 +584,30 @@ Value* cyrusBrushExportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushExpo
     std::unique_ptr<SplineShape,decltype(cleanup)> shape(static_cast<SplineShape*>(ip->CreateInstance(SHAPE_CLASS_ID,Class_ID(SPLINESHAPE_CLASS_ID,0))),cleanup);
     if(!shape)throw std::runtime_error("Could not create an editable spline snapshot");
     shape->shape.NewShape();
-    for(const auto& contour:p->document.contours){
+    std::vector<std::vector<b::Vec3>> loops;
+    if(p->document.attached)loops=p->atlas->contours(p->document);
+    else for(const auto& contour:p->document.contours){std::vector<b::Vec3> loop;for(auto xy:contour)loop.push_back({xy[0],xy[1],0});loops.push_back(std::move(loop));}
+    if(loops.empty())throw std::runtime_error("The whole closed surface is filled and has no border to export");
+    for(const auto& contour:loops){
         auto* spline=shape->shape.NewSpline();
-        for(auto xy:contour){
-            Point3 q(float(xy[0]),float(xy[1]),0.f);
+        for(auto position:contour){
+            Point3 q=point(position);
             // Max knots are single precision. Reject lossy large-coordinate
             // snapshots rather than quietly losing canonical boundary detail.
-            if(std::hypot(double(q.x)-xy[0],double(q.y)-xy[1])>.0001)
+            if(amin::length(vec(q)-position)>.0001)
                 throw std::runtime_error("Paint coordinates are too large for an accurate Max spline; move geometry nearer its local origin");
             if(!spline->AddKnot(SplineKnot(KTYPE_CORNER,LTYPE_LINE,q,q,q)))throw std::runtime_error("Spline knot allocation failed");
         }
         spline->SetClosed();spline->ComputeBezPoints();
     }
     shape->shape.UpdateSels();shape->shape.InvalidateGeomCache();
+    if(p->document.attached){
+        const auto payload=b::encode(p->document);const auto key=splineGeometryKey(shape->shape);const auto size=payload.size()+sizeof(key);
+        if(size>cyrus::recipes::maxPaintBytes+sizeof(key))throw std::runtime_error("Surface spline snapshot exceeds its coverage budget");
+        const auto freeData=[](unsigned char* data){MAX_free(data);};
+        std::unique_ptr<unsigned char,decltype(freeData)> data(static_cast<unsigned char*>(MAX_malloc(size)),freeData);if(!data)throw std::bad_alloc();std::memcpy(data.get(),&key,sizeof(key));std::memcpy(data.get()+sizeof(key),payload.data(),payload.size());
+        shape->AddAppDataChunk(documentID,REF_TARGET_CLASS_ID,0x8661,static_cast<DWORD>(size),data.get());data.release();
+    }
     const bool ownHold=!theHold.Holding();if(ownHold)theHold.Begin();
     INode* node=nullptr;
     try{
@@ -578,17 +631,33 @@ Value* cyrusBrushImportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushImpo
     auto* node=a[1]->to_node();const auto time=GetCOREInterface()->GetTime();auto* object=node?node->EvalWorldState(time).obj:nullptr;
     if(!object||object->SuperClassID()!=SHAPE_CLASS_ID)throw std::runtime_error("Pick a closed spline shape to import into this Paint Area");
     auto* shape=static_cast<ShapeObject*>(object);constexpr std::size_t budget=8192;
-    const int curves=shape->NumberOfCurves(time);if(curves<1||curves>int(budget/3))throw std::runtime_error("Spline import needs bounded closed contours (8,192 total knots/samples)");
+    // Native snapshots can retain the full canonical border budget. Generic
+    // edited-spline reconstruction still has the smaller tessellation budget.
+    const auto inputBudget=p->document.attached?b::maxVertices:budget;
+    const int curves=shape->NumberOfCurves(time);if(curves<1||curves>int(inputBudget/3))throw std::runtime_error("Spline import needs bounded closed contours");
     std::size_t pieces=0;
     for(int i=0;i<curves;++i){
         if(!shape->CurveClosed(time,i))throw std::runtime_error("Every imported spline must be closed; close open contours first");
         const int count=shape->NumberOfPieces(time,i);
-        if(count<1||std::size_t(count)>budget-pieces)throw std::runtime_error("Spline input exceeds 8,192 total knots; simplify the shape");pieces+=count;
+        if(count<1||std::size_t(count)>inputBudget-pieces)throw std::runtime_error("Spline input exceeds its knot budget; simplify the shape");pieces+=count;
     }
     if(!shape->CanMakeBezier())throw std::runtime_error("This shape cannot provide Bezier geometry; convert a copy to Editable Spline");
     BezierShape bezier;shape->MakeBezier(time,bezier);
     if(bezier.SplineCount()!=curves)throw std::runtime_error("Spline conversion changed contour topology");
     const auto tm=node->GetObjectTM(time),receiver=p->objectTM;
+    if(p->document.attached){
+        // An unchanged exported snapshot retains exact holes and the chosen side
+        // of a closed receiver. Edited curves use geometric reconstruction below.
+        auto* chunk=object->GetAppDataChunk(documentID,REF_TARGET_CLASS_ID,0x8661);bool sameFrame=true;for(int i=0;i<4;++i)sameFrame=sameFrame&&(tm.GetRow(i)==receiver.GetRow(i));
+        if(chunk&&sameFrame&&chunk->length>sizeof(std::uint64_t)&&chunk->length<=cyrus::recipes::maxPaintBytes+sizeof(std::uint64_t)){
+            std::uint64_t key;std::memcpy(&key,chunk->data,sizeof(key));
+            if(key==splineGeometryKey(bezier)){auto* bytes=static_cast<const std::uint8_t*>(chunk->data);auto saved=b::decode(std::vector<std::uint8_t>(bytes+sizeof(key),bytes+chunk->length));
+                if(saved.surface==p->document.surface){auto next=p->atlas->combine(p->document,saved,a[2]==&true_value);
+                    if(b::encode(next)==b::encode(p->document))return &false_value;
+                    auto restore=std::make_unique<PaintRestore>(p);const bool ownHold=!theHold.Holding();if(ownHold)theHold.Begin();theHold.Put(restore.release());p->document=std::move(next);p->changed();if(ownHold)theHold.Accept(_T("Cyrus surface spline to Paint"));return &true_value;}}
+        }
+    }
+    if(pieces>budget)throw std::runtime_error("Edited spline input exceeds 8,192 total knots; simplify the shape");
     const auto x=vec(receiver.GetRow(0)),y=vec(receiver.GetRow(1)),z=vec(receiver.GetRow(2));
     const auto cross=[](amin::Vec3 a,amin::Vec3 b)->amin::Vec3{return {a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y-a.y*b.x};};
     const auto yz=cross(y,z),zx=cross(z,x);const double determinant=amin::dot(x,yz);
@@ -596,11 +665,12 @@ Value* cyrusBrushImportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushImpo
     const auto projected=[&](Point3 q)->amin::Vec3{
         const auto delta=sx*double(q.x)+sy*double(q.y)+sz*double(q.z)+offset;
         if(!std::isfinite(delta.x)||!std::isfinite(delta.y)||!std::isfinite(delta.z))throw std::runtime_error("Spline has nonfinite geometry or transform");
+        if(p->document.attached)return delta;
         b::Point local{amin::dot(delta,yz)/determinant,amin::dot(delta,zx)/determinant};
         if(!std::isfinite(local[0])||!std::isfinite(local[1])||std::max(std::abs(local[0]),std::abs(local[1]))>1.e9)throw std::runtime_error("Projected spline coordinates are outside the Paint range");
         const auto mapped=m.map(local);return {mapped[0],mapped[1],0};
     };
-    b::Contours contours;std::size_t knots=0,vertices=0;
+    b::Contours contours;std::vector<std::vector<b::Vec3>> surfaceCurves;std::size_t knots=0,vertices=0;
     for(int i=0;i<curves;++i){
         auto* spline=bezier.GetSpline(i);const int count=spline?spline->KnotCount():0;
         if(!spline||!spline->Closed()||count<1||std::size_t(count)>budget-knots)throw std::runtime_error("Invalid or oversized closed spline");knots+=count;
@@ -612,10 +682,11 @@ Value* cyrusBrushImportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushImpo
         }
         // Reserve half the tolerance for canonical quantization and host precision.
         auto samples=cyrus::bands::tessellate(controls,tolerance*.5,budget-vertices);vertices+=samples.size();
-        b::Contour contour;contour.reserve(samples.size());for(auto q:samples)contour.push_back(m.unmap({q.x,q.y}));contours.push_back(std::move(contour));
+        if(p->document.attached){std::vector<b::Vec3> curve;curve.reserve(samples.size());auto xy=cross(x,y);for(auto q:samples)curve.push_back({amin::dot(q,yz)/determinant,amin::dot(q,zx)/determinant,amin::dot(q,xy)/determinant});surfaceCurves.push_back(std::move(curve));}
+        else {b::Contour contour;contour.reserve(samples.size());for(auto q:samples)contour.push_back(m.unmap({q.x,q.y}));contours.push_back(std::move(contour));}
     }
-    auto next=b::importContours(p->document,contours,p->receiverDomain,a[2]==&true_value);
-    if(next.contours==p->document.contours)return &false_value;
+    auto next=p->document.attached?p->atlas->importCurves(p->document,surfaceCurves,tolerance,a[2]==&true_value):b::importContours(p->document,contours,p->receiverDomain,a[2]==&true_value);
+    if(b::encode(next)==b::encode(p->document))return &false_value;
     auto restore=std::make_unique<PaintRestore>(p);const bool ownHold=!theHold.Holding();if(ownHold)theHold.Begin();
     theHold.Put(restore.release());p->document=std::move(next);p->changed();if(ownHold)theHold.Accept(_T("Cyrus spline to Paint"));return &true_value;
 });}

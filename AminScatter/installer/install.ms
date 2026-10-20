@@ -5,9 +5,13 @@
     ) else try (
         local packageDir=getFilenamePath (getSourceFileName())
         dotNet.loadAssembly (pathConfig.appendPath packageDir "CyrusInstaller.dll")
-        local paths=dotNetObject "Cyrus.Setup.InstallPaths" (getDir #userScripts) (getDir #userStartupScripts) (getDir #userMacros) (getFilenamePath (getMAXIniFile()))
+        local paths=(dotNetClass "Cyrus.Setup.InstallPaths").ForMax (getDir #userScripts) (getDir #userStartupScripts) (getDir #userMacros) (getFilenamePath (getMAXIniFile())) "__MAX_YEAR__"
         local installer=dotNetObject "Cyrus.Setup.InstallEngine" packageDir "__INSTALL_HASH__"
         local release=installer.Install paths
         messageBox ("Cyrus Scatter __VERSION__ is installed for Max __MAX_YEAR__.\nRestart Max to load the matching native/script pair.\n\nCreate > Geometry > Cyrus > Cyrus Scatter.\nLayers > Recipes opens the gallery and bundled examples.\nPersonal recipes and activation are preserved.\n\nInstallation: "+release+"\n\nThis development build uses schema 58. Preserve earlier scenes with their matching older build.") title:"Cyrus Scatter __VERSION__"
-    )catch(messageBox (getCurrentException()) title:"Cyrus Scatter installation")
+    )catch(
+        local details=(getCurrentException())+"\n"+(getCurrentExceptionStackTrace()),logPath=""
+        try(logPath=(dotNetClass "Cyrus.Setup.InstallEngine").SaveFailure paths details)catch()
+        messageBox (details+"\n\nInstallation log: "+logPath) title:"Cyrus Scatter installation"
+    )
 )

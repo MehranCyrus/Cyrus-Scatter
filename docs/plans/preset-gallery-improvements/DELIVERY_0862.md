@@ -1,8 +1,45 @@
 # Scatter 0.86.2 — density fields, portable recipes and panel follow-up
 
-## Current multi-host installer — 19 October 2026
+## Current corrected installer — 19 October 2026
 
-**Share the universal EXE below for team testing. Version remains 0.86.2.** This extends the exact UI follow-up to matching Max 2024 and 2026 builds. The Max 2027 MZP is byte-for-byte unchanged. [Exact qualification](QUALIFICATION_0862_COMPATIBILITY.json) records payloads, tests and limits; no plugin implementation was changed for compatibility.
+**Use this replacement universal EXE for team testing. Version remains 0.86.2.** The normal view now needs only the Max year and **Install / Repair**. Technical paths, Unregister and full copyable errors are under **Details**. Short archive names and a compact per-user runtime avoid the legacy .NET path limits reported on the artist's Max 2024 system. [Exact qualification](QUALIFICATION_0862_INSTALLER.json) pins this correction; older same-version installers below are superseded.
+
+| Installer | Bytes | SHA-256 |
+| --- | ---: | --- |
+| [Universal EXE](../../../dist/CyrusScatter-0.86.2-20261019-installer01/CyrusScatter-0.86.2-Setup.exe) | 31,325,184 | `f3394f0aeed728d11befa74a4920d25452bdaccfb083decac7aaaac8764fbe66` |
+| [Max 2024 MZP](../../../dist/CyrusScatter-0.86.2-20261019-installer01/CyrusScatter-0.86.2-Max2024.mzp) | 10,259,128 | `0af3c7b8e8dfa6419802071c422e8e1547d7233d8a6f605de5882e78f312bf8f` |
+| [Max 2026 MZP](../../../dist/CyrusScatter-0.86.2-20261019-installer01/CyrusScatter-0.86.2-Max2026.mzp) | 10,354,030 | `79b2a6d00f1d77bebf4ffcc2e3954b95a75ae49f64d7045be07e9f39c2ea55c6` |
+| [Max 2027 MZP](../../../dist/CyrusScatter-0.86.2-20261019-installer01/CyrusScatter-0.86.2-Max2027.mzp) | 10,668,887 | `0e5cd232cbdd4667836ae0a7bfccf43afcc27d8b607de13fb69f60960496b688` |
+
+Open the intended Max once, save/close it, run the EXE, select its year and **Install / Repair**, then start/restart Max. For a custom Max executable location, use **Scripting > Run Script** with the matching MZP, then restart. The EXE detects initialized configuration paths; artists do not normally choose a profile. It remains unsigned and requires Windows .NET Framework 4.8. No Max 2025 or earlier-than-2024 payload is included.
+
+The user subsequently confirmed that this replacement installer worked. This report does not imply a new physical-input, renderer or complete licensing qualification on their system. Current documentation/index maintenance is recorded in the [knowledge entrypoint](../../../tools/rag/README.md); the no-activation statements in earlier receipts describe those earlier deliveries.
+
+### Correction and preservation
+
+Installer inventory 2 maps short physical archive sources back to the original logical Library paths, preserving every asset hash. Standard profiles use `%LOCALAPPDATA%/CyrusScatter/<year>/r/<content-id>`; explicitly relocated profiles use `<profile>/cs/r/<content-id>`. Short staging/atomic filenames and destination-length checks work under legacy path handling. All destination volumes are checked for local NTFS/free space. Max/Windows path policies are unchanged. Full failure text is saved to an owned log and shown in Details; completed status survives destination refresh.
+
+Native modules, generated Scatter script, gallery helper, recipes, example scenes and starter-mask bytes are identical to the preceding host-specific qualified pairs. Scene schema 58, recipe/library formats, slope/altitude and licensing behavior are unchanged. Earlier immutable releases remain available for recovery. Personal recipes, imported assets and activation are preserved. The [installer contract](INSTALLER_CONTRACT.md) describes ownership, recovery and bounds.
+
+### Fresh evidence
+
+| Host | Current evidence |
+| --- | --- |
+| Max 2024, 26.2.1.22056 | Complete MZP installation, exact loaded installer assembly and installed native/script startup. All eight library examples, selected-terrain/additive Load, image/Paint complete Save/reload, Undo/Redo, numeric density/channel fields, actual Data Channel edits, persistent preview, Manual/Live, missing dependencies and late-failure retention pass. Count changes through 250,000 retain Undo/image reuse; quiet idle does not solve/bake/upload. Thumbnail and scripted Modify layout/control checks pass. The former preview label is removed for this scoped qualification. |
+| Max 2026, 28.3.2.30788 | Final MZP installation, exact loaded installer assembly, installed native/script startup, selected-terrain/additive Load and Undo, density, scripted panel/layout and every installed asset hash pass. Earlier full 0.86.2 native/script qualification remains applicable to the identical calculation pair. |
+| Max 2027, 29.1.0.11426 | The same fresh final installer/startup/workflow/density/layout/asset checks pass. Earlier UI, physical-input and density qualification retains its original scope on the unchanged calculation pair. |
+
+The final EXE passes **95 recipient checks with legacy path limits enforced**: all three exact embedded packages, Unicode/space paths, compact destinations, hostile mapping rejection, overly deep destination rejection, repair, modified-file protection, same-version legacy-to-compact upgrades, interrupted publication, cancellation, retry, unregister and personal-content retention. Its actual Install handler, success/error status, simple/expanded layout and 150% scripted scaling pass **70 checks**. The final MZPs run through each host's real extraction path; post-restart tests verify all four native module paths, script fingerprint, loaded gallery path and all **137 installed runtime files** per host. Archive inventories, full payload hashes, version/host guards and offline-team licensing metadata pass. Python passes **175 tests**, and generated/catalog consistency passes for 320 controls. No unchanged native SDK rebuild was necessary; prior 45-test receipts retain their original identities.
+
+**Evidence limits:** this machine's default Max 2024 accepts the preceding deep source path. An isolated legacy-CLR probe reproduces the actual old core's `PathTooLongException`; the correction succeeds under those limits. This does not reproduce every setting on the artist's other computer. Full Max 2024 regressions ran on the identical Scatter/library pair before the final installer-only volume-admission adjustment; the final core then received fresh MZP/assembly/startup/workflow/layout/hash checks on all three hosts. New panel checks are scripted, not physical mouse/keyboard, renderer, mixed-monitor or renderfarm qualification.
+
+The first final-panel fixture referenced a destroyed owner after workflow scene changes; explicitly mounting its current owner passed. An earlier startup fixture compared slash styles incorrectly; normalizing expectations passed. The first broad Python run had one transient MCP HTTP connection abort; its focused 12-test recheck and complete 175-test rerun passed without source changes. Original failed witnesses remain in the ignored test folders; none was relabeled as a product pass.
+
+Only disposable profiles were installed/restarted for qualification, and those owned processes were closed. No artist profile installation/restart, Git push, knowledge activation or further roadmap work occurred. Team members still need their own valid generated activation. The original editable demo remains applicable to the unchanged Scatter pair.
+
+## Historical initial multi-host installer — 19 October 2026
+
+**Historical initial distribution, superseded by the corrected installer above. Version remained 0.86.2.** This extended the UI follow-up to matching Max 2024 and 2026 builds. Its Max 2027 MZP was byte-for-byte unchanged from the UI delivery. [Original qualification](QUALIFICATION_0862_COMPATIBILITY.json) retains its exact payloads, tests and preview limits; no plugin implementation was changed for compatibility.
 
 | Installer | Bytes | SHA-256 |
 | --- | ---: | --- |
@@ -29,7 +66,7 @@ Team licensing remains enabled: recipients need their own valid generated activa
 
 ## Qualified UI follow-up — 19 October 2026
 
-**Retained Max 2027 qualification; the universal distribution above is current. Version remains 0.86.2.** [Exact qualification](QUALIFICATION_0862_UI.json) supersedes the earlier installer pair; earlier receipts and artifacts remain historical evidence.
+**Retained Max 2027 qualification; the corrected installer at the top is current. Version remains 0.86.2.** [Exact qualification](QUALIFICATION_0862_UI.json) retains the original UI delivery's pair; its installer artifacts are superseded.
 
 | Current installer | Bytes | SHA-256 |
 | --- | ---: | --- |

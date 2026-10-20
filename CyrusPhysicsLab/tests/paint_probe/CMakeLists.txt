@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.24)
+project(CyrusPhysicsProbe LANGUAGES CXX)
+include("${CMAKE_CURRENT_LIST_DIR}/../../../cmake/CyrusMaxSDK.cmake")
+add_library(CyrusPhysicsProbe MODULE probe.cpp)
+cyrus_max_target(CyrusPhysicsProbe)
+target_link_libraries(CyrusPhysicsProbe PRIVATE core geom mesh gfx maxutil Maxscrpt paramblk2)
+set_target_properties(CyrusPhysicsProbe PROPERTIES SUFFIX ".dlx")

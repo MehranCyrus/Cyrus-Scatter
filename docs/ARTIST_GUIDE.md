@@ -1,12 +1,12 @@
-# Cyrus Scatter 0.86.2 — current artist workflow
+# Cyrus Scatter 0.86.6 — current artist workflow
 
-This delivery adds image/pattern density with physical size, rotation, offsets and repeat/clamp, alongside the independent mesh-channel mask. **Show mask** stays enabled through relevant edits; Manual plants wait for **Update scatter**. Recipes retain supported models/materials, image bytes, mapping, curves, Paint and paths. The [delivery report](plans/preset-gallery-improvements/DELIVERY_0862.md) records the installers, demonstration, tests and limits for Max 2027.
+This Max 2027 delivery fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. The [delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) records the exact MZP, tests and limits; earlier host deliveries retain their original scope.
 
 Placement computation and storage remain native C++. The one-million controller work limit still applies, and failed updates retain the previous complete result and Undo. Existing grids, Bands, orientation, Paint and slope/altitude controls remain available. The [library workflow](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md) explains selected-terrain loading and complete Save. Further roadmap work remains paused.
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) remains independent. Open **License / activation**, save a request and import the returned license. Existing scenes remain loadable/renderable after expiry; creation/editing locks. See [activation instructions](../tools/licensing/README.md).
 
-Scroll over empty panel background with the wheel, or click-hold and drag that background vertically. Buttons, numeric controls and list resize grips keep their own actions. In the library, Maxâ€™s default UI scale is treated as normal size; the toolbar offers Small, Medium and Large tiles. Resize the library as needed. Configured 150% scaling is tested separately from physical 4K/mixed-monitor acceptance.
+Scroll over empty panel background with the wheel, or click-hold and drag that background vertically. Buttons, numeric controls and list resize grips keep their own actions. In the library, Max’s default UI scale is treated as normal size; the toolbar offers Small, Medium and Large tiles. Resize the library as needed. Configured 150% scaling is tested separately from physical 4K/mixed-monitor acceptance.
 
 Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
@@ -36,6 +36,8 @@ This does not freeze all accepted output. A cap can redistribute quotas; changed
 
 **Create fresh schema-58 setups.** Earlier development formats are unsupported and are not migrated. Preserve original scene files. Current settings use unit-aware distances; use saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported binding conversion is rejected rather than clearing authored edits.
 
+Removing the last model produces a valid empty layer after Update in Manual, or automatically in Live. Amount changes remain valid while empty, and adding a replacement resumes normal validation. A failed update retains the last complete result; intentionally empty output clears it.
+
 Models are source scene objects. Their Scatter label can differ from the scene object name; clearing the label uses the scene name again. The color square is a viewport identification color. Assignment groups use separate colors in their own disclosure; changing identification color does not change grouping.
 
 0.79.5 limits a local preview edit to the affected layers and reuses unchanged native display buffers. Changing one source identification color leaves other layers' prepared previews intact. It does not change plant positions or apply pending Manual population edits. Heavy changed layers and cold scene loading can still take time; see the [measured garden workflow](Terrace_Workflow_0.79.5_2026-10-11/README.md).
@@ -46,7 +48,7 @@ Visible Source settings expose weight, scale, radius mode, vertical offset, Foll
 
 For point-only Spline bands, add and name Point rows in Models & Points, then select them under Layout > Spline bands > Assign by **Models / Points**. Assignment groups remain available for choosing several source types together. Use **Plant centres** display for one marker per accepted point. No model or Paint Area is required; a receiver and closed spline still define the placement domain. Point placeholders do not produce final rendered geometry. Point names, identification colors and explicit band choices use saved row identities. Replacing a Point preserves its row; removing another row cannot redirect the choice. Copying a layer includes its band settings and explicit choices.
 
-**Source containers** is a separate collapsible section. Choose Manual models, Layer containers or Shared containers. Containers are optional palettes. Point and Empty rows stay active independently of rectangles; actual models are activated by their pivots. Collection is distinct from layout assignment groups. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Source containers or in the rectangleâ€™s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The selected-container Modify view edits collection properties; select the Scatter controller for full layer and planting settings. The floating layer editor and source-to-Band navigation button have been removed. Band membership labels and tooltips remain informational.
+**Source containers** is a separate collapsible section. Choose Manual models, Layer containers or Shared containers. Containers are optional palettes. Point and Empty rows stay active independently of rectangles; actual models are activated by their pivots. Collection is distinct from layout assignment groups. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Source containers or in the rectangle’s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The selected-container Modify view edits collection properties; select the Scatter controller for full layer and planting settings. The floating layer editor and source-to-Band navigation button have been removed. Band membership labels and tooltips remain informational.
 
 Selecting a source rectangle opens its compact collection, dimensions and ownership properties. Select the Scatter controller to edit the full planting settings. Moving an enabled rectangle carries its eligible owned models; resizing its boundary leaves model transforms unchanged. Label refresh reuses the existing movement setup.
 
@@ -88,24 +90,26 @@ With Surface random, Amount offers fixed Count or area Density. The seed makes a
 
 Count accepts up to **1,000,000** per population. All populations on one controller share a **1,000,000-candidate work limit**, including retry and protected-edit requirements. Exceeding the shared limit reports an error and keeps the preceding complete result. This limit is separate from the viewport display budget.
 
-**Image / pattern density** and **Mesh-channel density** are independent. White permits plants, black excludes them and gray thins them. Enabled masks multiply with Paint and terrain eligibility before spacing/collision limits.
+**Image / pattern density** and **Surface density** are independent. White permits plants, black excludes them and gray thins them. Enabled masks multiply with Paint and terrain eligibility before spacing/collision limits.
 
-**Choose pattern** opens the bundled starter masks: Uniform, Soft patches and Wide bands. **Image** and **Map** share the next row and are available even before an image has been selected. Map accepts a compatible texture output such as Bitmap or Noise and enables **Use image** when a map is chosen. Cyrus evaluates a 2D tile; a complete surface material is not a scalar mask. The three masks are original mathematical images; the user's final artwork can extend this collection later. An empty or procedural map leaves no blank thumbnail space. A selected bitmap shows the complete tile.
+**Choose pattern** opens the bundled starter masks: Uniform, Soft patches and Wide bands. **Image** and **Map** share the next row and are available even before an image has been selected. Map enables **Use image** and selects **Map coordinates**, evaluating the graph on each receiving surface. Supported graphs include Vertex Color, Color Correction, Output, Checker, Bitmap, Mix, Noise, RGB Multiply and Gradient. A Vertex Color node can read its own data channel, and Checker can read its own UV channel; nested outputs retain that context. A complete material is not a scalar density map. Renderer/camera-dependent maps and unsupported classes report an error. The three masks are original mathematical images; the user's final artwork can extend this collection later. An empty or procedural map leaves no blank thumbnail space. A selected bitmap shows the complete tile.
 
-**World XY** projects without receiver UVs. **Scatter local XY** follows the setup frame. Physical **Tile X/Y**, size lock, rotation and offsets control the pattern footprint; **Repeat** tiles it and **Clamp** extends border pixels. **Receiver UV** explicitly reads UV channel 1..99 and has U/V repeats and offsets. Only UV mode requires receiver UVs. Invert precedes the image density curve. Initial placement and Relax use the same native image sampler.
+**World XY** projects without receiver UVs. **Scatter local XY** follows the setup frame. Physical **Tile X/Y**, size lock, rotation and offsets control the pattern footprint; **Repeat** tiles it and **Clamp** extends border pixels. **Receiver UV** explicitly reads UV channel 1..99 and has U/V repeats and offsets. Projected World/Scatter-local images do not require UVs. Receiver UV needs the selected UV channel; Map coordinates needs each channel requested by its graph. Invert precedes the image density curve. Initial placement and Relax use the same native image sampler.
 
-**More settings** expands one section below the button: image sampling and portable Bake, mask display detail/opacity/sample markers, and population retry settings. **Fewer settings** collapses that section. Hiding these controls preserves their settings. Map resolution 64/128/256/512 controls sampled detail independently of physical tile size. Image mapping controls appear when **Use image** is enabled; mesh-channel controls appear when **Use mesh channel** is enabled.
+**More settings** expands one section below the button: image sampling and portable Bake, mask display detail/opacity/sample markers, and population retry settings. **Fewer settings** collapses that section. Hiding these controls preserves their settings. Map resolution 64/128/256/512 controls projected image detail independently of physical tile size. Map coordinates samples the graph directly at each candidate; it is not a raster bake. Image mapping controls appear when **Use image** is enabled. Surface field controls appear when **Use surface density** is enabled. **Clear** removes the assigned map and disables image density, while retaining the independent surface field. Disabling Use image alone keeps the map for later re-enabling. Choosing an Image or pattern restores World XY; choosing Map restores Map coordinates.
 
 **Show mask** displays Image, Mesh or Combined density as a bounded surface overlay. It stays enabled during relevant edits, including Data Channel changes. **Hide mask** stops it. Buttons share a row when space permits; narrow panels stack controls to keep captions readable. Opacity and optional tiny/small/large markers affect visualization only. Combined is eligibility before spacing, collision and count limits. A failed same-layer refresh marks the retained mask stale; a failed owner switch never displays another layer's cached mask. Manual placements remain at their last Update.
 
-Image masks run before authored Edit. Removing eligibility keeps an edit dormant; restoring eligibility restores it. Resolution changes alone preserve Edit bindings. Live procedural maps remain editable in the scene. For portable Save, use a supported static RGB/RGBA PNG or explicitly **Bake portable snapshot**: a linear 16-bit density tile with time/resolution provenance. This snapshot preserves scalar density, not the editable procedural producer; Undo restores the live map. Other live image formats can also be explicitly baked for portable Save. External bitmap edits follow Max's reload/notification behavior; there is no idle directory polling.
+Image masks run before authored Edit. Removing eligibility keeps an edit dormant; restoring eligibility restores it. Resolution changes alone preserve Edit bindings. Live procedural maps remain editable in the scene. Arbitrary procedural graphs are retained in Max scenes but are not serialized by the portable package adapter. Receiver-aware graphs cannot be baked into a context-free tile. For projected image workflows, portable Save accepts a supported static RGB/RGBA PNG or explicit **Bake portable snapshot**: a linear 16-bit density tile with time/resolution provenance. This snapshot preserves scalar density, not the editable procedural producer; Undo restores the live map. Other live image formats can also be explicitly baked for portable Save. External bitmap edits follow Max's reload/notification behavior; there is no idle directory polling.
 
-**Mesh channel density** reads numeric values directly from each receiving
+**Surface density > Mesh channel** reads numeric values directly from each receiving
 surface's evaluated modifier stack. It works with Random, Clusters, Spline Bands,
-Analyzer layouts, texture density and Paint Areas. Enable **Use mesh channel** in Amount. Choose **Channel 0** for vertex colors or **1..99** for
+Analyzer layouts, texture density and Paint Areas. Enable **Use surface density** in Amount and choose **Mesh channel**. Choose **Channel 0** for vertex colors or **1..99** for
 a numbered map channel, then the component **R/X**, **G/Y** or **B/Z**. These are
 stored values; the separate Texture Density UV channel still selects texture
 coordinates. Each assigned receiver must contain the selected channel.
+
+**Relative elevation** is the other surface field. It measures evaluated receiver-local Z from 0 at the lowest referenced vertex to 1 at the highest; a flat receiver is 0. It creates no channel or modifier. Invert and the response curve control low/high planting. Node translation, rotation and scale preserve this local field. The revised Valley and Mountain presets use this mode, so they require neither a fabricated channel 2 nor the original scene altitude. Explicit artist-authored channels remain requirements.
 
 For terrain curvature, put Data Channel above the terrain deformation. Add
 Curvature, adjust its convex/flat/concave response and output through Vertex
@@ -141,8 +145,8 @@ clears the cached display. Navigation and redraw consume cached markers without
 channel reads. Direct channel sampling is limited to 2 million evaluated faces
 per receiver; VData, selection and negative map channels are outside this version.
 
-Map samples are reused while the map, its resolution and its evaluation interval
-remain valid. Receiver/UV changes can reuse the bake. Invert derives its own
+Projected image samples are reused while the map, its resolution and its evaluation interval
+remain valid. Receiver/UV changes can reuse that bake. Receiver-aware maps re-evaluate relevant receiver/channel/graph changes; unrelated animation and idle do not sample or solve. Invert derives its own
 bounded sample array. Editing or animating the map refreshes its samples when an
 update is needed. Manual holds the preceding plants until Update scatter; invalid
 mapping or a failed update keeps the previous complete result. Cache reuse does
@@ -151,13 +155,13 @@ not make a high-resolution map free, and coarse maps can miss narrow features.
 
 ## Slope and altitude filters
 
-In **Include / exclude areas â†’ Surface eligibility**, enable **Filter slope** or **Filter altitude** for the selected layer. These decide whether a candidate can grow there; **Align to normal** controls its orientation separately. Disabled filters leave the candidate result unchanged.
+In **Include / exclude areas → Surface eligibility**, enable **Filter slope** or **Filter altitude** for the selected layer. These decide whether a candidate can grow there; **Align to normal** controls its orientation separately. Disabled filters leave the candidate result unchanged.
 
-Slope uses the evaluated triangle's world-space geometric normal: **0Â° faces upward, 90Â° is vertical, 180Â° faces downward**. A 0â€“35Â° interval keeps relatively gentle upward terrain. Smoothing normals do not change the test. A mirrored transform uses the winding of the transformed surface, so check the intended side.
+Slope uses the evaluated triangle's world-space geometric normal: **0° faces upward, 90° is vertical, 180° faces downward**. A 0–35° interval keeps relatively gentle upward terrain. Smoothing normals do not change the test. A mirrored transform uses the winding of the transformed surface, so check the intended side.
 
 Altitude uses world Z at the final receiver anchor, in scene units, after movement and Relax. Source pivot offsets do not move this test. For example, Min height 10 m and Max height 30 m select that elevation band. With unprojected movement, the saved anchor is the projection on the owning triangle's plane; this does not make an off-surface point lie inside that triangle.
 
-**Lower fade** rises smoothly inside the minimum; **Upper fade** falls smoothly inside the maximum. A 0â€“35Â° slope interval with a 10Â° upper fade stays full through 25Â°, then thins to zero at 35Â°. Zero fade includes the hard endpoint. A lower fade of 5 m in the 10â€“30 m altitude example rises from zero at 10 m to full density at 15 m. Fades must fit inside the interval without overlapping; crossed ranges and nonfinite values reject the update and retain the previous complete result. Equal Min/Max is valid only with zero fades.
+**Lower fade** rises smoothly inside the minimum; **Upper fade** falls smoothly inside the maximum. A 0–35° slope interval with a 10° upper fade stays full through 25°, then thins to zero at 35°. Zero fade includes the hard endpoint. A lower fade of 5 m in the 10–30 m altitude example rises from zero at 10 m to full density at 15 m. Fades must fit inside the interval without overlapping; crossed ranges and nonfinite values reject the update and retain the previous complete result. Equal Min/Max is valid only with zero fades.
 
 Slope and altitude eligibility multiply with the existing Paint, Band and texture restrictions. Overlapping Paint Areas retain their existing max-union rule. Surviving candidates retain IDs, model choices and transforms. Explicitly moved or cloned CS Edit plants are protected and bypass these filters. Filtering precedes spacing and cleanup. **Accepted target** can refill from a bounded later candidate prefix and therefore increase local density; use **Candidate budget** when the fade itself should determine the population.
 
@@ -171,7 +175,7 @@ Choose **Save Recipe**, select layers in evaluation order, and enter a name, col
 
 Optional PNGs are limited to 1024 pixels per axis and 2 MiB. Choose an existing image or explicitly capture the published viewport. Pending Manual changes require explicit Update-and-capture or saving without a current thumbnail; browsing never renders previews. **Update selected** creates a new revision, **Save Copy** creates another identity, and **Edit details** changes presentation without touching the scene. A changed file after review requires a fresh review. Bundled examples remain read-only; save a personal copy.
 
-**Load onto surface**, double-click or Enter imports supported models/materials, creates a setup when needed and adds new layers to the captured terrain. Existing layers, order and Manual/Live mode remain intact. The explicit Update also applies pending setup edits. Multiple owners require opening Recipes from the intended setup. Missing mesh-channel data and incompatible Paint are explained before adding anything; no saved terrain is substituted. Static paths retain authored dimensions relative to the saved terrain frame.
+**Load onto surface**, double-click or Enter imports supported models/materials, creates a setup when needed and adds new layers to the captured terrain. Existing layers, order and Manual/Live mode remain intact. The explicit Update also applies pending setup edits. Multiple owners require opening Recipes from the intended setup. Explicit missing mesh-channel requirements are explained before adding anything; no saved terrain is substituted. Complete presets transfer Paint contours and path positions from the saved local-XY footprint into the destination footprint. Plant sizes, spacing, brush radius, falloff and path widths convert system units and retain physical dimensions. Terrain Paint presets transfer between single-valued local-XY footprints. Surface-attached Paint presets require matching mesh topology; arbitrary remeshing is not an automatic transfer. Original Paint is preserved. Settings-only exact Paint restoration still requires its compatible receiver.
 
 One Undo removes the added preset and restores the preceding complete publication. Redo restores the same layers, sources, Paint and placement rows without needing the library files. A setup supports ten populations. The controller's shared viewport budget stays unchanged; its per-layer share adjusts as layers are added.
 
@@ -206,25 +210,29 @@ pick. Each changed import and each export is one Undo. Manual waits for Update;
 Live applies the changed coverage. Neither operation links Paint to the source
 spline, so later spline edits require another import.
 
-Export uses the receiver's local XY plane at local Z=0, including its scene
-transform. On terrain this is a planar border guide. Import projects the chosen
-shape along receiver-local Z and clips it to the receiver. Every contour must be
+On terrain, export uses the receiver's local XY plane at local Z=0, including
+its scene transform; import projects along receiver-local Z and clips to the
+receiver. Curved surfaces export their 3D border. An unchanged exported snapshot
+restores exact coverage, including holes and large regions. Edited closed curves
+must lie on the surface within Curve tolerance and select the smaller enclosed
+region on a closed component. A completely filled closed object has no border to export. Every contour must be
 closed. Nested contours alternate filled regions and holes regardless of winding
 or order; self-intersections use the same even-odd fill. Add does not erase paint.
 Area density, fades, identity and model assignments are preserved.
 
 **Curve tolerance** is a world-unit approximation distance, initially 1 mm.
-Smaller values require more samples. One import allows up to 8,192 input knots
-and 8,192 sampled vertices; simplify the shape or increase tolerance when needed.
+Smaller values require more samples. One edited-curve import allows up to 8,192 input knots
+and 8,192 sampled vertices; unchanged guarded surface snapshots use the native
+contour budget. For edited curves, simplify the shape or increase tolerance when needed.
 Paint's local coordinate precision also imposes a minimum tolerance. Very large
 local coordinates can exceed Max spline precision and cause export rejection.
 Invalid conversion retains the preceding area. See [Phase 5 evidence](plans/eleven-phase-roadmap/P05.md).
 
 Turn on **Use Paint Areas**, add a named area and choose one of this layer's surfaces. Use **Start Brush**, **Paint / Erase**, **Radius**, **Stop**, **Fill** and **Clear**. **Radius** is center to edge: 100 mm gives a 200 mm stroke diameter. The Painter cursor now uses that same radius. Area density, fade controls and Paint feedback are directly visible in Painting, with no Advanced disclosure. Repeated painting merges into the same area. Erasing cuts holes; overlapping areas admit each candidate only once. Undo/Redo restores a complete brush gesture.
 
-Each area targets one receiver. Use separate areas for separate terrain surfaces while retaining the same layer models and population. Vector painting supports terrain and planes that are single-valued in receiver-local XY. Closed spheres, vertical faces, folds and stacked projected sheets are rejected. They remain usable as ordinary scatter receivers without vector painting.
+Each area targets one receiver. Use separate areas for separate surfaces while retaining the same layer models and population. Vector painting supports terrain, spheres, boxes, vertical sides and manifold curved meshes. Curved strokes follow the surface, cross connected edges and do not paint through to the opposite side or a disconnected sheet. Degenerate faces and nonmanifold connections require repair. Curved receivers admit up to 100,000 triangles and 200,000 vertices, with additional bounded stroke and contour work.
 
-**Inside fade** places the transition inside the border; **Outside fade** extends it beyond the border. Set both for a transition across the border. Zero for both gives a hard edge. Distances are in the transformed projection plane, not distance along a slope. A larger outward fade cannot place plants outside the receiver or inside an explicit Exclude area.
+**Inside fade** places the transition inside the border; **Outside fade** extends it beyond the border. Set both for a transition across the border. Zero for both gives a hard edge. Terrain distances remain in the transformed projection plane. Curved-surface distances follow the mesh with the complete receiver transform, including nonuniform scale. A larger outward fade cannot place plants outside the receiver or inside an explicit Exclude area.
 
 **Fade density** thins stable candidates using the **Density curve**. **Fade scale** multiplies each plant's existing random scale between **Edge scale** and **Inner scale**, shaped by the **Scale curve**. The graph's left end is the outer edge of the transition, and its right end is the fully interior end. Density and scale can be used independently. With both widths at zero there is no transition: interior plants use the curve's right-end scale. Where areas overlap, the strongest effective density determines scale; equal weights use area order.
 
@@ -234,7 +242,7 @@ Each area targets one receiver. Use separate areas for separate terrain surfaces
 
 Removing a receiver link leaves its area inactive with its borders preserved. Relinking the same node restores eligibility. An area with paint cannot silently change target. Changes to target geometry/topology require restoring that geometry or creating a new area; the previous completed scatter remains available after a failed update. Use saved scene units on reopen.
 
-The new engine bounds contour vertices and prepared feedback. A failed edit leaves the preceding region intact; feedback never silently publishes a truncated successor. See [limits and actual qualification](Vector_Brush_0.78_2026-10-10/README.md) before treating scripted results as physical-input certification.
+The new engine bounds contour vertices and prepared feedback. A failed edit leaves the preceding region intact; feedback never silently publishes a truncated successor. See [current limits and actual qualification](plans/preset-gallery-improvements/DELIVERY_0866.md) before treating scripted results as physical-input certification.
 
 ## Area limits, transforms and spacing
 
@@ -250,7 +258,7 @@ Transforms show X Min/Max, Y Min/Max and Z Min/Max side by side for rotation, sc
 
 New complete recipes use format 5; numeric settings presets use format 3. Earlier complete formats retain their versioned defaults: formats 1/2/3 receive Surface random, formats 1/2 retain their original receiver variation, and format 1 receives neutral orientation. Reading never rewrites files or Paint. Grid distances convert with scene units. Explicit target bindings still apply.
 
-Fresh ordinary layers expose Within this layer and Between layers spacing. Clearance is **factor Ã— (radius A + radius B) + gap**. XY ignores vertical distance; 3D includes it. Each relationship has its own settings. Per-instance radius overrides belong to stable instance identities; generator changes can require an explicit clear instead of silently rebinding edits.
+Fresh ordinary layers expose Within this layer and Between layers spacing. Clearance is **factor × (radius A + radius B) + gap**. XY ignores vertical distance; 3D includes it. Each relationship has its own settings. Per-instance radius overrides belong to stable instance identities; generator changes can require an explicit clear instead of silently rebinding edits.
 
 Candidate Relax moves candidates within its bounded settings. Cleanup removes unprotected isolated plants or small islands using neighbor distance, minimum neighbors and minimum island size. Protected CS Edit placements can survive generation/cleanup and create reported conflicts. Retry cleanup gaps is a separate population-policy choice.
 
@@ -276,7 +284,7 @@ Statistics identifies the selected layer by its name and describes its last comp
 
 Diagnostic recording is local, bounded and off by default. Start, Stop and Save report are separate from sending a report anywhere.
 
-Surface Analyzer remains version 0.14 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; general curved-surface scattering remains separate; the vector brush has the projection limits above. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
+Surface Analyzer remains version 0.14 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; general curved-surface scattering remains separate; the surface brush is a separate system and supports the curved receivers described above. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
 
 If linked analysis is out of date, Scatter keeps its previous complete result and names the Analyzer that needs updating. Run **Update Analyzer / Analyze**, then **Update scatter** when Scatter is Manual. This applies to Layout, Analyzer Area and Analyzer falloff dependencies. Freshness is saved with the guides, so reopening does not make pending analysis current. Older Analyzer publications need one explicit Analyze with the matching updated Analyzer script; the new Scatter script must be distributed with that script.
 
@@ -298,7 +306,7 @@ Follow Density uses the effective density curve shape, excluding the Density %
 strength. Disabling the density curve makes this scale mode flat 100%. Switching
 modes preserves the stored Custom graph. Zero scale collapses the instance without
 removing its candidate; use density to remove placements. Scale traces are bounded
-to 2â€“257 samples, at most 64 authored graph points and 0â€“10000% size.
+to 2–257 samples, at most 64 authored graph points and 0–10000% size.
 
 Scale-only changes retain base candidates and source/owner random channels.
 Size-dependent spacing, protected edits and cleanup can change accepted output.

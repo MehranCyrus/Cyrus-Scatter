@@ -1,0 +1,459 @@
+{
+  "pass": true,
+  "date": "2026-10-19",
+  "version": "0.2.1",
+  "max_year": 2027,
+  "computer_use": false,
+  "artist_profile_installation": false,
+  "scatter_integration": false,
+  "source_head": "56b6e09db2b7e53f30fd60b6e4f51ea19296075f",
+  "build": "build\\physics-collider-021-20261019-01\\native",
+  "receipt": {
+    "version": "0.2.1",
+    "max_year": 2027,
+    "source_hashes": {
+      "CMakeLists.txt": "bd8f0675b4218c0c193b3d8283de603d76920fa36d2e4463f6d02e2c4592c9a6",
+      "README.md": "9daecae7421e196aae9859345bc8cfc804813bf9f82c025c23d83109b4af269c",
+      "include/core.h": "a1e8cdeea96bef659a8c1807479cab7d8b3463122f9d470a0b0cb8a03a755784",
+      "include/diagnostics.h": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0",
+      "include/live_session.h": "19893057f821162c984e6b8dce4e41045b079b115160580b7e4cd5f4d3abd203",
+      "installer/CyrusPhysicsLabStartup.ms": "fa6f263a7f33e8e0199237abdb87ac77c23bb98cace59ce0426c563f91bedf99",
+      "scripts/CyrusPhysicsLab.ms": "c65ee89821d2b2415e701bb2392b51528a0fe54c7ef098cb2bbf9890df92b1cf",
+      "src/core.cpp": "f204b1daa34c368f348fb34c8628899d0a34472f7f94189d9f6013921c70e1ee",
+      "src/crash_watch.cpp": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4",
+      "src/diagnostics.cpp": "9142ffa430cd09d5f51901aba42c663668bac3f6ec3b6092b6a27c827ba86847",
+      "src/jolt_collider.inc": "c50d1cbc0de99d4190f7b5efc60e4cc1328519db7566d95fae2c88f5e0315cfb",
+      "src/jolt_world.cpp": "175fccbd3ee3169cf5fce798111d3c4ee8732a52172f1277218442cddad00798",
+      "src/live_session.cpp": "0fdcc796559738631c6bd160e903962925fb08e7f0f5feb0f9be13b53ab792f1",
+      "src/max_bake.inc": "b9597d5eb0bfac35a0c08452d54233677ddd3d194747d561218b91c817adbf9d",
+      "src/max_collision.inc": "5bc1a3e9c22ddfc979e35b66dc9bce6f0b49bd8a0820f8fda66830e866876ac7",
+      "src/max_host.cpp": "d847e997c648b5f24760d8007b57a6571cf40aa7ed427ecf8e514b55f9035b32",
+      "src/max_icon.inc": "aabba1a92cb61e4b953db248fdeb10a486548c2bcce769edf64d28c77d020326",
+      "src/max_live.inc": "990884d1b3919490d64cce3022a391665d9c82a340c3021c1cc90660f35fbfcf",
+      "src/physx_world.cpp": "99c79aa3bb230ef89f66cb953da86a560686bd2fca18af2fa606136e3a1fa500",
+      "src/quality.cpp": "d7460a3325291873f4c7dc46dc435415bdfd11fb3c3189b499fae3c2f1da7ea3",
+      "src/storage_plugin.cpp": "f3c30828d8b02bd38704d2a943cb5e40360a15f4fe8d4121ca8bf8e337c8afa8",
+      "tests/collider_cook_tests.cpp": "01bd92f9327fcdf340493e4c16397411d757224b224388b17bd299d0f57d03b2",
+      "tests/collision_tests.cpp": "cee033d75447c3d8af187e4cacd7d1b77408e300a6928a9055e11873d037101f",
+      "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+      "tests/core_tests.cpp": "51819564cd85f0d29e1ff50db8f60d8d68bba1b58f029e27945b0ddb5a2e4739",
+      "tests/demo.ms": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8",
+      "tests/grip_tests.cpp": "532a6f9bbca9498b37e1a300e25ad3ef4fabc5bb8716dc236e1cfc63f431187d",
+      "tests/host.ms": "37503963e3e34027f1f3c4ee2c1edbad78f89bb7d6866b6b8dba3c149e2e4db3",
+      "tests/host_brush_ui.ms": "81c3c872aa5cedaeb1b449a0ca01512f6c30f657d16bb2447bcb4d8d3e66a5e3",
+      "tests/host_continuous.ms": "174d387d32953e8f26ed3cdf043f17f23dc4e29439db6dbc3c3e6c09add53985",
+      "tests/host_continuous_crash_common.ms": "ab59e31ee11e284e48840b8ce4c434adb00f0c16a2db777c7cd6fcf537ea0c26",
+      "tests/host_continuous_fatal.ms": "7f63e788146330c46d8e73081e41e0a164f41f2d1ac20497f42f9979d46afb24",
+      "tests/host_continuous_faults.ms": "dc14291662e2193fdf9073cc2b72212959e18181da9a9c71c4ed04e9dd6b7c76",
+      "tests/host_continuous_hardkill.ms": "f4dfa68608facfaee9fee7bbd8fe815150f79ed282c094bbcf45206c6e39811a",
+      "tests/host_continuous_lifecycle.ms": "b47466cfa211d7a74b00592487d2cbcf2099da651fe4a33fd16eb27fa0c303a0",
+      "tests/host_continuous_performance.ms": "5d717d40df067e687e3d2acc055435eec2e36c870f2128cfa44ba9a120f9fb8c",
+      "tests/host_continuous_rebuild.ms": "32ff83df1e1cd3b330f996ac3842f79221f9871785394596b2a3c3ae8541ad38",
+      "tests/host_continuous_recover.ms": "475f859c15e3fa74740a77fcd26f5f37a5a0c480e36edd78ba90f735a94e1423",
+      "tests/host_continuous_secondary.ms": "257ac01b18924b8b6ffac4bbde817f7a5b4323846b943b461c9a77bef6630c21",
+      "tests/host_extended.ms": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224",
+      "tests/host_faults.ms": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d",
+      "tests/host_previous_scene.ms": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86",
+      "tests/host_proxy_previous_scene.ms": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564",
+      "tests/host_proxy_ui.ms": "35587891b466000eb8bb9a918fc724abdfe6585883d4a0dcbec321774ed1b9cc",
+      "tests/host_regression.ms": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791",
+      "tests/host_scaled_ui.ms": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191",
+      "tests/host_timeout_ui.ms": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992",
+      "tests/host_transforms.ms": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208",
+      "tests/host_ui_layout.ms": "ef94888c06ec253abd88ffba7f7947120d632c390d1bcee4763359f96e3b50f1",
+      "tests/hull_tests.cpp": "831682b78e78de0f5f44cfb08adc143b4a7b2b172640284535d9eb3e381c9531",
+      "tests/live_stress.cpp": "45d6c06fe3c354dc783ebb24cf688a601cab1f7ca706f1b7c552dcac0dd2402c",
+      "tests/live_tests.cpp": "f2f9a0bf31ae91b965fce87f0bfa635914889273ecbd56f20dfc2177eba2669c",
+      "tests/mountain_tests.cpp": "6e888af4344c26ecdf0085d918a2c5b3eaa53012502f942bdecf85f45a695a70",
+      "tests/quality_tests.cpp": "392080c7036bc16d4c499151c45485565f87d6d340cebb800a077547c270b703",
+      "tests/ui_layout.py": "e64610c6b14bf980b660ea92bbc48ab4f777efeb7df3c83885f5258705244957",
+      "tests/fixtures/artist-hulls-018.json": "23bb5ef7985445e76aec31037b041cb81e2b71b0eee930b6a26a4d90ad87bf57",
+      "tests/fixtures/millimetre-teapot-020.json": "1cfa903129b0dcd258f18d8501ea5d70e9090b493854958d2dc88e27a2404eda",
+      "tests/fixtures/pyramid_append_plane.json": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f",
+      "tests/fixtures/retired-palette-rebuild.json": "132bc232b26ae7e23d40829a510ccd2fa01f9f30516735fd6ae50d22c2c0e94b",
+      "tests/fixtures/rolling-sphere-mountain.json": "7fe69c63696d98ea6c0bf6b1c2a4f1928c0695d136900d24c34db745e405c010",
+      "tests/paint_probe/CMakeLists.txt": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd",
+      "tests/paint_probe/probe.cpp": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a",
+      "third_party/vhacd/LICENSE": "245c933225f5bd28a10336137b26f1f86551b6b1d29f804253eb5e1d73744c2e",
+      "third_party/vhacd/SOURCE.json": "e3fb01ab52597346738f4cd85dfac9c34c03f6f13ddacd079144d53e35635de7",
+      "third_party/vhacd/VHACD.h": "c2b750a41bc6044457c79dc51d196b7bbe5e24bfaec72d409a065434d9651ff2",
+      "tools/build.py": "ccd7e1409d57aefa96493ce8d3336d72ba52fa7af229bee9b1ee19b05b7b12cd",
+      "tools/build_probe.py": "5808b02e35aa6ba9a5576c60b87b400cb91e747ca446c1ab463df582f7f0c31d",
+      "tools/compare.py": "8e93a42a402cf4ea8e92dee3c51cf4c1e050fdc0c2f9e7f3ba420b9e457d082b",
+      "tools/host_test.py": "7108987e79553bfebecbb1de9b48878e18e95dc481a65c18d098b5c1c9810903",
+      "tools/installer_test.py": "18d726e3608fa45796268d8f9db5f4d118c6c8dd43c9831adbb0e1ef8cf5664f",
+      "tools/package.py": "2a30cc735e7e3e2a8ae8b6f29ad82d8cafec288679e033b442715c37c9cc3d49"
+    },
+    "shared_source_hashes": {
+      "cmake/CyrusMaxSDK.cmake": "6b6919710b62fd50cf7b58f09f4bca01088a2f188b0766b5d0f1d763e1598904",
+      "tools/build_max.py": "549950dc7e76b93c2c6ee600b826a63d650520148e7046731a216e762f13ced1",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "pins": {
+      "jolt": [
+        "jrouwe/JoltPhysics",
+        "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+      ],
+      "physx": [
+        "NVIDIA-Omniverse/PhysX",
+        "b97365c6ddb32fda8469bc788ec18024862b0368"
+      ]
+    },
+    "toolchain": {
+      "msvc": "14.38.33130",
+      "windows_sdk": "10.0.19041.0"
+    },
+    "dependency_archives": {
+      "jolt": {
+        "repository": "jrouwe/JoltPhysics",
+        "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+      },
+      "physx": {
+        "repository": "NVIDIA-Omniverse/PhysX",
+        "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+        "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+      }
+    },
+    "host_launched": false,
+    "installed": false,
+    "faults": false,
+    "binaries": {
+      "cpl_collider_cook_tests.exe": "57a5d7840600d267b12839fbed3586978a7971d1dd673c1f21b8d7c8e787563c",
+      "cpl_collision_tests.exe": "acd2e59ed1f17f9ee475f960d0bf066edd35b8fbc80eaba719b0edb77ee240a8",
+      "cpl_compare.exe": "4cfb5acae4b71b26ad178d4dfbdd6f0060698a5025567c784e6579058177f67f",
+      "cpl_grip_tests.exe": "8a68c22432fee637128d331d9a0ff8fe864a7b011a7e5896635c7ae0f89fec27",
+      "cpl_hull_tests.exe": "5910c74236c19bfe880f76bfa9ff0ee439854f58db6efce33532794143414065",
+      "cpl_live_stress.exe": "28e45d6b2c877b26482428a1a77f385ad3aa22ff351f192832e3bf13de6b8cb6",
+      "cpl_live_tests.exe": "c32059d1ceda2625da71f3eb2e31adf53ab60a7241321b77f5304137bf007bee",
+      "cpl_mountain_tests.exe": "097edce5e207bc7773726391c9fc8ebc13a7e4ecf573c27a050722ddb4a8a0c1",
+      "cpl_quality_tests.exe": "ef92b0742dded15355214ae2c2e19283d10d4d542eed88a511285aec768959eb",
+      "cpl_tests.exe": "50707d7fbf722f6ddab264a854fd62364a5113043e14a8b30a1af277383d0283",
+      "CyrusPhysicsCrashWatch.exe": "455a564cec767b1c08ca74b66e0f8e4b8ea0cf8388d812a42ab998673f00ed14",
+      "CyrusPhysicsLab.dlx": "0ebfd746592855d3c8eea4d3b3dc3a7bacdbe6d09f5c24e24e28620e24b380be",
+      "CyrusPhysicsStorage.dlh": "f572813efbadc8d656f4284be7f8708c4efa2dde4dd4fe10dfe402d3a09d2750"
+    }
+  },
+  "native_suites": 8,
+  "artist_capture": {
+    "original": "C:\\Users\\Mehran\\AppData\\Local\\Cyrus\\PhysicsLab\\Diagnostics\\20261019-031210-718-pid43280",
+    "files": {
+      "context-3.json": {
+        "sha256": "3808d1e943934720c5934a2d509483e29f4f1b60c3203ad42800b24b46b40d75",
+        "bytes": 9773015,
+        "stable_during_read": true
+      },
+      "build-identity.json": {
+        "sha256": "6da3c411799e5ced9dcd512ff1ec320f543bfe1a628df2333207f91dc72d87f9",
+        "bytes": 8005,
+        "stable_during_read": true
+      },
+      "events-0.jsonl": {
+        "sha256": "a7cb4d19cf56cfe173ca36f1f12a954a0ac56f880757fbec7bc2925657b4026d",
+        "bytes": 1621243,
+        "stable_during_read": true
+      },
+      "exception.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "stable_during_read": true
+      }
+    }
+  },
+  "old_pair_reproduction": "WORLD ERROR Jolt collider cook failed\nCOLLIDER 0 PASS 0 FACES 0 ERROR Need triangles to create a mesh shape!\nCOLLIDER 0 PASS 1 FACES 0 ERROR Need triangles to create a mesh shape!\nCOLLIDER 0 PASS 2 FACES 0 ERROR Need triangles to create a mesh shape!\nCOLLIDER 0 PASS 3 FACES 0 ERROR Need triangles to create a mesh shape!\nCOLLIDER 0 PASS 4 FACES 0 ERROR Need triangles to create a mesh shape!\nCOLLIDER 1 PASS 0 FACES 32 ERROR none",
+  "exact_artist_native_replay": {
+    "artist_colliders": [
+      {
+        "cook_scale": 128.0,
+        "cooked_triangles": 84672,
+        "degenerate_triangles": 0,
+        "duplicate_triangles": 0,
+        "input_triangles": 84672,
+        "kind": "mesh",
+        "minimum_twice_area_m2": 1.0974146013205346e-09,
+        "offset_m": [
+          0.0520977957386512,
+          0.08808941973721335,
+          0.006669183968321906
+        ]
+      },
+      {
+        "cook_scale": 1,
+        "input_triangles": 32,
+        "kind": "box"
+      }
+    ],
+    "checks": 19,
+    "pass": true,
+    "platform": {
+      "body_z_m": 0.40115898847579956,
+      "cook": {
+        "cook_scale": 8.0,
+        "cooked_triangles": 2048,
+        "degenerate_triangles": 0,
+        "duplicate_triangles": 0,
+        "input_triangles": 2048,
+        "kind": "mesh",
+        "minimum_twice_area_m2": 2.500499950007222e-07,
+        "offset_m": [
+          2.008,
+          -2.992,
+          0.40016
+        ]
+      },
+      "sleeping": true,
+      "solver_length_scale": 128.0
+    },
+    "teapot": [
+      {
+        "cook_scale": 1024.0,
+        "cooked_triangles": 4032,
+        "degenerate_triangles": 64,
+        "duplicate_triangles": 0,
+        "input_triangles": 4096,
+        "kind": "mesh",
+        "minimum_twice_area_m2": 1.5766717473943975e-11,
+        "offset_m": [
+          0.30016949672325766,
+          -0.7000098430858739,
+          1.2001990431617822
+        ],
+        "physical_scale": 0.1
+      },
+      {
+        "cook_scale": 128.0,
+        "cooked_triangles": 4032,
+        "degenerate_triangles": 64,
+        "duplicate_triangles": 0,
+        "input_triangles": 4096,
+        "kind": "mesh",
+        "minimum_twice_area_m2": 1.576671747359173e-09,
+        "offset_m": [
+          0.30169496723257666,
+          -0.7000984308587386,
+          1.201990431617821
+        ],
+        "physical_scale": 1.0
+      },
+      {
+        "cook_scale": 1.0,
+        "cooked_triangles": 4032,
+        "degenerate_triangles": 64,
+        "duplicate_triangles": 0,
+        "input_triangles": 4096,
+        "kind": "mesh",
+        "minimum_twice_area_m2": 1.5766717473765462e-05,
+        "offset_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physical_scale": 100.0
+      },
+      {
+        "cook_scale": 1.0,
+        "cooked_triangles": 4032,
+        "degenerate_triangles": 64,
+        "duplicate_triangles": 0,
+        "input_triangles": 4096,
+        "kind": "mesh",
+        "minimum_twice_area_m2": 0.0015766717473764621,
+        "offset_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physical_scale": 1000.0
+      }
+    ]
+  },
+  "small_object_grip": {
+    "cases": [
+      {
+        "position": [
+          1.9439247846603394,
+          -1.0215278962277807e-05,
+          -80.62771606445312
+        ],
+        "sleeping": false,
+        "solver_scale": 64.0,
+        "stickiness": 0,
+        "travel_m": 80.65514539734654
+      },
+      {
+        "position": [
+          0.0003327282902318984,
+          3.637743793660775e-05,
+          0.0035022320225834846
+        ],
+        "sleeping": true,
+        "solver_scale": 64.0,
+        "stickiness": 1,
+        "travel_m": 0.0005998369715621094
+      }
+    ],
+    "pass": true
+  },
+  "private_grip_binary_sha256": "77b5f2b6418a7250fbde9f43bea9cb5684d8cd4d6630c05a6eaf591030032f0d",
+  "linked_core_library_sha256": "1aa6c0bca58d11193b5a5148ea51a76ceff48f608d61746cf5274bb0be32e56d",
+  "profiles": [
+    {
+      "profile": "build\\physics-lab-collider-021-installed-03",
+      "launch": {
+        "pid": 35836,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "0ebfd746592855d3c8eea4d3b3dc3a7bacdbe6d09f5c24e24e28620e24b380be",
+          "CyrusPhysicsStorage.dlh": "f572813efbadc8d656f4284be7f8708c4efa2dde4dd4fe10dfe402d3a09d2750"
+        },
+        "script_sha256": "c65ee89821d2b2415e701bb2392b51528a0fe54c7ef098cb2bbf9890df92b1cf",
+        "diagnostic_helper_sha256": "455a564cec767b1c08ca74b66e0f8e4b8ea0cf8388d812a42ab998673f00ed14",
+        "fixture_sha256": "6888ee5fb9dec3a649f0d0abadf0b2e93d56d73de15405ec554fbc2628797e3a",
+        "profile_template_sha256": "984cfff277c9aa708cc57eca9fcfe21dd5da88537c02f0d51542f39fea85656b"
+      },
+      "exits": [
+        {
+          "pid": 40984,
+          "exit_code": 0,
+          "exception_notifications": 0
+        }
+      ],
+      "bake_commits": 29,
+      "bake_cook_checks": 29,
+      "solver_length_scales": [
+        1.0,
+        32.0
+      ],
+      "expected_rejections_or_settle_limits": [
+        {
+          "event": "live.step.error",
+          "message": "Finish wall-time limit reached; freeze or resume the preview"
+        },
+        {
+          "event": "live.worker.error",
+          "message": "Static collider 1: Collider has no non-degenerate triangles"
+        },
+        {
+          "event": "live.worker.error",
+          "message": "Static collider 1: Collider has no non-degenerate triangles"
+        },
+        {
+          "event": "live.worker.error",
+          "message": "Static collider 1: Collider has no non-degenerate triangles"
+        },
+        {
+          "event": "live.commit.error",
+          "message": "Collider has no triangles"
+        },
+        {
+          "event": "live.commit.error",
+          "message": "Bake collider exceeds 200,000 vertices or triangles. Reduce the batch density or source mesh detail; pending preview retained."
+        },
+        {
+          "event": "live.step.error",
+          "message": "Finish limit reached. Freeze the preview or resume brushing."
+        },
+        {
+          "event": "live.step.error",
+          "message": "Finish wall-time limit reached; freeze or resume the preview"
+        },
+        {
+          "event": "live.step.error",
+          "message": "Finish wall-time limit reached; freeze or resume the preview"
+        },
+        {
+          "event": "live.step.error",
+          "message": "Finish wall-time limit reached; freeze or resume the preview"
+        },
+        {
+          "event": "live.step.error",
+          "message": "Finish wall-time limit reached; freeze or resume the preview"
+        }
+      ],
+      "unexpected_errors": 0
+    }
+  ],
+  "installer": {
+    "pass": true,
+    "computer_use": false,
+    "normal_profile_modified": false,
+    "package_sha256": "48a03d3a6e5b599be18d5205c014c71c4930f9045b807984c94a441839d132cc",
+    "installed_pair": {
+      "CyrusPhysicsStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\scripts\\CyrusPhysicsLab\\0.2.1\\d662c8f6b646\\native\\CyrusPhysicsStorage.dlh",
+        "sha256": "f572813efbadc8d656f4284be7f8708c4efa2dde4dd4fe10dfe402d3a09d2750"
+      },
+      "CyrusPhysicsLab.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\scripts\\CyrusPhysicsLab\\0.2.1\\d662c8f6b646\\native\\CyrusPhysicsLab.dlx",
+        "sha256": "0ebfd746592855d3c8eea4d3b3dc3a7bacdbe6d09f5c24e24e28620e24b380be"
+      }
+    },
+    "installed_script_sha256": "c65ee89821d2b2415e701bb2392b51528a0fe54c7ef098cb2bbf9890df92b1cf",
+    "fixture_sha256": "121e84c1afba942c1f587cabdeb9b62de7467b1d5617f2e75a94784058173d4c",
+    "restart_command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-silent",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\restart-plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\restart.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-collider-021-installed-03\\restart-listener.log"
+    ]
+  },
+  "package": {
+    "path": "dist\\CyrusPhysicsLab-0.2.1-20261019-02\\CyrusPhysicsLab-0.2.1-Max2027.mzp",
+    "sha256": "48a03d3a6e5b599be18d5205c014c71c4930f9045b807984c94a441839d132cc",
+    "bytes": 936377
+  },
+  "transitions": "7 cases; 195 checks; 1 optional second-Finish freezes",
+  "captured_host_assertions": 22,
+  "failure_host_assertions": 18,
+  "installed_workflow_assertions": 56,
+  "installed_workflow_stack_assertions": 69,
+  "recovery_assertions": 12,
+  "mountain": "9 cases; 5 settle timeouts; 138 cumulative assertions",
+  "stack_height_m": "0.2999,0.4999",
+  "original_mountain_sha256": "99ee36fd84f34995ca565aa27ad6292a5b83b46a24ea7cfbe92a7ab87315b28e",
+  "preserved_failed_candidates": [
+    "Cook-only candidate passed captured cooking but the 2 mm dynamic platform test lost contact; fixed by solver length scaling, not accepted as a pass.",
+    "installed-01 budget fixture emitted 193536 triangles below the 200000 bound; fixture corrected to assert a genuinely oversized batch. Product/package bytes unchanged.",
+    "installed-02 passed workflow, stack and recovery but the owned parent timed out at 600 seconds during mountain case 8. Its incomplete run is not a qualification pass; installed-03 reruns the full suite against the final guarded binary with a 1200-second allowance."
+  ],
+  "fixture_hashes": {
+    "collect_evidence.py": "d5df0ab69cc170dfeb108b712b747fe1cae468ed846113b1e6d3233265394194",
+    "host_captured.ms": "2e4d33c6d0e79f83c8f841b27f3f75ad0d2f2fba624310e862b54e701941aeb3",
+    "host_captured_failures.ms": "00543e49d27482f46471234c8e666030d8ccfe9e879f283533ba72309e23f76b",
+    "host_failures.ms": "fc57006f83cb7274caacc0df35e7c44ae655f5513b49b072fa041ac0791cb049",
+    "host_final.ms": "121e84c1afba942c1f587cabdeb9b62de7467b1d5617f2e75a94784058173d4c",
+    "host_regressions.ms": "8ac464b615514c77605b33dbd90d9134328a536034a0c7394c8b315dfc3fc4eb",
+    "host_stack.ms": "0c5d1a3779591983a36aa0dcd97d9987fe8bf3bd8299ae78f33e211fbbe53333",
+    "host_transitions.ms": "a3578886ab1d4a64b998738ee9e71f066b56efa5530de9c86bebd2d054667fcf",
+    "load_captured.py": "fdbf231ebb3cabca360830ba5ef60ba13ecdac3f03ebd315dcd89d9e54e6cc91",
+    "package_testing_kit.py": "62e1bda08f426c1cc3705bf68004af3585b8f6a6b61d5aecb803732d9dad2982",
+    "small_grip.cpp": "03e3ce6520d22e47e5a6aaf8fa4349ab7d1ddf7329f14a420038903ec6bd85d9"
+  }
+}

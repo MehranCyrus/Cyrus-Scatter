@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.86.2, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/preset-gallery-improvements/DELIVERY_0862.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 6, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to Cyrus Scatter 0.86.6, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/preset-gallery-improvements/DELIVERY_0866.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 7, numeric settings 3, library capability 4 and asset package capability 2.
 
 ## Ownership
 
@@ -205,10 +205,38 @@ Snapshot keys use evaluated geometry, exact grid settings, required UV mapping, 
 
 The 0.86.2 loader uses `preset-loading.ms` over the recipes/assets templates. Browsing remains metadata/image work only. Explicit Load captures one selected terrain and an unambiguous destination, validates required numeric/UV channels, Paint compatibility, frames, assets and paths, then stages supported models/materials/paths and adds layers in one authored hold. A new setup is created only when required. Existing layers and Manual/Live mode remain. First calculation and display preparation run inside that hold; failure rolls back staged content and retains the preceding complete publication/history. A native publication restorer retains immutable generations for one Undo/Redo without package reads or solves. Post-Undo presentation restores display from the complete publication.
 
-Ready Save captures exact role references, supported assets, evaluated receiver/static spline context, image bytes/mapping/frame/provenance and complete Paint in a content-bound data package. It does not save arbitrary scene scripts, modifier producers or procedural graphs. A compatible live 2D map can be explicitly baked into a linear 16-bit PNG scalar snapshot; Undo restores the live map. Local image frames rebase against the destination setup without moving existing layers. Receiver-bound Paint still guards geometry/frame/units; no arbitrary reprojection is implied. See [the package contract](plans/preset-gallery-improvements/PACKAGE_CONTRACT.md).
+Ready Save captures exact role references, supported assets, evaluated receiver/static spline context, image bytes/mapping/frame/provenance and complete Paint in a content-bound data package. It does not save arbitrary scene scripts, modifier producers or procedural graphs. A compatible projected 2D map can be explicitly baked into a linear 16-bit PNG scalar snapshot; receiver-aware maps reject context-free baking. Local image frames rebase against the destination setup without moving existing layers. In the 0.86.5 reliability baseline (original receipts labeled 0.87.0), complete terrain presets fit Paint contours and spline positions between referenced local-XY footprints. Physical distances convert units, original Paint remains immutable and unsupported folded/stacked projection rejects before scene mutation. Exact settings-only Paint retains geometry/frame/unit guards. See [format 7](plans/preset-gallery-improvements/FORMAT_7.md).
 
 ## Density fields and mask visualization (0.86.2)
 
+The 0.86.5 reliability baseline (originally labeled 0.87.0) adds synchronous host-thread receiver-map contexts owning
+evaluated TriObjects through RAII. Graphs are limited to 64 maps/32 levels and
+32 million node-samples; each call admits at most one million samples. Retained
+mesh arrays, including unused channels, share a 256 MiB operation/overlay budget.
+Host texture caches and SDK internal allocations are outside this accounting.
+Filtering may additionally allocate a 4-byte index per admitted candidate while
+the old complete publication remains live. Contexts do not retain SDK pointers
+after the call. Placement and overlay share the same scalar evaluator. Surface
+density capability 2 adds referenced-vertex relative local elevation; empty
+sources short-circuit receiver work and publish valid empty native views.
+
 Layer-owned image/pattern and numeric mesh-channel masks are independent. Max evaluates/copies host data on its thread. Native C++ owns the immutable scalar tile, bilinear Repeat/Clamp sampler, placement-sized application and copied overlay triangles. World XY and Scatter local XY use physical distances; advanced receiver UV mode explicitly requires UVs. Invert precedes response. Placement and Relax use the same sampler. Relevant settings/map/time validity changes prepare a bounded tile; Count-only changes reuse it.
 
-Transient mask visibility and captured owner are separate from cached data. Relevant edits coalesce through a one-shot timer, stopped when settled/hidden. Manual fields can update without publishing plants. Same-owner failure retains a marked stale field; owner-switch failure cannot display another owner's field. Redraw submits copied cached vertices through immediate Max graphics calls, without host sampling, placement solves or unchanged Scatter instance uploads. Detail, receiver/Paint/query work and payloads are bounded; this is not a retained GPU overlay. Exact performance/lifecycle limits and the three QA-only patterns are recorded in [the delivery report](plans/preset-gallery-improvements/DELIVERY_0862.md).
+Transient mask visibility and captured owner are separate from cached data. Relevant edits coalesce through a one-shot timer, stopped when settled/hidden. Manual fields can update without publishing plants. Same-owner failure retains a marked stale field; owner-switch failure cannot display another owner's field. Redraw submits copied cached vertices through immediate Max graphics calls, without host sampling, placement solves or unchanged Scatter instance uploads. Detail, receiver/Paint/query work and payloads are bounded; this is not a retained GPU overlay. Exact performance/lifecycle limits and the three bundled starter patterns are recorded in [the delivery report](plans/preset-gallery-improvements/DELIVERY_0862.md). The later UI follow-up supersedes the initial QA-only pattern decision.
+
+
+## Surface Paint — 0.86.6
+
+`brush_atlas.cpp` owns copied topology, full transformed metric and geodesic work.
+The existing terrain codec remains unchanged. An additive payload discriminator
+stores sparse per-face barycentric vector contours/full-face markers; geometry
+identity prevents silent remeshing. Paint/Erase uses bounded native polygon
+Booleans; no persistent stroke history or raster replaces the vector model.
+Feather sources derive from canonical borders with internal face edges removed.
+Derived atlases/fields are reused across idle redraws and invalidated on relevant
+geometry/transform/coverage changes. Native reservations retain OS commit headroom;
+failed successors retain preceding coverage and publication. Curved spline
+snapshots carry exact coverage guarded by knot/frame/receiver identity; edited
+curves reconstruct coverage on the surface. Complete curved preset transfer uses
+matching indexed topology and physical-unit conversion. See the delivery report
+for measured scope, approximation limits and explicit unsupported geometry.

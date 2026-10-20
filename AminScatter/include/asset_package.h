@@ -10,6 +10,14 @@ using Json=recipes::Json;
 constexpr std::size_t maxGraphBytes=2*1024*1024;
 constexpr std::uint64_t maxFileBytes=32*1024*1024;
 constexpr std::uint64_t maxPackageBytes=256*1024*1024;
+// Explicit graph-3 prototype admission; expanded host/renderer memory needs
+// its separate measured admission and qualification before scene mutation.
+constexpr std::uint64_t maxPlantBitmapPixels=512ull*1024ull*1024ull;
+// Separate candidate profile for measured plant meshes/stored normals and
+// authored nested shader graphs. Legacy and plant-images-v1 admission is intact.
+constexpr std::uint64_t maxPlantPackageBytes=640ull*1024ull*1024ull;
+constexpr std::uint64_t maxPlantMeshFileBytes=224ull*1024ull*1024ull;
+constexpr std::size_t maxPlantMapObjects=256;
 constexpr std::size_t maxObjects=128, maxFiles=256;
 using Checkpoint=std::function<void(const char*,std::uint64_t)>;
 // Closed, data-only graph. Geometry is a separate typed payload; no Max scene or scripts.
@@ -33,4 +41,5 @@ struct PreparedPackage {
 };
 PreparedPackage preparePackage(const std::filesystem::path& directory,const Checkpoint& checkpoint={},const std::filesystem::path& bitmapDirectory={});
 Json fileInfo(const std::filesystem::path& path,bool png);
+Json imageFileInfo(const std::filesystem::path& path);
 }

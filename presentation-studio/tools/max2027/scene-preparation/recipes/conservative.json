@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "bakeFrame": 0,
+  "translationMetres": [0, 0, 0],
+  "protectedLayers": [],
+  "nativeReduction": { "minimumFaces": 5000, "layers": [] },
+  "materials": { "mode": "retain", "rules": [] },
+  "post": { "layers": [], "textureFormat": "preserve", "textureEdge": 2048, "textureQuality": 92, "quantization": null, "meshopt": true }
+}

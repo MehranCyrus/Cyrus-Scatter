@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace cyrus::density {
-enum class Coordinates { UV=0, World=1, Local=2 };
+enum class Coordinates { UV=0, World=1, Local=2, Map=3 };
 enum class Wrapping { Clamp=0, Repeat=1 };
 struct Mapping {
     Coordinates coordinates=Coordinates::UV;

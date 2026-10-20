@@ -1,5 +1,43 @@
 # Scatter Physics research
 
+**For the standalone workflow, start with the
+[Physics Lab documentation set](DOCUMENTATION.md): artist guidance, technical
+architecture, diagnostics/recovery, validation and research decisions.** It
+consolidates the evidence below and records subsequent positive artist feedback
+without changing the scope of historical receipts.
+
+The current [0.2.1 repair](COLLIDER_COOK_021.md) corrects small baked static
+colliders and small-object contact precision, with the exact artist-log reproduction.
+It preserves the completion workflow and standalone scope below.
+
+The [0.2.0 workflow](ARTIST_GUIDE_020.md) makes Finish/Freeze bake independent
+Editable Poly colliders, isolates future collision quality and fixes checkbox-only
+activation and unassigned-material colours. See [technical evidence](BAKE_WORKFLOW_020.md)
+for final qualification and limits. Earlier versioned reports remain historical.
+
+The [0.1.9 repair follow-up](STABILITY_UI_019.md) corrects small-piece cooking,
+quality popup sizing, model removal/ordering and creation sizing. Use the
+[0.1.9 testing guide](TEST_SCENE_019.md) for its installer and scenes. Qualification
+is scoped by its linked final evidence; earlier receipts keep their original scope.
+
+The [0.1.8 collision-quality delivery](COLLISION_QUALITY_018.md) added per-model
+compound quality, checked source activation and the rolling-hull correction.
+Its [mountain testing guide](TEST_SCENE_018.md) and scene remain historical.
+The preceding receipts below keep their historical qualification scope.
+
+The [0.1.7 mountain-brush and collision-display investigation](MOUNTAIN_BRUSH_017.md)
+records the tall-pyramid stall, actual mountain/teapot/hard-shape tests and the
+new Show collision shapes option and selectable viewport icon. It remains a
+separate Max 2027 lab delivery.
+
+The [0.1.6 collision-proxy correction](COLLISION_BINDINGS_016.md) investigates the
+recorded sphere/plane incident, prevents mistaken proxy assignments and records
+fresh standalone tests. Its installer is a separate Max 2027 lab delivery.
+
+The [0.1.5 surface-grip update](SURFACE_GRIP_015.md) adds Stickiness (%), records
+Houdini-informed design decisions, terrain and slope tests, current crash recovery,
+and the separately packaged Max 2027 lab delivery.
+
 16 October 2026. The original investigation was research and proposed design only. Its receipts do not include a Scatter implementation, version change, SDK build, installation, Max launch, commit or push. Follow-on standalone work has a separate execution ledger below.
 
 **Follow-on work:** the user subsequently authorized an independent Max 2027 test
@@ -18,6 +56,18 @@ The [0.1.3 crash diagnostics and lifecycle correction](CRASH_DIAGNOSTICS_013.md)
 records the reproduced native null read, flushed brush/memory logs, external
 dump capture, abrupt-exit durability and the qualified standalone diagnostic MZP.
 
+The [17 October continuous-brush follow-up](CONTINUOUS_BRUSH_RESEARCH_20261017.md)
+uses the [artist recording](ARTIST_LOG_013_20261017.md), current lab source and
+fresh SideFX/Jolt/Max documentation to recommend one live world across gestures,
+with explicit Finish, lost-body handling, Undo and recovery. It supersedes the
+one-world-per-gesture proposal for that standalone experiment only; it includes
+unexecuted acceptance gates and makes no implementation or integration change.
+
+The user then authorized [0.1.4 continuous-brush implementation](CONTINUOUS_BRUSH_014.md)
+in the standalone lab. That separate ledger records CB1–CB6 implementation,
+current test evidence, package identity and remaining artist acceptance. The
+research and earlier release receipts above retain their original status.
+
 ## Conclusion
 
 An integrated physics placement tool is technically credible. Build it around **authored emission -> simplified collision bodies -> bounded settling -> persisted instance transforms**. Reuse Cyrus's interaction and output foundations while keeping simulated placements separate from surface-generated candidates. Choose an embedded physics engine after a controlled comparison; the earlier preference for Jolt is a prototype hypothesis, not a measured winner.
@@ -34,6 +84,8 @@ The existing layer's spacing rules cannot substitute for physical contact. Nor c
 | Document | Contents |
 | --- | --- |
 | [PHASED_PLAN.md](PHASED_PLAN.md) | Original gated plan, starting with Jolt/PhysX comparisons and Max 2027 brush tests; follow-on execution is tracked separately |
+| [CONTINUOUS_BRUSH_RESEARCH_20261017.md](CONTINUOUS_BRUSH_RESEARCH_20261017.md) | Follow-up Houdini research, continuous live-session architecture, boundary/Undo/recovery policies and proposed CB1–CB6 acceptance gates |
+| [CONTINUOUS_BRUSH_RESEARCH_20261017_EVIDENCE.json](CONTINUOUS_BRUSH_RESEARCH_20261017_EVIDENCE.json) | Research source identities, primary references, knowledge freshness and preservation checks |
 | [IMPLEMENTATION.md](IMPLEMENTATION.md) | Follow-on standalone node, execution receipts and remaining acceptance |
 | [IMPLEMENTATION_EVIDENCE.json](IMPLEMENTATION_EVIDENCE.json) | Exact independent build/package identities and scripted-test receipts |
 | [BRUSH_UI_011.md](BRUSH_UI_011.md) | 0.1.1 brush failure reproduction, UI corrections and validation limits |
@@ -68,3 +120,24 @@ Final fingerprinting detected concurrent changes in the controller/template and 
 During the original research, no physical brush, simulation-quality or performance experiment was executed in Max, Houdini or a physics harness. Subsequent scripted Max and numerical results belong to IMPLEMENTATION.md. No vendor physics solver was fully reconstructed. Read [TYFLOW.md](TYFLOW.md) before treating decompilation completion as behavioral proof. A complete inventory of every plugin or algorithm is outside this bounded study.
 
 The [phased plan](PHASED_PLAN.md) turns the engine-neutral matrix in [VALIDATION.md](VALIDATION.md) into sequenced experiments, decisions, implementation stages and delivery gates. Its first work package was Jolt/PhysX comparison plus Max 2027 brush tests. The user later authorized the independent test node; see IMPLEMENTATION.md for actual results and remaining gates. The historical plan does not authorize integration into Scatter or amend the existing improvement program.
+# Standalone repair successor: 0.1.9 — qualified
+
+Scope authorized 18 October: reproduce the artist's 0.1.8 convex-hull failures,
+repair bounded numeric hull cooking, correct the quality popup, replace palette
+All/None/Solo with Add (+), Remove (×), and Replace, and match Scatter's scene-unit
+creation/drag icon behaviour. This is a patch successor to delivered Lab 0.1.8;
+Scatter stays 0.86.0. Registration identities and numeric input format stay intact.
+
+F05–F11 apply: native copied geometry owns cooking; invalid geometry retains the
+previous result. Model removal unlinks future emission, preserves already placed
+bodies/material slots, and is Undoable. Native source slots remain stable, with
+removed used slots retained as numeric snapshots; unused slots can be reused.
+The palette edits are bounded by 64 slots, and pending sessions reject edits.
+Caches remain transient; removal Undo stores bounded binding references/policies,
+not placement-sized copies. Saved native policies record palette membership.
+No artist profile installation, Computer Use, presets, or Scatter integration.
+
+Acceptance completed in the [0.1.9 report](STABILITY_UI_019.md) and [machine evidence](STABILITY_UI_019_EVIDENCE.json): recorded failing hulls in single/mixed palettes; all quality
+modes; thin/offset/scaled geometry; continuous/outside strokes and Undo; palette
+remove/re-add/save/reopen; popup geometry at narrow widths/DPI; creation sizing;
+Max 2027 exact-pair qualification and runnable installer.

@@ -14,7 +14,7 @@ module.exports={
   {name:'populationUI',title:'Amount',parts:['distributionUI','populationPolicyUI'],layerPage:true,advancedLabel:'More settings',advancedTooltip:'Show image sampling and baking, mask display options, and population retry controls below.',rows:[
    ...rows('distributionUI',['presetsButton','populationRadio','countSpin','densitySpin','seedSpin']),
    heading('Image density'),...rows('distributionUI',['imageCheck','patternButton',['imageButton','mapBrowseButton'],'imageThumbnail','densityButton','coordinatesList','uvChannelSpin','tileXSpin','tileYSpin','tileLockCheck','repeatXSpin','repeatYSpin','headingSpin','offsetXSpin','offsetYSpin','offsetUSpin','offsetVSpin','wrappingList','invertCheck','imageCurveButton']),
-   heading('Mesh-channel density'),...rows('distributionUI',['meshCheck','meshChannelSpin','meshComponentList','meshMinSpin','meshMaxSpin','meshInvertCheck','meshCurveButton']),
+   heading('Surface density'),...rows('distributionUI',['meshCheck','meshSourceList','meshChannelSpin','meshComponentList','meshMinSpin','meshMaxSpin','meshInvertCheck','meshCurveButton']),
    heading('Mask preview'),...rows('distributionUI',['maskViewList',['meshPreviewButton','meshHideButton']]),
    heading('Image sampling & portability',true),...rows('distributionUI',['resolutionList','bakeImageButton'],true),
    heading('Mask display',true),...rows('distributionUI',['maskDetailList','opacitySpin','markersCheck','markerSizeList'],true),
@@ -111,8 +111,9 @@ Object.assign(module.exports.conditions,{
  'distributionUI.imageThumbnail':'distributionUI_imageThumbnail.bitmap!=undefined',
  'distributionUI.imageState':'distributionUI_imageState.text!=""',
  'distributionUI.markerSizeList':'distributionUI_markersCheck.checked',
- ...Object.fromEntries(['meshChannelSpin','meshComponentList','meshMinSpin','meshMaxSpin','meshInvertCheck','meshCurveButton'].map(n=>['distributionUI.'+n,'distributionUI_meshCheck.checked']))
+ ...Object.fromEntries(['meshSourceList','meshChannelSpin','meshComponentList','meshMinSpin','meshMaxSpin','meshInvertCheck','meshCurveButton'].map(n=>['distributionUI.'+n,'distributionUI_meshCheck.checked']))
 });
+for(const name of ['meshChannelSpin','meshComponentList'])module.exports.conditions['distributionUI.'+name]+=' and distributionUI_meshSourceList.selection==1';
 for(const name of ['coordinatesList','uvChannelSpin','tileXSpin','tileYSpin','tileLockCheck','repeatXSpin','repeatYSpin','headingSpin','offsetXSpin','offsetYSpin','offsetUSpin','offsetVSpin','wrappingList','invertCheck','imageCurveButton']){
  const key='distributionUI.'+name,condition=module.exports.conditions[key]||'true';
  module.exports.conditions[key]='distributionUI_imageCheck.checked and ('+condition+')';

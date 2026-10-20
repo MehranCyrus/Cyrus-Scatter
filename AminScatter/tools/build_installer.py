@@ -42,7 +42,7 @@ def build_exe(output: Path, package: Path | list[Path], core: Path):
             assert manifest['files']['CyrusInstaller.dll']==sha(core)
             inventory=archive.read('InstallInventory.txt')
             marker,version,year,content_id=inventory.decode('utf-8').splitlines()[0].split('\t')
-            assert marker=='CyrusScatterInstall1' and year in ('2024','2026','2027')
+            assert marker in ('CyrusScatterInstall1','CyrusScatterInstall2') and year in ('2024','2026','2027')
             assert manifest['max_year']==int(year)
             descriptors.append({'year':year,'version':version,'path':str(item),'package_sha256':sha(item),
                 'inventory_sha256':hashlib.sha256(inventory).hexdigest(),'resource':'Cyrus.Payload.'+year+'.mzp'})
@@ -51,7 +51,13 @@ def build_exe(output: Path, package: Path | list[Path], core: Path):
     version=descriptors[0]['version']
     output.parent.mkdir(parents=True,exist_ok=True)
     identity=output.with_suffix('.identity.cs')
-    identity.write_text('namespace Cyrus.Setup { internal static class BuildIdentity { public const string Version="'+version+'"; '+
+    assembly_version='.'.join(version.split('.')+['0']*(4-len(version.split('.'))))
+    identity.write_text('[assembly:System.Reflection.AssemblyTitle("Cyrus Scatter Installer")]\n'+
+        '[assembly:System.Reflection.AssemblyProduct("Cyrus Scatter")]\n'+
+        '[assembly:System.Reflection.AssemblyVersion("'+assembly_version+'")]\n'+
+        '[assembly:System.Reflection.AssemblyFileVersion("'+assembly_version+'")]\n'+
+        '[assembly:System.Reflection.AssemblyInformationalVersion("'+version+'")]\n'+
+        'namespace Cyrus.Setup { internal static class BuildIdentity { public const string Version="'+version+'"; '+
         ''.join('public static readonly string[] '+name+'=new string[]{'+','.join(json.dumps(d[key]) for d in descriptors)+'};'
             for name,key in [('Years','year'),('PackageHashes','package_sha256'),('InventoryHashes','inventory_sha256'),('Resources','resource')])+' } }\n',encoding='utf-8')
     compiler=Path(receipt['compiler'])

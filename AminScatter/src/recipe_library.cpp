@@ -108,7 +108,7 @@ Json summary(const std::filesystem::path& recipe){
     // A manifest is not a full integrity verdict; Load checks every payload.
     std::set<int> channels,uvs;bool localFrame=false;
     const auto inspect=[&](const Json& settings){
-        if(settings.value("meshMaskEnabled",false))channels.insert(settings["meshMaskChannel"].get<int>());
+        if(settings.value("meshMaskEnabled",false)&&settings.value("meshMaskSource",1)==1)channels.insert(settings["meshMaskChannel"].get<int>());
         if(settings.value("distributionMode",1)==3){
             if(settings.value("densityCoordinateMode",0)==0)uvs.insert(settings["densityUVChannel"].get<int>());
             if(settings.value("densityCoordinateMode",0)==2)localFrame=true;
@@ -118,7 +118,7 @@ Json summary(const std::filesystem::path& recipe){
     std::string requirements;
     for(int channel:channels)requirements+="Requires mesh data channel "+std::to_string(channel)+". ";
     for(int channel:uvs)requirements+="Requires receiver UV channel "+std::to_string(channel)+". ";
-    if(paints)requirements+="Paint requires compatible terrain geometry, frame and units. ";
+    if(paints)requirements+="Packaged Paint fits the selected terrain's local XY footprint; folded/stacked surfaces are unsupported. Settings-only Paint needs its original receiver. ";
     if(localFrame)requirements+="Saved local image frame is retained. ";
     if(requirements.empty())requirements="No authored channel or Paint requirements.";
     const auto package=recipe.parent_path()/"Presets"/hash,manifest=package/"cyrus.package.json";

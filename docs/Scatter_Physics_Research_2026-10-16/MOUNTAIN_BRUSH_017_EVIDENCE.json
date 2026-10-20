@@ -1,0 +1,6467 @@
+{
+  "version": "0.1.7",
+  "date": "2026-10-18",
+  "scope": "standalone Physics Lab; Max 2027; no Computer Use; no artist installation; no Scatter/preset integration; no commit/push",
+  "branch": "codex/workflow-0.75",
+  "head": "e3e81a6d204063efd9b77771ad9b0268ad2ea578",
+  "original_scene": {
+    "path": "Test Scene/Mountain Scene Brush Test.max",
+    "sha256": "99ee36fd84f34995ca565aa27ad6292a5b83b46a24ea7cfbe92a7ab87315b28e"
+  },
+  "original_scene_unchanged": true,
+  "artist_log": {
+    "snapshot_path": "build/physics-mountain-017-20261018-01/artist-diagnostics",
+    "events": 31692,
+    "counts": {
+      "snapshot.written": 21,
+      "diagnostics.start": 1,
+      "ui.start.enter": 10,
+      "begin.enter": 10,
+      "prepare.enter": 10,
+      "prepare.exit": 10,
+      "live.created": 10,
+      "live.command.enter": 2860,
+      "live.resume": 10,
+      "live.command.exit": 2860,
+      "painter.initialize.enter": 10,
+      "begin.exit": 10,
+      "ui.start.exit": 10,
+      "ui.live.heartbeat": 212,
+      "stroke.start.enter": 41,
+      "paint.enter": 3784,
+      "live.gesture.begin": 23,
+      "paint.ray": 2736,
+      "paint.exit": 2781,
+      "live.footprint.clipped": 13,
+      "stroke.end.enter": 41,
+      "stroke.end.exit": 41,
+      "live.gesture.end": 23,
+      "live.births.intent": 358,
+      "live.births.applied": 358,
+      "live.tick": 13804,
+      "brush.paused": 4,
+      "live.finish": 9,
+      "live.finish.ready": 7,
+      "commit.enter": 9,
+      "commit.exit": 9,
+      "live.worker.retired": 10,
+      "live.body.lost": 13,
+      "painter.system_end.enter": 1,
+      "painter.system_end.exit": 1,
+      "scene.notification": 2,
+      "stop.enter": 2,
+      "cancel.enter": 2,
+      "cancel.exit": 2,
+      "stop.exit": 2,
+      "binding.deleted": 3,
+      "live.command.error": 545,
+      "stroke.start.ignored.paused": 18,
+      "paint.ignored.closed": 1003,
+      "live.freeze": 2,
+      "ui.logs.open": 1
+    },
+    "spawn_errors": 5,
+    "subsequent_paused_errors": 540,
+    "exception_bytes": 0
+  },
+  "old_actual_scene_reproduction": {
+    "path": "build/physics-lab-017-before-01/assertions.txt",
+    "sha256": "c170f80673d966bf1bc35f1086f6b6d5ec49ddf6ea21df7c4827666044b2d236"
+  },
+  "native_build": {
+    "path": "build/physics-mountain-017-20261018-01/native-01/receipt.json",
+    "sha256": "f48fc466970d1b5e4d15f9fab1131471a4abba857eb93c0758af44ad6213207e"
+  },
+  "native_suite_log": {
+    "path": "build/physics-mountain-017-20261018-01/native-01/tests.log",
+    "sha256": "b49bc1f09160c5fcc86cd5808ce0de9206f5b5a0f2a108e57434b47a2795d3ff"
+  },
+  "native_reports": {
+    "grip": {
+      "receipt": {
+        "path": "build/physics-mountain-017-20261018-01/native-01/grip-results.json",
+        "sha256": "1dcb6dfecd74e4f6ea1a7069e150af226afc92f8a2560c4bef563affbaaaaaea"
+      },
+      "result": {
+        "checks": 1898,
+        "finish_slopes": [
+          {
+            "active": 1,
+            "angle": 15.0,
+            "ball": false,
+            "done": true,
+            "step": 86,
+            "timeout": false
+          },
+          {
+            "active": 1,
+            "angle": 30.0,
+            "ball": false,
+            "done": true,
+            "step": 84,
+            "timeout": false
+          },
+          {
+            "active": 1,
+            "angle": 45.0,
+            "ball": false,
+            "done": true,
+            "step": 91,
+            "timeout": false
+          },
+          {
+            "active": 1,
+            "angle": 60.0,
+            "ball": false,
+            "done": true,
+            "step": 104,
+            "timeout": false
+          },
+          {
+            "active": 0,
+            "angle": 75.0,
+            "ball": false,
+            "done": true,
+            "step": 360,
+            "timeout": false
+          },
+          {
+            "active": 1,
+            "angle": 15.0,
+            "ball": true,
+            "done": true,
+            "step": 79,
+            "timeout": false
+          },
+          {
+            "active": 1,
+            "angle": 30.0,
+            "ball": true,
+            "done": true,
+            "step": 86,
+            "timeout": false
+          },
+          {
+            "active": 1,
+            "angle": 45.0,
+            "ball": true,
+            "done": true,
+            "step": 101,
+            "timeout": false
+          },
+          {
+            "active": 1,
+            "angle": 60.0,
+            "ball": true,
+            "done": true,
+            "step": 157,
+            "timeout": false
+          },
+          {
+            "active": 0,
+            "angle": 75.0,
+            "ball": true,
+            "done": true,
+            "step": 356,
+            "timeout": false
+          }
+        ],
+        "forced_timeout": {
+          "freeze": true,
+          "retained": true
+        },
+        "pass": true,
+        "slopes": [
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 0.0,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.493601596569416e-11,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.493601596569416e-11,
+                -6.262765046144425e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5350495180532775e-11,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5350495180532775e-11,
+                -6.684702270887133e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5350495180532775e-11,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5350495180532775e-11,
+                -6.684702270887133e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": false,
+            "drift_m": 1.5401653910562807e-11,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.1177291991265603e-10,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.5401653910562807e-11,
+                -6.684701837206264e-12,
+                0.004999999888241291
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 8.7381294040286,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 7.045326085730608e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -8.440384864807129,
+                1.0227726079392596e-06,
+                -25.573265075683594
+              ],
+              "q": [
+                0.11780184507369995,
+                -0.35853463411331177,
+                -0.7975813150405884,
+                0.470573753118515
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 22.013892201196775,
+            "spin": 47.12389026946319
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 4.8862792335250775,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00013402072445561908,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -4.719783306121826,
+                -0.005310595501214266,
+                -2.658843517303467
+              ],
+              "q": [
+                -0.08241751044988632,
+                0.02193055860698223,
+                -0.605567991733551,
+                0.791210412979126
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 5.7395595804360395,
+            "spin": 44.76641117407807
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.8727962005567593e-12,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 6.968622566823346e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.8089822174938153e-12,
+                1.380816017082509e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.8727962005567593e-12,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 6.968622566823346e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.8089822174938153e-12,
+                1.380816017082509e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": false,
+            "drift_m": 1.3226155189514568e-12,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 6.968622559717919e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.2775484880059307e-12,
+                1.3809824117583247e-10,
+                0.005106694996356964
+              ],
+              "q": [
+                0.0,
+                -0.13052618503570557,
+                0.0,
+                0.9914448857307434
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 22.41657168086259,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00019039173175592478,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -19.413320541381836,
+                5.464638661578647e-07,
+                -44.74605941772461
+              ],
+              "q": [
+                3.419701442908263e-06,
+                -0.8509600162506104,
+                -4.202101081318688e-06,
+                0.5252305269241333
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 29.633319098655104,
+            "spin": 0.5781572461213739
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757481168562295,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.00023880487424321473,
+                -8.352107450093627e-09,
+                0.005520249716937542
+              ],
+              "q": [
+                2.133049520125496e-06,
+                -0.2588191628456116,
+                -8.332459401572123e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757524184509427,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388085995335132,
+                -8.353985059272873e-09,
+                0.00552025530487299
+              ],
+              "q": [
+                2.266457613586681e-06,
+                -0.2588191628456116,
+                -8.296798114315607e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.00027574704145755117,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388039429206401,
+                -8.351072722234676e-09,
+                0.005520250182598829
+              ],
+              "q": [
+                2.1796372493554372e-06,
+                -0.25881919264793396,
+                -8.31999204820022e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 16.904549785911534,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0001903876874378707,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -14.639769554138184,
+                5.00358783028787e-06,
+                -36.02993392944336
+              ],
+              "q": [
+                0.34091830253601074,
+                -0.0049925297498703,
+                -0.9333140254020691,
+                0.11258228868246078
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 26.261539507841764,
+            "spin": 2.437204869584567e-06
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757481168562295,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.00023880487424321473,
+                -8.352107450093627e-09,
+                0.005520249716937542
+              ],
+              "q": [
+                2.133049520125496e-06,
+                -0.2588191628456116,
+                -8.332459401572123e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757524184509427,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388085995335132,
+                -8.353985059272873e-09,
+                0.00552025530487299
+              ],
+              "q": [
+                2.266457613586681e-06,
+                -0.2588191628456116,
+                -8.296798114315607e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.00027574704145755117,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388039429206401,
+                -8.351072722234676e-09,
+                0.005520250182598829
+              ],
+              "q": [
+                2.1796372493554372e-06,
+                -0.25881919264793396,
+                -8.31999204820022e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.00027575608152769073,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00019037680484266378,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.00023881177185103297,
+                -8.328919776090515e-09,
+                0.005520266946405172
+              ],
+              "q": [
+                2.2321989945339737e-06,
+                -0.2588191628456116,
+                -8.305795745400246e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757481168562295,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.00023880487424321473,
+                -8.352107450093627e-09,
+                0.005520249716937542
+              ],
+              "q": [
+                2.133049520125496e-06,
+                -0.2588191628456116,
+                -8.332459401572123e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757524184509427,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388085995335132,
+                -8.353985059272873e-09,
+                0.00552025530487299
+              ],
+              "q": [
+                2.266457613586681e-06,
+                -0.2588191628456116,
+                -8.296798114315607e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.00027574704145755117,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388039429206401,
+                -8.351072722234676e-09,
+                0.005520250182598829
+              ],
+              "q": [
+                2.1796372493554372e-06,
+                -0.25881919264793396,
+                -8.31999204820022e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757502676535861,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.00023880673688836396,
+                -8.38642399969558e-09,
+                0.005520256236195564
+              ],
+              "q": [
+                2.1657767774740933e-06,
+                -0.25881925225257874,
+                -8.32376736070728e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757481168562295,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.00023880487424321473,
+                -8.352107450093627e-09,
+                0.005520249716937542
+              ],
+              "q": [
+                2.133049520125496e-06,
+                -0.2588191628456116,
+                -8.332459401572123e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.0002757524184509427,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388085995335132,
+                -8.353985059272873e-09,
+                0.00552025530487299
+              ],
+              "q": [
+                2.266457613586681e-06,
+                -0.2588191628456116,
+                -8.296798114315607e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": false,
+            "drift_m": 0.00027574704145755117,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0001903713172356665,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0002388039429206401,
+                -8.351072722234676e-09,
+                0.005520250182598829
+              ],
+              "q": [
+                2.1796372493554372e-06,
+                -0.25881919264793396,
+                -8.31999204820022e-06,
+                0.9659258127212524
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 16.64327257647755,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 2.893874651022088e-07,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -11.768570899963379,
+                3.2596531696071906e-07,
+                -47.77596664428711
+              ],
+              "q": [
+                0.300885945558548,
+                -0.462087482213974,
+                -0.7266218066215515,
+                0.4098336100578308
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 29.573901275335746,
+            "spin": 47.123890726731574
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 3.758554527554452e-09,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 8.457440851816767e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                2.6576993938931537e-09,
+                5.256760027272378e-10,
+                0.0070710633881390095
+              ],
+              "q": [
+                0.0,
+                -0.3826834261417389,
+                0.0,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797782219745637,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 5.605885781273523e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635185029357672,
+                3.279848392878648e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.545154984545661e-07,
+                -0.3826836049556732,
+                -1.0542408546143633e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797778927023097,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 5.5823193005621885e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635182701051235,
+                3.4126441672555075e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.5447823759350285e-07,
+                -0.3826836049556732,
+                -1.054087235274892e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 26.149609571887225,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 6.993266565302747e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -18.49056625366211,
+                0.0003590055857785046,
+                -50.63520812988281
+              ],
+              "q": [
+                -7.033620204310864e-05,
+                -0.7969588041305542,
+                -1.515472922619665e-05,
+                0.6040337681770325
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 31.274625523482694,
+            "spin": 0.413624139814293
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.00027781218673051045,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 8.069854000314347e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.00019644288113340735,
+                -4.63338152567605e-11,
+                0.007267503999173641
+              ],
+              "q": [
+                0.0,
+                -0.3826834261417389,
+                0.0,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.001079778304292627,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 5.6085788409376836e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635185611434281,
+                3.3984688396770935e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.541069932249229e-07,
+                -0.3826836049556732,
+                -1.0525477733835942e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797778927023097,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 5.5823193005621885e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635182701051235,
+                3.4126441672555075e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.5447823759350285e-07,
+                -0.3826836049556732,
+                -1.054087235274892e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 16.779454775987645,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00014309999862183176,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -11.864866256713867,
+                0.0008841381641104817,
+                -30.917234420776367
+              ],
+              "q": [
+                -3.301795004517771e-05,
+                -0.8075594305992126,
+                -6.685243533866014e-06,
+                0.5897862911224365
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 23.647976088690502,
+            "spin": 0.5552181608437492
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0008334212490317208,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 9.69965429503672e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0005893178167752922,
+                1.1176505276822013e-09,
+                0.00766037730500102
+              ],
+              "q": [
+                0.0,
+                -0.3826834261417389,
+                0.0,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797782219745637,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 5.605700154759363e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635185029357672,
+                3.3296334578380993e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.544911694712937e-07,
+                -0.3826836049556732,
+                -1.0541408812514419e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797778927023097,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 5.5823193005621885e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635182701051235,
+                3.4126441672555075e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.5447823759350285e-07,
+                -0.3826836049556732,
+                -1.054087235274892e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797782219745637,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 5.60589253420507e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635185029357672,
+                3.262151881955333e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.545165216361056e-07,
+                -0.3826836049556732,
+                -1.0542451178707779e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797782219745637,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 5.6057318866681305e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635185029357672,
+                3.4140767990464838e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.544953758842894e-07,
+                -0.3826836049556732,
+                -1.054158289548468e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797782219745637,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 5.605700154759363e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635185029357672,
+                3.3296334578380993e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.544911694712937e-07,
+                -0.3826836049556732,
+                -1.0541408812514419e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": false,
+            "drift_m": 0.0010797778927023097,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 5.5823193005621885e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007635182701051235,
+                3.4126441672555075e-09,
+                0.007834569551050663
+              ],
+              "q": [
+                -2.5447823759350285e-07,
+                -0.3826836049556732,
+                -1.054087235274892e-07,
+                0.9238795042037964
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 19.023864746093746,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 4.588892542400913e-06,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -9.511932373046875,
+                1.4834468231583742e-07,
+                -50.026641845703125
+              ],
+              "q": [
+                -0.43304207921028137,
+                0.14988531172275543,
+                0.7508504390716553,
+                0.4756391942501068
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 29.370728461777034,
+            "spin": 47.12388992711417
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.20969256758689875,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 3.1187644251862157e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.1048462837934494,
+                -8.202749768315698e-08,
+                -0.17159903049468994
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 6.47502033594533e-07,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.00018783657287713135,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                9.39182864385657e-05,
+                1.8478938379473675e-09,
+                0.01016269251704216
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0015897790435701604,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007948895217850804,
+                -7.445871474942578e-09,
+                0.011376818642020226
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 35.99790954589843,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 3.747186310931738e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -17.99895477294922,
+                0.00010149331501452252,
+                -62.55238342285156
+              ],
+              "q": [
+                -3.110009856754914e-05,
+                -0.7401189804077148,
+                -1.408894604537636e-05,
+                0.6724759340286255
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 34.82289756230008,
+            "spin": 0.24481415773215953
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.09459807723760602,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 3.042588559570847e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.047299038618803024,
+                -3.1865252658747067e-09,
+                -0.07192432880401611
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0003280314558651298,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.00016401572793256491,
+                2.7511866118601347e-09,
+                0.010284104384481907
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0017299724277108903,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0008649862138554454,
+                -2.2134005739360418e-10,
+                0.011498237028717995
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 29.773324966430657,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 4.359412191590195e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -14.886662483215332,
+                0.0003169595147483051,
+                -51.55644226074219
+              ],
+              "q": [
+                -4.762618846143596e-05,
+                -0.7328231334686279,
+                -2.2272693968261592e-05,
+                0.6804192066192627
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 31.06043411113071,
+            "spin": 0.26066383779231334
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.014621089212596413,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 9.34706940805552e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.007310544606298208,
+                3.6380720658257815e-09,
+                -0.0026622354052960873
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0006084592314437031,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 3.39307655375376e-08,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0003042296157218516,
+                8.264823492254436e-09,
+                0.010526907630264759
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0017726707737892862,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0008863353868946433,
+                1.8137448876132112e-08,
+                0.01153519842773676
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.00018783657287713135,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                9.39182864385657e-05,
+                1.881470534925711e-09,
+                0.01016269251704216
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0008887937874533234,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0004443968937266618,
+                8.385963798374085e-12,
+                0.010769752785563469
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0015897790435701604,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0007948895217850804,
+                -7.43967643046517e-09,
+                0.011376818642020226
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": false,
+            "drift_m": 0.0017726707737892862,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0008863353868946433,
+                1.8141058433229773e-08,
+                0.01153519842773676
+              ],
+              "q": [
+                0.0,
+                -0.5,
+                0.0,
+                0.8660253882408142
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 25.55585034148288,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 1.5111374347176465e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -6.614340782165527,
+                1.839500555433915e-06,
+                -48.076133728027344
+              ],
+              "q": [
+                0.494808167219162,
+                -0.5810612440109253,
+                -0.6451406478881836,
+                0.03641774132847786
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 25.90079495412959,
+            "spin": 47.123888366520355
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 32.22513956600565,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0001644754414762417,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -8.340479850769043,
+                7.71869090385735e-05,
+                -41.11809158325195
+              ],
+              "q": [
+                -7.096769695635885e-05,
+                -0.6090472936630249,
+                -5.444444468594156e-05,
+                0.7931338548660278
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 25.497770663280004,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 0.4454358508553818,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 3.14882380954562e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11528728157281876,
+                1.0382872517311625e-07,
+                -0.4109707176685333
+              ],
+              "q": [
+                -1.1378949338336497e-08,
+                -0.6087621450424194,
+                -8.731371181625036e-09,
+                0.7933527827262878
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 4.656613041286396e-10,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 3.388181766158249e-05,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.4775922571715061e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                8.769259693508502e-06,
+                3.846067464507996e-09,
+                0.019336774945259094
+              ],
+              "q": [
+                5.401147973316256e-09,
+                -0.6087623238563538,
+                4.1451642118772725e-09,
+                0.7933526635169983
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 51.21624340583362,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.000116767315601507,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -13.255739212036133,
+                7.39841052563861e-05,
+                -71.81763458251953
+              ],
+              "q": [
+                -2.972574111481663e-05,
+                -0.7102516889572144,
+                -2.08003657462541e-05,
+                0.7039478421211243
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 37.351321626739825,
+            "spin": 0.12674920275478738
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 29.508445544208087,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0003793959494728938,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -7.63734769821167,
+                0.00018757533689495176,
+                -36.422664642333984
+              ],
+              "q": [
+                -8.250999235315248e-05,
+                -0.6091869473457336,
+                -6.329173629637808e-05,
+                0.7930267453193665
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 23.282333817931455,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 0.2376172704543498,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 1.5205453779476574e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.06149987503886223,
+                6.735120905432268e-08,
+                -0.21021513640880585
+              ],
+              "q": [
+                -1.203581589948044e-08,
+                -0.6087621450424194,
+                -9.23540355302066e-09,
+                0.7933527827262878
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 1.3969838587663065e-09,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 5.911761970570924e-05,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.478548837538507e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                1.5300765880965628e-05,
+                2.7331883423187264e-09,
+                0.019361142069101334
+              ],
+              "q": [
+                -8.591456435169675e-09,
+                -0.6087623238563538,
+                -6.591932333321893e-09,
+                0.7933526635169983
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 47.30766396146236,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0002563221908236102,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -12.244124412536621,
+                0.0001600829855306074,
+                -65.7107162475586
+              ],
+              "q": [
+                -6.463886529672891e-05,
+                -0.7108579277992249,
+                -4.50850093329791e-05,
+                0.7033356428146362
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 35.262475059916156,
+            "spin": 0.13476936593908295
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 23.518138680564395,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0003937504924493851,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -6.086942195892334,
+                0.0005244607455097139,
+                -26.219751358032227
+              ],
+              "q": [
+                -1.425783239028533e-06,
+                -0.6091940999031067,
+                -1.0957488711937913e-06,
+                0.7930212616920471
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 17.61415825029997,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 0.10462144046236839,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 1.571880620301891e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.027078021317720413,
+                3.2210341061045256e-08,
+                -0.08175350725650787
+              ],
+              "q": [
+                -1.1420185686006334e-08,
+                -0.6087621450424194,
+                -8.763011649648433e-09,
+                0.7933527827262878
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 0.00010953389909952596,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.4707183011331004e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                2.8349459171295166e-05,
+                -2.598811610354801e-09,
+                0.01940988004207611
+              ],
+              "q": [
+                -2.502850904306797e-08,
+                -0.6087622046470642,
+                -1.9205037560254823e-08,
+                0.7933527231216431
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 31.180342423525037,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00039630232646370445,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -8.070066452026367,
+                0.0006307635339908302,
+                -38.93631362915039
+              ],
+              "q": [
+                -8.621249776297191e-07,
+                -0.6733213067054749,
+                -6.257311611079786e-07,
+                0.7393500208854675
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 24.638195093550607,
+            "spin": 0.12539117038343628
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 0.10091343010952067,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 1.5222867061417955e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.026118317618966103,
+                2.633310458577398e-08,
+                -0.07817094773054123
+              ],
+              "q": [
+                -1.1910171515694401e-08,
+                -0.6087621450424194,
+                -9.138992673740631e-09,
+                0.7933527827262878
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 3.3878503942905285e-05,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 1.4772721747220718e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                8.76840204000473e-06,
+                3.916255764124799e-09,
+                0.019336774945259094
+              ],
+              "q": [
+                5.401147973316256e-09,
+                -0.6087623238563538,
+                4.1451642118772725e-09,
+                0.7933526635169983
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": false,
+            "drift_m": 0.0002863226670137093,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 1.4654026694045641e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                7.410575926769525e-05,
+                -2.8051492240166453e-09,
+                0.019580675289034843
+              ],
+              "q": [
+                -1.1342761396804235e-08,
+                -0.6087621450424194,
+                -8.703603171511531e-09,
+                0.7933527827262878
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 4.873763970181244e-08,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                4.873763970181244e-08,
+                4.873765035995348e-08,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                3.2751579226442118e-15,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                3.2751579226442118e-15,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                3.2751579226442118e-15,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 0.0,
+            "ball": true,
+            "drift_m": 0.0,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 4.619374181780156e-09,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                0.0,
+                0.0,
+                0.03999999538064003
+              ],
+              "q": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 14.226040194000495,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00013797936043558057,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -13.741299629211426,
+                -0.06737465411424637,
+                -27.09031105041504
+              ],
+              "q": [
+                -0.08517992496490479,
+                -0.09190033376216888,
+                -0.06529068946838379,
+                0.9899675846099854
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 23.064796807386816,
+            "spin": 0.03713343697545019
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.03176857202272076,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00010503594342569506,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.030686084181070328,
+                -0.007154542952775955,
+                0.032397590577602386
+              ],
+              "q": [
+                0.09767713397741318,
+                -0.5100286602973938,
+                -0.00894937850534916,
+                0.8545466065406799
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0009288294196673257,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.028974567157719594,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00010503429383000584,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0279872827231884,
+                -0.006555818021297455,
+                0.03321148827672005
+              ],
+              "q": [
+                0.08986225724220276,
+                -0.47901812195777893,
+                -0.009869559668004513,
+                0.8731374740600586
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 5.4709963415433e-05,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.028031670445978547,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.00010503376532108866,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.027076514437794685,
+                -0.006369372364133596,
+                0.03343648463487625
+              ],
+              "q": [
+                0.08733843266963959,
+                -0.46857741475105286,
+                -0.0097513347864151,
+                0.8790404796600342
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 6.9000841088188345,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00012881734468200845,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -6.664969444274902,
+                -0.1400018036365509,
+                -7.475849628448486
+              ],
+              "q": [
+                -0.06091897562146187,
+                0.5828971266746521,
+                0.11290927231311798,
+                -0.8023536801338196
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 11.526057781998782,
+            "spin": 47.12388933468441
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.03180550960826042,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00010503436300592778,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.030721763148903847,
+                -0.007144050672650337,
+                0.03238551691174507
+              ],
+              "q": [
+                0.09763477742671967,
+                -0.510453462600708,
+                -0.00942296627908945,
+                0.854292631149292
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0009436249696291079,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.029047591925498314,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00010503313494680117,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.028057819232344627,
+                -0.00655768159776926,
+                0.03319305554032326
+              ],
+              "q": [
+                0.08996632695198059,
+                -0.47987744212150574,
+                -0.010265443474054337,
+                0.8726502656936646
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 4.026724459879697e-05,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.02810450816359818,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.00010503643265092483,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.027146870270371437,
+                -0.006382529158145189,
+                0.03341998904943466
+              ],
+              "q": [
+                0.08751261979341507,
+                -0.46940383315086365,
+                -0.009862642735242844,
+                0.8785808682441711
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 5.699487737261342,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00010503482850655887,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -5.505282402038574,
+                0.0077864681370556355,
+                -4.8590545654296875
+              ],
+              "q": [
+                -0.03160959109663963,
+                -0.20803025364875793,
+                -0.12264006584882736,
+                -0.9698885083198547
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 8.857790232042682,
+            "spin": 47.12388641802255
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.03177763913455618,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0001050362614273409,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.03069484233856201,
+                -0.007169096264988184,
+                0.03239448368549347
+              ],
+              "q": [
+                0.09780852496623993,
+                -0.5101077556610107,
+                -0.008584308438003063,
+                0.8544881343841553
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0009333242416149619,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.02900677449542168,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00010503436646387698,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.028018392622470856,
+                -0.006571809761226177,
+                0.0332033671438694
+              ],
+              "q": [
+                0.09002938121557236,
+                -0.4793573021888733,
+                -0.00955367274582386,
+                0.8729376196861267
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 4.792062280496677e-05,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.028060865697613655,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0001050343681101365,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.027104714885354042,
+                -0.006375142838805914,
+                0.03342996910214424
+              ],
+              "q": [
+                0.08740966767072678,
+                -0.46893900632858276,
+                -0.009820116683840752,
+                0.8788397908210754
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 5.693259746017954,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00022223376994662258,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -5.499266624450684,
+                0.06005634739995003,
+                -4.902862548828125
+              ],
+              "q": [
+                -0.01033295039087534,
+                0.011431675404310226,
+                -0.12188626825809479,
+                -0.992424488067627
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 8.899204882489384,
+            "spin": 47.12388866854425
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.03176294123442654,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00010503239529215808,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.030680645257234573,
+                -0.007156275678426027,
+                0.03239947557449341
+              ],
+              "q": [
+                0.09770794212818146,
+                -0.509947657585144,
+                -0.008785410784184933,
+                0.8545931577682495
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0009237528755756597,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.029129866998567233,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00010503376532108866,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.028137290850281715,
+                -0.006577170453965664,
+                0.033172085881233215
+              ],
+              "q": [
+                0.09021054953336716,
+                -0.4807335138320923,
+                -0.010130873881280422,
+                0.8721551895141602
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 2.5065616210041016e-05,
+            "spin": 0.0
+          },
+          {
+            "angle": 15.0,
+            "ball": true,
+            "drift_m": 0.02814653852718066,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.00010503381351197744,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.027187468484044075,
+                -0.006383397150784731,
+                0.033410485833883286
+              ],
+              "q": [
+                0.08759104460477829,
+                -0.46991750597953796,
+                -0.010049408301711082,
+                0.8782963156700134
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 22.40347170756112,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00011567913862775558,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -19.401975631713867,
+                -0.038481272757053375,
+                -44.76759338378906
+              ],
+              "q": [
+                -0.08124598115682602,
+                -0.2851124107837677,
+                -0.06668564677238464,
+                0.9527134895324707
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 29.65028669496722,
+            "spin": 0.02522918199880119
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.13125726088696793,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0006480326336378434,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11367212235927582,
+                0.00530211953446269,
+                -0.020109932869672775
+              ],
+              "q": [
+                -0.06148416921496391,
+                -0.9284773468971252,
+                0.01695026084780693,
+                -0.3658719062805176
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0025788211893576613,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.08590774163844558,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00011838756903087555,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.07439828664064407,
+                -0.003721370594576001,
+                0.0025512478314340115
+              ],
+              "q": [
+                0.045509036630392075,
+                -0.9777392745018005,
+                -0.01903434284031391,
+                0.20394258201122284
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0014569005490051665,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.07274707283557409,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.000780854138482695,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.06300081312656403,
+                -0.004373790696263313,
+                0.009160099551081657
+              ],
+              "q": [
+                0.056846000254154205,
+                -0.919989287853241,
+                -0.0025726407766342163,
+                0.3877907693386078
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 17.256658920343078,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0004707815667108761,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -14.94470500946045,
+                -0.13191215693950653,
+                -35.03586196899414
+              ],
+              "q": [
+                -0.09037844091653824,
+                -0.7834078669548035,
+                0.11430195719003677,
+                0.6041845083236694
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 25.934681868692874,
+            "spin": 45.01265333515705
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.12741081791032424,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00010477322405894052,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11034100502729416,
+                -0.0011594081297516823,
+                -0.017832254990935326
+              ],
+              "q": [
+                0.009954113513231277,
+                -0.9494497179985046,
+                -0.009550593793392181,
+                -0.31361594796180725
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0030477427940920334,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.08566059781579034,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00011846887843765253,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.07418425381183624,
+                -0.00335456314496696,
+                0.0026755998842418194
+              ],
+              "q": [
+                0.04496251419186592,
+                -0.9771977066993713,
+                -0.01128336600959301,
+                0.20720960199832916
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0015561399817697213,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.07188170382073014,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 4.147387574947314e-06,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.06225138157606125,
+                -0.00040528146200813353,
+                0.009930698201060295
+              ],
+              "q": [
+                0.005527778062969446,
+                -0.9265573024749756,
+                -0.0012530733365565538,
+                0.37611109018325806
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 7.737007651150495,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0007090613894283129,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -6.700445175170898,
+                0.05039010941982269,
+                -13.306207656860352
+              ],
+              "q": [
+                -0.0748104602098465,
+                0.9577337503433228,
+                0.06537744402885437,
+                0.2699543535709381
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 14.86165549428273,
+            "spin": 47.12389099925613
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.133297309386107,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0001941676437765688,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11543885618448257,
+                0.003477636259049177,
+                -0.020923832431435585
+              ],
+              "q": [
+                -0.023539317771792412,
+                -0.9224578738212585,
+                0.034064456820487976,
+                -0.38387104868888855
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0008329984651826403,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.08541313567512633,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00011845006126160601,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.07396994531154633,
+                -0.00355881848372519,
+                0.0027426232118159533
+              ],
+              "q": [
+                0.047067444771528244,
+                -0.9765108227729797,
+                -0.012682835571467876,
+                0.209881991147995
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0015732372934528023,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.07103470261531178,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 3.926983935240158e-06,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.061517857015132904,
+                -0.00030619368772022426,
+                0.010233702138066292
+              ],
+              "q": [
+                -0.00139527244027704,
+                -0.9226870536804199,
+                -0.006625855341553688,
+                0.3854902982711792
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 7.097976505652714,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00071982917452032,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -6.147027969360352,
+                0.024718837812542915,
+                -11.550714492797852
+              ],
+              "q": [
+                -0.012238535098731518,
+                0.8858570456504822,
+                0.02856285311281681,
+                0.46291646361351013
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 13.617254891665112,
+            "spin": 47.12388361664185
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.13289123884517592,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00019420458428764942,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11508718878030777,
+                0.003984958399087191,
+                -0.02073691412806511
+              ],
+              "q": [
+                -0.035762492567300797,
+                -0.9234415292739868,
+                0.02538420632481575,
+                -0.38122496008872986
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0021943854393764108,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.08491101912743773,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00011835773566071239,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.07353509962558746,
+                -0.004659814294427633,
+                0.0027957253623753786
+              ],
+              "q": [
+                0.057579006999731064,
+                -0.9747717976570129,
+                -0.02325400523841381,
+                0.2143917977809906
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.001496319970641154,
+            "spin": 0.0
+          },
+          {
+            "angle": 30.0,
+            "ball": true,
+            "drift_m": 0.0718313192418538,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 4.179988893827924e-06,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.062207747250795364,
+                -0.00047374996938742697,
+                0.009948058053851128
+              ],
+              "q": [
+                0.006350765470415354,
+                -0.9263046383857727,
+                -0.0016087632393464446,
+                0.37671858072280884
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 29.957283992780862,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 8.625486189145493e-05,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -21.182998657226562,
+                -0.025895003229379654,
+                -57.187660217285156
+              ],
+              "q": [
+                -0.09125993400812149,
+                -0.35215088725090027,
+                -0.031654275953769684,
+                0.9309454560279846
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 33.51652752976021,
+            "spin": 0.004278615878198325
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 6.4008587420888805,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0005201138123762175,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -4.526090621948242,
+                0.013777075335383415,
+                -5.108964443206787
+              ],
+              "q": [
+                0.10755056142807007,
+                -0.5864626169204712,
+                0.007166024297475815,
+                0.8027721643447876
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 5.094558945491588,
+            "spin": 46.28952927873084
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.1567892899601943,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.000491324329093698,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11086677014827728,
+                0.003991360310465097,
+                -0.05443044379353523
+              ],
+              "q": [
+                -0.05281148850917816,
+                -0.6823964715003967,
+                -0.009123409166932106,
+                -0.7290149927139282
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.001463479426504897,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.11231400719317956,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0005951338988264068,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.07941799610853195,
+                0.003455530386418104,
+                -0.023809310048818588
+              ],
+              "q": [
+                -0.05064413323998451,
+                -0.9597095251083374,
+                0.0011725635267794132,
+                -0.2763901650905609
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 25.987544486944405,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00016000534436144687,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -18.37596893310547,
+                0.12549324333667755,
+                -50.82963943481445
+              ],
+              "q": [
+                -0.10397593677043915,
+                0.6208230257034302,
+                0.12966902554035187,
+                -0.7661290764808655
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 31.350084572316252,
+            "spin": 35.71802890428784
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 5.852287500163455,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00043015534549717405,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -4.138192176818848,
+                -0.06575486063957214,
+                -4.114630222320557
+              ],
+              "q": [
+                0.07042048871517181,
+                -0.4785607159137726,
+                0.12055575102567673,
+                -0.866883397102356
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 2.5475418094093207,
+            "spin": 45.45517719684565
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.1567702395846674,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0004912752479476271,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11085329949855804,
+                0.003984777722507715,
+                -0.05441567674279213
+              ],
+              "q": [
+                -0.05272674560546875,
+                -0.6825053691864014,
+                -0.00902826152741909,
+                -0.7289202809333801
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.001456931271507823,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.11230488240047695,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.000595130391500609,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.07941154390573502,
+                0.0037421011365950108,
+                -0.023726101964712143
+              ],
+              "q": [
+                -0.055065806955099106,
+                -0.9598717093467712,
+                0.001472372910939157,
+                -0.2749764323234558
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 18.37946783098659,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -12.996246337890625,
+                0.06288173794746399,
+                -36.927425384521484
+              ],
+              "q": [
+                -0.08473709970712662,
+                -0.958994448184967,
+                -0.005261978600174189,
+                0.2704102098941803
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 26.075996065850912,
+            "spin": 47.123886939725864
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 5.784752738808751,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00043015487749543946,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -4.090437889099121,
+                -0.0027200609911233187,
+                -4.045509338378906
+              ],
+              "q": [
+                -0.05163947120308876,
+                -0.5482937693595886,
+                -0.08236537128686905,
+                0.8306161761283875
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 2.479122928977223,
+            "spin": 47.12388692049522
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.15617717020584634,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0004913673222438908,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11043393611907959,
+                0.004453545436263084,
+                -0.05394473671913147
+              ],
+              "q": [
+                -0.04520857334136963,
+                -0.6892351508140564,
+                0.011456060223281384,
+                -0.7230352163314819
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0010033026830334852,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.11228173324393234,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.000595181732727143,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.07939517498016357,
+                0.0033684431109577417,
+                -0.023796863853931427
+              ],
+              "q": [
+                -0.049561742693185806,
+                -0.9600694179534912,
+                0.0011619399301707745,
+                -0.27533450722694397
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 8.92210277614827,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00036717738155447877,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -6.308879375457764,
+                0.05048086494207382,
+                -15.38555908203125
+              ],
+              "q": [
+                0.05438312888145447,
+                -0.9608847498893738,
+                0.0055002132430672646,
+                0.27150091528892517
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 15.15708934517524,
+            "spin": 47.123888957248475
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 5.490408589702733,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0004297876529805178,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -3.882305145263672,
+                -0.010799454525113106,
+                -3.8171029090881348
+              ],
+              "q": [
+                -0.0031904601491987705,
+                -0.8998647332191467,
+                -0.0894518569111824,
+                0.4268861413002014
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 2.3250606065603034,
+            "spin": 47.12388893524073
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.15589482846767186,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0004917976288017212,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.11023429036140442,
+                0.004404196050018072,
+                -0.05372707173228264
+              ],
+              "q": [
+                -0.045666296035051346,
+                -0.6915945410728455,
+                0.010862017050385475,
+                -0.7207590937614441
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0008477019101644285,
+            "spin": 0.0
+          },
+          {
+            "angle": 45.0,
+            "ball": true,
+            "drift_m": 0.11224052416280082,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0005953219203895382,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.079366035759449,
+                0.003705353941768408,
+                -0.023711293935775757
+              ],
+              "q": [
+                -0.054496508091688156,
+                -0.9602736234664917,
+                0.0011328232940286398,
+                -0.273685097694397
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 38.83115005493163,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00025544703008728575,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -19.41557502746582,
+                -0.01697455905377865,
+                -67.16123962402344
+              ],
+              "q": [
+                -0.08664897829294205,
+                -0.47949638962745667,
+                -0.044847551733255386,
+                0.8721031546592712
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 36.325927523055924,
+            "spin": 0.0040935915492269015
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 18.04963111877441,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0005355151871685171,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -9.024815559387207,
+                -0.027831465005874634,
+                -28.624494552612305
+              ],
+              "q": [
+                0.008576931431889534,
+                -0.6580307483673096,
+                0.1080102026462555,
+                0.7451549172401428
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 21.517037987110673,
+            "spin": 47.12388824250062
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 2.7603683471679683,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00039239556762438177,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.3801841735839844,
+                -0.002478696871548891,
+                -2.310324192047119
+              ],
+              "q": [
+                -0.02311214618384838,
+                -0.6420415639877319,
+                0.16228151321411133,
+                0.7489413619041443
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.7230802008260696,
+            "spin": 15.723737907215316
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 0.16884410381317136,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0005065728357352278,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.0844220519065857,
+                0.0023124513681977987,
+                -0.06646578758955002
+              ],
+              "q": [
+                -0.03742248937487602,
+                -0.472062349319458,
+                -0.01678614690899849,
+                -0.8806106448173523
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 35.99074554443359,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00018143501625087974,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -17.995372772216797,
+                -0.01987377181649208,
+                -62.55659103393555
+              ],
+              "q": [
+                0.09543921053409576,
+                0.9085788726806641,
+                -0.04437030479311943,
+                -0.404236376285553
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 34.83242413455883,
+            "spin": 36.11651265450122
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 15.694343566894528,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00044135481443643293,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -7.847171783447266,
+                0.008774627931416035,
+                -23.050701141357422
+              ],
+              "q": [
+                -0.016607187688350677,
+                -0.6146580576896667,
+                -0.07853028923273087,
+                0.7846991419792175
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 18.534143885916688,
+            "spin": 47.123887858383874
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 5.099691867828368,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0006102599639836725,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -2.5498459339141846,
+                0.01793891005218029,
+                -4.3345818519592285
+              ],
+              "q": [
+                -0.01900620572268963,
+                -0.9447493553161621,
+                -0.12666089832782745,
+                0.30173560976982117
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 2.014354559634728,
+            "spin": 44.763963212976144
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 0.16899158060550687,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0005044858010004351,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.08449579030275345,
+                0.002311697229743004,
+                -0.06660149246454239
+              ],
+              "q": [
+                -0.03745412081480026,
+                -0.47271841764450073,
+                -0.01676778681576252,
+                -0.8802576065063477
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 30.031148910522454,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0005660736026004975,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -15.01557445526123,
+                0.06948690861463547,
+                -52.36477279663086
+              ],
+              "q": [
+                0.05520008131861687,
+                -0.7473532557487488,
+                -0.016995742917060852,
+                -0.6619117856025696
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 31.33413504040788,
+            "spin": 47.12389226915288
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 18.14884757995605,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -9.074423789978027,
+                -0.31430569291114807,
+                -27.399686813354492
+              ],
+              "q": [
+                -0.059399500489234924,
+                -0.7851846814155579,
+                -0.05850701779127121,
+                0.6136234402656555
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 20.940147918174002,
+            "spin": 47.12389142288447
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 2.140297651290893,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00036768815085619355,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.0701488256454468,
+                0.022106686607003212,
+                -1.775858759880066
+              ],
+              "q": [
+                0.029268570244312286,
+                -0.21781021356582642,
+                -0.1240210011601448,
+                0.9676368236541748
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.34562077026791876,
+            "spin": 9.204333472600979
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 0.16894756257534024,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0005070035804311743,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.08447378128767014,
+                0.0023321195039898157,
+                -0.0665622353553772
+              ],
+              "q": [
+                -0.03768154978752136,
+                -0.4725884795188904,
+                -0.01682097464799881,
+                -0.8803166151046753
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 16.44612121582031,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0002091249341486523,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -8.223060607910156,
+                0.3349756896495819,
+                -28.860292434692383
+              ],
+              "q": [
+                -0.07655633985996246,
+                -0.6743940114974976,
+                0.01274519506841898,
+                -0.734281599521637
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 21.23591856103227,
+            "spin": 47.12388739948296
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 12.75262355804443,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0002050248697986548,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -6.376311779022217,
+                0.07983079552650452,
+                -15.788578987121582
+              ],
+              "q": [
+                0.054607756435871124,
+                -0.7916862368583679,
+                0.041550636291503906,
+                0.6070621609687805
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 13.752934171960526,
+            "spin": 47.123886444057774
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 2.2189490795135494,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.001688001660128835,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -1.109474539756775,
+                -0.001492645707912743,
+                -1.8443294763565063
+              ],
+              "q": [
+                0.13302157819271088,
+                -0.9846958518028259,
+                -0.014777401462197304,
+                0.11162878572940826
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.2644402477032309,
+            "spin": 6.989251069079889
+          },
+          {
+            "angle": 60.0,
+            "ball": true,
+            "drift_m": 0.16802646219730374,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.00022378548185885555,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.08401323109865189,
+                -0.0017845899565145373,
+                -0.06587370485067368
+              ],
+              "q": [
+                0.024160441011190414,
+                -0.47196483612060547,
+                -0.03481094166636467,
+                -0.8805984854698181
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.0
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 53.1714819420309,
+            "friction": 0.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00041773271985967586,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -13.761792182922363,
+                0.0241845715790987,
+                -74.68418884277344
+              ],
+              "q": [
+                0.03186874836683273,
+                -0.6599122285842896,
+                0.07704588025808334,
+                0.746702253818512
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 38.30803050102327,
+            "spin": 0.01997423432201929
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 41.07005747687983,
+            "friction": 0.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00037939228314098905,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -10.62971305847168,
+                0.0011828425340354443,
+                -55.4826545715332
+              ],
+              "q": [
+                0.026591386646032333,
+                -0.5362503528594971,
+                0.048326246440410614,
+                0.8422547578811646
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 31.639934073136015,
+            "spin": 46.20769659489454
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 38.9863403117189,
+            "friction": 0.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0004450642259279797,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -10.090407371520996,
+                0.36677777767181396,
+                -42.98716735839844
+              ],
+              "q": [
+                -0.07534641772508621,
+                -0.2415400594472885,
+                -0.021262114867568016,
+                0.9672276377677917
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 26.50057629584727,
+            "spin": 47.12388947995765
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 0.15529454254151603,
+            "friction": 0.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0022780289667421114,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.040193185210227966,
+                0.00046224702964536846,
+                0.00223048054613173
+              ],
+              "q": [
+                0.009862183593213558,
+                -0.570206344127655,
+                0.008717501536011696,
+                -0.8213961124420166
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.19747434946167813
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 51.467865197008045,
+            "friction": 0.2,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0003988571924509188,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -13.320863723754883,
+                0.05079343542456627,
+                -71.78459167480469
+              ],
+              "q": [
+                0.15441027283668518,
+                -0.2921316921710968,
+                0.14049147069454193,
+                -0.9333159923553467
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 37.34510895726469,
+            "spin": 21.44524740712609
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 39.52800809800353,
+            "friction": 0.2,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.0003779410319637855,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -10.23060131072998,
+                -0.0966082513332367,
+                -52.28097152709961
+              ],
+              "q": [
+                -0.006292428355664015,
+                -0.9617807865142822,
+                0.033998098224401474,
+                -0.27162909507751465
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 30.385456999342246,
+            "spin": 47.123892307483494
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 30.665801506187016,
+            "friction": 0.2,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.00042062015023219823,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -7.936893463134766,
+                -0.17374543845653534,
+                -44.928932189941406
+              ],
+              "q": [
+                0.021329639479517937,
+                0.014906464144587517,
+                -0.02106655389070511,
+                0.9994393587112427
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 28.10553423116406,
+            "spin": 47.12388989827706
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 0.15516448363057475,
+            "friction": 0.2,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.0021934335694193327,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.040159523487091064,
+                0.0005140288849361241,
+                0.0023187221959233284
+              ],
+              "q": [
+                0.01310037076473236,
+                -0.5705782771110535,
+                0.012237418442964554,
+                -0.8210475444793701
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.20314563179551942
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 47.593199865891954,
+            "friction": 0.6,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.00038097816737373,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -12.318026542663574,
+                0.004977216478437185,
+                -65.62855529785156
+              ],
+              "q": [
+                0.023816784843802452,
+                0.45083752274513245,
+                0.03610756993293762,
+                0.8915574550628662
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 35.24063459852209,
+            "spin": 47.12389045057568
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 43.67499963167831,
+            "friction": 0.6,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.00037793060274438073,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -11.303921699523926,
+                -0.3127010762691498,
+                -45.502872467041016
+              ],
+              "q": [
+                -0.04138679429888725,
+                -0.9276578426361084,
+                0.03874106705188751,
+                -0.36910325288772583
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 27.053415082216357,
+            "spin": 47.12388962222404
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 32.8463271782529,
+            "friction": 0.6,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.0004657837797785447,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -8.50125503540039,
+                0.6923701763153076,
+                -41.40296936035156
+              ],
+              "q": [
+                -0.10065735876560211,
+                0.21549826860427856,
+                0.030834157019853592,
+                0.9708130359649658
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 26.313926347009872,
+            "spin": 47.1238884213399
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 0.15543292084715898,
+            "friction": 0.6,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.002089872425246199,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.04022900015115738,
+                0.0003749259340111166,
+                0.002352865180000663
+              ],
+              "q": [
+                0.006962337996810675,
+                -0.5687648057937622,
+                0.0025045503862202168,
+                -0.8224669694900513
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.23452628452450006
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 38.222801120007595,
+            "friction": 2.0,
+            "grip": 0.0,
+            "penetration_vertical_m": 0.0003779339449313801,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -9.892788887023926,
+                0.09489095956087112,
+                -57.8089599609375
+              ],
+              "q": [
+                -0.011317085474729538,
+                -0.5446414351463318,
+                0.0016425484791398048,
+                -0.8385910391807556
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 32.743042237442424,
+            "spin": 47.12388874166975
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 35.415277040757104,
+            "friction": 2.0,
+            "grip": 0.25,
+            "penetration_vertical_m": 0.001195381646452276,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -9.16614818572998,
+                -0.03505236655473709,
+                -52.95265579223633
+              ],
+              "q": [
+                0.012507250532507896,
+                -0.976868212223053,
+                0.014489022083580494,
+                -0.212984099984169
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 30.890193616344984,
+            "spin": 47.12388643248198
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 35.199710182025306,
+            "friction": 2.0,
+            "grip": 0.5,
+            "penetration_vertical_m": 0.000443155971385778,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -9.110355377197266,
+                0.040247198194265366,
+                -34.33161163330078
+              ],
+              "q": [
+                0.03431575745344162,
+                0.25059232115745544,
+                -0.0304917860776186,
+                0.9670037031173706
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 22.253388345731825,
+            "spin": 47.12388715506971
+          },
+          {
+            "angle": 75.0,
+            "ball": true,
+            "drift_m": 0.1578421628577732,
+            "friction": 2.0,
+            "grip": 1.0,
+            "penetration_vertical_m": 0.002104617977976307,
+            "row": {
+              "gesture": 1,
+              "id": 1,
+              "p": [
+                -0.04085255786776543,
+                0.007584207691252232,
+                -0.0006081845494918525
+              ],
+              "q": [
+                -0.2939493656158447,
+                -0.24980516731739044,
+                0.5683698654174805,
+                -0.7267371416091919
+              ],
+              "scale": 1.0,
+              "source": 0
+            },
+            "speed": 0.0,
+            "spin": 0.33342206405658564
+          }
+        ],
+        "terrains": [
+          {
+            "bodies": 12,
+            "kind": "hills",
+            "lost": 0,
+            "max_penetration_vertical_m": 0.00010937759158878568,
+            "recovery_bytes": 100133
+          },
+          {
+            "bodies": 12,
+            "kind": "ridge",
+            "lost": 0,
+            "max_penetration_vertical_m": 0.00012158985057919569,
+            "recovery_bytes": 99986
+          },
+          {
+            "bodies": 12,
+            "kind": "valley",
+            "lost": 0,
+            "max_penetration_vertical_m": 0.00011248766264243537,
+            "recovery_bytes": 98883
+          },
+          {
+            "bodies": 12,
+            "kind": "rough",
+            "lost": 0,
+            "max_penetration_vertical_m": 0.00017605480799726125,
+            "recovery_bytes": 100571
+          },
+          {
+            "bodies": 12,
+            "kind": "terraces",
+            "lost": 0,
+            "max_penetration_vertical_m": 0.00011473010514362336,
+            "recovery_bytes": 98558
+          },
+          {
+            "bodies": 10,
+            "kind": "hole",
+            "lost": 0,
+            "max_penetration_vertical_m": 1.3497981944624905e-05,
+            "recovery_bytes": 78030
+          }
+        ]
+      }
+    },
+    "collision": {
+      "receipt": {
+        "path": "build/physics-mountain-017-20261018-01/native-01/collision-results.json",
+        "sha256": "6db124c1fc55bc7af80ff7b405c7f3e1e10fe3f66b21743fdcf6e1b42531ab09"
+      },
+      "result": {
+        "checks": 579,
+        "continuous": {
+          "bodies": 9,
+          "finished": true,
+          "lost": 0
+        },
+        "edge": {
+          "crossed": true,
+          "fell_after_crossing": true,
+          "minimum_centre_before_crossing_m": 0.01475030742585659
+        },
+        "flat": [
+          {
+            "bodies": 64,
+            "friction": 0.0,
+            "maximum_transient_penetration_m": 0.003225224943483658,
+            "settled_penetration_m": 5.4109579747385617e-08,
+            "slept_at_step": 409,
+            "stickiness": 0.0
+          },
+          {
+            "bodies": 64,
+            "friction": 0.0,
+            "maximum_transient_penetration_m": 0.003225224943483658,
+            "settled_penetration_m": 4.713099427920697e-07,
+            "slept_at_step": 275,
+            "stickiness": 0.8
+          },
+          {
+            "bodies": 64,
+            "friction": 0.6,
+            "maximum_transient_penetration_m": 0.003225224943483658,
+            "settled_penetration_m": 3.734558062847698e-07,
+            "slept_at_step": 287,
+            "stickiness": 0.0
+          },
+          {
+            "bodies": 64,
+            "friction": 0.6,
+            "maximum_transient_penetration_m": 0.003225224943483658,
+            "settled_penetration_m": 4.713099427920697e-07,
+            "slept_at_step": 275,
+            "stickiness": 0.8
+          }
+        ],
+        "pass": true
+      }
+    },
+    "mountain": {
+      "receipt": {
+        "path": "build/physics-mountain-017-20261018-01/native-01/mountain-results.json",
+        "sha256": "453bc04de52479e408f38c602ebe587586ac4d56c2be38e9c01595fc2815d86e"
+      },
+      "result": {
+        "checks": 230492,
+        "crowding": {
+          "accepted": 3,
+          "blocked": 10,
+          "step_before_finish": 25,
+          "undo": 3
+        },
+        "large_terrain": [
+          {
+            "bodies": 16,
+            "contact_distance_m": 0.02,
+            "final_vertex_depth_m": 0.002624572017857929,
+            "maximum_speed_mps": 0.010887233831708176,
+            "minimum_body_top_m": 3.5637732934611823,
+            "sleeping": 14,
+            "source": "tall_pyramid",
+            "steps": 3600
+          },
+          {
+            "bodies": 16,
+            "contact_distance_m": 0.018000000000000002,
+            "final_vertex_depth_m": 0.005014650618906824,
+            "maximum_speed_mps": 0.1385759429177842,
+            "minimum_body_top_m": 3.2377263313188305,
+            "sleeping": 12,
+            "source": "tall_box",
+            "steps": 3600
+          }
+        ],
+        "pass": true,
+        "pyramid_wire": {
+          "bottom_m": 0.0,
+          "edges": 8,
+          "top_m": 10.461930274963379
+        },
+        "wire_budget": {
+          "bytes": 9600000,
+          "capacity": 200000,
+          "limited": true,
+          "segments": 200000
+        }
+      }
+    }
+  },
+  "source_archive": {
+    "path": "build/physics-mountain-017-20261018-01/final-source-017.zip",
+    "sha256": "5dc55cbe27afddd66e5e34d6421074a8f870cf6be550f3c41f80c690dfa59029"
+  },
+  "private_probes": {
+    "painter": {
+      "path": "build/physics-lab-brush-probe-013/CyrusPhysicsProbe.dlx",
+      "sha256": "dfd1f903cb7cfb79eb655fcd212b352cac461380b3cc87a82d549084df56c09a"
+    },
+    "icon_hit": {
+      "path": "build/physics-lab-icon-probe-017/CyrusPhysicsIconProbe.dlx",
+      "sha256": "74e483df19fc921e24d091b89a844b4fef4679ab17f72c421710de9173f2b320"
+    },
+    "icon_hit_source": {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/mountain-fixtures/icon_probe.cpp",
+      "sha256": "7efdddb59285cb99aafb6a5d2ef90781c835495876a481805b426ff8d70dde21"
+    }
+  },
+  "manual_birth_slope_rows_unchanged_from_016": 192,
+  "hosts": {
+    "mountain-09": {
+      "launch": {
+        "path": "build/physics-lab-017-mountain-09/launch.json",
+        "sha256": "dd98984497d51dac19c840f047b472ca4c887f80a032456bd0453d6b04726691"
+      },
+      "assertions": "PASS 210 actual-mountain/shape/continuous/overlay/Undo/recovery checks",
+      "computer_use": false,
+      "normal_profile_modified": false,
+      "clean_exit": {
+        "pid": 35868,
+        "exit_code": 0,
+        "exception_notifications": 0
+      },
+      "exit_receipt": {
+        "path": "build/physics-lab-017-mountain-09/diagnostics/20261018-085722-473-pid35868/process-exit.json",
+        "sha256": "55e6480436d939281ac108b43683025f187fde204482cd2e73a773411a0d591b"
+      }
+    },
+    "icon-05": {
+      "launch": {
+        "path": "build/physics-lab-017-icon-05/launch.json",
+        "sha256": "b653a67993538bdf689312e8fb4e3bb0b194eb4bf8bf0a49f5879296f4d163c2"
+      },
+      "assertions": "PASS 150 icon visibility/size/native HitTest/live isolation/scene/clone/render checks; render SHA256 ba55df7ce82b4f9f987eea9482761207981d34ae07641f027c287fe0c7268825",
+      "computer_use": false,
+      "normal_profile_modified": false,
+      "clean_exit": {
+        "pid": 31368,
+        "exit_code": 0,
+        "exception_notifications": 0
+      },
+      "exit_receipt": {
+        "path": "build/physics-lab-017-icon-05/diagnostics/20261018-085731-070-pid31368/process-exit.json",
+        "sha256": "88deb3e47eed53af66eff6105b4d1dc316d1e50382bcf1724fa7586019924ecf"
+      }
+    },
+    "layout150-07": {
+      "launch": {
+        "path": "build/physics-lab-017-layout150-07/launch.json",
+        "sha256": "0bb116621a0621647231a4721da5e1e262718dc46d5b15548525f330bf876e66"
+      },
+      "assertions": "PASS native rollout bounds and caption metrics; no screen pixels or OS input\n",
+      "computer_use": false,
+      "normal_profile_modified": false,
+      "clean_exit": {
+        "pid": 39808,
+        "exit_code": 0,
+        "exception_notifications": 0
+      },
+      "exit_receipt": {
+        "path": "build/physics-lab-017-layout150-07/diagnostics/20261018-085832-532-pid39808/process-exit.json",
+        "sha256": "4cdd7cb8fe48d52d29e57d7ae430dc7f748a9d7fa17c2f23d013edd4069492b2"
+      }
+    },
+    "fault-after-04": {
+      "launch": {
+        "path": "build/physics-lab-017-fault-after-04/launch.json",
+        "sha256": "7b6a180a6f460b77adc969fe36a67394be4d709d6c52c774eff9f20ea5c8c9bd"
+      },
+      "assertions": "PASS pre/post publication faults: retained result, pending world and its collision wires; explicit retry and Undo",
+      "computer_use": false,
+      "normal_profile_modified": false,
+      "clean_exit": {
+        "pid": 43192,
+        "exit_code": 0,
+        "exception_notifications": 0
+      },
+      "exit_receipt": {
+        "path": "build/physics-lab-017-fault-after-04/diagnostics/20261018-085821-356-pid43192/process-exit.json",
+        "sha256": "e11653d01c4be53b4718d8120b1398cf00018abd81f81ae0ad4012636d6c8365"
+      }
+    }
+  },
+  "mountain": {
+    "pass": true,
+    "checks": 210,
+    "cases": [
+      {
+        "kind": "original_pyramid",
+        "first": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 7,
+            "epoch": 1,
+            "history_bytes": 146,
+            "last_step_ms": 0.1953,
+            "lost": 0,
+            "lost_z": -125.54316333973956,
+            "moving": 3,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 5,
+            "skipped": 0,
+            "step": 4,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 3,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 3,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "live": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 7,
+            "epoch": 1,
+            "history_bytes": 146,
+            "last_step_ms": 0.1336,
+            "lost": 0,
+            "lost_z": -125.54316333973956,
+            "moving": 3,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 6,
+            "skipped": 0,
+            "step": 48,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 3,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 10,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "overlay": {
+          "bodies": 8,
+          "builds": 1,
+          "cached_lines": 30208,
+          "draws": 9,
+          "enabled": true,
+          "error": "",
+          "limited": false,
+          "line_limit": 200000,
+          "model_lines": 64,
+          "prepared": true,
+          "surface_lines": 30200
+        },
+        "mesh_sha256": "05668564e12f84c3c8a8d6b693ac4208801da75656c53e2881ccf09863fcd17b",
+        "finish_settled": false,
+        "final": {
+          "active": false,
+          "commits": 1,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 2,
+            "history_bytes": 0,
+            "last_step_ms": 0.0,
+            "lost": 0,
+            "lost_z": 0.0,
+            "moving": 0,
+            "paused": false,
+            "queued": 0,
+            "ready": false,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 0,
+            "skipped": 0,
+            "step": 0,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": false,
+          "preview": 0,
+          "revision": 2,
+          "rows": 8,
+          "schema": 2,
+          "settled": false,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": false,
+          "stickiness": 0.0,
+          "ticks": 1228,
+          "timedOut": false,
+          "version": "0.1.7"
+        }
+      },
+      {
+        "kind": "pyramid_original_radius",
+        "first": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 3,
+            "history_bytes": 146,
+            "last_step_ms": 0.261,
+            "lost": 0,
+            "lost_z": -125.54316333973956,
+            "moving": 10,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 5,
+            "skipped": 0,
+            "step": 4,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 10,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 3,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "live": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 3,
+            "history_bytes": 146,
+            "last_step_ms": 0.2719,
+            "lost": 0,
+            "lost_z": -125.54316333973956,
+            "moving": 10,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 6,
+            "skipped": 0,
+            "step": 47,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 10,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 10,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "overlay": {
+          "bodies": 21,
+          "builds": 1,
+          "cached_lines": 30208,
+          "draws": 2,
+          "enabled": true,
+          "error": "",
+          "limited": false,
+          "line_limit": 200000,
+          "model_lines": 168,
+          "prepared": true,
+          "surface_lines": 30200
+        },
+        "mesh_sha256": "11fb2a5a4eb6e03433a5538ccac9805f23fdf324d85cd476602d707407e42c0e",
+        "finish_settled": false,
+        "final": {
+          "active": false,
+          "commits": 1,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 4,
+            "history_bytes": 0,
+            "last_step_ms": 0.0,
+            "lost": 0,
+            "lost_z": 0.0,
+            "moving": 0,
+            "paused": false,
+            "queued": 0,
+            "ready": false,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 0,
+            "skipped": 0,
+            "step": 0,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": false,
+          "preview": 0,
+          "revision": 2,
+          "rows": 21,
+          "schema": 2,
+          "settled": false,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": false,
+          "stickiness": 0.0,
+          "ticks": 1176,
+          "timedOut": false,
+          "version": "0.1.7"
+        }
+      },
+      {
+        "kind": "teapot",
+        "first": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 3,
+            "epoch": 5,
+            "history_bytes": 146,
+            "last_step_ms": 0.2761,
+            "lost": 0,
+            "lost_z": -33.55618312889233,
+            "moving": 4,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 5,
+            "skipped": 0,
+            "step": 4,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 4,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 3,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "live": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 3,
+            "epoch": 5,
+            "history_bytes": 146,
+            "last_step_ms": 0.4463,
+            "lost": 0,
+            "lost_z": -33.55618312889233,
+            "moving": 4,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 6,
+            "skipped": 0,
+            "step": 48,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 4,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 11,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "overlay": {
+          "bodies": 12,
+          "builds": 1,
+          "cached_lines": 30248,
+          "draws": 11,
+          "enabled": true,
+          "error": "",
+          "limited": false,
+          "line_limit": 200000,
+          "model_lines": 576,
+          "prepared": true,
+          "surface_lines": 30200
+        },
+        "mesh_sha256": "5407db75c98331b24eef725bda32a1e17de54fa654296b03c55d732dc6c52fd9",
+        "finish_settled": false,
+        "final": {
+          "active": false,
+          "commits": 1,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 6,
+            "history_bytes": 0,
+            "last_step_ms": 0.0,
+            "lost": 0,
+            "lost_z": 0.0,
+            "moving": 0,
+            "paused": false,
+            "queued": 0,
+            "ready": false,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 0,
+            "skipped": 0,
+            "step": 0,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": false,
+          "preview": 0,
+          "revision": 2,
+          "rows": 12,
+          "schema": 2,
+          "settled": false,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": false,
+          "stickiness": 0.0,
+          "ticks": 1127,
+          "timedOut": false,
+          "version": "0.1.7"
+        }
+      },
+      {
+        "kind": "torus",
+        "first": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 1,
+            "epoch": 7,
+            "history_bytes": 146,
+            "last_step_ms": 0.5824,
+            "lost": 0,
+            "lost_z": -19.260333457087068,
+            "moving": 6,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 5,
+            "skipped": 0,
+            "step": 4,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 6,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 3,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "live": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 1,
+            "epoch": 7,
+            "history_bytes": 146,
+            "last_step_ms": 0.3618,
+            "lost": 0,
+            "lost_z": -19.260333457087068,
+            "moving": 6,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 6,
+            "skipped": 0,
+            "step": 48,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 6,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 9,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "overlay": {
+          "bodies": 19,
+          "builds": 1,
+          "cached_lines": 30456,
+          "draws": 8,
+          "enabled": true,
+          "error": "",
+          "limited": false,
+          "line_limit": 200000,
+          "model_lines": 4864,
+          "prepared": true,
+          "surface_lines": 30200
+        },
+        "mesh_sha256": "f79121268a0d118f5b5e10017cea6d33c51d7cce4dbaf4a39394ed573e343054",
+        "finish_settled": false,
+        "final": {
+          "active": false,
+          "commits": 1,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 8,
+            "history_bytes": 0,
+            "last_step_ms": 0.0,
+            "lost": 0,
+            "lost_z": 0.0,
+            "moving": 0,
+            "paused": false,
+            "queued": 0,
+            "ready": false,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 0,
+            "skipped": 0,
+            "step": 0,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": false,
+          "preview": 0,
+          "revision": 2,
+          "rows": 19,
+          "schema": 2,
+          "settled": false,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": false,
+          "stickiness": 0.0,
+          "ticks": 1106,
+          "timedOut": false,
+          "version": "0.1.7"
+        }
+      },
+      {
+        "kind": "tall_box",
+        "first": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 9,
+            "history_bytes": 146,
+            "last_step_ms": 0.1683,
+            "lost": 0,
+            "lost_z": -54.6889403647042,
+            "moving": 7,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 5,
+            "skipped": 0,
+            "step": 3,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 7,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 3,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "live": {
+          "active": true,
+          "commits": 0,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 9,
+            "history_bytes": 146,
+            "last_step_ms": 0.4589,
+            "lost": 0,
+            "lost_z": -54.6889403647042,
+            "moving": 7,
+            "paused": false,
+            "queued": 0,
+            "ready": true,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 6,
+            "skipped": 0,
+            "step": 47,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": true,
+          "preview": 7,
+          "revision": 1,
+          "rows": 0,
+          "schema": 2,
+          "settled": true,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": true,
+          "stickiness": 0.0,
+          "ticks": 12,
+          "timedOut": false,
+          "version": "0.1.7"
+        },
+        "overlay": {
+          "bodies": 21,
+          "builds": 1,
+          "cached_lines": 30212,
+          "draws": 11,
+          "enabled": true,
+          "error": "",
+          "limited": false,
+          "line_limit": 200000,
+          "model_lines": 252,
+          "prepared": true,
+          "surface_lines": 30200
+        },
+        "mesh_sha256": "3926a842a030df2cf3745b48c6cb0dbcbbaf55df974d7bdf017650ea6dbe258a",
+        "finish_settled": false,
+        "final": {
+          "active": false,
+          "commits": 1,
+          "cooks": 1,
+          "error": "",
+          "lastTickMs": 0.0,
+          "live": {
+            "blocked": 0,
+            "epoch": 10,
+            "history_bytes": 0,
+            "last_step_ms": 0.0,
+            "lost": 0,
+            "lost_z": 0.0,
+            "moving": 0,
+            "paused": false,
+            "queued": 0,
+            "ready": false,
+            "recovery": false,
+            "redo": 0,
+            "sequence": 0,
+            "skipped": 0,
+            "step": 0,
+            "undo": 0
+          },
+          "motion": null,
+          "painting": false,
+          "preview": 0,
+          "revision": 2,
+          "rows": 21,
+          "schema": 2,
+          "settled": false,
+          "settling": false,
+          "solver": "ede0fb8bd6a21e30288aca9d90be06716e7ad9dfc0dfea4414fc97ccbcf84b2e",
+          "stale": false,
+          "stickiness": 0.0,
+          "ticks": 1113,
+          "timedOut": false,
+          "version": "0.1.7"
+        }
+      }
+    ],
+    "diagnostics": {
+      "error": 0,
+      "event_segment_bytes": 8388608,
+      "event_segments": 4,
+      "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-017-mountain-09\\diagnostics\\20261018-085722-473-pid35868",
+      "max_dumps": 2,
+      "memory": {
+        "available": true,
+        "peak_working_set_bytes": 2553499648,
+        "private_bytes": 3193675776,
+        "working_set_bytes": 2524196864
+      },
+      "recording": true,
+      "version": "0.1.7",
+      "watcher_alive": true,
+      "watcher_pid": 26076,
+      "watcher_ready": true
+    }
+  },
+  "mountain_replay": {
+    "pass": true,
+    "source_sha256": "ae188c30e7347039607dd54326603bf7d5799f0fb4b2436999f04030f639181a",
+    "core_library_sha256": "5188dfc725dd1dcea4c0e1366c17a4a34bcea0680ba4d1907c01faca2d542f24",
+    "cases": [
+      {
+        "bodies": 8,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0028460733136128624,
+        "final_normal_depth_m": 0.0028170930743443338,
+        "sleeping_normal_depth_m": 0.00010879650857513801,
+        "published_vertical_depth_m": 0.00011862334010981357,
+        "published_normal_depth_m": 0.00010879650857513801,
+        "sleeping": 7,
+        "contact_distance_m": 0.02,
+        "case": "original_pyramid",
+        "input_sha256": "5406d07582accc52bea871e16ae34e12d8a06360d9b5ec72ec337da89887ac5c",
+        "trace_sha256": "92ceb13148adbe07539ec6f9b80be17eac17a012a09be60a4a7aa2dde6664773",
+        "returncode": 0,
+        "minimum_birth_gap_m": 0.34869490365432587,
+        "pass": true
+      },
+      {
+        "bodies": 21,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0040177916614538844,
+        "final_normal_depth_m": 0.004014134092804651,
+        "sleeping_normal_depth_m": 0.004014134092804651,
+        "published_vertical_depth_m": 0.0040177916614538844,
+        "published_normal_depth_m": 0.004014134092804651,
+        "sleeping": 18,
+        "contact_distance_m": 0.02,
+        "case": "pyramid_original_radius",
+        "input_sha256": "2efc49095051d58c117b4227e58a98c82e2af6a1a84f9799526f1d29282c1ea9",
+        "trace_sha256": "5279983ef1ab3be56a438d079b9cc626c6bb1f246b5a21bf282aa7fa5f3ea747",
+        "returncode": 0,
+        "minimum_birth_gap_m": 0.20655999237185974,
+        "pass": true
+      },
+      {
+        "bodies": 21,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.006525626621063374,
+        "final_normal_depth_m": 0.006304198498137142,
+        "sleeping_normal_depth_m": 0.006304198498137142,
+        "published_vertical_depth_m": 0.006525626621063374,
+        "published_normal_depth_m": 0.006304198498137142,
+        "sleeping": 11,
+        "contact_distance_m": 0.01440000011953672,
+        "case": "tall_box",
+        "input_sha256": "c0f4e1a5de08a21f96af789389cd841084ceaeb5691b77fa39c91fe2829385e3",
+        "trace_sha256": "f3e572e71c46793054ccb1ad369b28d2bf2c8dd6aef9e162a57d35d3e91ab049",
+        "returncode": 0,
+        "minimum_birth_gap_m": 0.2782844508591751,
+        "pass": true
+      },
+      {
+        "bodies": 12,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.010311082308832376,
+        "final_normal_depth_m": 0.009534039434095476,
+        "sleeping_normal_depth_m": 0.007036607101530978,
+        "published_vertical_depth_m": 0.010133225923686595,
+        "published_normal_depth_m": 0.009369586301165578,
+        "sleeping": 8,
+        "contact_distance_m": 0.012351668704189437,
+        "case": "teapot",
+        "input_sha256": "426259863c4146a9f6820c38e9a5f04f4ac96bb109229f503d11e458e586b2e8",
+        "trace_sha256": "f42aecf54cf1b54f5d2850ec93f8a39a42cdb96ea90957e588cacb85d3690b34",
+        "returncode": 0,
+        "minimum_birth_gap_m": 0.1952916868246004,
+        "pass": true
+      },
+      {
+        "bodies": 19,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.004539956165361347,
+        "final_normal_depth_m": 0.0044858274901558035,
+        "sleeping_normal_depth_m": 0.0044858274901558035,
+        "published_vertical_depth_m": 0.004539956165361347,
+        "published_normal_depth_m": 0.0044858274901558035,
+        "sleeping": 18,
+        "contact_distance_m": 0.0099200100023476,
+        "case": "torus",
+        "input_sha256": "0159157b07d5f1d9c2ab0e1d4900bb1f640a74bdb269884bbfda02fa0ac3167f",
+        "trace_sha256": "b3067d0a43288aed91a8bbe247377c2a62ac2e88cdb24586ce2da05ef8319201",
+        "returncode": 0,
+        "minimum_birth_gap_m": 0.6335496913198018,
+        "pass": true
+      }
+    ]
+  },
+  "installer": {
+    "pass": true,
+    "computer_use": false,
+    "normal_profile_modified": false,
+    "package_sha256": "4ac2b699093e9fb5cb405012103b51412e8c8e63c7017edd691421f06120ccd4",
+    "installed_pair": {
+      "CyrusPhysicsStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-017-installer-04\\scripts\\CyrusPhysicsLab\\0.1.7\\545a1674d5d6\\native\\CyrusPhysicsStorage.dlh",
+        "sha256": "d4d14ec87b582f0ef8a0bb5b34ecdca99d25cdd785230681b47dfad951a119a8"
+      },
+      "CyrusPhysicsLab.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-017-installer-04\\scripts\\CyrusPhysicsLab\\0.1.7\\545a1674d5d6\\native\\CyrusPhysicsLab.dlx",
+        "sha256": "a2a89444185ea6bfe51e8eab406779150926540532265ace05267f99aeadcd15"
+      }
+    },
+    "installed_script_sha256": "5522e3e137821f624b642d9d2dfba2d1af9752a6530e2be290b775e7c2f17778",
+    "fixture_sha256": "1c7b27989cb7b3e502d3056e3d2c88ddd598f01ccf2357c2baffabb0671f2712",
+    "restart_command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-silent",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-017-installer-04\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-017-installer-04\\restart-plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-017-installer-04\\restart.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-017-installer-04\\restart-listener.log"
+    ]
+  },
+  "installer_receipt": {
+    "path": "build/physics-lab-017-installer-04/installer-receipt.json",
+    "sha256": "3ee1f9c1ebc2dec303df6d613d1f6e4e83b00eb43179ad914d61be0a7c5ded55"
+  },
+  "installer_clean_exits": [
+    {
+      "receipt": {
+        "path": "build/physics-lab-017-installer-04/restart-diagnostics/20261018-090010-327-pid44480/process-exit.json",
+        "sha256": "088758a424c5e7e886e720a6868fc1d4b5bf4cf4a38421d897413400c18cd130"
+      },
+      "result": {
+        "pid": 44480,
+        "exit_code": 0,
+        "exception_notifications": 0
+      }
+    }
+  ],
+  "package": {
+    "path": "dist/CyrusPhysicsLab-0.1.7-20261018-04/CyrusPhysicsLab-0.1.7-Max2027.mzp",
+    "sha256": "4ac2b699093e9fb5cb405012103b51412e8c8e63c7017edd691421f06120ccd4"
+  },
+  "package_bytes": 824182,
+  "limits": [
+    "Scripted SDK/rollout checks do not certify physical mouse input, displayed UI pixels or presented FPS.",
+    "Automatic convex proxies may fill concavities.",
+    "Actual mountain matrix uses individual source types and scale 0.8 to 1.2; arbitrary mixed size ranges remain unqualified.",
+    "Actual-mountain sampled normal-depth bound is 10 mm; vertical depth is reported separately. A moving composition may require Freeze.",
+    "Footprint clearance uses a conservative triangle XY height bound; multi-level receivers can choose the upper surface.",
+    "Old pending sessions require their exact solver build for Resume; cached results remain readable.",
+    "The icon contributes zero-area picking edges to the evaluated mesh. Disable it before converting/exporting that mesh. Native physical geometry and JSON recipes omit the icon. Render identity is qualified with Max 2027 Scanline, not every renderer."
+  ]
+}

@@ -1,0 +1,505 @@
+{
+  "pass": true,
+  "version": "0.1.9",
+  "max_year": 2027,
+  "computer_use": false,
+  "normal_profile_modified": false,
+  "scatter_integrated": false,
+  "branch": "codex/workflow-0.75",
+  "head": "e3e81a6d204063efd9b77771ad9b0268ad2ea578",
+  "build_receipt_sha256": "817db8ce39a648dd61fc11dfa87805f07045a68348844a0df4cf60acce5e1bad",
+  "native_binaries": {
+    "cpl_collision_tests.exe": "888c4d1a205b56054f255f64aaa4d66e996fb34e971663133577c6b8be0d7b6f",
+    "cpl_compare.exe": "7032dc6bb68eef5caf4088f42e0ed10c5e60e3be2c609f7db18db3c749c6d900",
+    "cpl_grip_tests.exe": "3e25ff3115ce1ce128a7b7d12ad8600c167af23a77849bc7136ef0be34089217",
+    "cpl_hull_tests.exe": "1ec4f4dae6935e11b23f30d1d0bcb33af1749c4d66d0c06ffcad385d360f59fa",
+    "cpl_live_stress.exe": "4497d4a2f9aa092a6707b802d5c0662d558fc2e2f4b46fb584812bc375f504b5",
+    "cpl_live_tests.exe": "159cc3d7d41e11fdbe7fa32c812d272075812a2e91d8af48bf200bd91a96ad50",
+    "cpl_mountain_tests.exe": "11262ded083beb95e1ecb250cf8eca86b435fe6750f868031e212825215a9c5f",
+    "cpl_quality_tests.exe": "b59a231e3b08a88e93b09fce6135cb790d5883b8f0a5ffdb6ffb53a7028515d7",
+    "cpl_tests.exe": "12cb6cd230a0b55e694228d9898f8fbb149f6f3ce99095e53ab3d5eb0c0b4d0e",
+    "CyrusPhysicsCrashWatch.exe": "7277842213d7236e663f785c8ebe5c94404dcae7aa153d88a49a611f5c0c727c",
+    "CyrusPhysicsLab.dlx": "c5acacac6ae06e488d18ec55930e2a403ad5ea4100b1a3353e3a614af420361b",
+    "CyrusPhysicsStorage.dlh": "fed9c8b1bdb6df67fa2b25b6606f7b8c2aa59464d0a6529f3ca66808af4e0f36"
+  },
+  "script_sha256": "38f4809d5f3b1bc87ec7de7e6d2f259560e8f0b81fe1e26fd00f3496cfcf31b9",
+  "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusPhysicsLab-0.1.9-20261018-06\\CyrusPhysicsLab-0.1.9-Max2027.mzp",
+  "package_sha256": "d3d533f825f7cbee70905fdd9110283ba333066372b04f411cbde1457c734336",
+  "native_hulls": {
+    "checks": 24224,
+    "legacy_rejected_pieces": 4,
+    "pass": true,
+    "retired_palette_replay": {
+      "bodies": 19,
+      "normal_depth_m": 9.119782263766884e-05
+    },
+    "shape_variants": 14,
+    "teapot_quality_pieces": [
+      1,
+      8,
+      16
+    ]
+  },
+  "hosts": {
+    "physics-lab-repair-019-all-04": {
+      "completion": "completed.json",
+      "exits": [
+        {
+          "pid": 7656,
+          "exit_code": 0,
+          "exception_notifications": 0
+        }
+      ],
+      "retained_events": 8943,
+      "unexpected_errors": 0,
+      "expected_invalid_source_preflights": 0
+    },
+    "physics-lab-repair-019-installed-03": {
+      "completion": "restart-completed.json",
+      "exits": [
+        {
+          "pid": 14952,
+          "exit_code": 0,
+          "exception_notifications": 0
+        }
+      ],
+      "retained_events": 848,
+      "unexpected_errors": 0,
+      "expected_invalid_source_preflights": 1
+    },
+    "physics-lab-repair-019-reopen-02": {
+      "completion": "completed.json",
+      "exits": [
+        {
+          "pid": 45812,
+          "exit_code": 0,
+          "exception_notifications": 0
+        }
+      ],
+      "retained_events": 1016,
+      "unexpected_errors": 0,
+      "expected_invalid_source_preflights": 0
+    }
+  },
+  "statements": {
+    "physics-lab-repair-019-all-04": {
+      "artist-assertions.txt": "PASS 324 assertions across 27 captured-source/scale/quality cases",
+      "mountain-assertions.txt": "PASS 327 mountain/quality/palette/remove/history/icon checks",
+      "order-assertions.txt": "PASS 14 reused-hole/order/enablement/material/Undo/clone checks"
+    },
+    "physics-lab-repair-019-installed-03": {
+      "continuous-assertions.txt": "PASS 57 continuous Max 2027 checks\n{\"active\":false,\"commits\":2,\"cooks\":3,\"error\":\"\",\"lastTickMs\":0.0,\"live\":{\"blocked\":0,\"epoch\":4,\"history_bytes\":0,\"last_step_ms\":0.0,\"lost\":0,\"lost_z\":0.0,\"moving\":0,\"paused\":false,\"queued\":0,\"ready\":false,\"recovery\":false,\"redo\":0,\"sequence\":0,\"skipped\":0,\"step\":0,\"undo\":0},\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":8,\"schema\":2,\"settled\":true,\"settling\":false,\"solver\":\"49f3950503cb4bd1284ce554af4782fd127f98d66bd6fe9f5a0cf201e2eb470d\",\"stale\":false,\"stickiness\":0.0,\"ticks\":51,\"timedOut\":false,\"version\":\"0.1.9\"}",
+      "installed-assertions.txt": "PASS 22 installed toolbar/empty-state/history checks; popup at 100% and 150%"
+    },
+    "physics-lab-repair-019-reopen-02": {
+      "assertions.txt": "PASS 57 continuous Max 2027 checks\n{\"active\":false,\"commits\":2,\"cooks\":3,\"error\":\"\",\"lastTickMs\":0.0,\"live\":{\"blocked\":0,\"epoch\":4,\"history_bytes\":0,\"last_step_ms\":0.0,\"lost\":0,\"lost_z\":0.0,\"moving\":0,\"paused\":false,\"queued\":0,\"ready\":false,\"recovery\":false,\"redo\":0,\"sequence\":0,\"skipped\":0,\"step\":0,\"undo\":0},\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":8,\"schema\":2,\"settled\":true,\"settling\":false,\"solver\":\"49f3950503cb4bd1284ce554af4782fd127f98d66bd6fe9f5a0cf201e2eb470d\",\"stale\":false,\"stickiness\":0.0,\"ticks\":65,\"timedOut\":false,\"version\":\"0.1.9\"}",
+      "reopen-assertions.txt": "PASS 31 retired/persistence/clone/installed-ready-scene checks"
+    }
+  },
+  "popup_checks": [
+    {
+      "file": "popup-1.0.json",
+      "data": [
+        {
+          "width": 140,
+          "actual_logical_width": 140.0,
+          "scale": 1.0,
+          "items": 3,
+          "item_height": 13,
+          "popup_rect": [
+            1725,
+            319,
+            1849,
+            387
+          ],
+          "collapsed_height": 21
+        },
+        {
+          "width": 180,
+          "actual_logical_width": 180.0,
+          "scale": 1.0,
+          "items": 3,
+          "item_height": 13,
+          "popup_rect": [
+            1725,
+            319,
+            1889,
+            387
+          ],
+          "collapsed_height": 21
+        },
+        {
+          "width": 225,
+          "actual_logical_width": 162.0,
+          "scale": 1.0,
+          "items": 3,
+          "item_height": 13,
+          "popup_rect": [
+            1725,
+            319,
+            1871,
+            387
+          ],
+          "collapsed_height": 21
+        }
+      ]
+    },
+    {
+      "file": "popup-1.5.json",
+      "data": [
+        {
+          "width": 140,
+          "actual_logical_width": 141.0,
+          "scale": 1.5,
+          "items": 3,
+          "item_height": 13,
+          "popup_rect": [
+            1727,
+            944,
+            1915,
+            1046
+          ],
+          "collapsed_height": 21
+        },
+        {
+          "width": 180,
+          "actual_logical_width": 181.0,
+          "scale": 1.5,
+          "items": 3,
+          "item_height": 13,
+          "popup_rect": [
+            1727,
+            944,
+            1975,
+            1046
+          ],
+          "collapsed_height": 21
+        },
+        {
+          "width": 225,
+          "actual_logical_width": 109.0,
+          "scale": 1.5,
+          "items": 3,
+          "item_height": 13,
+          "popup_rect": [
+            1727,
+            944,
+            1867,
+            1046
+          ],
+          "collapsed_height": 21
+        }
+      ]
+    }
+  ],
+  "scenes": {
+    "PhysicsLab-0.1.9-Mountain-Test.max": {
+      "sha256": "76d712c6fb4e45c5ba964309bac84841f8baccc5e9cd7f61b6110531e841096e",
+      "bytes": 14016512
+    },
+    "palette-retired.max": {
+      "sha256": "d860e9e4bd3376666c3da07f562b4f98d331ca0159d937f419bc685f6e5ee3f4",
+      "bytes": 14012416
+    },
+    "order-persist.max": {
+      "sha256": "73529b49c3337917a78a6b9f0fd4f6253f6cdaf688222f6f70010e7ee471affc",
+      "bytes": 1105920
+    }
+  },
+  "replay": {
+    "source_hashes": {
+      "collect_evidence.py": "0640ff8acbe86f46682a4ab87b241154e4aa785a9abdfa55fe90c0925f99f4a9",
+      "fill_probe.cpp": "4931f6be20a79e9a4230e6c9cc8291f7d35cedd21c7282f71b0a6bea9bda76f6",
+      "fit_metrics.cpp": "5ad67452d9d4ff8ce6d10f9c020ee8e5dd0fff396ec4e0fd3ab5411b47e0c5e5",
+      "hole_probe.cpp": "8794f8bec551529ab69487845d114606de949d402954cde13ac7857c58232b55",
+      "host_layout.ms": "73894ddfd24c0a4dde0136382d57d18be3f9455654d97c6148111233153809ac",
+      "host_quality.ms": "dbc7f19a078f6c8e1b381e5169d910f0cc244b38fb6a6d1c29afb8ca330862f7",
+      "host_ready_verify.ms": "37c7d7adaa64b3247141cfe8571936c9a9326621d0fde0c9a10b3f360c29a750",
+      "host_reopen.ms": "844c0a5c465a4e85ea8406e20e65d41944191ba6f4418d049a455d0c69aebfbf",
+      "list_layout.py": "9f3140700c87b23c798d6aa2e0664bd0fe41bbb28fce511e50b712ae2ad7e035",
+      "replay_quality.py": "c83111ed06fd38e6ebd3c7bcd499541f5631dc2327658a285fd0c1d88f477689"
+    },
+    "core_library_sha256": "9478f2658bdc5410a358ec5f26f71af394dc834c64f3824559fdc4f9baa26235",
+    "fit": {
+      "pyramid": {
+        "0": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21360,
+          "pieces": 1,
+          "render_vertices": 6,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "1": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21360,
+          "pieces": 1,
+          "render_vertices": 6,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "2": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21360,
+          "pieces": 1,
+          "render_vertices": 6,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        }
+      },
+      "sphere": {
+        "0": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 34824,
+          "pieces": 1,
+          "render_vertices": 482,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "1": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 34824,
+          "pieces": 1,
+          "render_vertices": 482,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "2": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 34824,
+          "pieces": 1,
+          "render_vertices": 482,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        }
+      },
+      "teapot": {
+        "0": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 41120,
+          "pieces": 1,
+          "render_vertices": 2082,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "1": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21992,
+          "pieces": 8,
+          "render_vertices": 2082,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "2": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 15482,
+          "pieces": 16,
+          "render_vertices": 2082,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        }
+      }
+    },
+    "cases": [
+      {
+        "bodies": 19,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0008545030908226892,
+        "final_normal_depth_m": 0.0007926422001830991,
+        "published_vertical_depth_m": 0.0,
+        "published_normal_depth_m": 0.0,
+        "sleeping": 19,
+        "contact_distance_m": 0.003840003871876491,
+        "case": "palette-final-result",
+        "input_sha256": "29d48cc886e79fb24bade535eab54dcb4db6417c4f9af48d082a98533ea6b9a8",
+        "returncode": 0
+      },
+      {
+        "bodies": 9,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0001318660143994066,
+        "final_normal_depth_m": 9.119782263766884e-05,
+        "published_vertical_depth_m": 0.0,
+        "published_normal_depth_m": 0.0,
+        "sleeping": 9,
+        "contact_distance_m": 0.003840003871876491,
+        "case": "palette-mixed-result",
+        "input_sha256": "029d13d923e00b07ea7409d673088857920305d8b4200ce2e274a9a18e79e105",
+        "returncode": 0
+      },
+      {
+        "bodies": 4,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 6.34085130091222e-05,
+        "final_normal_depth_m": 1.9375253978170963e-05,
+        "published_vertical_depth_m": 0.0,
+        "published_normal_depth_m": 0.0,
+        "sleeping": 4,
+        "contact_distance_m": 0.003840003871876491,
+        "case": "palette-sphere-result",
+        "input_sha256": "934a2191a8937b4a9d300d45e098258f9681126195c132c633656694abeb2e4e",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.00017412221225754365,
+        "final_normal_depth_m": 0.00011511155045922498,
+        "published_vertical_depth_m": 1.6994427465277795e-05,
+        "published_normal_depth_m": 1.2097768579376567e-05,
+        "sleeping": 11,
+        "contact_distance_m": 0.02,
+        "case": "pyramid_q0-result",
+        "input_sha256": "1e7ffcc0d08d5eb3a1ba1185749173dd94a2d50767506b4504cb9945f0f593df",
+        "returncode": 0
+      },
+      {
+        "bodies": 10,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.00024040882463438606,
+        "final_normal_depth_m": 0.00011690706623849037,
+        "published_vertical_depth_m": 0.0,
+        "published_normal_depth_m": 0.0,
+        "sleeping": 10,
+        "contact_distance_m": 0.02,
+        "case": "pyramid_q1-result",
+        "input_sha256": "f4aa95cffc4bc4d706d755c8e227da4d4ced4785f7d24a12038a59df466df563",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0002931255138207689,
+        "final_normal_depth_m": 0.00011298748308528133,
+        "published_vertical_depth_m": 0.0002931255138207689,
+        "published_normal_depth_m": 0.00011298748308528133,
+        "sleeping": 11,
+        "contact_distance_m": 0.02,
+        "case": "pyramid_q2-result",
+        "input_sha256": "825cccfaecdc9227593517e5f0b5cf1e2915e6dabf641aefdce56f7f625fecf5",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0004345058736223706,
+        "final_normal_depth_m": 0.0004339548099296021,
+        "published_vertical_depth_m": 5.575483305264584e-06,
+        "published_normal_depth_m": 5.452462666135475e-06,
+        "sleeping": 11,
+        "contact_distance_m": 0.003840003871876491,
+        "case": "sphere_q0-result",
+        "input_sha256": "e58eb326af2c7332b6add9db000ee962003bff84c47ec36366eed0f37f3cf1b3",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.00034843702931119935,
+        "final_normal_depth_m": 0.000127762471929523,
+        "published_vertical_depth_m": 2.117271961488143e-05,
+        "published_normal_depth_m": 1.8908890409682654e-05,
+        "sleeping": 11,
+        "contact_distance_m": 0.003840003871876491,
+        "case": "sphere_q1-result",
+        "input_sha256": "0d14ab0d7f1ed76a5a271f44e4ae82f8b9857a2ab979838c91d4abbf9fa6fdf1",
+        "returncode": 0
+      },
+      {
+        "bodies": 12,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.00037072889722900015,
+        "final_normal_depth_m": 0.00011028420566682313,
+        "published_vertical_depth_m": 0.00037072889722900015,
+        "published_normal_depth_m": 0.00011028420566682313,
+        "sleeping": 12,
+        "contact_distance_m": 0.003840003871876491,
+        "case": "sphere_q2-result",
+        "input_sha256": "9e7f1d2c295ad4b781e63a838d393d4b0eac6ee04558a39129fe6393e07ba356",
+        "returncode": 0
+      },
+      {
+        "bodies": 8,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.03261466231381327,
+        "final_normal_depth_m": 0.02963541907931897,
+        "published_vertical_depth_m": 0.012426849540578822,
+        "published_normal_depth_m": 0.011809294931507189,
+        "sleeping": 8,
+        "contact_distance_m": 0.01235166870418944,
+        "case": "teapot_q0-result",
+        "input_sha256": "0db55515b8108c89d3c7acc5a448bc48f5863840e3d2d9794911e776a9a4ef82",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.01690772072068647,
+        "final_normal_depth_m": 0.016444291085965464,
+        "published_vertical_depth_m": 0.0,
+        "published_normal_depth_m": 0.0,
+        "sleeping": 11,
+        "contact_distance_m": 0.012538802660904803,
+        "case": "teapot_q1-result",
+        "input_sha256": "c427612700a34f24fe5829ac96ee0a44ee0a6a48680a68bd81e457f255647d51",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.004011235207647346,
+        "final_normal_depth_m": 0.0039948715069211835,
+        "published_vertical_depth_m": 0.004011235207647346,
+        "published_normal_depth_m": 0.0039948715069211835,
+        "sleeping": 11,
+        "contact_distance_m": 0.012470422278999754,
+        "case": "teapot_q2-result",
+        "input_sha256": "12d704ce39652b7cbb94541e29f6ee3142d67d4200fa70f1d85894ad66ca370d",
+        "returncode": 0
+      }
+    ],
+    "palette_sphere_only": true,
+    "palette_mixed_all_three": true,
+    "no_interior_tunnels": true
+  },
+  "original_scene_preserved": true,
+  "source_slot_order_sphere_only": true,
+  "reopened_order_both_models": true,
+  "reopened_rows_exact": true,
+  "unused_retired_geometry_reclaimed": true,
+  "fixture_hashes": {
+    "artist_meshes.py": "1d7757fc76441517d8948c0b5c1926c5f9f901ececa3b843fc552e1d4a71fe2e",
+    "build_testing_kit.py": "08182ac131e40bc2ff2e60d9f0c0a3fafe60805af9b3caf4dda2a07322944926",
+    "collect_evidence.py": "7c50869221f4b88a45580b0195c3c93ca9d8d615be166730100ffcd454936e89",
+    "host_all.ms": "4a282dd805249081b8dbbc1a411e4a59cf8fb42fe5e03dc4b2f62dc3e03058ba",
+    "host_artist.ms": "fa6b9efc4bd6ba56a8c1659ef64a760a748a544943ef1c66801cc8ff510a120d",
+    "host_installed.ms": "9434db44f67c79801fe29db7daee4f50be5d879209f0afd552db2bf69a84c4e0",
+    "host_matrix.ms": "16881aab51fbc22318894c41c9ada63976731a0a5cacb2d2d880844e97c7a367",
+    "host_order.ms": "4968ccd1bc6cab2aae9282358d9be8488cdb2f259bae44309daebf8850fa1424",
+    "host_palette.ms": "30292b78fb2f96554884bc9022fe9366612351f28a9e57aa105d07e337e89b9b",
+    "host_popup.ms": "2f77a8678342412f269d56845a2b0d86d644645cac7e600a6d5b519b24d1e492",
+    "host_reopen.ms": "e9e5183112afcd0e4a6041932493e3cd962797ebb6b461069f587100d714f7e4",
+    "popup_layout.py": "fed8d8c241d8fd2b8f90b81041a825745d7c7da61bf6c2ccf53cff6738908816",
+    "replay_quality.py": "5f3732af480d8a9f6b5a3dfc53f42eae3a274f335de0f5ba9bb230d7293da795"
+  },
+  "limits": [
+    "Physical input/pixels/mixed-monitor DPI/FPS not qualified.",
+    "V-HACD approximation/16-piece hole limits remain.",
+    "Freeze can retain moving-body overlaps; arbitrary settling is not guaranteed."
+  ]
+}

@@ -968,7 +968,7 @@
   },
   "layer.brushUI.beginButton": {
     "label": "Start Brush",
-    "help": "Start painting the selected area on its explicit receiver and enable painted coverage for the layer. The receiver must be linked to this layer and supported single-valued local-XY terrain; Manual planting still waits for Update.",
+    "help": "Start painting the selected area on its explicit receiver and enable painted coverage for the layer. The receiver must be linked to this layer and supported terrain or manifold curved geometry; Manual planting still waits for Update.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4618",
       "docs/ARTIST_GUIDE.md:1"
@@ -2189,7 +2189,7 @@
   },
   "layer.brushUI.exportSpline": {
     "label": "Export spline",
-    "help": "Create and select an independent closed Editable Spline with this Paint Area's contours and holes. Uses receiver-local XY at Z=0, so terrain exports a planar guide. Stop the brush first; area coverage is preserved.",
+    "help": "Export an independent editable border spline. Terrain uses local XY; curved receivers keep their 3D surface border. An unchanged surface snapshot restores exact coverage. Keeps the Paint Area. Stop the brush first.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4539",
       "docs/plans/eleven-phase-roadmap/P05.md:1"
@@ -2213,15 +2213,15 @@
   },
   "layer.brushUI.importSpline": {
     "label": "Pick spline...",
-    "help": "Pick one closed shape for the captured Paint Area. Escape cancels. A changed import is one Undo; Manual waits for Update. The source is preserved, with no live link.",
+    "help": "Apply closed spline coverage using Replace or Add. Curved borders must lie on the receiver within Curve tolerance; edited closed-surface borders select the smaller enclosed region. One Undo; Manual waits for Update. Stop the brush first.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4542",
       "docs/plans/eleven-phase-roadmap/P05.md:1"
     ]
   },
   "layer.distributionUI.meshCheck": {
-    "label": "Use mesh channel mask",
-    "help": "Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters.",
+    "label": "Use surface density",
+    "help": "Enable the independent channel or relative-elevation field.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4301",
       "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
@@ -2441,6 +2441,181 @@
     "evidence": [
       "docs/plans/improvement-program/I06_0850.md:5",
       "AminScatter/tools/ui/templates/unified-core.ms:4529"
+    ]
+  },
+  "layer.distributionUI.mapBrowseButton": {
+    "label": "Map",
+    "help": "Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4847"
+    ]
+  },
+  "layer.distributionUI.imageCheck": {
+    "label": "Use image",
+    "help": "Enable the chosen pattern, image or texture map. White permits plants; black excludes them. Independent of the mesh-channel mask.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4853"
+    ]
+  },
+  "layer.distributionUI.patternButton": {
+    "label": "Choose pattern...",
+    "help": "Browse original Cyrus masks. Choosing one changes only image density.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4854"
+    ]
+  },
+  "layer.distributionUI.imageButton": {
+    "label": "Image",
+    "help": "Choose an image file, read as linear density data.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4855"
+    ]
+  },
+  "layer.distributionUI.imageThumbnail": {
+    "label": "Image preview",
+    "help": "Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4856"
+    ]
+  },
+  "layer.distributionUI.coordinatesList": {
+    "label": "Coordinates",
+    "help": "Map coordinates uses the texture graph’s own receiver UV/data channels. Other modes project a sampled image.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4858"
+    ]
+  },
+  "layer.distributionUI.tileLockCheck": {
+    "label": "Lock X / Y size",
+    "help": "Use equal physical sizes or UV repeats in both axes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4859"
+    ]
+  },
+  "layer.distributionUI.wrappingList": {
+    "label": "Tile edges",
+    "help": "Repeat wraps the pattern across seams. Clamp extends its outside pixels.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4860"
+    ]
+  },
+  "layer.distributionUI.imageCurveButton": {
+    "label": "Density curve...",
+    "help": "Remap image values after inversion. Height is planting eligibility.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4861"
+    ]
+  },
+  "layer.distributionUI.bakeImageButton": {
+    "label": "Bake portable snapshot...",
+    "help": "Explicitly replace a live map with a saved 2D image tile for portable recipes. Undo restores the original graph.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4862"
+    ]
+  },
+  "layer.distributionUI.maskViewList": {
+    "label": "Mask view",
+    "help": "Combined includes image, mesh density, Paint, include/exclude areas and terrain eligibility before collisions, spacing and count limits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4863"
+    ]
+  },
+  "layer.distributionUI.maskDetailList": {
+    "label": "Preview detail",
+    "help": "Bounded surface tessellation independent of plant count. Increase for dense meshes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4864"
+    ]
+  },
+  "layer.distributionUI.opacitySpin": {
+    "label": "Opacity %:",
+    "help": "Change mask visibility only; plants are unchanged.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4865"
+    ]
+  },
+  "layer.distributionUI.markersCheck": {
+    "label": "Show sample markers",
+    "help": "Diagnostic samples in place of the continuous surface mask. Does not change planting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4866"
+    ]
+  },
+  "layer.distributionUI.markerSizeList": {
+    "label": "Marker size",
+    "help": "Diagnostic marker size only. Does not resample the field or recalculate plants.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4867"
+    ]
+  },
+  "layer.distributionUI.tileXSpin": {
+    "label": "Tile X:",
+    "help": "Physical width of one tile. Image resolution changes detail, not size.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4868"
+    ]
+  },
+  "layer.distributionUI.tileYSpin": {
+    "label": "Tile Y:",
+    "help": "Physical height when size is unlocked.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4869"
+    ]
+  },
+  "layer.distributionUI.repeatXSpin": {
+    "label": "Repeat U:",
+    "help": "Image repetitions per UV unit.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4870"
+    ]
+  },
+  "layer.distributionUI.repeatYSpin": {
+    "label": "Repeat V:",
+    "help": "V repetitions when unlocked.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4871"
+    ]
+  },
+  "layer.distributionUI.headingSpin": {
+    "label": "Heading:",
+    "help": "Pattern rotation in degrees about the projection origin.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4805"
+    ]
+  },
+  "layer.distributionUI.offsetXSpin": {
+    "label": "Offset X:",
+    "help": "Shift the projection origin in scene units before rotation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4873"
+    ]
+  },
+  "layer.distributionUI.offsetYSpin": {
+    "label": "Offset Y:",
+    "help": "Shift the projection origin in scene units before rotation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4874"
+    ]
+  },
+  "layer.distributionUI.offsetUSpin": {
+    "label": "Offset U:",
+    "help": "Shift the UV origin before rotation and repeats.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4875"
+    ]
+  },
+  "layer.distributionUI.offsetVSpin": {
+    "label": "Offset V:",
+    "help": "Shift the UV origin before rotation and repeats.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4876"
+    ]
+  },
+  "layer.distributionUI.meshSourceList": {
+    "label": "Field",
+    "help": "Choose an authored mesh channel or relative local elevation. Elevation uses 0 at the lowest referenced vertex and 1 at the highest; flat terrain is 0.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4878"
     ]
   }
 }

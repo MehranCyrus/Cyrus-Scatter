@@ -175,7 +175,13 @@ def package(project, name, version, native_names, script_name, args, build_dir):
             raise RuntimeError('Installer core source/artifact identity differs from its build receipt.')
         payload['CyrusInstaller.dll'] = installer.read_bytes()
         payload['Clipper2-LICENSE.txt'] = (ROOT / project / 'third_party/clipper2/LICENSE').read_bytes()
+        payload['SurfaceGeodesic-LICENSE.txt'] = (ROOT / project / 'third_party/geodesic/LICENSE').read_bytes()
+        payload['SurfaceGeodesic-NOTICE.txt'] = (ROOT / project / 'third_party/geodesic/CYRUS_CHANGES.md').read_bytes()
         payload['nlohmann-json-LICENSE.txt'] = (ROOT / 'CyrusLicensing/third_party/nlohmann/LICENSE.MIT').read_bytes()
+        jpeg = ROOT / project / 'third_party/libjpeg-turbo-3.2.0'
+        payload['libjpeg-turbo-LICENSE.txt'] = (jpeg / 'LICENSE.md').read_bytes()
+        payload['libjpeg-turbo-IJG-README.txt'] = (jpeg / 'README.ijg').read_bytes()
+        payload['libjpeg-turbo-NOTICE.txt'] = (jpeg / 'CYRUS-NOTICE.txt').read_bytes()
         payload.update(library_payload(Path(getattr(args, 'library_dir', None) or ROOT / project / 'library'), version,args.max_year))
         payload.update(pattern_payload(ROOT/project/'patterns'))
     payload['INSTALL.txt'] = (
@@ -271,8 +277,16 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         # to avoid a self-referential digest. The outer ZIP hashes all files.
         installed = {n: data for n, data in payload.items() if n not in ('install.ms', 'mzp.run')}
         content_id = sha(''.join(n + ':' + sha(data) + '\n' for n, data in sorted(installed.items())).encode('utf-8'))[:12]
-        inventory = ('CyrusScatterInstall1\t' + version + '\t' + str(args.max_year) + '\t' + content_id + '\n' +
-                     ''.join(n + '\t' + sha(data) + '\t' + str(len(data)) + '\n' for n, data in sorted(installed.items()))).encode('utf-8')
+        # Max itself extracts an MZP before our managed core runs. Keep archive
+        # names short even when that host has legacy .NET path behavior.
+        source_names = {}
+        for index, (n, data) in enumerate(sorted(installed.items())):
+            source_names[n] = f'p/{index:04d}{Path(n).suffix.lower()}' if n.startswith('Library/') else n
+            if source_names[n] != n:
+                del payload[n]
+                payload[source_names[n]] = data
+        inventory = ('CyrusScatterInstall2\t' + version + '\t' + str(args.max_year) + '\t' + content_id + '\n' +
+                     ''.join(n + '\t' + sha(data) + '\t' + str(len(data)) + '\t' + source_names[n] + '\n' for n, data in sorted(installed.items()))).encode('utf-8')
         payload['InstallInventory.txt'] = inventory
         payload['install.ms'] = payload['install.ms'].replace(b'__INSTALL_HASH__', sha(inventory).encode('ascii'))
     manifest = dict(product=name, version=version, max_year=args.max_year,

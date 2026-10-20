@@ -1,0 +1,589 @@
+{
+  "version": 1,
+  "bakeFrame": 0,
+  "translationMetres": [
+    40,
+    19,
+    -17
+  ],
+  "protectedLayers": [
+    "300-Walls",
+    "100-Win",
+    "200-Glass"
+  ],
+  "nativeReduction": {
+    "minimumFaces": 5000,
+    "layers": [
+      {
+        "layer": "Fance-Peoxy",
+        "percent": 10,
+        "keepUV": false
+      },
+      {
+        "layer": "500-Fance",
+        "percent": 10,
+        "keepUV": true
+      },
+      {
+        "layer": "600-objects",
+        "percent": 15,
+        "keepUV": true
+      },
+      {
+        "layer": "Objects Street",
+        "percent": 50,
+        "keepUV": true
+      },
+      {
+        "layer": "030_ Landscape",
+        "percent": 50,
+        "keepUV": true
+      }
+    ]
+  },
+  "materials": {
+    "mode": "scalar-approximation",
+    "rules": [
+      {
+        "sourceName": "Material #17797",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Glas - algemeen",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "E01_GEVEL:GL01:Glas:::",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Material #468",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Glass'",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Glasss",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "E02_GEVELELEMENTEN:GB05:Privacyscherm-Gelaagd glas:Straatman PS-OS1VRZ-A:gezeefdrukt/geprint glas RAL nnb:-",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "E02_GEVELELEMENTEN:GB02:Glazen balustrade frans balkons:Storax Q-Railing Easy Glass View: kleur afgestemd op het raamkozijn:poedergecoat",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Material #-2147483648 #1",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Material #469",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "glass",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Glass",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Glass_EWO2",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "AVE Traffic Lights Pillars g",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "sourceName": "Material #838",
+        "label": "Tinted alpha-blended PBR glazing approximation; no Corona refraction",
+        "baseColor": [
+          0.6039215686274509,
+          0.7176470588235294,
+          0.7411764705882353
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.14,
+        "metalness": 0.05,
+        "opacityTexture": "../../../../exports/building-20261016/textures/glass-opacity-v2.png",
+        "doubleSided": true
+      },
+      {
+        "pattern": "*baksteen*",
+        "label": "Generated running-bond brick albedo; artistic replacement",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.85,
+        "metalness": 0,
+        "baseColorTexture": "../../../../exports/building-20261016/textures/brick-generated.png"
+      },
+      {
+        "pattern": "*fibre cement*",
+        "label": "Generated fibre-cement albedo with artistic tint",
+        "baseColor": [
+          0.9098039215686274,
+          0.8666666666666667,
+          0.7843137254901961
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.82,
+        "metalness": 0,
+        "baseColorTexture": "../../../../exports/building-20261016/textures/fiber-cement-generated.png"
+      },
+      {
+        "pattern": "*painted_wooden_facade*",
+        "label": "Generated greige painted-timber albedo; artistic replacement",
+        "baseColor": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.76,
+        "metalness": 0,
+        "baseColorTexture": "../../../../exports/building-20261016/textures/painted-timber-generated.png"
+      },
+      {
+        "pattern": "*concerete*",
+        "label": "Generated neutral mineral grain; artistic replacement",
+        "baseColor": [
+          0.9215686274509803,
+          0.8941176470588236,
+          0.8470588235294118
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.85,
+        "metalness": 0,
+        "baseColorTexture": "../../../../exports/building-20261016/textures/fiber-cement-generated.png"
+      },
+      {
+        "pattern": "*concrete*",
+        "label": "Generated neutral mineral grain; artistic replacement",
+        "baseColor": [
+          0.9215686274509803,
+          0.8941176470588236,
+          0.8470588235294118
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.85,
+        "metalness": 0,
+        "baseColorTexture": "../../../../exports/building-20261016/textures/fiber-cement-generated.png"
+      },
+      {
+        "pattern": "*asphalt*",
+        "label": "Artistic dark asphalt; missing source maps",
+        "baseColor": [
+          0.19607843137254902,
+          0.20392156862745098,
+          0.21568627450980393
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.96,
+        "metalness": 0
+      },
+      {
+        "pattern": "*stone_pavement*",
+        "label": "Artistic warm pavement; missing source maps",
+        "baseColor": [
+          0.6352941176470588,
+          0.615686274509804,
+          0.5607843137254902
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.92,
+        "metalness": 0
+      },
+      {
+        "pattern": "*soil*",
+        "label": "Artistic garden soil; missing source maps",
+        "baseColor": [
+          0.2901960784313726,
+          0.25098039215686274,
+          0.19215686274509805
+        ],
+        "colorSpace": "srgb",
+        "roughness": 1,
+        "metalness": 0
+      },
+      {
+        "pattern": "*hout*licht*",
+        "label": "Artistic light timber; missing source maps",
+        "baseColor": [
+          0.6313725490196078,
+          0.5215686274509804,
+          0.3686274509803922
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.7,
+        "metalness": 0
+      },
+      {
+        "pattern": "*hout*",
+        "label": "Artistic timber; missing source maps",
+        "baseColor": [
+          0.44313725490196076,
+          0.30980392156862746,
+          0.21176470588235294
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.7,
+        "metalness": 0
+      },
+      {
+        "pattern": "*ral*8022*",
+        "label": "Approximate named RAL8022 coating",
+        "baseColor": [
+          0.1843137254901961,
+          0.16470588235294117,
+          0.14901960784313725
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.55,
+        "metalness": 0.12
+      },
+      {
+        "pattern": "*ral*7021*",
+        "label": "Approximate named RAL7021 coating",
+        "baseColor": [
+          0.18823529411764706,
+          0.20392156862745098,
+          0.20784313725490197
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.55,
+        "metalness": 0.12
+      },
+      {
+        "pattern": "*ral*7039*",
+        "label": "Approximate named RAL7039 coating",
+        "baseColor": [
+          0.4235294117647059,
+          0.4117647058823529,
+          0.37254901960784315
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.58,
+        "metalness": 0.1
+      },
+      {
+        "pattern": "*ral*7033*",
+        "label": "Approximate named RAL7033 coating",
+        "baseColor": [
+          0.5019607843137255,
+          0.5215686274509804,
+          0.4627450980392157
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.6,
+        "metalness": 0.1
+      },
+      {
+        "pattern": "*ral*7032*",
+        "label": "Approximate named RAL7032 coating",
+        "baseColor": [
+          0.7215686274509804,
+          0.7058823529411765,
+          0.6392156862745098
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.7,
+        "metalness": 0
+      },
+      {
+        "pattern": "*ral*7047*",
+        "label": "Approximate named RAL7047 coating",
+        "baseColor": [
+          0.8196078431372549,
+          0.8156862745098039,
+          0.8117647058823529
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.75,
+        "metalness": 0
+      },
+      {
+        "pattern": "*wit*",
+        "label": "Artistic warm white coating",
+        "baseColor": [
+          0.8705882352941177,
+          0.8549019607843137,
+          0.8196078431372549
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.6,
+        "metalness": 0
+      },
+      {
+        "pattern": "*white*",
+        "label": "Artistic warm white coating",
+        "baseColor": [
+          0.8705882352941177,
+          0.8549019607843137,
+          0.8196078431372549
+        ],
+        "colorSpace": "srgb",
+        "roughness": 0.6,
+        "metalness": 0
+      },
+      {
+        "pattern": "*steel*",
+        "label": "Scalar metallic approximation; source linear colour retained",
+        "roughness": 0.45,
+        "metalness": 0.55
+      },
+      {
+        "pattern": "*metaal*",
+        "label": "Scalar metallic approximation; source linear colour retained",
+        "roughness": 0.45,
+        "metalness": 0.55
+      },
+      {
+        "pattern": "*metal*",
+        "label": "Scalar metallic approximation; source linear colour retained",
+        "roughness": 0.45,
+        "metalness": 0.55
+      }
+    ]
+  },
+  "post": {
+    "layers": [
+      {
+        "layer": "020_ Exterior ",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "030_ Landscape",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "034-1 - Pavement Curb",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "036-Neighbors",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "065_shop",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "400-Green",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "500-Fance",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "crease45"
+      },
+      {
+        "layer": "600-objects",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "crease45"
+      },
+      {
+        "layer": "700-Light Box",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "AC_3D MODEL",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "Fance-Peoxy",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "crease45"
+      },
+      {
+        "layer": "Objects Street",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      },
+      {
+        "layer": "scatterobjects",
+        "ratio": 0.3,
+        "error": 0.0003,
+        "normals": "preserve"
+      }
+    ],
+    "textureFormat": "webp",
+    "textureEdge": 2048,
+    "textureQuality": 92,
+    "quantization": {
+      "positionBits": 16,
+      "normalBits": 12,
+      "uvBits": 16
+    },
+    "meshopt": true
+  }
+}

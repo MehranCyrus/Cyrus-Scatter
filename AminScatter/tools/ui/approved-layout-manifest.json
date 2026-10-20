@@ -1107,6 +1107,12 @@
         },
         {
           "component": "distributionUI",
+          "control": "meshSourceList",
+          "presentation": "distributionUI_meshSourceList",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
           "control": "meshChannelSpin",
           "presentation": "distributionUI_meshChannelSpin",
           "advanced": false

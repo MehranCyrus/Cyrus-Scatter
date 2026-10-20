@@ -4,12 +4,13 @@ namespace {
 std::uint64_t meshDensityReads=0,meshDensityRows=0,meshDensityPreviews=0;
 cyrus::mesh_density::Settings meshDensitySettings(Value* value) {
     auto* a=groupArray(value);
-    if(a->size!=7)throw RuntimeError(_T("Mesh density requires seven settings"));
+    if(a->size!=8)throw RuntimeError(_T("Surface density requires eight settings from the matching script"));
     cyrus::mesh_density::Settings s;
     if((a->data[0]!=&true_value&&a->data[0]!=&false_value)||(a->data[5]!=&true_value&&a->data[5]!=&false_value))
         throw RuntimeError(_T("Invalid mesh density enable/invert flag"));
     s.enabled=a->data[0]==&true_value;s.channel=a->data[1]->to_int();s.component=a->data[2]->to_int()-1;
     s.minimum=a->data[3]->to_double();s.maximum=a->data[4]->to_double();s.invert=a->data[5]==&true_value;
+    s.source=a->data[7]->to_int();
     auto* curve=groupArray(a->data[6]);s.curve.clear();
     if(curve->size>257)throw RuntimeError(_T("Mesh density curve exceeds 257 samples"));
     for(int i=0;i<curve->size;++i)s.curve.push_back(curve->data[i]->to_double());
@@ -24,7 +25,8 @@ MeshDensitySnapshot meshDensitySnapshot(INode* node,const cyrus::mesh_density::S
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::MeshChannel);
     if(!node)throw RuntimeError(_T("Mesh density receiver is missing"));
     const auto fail=[&](const wchar_t* reason){
-        const std::wstring message=std::wstring(L"Mesh density: receiver '")+node->GetName()+L"', channel "+std::to_wstring(s.channel)+L": "+reason+L". Repair/select the channel or disable the mask. The previous result is retained.";
+        const auto field=s.source==1?L"channel "+std::to_wstring(s.channel):std::wstring(L"relative elevation");
+        const std::wstring message=std::wstring(L"Surface density: receiver '")+node->GetName()+L"', "+field+L": "+reason+L". Repair/select the field or disable the mask. The previous result is retained.";
         throw RuntimeError(message.c_str());
     };
     const auto time=GetCOREInterface()->GetTime();auto* object=node->EvalWorldState(time).obj;
@@ -36,17 +38,29 @@ MeshDensitySnapshot meshDensitySnapshot(INode* node,const cyrus::mesh_density::S
     auto& mesh=tri->GetMesh();
     const auto faces=std::size_t(mesh.getNumFaces());
     if(faces>cyrus::mesh_density::faceLimit)fail(L"exceeds 2 million evaluated faces");
-    if(!mesh.mapSupport(s.channel)||!mesh.mapVerts(s.channel)||!mesh.mapFaces(s.channel)||
-       mesh.getNumMapVerts(s.channel)<1||mesh.getNumMapFaces(s.channel)!=mesh.getNumFaces())fail(L"missing or incomplete channel");
+    if(s.source==1&&(!mesh.mapSupport(s.channel)||!mesh.mapVerts(s.channel)||!mesh.mapFaces(s.channel)||
+       mesh.getNumMapVerts(s.channel)<1||mesh.getNumMapFaces(s.channel)!=mesh.getNumFaces()))fail(L"missing or incomplete channel");
     MeshDensitySnapshot result;result.corners.reserve(faces);
-    const auto* values=mesh.mapVerts(s.channel);const auto* mapping=mesh.mapFaces(s.channel);
-    const auto count=std::size_t(mesh.getNumMapVerts(s.channel));
+    const auto* values=s.source==1?mesh.mapVerts(s.channel):nullptr;const auto* mapping=s.source==1?mesh.mapFaces(s.channel):nullptr;
+    const auto count=s.source==1?std::size_t(mesh.getNumMapVerts(s.channel)):0;
+    double minimum=INFINITY,maximum=-INFINITY;
+    if(s.source==2){
+        if(mesh.getNumVerts()>2000000)fail(L"exceeds 2 million evaluated vertices");
+        // Only referenced vertices contribute to the receiver height range;
+        // isolated construction vertices must not flatten the visible field.
+        for(std::size_t i=0;i<faces;++i)for(int k=0;k<3;++k){const auto index=mesh.faces[i].v[k];
+            if(index>=DWORD(mesh.getNumVerts()))fail(L"invalid geometry face");const double z=mesh.verts[index].z;
+            if(!std::isfinite(z))fail(L"nonfinite local height");minimum=std::min(minimum,z);maximum=std::max(maximum,z);}
+    }
     const auto add=[&](double value){std::uint64_t bits=0;std::memcpy(&bits,&value,sizeof(bits));for(int byte=0;byte<8;++byte){result.hash^=(bits>>(byte*8))&255;result.hash*=1099511628211ULL;}};
     add(double(faces));
     for(std::size_t i=0;i<faces;++i){
         std::array<double,3> corners{};
-        for(int k=0;k<3;++k){const auto index=std::size_t(mapping[i].t[k]);if(index>=count)fail(L"invalid map-face vertex index");
-            corners[k]=values[index][s.component];if(!std::isfinite(corners[k]))fail(L"nonfinite selected component");add(corners[k]);}
+        for(int k=0;k<3;++k){
+            if(s.source==1){const auto index=std::size_t(mapping[i].t[k]);if(index>=count)fail(L"invalid map-face vertex index");
+                corners[k]=values[index][s.component];if(!std::isfinite(corners[k]))fail(L"nonfinite selected component");}
+            else corners[k]=cyrus::mesh_density::relativeElevation(mesh.verts[mesh.faces[i].v[k]].z,minimum,maximum);
+            add(corners[k]);}
         result.corners.push_back(corners);
     }
     if(budget&&faces){
@@ -59,7 +73,7 @@ MeshDensitySnapshot meshDensitySnapshot(INode* node,const cyrus::mesh_density::S
 }
 }
 def_visible_primitive(cyrusMeshDensityVersion,"cyrusMeshDensityVersion");
-Value* cyrusMeshDensityVersion_cf(Value**,int n){check_arg_count(cyrusMeshDensityVersion,0,n);return Integer::intern(1);}
+Value* cyrusMeshDensityVersion_cf(Value**,int n){check_arg_count(cyrusMeshDensityVersion,0,n);return Integer::intern(2);}
 def_visible_primitive(cyrusValidateMeshDensity,"cyrusValidateMeshDensity");
 Value* cyrusValidateMeshDensity_cf(Value** a,int n){check_arg_count(cyrusValidateMeshDensity,1,n);
     try{meshDensitySettings(a[0]);}catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}return &ok;}

@@ -8,9 +8,31 @@ global CyrusAssetStage,CyrusAssetImport,CyrusAssetImportPlan,CyrusAssetReview,Cy
 global CyrusOpenAssetImport,CyrusAssetImportEditor,CyrusAssetImportOpenData,CyrusRecipeValidateBindings
 global CyrusAssetColorContext,CyrusAssetCheckColor,CyrusAssetBitmapDirectory,CyrusAssetRestoreMap
 global CyrusAssetSharedSnapshot,CyrusAssetRoleIsReceiver,CyrusAssetRoleIsPath,CyrusAssetCaptureSpline,CyrusAssetBoundNode
-struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false,pathTransform=undefined)
+global CyrusAssetShaderKind,CyrusAssetCheckRenderer,CyrusAssetCheckForest,CyrusAssetCaptureShader,CyrusAssetRestoreShader,CyrusAssetAdapterArrayLinks
+global cyrusAssetOpenImage,cyrusAssetImageInfo,cyrusAssetImageEqual,cyrusAssetImageAdmission,cyrusAssetRendererModule
+global cyrusAssetMeshProfile,cyrusAssetPlantMeshExport,cyrusAssetPlantSceneAdmission
+global CyrusAssetCheckImageBuild
+global CyrusAssetCaptureCoronaImage,CyrusAssetRestoreCoronaImage
+global CyrusAssetUsesRenderer
+fn CyrusAssetCheckImageBuild = (
+    if cyrusAssetOpenImage==undefined or cyrusAssetImageInfo==undefined or cyrusAssetImageEqual==undefined or cyrusAssetImageAdmission==undefined or cyrusAssetRendererModule==undefined do throw "Load the complete matching plant-image native build."
+    true
+)
+fn CyrusAssetUsesRenderer value depth:0 = (
+    if value==undefined do return false
+    if depth>8 do throw "Portable shader dependency depth exceeds eight."
+    if (CyrusAssetShaderKind value)!=undefined do return true
+    -- These are the only map slots admitted by the existing Standard adapter.
+    -- Detect their finite nested adapters before any image copy, independent of
+    -- role/slot order. Unsupported other slots are still rejected by its guard.
+    if classof value==StandardMaterial do for key in #(#ambientMap,#diffuseMap,#opacityMap) do (
+        if CyrusAssetUsesRenderer (getProperty value key) depth:(depth+1) do return true
+    )
+    false
+)
+struct CyrusAssetImportPlan (root,node,inputKey,directory,package,recipeHash,bindings,newSetup=false,variation=#new,assets=#clone,sharedSnapshot=undefined,preset=false,pathTransform=undefined,paintFootprint=undefined)
 if CyrusAssetJobs==undefined do CyrusAssetJobs=#()
-struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined)
+struct CyrusAssetCaptureContext (directory,materials=#(),materialValues=#(),maps=#(),mapValues=#(),files=#(),fileBindings=#(),bitmapPixels=0,colorContext=undefined,rendererMode=false,rendererChecked=false,plantMeshes=false,mapVisiting=#(),materialVisiting=#())
 fn CyrusAssetBitmapDirectory = (pathConfig.appendPath (getDir #userScripts) "CyrusScatter\\ImportedAssets")
 fn CyrusAssetColorContext inputSpace = (
     if ColorPipelineMgr.Mode!=#OCIO_Default or ColorPipelineMgr.Status!=#normal do throw "Portable bitmap maps currently require Max's normal default OCIO colour pipeline."
@@ -52,18 +74,54 @@ fn CyrusAssetCheckDefaults value baseline supported = (
 fn CyrusAssetCheckController control depth:0 = (
     if control==undefined do return true
     if depth>8 do throw "Portable source controller depth exceeds its bound."
-    if findItem #(PRS,Position_XYZ,Euler_XYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 or (numKeys control)>0 do throw "Portable assets require supported static parameter and transform controllers."
+    if findItem #(PRS,Position_XYZ,Euler_XYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 do throw ("Portable assets require supported static parameter and transform controllers. Unsupported class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
+    if (numKeys control)>0 do throw ("Portable assets require supported static parameter and transform controllers. Keyed class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
     for i=1 to control.numSubs do (
         local child=(getSubAnim control i).controller
         if child!=undefined do CyrusAssetCheckController child depth:(depth+1)
     )
     true
 )
+-- CoronaBitmap owns a file-backed image, not an editable MAXBitMap value. Only
+-- the measured modern interpretation is admitted. The shader adapter owns all
+-- typed controls; this helper owns verified bytes, colour context and lifetime.
+fn CyrusAssetCaptureCoronaImage context value = (
+    if (CyrusAssetShaderKind value)!="corona-bitmap-v1" do throw "Unsupported Corona image class identity."
+    CyrusAssetCheckImageBuild()
+    if value.useLegacyGamma or value.showLegacyGamma or value.gamma!=1.0 or value.colorSpace!=4 or findItem #("Raw","Gamma 2.2 / Rec.709") value.colorSpaceStr==0 do throw "Prepare an explicitly authored modern OCIO CoronaBitmap before packaging; the source was preserved."
+    local path=value.filename,info=cyrusAssetImageInfo path,pixels=(info[3] as Integer64)*info[4]
+    if context.bitmapPixels+pixels>536870912L do throw "Portable bitmap map instances exceed the 512-Mpixel plant profile."
+    -- Existing source/staged allocations are reflected in current free memory.
+    -- Admit this next image before opening either a BMM or plugin-side copy.
+    cyrusAssetImageAdmission pixels
+    local colorData=CyrusAssetColorContext value.colorSpaceStr
+    if context.colorContext==undefined then context.colorContext=deepCopy colorData else CyrusAssetCheckColor colorData context.colorContext
+    local suffix=toLower(getFilenameType path),fileID="corona-bitmap-file-"+((context.maps.count+1) as string)
+    local staged=pathConfig.appendPath context.directory (fileID+suffix),opened=undefined
+    (dotNetClass "System.IO.File").Copy path staged false
+    try (
+        if not (CyrusPresetSameValues info (cyrusAssetImageInfo staged)) do throw "Corona image bytes changed during capture."
+        opened=cyrusAssetOpenImage staged value.colorSpaceStr 1.0
+        if opened==undefined or opened.numframes!=1 or opened.aspect!=1.0 or opened.width!=info[3] or opened.height!=info[4] or opened.colorSpaceStatus!=#normal or opened.colorSpace!=value.colorSpaceStr do throw "The copied Corona image has an unresolved or unsupported colour interpretation."
+        close opened;opened=undefined
+    )catch(if opened!=undefined do close opened;throw())
+    context.bitmapPixels+=pixels
+    append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","bitmap"),#("sha256",info[1]),#("bytes",info[2]),#("suffix",substring suffix 2 (suffix.count-1))))
+    append context.fileBindings #(fileID,staged)
+    #(CyrusRecipeObject #(#("file",fileID),#("size",#(info[3],info[4])),#("color",colorData)),staged)
+)
 fn CyrusAssetMap context value = (
     if value==undefined do return undefined
     local found=findItem context.mapValues value
     if found>0 do return (CyrusRecipeGet context.maps[found] "id")
-    if classof value!=Bitmaptexture or context.maps.count>=128 do throw "Portable maps require a supported static Bitmap texture; map limit is 128."
+    if classof value!=Bitmaptexture do (
+        local kind=CyrusAssetShaderKind value
+        if kind==undefined do throw ("Unsupported portable map: "+(classof value as string)+". The source is preserved.")
+        return CyrusAssetCaptureShader context value kind
+    )
+    local mapLimit=if context.rendererMode then 256 else 128
+    if classof value!=Bitmaptexture or context.maps.count+context.mapVisiting.count>=mapLimit do throw "Portable maps exceed their finite profile count or use an unsupported class."
+    if context.mapVisiting.count+context.materialVisiting.count>=8 do throw "Portable shader dependency depth exceeds eight."
     local defaults=bitmaptexture(),coords=value.coords,output=value.output
     if classof coords!=classof defaults.coords or classof output!=classof defaults.output do throw "This bitmap uses an unsupported coordinate/output adapter."
     CyrusAssetCheckDefaults value defaults #(#name,#filename,#bitmap,#coords,#output,#filtering,#monoOutput,#rgbOutput,#alphaSource,#preMultAlpha)
@@ -74,35 +132,57 @@ fn CyrusAssetMap context value = (
     CyrusAssetCheckDefaults coords defaults.coords #(#UVTransform)
     CyrusAssetCheckDefaults output defaults.output #(#invert,#clamp,#alphaFromRGB,#RGB_Level,#RGB_Offset,#Output_Amount)
     cyrusAssetDefaultCurves output defaults.output
-    local path=value.filename,info=cyrusAssetFileInfo path true,pixels=info[3]*info[4]
-    if context.bitmapPixels+pixels>16777216 do throw "Portable bitmap maps exceed the 16 Mpixel aggregate limit."
+    local path=value.filename,info=(if context.rendererMode then cyrusAssetImageInfo path else cyrusAssetFileInfo path true),pixels=info[3]*info[4]
+    local pixelLimit=if context.rendererMode then 536870912 else 16777216
+    if context.bitmapPixels+pixels>pixelLimit do throw "Portable bitmap map instances exceed their profile's aggregate pixel bound."
+    if context.rendererMode do cyrusAssetImageAdmission pixels
     context.bitmapPixels+=pixels
     local source=value.bitmap
     if source==undefined or source.numframes!=1 or source.width!=info[3] or source.height!=info[4] or source.aspect!=1.0 do throw "Portable bitmap requires a current single-frame image with square pixels."
     if source.colorSpaceStatus!=#normal do throw "This bitmap's input colour space is unresolved."
     if context.colorContext==undefined do context.colorContext=CyrusAssetColorContext source.colorSpace
     local colorData=deepCopy context.colorContext;CyrusRecipePut colorData "inputSpace" source.colorSpace
-    local id="bitmap-"+((context.maps.count+1) as string),fileID="bitmap-file-"+((context.maps.count+1) as string),staged=pathConfig.appendPath context.directory (fileID+".png"),opened=undefined
+    local inputGamma=source.inputGamma
+    if context.rendererMode do (
+        if classof inputGamma==Name then (
+            if inputGamma!=#auto do throw "This bitmap input-gamma mode has no portable renderer adapter."
+            CyrusRecipePut colorData "inputGamma" "auto"
+        )else (
+            if not (isKindOf inputGamma Number) do throw "This bitmap input-gamma value has no portable renderer adapter."
+            CyrusRecipePut colorData "inputGamma" (inputGamma as double)
+        )
+        CyrusRecipePut colorData "effectiveGamma" (source.gamma as double)
+    )
+    local suffix=if context.rendererMode then toLower (getFilenameType path) else ".png"
+    local id="bitmap-"+((context.maps.count+1) as string),fileID="bitmap-file-"+((context.maps.count+1) as string),staged=pathConfig.appendPath context.directory (fileID+suffix),opened=undefined
     (dotNetClass "System.IO.File").Copy path staged false
     try (
-        local copied=cyrusAssetFileInfo staged true
+        local copied=if context.rendererMode then cyrusAssetImageInfo staged else cyrusAssetFileInfo staged true
         if not (CyrusPresetSameValues info copied) do throw "Bitmap changed during capture."
-        opened=openBitmap staged colorSpace:source.colorSpace
-        if opened==undefined or opened.colorSpaceStatus!=#normal or opened.colorSpace!=source.colorSpace or not (cyrusAssetBitmapEqual source opened) do throw "The in-memory bitmap differs from its file or colour interpretation. Save it before exporting."
+        opened=if context.rendererMode then cyrusAssetOpenImage staged source.colorSpace (CyrusRecipeGet colorData "inputGamma") else openBitmap staged colorSpace:source.colorSpace
+        if opened==undefined or opened.colorSpaceStatus!=#normal or opened.colorSpace!=source.colorSpace do throw "The copied bitmap could not retain its input colour interpretation."
+        if context.rendererMode and (abs (opened.gamma-source.gamma)>0.000002 or opened.inputGamma!=source.inputGamma) do throw "The copied bitmap changed its saved gamma interpretation."
+        if not (if context.rendererMode then cyrusAssetImageEqual source opened else cyrusAssetBitmapEqual source opened) do throw "The in-memory bitmap differs from its file or colour interpretation. Save it before exporting."
         close opened;opened=undefined
     )catch(if opened!=undefined do close opened;throw())
     local sampler=CyrusRecipeObject #(#("filtering",value.filtering),#("monoOutput",value.monoOutput),#("rgbOutput",value.rgbOutput),#("alphaSource",value.alphaSource),#("preMultAlpha",value.preMultAlpha),#("uMirror",coords.U_Mirror),#("vMirror",coords.V_Mirror),#("uTile",coords.U_Tile),#("vTile",coords.V_Tile),#("blur",coords.blur),#("blurOffset",coords.Blur_Offset))
     local outputData=CyrusRecipeObject #(#("invert",output.invert),#("clamp",output.clamp),#("alphaFromRGB",output.alphaFromRGB),#("rgbLevel",output.RGB_Level),#("rgbOffset",output.RGB_Offset),#("outputAmount",output.Output_Amount))
     local data=CyrusRecipeObject #(#("id",id),#("kind","bitmap"),#("name",value.name),#("file",fileID),#("channel",coords.mapChannel),#("uv",#(coords.U_Offset,coords.V_Offset,coords.U_Tiling,coords.V_Tiling,coords.W_Angle)),#("size",#(info[3],info[4])),#("color",colorData),#("sampler",sampler),#("output",outputData),#("roles",#()))
     append context.maps data;append context.mapValues value
-    append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","bitmap"),#("sha256",info[1]),#("bytes",info[2]),#("suffix","png")))
+    append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","bitmap"),#("sha256",info[1]),#("bytes",info[2]),#("suffix",substring suffix 2 (suffix.count-1))))
     append context.fileBindings #(fileID,staged);id
 )
 fn CyrusAssetMaterial context value = (
     if value==undefined do return undefined
     local found=findItem context.materialValues value
     if found>0 do return (CyrusRecipeGet context.materials[found] "id")
-    if context.materials.count>=128 do throw "Package material limit is 128."
+    if context.materials.count+context.materialVisiting.count>=128 do throw "Package material limit is 128."
+    if context.mapVisiting.count+context.materialVisiting.count>=8 do throw "Portable shader dependency depth exceeds eight."
+    if classof value!=StandardMaterial do (
+        local kind=CyrusAssetShaderKind value
+        if kind==undefined do throw ("Unsupported portable material: "+(classof value as string)+". The source is preserved.")
+        return CyrusAssetCaptureShader context value kind
+    )
     if classof value!=StandardMaterial do throw ("Unsupported portable material: "+(classof value as string)+". The source is preserved.")
     local defaults=standardMaterial(),supported=#(#name,#diffuse,#ambient,#specular,#specularLevel,#glossiness,#soften,#selfIllumAmount,#selfIllumColor,#useSelfIllumColor,#adLock,#dsLock,#adTextureLock,#opacity,#twoSided)
     defaults.adTextureLock=false
@@ -145,24 +225,51 @@ fn CyrusAssetRoleIsPath role = (
 )
 fn CyrusAssetCaptureSpline source roleID metres index = (
     if not isValidNode source or superclassof source!=Shape or source.modifiers.count>0 or source.parent!=undefined or source.children.count>0 do throw "Ready presets require independent static spline paths."
-    CyrusAssetCheckController source.transform.controller;cyrusRecipeCheckStatic source.baseObject
+    local controllerError=undefined
+    try(CyrusAssetCheckController source.transform.controller)catch(controllerError=getCurrentException())
+    if controllerError!=undefined do throw ("Source "+source.name+": "+controllerError)
+    cyrusRecipeCheckStatic source.baseObject
     local curves=cyrusAssetSplineSnapshot source metres,values=#(),transform=source.objectTransform
     for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
     CyrusRecipeObject #(#("id","spline-"+(index as string)),#("name",source.name),#("transform",values),#("wireColor",#(source.wireColor.r as double,source.wireColor.g as double,source.wireColor.b as double)),#("roles",#(roleID)),#("curves",curves))
 )
 fn CyrusAssetCapture root recipePath digest bindings directory includeContext:false = (
     CyrusRequireAuthor();CyrusRecipeCheckRoot root (CyrusRecipeOwnerNode root)
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=3 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed. Review it again before export."
     local document=if includeContext then cyrusRecipeRead recipePath else cyrusRecipeReadMetadata recipePath
     local roles=CyrusRecipeGet document "roles",context=CyrusAssetCaptureContext directory:directory,nodes=#(),nodeValues=#(),meshes=#(),splines=#(),external=#(),metres=(units.decodeValue "1m") as double
     if not (doesDirectoryExist directory) do throw "Owned asset staging folder is missing."
+    -- Choose the finite profile before copying any bitmap, independent of role
+    -- order. A Standard/Bitmap-only graph retains the exact legacy admission.
+    for role in roles do (
+        local value=CyrusRecipeResolve bindings (CyrusRecipeGet role "id")
+        if (CyrusRecipeGet role "kind")=="node" and isValidNode value do value=value.material
+        if CyrusAssetUsesRenderer value do context.rendererMode=true
+    )
+    if context.rendererMode do (CyrusAssetCheckImageBuild();CyrusAssetCheckRenderer();cyrusAssetImageAdmission 0L;context.rendererChecked=true)
+    if context.rendererMode do (
+        if cyrusAssetMeshProfile==undefined or cyrusAssetPlantMeshExport==undefined do throw "Load the complete matching plant-mesh native build."
+        -- Inspect the selected cohort before copying images. Any later evaluated
+        -- terrain change is inspected again by the actual exporter.
+        local inspected=#()
+        for role in roles where (CyrusAssetRoleIsSource role) or (includeContext and (CyrusAssetRoleIsReceiver role)) do (
+            local source=CyrusRecipeResolve bindings (CyrusRecipeGet role "id")
+            if isValidNode source and findItem inspected source==0 do (
+                if (cyrusAssetMeshProfile source)[1]=="plant" do context.plantMeshes=true
+                append inspected source
+            )
+        )
+    )
     for role in roles do (
         local roleID=CyrusRecipeGet role "id"
         if (CyrusRecipeGet role "kind")=="texture" then (
             local value=CyrusRecipeResolve bindings roleID,id=CyrusAssetMap context value
             if id==undefined do throw "Bind every texture role before portable export."
-            for row in context.maps where (CyrusRecipeGet row "id")==id do append (CyrusRecipeGet row "roles") roleID
+            for row in context.maps where (CyrusRecipeGet row "id")==id do (
+                if (CyrusRecipeGet row "kind")!="bitmap" do throw "Renderer shader maps are not qualified as density-map roles."
+                append (CyrusRecipeGet row "roles") roleID
+            )
         ) else if includeContext and (CyrusAssetRoleIsPath role) then append splines (CyrusAssetCaptureSpline (CyrusRecipeResolve bindings roleID) roleID metres (splines.count+1))
         else if not (CyrusAssetRoleIsSource role) and not (includeContext and (CyrusAssetRoleIsReceiver role)) then append external roleID
         else (
@@ -174,7 +281,9 @@ fn CyrusAssetCapture root recipePath digest bindings directory includeContext:fa
                 if nodes.count>=128 do throw "Package source limit is 128."
                 if isGroupHead source or isGroupMember source or source.children.count>0 or source.parent!=undefined do throw "Portable sources must be independent objects; groups and hierarchies need their own adapter."
                 if source.modifiers.count>0 and not (includeContext and (CyrusAssetRoleIsReceiver role)) do throw "Portable sources currently require static geometry without modifiers. The source is preserved."
-                CyrusAssetCheckController source.transform.controller
+                local controllerError=undefined
+                try(CyrusAssetCheckController source.transform.controller)catch(controllerError=getCurrentException())
+                if controllerError!=undefined do throw ("Source "+source.name+": "+controllerError)
                 cyrusRecipeCheckStatic source.baseObject
                 if includeContext and (CyrusAssetRoleIsReceiver role) do (
                     -- Terrain is an evaluated snapshot, including produced mesh
@@ -191,7 +300,15 @@ fn CyrusAssetCapture root recipePath digest bindings directory includeContext:fa
                 )
                 if findItem #(Box,Sphere,Cylinder,Cone,Pyramid,GeoSphere,Editable_Mesh,Editable_Poly,Plane) (classof source.baseObject)==0 do throw "This geometry class has no qualified portable adapter."
                 local materialID=CyrusAssetMaterial context source.material,number=(nodes.count+1) as string,meshID="mesh-"+number,fileID="mesh-file-"+number,path=pathConfig.appendPath directory (fileID+".cmesh")
-                local info=cyrusAssetMeshExport source path metres,transform=source.transform,values=#()
+                local meshPlan=if context.rendererMode then cyrusAssetMeshProfile source else undefined
+                local needsPlant=if context.rendererMode then meshPlan[1]=="plant" else false
+                if needsPlant do (
+                    if cyrusAssetPlantSceneAdmission==undefined do throw "Load the complete matching plant-mesh native build."
+                    cyrusAssetPlantSceneAdmission (meshPlan[2] as Integer64) 0L
+                    context.plantMeshes=true
+                )
+                local info=if needsPlant then cyrusAssetPlantMeshExport source path metres else cyrusAssetMeshExport source path metres
+                local transform=source.transform,values=#()
                 for i=1 to 4 do for j=1 to 3 do append values (transform[i][j]/(if i==4 then metres else 1.0))
                 append context.files (CyrusRecipeObject #(#("id",fileID),#("kind","mesh"),#("sha256",info[1]),#("bytes",info[2]),#("suffix","cmesh")))
                 append context.fileBindings #(fileID,path)
@@ -204,6 +321,11 @@ fn CyrusAssetCapture root recipePath digest bindings directory includeContext:fa
     if (cyrusRecipeInfo recipePath)[11]!=digest do throw "Recipe changed during asset capture. Export was cancelled."
     local graph=CyrusRecipeObject #(#("format","cyrus.library-assets"),#("version",1),#("nodes",nodes),#("meshes",meshes),#("materials",context.materials),#("maps",context.maps),#("files",context.files),#("externalRoles",external))
     if includeContext do (CyrusRecipePut graph "version" 2;CyrusRecipePut graph "splines" splines)
+    if context.rendererMode do (
+        CyrusRecipePut graph "version" 3;CyrusRecipePut graph "splines" splines
+        CyrusRecipePut graph "rendererProfile" (CyrusAssetAdapterProfile())
+        CyrusRecipePut graph "resourceProfile" (if context.plantMeshes or context.maps.count>128 then "plant-assets-v1" else "plant-images-v1")
+    )
     #(graph,context.fileBindings)
 )
 
@@ -243,7 +365,7 @@ fn CyrusAssetWatch token stage = (
 fn CyrusOpenAssetExport root path digest = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=2 do throw "Load the complete matching package-capable Cyrus build."
+    if cyrusAssetPackageVersion==undefined or cyrusAssetPackageVersion()!=3 do throw "Load the complete matching package-capable Cyrus build."
     if (cyrusRecipeInfo path)[11]!=digest do throw "Recipe changed. Refresh before export."
     local document=cyrusRecipeReadMetadata path
     if CyrusAssetExportEditor!=undefined do try(destroyDialog CyrusAssetExportEditor)catch()
@@ -358,16 +480,18 @@ fn CyrusAssetReview root directory bindings newSetup:false variation:#new verifi
     local snapshot=if assets==#share then CyrusAssetSharedSnapshot root directory digest bindings else undefined
     CyrusAssetImportPlan root:root node:node inputKey:(root.procInputKey()) directory:directory package:package recipeHash:digest bindings:(for pair in bindings collect #(pair[1],pair[2])) newSetup:newSetup variation:variation assets:assets sharedSnapshot:snapshot
 )
-fn CyrusAssetRestoreMap data fileData token currentColor = (
+fn CyrusAssetRestoreMap data fileData token currentColor plantImages:false = (
     if token==0 do throw "Bitmap import requires background package preparation. Use Load package."
     local colorData=CyrusRecipeGet data "color"
     CyrusAssetCheckColor colorData currentColor
-    local path=cyrusAssetPreparedBitmap token (CyrusRecipeGet data "file"),info=cyrusAssetFileInfo path true,dimensions=CyrusRecipeGet data "size"
+    local path=cyrusAssetPreparedBitmap token (CyrusRecipeGet data "file"),info=(if plantImages then cyrusAssetImageInfo path else cyrusAssetFileInfo path true),dimensions=CyrusRecipeGet data "size"
     if info[1]!=(CyrusRecipeGet fileData "sha256") or info[2]!=(CyrusRecipeGet fileData "bytes") or info[3]!=dimensions[1] or info[4]!=dimensions[2] do throw "Owned bitmap content changed after preparation."
     local opened=undefined,result=undefined
     try (
-        opened=openBitmap path colorSpace:(CyrusRecipeGet colorData "inputSpace")
+        local savedGamma=if plantImages then CyrusRecipeGet colorData "inputGamma" else undefined
+        opened=if plantImages then cyrusAssetOpenImage path (CyrusRecipeGet colorData "inputSpace") savedGamma else openBitmap path colorSpace:(CyrusRecipeGet colorData "inputSpace")
         if opened==undefined or opened.colorSpaceStatus!=#normal or opened.colorSpace!=(CyrusRecipeGet colorData "inputSpace") or opened.width!=dimensions[1] or opened.height!=dimensions[2] or opened.numframes!=1 do throw "The bitmap could not be restored in its saved colour space."
+        if plantImages and abs (opened.gamma-(CyrusRecipeGet colorData "effectiveGamma"))>0.000002 do throw "The bitmap's resolved gamma differs from its saved interpretation."
         result=bitmaptexture name:(CyrusRecipeGet data "name") bitmap:opened
         local uv=CyrusRecipeGet data "uv",sampler=CyrusRecipeGet data "sampler",output=CyrusRecipeGet data "output"
         result.coords.mapChannel=CyrusRecipeGet data "channel"
@@ -377,6 +501,16 @@ fn CyrusAssetRestoreMap data fileData token currentColor = (
         for pair in #(#("invert",#invert),#("clamp",#clamp),#("alphaFromRGB",#alphaFromRGB),#("rgbLevel",#RGB_Level),#("rgbOffset",#RGB_Offset),#("outputAmount",#Output_Amount)) do setProperty result.output pair[2] (CyrusRecipeGet output pair[1])
         opened=undefined;result
     )catch(if opened!=undefined do close opened;throw())
+)
+fn CyrusAssetRestoreCoronaImage data fileData token currentColor = (
+    if token==0 or fileData==undefined do throw "Corona image import requires a prepared, declared bitmap resource."
+    local colorData=CyrusRecipeGet data "color",dimensions=CyrusRecipeGet data "size",properties=CyrusRecipeGet data "properties"
+    CyrusAssetCheckColor colorData currentColor
+    if (CyrusRecipeGet colorData "inputSpace")!=(CyrusRecipeGet properties "colorSpaceStr") do throw "Corona image colour space disagrees with its shader controls."
+    cyrusAssetImageAdmission ((dimensions[1] as Integer64)*dimensions[2])
+    local path=cyrusAssetPreparedBitmap token (CyrusRecipeGet data "file"),info=cyrusAssetImageInfo path
+    if info[1]!=(CyrusRecipeGet fileData "sha256") or info[2]!=(CyrusRecipeGet fileData "bytes") or info[3]!=dimensions[1] or info[4]!=dimensions[2] do throw "Owned Corona image content changed after preparation."
+    CyrusAssetRestoreShader data #() #() imagePath:path
 )
 fn CyrusAssetBoundNode data bindings = (
     local roles=CyrusRecipeGet data "roles",found=0,node=undefined
@@ -391,15 +525,62 @@ fn CyrusAssetStage package bindings = (
     if not theHold.Holding() do throw "Portable source staging requires the recipe's authored transaction."
     local graph=package[1],directory=package[2],metres=(units.decodeValue "1m") as double,materials=#(),maps=#(),files=CyrusRecipeGet graph "files",meshes=CyrusRecipeGet graph "meshes",resolved=for pair in bindings collect #(pair[1],pair[2])
     fn colorValue values = (color values[1] values[2] values[3])
+    fn hasBinding values identity = (
+        if identity==undefined do return true
+        for pair in values where pair[1]==identity do return true
+        false
+    )
+    local plantImages=(CyrusRecipeGet graph "version")==3
+    if plantImages do (
+        CyrusAssetCheckImageBuild()
+        CyrusAssetCheckRenderer()
+        local expectedProfile=CyrusAssetAdapterProfile(),savedProfile=CyrusRecipeGet graph "rendererProfile"
+        for key in #("id","hostYear","pluginVersion") where (CyrusRecipeGet savedProfile key)!=(CyrusRecipeGet expectedProfile key) do throw "The renderer adapter profile differs from this build."
+        local forestUsed=false
+        for data in (CyrusRecipeGet graph "maps") where findItem #("forest-color-v1","forest-edge-v1") (CyrusRecipeGet data "kind")>0 do forestUsed=true
+        if forestUsed do CyrusAssetCheckForest()
+        local pixels=0L
+        for data in (CyrusRecipeGet graph "maps") where findItem #("bitmap","corona-bitmap-v1") (CyrusRecipeGet data "kind")>0 do (
+            local size=CyrusRecipeGet data "size";pixels+=(size[1] as Integer64)*size[2]
+        )
+        if (CyrusRecipeGet graph "resourceProfile")=="plant-assets-v1" then (
+            if cyrusAssetPlantSceneAdmission==undefined do throw "Load the complete matching plant-mesh native build."
+            local meshBytes=0L
+            for file in files where (CyrusRecipeGet file "kind")=="mesh" do meshBytes+=(CyrusRecipeGet file "bytes") as Integer64
+            cyrusAssetPlantSceneAdmission meshBytes pixels
+        )else cyrusAssetImageAdmission pixels
+    )
     local currentColor=if (CyrusRecipeGet graph "maps").count>0 then CyrusAssetColorContext "raw" else undefined
-    for data in (CyrusRecipeGet graph "maps") do (
+    for data in (CyrusRecipeGet graph "maps") where findItem #("bitmap","corona-bitmap-v1") (CyrusRecipeGet data "kind")>0 do (
         local fileData=undefined;for row in files where (CyrusRecipeGet row "id")==(CyrusRecipeGet data "file") do fileData=row
-        local value=CyrusAssetRestoreMap data fileData (if package.count>2 then package[3] else 0L) currentColor
+        local value=undefined
+        if (CyrusRecipeGet data "kind")=="bitmap" then value=CyrusAssetRestoreMap data fileData (if package.count>2 then package[3] else 0L) currentColor plantImages:plantImages else value=CyrusAssetRestoreCoronaImage data fileData (if package.count>2 then package[3] else 0L) currentColor
         append maps #((CyrusRecipeGet data "id"),value)
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,value)
     )
-    for data in (CyrusRecipeGet graph "materials") do (
-        local material=standardMaterial name:(CyrusRecipeGet data "name")
+    -- Native validation admits a DAG, independent of serialization order. Create
+    -- dependency leaves first and retain each completed graph in these arrays.
+    local pending=for data in (CyrusRecipeGet graph "maps") where findItem #("bitmap","corona-bitmap-v1") (CyrusRecipeGet data "kind")==0 collect data
+    while pending.count>0 do (
+        local progressed=false
+        for i=pending.count to 1 by -1 do (
+            local data=pending[i],ready=true
+            local links=CyrusRecipeGet data "links"
+            for field in (CyrusAssetAdapterLinks (CyrusRecipeGet data "kind")) where not (hasBinding maps (CyrusRecipeGet links field)) do ready=false
+            for field in (CyrusAssetAdapterArrayLinks (CyrusRecipeGet data "kind")) do (
+                for identity in (CyrusRecipeGet links field) where not (hasBinding maps identity) do ready=false
+            )
+            if ready do (
+                append maps #((CyrusRecipeGet data "id"),CyrusAssetRestoreShader data maps materials)
+                deleteItem pending i;progressed=true
+            )
+        )
+        if not progressed do throw "Renderer map dependencies could not be restored."
+    )
+    for data in (CyrusRecipeGet graph "materials") where (CyrusRecipeGet data "kind")!="multi-sub-v1" do (
+        local material=undefined
+        if (CyrusRecipeGet data "kind")=="standard-blinn" then (
+        material=standardMaterial name:(CyrusRecipeGet data "name")
         material.adLock=false;material.dsLock=false;material.adTextureLock=false
         for pair in #(#("ambient",#ambient),#("diffuse",#diffuse),#("specular",#specular),#("selfIllumColor",#selfIllumColor)) do setProperty material pair[2] (colorValue (CyrusRecipeGet data pair[1]))
         for pair in #(#("opacity",#opacity),#("twoSided",#twoSided),#("specularLevel",#specularLevel),#("glossiness",#glossiness),#("soften",#soften),#("selfIllumAmount",#selfIllumAmount),#("useSelfIllumColor",#useSelfIllumColor),#("ambientDiffuseLock",#adLock),#("diffuseSpecularLock",#dsLock)) do setProperty material pair[2] (CyrusRecipeGet data pair[1])
@@ -410,7 +591,21 @@ fn CyrusAssetStage package bindings = (
             setProperty material ((key+"MapEnable") as name) (CyrusRecipeGet slot "enabled")
         )
         material.adTextureLock=CyrusRecipeGet data "textureLock"
+        ) else material=CyrusAssetRestoreShader data maps materials
         append materials #((CyrusRecipeGet data "id"),material)
+    )
+    pending=for data in (CyrusRecipeGet graph "materials") where (CyrusRecipeGet data "kind")=="multi-sub-v1" collect data
+    while pending.count>0 do (
+        local progressed=false
+        for i=pending.count to 1 by -1 do (
+            local data=pending[i],ready=true
+            for slot in (CyrusRecipeGet data "slots") where not (hasBinding materials (CyrusRecipeGet slot "material")) do ready=false
+            if ready do (
+                append materials #((CyrusRecipeGet data "id"),CyrusAssetRestoreShader data maps materials)
+                deleteItem pending i;progressed=true
+            )
+        )
+        if not progressed do throw "Multi/Sub material dependencies could not be restored."
     )
     for data in (CyrusRecipeGet graph "nodes") where (CyrusAssetBoundNode data bindings)==undefined do (
         local meshID=CyrusRecipeGet data "mesh",meshData=undefined,fileData=undefined
@@ -428,7 +623,7 @@ fn CyrusAssetStage package bindings = (
         )
         for role in (CyrusRecipeGet data "roles") do append resolved #(role,node)
     )
-    if (CyrusRecipeGet graph "version")==2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
+    if (CyrusRecipeGet graph "version")>=2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
         local node=splineShape name:(CyrusRecipeGet data "name"),values=CyrusRecipeGet data "transform",index=0
         fn pointValue value metres = [value[1]*metres,value[2]*metres,value[3]*metres]
         for curve in (CyrusRecipeGet data "curves") do (
@@ -465,7 +660,7 @@ fn CyrusAssetImport plan preparedToken:0L = (
     ) else (
         if plan.assets!=#clone do throw "Unsupported asset reuse policy."
         local packagedReceivers=#()
-        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"),plan.pathTransform)) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined) calculate:plan.preset
+        CyrusRecipeImport plan.root document plan.bindings newSetup:plan.newSetup variation:plan.variation prepareAssets:#(CyrusAssetStage,#((CyrusRecipeGet plan.package "graph"),plan.directory,preparedToken,packagedReceivers,(CyrusRecipeGet document "roles"),plan.pathTransform)) packagedPaintReceivers:(if plan.preset then packagedReceivers else undefined) paintFootprint:plan.paintFootprint calculate:plan.preset
     )
 )
 

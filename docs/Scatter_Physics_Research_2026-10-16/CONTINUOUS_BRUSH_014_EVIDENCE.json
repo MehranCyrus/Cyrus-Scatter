@@ -1,0 +1,2106 @@
+{
+  "product": "CyrusPhysicsLab",
+  "version": "0.1.4",
+  "date": "2026-10-17",
+  "max_year": 2027,
+  "computer_use": false,
+  "integrated_into_scatter": false,
+  "artist_installation": false,
+  "qualified_build": "build\\physics-continuous-014-20261017-01\\qualified",
+  "build_receipt": {
+    "version": "0.1.4",
+    "max_year": 2027,
+    "source_hashes": {
+      "CMakeLists.txt": "2301d946048d33654ab069170202dc60027cd903f441e3786e1d32cacde4d91e",
+      "README.md": "3324696a52c12b224a97458c7a0a9574f6463f052c53f4c71e8a47bb87276885",
+      "include/core.h": "76bb4c6cec182a713082b3b3517cc4668d5614992bf488d73fd98c7b660d5dd2",
+      "include/diagnostics.h": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0",
+      "include/live_session.h": "283ca19b574900db62e20b79a4b65dd9479bd0cd0cfd78a4330b65f20b49526d",
+      "installer/CyrusPhysicsLabStartup.ms": "a9d31803d3c2434d12bb6d0813fb7f4bd550a0735b523cd73956ecb4501b16c9",
+      "scripts/CyrusPhysicsLab.ms": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+      "src/core.cpp": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200",
+      "src/crash_watch.cpp": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4",
+      "src/diagnostics.cpp": "aff283ab3c87698c704c69ac0e3c3a28ff28c993281f75260edb5bb50a1ec677",
+      "src/jolt_world.cpp": "6b4508b4a21c21d88e94ee78b4148f860ce30ca1fb3f2f4db00fa488be0719b8",
+      "src/live_session.cpp": "0dfeec57cff734fb5f355188d377d990ddc7730f5494e51562835f18027d4ae5",
+      "src/max_host.cpp": "a2f8d648cd5ee30c20dc006a476a994fe4567f1e81945dad7e09f4531122316b",
+      "src/max_live.inc": "88304ecd7bd2f5e4feb30d919f7652f0d98033af597725b2cc7cbe8ff7208880",
+      "src/physx_world.cpp": "0f966570a65f40f0be0e8e2fbf81658f75c1cd7c4cce0b1cdd8fa846c139e00e",
+      "src/storage_plugin.cpp": "cc8237f29978eb3c69becb890170cc1df2d783c731a5ecb14b15c52e61a9db0c",
+      "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+      "tests/core_tests.cpp": "975be38e04da2ef9bf2840fd5f0f00369bbbe6737c044d77cbe49a79ac812457",
+      "tests/demo.ms": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8",
+      "tests/host.ms": "dcd15b87209af23cf1c8a617b10367065f00d3f6486fae90649d6466218db96f",
+      "tests/host_brush_ui.ms": "2cf24f76d2a45f28ddba9e892b36060d20f9403f0b80e3377c2aaab8ea694f89",
+      "tests/host_continuous.ms": "174d387d32953e8f26ed3cdf043f17f23dc4e29439db6dbc3c3e6c09add53985",
+      "tests/host_continuous_crash_common.ms": "ab59e31ee11e284e48840b8ce4c434adb00f0c16a2db777c7cd6fcf537ea0c26",
+      "tests/host_continuous_fatal.ms": "7f63e788146330c46d8e73081e41e0a164f41f2d1ac20497f42f9979d46afb24",
+      "tests/host_continuous_faults.ms": "dc14291662e2193fdf9073cc2b72212959e18181da9a9c71c4ed04e9dd6b7c76",
+      "tests/host_continuous_hardkill.ms": "f4dfa68608facfaee9fee7bbd8fe815150f79ed282c094bbcf45206c6e39811a",
+      "tests/host_continuous_lifecycle.ms": "b47466cfa211d7a74b00592487d2cbcf2099da651fe4a33fd16eb27fa0c303a0",
+      "tests/host_continuous_performance.ms": "5d717d40df067e687e3d2acc055435eec2e36c870f2128cfa44ba9a120f9fb8c",
+      "tests/host_continuous_rebuild.ms": "32ff83df1e1cd3b330f996ac3842f79221f9871785394596b2a3c3ae8541ad38",
+      "tests/host_continuous_recover.ms": "475f859c15e3fa74740a77fcd26f5f37a5a0c480e36edd78ba90f735a94e1423",
+      "tests/host_continuous_secondary.ms": "257ac01b18924b8b6ffac4bbde817f7a5b4323846b943b461c9a77bef6630c21",
+      "tests/host_extended.ms": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224",
+      "tests/host_faults.ms": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d",
+      "tests/host_previous_scene.ms": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86",
+      "tests/host_proxy_previous_scene.ms": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564",
+      "tests/host_proxy_ui.ms": "a85f99f4d920fd00acf503331b700b30bffdd589c7bc92234a477ae86c339091",
+      "tests/host_regression.ms": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791",
+      "tests/host_scaled_ui.ms": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191",
+      "tests/host_timeout_ui.ms": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992",
+      "tests/host_transforms.ms": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208",
+      "tests/host_ui_layout.ms": "ef94888c06ec253abd88ffba7f7947120d632c390d1bcee4763359f96e3b50f1",
+      "tests/live_stress.cpp": "2e61272de3c5f93a39355f29391c07109e67f082d50eb3b746d9b8d89da0b058",
+      "tests/live_tests.cpp": "f2f9a0bf31ae91b965fce87f0bfa635914889273ecbd56f20dfc2177eba2669c",
+      "tests/ui_layout.py": "c23b3e27c369033f42004800fbe028632b59c44d0949abd430423b57ea64e82b",
+      "tests/fixtures/pyramid_append_plane.json": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f",
+      "tests/paint_probe/CMakeLists.txt": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd",
+      "tests/paint_probe/probe.cpp": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a",
+      "tools/build.py": "ae15a65b7da9660eddefe8b619a18c876f9be20f75cab5f586b64c0ef22c269b",
+      "tools/build_probe.py": "dd7cff0e5b651d116c0996f7d745ab0453d575050b0d8821698bc191eef8588a",
+      "tools/compare.py": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156",
+      "tools/host_test.py": "4a3fedc6e3683ba6e6781106114a29969e4671b9e502bce4e3c7bce1018d458e",
+      "tools/installer_test.py": "eadcf9c723814376b88e0088f73281edd4a8ab1dcd59b5d82f2dacba84266e93",
+      "tools/package.py": "0df2f83e51b060463421be592d00662069a73f32f8df9a10b709298dc08def59"
+    },
+    "shared_source_hashes": {
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "tools/build_max.py": "3dfe4fe7643ce78a90335998523e3906de79851863a6c3f81707016b12bcf434",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "pins": {
+      "jolt": [
+        "jrouwe/JoltPhysics",
+        "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+      ],
+      "physx": [
+        "NVIDIA-Omniverse/PhysX",
+        "b97365c6ddb32fda8469bc788ec18024862b0368"
+      ]
+    },
+    "toolchain": {
+      "msvc": "14.38.33130",
+      "windows_sdk": "10.0.19041.0"
+    },
+    "dependency_archives": {
+      "jolt": {
+        "repository": "jrouwe/JoltPhysics",
+        "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+      },
+      "physx": {
+        "repository": "NVIDIA-Omniverse/PhysX",
+        "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+        "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+      }
+    },
+    "host_launched": false,
+    "installed": false,
+    "faults": false,
+    "binaries": {
+      "cpl_compare.exe": "575cd899376b8f4141161afda8d73748efdee41a26a2dc4ee7b3c82374df1bb5",
+      "cpl_live_stress.exe": "a634ea4ad3dd0a987d0633b641b71e1d776f2fa37d0584dc39c4619e1dbb35ff",
+      "cpl_live_tests.exe": "c713a886f4d17998005ffcba811ae536bc9661eb1478ad20d3b69fb8e7e1d1b4",
+      "cpl_tests.exe": "6e36261009023252c0136c6911867d0889e525871873d66610e03d670550ed22",
+      "CyrusPhysicsCrashWatch.exe": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+      "CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+      "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+    }
+  },
+  "package": {
+    "path": "dist\\CyrusPhysicsLab-0.1.4-20261017-03\\CyrusPhysicsLab-0.1.4-Max2027.mzp",
+    "sha256": "6f616ddb04605953a9ea5216d26d5ca518f71302666348ae6de33bd8b33fd2ec",
+    "bytes": 796927,
+    "manifest": {
+      "product": "CyrusPhysicsLab",
+      "version": "0.1.4",
+      "max_year": 2027,
+      "integrated_into_scatter": false,
+      "payload": {
+        "native/CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+        "native/CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957",
+        "native/CyrusPhysicsCrashWatch.exe": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "native/build-identity.json": "9e62e065de0886268dd44564787948a62fcf5b19349536983926d06014dab854",
+        "scripts/CyrusPhysicsLab.ms": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "README.md": "3324696a52c12b224a97458c7a0a9574f6463f052c53f4c71e8a47bb87276885",
+        "licenses/Jolt-MIT.txt": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3",
+        "licenses/nlohmann-MIT.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+        "Uninstall.ms": "ed974125dd5ba550eed71a9ef7903c78c41f55c23494a0935b180e95b693f6d6",
+        "CyrusPhysicsLabStartup.ms": "9e27e4bf4562d712addf344c6129032943457ee5e3a72fcd6cf00f4faed50b2e",
+        "install.ms": "d43bac0024499b52d34f8fe92a64563434dbf7757edfc675882a5d7b85b80542",
+        "mzp.run": "de40948192720d438a1a0d7181545b3eef33dff9029f073681da446cd9f61038"
+      }
+    }
+  },
+  "native_tests": "Start testing: Oct 17 21:43 Iran Standard Time\n----------------------------------------------------------\n1/2 Testing: physics_core\n1/2 Test: physics_core\nCommand: \"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/physics-continuous-014-20261017-01/native-01/cpl_tests.exe\"\nDirectory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/physics-continuous-014-20261017-01/native-01\n\"physics_core\" start time: Oct 17 21:43 Iran Standard Time\nOutput:\n----------------------------------------------------------\nJolt create\nemit\nsolve\nlimits\nPhysX create\nemit\nsolve\nlimits\ncontact exhaustion\nscratch exhaustion\nPASS 3174 contract checks\n<end of output>\nTest time =   0.34 sec\n----------------------------------------------------------\nTest Passed.\n\"physics_core\" end time: Oct 17 21:43 Iran Standard Time\n\"physics_core\" time elapsed: 00:00:00\n----------------------------------------------------------\n\n2/2 Testing: physics_continuous\n2/2 Test: physics_continuous\nCommand: \"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/physics-continuous-014-20261017-01/native-01/cpl_live_tests.exe\"\nDirectory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/physics-continuous-014-20261017-01/native-01\n\"physics_continuous\" start time: Oct 17 21:43 Iran Standard Time\nOutput:\n----------------------------------------------------------\nPASS 413 continuous-brush checks\n<end of output>\nTest time =   0.61 sec\n----------------------------------------------------------\nTest Passed.\n\"physics_continuous\" end time: Oct 17 21:43 Iran Standard Time\n\"physics_continuous\" time elapsed: 00:00:00\n----------------------------------------------------------\n\nEnd testing: Oct 17 21:43 Iran Standard Time\n",
+  "stress": [
+    {
+      "archive_bytes": 406514,
+      "archive_ms": 6.491,
+      "birth_ms": 17.7367,
+      "bodies": 1000,
+      "create_ms": 0.4416,
+      "lost": 0,
+      "moving": 0,
+      "redo_ms": 1.2714,
+      "render_faces": 12000,
+      "render_vertices": 8000,
+      "sampled_peak_private_bytes": 33136640,
+      "step_max_ms": 9.7461,
+      "step_p50_ms": 4.5484,
+      "step_p95_ms": 6.0128,
+      "steps": 360,
+      "undo_ms": 1.0964
+    },
+    {
+      "archive_bytes": 2035737,
+      "archive_ms": 37.0325,
+      "birth_ms": 226.7003,
+      "bodies": 5000,
+      "create_ms": 0.3008,
+      "lost": 0,
+      "moving": 0,
+      "redo_ms": 5.1038,
+      "render_faces": 60000,
+      "render_vertices": 40000,
+      "sampled_peak_private_bytes": 50155520,
+      "step_max_ms": 47.8926,
+      "step_p50_ms": 24.466,
+      "step_p95_ms": 35.5969,
+      "steps": 360,
+      "undo_ms": 4.0556
+    }
+  ],
+  "host": {
+    "installed": {
+      "path": "build\\physics-lab-014-installer-01",
+      "launch": {
+        "pid": 19648,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+          "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+        },
+        "script_sha256": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "diagnostic_helper_sha256": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "fixture_sha256": "10bf33788801eb8dc10a150d9a331a479db2bd9677f5ef93b2639170676b9d71",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "assertions": "PASS 57 continuous Max 2027 checks\n{\"active\":false,\"commits\":2,\"cooks\":3,\"error\":\"\",\"lastTickMs\":0.0,\"live\":{\"epoch\":4,\"history_bytes\":0,\"last_step_ms\":0.0,\"lost\":0,\"lost_z\":0.0,\"moving\":0,\"paused\":false,\"queued\":0,\"ready\":false,\"recovery\":false,\"redo\":0,\"sequence\":0,\"skipped\":0,\"step\":0,\"undo\":0},\"motion\":null,\"painting\":false,\"preview\":0,\"revision\":2,\"rows\":8,\"schema\":2,\"settled\":true,\"settling\":false,\"solver\":\"5db7dc8f07cdea4960ae3b5c583dcb07955e5191a36be20b15fece6a949d0b8c\",\"stale\":false,\"ticks\":77,\"timedOut\":false,\"version\":\"0.1.4\"}\n",
+      "installer_receipt": {
+        "pass": true,
+        "computer_use": false,
+        "normal_profile_modified": false,
+        "package_sha256": "6f616ddb04605953a9ea5216d26d5ca518f71302666348ae6de33bd8b33fd2ec",
+        "installed_pair": {
+          "CyrusPhysicsStorage.dlh": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\scripts\\CyrusPhysicsLab\\0.1.4\\0077bb0cb5db\\native\\CyrusPhysicsStorage.dlh",
+            "sha256": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+          },
+          "CyrusPhysicsLab.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\scripts\\CyrusPhysicsLab\\0.1.4\\0077bb0cb5db\\native\\CyrusPhysicsLab.dlx",
+            "sha256": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25"
+          }
+        },
+        "installed_script_sha256": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "fixture_sha256": "174d387d32953e8f26ed3cdf043f17f23dc4e29439db6dbc3c3e6c09add53985",
+        "restart_command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\restart-plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\restart.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-installer-01\\restart-listener.log"
+        ]
+      }
+    },
+    "secondary": {
+      "path": "build\\physics-lab-014-secondary-host-03",
+      "launch": {
+        "pid": 19256,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-secondary-host-03\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-secondary-host-03\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-secondary-host-03\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-secondary-host-03\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": 1.5,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+          "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+        },
+        "script_sha256": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "diagnostic_helper_sha256": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "fixture_sha256": "257ac01b18924b8b6ffac4bbde817f7a5b4323846b943b461c9a77bef6630c21",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "assertions": "PASS native rollout bounds and caption metrics; no screen pixels or OS input\n\nPASS repeated live start/pause/resume/cancel, unrelated global Undo, clone/merge isolation, source/frame/unit invalidation, owner deletion and reset\nPASS centimetres, source offset/rotation/nonuniform scale, mirrored receiver, transformed polygon, save/reopen and self-binding rejection\n\nPASS two continuous sessions, four gestures, explicit scheduled Rebuild and Max Undo/Redo\nPASS preserved 0.1.0 scene opens with 60 cached bodies, original solver profile and current UI; no replay/resave\n\nPASS preserved 0.1.1 scene: profile 2 and 60 cached leaves unchanged; no replay/resave\n\n",
+      "layout": [
+        {
+          "name": "brushHeader",
+          "width": 108,
+          "height": 882,
+          "scale": 1.5,
+          "controls": [
+            {
+              "name": "titleLabel",
+              "class": "Static",
+              "text": "Physics brush",
+              "rect": [
+                12,
+                9,
+                152,
+                33
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "startButton",
+              "class": "CustButton",
+              "text": "Start brush",
+              "rect": [
+                12,
+                42,
+                152,
+                78
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "stopButton",
+              "class": "CustButton",
+              "text": "Pause",
+              "rect": [
+                12,
+                84,
+                152,
+                120
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "finishButton",
+              "class": "CustButton",
+              "text": "Finish",
+              "rect": [
+                12,
+                126,
+                152,
+                162
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "keepButton",
+              "class": "CustButton",
+              "text": "Freeze",
+              "rect": [
+                12,
+                168,
+                152,
+                204
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "undoButton",
+              "class": "CustButton",
+              "text": "Undo stroke",
+              "rect": [
+                12,
+                210,
+                152,
+                246
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "redoButton",
+              "class": "CustButton",
+              "text": "Redo stroke",
+              "rect": [
+                12,
+                252,
+                152,
+                288
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "cancelButton",
+              "class": "CustButton",
+              "text": "Cancel session",
+              "rect": [
+                12,
+                300,
+                152,
+                333
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "statusLabel",
+              "class": "Static",
+              "text": "A longer\ndiagnostic must\nremain\nreadable. The\npending physics\nresult is\npreserved.\nResume the\nsession, undo a\nstroke, freeze\nthe preview, or\ncancel before\nchanging the\nsource\ngeometry. This\nchecks wrapping\nand rollout\nheight without\na screenshot.\n0 saved bodies",
+              "rect": [
+                12,
+                345,
+                152,
+                825
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "logsButton",
+              "class": "CustButton",
+              "text": "Open logs",
+              "rect": [
+                12,
+                837,
+                152,
+                870
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            }
+          ],
+          "items": [
+            {
+              "item": "LabelControl:titleLabel",
+              "visible": true,
+              "handles": [
+                3343886
+              ]
+            },
+            {
+              "item": "ButtonControl:startButton",
+              "visible": true,
+              "handles": [
+                1315516
+              ]
+            },
+            {
+              "item": "ButtonControl:stopButton",
+              "visible": true,
+              "handles": [
+                1779022
+              ]
+            },
+            {
+              "item": "ButtonControl:finishButton",
+              "visible": true,
+              "handles": [
+                861448
+              ]
+            },
+            {
+              "item": "ButtonControl:keepButton",
+              "visible": true,
+              "handles": [
+                861430
+              ]
+            },
+            {
+              "item": "ButtonControl:undoButton",
+              "visible": true,
+              "handles": [
+                1514692
+              ]
+            },
+            {
+              "item": "ButtonControl:redoButton",
+              "visible": true,
+              "handles": [
+                4134716
+              ]
+            },
+            {
+              "item": "ButtonControl:cancelButton",
+              "visible": true,
+              "handles": [
+                24254302
+              ]
+            },
+            {
+              "item": "LabelControl:statusLabel",
+              "visible": true,
+              "handles": [
+                1841948
+              ]
+            },
+            {
+              "item": "ButtonControl:logsButton",
+              "visible": true,
+              "handles": [
+                1380836
+              ]
+            },
+            {
+              "item": "Timer:updateTimer",
+              "visible": true,
+              "handles": [
+                0
+              ]
+            }
+          ],
+          "overlaps": []
+        },
+        {
+          "name": "objectsUI",
+          "width": 108,
+          "height": 389,
+          "scale": 1.5,
+          "controls": [
+            {
+              "name": "receiverCaption",
+              "class": "Static",
+              "text": "Receiver",
+              "rect": [
+                12,
+                9,
+                150,
+                33
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "receiverPick",
+              "class": "CustButton",
+              "text": "Pick...",
+              "rect": [
+                14,
+                39,
+                151,
+                73
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "receiverName",
+              "class": "Static",
+              "text": "None selected",
+              "rect": [
+                12,
+                78,
+                150,
+                102
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "receiverCollisionCheck",
+              "class": "Button",
+              "text": "Collides",
+              "rect": [
+                14,
+                111,
+                151,
+                127
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "sourceCaption",
+              "class": "Static",
+              "text": "Models (0)",
+              "rect": [
+                12,
+                150,
+                150,
+                174
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "sourceList",
+              "class": "ComboBox",
+              "text": "",
+              "rect": [
+                12,
+                179,
+                150,
+                200
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "sourcePick",
+              "class": "CustButton",
+              "text": "Add...",
+              "rect": [
+                14,
+                224,
+                151,
+                258
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "replaceSourcePick",
+              "class": "CustButton",
+              "text": "Replace...",
+              "rect": [
+                14,
+                266,
+                151,
+                300
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "colliderPick",
+              "class": "CustButton",
+              "text": "Add collider...",
+              "rect": [
+                14,
+                312,
+                151,
+                346
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "colliderInfo",
+              "class": "Static",
+              "text": "0 colliders",
+              "rect": [
+                12,
+                353,
+                150,
+                377
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            }
+          ],
+          "items": [
+            {
+              "item": "LabelControl:receiverCaption",
+              "visible": true,
+              "handles": [
+                1776660
+              ]
+            },
+            {
+              "item": "PickerControl:receiverPick",
+              "visible": true,
+              "handles": [
+                2691406
+              ]
+            },
+            {
+              "item": "LabelControl:receiverName",
+              "visible": true,
+              "handles": [
+                1578470
+              ]
+            },
+            {
+              "item": "CheckBoxControl:receiverCollisionCheck",
+              "visible": true,
+              "handles": [
+                1580254
+              ]
+            },
+            {
+              "item": "LabelControl:sourceCaption",
+              "visible": true,
+              "handles": [
+                1447420
+              ]
+            },
+            {
+              "item": "ComboBoxControl:sourceList",
+              "visible": true,
+              "handles": [
+                1513826,
+                1513828
+              ]
+            },
+            {
+              "item": "PickerControl:sourcePick",
+              "visible": true,
+              "handles": [
+                1380838
+              ]
+            },
+            {
+              "item": "PickerControl:replaceSourcePick",
+              "visible": true,
+              "handles": [
+                1250450
+              ]
+            },
+            {
+              "item": "PickerControl:colliderPick",
+              "visible": true,
+              "handles": [
+                1511040
+              ]
+            },
+            {
+              "item": "LabelControl:colliderInfo",
+              "visible": true,
+              "handles": [
+                1446316
+              ]
+            }
+          ],
+          "overlaps": []
+        },
+        {
+          "name": "brushUI",
+          "width": 108,
+          "height": 495,
+          "scale": 1.5,
+          "controls": [
+            {
+              "name": "unitsLabel",
+              "class": "Static",
+              "text": "Distances: metres",
+              "rect": [
+                12,
+                9,
+                152,
+                33
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "radiusLabel",
+              "class": "Static",
+              "text": "Radius (m)",
+              "rect": [
+                12,
+                45,
+                152,
+                69
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "radiusSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                134,
+                74,
+                152,
+                98
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "radiusSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                14,
+                74,
+                135,
+                90
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "spacingLabel",
+              "class": "Static",
+              "text": "Spacing (m)",
+              "rect": [
+                12,
+                110,
+                152,
+                134
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "spacingSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                134,
+                138,
+                152,
+                162
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "spacingSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                14,
+                140,
+                135,
+                159
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "heightLabel",
+              "class": "Static",
+              "text": "Height (m)",
+              "rect": [
+                12,
+                174,
+                152,
+                198
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "heightSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                134,
+                203,
+                152,
+                227
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "heightSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                14,
+                203,
+                135,
+                219
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "scaleMinLabel",
+              "class": "Static",
+              "text": "Min scale",
+              "rect": [
+                12,
+                239,
+                152,
+                263
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "scaleMinSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                134,
+                267,
+                152,
+                291
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "scaleMinSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                14,
+                269,
+                135,
+                288
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "scaleMaxLabel",
+              "class": "Static",
+              "text": "Max scale",
+              "rect": [
+                12,
+                303,
+                152,
+                327
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "scaleMaxSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                134,
+                332,
+                152,
+                356
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "scaleMaxSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                14,
+                332,
+                135,
+                348
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "seedLabel",
+              "class": "Static",
+              "text": "Seed",
+              "rect": [
+                12,
+                368,
+                152,
+                392
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "seedSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                134,
+                396,
+                152,
+                420
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "seedSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                14,
+                398,
+                135,
+                417
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "limitLabel",
+              "class": "Static",
+              "text": "Body limit",
+              "rect": [
+                12,
+                432,
+                152,
+                456
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "limitSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                134,
+                461,
+                152,
+                485
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "limitSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                14,
+                461,
+                135,
+                477
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            }
+          ],
+          "items": [
+            {
+              "item": "LabelControl:unitsLabel",
+              "visible": true,
+              "handles": [
+                2889552
+              ]
+            },
+            {
+              "item": "LabelControl:radiusLabel",
+              "visible": true,
+              "handles": [
+                1252784
+              ]
+            },
+            {
+              "item": "SpinnerControl:radiusSpin",
+              "visible": true,
+              "handles": [
+                2494658,
+                722348,
+                1318784
+              ]
+            },
+            {
+              "item": "LabelControl:spacingLabel",
+              "visible": true,
+              "handles": [
+                2429944
+              ]
+            },
+            {
+              "item": "SpinnerControl:spacingSpin",
+              "visible": true,
+              "handles": [
+                3676492,
+                2823860,
+                1777386
+              ]
+            },
+            {
+              "item": "LabelControl:heightLabel",
+              "visible": true,
+              "handles": [
+                2235322
+              ]
+            },
+            {
+              "item": "SpinnerControl:heightSpin",
+              "visible": true,
+              "handles": [
+                1253664,
+                1578100,
+                2104414
+              ]
+            },
+            {
+              "item": "LabelControl:scaleMinLabel",
+              "visible": true,
+              "handles": [
+                4004668
+              ]
+            },
+            {
+              "item": "SpinnerControl:scaleMinSpin",
+              "visible": true,
+              "handles": [
+                1253578,
+                4787602,
+                1315332
+              ]
+            },
+            {
+              "item": "LabelControl:scaleMaxLabel",
+              "visible": true,
+              "handles": [
+                2826260
+              ]
+            },
+            {
+              "item": "SpinnerControl:scaleMaxSpin",
+              "visible": true,
+              "handles": [
+                1712214,
+                2627110,
+                1380852
+              ]
+            },
+            {
+              "item": "LabelControl:seedLabel",
+              "visible": true,
+              "handles": [
+                1318816
+              ]
+            },
+            {
+              "item": "SpinnerControl:seedSpin",
+              "visible": true,
+              "handles": [
+                1911244,
+                1515804,
+                1974482
+              ]
+            },
+            {
+              "item": "LabelControl:limitLabel",
+              "visible": true,
+              "handles": [
+                22943260
+              ]
+            },
+            {
+              "item": "SpinnerControl:limitSpin",
+              "visible": true,
+              "handles": [
+                2171034,
+                4069178,
+                1971168
+              ]
+            }
+          ],
+          "overlaps": []
+        },
+        {
+          "name": "collisionUI",
+          "width": 108,
+          "height": 359,
+          "scale": 1.5,
+          "controls": [
+            {
+              "name": "proxyLabel",
+              "class": "Static",
+              "text": "Collision:\nautomatic",
+              "rect": [
+                12,
+                9,
+                150,
+                57
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "proxyPick",
+              "class": "CustButton",
+              "text": "Pick...",
+              "rect": [
+                12,
+                60,
+                149,
+                94
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "autoProxyButton",
+              "class": "CustButton",
+              "text": "Use auto",
+              "rect": [
+                12,
+                102,
+                150,
+                135
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "thicknessLabel",
+              "class": "Static",
+              "text": "Thickness",
+              "rect": [
+                12,
+                162,
+                150,
+                186
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "thicknessSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                132,
+                191,
+                150,
+                215
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "thicknessSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                12,
+                191,
+                132,
+                210
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "frictionLabel",
+              "class": "Static",
+              "text": "Friction",
+              "rect": [
+                12,
+                227,
+                150,
+                251
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "frictionSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                132,
+                255,
+                150,
+                279
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "frictionSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                12,
+                255,
+                132,
+                274
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "bounceLabel",
+              "class": "Static",
+              "text": "Bounce",
+              "rect": [
+                12,
+                291,
+                150,
+                315
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "bounceSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                132,
+                320,
+                150,
+                344
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "bounceSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                12,
+                320,
+                132,
+                339
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            }
+          ],
+          "items": [
+            {
+              "item": "LabelControl:proxyLabel",
+              "visible": true,
+              "handles": [
+                3215610
+              ]
+            },
+            {
+              "item": "PickerControl:proxyPick",
+              "visible": true,
+              "handles": [
+                1709220
+              ]
+            },
+            {
+              "item": "ButtonControl:autoProxyButton",
+              "visible": true,
+              "handles": [
+                2364432
+              ]
+            },
+            {
+              "item": "LabelControl:thicknessLabel",
+              "visible": true,
+              "handles": [
+                2430684
+              ]
+            },
+            {
+              "item": "SpinnerControl:thicknessSpin",
+              "visible": true,
+              "handles": [
+                1970570,
+                1575520,
+                3545960
+              ]
+            },
+            {
+              "item": "LabelControl:frictionLabel",
+              "visible": true,
+              "handles": [
+                22813600
+              ]
+            },
+            {
+              "item": "SpinnerControl:frictionSpin",
+              "visible": true,
+              "handles": [
+                3675536,
+                2888640,
+                2367138
+              ]
+            },
+            {
+              "item": "LabelControl:bounceLabel",
+              "visible": true,
+              "handles": [
+                1906090
+              ]
+            },
+            {
+              "item": "SpinnerControl:bounceSpin",
+              "visible": true,
+              "handles": [
+                6167194,
+                3349326,
+                3150658
+              ]
+            }
+          ],
+          "overlaps": []
+        },
+        {
+          "name": "areaUI",
+          "width": 108,
+          "height": 297,
+          "scale": 1.5,
+          "controls": [
+            {
+              "name": "areaHint",
+              "class": "Static",
+              "text": "Fill the receiver\nor a polygon.\nReplaces result.",
+              "rect": [
+                12,
+                9,
+                150,
+                81
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "areaPick",
+              "class": "CustButton",
+              "text": "Boundary...",
+              "rect": [
+                12,
+                93,
+                149,
+                127
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "boundaryName",
+              "class": "Static",
+              "text": "Whole receiver",
+              "rect": [
+                12,
+                135,
+                150,
+                159
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "countLabel",
+              "class": "Static",
+              "text": "Body count",
+              "rect": [
+                12,
+                179,
+                150,
+                203
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "areaCountSpin",
+              "class": "SpinnerControl",
+              "text": "",
+              "rect": [
+                132,
+                207,
+                150,
+                231
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "areaCountSpin",
+              "class": "CustEdit",
+              "text": "",
+              "rect": [
+                12,
+                207,
+                132,
+                223
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "areaButton",
+              "class": "CustButton",
+              "text": "Settle area",
+              "rect": [
+                12,
+                248,
+                150,
+                284
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            }
+          ],
+          "items": [
+            {
+              "item": "LabelControl:areaHint",
+              "visible": true,
+              "handles": [
+                2756932
+              ]
+            },
+            {
+              "item": "PickerControl:areaPick",
+              "visible": true,
+              "handles": [
+                3084428
+              ]
+            },
+            {
+              "item": "LabelControl:boundaryName",
+              "visible": true,
+              "handles": [
+                2171310
+              ]
+            },
+            {
+              "item": "LabelControl:countLabel",
+              "visible": true,
+              "handles": [
+                3280142
+              ]
+            },
+            {
+              "item": "SpinnerControl:areaCountSpin",
+              "visible": true,
+              "handles": [
+                2958188,
+                1712548,
+                4790678
+              ]
+            },
+            {
+              "item": "ButtonControl:areaButton",
+              "visible": true,
+              "handles": [
+                2758136
+              ]
+            }
+          ],
+          "overlaps": []
+        },
+        {
+          "name": "resultUI",
+          "width": 108,
+          "height": 375,
+          "scale": 1.5,
+          "controls": [
+            {
+              "name": "eraseButton",
+              "class": "CustButton",
+              "text": "Erase nearby...",
+              "rect": [
+                12,
+                12,
+                152,
+                45
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "rebuildButton",
+              "class": "CustButton",
+              "text": "Rebuild strokes",
+              "rect": [
+                12,
+                57,
+                152,
+                90
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "clearButton",
+              "class": "CustButton",
+              "text": "Clear result",
+              "rect": [
+                12,
+                102,
+                152,
+                135
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "exportButton",
+              "class": "CustButton",
+              "text": "Save...",
+              "rect": [
+                12,
+                153,
+                152,
+                186
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "importButton",
+              "class": "CustButton",
+              "text": "Load...",
+              "rect": [
+                12,
+                195,
+                152,
+                228
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "recoveryButton",
+              "class": "CustButton",
+              "text": "Recover session...",
+              "rect": [
+                12,
+                246,
+                152,
+                279
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            },
+            {
+              "name": "fileHint",
+              "class": "Static",
+              "text": "Save MAX for\nmodels and\nmaterials.",
+              "rect": [
+                12,
+                291,
+                152,
+                363
+              ],
+              "inside": true,
+              "glyphs_fit": true
+            }
+          ],
+          "items": [
+            {
+              "item": "ButtonControl:eraseButton",
+              "visible": true,
+              "handles": [
+                1582342
+              ]
+            },
+            {
+              "item": "ButtonControl:rebuildButton",
+              "visible": true,
+              "handles": [
+                1580346
+              ]
+            },
+            {
+              "item": "ButtonControl:clearButton",
+              "visible": true,
+              "handles": [
+                5118060
+              ]
+            },
+            {
+              "item": "ButtonControl:exportButton",
+              "visible": true,
+              "handles": [
+                1508794
+              ]
+            },
+            {
+              "item": "ButtonControl:importButton",
+              "visible": true,
+              "handles": [
+                1386756
+              ]
+            },
+            {
+              "item": "ButtonControl:recoveryButton",
+              "visible": true,
+              "handles": [
+                1517780
+              ]
+            },
+            {
+              "item": "LabelControl:fileHint",
+              "visible": true,
+              "handles": [
+                2432202
+              ]
+            }
+          ],
+          "overlaps": []
+        }
+      ]
+    },
+    "recovery": {
+      "path": "build\\physics-lab-014-recovery-host-03",
+      "launch": {
+        "pid": 26752,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-recovery-host-03\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-recovery-host-03\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-recovery-host-03\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-recovery-host-03\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+          "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+        },
+        "script_sha256": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "diagnostic_helper_sha256": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "fixture_sha256": "475f859c15e3fa74740a77fcd26f5f37a5a0c480e36edd78ba90f735a94e1423",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "assertions": "PASS physics-lab-014-fatal-02: cached preview, matching replay, Undo/Redo, Freeze, mismatched replay rejection and cached Freeze\nPASS physics-lab-014-hardkill-02: cached preview, matching replay, Undo/Redo, Freeze, mismatched replay rejection and cached Freeze\n"
+    },
+    "faults": {
+      "path": "build\\physics-lab-014-fault-host-04",
+      "launch": {
+        "pid": 43016,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fault-host-04\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fault-host-04\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fault-host-04\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fault-host-04\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "7494faba683ea6ef2f11c6cc20f4a0005bde151ae2db3d70bc26a9f177b8af36",
+          "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+        },
+        "script_sha256": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "diagnostic_helper_sha256": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "fixture_sha256": "dc14291662e2193fdf9073cc2b72212959e18181da9a9c71c4ed04e9dd6b7c76",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "assertions": "PASS both publication faults, retained preview, no automatic retry, explicit retry/Undo, Finish timeout and Freeze"
+    },
+    "timing": {
+      "path": "build\\physics-lab-014-performance-host-02",
+      "launch": {
+        "pid": 22484,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-performance-host-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-performance-host-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-performance-host-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-performance-host-02\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+          "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+        },
+        "script_sha256": "5edc440ee6ebee5f2bc50da485e74ec28ef2e67853e031e6daac77c6396c46ef",
+        "diagnostic_helper_sha256": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "fixture_sha256": "5d717d40df067e687e3d2acc055435eec2e36c870f2128cfa44ba9a120f9fb8c",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "assertions": "PASS 1000-body baseline plus 20 moving SDK strokes, cancellation and latency/memory recording"
+    }
+  },
+  "fault_build": {
+    "version": "0.1.4",
+    "max_year": 2027,
+    "source_hashes": {
+      "CMakeLists.txt": "2301d946048d33654ab069170202dc60027cd903f441e3786e1d32cacde4d91e",
+      "README.md": "3324696a52c12b224a97458c7a0a9574f6463f052c53f4c71e8a47bb87276885",
+      "include/core.h": "76bb4c6cec182a713082b3b3517cc4668d5614992bf488d73fd98c7b660d5dd2",
+      "include/diagnostics.h": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0",
+      "include/live_session.h": "283ca19b574900db62e20b79a4b65dd9479bd0cd0cfd78a4330b65f20b49526d",
+      "installer/CyrusPhysicsLabStartup.ms": "a9d31803d3c2434d12bb6d0813fb7f4bd550a0735b523cd73956ecb4501b16c9",
+      "scripts/CyrusPhysicsLab.ms": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+      "src/core.cpp": "14c5eba1a9e5fd66a12fe6bf8f9c451ea7c6d9e17596642fade40e7911a51200",
+      "src/crash_watch.cpp": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4",
+      "src/diagnostics.cpp": "aff283ab3c87698c704c69ac0e3c3a28ff28c993281f75260edb5bb50a1ec677",
+      "src/jolt_world.cpp": "6b4508b4a21c21d88e94ee78b4148f860ce30ca1fb3f2f4db00fa488be0719b8",
+      "src/live_session.cpp": "0dfeec57cff734fb5f355188d377d990ddc7730f5494e51562835f18027d4ae5",
+      "src/max_host.cpp": "a2f8d648cd5ee30c20dc006a476a994fe4567f1e81945dad7e09f4531122316b",
+      "src/max_live.inc": "88304ecd7bd2f5e4feb30d919f7652f0d98033af597725b2cc7cbe8ff7208880",
+      "src/physx_world.cpp": "0f966570a65f40f0be0e8e2fbf81658f75c1cd7c4cce0b1cdd8fa846c139e00e",
+      "src/storage_plugin.cpp": "cc8237f29978eb3c69becb890170cc1df2d783c731a5ecb14b15c52e61a9db0c",
+      "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+      "tests/core_tests.cpp": "975be38e04da2ef9bf2840fd5f0f00369bbbe6737c044d77cbe49a79ac812457",
+      "tests/demo.ms": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8",
+      "tests/host.ms": "dcd15b87209af23cf1c8a617b10367065f00d3f6486fae90649d6466218db96f",
+      "tests/host_brush_ui.ms": "2cf24f76d2a45f28ddba9e892b36060d20f9403f0b80e3377c2aaab8ea694f89",
+      "tests/host_continuous.ms": "174d387d32953e8f26ed3cdf043f17f23dc4e29439db6dbc3c3e6c09add53985",
+      "tests/host_continuous_crash_common.ms": "ab59e31ee11e284e48840b8ce4c434adb00f0c16a2db777c7cd6fcf537ea0c26",
+      "tests/host_continuous_fatal.ms": "7f63e788146330c46d8e73081e41e0a164f41f2d1ac20497f42f9979d46afb24",
+      "tests/host_continuous_faults.ms": "dc14291662e2193fdf9073cc2b72212959e18181da9a9c71c4ed04e9dd6b7c76",
+      "tests/host_continuous_hardkill.ms": "f4dfa68608facfaee9fee7bbd8fe815150f79ed282c094bbcf45206c6e39811a",
+      "tests/host_continuous_lifecycle.ms": "b47466cfa211d7a74b00592487d2cbcf2099da651fe4a33fd16eb27fa0c303a0",
+      "tests/host_continuous_performance.ms": "5d717d40df067e687e3d2acc055435eec2e36c870f2128cfa44ba9a120f9fb8c",
+      "tests/host_continuous_rebuild.ms": "32ff83df1e1cd3b330f996ac3842f79221f9871785394596b2a3c3ae8541ad38",
+      "tests/host_continuous_recover.ms": "475f859c15e3fa74740a77fcd26f5f37a5a0c480e36edd78ba90f735a94e1423",
+      "tests/host_continuous_secondary.ms": "257ac01b18924b8b6ffac4bbde817f7a5b4323846b943b461c9a77bef6630c21",
+      "tests/host_extended.ms": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224",
+      "tests/host_faults.ms": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d",
+      "tests/host_previous_scene.ms": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86",
+      "tests/host_proxy_previous_scene.ms": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564",
+      "tests/host_proxy_ui.ms": "a85f99f4d920fd00acf503331b700b30bffdd589c7bc92234a477ae86c339091",
+      "tests/host_regression.ms": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791",
+      "tests/host_scaled_ui.ms": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191",
+      "tests/host_timeout_ui.ms": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992",
+      "tests/host_transforms.ms": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208",
+      "tests/host_ui_layout.ms": "ef94888c06ec253abd88ffba7f7947120d632c390d1bcee4763359f96e3b50f1",
+      "tests/live_stress.cpp": "2e61272de3c5f93a39355f29391c07109e67f082d50eb3b746d9b8d89da0b058",
+      "tests/live_tests.cpp": "f2f9a0bf31ae91b965fce87f0bfa635914889273ecbd56f20dfc2177eba2669c",
+      "tests/ui_layout.py": "c23b3e27c369033f42004800fbe028632b59c44d0949abd430423b57ea64e82b",
+      "tests/fixtures/pyramid_append_plane.json": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f",
+      "tests/paint_probe/CMakeLists.txt": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd",
+      "tests/paint_probe/probe.cpp": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a",
+      "tools/build.py": "ae15a65b7da9660eddefe8b619a18c876f9be20f75cab5f586b64c0ef22c269b",
+      "tools/build_probe.py": "dd7cff0e5b651d116c0996f7d745ab0453d575050b0d8821698bc191eef8588a",
+      "tools/compare.py": "0e5f45c38ce3379295d343c2caad7405433be3616fc88157bd803e4b4ecbf156",
+      "tools/host_test.py": "4a3fedc6e3683ba6e6781106114a29969e4671b9e502bce4e3c7bce1018d458e",
+      "tools/installer_test.py": "eadcf9c723814376b88e0088f73281edd4a8ab1dcd59b5d82f2dacba84266e93",
+      "tools/package.py": "0df2f83e51b060463421be592d00662069a73f32f8df9a10b709298dc08def59"
+    },
+    "shared_source_hashes": {
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "tools/build_max.py": "3dfe4fe7643ce78a90335998523e3906de79851863a6c3f81707016b12bcf434",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "pins": {
+      "jolt": [
+        "jrouwe/JoltPhysics",
+        "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+      ],
+      "physx": [
+        "NVIDIA-Omniverse/PhysX",
+        "b97365c6ddb32fda8469bc788ec18024862b0368"
+      ]
+    },
+    "toolchain": {
+      "msvc": "14.38.33130",
+      "windows_sdk": "10.0.19041.0"
+    },
+    "dependency_archives": {
+      "jolt": {
+        "repository": "jrouwe/JoltPhysics",
+        "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+      },
+      "physx": {
+        "repository": "NVIDIA-Omniverse/PhysX",
+        "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+        "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+      }
+    },
+    "host_launched": false,
+    "installed": false,
+    "faults": true,
+    "binaries": {
+      "cpl_compare.exe": "575cd899376b8f4141161afda8d73748efdee41a26a2dc4ee7b3c82374df1bb5",
+      "cpl_live_stress.exe": "a634ea4ad3dd0a987d0633b641b71e1d776f2fa37d0584dc39c4619e1dbb35ff",
+      "cpl_live_tests.exe": "c713a886f4d17998005ffcba811ae536bc9661eb1478ad20d3b69fb8e7e1d1b4",
+      "cpl_tests.exe": "6e36261009023252c0136c6911867d0889e525871873d66610e03d670550ed22",
+      "CyrusPhysicsCrashWatch.exe": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+      "CyrusPhysicsLab.dlx": "7494faba683ea6ef2f11c6cc20f4a0005bde151ae2db3d70bc26a9f177b8af36",
+      "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+    }
+  },
+  "timing_comparison": {
+    "before": {
+      "scope": "scripted SDK sample to host snapshot plus redraw call; no physical input or presented-frame measurement",
+      "baseline_bodies": 1000,
+      "source_vertices": 8,
+      "source_faces": 12,
+      "latency_ms": [
+        65,
+        62,
+        46,
+        38,
+        100,
+        110,
+        103,
+        110,
+        104,
+        110,
+        115,
+        119,
+        144,
+        139,
+        142,
+        170,
+        180,
+        185,
+        187,
+        180
+      ],
+      "cancel_ms": 198,
+      "diagnostics": {
+        "error": 0,
+        "event_segment_bytes": 8388608,
+        "event_segments": 4,
+        "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-performance-host-01\\diagnostics\\20261017-180707-759-pid42584",
+        "max_dumps": 2,
+        "memory": {
+          "available": true,
+          "peak_working_set_bytes": 2262421504,
+          "private_bytes": 3183415296,
+          "working_set_bytes": 2253885440
+        },
+        "recording": true,
+        "version": "0.1.4",
+        "watcher_alive": true,
+        "watcher_pid": 13200,
+        "watcher_ready": true
+      },
+      "p50_ms": 112.5,
+      "p95_ms": 185,
+      "max_ms": 187,
+      "recovery_bytes": 4827824,
+      "recovery_sha256": "5cace8174831ae65d25058f3761ff8d88b137832decac7a1b80751588ba675a9"
+    },
+    "after": {
+      "scope": "scripted SDK sample to host snapshot plus redraw call; no physical input or presented-frame measurement",
+      "baseline_bodies": 1000,
+      "source_vertices": 8,
+      "source_faces": 12,
+      "latency_ms": [
+        43,
+        41,
+        31,
+        41,
+        42,
+        39,
+        38,
+        39,
+        43,
+        35,
+        39,
+        36,
+        34,
+        37,
+        40,
+        36,
+        37,
+        37,
+        42,
+        38
+      ],
+      "cancel_ms": 19,
+      "diagnostics": {
+        "error": 0,
+        "event_segment_bytes": 8388608,
+        "event_segments": 4,
+        "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-performance-host-02\\diagnostics\\20261017-181218-089-pid22484",
+        "max_dumps": 2,
+        "memory": {
+          "available": true,
+          "peak_working_set_bytes": 2180472832,
+          "private_bytes": 3114065920,
+          "working_set_bytes": 2179850240
+        },
+        "recording": true,
+        "version": "0.1.4",
+        "watcher_alive": true,
+        "watcher_pid": 48436,
+        "watcher_ready": true
+      },
+      "p50_ms": 38.5,
+      "p95_ms": 43,
+      "max_ms": 43,
+      "recovery_bytes": 513117,
+      "recovery_sha256": "3ed54fc444ef8a65d86062954cb55ffc96872c2ca11cdc9f53e7c77b6b4b07a4"
+    },
+    "scope": "Same final native pair; timing preceded only the subsequent long-error-label layout fix. No physical input or presented-frame timing. Shared workstation, not an exclusive benchmark."
+  },
+  "crash": {
+    "physics-lab-014-fatal-02": {
+      "path": "build\\physics-lab-014-fatal-02",
+      "launch": {
+        "pid": 24812,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fatal-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fatal-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fatal-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-fatal-02\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+          "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+        },
+        "script_sha256": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "diagnostic_helper_sha256": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "fixture_sha256": "7f63e788146330c46d8e73081e41e0a164f41f2d1ac20497f42f9979d46afb24",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "exit": {
+        "pid": 24812,
+        "exit_code": 78,
+        "exception_notifications": 2
+      },
+      "core_solver": "5db7dc8f07cdea4960ae3b5c583dcb07955e5191a36be20b15fece6a949d0b8c",
+      "recovery_bytes": 6148,
+      "recovery_sha256": "26e2bd57ed8ac32c7bde84b3b149e89658fa5cc9a821e9388ac4a4b4d4b3ba40",
+      "events": 67,
+      "first_sequence": 1,
+      "last_sequence": 67,
+      "dump": {
+        "path": "build\\physics-lab-014-fatal-02\\diagnostics\\20261017-181437-661-pid24812\\exception-1.dmp",
+        "sha256": "cadada85b93f12683496cb6dedb1dd8bc6d7fb433acd2c67443d8cd27d8098fc",
+        "bytes": 10916644,
+        "receipt": {
+          "notification": 1,
+          "thread": 38472,
+          "exception_code": 3221225477,
+          "address": 140720406271925,
+          "dump_written": true,
+          "error": 0,
+          "file": "exception-1.dmp",
+          "previous_complete_dump_retained": false
+        }
+      },
+      "attempts": [
+        {
+          "notification": 1,
+          "thread": 38472,
+          "exception_code": 3221225477,
+          "address": 140720406271925,
+          "dump_written": true,
+          "error": 0,
+          "file": "exception-1.dmp",
+          "previous_complete_dump_retained": false
+        },
+        {
+          "notification": 2,
+          "thread": 38472,
+          "exception_code": 3221225477,
+          "address": 140721962041482,
+          "dump_written": false,
+          "error": 2147942699,
+          "file": "exception-2.dmp",
+          "previous_complete_dump_retained": false
+        }
+      ]
+    },
+    "physics-lab-014-hardkill-02": {
+      "path": "build\\physics-lab-014-hardkill-02",
+      "launch": {
+        "pid": 32464,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-hardkill-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-hardkill-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-hardkill-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-014-hardkill-02\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "de8024f2d62bbd221c1c9aab72a0a042a48d25e80bc0f70251a0cf3104c43b25",
+          "CyrusPhysicsStorage.dlh": "50c66ae198521df39eb8208636c3d8e31024a09394d713280470896933db2957"
+        },
+        "script_sha256": "306355c6407e96380d7b2f15355943f27bcd81d8a75e753c6adfe6c55d8175fb",
+        "diagnostic_helper_sha256": "78277ec6a9eec9814da776afef68dddf991c2d240e0466ebb921f80954f793c6",
+        "fixture_sha256": "f4dfa68608facfaee9fee7bbd8fe815150f79ed282c094bbcf45206c6e39811a",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4"
+      },
+      "exit": {
+        "pid": 32464,
+        "exit_code": 77,
+        "exception_notifications": 0
+      },
+      "core_solver": "5db7dc8f07cdea4960ae3b5c583dcb07955e5191a36be20b15fece6a949d0b8c",
+      "recovery_bytes": 6148,
+      "recovery_sha256": "d9a7a31acafb5e705073933486360efb519a9b857baec414df1e712dd4d960f0",
+      "events": 67,
+      "first_sequence": 1,
+      "last_sequence": 67
+    }
+  },
+  "limits": [
+    "Physical mouse/tablet feel, presented FPS and artist acceptance remain open.",
+    "5,000 distributed low-poly bodies is a capacity stress, not an interactive or dense-pile promise.",
+    "Sampled native process memory is not a global allocation-failure guarantee.",
+    "Last unflushed commands/steps can be absent from crash recovery.",
+    "Development native-01 now contains private fault modules; qualified/ and the MZP contain the ordinary pair."
+  ]
+}

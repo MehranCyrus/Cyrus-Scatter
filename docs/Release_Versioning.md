@@ -2,11 +2,11 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.2 | Image/mesh density, persistent field preview, recipe recovery and full-width names |
-| Scatter native/package | 0.86.2 host MZPs/universal EXE; [current acceptance](plans/preset-gallery-improvements/DELIVERY_0862.md) | Exact loaded/package identities required; no artist installation by this task |
+| Scatter UI | 0.86.6.1 artist-test candidate; 0.86.6 qualified | User-selected correction of the real-model delivery label; historical 0.88.0 receipts retain their original identities |
+| Scatter native/package | 0.86.6.1 candidate / Max 2027; [qualified 0.86.6 acceptance](plans/preset-gallery-improvements/DELIVERY_0866.md) | Exact loaded/package identities required; earlier host deliveries retain their own scope |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
-| Recipe / numeric-settings format and capability | 6 / 3 | 261 typed authored fields; explicit older recipe conversion; image mapping/frame/provenance |
-| Library / portable-package capability | 4 / 2 | Bounded collections; graph 2 adds evaluated receiver/static spline context to the mesh/Standard/PNG adapter; package manifest remains 1 |
+| Recipe / numeric-settings format and capability | 7 / 3 | 262 typed authored fields; explicit older recipe conversion; relative-elevation source appended |
+| Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
 | Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -15,6 +15,52 @@
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
 
 ## Choosing the next version
+
+**20 October 2026 explicit user correction:** the real-model library delivery is
+**0.86.6.1**, superseding the 0.88.0 selection below. This changes the delivery
+label only: regenerate the displayed script labels, use managed assembly version
+0.86.6.1, align native project/package/catalog metadata and issue a matching Max
+2027 MZP. Native implementation, saved-data formats, eight presets and actual
+rendered previews remain unchanged. Preserve the original 0.88.0 artifacts and
+receipts as historical evidence, and distinguish the focused version correction
+from fresh renderer or broad qualification. No artist installation or restart is
+authorized.
+
+**Historical 19 October 2026 real-model pilot implementation decision:** reserve **0.88.0**
+for the authorized RL01/RL02/RL03 delivery: closed Corona/nested-material and
+dependency support, measured real-asset bounds and eight freshly loaded, rendered
+portable presets. This substantial user-visible portable-content change follows
+the substantial-delivery override. Preserve the historical 0.87.0 receipts and the
+current qualified 0.86.6 pair. Internal adapter/graph capabilities advance separately;
+scene schema 58, recipe 7 and independent products remain unchanged unless their
+actual contracts change. This reserves a successor label; it does not qualify a
+prototype or change the current delivered version. The
+[execution ledger](plans/improvement-program/PROGRESS.md#real-model-library-planning)
+owns the remaining gates. No artist installation, restart or publication is implied.
+
+**19 October 2026 user-selected correction and surface brush delivery:** the user
+assigns the completed library/Amount reliability changes to **0.86.5** and this
+surface Paint restoration to **0.86.6**, explicitly superseding the 0.87.0 minor
+selection below. The original 0.87.0 artifacts and qualification remain unchanged
+and identified by their original hashes. The 0.86.5 baseline denotes that same
+feature set, not a claim that old artifacts were compiled with a different label.
+0.86.6 includes the complete baseline and restored sphere/box/curved painting.
+Scene schema 58, recipe 7 and independent product versions remain unchanged;
+curved Paint has an additive vector payload discriminator and requires its matched
+native modules. [Implementation/acceptance](plans/preset-gallery-improvements/BRUSH_0866.md)
+owns the new Max 2027 qualification and MZP/EXE delivery. No artist installation,
+restart, older-host qualification or website publication is authorized.
+
+
+**Historical 19 October reliability delivery — originally labeled 0.87.0; feature baseline corrected to 0.86.5 above.** The user authorizes the
+full library/Amount reliability scope and a qualified Max 2027 MZP. The
+[delivery ledger](plans/preset-gallery-improvements/RELIABILITY_0870.md) records
+the decision: receiver-context maps and reusable Paint transfer change substantial
+user-visible contracts alongside preset portability and lifecycle corrections.
+This follows the substantial-delivery override below. Native/recipe capability
+revisions are separate; preserve parameter/registration identities and independent
+products. 0.86.2 remains the current delivered package until qualification finishes.
+No artist installation/restart, older-host qualification or deployment is implied.
 
 **Current user-selected delivery: 0.86.2.** The active goal explicitly authorizes
 the density-pattern/channel/overlay and complete recipe/library D01–D10 roadmap,
@@ -25,7 +71,7 @@ MZP/EXE packaging. The user's explicit patch label governs this delivery despite
 its feature scope. Existing 0.86.1 receipts/host labels remain historical; new
 qualification originally covered Max 2027 only. The user explicitly requested the
 19 October same-version compatibility follow-up: current Max 2026 runtime checks,
-unchanged qualified Max 2027 payload and a Max 2024 SDK/managed preview. No artist install/restart is authorized. Record
+unchanged qualified Max 2027 payload and a Max 2024 SDK/managed preview. The subsequent explicit artist-installer correction stays **0.86.2**: simplified EXE, mapped short archive paths, compact per-user runtime and actual Max 2024 qualification. Installer inventory advances to 2; recipe/library/scene/native formats do not change. Earlier preview receipts remain historical. No artist install/restart is authorized. Record
 the delivered recipe format 6, library capability 4 and density-image capability 2 changes explicitly; scene schema 58 and Analyzer/MCP/licensing remain independently versioned.
 
 **Retained 0.86.1 version decision.** The user explicitly selects this patch

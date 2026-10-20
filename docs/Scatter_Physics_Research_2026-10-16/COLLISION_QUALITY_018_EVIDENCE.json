@@ -1,0 +1,709 @@
+{
+  "pass": true,
+  "product": "CyrusPhysicsLab",
+  "version": "0.1.8",
+  "max_year": 2027,
+  "computer_use": false,
+  "artist_installation": false,
+  "integrated_into_scatter": false,
+  "git_head": "e3e81a6d204063efd9b77771ad9b0268ad2ea578",
+  "dirty_untracked_sources": true,
+  "build": {
+    "version": "0.1.8",
+    "max_year": 2027,
+    "source_hashes": {
+      "CMakeLists.txt": "4d5bcb396b93c34de5be35e16fa7372c0dd74f55c6ebc4733b43cd8d007b9124",
+      "README.md": "6a4d4fac96aa4eb6c42d7972ece056ff5ac2a422fc19840c032a7733d3cd25eb",
+      "include/core.h": "6f451d9429fcdc114ced29b2e5871c776ec5e5628d9dfa4ac7f691cf7ffdf699",
+      "include/diagnostics.h": "7fa3a2eb73ba7bfdcc686e199392453183adb15abe1d5c512d3d1c77531ff7b0",
+      "include/live_session.h": "19893057f821162c984e6b8dce4e41045b079b115160580b7e4cd5f4d3abd203",
+      "installer/CyrusPhysicsLabStartup.ms": "fa6f263a7f33e8e0199237abdb87ac77c23bb98cace59ce0426c563f91bedf99",
+      "scripts/CyrusPhysicsLab.ms": "f515e5dc9683a2f0d76677666c410a8e80b94f35ba9e70e22ec4ac2379cb5437",
+      "src/core.cpp": "f204b1daa34c368f348fb34c8628899d0a34472f7f94189d9f6013921c70e1ee",
+      "src/crash_watch.cpp": "44be07926a97c40cda1f05c73fe7d3340ef9e70b1ef66b259b38b0970c2642c4",
+      "src/diagnostics.cpp": "0d01d75883c47ab1ee9e0cb9c331067fe0527083d13040c01a590e0564428554",
+      "src/jolt_world.cpp": "81bf547e3191a17fe6a36372aa84c72cbf516fe91dbaf076f71f3e7a7b377c2c",
+      "src/live_session.cpp": "0fdcc796559738631c6bd160e903962925fb08e7f0f5feb0f9be13b53ab792f1",
+      "src/max_collision.inc": "5bc1a3e9c22ddfc979e35b66dc9bce6f0b49bd8a0820f8fda66830e866876ac7",
+      "src/max_host.cpp": "176d9c19da998a2516c4e592cfaa9f706b47c19f5703ec08b1a062cc0dc041d7",
+      "src/max_icon.inc": "aabba1a92cb61e4b953db248fdeb10a486548c2bcce769edf64d28c77d020326",
+      "src/max_live.inc": "88304ecd7bd2f5e4feb30d919f7652f0d98033af597725b2cc7cbe8ff7208880",
+      "src/physx_world.cpp": "99c79aa3bb230ef89f66cb953da86a560686bd2fca18af2fa606136e3a1fa500",
+      "src/quality.cpp": "d7460a3325291873f4c7dc46dc435415bdfd11fb3c3189b499fae3c2f1da7ea3",
+      "src/storage_plugin.cpp": "9d4f6de68e0a45cf4de98f8f8a3bac7c7030bb880fac8dc3c2701e817f357fc9",
+      "tests/collision_tests.cpp": "cee033d75447c3d8af187e4cacd7d1b77408e300a6928a9055e11873d037101f",
+      "tests/compare.cpp": "03490940c14be944959becb00da2e1af15e365ea54dbf96edaf234a414592e42",
+      "tests/core_tests.cpp": "51819564cd85f0d29e1ff50db8f60d8d68bba1b58f029e27945b0ddb5a2e4739",
+      "tests/demo.ms": "6af37da1a59fb04299a2da1a96b3df9391a1e811e9ce7dd743a9326bb34c57e8",
+      "tests/grip_tests.cpp": "532a6f9bbca9498b37e1a300e25ad3ef4fabc5bb8716dc236e1cfc63f431187d",
+      "tests/host.ms": "37503963e3e34027f1f3c4ee2c1edbad78f89bb7d6866b6b8dba3c149e2e4db3",
+      "tests/host_brush_ui.ms": "81c3c872aa5cedaeb1b449a0ca01512f6c30f657d16bb2447bcb4d8d3e66a5e3",
+      "tests/host_continuous.ms": "174d387d32953e8f26ed3cdf043f17f23dc4e29439db6dbc3c3e6c09add53985",
+      "tests/host_continuous_crash_common.ms": "ab59e31ee11e284e48840b8ce4c434adb00f0c16a2db777c7cd6fcf537ea0c26",
+      "tests/host_continuous_fatal.ms": "7f63e788146330c46d8e73081e41e0a164f41f2d1ac20497f42f9979d46afb24",
+      "tests/host_continuous_faults.ms": "dc14291662e2193fdf9073cc2b72212959e18181da9a9c71c4ed04e9dd6b7c76",
+      "tests/host_continuous_hardkill.ms": "f4dfa68608facfaee9fee7bbd8fe815150f79ed282c094bbcf45206c6e39811a",
+      "tests/host_continuous_lifecycle.ms": "b47466cfa211d7a74b00592487d2cbcf2099da651fe4a33fd16eb27fa0c303a0",
+      "tests/host_continuous_performance.ms": "5d717d40df067e687e3d2acc055435eec2e36c870f2128cfa44ba9a120f9fb8c",
+      "tests/host_continuous_rebuild.ms": "32ff83df1e1cd3b330f996ac3842f79221f9871785394596b2a3c3ae8541ad38",
+      "tests/host_continuous_recover.ms": "475f859c15e3fa74740a77fcd26f5f37a5a0c480e36edd78ba90f735a94e1423",
+      "tests/host_continuous_secondary.ms": "257ac01b18924b8b6ffac4bbde817f7a5b4323846b943b461c9a77bef6630c21",
+      "tests/host_extended.ms": "519bc3f2f446df36ca90552e38d8b38ad7411e052a43c2b9c32d9101df9cf224",
+      "tests/host_faults.ms": "b2b09cb057acc027f74265f8c9d3b71d4be145db4bda5f850b419a0c6f77d05d",
+      "tests/host_previous_scene.ms": "baaf89d5daddea2a348860944d4eeea9dd8256adea9a1694e20f521372e84e86",
+      "tests/host_proxy_previous_scene.ms": "ed797c18a1fe7a80cc8bc8cb7cfe9e023306bb6dcd68ceb4ad1e2b3fcb4a6564",
+      "tests/host_proxy_ui.ms": "35587891b466000eb8bb9a918fc724abdfe6585883d4a0dcbec321774ed1b9cc",
+      "tests/host_regression.ms": "8521bc09ba613a35c24861085581bd4c128066ecb2b4e27fbada362caeee4791",
+      "tests/host_scaled_ui.ms": "bcd71358e04cd51c6253a34b269b266eb406450240c34a5d1bfe56dd230eb191",
+      "tests/host_timeout_ui.ms": "7adaa377a9c88d846e631de886692f1d94e2728e4a400c8ad6df312dedc45992",
+      "tests/host_transforms.ms": "d932f5e0ae91966afb07bc6ea3bd6501fa181e209fe7a75309c5492ab12dd208",
+      "tests/host_ui_layout.ms": "ef94888c06ec253abd88ffba7f7947120d632c390d1bcee4763359f96e3b50f1",
+      "tests/live_stress.cpp": "45d6c06fe3c354dc783ebb24cf688a601cab1f7ca706f1b7c552dcac0dd2402c",
+      "tests/live_tests.cpp": "f2f9a0bf31ae91b965fce87f0bfa635914889273ecbd56f20dfc2177eba2669c",
+      "tests/mountain_tests.cpp": "6e888af4344c26ecdf0085d918a2c5b3eaa53012502f942bdecf85f45a695a70",
+      "tests/quality_tests.cpp": "392080c7036bc16d4c499151c45485565f87d6d340cebb800a077547c270b703",
+      "tests/ui_layout.py": "e64610c6b14bf980b660ea92bbc48ab4f777efeb7df3c83885f5258705244957",
+      "tests/fixtures/pyramid_append_plane.json": "923c2568b94bd25a021e1b940fac9cc0c8680732ba591b23a663765fa2f17c6f",
+      "tests/fixtures/rolling-sphere-mountain.json": "7fe69c63696d98ea6c0bf6b1c2a4f1928c0695d136900d24c34db745e405c010",
+      "tests/paint_probe/CMakeLists.txt": "07aea5e470699979cac7cf44ee91329007454375cec7ed4b46007a4f191d31fd",
+      "tests/paint_probe/probe.cpp": "b71db1114bc1605c8ab5731d94f704041a5945ef329c8198ee38baa67513015a",
+      "third_party/vhacd/LICENSE": "245c933225f5bd28a10336137b26f1f86551b6b1d29f804253eb5e1d73744c2e",
+      "third_party/vhacd/SOURCE.json": "e3fb01ab52597346738f4cd85dfac9c34c03f6f13ddacd079144d53e35635de7",
+      "third_party/vhacd/VHACD.h": "c2b750a41bc6044457c79dc51d196b7bbe5e24bfaec72d409a065434d9651ff2",
+      "tools/build.py": "75b17774997f894f0adfeebf7ac16826c46be565526d4eca32947f781f8e8d16",
+      "tools/build_probe.py": "5808b02e35aa6ba9a5576c60b87b400cb91e747ca446c1ab463df582f7f0c31d",
+      "tools/compare.py": "8e93a42a402cf4ea8e92dee3c51cf4c1e050fdc0c2f9e7f3ba420b9e457d082b",
+      "tools/host_test.py": "35bdc77c4e7a5d40996cb28ce7c6eec5552385955881a12e0dcbcc4f0fc21e69",
+      "tools/installer_test.py": "1531ff70d8587a473b845451f0e36cd05b294af0db509bfe4e87fdce491707b0",
+      "tools/package.py": "91ddfd2913483c5a21222232bae974e984fbbc6e18bd13b5c6a66bbc677d61a1"
+    },
+    "shared_source_hashes": {
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "tools/build_max.py": "ec58c480aab48728969ccc6494bbcf23c9dacc2c90a86531f0674e37a5257443",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "pins": {
+      "jolt": [
+        "jrouwe/JoltPhysics",
+        "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+      ],
+      "physx": [
+        "NVIDIA-Omniverse/PhysX",
+        "b97365c6ddb32fda8469bc788ec18024862b0368"
+      ]
+    },
+    "toolchain": {
+      "msvc": "14.38.33130",
+      "windows_sdk": "10.0.19041.0"
+    },
+    "dependency_archives": {
+      "jolt": {
+        "repository": "jrouwe/JoltPhysics",
+        "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "archive_sha256": "9b2744ce490c40ce79c4bd5f071e2a56623870cc6b0b8fdbc108643d9d6c016f"
+      },
+      "physx": {
+        "repository": "NVIDIA-Omniverse/PhysX",
+        "commit": "b97365c6ddb32fda8469bc788ec18024862b0368",
+        "archive_sha256": "1f34d30f027c9c0b9bb7f243b5f6bbf87167fdc3839ba24498cdc3f0f08aa1af"
+      }
+    },
+    "host_launched": false,
+    "installed": false,
+    "faults": false,
+    "binaries": {
+      "cpl_collision_tests.exe": "c59a8593dee1e2ada6c02ee93f67a8b2fec66031a8c1a2bd5bfe0e7d6b2cc786",
+      "cpl_compare.exe": "5b2aa6c4adcc9bd071e3945b235fd1d0be4ee44ee81e3611d695796fb97a0427",
+      "cpl_grip_tests.exe": "7b39ee18228033422149793e52e2e411dee7f73f7ae9199288ee592cc8192712",
+      "cpl_live_stress.exe": "468f93be74170ea1ea34d8e21c991cf694d200ff435b1912b61da684e332b5bd",
+      "cpl_live_tests.exe": "b45127b7b214dc48a09b8cb6f3f09091ddd8a053e6ef625fcb3b54ede329d85c",
+      "cpl_mountain_tests.exe": "3074de778875d52b33ce5544d0b4698b79631beb60fe988ba4014156a28c28a5",
+      "cpl_quality_tests.exe": "abc27a2b67a434e851d36a1e6d3fd1646fc93b0a2e9f2e02e93debb23aeffb58",
+      "cpl_tests.exe": "982d728440265a2e0d3c3b4beabb5f96091ea8823c366917e16e5d9eed67b1d3",
+      "CyrusPhysicsCrashWatch.exe": "ccd8b799dd462d159b85e0541993a3c26ed864dcb4ffd7b679e4596265084474",
+      "CyrusPhysicsLab.dlx": "91cbdba43a218a9e2028291298425a161eff96863ea363d6978d04a05151d026",
+      "CyrusPhysicsStorage.dlh": "e9f3244f67b0822b71f87c9dd57cc9d5709a4977185f556d26c009c665aca6eb"
+    }
+  },
+  "quality_suite": {
+    "1": {
+      "cook_ms": 1358.1359,
+      "floor_z": 0.2136363834142685,
+      "hole_clear": true,
+      "pieces": 16
+    },
+    "2": {
+      "cook_ms": 4958.0581,
+      "floor_z": 0.20865383744239807,
+      "hole_clear": true,
+      "pieces": 16
+    },
+    "checks": 44268,
+    "pass": true,
+    "rolling_sphere_mountain": {
+      "bodies": 11,
+      "interior_tunnels": 0,
+      "steps": 4054
+    }
+  },
+  "source_snapshot": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-quality-018-20261018-01\\final-source-018.zip",
+    "sha256": "25e8c8934b318334d59a04288ad1d6d7c098d7cc2b1096c4340a8c5d8fc27982"
+  },
+  "package": {
+    "product": "CyrusPhysicsLab",
+    "version": "0.1.8",
+    "max_year": 2027,
+    "integrated_into_scatter": false,
+    "payload": {
+      "native/CyrusPhysicsLab.dlx": "91cbdba43a218a9e2028291298425a161eff96863ea363d6978d04a05151d026",
+      "native/CyrusPhysicsStorage.dlh": "e9f3244f67b0822b71f87c9dd57cc9d5709a4977185f556d26c009c665aca6eb",
+      "native/CyrusPhysicsCrashWatch.exe": "ccd8b799dd462d159b85e0541993a3c26ed864dcb4ffd7b679e4596265084474",
+      "native/build-identity.json": "bb68095d5dcc983ba6d2607bdb8ac8d7514889e8b36e44d7b19fcbc91cd5da3e",
+      "scripts/CyrusPhysicsLab.ms": "f515e5dc9683a2f0d76677666c410a8e80b94f35ba9e70e22ec4ac2379cb5437",
+      "README.md": "6a4d4fac96aa4eb6c42d7972ece056ff5ac2a422fc19840c032a7733d3cd25eb",
+      "licenses/Jolt-MIT.txt": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3",
+      "licenses/VHACD-BSD-3-Clause.txt": "245c933225f5bd28a10336137b26f1f86551b6b1d29f804253eb5e1d73744c2e",
+      "licenses/nlohmann-MIT.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "Uninstall.ms": "ed974125dd5ba550eed71a9ef7903c78c41f55c23494a0935b180e95b693f6d6",
+      "CyrusPhysicsLabStartup.ms": "8b84beecc3253cab15530c9625d45ff92bb25385a4b7846eb11fba1cd6c57f09",
+      "install.ms": "3d0886204eca7305de9d53fa6a9bcc19abfa131345cc37af1cfebc1a496da11e",
+      "mzp.run": "d9c748b6d5f38f781ce70de5b42891b0eabba96ae633bce7e45e6b54e660fdd6"
+    },
+    "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusPhysicsLab-0.1.8-20261018-03\\CyrusPhysicsLab-0.1.8-Max2027.mzp",
+    "package_sha256": "2c2dd289b62f633a6ed5d240ebb3271d766967d5f1365dd44b23c0ea51a36f12",
+    "package_bytes": 909611,
+    "installed": false
+  },
+  "scenes": {
+    "PhysicsLab-0.1.8-Mountain-Test.max": {
+      "sha256": "0dba50cff610df279394dc36eefaca1f599656ea93d59e308087975771bc2a0b",
+      "bytes": 15003648,
+      "source": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-reopen-02\\PhysicsLab-0.1.8-Mountain-Test.max"
+    },
+    "PhysicsLab-0.1.8-Mountain-Results.max": {
+      "sha256": "5ce096dadea987738fdb3c327f824eb64463fc4c9b57829fbfa545bb98f0d275",
+      "bytes": 13717504,
+      "source": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-reopen-02\\PhysicsLab-0.1.8-Mountain-Results.max"
+    }
+  },
+  "original_scene_sha256": "99ee36fd84f34995ca565aa27ad6292a5b83b46a24ea7cfbe92a7ab87315b28e",
+  "hosts": {
+    "mountain": {
+      "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-mountain-06",
+      "launch": {
+        "pid": 24732,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-mountain-06\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-mountain-06\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-mountain-06\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-mountain-06\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "91cbdba43a218a9e2028291298425a161eff96863ea363d6978d04a05151d026",
+          "CyrusPhysicsStorage.dlh": "e9f3244f67b0822b71f87c9dd57cc9d5709a4977185f556d26c009c665aca6eb"
+        },
+        "script_sha256": "f515e5dc9683a2f0d76677666c410a8e80b94f35ba9e70e22ec4ac2379cb5437",
+        "diagnostic_helper_sha256": "ccd8b799dd462d159b85e0541993a3c26ed864dcb4ffd7b679e4596265084474",
+        "fixture_sha256": "dbc7f19a078f6c8e1b381e5169d910f0cc244b38fb6a6d1c29afb8ca330862f7",
+        "profile_template_sha256": "4fc170f376e5b920838f87690206d9c6b66542866bd9f7ebf0deb1646b683738"
+      },
+      "runtime": {
+        "exit_records": [
+          {
+            "pid": 24732,
+            "exit_code": 0,
+            "exception_notifications": 0
+          }
+        ],
+        "exception_files_empty": true
+      }
+    },
+    "reopen": {
+      "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-reopen-02",
+      "launch": {
+        "pid": 50300,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-reopen-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-reopen-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-reopen-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-reopen-02\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": null,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "91cbdba43a218a9e2028291298425a161eff96863ea363d6978d04a05151d026",
+          "CyrusPhysicsStorage.dlh": "e9f3244f67b0822b71f87c9dd57cc9d5709a4977185f556d26c009c665aca6eb"
+        },
+        "script_sha256": "5853df67ce9676e44c50625ffd86c8b8ac2c59f5c3b1f0c978bc635d63293a96",
+        "diagnostic_helper_sha256": "ccd8b799dd462d159b85e0541993a3c26ed864dcb4ffd7b679e4596265084474",
+        "fixture_sha256": "844c0a5c465a4e85ea8406e20e65d41944191ba6f4418d049a455d0c69aebfbf",
+        "profile_template_sha256": "4fc170f376e5b920838f87690206d9c6b66542866bd9f7ebf0deb1646b683738"
+      },
+      "runtime": {
+        "exit_records": [
+          {
+            "pid": 50300,
+            "exit_code": 0,
+            "exception_notifications": 0
+          }
+        ],
+        "exception_files_empty": true
+      },
+      "managed_list": {
+        "hwnd": 8523328,
+        "rect": [
+          8,
+          120,
+          154,
+          230
+        ],
+        "parent": [
+          162,
+          371
+        ],
+        "client": [
+          142,
+          106
+        ],
+        "item_height": 16,
+        "item_count": 3,
+        "scale": 1.0
+      }
+    },
+    "layout150": {
+      "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-list150-02",
+      "launch": {
+        "pid": 51956,
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-list150-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-list150-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-list150-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-list150-02\\listener.log"
+        ],
+        "max_year": 2027,
+        "computer_use": false,
+        "max_executable_sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc",
+        "normal_profile_modified": false,
+        "requested_scale": 1.5,
+        "binaries": {
+          "CyrusPhysicsLab.dlx": "91cbdba43a218a9e2028291298425a161eff96863ea363d6978d04a05151d026",
+          "CyrusPhysicsStorage.dlh": "e9f3244f67b0822b71f87c9dd57cc9d5709a4977185f556d26c009c665aca6eb"
+        },
+        "script_sha256": "f515e5dc9683a2f0d76677666c410a8e80b94f35ba9e70e22ec4ac2379cb5437",
+        "diagnostic_helper_sha256": "ccd8b799dd462d159b85e0541993a3c26ed864dcb4ffd7b679e4596265084474",
+        "fixture_sha256": "73894ddfd24c0a4dde0136382d57d18be3f9455654d97c6148111233153809ac",
+        "profile_template_sha256": "4fc170f376e5b920838f87690206d9c6b66542866bd9f7ebf0deb1646b683738"
+      },
+      "runtime": {
+        "exit_records": [
+          {
+            "pid": 51956,
+            "exit_code": 0,
+            "exception_notifications": 0
+          }
+        ],
+        "exception_files_empty": true
+      },
+      "managed_list": {
+        "hwnd": 2499028,
+        "rect": [
+          12,
+          180,
+          152,
+          345
+        ],
+        "parent": [
+          162,
+          641
+        ],
+        "client": [
+          136,
+          161
+        ],
+        "item_height": 16,
+        "item_count": 0,
+        "scale": 1.5
+      }
+    }
+  },
+  "installed": {
+    "pass": true,
+    "computer_use": false,
+    "normal_profile_modified": false,
+    "package_sha256": "2c2dd289b62f633a6ed5d240ebb3271d766967d5f1365dd44b23c0ea51a36f12",
+    "installed_pair": {
+      "CyrusPhysicsStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-installed-02\\scripts\\CyrusPhysicsLab\\0.1.8\\443d63e0f568\\native\\CyrusPhysicsStorage.dlh",
+        "sha256": "e9f3244f67b0822b71f87c9dd57cc9d5709a4977185f556d26c009c665aca6eb"
+      },
+      "CyrusPhysicsLab.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-installed-02\\scripts\\CyrusPhysicsLab\\0.1.8\\443d63e0f568\\native\\CyrusPhysicsLab.dlx",
+        "sha256": "91cbdba43a218a9e2028291298425a161eff96863ea363d6978d04a05151d026"
+      }
+    },
+    "installed_script_sha256": "f515e5dc9683a2f0d76677666c410a8e80b94f35ba9e70e22ec4ac2379cb5437",
+    "fixture_sha256": "37c7d7adaa64b3247141cfe8571936c9a9326621d0fde0c9a10b3f360c29a750",
+    "restart_command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-silent",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-installed-02\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-installed-02\\restart-plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-installed-02\\restart.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-quality-018-installed-02\\restart-listener.log"
+    ]
+  },
+  "installed_runtime": {
+    "exit_records": [
+      {
+        "pid": 53188,
+        "exit_code": 0,
+        "exception_notifications": 0
+      }
+    ],
+    "exception_files_empty": true
+  },
+  "installed_managed_list": {
+    "hwnd": 9254360,
+    "rect": [
+      8,
+      120,
+      154,
+      230
+    ],
+    "parent": [
+      162,
+      371
+    ],
+    "client": [
+      142,
+      106
+    ],
+    "item_height": 16,
+    "item_count": 3,
+    "scale": 1.0
+  },
+  "replay": {
+    "source_hashes": {
+      "fill_probe.cpp": "4931f6be20a79e9a4230e6c9cc8291f7d35cedd21c7282f71b0a6bea9bda76f6",
+      "fit_metrics.cpp": "5ad67452d9d4ff8ce6d10f9c020ee8e5dd0fff396ec4e0fd3ab5411b47e0c5e5",
+      "hole_probe.cpp": "8794f8bec551529ab69487845d114606de949d402954cde13ac7857c58232b55",
+      "host_layout.ms": "73894ddfd24c0a4dde0136382d57d18be3f9455654d97c6148111233153809ac",
+      "host_quality.ms": "dbc7f19a078f6c8e1b381e5169d910f0cc244b38fb6a6d1c29afb8ca330862f7",
+      "host_ready_verify.ms": "37c7d7adaa64b3247141cfe8571936c9a9326621d0fde0c9a10b3f360c29a750",
+      "host_reopen.ms": "844c0a5c465a4e85ea8406e20e65d41944191ba6f4418d049a455d0c69aebfbf",
+      "list_layout.py": "9f3140700c87b23c798d6aa2e0664bd0fe41bbb28fce511e50b712ae2ad7e035",
+      "replay_quality.py": "c83111ed06fd38e6ebd3c7bcd499541f5631dc2327658a285fd0c1d88f477689"
+    },
+    "core_library_sha256": "c417298d89618f910f4de2f270cfd6ea74d7567a1d3d0517ec0cdda5fff7ac01",
+    "fit": {
+      "pyramid": {
+        "0": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21360,
+          "pieces": 1,
+          "render_vertices": 6,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "1": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21360,
+          "pieces": 1,
+          "render_vertices": 6,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "2": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21360,
+          "pieces": 1,
+          "render_vertices": 6,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        }
+      },
+      "sphere": {
+        "0": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 34824,
+          "pieces": 1,
+          "render_vertices": 482,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "1": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 34824,
+          "pieces": 1,
+          "render_vertices": 482,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "2": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 34824,
+          "pieces": 1,
+          "render_vertices": 482,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        }
+      },
+      "teapot": {
+        "0": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 41120,
+          "pieces": 1,
+          "render_vertices": 2082,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "1": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 21992,
+          "pieces": 8,
+          "render_vertices": 2082,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        },
+        "2": {
+          "grid_cells": 64000,
+          "occupied_grid_cells": 15482,
+          "pieces": 16,
+          "render_vertices": 2082,
+          "vertices_outside_0_5_percent_diagonal_plane_envelope": 0
+        }
+      }
+    },
+    "cases": [
+      {
+        "bodies": 9,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0007946832164247297,
+        "final_normal_depth_m": 0.0007803773091630763,
+        "published_vertical_depth_m": 0.0,
+        "published_normal_depth_m": 0.0,
+        "sleeping": 9,
+        "contact_distance_m": 0.0038400038718764905,
+        "case": "palette-mixed-result",
+        "input_sha256": "d9c30e673a8ebb8d7407e985f3a89977bf1de5bcee9ed46efd77bfb3b6ebee23",
+        "returncode": 0
+      },
+      {
+        "bodies": 4,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 2.10889762186639e-06,
+        "final_normal_depth_m": 2.1062590992131355e-06,
+        "published_vertical_depth_m": 0.0,
+        "published_normal_depth_m": 0.0,
+        "sleeping": 4,
+        "contact_distance_m": 0.0038400038718764905,
+        "case": "palette-sphere-result",
+        "input_sha256": "54771366e831247e563d969f7ccc02318913b1a7eca5f8d415fa2f829600c05c",
+        "returncode": 0
+      },
+      {
+        "bodies": 10,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.00023845509877240545,
+        "final_normal_depth_m": 0.0002377985930580258,
+        "published_vertical_depth_m": 9.877902552446471e-05,
+        "published_normal_depth_m": 9.850707078308357e-05,
+        "sleeping": 9,
+        "contact_distance_m": 0.02,
+        "case": "pyramid_q0-result",
+        "input_sha256": "a28756146b342326f908258d5fb71668139fd0f95e21016c1e49f6a5cad4c81f",
+        "returncode": 0
+      },
+      {
+        "bodies": 10,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.00013369033649190953,
+        "final_normal_depth_m": 0.00012965175324497217,
+        "published_vertical_depth_m": 8.585715338682576e-07,
+        "published_normal_depth_m": 8.567223755069536e-07,
+        "sleeping": 6,
+        "contact_distance_m": 0.02,
+        "case": "pyramid_q1-result",
+        "input_sha256": "2b336bde0dead6e4a25486593caf73acf6fcda85dcd4eaeb24b61d44b7e4301a",
+        "returncode": 0
+      },
+      {
+        "bodies": 10,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0007360989889590996,
+        "final_normal_depth_m": 0.000715689079561514,
+        "published_vertical_depth_m": 0.0007360989889590996,
+        "published_normal_depth_m": 0.000715689079561514,
+        "sleeping": 9,
+        "contact_distance_m": 0.02,
+        "case": "pyramid_q2-result",
+        "input_sha256": "531b4d90492ede6e4b30aa7ec96bd52cd32cce0cb3140d01504277bd3c0f7238",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.000277857062872755,
+        "final_normal_depth_m": 0.0002776390234215524,
+        "published_vertical_depth_m": 4.995378283467744e-06,
+        "published_normal_depth_m": 4.9198147253672555e-06,
+        "sleeping": 8,
+        "contact_distance_m": 0.0038400038718764905,
+        "case": "sphere_q0-result",
+        "input_sha256": "76b5be57eabcbfe1cb7c12840926fb2744b23d06971245c1ea7b37075efd6bf9",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0009823984750774173,
+        "final_normal_depth_m": 0.0009797323475381594,
+        "published_vertical_depth_m": 1.5012344967146873e-06,
+        "published_normal_depth_m": 1.4487116396068612e-06,
+        "sleeping": 11,
+        "contact_distance_m": 0.0038400038718764905,
+        "case": "sphere_q1-result",
+        "input_sha256": "21d4427c174d7ccc21eb272c125e23b4f4854d520e79d66c33c379fbd5fb2bad",
+        "returncode": 0
+      },
+      {
+        "bodies": 11,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.0010018641394662353,
+        "final_normal_depth_m": 0.0010015782469520226,
+        "published_vertical_depth_m": 0.0003560926795351804,
+        "published_normal_depth_m": 0.0003552845584287598,
+        "sleeping": 7,
+        "contact_distance_m": 0.0038400038718764905,
+        "case": "sphere_q2-result",
+        "input_sha256": "4f1f51d88c1475f549ce829bbc12a646d3b9e7f3b4d4e6b33ca1550798e40c7a",
+        "returncode": 0
+      },
+      {
+        "bodies": 9,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.005385728948398949,
+        "final_normal_depth_m": 0.0052890975849015425,
+        "published_vertical_depth_m": 0.00042034722913086853,
+        "published_normal_depth_m": 0.00041106629835800375,
+        "sleeping": 8,
+        "contact_distance_m": 0.012351668704189437,
+        "case": "teapot_q0-result",
+        "input_sha256": "8e94f8230ef95dd889a1bea924327016ce3cc033c755e944af0e25e30eaa2ddb",
+        "returncode": 0
+      },
+      {
+        "bodies": 9,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.005807501552952843,
+        "final_normal_depth_m": 0.005692773639554305,
+        "published_vertical_depth_m": 0.012293982707548778,
+        "published_normal_depth_m": 0.011958899451187895,
+        "sleeping": 6,
+        "contact_distance_m": 0.0125388026609048,
+        "case": "teapot_q1-result",
+        "input_sha256": "106d47c0b07dd87c38e1258ad7bb8f270070968edcaeafa9f04592bf4190ef7f",
+        "returncode": 0
+      },
+      {
+        "bodies": 9,
+        "ever_left": [],
+        "wholly_below": [],
+        "interior_tunnel": false,
+        "final_vertex_depth_m": 0.004597669884269351,
+        "final_normal_depth_m": 0.00456139314628136,
+        "published_vertical_depth_m": 0.0035839002295237066,
+        "published_normal_depth_m": 0.0035556223816411606,
+        "sleeping": 4,
+        "contact_distance_m": 0.01247042227899975,
+        "case": "teapot_q2-result",
+        "input_sha256": "a0844617f2a4768077b5f271746bb99f3703f7030dc37e77ec5bf389a82de488",
+        "returncode": 0
+      }
+    ],
+    "palette_sphere_only": true,
+    "palette_mixed_all_three": true,
+    "no_interior_tunnels": true
+  },
+  "frozen_publications_over_10mm": [
+    {
+      "bodies": 9,
+      "ever_left": [],
+      "wholly_below": [],
+      "interior_tunnel": false,
+      "final_vertex_depth_m": 0.005807501552952843,
+      "final_normal_depth_m": 0.005692773639554305,
+      "published_vertical_depth_m": 0.012293982707548778,
+      "published_normal_depth_m": 0.011958899451187895,
+      "sleeping": 6,
+      "contact_distance_m": 0.0125388026609048,
+      "case": "teapot_q1-result",
+      "input_sha256": "106d47c0b07dd87c38e1258ad7bb8f270070968edcaeafa9f04592bf4190ef7f",
+      "returncode": 0
+    }
+  ],
+  "assertions": {
+    "mountain": "PASS 281 actual mountain/quality/palette/history/cache/layout checks",
+    "reopen": "PASS 6477 fresh-scene/palette/pending/rebuild/failure-retention checks",
+    "installed": "PASS 19 installed/clean-scene/short-labels/palette/brush checks"
+  },
+  "limits": [
+    "16-piece teapot handle opening remains filled",
+    "Three Detailed Finish attempts needed Freeze",
+    "Rounding error <=1mm before instance scale",
+    "Immediate Frozen moving poses can exceed 10mm normal depth",
+    "Physical mouse/pixels/presented FPS not tested"
+  ]
+}

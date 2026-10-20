@@ -30,7 +30,25 @@ namespace Cyrus.Setup {
             }
             foreach(string name in new[]{"Additional Scripts","Additional Startup Scripts","Additional Macros"})
                 if(!values.ContainsKey(name))throw new IOException("Profile directory missing: "+name+". Open Max "+year+" once before installing, or run the matching MZP inside Max.");
-            return new InstallPaths(values["Additional Scripts"],values["Additional Startup Scripts"],values["Additional Macros"],Path.GetDirectoryName(ini));
+            return InstallPaths.ForMax(values["Additional Scripts"],values["Additional Startup Scripts"],values["Additional Macros"],Path.GetDirectoryName(ini),year);
+        }
+        public static string FindProfile(string year) {
+            InstallEngine.CheckYear(year);
+            string root=InstallPaths.Full(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),@"Autodesk\3dsMax\"+year+" - 64bit"));
+            string english=Path.Combine(root,"ENU","3dsMax.ini");
+            if(File.Exists(english)){FromProfile(english,year);return english;}
+            string found=null;
+            if(Directory.Exists(root)) {
+                string[] children=Directory.GetDirectories(root);if(children.Length>64)throw new IOException("Too many Max profile folders. Use the matching MZP inside Max.");
+                foreach(string child in children) {
+                    string candidate=Path.Combine(child,"3dsMax.ini");if(!File.Exists(candidate))continue;
+                    FromProfile(candidate,year);
+                    if(found!=null)throw new IOException("Multiple Max profiles found. Use Details to choose one, or run the matching MZP inside Max.");
+                    found=candidate;
+                }
+            }
+            if(found==null)throw new IOException("Open Max "+year+" once to initialize it, close it, then try Install again.");
+            return found;
         }
         public static string DetectMax(string year) {
             InstallEngine.CheckYear(year);
@@ -41,7 +59,7 @@ namespace Cyrus.Setup {
         }
         public static string Extract(Assembly assembly,string parent,string packageHash,Action<string> checkpoint,string resource="Cyrus.Payload.mzp") {
             parent=InstallPaths.Full(parent);Directory.CreateDirectory(parent);
-            string destination=Path.Combine(parent,"payload-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(destination);
+            string destination=Path.Combine(parent,"p-"+Guid.NewGuid().ToString("N").Substring(0,12));Directory.CreateDirectory(destination);
             try {
                 using(var payload=assembly.GetManifestResourceStream(resource)) {
                     if(payload==null||payload.Length>512L*1024*1024)throw new IOException("Embedded payload is missing or too large.");
@@ -75,7 +93,7 @@ namespace Cyrus.Setup {
         }
         public static void Cleanup(string parent,string destination) {
             parent=InstallPaths.Full(parent);destination=InstallPaths.Full(destination);
-            if(Path.GetDirectoryName(destination)!=parent||!Path.GetFileName(destination).StartsWith("payload-",StringComparison.Ordinal))throw new IOException("Extraction ownership differs.");
+            if(Path.GetDirectoryName(destination)!=parent||!System.Text.RegularExpressions.Regex.IsMatch(Path.GetFileName(destination),@"^(payload-[0-9a-f]{32}|p-[0-9a-f]{12})$"))throw new IOException("Extraction ownership differs.");
             if(Directory.Exists(destination))Directory.Delete(destination,true);
         }
     }

@@ -21,6 +21,7 @@ CyrusLicensing/third_party/README.md,preserved-excluded,"Research/website, indep
 CyrusMCP/README.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
 CyrusMCP/requirements-pinned.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 CyrusMCP/requirements.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
+CyrusPhysicsLab/README.md,maintained,User requested Physics Brush knowledge on 19 October 2026. Current standalone 0.2.1/retained 0.2 workflow; earlier versioned foundation remains qualified only by its original receipts. Not Scatter integration.
 CyrusSurfaceAnalyzer/CMakeLists.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 CyrusSurfaceAnalyzer/README.md,maintained,Current component/navigation/build/engineering authority; stale claims reconciled with source
 README.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
@@ -473,7 +474,7 @@ docs/MCP_Implementation_2026-10-03/ROADMAP_STATUS.md,retained-history,"Version/p
 docs/MCP_Implementation_2026-10-03/TRY_IT.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/MCP_Implementation_2026-10-03/evidence/README.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 docs/Max2026_Build_0.73_2026-10-07/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
-docs/Max_2027_Installation.md,maintained,Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.
+docs/Max_2027_Installation.md,maintained,Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.
 docs/Offline_Implementation_2026-10-05/DESIGN_LAB.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Offline_Implementation_2026-10-05/IMPLEMENTATION.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
 docs/Offline_Implementation_2026-10-05/README.md,retained-history,"Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified"
@@ -622,10 +623,13 @@ docs/Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md,retained-histor
 docs/Scatter_Data_Recipes_Research_2026-10-15/README.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Scatter_Data_Recipes_Research_2026-10-15/SOURCES.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/Scatter_Data_Recipes_Research_2026-10-15/VALIDATION.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md,maintained,User requested Physics Brush knowledge on 19 October 2026. Current standalone 0.2.1/retained 0.2 workflow; earlier versioned foundation remains qualified only by its original receipts. Not Scatter integration.
 docs/Scatter_Physics_Research_2026-10-16/AUTO_PROXY_012.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
 docs/Scatter_Physics_Research_2026-10-16/BRUSH_UI_011.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md,retained-history,"Exact dated standalone Physics Lab 0.2.1 repair/test/package evidence; current guides link here without generalizing its host, input or renderer qualification."
 docs/Scatter_Physics_Research_2026-10-16/CRASH_DIAGNOSTICS_013.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
 docs/Scatter_Physics_Research_2026-10-16/CYRUS_SOURCE.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
+docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md,maintained,User requested Physics Brush knowledge on 19 October 2026. Current standalone 0.2.1/retained 0.2 workflow; earlier versioned foundation remains qualified only by its original receipts. Not Scatter integration.
 docs/Scatter_Physics_Research_2026-10-16/ENGINES.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
 docs/Scatter_Physics_Research_2026-10-16/HOUDINI.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
 docs/Scatter_Physics_Research_2026-10-16/IMPLEMENTATION.md,preserved-excluded,"Independent research/component or original design package; preserved, not semantically requalified by this inventory."
@@ -879,15 +883,20 @@ docs/plans/native-placement/README.md,maintained,Current maintained owner/naviga
 docs/plans/native-placement/SOURCE_MAP.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/plans/native-placement/VALIDATION.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
 docs/plans/panel-performance-0826/PROGRESS.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
-docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md,maintained,Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.
 docs/plans/preset-gallery-improvements/BROWSER_LAYOUT.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/plans/preset-gallery-improvements/DELIVERY_0851.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/DELIVERY_0862.md,maintained,Current same-version handoff at the top; earlier dated installer/UI receipts remain labeled historical with exact identities and limits.
 docs/plans/preset-gallery-improvements/FOREST_RUNTIME_2026-10-16.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/plans/preset-gallery-improvements/FORMAT_5.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
-docs/plans/preset-gallery-improvements/INSTALLER_CONTRACT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
+docs/plans/preset-gallery-improvements/INSTALLER_CONTRACT.md,maintained,Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.
 docs/plans/preset-gallery-improvements/LOAD_0853.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/plans/preset-gallery-improvements/PACKAGE_CONTRACT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
 docs/plans/preset-gallery-improvements/PROGRESS_0851.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862.json,retained-history,0.86.2 scoped qualification and exact artifact identities; current navigation links here; historical receipts retained; knowledge activation separate.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862_COMPATIBILITY.json,retained-history,Exact 0.86.2 universal installer and older-host qualification; Max 2024 runtime unverified; knowledge activation remains paused.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862_CORRECTION.json,retained-history,Earlier same-version Amount correction receipt; superseded installer pair retained without rewriting hashes.
+docs/plans/preset-gallery-improvements/QUALIFICATION_0862_UI.json,retained-history,Current same-version UI follow-up qualification and exact artifact identities; report owns current navigation; knowledge activation remains paused.
 docs/plans/preset-gallery-improvements/README.md,maintained,Current maintained owner/navigation; superseded narrative archived separately. Original historical qualification remains distinct.
 docs/plans/preset-gallery-improvements/STYLE_CONTRACT.md,maintained-interface,"Retained distinct detailed contract or validation reference; current status/authorization is the single execution ledger, not historical pending text."
 docs/plans/preset-gallery-improvements/TODO.md,maintained-interface,Retired duplicate work queue; short route kept for real external/tool citations; current sequence is improvement-program/PROGRESS.md.
@@ -916,6 +925,7 @@ docs/plans/terrace-0815/VIEWPORT_0816.md,retained-history,Dated evidence/design 
 docs/plans/terrace-0815/VIEWPORT_0817.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 docs/plans/terrace-0815/VIEWPORT_POLICY_RESEARCH_2026-10-13.md,retained-history,Dated evidence/design context retained at original path for provenance; inventory classification alone is not semantic review or current qualification.
 tools/brush_lab/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
+tools/licensing/README.md,maintained,Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.
 tools/licensing_lab/CMakeLists.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
 tools/licensing_lab/README.md,preserved-tool-guide,Guide to a specific current tool or pinned historical launcher; not general product instructions
 tools/licensing_lab/requirements-signer.txt,preserved-data,"Build input, dependency/license notice, fixture or historical test log; not disposable guidance"
@@ -974,8 +984,7 @@ website/sources/README.md,preserved-excluded,"Research/website, independent lice
 website/verification/BROWSER_REVIEW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 website/verification/COMBINED_BROWSER_REVIEW.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
 website/verification/FINAL_IMPLEMENTATION_CHECKS.md,preserved-excluded,"Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup"
-docs/plans/preset-gallery-improvements/DELIVERY_0862.md,maintained,Current 0.86.2 delivery and installer navigation; earlier evidence explicitly historical; knowledge activation separate.
-docs/plans/preset-gallery-improvements/QUALIFICATION_0862.json,retained-history,0.86.2 scoped qualification and exact artifact identities; current navigation links here; historical receipts retained; knowledge activation separate.
-docs/plans/preset-gallery-improvements/QUALIFICATION_0862_CORRECTION.json,retained-history,Earlier same-version Amount correction receipt; superseded installer pair retained without rewriting hashes.
-docs/plans/preset-gallery-improvements/QUALIFICATION_0862_UI.json,retained-history,Current same-version UI follow-up qualification and exact artifact identities; report owns current navigation; knowledge activation remains paused.
-docs/plans/preset-gallery-improvements/QUALIFICATION_0862_COMPATIBILITY.json,retained-history,Exact 0.86.2 universal installer and older-host qualification; Max 2024 runtime unverified; knowledge activation remains paused.
+docs/plans/preset-gallery-improvements/real-model-library/README.md,maintained,"User-requested real-model library guideline and AI handoff; planning scope and dated analysis limits; execution status remains in the program ledger."
+docs/plans/preset-gallery-improvements/real-model-library/PRESETS.md,maintained,"Proposed 24-preset composition catalog and eight-pilot selection; no new host qualification implied."
+docs/plans/preset-gallery-improvements/real-model-library/ROADMAP.md,maintained,"Bounded RL01-RL07 milestones and default-retirement gates; actual status belongs to the program ledger."
+docs/plans/preset-gallery-improvements/real-model-library/VALIDATION.md,maintained,"Required per-preset and cross-scene acceptance with evidence schema; checklist is not a pass record."

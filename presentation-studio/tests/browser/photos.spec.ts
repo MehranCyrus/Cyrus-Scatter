@@ -1,0 +1,21 @@
+import { menuAction } from './ui-actions';
+import { test, expect } from '@playwright/test';
+test('artistic images require approval, fade at holds, yield to layer choices and stale after scene edits', async ({ page }) => {
+  await page.goto('/'); await page.waitForFunction(() => (window as any).__cyrusStudio?.ready);
+  await page.getByRole('button', { name: /04 The pavilion/ }).click();
+  const data = await page.evaluate(() => { const c = document.createElement('canvas'); c.width = 1280; c.height = 720; const g = c.getContext('2d')!; const gradient = g.createLinearGradient(0, 0, 0, 720); gradient.addColorStop(0, '#8ea6a1'); gradient.addColorStop(1, '#d4c3a1'); g.fillStyle = gradient; g.fillRect(0, 0, 1280, 720); g.fillStyle = '#f2e8d4'; g.fillRect(450, 260, 400, 260); g.fillStyle = '#935d49'; g.beginPath(); g.moveTo(410, 260); g.lineTo(650, 170); g.lineTo(890, 260); g.fill(); return c.toDataURL('image/png').split(',')[1]; });
+  await page.getByLabel('Import artistic photo', { exact: true }).setInputFiles({ name: 'owned-impression.png', mimeType: 'image/png', buffer: Buffer.from(data, 'base64') });
+  await page.locator('.photo-section > summary').click();
+  await expect(page.getByText('Review needed · scene has changed', { exact: true })).toBeVisible();
+  await menuAction(page, 'output-menu', 'export-website'); await expect(page.getByTestId('error')).toContainText('stale');
+  await page.getByRole('button', { name: 'Approve for current scene', exact: true }).click(); await expect(page.getByText('Approved for this scene', { exact: true })).toBeVisible();
+  await menuAction(page, 'output-menu', 'preview-export'); const frame = page.frameLocator('iframe'); await frame.getByRole('button', { name: 'Go to The pavilion' }).click();
+  const photo = frame.locator('img[alt="Artist impression"]'); await expect(photo).toHaveCSS('opacity', '1'); await expect(frame.getByText('Artist impression', { exact: true })).toBeVisible();
+  await frame.getByRole('button', { name: 'Layers', exact: true }).click(); await frame.getByRole('checkbox', { name: 'Trees', exact: true }).uncheck(); await expect(photo).toHaveCSS('opacity', '0');
+  await frame.getByRole('checkbox', { name: 'Trees', exact: true }).check(); await expect(photo).toHaveCSS('opacity', '1');
+  await page.getByRole('button', { name: 'Close preview', exact: true }).click();
+  await page.evaluate(async () => { const c = (window as any).__cyrusStudio.controller; await c.act('updateStop', { id: c.project.stops.at(-1).id, patch: { hold: 8 } }); });
+  await expect(page.getByText('Approved for this scene', { exact: true })).toBeVisible();
+  await page.evaluate(async () => { const c = (window as any).__cyrusStudio.controller; await c.act('updateInstance', { id: c.project.instances[0].id, patch: { transform: { ...c.project.instances[0].transform, scale: 1.1 } } }); });
+  await expect(page.getByText('Review needed · scene has changed', { exact: true })).toBeVisible();
+});

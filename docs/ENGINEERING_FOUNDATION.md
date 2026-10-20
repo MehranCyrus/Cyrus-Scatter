@@ -165,7 +165,7 @@ Shared views bind owner records. Unchanged warm display reuses placement/prepara
 
 **Contract:** F09 Geometry — Established bounded support
 
-Face+barycentric locators are not identities across arbitrary remeshing. General scattering supports curved receivers; vector painting requires single-valued receiver-local XY terrain. Reject unsupported projection while preserving authored borders.
+Face+barycentric locators are not identities across arbitrary remeshing. General scattering and vector painting support manifold curved receivers. Preserve existing local-XY terrain coverage; curved coverage is attached to indexed receiver faces. Surface-distance strokes and feathering must not leak through closed objects or disconnected sheets. Reject degenerate/nonmanifold geometry or changed geometry identity while preserving authored borders and the previous complete result. The 0.86.6 extension supersedes the earlier terrain-only restriction; its delivery report owns scoped acceptance.
 
 **Limits:** Source/offline support; arbitrary topology restoration and extreme scales remain unqualified. 0.0001 local-unit quantization is not a universal physical tolerance. Silently reusing stale bindings or accepting ambiguous projected sheets falsifies the rule.
 

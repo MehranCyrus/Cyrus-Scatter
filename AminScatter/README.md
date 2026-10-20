@@ -1,13 +1,13 @@
 # Cyrus Scatter native engine and UI
 
-Current development/package version **0.86.2**, saved schema **58**, model **CyrusUnified1**. The [current delivery](../docs/plans/preset-gallery-improvements/DELIVERY_0862.md) qualifies the image/mesh density, mask visualization, recipe and UI follow-up in Max 2026/2027, with a separately labeled Max 2024 SDK/managed preview. The [0.86.1 report](../docs/plans/preset-gallery-improvements/DELIVERY_0861.md) retains its distinct older-host scope. Team licensing remains enabled and independently versioned. Internal AminScatter registration identities remain unchanged.
+Current development/package version **0.86.6**, saved schema **58**, model **CyrusUnified1**. The [current Max 2027 delivery](../docs/plans/preset-gallery-improvements/DELIVERY_0866.md) qualifies surface painting and retains the corrected 0.86.5 library/Amount baseline within its recorded scope. Earlier 0.86.2 host deliveries remain separate. Licensing and internal registration identities are unchanged.
 
 - [Current artist workflow](../docs/ARTIST_GUIDE.md)
 - [Architecture and source ownership](../docs/ARCHITECTURE.md)
 - [Layout, Analyzer and falloff details](../docs/LAYOUT_AND_FALLOFF.md)
 - [Build/install instructions](../docs/Max_2027_Installation.md)
 - [Current limits and work](../docs/BACKLOG.md)
-- [Latest qualification](../docs/plans/preset-gallery-improvements/DELIVERY_0862.md)
+- [Latest qualification](../docs/plans/preset-gallery-improvements/DELIVERY_0866.md)
 
 ## Development
 

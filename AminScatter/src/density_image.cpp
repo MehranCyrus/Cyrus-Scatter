@@ -35,7 +35,7 @@ std::vector<std::uint8_t> encodeLinearPNG(const ImageData& image){
     header.insert(header.end(),{16,2,0,0,0});chunk("IHDR",header);Bytes gamma;number(gamma,100000);chunk("gAMA",gamma);chunk("IDAT",compressed);chunk("IEND",{});return png;
 }
 void validate(const Mapping& m) {
-    if(m.coordinates!=Coordinates::UV&&m.coordinates!=Coordinates::World&&m.coordinates!=Coordinates::Local)
+    if(m.coordinates!=Coordinates::UV&&m.coordinates!=Coordinates::World&&m.coordinates!=Coordinates::Local&&m.coordinates!=Coordinates::Map)
         throw std::invalid_argument("Image density: unsupported coordinate mode");
     if(m.wrapping!=Wrapping::Clamp&&m.wrapping!=Wrapping::Repeat)
         throw std::invalid_argument("Image density: choose Clamp or Repeat");
@@ -50,6 +50,7 @@ void validate(const Mapping& m) {
 ImageSampler::ImageSampler(const std::vector<double>& pixels,std::size_t w,std::size_t h,const Mapping& m)
     :pixels_(pixels),width_(w),height_(h),mapping_(m),cosine_(std::cos(m.rotation*3.14159265358979323846/180)),sine_(std::sin(m.rotation*3.14159265358979323846/180)) {
     validate(m);
+    if(m.coordinates==Coordinates::Map)throw std::invalid_argument("Map coordinates require receiver-aware texture evaluation, not a sampled image");
     if(!w||!h||w>4096||h>4096||w>std::numeric_limits<std::size_t>::max()/h||pixels.size()!=w*h)
         throw std::invalid_argument("Image density: invalid or oversized image dimensions");
     for(double v:pixels)if(!std::isfinite(v)||v<0||v>1)throw std::invalid_argument("Image density: nonfinite or out-of-range pixel");

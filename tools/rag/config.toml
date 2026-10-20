@@ -12,7 +12,7 @@ known_decisions = ["maintained", "maintained-interface", "retained-history", "pr
 
 [inspection]
 skip_directory_names = [".git", "build", "dist", "_local", "node_modules", "__pycache__", ".pytest_cache", ".venv", "venv", ".vs", ".vite", "bin", "obj", "debug", "release", "x64", "x86", "artifacts", "out", "output", "tmp", "temp", "autoback", ".mypy_cache", ".ruff_cache", ".cache", ".test-output", "test-results", ".downloads", "secrets", "private", "certificates", "signing", ".ssh", ".aws", ".kube"]
-skip_path_patterns = ["experiments/paint-methods/scenes/**", "experiments/paint-methods/results/raw/**"]
+skip_path_patterns = ["experiments/paint-methods/scenes/**", "experiments/paint-methods/results/raw/**", "CyrusArrange/**"]
 sensitive_file_patterns = [".env", ".env.*", "*.pem", "*.pfx", "*.p12", "*.key", "*.dpapi", "*.cyruslicense", "*.cyrusissuer", "issued.sqlite3*", "*.local.json", "config.local.*", "settings.local.*", "credentials*", ".netrc", "id_rsa*", "id_ed25519*"]
 safe_file_exceptions = [".env.example"]
 metadata_directory_prefixes = ["Test Scene"]
@@ -50,6 +50,10 @@ value = "website"
 id = "design"
 regex = '^Landing Page Design/'
 value = "landing_design"
+[[components]]
+id = "physics-lab"
+regex = '^CyrusPhysicsLab/|^docs/Scatter_Physics_Research_2026-10-16/'
+value = "PhysicsLab"
 [[components]]
 id = "docs"
 regex = '^docs/'
@@ -173,7 +177,7 @@ source = "website/tools/import_reference.py; website/content/README.md"
 id = "scatter-development"
 source = "README.md"
 component = "Scatter"
-regex = 'Current development: Scatter ([0-9]+(?:\.[0-9]+)+)'
+regex = 'Current (?:development|delivery): (?:Scatter )?([0-9]+(?:\.[0-9]+)+)'
 [[version_observations]]
 id = "scatter-package"
 source = "README.md"
