@@ -988,3 +988,4 @@ docs/plans/preset-gallery-improvements/real-model-library/README.md,maintained,"
 docs/plans/preset-gallery-improvements/real-model-library/PRESETS.md,maintained,"Proposed 24-preset composition catalog and eight-pilot selection; no new host qualification implied."
 docs/plans/preset-gallery-improvements/real-model-library/ROADMAP.md,maintained,"Bounded RL01-RL07 milestones and default-retirement gates; actual status belongs to the program ledger."
 docs/plans/preset-gallery-improvements/real-model-library/VALIDATION.md,maintained,"Required per-preset and cross-scene acceptance with evidence schema; checklist is not a pass record."
+docs/archive/plans/real-model-library-execution-20261020.md,retained-history,Preserved 20 October pilot and individual-model narrative moved from maintained ledger; original parent/section hashes and recovery commit recorded; relative links relocated.

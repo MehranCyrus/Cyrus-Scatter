@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.86.8.1, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/source-clearance/DELIVERY_08681.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to Cyrus Scatter 0.86.8.2, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/source-clearance/DELIVERY_08682.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
 
 ## Ownership
 
@@ -15,12 +15,12 @@ The **0.85.1 delivery** extends the preceding 0.85.0 foundation with the [galler
 | Scatter controller | Ordered layers, setup enable, Manual/Live, global palettes, between-layer relationships, preview and output publication |
 | Ordinary layer | Receiving surfaces, models, amount/seed, assignment layout, transforms, masks, spacing defaults, candidate Relax and accepted-union cleanup |
 | Paint Area | Named coverage document and one explicit receiver target; shares its layer's models and population |
-| Source row | Stable source identity, local alias, identification color, assignment group, weight, scale/lift, forward axis and radius settings |
+| Source row | Stable source identity, local alias, identification color, assignment group, weight, scale/lift, forward axis, radius, independently inherited clearance scopes and conflict priority |
 | Spline Path / Band | Stable local identities, Path corner policy, Band ranges, density/curve, membership, scale multiplier and identification color |
 | Source container | Saved collection-enable flag (off by default), palette boundary and cached consumer/ownership presentation; optional guarded static source movement |
 | Surface Analyzer | Independently updated boundary/path/point results; Scatter consumes its published output |
 
-The current scene model has owning layers and receiver-bound Paint Areas. Model-owning paint sets, shared-receiver inheritance, old paint adoption and stroke-history evaluation have been removed. Schema 58 and vector payload version 1 reject unsupported saved data. Schema-55/56 migration and old internal placement readers are removed. Removing a receiver preserves its inactive area; a replacement node with the same name is a different identity.
+The current scene model has owning layers and receiver-bound Paint Areas. Model-owning paint sets, shared-receiver inheritance, old paint adoption and stroke-history evaluation have been removed. Schema 59 supports an explicit Undoable source-clearance upgrade from schema 58. Earlier development schemas and old internal placement readers remain unsupported; vector payload version 1 retains its own validation. Removing a receiver preserves its inactive area; a replacement node with the same name is a different identity.
 
 ## Native storage and lifetime
 
@@ -119,14 +119,13 @@ Explicit Update enters root evaluation once: that evaluation stages and installs
 
 ## Cached feedback
 
-The 0.86.6.2 custom Mesh display remains identification-only: Model/Layer/Bands
-colors are shaded by `mesh_display.inc`, with alpha 1. `PreviewGeometry` retains
-positions/instances, not material UV or texture descriptors. The original-material
-and opacity-aware viewport requested in B34 therefore requires a native display
-extension, not a color-dropdown rename or another material conversion. Keep its
-future material/UV/texture invalidation separate from unchanged placements and
-existing geometry reuse. [Current source findings and implementation boundaries](plans/preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md#5-b34-original-material-textures-and-cutout-opacity-in-mesh-preview)
-describe requested behavior, not an implemented feature.
+The [0.86.7 delivery](plans/preset-gallery-improvements/DELIVERY_0867.md) implemented
+supported material/UV/opacity preview. **Textured mesh** now uses source appearance;
+**Mesh** retains identification colors and, since 0.86.8.1, supported opacity
+cutouts. The native appearance/reuse boundary above applies. Unsupported shaders
+and world/vertex-dependent maps retain the documented fallback; this is not
+renderer parity. The [0.86.6.2 handoff](plans/preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md#5-b34-original-material-textures-and-cutout-opacity-in-mesh-preview)
+is the historical pre-implementation investigation, not current feature status.
 
 The 0.81.8 presentation reads existing owner/result snapshots. A completed
 calculation epoch distinguishes a result from an empty preview staged for a new
@@ -154,6 +153,13 @@ reject completions from older sessions. Cached status export does not evaluate
 geometry or placements. Timing totals are nested scopes, not additive wall time
 or presented FPS. See the [0.82.6 handoff](plans/panel-performance-0826/PROGRESS.md)
 for exact sources, measured improvement and remaining physical-display limits.
+
+The 0.86.8.2 shared generator bounds composed spinner edit widths, including
+source clearance factor/gap. **Point Relax** and **Boundary Relax** are direct
+layer controls above Advanced; their shared distance is editable for either mode.
+Visibility and rebinding read the same authored owners without calculation.
+Focused physical input, lifecycle and width checks are in the current delivery;
+other DPI settings remain unqualified.
 
 ## Source map
 
@@ -233,15 +239,14 @@ Snapshot keys use evaluated geometry, exact grid settings, required UV mapping, 
 
 ## Ready preset loading
 
-The separate 0.86.6.2 **individual model** catalog is not a Ready recipe. It
-describes 96 prepared single-source MAX files and rendered JPEGs. The managed
-gallery reads bounded metadata/preview files; explicit Merge/Add verifies and
-imports only the selected model. A verified external Content payload installs
-alongside the versioned runtime. B33 records artist-observed automatic thumbnail
-progress stalling until selection; the selected-first worker queue, UI completion
-pump and visibility calculations need a causal reproduction. The prior 12-visible-
-preview check did not qualify large-window scrolling. See the
-[full handoff](plans/preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md).
+The **individual model** catalog is separate from a Ready recipe. It describes
+96 prepared single-source MAX files and rendered JPEGs. The managed gallery
+reads bounded metadata/preview files; explicit Merge/Add verifies and imports
+only the selected model. Content revision 0.86.7 is registered once for shared
+reuse across standard profiles rather than copied for each runtime. The
+[0.86.7 delivery](plans/preset-gallery-improvements/DELIVERY_0867.md) corrects B33
+thumbnail visibility/queue progress. The [0.86.6.2 handoff](plans/preset-gallery-improvements/INDIVIDUAL_LIBRARY_08662_HANDOFF.md)
+retains the original investigation; it is not an outstanding reproduction request.
 
 The 0.86.2 loader uses `preset-loading.ms` over the recipes/assets templates. Browsing remains metadata/image work only. Explicit Load captures one selected terrain and an unambiguous destination, validates required numeric/UV channels, Paint compatibility, frames, assets and paths, then stages supported models/materials/paths and adds layers in one authored hold. A new setup is created only when required. Existing layers and Manual/Live mode remain. First calculation and display preparation run inside that hold; failure rolls back staged content and retains the preceding complete publication/history. A native publication restorer retains immutable generations for one Undo/Redo without package reads or solves. Post-Undo presentation restores display from the complete publication.
 

@@ -62,7 +62,7 @@ channels retain the previous complete display until repaired. Source render
 materials remain intact. The supplied library requires compatible Corona and,
 where used, Forest map plug-ins in each Max version.
 
-The retained 0.86.5 library/Amount baseline fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. Its [historical delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) retains the original 0.87.0 labels, tests and limits. The [0.86.7.2 report](plans/preset-gallery-improvements/DELIVERY_08672.md) records current packages and host qualification; [0.86.7](plans/preset-gallery-improvements/DELIVERY_0867.md) retains the textured-preview delivery details.
+The retained 0.86.5 library/Amount baseline fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. Its [historical delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) retains the original 0.87.0 labels, tests and limits. The [current delivery](plans/source-clearance/DELIVERY_08682.md) records current packages and focused qualification. The [0.86.7.2 report](plans/preset-gallery-improvements/DELIVERY_08672.md) preserves its original package and host evidence; [0.86.7](plans/preset-gallery-improvements/DELIVERY_0867.md) retains the textured-preview delivery details.
 
 Placement computation and storage remain native C++. The one-million controller work limit still applies, and failed updates retain the previous complete result and Undo. Existing grids, Bands, orientation, Paint and slope/altitude controls remain available. The [library workflow](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md) explains selected-terrain loading and complete Save. Further roadmap work remains paused.
 
@@ -96,7 +96,7 @@ The Surfaces list belongs to the selected layer. Use + to pick a receiver, the l
 
 This does not freeze all accepted output. A cap can redistribute quotas; changed masks, spacing, cleanup or protected edits can affect acceptance. Relax can move plants when their own receiver's count or neighborhood changes. Editing the receiver's geometry/topology is outside the unchanged-surface guarantee.
 
-**Create fresh schema-58 setups.** Earlier development formats are unsupported and are not migrated. Preserve original scene files. Current settings use unit-aware distances; use saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported binding conversion is rejected rather than clearing authored edits.
+**New setups use schema 59.** Schema-58 scenes have an explicit Undoable clearance upgrade; save an upgraded copy and preserve the original. Earlier development formats remain unsupported. Current settings use unit-aware distances; use saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported binding conversion is rejected rather than clearing authored edits.
 
 Removing the last model produces a valid empty layer after Update in Manual, or automatically in Live. Amount changes remain valid while empty, and adding a replacement resumes normal validation. A failed update retains the last complete result; intentionally empty output clears it.
 
@@ -152,8 +152,9 @@ option to reveal its settings. Both belong to the selected layer:
 
 Relax moves candidate positions; subsequent radius/clearance rules reject
 conflicting placements. Relax alone does not guarantee that model geometry will
-not overlap. Set each model's **Radius and clearance** scopes for that purpose;
-those checks use pivot distances rather than exact mesh collision. **Advanced**
+not overlap. Use each model's **Radius and clearance** scopes to reject pivot-distance
+conflicts. Geometry can still overlap because those checks are not exact mesh
+collision. **Advanced**
 keeps selected-instance radius overrides and accepted-placement cleanup.
 
 Scenes saved with schema 58 show **Upgrade scene to 0.86.8.2** before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Scenes already upgraded to schema 59 in 0.86.8 need no additional upgrade. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.

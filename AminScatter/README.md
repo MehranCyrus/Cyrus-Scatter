@@ -1,13 +1,13 @@
 # Cyrus Scatter native engine and UI
 
-Current development/package version **0.86.6**, saved schema **58**, model **CyrusUnified1**. The [current Max 2027 delivery](../docs/plans/preset-gallery-improvements/DELIVERY_0866.md) qualifies surface painting and retains the corrected 0.86.5 library/Amount baseline within its recorded scope. Earlier 0.86.2 host deliveries remain separate. Licensing and internal registration identities are unchanged.
+Current development/package version **0.86.8.2**, saved schema **59**, model **CyrusUnified2**. The [current delivery](../docs/plans/source-clearance/DELIVERY_08682.md) contains matched Max 2024/2026/2027 packages and focused clearance UI, Relax and lifecycle qualification. The [0.86.8.1 correction](../docs/plans/source-clearance/DELIVERY_08681.md) retains its solver/viewport performance evidence. Schema 58 has an explicit Undoable upgrade; earlier development schemas remain unsupported. Ordinary development remains Max 2027 unless another host is explicitly requested. Licensing and internal registration identities are unchanged.
 
 - [Current artist workflow](../docs/ARTIST_GUIDE.md)
 - [Architecture and source ownership](../docs/ARCHITECTURE.md)
 - [Layout, Analyzer and falloff details](../docs/LAYOUT_AND_FALLOFF.md)
 - [Build/install instructions](../docs/Max_2027_Installation.md)
 - [Current limits and work](../docs/BACKLOG.md)
-- [Latest qualification](../docs/plans/preset-gallery-improvements/DELIVERY_0866.md)
+- [Latest qualification](../docs/plans/source-clearance/DELIVERY_08682.md)
 
 ## Development
 

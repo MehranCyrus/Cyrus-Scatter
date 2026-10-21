@@ -69,3 +69,20 @@ Evaluation output schema 2 adds counts, ranks, full text and diagnostics. Existi
 metric definitions remain version 1, with original results preserved. Plain and
 selected profiles are recomputed on identical original, successor and challenge
 inputs; the frozen old runtime also evaluates the successor for baseline parity.
+
+## 21 October 2026 documentation successor — draft
+
+Corpus v22 and review v27 reconcile the 0.86.8.2 guidance while preserving corpus
+v21 and all earlier evaluation bytes. Original/revised v16, challenge v15,
+foundation v10, native-foundation v7, navigation v3 and workflow v2 relocate
+reviewed equivalent evidence intervals/hashes. Questions, required units,
+qualifiers, answerability and denominators are unchanged. H06's unscored note
+reflects schema 59's explicit schema-58 upgrade while still rejecting the queried
+schema-54/55 migration. WF-INSTALL keeps its 0.86.2 question and now cites the
+explicitly historical installation paragraph.
+
+These definitions are not accepted regression results. The first original/plain
+comparison loses B02's required top-ten MCP-limit evidence (complete queries
+36/37 to 35/37), so activation is blocked and later gates are omitted. See the
+[current maintenance record](README.md#documentation-and-candidate-review--21-october-2026)
+for artifacts, the separate failing timeout-recovery test and remaining review.

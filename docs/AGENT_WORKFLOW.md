@@ -17,7 +17,7 @@ For architecture choices, use the [native boundary and extension contracts](ENGI
 
 Follow generation → receiving surface/Brush eligibility → transforms/Edit/radius → applicable collision scopes → cleanup/refill → atomic publication → preview/exact output/export. Identify the dependencies invalidated by the proposed change, the cache reused, and what failure leaves published.
 
-Current layers own receivers, models, amount and calculation settings. Optional named Paint Areas own receiver-bound coverage and share the layer models; overlapping areas union coverage. Current schema 58 rejects earlier development scenes and has no retained model-owning paint-set, stroke-history or placement-format compatibility path; use new current setups. Read the current ownership guide before adapting fixtures that mutate the former setup-wide receiver field. Source-container membership and saved per-source settings are distinct from receiving surfaces and placed instances. Moving a model out of a palette must not silently delete its saved settings. Distinguish requested, accepted, shown and output counts.
+Current layers own receivers, models, amount and calculation settings. Optional named Paint Areas own receiver-bound coverage and share the layer models; overlapping areas union coverage. Current schema 59 supports an explicit Undoable upgrade from schema 58 for source clearance; save an upgraded copy. Earlier development schemas, model-owning paint sets and stroke-history/old placement compatibility remain unsupported. Use new current setups or the supported upgrade. Read the current ownership guide before adapting fixtures that mutate the former setup-wide receiver field. Source-container membership and saved per-source settings are distinct from receiving surfaces and placed instances. Moving a model out of a palette must not silently delete its saved settings. Distinguish requested, accepted, shown and output counts.
 
 Scatter Modify and selected-container Modify are views of shared records. Test owner switching and callbacks that create/remove/rebind views. A callback must not continue through stale rollout/controller references after a nested refresh. Do not use broad exception swallowing, forced refresh loops or Undo-history clearing to conceal a defect.
 
@@ -29,7 +29,7 @@ The user's current testing rule is **Max 2027 only**, including SDK builds,
 native tests, host automation, Computer Use and performance qualification. Max
 2026 work requires a new explicit user request. This supersedes older dual-version
 requirements in plans and historical campaigns. Preserve their original results;
-label new qualification with the actual Max 2027 environment.
+label new qualification with the actual Max 2027 environment. The explicitly requested 0.86.8.2 compatibility delivery also has matched Max 2024/2026/2027 packages and scoped receipts; this does not extend the default development scope to other hosts.
 
 All paths below are relative to the repository root. Node, Python and the documented native toolchain must be available. The existing MCP test environment is local/ignored; consult [MCP setup](../CyrusMCP/README.md) if absent, rather than assuming a clean checkout includes it.
 

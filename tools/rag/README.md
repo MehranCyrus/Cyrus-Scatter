@@ -1,6 +1,12 @@
 # Local catalog and lexical search
 
-**Current maintenance — 19 October 2026:** the reviewed Scatter / Physics Brush successor is activated. The actual project-following knowledge tool confirms generation `c14f3d16e81bcf39ebd488d53bcec1239b522a0de37dcc8a81738bffdcf9be3e`, all **48 enrolled sources fresh**, and no rebuild required. CyrusArrange is explicitly excluded from catalog content and retrieval. Use the [maintained documentation index](../../docs/README.md), [single execution ledger](../../docs/plans/improvement-program/PROGRESS.md) and [archive policy](../../docs/DOCUMENTATION.md). Plugin code and further roadmap work remain outside this maintenance task. The dated handoffs below preserve historical scope; they are not current work queues.
+**Current maintenance — 21 October 2026:** maintained product guidance now follows
+**Scatter 0.86.8.2 / schema 59** and its scoped Max 2024/2026/2027 delivery.
+**The live knowledge index is stale; the successor is a draft, not activated.**
+Use the [current handoff](../../docs/plans/source-clearance/DELIVERY_08682.md),
+[artist guide](../../docs/ARTIST_GUIDE.md) and source inspection until the gates
+below are resolved. The 19 October freshness statement is a historical observation.
+No plugin behavior, installed profiles, package bytes or retrieval runtime changed.
 
 The [12 October completion handoff](COMPLETION_2026-10-12.md) records the expanded
 foundation corpus, measured limits, selected generation and actual consumers.
@@ -39,9 +45,81 @@ Python bytecode caches beside source; temporary fixtures live under
 `_local/rag/test-data/`. Tests create and commit only owned temporary Git repos,
 never the real repository. No Max/plugin builds or application launches occur.
 
-## Current Scatter and Physics Brush knowledge — 19 October 2026
+## Documentation and candidate review — 21 October 2026
 
-The current set is [corpus v21](corpus-v21.json), [review v26](review-v26.json), [original v15](evaluation-original-v15.json), [revised v15](evaluation-revised-v15.json), [challenge v14](challenge-v14.json), [foundation v9](evaluation-foundation-v9.json), [native foundation v6](evaluation-native-foundation-v6.json), [navigation v2](evaluation-navigation-v2.json) and [current workflows v1](evaluation-workflows-v1.json). Previous source authority, frozen questions, original qualifications and historical evidence remain intact. The index now contains 48 parents and 92 complete contract sections. It adds current installation, licensing, library, navigation and ledger guidance plus explicitly reviewed standalone Physics Brush sources. Scatter is 0.86.2; Physics Lab / Brush is independently versioned 0.2.1 for Max 2027, with the applicable 0.2.0 artist workflow and older historical receipts kept distinct. This does not establish Scatter/Physics integration.
+The root/product entrypoints, artist/library workflow, architecture, engineering
+foundation, capability help and execution ledger were reconciled with 0.86.8.2.
+They now distinguish source clearance, layer-owned Point/Boundary Relax, the
+schema-58 upgrade, supported textured/opacity preview and shared optional content.
+The capability catalog was regenerated as help metadata; the dispatcher, plan API,
+plugin script and native payloads are unchanged. The ledger's 700-line historical
+library narrative was [archived](../../docs/archive/plans/real-model-library-execution-20261020.md)
+with original hashes/recovery commit and verified equivalent prose/link targets.
+Its obsolete pending states no longer compete with current completion status.
+Separate website changes and artist assets are preserved outside this backup.
+
+Prepared successor definitions: [corpus v22](corpus-v22.json),
+[review v27](review-v27.json), [original v16](evaluation-original-v16.json),
+[revised v16](evaluation-revised-v16.json), [challenge v15](challenge-v15.json),
+[foundation v10](evaluation-foundation-v10.json),
+[native foundation v7](evaluation-native-foundation-v7.json),
+[navigation v3](evaluation-navigation-v3.json) and
+[workflow v2](evaluation-workflows-v2.json). They retain prior source authority,
+questions, requirements, qualifiers and denominators. Hashes/equivalent locators
+follow reviewed current text; H06's unscored schema note is explicitly updated.
+The historical 0.86.2 installer question points to a labeled historical paragraph,
+not the 0.86.8.2 installation claim. The source set has 50 parents and 124 complete
+selected sections, including both latest delivery reports. Website applicability
+explicitly identifies the separate uncommitted 0.86.7 reference edition; these
+hashes do not claim latest-product website parity or a published site.
+
+Two bounded attempts are preserved:
+
+- `20261021-docs-currency-01`: the full audit reached its 120-second stage
+  deadline during verification of 18,778 files while tooling tests were running.
+  It produced no candidate index. No limit was increased or bypassed.
+- `20261021-docs-currency-02`: serial retry completed paired audits, builds and
+  initial verification. Both indexes have generation `1e0b884cf56c4f91fe77453d2694be05dec95875ec74961ca93713a29198c4bd`.
+  The original/plain suite has complete top-ten evidence for **35/37** answerable
+  questions, versus **36/37** in the selected baseline. **B02**, the MCP resource
+  limits question, loses required top-ten evidence and its canonical source.
+  The first comparison reports 21 base/anchor rank or precision findings in total.
+  Preparation stops at `retrieval_regression`; later suites/final gates are omitted.
+  No ranking, evaluation requirement, resource bound or activation gate was weakened.
+
+Tooling checks: **247/248 passed** across core, detector, pinned SDK adapter,
+candidate, activation and automatic-refresh tests. The candidate test
+`test_total_timeout_competing_invocation_and_abandoned_lock` fails at the missing
+`interrupted-receipt.json` assertion after timeout. An isolated repeat also fails.
+Its cause is not established by this documentation task. This is knowledge-tool
+evidence, not a Scatter native/UI test or a new plugin regression.
+
+The actual project-following tool still selects historical generation
+`c14f3d16e81bcf39ebd488d53bcec1239b522a0de37dcc8a81738bffdcf9be3e`.
+Full-source status verifies 28 of its 48 parents and reports 20 changed parents
+with `stale_evidence`. No registration, refresh policy or consumer was switched
+or restarted. A separate read-only CLI check of the draft verifies all 50 parent
+hashes and returns current Point Relax contracts from the artist guide, architecture
+and capability matrix. Exact lookup success does not resolve the failed broad
+retrieval comparison. A source-only Git clone also lacks ignored indexes/receipts, and
+the draft website hashes refer to preserved local work outside this commit.
+
+Evidence is under `build/docs-currency-20261021-01/` and
+`_local/rag/candidates/20261021-docs-currency-01/02/` (the latter denotes the two
+separately named candidate directories). Generated checks and the feature-catalog
+test pass; maintained local links, archive preservation and existing package/build
+identities were checked separately. No new Max, renderer, installation or timing
+qualification is claimed.
+
+**Remaining gates:** reproduce/correct the timeout-receipt failure; review the
+lost B02 evidence and remaining strict findings without dropping old obligations;
+complete paired evaluation of all retained suites and actual full-contract
+consumer checks; then prepare a separately verified activation under applicable
+authorization. Automatic refresh cannot supply these semantic decisions.
+
+## Historical Scatter and Physics Brush knowledge — 19 October 2026
+
+The set activated on 19 October is [corpus v21](corpus-v21.json), [review v26](review-v26.json), [original v15](evaluation-original-v15.json), [revised v15](evaluation-revised-v15.json), [challenge v14](challenge-v14.json), [foundation v9](evaluation-foundation-v9.json), [native foundation v6](evaluation-native-foundation-v6.json), [navigation v2](evaluation-navigation-v2.json) and [current workflows v1](evaluation-workflows-v1.json). Previous source authority, frozen questions, original qualifications and historical evidence remain intact. The index now contains 48 parents and 92 complete contract sections. It adds current installation, licensing, library, navigation and ledger guidance plus explicitly reviewed standalone Physics Brush sources. Scatter is 0.86.2; Physics Lab / Brush is independently versioned 0.2.1 for Max 2027, with the applicable 0.2.0 artist workflow and older historical receipts kept distinct. This does not establish Scatter/Physics integration.
 
 Maintained corrections cover the licensing generator and current installer route, bundled starter masks, the user's successful installer report, readable punctuation, and separate knowledge-maintenance versus paused-roadmap status. The Physics documentation now routes to the current delivery and labels the older 0.1.4 download historically. The final check of twenty current guides found 404 resolving local links. All four Scatter installer hashes, the Physics 0.2.1 MZP hash/CRC, its 70 non-document source hashes and four installer build-source hashes were checked. All 1,467 protected tracked code/tool files match the initial snapshot. No plugin/installer was modified, installed or rebuilt by this maintenance task; no new Max, physical-input or renderer qualification is claimed.
 

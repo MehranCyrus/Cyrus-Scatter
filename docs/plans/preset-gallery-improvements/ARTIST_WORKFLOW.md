@@ -1,6 +1,10 @@
-# Cyrus Library — 0.86.6 workflow
+# Cyrus Library — current model and recipe workflow
 
-The [0.86.6 delivery report](DELIVERY_0866.md) owns the current Max 2027 MZP/EXE and scoped qualification. The earlier reliability changes form the corrected 0.86.5 baseline; [original 0.87.0 evidence](DELIVERY_0870.md) retains its actual labels. The [0.86.2 report](DELIVERY_0862.md) preserves its older-host deliveries. Earlier navigation and static asset contracts remain supported where not superseded here.
+The [0.86.8.2 delivery](../source-clearance/DELIVERY_08682.md) owns current Max 2024/2026/2027 packages and focused qualification. Content keeps its independent 0.86.7 revision. The [0.86.7 report](DELIVERY_0867.md) records model thumbnails and supported material preview; [0.86.6](DELIVERY_0866.md) and [original 0.87.0 evidence](DELIVERY_0870.md) retain their historical brush/reliability labels and limits. Model imports and complete planting recipes are different actions.
+
+## Individual plant models
+
+The supplied private content has 96 prepared single-model files covering the 104 catalog cards. Select **Plant models**, choose a model, then **Merge model** to add a scene source or **Add to selected layer** to add it to the captured Scatter layer. The completion/error banner reports the result. Thumbnails load as visible items need them. This action imports a model; it does not apply a complete planting recipe or replace receiving surfaces. The [artist guide](../../ARTIST_GUIDE.md) owns source controls, clearance and supported viewport material behavior.
 
 ## Browse collections
 
@@ -38,9 +42,9 @@ XRefs, nested populations, renderer-specific shaders/proxies, material-variant b
 
 ## Examples and installation
 
-The [eight examples](../../../AminScatter/library/README.md) include matching-host editable scene copies and rendered previews. The geometry is intentionally simple and replaceable. Open a copy of the matching scene to examine compatible bindings, then make your own variation.
+The [historical eight examples](../../../AminScatter/library/README.md) retain their own matching-host scenes and previews; their simple replaceable geometry is separate from the real-model library. The earlier [real-model pilot roadmap](real-model-library/ROADMAP.md) is a staged recipe program, not a claim that every catalog model has a qualified planting preset.
 
-The 0.86.6 delivery targets Max 2027 and includes a shareable Windows EXE as well as the MZP. Run its verified MZP through **Scripting > Run Script**, then restart Max 2027. The [earlier delivery report](DELIVERY_0862.md) retains the distinct Max 2024/2026/2027 MZPs and Windows EXE. Both use an immutable plugin/library folder and preserve personal recipes and activation. Neither starts or restarts Max. The EXE normally needs only the Max year and **Install / Repair**; technical paths, complete errors and Unregister are under **Details**. Alternatively run the matching MZP through **Scripting > Run Script**, then restart the selected Max version. Unregister removes owned registration while retaining personal recipes, imported assets and versioned recovery files.
+For the current EXE, close the selected Max versions, select their cards and click **Install/Update**. Check **Install / update plant library** with `CyrusScatter-Content-0.86.7.zip` beside the EXE for a content installation; an absent ZIP fails before installation. Leave it unchecked to reuse existing content. One shared content store serves standard profiles across all three hosts, with verified bytes reused on repeat updates. **Uninstall** retains shared content, personal recipes and recovery paths. Alternatively run the matching MZP through **Scripting > Run Script**, then restart that host. The [installation guide](../../Max_2027_Installation.md) gives current paths and dependencies. No online content download or automatic Max restart is performed.
 
 
 ## Density and portable images

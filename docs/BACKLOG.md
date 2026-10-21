@@ -68,11 +68,11 @@ count, without placement work in that fixture. It recommends revision-aware
 binding/layout and reduced control construction before background preparation;
 the later patch report owns implementation measurements and their limits.
 
-Use the [maintained native/performance and physics/animation contracts](ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) for new designs. Foundation upkeep is continuous, but each implementation needs a bounded user-authorized task and measured acceptance. The standalone Physics Lab is separate evidence, not a completed Scatter integration. Current docs/knowledge maintenance is recorded in the [17 October audit](../tools/rag/FOUNDATION_REFRESH_2026-10-17.md).
+Use the [maintained native/performance and physics/animation contracts](ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) for new designs. Foundation upkeep is continuous, but each implementation needs a bounded user-authorized task and measured acceptance. The standalone Physics Lab is separate evidence, not a completed Scatter integration. Current docs/knowledge selection and freshness are recorded in the [knowledge entrypoint](../tools/rag/README.md); the [17 October audit](../tools/rag/FOUNDATION_REFRESH_2026-10-17.md) preserves its historical scope.
 
 The [0.85.4 memory correction](plans/memory-0854/README.md) is historical.
-The [0.86.0 native delivery report](plans/native-placement/DELIVERY_0860.md) now
-owns current source/acceptance status. The controller's bulk placement and Edit
+The [0.86.0 native delivery report](plans/native-placement/DELIVERY_0860.md)
+records that native-foundation qualification; current patch evidence is linked above. The controller's bulk placement and Edit
 paths are native; the final pair passed the documented Max 2027 matrix and
 one-hour equal-history soak. B26's original Count/Undo pressure is corrected
 within that scope; arbitrary scene, third-party, allocator and long-session

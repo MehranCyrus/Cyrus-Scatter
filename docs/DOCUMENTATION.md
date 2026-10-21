@@ -6,7 +6,7 @@
 
 The capability matrix and MCP agent workflow remain at their existing `Current_System_2026-10-05` paths because code/catalog generation and external references use them. Their directory date does not make their maintained content obsolete. The semantic inventory, catalog hashes and current control register are functional inputs, not disposable prose.
 
-The 19 October 2026 maintenance check reconciles current installation, licensing and knowledge navigation with the corrected 0.86.2 delivery. The user confirmed that the replacement installer worked; this is a user report, not a new comprehensive host qualification. Earlier package hashes, preview labels and test limits remain historical. Knowledge activation and retrieval evidence are recorded in the existing [knowledge entrypoint](../tools/rag/README.md); plugin changes and further roadmap work are outside this maintenance task.
+The 21 October 2026 maintenance reconciles current guidance with [Scatter 0.86.8.2](plans/source-clearance/DELIVERY_08682.md): schema 59 and its schema-58 upgrade, source clearance ownership, visible layer Relax controls, supported textured/opacity preview and three-host packaging. Product code and its qualified artifacts remain unchanged. Earlier performance, rendering and host evidence retain their original limits. Knowledge selection, actual freshness and review evidence are recorded in the [knowledge entrypoint](../tools/rag/README.md). Separate website implementation/content edits are preserved; this task does not build or publish them.
 
 ## What to keep
 

@@ -69,6 +69,10 @@ original scenes and never combine a new script with stale native modules.
 
 Existing Analyzer guides without the new saved freshness record need one explicit **Analyze / Update Analyzer**, followed by **Update scatter** when Scatter is Manual. The previous complete Scatter result is preserved if a successor encounters a stale guide. Analyzer's [guide](../CyrusSurfaceAnalyzer/README.md) explains supported planar inputs; Analyzer remains separate from the surface brush, which now supports manifold curved receivers.
 
+## Historical compatibility reference
+
+The **0.86.2 / schema 58** delivery included matched Max 2024, 2026 and 2027 MZPs and a universal EXE, with scoped runtime qualification, eight examples and three starter masks. Its [original delivery report](plans/preset-gallery-improvements/DELIVERY_0862.md) retains exact files, the same-version installer correction and limits. That historical release is not the current installation target.
+
 ## Installed files and recovery
 
 Standard Max profiles install the immutable runtime under `%LOCALAPPDATA%/CyrusScatter/<year>/r/<content-id>`. An explicitly relocated profile uses `<profile>/cs/r/<content-id>`. The release contains the matching script, native modules, managed gallery and a small `LibraryBinding.txt`. Standard profiles resolve `%LOCALAPPDATA%/CyrusScatter/library-state.txt` to the selected shared library. Startup, macros, the install receipt and plugin registration remain in the selected Max profile and point to that complete release. Personal recipes in `Documents/CyrusScatter/Library` and activation are preserved. Older runtime/library paths remain recovery content. Analyzer uses its separate installer and directory. No compiler or SDK is required to use either built Scatter installer.

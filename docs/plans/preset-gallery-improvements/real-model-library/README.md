@@ -1,6 +1,8 @@
 # Cyrus Scatter real-model library
 
-**Planning brief · 19 October 2026 · Max 2027 only**
+**Historical planning brief · 19 October 2026 · original Max 2027 scope**
+
+**Current status:** the artist later chose individual models as the default library. The 96-model content revision 0.86.7 and current three-host plugin delivery are recorded in the [execution ledger](../../improvement-program/PROGRESS.md#real-model-library-planning). The 24 presets below remain an expansion proposal; this brief does not authorize resuming it or choosing its old proposed version.
 
 Build a useful collection of planting presets from the prepared plant assets,
 using Cyrus Scatter to author, save, reload and render the delivered results.

@@ -1,7 +1,7 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "7b3b0a258ddf7e521f990fec238b75c89f450bd3a31f0e9cea4c83adeaf95301",
+  "capability_source_sha256": "d6867ab03d401d739ff875b309d30cd5664fc52cf658ddae840aaaf55e1c77aa",
   "control_inventory_sha256": "fa985531e5c4d86401fb1f467fa258f6ef6df1b6d6e3024182ba302fad4354ac",
   "development_version": "0.86.8.2",
   "mcp_version": "0.73.0",
@@ -142,10 +142,10 @@
     },
     {
       "feature_id": "C20",
-      "title": "Collision rules / layer/pair",
-      "native": "Independent within-layer and between-layer radius factor, gap and XY/3D; deterministic order",
-      "mcp": "Plan 0.73 typed self/source radius/layer-pair rules",
-      "qualification_or_extension": "Extreme-radius work admission remains open"
+      "title": "Clearance / source with layer defaults",
+      "native": "Independently inherited own-copy, same-layer and other-layer scopes; summed pivot radii, factor/gap and XY/3D. Protected edits then preferred sources then layer/stable candidate order; Count admission precedes preference",
+      "mcp": "Plan 0.73 retains its typed self/source radius/layer-pair subset; no new source-policy write API",
+      "qualification_or_extension": "0.86.8.1 fixes stale refill blockers and unused-source scheduling; bounded witnesses are not exact mesh collision or all-scene qualification"
     },
     {
       "feature_id": "C21",
@@ -164,9 +164,9 @@
     {
       "feature_id": "C23",
       "title": "Relax / layer candidate preparation",
-      "native": "Point and constrained boundary movement before final eligibility/Brush/Edit/scoped collision; defaults off, finite iterations",
+      "native": "Point Relax and Boundary Relax directly above Advanced; shared Relax distance is desired Point separation or Boundary neighbor radius. Bounded movement precedes eligibility/Edit/clearance",
       "mcp": "No Relax mutation",
-      "qualification_or_extension": "This stage is a deliberate new contract, not old late accepted-output relaxation; profiling and artist acceptance"
+      "qualification_or_extension": "[0.86.8.2](../plans/source-clearance/DELIVERY_08682.md) qualifies focused handlers, deterministic movement, clearance and lifecycle in three hosts; no rigid-body or exact mesh collision"
     },
     {
       "feature_id": "C24",
@@ -178,7 +178,7 @@
     {
       "feature_id": "C25",
       "title": "Preview / setup/layer",
-      "native": "Retained Point Cloud/Proxy/Mesh/centres, owner-based Band colors and one field/radius inspection bundle per population; unchanged main/sibling buffers reused",
+      "native": "Retained Point Cloud/Proxy/Mesh/Placement points and Textured mesh; supported material/UV/opacity preview, identification Mesh cutouts, unchanged source appearance/geometry reuse, and one field/radius inspection bundle per population",
       "mcp": "Existing typed display subset, cached metrics and viewport capture; new Band/field controls remain local",
       "qualification_or_extension": "Current image/fallback and allocation witnesses are scoped evidence. Cold realization, representative costs, device loss and physical presentation remain separate gates"
     },
@@ -250,7 +250,7 @@
       "title": "Settings presets and complete static recipes",
       "native": "Multi-layer recipes retain supported Paint/assets/paths, revisions, thumbnails, image bytes/mapping/frame/response and selective style. Selected-terrain Load creates a setup only when needed and adds layers. Complete preset Paint/path transfer fits local XY, with physical unit conversion and early dependency checks",
       "mcp": "Catalog help only; no preset/recipe filesystem or application tool",
-      "qualification_or_extension": "Recipe 7, settings 3, library 4, asset capability/graph 2 (manifest 1). One Undo/Redo restores output/assets. Terrain preset transfer requires a single-valued XY footprint; curved preset transfer requires matching indexed topology; settings-only exact Paint keeps its compatibility contract. Broader Edit/effects/animation/XRef/renderer adapters remain outside scope. See [0.87.0](../plans/preset-gallery-improvements/RELIABILITY_0870.md)"
+      "qualification_or_extension": "Recipe 8, settings 3, library 4, asset capability/graph 2 (manifest 1). Source policies retain independent scope inheritance and remapped identities. One Undo/Redo restores output/assets. Terrain preset transfer requires a single-valued XY footprint; curved preset transfer requires matching indexed topology; settings-only exact Paint keeps its compatibility contract. Broader Edit/effects/animation/XRef/renderer adapters remain outside scope. [0.87.0](../plans/preset-gallery-improvements/RELIABILITY_0870.md) retains its original format-7 reliability evidence; current source-policy scope is [0.86.8](../plans/source-clearance/DELIVERY_0868.md)"
     },
     {
       "feature_id": "C36",

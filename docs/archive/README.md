@@ -7,9 +7,10 @@ The [documentation index](../README.md) routes current guidance; the [execution 
 - [Original eleven-phase plan](plans/original-eleven-phase-plan.md) and [checklist](plans/original-eleven-phase-checklist.md).
 - [Preset/gallery plan](plans/preset-gallery-plan-0851.md) and [checklist](plans/preset-gallery-checklist-0851.md).
 - [Improvement execution narrative through 0.86.0](plans/improvement-execution-to-0860.md).
+- [Real-model library execution through 20 October 2026](plans/real-model-library-execution-20261020.md), recovered from the exact commit recorded in its preface.
 - [Native migration overview](plans/native-migration-plan.md).
 
-The archive prefaces record original paths/hashes and Git recovery. Relative Markdown links are relocated; the original checkpoint bytes remain at commit `e3e81a6d204063efd9b77771ad9b0268ad2ea578`. Current guides contain only contracts, concise navigation and one status ledger rather than another copy of these narratives.
+The archive prefaces record original paths/hashes and Git recovery. Relative Markdown links are relocated; the six earlier consolidation archives retain their original checkpoint bytes at commit `e3e81a6d204063efd9b77771ad9b0268ad2ea578`. Current guides contain only contracts, concise navigation and one status ledger rather than another copy of these narratives.
 
 ## Evidence retained at original paths
 
