@@ -155,6 +155,12 @@ Host API access/publication stay on the host thread; workers consume owned numer
 
 Shared views bind owner records. Unchanged warm display reuses placement/preparation and ready buffers. Display edits may rebuild changed layers without applying Manual recipes. Measure avoided work separately from output equality.
 
+Edit gesture feedback may derive a live handle/gizmo matrix from the current
+authored delta and proven committed input while full geometry remains published
+on release. Feedback must not consume pending Manual changes or let an older
+retained presentation clear a newer gesture. The [0.86.9.1 evidence](plans/edit-instances/DELIVERY_08691.md)
+qualifies this path in Max 2027 only; it does not establish production FPS.
+
 **Limits:** 0.79.6 actual native admission/recovery and two-group upload/sibling reuse passed in both hosts. Cold realization, failed resources and changed geometry need work; F05 applies. No presented-FPS measurement. Increased solve/preparation/upload counters on unchanged warm browsing falsify reuse even if pixels match. Physical callbacks/owner switching remain acceptance gates.
 
 **Implementation:** U: procDisplayLayerKey, procEnsureDisplay, CyrusViewportRecords; [Point](../AminScatter/src/point_display.cpp) / [Mesh](../AminScatter/src/mesh_display.inc): reusable, generation-owned items.

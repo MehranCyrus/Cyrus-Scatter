@@ -2351,7 +2351,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.9"
+    fn uiVersion = "0.86.9.2"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2604,7 +2604,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.86.9" on (
+        undo "Upgrade Cyrus scene to 0.86.9.2" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -3783,7 +3783,7 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.9 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.9.2 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
@@ -3791,20 +3791,20 @@ initialRollupState:0x8
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.86.9 requires its matching source-aware Edit modules. Restart Max with the complete package."
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.86.9 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.9 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.9 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.9 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.9 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.9 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.9 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.86.9.2 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.86.9.2 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.9.2 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.9.2 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.9.2 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.9.2 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.9.2 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.9.2 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.9 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.9.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -5132,7 +5132,7 @@ initialRollupState:0x8
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,92] tooltip:"Deterministic generation seed. Changing it can invalidate existing Edit bindings."
         label densityHeading "Texture density" pos:[4,180] width:(selected_distributionUI.width-8)
         mapbutton densityButton "Map" pos:[4,204] width:70 tooltip:"Choose a 3ds Max texture map such as Noise or Bitmap, or drag one from the Material Editor. A material itself is not a density mask."
-        button mapBrowseButton "Map" width:70 tooltip:"Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor."
+        mapbutton mapBrowseButton "Map" width:70 tooltip:"Choose or drag a texture map from the Material Editor, including when empty. Drag the map itself; a complete material has no single density channel."
         checkbox invertCheck "Invert density" pos:[4,234] width:(selected_distributionUI.width-8) tooltip:"Reverse the density map's white and black eligibility."
         spinner uvChannelSpin "UV channel:" type:#integer range:[1,99,1] width:(selected_distributionUI.width-8) fieldWidth:82 tooltip:"Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result."
         dropdownlist resolutionList "Map resolution" items:#("64 x 64","128 x 128","256 x 256","512 x 512") selection:2 width:(selected_distributionUI.width-8) tooltip:"Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128."
@@ -5141,7 +5141,29 @@ initialRollupState:0x8
         checkbox imageCheck "Use image" tooltip:"Enable the chosen pattern, image or texture map. White permits plants; black excludes them. Independent of the mesh-channel mask."
         button patternButton "Choose pattern..." width:100 tooltip:"Browse original Cyrus masks. Choosing one changes only image density."
         button imageButton "Image" width:70 tooltip:"Choose an image file, read as linear density data."
-        imgTag imageThumbnail "" width:72 height:72 style:#bmp_stretch transparent:(color 255 0 255) tooltip:"Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field."
+        imgTag imageThumbnail "" width:72 height:72 style:#bmp_stretch transparent:(color 255 0 255) tooltip:"Density texture preview. Procedural maps remain editable. Receiver-dependent maps can differ on the surface; use Show mask for the evaluated field."
+        local thumbnailMap=undefined,thumbnailRevision=-1,thumbnailInterval=#(),thumbnailBitmap=undefined,thumbnailOwned=false,thumbnailRenders=0
+        fn releaseThumbnail = (
+            imageThumbnail.bitmap=undefined
+            if thumbnailOwned and thumbnailBitmap!=undefined do try(close thumbnailBitmap)catch()
+            thumbnailMap=undefined;thumbnailRevision=-1;thumbnailInterval=#();thumbnailBitmap=undefined;thumbnailOwned=false
+        )
+        fn syncThumbnail = (
+            if obj==undefined or obj.densityMap==undefined do (releaseThumbnail();return false)
+            local texture=obj.densityMap,revision=obj.procWatchDensity(),tick=currentTime as integer
+            if thumbnailMap==texture and thumbnailRevision==revision and thumbnailInterval.count==3 and tick>=thumbnailInterval[1] and tick<=thumbnailInterval[2] do (
+                imageThumbnail.bitmap=thumbnailBitmap;return true
+            )
+            releaseThumbnail()
+            thumbnailMap=texture;thumbnailRevision=revision
+            thumbnailInterval=try(cyrusScatterInputValidity #() #() #(texture))catch(#(tick,tick,false))
+            if classof texture==Bitmaptexture then thumbnailBitmap=try(texture.bitmap)catch(undefined)
+            else (
+                thumbnailBitmap=try(renderMap texture size:[72,72] display:false)catch(undefined)
+                thumbnailOwned=thumbnailBitmap!=undefined;thumbnailRenders+=1
+            )
+            imageThumbnail.bitmap=thumbnailBitmap;true
+        )
         label imageState "" width:(selected_distributionUI.width-8) height:36
         dropdownlist coordinatesList "Coordinates" items:#("World XY","Scatter local XY","Receiver UV","Map coordinates") selection:1 width:(selected_distributionUI.width-8) tooltip:"Map coordinates uses each map's own UV/data channels on the receiver. Other modes project a sampled image using Scatter's controls."
         checkbox tileLockCheck "Lock X / Y size" checked:true tooltip:"Use equal physical sizes or UV repeats in both axes."
@@ -5192,12 +5214,13 @@ initialRollupState:0x8
             local projected=obj.densityCoordinateMode!=3
             for c in #(uvChannelSpin,resolutionList,tileXSpin,tileYSpin,tileLockCheck,repeatXSpin,repeatYSpin,headingSpin,offsetXSpin,offsetYSpin,offsetUSpin,offsetVSpin,wrappingList,bakeImageButton) do c.enabled=projected
             tileLockCheck.checked=obj.densityTileLock;wrappingList.selection=obj.densityWrapMode+1
-            densityButton.text="Map"
+            densityButton.text=if obj.densityMap==undefined then "None (drag map here)" else obj.densityMap.name
+            mapBrowseButton.map=obj.densityMap;mapBrowseButton.text="Map"
             imageState.text=if obj.densityMap==undefined then "" else obj.densityMap.name
             imageState.tooltip=if obj.densityMap==undefined then "Choose a pattern, Image or Map." else obj.densityMap.name+". Use Show mask to inspect the evaluated density. More settings contains portable snapshot baking."
-            -- ImgTag supports clearing with undefined and scales the entire tile.
-            -- Browsing must not render procedural maps or create resized pixel copies.
-            imageThumbnail.bitmap=if classof obj.densityMap==Bitmaptexture then try(obj.densityMap.bitmap)catch(undefined) else undefined
+            -- One small cached preview, separate from the placement-density cache.
+            -- Repeated binding of an unchanged map does not render it again.
+            syncThumbnail()
             maskViewList.selection=CyrusMaskView;maskDetailList.selection=CyrusMaskDetail;opacitySpin.value=CyrusMaskOpacity;markersCheck.checked=CyrusMaskMarkers;markerSizeList.selection=CyrusMaskMarkerSize
             tileXSpin.value=obj.densityTileXWU
             tileYSpin.value=obj.densityTileYWU
@@ -5275,10 +5298,7 @@ initialRollupState:0x8
             binding=true;syncControls();binding=false;CyrusViewportRedraw()
         )
         on densityButton picked v do if controlsReady and not binding and obj!=undefined do assignDensityMap obj v
-        on mapBrowseButton pressed do if controlsReady and not binding and obj!=undefined do (
-            local target=obj,value=materialBrowseDlg #maps #instanceOnly
-            if value!=undefined do assignDensityMap target value
-        )
+        on mapBrowseButton picked value do if controlsReady and not binding and obj!=undefined do assignDensityMap obj value
         on invertCheck changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.invertDensity=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on uvChannelSpin changed v do if controlsReady and not binding and obj!=undefined do (
             local target=obj

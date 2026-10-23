@@ -137,7 +137,7 @@ Value* cyrusEditTransaction_cf(Value** a,int count){
         // A display failure must neither strand the transaction nor leave a
         // mixture of restored and successor maps across Edit modifiers.
         if(command==2){
-            for(auto& entry:finished->before)entry.first->layers.swap(entry.second);
+            for(auto& entry:finished->before){entry.first->layers.swap(entry.second);entry.first->transformPreview=false;entry.first->refreshFeedback();}
             for(auto& entry:finished->before)try{entry.first->status();}catch(...){/* Data is restored; the next UI refresh can retry. */}
         }
     }else throw RuntimeError(_T("Unknown procedural Edit transaction command"));

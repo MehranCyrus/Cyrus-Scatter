@@ -1,8 +1,45 @@
 # Current codebase architecture
 
-Applies to the Cyrus Scatter 0.86.9 source, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification status](plans/edit-instances/DELIVERY_0869.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to the Cyrus Scatter 0.86.9.2 source, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification status](plans/edit-instances/DELIVERY_08692.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
 
 ## Ownership
+
+### 0.86.9.1 density presentation, column fit and gesture feedback
+
+The layer continues to own its density graph. Both visible map targets use the
+native TextureMap button, including when empty. A mounted Amount page owns one
+72×72 procedural preview and its identity/revision/validity key; source Bitmap
+previews are borrowed. Replacement and page close release owned bitmaps. Preview
+failure changes presentation only. This generic texture thumbnail is separate
+from receiver-aware native density sampling and the Show mask surface overlay.
+
+**Column fitting withdrawn in 0.86.9.2.** The 0.86.9.1 geometry integration
+rewrote native window positioning and bound the root while Max/Qt was arranging
+legacy rollups. Artist and owned reproduction dumps fail at the same Qt box-layout
+instruction. The complete width integration is removed; Max again owns dialog
+geometry and root auto layout, and navigation uses the previous child-only
+lifetime protocol. Small native padding is deferred. No calculation, schema or
+placement ownership changes are introduced.
+
+The [corrective delivery](plans/edit-instances/DELIVERY_08692.md) checks owner
+switching in single and six-column panels after separate native event-loop idle,
+pending lazy mounts, Undo and cold/warm scene restoration. Scripted assertions
+inside a callback alone cannot qualify later queued Qt work.
+
+During an Edit transform, display, hit testing, bounds and gizmo centers derive
+the same live matrix from the current authored block and proven committed local
+input/downstream suffix. This transient feedback does not publish a new placement
+population on each mouse sample. Move unlocks axis tripods; Rotate and Scale keep
+their original locked gesture pivot. Selected-center queries avoid materializing
+the whole visible instance vector. The final renderer view remains atomic.
+
+Feedback captures the local authored revision so an older retained presentation
+cannot clear a newer gesture. Commit/rollback coalesces one modifier-identified
+UI message to refresh Max's cached axes outside the renderer callback, using
+selection-only invalidation. It adds no authored revision or Undo record. The
+read-only `cyrusEditHandleMatrix` query exposes live feedback; `cyrusEditInspect`
+retains its committed-matrix meaning. See [ownership and failure details](plans/edit-instances/IMPLEMENTATION_08691.md)
+and the [corrected exact executed scope](plans/edit-instances/DELIVERY_08692.md).
 
 ### 0.86.9 source-aware Edit and displayed feedback
 
@@ -13,7 +50,7 @@ history. Missing histories remain inactive. The binding separates generation
 and receiver guards from source inventory/settings. `source_radius.cpp` applies
 the same proven correspondence to independently layer-owned radius overrides.
 
-Display, hit testing and gizmos resolve one immutable final accepted view.
+Outside a transform gesture, display, hit testing and gizmos resolve one immutable final accepted view. The 0.86.9.1 transient gesture path is described above.
 Modifier-local input and shared authored blocks provide the intermediate matrix
 for downstream gesture conversion. The existing palette supplies Model, Layer
 and Bands colours. Recolouring does not solve placements. Native renderer

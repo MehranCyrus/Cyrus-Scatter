@@ -1,5 +1,7 @@
 # Website verification records
 
+Current website: [0.86.9.2 direct EXE download and guide update](WEBSITE_08692_20261023.md), with 33 focused browser assertions and exact root/subfolder download checks. Earlier records below retain their historical scope.
+
 Current public-content cleanup and the 53-version timeline are recorded in [PUBLIC_CONTENT_HISTORY.md](PUBLIC_CONTENT_HISTORY.md): no public Markdown or internal report snapshots, 76 exact-package assertions, 152 HTTP checks and 45 existing interaction assertions. The earlier cPanel package below is superseded and must not be deployed.
 
 The static cPanel ZIP, root/subfolder deployment checks and remaining public-host verification are recorded in [CPANEL_PACKAGE.md](CPANEL_PACKAGE.md). The exact upload archive passed 17 assertions and 222 HTTP file/hash checks; no public deployment was performed.

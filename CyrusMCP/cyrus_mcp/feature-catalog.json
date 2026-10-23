@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "bb76076526bc36fab823c2f8c15c7e38c4631ca575b07ebc0fa230be68ff7532",
-  "control_inventory_sha256": "3f5efda86d25659cca1471a01435c493503b453fcf5f66c533484916a2af0321",
-  "development_version": "0.86.9",
+  "capability_source_sha256": "82fe26dffc31794ac9520b8d50c49212abed050ffa86be1d26a67dbd6f29c92e",
+  "control_inventory_sha256": "99709c56823f762a9568a7d635ad5dbd6cc58bb57e2d13517041d9ddcdc86c4a",
+  "development_version": "0.86.9.2",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified2",
   "features": [
@@ -80,9 +80,9 @@
     {
       "feature_id": "C11",
       "title": "Density masks / layer",
-      "native": "Independent projected image, receiver-aware procedural map and surface fields. Map coordinates supplies actual receiver UV/data channels to supported graphs. Surface field chooses explicit channel 0..99 or relative local elevation. Shared bounded placement/preview scalars; Clear removes only the image rule",
+      "native": "Independent projected image, receiver-aware procedural map and surface fields. Map coordinates supplies actual receiver UV/data channels to supported graphs. Surface field chooses explicit channel 0..99 or relative local elevation. Shared bounded placement/preview scalars; Clear removes only the image rule. Native empty map drop targets and a cached procedural thumbnail preserve Manual state; Show mask remains receiver-aware",
       "mcp": "No map/channel enrollment or write contract",
-      "qualification_or_extension": "[0.87.0 scoped qualification](../plans/preset-gallery-improvements/RELIABILITY_0870.md); supported classes and resource limits in [format 7](../plans/preset-gallery-improvements/FORMAT_7.md). No arbitrary procedural graph portability or renderer context"
+      "qualification_or_extension": "[0.86.9.2 Max 2027 UI evidence](../plans/edit-instances/DELIVERY_08692.md); [density qualification](../plans/preset-gallery-improvements/RELIABILITY_0870.md), supported classes and resource limits in [format 7](../plans/preset-gallery-improvements/FORMAT_7.md). No arbitrary procedural graph portability or renderer context"
     },
     {
       "feature_id": "C12",
@@ -1848,14 +1848,14 @@
     {
       "group": "layer",
       "section": "distributionUI",
-      "kind": "button",
+      "kind": "mapbutton",
       "name": "mapBrowseButton",
       "capabilities": [
         "C09",
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor.",
+      "help": "Choose or drag a texture map from the Material Editor, including when empty. Drag the map itself; a complete material has no single density channel.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1953,7 +1953,7 @@
         "C11"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field.",
+      "help": "Density texture preview. Procedural maps remain editable. Receiver-dependent maps can differ on the surface; use Show mask for the evaluated field.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

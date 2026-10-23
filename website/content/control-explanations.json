@@ -2437,7 +2437,7 @@
   },
   "layer.distributionUI.mapBrowseButton": {
     "label": "Map",
-    "help": "Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor.",
+    "help": "Choose a texture map or drag one from the Material Editor, including when empty. Drag the TextureMap itself rather than a complete material; supported procedural maps show a cached thumbnail. Use Show mask to inspect receiver-dependent output.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4847"
     ]
@@ -2705,6 +2705,15 @@
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4686",
       "docs/ARTIST_GUIDE.md:5"
+    ]
+  },
+  "general.previewUI.memoryButton": {
+    "label": "Viewport memory…",
+    "help": "Choose Automatic or a Custom 256–65,536 MiB Mesh memory allowance for this Max installation. It is shared across Scatter controllers and is separate from scene/recipe settings. It affects future admission without calculating planting; Refresh display retries published results while preserving pending Manual placement changes. Windows/device safeguards still apply.",
+    "owner_context": "Max installation preference, shared across Scatter controllers",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4547",
+      "AminScatter/tools/ui/templates/viewport-memory.ms:1"
     ]
   }
 }

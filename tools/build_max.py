@@ -79,11 +79,14 @@ def verify_installer(path):
 def verify_native_receipt(path, project, year, binaries):
     receipt=json.loads(Path(path).read_text(encoding='utf-8'))
     expected='scatter' if project=='AminScatter' else 'analyzer'
+    expected_stages={'configure','build','tests'}
+    if receipt.get('tests_run') is False and receipt.get('source_selection',{}).get('build_testing') is False:
+        expected_stages={'configure','build'}
     if (receipt.get('schema')!='cyrus.native-build/2' or receipt.get('status')!='complete'
             or receipt.get('project')!=expected or receipt.get('max_year')!=year
             or not receipt.get('clean_compilation') or receipt.get('preview_fault_lab')
             or receipt.get('placement_qualification')
-            or {stage['stage'] for stage in receipt.get('stages',[])}!={'configure','build','tests'}
+            or {stage['stage'] for stage in receipt.get('stages',[])}!=expected_stages
             or any(stage['exit_code'] for stage in receipt['stages']) or not receipt.get('compiler_dependencies')):
         raise ValueError('A complete matching version 2 native receipt is required; rebuild the selected product.')
     manifest=receipt['input_manifest']

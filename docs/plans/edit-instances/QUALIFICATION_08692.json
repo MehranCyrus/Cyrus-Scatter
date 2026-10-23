@@ -1,0 +1,417 @@
+{
+  "schema": "cyrus.scatter-qualification/1",
+  "version": "0.86.9.2",
+  "date": "2026-10-23",
+  "status": "Focused corrected Max 2027 acceptance passed; older hosts build-only",
+  "git": {
+    "branch": "codex/workflow-0.75",
+    "head": "dde07870d4c005cb27987c4c46f7f9065cb1e891",
+    "source_state": "Scoped uncommitted changes; unrelated workspace changes preserved; no commit or push"
+  },
+  "formats": {
+    "scene_schema": 59,
+    "model": "CyrusUnified2",
+    "recipe": 8,
+    "native_edit": 2,
+    "analyzer": "0.14.2",
+    "content": "0.86.7",
+    "original_paint": "unchanged"
+  },
+  "producers": {
+    "2024": {
+      "AminScatter": {
+        "receipt": "build/crash-08691-20261023-01/scatter-2024-08692-01/receipt.json",
+        "sha256": "eb3cb7868484c7e01b2b7ef41f29f07aa419cbbf4870bd75be374da16eedd038",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      },
+      "CyrusSurfaceAnalyzer": {
+        "receipt": "build/ui-edit-08691-20261023/analyzer-2024-02/receipt.json",
+        "sha256": "544ae1fe7cd7ce7e963a1a21d1b30dbb8a217cea95156e02bd30ab932e84844f",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      }
+    },
+    "2026": {
+      "AminScatter": {
+        "receipt": "build/crash-08691-20261023-01/scatter-2026-08692-01/receipt.json",
+        "sha256": "ba6e72b5bf1b6aa55c2dcc7f00ebedb317bed310f071b276daa915f9176ecd25",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      },
+      "CyrusSurfaceAnalyzer": {
+        "receipt": "build/ui-edit-08691-20261023/analyzer-2026-02/receipt.json",
+        "sha256": "d3b7326cb81f4868b9bb9660254a099ff64fe8de1a2b1340aaf59b0d60e12696",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      }
+    },
+    "2027": {
+      "AminScatter": {
+        "receipt": "build/crash-08691-20261023-01/scatter-2027-08692-01/receipt.json",
+        "sha256": "81210f46be2b96cb016c9c28971cc2e106fbafb11069067cda3864e81c8d7fe5",
+        "tests_run": true,
+        "native_test_count": 56,
+        "qualification": "SDK build and focused Max 2027 tests"
+      },
+      "CyrusSurfaceAnalyzer": {
+        "receipt": "build/ui-edit-08691-20261023/analyzer-2027-02/receipt.json",
+        "sha256": "be7f528cace3c41fed0a14e4344d1500edcef206f23a4894f0728f9bc4689b56",
+        "tests_run": true,
+        "native_test_count": 1,
+        "qualification": "SDK build and focused Max 2027 tests"
+      }
+    }
+  },
+  "verified_current_producer_inputs": 10678,
+  "package_recipe": {
+    "path": "build/crash-08691-20261023-01/packages-08692-01/recipe-receipt.json",
+    "sha256": "6a4242dae28e1c9445f735d0355a73218160302a87eaa32c64fa1f7918655440"
+  },
+  "installer": {
+    "path": "dist/CyrusScatter-0.86.9.2-20261023/CyrusScatter-0.86.9.2-Setup.exe",
+    "sha256": "d93c1dcd1353d0c1794aa2d5fae6706066c88b1df8a6a48b0a20fc22a3c9b50c",
+    "bytes": 6440960,
+    "contains_scatter_and_analyzer_for": [
+      2024,
+      2026,
+      2027
+    ],
+    "qualification": "Source/build/contained archive verification; no new interactive installer campaign"
+  },
+  "packages": [
+    {
+      "path": "build/crash-08691-20261023-01/packages-08692-01/artifacts/CyrusScatter-0.86.9.2-Max2024.mzp",
+      "sha256": "74bbfc1223989098f8724cca19ff6d8bc7ae74a66261f701409be9c972e3c3a6",
+      "max_year": 2024,
+      "version": "0.86.9.2",
+      "member_count": 31,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/crash-08691-20261023-01/packages-08692-01/artifacts/CyrusScatter-0.86.9.2-Max2026.mzp",
+      "sha256": "428df4e6c95b62da25c1ebe6b06b0a9f5ea8b0f084a1d2f0a5ee02e55763c00b",
+      "max_year": 2026,
+      "version": "0.86.9.2",
+      "member_count": 31,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/crash-08691-20261023-01/packages-08692-01/artifacts/CyrusScatter-0.86.9.2-Max2027.mzp",
+      "sha256": "83b017c14a255d5a6d31dcde810b6c97121486838f36507ae7ec16ca1e896168",
+      "max_year": 2027,
+      "version": "0.86.9.2",
+      "member_count": 31,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": true
+    },
+    {
+      "path": "build/crash-08691-20261023-01/packages-08692-01/artifacts/CyrusSurfaceAnalyzer-0.14.2-Max2024.mzp",
+      "sha256": "fb86d50ce209113b987fa7999132a784e37e01b42412c25ce394f602e389d707",
+      "max_year": 2024,
+      "version": "0.14.2",
+      "member_count": 9,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/crash-08691-20261023-01/packages-08692-01/artifacts/CyrusSurfaceAnalyzer-0.14.2-Max2026.mzp",
+      "sha256": "fa481fe709e912108ab1f8a26e13350929182c33b740984f5000081d7d2bc176",
+      "max_year": 2026,
+      "version": "0.14.2",
+      "member_count": 9,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/crash-08691-20261023-01/packages-08692-01/artifacts/CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp",
+      "sha256": "ae953e85f7db547f946f02ed1de2c10155e74c79fbd15dc33d409da2bacc7c9e",
+      "max_year": 2027,
+      "version": "0.14.2",
+      "member_count": 9,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": true
+    }
+  ],
+  "loaded_max_2027_payload": {
+    "AminScatter.dlx": "e14b7a82d94c288f125634bf3a1a8523658b9cf8d55e777f57f8d2afa3b0678a",
+    "CyrusBrush.dlx": "f2b3d580c2746bf1b852db6910cd1951537595f647b7d2d2f0a3e01e64790995",
+    "CyrusBrushStorage.dlh": "2d9fe1607cfb793d54ce9afa2b93371caf600bc11982d3019eefa574ec321a52",
+    "CyrusGallery.dll": "7e1a48b01b84baeb860124181897d3892cef0b621dec6b6defcae409b24621b6",
+    "CyrusScatter.ms": "2a122fc2012b69b887363e5878b36be19ace409141da5bf5248c599332b1c17c",
+    "CyrusScatterEdit.dlm": "7f4cd6d1a4eb77d88097e486fa15a8575bf50312eea176813f786146b7b5fb67",
+    "CyrusSurfaceAnalyzer.dlx": "d179cf3cb7f023c6592e971e8491378cd147d97bab415cfa014445031b4d1897",
+    "CyrusSurfaceAnalyzer.ms": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69"
+  },
+  "host": {
+    "profile": "build/crash-08691-20261023-01/host04-candidate",
+    "pid": 38800,
+    "closed_after_testing": true,
+    "artist_profile_installed_or_restarted": false,
+    "selected_witnesses": [
+      {
+        "request_id": "44329fc6f6744aa297529c12fa367522",
+        "scenario_id": "wide",
+        "run_id": "56c83702555740b39dfa1994a493461e",
+        "artifact_id": "79a7e272d07c6f2ef8e90ae8d338fdb20f18ee35a7d1d7ff5f434c89cf379d89",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-44329fc6f6744aa297529c12fa367522.json",
+        "result_sha256": "4d48ae9cb1b6c3eaff50698d83f9ac2da40dd7050978a4aa647f7db06ad821db",
+        "request_sha256": "ad982e1efd774ceaaf8eb24c0ec3e00864259454925fe717505202d3c690d0e1"
+      },
+      {
+        "request_id": "fab10ed3190a417b893f410fde7fd0f9",
+        "scenario_id": "author",
+        "run_id": "56c83702555740b39dfa1994a493461e",
+        "artifact_id": "79a7e272d07c6f2ef8e90ae8d338fdb20f18ee35a7d1d7ff5f434c89cf379d89",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-fab10ed3190a417b893f410fde7fd0f9.json",
+        "result_sha256": "941278294bef9787415c5a714f39c15ec227147031845dae784845e904c24c86",
+        "request_sha256": "63602279f327d59bc30ec7d2d43d89b8eae08bd350cbe633eebc5be517967482"
+      },
+      {
+        "request_id": "628eceb195804489a4ec24848c9ad3c3",
+        "scenario_id": "verify",
+        "run_id": "56c83702555740b39dfa1994a493461e",
+        "artifact_id": "79a7e272d07c6f2ef8e90ae8d338fdb20f18ee35a7d1d7ff5f434c89cf379d89",
+        "assertions_passed": 3,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-628eceb195804489a4ec24848c9ad3c3.json",
+        "result_sha256": "0080201f9bd8de3b36f0f89f7fe71b41e0383b522ca15c013a638be7208291ad",
+        "request_sha256": "fd571586b69e7fa118afdea0e36410586a9bb1118e58af444f863d1e7b6bbfb2"
+      },
+      {
+        "request_id": "9861eaed3c224937bba7bb2016617189",
+        "scenario_id": "undo",
+        "run_id": "4390948f7d4346029ee950fdae493972",
+        "artifact_id": "fdb2a5854315bd33176ba2af0b4f223d694d81970af10f4813e43962c9463201",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-9861eaed3c224937bba7bb2016617189.json",
+        "result_sha256": "4ade7e28482262e0aa45d088489333a55a92d6897acbe529609a419ae22942b0",
+        "request_sha256": "b05976aea48a1be0fce1c2afaf398b69934ff9bbcce55084b9038737ed220bfa"
+      },
+      {
+        "request_id": "1e722fa081bb41da822729f1da538d67",
+        "scenario_id": "redo",
+        "run_id": "4390948f7d4346029ee950fdae493972",
+        "artifact_id": "fdb2a5854315bd33176ba2af0b4f223d694d81970af10f4813e43962c9463201",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-1e722fa081bb41da822729f1da538d67.json",
+        "result_sha256": "2863a6e8270506f3d0b8aca9b451366a90764aec9f7b70a09445c7a981f3bdde",
+        "request_sha256": "fbf30ad8e96069f003fe01235970b779d78e3eaea6eaf17654606a17d85a7513"
+      },
+      {
+        "request_id": "77d16c0abd6f41b09e236e9d9096f699",
+        "scenario_id": "map",
+        "run_id": "4390948f7d4346029ee950fdae493972",
+        "artifact_id": "fdb2a5854315bd33176ba2af0b4f223d694d81970af10f4813e43962c9463201",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-77d16c0abd6f41b09e236e9d9096f699.json",
+        "result_sha256": "6717210cf143f548094c8cfc94377cc4a14affcc21136b7951b308656b22140e",
+        "request_sha256": "f359a978720549c67845d7b7823e667134015473efcaff977cf08be3df2c5e4f"
+      },
+      {
+        "request_id": "86fe0099c93e44e19c0622733c78b0c0",
+        "scenario_id": "map",
+        "run_id": "4390948f7d4346029ee950fdae493972",
+        "artifact_id": "fdb2a5854315bd33176ba2af0b4f223d694d81970af10f4813e43962c9463201",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-86fe0099c93e44e19c0622733c78b0c0.json",
+        "result_sha256": "7814a32714be5516407b4ca193dbd1b52ea4f7ca412670183fe406738504df05",
+        "request_sha256": "cade94d9aa5ec1c964fd6e52ab185e68288d488d78e8f67fe03460c80455bbf5"
+      },
+      {
+        "request_id": "82d0272bcc9c4d98b4ce0fd8bf4aed99",
+        "scenario_id": "save",
+        "run_id": "4390948f7d4346029ee950fdae493972",
+        "artifact_id": "fdb2a5854315bd33176ba2af0b4f223d694d81970af10f4813e43962c9463201",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-82d0272bcc9c4d98b4ce0fd8bf4aed99.json",
+        "result_sha256": "6a2c5f29fc00f870c43b919fc586a7f53fe3d1fa8a77c894d5b35f9f3e8a360d",
+        "request_sha256": "26cd96d25123d81cd72554eebef2a6c15d9f3f6f645350529430449e9cdf4f5d"
+      },
+      {
+        "request_id": "5738ff0bcec34d9496e23ec1614e7c05",
+        "scenario_id": "reopen",
+        "run_id": "4390948f7d4346029ee950fdae493972",
+        "artifact_id": "fdb2a5854315bd33176ba2af0b4f223d694d81970af10f4813e43962c9463201",
+        "assertions_passed": 2,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-5738ff0bcec34d9496e23ec1614e7c05.json",
+        "result_sha256": "2e88ba204ccb819c307af5e91b3af1d9cf6617d370ab7528f4ad747e5b4bb32d",
+        "request_sha256": "5306ae54ba9e1d453a7eddcccab275274afab927836b98a23aad569177b13978"
+      },
+      {
+        "request_id": "88eb0ef31d044a79ab9cb883958d500d",
+        "scenario_id": "reopen_verify",
+        "run_id": "9c42544637294d22af556cc0ebffc9b6",
+        "artifact_id": "ad43e938f1bc108967fcad84007f960ce049d09f3202afb298aec473b02da5fd",
+        "assertions_passed": 2,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-88eb0ef31d044a79ab9cb883958d500d.json",
+        "result_sha256": "5ed90ad4374d39eacf4e80d142cd2582c1bce0585428cb2ef1183ad6dad90d44",
+        "request_sha256": "22fbd33efd09091d4f51b163c786fa32543ae80c3b90a18241e56ce0e07bcfc8"
+      },
+      {
+        "request_id": "baeee13d199b4490932dd6f570e1aa24",
+        "scenario_id": "verify",
+        "run_id": "9c42544637294d22af556cc0ebffc9b6",
+        "artifact_id": "ad43e938f1bc108967fcad84007f960ce049d09f3202afb298aec473b02da5fd",
+        "assertions_passed": 3,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-baeee13d199b4490932dd6f570e1aa24.json",
+        "result_sha256": "8e983d58322ee325e8e25efb7dafd400ee856151e39c902ed92b29cabf6e7e4e",
+        "request_sha256": "d2c28dbecabce6fd935ef95471e3970ed43d8c5ee48273225103b84466343137"
+      },
+      {
+        "request_id": "7f918e08fbd7415a8a00167719537e4e",
+        "scenario_id": "fresh",
+        "run_id": "9c42544637294d22af556cc0ebffc9b6",
+        "artifact_id": "ad43e938f1bc108967fcad84007f960ce049d09f3202afb298aec473b02da5fd",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-7f918e08fbd7415a8a00167719537e4e.json",
+        "result_sha256": "c8be71da5c68c3afc658f6fe5f37b53982257eeedef73c09a21b7af8dbd11dcb",
+        "request_sha256": "a884e4cddf88b9ca51f5f15810511924db85d94fa2a355beabeeb068f06e005e"
+      },
+      {
+        "request_id": "d20980d484734f1289dd7327c2b9453a",
+        "scenario_id": "verify",
+        "run_id": "9c42544637294d22af556cc0ebffc9b6",
+        "artifact_id": "ad43e938f1bc108967fcad84007f960ce049d09f3202afb298aec473b02da5fd",
+        "assertions_passed": 3,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-d20980d484734f1289dd7327c2b9453a.json",
+        "result_sha256": "eaf5e8e1c5c55d43580bd480bb074edbd1a2f09b272607b9d885ec127149da2a",
+        "request_sha256": "f642943f7d66bd4509115fc6205adf09a0d950b288aa6aed4b0fdaf77cbf68e0"
+      },
+      {
+        "request_id": "eba095600e0d472ca7541f6858e6ab36",
+        "scenario_id": "density",
+        "run_id": "b5f3dce85dc24aabb1b96e902bf4e794",
+        "artifact_id": "7cec655411fbb2471cb8abc73dc420218320672e13c24f6f866cce88c533488f",
+        "assertions_passed": 7,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-eba095600e0d472ca7541f6858e6ab36.json",
+        "result_sha256": "4078383ba40524dfffe6414ce83b1c2b0f432ba27aeef33ea9831f873fedac65",
+        "request_sha256": "20c90ff05a40596941559e6b691b81ca3a367e4f2e5dbf5d37a9df882d911475"
+      },
+      {
+        "request_id": "11e6d9818d9b49b18a549caadd65a2f9",
+        "scenario_id": "old_scene",
+        "run_id": "b5f3dce85dc24aabb1b96e902bf4e794",
+        "artifact_id": "7cec655411fbb2471cb8abc73dc420218320672e13c24f6f866cce88c533488f",
+        "assertions_passed": 2,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-11e6d9818d9b49b18a549caadd65a2f9.json",
+        "result_sha256": "154d40cde17c45adc5a474d0570d9434766bd5a0bba7510cb983b67f01c7d714",
+        "request_sha256": "761494fe33917179b7278460a4a462cf6eeeb4c41c55af4f86cc2ff6b0d42b13"
+      },
+      {
+        "request_id": "000dce1e35404252b8276d181ff0793b",
+        "scenario_id": "analyzer",
+        "run_id": "b5f3dce85dc24aabb1b96e902bf4e794",
+        "artifact_id": "7cec655411fbb2471cb8abc73dc420218320672e13c24f6f866cce88c533488f",
+        "assertions_passed": 1,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-000dce1e35404252b8276d181ff0793b.json",
+        "result_sha256": "99d099642ca39f815c8dc0a5bc859265a2e15d315e4a0fde975ec33b0b791b09",
+        "request_sha256": "83098ad9cc01a1ed766699621d1a79ce39cc1fcb8e028553c5b8a9a906ae0ce5"
+      },
+      {
+        "request_id": "d5f3dafd55814e6b8ea613b3c393c92c",
+        "scenario_id": "lifecycle",
+        "run_id": "b5f3dce85dc24aabb1b96e902bf4e794",
+        "artifact_id": "7cec655411fbb2471cb8abc73dc420218320672e13c24f6f866cce88c533488f",
+        "assertions_passed": 5,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-d5f3dafd55814e6b8ea613b3c393c92c.json",
+        "result_sha256": "db4bf3daa200e136a676c37e547a4bb3f3adacac3fdf84ac6cb67042edbad79a",
+        "request_sha256": "9c9806cc903f787a4cd49ba745102b7f033f5f052e266402fbe8e62231d60eca"
+      },
+      {
+        "request_id": "89f6c1a9c0834cbf9739588371b4fb06",
+        "scenario_id": "drop_verify",
+        "run_id": "b5f3dce85dc24aabb1b96e902bf4e794",
+        "artifact_id": "7cec655411fbb2471cb8abc73dc420218320672e13c24f6f866cce88c533488f",
+        "assertions_passed": 2,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-89f6c1a9c0834cbf9739588371b4fb06.json",
+        "result_sha256": "fdc9a744555dcddf4ea58acbadf776cb70c5960defb07cc5a9dfee4228f9de3f",
+        "request_sha256": "8d6eacf0b3cd1607f390af8a955dc87a463778cf0f439c282bc840fb4f195a1d"
+      },
+      {
+        "request_id": "071cdf05292f4b4285260dd598dd504e",
+        "scenario_id": "verify",
+        "run_id": "6a593e2c60074d81b99359c893b291de",
+        "artifact_id": "0260a3b198516edba8c0269a766029cffa9ffdeb42b8375388cb575845e10df1",
+        "assertions_passed": 3,
+        "result": "build/crash-08691-20261023-01/host04-candidate/result-071cdf05292f4b4285260dd598dd504e.json",
+        "result_sha256": "7cb7e5418108a318f1b8ee990694e839af9e2d4b195e933e7e482e04fab306d3",
+        "request_sha256": "48565d601db810d2017b7418cafecb8cff6648f1c8515d55d899a7d117d3073c"
+      }
+    ],
+    "selected_witness_assertions": 41,
+    "switch_campaign": {
+      "single_column_owner_switches": 6,
+      "wide_owner_switches": 20,
+      "rapid_batches": 2,
+      "switches_per_rapid_batch": 10,
+      "independent_native_idle_observation": true
+    },
+    "physical_input": [
+      "Checker swatch dropped onto initially empty native Map target; Instance chosen",
+      "Two viewport clicks each create a Scatter, then open Modify"
+    ],
+    "test_only_corrections": [
+      "seed renamed randomSeed in fixture",
+      "MAXScript function-return property syntax corrected",
+      "Array-reference equality replaced by owner identity",
+      "Wait for actual mounted owner rather than fixed one-second assumption",
+      "Cold reopen permits missing-publication reconstruction; freeze warm baseline after settling",
+      "Physical Scatter tool creates one node per click, not a two-click shape"
+    ],
+    "cold_reopen_note": "Authored count/seed/layer ID preserved. Epoch/build may advance 0 to 1 for cold publication reconstruction, then warm browsing must preserve publication fingerprints."
+  },
+  "offline": {
+    "scatter_native_2027": 56,
+    "analyzer_native_2027": {
+      "count": 1,
+      "qualification": "Unchanged exact-byte producer reused; current Analyzer bridge check passed"
+    },
+    "focused_python": 37,
+    "generated_controls": 333,
+    "delimiter_fixtures": 32,
+    "generated_receipt_directory": "build/crash-08691-20261023-01/generated-08692-final"
+  },
+  "crashes": {
+    "artist_dump_sha256": "42028f8691b54aed921c0999226903fc8515c20fed18f6713f58169b6474dcce",
+    "reproduced_08691_dump_sha256": "da204c5d98d49845256fb6acd9263aa72464feebefc38be6ec51187d988403df",
+    "matching_failure": "Qt6Widgets!QBoxLayout::setGeometry+0x460 null read",
+    "diagnostic_no_bindings": "Failed later in Qt focus notification; accidentally BOM-stripped script excluded from acceptance",
+    "corrected_candidate_crashes": 0
+  },
+  "limits": [
+    "Small Max-controlled native column insets remain; forced-width improvement withdrawn",
+    "Max 2024/2026 built only; no native tests or host launch",
+    "No broad high-DPI, production-scene, renderer, device-loss or long-soak qualification",
+    "Map target accepts TextureMaps, not whole materials; generic thumbnail is not receiver/renderer-accurate",
+    "Current Edit checks use native gesture lifecycle; historical physical movement witness retains its own bytes",
+    "B37 clone-dependent copied Edit stack/radius remapping and generation/receiver guards unchanged",
+    "No new interactive installer campaign; exact archive/producer verification only",
+    "Knowledge docs updated separately; selected index stale; no index activation or website publication"
+  ],
+  "documentation": {
+    "receipt": "build/crash-08691-20261023-01/documentation-check.json",
+    "sha256": "dd701a0e9d35ecd58548a384ce3051a546eb785844034c01ee53e635935aba34",
+    "markdown_files": 21,
+    "local_links": 586,
+    "local_markdown_anchor_links": 28,
+    "focused_tests": {
+      "passed": 37,
+      "duration_seconds": 2.51,
+      "scope": [
+        "tools/tests/test_build_inputs.py",
+        "tools/tests/test_build_only_receipt.py",
+        "tools/tests/test_installer_adapter.py",
+        "tools/tests/test_installer_docs.py",
+        "CyrusMCP/tests/test_feature_catalog.py"
+      ]
+    }
+  }
+}

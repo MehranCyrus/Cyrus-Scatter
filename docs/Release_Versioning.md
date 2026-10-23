@@ -2,15 +2,15 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.9 | Source-aware Edit preservation, identification colours and final displayed feedback |
-| Scatter native/package | 0.86.9 / Max 2024, 2026, 2027 | [Delivery and scoped qualification](plans/edit-instances/DELIVERY_0869.md); historical receipts retain their identities |
+| Scatter UI | 0.86.9.2 | Procedural map previews/drop targets, restored native columns and live Edit gizmo feedback |
+| Scatter native/package | 0.86.9.2 / Max 2024, 2026, 2027 | [Delivery and scoped qualification](plans/edit-instances/DELIVERY_08692.md); Max 2027 tested, older hosts built and untested; historical receipts retain their identities |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Native Edit capability / storage | 2 / 2 | Source lineage and inactive history; supported legacy reader and explicit old-reader rejection of upgraded scenes |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
 | Saved MAXScript schema | 59 | Appended source-clearance block; explicit Undoable schema-58 upgrade; earlier schemas remain unsupported |
 | Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
-| Surface Analyzer | 0.14.2 | Independent installer safety correction; matched 2024/2026/2027 payloads qualified with Scatter 0.86.9 |
+| Surface Analyzer | 0.14.2 | Independent installer safety correction; current matched builds tested in Max 2027 only. Three-host 0.86.9 receipts retain their original scope |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
 
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
@@ -24,6 +24,23 @@ the [correction report](plans/source-clearance/DELIVERY_08682.md) records the
 matched build and host evidence separately from prior material-performance work.
 
 ## Choosing the next version
+
+**23 October 2026 correction: 0.86.9.2.** The user requests continued testing and
+repair of the 0.86.9.1 Modify-panel crash, with the additional six-column object
+switching trigger. Restore previous native column ownership while retaining
+the map and Edit fixes. This is a patch with unchanged schema 59, recipe 8,
+Edit capability/storage 2 and independent Analyzer 0.14.2. Earlier package
+identities and passes remain historical; new queued-event lifecycle acceptance
+is required. See the [repair scope](plans/edit-instances/IMPLEMENTATION_08692.md).
+
+**23 October 2026 user-selected patch: 0.86.9.1.** The user requests density-map
+previews, an empty map drop target and first-column resizing, continuing the
+confirmed Edit drag-feedback repair. The [patch plan](plans/edit-instances/IMPLEMENTATION_08691.md)
+preserves placement rules, schema 59, recipe 8 and Edit storage/capability 2.
+Analyzer stays independently versioned at 0.14.2. Produce distinct Max 2024,
+2026 and 2027 payloads, but run tests only for Max 2027 as explicitly requested.
+Older-host compilation is not runtime qualification; retain the earlier
+0.86.9 three-host receipts under their original identities.
 
 **23 October 2026 user-selected delivery: 0.86.9.** The user explicitly selects
 this label for the three Edit-instance refinements and requests installation

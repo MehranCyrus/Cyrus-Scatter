@@ -119,7 +119,7 @@ Object.assign(module.exports.conditions,{
 
 // Empty maps reserve no thumbnail; authoring choices remain reachable while disabled.
 Object.assign(module.exports.conditions,{
- 'distributionUI.densityButton':'distributionUI_obj!=undefined and distributionUI_obj.densityMap!=undefined',
+ 'distributionUI.densityButton':'distributionUI_obj!=undefined',
  'distributionUI.imageThumbnail':'distributionUI_imageThumbnail.bitmap!=undefined',
  'distributionUI.imageState':'distributionUI_imageState.text!=""',
  'distributionUI.markerSizeList':'distributionUI_markersCheck.checked',

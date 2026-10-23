@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(CyrusScatter VERSION 0.86.9 LANGUAGES CXX)
+project(CyrusScatter VERSION 0.86.9.2 LANGUAGES CXX)
 enable_language(C)
 include(ExternalProject)
 set(CYRUS_JPEG_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/third_party/libjpeg-turbo-3.2.0")

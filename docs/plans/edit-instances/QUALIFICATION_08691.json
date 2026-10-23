@@ -1,0 +1,340 @@
+{
+  "schema": "cyrus.scatter-qualification/1",
+  "version": "0.86.9.1",
+  "date": "2026-10-23",
+  "status": "focused Max 2027 acceptance passed; older hosts build-only",
+  "git": {
+    "branch": "codex/workflow-0.75",
+    "head": "dde07870d4c005cb27987c4c46f7f9065cb1e891",
+    "source_state": "HEAD plus scoped uncommitted changes; unrelated workspace changes preserved; no commit or push"
+  },
+  "formats": {
+    "scene_schema": 59,
+    "model": "CyrusUnified2",
+    "recipe": 8,
+    "native_edit": 2,
+    "analyzer": "0.14.2",
+    "content": "0.86.7",
+    "original_paint": "unchanged"
+  },
+  "producers": {
+    "2024": {
+      "AminScatter": {
+        "receipt": "build/ui-edit-08691-20261023/scatter-2024-04/receipt.json",
+        "sha256": "2575a8b0cc5b862adbc8653e2fa06f01b390609a8cfe426fcb266f988fdef4ef",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      },
+      "CyrusSurfaceAnalyzer": {
+        "receipt": "build/ui-edit-08691-20261023/analyzer-2024-02/receipt.json",
+        "sha256": "544ae1fe7cd7ce7e963a1a21d1b30dbb8a217cea95156e02bd30ab932e84844f",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      }
+    },
+    "2026": {
+      "AminScatter": {
+        "receipt": "build/ui-edit-08691-20261023/scatter-2026-04/receipt.json",
+        "sha256": "218d9112a4cfc4725eebd3e3f84528c7a664d739d95c65134601e6ae77745f26",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      },
+      "CyrusSurfaceAnalyzer": {
+        "receipt": "build/ui-edit-08691-20261023/analyzer-2026-02/receipt.json",
+        "sha256": "d3b7326cb81f4868b9bb9660254a099ff64fe8de1a2b1340aaf59b0d60e12696",
+        "tests_run": false,
+        "native_test_count": null,
+        "qualification": "SDK build only; no native executables or Max host tests run"
+      }
+    },
+    "2027": {
+      "AminScatter": {
+        "receipt": "build/ui-edit-08691-20261023/scatter-2027-07/receipt.json",
+        "sha256": "c3a11c2942a8c19655de5473e3c0770a1bfd4a0b101a50cf754c9dd4c00f109a",
+        "tests_run": true,
+        "native_test_count": 56,
+        "qualification": "SDK build and focused Max 2027 tests"
+      },
+      "CyrusSurfaceAnalyzer": {
+        "receipt": "build/ui-edit-08691-20261023/analyzer-2027-02/receipt.json",
+        "sha256": "be7f528cace3c41fed0a14e4344d1500edcef206f23a4894f0728f9bc4689b56",
+        "tests_run": true,
+        "native_test_count": 1,
+        "qualification": "SDK build and focused Max 2027 tests"
+      }
+    }
+  },
+  "verified_current_producer_inputs": 10677,
+  "package_recipe": {
+    "path": "build/ui-edit-08691-20261023/packages03/recipe-receipt.json",
+    "sha256": "af763440160d9ffd39632f1c6004ff0049085843bf49ba8c22c6b5476f78e4d9"
+  },
+  "installer": {
+    "path": "dist/CyrusScatter-0.86.9.1-20261023/CyrusScatter-0.86.9.1-Setup.exe",
+    "sha256": "670e2fb4f0f275a8f951bb55b9c27f349de6c3b6cc0073d4c3224deb535a9010",
+    "bytes": 6443008,
+    "contains_scatter_and_analyzer_for": [
+      2024,
+      2026,
+      2027
+    ],
+    "qualification": "source/build/contained-package verification; no new interactive installer campaign"
+  },
+  "packages": [
+    {
+      "path": "build/ui-edit-08691-20261023/packages03/artifacts/CyrusScatter-0.86.9.1-Max2024.mzp",
+      "sha256": "09fb8b6703992f83ff9dd51ebf5a7676e4aaed68b68a161f969fbb5aec05d88e",
+      "max_year": 2024,
+      "version": "0.86.9.1",
+      "member_count": 31,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/ui-edit-08691-20261023/packages03/artifacts/CyrusScatter-0.86.9.1-Max2026.mzp",
+      "sha256": "9f3b3cce0ea060011f379f3b7665be251e88ad7bec622c49c58b28f030320723",
+      "max_year": 2026,
+      "version": "0.86.9.1",
+      "member_count": 31,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/ui-edit-08691-20261023/packages03/artifacts/CyrusScatter-0.86.9.1-Max2027.mzp",
+      "sha256": "be5610b6a2a6bb782a68a50ff4b3ebd6a937c9d14236bcd537dec09d762a5b07",
+      "max_year": 2027,
+      "version": "0.86.9.1",
+      "member_count": 31,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": true
+    },
+    {
+      "path": "build/ui-edit-08691-20261023/packages03/artifacts/CyrusSurfaceAnalyzer-0.14.2-Max2024.mzp",
+      "sha256": "25f5167f575a5c9634453b722244f2630ded4d57e599bd09dece17fae317c67e",
+      "max_year": 2024,
+      "version": "0.14.2",
+      "member_count": 9,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/ui-edit-08691-20261023/packages03/artifacts/CyrusSurfaceAnalyzer-0.14.2-Max2026.mzp",
+      "sha256": "117c69fdc8c56f258970007a7dbe67b0c9816152fc4446b27b5536974b96b002",
+      "max_year": 2026,
+      "version": "0.14.2",
+      "member_count": 9,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": false
+    },
+    {
+      "path": "build/ui-edit-08691-20261023/packages03/artifacts/CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp",
+      "sha256": "68d1e0ff12d4fa3d82966a36e73c57fbcff4c16e81ca80bc038063d9c5a991e5",
+      "max_year": 2027,
+      "version": "0.14.2",
+      "member_count": 9,
+      "crc_manifest_guards_pass": true,
+      "matches_tested_payload": true
+    }
+  ],
+  "loaded_max_2027_payload": {
+    "AminScatter.dlx": "51c1419fcdf9c4529fe27d7eedf8261306e9217e7e48b99362bf4dd7a0d4a7de",
+    "CyrusBrush.dlx": "c0c9fc1c5cb5055ac73c1704b0783ae0a6a71393b2e50bd48333d92421f91c66",
+    "CyrusBrushStorage.dlh": "27ffc6353a780385c479dc0a24071a2969a42d28c8b0189be6fb277321fa3bc3",
+    "CyrusGallery.dll": "18e095e3404f40e643b9db7868baaa0855af4d20ff654a908639b85af40baaad",
+    "CyrusScatter.ms": "096f956e7d96c58fd4f3a20d3e2cfb3663ea71002342d567aa5a553134fca53d",
+    "CyrusScatterEdit.dlm": "ebd875ff9d8f86cb35db83dab18883c9399a457589eb1f294e55ebafd5a6734d",
+    "CyrusSurfaceAnalyzer.dlx": "d179cf3cb7f023c6592e971e8491378cd147d97bab415cfa014445031b4d1897",
+    "CyrusSurfaceAnalyzer.ms": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69"
+  },
+  "host": {
+    "profile": "build/ui-edit-08691-20261023/host05",
+    "pid": 15292,
+    "closed_after_testing": true,
+    "artist_profile_installed_or_restarted": false,
+    "product_assertions_passed": 50,
+    "accepted_scenarios": [
+      {
+        "request_id": "5e5828f288c94d6eabc2663cc1ec729c",
+        "scenario_id": "density",
+        "run_id": "ae1a0d5f10e84bdcb08b421565c8ecaa",
+        "artifact_id": "e525673476e3656167682346640456f8c70d29f0be793e9cadf5a6dde89ba0e6",
+        "assertions_passed": 7,
+        "result": "build/ui-edit-08691-20261023/host05/result-5e5828f288c94d6eabc2663cc1ec729c.json",
+        "result_sha256": "b83a8e43ac83937dc74323abc172e4dbdd41dd158a9e8ab0ef58a0369e41fd3c",
+        "request_sha256": "92eab91b2f16366c8faf78434f32266d94a24ad8f74338fe6520f3b0b6a5afe1"
+      },
+      {
+        "request_id": "6fb0af22aec14f1988808c660813a953",
+        "scenario_id": "drop_verify",
+        "run_id": "2755680459374fe98e43c8421f75a913",
+        "artifact_id": "d2bda9fc2c22c4008e50b7a85454154f13b37796b4ced2c8cc84753fb769ee76",
+        "assertions_passed": 2,
+        "result": "build/ui-edit-08691-20261023/host05/result-6fb0af22aec14f1988808c660813a953.json",
+        "result_sha256": "4b74c21a96ba7733153e863ff1ffd14e582d659f11f60ac224a23a1132732678",
+        "request_sha256": "38723050973d931f3765865f67022d0e3eeedc92a3a372d36b7fbf48849ae54d"
+      },
+      {
+        "request_id": "a63ec3664df643fea8b12d643e7aaa65",
+        "scenario_id": "layout_verify",
+        "run_id": "2755680459374fe98e43c8421f75a913",
+        "artifact_id": "d2bda9fc2c22c4008e50b7a85454154f13b37796b4ced2c8cc84753fb769ee76",
+        "assertions_passed": 3,
+        "result": "build/ui-edit-08691-20261023/host05/result-a63ec3664df643fea8b12d643e7aaa65.json",
+        "result_sha256": "2f2e02a8c201dc222496c4496a630b902fc9565a685dd72684e344870e009294",
+        "request_sha256": "ed9c05734426911a6e2cdbbd3ff88b3902f833e71440f46a4241339a6a66e256"
+      },
+      {
+        "request_id": "2c0d884b72774f8c8c7cd337c844075e",
+        "scenario_id": "layout_reselect",
+        "run_id": "2755680459374fe98e43c8421f75a913",
+        "artifact_id": "d2bda9fc2c22c4008e50b7a85454154f13b37796b4ced2c8cc84753fb769ee76",
+        "assertions_passed": 1,
+        "result": "build/ui-edit-08691-20261023/host05/result-2c0d884b72774f8c8c7cd337c844075e.json",
+        "result_sha256": "0edcd460e10b4a9ec6471538a2badfa661d1aa3341ba34a582742077b9693ad0",
+        "request_sha256": "d4c504eb5c133023d7808dd71b2c464677f6c544590bc7eef8036767cc89a5c8"
+      },
+      {
+        "request_id": "b7b79d14126a469d805844557bbb2b9a",
+        "scenario_id": "physical_verify",
+        "run_id": "ae1a0d5f10e84bdcb08b421565c8ecaa",
+        "artifact_id": "e525673476e3656167682346640456f8c70d29f0be793e9cadf5a6dde89ba0e6",
+        "assertions_passed": 6,
+        "result": "build/ui-edit-08691-20261023/host05/result-b7b79d14126a469d805844557bbb2b9a.json",
+        "result_sha256": "4b25b8a687d26d2f4329ab8e89c0577b46732791ae2ec6c0a79081acc9a0a809",
+        "request_sha256": "332002de6303a77a47ca47b7426a8ae1699707d08c92fca44dcdf683da965ec9"
+      },
+      {
+        "request_id": "d59d4c34726b46c9b76bc551bb352481",
+        "scenario_id": "feedback_manual",
+        "run_id": "ae1a0d5f10e84bdcb08b421565c8ecaa",
+        "artifact_id": "e525673476e3656167682346640456f8c70d29f0be793e9cadf5a6dde89ba0e6",
+        "assertions_passed": 1,
+        "result": "build/ui-edit-08691-20261023/host05/result-d59d4c34726b46c9b76bc551bb352481.json",
+        "result_sha256": "be741de76df67efdcad1669dd65e8324047526d25c9ad0772519e91f7f906c03",
+        "request_sha256": "bc487f6b7fdbbef8dc88fd0b0541b1d81b93dd817d7ecd8d6052ca9497d3eae8"
+      },
+      {
+        "request_id": "9013c39dcebc4254984d62abb3653ab7",
+        "scenario_id": "bench",
+        "run_id": "ae1a0d5f10e84bdcb08b421565c8ecaa",
+        "artifact_id": "e525673476e3656167682346640456f8c70d29f0be793e9cadf5a6dde89ba0e6",
+        "assertions_passed": 6,
+        "result": "build/ui-edit-08691-20261023/host05/result-9013c39dcebc4254984d62abb3653ab7.json",
+        "result_sha256": "bb449aacbcaad3aa82befd55106461222a5b77d6eaae28df105a9143a1e3482b",
+        "request_sha256": "f7b04ccda30431c4dec00738eb69453ad6251d1f5b0ebfa3e5541a7451a44b0d"
+      },
+      {
+        "request_id": "6dbec195aa55445da4f56b29b931fad6",
+        "scenario_id": "lifecycle",
+        "run_id": "ae1a0d5f10e84bdcb08b421565c8ecaa",
+        "artifact_id": "e525673476e3656167682346640456f8c70d29f0be793e9cadf5a6dde89ba0e6",
+        "assertions_passed": 5,
+        "result": "build/ui-edit-08691-20261023/host05/result-6dbec195aa55445da4f56b29b931fad6.json",
+        "result_sha256": "c9ea5ea538a241364312a4d85241061a3637e284645bf825f4c37f014ee616e3",
+        "request_sha256": "080ad9ab50e8f0eb0ccf5762868fb82954d96a43001e5d28c3c519cfbc0551ab"
+      },
+      {
+        "request_id": "2544a91f2e66445ab7eb698e2c799f39",
+        "scenario_id": "old_scene",
+        "run_id": "ae1a0d5f10e84bdcb08b421565c8ecaa",
+        "artifact_id": "e525673476e3656167682346640456f8c70d29f0be793e9cadf5a6dde89ba0e6",
+        "assertions_passed": 2,
+        "result": "build/ui-edit-08691-20261023/host05/result-2544a91f2e66445ab7eb698e2c799f39.json",
+        "result_sha256": "1c7689ac19bd9f1cf73a5f078f9d82d945346f99e7385324c0cdbc20784f8409",
+        "request_sha256": "9f03a0fb796a474979c579164ce86f22c1fc3df1f9e0b7febb2c23b1d4ebda84"
+      },
+      {
+        "request_id": "8dfb69da233b4034a6e4eeac9eaf6aed",
+        "scenario_id": "analyzer",
+        "run_id": "ae1a0d5f10e84bdcb08b421565c8ecaa",
+        "artifact_id": "e525673476e3656167682346640456f8c70d29f0be793e9cadf5a6dde89ba0e6",
+        "assertions_passed": 1,
+        "result": "build/ui-edit-08691-20261023/host05/result-8dfb69da233b4034a6e4eeac9eaf6aed.json",
+        "result_sha256": "ffaae8e78669b784c84d56cbe0031f5f36044793f878ace40623005ed9700739",
+        "request_sha256": "23c34c356fe6649ef5116474fddd76ad783181e93c1202ce56adb835aff8f93f"
+      },
+      {
+        "request_id": "97dfb874a9214aae995bd6aaf7b823d1",
+        "scenario_id": "feedback",
+        "run_id": "2755680459374fe98e43c8421f75a913",
+        "artifact_id": "d2bda9fc2c22c4008e50b7a85454154f13b37796b4ced2c8cc84753fb769ee76",
+        "assertions_passed": 7,
+        "result": "build/ui-edit-08691-20261023/host05/result-97dfb874a9214aae995bd6aaf7b823d1.json",
+        "result_sha256": "71e5e6c3638e483c27bd1af95c07b96405569c4b32456fa9bb2a659e7d7679a5",
+        "request_sha256": "1747c2d4a96ad12d6e61a3cc40ea925815e20ef23e17f81fd5073205d37e44b0"
+      },
+      {
+        "request_id": "14c7240ce45c44a99d3345f398d4eff0",
+        "scenario_id": "stack",
+        "run_id": "2755680459374fe98e43c8421f75a913",
+        "artifact_id": "d2bda9fc2c22c4008e50b7a85454154f13b37796b4ced2c8cc84753fb769ee76",
+        "assertions_passed": 3,
+        "result": "build/ui-edit-08691-20261023/host05/result-14c7240ce45c44a99d3345f398d4eff0.json",
+        "result_sha256": "758c9ab51bd907b2d7fbf370b68df6dcde06ea2d38fbd5c7068f131a36ae7a2b",
+        "request_sha256": "0d12dcfb17a320504e60432629805c3edfcbedd13de2becc09f9226b994fa542"
+      },
+      {
+        "request_id": "87dd9e391eda4b919fb4ee26b228d70d",
+        "scenario_id": "guards",
+        "run_id": "2755680459374fe98e43c8421f75a913",
+        "artifact_id": "d2bda9fc2c22c4008e50b7a85454154f13b37796b4ced2c8cc84753fb769ee76",
+        "assertions_passed": 6,
+        "result": "build/ui-edit-08691-20261023/host05/result-87dd9e391eda4b919fb4ee26b228d70d.json",
+        "result_sha256": "6302b7d779553875fba6176a515eb124b3acc14b12f4e4ee01b668c34b21efb3",
+        "request_sha256": "a24fc63b7d594d50d76262673c00a8cd71084ae7fb6fd32fc797997a2368507f"
+      }
+    ],
+    "physical_input": [
+      "Move gizmo mouse drag with held/release trace",
+      "Checker map dropped onto empty native mapbutton; Instance chosen"
+    ],
+    "physical_trace": "build/ui-edit-08691-20261023/host05/physical-frames.tsv",
+    "failed_test_only_requests_retained": [
+      "98b43280323f4ef28e37a1bc47f78287",
+      "93e0d06e43a540cba62bec3e07247299"
+    ],
+    "failure_explanation": "Over-strict nested HWND width assumption and diagnostic missing control symbol; corrected acceptance checks visible controls against actual clipping slot. Prior product candidates remain excluded."
+  },
+  "offline": {
+    "scatter_native_2027": 56,
+    "analyzer_native_2027": 1,
+    "focused_python": 35,
+    "generated_controls": 333,
+    "delimiter_fixtures": 32,
+    "python_scope": [
+      "tools/tests/test_build_inputs.py",
+      "tools/tests/test_build_only_receipt.py",
+      "tools/tests/test_installer_adapter.py",
+      "CyrusMCP/tests/test_feature_catalog.py"
+    ],
+    "generated_receipt_directory": "build/ui-edit-08691-20261023/generated03"
+  },
+  "limits": [
+    "Max 2024 and 2026 built only; neither native tests nor hosts run",
+    "Density target accepts TextureMaps, not complete materials",
+    "Generic procedural thumbnail is not receiver/camera/renderer-accurate; use Show mask",
+    "Full geometry presentation still commits after release and can retain the prior complete frame while staging",
+    "B37 clone-dependent copied Edit stack/radius remapping remains open",
+    "Generation/receiver compatibility guards remain enforced",
+    "No broad high-DPI, production-scene, renderer, device-loss or long-soak qualification",
+    "Knowledge documents updated separately; selected index remains stale; no website publication"
+  ],
+  "documentation": {
+    "receipt": "build/ui-edit-08691-20261023/documentation-check.json",
+    "sha256": "25c5ae667851b6a926bf85239d266bf349feaf030933ad5bb66d1cbfd4b3a967",
+    "markdown_files": 17,
+    "local_links": 570,
+    "local_markdown_anchor_links": 28,
+    "focused_doc_catalog_tests": {
+      "passed": 3,
+      "duration_seconds": 0.07,
+      "scope": [
+        "tools/tests/test_installer_docs.py",
+        "CyrusMCP/tests/test_feature_catalog.py"
+      ]
+    }
+  }
+}

@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--project', choices=('scatter', 'analyzer'), default='scatter')
     parser.add_argument('--generator', choices=('NMake Makefiles', 'Ninja'), default='NMake Makefiles')
     parser.add_argument('--jobs', type=int, choices=range(1, 5), default=1)
+    parser.add_argument('--build-only', action='store_true', help='Compile without running native tests; receipt explicitly records untested payloads')
     parser.add_argument('--preview-fault-lab', action='store_true', help='NEVER SHIP: isolated Scatter SDK preview faults')
     parser.add_argument('--placement-qualification', action='store_true', help='NEVER SHIP: isolated placement/Undo probes')
     parser.add_argument('--sdk-root', type=Path)
@@ -44,7 +45,7 @@ def main():
     folder.mkdir(parents=True, exist_ok=True)
     project = 'AminScatter' if args.project == 'scatter' else 'CyrusSurfaceAnalyzer'
     options = {'max_year': args.year, 'generator': args.generator, 'configuration': 'Release',
-               'build_testing': True, 'team_license': bool(args.year and args.project == 'scatter'),
+               'build_testing': not args.build_only, 'team_license': bool(args.year and args.project == 'scatter'),
                'team_trust_header': str(args.team_trust_header.resolve()),
                'preview_fault_lab': args.preview_fault_lab, 'placement_qualification': args.placement_qualification}
     pending = {'schema': 'cyrus.native-build/2', 'status': 'pending', 'project': args.project, 'max_year': args.year}
@@ -52,7 +53,7 @@ def main():
     initial = build_inputs.source_manifest(ROOT, project, options)
     enable_flag = 'AMIN_BUILD_MAX' if args.project == 'scatter' else 'CYRUS_ANALYZER_BUILD_MAX'
     command = ['cmake', '-S', str(ROOT/project), '-B', str(folder), '-G', args.generator,
-               '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_TESTING=ON', f'-D{enable_flag}='+('ON' if args.year else 'OFF'),
+               '-DCMAKE_BUILD_TYPE=Release', '-DBUILD_TESTING='+('OFF' if args.build_only else 'ON'), f'-D{enable_flag}='+('ON' if args.year else 'OFF'),
                '-DCYRUS_NATIVE_LICENSE_EXPERIMENT=OFF', '-DCYRUS_LICENSE_INSTALLATION_CONTEXT=OFF']
     if args.project == 'scatter':
         command += ['-DCYRUS_PREVIEW_TEST_FAULTS='+('ON' if args.preview_fault_lab else 'OFF'),
@@ -84,7 +85,8 @@ def main():
     frozen = build_inputs.native_manifest(ROOT, project, folder, env, options)
     (folder/'inputs-before.json').write_text(json.dumps(frozen, indent=2)+'\n', encoding='utf-8')
     stage('build', build_command)
-    stage('tests', ['ctest', '--test-dir', str(folder), '--output-on-failure', '-j', '1'])
+    if not args.build_only:
+        stage('tests', ['ctest', '--test-dir', str(folder), '--output-on-failure', '-j', '1'])
     if build_inputs.source_manifest(ROOT, project, options) != initial:
         raise SystemExit('Selected sources changed during build/tests; receipt remains pending.')
     if build_inputs.native_manifest(ROOT, project, folder, env, options) != frozen:
@@ -106,7 +108,9 @@ def main():
         'input_manifest': frozen, 'input_manifest_sha256': build_inputs.identity(frozen),
         'producer_receipts': producers, **audit,
         'preview_fault_lab': args.preview_fault_lab, 'placement_qualification': args.placement_qualification,
-        'qualification': 'SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.'}
+        'tests_run': not args.build_only,
+        'qualification': ('SDK compilation only; native tests and Max host tests NOT RUN.' if args.build_only else
+                          'SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.')}
     (folder/'receipt.json').write_text(json.dumps(complete, indent=2)+'\n', encoding='utf-8')
 
 

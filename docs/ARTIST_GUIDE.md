@@ -1,6 +1,6 @@
-# Cyrus Scatter 0.86.9 — artist workflow
+# Cyrus Scatter 0.86.9.2 — artist workflow
 
-The 0.86.9 delivery targets **Max 2024, 2026 and 2027** and includes **Surface Analyzer 0.14.2** in one EXE. Exact qualification, the Orange Tree pivot finding and copy limitations are recorded in the [delivery report](plans/edit-instances/DELIVERY_0869.md). Existing supported edits are preserved; save upgraded scenes as new copies because older plugins cannot read the new source-aware Edit format.
+The 0.86.9.2 EXE includes distinct **Max 2024, 2026 and 2027** builds and **Surface Analyzer 0.14.2**. **This patch was tested only in Max 2027; the 2024/2026 builds are untested.** The [delivery report](plans/edit-instances/DELIVERY_08692.md) records the density controls, native column lifecycle, live Edit movement and preservation checks. Existing supported edits are preserved; save upgraded scenes as new copies because plugins older than 0.86.9 cannot read source-aware Edit data.
 
 For library models already added to a layer, highlight the row in **Models &
 Points** and use **Select sources**. **Show sources** and **Hide sources** change
@@ -20,7 +20,7 @@ receivers and distribution yourself, then **Update scatter** in Manual mode.
 Corona is required for the supplied materials. Personal recipes remain separate.
 Successful model additions now show a banner naming the model and destination
 layer. Failed imports show an error banner and retain the previous scene.
-The **0.86.9** installer updates Scatter and Surface Analyzer 0.14.2 for Max 2024, 2026 and 2027 and detects your existing library.
+The **0.86.9.2** installer updates Scatter and Surface Analyzer 0.14.2 for Max 2024, 2026 and 2027 and detects your existing library.
 Save and close the target Max versions, then choose **Install / Update** for the versions you need and reopen them afterwards.
 **Uninstall Scatter** removes Scatter registration while keeping the independent Analyzer, your library
 and scenes. To install or update the library, put
@@ -34,6 +34,7 @@ plugin version changes. See the
 
 Drag rollout headers to arrange the Modify panel. Cyrus leaves Max's saved rollout order intact when the controller is deselected and selected again.
 The order is a Max user preference; open/closed and Advanced state retain their existing presentation behavior. Max packs whole rollouts into columns, so a tall open rollout can move to the next column when it does not fit.
+0.86.9.2 restores Max-controlled column geometry after a crash in the 0.86.9.1 width adjustment. Switching Scatter objects in wide Modify panels is covered by focused Max 2027 checks. Small native insets can remain; padding removal is deferred.
 
 Common parameter edits now refresh affected sections and reuse unchanged layout.
 When many sections are saved open, later sections appear in queued batches.
@@ -209,7 +210,9 @@ Count accepts up to **1,000,000** per population. All populations on one control
 
 **Image / pattern density** and **Surface density** are independent. White permits plants, black excludes them and gray thins them. Enabled masks multiply with Paint and terrain eligibility before spacing/collision limits.
 
-**Choose pattern** opens the bundled starter masks: Uniform, Soft patches and Wide bands. **Image** and **Map** share the next row and are available even before an image has been selected. Map enables **Use image** and selects **Map coordinates**, evaluating the graph on each receiving surface. Supported graphs include Vertex Color, Color Correction, Output, Checker, Bitmap, Mix, Noise, RGB Multiply and Gradient. A Vertex Color node can read its own data channel, and Checker can read its own UV channel; nested outputs retain that context. A complete material is not a scalar density map. Renderer/camera-dependent maps and unsupported classes report an error. The three masks are original mathematical images; the user's final artwork can extend this collection later. An empty or procedural map leaves no blank thumbnail space. A selected bitmap shows the complete tile.
+**Choose pattern** opens the bundled starter masks: Uniform, Soft patches and Wide bands. **Image** and the native **Map** target share the next row and remain available when empty. Max may label an empty map target **None**. Click it to browse, or drag a **texture map** from the Material Editor onto it; choose Instance to keep the same editable map. Map enables **Use image** and selects **Map coordinates**, evaluating the graph on each receiving surface. Supported graphs include Vertex Color, Color Correction, Output, Checker, Bitmap, Mix, Noise, RGB Multiply and Gradient. A Vertex Color node can read its own data channel, and Checker can read its own UV channel; nested outputs retain that context. A complete material is not a scalar density map. Renderer/camera-dependent maps and unsupported classes report an error. The three masks are original mathematical images; the user's final artwork can extend this collection later.
+
+A selected bitmap shows the complete tile. Procedural maps now show a small cached texture preview. Receiver-dependent graphs can look different on the actual surface: use **Show mask** to inspect the field Scatter evaluates. A failed thumbnail clears the preview without removing the assigned map. Opening or refreshing this thumbnail preserves pending Manual settings and the current scatter result.
 
 **World XY** projects without receiver UVs. **Scatter local XY** follows the setup frame. Physical **Tile X/Y**, size lock, rotation and offsets control the pattern footprint; **Repeat** tiles it and **Clamp** extends border pixels. **Receiver UV** explicitly reads UV channel 1..99 and has U/V repeats and offsets. Projected World/Scatter-local images do not require UVs. Receiver UV needs the selected UV channel; Map coordinates needs each channel requested by its graph. Invert precedes the image density curve. Initial placement and Relax use the same native image sampler.
 
@@ -458,6 +461,12 @@ it does not mark the trunk or automatically recenter a model. The library Orange
 Tree has geometry offset from its pivot, so its trunk can remain beside a correct
 handle. Changing the source pivot intentionally changes placement semantics.
 
+In **0.86.9.2**, the selected handle and Move gizmo follow your drag immediately.
+The complete scatter display commits after release, so heavy geometry can still
+take time to finish presenting. The previous complete display may remain briefly
+while that work finishes. Undo, Redo and Cancel preserve their existing behavior;
+you do not need to delete and recreate Edit to receive this feedback fix.
+
 Remove sources through **Models & Points**. Edits belonging to the removed model
 remain saved and inactive. Matching surviving instances keep their edits; a
 replacement model cannot inherit them merely by taking the same list position.
@@ -479,7 +488,7 @@ another instance transform or selected-radius change.
 
 Existing supported scenes load without an automatic reset. Save a new upgraded
 copy and keep the original: source-aware Edit data saved by 0.86.9 requires
-0.86.9 or later. See the [delivery evidence and limits](plans/edit-instances/DELIVERY_0869.md).
+0.86.9 or later. See the [current delivery evidence and limits](plans/edit-instances/DELIVERY_08692.md) and [original source-aware Edit qualification](plans/edit-instances/DELIVERY_0869.md).
 
 ## Copy and recipe variation (0.84.0)
 

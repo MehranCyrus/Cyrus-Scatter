@@ -6,15 +6,17 @@
 
 The capability matrix and MCP agent workflow remain at their existing `Current_System_2026-10-05` paths because code/catalog generation and external references use them. Their directory date does not make their maintained content obsolete. The semantic inventory, catalog hashes and current control register are functional inputs, not disposable prose.
 
-The 23 October 2026 maintenance reconciles current guidance with [Scatter 0.86.9](plans/edit-instances/DELIVERY_0869.md): source-aware Edit history, identification colours, final displayed feedback, native Edit storage/capability 2 and one EXE containing matched Max 2024/2026/2027 payloads with Surface Analyzer 0.14.2. Schema 59, recipe 8, original Paint and content revision 0.86.7 are preserved. The [qualification manifest](plans/edit-instances/QUALIFICATION_0869.json) retains the exact producer/package/host evidence. The remaining full-object Copy limitation is tracked as [B37](BACKLOG.md#edit-instance-findings--0869); it is not a completed fix. Earlier performance, rendering and host evidence retain their original limits. Knowledge selection, actual freshness and direct-source routing are recorded in the [knowledge entrypoint](../tools/rag/README.md). This documentation pass does not rebuild plugin packages, activate a knowledge index, build a website or publish one.
+The 23 October 2026 patch maintenance reconciles current guidance with [Scatter 0.86.9.2](plans/edit-instances/DELIVERY_08692.md): procedural map thumbnails and empty map drop targets, safe native Modify column ownership, live Edit movement and native Edit storage/capability 2. One EXE contains matched Max 2024/2026/2027 payloads with Surface Analyzer 0.14.2; only Max 2027 was tested for this patch, while older hosts are build-only and untested. Schema 59, recipe 8, original Paint and content revision 0.86.7 are preserved. The [qualification manifest](plans/edit-instances/QUALIFICATION_08692.json) retains exact producer/package/host evidence. The remaining full-object Copy limitation is tracked as [B37](BACKLOG.md#edit-instance-findings--0869); it is not a completed fix. Earlier performance, rendering and host evidence retain their original limits. Knowledge selection, actual freshness and direct-source routing are recorded in the [knowledge entrypoint](../tools/rag/README.md). No knowledge index activation, website build/publication or Git push is implied by this maintenance.
 
-This pass checked 20 maintained/campaign Markdown files: 662 local links and
+The preceding 0.86.9 documentation pass checked 20 maintained/campaign Markdown files: 662 local links and
 16 current anchor links resolve. Generated integration checks pass for 333
 controls and 32 bounded delimiter fixtures; the three focused installer-doc and
 catalog tests pass. The native producer source hashes and all seven qualified
 EXE/MZP hashes still match the 0.86.9 evidence. Catalog changes are help metadata
-only. Local receipts are under `build/docs-0869-20261023-01/`; no new Max runtime
+only. Those historical local receipts are under `build/docs-0869-20261023-01/`; no new Max runtime
 qualification is implied by these documentation checks.
+
+The corrected delivery adds independent native-event-loop survival checks after UI mutations, including wide-panel owner switches. The [documentation receipt](../build/crash-08691-20261023-01/documentation-check.json) records current links and focused doc/catalog tests. Historical 0.86.9.1 receipts remain intact with acceptance withdrawn. Documentation checks do not extend runtime qualification to older hosts.
 
 ## What to keep
 

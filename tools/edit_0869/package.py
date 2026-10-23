@@ -1,4 +1,4 @@
-"""Stage frozen host pairs or construct the 0.86.9 three-host installer.
+"""Stage frozen host pairs or construct the current three-host installer.
 
 This recipe never builds native modules, installs into Max, or copies content.
 Original producer directories remain required by the version-2 receipts.
@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 import build_inputs
 import build_max
 
-VERSION = "0.86.9"
+VERSION = build_max.scatter_version()
 ANALYZER_VERSION = "0.14.2"
 YEARS = (2024, 2026, 2027)
 SCATTER_NATIVE = ("AminScatter.dlx", "CyrusScatterEdit.dlm", "CyrusBrush.dlx", "CyrusBrushStorage.dlh")
@@ -48,7 +48,7 @@ def copy_artifact(source, destination, sidecars=()):
 
 def verify_pair(year, scatter, analyzer):
     if year not in YEARS or build_max.scatter_version() != VERSION:
-        raise ValueError("Expected the frozen 0.86.9 product source and a supported host")
+        raise ValueError("Expected the frozen current product source and a supported host")
     scatter, analyzer = Path(scatter).resolve(), Path(analyzer).resolve()
     receipts = {"AminScatter": scatter / "receipt.json", "CyrusSurfaceAnalyzer": analyzer / "receipt.json"}
     for project, directory, names in (("AminScatter", scatter, SCATTER_NATIVE),

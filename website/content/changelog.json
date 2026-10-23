@@ -3,6 +3,114 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. Historical work-state notes retain their original review date. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.86.9.2",
+      "date": "2026-10-23",
+      "title": "Native Modify layout restored",
+      "era": "recent",
+      "legacy": false,
+      "note": "Current user-test build. Max 2027 tested; Max 2024/2026 built and untested. Schema 59, recipe 8, Edit storage 2 and optional content 0.86.7 are retained.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Restores Max-owned column sizing after the 0.86.9.1 Modify-panel regression, including wide-panel switching between Scatter controllers."
+        },
+        {
+          "kind": "Changed",
+          "text": "Keeps procedural map previews, empty Map drop targets and live Edit movement feedback. Small native column padding may remain."
+        },
+        {
+          "kind": "Improved",
+          "text": "Focused Max 2027 checks include queued UI owner switches, fresh creation, Undo/Redo, saved scenes, Edit lifecycle and physical map drag/drop."
+        }
+      ],
+      "evidence": [
+        "docs/plans/edit-instances/DELIVERY_08692.md"
+      ]
+    },
+    {
+      "version": "0.86.9.1",
+      "date": "2026-10-23",
+      "title": "Map thumbnails and live Edit feedback — withdrawn",
+      "era": "recent",
+      "legacy": false,
+      "note": "Superseded by 0.86.9.2 after a reproduced Modify-panel layout crash. Do not install this version.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Procedural density maps gain cached thumbnails and native TextureMap drop targets that also work when empty."
+        },
+        {
+          "kind": "Improved",
+          "text": "Selected Edit handles and the Move gizmo track the authored gesture; full geometry commits after release."
+        },
+        {
+          "kind": "Changed",
+          "text": "Its column-fitting adjustment is withdrawn; use the corrected 0.86.9.2 installer."
+        }
+      ],
+      "evidence": [
+        "docs/plans/edit-instances/DELIVERY_08691.md"
+      ]
+    },
+    {
+      "version": "0.86.9",
+      "date": "2026-10-23",
+      "title": "Source-aware Edit instances",
+      "era": "recent",
+      "legacy": false,
+      "note": "Source-aware Edit storage is version 2. Preserve original scenes and save upgraded copies; older plugins cannot read the upgraded Edit data.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Edit handles use Model, Layer or Bands colors and share final displayed positions with picking and transform gizmos."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Removing a source retains its authored move, deletion and clone history inactive; surviving compatible source identities retain their own edits."
+        },
+        {
+          "kind": "Changed",
+          "text": "Generation and receiver guards remain active. Whole-object Copy of clone-dependent Edit stacks or clone-targeted radius histories remains limited."
+        },
+        {
+          "kind": "Changed",
+          "text": "One EXE includes independently versioned Surface Analyzer 0.14.2 and distinct Max 2024/2026/2027 payloads."
+        }
+      ],
+      "evidence": [
+        "docs/plans/edit-instances/DELIVERY_0869.md"
+      ]
+    },
+    {
+      "version": "0.86.8.7",
+      "date": "2026-10-23",
+      "title": "Viewport memory controls and reliability repairs",
+      "era": "recent",
+      "legacy": false,
+      "note": "Viewport memory is a Max installation preference. Original Paint, placement identities and optional content 0.86.7 remain unchanged.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Viewport & render > Viewport memory offers Automatic or a Custom 256–65,536 MiB Mesh allowance. Refresh display retries published planting without applying pending Manual placement changes."
+        },
+        {
+          "kind": "Improved",
+          "text": "Coordinated Mesh resource accounting and bounded source inspection support the measured high-polygon tree case while retaining CPU/device safeguards."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Boundary Relax image sampling follows the common density path; bounded spatial queries reduce repeated projection work."
+        },
+        {
+          "kind": "Improved",
+          "text": "Installer backup recovery, matching-payload checks and malformed mesh/automation-result validation are strengthened."
+        }
+      ],
+      "evidence": [
+        "docs/plans/code-quality/DELIVERY_08687.md"
+      ]
+    },
+    {
       "version": "0.86.8.6",
       "date": "2026-10-23",
       "title": "Library gallery version correction",
@@ -137,11 +245,11 @@
       "changes": [
         {
           "kind": "Fixed",
-          "text": "Candidates rejected by a displaced blocker are reconsidered without spending another layer\u00e2\u20ac\u2122s refill allowance."
+          "text": "Candidates rejected by a displaced blocker are reconsidered without spending another layerâ€™s refill allowance."
         },
         {
           "kind": "Fixed",
-          "text": "Unused model policies no longer change another layer\u00e2\u20ac\u2122s settlement schedule."
+          "text": "Unused model policies no longer change another layerâ€™s settlement schedule."
         },
         {
           "kind": "Improved",
@@ -199,7 +307,7 @@
         },
         {
           "kind": "Fixed",
-          "text": "New layers inherit the selected layer\u00e2\u20ac\u2122s current receiving surfaces. Point and replacement-model workflows retain both layers; missing receivers get a No surface diagnosis."
+          "text": "New layers inherit the selected layerâ€™s current receiving surfaces. Point and replacement-model workflows retain both layers; missing receivers get a No surface diagnosis."
         },
         {
           "kind": "Fixed",
@@ -511,7 +619,7 @@
       "changes": [
         {
           "kind": "Added",
-          "text": "World direction and Look at target modes, explicit source forward axes and 0\u00e2\u20ac\u201c100% geometric-normal blending."
+          "text": "World direction and Look at target modes, explicit source forward axes and 0â€“100% geometric-normal blending."
         },
         {
           "kind": "Improved",
@@ -1279,7 +1387,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer \u00e2\u2020\u2019 Surfaces \u00e2\u2020\u2019 Models \u00e2\u2020\u2019 Amount \u00e2\u2020\u2019 Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer â†’ Surfaces â†’ Models â†’ Amount â†’ Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

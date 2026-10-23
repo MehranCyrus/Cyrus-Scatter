@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="488c5dedf63755ad2e28d5a76be015602957a843f41eedfdd97aef5facadcd3c"
+﻿global CyrusLoadedScriptFingerprint="0ad7c6d83f3e3bf7518a9636b895435897c9ebd845b87868f695f2dc03ec9aff"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -1736,7 +1736,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.9"
+fn CyrusLibraryVersion = "0.86.9.2"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -1951,7 +1951,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.9 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.9.2 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -2543,7 +2543,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.9 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.9.2 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -2719,11 +2719,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.9 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.9.2 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.9.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.9 gallery package."
+    if assemblyName.Version.ToString()!="0.86.9.2" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.9.2 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -2965,7 +2965,7 @@ fn CyrusViewportMemoryPreferences = pathConfig.appendPath (getDir #plugcfg) "Cyr
 fn CyrusInitializeViewportMemory = (
     if CyrusViewportMemoryInitialized==true do return true
     if cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined do
-        throw "Install the complete Cyrus 0.86.9 package and restart Max."
+        throw "Install the complete Cyrus 0.86.9.2 package and restart Max."
     local value=0,stored=getINISetting (CyrusViewportMemoryPreferences()) "Memory" "LimitMiB"
     if stored!="" do try(value=stored as integer)catch(value=0)
     if value!=0 and (value<256 or value>65536) do value=0
@@ -5907,7 +5907,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.9"
+    fn uiVersion = "0.86.9.2"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -6243,7 +6243,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.86.9" on (
+        undo "Upgrade Cyrus scene to 0.86.9.2" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -7422,7 +7422,7 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.9 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.9.2 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
@@ -7430,20 +7430,20 @@ initialRollupState:0x8
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.86.9 requires its matching source-aware Edit modules. Restart Max with the complete package."
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.86.9 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.9 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.9 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.9 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.9 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.9 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.9 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.86.9.2 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.86.9.2 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.9.2 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.9.2 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.9.2 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.9.2 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.9.2 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.9.2 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.9 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.9.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -12578,7 +12578,7 @@ initialRollupState:0x8
         label distributionUI_seedSpin_caption "Seed: " pos:[6,6] width:(populationUI.width-12) height:18
         label distributionUI_densityHeading "Texture density" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
         mapbutton distributionUI_densityButton "Map" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/33.6))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/33.6))))) tooltip:"Choose a 3ds Max texture map such as Noise or Bitmap, or drag one from the Material Editor. A material itself is not a density mask." height:22
-        button distributionUI_mapBrowseButton "Map" width:((populationUI.width-16-((amin 2 (amax 1 (floor ((populationUI.width-8)/44))))-1)*4)/(amin 2 (amax 1 (floor ((populationUI.width-8)/44))))) tooltip:"Choose a 3ds Max texture map directly. No image is required. The selected map name below also accepts maps dragged from the Material Editor." height:22
+        mapbutton distributionUI_mapBrowseButton "Map" width:((populationUI.width-16-((amin 2 (amax 1 (floor ((populationUI.width-8)/44))))-1)*4)/(amin 2 (amax 1 (floor ((populationUI.width-8)/44))))) tooltip:"Choose or drag a texture map from the Material Editor, including when empty. Drag the map itself; a complete material has no single density channel." height:22
         checkbox distributionUI_invertCheck "Invert density" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/98.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/98.8))))) tooltip:"Reverse the density map's white and black eligibility."
         spinner distributionUI_uvChannelSpin "" type:#integer range:[1,99,1] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result."
         label distributionUI_uvChannelSpin_caption "UV channel:" pos:[6,6] width:(populationUI.width-12) height:18
@@ -12589,7 +12589,7 @@ initialRollupState:0x8
         checkbox distributionUI_imageCheck "Use image" tooltip:"Enable the chosen pattern, image or texture map. White permits plants; black excludes them. Independent of the mesh-channel mask."
         button distributionUI_patternButton "Choose pattern..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/106.4))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/106.4))))) tooltip:"Browse original Cyrus masks. Choosing one changes only image density." height:22
         button distributionUI_imageButton "Image" width:((populationUI.width-16-((amin 2 (amax 1 (floor ((populationUI.width-8)/44))))-1)*4)/(amin 2 (amax 1 (floor ((populationUI.width-8)/44))))) tooltip:"Choose an image file, read as linear density data." height:22
-        imgTag distributionUI_imageThumbnail "" width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:72 style:#bmp_stretch transparent:(color 255 0 255) tooltip:"Complete density image tile. Procedural maps remain editable; use Show mask to inspect their evaluated field."
+        imgTag distributionUI_imageThumbnail "" width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:72 style:#bmp_stretch transparent:(color 255 0 255) tooltip:"Density texture preview. Procedural maps remain editable. Receiver-dependent maps can differ on the surface; use Show mask for the evaluated field."
         label distributionUI_imageState "" width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:36
         dropdownlist distributionUI_coordinatesList "" items:#("World XY","Scatter local XY","Receiver UV","Map coordinates") selection:1 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Map coordinates uses each map's own UV/data channels on the receiver. Other modes project a sampled image using Scatter's controls."
         label distributionUI_coordinatesList_caption "Coordinates" pos:[6,6] width:(populationUI.width-12) height:18
@@ -12663,6 +12663,28 @@ initialRollupState:0x8
         local distributionUI_binding=false,
         distributionUI_obj=undefined,distributionUI_parentView=undefined
         local distributionUI_controlsReady=false
+        local distributionUI_thumbnailMap=undefined,distributionUI_thumbnailRevision=-1,distributionUI_thumbnailInterval=#(),distributionUI_thumbnailBitmap=undefined,distributionUI_thumbnailOwned=false,distributionUI_thumbnailRenders=0
+        fn distributionUI_releaseThumbnail = (
+            distributionUI_imageThumbnail.bitmap=undefined
+            if distributionUI_thumbnailOwned and distributionUI_thumbnailBitmap!=undefined do try(close distributionUI_thumbnailBitmap)catch()
+            distributionUI_thumbnailMap=undefined;distributionUI_thumbnailRevision=-1;distributionUI_thumbnailInterval=#();distributionUI_thumbnailBitmap=undefined;distributionUI_thumbnailOwned=false
+        )
+        fn distributionUI_syncThumbnail = (
+            if distributionUI_obj==undefined or distributionUI_obj.densityMap==undefined do (distributionUI_releaseThumbnail();return false)
+            local texture=distributionUI_obj.densityMap,revision=distributionUI_obj.procWatchDensity(),tick=currentTime as integer
+            if distributionUI_thumbnailMap==texture and distributionUI_thumbnailRevision==revision and distributionUI_thumbnailInterval.count==3 and tick>=distributionUI_thumbnailInterval[1] and tick<=distributionUI_thumbnailInterval[2] do (
+                distributionUI_imageThumbnail.bitmap=distributionUI_thumbnailBitmap;return true
+            )
+            distributionUI_releaseThumbnail()
+            distributionUI_thumbnailMap=texture;distributionUI_thumbnailRevision=revision
+            distributionUI_thumbnailInterval=try(cyrusScatterInputValidity #() #() #(texture))catch(#(tick,tick,false))
+            if classof texture==Bitmaptexture then distributionUI_thumbnailBitmap=try(texture.bitmap)catch(undefined)
+            else (
+                distributionUI_thumbnailBitmap=try(renderMap texture size:[72,72] display:false)catch(undefined)
+                distributionUI_thumbnailOwned=distributionUI_thumbnailBitmap!=undefined;distributionUI_thumbnailRenders+=1
+            )
+            distributionUI_imageThumbnail.bitmap=distributionUI_thumbnailBitmap;true
+        )
         fn distributionUI_arrangePopulation = true
         fn distributionUI_syncControls = (
             for c in #(distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin) do c.enabled=distributionUI_obj.placementMode==1
@@ -12676,12 +12698,13 @@ initialRollupState:0x8
             local projected=distributionUI_obj.densityCoordinateMode!=3
             for c in #(distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_tileXSpin,distributionUI_tileYSpin,distributionUI_tileLockCheck,distributionUI_repeatXSpin,distributionUI_repeatYSpin,distributionUI_headingSpin,distributionUI_offsetXSpin,distributionUI_offsetYSpin,distributionUI_offsetUSpin,distributionUI_offsetVSpin,distributionUI_wrappingList,distributionUI_bakeImageButton) do c.enabled=projected
             distributionUI_tileLockCheck.checked=distributionUI_obj.densityTileLock;distributionUI_wrappingList.selection=distributionUI_obj.densityWrapMode+1
-            distributionUI_densityButton.text="Map"
+            distributionUI_densityButton.text=if distributionUI_obj.densityMap==undefined then "None (drag map here)" else distributionUI_obj.densityMap.name
+            distributionUI_mapBrowseButton.map=distributionUI_obj.densityMap;distributionUI_mapBrowseButton.text="Map"
             distributionUI_imageState.text=if distributionUI_obj.densityMap==undefined then "" else distributionUI_obj.densityMap.name
             distributionUI_imageState.tooltip=if distributionUI_obj.densityMap==undefined then "Choose a pattern, Image or Map." else distributionUI_obj.densityMap.name+". Use Show mask to inspect the evaluated density. More settings contains portable snapshot baking."
-            -- ImgTag supports clearing with undefined and scales the entire tile.
-            -- Browsing must not render procedural maps or create resized pixel copies.
-            distributionUI_imageThumbnail.bitmap=if classof distributionUI_obj.densityMap==Bitmaptexture then try(distributionUI_obj.densityMap.bitmap)catch(undefined) else undefined
+            -- One small cached preview, separate from the placement-density cache.
+            -- Repeated binding of an unchanged map does not render it again.
+            distributionUI_syncThumbnail()
             distributionUI_maskViewList.selection=CyrusMaskView;distributionUI_maskDetailList.selection=CyrusMaskDetail;distributionUI_opacitySpin.value=CyrusMaskOpacity;distributionUI_markersCheck.checked=CyrusMaskMarkers;distributionUI_markerSizeList.selection=CyrusMaskMarkerSize
             distributionUI_tileXSpin.value=distributionUI_obj.densityTileXWU
             distributionUI_tileYSpin.value=distributionUI_obj.densityTileYWU
@@ -13062,13 +13085,10 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
-        on distributionUI_mapBrowseButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
+        on distributionUI_mapBrowseButton picked value do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "distributionUI_mapBrowseButton"
             if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
-            try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
-            local target=distributionUI_obj,value=materialBrowseDlg #maps #instanceOnly
-            if value!=undefined do distributionUI_assignDensityMap target value
-        )
+            try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do distributionUI_assignDensityMap distributionUI_obj value
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -13297,7 +13317,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(distributionUI_populationRadio.state==1),(distributionUI_populationRadio.state==2),(distributionUI_imageThumbnail.bitmap!=undefined),(distributionUI_obj!=undefined and distributionUI_obj.densityMap!=undefined),(distributionUI_imageCheck.checked and (true)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3 and not distributionUI_tileLockCheck.checked)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3 and not distributionUI_tileLockCheck.checked)),(distributionUI_imageCheck.checked and (distributionUI_modeRadio.state==2)),(distributionUI_meshCheck.checked),(distributionUI_meshCheck.checked and distributionUI_meshSourceList.selection==1),(true),(distributionUI_markersCheck.checked),distributionUI_presetsButton.text,distributionUI_modeRadio.text,distributionUI_populationRadio.text,distributionUI_densityHeading.text,distributionUI_densityButton.text,distributionUI_mapBrowseButton.text,distributionUI_invertCheck.text,distributionUI_uvHint.text,distributionUI_mapHint.text,distributionUI_imageCheck.text,distributionUI_patternButton.text,distributionUI_imageButton.text,distributionUI_imageState.text,distributionUI_tileLockCheck.text,distributionUI_imageCurveButton.text,distributionUI_bakeImageButton.text,distributionUI_markersCheck.text,distributionUI_meshCheck.text,distributionUI_meshInvertCheck.text,distributionUI_meshCurveButton.text,distributionUI_meshPreviewButton.text,distributionUI_meshHideButton.text,distributionUI_meshHint.text,populationPolicyUI_repairCheck.text,populationPolicyUI_info.text,distributionUI_modeRadio_caption.text,distributionUI_populationRadio_caption.text,distributionUI_countSpin_caption.text,distributionUI_densitySpin_caption.text,distributionUI_seedSpin_caption.text,distributionUI_uvChannelSpin_caption.text,distributionUI_resolutionList_caption.text,distributionUI_coordinatesList_caption.text,distributionUI_wrappingList_caption.text,distributionUI_maskViewList_caption.text,distributionUI_maskDetailList_caption.text,distributionUI_opacitySpin_caption.text,distributionUI_markerSizeList_caption.text,distributionUI_tileXSpin_caption.text,distributionUI_tileYSpin_caption.text,distributionUI_repeatXSpin_caption.text,distributionUI_repeatYSpin_caption.text,distributionUI_headingSpin_caption.text,distributionUI_offsetXSpin_caption.text,distributionUI_offsetYSpin_caption.text,distributionUI_offsetUSpin_caption.text,distributionUI_offsetVSpin_caption.text,distributionUI_meshSourceList_caption.text,distributionUI_meshChannelSpin_caption.text,distributionUI_meshComponentList_caption.text,distributionUI_meshMinSpin_caption.text,distributionUI_meshMaxSpin_caption.text,populationPolicyUI_populationList_caption.text,populationPolicyUI_attemptSpin_caption.text,populationPolicyUI_roundSpin_caption.text,distributionUI_presetsButton.visible,distributionUI_modeRadio.visible,distributionUI_populationRadio.visible,distributionUI_countSpin.visible,distributionUI_densitySpin.visible,distributionUI_seedSpin.visible,distributionUI_densityHeading.visible,distributionUI_densityButton.visible,distributionUI_mapBrowseButton.visible,distributionUI_invertCheck.visible,distributionUI_uvChannelSpin.visible,distributionUI_resolutionList.visible,distributionUI_uvHint.visible,distributionUI_mapHint.visible,distributionUI_imageCheck.visible,distributionUI_patternButton.visible,distributionUI_imageButton.visible,distributionUI_imageThumbnail.visible,distributionUI_imageState.visible,distributionUI_coordinatesList.visible,distributionUI_tileLockCheck.visible,distributionUI_wrappingList.visible,distributionUI_imageCurveButton.visible,distributionUI_bakeImageButton.visible,distributionUI_maskViewList.visible,distributionUI_maskDetailList.visible,distributionUI_opacitySpin.visible,distributionUI_markersCheck.visible,distributionUI_markerSizeList.visible,distributionUI_tileXSpin.visible,distributionUI_tileYSpin.visible,distributionUI_repeatXSpin.visible,distributionUI_repeatYSpin.visible,distributionUI_headingSpin.visible,distributionUI_offsetXSpin.visible,distributionUI_offsetYSpin.visible,distributionUI_offsetUSpin.visible,distributionUI_offsetVSpin.visible,distributionUI_meshCheck.visible,distributionUI_meshSourceList.visible,distributionUI_meshChannelSpin.visible,distributionUI_meshComponentList.visible,distributionUI_meshMinSpin.visible,distributionUI_meshMaxSpin.visible,distributionUI_meshInvertCheck.visible,distributionUI_meshCurveButton.visible,distributionUI_meshPreviewButton.visible,distributionUI_meshHideButton.visible,distributionUI_meshHint.visible,populationPolicyUI_populationList.visible,populationPolicyUI_attemptSpin.visible,populationPolicyUI_roundSpin.visible,populationPolicyUI_repairCheck.visible,populationPolicyUI_info.visible,distributionUI_densityHeading.height,distributionUI_uvHint.height,distributionUI_mapHint.height,distributionUI_imageState.height,distributionUI_meshHint.height,populationPolicyUI_info.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(distributionUI_populationRadio.state==1),(distributionUI_populationRadio.state==2),(distributionUI_imageThumbnail.bitmap!=undefined),(distributionUI_obj!=undefined),(distributionUI_imageCheck.checked and (true)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection!=3 and not distributionUI_tileLockCheck.checked)),(distributionUI_imageCheck.checked and (distributionUI_coordinatesList.selection==3 and not distributionUI_tileLockCheck.checked)),(distributionUI_imageCheck.checked and (distributionUI_modeRadio.state==2)),(distributionUI_meshCheck.checked),(distributionUI_meshCheck.checked and distributionUI_meshSourceList.selection==1),(true),(distributionUI_markersCheck.checked),distributionUI_presetsButton.text,distributionUI_modeRadio.text,distributionUI_populationRadio.text,distributionUI_densityHeading.text,distributionUI_densityButton.text,distributionUI_mapBrowseButton.text,distributionUI_invertCheck.text,distributionUI_uvHint.text,distributionUI_mapHint.text,distributionUI_imageCheck.text,distributionUI_patternButton.text,distributionUI_imageButton.text,distributionUI_imageState.text,distributionUI_tileLockCheck.text,distributionUI_imageCurveButton.text,distributionUI_bakeImageButton.text,distributionUI_markersCheck.text,distributionUI_meshCheck.text,distributionUI_meshInvertCheck.text,distributionUI_meshCurveButton.text,distributionUI_meshPreviewButton.text,distributionUI_meshHideButton.text,distributionUI_meshHint.text,populationPolicyUI_repairCheck.text,populationPolicyUI_info.text,distributionUI_modeRadio_caption.text,distributionUI_populationRadio_caption.text,distributionUI_countSpin_caption.text,distributionUI_densitySpin_caption.text,distributionUI_seedSpin_caption.text,distributionUI_uvChannelSpin_caption.text,distributionUI_resolutionList_caption.text,distributionUI_coordinatesList_caption.text,distributionUI_wrappingList_caption.text,distributionUI_maskViewList_caption.text,distributionUI_maskDetailList_caption.text,distributionUI_opacitySpin_caption.text,distributionUI_markerSizeList_caption.text,distributionUI_tileXSpin_caption.text,distributionUI_tileYSpin_caption.text,distributionUI_repeatXSpin_caption.text,distributionUI_repeatYSpin_caption.text,distributionUI_headingSpin_caption.text,distributionUI_offsetXSpin_caption.text,distributionUI_offsetYSpin_caption.text,distributionUI_offsetUSpin_caption.text,distributionUI_offsetVSpin_caption.text,distributionUI_meshSourceList_caption.text,distributionUI_meshChannelSpin_caption.text,distributionUI_meshComponentList_caption.text,distributionUI_meshMinSpin_caption.text,distributionUI_meshMaxSpin_caption.text,populationPolicyUI_populationList_caption.text,populationPolicyUI_attemptSpin_caption.text,populationPolicyUI_roundSpin_caption.text,distributionUI_presetsButton.visible,distributionUI_modeRadio.visible,distributionUI_populationRadio.visible,distributionUI_countSpin.visible,distributionUI_densitySpin.visible,distributionUI_seedSpin.visible,distributionUI_densityHeading.visible,distributionUI_densityButton.visible,distributionUI_mapBrowseButton.visible,distributionUI_invertCheck.visible,distributionUI_uvChannelSpin.visible,distributionUI_resolutionList.visible,distributionUI_uvHint.visible,distributionUI_mapHint.visible,distributionUI_imageCheck.visible,distributionUI_patternButton.visible,distributionUI_imageButton.visible,distributionUI_imageThumbnail.visible,distributionUI_imageState.visible,distributionUI_coordinatesList.visible,distributionUI_tileLockCheck.visible,distributionUI_wrappingList.visible,distributionUI_imageCurveButton.visible,distributionUI_bakeImageButton.visible,distributionUI_maskViewList.visible,distributionUI_maskDetailList.visible,distributionUI_opacitySpin.visible,distributionUI_markersCheck.visible,distributionUI_markerSizeList.visible,distributionUI_tileXSpin.visible,distributionUI_tileYSpin.visible,distributionUI_repeatXSpin.visible,distributionUI_repeatYSpin.visible,distributionUI_headingSpin.visible,distributionUI_offsetXSpin.visible,distributionUI_offsetYSpin.visible,distributionUI_offsetUSpin.visible,distributionUI_offsetVSpin.visible,distributionUI_meshCheck.visible,distributionUI_meshSourceList.visible,distributionUI_meshChannelSpin.visible,distributionUI_meshComponentList.visible,distributionUI_meshMinSpin.visible,distributionUI_meshMaxSpin.visible,distributionUI_meshInvertCheck.visible,distributionUI_meshCurveButton.visible,distributionUI_meshPreviewButton.visible,distributionUI_meshHideButton.visible,distributionUI_meshHint.visible,populationPolicyUI_populationList.visible,populationPolicyUI_attemptSpin.visible,populationPolicyUI_roundSpin.visible,populationPolicyUI_repairCheck.visible,populationPolicyUI_info.visible,distributionUI_densityHeading.height,distributionUI_uvHint.height,distributionUI_mapHint.height,distributionUI_imageState.height,distributionUI_meshHint.height,populationPolicyUI_info.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -13412,7 +13432,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] (amin 72 cellWidth))
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_densityButton);show=(true and (distributionUI_obj!=undefined and distributionUI_obj.densityMap!=undefined))
+            rowControls=#(distributionUI_densityButton);show=(true and (distributionUI_obj!=undefined))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/33.6))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -13909,7 +13929,7 @@ initialRollupState:0x8
         )
         on populationUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
         on populationUI open do (controlsReady=false)
-        on populationUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
+        on populationUI close do (distributionUI_releaseThumbnail();stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
 
     )
         populationUI
@@ -18696,14 +18716,14 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.86.9" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.86.9.2" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
-        button upgradeButton "Upgrade scene to 0.86.9" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
+        button upgradeButton "Upgrade scene to 0.86.9.2" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         timer bindTimer interval:1 active:false
@@ -18850,7 +18870,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.9 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.9.2 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()

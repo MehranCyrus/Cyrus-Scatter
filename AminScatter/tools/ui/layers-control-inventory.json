@@ -472,7 +472,7 @@
         "name": "densityButton"
       },
       {
-        "kind": "button",
+        "kind": "mapbutton",
         "name": "mapBrowseButton"
       },
       {

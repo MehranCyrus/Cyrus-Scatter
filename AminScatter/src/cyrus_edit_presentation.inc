@@ -85,3 +85,15 @@ Value* cyrusEditInspect_cf(Value** a,int count){
     }
     return_value(vl.result);
 }
+
+// Read one actual handle matrix without materializing the population. Published
+// inspection above deliberately continues to report committed renderer feedback.
+def_visible_primitive(cyrusEditHandleMatrix,"cyrusEditHandleMatrix");
+Value* cyrusEditHandleMatrix_cf(Value** a,int count){
+    check_arg_count(cyrusEditHandleMatrix,3,count);auto* m=edit(a[0]);
+    const auto found=m->layers.find(a[1]->to_int());const auto index=a[2]->to_int64();
+    if(found==m->layers.end()||index<1||std::uint64_t(index)>found->second.rows.size())throw RuntimeError(_T("Unknown Edit handle"));
+    const auto& l=found->second;const auto i=unsigned(index-1);
+    if(!l.active||l.invalid||!l.shown(l.rows.get(i)))return &undefined;
+    return new Matrix3Value(m->handleMatrix(l,i));
+}

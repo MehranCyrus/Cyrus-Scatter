@@ -364,6 +364,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
   .replace(name+'.height=y+4;', 'lastLayoutStamp=geometryStamp widthValue;'+name+'.height=y+4;');
  if(definition.advancedLabel)final=final.replace('advancedToggle.visible=true;advancedToggle.pos=', 'advancedToggle.text=if advancedToggle.checked then "Fewer settings" else '+JSON.stringify(definition.advancedLabel)+';advancedToggle.visible=true;advancedToggle.pos=');
  final=final.replace('            binding=true;controlsReady=false','            stopListDrag();binding=true;controlsReady=false').replace('on '+name+' close do (','on '+name+' close do (stopListDrag();');
+ if(components.some(p=>p.key==='distributionUI'))final=final.replace('on '+name+' close do (','on '+name+' close do (distributionUI_releaseThumbnail();');
  // The parent blocks all events throughout bind. Release each copied guard
  // afterwards as well: components without their own binding local otherwise
  // inherit true forever, leaving visible buttons inert after a successful bind.
