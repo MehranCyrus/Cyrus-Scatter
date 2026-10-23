@@ -87,9 +87,21 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
     command=[f'C:/Program Files/Autodesk/3ds Max {max_year}/3dsmax.exe','-q','-i',str(folder/'max.ini'),'-p',str(folder/'plugins.ini'),'-U','MAXScript',str(start),'-listenerlog',str(folder/'listener.log')]
     if silent_startup:command.insert(2,'-silent')
     startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=1 if visible else 0
-    process=subprocess.Popen(command,cwd=folder,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,startupinfo=startup)
+    # -i redirects the INI, but not Max's rollout order/workspaces or user tools.
+    # Keep physical UI tests from sharing those files with the artist session.
+    environment=os.environ.copy()
+    user_directories={
+        'ADSK_3DSMAX_APPDATA_DIR':folder/'userdata',
+        'ADSK_3DSMAX_USERSETTINGS_DIR':folder/'usersettings',
+        'ADSK_3DSMAX_USERTOOLS_DIR':folder/'usertools',
+    }
+    for key,path in user_directories.items():
+        path.mkdir(exist_ok=True)
+        environment[key]=str(path)
+    process=subprocess.Popen(command,cwd=folder,env=environment,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,startupinfo=startup)
     metadata={'pid':process.pid,'max_year':max_year,'output':str(folder),'command':command,'binaries':modules,
               'script_sha256':digest(copied),'script_assets':assets,'normal_profile_modified':False,'development_transport':transport,'preview_fault_lab':preview_fault_lab,'placement_qualification':placement_qualification,
-              'profile_template':str(profile),'profile_template_sha256':hashlib.sha256(profile_bytes).hexdigest()}
+              'profile_template':str(profile),'profile_template_sha256':hashlib.sha256(profile_bytes).hexdigest(),
+              'user_directories':{key:str(path) for key,path in user_directories.items()}}
     (folder/'launch.json').write_text(json.dumps(metadata,indent=2)+'\n')
     return process,metadata

@@ -109,6 +109,7 @@ def main():
     version=re.search(r'project\(CyrusScatter VERSION ([0-9.]+)',(ROOT/'AminScatter/CMakeLists.txt').read_text())[1]
     assert re.findall(r'fn uiVersion = "([^"]+)"',text)==[version]
     assert re.findall(r'fn CyrusLibraryVersion = "([^"]+)"',text)==[version]
+    assert re.findall(r'assemblyName.Version.ToString\(\)!="([^"]+)"',text)==[version]
     assert text.count('rollout mainUI "Cyrus Scatter '+version+'"')==1
     container=text[text.index('plugin helper CyrusSourceContainer'):]
     assert re.findall(r'rollout (\w+) "',container)==['containerUI']
@@ -120,7 +121,7 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==329  # 0.86.8 adds eight source clearance controls.
+    assert len(current)==332  # 0.86.8.3 adds three scene-source access actions.
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
     assert len(layout['sections'])==12
     for section in layout['sections']:

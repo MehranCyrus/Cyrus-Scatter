@@ -44,7 +44,10 @@ Value* cyrusSetRolloutVisible_cf(Value** args, int count) {
     auto* panel=rollup->GetPanel(page);
     if (index<0 || rollup->GetPanelDlg(index)!=page || !panel)
         return &false_value;
-    panel->SetCategory(args[2]->to_int());
+    // Creation categories provide defaults. Max restores the artist's dragged
+    // order from its category registry; visibility must not reset it.
+    // Keep the third argument for the existing matched-script API.
+    (void)args[2];
     if (args[1]->to_bool()) rollup->Show(index);
     else rollup->Hide(index);
     rollup->UpdateLayout();

@@ -2,7 +2,7 @@
 // Container views bind those same owners; generation adds no engine.
 const fs=require('fs');
 const crypto=require('crypto');
-let text=fs.readFileSync('tools/ui/templates/unified-core.ms','utf8').replace(/\r/g,'');
+let text=require('./assemble-template.cjs')('tools/ui/templates/unified-core.ms');
 text=require('./licensing.cjs')(text);
 const check=process.argv.includes('--check');
 // Keep semantic MCP identities independent of the approved presentation.
@@ -10,6 +10,8 @@ require('./inventory.cjs')(text+'\n'+fs.readFileSync('tools/ui/templates/contain
 text=require('./approved-layout.cjs')(text,{check});
 text=require('./container-system.cjs')(text);
 text=fs.readFileSync('tools/ui/templates/presets.ms','utf8').replace(/\r/g,'')+'\n'+text;
+text=fs.readFileSync('tools/ui/templates/paint-export.ms','utf8').replace(/\r/g,'')+'\n'+text;
+text=fs.readFileSync('tools/ui/templates/source-access.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/recipes.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/density-patterns.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=require('./asset-adapters.cjs')({check})+'\n'+fs.readFileSync('tools/ui/templates/asset-shaders.ms','utf8').replace(/\r/g,'')+'\n'+fs.readFileSync('tools/ui/templates/assets.ms','utf8').replace(/\r/g,'')+'\n'+text;

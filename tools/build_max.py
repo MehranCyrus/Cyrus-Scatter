@@ -55,6 +55,15 @@ def scatter_version():
         raise ValueError('Scatter native/package metadata differs from the displayed development version.')
     return version
 
+def verify_gallery(path, version, year):
+    receipt = json.loads(path.with_suffix('.build.json').read_text(encoding='utf-8'))
+    assembly_version = '.'.join(version.split('.') + ['0'] * (4-len(version.split('.'))))
+    if (receipt.get('assembly_version') != assembly_version or receipt.get('max_year') != year
+        or receipt.get('artifact_sha256') != sha(path.read_bytes())
+        or receipt.get('source_sha256') != sha((ROOT/'AminScatter/ui/LibraryGallery.cs').read_bytes())
+        or receipt.get('shared_source_sha256') != sha((ROOT/'AminScatter/shared/LibraryLocation.cs').read_bytes())):
+        raise ValueError('Gallery release/host/source/artifact differs from its verified build receipt. Rebuild the gallery.')
+
 
 def reject_development_binary(filename, data, *, allow_owned_preview=False, allow_owned_placement=False):
     if allow_owned_placement:
@@ -197,6 +206,14 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         reject_development_binary(filename, payload[filename])
     team_key = require_team_authority(payload['AminScatter.dlx'], args.team_trust_header) if project == 'AminScatter' else None
     native_id = sha(b''.join(payload[n] for n in sorted(payload)))[:12]
+    analyzer_script = (ROOT / project / 'scripts' / script_name).read_bytes() if project == 'CyrusSurfaceAnalyzer' else b''
+    analyzer_tokens = {
+        '__MAX_YEAR__': args.max_year, '__MAX_VERSION__': (args.max_year - 1998) * 1000,
+        '__VERSION__': version, '__RUNTIME_ID__': sha(payload.get('CyrusSurfaceAnalyzer.dlx', b'') + analyzer_script)[:16],
+        '__NATIVE_SHA256__': sha(payload.get('CyrusSurfaceAnalyzer.dlx', b'')),
+        '__SCRIPT_SHA256__': sha(analyzer_script),
+        '__STARTUP_SHA256__': sha((ROOT/project/'installer/CyrusSurfaceAnalyzerStartup.ms').read_text(encoding='utf-8-sig').encode('utf-8')) if project == 'CyrusSurfaceAnalyzer' else '',
+    }
     for path in sorted((ROOT / project / 'installer').iterdir()):
         if path.is_file():
             text = path.read_text(encoding='utf-8-sig')
@@ -208,10 +225,10 @@ def package(project, name, version, native_names, script_name, args, build_dir):
                                      '__NATIVE_ID__': native_id, '__VERSION__': version}.items():
                     text = text.replace(token, str(value))
             else:
-                if path.name == 'install.ms' and ('28000' not in text or '2026' not in text):
-                    raise RuntimeError('Analyzer installer host guard changed')
-                text = text.replace('2026', str(args.max_year)).replace('28000', str((args.max_year - 1998) * 1000))
-                text = text.replace('bin05', f'bin-max{args.max_year}-{native_id}')
+                if path.name == 'install.ms' and '__MAX_VERSION__' not in text:
+                    raise RuntimeError('Missing Analyzer installer host guard')
+                for token, value in analyzer_tokens.items():
+                    text = text.replace(token, str(value))
             if path.name == 'mzp.run':
                 # MZP uses a numeric version; retain full SemVer in its name,
                 # filename and manifest, rather than emitting 1.0.0 syntax.
@@ -220,6 +237,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
             payload[path.name] = text.encode('utf-8')
     payload['CyrusScatter.ms' if project == 'AminScatter' else script_name] = (ROOT / project / 'scripts' / script_name).read_bytes()
     if project == 'AminScatter':
+        verify_gallery(build_dir / project / 'CyrusGallery.dll', version, args.max_year)
         payload['CyrusGallery.dll'] = (build_dir / project / 'CyrusGallery.dll').read_bytes()
         installer = build_dir / project / 'CyrusInstaller.dll'
         installer_receipt = json.loads(installer.with_suffix('.build.json').read_text(encoding='utf-8'))
@@ -227,6 +245,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
             raise RuntimeError('Installer core source/artifact identity differs from its build receipt.')
         payload['CyrusInstaller.dll'] = installer.read_bytes()
         payload['Clipper2-LICENSE.txt'] = (ROOT / project / 'third_party/clipper2/LICENSE').read_bytes()
+        payload['Clipper2-NOTICE.txt'] = (ROOT / project / 'third_party/clipper2/CYRUS-CHANGES.md').read_bytes()
         payload['SurfaceGeodesic-LICENSE.txt'] = (ROOT / project / 'third_party/geodesic/LICENSE').read_bytes()
         payload['SurfaceGeodesic-NOTICE.txt'] = (ROOT / project / 'third_party/geodesic/CYRUS_CHANGES.md').read_bytes()
         payload['nlohmann-json-LICENSE.txt'] = (ROOT / 'CyrusLicensing/third_party/nlohmann/LICENSE.MIT').read_bytes()
@@ -272,7 +291,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Use Data Channel Curvature > Vertex Output or VertexPaint to author values. White permits plants; black excludes them.\n'
            'Preview mask is an explicit cached snapshot of at most 2,048 grayscale face-centre markers; refresh after edits.\n'
            'Paint controls have short hover help for density/scale fades, edges, brush actions and feedback.\n'
-           'Painting > Export spline creates an independent local-XY snapshot. Pick spline... imports closed contours using Replace or Add and a world-unit tolerance.\n'
+           'Painting > Export spline offers Optimized and Exact independent snapshots. Optimized reduces planar boundary knots within a world-unit tolerance; original Paint remains unchanged. Attached surface exports retain Exact geometry.\n'
+           'Pick spline... imports closed contours using Replace or Add and a world-unit tolerance.\n'
            'Select a layer; its Surfaces and Models are independent of other layers. Paint Areas are optional.\n'
            'Edit layers in the Scatter controller Modify panel.\n'
            'Source rectangles open compact collection properties for moving and resizing.\n'
@@ -280,7 +300,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Hover controls for short explanations. Models & Points offers Pick object and Make point.\n'
            'Each layer owns models and count/density. Named Paint Areas target its receivers and combine coverage without duplicate plants.\n'
            'Population, transforms and cleanup belong to the layer. Capacity: 10 populations; area APIs bound each layer to 128 areas/receivers.\n'
-           'CyrusUnified1, schema 58: create fresh current setups. Earlier development scenes and retired payloads are rejected without migration.\n'
+           'CyrusUnified2, schema 59: existing supported schema 58 scenes require the explicit scene upgrade command; save an upgraded copy.\n'
            'Preserve old scenes with their matching build. Earlier stroke formats are not converted and have no legacy brush fallback.\n'
            'Density preserves unchanged receiver candidates below the cap. Fixed Total redistributes quotas and preserves surviving base candidates.\n'
            'Changing local Relax neighborhoods, masks, spacing or geometry can change accepted output; face IDs do not survive arbitrary remeshing.\n'
@@ -297,6 +317,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
              'Spline Bands > Scale (below density): Off, Follow Density, or Custom with Edit scale curve.\n'
              'The profile multiplies Band Min/Max size; Follow Density links the curve shape, not Density %.\n'
            'Bands have stable identities, Consecutive/Independent ranges, Rounded/Sharp corners, density curves and display colors.\n'
+           'Dense Bands admit up to 8,192 total sampled vertices under bounded construction, query and outline work. Complex overlaps may still reach a separate limit; failed successors retain the last complete result.\n'
+           'Models & Points > Source access: Select sources keeps visibility; Show/Hide sources preserves renderable flags; Edit material opens the assigned scene material in Slate. Shared instances change together.\n'
            'Manual field previews can show pending inputs while plants and radii remain from the last Update.\n'
            'Auto Radius uses conservative XY/3D bounds for explicitly supported source types; other source types retain Manual radius.\n'
            'Point and constrained boundary Relax prepare ordinary candidates before eligibility and protected Edit.\n'
@@ -321,7 +343,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Statistics & diagnostics > Advanced records bounded process-wide events. Start, Stop and Save work without MCP.\n'
            'Read recording status explicitly; the diagnostic controls have no polling timer or background disk writes.\n'
            'Box, Sphere and Pyramid proxies use retained instanced geometry; CPU fallback remains available.\n'
-           'Surface Analyzer 0.14 is independently installed; this Scatter package does not change it.\n'
+           'Surface Analyzer 0.14.1 is independently installed; this Scatter package does not change it.\n'
            'Outdated guides retain the last complete scatter. Analyze first, then Update scatter in Manual mode.\n'
            if project == 'AminScatter' else 'Published guide freshness is saved. Older guides need one explicit Analyze.\n'
            'Pending geometry events are checked before validation, analysis and saving.\n') +
@@ -408,7 +430,7 @@ def main():
             run([sys.executable, ROOT / project / 'tools/build_installer.py', '--output', dest / 'CyrusInstaller.dll'], env)
     package('AminScatter', 'Cyrus Scatter', scatter_version(), ['AminScatter.dlx', 'CyrusScatterEdit.dlm', 'CyrusBrush.dlx', 'CyrusBrushStorage.dlh'],
             'AminScatterObject.ms', args, base)
-    package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],
+    package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14.1', ['CyrusSurfaceAnalyzer.dlx'],
             'CyrusSurfaceAnalyzer.ms', args, base)
 
 

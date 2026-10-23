@@ -1,12 +1,12 @@
 # Cyrus Scatter documentation
 
-Current standalone Physics Lab: [0.2.1 small baked collider repair](Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md), [artist guide](Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md) and [bake/checkbox/material qualification](Scatter_Physics_Research_2026-10-16/BAKE_WORKFLOW_020.md). Earlier Physics Lab reports retain their versioned scope.
-**Current delivery: 0.86.8.2, schema 59, Max 2024/2026/2027 packages.** [Clearance UI, visible Relax, packages and qualification](plans/source-clearance/DELIVERY_08682.md). Historical [0.86.7.2 three-host receipts](plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) and independent Physics Lab reports retain their own scope. The execution ledger records remaining work.
+Current standalone Physics Lab: [0.3.0 shared instances, persistent proxy colliders, primitive choices and drop-height handle](Scatter_Physics_Research_2026-10-16/INSTANCES_030.md). Earlier Physics Lab reports retain their versioned scope.
+**Current combined-installer test delivery: 0.86.8.6, schema 59, with Analyzer 0.14.1 for Max 2024/2026/2027.** [Scope, qualification and delivery](plans/combined-installer/DELIVERY_08686.md). Earlier reports retain their original qualification.
 
 | Need | Current source |
 | --- | --- |
 | Use the plugin | [Artist guide](ARTIST_GUIDE.md), [Layout and falloff](LAYOUT_AND_FALLOFF.md) |
-| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.8.2 delivery and artist checklist](plans/source-clearance/DELIVERY_08682.md) |
+| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [combined-installer delivery and remaining acceptance](plans/combined-installer/DELIVERY_08686.md) |
 | Understand source and behavioral guarantees | [Architecture](ARCHITECTURE.md), [engineering foundation](ENGINEERING_FOUNDATION.md) |
 | Plan source radius, clearance and layer priority | [Implementation plan](plans/source-clearance/IMPLEMENTATION_PLAN.md) and [validation matrix](plans/source-clearance/VALIDATION.md) — implemented hierarchy, native C++ rules, deterministic priority, cleanup/refill, persistence and UI; the delivery report distinguishes exercised checks from the broader matrix |
 | Review the source-clearance implementation | [Independent code and delivery review](plans/source-clearance/REVIEW_0868_20261020.md) — historical findings preserved; [0.86.8.1 correction evidence](plans/source-clearance/DELIVERY_08681.md) resolves F1/F2 and measures F3; the [independent 0.86.8.1 review](plans/source-clearance/REVIEW_08681_20261020.md) records its separate repeat tests and limits |
@@ -21,7 +21,7 @@ Current standalone Physics Lab: [0.2.1 small baked collider repair](Scatter_Phys
 | Find current repository evidence | [Knowledge service, selected corpus and verification](../tools/rag/README.md); verify freshness and request full contracts |
 | Find historical qualification or proposals | [History](HISTORY.md), [archive](archive/README.md), [per-file decisions](documentation-inventory.csv) |
 | Use the separate Analyzer | [Analyzer guide](../CyrusSurfaceAnalyzer/README.md) |
-| Use and understand the standalone Physics Lab | [Documentation set](Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md), current [0.2.1 small baked collider repair](Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md) and [artist workflow](Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md). Earlier versioned guides and receipts retain their original scope. |
+| Use and understand the standalone Physics Lab | [Documentation set](Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md), current [0.3.0 workflow and qualification](Scatter_Physics_Research_2026-10-16/INSTANCES_030.md). Earlier versioned guides and receipts retain their original scope. |
 | How could Physics and animation fit the foundation? | [Extension contract](ENGINEERING_FOUNDATION.md#physics-and-animation-extension-contract), [research and separate execution ledger](Scatter_Physics_Research_2026-10-16/README.md), and [standalone Physics Lab](../CyrusPhysicsLab/README.md). Integration into Scatter and broader animation remain future work. |
 | How should the browser landscape studio and exported presentation work? | [Presentation-only Three.js/Vite MVP plan](plans/landscape-presentation/README.md), [dated research](plans/landscape-presentation/RESEARCH_2026-10-15.md), [implementation evidence](plans/landscape-presentation/PROGRESS.md) and [local run instructions](../presentation-studio/README.md) — desktop-first private MVP tested with the selected Botanical Islands model; [camera desk 0.3.0](plans/landscape-presentation/CAMERA_DESK.md) adds resize, safe guides and Orbit playback review; broader device/publication qualification later; existing website remains separate |
 

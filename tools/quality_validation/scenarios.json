@@ -1,0 +1,555 @@
+{
+  "schema": "cyrus.max-scenarios/1",
+  "max_year": 2027,
+  "scenarios": [
+    {
+      "id": "R1-M01",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M01-01"
+      ],
+      "trigger": "Old Analyzer pair + current Scatter",
+      "expected": "Exact missing-interface failure; old complete Scatter result retained"
+    },
+    {
+      "id": "R1-M02",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M02-01"
+      ],
+      "trigger": "Fresh disposable installation \u2192 restart \u2192 inspect loaded paths/hashes; both mixed old/new combinations",
+      "expected": "Current pair actually loaded; mismatched pairs fail explicitly without partial publication"
+    },
+    {
+      "id": "R1-M03",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M03-01"
+      ],
+      "trigger": "Actual Layout picker, Select, Analyze button and channel controls",
+      "expected": "Correct owner; usable status; Border/Centerline/Points/Single/Edge Row assignment works"
+    },
+    {
+      "id": "R1-M04",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M04-01"
+      ],
+      "trigger": "Analyzer line/point Area masks and boundary falloff",
+      "expected": "Correct bounded filtering, deterministic repeat and source assignment"
+    },
+    {
+      "id": "R1-M05",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M05-01"
+      ],
+      "trigger": "Manual Analyzer pending edit + unchanged Scatter read + changed successor",
+      "expected": "Cache remains usable; changed successor rejects stale guides; explicit Analyze/Update recovers"
+    },
+    {
+      "id": "R1-M06",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M06-01"
+      ],
+      "trigger": "Relevant geometry/parent/parameter/animation versus unrelated edit/idle",
+      "expected": "Relevant Real-time update settles; unrelated activity does no Analyze; Manual remains pending"
+    },
+    {
+      "id": "R1-M07",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M07-01"
+      ],
+      "trigger": "Analyze, Undo/Redo and unrelated Undo sentinel",
+      "expected": "Authored settings/guides/freshness restored coherently; no lost earlier history"
+    },
+    {
+      "id": "R1-M08",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M08-01"
+      ],
+      "trigger": "Fresh/pending and old-Analyzer-authored scenes: save/reopen, copy and merge with same-name nodes",
+      "expected": "Settings/output preserved where supported; unprovable freshness becomes stale; saved-unit identity correct; no name-based rebinding or implicit Analyze"
+    },
+    {
+      "id": "R1-M09",
+      "fixture": "tools/quality_validation/analyzer.ms",
+      "assertions": [
+        "R1-M09-01"
+      ],
+      "trigger": "Invalid solid/nonplanar/deleted input, then valid recovery",
+      "expected": "Clear failure; previous guides and Scatter publication retained; no repeated idle retries"
+    },
+    {
+      "id": "R1-M10",
+      "fixture": "tools/quality_validation/installer.ms",
+      "assertions": [
+        "R1-M10-01"
+      ],
+      "trigger": "Repeat install, simulated wrong-host guard, copy/registration failure",
+      "expected": "Correct rejection/rollback and complete pair; no mixed startup binding; no older Max launch"
+    },
+    {
+      "id": "R2-M01",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M01-01"
+      ],
+      "trigger": "Dense painted S-ribbon plus two islands \u2192 actual Optimized export controls",
+      "expected": "Useful reduction where safe; correct independent node; original Paint and publications unchanged"
+    },
+    {
+      "id": "R2-M02",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M02-01"
+      ],
+      "trigger": "Exact terrain and guarded attached snapshots",
+      "expected": "Existing geometry/metadata and supported exact restoration unchanged"
+    },
+    {
+      "id": "R2-M03",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M03-01"
+      ],
+      "trigger": "Holes, small islands, narrow necks, contacts and useful corners",
+      "expected": "No topology loss; retain detail when reduction is unsafe"
+    },
+    {
+      "id": "R2-M04",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M04-01"
+      ],
+      "trigger": "Nonuniform/mirrored/sheared/large transforms and mm/cm/m fixtures",
+      "expected": "Final published geometry satisfies physical tolerance or rejects cleanly"
+    },
+    {
+      "id": "R2-M05",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M05-01"
+      ],
+      "trigger": "Attached curved/folded receiver",
+      "expected": "Exact fallback; no chord cutting through the receiver or false optimization claim"
+    },
+    {
+      "id": "R2-M06",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M06-01"
+      ],
+      "trigger": "Export options open \u2192 switch/delete/paint owner, cancel or stale callback",
+      "expected": "Correct captured owner or explicit stale-context rejection; no wrong-Area export"
+    },
+    {
+      "id": "R2-M07",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M07-01"
+      ],
+      "trigger": "Export Undo/Redo with a prior unrelated sentinel",
+      "expected": "Only the exported node/metadata removed/restored; Paint and placements unchanged"
+    },
+    {
+      "id": "R2-M08",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M08-01"
+      ],
+      "trigger": "Optimized reimport and edited/modified exported spline",
+      "expected": "Ordinary import; no hidden unsimplified-coverage restoration or trusted stale certificate"
+    },
+    {
+      "id": "R2-M09",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R2-M09-01"
+      ],
+      "trigger": "Repeated export/delete/history/reset and injected publication failure",
+      "expected": "Bounded scratch/history retention; no partial nodes; next valid export succeeds"
+    },
+    {
+      "id": "R3-M01",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M01-01"
+      ],
+      "trigger": "Dense Exact spline at the former 720/721 threshold and 1k/2k/4k/8192 totals",
+      "expected": "Qualified simple paths no longer hit the old blanket estimate; total cap remains explicit"
+    },
+    {
+      "id": "R3-M02",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M02-01"
+      ],
+      "trigger": "Previously accepted scene, same seed/path/settings",
+      "expected": "Full IDs, transforms, source/scale choices, membership/progress and contribution order preserved"
+    },
+    {
+      "id": "R3-M03",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M03-01"
+      ],
+      "trigger": "Rounded/Sharp, wide/narrow ranges and acute/concave corners",
+      "expected": "Current geometric accuracy and nesting semantics; no silent tolerance escalation"
+    },
+    {
+      "id": "R3-M04",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M04-01"
+      ],
+      "trigger": "Holes, winding, duplicate/touching rings, bow-ties and retraced edges",
+      "expected": "Correct EvenOdd/ambiguity behavior; no unsafe fast-path admission or lost distance segment"
+    },
+    {
+      "id": "R3-M05",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M05-01"
+      ],
+      "trigger": "Consecutive/Independent ranges, Empty/source mixtures and curves",
+      "expected": "Existing assignment, density, scale, Count/refill eligibility and underfill rules"
+    },
+    {
+      "id": "R3-M06",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M06-01"
+      ],
+      "trigger": "Field/boundary preview selected/all Bands, output and work exhaustion",
+      "expected": "Correct outline or complete retained prior publication; no hidden display fallback"
+    },
+    {
+      "id": "R3-M07",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M07-01"
+      ],
+      "trigger": "Relevant spline edit/animation versus browsing/unrelated animation",
+      "expected": "Consumer invalidates as required; static prepared fields and buffers reused otherwise"
+    },
+    {
+      "id": "R3-M08",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M08-01"
+      ],
+      "trigger": "First/later allocation, clipping, index and publication failures",
+      "expected": "Old result queryable/visible; reservations released; valid retry succeeds"
+    },
+    {
+      "id": "R3-M09",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M09-01"
+      ],
+      "trigger": "Shared paths, staged successor, Undo/Redo, save/reopen/merge/reset",
+      "expected": "Correct ownership/identity and bounded legitimate retained resources"
+    },
+    {
+      "id": "R3-M10",
+      "fixture": "tools/quality_validation/geometry.ms",
+      "assertions": [
+        "R3-M10-01"
+      ],
+      "trigger": "Paint \u2192 Exact/Optimized export \u2192 different layer's inside/outside Band \u2192 Update",
+      "expected": "New consumer follows its independent spline; original Paint/layer unchanged"
+    },
+    {
+      "id": "R4-M01",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M01-01"
+      ],
+      "trigger": "Cold mount, all pages restored open, collapse and reopen",
+      "expected": "Correct controls/values and valid owner; cold costs recorded separately"
+    },
+    {
+      "id": "R4-M02",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M02-01"
+      ],
+      "trigger": "Queue page/bind/status work, switch A\u2192B\u2192A, then dispatch",
+      "expected": "Latest valid owner; no stale writes or extra Manual solve"
+    },
+    {
+      "id": "R4-M03",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M03-01"
+      ],
+      "trigger": "Nested handler rebuilds/removes its own page; injected bind failure",
+      "expected": "No stale rollout continuation; action flags and next interaction recover"
+    },
+    {
+      "id": "R4-M04",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M04-01"
+      ],
+      "trigger": "Close/delete/reset/open while mount/bind/status work is pending",
+      "expected": "Old queues/timers retire; no late write into a replacement scene/owner"
+    },
+    {
+      "id": "R4-M05",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M05-01"
+      ],
+      "trigger": "Delete \u2192 Undo/Redo, copy/merge same-name nodes, script reload",
+      "expected": "Correct stable identities; one callback lifetime; no duplicate handlers"
+    },
+    {
+      "id": "R4-M06",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M06-01"
+      ],
+      "trigger": "Source multiselect, Point/model conversion and replacement",
+      "expected": "Row policies/identity preserved; correct owner and Undo grouping"
+    },
+    {
+      "id": "R4-M07",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M07-01"
+      ],
+      "trigger": "Clearance scopes, preference, Relax and Between layers controls",
+      "expected": "Independent inheritance/priority; no free-thunk exception; Boundary-only distance enabled"
+    },
+    {
+      "id": "R4-M08",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M08-01"
+      ],
+      "trigger": "Actual factor/gap edits and Hide surface at narrow panel width",
+      "expected": "Correct hit targets/values; no caption overlap or unintended node creation"
+    },
+    {
+      "id": "R4-M09",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M09-01"
+      ],
+      "trigger": "Container and Scatter views, Library destination switches/minimize/reopen",
+      "expected": "Same authored model; correct captured destination; retired scans/dialog references"
+    },
+    {
+      "id": "R4-M10",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M10-01"
+      ],
+      "trigger": "Active Brush across close, owner change, deletion and scene replacement",
+      "expected": "Correct session cancellation/retirement; no late Paint or wrong-Area edit"
+    },
+    {
+      "id": "R4-M11",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M11-01"
+      ],
+      "trigger": "Manual pending edit + unrelated Undo; structural/preset Undo; Live edit",
+      "expected": "Each documented history/publication policy preserved; no blanket Manual assumption"
+    },
+    {
+      "id": "R4-M12",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M12-01"
+      ],
+      "trigger": "Schema59 save/copy/merge and supported schema58 upgrade Undo/Redo",
+      "expected": "Correct identities/defaults/history; original file preserved; unsupported formats fail explicitly"
+    },
+    {
+      "id": "R4-M13",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M13-01"
+      ],
+      "trigger": "Admission, later-owner staging, script install/commit-tail and observer faults",
+      "expected": "Atomic retention/rollback before commit; coherent committed result after observer failure"
+    },
+    {
+      "id": "R4-M14",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M14-01"
+      ],
+      "trigger": "Warm browsing, selection, unrelated animation and appearance-only edits",
+      "expected": "No unnecessary solves/preparation/uploads; affected appearance work measured separately"
+    },
+    {
+      "id": "R4-M15",
+      "fixture": "tools/quality_validation/ui_lifecycle.ms",
+      "assertions": [
+        "R4-M15-01"
+      ],
+      "trigger": "Bake/PFlow/render start/end with pending Manual state",
+      "expected": "Full output/source mapping and render pins preserved; preview caps do not trim output"
+    },
+    {
+      "id": "R5-M01",
+      "fixture": "tools/quality_validation/parity.ms",
+      "assertions": [
+        "R5-M01-01"
+      ],
+      "trigger": "Same fixtures and toolchain, before/after full solve",
+      "expected": "Ordered identities, source/receiver mapping, full transforms/radii/reasons equal"
+    },
+    {
+      "id": "R5-M02",
+      "fixture": "tools/quality_validation/parity.ms",
+      "assertions": [
+        "R5-M02-01"
+      ],
+      "trigger": "Serial/parallel, repeat solves, clearance/Relax/refill state sequences",
+      "expected": "Existing deterministic and independent-oracle results preserved"
+    },
+    {
+      "id": "R5-M03",
+      "fixture": "tools/quality_validation/parity.ms",
+      "assertions": [
+        "R5-M03-01"
+      ],
+      "trigger": "Actual owner switches, generated controls and pending Manual state",
+      "expected": "Same UI/Undo behavior; no new invalidation or scope/free-thunk defect"
+    },
+    {
+      "id": "R5-M04",
+      "fixture": "tools/quality_validation/parity.ms",
+      "assertions": [
+        "R5-M04-01"
+      ],
+      "trigger": "Faults before/after publication, history and final-consumer release",
+      "expected": "Same rollback/commit semantics, resource ownership and recovery"
+    },
+    {
+      "id": "R5-M05",
+      "fixture": "tools/quality_validation/parity.ms",
+      "assertions": [
+        "R5-M05-01"
+      ],
+      "trigger": "Initial template extraction",
+      "expected": "Generated runtime bytes equal; new authoring provenance accurate"
+    },
+    {
+      "id": "R5-M06",
+      "fixture": "tools/quality_validation/parity.ms",
+      "assertions": [
+        "R5-M06-01"
+      ],
+      "trigger": "Cold/warm equal-input performance and settled resource measurements",
+      "expected": "No reproducible regression beyond calibrated noise; same limits/reuse behavior"
+    },
+    {
+      "id": "R6-M01",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M01-01"
+      ],
+      "trigger": "Actual library Add \u2192 Models & Points \u2192 Select sources",
+      "expected": "Correct imported node selected; hidden/renderable state and source policies unchanged"
+    },
+    {
+      "id": "R6-M02",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M02-01"
+      ],
+      "trigger": "Show/Hide imported, ordinary and Merge model sources",
+      "expected": "Only captured node hide flags change; original renderable flags preserved"
+    },
+    {
+      "id": "R6-M03",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M03-01"
+      ],
+      "trigger": "Mixed/multiple selections; Point/Empty/missing material",
+      "expected": "Defined enabled states; no accidental partial material selection or new material"
+    },
+    {
+      "id": "R6-M04",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M04-01"
+      ],
+      "trigger": "Edit material on hidden Standard and Multi/Sub sources",
+      "expected": "Assigned material instance/root opens; no unhide, assignment, copies or slot overwrite"
+    },
+    {
+      "id": "R6-M05",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M05-01"
+      ],
+      "trigger": "Shared material across layers and ordinary scene objects",
+      "expected": "Expected shared appearance changes; unrelated materials/placements remain reusable"
+    },
+    {
+      "id": "R6-M06",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M06-01"
+      ],
+      "trigger": "Consumed diffuse/opacity/map edit versus unconsumed parameter",
+      "expected": "Correct appearance refresh and counter deltas; no application of pending Manual placement edits"
+    },
+    {
+      "id": "R6-M07",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M07-01"
+      ],
+      "trigger": "Same map used for appearance and density; relevant animation/rewind",
+      "expected": "Both dependency roles obey existing Manual/Live policies; no broad unrelated invalidation"
+    },
+    {
+      "id": "R6-M08",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M08-01"
+      ],
+      "trigger": "Switch/delete/reorder source/owner during queued action or editor opening",
+      "expected": "Correct captured identity or clean cancellation; no wrong-source action"
+    },
+    {
+      "id": "R6-M09",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M09-01"
+      ],
+      "trigger": "Visibility Undo/Redo, material Undo/Redo, save/reopen/merge",
+      "expected": "Existing row IDs/material assignments/flags and prior Undo sentinel preserved"
+    },
+    {
+      "id": "R6-M10",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M10-01"
+      ],
+      "trigger": "Missing bitmap/unsupported material, source deletion and valid retry",
+      "expected": "Clear supported-scope status; existing material/publication preserved; no stuck UI"
+    },
+    {
+      "id": "R6-M11",
+      "fixture": "tools/quality_validation/source_access.ms",
+      "assertions": [
+        "R6-M11-01"
+      ],
+      "trigger": "Repeated open/close/select/edit/delete/reset with editor and history pins",
+      "expected": "Bounded watchers/resources; no duplicate handlers/views; legitimate editor/Undo references accounted"
+    }
+  ]
+}

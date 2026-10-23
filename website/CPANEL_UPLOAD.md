@@ -1,34 +1,38 @@
-# Upload Cyrus Scatter to cPanel
+# Upload Cyrus Scatter 0.86.8.6 to cPanel
 
-This package is a compiled static React website. Hosting needs no Node.js process, npm installation, PHP application or database. The ZIP contains the deployable site only; its manifest and these instructions stay outside the ZIP.
-
-## Choose the destination
-
-In **cPanel → Domains**, find your domain and its **Document Root**. For the main domain this is commonly `public_html`; addon domains and subdomains can use different folders. Use the folder shown for your domain rather than assuming all domains share `public_html`.
-
-For a first preview alongside an existing site, create a folder such as `scatter-preview` inside that document root and deploy there. Its URL will be `https://your-domain.com/scatter-preview/`. The same package works at the domain root or in a subfolder.
+The upload ZIP contains the compiled static website **and one downloadable release file: the main Windows EXE**. It needs no Node.js process, database or PHP application on the host. Plant content and standalone MZPs are not included.
 
 ## Upload and extract
 
-If you already uploaded the preceding Cyrus package, first remove its generated `sources/` folder, `assets/CREDITS.md` and `assets/fonts/README.md` from that deployment. Extracting a new ZIP does not delete old files. These are retired Cyrus files; preserve unrelated host files. The new package contains no Markdown or source snapshots.
+1. In **cPanel → Domains**, find the domain's document root. Use that destination or a preview subfolder such as `scatter-preview`.
+2. Back up the existing website, then upload `CyrusScatter-website-0.86.8.6.zip` through **File Manager → Upload**.
+3. Extract into the destination itself. `index.html`, `favicon.ico`, `assets/` and `downloads/` must sit directly inside it, without an enclosing `dist/` or `website/` folder.
+4. Confirm `downloads/CyrusScatter-0.86.8.6-Setup.exe` exists and is **6,034,944 bytes**.
+5. Delete the uploaded ZIP from the server after extraction. Retain your local copy.
+6. Open the domain or preview URL with its trailing slash, then visit `#/download`.
 
-1. Open **cPanel → File Manager** and navigate to the chosen destination. Back up existing site files before replacing them.
-2. Click **Upload**, select `CyrusScatter-website-0.79.5.zip`, and wait for completion.
-3. Return to File Manager, select the ZIP and click **Extract**. Extract into the chosen destination itself.
-4. Confirm the resulting structure has `index.html`, `favicon.ico`, `assets/` directly inside that destination. There should be no enclosing `dist/` or `website/` folder.
-5. Delete the uploaded ZIP from the host after extraction. Keep your local ZIP for later redeployment.
-6. Open `https://your-domain.com/` or the preview-folder URL, including its trailing slash. The guide opens at `#/guide`; the reference opens at `#/controls`.
+The Download page serves the **EXE directly**, without asking visitors to extract a ZIP. It installs Scatter 0.86.8.6 and Surface Analyzer 0.14.1 together. Relative paths work at the domain root and inside a subfolder. The smaller `CyrusScatter-0.86.8.6-Installer.zip` beside the upload ZIP is an optional sharing archive containing exactly one file, the EXE; it is not the website upload.
 
-The domain must point to this hosting account. Check **SSL/TLS Status** or **SSL/TLS Certificates** in cPanel for HTTPS; availability and AutoSSL controls depend on the provider. An existing `index.php` or inherited redirect can take precedence over this site: use a clean preview folder or ask the host to confirm the correct document root/index configuration before replacing an existing application.
+## Verify the download
 
-## Check the uploaded site
+Click **Download Windows EXE**. The saved filename should be `CyrusScatter-0.86.8.6-Setup.exe`, with SHA-256:
 
-Check the main hero, logo/favicon, `#/guide`, `#/controls?topic=painting`, a dropdown and guide search. Refresh a guide URL directly to confirm it reloads. Open a changelog version link and a Sources & credits image. If you see the old site, hard-refresh or clear the host/CDN cache. A blank page generally means the ZIP was extracted one directory too deep, the domain points to a different root, or an existing rewrite/redirect intercepts assets.
+```text
+f2ea7be7b74bb1f5b2cf0ab58dc21c735ed775280faee19aab48b6dac76a173b
+```
 
-Routes use URL fragments (`#/…`), so this package needs no SPA rewrite rules or `.htaccess` replacement. Preserve unrelated host configuration. Upload only the generated ZIP contents, not the repository, `node_modules`, source artwork, plugin code or licensing tools. The website contains curated rendered guides and a concise changelog. Raw Markdown, internal report snapshots and repository source documents are excluded.
+Check `#/library`, its image viewer, `#/changelog`, the guide and control search as well. Refresh a guide URL. If old content remains, hard-refresh or clear the hosting cache. A 404 for the EXE usually means the `downloads/` folder was not extracted beside `index.html`; an HTML file saved as an EXE means a host redirect or error handler intercepted that path.
 
-## Build a later update
+Existing `index.php`, redirects or host security rules may affect serving. Preserve unrelated server configuration and use a preview folder when needed. Hash routes need no SPA rewrite or replacement `.htaccess`. If the host blocks EXE downloads, ask it to permit the exact download path.
 
-From the repository root, run `npm --prefix website run package:cpanel`. It checks documentation, builds the frontend, and writes a ZIP plus hashes into the ignored `dist/website/cpanel-<date>-<build>/` directory. Extract the new package over the same website files, retaining unrelated server files. This local packaging command does not upload or publish anything.
+Remove retired Cyrus `sources/`, `assets/CREDITS.md` and `assets/fonts/README.md` from an earlier deployment if present. Extraction does not remove old files. Preserve unrelated server files and any separately managed content; this upload does not manage a plant-library download.
 
-Official cPanel references: [find the document root](https://support.cpanel.net/hc/en-us/articles/1500004206502-How-to-find-the-document-root-of-a-domain), [File Manager upload/extract](https://docs.cpanel.net/cpanel/files/file-manager/), and [SSL guide](https://docs.cpanel.net/knowledge-base/security/guide-to-ssl/).
+## Installation shown to visitors
+
+Save work and close the selected Max versions before running the EXE. Choose Max 2024, 2026 or 2027, then Install/Update and reopen Max. Both products install together; no separate Analyzer installation is needed. Leave **Install / update plant library** unchecked for plugin-only installation or existing content. An optional matching content ZIP can be placed beside the EXE separately; it is not in this website package. Uninstall Scatter retains the independent Analyzer, content and scenes.
+
+## Build a later upload
+
+Run `npm --prefix website run package:cpanel` from the repository root. Source/content checks run first, then the production build stages the exact SHA-verified EXE. The packager rejects additional release/model binaries and writes both ZIPs plus a hash manifest under ignored `dist/website/cpanel-<date>-<build>/`.
+
+Upload only the generated website ZIP contents. Do not upload repository source, `node_modules`, authoring artwork or licensing tools. Raw Markdown and internal reports remain excluded. Building and packaging locally does not publish to the server.

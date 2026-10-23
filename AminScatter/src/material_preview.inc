@@ -242,8 +242,15 @@ std::wstring appearanceSourceKey(INode* node,TimeValue t) {
     bool timeChanged=false;
     const auto inputs=appearanceTimeKey(material,t,validity,watch.timeAnchor,timeChanged);
     if(timeChanged){watch.timeAnchor=t;++watch.timeRevision;}
+    // An unmapped Standard material contributes only the sampled diffuse and
+    // opacity scalars above. Broad shader notifications (for example glossiness)
+    // must not replace identical appearance buffers. Mapped, Multi/Sub and
+    // unsupported branches retain conservative dependency invalidation.
+    bool scalarStandard=material&&material->ClassID()==Class_ID(DMTL_CLASS_ID,0);
+    if(scalarStandard){const auto selected=materialInputs(material,t);scalarStandard=!selected.colorMap&&!selected.opacityMap;}
+    const auto editRevision=scalarStandard?std::uint64_t(0):watch.revision;
     const auto space=MaxSDK::ColorManagement::IColorPipelineMgr::GetInstance()->Settings()->GetCurrentRenderingColorSpace();
-    return std::to_wstring(node->GetHandle())+L":"+std::to_wstring(watch.revision)+L":"+
+    return std::to_wstring(node->GetHandle())+L":"+std::to_wstring(editRevision)+L":"+
         std::to_wstring(reinterpret_cast<std::uintptr_t>(material))+L":"+std::to_wstring(watch.timeRevision)+L":"+inputs+
         L":"+space.data()+L":"+std::to_wstring(colors.revision);
 }

@@ -2,12 +2,12 @@
 
 Native C++ scattering and generated MAXScript UI for 3ds Max.
 
-**Current delivery: Scatter 0.86.8.2 / schema 59 / CyrusUnified2, with matched Max 2024, 2026 and 2027 packages.** See the [clearance UI and Relax correction, packages and qualification limits](docs/plans/source-clearance/DELIVERY_08682.md). This patch fixes clipped clearance fields, exposes both Relax modes above Advanced, and enables the shared distance for Boundary Relax alone. The [0.86.8.1 solver and viewport improvements](docs/plans/source-clearance/DELIVERY_08681.md) retain their original evidence. Models retain independent clearance scopes and conflict priority. Existing schema-58 scenes require an Undoable upgrade. Historical [corrected 0.86.7.2 Max 2024/2026/2027 deliveries](docs/plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md) retain their original versions and receipts. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) owns remaining work; unrelated roadmap work is outside this delivery.
+**Current combined-installer test delivery: Scatter 0.86.8.6 / schema 59 / CyrusUnified2, with Surface Analyzer 0.14.1 included for Max 2024, 2026 and 2027.** See the [single-EXE scope, exact evidence and remaining acceptance](docs/plans/combined-installer/DELIVERY_08686.md). The [0.86.8.4 correction](docs/plans/installer-panels/DELIVERY_08684.md) retains its original Max 2027 qualification. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) records remaining roadmap work.
 
 | Need | Maintained source |
 | --- | --- |
 | Use the plugin | [Artist guide](docs/ARTIST_GUIDE.md), [Layout and falloff](docs/LAYOUT_AND_FALLOFF.md) |
-| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [0.86.8.2 installers, checks and limits](docs/plans/source-clearance/DELIVERY_08682.md) |
+| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [combined installer, checks and limits](docs/plans/combined-installer/DELIVERY_08686.md) |
 | Understand implementation | [Architecture](docs/ARCHITECTURE.md), [engineering contracts](docs/ENGINEERING_FOUNDATION.md) |
 | Find remaining work | [Execution ledger](docs/plans/improvement-program/PROGRESS.md), [defects and acceptance](docs/BACKLOG.md) |
 | Work in this repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md), [version policy](docs/Release_Versioning.md) |
@@ -22,8 +22,9 @@ selected layer's current surfaces.
 **Models & Points** uses **+** to add objects, places **Add Point** beside **Make
 point**, and lets **Pick object** replace either a Point or a model.
 Put `CyrusScatter-Content-0.86.7.zip` beside the EXE and check **Install / update
-plant library** to install content. The EXE and ZIP are together under
-`dist/CyrusScatter-0.86.8.2-20261021/`. Leave the option unchecked to keep existing
+plant library** to install content. Current plugin packages are under
+`dist/CyrusScatter-0.86.8.6-20261023/`; distribute the existing content ZIP separately
+for recipients who need it. Leave the option unchecked to keep existing
 content. Content keeps its independent revision and is shared by standard profiles
 across all three hosts. Plugin-only updates do not copy the models. The ZIP streams
 into one shared store, reusing verified existing bytes; success shows a brief

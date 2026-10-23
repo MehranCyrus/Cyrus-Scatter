@@ -234,6 +234,30 @@
         },
         {
           "component": "sourceUI",
+          "control": "showSources",
+          "presentation": "sourceUI_showSources",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "hideSources",
+          "presentation": "sourceUI_hideSources",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "editMaterial",
+          "presentation": "sourceUI_editMaterial",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "sourceAccessInfo",
+          "presentation": "sourceUI_sourceAccessInfo",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
           "control": "addPoint",
           "presentation": "sourceUI_addPoint",
           "advanced": false

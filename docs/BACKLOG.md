@@ -1,5 +1,7 @@
 # Current work and acceptance
 
+The [0.86.8.4 correction](plans/installer-panels/DELIVERY_08684.md) preserves Max's saved rollout categories and repairs recognized no-receipt installer migrations. Native whole-rollout column packing remains; this does not close B21 cold construction/performance or physical all-control acceptance.
+
 Current delivery: [0.86.8.2 clearance UI and visible Relax](plans/source-clearance/DELIVERY_08682.md), with separately matched Max 2024/2026/2027 packages. Expanded source fields now fit narrow panels; both Relax modes are visible before Advanced, and Boundary-only distance is editable. Native, host, lifecycle and installer checks passed within the report's scope. Earlier correction records below retain their original scope.
 
 The independent 0.86.8 review's F1 stale refill blocker and F2 unused-source

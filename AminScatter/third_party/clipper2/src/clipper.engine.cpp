@@ -38,18 +38,40 @@ namespace Clipper2Lib {
     explicit Scanline(int64_t y_) : y(y_) {}
   };
 
+  // Cyrus: detached points remain operation-owned until linked or retired.
+  inline OutPt* MakeBudgetOutPt(const Point64& pt, OutRec* outrec)
+  {
+    auto* budget = outrec->budget;
+    BudgetItems(budget);
+    auto owned = std::make_unique<OutPt>(pt, outrec);
+    owned->allocation_budget = budget;
+    if (budget) budget->track(owned.get(), [](void* value){delete static_cast<OutPt*>(value);});
+    return owned.release();
+  }
+  inline void DeleteBudgetOutPt(OutPt* point) noexcept
+  {
+    if (point->allocation_budget) point->allocation_budget->forget(point);
+    delete point;
+  }
+  inline OperationBudget* BudgetOf(const OutRec* record){return record ? record->budget : nullptr;}
+  inline OperationBudget* BudgetOf(const Active* edge){return edge ? edge->budget : nullptr;}
+
   struct HorzSegSorter {
+    OperationBudget* budget=nullptr;
     inline bool operator()(const HorzSegment& hs1, const HorzSegment& hs2)
     {
+      BudgetWork(budget);
       if (!hs1.right_op || !hs2.right_op) return (hs1.right_op);
       return  hs2.left_op->pt.x > hs1.left_op->pt.x;
     }
   };
 
   struct LocMinSorter {
+    OperationBudget* budget=nullptr;
     inline bool operator()(const LocalMinima_ptr& locMin1,
       const LocalMinima_ptr& locMin2)
     {
+      BudgetWork(budget);
       if (locMin2->vertex->pt.y != locMin1->vertex->pt.y)
         return locMin2->vertex->pt.y < locMin1->vertex->pt.y;
       else
@@ -92,7 +114,7 @@ namespace Clipper2Lib {
   inline Active* GetPrevHotEdge(const Active& e)
   {
     Active* prev = e.prev_in_ael;
-    while (prev && (IsOpen(*prev) || !IsHotEdge(*prev)))
+    while ((BudgetWork(e.budget), prev && (IsOpen(*prev) || !IsHotEdge(*prev))))
       prev = prev->prev_in_ael;
     return prev;
   }
@@ -227,14 +249,14 @@ namespace Clipper2Lib {
   {
     Vertex* result = e.vertex_top;
     if (e.wind_dx > 0)
-      while ((result->next->pt.y == result->pt.y) &&
+      while ((BudgetWork(e.budget), (result->next->pt.y == result->pt.y) &&
         ((result->flags & (VertexFlags::OpenEnd |
-          VertexFlags::LocalMax)) == VertexFlags::Empty))
+          VertexFlags::LocalMax)) == VertexFlags::Empty)))
             result = result->next;
     else
-      while (result->prev->pt.y == result->pt.y &&
+      while ((BudgetWork(e.budget), result->prev->pt.y == result->pt.y &&
         ((result->flags & (VertexFlags::OpenEnd |
-          VertexFlags::LocalMax)) == VertexFlags::Empty))
+          VertexFlags::LocalMax)) == VertexFlags::Empty)))
           result = result->prev;
     if (!IsMaxima(*result)) result = nullptr; // not a maxima
     return result;
@@ -244,9 +266,9 @@ namespace Clipper2Lib {
   {
     Vertex* result = e.vertex_top;
     if (e.wind_dx > 0)
-      while (result->next->pt.y == result->pt.y) result = result->next;
+      while ((BudgetWork(e.budget), result->next->pt.y == result->pt.y)) result = result->next;
     else
-      while (result->prev->pt.y == result->pt.y) result = result->prev;
+      while ((BudgetWork(e.budget), result->prev->pt.y == result->pt.y)) result = result->prev;
     if (!IsMaxima(*result)) result = nullptr; // not a maxima
     return result;
   }
@@ -255,7 +277,7 @@ namespace Clipper2Lib {
   {
     Active* e2;
     e2 = e.next_in_ael;
-    while (e2)
+    while ((BudgetWork(e.budget), e2))
     {
       if (e2->vertex_top == e.vertex_top) return e2;  // Found!
       e2 = e2->next_in_ael;
@@ -271,13 +293,14 @@ namespace Clipper2Lib {
     {
       op2 = op2->next;
       ++cnt;
-    } while (op2 != op);
+    } while ((BudgetWork(op->outrec->budget), op2 != op));
     return cnt;
   }
 
   inline OutPt* DuplicateOp(OutPt* op, bool insert_after)
   {
-    OutPt* result = new OutPt(op->pt, op->outrec);
+    BudgetItems(op->outrec->budget);
+    OutPt* result = MakeBudgetOutPt(op->pt, op->outrec);
     if (insert_after)
     {
       result->next = op->next;
@@ -300,7 +323,7 @@ namespace Clipper2Lib {
     OutPt* result = op->next;
     op->prev->next = op->next;
     op->next->prev = op->prev;
-    delete op;
+    DeleteBudgetOutPt(op);
     return result;
   }
 
@@ -313,7 +336,7 @@ namespace Clipper2Lib {
     {
       OutPt* tmp = op;
       op = op->next;
-      delete tmp;
+      DeleteBudgetOutPt(tmp);
     };
     outrec->pts = nullptr;
   }
@@ -373,7 +396,7 @@ namespace Clipper2Lib {
       result += static_cast<double>(op2->prev->pt.y + op2->pt.y) *
         static_cast<double>(op2->prev->pt.x - op2->pt.x);
       op2 = op2->next;
-    } while (op2 != op);
+    } while ((BudgetWork(op->outrec->budget), op2 != op));
     return result * 0.5;
   }
 
@@ -398,7 +421,7 @@ namespace Clipper2Lib {
       op1->next = op1->prev;
       op1->prev = op2;
       op1 = op2;
-    } while (op1 != op);
+    } while ((BudgetWork(op->outrec->budget), op1 != op));
   }
 
   inline void SwapSides(OutRec& outrec)
@@ -411,14 +434,14 @@ namespace Clipper2Lib {
 
   inline OutRec* GetRealOutRec(OutRec* outrec)
   {
-    while (outrec && !outrec->pts) outrec = outrec->owner;
+    while ((BudgetWork(BudgetOf(outrec)), outrec && !outrec->pts)) outrec = outrec->owner;
     return outrec;
   }
 
   inline bool IsValidOwner(OutRec* outrec, OutRec* testOwner)
   {
     // prevent outrec owning itself either directly or indirectly
-    while (testOwner && testOwner != outrec) testOwner = testOwner->owner;
+    while ((BudgetWork(BudgetOf(testOwner)), testOwner && testOwner != outrec)) testOwner = testOwner->owner;
     return !testOwner;
   }
 
@@ -480,7 +503,7 @@ namespace Clipper2Lib {
     //precondition1: new_owner is never null
     new_owner->owner = GetRealOutRec(new_owner->owner);
     OutRec* tmp = new_owner;
-    while (tmp && tmp != outrec) tmp = tmp->owner;
+    while ((BudgetWork(BudgetOf(outrec)), tmp && tmp != outrec)) tmp = tmp->owner;
     if (tmp) new_owner->owner = outrec->owner;
     outrec->owner = new_owner;
   }
@@ -495,19 +518,19 @@ namespace Clipper2Lib {
     {
       if (op->pt.y != pt.y) break;
       op = op->next;
-    } while (op != op2);
+    } while ((BudgetWork(op->outrec->budget), op != op2));
     if (op->pt.y == pt.y) // not a proper polygon
       return PointInPolygonResult::IsOutside;
 
     bool is_above = op->pt.y < pt.y, starting_above = is_above;
     int val = 0;
     op2 = op->next;
-    while (op2 != op)
+    while ((BudgetWork(op->outrec->budget), op2 != op))
     {
       if (is_above)
-        while (op2 != op && op2->pt.y < pt.y) op2 = op2->next;
+        while ((BudgetWork(op->outrec->budget), op2 != op && op2->pt.y < pt.y)) op2 = op2->next;
       else
-        while (op2 != op && op2->pt.y > pt.y) op2 = op2->next;
+        while ((BudgetWork(op->outrec->budget), op2 != op && op2->pt.y > pt.y)) op2 = op2->next;
       if (op2 == op) break;
 
       // must have touched or crossed the pt.Y horizontal
@@ -554,18 +577,19 @@ namespace Clipper2Lib {
   {
     Path64 result;
     OutPt* op2 = op;
-    while (op2->next != op &&
+    while ((BudgetWork(op->outrec->budget), op2->next != op &&
       ((op2->pt.x == op2->next->pt.x && op2->pt.x == op2->prev->pt.x) ||
-        (op2->pt.y == op2->next->pt.y && op2->pt.y == op2->prev->pt.y))) op2 = op2->next;
+        (op2->pt.y == op2->next->pt.y && op2->pt.y == op2->prev->pt.y)))) op2 = op2->next;
+    BudgetItems(op->allocation_budget);
     result.emplace_back(op2->pt);
     OutPt* prevOp = op2;
     op2 = op2->next;
-    while (op2 != op)
+    while ((BudgetWork(op->outrec->budget), op2 != op))
     {
       if ((op2->pt.x != op2->next->pt.x || op2->pt.x != prevOp->pt.x) &&
         (op2->pt.y != op2->next->pt.y || op2->pt.y != prevOp->pt.y))
       {
-        result.emplace_back(op2->pt);
+        result.emplace_back((BudgetItems(op->allocation_budget), op2->pt));
         prevOp = op2;
       }
       op2 = op2->next;
@@ -593,9 +617,13 @@ namespace Clipper2Lib {
       default: break;
       }
       op = op->next;
-    } while (op != op1);
+    } while ((BudgetWork(op1->outrec->budget), op != op1));
     // result unclear, so try again using cleaned paths
-    return Path2ContainsPath1(GetCleanPath(op1), GetCleanPath(op2)); // (#973)
+    const auto first = GetCleanPath(op1), second = GetCleanPath(op2);
+    // The uncommon cleaned-path fallback uses upstream vector predicates.
+    // Admit their full nested traversal before entering those unmetered helpers.
+    BudgetWork(op1->allocation_budget, (first.size() + 1) * (second.size() + 1) * 4);
+    return Path2ContainsPath1(first, second); // (#973)
   }
 
   void AddLocMin(LocalMinimaList& list,
@@ -609,7 +637,7 @@ namespace Clipper2Lib {
   }
 
   void AddPaths_(const Paths64& paths, PathType polytype, bool is_open,
-    std::vector<Vertex*>& vertexLists, LocalMinimaList& locMinList)
+    std::vector<Vertex*>& vertexLists, LocalMinimaList& locMinList, OperationBudget* budget = nullptr)
   {
     const auto total_vertex_count =
       std::accumulate(paths.begin(), paths.end(), size_t(0),
@@ -617,7 +645,9 @@ namespace Clipper2Lib {
         {return a + path.size(); });
     if (total_vertex_count == 0) return;
 
-    Vertex* allVertices = new Vertex[total_vertex_count], * v = allVertices;
+    BudgetItems(budget, total_vertex_count);
+    auto vertexOwner = std::make_unique<Vertex[]>(total_vertex_count);
+    Vertex* allVertices = vertexOwner.get(), * v = allVertices;
     for (const Path64& path : paths)
     {
       //for each path create a circular double linked list of vertices
@@ -710,6 +740,7 @@ namespace Clipper2Lib {
     } // end processing current path
 
     vertexLists.emplace_back(allVertices);
+    vertexOwner.release();
   }
 
   //------------------------------------------------------------------------------
@@ -787,7 +818,7 @@ namespace Clipper2Lib {
   {
     if (!minima_list_sorted_)
     {
-      std::stable_sort(minima_list_.begin(), minima_list_.end(), LocMinSorter()); //#594
+      std::stable_sort((BudgetItems(budget_, minima_list_.size()), minima_list_.begin()), minima_list_.end(), LocMinSorter{budget_}); //#594
       minima_list_sorted_ = true;
     }
     LocalMinimaList::const_reverse_iterator i;
@@ -837,7 +868,7 @@ namespace Clipper2Lib {
   {
     if (is_open) has_open_paths_ = true;
     minima_list_sorted_ = false;
-    AddPaths_(paths, polytype, is_open, vertex_lists_, minima_list_);
+    AddPaths_(paths, polytype, is_open, vertex_lists_, minima_list_, budget_);
   }
 
   void ClipperBase::AddReuseableData(const ReuseableDataContainer64& reuseable_data)
@@ -848,7 +879,7 @@ namespace Clipper2Lib {
     minima_list_sorted_ = false;
     LocalMinimaList::const_iterator i;
     for (i = reuseable_data.minima_list_.cbegin(); i != reuseable_data.minima_list_.cend(); ++i)
-    {
+    { BudgetWork(budget_);
       minima_list_.emplace_back(std::make_unique <LocalMinima>((*i)->vertex, (*i)->polytype, (*i)->is_open));
       if ((*i)->is_open) has_open_paths_ = true;
     }
@@ -865,7 +896,7 @@ namespace Clipper2Lib {
     if (scanline_list_.empty()) return false;
     y = scanline_list_.top();
     scanline_list_.pop();
-    while (!scanline_list_.empty() && y == scanline_list_.top())
+    while ((BudgetWork(budget_), !scanline_list_.empty() && y == scanline_list_.top()))
       scanline_list_.pop();  // Pop duplicates.
     return true;
   }
@@ -1018,7 +1049,7 @@ namespace Clipper2Lib {
     Active* e2 = e.prev_in_ael;
     //find the nearest closed path edge of the same PolyType in AEL (heading left)
     PathType pt = GetPolyType(e);
-    while (e2 && (GetPolyType(*e2) != pt || IsOpen(*e2))) e2 = e2->prev_in_ael;
+    while ((BudgetWork(budget_), e2 && (GetPolyType(*e2) != pt || IsOpen(*e2)))) e2 = e2->prev_in_ael;
 
     if (!e2)
     {
@@ -1070,14 +1101,14 @@ namespace Clipper2Lib {
 
     //update wind_cnt2 ...
     if (fillrule_ == FillRule::EvenOdd)
-      while (e2 != &e)
+      while ((BudgetWork(budget_), e2 != &e))
       {
         if (GetPolyType(*e2) != pt && !IsOpen(*e2))
           e.wind_cnt2 = (e.wind_cnt2 == 0 ? 1 : 0);
         e2 = e2->next_in_ael;
       }
     else
-      while (e2 != &e)
+      while ((BudgetWork(budget_), e2 != &e))
       {
         if (GetPolyType(*e2) != pt && !IsOpen(*e2))
           e.wind_cnt2 += e2->wind_dx;
@@ -1092,7 +1123,7 @@ namespace Clipper2Lib {
     if (fillrule_ == FillRule::EvenOdd)
     {
       int cnt1 = 0, cnt2 = 0;
-      while (e2 != &e)
+      while ((BudgetWork(budget_), e2 != &e))
       {
         if (GetPolyType(*e2) == PathType::Clip)
           cnt2++;
@@ -1105,7 +1136,7 @@ namespace Clipper2Lib {
     }
     else
     {
-      while (e2 != &e)
+      while ((BudgetWork(budget_), e2 != &e))
       {
         if (GetPolyType(*e2) == PathType::Clip)
           e.wind_cnt2 += e2->wind_dx;
@@ -1173,7 +1204,7 @@ namespace Clipper2Lib {
     else
     {
       e2 = actives_;
-      while (e2->next_in_ael && IsValidAelOrder(*e2->next_in_ael, e))
+      while ((BudgetWork(budget_), e2->next_in_ael && IsValidAelOrder(*e2->next_in_ael, e)))
         e2 = e2->next_in_ael;
       if (e2->join_with == JoinWith::Right)
         e2 = e2->next_in_ael;
@@ -1202,15 +1233,19 @@ namespace Clipper2Lib {
     //Add any local minima (if any) at BotY ...
     //nb: horizontal local minima edges should contain locMin.vertex.prev
 
-    while (PopLocalMinima(bot_y, local_minima))
+    while ((BudgetWork(budget_), PopLocalMinima(bot_y, local_minima)))
     {
+      std::unique_ptr<Active> firstHold, secondHold;
       if ((local_minima->vertex->flags & VertexFlags::OpenStart) != VertexFlags::Empty)
       {
         left_bound = nullptr;
       }
       else
       {
-        left_bound = new Active();
+        BudgetItems(budget_);
+        firstHold = std::make_unique<Active>();
+        left_bound = firstHold.get();
+        left_bound->budget = budget_;
         left_bound->bot = local_minima->vertex->pt;
         left_bound->curr_x = left_bound->bot.x;
         left_bound->wind_dx = -1;
@@ -1226,7 +1261,10 @@ namespace Clipper2Lib {
       }
       else
       {
-        right_bound = new Active();
+        BudgetItems(budget_);
+        secondHold = std::make_unique<Active>();
+        right_bound = secondHold.get();
+        right_bound->budget = budget_;
         right_bound->bot = local_minima->vertex->pt;
         right_bound->curr_x = right_bound->bot.x;
         right_bound->wind_dx = 1;
@@ -1260,6 +1298,7 @@ namespace Clipper2Lib {
       bool contributing;
       left_bound->is_left_bound = true;
       InsertLeftEdge(*left_bound);
+      if (firstHold.get() == left_bound) firstHold.release(); else secondHold.release();
 
       if (IsOpen(*left_bound))
       {
@@ -1277,7 +1316,8 @@ namespace Clipper2Lib {
         right_bound->is_left_bound = false;
         right_bound->wind_cnt = left_bound->wind_cnt;
         right_bound->wind_cnt2 = left_bound->wind_cnt2;
-        InsertRightEdge(*left_bound, *right_bound);  ///////
+        InsertRightEdge(*left_bound, *right_bound);
+        if (firstHold.get() == right_bound) firstHold.release(); else secondHold.release();  ///////
         if (contributing)
         {
           AddLocalMinPoly(*left_bound, *right_bound, left_bound->bot, true);
@@ -1285,8 +1325,8 @@ namespace Clipper2Lib {
             CheckJoinLeft(*left_bound, left_bound->bot);
         }
 
-        while (right_bound->next_in_ael &&
-          IsValidAelOrder(*right_bound->next_in_ael, *right_bound))
+        while ((BudgetWork(budget_), right_bound->next_in_ael &&
+          IsValidAelOrder(*right_bound->next_in_ael, *right_bound)))
         {
           IntersectEdges(*right_bound, *right_bound->next_in_ael, right_bound->bot);
           SwapPositionsInAEL(*right_bound, *right_bound->next_in_ael);
@@ -1371,7 +1411,7 @@ namespace Clipper2Lib {
       }
     }
 
-    OutPt* op = new OutPt(pt, outrec);
+        OutPt* op = (BudgetItems(budget_), MakeBudgetOutPt(pt, outrec));
     outrec->pts = op;
     return op;
   }
@@ -1482,9 +1522,13 @@ namespace Clipper2Lib {
 
   OutRec* ClipperBase::NewOutRec()
   {
-    OutRec* result = new OutRec();
+    BudgetItems(budget_);
+    auto owner = std::make_unique<OutRec>();
+    OutRec* result = owner.get();
+    result->budget = budget_;
     result->idx = outrec_list_.size();
     outrec_list_.emplace_back(result);
+    owner.release();
     result->pts = nullptr;
     result->owner = nullptr;
     result->polypath = nullptr;
@@ -1513,7 +1557,7 @@ namespace Clipper2Lib {
     else if (pt == op_back->pt)
       return op_back;
 
-    new_op = new OutPt(pt, outrec);
+        new_op = (BudgetItems(budget_), MakeBudgetOutPt(pt, outrec));
     op_back->prev = new_op;
     new_op->prev = op_front;
     new_op->next = op_back;
@@ -1534,7 +1578,7 @@ namespace Clipper2Lib {
 
     OutPt* startOp = outrec->pts, * op2 = startOp;
     for (; ; )
-    {
+    { BudgetWork(budget_);
       //NB if preserveCollinear == true, then only remove 180 deg. spikes
       if (IsCollinear(op2->prev->pt, op2->pt, op2->next->pt) &&
         (op2->pt == op2->prev->pt ||
@@ -1595,7 +1639,7 @@ namespace Clipper2Lib {
     }
     else
     {
-      OutPt* newOp2 = new OutPt(ip, prevOp->outrec);
+            OutPt* newOp2 = (BudgetItems(budget_), MakeBudgetOutPt(ip, prevOp->outrec));
       newOp2->prev = prevOp;
       newOp2->next = nextNextOp;
       nextNextOp->prev = newOp2;
@@ -1615,7 +1659,7 @@ namespace Clipper2Lib {
 
       splitOp->outrec = newOr;
       splitOp->next->outrec = newOr;
-      OutPt* newOp = new OutPt(ip, newOr);
+            OutPt* newOp = (BudgetItems(budget_), MakeBudgetOutPt(ip, newOr));
       newOp->prev = splitOp->next;
       newOp->next = splitOp;
       newOr->pts = newOp;
@@ -1638,8 +1682,8 @@ namespace Clipper2Lib {
     }
     else
     {
-      delete splitOp->next;
-      delete splitOp;
+      DeleteBudgetOutPt(splitOp->next);
+      DeleteBudgetOutPt(splitOp);
     }
   }
 
@@ -1649,7 +1693,7 @@ namespace Clipper2Lib {
     if (op2->prev == op2->next->next) 
       return; // because triangles can't self-intersect
     for (; ; )
-    {
+    { BudgetWork(budget_);
       if (SegmentsIntersect(op2->prev->pt,
         op2->pt, op2->next->pt, op2->next->next->pt))
       {
@@ -1700,7 +1744,7 @@ namespace Clipper2Lib {
 
     e.outrec = outrec;
 
-    OutPt* op = new OutPt(pt, outrec);
+        OutPt* op = (BudgetItems(budget_), MakeBudgetOutPt(pt, outrec));
     outrec->pts = op;
     return op;
   }
@@ -1709,7 +1753,7 @@ namespace Clipper2Lib {
   {
     bool wasTrimmed = false;
     Point64 pt = NextVertex(horzEdge)->pt;
-    while (pt.y == horzEdge.top.y)
+    while ((BudgetWork(horzEdge.budget), pt.y == horzEdge.top.y))
     {
       //always trim 180 deg. spikes (in closed paths)
       //but otherwise break if preserveCollinear = true
@@ -1752,14 +1796,14 @@ namespace Clipper2Lib {
   Active* FindEdgeWithMatchingLocMin(Active* e)
   {
     Active* result = e->next_in_ael;
-    while (result)
+    while ((BudgetWork(e->budget), result))
     {
       if (result->local_min == e->local_min) return result;
       else if (!IsHorizontal(*result) && e->bot != result->bot) result = nullptr;
       else result = result->next_in_ael;
     }
     result = e->prev_in_ael;
-    while (result)
+    while ((BudgetWork(e->budget), result))
     {
       if (result->local_min == e->local_min) return result;
       else if (!IsHorizontal(*result) && e->bot != result->bot) return nullptr;
@@ -2103,7 +2147,7 @@ namespace Clipper2Lib {
   {
     Active* e = actives_;
     sel_ = e;
-    while (e)
+    while ((BudgetWork(budget_), e))
     {
       e->prev_in_sel = e->prev_in_ael;
       e->next_in_sel = e->next_in_ael;
@@ -2124,11 +2168,11 @@ namespace Clipper2Lib {
     int64_t y;
     if (ct == ClipType::NoClip || !PopScanline(y)) return true;
 
-    while (succeeded_)
+    while ((BudgetWork(budget_), succeeded_))
     {
       InsertLocalMinimaIntoAEL(y);
       Active* e;
-      while (PopHorz(e)) DoHorizontal(*e);
+      while ((BudgetWork(budget_), PopHorz(e))) DoHorizontal(*e);
       if (horz_seg_list_.size() > 0)
       {
         ConvertHorzSegsToJoins();
@@ -2138,7 +2182,7 @@ namespace Clipper2Lib {
       if (!PopScanline(y)) break;  // y new top of scanbeam
       DoIntersections(y);
       DoTopOfScanbeam(y);
-      while (PopHorz(e)) DoHorizontal(*e);
+      while ((BudgetWork(budget_), PopHorz(e))) DoHorizontal(*e);
     }
     if (succeeded_) ProcessHorzJoins();
     return succeeded_;
@@ -2150,7 +2194,7 @@ namespace Clipper2Lib {
     do {
       op->outrec = outrec;
       op = op->next;
-    } while (op != outrec->pts);
+    } while ((BudgetWork(outrec->budget), op != outrec->pts));
   }
 
   inline bool SetHorzSegHeadingForward(HorzSegment& hs, OutPt* opP, OutPt* opN)
@@ -2181,16 +2225,16 @@ namespace Clipper2Lib {
     if (outrecHasEdges)
     {
       OutPt* opA = outrec->pts, * opZ = opA->next;
-      while (opP != opZ && opP->prev->pt.y == curr_y)
+      while ((BudgetWork(op->allocation_budget), opP != opZ && opP->prev->pt.y == curr_y))
         opP = opP->prev;
-      while (opN != opA && opN->next->pt.y == curr_y)
+      while ((BudgetWork(op->allocation_budget), opN != opA && opN->next->pt.y == curr_y))
         opN = opN->next;
     }
     else
     {
-      while (opP->prev != opN && opP->prev->pt.y == curr_y)
+      while ((BudgetWork(op->allocation_budget), opP->prev != opN && opP->prev->pt.y == curr_y))
         opP = opP->prev;
-      while (opN->next != opP && opN->next->pt.y == curr_y)
+      while ((BudgetWork(op->allocation_budget), opN->next != opP && opN->next->pt.y == curr_y))
         opN = opN->next;
     }
     bool result =
@@ -2211,45 +2255,45 @@ namespace Clipper2Lib {
       [](HorzSegment& hs) { return UpdateHorzSegment(hs); });
     if (j < 2) return;
 
-    std::stable_sort(horz_seg_list_.begin(), horz_seg_list_.end(), HorzSegSorter());
+    std::stable_sort((BudgetItems(budget_, horz_seg_list_.size()), horz_seg_list_.begin()), horz_seg_list_.end(), HorzSegSorter{budget_});
 
     HorzSegmentList::iterator hs1 = horz_seg_list_.begin(), hs2;
     HorzSegmentList::iterator hs_end = hs1 +j;
     HorzSegmentList::iterator hs_end1 = hs_end - 1;
 
     for (; hs1 != hs_end1; ++hs1)
-    {
+    { BudgetWork(budget_);
       for (hs2 = hs1 + 1; hs2 != hs_end; ++hs2)
-      {
+      { BudgetWork(budget_);
         if ((hs2->left_op->pt.x >= hs1->right_op->pt.x) ||
           (hs2->left_to_right == hs1->left_to_right) ||
           (hs2->right_op->pt.x <= hs1->left_op->pt.x)) continue;
         int64_t curr_y = hs1->left_op->pt.y;
         if (hs1->left_to_right)
         {
-          while (hs1->left_op->next->pt.y == curr_y &&
-            hs1->left_op->next->pt.x <= hs2->left_op->pt.x)
+          while ((BudgetWork(budget_), hs1->left_op->next->pt.y == curr_y &&
+            hs1->left_op->next->pt.x <= hs2->left_op->pt.x))
             hs1->left_op = hs1->left_op->next;
-          while (hs2->left_op->prev->pt.y == curr_y &&
-            hs2->left_op->prev->pt.x <= hs1->left_op->pt.x)
+          while ((BudgetWork(budget_), hs2->left_op->prev->pt.y == curr_y &&
+            hs2->left_op->prev->pt.x <= hs1->left_op->pt.x))
             hs2->left_op = hs2->left_op->prev;
           HorzJoin join = HorzJoin(
             DuplicateOp(hs1->left_op, true),
             DuplicateOp(hs2->left_op, false));
-          horz_join_list_.emplace_back(join);
+          horz_join_list_.emplace_back((BudgetItems(budget_), join));
         }
         else
         {
-          while (hs1->left_op->prev->pt.y == curr_y &&
-            hs1->left_op->prev->pt.x <= hs2->left_op->pt.x)
+          while ((BudgetWork(budget_), hs1->left_op->prev->pt.y == curr_y &&
+            hs1->left_op->prev->pt.x <= hs2->left_op->pt.x))
             hs1->left_op = hs1->left_op->prev;
-          while (hs2->left_op->next->pt.y == curr_y &&
-            hs2->left_op->next->pt.x <= hs1->left_op->pt.x)
+          while ((BudgetWork(budget_), hs2->left_op->next->pt.y == curr_y &&
+            hs2->left_op->next->pt.x <= hs1->left_op->pt.x))
             hs2->left_op = hs2->left_op->next;
           HorzJoin join = HorzJoin(
             DuplicateOp(hs2->left_op, true),
             DuplicateOp(hs1->left_op, false));
-          horz_join_list_.emplace_back(join);
+          horz_join_list_.emplace_back((BudgetItems(budget_), join));
         }
       }
     }
@@ -2261,14 +2305,14 @@ namespace Clipper2Lib {
     OutRecList::iterator orIter = fromOr->splits->begin();
     for (; orIter != fromOr->splits->end(); ++orIter)
       if (toOr != *orIter) // #987
-        toOr->splits->emplace_back(*orIter);
+        toOr->splits->emplace_back((BudgetItems(toOr->budget), *orIter));
     fromOr->splits->clear();
   }
 
   void ClipperBase::ProcessHorzJoins()
   {
     for (const HorzJoin& j : horz_join_list_)
-    {
+    { BudgetWork(budget_);
       OutRec* or1 = GetRealOutRec(j.op1->outrec);
       OutRec* or2 = GetRealOutRec(j.op2->outrec);
 
@@ -2313,7 +2357,7 @@ namespace Clipper2Lib {
             or2->owner = or1->owner;
 
           if (!or1->splits) or1->splits = new OutRecList();
-          or1->splits->emplace_back(or2);
+          or1->splits->emplace_back((BudgetItems(budget_), or2));
         }
         else
           or2->owner = or1;
@@ -2373,7 +2417,7 @@ namespace Clipper2Lib {
         else ip.x = TopX(e2, ip.y);
       }
     }
-    intersect_nodes_.emplace_back(&e1, &e2, ip);
+    intersect_nodes_.emplace_back((BudgetItems(budget_), &e1), &e2, ip);
   }
 
   bool ClipperBase::BuildIntersectList(const int64_t top_y)
@@ -2390,23 +2434,23 @@ namespace Clipper2Lib {
 
     Active* left = sel_, * right, * l_end, * r_end, * curr_base, * tmp;
 
-    while (left && left->jump)
+    while ((BudgetWork(budget_), left && left->jump))
     {
       Active* prev_base = nullptr;
-      while (left && left->jump)
+      while ((BudgetWork(budget_), left && left->jump))
       {
         curr_base = left;
         right = left->jump;
         l_end = right;
         r_end = right->jump;
         left->jump = r_end;
-        while (left != l_end && right != r_end)
+        while ((BudgetWork(budget_), left != l_end && right != r_end))
         {
           if (right->curr_x < left->curr_x)
           {
             tmp = right->prev_in_sel;
             for (; ; )
-            {
+            { BudgetWork(budget_);
               AddNewIntersectNode(*tmp, *right, top_y);
               if (tmp == left) break;
               tmp = tmp->prev_in_sel;
@@ -2442,18 +2486,18 @@ namespace Clipper2Lib {
     //crucial that intersections only occur between adjacent edges.
 
     //First we do a quicksort so intersections proceed in a bottom up order ...
-    std::sort(intersect_nodes_.begin(), intersect_nodes_.end(), IntersectListSort);
+    std::sort(intersect_nodes_.begin(), intersect_nodes_.end(), [this](const IntersectNode& a, const IntersectNode& b){BudgetWork(budget_);return IntersectListSort(a,b);});
     //Now as we process these intersections, we must sometimes adjust the order
     //to ensure that intersecting edges are always adjacent ...
 
     IntersectNodeList::iterator node_iter, node_iter2;
     for (node_iter = intersect_nodes_.begin();
       node_iter != intersect_nodes_.end();  ++node_iter)
-    {
+    { BudgetWork(budget_);
       if (!EdgesAdjacentInAEL(*node_iter))
       {
         node_iter2 = node_iter + 1;
-        while (!EdgesAdjacentInAEL(*node_iter2)) ++node_iter2;
+        while ((BudgetWork(budget_), !EdgesAdjacentInAEL(*node_iter2))) ++node_iter2;
         std::swap(*node_iter, *node_iter2);
       }
 
@@ -2494,7 +2538,7 @@ namespace Clipper2Lib {
   void ClipperBase::AddTrialHorzJoin(OutPt* op)
   {
     if (op->outrec->is_open) return;
-    horz_seg_list_.emplace_back(op);
+    horz_seg_list_.emplace_back((BudgetItems(budget_), op));
   }
 
   bool ClipperBase::ResetHorzDirection(const Active& horz,
@@ -2506,7 +2550,7 @@ namespace Clipper2Lib {
       horz_left = horz.curr_x;
       horz_right = horz.curr_x;
       Active* e = horz.next_in_ael;
-      while (e && e->vertex_top != max_vertex) e = e->next_in_ael;
+      while ((BudgetWork(budget_), e && e->vertex_top != max_vertex)) e = e->next_in_ael;
       return e != nullptr;
     }
     else if (horz.curr_x < horz.top.x)
@@ -2567,13 +2611,13 @@ namespace Clipper2Lib {
       AddTrialHorzJoin(op);
     }
 
-    while (true) // loop through consec. horizontal edges
+    while ((BudgetWork(budget_), true)) // loop through consec. horizontal edges
     {
       Active* e;
       if (is_left_to_right) e = horz.next_in_ael;
       else e = horz.prev_in_ael;
 
-      while (e)
+      while ((BudgetWork(budget_), e))
       {
         if (e->vertex_top == vertex_max)
         {
@@ -2585,7 +2629,7 @@ namespace Clipper2Lib {
 
           if (IsHotEdge(horz))
           {
-            while (horz.vertex_top != vertex_max)
+            while ((BudgetWork(budget_), horz.vertex_top != vertex_max))
             {
               AddOutPt(horz, horz.top);
               UpdateEdgeIntoAEL(&horz);
@@ -2698,7 +2742,7 @@ namespace Clipper2Lib {
   {
     sel_ = nullptr;  // sel_ is reused to flag horizontals (see PushHorz below)
     Active* e = actives_;
-    while (e)
+    while ((BudgetWork(budget_), e))
     {
       //nb: 'e' will never be horizontal here
       if (e->top.y == y)
@@ -2757,7 +2801,7 @@ namespace Clipper2Lib {
 
     //only non-horizontal maxima here.
     //process any edges between maxima pair ...
-    while (next_e != max_pair)
+    while ((BudgetWork(budget_), next_e != max_pair))
     {
       IntersectEdges(e, *next_e, e.top);
       SwapPositionsInAEL(e, *next_e);
@@ -2861,17 +2905,17 @@ namespace Clipper2Lib {
     op2 = op;
     if (outrec->front_edge)
     {
-      while (op->prev != outrec->pts &&
-        op->prev->pt.y == op->pt.y) op = op->prev;
-      while (op2 != outrec->pts &&
-        op2->next->pt.y == op2->pt.y) op2 = op2->next;
+      while ((BudgetWork(op->allocation_budget), op->prev != outrec->pts &&
+        op->prev->pt.y == op->pt.y)) op = op->prev;
+      while ((BudgetWork(op->allocation_budget), op2 != outrec->pts &&
+        op2->next->pt.y == op2->pt.y)) op2 = op2->next;
       return op2 != op;
     }
     else
     {
-      while (op->prev != op2 && op->prev->pt.y == op->pt.y)
+      while ((BudgetWork(op->allocation_budget), op->prev != op2 && op->prev->pt.y == op->pt.y))
         op = op->prev;
-      while (op2->next != op && op2->next->pt.y == op2->pt.y)
+      while ((BudgetWork(op->allocation_budget), op2->next != op && op2->next->pt.y == op2->pt.y))
         op2 = op2->next;
       return op2 != op && op2->next != op;
     }
@@ -2896,14 +2940,16 @@ namespace Clipper2Lib {
       lastPt = op->pt;
       op2 = op->next;
     }
+    BudgetItems(op->outrec->budget);
     path.emplace_back(lastPt);
 
-    while (op2 != op)
+    while ((BudgetWork(op->outrec->budget), op2 != op))
     {
       if (op2->pt != lastPt)
       {
         lastPt = op2->pt;
-        path.emplace_back(lastPt);
+        BudgetItems(op->outrec->budget);
+    path.emplace_back(lastPt);
       }
       if (reverse)
         op2 = op2->prev;
@@ -2931,7 +2977,7 @@ namespace Clipper2Lib {
   {
     // nb: use indexing (not an iterator) in case 'splits' is modified inside this loop (#1029)
     for (size_t idx = 0; idx < splits->size(); ++idx)
-    {
+    { BudgetWork(budget_);
       OutRec* split = (*splits)[idx]; 
       if (!split->pts && split->splits &&
         CheckSplitOwner(outrec, split->splits)) return true; //#942
@@ -2961,7 +3007,7 @@ namespace Clipper2Lib {
     // post-condition: if a valid path, outrec will have a polypath
 
     if (outrec->polypath || outrec->bounds.IsEmpty()) return;
-    while (outrec->owner)
+    while ((BudgetWork(budget_), outrec->owner))
     {
       if (outrec->owner->splits && CheckSplitOwner(outrec, outrec->owner->splits)) break;
       if (outrec->owner->pts && CheckBounds(outrec->owner) &&
@@ -2994,7 +3040,7 @@ namespace Clipper2Lib {
     // while loop because polygons may be split during
     // calls to CleanCollinear which calls FixSelfIntersects
     for (size_t i = 0; i < outrec_list_.size(); ++i)
-    {
+    { BudgetWork(budget_);
       OutRec* outrec = outrec_list_[i];
       if (outrec->pts == nullptr) continue;
 
@@ -3026,7 +3072,7 @@ namespace Clipper2Lib {
     // CheckBounds below can indirectly add additional
     // OutRec (via FixOutRecPts & CleanCollinear)
     for (size_t i = 0; i < outrec_list_.size(); ++i)
-    {
+    { BudgetWork(budget_);
       OutRec* outrec = outrec_list_[i];
       if (!outrec || !outrec->pts) continue;
 

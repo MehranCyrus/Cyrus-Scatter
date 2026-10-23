@@ -1,4 +1,13 @@
-# Cyrus Scatter 0.86.8.2 — current artist workflow
+# Cyrus Scatter 0.86.8.6 — current artist workflow
+
+The current combined EXE targets **Max 2024, 2026 and 2027** and includes **Surface Analyzer 0.14.1**. See the [changes, checks and qualification limits](plans/combined-installer/DELIVERY_08686.md). Earlier receipts retain their original scope.
+
+For library models already added to a layer, highlight the row in **Models &
+Points** and use **Select sources**. **Show sources** and **Hide sources** change
+node visibility while preserving renderable flags; expand **Source access** to reach
+these commands. Layer/group restrictions still
+apply. **Edit material** opens one model's assigned scene material in Slate.
+Shared materials change together, and catalog files remain unchanged.
 
 The private **0.86.7 individual library** replaces the bundled example designs
 with 96 individual assets covering all 104 original catalog cards. Open **Layers >
@@ -11,9 +20,9 @@ receivers and distribution yourself, then **Update scatter** in Manual mode.
 Corona is required for the supplied materials. Personal recipes remain separate.
 Successful model additions now show a banner naming the model and destination
 layer. Failed imports show an error banner and retain the previous scene.
-The **0.86.8.2** installer detects Max 2024, 2026 and 2027 and your existing
-library. Select the versions you want, then **Install** or **Update**.
-**Uninstall** removes the selected host registration while keeping your library
+The **0.86.8.6** installer updates Scatter and Surface Analyzer for the selected Max versions and detects your existing library.
+Choose **Install** or **Update** for those hosts.
+**Uninstall Scatter** removes Scatter registration while keeping the independent Analyzer, your library
 and scenes. To install or update the library, put
 **CyrusScatter-Content-0.86.7.zip** beside the EXE and check
 **Install / update plant library**. Leave it unchecked for a plugin-only update.
@@ -22,6 +31,9 @@ ZIP directly into shared storage. Existing compatible bytes are reused.
 Standard profiles share one library; models do not need a new copy when the
 plugin version changes. See the
 [installation guide](Max_2027_Installation.md), then restart Max after installation.
+
+Drag rollout headers to arrange the Modify panel. Cyrus leaves Max's saved rollout order intact when the controller is deselected and selected again.
+The order is a Max user preference; open/closed and Advanced state retain their existing presentation behavior. Max packs whole rollouts into columns, so a tall open rollout can move to the next column when it does not fit.
 
 Common parameter edits now refresh affected sections and reuse unchanged layout.
 When many sections are saved open, later sections appear in queued batches.
@@ -307,8 +319,12 @@ Manual mode retains the last complete plants until **Update scatter**. Live appl
 ## Vector painting
 
 **Paint and splines:** select a Paint Area and stop the brush. **Export spline**
-creates and selects an independent Editable Spline with the area's contours and
-holes. Edit it with Max's spline tools, reselect the Scatter and Paint Area, then
+offers **Optimized** and **Exact snapshot**, creating an independent Editable
+Spline with the area's contours and holes. Optimized reduces planar knots within
+the world-unit maximum deviation and reports the result; its initial tolerance is
+1 mm. Attached boundaries use Exact. Original Paint and completed placements stay
+unchanged. A changed export context requires reopening the options.
+Edit the spline with Max's tools, reselect the Scatter and Paint Area, then
 choose **Replace** or **Add** and press **Pick spline...**. Replace sets that area's
 coverage; Add unions the imported region with existing paint. Escape cancels the
 pick. Each changed import and each export is one Undo. Manual waits for Update;
@@ -389,7 +405,7 @@ Statistics identifies the selected layer by its name and describes its last comp
 
 Diagnostic recording is local, bounded and off by default. Start, Stop and Save report are separate from sending a report anywhere.
 
-Surface Analyzer remains version 0.14 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; general curved-surface scattering remains separate; the surface brush is a separate system and supports the curved receivers described above. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
+Surface Analyzer is independently versioned at 0.14.1 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; general curved-surface scattering remains separate; the surface brush is a separate system and supports the curved receivers described above. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
 
 If linked analysis is out of date, Scatter keeps its previous complete result and names the Analyzer that needs updating. Run **Update Analyzer / Analyze**, then **Update scatter** when Scatter is Manual. This applies to Layout, Analyzer Area and Analyzer falloff dependencies. Freshness is saved with the guides, so reopening does not make pending analysis current. Older Analyzer publications need one explicit Analyze with the matching updated Analyzer script; the new Scatter script must be distributed with that script.
 

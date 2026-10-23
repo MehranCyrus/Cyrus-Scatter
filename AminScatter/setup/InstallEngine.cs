@@ -87,7 +87,7 @@ namespace Cyrus.Setup {
             "AminScatter.dlx", "CyrusBrush.dlx", "CyrusBrushStorage.dlh", "CyrusScatterEdit.dlm"
         };
         public static string Hash(byte[] bytes) { using (var sha = SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant(); }
-        static string FileHash(string path,Action<string> checkpoint=null) {
+        internal static string FileHash(string path,Action<string> checkpoint=null) {
             using(var stream=File.OpenRead(path))using(var sha=SHA256.Create()) {
                 var buffer=new byte[262144];int count;long next=0;
                 while((count=stream.Read(buffer,0,buffer.Length))>0) {
@@ -98,12 +98,12 @@ namespace Cyrus.Setup {
                 return BitConverter.ToString(sha.Hash).Replace("-","").ToLowerInvariant();
             }
         }
-        static bool Hex(string value, int length) {
+        internal static bool Hex(string value, int length) {
             if (value.Length != length) return false;
             foreach (char c in value) if (!(c >= '0' && c <= '9') && !(c >= 'a' && c <= 'f')) return false;
             return true;
         }
-        static string Child(string root, string relative) {
+        internal static string Child(string root, string relative) {
             if (String.IsNullOrEmpty(relative) || relative.Contains(":") || relative.StartsWith("/") || relative.StartsWith("\\")) throw new IOException("Invalid package path.");
             foreach (string part in relative.Replace('\\', '/').Split('/'))
                 if (part.Length == 0 || part == "." || part == ".." || part.TrimEnd(' ', '.') != part || part.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
@@ -129,7 +129,10 @@ namespace Cyrus.Setup {
                 string[] row = lines[i].Split('\t'); long size;
                 if (row.Length != (mapped?4:3) || !Hex(row[1], 64) || !Int64.TryParse(row[2], out size) || size < 0 || size > 128L * 1024 * 1024 || !names.Add(row[0])) throw new IOException("Invalid inventory entry.");
                 bool pattern = System.Text.RegularExpressions.Regex.IsMatch(row[0], @"^Patterns/(catalog\.tsv|index\.json|README\.md|[a-z0-9][a-z0-9_-]{0,80}\.png)$");
-                if (!Runtime.Contains(row[0]) && row[0]!="ExternalContent.json" && !row[0].StartsWith("Library/", StringComparison.Ordinal) && !pattern) throw new IOException("Unsupported installer file: " + row[0]);
+                // The modification notice is carried by new packages. Earlier
+                // qualified inventories remain readable without that new file.
+                bool clipperNotice=String.Equals(row[0],"Clipper2-NOTICE.txt",StringComparison.OrdinalIgnoreCase);
+                if (!Runtime.Contains(row[0]) && !clipperNotice && row[0]!="ExternalContent.json" && !row[0].StartsWith("Library/", StringComparison.Ordinal) && !pattern) throw new IOException("Unsupported installer file: " + row[0]);
                 string sourceName=mapped?row[3]:row[0];
                 if(mapped && sourceName!=row[0] && !(row[0].StartsWith("Library/",StringComparison.Ordinal) && System.Text.RegularExpressions.Regex.IsMatch(sourceName,@"^p/[0-9]{4}\.[a-z0-9]{1,12}$")))throw new IOException("Invalid mapped package source.");
                 if(!sourceNames.Add(sourceName))throw new IOException("Duplicate mapped package source.");
@@ -385,7 +388,7 @@ namespace Cyrus.Setup {
                 Verify(blob,item,checkpoint);Link(blob,destination);
             }
         }
-        static byte[] ReadBounded(string path, long limit) {
+        internal static byte[] ReadBounded(string path, long limit) {
             using(var stream=File.OpenRead(path)) {
                 if(stream.Length>limit)throw new IOException("File exceeds the installation bound: "+path);
                 using(var memory=new MemoryStream()) { var buffer=new byte[65536];int count;
@@ -394,14 +397,14 @@ namespace Cyrus.Setup {
                 }
             }
         }
-        static byte[] ReadOptional(string path) { return File.Exists(path) ? ReadBounded(path,2*1024*1024) : null; }
-        static bool Equal(byte[] a, byte[] b) {
+        internal static byte[] ReadOptional(string path) { return File.Exists(path) ? ReadBounded(path,2*1024*1024) : null; }
+        internal static bool Equal(byte[] a, byte[] b) {
             if (a == null || b == null) return a == b;
             if (a.Length != b.Length) return false;
             for (int i = 0; i < a.Length; ++i) if (a[i] != b[i]) return false;
             return true;
         }
-        static void WriteAtomic(string path, byte[] value) {
+        internal static void WriteAtomic(string path, byte[] value) {
             InstallPaths.Full(path); Directory.CreateDirectory(Path.GetDirectoryName(path));
             string temp = Path.Combine(Path.GetDirectoryName(path),".w-"+Guid.NewGuid().ToString("N").Substring(0,12));
             try {
@@ -409,25 +412,28 @@ namespace Cyrus.Setup {
                 if (File.Exists(path)) File.Replace(temp, path, null); else File.Move(temp, path);
             } finally { if (File.Exists(temp)) File.Delete(temp); }
         }
-        static byte[] Text(string value) { return new UTF8Encoding(true).GetBytes(value); }
-        static string Decode(byte[] value) { if (value == null) return ""; using (var reader = new StreamReader(new MemoryStream(value), Encoding.UTF8, true)) return reader.ReadToEnd(); }
+        internal static byte[] Text(string value) { return new UTF8Encoding(true).GetBytes(value); }
+        internal static string Decode(byte[] value) { if (value == null) return ""; using (var reader = new StreamReader(new MemoryStream(value), Encoding.UTF8, true)) return reader.ReadToEnd(); }
         static byte[] Registration(byte[] previous, string nativePath,string year) {
+            return RegistrationEntry(previous,nativePath,"CyrusScatter"+year,"AminScatter"+year);
+        }
+        internal static byte[] RegistrationEntry(byte[] previous,string nativePath,string key,string legacyKey=null) {
             string text = Decode(previous); if (text.Length > 1048576) throw new IOException("Plugin settings exceed the installation bound.");
             var output = new List<string>(); bool section = false, found = false;
             foreach (string raw in text.Replace("\r", "").Split('\n')) {
                 string line = raw.Trim();
                 if (line.StartsWith("[") && line.EndsWith("]")) {
-                    if (section && nativePath != null) output.Add("CyrusScatter"+year+"=" + nativePath);
+                    if (section && nativePath != null) output.Add(key+"=" + nativePath);
                     section = line.Equals("[Directories]", StringComparison.OrdinalIgnoreCase);
                     if (section && found) throw new IOException("Duplicate Directories sections require manual review.");
                     found |= section;
                 }
                 int equals = line.IndexOf('=');
-                if (section && equals >= 0 && (line.Substring(0, equals).Trim().Equals("CyrusScatter"+year, StringComparison.OrdinalIgnoreCase) || line.Substring(0, equals).Trim().Equals("AminScatter"+year, StringComparison.OrdinalIgnoreCase))) continue;
+                if (section && equals >= 0 && (line.Substring(0, equals).Trim().Equals(key, StringComparison.OrdinalIgnoreCase) || (legacyKey!=null&&line.Substring(0, equals).Trim().Equals(legacyKey, StringComparison.OrdinalIgnoreCase)))) continue;
                 output.Add(raw);
             }
             if (!found && nativePath != null) { output.Add("[Directories]"); section = true; }
-            if (section && nativePath != null) output.Add("CyrusScatter"+year+"=" + nativePath);
+            if (section && nativePath != null) output.Add(key+"=" + nativePath);
             return Encoding.Unicode.GetPreambleConcat(String.Join("\r\n", output));
         }
         static string[] Targets(InstallPaths paths) { return new[] {
@@ -435,32 +441,64 @@ namespace Cyrus.Setup {
             Path.Combine(paths.Scripts,"CyrusScatter","installed.txt"), Path.Combine(paths.Profile,"Plugin.UserSettings.ini")
         }; }
         static string Journal(InstallPaths paths) { return Path.Combine(paths.Scripts,"CyrusScatter","install-transaction.bin"); }
-        static void CheckWrappers(byte[][] before) {
-            string[] expected;
+        // Exact delivered Max 2027 wrapper bytes, independently verified against
+        // archived packages. No filename/content-pattern ownership inference.
+        static readonly string[,] LegacyWrappers = {
+            {"0.81.6","fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405","d76b48b84c4b882d4a5a40fd07e880c3b9fb3b0c12bbdac7bfccea3045c91b20"},
+            {"0.85.0","fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405","758c4d94d47eab5dbfe9a30b358e7ba94c5734b18968133ba78b8a5d18df262b"},
+            {"0.86.8.2","eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06","0f22569def0cab74a0a90d8a14bbf0c2836bd4af22d667da825487e84e74b811"},
+            {"0.86.8.3","eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06","67da84af1e5b6ffc3711c3e540d831f90182846b7a59f4706abafa146a6de162"},
+            {"0.86.8.4","eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06","d6a7ad19ca2979f4695780cec03f4aef268187d9d5b7e8cf378124d9d76ff619"},
+        };
+        static bool CheckWrappers(byte[][] before, string[] targets, string year) {
             if(before[2]!=null) {
                 string[] record=Decode(before[2]).Replace("\r","").Split('\n');
-                if(record.Length!=6||record[0]!=Marker||!Hex(record[3],64)||!Hex(record[4],64))throw new IOException("The existing installation receipt differs.");
-                expected=new[]{record[3],record[4]};
-            }else {
-                // Exact wrappers from the last delivered 0.85.0 package only.
-                // Unknown/custom files need review, never a name-based overwrite.
-                expected=new[]{"fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405","758c4d94d47eab5dbfe9a30b358e7ba94c5734b18968133ba78b8a5d18df262b"};
+                if(record.Length!=6||record[0]!=Marker||!Hex(record[3],64)||!Hex(record[4],64))
+                    throw new IOException("Max "+year+": the installation receipt is invalid. See Error details.\nFile: "+targets[2]);
+                for(int i=0;i<2;++i)if(before[i]!=null&&Hash(before[i])!=record[i+3])
+                    throw new IOException("Max "+year+": "+Path.GetFileName(targets[i])+" differs from its installation record. It was preserved. See Error details.\nFile: "+targets[i]);
+                return false;
             }
-            for(int i=0;i<2;++i)if(before[i]!=null&&Hash(before[i])!=expected[i])throw new IOException("An existing startup/macro file differs from its owned version. Preserve/review it before updating.");
+            if(before[0]==null&&before[1]==null)return false;
+            for(int row=0;row<LegacyWrappers.GetLength(0);++row) {
+                bool matches=true;
+                for(int i=0;i<2;++i)matches &= before[i]==null||Hash(before[i])==LegacyWrappers[row,i+1];
+                if(matches)return true;
+            }
+            throw new IOException("Max "+year+": older startup/macro files are not recognized. They were preserved. See Error details.\nReview these files before updating: "+targets[0]+"\n"+targets[1]+"\nNo installation receipt: "+targets[2]);
         }
-        static void SaveJournal(string journal, string[] paths, byte[][] before, byte[][] after) {
+        static void PreserveLegacyWrappers(string root, string[] targets, byte[][] before) {
+            // Content-addressed backups survive successful migration and rollback.
+            // Repeat installs do not create additional copies.
+            using(var data=new MemoryStream())using(var writer=new BinaryWriter(data,Encoding.UTF8)) {
+                for(int i=0;i<3;++i){writer.Write(targets[i]);writer.Write(before[i]==null?-1:before[i].Length);if(before[i]!=null)writer.Write(before[i]);}
+                writer.Flush();string folder=Child(root,"Backups/wrappers-"+Hash(data.ToArray()));
+                Directory.CreateDirectory(folder);
+                for(int i=0;i<3;++i)if(before[i]!=null) {
+                    string path=Child(folder,Path.GetFileName(targets[i]));
+                    if(File.Exists(path)) {if(!Equal(ReadOptional(path),before[i]))throw new IOException("A legacy backup differs; it was preserved: "+path);}
+                    else using(var output=new FileStream(path,FileMode.CreateNew,FileAccess.Write,FileShare.None)){output.Write(before[i],0,before[i].Length);output.Flush(true);}
+                }
+            }
+        }
+        internal static void SaveJournal(string journal, string[] paths, byte[][] before, byte[][] after,string marker=Marker) {
             using (var stream = new MemoryStream()) using (var writer = new BinaryWriter(stream, Encoding.UTF8)) {
-                writer.Write(Marker); writer.Write(paths.Length);
+                writer.Write(marker); writer.Write(paths.Length);
                 for (int i=0;i<paths.Length;++i) { writer.Write(paths[i]); foreach(var bytes in new[]{before[i],after[i]}) { writer.Write(bytes==null?-1:bytes.Length); if(bytes!=null)writer.Write(bytes); } }
-                writer.Flush(); WriteAtomic(journal, stream.ToArray());
+                writer.Flush();
+                if(stream.Length>8*1024*1024)throw new IOException("Installation recovery journal exceeds its 8 MiB bound.");
+                WriteAtomic(journal, stream.ToArray());
             }
         }
         static void Recover(InstallPaths paths) {
-            string journal=Journal(paths); if(!File.Exists(journal))return;
-            var targets=Targets(paths); var before=new byte[targets.Length][]; var after=new byte[targets.Length][];
+            RecoverJournal(Journal(paths),Targets(paths),Marker);
+        }
+        internal static void RecoverJournal(string journal,string[] targets,string marker) {
+            if(!File.Exists(journal))return;
+            var before=new byte[targets.Length][]; var after=new byte[targets.Length][];
             byte[] data=ReadBounded(journal,8*1024*1024);
             using(var reader=new BinaryReader(new MemoryStream(data),Encoding.UTF8)) {
-                if(reader.ReadString()!=Marker||reader.ReadInt32()!=targets.Length)throw new IOException("Unknown installation recovery journal.");
+                if(reader.ReadString()!=marker||reader.ReadInt32()!=targets.Length)throw new IOException("Unknown installation recovery journal.");
                 for(int i=0;i<targets.Length;++i) {
                     if(!String.Equals(reader.ReadString(),targets[i],StringComparison.OrdinalIgnoreCase))throw new IOException("Recovery destinations differ. Use the original profile.");
                     for(int side=0;side<2;++side) { int length=reader.ReadInt32(); if(length < -1 || length>2*1024*1024)throw new IOException("Invalid recovery data."); byte[] bytes=length<0?null:reader.ReadBytes(length); if(bytes!=null&&bytes.Length!=length)throw new IOException("Incomplete recovery data."); if(side==0)before[i]=bytes;else after[i]=bytes; }
@@ -519,6 +557,16 @@ namespace Cyrus.Setup {
             var rows=Decode(data).Replace("\r","").Split('\n');
             return rows.Length==6&&rows[0]==Marker&&System.Text.RegularExpressions.Regex.IsMatch(rows[1],@"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$")?rows[1]:"";
         }
+        // Explicit installation command preflight, separate from the read-only
+        // Plan used by library/UI inspection. Recover before checking ownership.
+        public void PreflightRegistration(InstallPaths paths) {
+            string root=Child(paths.Scripts,"CyrusScatter");Directory.CreateDirectory(root);
+            using(var held=new FileStream(Child(root,"install.lock"),FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.None)) {
+                Recover(paths);string[] targets=Targets(paths);var before=new byte[targets.Length][];
+                for(int i=0;i<targets.Length;++i){InstallPaths.Full(targets[i]);before[i]=ReadOptional(targets[i]);}
+                CheckWrappers(before,targets,Year);
+            }
+        }
         // Artist-facing installers resolve known locations automatically. No drive
         // crawl, asset re-export or copying merely to match the plugin version.
         public string ConfigureAutomaticLibrary(InstallPaths paths,IEnumerable<string> candidates) {
@@ -569,7 +617,7 @@ namespace Cyrus.Setup {
             long required=checked(bytes+16L*1024*1024);
             if(available<required)throw new IOException(String.Format("Not enough free space on {0}. Required {1:N0} bytes (including 16 MiB working space); available {2:N0}. Choose another library drive or Update plugin only.",volume,required,available));
         }
-        static void RequireSpace(string destination,long bytes) {
+        internal static void RequireSpace(string destination,long bytes) {
             var drive=new DriveInfo(Path.GetPathRoot(destination));
             if(!drive.DriveFormat.Equals("NTFS",StringComparison.OrdinalIgnoreCase))throw new IOException("Use local NTFS storage: "+drive.Name);
             CheckFreeSpace(drive.Name,drive.AvailableFreeSpace,bytes);
@@ -720,7 +768,7 @@ namespace Cyrus.Setup {
                 for(int i=0;i<targets.Length;++i) { InstallPaths.Full(targets[i]); before[i]=ReadOptional(targets[i]); if(before[i]!=null&&before[i].Length>2*1024*1024)throw new IOException("Installation target exceeds bounds."); }
                 // A previous current receipt owns only the registered wrapper files.
                 // Unknown custom startup/macros cannot silently be replaced.
-                CheckWrappers(before);
+                bool legacyWrappers=CheckWrappers(before,targets,Year);
                 string contentStore=null,previous=null;
                 var fallback=LegacyRegistration(paths,runtime,root,before[2]);
                 string statePath=StatePath(paths);
@@ -768,6 +816,7 @@ namespace Cyrus.Setup {
                     after[2]=Text(Marker+"\n"+Version+"\n"+release+"\n"+Hash(after[0])+"\n"+Hash(after[1])+"\n");
                     after[3]=Registration(before[3],Path.Combine(release,"bin"),Year);
                     for(int i=0;i<targets.Length;++i)if(!Equal(ReadOptional(targets[i]),before[i]))throw new IOException("An installation target changed during preparation; retry.");
+                    if(legacyWrappers)PreserveLegacyWrappers(root,targets,before);
                     SaveJournal(Journal(paths),targets,before,after);
                     if(checkpoint!=null)checkpoint("journal");
                     for(int i=0;i<targets.Length;++i) {

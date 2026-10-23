@@ -10,11 +10,17 @@ static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match th
 #include <stdexcept>
 #include "analyzer.h"
 #include <maxscript/macros/define_instantiation_functions.h>
-extern "C" __declspec(dllexport) const TCHAR* LibDescription(){return _T("Cyrus Surface Analyzer 0.5");}
+extern "C" __declspec(dllexport) const TCHAR* LibDescription(){return _T("Cyrus Surface Analyzer 0.14.1");}
 extern "C" __declspec(dllexport) ULONG LibVersion(){return VERSION_3DSMAX;}
 extern "C" __declspec(dllexport) void LibInit(){}
 BOOL WINAPI DllMain(HINSTANCE,DWORD,LPVOID){return TRUE;}
 static Point3 point(cyrus::V p){return Point3(float(p.x),float(p.y),float(p.z));}
+// Compatibility is independent of the product label and saved class version.
+def_visible_primitive(cyrusAnalyzerContractVersion,"cyrusAnalyzerContractVersion");
+Value* cyrusAnalyzerContractVersion_cf(Value**,int count){
+ if(count!=0)throw RuntimeError(_T("Analyzer compatibility takes no arguments."));
+ return Integer::intern(1);
+}
 def_visible_primitive(cyrusAnalyzeSurface,"cyrusAnalyzeSurface");
 Value* cyrusAnalyzeSurface_cf(Value** args,int count){
  if(count!=7 && count!=8 && count!=9 && count!=11) throw RuntimeError(_T("Expected 7, 8, 9 or 11 arguments."));

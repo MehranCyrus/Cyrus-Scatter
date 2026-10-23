@@ -1,6 +1,12 @@
 # Cyrus Scatter — selected landing and visual guide
 
-The one maintained public frontend for the artist plugin, its documentation and the separate future direction for MCP/learning. Curated guide content records **Scatter 0.82.6 development**, **Surface Analyzer 0.14** and **MCP package 0.73.0 / plan 0.73**. Complete static multi-layer recipes include Paint, external role binding and a bounded local browser, alongside mesh/UV density and slope/altitude filtering; final physical artist acceptance remains pending. These identify the imported reference edition; the [root README](../README.md) owns the latest product build and host qualification. Local content includes the Band/falloff workflow, Auto Radius, first-click/hover fixes, panel-help cleanup and the subsequent single-panel/Point-conversion workflow and independent Band scale profiles. The maintained source import and verification pass, with internal report/source records excluded from public output. The 0.82.6 source import, static verification and local production build pass; no upload package or deployment was produced. The existing 0.78.3 concept-gallery edition remains historical.
+The maintained public frontend now follows **Scatter 0.86.8.6 / schema 59**, with **Surface Analyzer 0.14.1 included in the combined EXE** and **MCP package 0.73.0 / plan 0.73** independently versioned. The [current delivery](../docs/plans/combined-installer/DELIVERY_08686.md) records Max 2027 library-open qualification, three-host packaging checks and retained native qualification. Real Corona leaf-material coverage remains Max 2027; older-host material tests used Standard materials.
+
+This edition preserves the cream/forest-green design, twelve-specimen showcase and historical concept imagery. Guides, all 332 control references and release notes include Optimized/Exact Paint exports, source visibility/material access, saved native rollout order and the combined installer, alongside clearance, Relax and retained leaf appearance. The optional library remains 96 individual assets covering 104 original catalog cards.
+
+**The Download page serves the exact 6,034,944-byte 0.86.8.6 EXE directly.** It installs Scatter and Analyzer together. The cPanel upload ZIP contains the website and this one release binary under `downloads/`. No plant content or standalone MZP downloads are included. Both plugins work with your own models and preserve existing shared content; an optional matching content ZIP can be supplied separately beside the EXE. Public metadata and its SHA-256 are in `content/release.json`; staging fails if the local approved artifact differs.
+
+The [23 October update receipt](verification/WEBSITE_08685_20261023.md) records the current checks and package. The [21 October receipt](verification/WEBSITE_08682_20261021.md) preserves the preceding edition. The [20 October receipt](verification/LIBRARY_DOWNLOAD_REFRESH_20261020.md) remains historical; its unavailable downloads and mandatory Content-folder instructions have been superseded. Local source/build updates do not imply a live deployment. Use the [cPanel upload guide](CPANEL_UPLOAD.md) for the prepared upload.
 
 ## Run locally
 
@@ -27,7 +33,7 @@ npm run build
 npm run preview
 ```
 
-Deploying the contents of `dist/` requires a separate publishing decision. Hash routing works on static hosting and retains meaningful guide/control deep links without server rewrites. The relative Vite base supports a subdirectory. Opening source `index.html` directly with `file://` is no longer the supported workflow.
+Use the production preview to test the installer link: the EXE is staged during `npm run build`, not served by the source-only development server. Deploying the contents of `dist/` requires a separate publishing decision. Hash routing works on static hosting and retains meaningful guide/control deep links without server rewrites. The relative Vite base supports a subdirectory. Opening source `index.html` directly with `file://` is no longer the supported workflow.
 
 For a cPanel upload package, run `npm run package:cpanel`. The verified ZIP and hash manifest are written under the repository's ignored `dist/website/` directory. Follow [the cPanel upload guide](CPANEL_UPLOAD.md); this command builds locally and does not publish to a host.
 
@@ -44,11 +50,11 @@ The catalog filters and visual lessons share one minimal dropdown component, wit
 - Artist features, exact behavior boundaries and two actual Max studies with version/context captions.
 - Five complete maintained source documents, a fixed documentation sidebar, section links, printing and global search (`Ctrl+K` / `Command+K`).
 - The complete current semantic catalog, with exact source keys, readable source-verified labels, explanations, ownership, local/MCP context and implementation-evidence paths. Entries do not each represent a distinct visible button or an individually qualified feature; current counts are in the [static verification receipt](verification/react-static-checks.json).
-- All **34 capability families** are discoverable through the finder, including retired and experimental records. They are not marketed as 34 available product features.
+- All **36 capability families** are discoverable through the finder, including retired and experimental records. They are not marketed as 34 available product features.
 - Explicit **Current**, **Experimental** and **Planned** distinctions, plus the five dependent roadmap stages from the maintained public summary.
 - Native-dialog search with Escape/focus restoration, keyboard result navigation, empty states, mobile navigation, reduced-motion support and meaningful unknown-route/source-loading/error states.
 
-There is no backend, signup, payment, telemetry, live Max connection or assistant login. Every primary action opens real guide/feature/reference content. The optional MCP foundation is narrower than the native artist UI; catalog visibility does not imply remote control support.
+There is no backend, signup, payment, telemetry, live Max connection or assistant login. Primary actions open real website destinations; the main EXE is served directly from the static download folder. The optional MCP foundation is narrower than the native artist UI; catalog visibility does not imply remote control support.
 
 ## Source architecture
 
@@ -64,6 +70,7 @@ There is no backend, signup, payment, telemetry, live Max connection or assistan
 | `content/source-manifest.json` | Explicit five-document manifest, catalog and selected supporting-doc/source-provenance enrollment. |
 | `content/control-explanations.json` | Source-verified editorial metadata for every current exact semantic key. |
 | `content/gallery-reading-notes.json` | Current reading notes, source evidence and guide links for every supplied poster. |
+| `content/release.json`, `src/content/release.ts`, `tools/stage_release.py` | One approved release record, relative EXE URL and verified production staging. |
 | `src/content/reference.json` | Deterministically generated current content and complete source fingerprints. |
 | `content/guide-chapters.json` | Curated customer-facing chapters rendered into HTML and search data. |
 | `content/changelog.json` | Concise version timeline with local-only evidence paths. |
@@ -92,6 +99,8 @@ The public roadmap is curated against `docs/PRODUCT_AND_AI_ROADMAP.md`. Root/doc
 | `#/workflow` | Six-step first planting workflow. |
 | `#/visuals/layers` | Six selectable interactive lessons; other IDs are containers, coverage, spacing, updates and viewport. |
 | `#/gallery` | All 19 posters, series filters, viewer and current reading notes. |
+| `#/library` | Curated rendered individual plants and the model-to-recipe workflow. |
+| `#/download` | Direct combined Scatter/Analyzer EXE download, installation steps and separate optional-content explanation. |
 | `#/examples` / `#/checklist` / `#/glossary` | Practical studies, local artist review and vocabulary. |
 | `#/guide/artist-guide/vector-painting` | Exact chapter/section link. |
 | `#/controls?q=radius&feature=C14` | Search and capability filters. |

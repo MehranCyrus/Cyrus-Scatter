@@ -1,11 +1,13 @@
 # Maintained website content
 
-`guide-chapters.json` contains the five curated customer-facing chapters. These are rendered into HTML/search data; no raw Markdown download or internal reference route is published. `source-manifest.json` records reviewed local source fingerprints and versions. A changed source fails verification until its public wording is reviewed and its fingerprint deliberately refreshed.
+The 21 October 2026 website edition follows **Scatter 0.86.8.2 / schema 59**. `guide-chapters.json` supplies five curated customer-facing chapters, rendered into HTML/search data. Current wording covers independent model clearance, layer-owned Point/Boundary Relax, retained opacity/textured preview, plugin-only installation and optional shared content. Analyzer and MCP retain their independent versions and qualification limits.
 
-`changelog.json` contains 53 concise documented version entries, ordered by development chronology. Dates are left unknown for the early September milestones. Historical 1.x names precede the later 0.7 series. Same-version updates are grouped; missing versions are not invented. Its evidence paths remain local and are stripped from generated public data.
+`release.json` is the public download record: exact EXE filename, byte count, SHA-256, date and supported hosts. `src/content/release.ts` resolves its relative download path for root and subfolder hosting. `tools/stage_release.py` checks the matching local release artifact before placing **only the main EXE** in the production download folder. Content ZIPs and MZPs are excluded from the website upload.
 
-`control-explanations.json` contains readable labels and source evidence for all 241 semantic controls. Evidence remains local; exact control identities and explanations remain public. `gallery-reading-notes.json` records the interpretation of 19 supplied concept posters and their current guide links.
+`source-manifest.json` records reviewed source fingerprints. The changed Artist Guide, MCP guide, architecture, version policy, capability matrix and library workflow were reviewed against the current delivery; the 0.86.8, 0.86.8.1 and 0.86.8.2 reports are enrolled as supporting evidence. This website update does not refresh the separate knowledge index or establish new Max qualification.
 
-Run `npm run docs:sync`, `npm run docs:check`, then `npm run build`. The only generated content output is `src/content/reference.json`. No `public/sources/` tree is generated. The cPanel packager rejects Markdown and source snapshots.
+`changelog.json` preserves earlier chronology and adds the three source-clearance releases. Internal evidence paths are stripped from public data. `control-explanations.json` includes all eight source-policy controls and the corrected shared Relax distance. `gallery-reading-notes.json` preserves the historical 0.78.3 edition of the 19 concept posters.
 
-The older coverage/status files and earlier verification receipts remain historical and are not imported into the active website. The retained poster-reading edition 0.78.3 does not identify the current Scatter 0.79.5 development build. Historical runtime evidence is never relabeled.
+Run `npm run docs:sync`, `npm run docs:check`, then `npm run package:cpanel`. Only `src/content/reference.json` is generated from the curated content. No raw Markdown or implementation source is published. The production build requires the exact approved EXE in the local release directory; a missing or mismatched artifact fails the build rather than publishing a broken download.
+
+Local builds and upload packages are distinct from a published website. Historical receipts retain their original scope.

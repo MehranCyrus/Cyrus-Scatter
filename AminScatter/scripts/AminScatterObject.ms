@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="0e133e4d2f87c3948940ae5837520ffca51cccb7b1bbcfe1217baec5a9977937"
+﻿global CyrusLoadedScriptFingerprint="cf91457ce8099c4e2a1dc65e8bd2733eaa9ee5dad0fa05143cf1e0d4d58b285d"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -1736,7 +1736,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.8.2"
+fn CyrusLibraryVersion = "0.86.8.6"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -1951,7 +1951,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.8.2 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.8.6 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -2543,7 +2543,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.8.2 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.8.6 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -2719,11 +2719,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.8.2 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.8.6 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.8.2" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.8.2 gallery package."
+    if assemblyName.Version.ToString()!="0.86.8.6" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.8.6 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -2953,6 +2953,109 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
     CyrusRecipeOpenRoot=root;CyrusRecipeOpenNode=node;CyrusRecipeOpenSurface=surface;CyrusRecipeBrowser=browser
     createDialog browser width:1000 height:680 style:#(#style_titlebar,#style_sysmenu,#style_resizing,#style_minimizebox,#style_maximizebox)
     true
+)
+
+-- Explicit scene-source commands. Catalog provenance is never node identity.
+global CyrusCaptureSourceAccess,CyrusValidateSourceAccess,CyrusShowSourceAccess,CyrusEditSourceMaterial
+fn CyrusCaptureSourceAccess controller layer rows = (
+    if controller==undefined or layer==undefined or findItem controller.layerObjects layer==0 do throw "Select an active source layer."
+    local records=#()
+    for row in rows where row>0 and row<=layer.sources.count do (
+        local node=layer.sources[row]
+        if not layer.isPointSource row and not layer.isEmptySource row and isValidNode node do
+            append records #(layer.sourceRowIDs[row],node,getHandleByAnim node)
+    )
+    #(controller,controller.layerID,layer,layer.layerID,records,rows.numberSet)
+)
+fn CyrusValidateSourceAccess context = (
+    local controller=context[1],layer=context[3],alive=false,nodes=#()
+    for node in refs.dependentNodes controller where isValidNode node and node.baseObject==controller do alive=true
+    if not alive or controller.layerID!=context[2] or findItem controller.layerObjects layer==0 or layer.layerID!=context[4] do throw "The source owner changed. Select its sources again."
+    for record in context[5] do (
+        local row=findItem layer.sourceRowIDs record[1],node=record[2]
+        if row==0 or not isValidNode node or getHandleByAnim node!=record[3] or layer.sources[row]!=node or layer.isPointSource row or layer.isEmptySource row do
+            throw "The selected source changed. Select it again."
+        appendIfUnique nodes node
+    )
+    nodes
+)
+fn CyrusShowSourceAccess context show = (
+    local nodes=CyrusValidateSourceAccess context
+    if nodes.count==0 do throw "Select at least one existing model source."
+    if theHold.Holding() do throw "Finish the current scene command before changing source visibility."
+    theHold.Begin()
+    try (
+        -- Host hide flags only. In particular, never set renderable=false here.
+        if show then unhide nodes else hide nodes
+        theHold.Accept (if show then "Cyrus show sources" else "Cyrus hide sources")
+    )catch(theHold.Cancel();throw())
+    redrawViews();nodes.count
+)
+fn CyrusEditSourceMaterial context = (
+    local nodes=CyrusValidateSourceAccess context
+    if context[6]!=1 or nodes.count!=1 or nodes[1].material==undefined do throw "Select one model with an assigned scene material."
+    local node=nodes[1],material=node.material
+    sme.Open()
+    -- Opening an editor can dispatch messages and retire/rebind the source view.
+    nodes=CyrusValidateSourceAccess context
+    if nodes.count!=1 or node.material!=material do throw "The source material changed while opening the editor. Select it again."
+    sme.SetMtlInParamEditor material
+    material
+)
+
+-- Export options retain one captured owner/document, never the current UI row.
+global CyrusPaintExportDialog,CyrusOpenPaintExport,CyrusClosePaintExport
+fn CyrusClosePaintExport = (try(destroyDialog CyrusPaintExportDialog)catch();CyrusPaintExportDialog=undefined)
+CyrusClosePaintExport()
+callbacks.removeScripts id:#CyrusPaintExportUI
+callbacks.addScript #systemPreReset "CyrusClosePaintExport()" id:#CyrusPaintExportUI persistent:false
+callbacks.addScript #filePreOpen "CyrusClosePaintExport()" id:#CyrusPaintExportUI persistent:false
+fn CyrusOpenPaintExport controller area = (
+    controller.validatePaintConversion area
+    try(destroyDialog CyrusPaintExportDialog)catch()
+    local document=area.paintDocument,key=area.paintKey(),target=area.areaTarget,transform=area.areaTarget.objectTransform
+    local surfaceAttached=cyrusBrushAttached document
+    rollout exportOptions "Paint spline export" width:330 height:250 (
+        local targetController,targetArea,targetDocument,capturedKey,capturedTarget,capturedTransform,attached=false
+        radiobuttons mode "Create independent spline" labels:#("Optimized","Exact snapshot") columns:2 pos:[12,12] width:306
+        spinner deviation "Maximum deviation:" type:#worldunits range:[1e-9,1e9,0.1] fieldWidth:90 pos:[12,60] width:306
+        label help "Optimized reduces planar boundary knots within tolerance.\nExact preserves existing snapshot/reimport behavior.\nThe original Paint is unchanged." pos:[12,94] width:306 height:48
+        button createSpline "Create spline" pos:[12,150] width:178 height:26
+        button cancel "Close" pos:[200,150] width:118 height:26
+        label result "" pos:[12,186] width:306 height:54
+        fn validateCapture = (
+            if targetController==undefined or targetArea==undefined do throw "The export context is closed. Open Export spline again."
+            local alive=false
+            for node in refs.dependentNodes targetController where isValidNode node and node.baseObject==targetController do alive=true
+            if not alive do throw "The source Scatter was removed. Open Export spline again."
+            targetController.validatePaintConversion targetArea
+            if targetArea.paintDocument!=targetDocument or targetArea.paintKey()!=capturedKey or targetArea.areaTarget!=capturedTarget or capturedTarget.objectTransform!=capturedTransform do
+                throw "The Paint Area or receiver changed. Close this view and open Export spline again."
+            true
+        )
+        on exportOptions open do (mode.state=if attached then 2 else 1;deviation.value=units.decodeValue "1mm";deviation.enabled=(mode.state==1))
+        on mode changed value do deviation.enabled=(value==1)
+        on cancel pressed do destroyDialog exportOptions
+        on createSpline pressed do try (
+            validateCapture()
+            local owner=targetController,source=targetArea,optimized=(mode.state==1),tolerance=deviation.value
+            -- Export selects its new node and can unmount the Scatter panel.
+            local outcome=owner.exportPaintSpline source optimized:optimized tolerance:tolerance
+            if optimized then result.text=(if outcome[5] then "Optimized: " else "Exact: ")+(outcome[2] as string)+" → "+(outcome[3] as string)+" knots\n"+(if outcome[5] then ("Certified deviation ≤ "+units.formatValue outcome[4]) else outcome[6])
+            else result.text="Exact independent snapshot created. Original Paint unchanged."
+        )catch(result.text=getCurrentException())
+        on exportOptions close do (targetController=undefined;targetArea=undefined;targetDocument=undefined;capturedTarget=undefined)
+    )
+    CyrusPaintExportDialog=exportOptions
+    createDialog exportOptions style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
+    -- Max initializes rollout locals when creating the dialog. Bind the captured
+    -- values afterwards; pre-creation assignments are reset by that lifecycle.
+    exportOptions.targetController=controller;exportOptions.targetArea=area;exportOptions.targetDocument=document
+    exportOptions.capturedKey=key;exportOptions.capturedTarget=target;exportOptions.capturedTransform=transform
+    exportOptions.attached=surfaceAttached;exportOptions.mode.state=if surfaceAttached then 2 else 1
+    exportOptions.deviation.enabled=not surfaceAttached
+    try(exportOptions.validateCapture())catch(CyrusClosePaintExport();throw())
+    exportOptions
 )
 
 global CyrusFalloffGraph,CyrusPointSuspended,CyrusViewportRedraw,CyrusNewLayerID
@@ -5223,7 +5326,7 @@ initialRollupState:0x8
         if areaUseLine or areaUsePoints do appendIfUnique guides areaAnalyzer
         if fallDelete or fallScale or fallDensity do appendIfUnique guides fallAnalyzer
         for guide in guides where isValidNode guide and not (analyzerOff guide) do (
-            if not isProperty guide #analysisCurrent do throw "Update the Surface Analyzer script to the matching package."
+            if not isProperty guide #analysisCurrent do throw "Install the matching Surface Analyzer 0.14.1 script/native package and restart Max. Update Analyzer recalculates guides; it does not update the installed software."
             if not guide.analysisCurrent() do throw ("Update Surface Analyzer '"+guide.name+"' first, then update Scatter. Its guides are out of date; the previous Scatter result is preserved.")
         )
         true
@@ -5351,7 +5454,7 @@ initialRollupState:0x8
     fn preparedSplineField records weights = (
         local nodes=#(),stream=stringStream "",quantum=units.decodeValue "0.0001mm"
         for row in records do appendIfUnique nodes row[1]
-        with printAllElements on format "%|%|%|%|%" records weights bandArrangement quantum (cyrusReceiverShapeKey nodes) to:stream
+        with printAllElements on format "%|%|%|%|%" records weights bandArrangement quantum (cyrusBandShapeKey nodes) to:stream
         local key=stream as string
         if procSplineField!=undefined and key==procSplineKey do (procSplineHits+=1;return procSplineField)
         local successor=cyrusPrepareSplineField records weights bandArrangement quantum
@@ -5612,8 +5715,9 @@ initialRollupState:0x8
             if diversityMode==3 do line=this.preparedSplineField line[2] shares
             if finalPass!=undefined do throw "Use the receiver-local candidate path before final acceptance."
             local shapeNodes=for node in areaNodes where isValidNode node collect node
-            if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique shapeNodes node
-            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)+"|Native:1"
+            local bandNodes=#()
+            if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique bandNodes node
+            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)+"|Bands:"+(cyrusBandShapeKey bandNodes)+"|Native:1"
             local nextCache=#(),nextNormals=#(),faceOffset=0
             result=#();paintBaseFaceCounts=cyrusReceiverFaceCounts targets
             local nativeInputs=#()
@@ -5676,7 +5780,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.8.2"
+    fn uiVersion = "0.86.8.6"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -6012,7 +6116,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.86.8.2" on (
+        undo "Upgrade Cyrus scene to 0.86.8.6" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -6106,16 +6210,18 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
         if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area and stored receiver do not match."
         true
     )
-    fn exportPaintSpline area = (
+    fn exportPaintSpline area optimized:false tolerance:0.1 = (
         this.validatePaintConversion area
-        cyrusBrushExportSpline area.paintDocument ((substring area.paintSetName 1 90)+"_Paint_Snapshot")
+        local name=(substring area.paintSetName 1 90)+"_Paint_Snapshot"
+        if optimized then cyrusBrushExportOptimizedSpline area.paintDocument name tolerance
+        else cyrusBrushExportSpline area.paintDocument name
     )
     fn importPaintSpline area node add:false tolerance:0.1 = (
         this.validatePaintConversion area
@@ -7164,7 +7270,7 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.8.2 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.8.6 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
@@ -7172,18 +7278,18 @@ initialRollupState:0x8
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.8.2 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.8.2 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.8.2 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.8.2 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.8.2 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.8.2 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.8.6 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.8.6 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.8.6 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.8.6 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.8.6 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.8.6 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.8.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.8.6 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -8720,7 +8826,11 @@ initialRollupState:0x8
         button sourceUI_selectFromScene "☷" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Choose one or more source models by name." height:22
         pickbutton sourceUI_addPlant "+" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Pick a scene model for this layer." height:22
         button sourceUI_removePlant "×" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead." height:22
-        button sourceUI_selectPlant "⌖" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Select the highlighted source models in the scene." height:22
+        button sourceUI_selectPlant "⌖" pos:[8,8] width:((modelsUI.width-16-((amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))-1)*4)/(amin 4 (amax 1 (floor ((modelsUI.width-8)/23.2))))) tooltip:"Select highlighted source models in the scene. Selection keeps their current visibility; use Show sources to unhide their node flags." height:22
+        button sourceUI_showSources "Show sources" width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/80.4))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/80.4))))) tooltip:"Unhide the selected scene source nodes in one Undo. Their renderable flags are preserved. Layer, group and category visibility restrictions remain." height:22
+        button sourceUI_hideSources "Hide sources" width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/80.4))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/80.4))))) tooltip:"Hide the selected scene source nodes in one Undo. Keep materials, registration, renderable flags and completed placements." height:22
+        button sourceUI_editMaterial "Edit material" width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))) tooltip:"Open the selected model's assigned scene material in Slate. Shared material instances change together. Library asset files are kept." height:22
+        label sourceUI_sourceAccessInfo "Select a model source." width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:36
         button sourceUI_addPoint "Add Point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model." height:22
         button sourceUI_addEmpty "Add Empty (gap)" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/96))))) tooltip:"Add a weighted empty source for intentional gaps in candidate-budget mode." height:22
         pickbutton sourceUI_replacePoint "Pick object" filter:AminScatterSourceFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments." height:22
@@ -8769,6 +8879,7 @@ initialRollupState:0x8
         checkbutton sourceUI_detailsToggle "Point / Empty sources and color groups" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))) height:22 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
         label heading_0 "Source settings" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_1 "Radius and clearance" pos:[6,6] width:(modelsUI.width-12) height:18
+        checkbutton accessToggle "Source access" pos:[6,6] width:(modelsUI.width-12) height:22
         checkbutton clearanceToggle "Clearance distance" pos:[6,6] width:(modelsUI.width-12) height:22
         checkbutton groupsToggle "Assignment groups" pos:[6,6] width:(modelsUI.width-12) height:22
         dotNetControl sourceUI_plantList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
@@ -8927,8 +9038,19 @@ initialRollupState:0x8
         fn sourceUI_addSource n = (
             sourceUI_obj.addModelSource n tint:sourceUI_groupColor.color
         )
+        fn sourceUI_syncSourceAccess = (
+            sourceUI_showSources.enabled=false;sourceUI_hideSources.enabled=false;sourceUI_editMaterial.enabled=false
+            sourceUI_sourceAccessInfo.text="Select a model source."
+            if sourceUI_obj!=undefined and sourceUI_plantList.selection.numberSet>0 do try (
+                local context=CyrusCaptureSourceAccess sourceUI_root sourceUI_obj sourceUI_plantList.selection,nodes=CyrusValidateSourceAccess context
+                sourceUI_showSources.enabled=nodes.count>0;sourceUI_hideSources.enabled=nodes.count>0
+                sourceUI_editMaterial.enabled=context[6]==1 and nodes.count==1 and nodes[1].material!=undefined
+                sourceUI_sourceAccessInfo.text=if nodes.count==1 then nodes[1].name+"\n"+(if nodes[1].material==undefined then "No assigned material" else "Scene material: "+nodes[1].material.name) else (nodes.count as string)+" existing model sources"
+            )catch(sourceUI_sourceAccessInfo.text="Source context unavailable. Select again.")
+        )
         fn sourceUI_showSelectedColor = (
             sourceUI_bindClearance()
+            sourceUI_syncSourceAccess()
             local rows=sourceUI_plantList.selection
             sourceUI_weightSpin.enabled=rows.numberSet>0;sourceUI_sourceZSpin.enabled=rows.numberSet>0;sourceUI_sourceScaleSpin.enabled=rows.numberSet>0;sourceUI_forwardAxis.enabled=rows.numberSet>0
             if rows.numberSet>0 then (
@@ -9233,12 +9355,48 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
+        fn sourceUI_sourceVisibility show = (
+            local savedOwner=sourceUI_obj,context=CyrusCaptureSourceAccess sourceUI_root sourceUI_obj sourceUI_plantList.selection
+            local count=CyrusShowSourceAccess context show
+            if sourceUI_controlsReady and sourceUI_obj==savedOwner do (sourceUI_syncSourceAccess();sourceUI_sourceAccessInfo.text=(count as string)+" source node flags changed.\nLayer/group restrictions remain.")
+        )
+        on sourceUI_showSources pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_showSources"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do try(sourceUI_sourceVisibility true)catch(messageBox(getCurrentException()) title:"Source visibility")
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_hideSources pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_hideSources"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do try(sourceUI_sourceVisibility false)catch(messageBox(getCurrentException()) title:"Source visibility")
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on sourceUI_editMaterial pressed do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "sourceUI_editMaterial"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
+            local context=CyrusCaptureSourceAccess sourceUI_root sourceUI_obj sourceUI_plantList.selection
+            try(CyrusEditSourceMaterial context)catch(messageBox(getCurrentException()) title:"Source material")
+            -- Do not touch this rollout after Slate may have dispatched a rebind.
+        )
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         fn sourceUI_bindFeatures layer = (
             local next=layer
             sourceUI_binding=true;sourceUI_controlsReady=false
             if sourceUI_obj!=next do (sourceUI_plantList.selection=#{};)
             sourceUI_obj=next;sourceUI_parentView=(CyrusContainerPanel sourceUI_root)
-            for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_clearanceCopiesList,sourceUI_clearanceOthersList,sourceUI_clearanceExternalList,sourceUI_clearanceLayerList,sourceUI_clearancePriorityList,sourceUI_clearanceSummary,sourceUI_clearanceFactorSpin,sourceUI_clearanceGapSpin,sourceUI_clearanceMetricList,sourceUI_detailsToggle) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
+            for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_showSources,sourceUI_hideSources,sourceUI_editMaterial,sourceUI_sourceAccessInfo,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_clearanceCopiesList,sourceUI_clearanceOthersList,sourceUI_clearanceExternalList,sourceUI_clearanceLayerList,sourceUI_clearancePriorityList,sourceUI_clearanceSummary,sourceUI_clearanceFactorSpin,sourceUI_clearanceGapSpin,sourceUI_clearanceMetricList,sourceUI_detailsToggle) where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((sourceUI_controlsReady=true;(sourceUI_updateList();sourceUI_showSelectedColor())))) catch(sourceUI_binding=false;sourceUI_controlsReady=true;throw())
             sourceUI_controlsReady=true;sourceUI_binding=false
         )
@@ -9364,10 +9522,10 @@ initialRollupState:0x8
             )catch(syncingColorLists=false;CyrusMeasureEnd measurement measuredOwner measuredEpoch "color_lists" failed:true;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
-        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,clearanceToggle.checked,groupsToggle.checked),#(sourceUI_plantList.height,sourceUI_clearanceLayerList.height))
+        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,accessToggle.checked,clearanceToggle.checked,groupsToggle.checked),#(sourceUI_plantList.height,sourceUI_clearanceLayerList.height))
         fn restoreView state = (
             if state[2]==undefined do return true
-            advancedToggle.checked=state[2][1];clearanceToggle.checked=state[2][2];groupsToggle.checked=state[2][3]
+            advancedToggle.checked=state[2][1];accessToggle.checked=state[2][2];clearanceToggle.checked=state[2][3];groupsToggle.checked=state[2][4]
             sourceUI_plantList.height=state[3][1];sourceUI_clearanceLayerList.height=state[3][2]
             true
         )
@@ -9463,7 +9621,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,clearanceToggle.checked,groupsToggle.checked,(sourceUI_clearanceExternalList.selection==3),(clearanceToggle.checked),(groupsToggle.checked),sourceUI_sourceNameLabel.text,sourceUI_selectFromScene.text,sourceUI_addPlant.text,sourceUI_removePlant.text,sourceUI_selectPlant.text,sourceUI_addPoint.text,sourceUI_addEmpty.text,sourceUI_replacePoint.text,sourceUI_makePoint.text,sourceUI_groupHeading.text,sourceUI_applyColor.text,sourceUI_colorHelp.text,sourceUI_weightHelp.text,sourceUI_sourceTransformHelp.text,sourceUI_radiusModeHelp.text,sourceUI_followRadiusCheck.text,sourceUI_showRadiusCheck.text,sourceUI_clearanceSummary.text,sourceUI_detailsToggle.text,sourceUI_plantList_caption.text,sourceUI_existingGroups_caption.text,sourceUI_groupColor_caption.text,sourceUI_weightSpin_caption.text,sourceUI_sourceZSpin_caption.text,sourceUI_sourceScaleSpin_caption.text,sourceUI_radiusSourceSpin_caption.text,sourceUI_radiusModeDrop_caption.text,sourceUI_forwardAxis_caption.text,sourceUI_clearanceCopiesList_caption.text,sourceUI_clearanceOthersList_caption.text,sourceUI_clearanceExternalList_caption.text,sourceUI_clearanceLayerList_caption.text,sourceUI_clearancePriorityList_caption.text,sourceUI_clearanceFactorSpin_caption.text,sourceUI_clearanceGapSpin_caption.text,sourceUI_clearanceMetricList_caption.text,sourceUI_plantList.height,sourceUI_clearanceLayerList.height,sourceUI_sourceNameLabel.visible,sourceUI_sourceName.visible,sourceUI_idColor.visible,sourceUI_selectFromScene.visible,sourceUI_addPlant.visible,sourceUI_removePlant.visible,sourceUI_selectPlant.visible,sourceUI_addPoint.visible,sourceUI_addEmpty.visible,sourceUI_replacePoint.visible,sourceUI_makePoint.visible,sourceUI_groupHeading.visible,sourceUI_existingGroups.visible,sourceUI_groupColor.visible,sourceUI_applyColor.visible,sourceUI_colorHelp.visible,sourceUI_weightSpin.visible,sourceUI_weightHelp.visible,sourceUI_sourceZSpin.visible,sourceUI_sourceScaleSpin.visible,sourceUI_sourceTransformHelp.visible,sourceUI_radiusSourceSpin.visible,sourceUI_radiusModeDrop.visible,sourceUI_radiusModeHelp.visible,sourceUI_followRadiusCheck.visible,sourceUI_showRadiusCheck.visible,sourceUI_forwardAxis.visible,sourceUI_clearanceCopiesList.visible,sourceUI_clearanceOthersList.visible,sourceUI_clearanceExternalList.visible,sourceUI_clearancePriorityList.visible,sourceUI_clearanceSummary.visible,sourceUI_clearanceFactorSpin.visible,sourceUI_clearanceGapSpin.visible,sourceUI_clearanceMetricList.visible,sourceUI_detailsToggle.visible,sourceUI_sourceNameLabel.height,sourceUI_groupHeading.height,sourceUI_colorHelp.height,sourceUI_weightHelp.height,sourceUI_sourceTransformHelp.height,sourceUI_radiusModeHelp.height,sourceUI_clearanceSummary.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,accessToggle.checked,clearanceToggle.checked,groupsToggle.checked,(accessToggle.checked),(sourceUI_clearanceExternalList.selection==3),(clearanceToggle.checked),(groupsToggle.checked),sourceUI_sourceNameLabel.text,sourceUI_selectFromScene.text,sourceUI_addPlant.text,sourceUI_removePlant.text,sourceUI_selectPlant.text,sourceUI_showSources.text,sourceUI_hideSources.text,sourceUI_editMaterial.text,sourceUI_sourceAccessInfo.text,sourceUI_addPoint.text,sourceUI_addEmpty.text,sourceUI_replacePoint.text,sourceUI_makePoint.text,sourceUI_groupHeading.text,sourceUI_applyColor.text,sourceUI_colorHelp.text,sourceUI_weightHelp.text,sourceUI_sourceTransformHelp.text,sourceUI_radiusModeHelp.text,sourceUI_followRadiusCheck.text,sourceUI_showRadiusCheck.text,sourceUI_clearanceSummary.text,sourceUI_detailsToggle.text,sourceUI_plantList_caption.text,sourceUI_existingGroups_caption.text,sourceUI_groupColor_caption.text,sourceUI_weightSpin_caption.text,sourceUI_sourceZSpin_caption.text,sourceUI_sourceScaleSpin_caption.text,sourceUI_radiusSourceSpin_caption.text,sourceUI_radiusModeDrop_caption.text,sourceUI_forwardAxis_caption.text,sourceUI_clearanceCopiesList_caption.text,sourceUI_clearanceOthersList_caption.text,sourceUI_clearanceExternalList_caption.text,sourceUI_clearanceLayerList_caption.text,sourceUI_clearancePriorityList_caption.text,sourceUI_clearanceFactorSpin_caption.text,sourceUI_clearanceGapSpin_caption.text,sourceUI_clearanceMetricList_caption.text,sourceUI_plantList.height,sourceUI_clearanceLayerList.height,sourceUI_sourceNameLabel.visible,sourceUI_sourceName.visible,sourceUI_idColor.visible,sourceUI_selectFromScene.visible,sourceUI_addPlant.visible,sourceUI_removePlant.visible,sourceUI_selectPlant.visible,sourceUI_showSources.visible,sourceUI_hideSources.visible,sourceUI_editMaterial.visible,sourceUI_sourceAccessInfo.visible,sourceUI_addPoint.visible,sourceUI_addEmpty.visible,sourceUI_replacePoint.visible,sourceUI_makePoint.visible,sourceUI_groupHeading.visible,sourceUI_existingGroups.visible,sourceUI_groupColor.visible,sourceUI_applyColor.visible,sourceUI_colorHelp.visible,sourceUI_weightSpin.visible,sourceUI_weightHelp.visible,sourceUI_sourceZSpin.visible,sourceUI_sourceScaleSpin.visible,sourceUI_sourceTransformHelp.visible,sourceUI_radiusSourceSpin.visible,sourceUI_radiusModeDrop.visible,sourceUI_radiusModeHelp.visible,sourceUI_followRadiusCheck.visible,sourceUI_showRadiusCheck.visible,sourceUI_forwardAxis.visible,sourceUI_clearanceCopiesList.visible,sourceUI_clearanceOthersList.visible,sourceUI_clearanceExternalList.visible,sourceUI_clearancePriorityList.visible,sourceUI_clearanceSummary.visible,sourceUI_clearanceFactorSpin.visible,sourceUI_clearanceGapSpin.visible,sourceUI_clearanceMetricList.visible,sourceUI_detailsToggle.visible,sourceUI_sourceNameLabel.height,sourceUI_sourceAccessInfo.height,sourceUI_groupHeading.height,sourceUI_colorHelp.height,sourceUI_weightHelp.height,sourceUI_sourceTransformHelp.height,sourceUI_radiusModeHelp.height,sourceUI_clearanceSummary.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -9538,6 +9696,43 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(accessToggle);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_showSources,sourceUI_hideSources);show=(true and (accessToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/80.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_editMaterial);show=(true and (accessToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(sourceUI_sourceAccessInfo);show=(true and (accessToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel sourceUI_sourceAccessInfo 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(sourceUI_sourceAccessInfo.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -9838,7 +10033,7 @@ initialRollupState:0x8
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
                 sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_clearanceCopiesList,sourceUI_clearanceOthersList,sourceUI_clearanceExternalList,sourceUI_clearanceLayerList,sourceUI_clearancePriorityList,sourceUI_clearanceSummary,sourceUI_clearanceFactorSpin,sourceUI_clearanceGapSpin,sourceUI_clearanceMetricList,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceNameLabel,sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_showSources,sourceUI_hideSources,sourceUI_editMaterial,sourceUI_sourceAccessInfo,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_makePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_radiusModeDrop,sourceUI_radiusModeHelp,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_clearanceCopiesList,sourceUI_clearanceOthersList,sourceUI_clearanceExternalList,sourceUI_clearanceLayerList,sourceUI_clearancePriorityList,sourceUI_clearanceSummary,sourceUI_clearanceFactorSpin,sourceUI_clearanceGapSpin,sourceUI_clearanceMetricList,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
                 sourceUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
 
@@ -9848,6 +10043,15 @@ initialRollupState:0x8
             )catch(CyrusMeasureEnd measurement measuredOwner measuredEpoch "modelsUI.bind" failed:true;throw())
         )
 
+        on accessToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "accessToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         on clearanceToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "clearanceToggle"
             if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
@@ -10629,7 +10833,7 @@ initialRollupState:0x8
             diversityUI_selectAnalyzer.enabled=valid;diversityUI_updateAnalyzer.enabled=valid
             diversityUI_analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
                 local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
-                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if not isProperty guide #analysisCurrent then "Update Analyzer script" else if not guide.analysisCurrent() then "Update Analyzer needed" else "Ready"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if not isProperty guide #analysisCurrent then "Install Analyzer 0.14.1; restart Max" else if not guide.analysisCurrent() then "Analyze / Update needed" else "Ready"
                 guide.name+"\nSurface: "+target+"\n"+state
             )
         )
@@ -13911,7 +14115,7 @@ initialRollupState:0x8
             if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
             try (if brushUI_controlsReady and not brushUI_binding and brushUI_obj!=undefined do (
             local controller=brushUI_root,area=brushUI_obj
-            try(controller.exportPaintSpline area)catch(messageBox (getCurrentException()) title:"Paint to spline")
+            try(CyrusOpenPaintExport controller area)catch(messageBox (getCurrentException()) title:"Paint to spline")
         )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
@@ -18323,14 +18527,14 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.86.8.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.86.8.6" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
-        button upgradeButton "Upgrade scene to 0.86.8.2" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
+        button upgradeButton "Upgrade scene to 0.86.8.6" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         timer bindTimer interval:1 active:false
@@ -18477,7 +18681,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.8.2 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.8.6 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()

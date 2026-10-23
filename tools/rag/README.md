@@ -1,12 +1,22 @@
 # Local catalog and lexical search
 
-**Current maintenance — 21 October 2026:** maintained product guidance now follows
-**Scatter 0.86.8.2 / schema 59** and its scoped Max 2024/2026/2027 delivery.
-**The live knowledge index is stale; the successor is a draft, not activated.**
-Use the [current handoff](../../docs/plans/source-clearance/DELIVERY_08682.md),
-[artist guide](../../docs/ARTIST_GUIDE.md) and source inspection until the gates
-below are resolved. The 19 October freshness statement is a historical observation.
-No plugin behavior, installed profiles, package bytes or retrieval runtime changed.
+**Current maintenance — 22 October 2026:** product guidance follows
+**Scatter 0.86.8.4 / schema 59**, with scoped **Max 2027** qualification and
+independent Analyzer **0.14.1**. The corrected index is **activated**, and actual
+project-following tools verify **48/48 full-parent hashes** with no source issues.
+See the [22 October refresh and consumer receipt](CURRENT_REFRESH_08684_20261022.md).
+Corpus v31 / review v39 preserve the 48-parent enrollment, full original qualifiers,
+historical qualification and exact evidence gates. The
+[product delivery](../../docs/plans/installer-panels/DELIVERY_08684.md),
+[artist guide](../../docs/ARTIST_GUIDE.md) and source inspection distinguish
+required behavior from qualified execution.
+
+This is a **one-time refresh**; live status reports the background watcher stopped.
+Its policy was not rebased or restarted. The
+[21 October refresh](CURRENT_REFRESH_08682_20261021.md) and
+[watcher record](CURRENT_WATCHER_08682_20261021.md) remain historical evidence.
+Retrieval tests are agent-reviewed, not human semantic acceptance or answer accuracy.
+Earlier failed attempts and prior indexes remain preserved.
 
 The [12 October completion handoff](COMPLETION_2026-10-12.md) records the expanded
 foundation corpus, measured limits, selected generation and actual consumers.
@@ -46,6 +56,10 @@ Python bytecode caches beside source; temporary fixtures live under
 never the real repository. No Max/plugin builds or application launches occur.
 
 ## Documentation and candidate review — 21 October 2026
+
+This subsection records the earlier **unactivated v22 draft**. Its blockers and
+test failure are superseded by the separately reviewed scope-preserving
+[current refresh](CURRENT_REFRESH_08682_20261021.md); original receipts remain unchanged.
 
 The root/product entrypoints, artist/library workflow, architecture, engineering
 foundation, capability help and execution ledger were reconciled with 0.86.8.2.

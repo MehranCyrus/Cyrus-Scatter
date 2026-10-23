@@ -1,4 +1,4 @@
-name "Cyrus Surface Analyzer 0.14"
+name "Cyrus Surface Analyzer 0.14.1"
 version 0.14
 run "install.ms"
 

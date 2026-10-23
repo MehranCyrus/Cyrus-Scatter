@@ -2,14 +2,14 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.8.2 | Clearance field sizing, visible Relax and independent Boundary Relax distance editing; historical receipts retain their identities |
-| Scatter native/package | 0.86.8.2 / Max 2024, 2026, 2027 | Separately matched SDK/managed payloads under the user's explicit compatibility request; [delivery scope](plans/source-clearance/DELIVERY_08682.md) |
+| Scatter UI | 0.86.8.6 | Combined three-host installation; calculation contracts retained |
+| Scatter native/package | 0.86.8.6 / Max 2024, 2026, 2027 | [Combined delivery and qualification](plans/combined-installer/DELIVERY_08686.md); previous receipts retain their identities |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
 | Saved MAXScript schema | 59 | Appended source-clearance block; explicit Undoable schema-58 upgrade; earlier schemas remain unsupported |
 | Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
-| Surface Analyzer | 0.14 | Independently versioned product |
+| Surface Analyzer | 0.14.1 | Independently versioned product |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
 
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
@@ -23,6 +23,22 @@ the [correction report](plans/source-clearance/DELIVERY_08682.md) records the
 matched build and host evidence separately from prior material-performance work.
 
 ## Choosing the next version
+
+**23 October 2026 gallery repair: 0.86.8.6.** The user authorizes a version-pairing correction, actual library-open testing, rebuilt installer and website ZIP. Use a patch to distinguish the corrected package from 0.86.8.5. Native Scatter and Analyzer payloads are retained byte-for-byte; schema 59, recipe 8, content 0.86.7 and scatter behavior stay unchanged. New host execution is Max 2027 only. [Repair and exact evidence](plans/combined-installer/DELIVERY_08686.md).
+
+**22 October 2026 requested combined-installer successor: 0.86.8.5.** A delivered EXE gains two host payloads and automatic installation of independent Analyzer 0.14.1, so use a new patch and preserve 0.86.8.4. The user explicitly authorizes Max 2024/2026 in addition to 2027 for this delivery. Preserve Scatter calculation behavior, schema 59, recipe 8 and content 0.86.7. [Plan and actual qualification](plans/combined-installer/DELIVERY_08685.md).
+
+**22 October 2026 user-selected correction: 0.86.8.4.** The user explicitly selects this patch for persistent native rollout ordering, recognized older-wrapper migration with preserved backups, installer presentation and focused regression/knowledge maintenance. Calculation behavior, schema 59, recipe 8 and content 0.86.7 remain unchanged. Analyzer stays independently at 0.14.1. New qualification targets Max 2027 only; preserve previous 2024/2026 receipts. [Delivery and exact evidence](plans/installer-panels/DELIVERY_08684.md).
+
+**22 October 2026 user-selected successor: 0.86.8.3.** The user explicitly
+selects this label for the six-refinement program: separately installed Analyzer
+compatibility, optimized independent Paint exports, bounded high-resolution
+Bands, UI/lifecycle coverage, behavior-preserving cleanup and scene-source
+material access. This is an implementation candidate until the exact final pair
+passes its Max 2027 gates. Preserve schema 59 / recipe 8 and original Paint;
+qualify new native capabilities explicitly. Analyzer advances independently to
+0.14.1 for the current matched-pair installer. New qualification is Max 2027
+only; older delivery receipts retain their original host/version scope.
 
 **20 October 2026 authorized correction: 0.86.8.1.** The user explicitly selected
 this patch for the two source-clearance review defects, relevant viewport reuse

@@ -18,6 +18,7 @@
 #include <maxscript/macros/define_instantiation_functions.h>
 #include "brush.h"
 #include "spline_bands.h"
+#include "spline_export.h"
 #include "license_boundary.h"
 #include "placement_transport.h"
 #include "placement_api.h"
@@ -573,14 +574,26 @@ Value* cyrusBrushFill_cf(Value** a,int n){check_arg_count(cyrusBrushFill,2,n);re
 });}
 
 def_visible_primitive(cyrusBrushConversionVersion,"cyrusBrushConversionVersion");
-Value* cyrusBrushConversionVersion_cf(Value**,int n){check_arg_count(cyrusBrushConversionVersion,0,n);return Integer::intern(1);}
+Value* cyrusBrushConversionVersion_cf(Value**,int n){check_arg_count(cyrusBrushConversionVersion,0,n);return Integer::intern(2);}
 def_visible_primitive(cyrusBrushSurfaceVersion,"cyrusBrushSurfaceVersion");
 Value* cyrusBrushSurfaceVersion_cf(Value**,int n){check_arg_count(cyrusBrushSurfaceVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusBrushAttached,"cyrusBrushAttached");
+Value* cyrusBrushAttached_cf(Value** a,int n){check_arg_count(cyrusBrushAttached,1,n);return doc(a[0])->document.attached?&true_value:&false_value;}
 
-def_visible_primitive(cyrusBrushExportSpline,"cyrusBrushExportSpline");
-Value* cyrusBrushExportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushExportSpline,2,n);return api([&]()->Value*{
+static Value* exportPaintSnapshot(Value** a,double tolerance,bool summary){return api([&]()->Value*{
     auto* p=doc(a[0]);p->requireAuthor();if(p->painting||p->gesture)throw std::runtime_error("Stop the brush before exporting a spline snapshot");
-    p->ensureSurface();if(p->document.contours.empty()&&p->document.faces.empty())throw std::runtime_error("This Paint Area is empty; paint or import coverage first");
+    // Export is a read-only consumer of canonical Paint. Revalidating a moved
+    // receiver through the source document would advance its revision and clear
+    // prepared state. Refresh an independent bounded capture instead.
+    std::unique_ptr<PaintDocument> refreshed;
+    bool current=p->target&&p->surface&&!p->invalid&&p->targetValidity.InInterval(GetCOREInterface()->GetTime())&&(!p->document.attached||p->atlas);
+    if(current){const auto tm=p->target->GetObjectTM(GetCOREInterface()->GetTime());for(int row=0;row<4;++row)current=current&&(tm.GetRow(row)==p->objectTM.GetRow(row));}
+    if(!current){
+        refreshed=std::make_unique<PaintDocument>();refreshed->document=p->document;
+        refreshed->objectTM=p->objectTM;refreshed->receiverFrameKnown=p->receiverFrameKnown;
+        refreshed->prepare(p->target);p=refreshed.get();
+    }
+    p->valid(false);if(p->document.contours.empty()&&p->document.faces.empty())throw std::runtime_error("This Paint Area is empty; paint or import coverage first");
     type_check(a[1],String,_T("snapshot name"));MSTR name(a[1]->to_string());
     if(name.Length()<1||name.Length()>128)throw std::runtime_error("Spline snapshot name must contain 1..128 characters");
     auto* ip=GetCOREInterface();ip->MakeNameUnique(name);
@@ -592,35 +605,74 @@ Value* cyrusBrushExportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushExpo
     if(p->document.attached)loops=p->atlas->contours(p->document);
     else for(const auto& contour:p->document.contours){std::vector<b::Vec3> loop;for(auto xy:contour)loop.push_back({xy[0],xy[1],0});loops.push_back(std::move(loop));}
     if(loops.empty())throw std::runtime_error("The whole closed surface is filled and has no border to export");
+    namespace ex=cyrus::spline_export;
+    ex::Result reduction;
+    for(const auto& loop:loops)reduction.input+=loop.size();
+    reduction.output=reduction.input;
+    if(tolerance>0){
+        if(p->document.attached)reduction.reason="Attached surface boundary: Exact snapshot retained";
+        else {
+            const auto original=loops;ex::Loops world;
+            const auto tm=p->objectTM;const auto x=vec(tm.GetRow(0)),y=vec(tm.GetRow(1)),z=vec(tm.GetRow(2)),offset=vec(tm.GetRow(3));
+            for(const auto& loop:original){world.emplace_back();for(auto q:loop)world.back().push_back(offset+x*q.x+y*q.y+z*q.z);}
+            reduction=ex::optimize(world,tolerance);
+            if(reduction.optimized){
+                loops.clear();ex::Loops published;
+                for(std::size_t r=0;r<original.size();++r){loops.emplace_back();published.emplace_back();for(auto i:reduction.indices[r]){
+                    loops.back().push_back(original[r][i]);published.back().push_back(vec(point(original[r][i])*tm));
+                }}
+                reduction.bound=ex::certify(world,published,reduction,tolerance);
+            }
+        }
+    }
     for(const auto& contour:loops){
         auto* spline=shape->shape.NewSpline();
         for(auto position:contour){
             Point3 q=point(position);
             // Max knots are single precision. Reject lossy large-coordinate
             // snapshots rather than quietly losing canonical boundary detail.
-            if(amin::length(vec(q)-position)>.0001)
+            if(!reduction.optimized&&amin::length(vec(q)-position)>.0001)
                 throw std::runtime_error("Paint coordinates are too large for an accurate Max spline; move geometry nearer its local origin");
             if(!spline->AddKnot(SplineKnot(KTYPE_CORNER,LTYPE_LINE,q,q,q)))throw std::runtime_error("Spline knot allocation failed");
         }
         spline->SetClosed();spline->ComputeBezPoints();
     }
     shape->shape.UpdateSels();shape->shape.InvalidateGeomCache();
-    if(p->document.attached){
+    if(p->document.attached&&!reduction.optimized){
         const auto payload=b::encode(p->document);const auto key=splineGeometryKey(shape->shape);const auto size=payload.size()+sizeof(key);
         if(size>cyrus::recipes::maxPaintBytes+sizeof(key))throw std::runtime_error("Surface spline snapshot exceeds its coverage budget");
         const auto freeData=[](unsigned char* data){MAX_free(data);};
         std::unique_ptr<unsigned char,decltype(freeData)> data(static_cast<unsigned char*>(MAX_malloc(size)),freeData);if(!data)throw std::bad_alloc();std::memcpy(data.get(),&key,sizeof(key));std::memcpy(data.get()+sizeof(key),payload.data(),payload.size());
         shape->AddAppDataChunk(documentID,REF_TARGET_CLASS_ID,0x8661,static_cast<DWORD>(size),data.get());data.release();
     }
+    two_typed_value_locals(Array* result,Value* wrapped);vl.result=nullptr;vl.wrapped=&undefined;
+    if(summary){
+        vl.result=new Array(6);vl.result->append(&undefined);
+        vl.result->append(Integer::intern(int(reduction.input)));vl.result->append(Integer::intern(int(reduction.output)));
+        vl.result->append(Double::intern(reduction.bound));vl.result->append(reduction.optimized?&true_value:&false_value);
+        vl.result->append(new String(MSTR::FromACP(reduction.reason.c_str())));
+    }
     const bool ownHold=!theHold.Holding();if(ownHold)theHold.Begin();
     INode* node=nullptr;
     try{
         node=ip->CreateObjectNode(shape.get());if(!node)throw std::runtime_error("Could not publish the spline snapshot");
         shape.release();node->SetName(name);node->SetNodeTM(ip->GetTime(),p->objectTM);
+        vl.wrapped=MAXNode::intern(node);if(summary)vl.result->data[0]=vl.wrapped;
         if(ownHold)theHold.Accept(_T("Cyrus Paint to spline"));
     }catch(...){if(ownHold)theHold.Cancel();else if(node)ip->DeleteNode(node,FALSE);throw;}
-    ip->SelectNode(node);ip->RedrawViews(ip->GetTime());return MAXNode::intern(node);
+    ip->SelectNode(node);ip->RedrawViews(ip->GetTime());
+    if(summary)return_value(vl.result);
+    return_value(vl.wrapped);
 });}
+
+def_visible_primitive(cyrusBrushExportSpline,"cyrusBrushExportSpline");
+Value* cyrusBrushExportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushExportSpline,2,n);return exportPaintSnapshot(a,0,false);}
+def_visible_primitive(cyrusBrushExportOptimizedSpline,"cyrusBrushExportOptimizedSpline");
+Value* cyrusBrushExportOptimizedSpline_cf(Value** a,int n){
+    check_arg_count(cyrusBrushExportOptimizedSpline,3,n);const double tolerance=a[2]->to_float();
+    if(!std::isfinite(tolerance)||tolerance<=0)throw RuntimeError(_T("Maximum deviation must be finite and positive in scene units"));
+    return exportPaintSnapshot(a,tolerance,true);
+}
 
 def_visible_primitive(cyrusBrushImportSpline,"cyrusBrushImportSpline");
 Value* cyrusBrushImportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushImportSpline,4,n);return api([&]()->Value*{

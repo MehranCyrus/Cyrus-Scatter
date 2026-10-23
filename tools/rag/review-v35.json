@@ -1,0 +1,278 @@
+{
+  "corpus": {
+    "old_sha256": "f31b5cd17f9ce88cae42af54ff5e283e03fccaba4f6d74bcfd2e5c6106abbd85",
+    "new_sha256": "1512c020cd6d04b66a0aeede3fa4dc50b0d36f2ed41a9fac868080b97d69440b",
+    "reason": "User requests 0.86.8.4 fixes, documentation and knowledge update. Preserve the selected 48 parents, authority, evidence requirements and limits; reconcile changed bytes and equivalent complete evidence intervals. Agent semantic review; no human semantic review claimed."
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "old_sha256": "f67574470e76584654897a21ee6ca707cc938a429ea0f0ad53ac6ff78ca3e95d",
+      "new_sha256": "15d8a364f6c94bb4d807630d7e7e58cd251f269efe52ad49c5977356c206bdeb",
+      "field_reasons": {
+        "applicability": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+      "new_sha256": "45bed8cf6406c1e7949dd92a5664e441e55406d59429452ce3c08970170f2334",
+      "field_reasons": {
+        "applicability": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/LAYOUT_AND_FALLOFF.md",
+      "old_sha256": "29a924aa0124f787d4fe8fca4fc0432fbdda1b95f79c5ab81ef9029d079d4091",
+      "new_sha256": "eb0cbd9daa9ccfa13dcebe38785b8e749a4ecda4bf61ebe28430e19d73a57697",
+      "field_reasons": {
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/README.md",
+      "old_sha256": "899909b52cb6c0617dab1b5c4f46321202806018f659a69038658d4913708611",
+      "new_sha256": "c7ffafdea2684e00f76395f1bcab07201683c74bec189765ac7442ed62e4df08",
+      "field_reasons": {
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "old_sha256": "7a8484b6bd19371de91611b4a8ac561c815a37231e718472edbf0f256fbc7fe8",
+      "new_sha256": "c9b9f4e60866c1f44d1024301f153c4056a837b7bbca740adb4f9ed479cf1ae2",
+      "field_reasons": {
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "old_sha256": "82cb26d9728cd6f0b624aa2b1a908b7e14b36312e4d1030cbd831d8a3f6f244f",
+      "new_sha256": "7691f4615889bc9d9e41d17389feec8afb0a9478f3579f56c84b64f5d9c152a2",
+      "field_reasons": {
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "old_sha256": "c56cee163dbd0a0fffb700c390d0142d0e8ea8df4d8b0e34f31eef98f8180ac5",
+      "new_sha256": "44f1b6d6899e0caa8fbeb82fcaf2262ba0cc6f96c69f5c4473d45bfd606c4c26",
+      "field_reasons": {
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "old_sha256": "c54d43464cc4cce3fb4b1ca7c33e7c7ac761113627c86fff4f4bc5e5b40f594d",
+      "new_sha256": "1854eb6da8168cc7efccec6780870717884f1bc5c169673e7c4408fcafe12e90",
+      "field_reasons": {
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "2ab972cfb3a4ff22c7b9bd08e7aa7fd06600e03f9ae0d883e8770b00ef991495",
+      "new_sha256": "a8b6d689aacc4068a7572197f7447ee592805afcf7b3e2d3559d779ec97e63f3",
+      "field_reasons": {
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/README.md",
+      "old_sha256": "7aa7adade23e1472606a195e7ea1ed76e81bc47b742247b9274a9308097d032f",
+      "new_sha256": "b99d155b90f5f996e9050da0f074fbf02bb21302b5fb878d578072463cd2c023",
+      "field_reasons": {
+        "applicability": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/improvement-program/PROGRESS.md",
+      "old_sha256": "97f197108576d837f1a609d55c4ad3d622811c65926f8dbaa370790d484330fa",
+      "new_sha256": "0970a061f9a4f0683f9daea4628efbefbb67714b1641d360c3db9bcc71c825a1",
+      "field_reasons": {
+        "applicability": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/Max_2027_Installation.md",
+      "old_sha256": "4b02f28d9c03b885b29cb94bfa1f396a9b259f2780353e446bea0dd5bb30b7b3",
+      "new_sha256": "57adaf04304551d4987d3a1c3b292a967c583f613738208988b1418ac1543d4b",
+      "field_reasons": {
+        "applicability": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/INSTALLER_CONTRACT.md",
+      "old_sha256": "806f94201d53024d7fb4e26c77e32008f2cc83efd8ea8c84d777eae11c183397",
+      "new_sha256": "3054f82ded6f951c0d26558905f98dc899218a23e143e25ea1a346ffeafd6ed5",
+      "field_reasons": {
+        "contract_sections": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "ranges": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "review_status": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection.",
+        "sha256": "Reconciled old/current parent and authoritative generated ownership; preserved source status/authority, complete selected contract sections, canonical owner and historical versus current qualification. Equivalent locator mapping is retained for inspection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "45e415fc46aaabc261c3d00eb6ded1f51de0ecc06afb0adfef7da33cb220c365",
+      "new_sha256": "2eaa7d24e404d0aab90ef5dde828d99994d693157ec90b79b6262c8d0f7e4227",
+      "reason": "Preserve every question, split, evidence unit, owner, qualifier and answerability. Only current source hashes and equivalent evidence locators change."
+    },
+    {
+      "old_sha256": "5fd8b67888cde0ae622a94ff384d61ca7863aac1022227c2d51c815d08039512",
+      "new_sha256": "6c918118f6b131b18b051c3df9442232052fcfcb66baff6a38011953645bdd20",
+      "reason": "Preserve every question, split, evidence unit, owner, qualifier and answerability. Only current source hashes and equivalent evidence locators change."
+    },
+    {
+      "old_sha256": "803ba31027cdd2cabd0a914290f4e5d50f9890ef07c54f27dd3adff5090ff540",
+      "new_sha256": "738e56a74cf7f039bed5d251f215087bc840941c9419b82bf1bca07a29b8dc7e",
+      "reason": "Preserve every question, split, evidence unit, owner, qualifier and answerability. Only current source hashes and equivalent evidence locators change."
+    },
+    {
+      "old_sha256": "7e80d3b3ca943f1f3bdaff1e7f69da5c08bba3c5e4e2a206b816b0a197749f17",
+      "new_sha256": "7e33ad84453b0055267e31126bd213a9c213def2a1969e179ee67d146a254366",
+      "reason": "Preserve every question, split, evidence unit, owner, qualifier and answerability. Only current source hashes and equivalent evidence locators change."
+    }
+  ],
+  "reference_conclusions": [],
+  "retrieval_tradeoffs": []
+}

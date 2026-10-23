@@ -16,7 +16,9 @@ def guarded_operation(args,argv=None):
     if not 1<=args.total_seconds<=support.BOUNDS['max_total_seconds']:
         raise support.Blocked('invalid_deadline','Total operation deadline outside documented bounds')
     token=uuid.uuid4().hex
-    command=[sys.executable,'-B',str(support.TOOL/'prepare_candidate.py'),*(sys.argv[1:] if argv is None else argv),'--json','--_orchestrator','--_token',token]
+    # Windows venv python.exe redirects to another process. Use the base
+    # interpreter so the launched PID matches the child's ownership receipt.
+    command=[sys._base_executable,'-B',str(support.TOOL/'prepare_candidate.py'),*(sys.argv[1:] if argv is None else argv),'--json','--_orchestrator','--_token',token]
     process=None;job=None;threads=[];overflow=threading.Event();buffers=[bytearray(),bytearray()]
     limits=[support.BOUNDS['report_bytes'],support.BOUNDS['captured_stream_bytes']]
     issue=None;code=2;started=time.monotonic()

@@ -13,8 +13,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Globalization;
 
-[assembly: AssemblyVersion("0.86.8.2")]
-[assembly: AssemblyFileVersion("0.86.8.2")]
 namespace CyrusScatter.UI
 {
     // Bounded data-only JSON reader shared by the three supported managed runtimes.

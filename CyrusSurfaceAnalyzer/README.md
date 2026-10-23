@@ -1,6 +1,10 @@
-# Cyrus Surface Analyzer 0.14
+# Cyrus Surface Analyzer 0.14.1
 
-0.14: general model/display notifications no longer trigger analysis; geometry, topology, transforms, stack changes and parameter changes still update.
+The **Scatter 0.86.8.5 combined EXE** installs matching Analyzer 0.14.1 payloads for **Max 2024, 2026 and 2027**. No separate Analyzer installation is needed with that EXE. See the [combined delivery, exact evidence and limits](../docs/plans/combined-installer/DELIVERY_08685.md). The prior [0.86.8.3 report](../docs/plans/refinement-program/DELIVERY_08683.md) retains its original Max 2027 scope.
+
+The package supplies guide freshness, a native contract guard, verified immutable runtime installation and loaded-module startup resolution. Close selected hosts before using the EXE, then reopen them. Analyze old guides explicitly; Scatter in Manual mode still needs its own Update.
+
+Previous 0.14 behavior: general model/display notifications no longer trigger analysis; geometry, topology, transforms, stack changes and parameter changes still update.
 
 Realtime analysis waits for mouse release. Internal Cyrus PFlow deletion events no longer trigger a redundant analysis. Use the native module matching the target Max year and package hash.
 

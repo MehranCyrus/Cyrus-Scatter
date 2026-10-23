@@ -6,9 +6,11 @@ from pathlib import Path
 from html.parser import HTMLParser
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
+import tempfile
 
 SITE=Path(__file__).resolve().parents[1]
 REPO=SITE.parent
@@ -34,6 +36,14 @@ def main():
     release_text=(REPO/'docs/Release_Versioning.md').read_text(encoding='utf-8')
     release_ui=re.search(r'\| Scatter UI \| ([0-9.]+) \|',release_text).group(1)
     assert data['developmentVersion']==catalog['development_version']==release_ui
+    release=json.loads((SITE/'content/release.json').read_text(encoding='utf-8'))
+    assert release['version']==data['developmentVersion']
+    assert release['analyzer']['version']==data['analyzerVersion']
+    assert release['analyzer']['included'] is True
+    assert release['installer']['path']=='downloads/'+release['installer']['filename']
+    assert release['installer']['filename']==f'CyrusScatter-{release["version"]}-Setup.exe'
+    assert re.fullmatch('[0-9a-f]{64}',release['installer']['sha256'])
+    assert release['content']['included'] is False
     assert len(data['documents'])==len(manifest['documents'])==5
     assert len(data['controls'])==len(catalog['controls'])==len(editorial)
     assert len(data['features'])==len(catalog['features'])==36
@@ -64,7 +74,7 @@ def main():
             if parts[0]=='guide':
                 assert parts[1] in docs,link
                 if len(parts)>2:assert parts[2] in {h['anchor'] for h in docs[parts[1]]['headings']},link
-            else:assert parts[0] in ('controls','changelog','checklist','troubleshooting'),link
+            else:assert parts[0] in ('controls','changelog','checklist','troubleshooting','download','library'),link
             checked_links+=1
     assert 'references' not in data
     assert not (SITE/'public/sources').exists()
@@ -127,7 +137,7 @@ def main():
             parts=link['href'][2:].split('/')
             assert parts[0]=='guide' and parts[1] in docs
             if len(parts)>2:assert parts[2] in {h['anchor'] for h in docs[parts[1]]['headings']},link
-    known_routes={'home','features','guide','workflow','visuals','gallery','examples','checklist','glossary','troubleshooting','controls','roadmap','status','about','changelog'}
+    known_routes={'home','features','library','download','guide','workflow','visuals','gallery','examples','checklist','glossary','troubleshooting','controls','roadmap','status','about','changelog'}
     nav_links=set()
     for path in list((SITE/'src').rglob('*.tsx'))+list((SITE/'src').rglob('*.html')):
         for link in re.findall(r'''["'](#/[^"'{}\s<>]*)["']''',path.read_text(encoding='utf-8')):
@@ -155,10 +165,16 @@ def main():
         assert next(f for f in data['features'] if f['feature_id']==cap)['title'].startswith(title)
     for retired in ['app.js','styles.css','content/reference.js']:assert not (SITE/retired).exists()
     report={'scope':'Website static/content verification only; no plugin qualification','development_version':data['developmentVersion'],'documents':len(docs),'semantic_controls':len(data['controls']),'capability_families_including_retired_and_experimental':len(data['features']),'bundled_supporting_references':0,'public_markdown_files':0,'changelog_versions':len(data['changelog']),'reviewed_local_sources':len(manifest['reviewedSourceHashes']),'resolved_generated_local_links':checked_links,'source_catalog_sha256':sha(catalog_bytes),'editorial_sha256':sha(editorial_bytes),'status':'PASS'}
-    target=SITE/'verification/react-static-checks.json';target.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     report['concept_posters_with_current_notes']=len(poster_manifest)
     report['resolved_static_navigation_destinations']=len(nav_links)
-    target.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    target=SITE/'verification/react-static-checks.json'
+    # Publish once, after validation, without truncating an observed receipt.
+    with tempfile.NamedTemporaryFile(mode='w',encoding='utf-8',dir=target.parent,prefix='.static-checks-',suffix='.tmp',delete=False) as stream:
+        stream.write(json.dumps(report,indent=2)+'\n')
+        temporary=Path(stream.name)
+    try:os.replace(temporary,target)
+    finally:
+        if temporary.exists():temporary.unlink()
     print(json.dumps(report,indent=2))
 
 if __name__=='__main__':main()

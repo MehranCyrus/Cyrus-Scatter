@@ -1865,7 +1865,7 @@ initialRollupState:0x8
         if areaUseLine or areaUsePoints do appendIfUnique guides areaAnalyzer
         if fallDelete or fallScale or fallDensity do appendIfUnique guides fallAnalyzer
         for guide in guides where isValidNode guide and not (analyzerOff guide) do (
-            if not isProperty guide #analysisCurrent do throw "Update the Surface Analyzer script to the matching package."
+            if not isProperty guide #analysisCurrent do throw "Install the matching Surface Analyzer 0.14.1 script/native package and restart Max. Update Analyzer recalculates guides; it does not update the installed software."
             if not guide.analysisCurrent() do throw ("Update Surface Analyzer '"+guide.name+"' first, then update Scatter. Its guides are out of date; the previous Scatter result is preserved.")
         )
         true
@@ -1989,7 +1989,7 @@ initialRollupState:0x8
     fn preparedSplineField records weights = (
         local nodes=#(),stream=stringStream "",quantum=units.decodeValue "0.0001mm"
         for row in records do appendIfUnique nodes row[1]
-        with printAllElements on format "%|%|%|%|%" records weights bandArrangement quantum (cyrusReceiverShapeKey nodes) to:stream
+        with printAllElements on format "%|%|%|%|%" records weights bandArrangement quantum (cyrusBandShapeKey nodes) to:stream
         local key=stream as string
         if procSplineField!=undefined and key==procSplineKey do (procSplineHits+=1;return procSplineField)
         local successor=cyrusPrepareSplineField records weights bandArrangement quantum
@@ -2244,8 +2244,9 @@ initialRollupState:0x8
             if diversityMode==3 do line=this.preparedSplineField line[2] shares
             if finalPass!=undefined do throw "Use the receiver-local candidate path before final acceptance."
             local shapeNodes=for node in areaNodes where isValidNode node collect node
-            if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique shapeNodes node
-            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)+"|Native:1"
+            local bandNodes=#()
+            if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique bandNodes node
+            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)+"|Bands:"+(cyrusBandShapeKey bandNodes)+"|Native:1"
             local nextCache=#(),nextNormals=#(),faceOffset=0
             result=#();paintBaseFaceCounts=cyrusReceiverFaceCounts targets
             local nativeInputs=#()
@@ -2308,7 +2309,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.8.2"
+    fn uiVersion = "0.86.8.6"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2552,36 +2553,7 @@ initialRollupState:0x8
         )
         true
     )
-    fn setSourceClearance rows field value = (
-        if findItem #(#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) field==0 do throw "Unknown model clearance field."
-        local selectedIDs=for row in rows where row>0 and row<=sourceRowIDs.count collect sourceRowIDs[row]
-        this.validateClearance()
-        undo "Cyrus model clearance" on (
-            for id in selectedIDs do (
-                local index=findItem clearanceSourceIDs id
-                if index==0 do (
-                    append clearanceSourceIDs id;append clearanceCopies 0;append clearanceOthers 0;append clearanceExternal 0
-                    append clearanceTargets "";append clearancePreferred false;append clearanceFactors 1.0;append clearanceGapsWU 0.0;append clearancePlanar false
-                    index=clearanceSourceIDs.count
-                )
-                (getProperty this field)[index]=value
-            )
-        )
-        this.markInputDirty();true
-    )
-    fn removeSourceClearance id = (
-        local index=findItem clearanceSourceIDs id
-        if index>0 do for key in #(#clearanceSourceIDs,#clearanceCopies,#clearanceOthers,#clearanceExternal,#clearanceTargets,#clearancePreferred,#clearanceFactors,#clearanceGapsWU,#clearancePlanar) do deleteItem (getProperty this key) index
-    )
-    fn procClearanceSpecs plants = (
-        this.validateClearance()
-        if plants.count==0 do return #(#("unassigned:1","unassigned:1",0,0,0,#(),false,#(true,1.0,0.0,false)))
-        for plant in plants collect (
-            local row=this.sourceRow plant,policy=this.clearanceRow row
-            if row<1 or row>sourceRowIDs.count or row>procSourceSlots.count do throw "Clearance source correspondence is incomplete."
-            #(sourceRowIDs[row],procSourceSlots[row],policy[1],policy[2],policy[3],filterString policy[4] "|",policy[5],#(true,policy[6],policy[7],policy[8]))
-        )
-    )
+-- @include source-clearance-authoring.ms
     fn needsClearanceUpgrade = (
         if clearanceUpgradePending do return true
         for leaf in layerObjects where leaf.clearanceUpgradePending do return true
@@ -2590,7 +2562,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.86.8.2" on (
+        undo "Upgrade Cyrus scene to 0.86.8.6" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -2684,16 +2656,18 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
         if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area and stored receiver do not match."
         true
     )
-    fn exportPaintSpline area = (
+    fn exportPaintSpline area optimized:false tolerance:0.1 = (
         this.validatePaintConversion area
-        cyrusBrushExportSpline area.paintDocument ((substring area.paintSetName 1 90)+"_Paint_Snapshot")
+        local name=(substring area.paintSetName 1 90)+"_Paint_Snapshot"
+        if optimized then cyrusBrushExportOptimizedSpline area.paintDocument name tolerance
+        else cyrusBrushExportSpline area.paintDocument name
     )
     fn importPaintSpline area node add:false tolerance:0.1 = (
         this.validatePaintConversion area
@@ -3742,7 +3716,7 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.8.2 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.8.6 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
@@ -3750,18 +3724,18 @@ initialRollupState:0x8
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.8.2 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.8.2 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.8.2 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.8.2 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.8.2 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.8.2 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.8.6 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.8.6 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.8.6 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.8.6 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.8.6 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.8.6 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.8.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.8.6 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -4706,7 +4680,11 @@ initialRollupState:0x8
         button selectFromScene "Choose from list..." pos:[4,170] width:((selected_sourceUI.width-12)/2) tooltip:"Choose one or more source models by name."
         pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this layer."
         button removePlant "Remove rows" pos:[4,200] width:(selected_sourceUI.width-8) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead."
-        button selectPlant "Select sources" pos:[(selected_sourceUI.width/2+2),170] width:((selected_sourceUI.width-12)/2) tooltip:"Select the highlighted source models in the scene."
+        button selectPlant "Select sources" pos:[(selected_sourceUI.width/2+2),170] width:((selected_sourceUI.width-12)/2) tooltip:"Select highlighted source models in the scene. Selection keeps their current visibility; use Show sources to unhide their node flags."
+        button showSources "Show sources" width:80 tooltip:"Unhide the selected scene source nodes in one Undo. Their renderable flags are preserved. Layer, group and category visibility restrictions remain."
+        button hideSources "Hide sources" width:80 tooltip:"Hide the selected scene source nodes in one Undo. Keep materials, registration, renderable flags and completed placements."
+        button editMaterial "Edit material" width:160 tooltip:"Open the selected model's assigned scene material in Slate. Shared material instances change together. Library asset files are kept."
+        label sourceAccessInfo "Select a model source." width:160 height:36
         button addPoint "Add Point" pos:[4,460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model."
         button addEmpty "Add Empty" pos:[(selected_sourceUI.width/2+2),460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a weighted empty source for intentional gaps in candidate-budget mode."
         pickbutton replacePoint "Pick object" filter:AminScatterSourceFilter pos:[4,490] width:(selected_sourceUI.width-8) tooltip:"Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments."
@@ -4816,8 +4794,20 @@ initialRollupState:0x8
             obj.addModelSource n tint:groupColor.color
         )
 
+        fn syncSourceAccess = (
+            showSources.enabled=false;hideSources.enabled=false;editMaterial.enabled=false
+            sourceAccessInfo.text="Select a model source."
+            if obj!=undefined and plantList.selection.numberSet>0 do try (
+                local context=CyrusCaptureSourceAccess root obj plantList.selection,nodes=CyrusValidateSourceAccess context
+                showSources.enabled=nodes.count>0;hideSources.enabled=nodes.count>0
+                editMaterial.enabled=context[6]==1 and nodes.count==1 and nodes[1].material!=undefined
+                sourceAccessInfo.text=if nodes.count==1 then nodes[1].name+"\n"+(if nodes[1].material==undefined then "No assigned material" else "Scene material: "+nodes[1].material.name) else (nodes.count as string)+" existing model sources"
+            )catch(sourceAccessInfo.text="Source context unavailable. Select again.")
+        )
+
         fn showSelectedColor = (
             bindClearance()
+            syncSourceAccess()
             local rows=plantList.selection
             weightSpin.enabled=rows.numberSet>0;sourceZSpin.enabled=rows.numberSet>0;sourceScaleSpin.enabled=rows.numberSet>0;forwardAxis.enabled=rows.numberSet>0
             if rows.numberSet>0 then (
@@ -4938,6 +4928,18 @@ initialRollupState:0x8
         on selectPlant pressed do if controlsReady and not binding and obj!=undefined do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
             if nodes.count>0 do select nodes
+        )
+        fn sourceVisibility show = (
+            local savedOwner=obj,context=CyrusCaptureSourceAccess root obj plantList.selection
+            local count=CyrusShowSourceAccess context show
+            if controlsReady and obj==savedOwner do (syncSourceAccess();sourceAccessInfo.text=(count as string)+" source node flags changed.\nLayer/group restrictions remain.")
+        )
+        on showSources pressed do if controlsReady and not binding and obj!=undefined do try(sourceVisibility true)catch(messageBox(getCurrentException()) title:"Source visibility")
+        on hideSources pressed do if controlsReady and not binding and obj!=undefined do try(sourceVisibility false)catch(messageBox(getCurrentException()) title:"Source visibility")
+        on editMaterial pressed do if controlsReady and not binding and obj!=undefined do (
+            local context=CyrusCaptureSourceAccess root obj plantList.selection
+            try(CyrusEditSourceMaterial context)catch(messageBox(getCurrentException()) title:"Source material")
+            -- Do not touch this rollout after Slate may have dispatched a rebind.
         )
 
 
@@ -5569,7 +5571,7 @@ initialRollupState:0x8
         on emptyButton pressed do if obj!=undefined and obj.paintDocument!=undefined do (cyrusBrushFill obj.paintDocument 0.0;obj.publishPaint();status())
         on exportSpline pressed do if controlsReady and not binding and obj!=undefined do (
             local controller=root,area=obj
-            try(controller.exportPaintSpline area)catch(messageBox (getCurrentException()) title:"Paint to spline")
+            try(CyrusOpenPaintExport controller area)catch(messageBox (getCurrentException()) title:"Paint to spline")
         )
         on importSpline pressed do if controlsReady and not binding and obj!=undefined do (
             local controller=root,area=obj,add=(importMode.state==2),tolerance=splineTolerance.value
@@ -5939,7 +5941,7 @@ initialRollupState:0x8
             selectAnalyzer.enabled=valid;updateAnalyzer.enabled=valid
             analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
                 local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
-                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if not isProperty guide #analysisCurrent then "Update Analyzer script" else if not guide.analysisCurrent() then "Update Analyzer needed" else "Ready"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if not isProperty guide #analysisCurrent then "Install Analyzer 0.14.1; restart Max" else if not guide.analysisCurrent() then "Analyze / Update needed" else "Ready"
                 guide.name+"\nSurface: "+target+"\n"+state
             )
         )

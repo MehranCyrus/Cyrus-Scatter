@@ -1,6 +1,24 @@
 # Cyrus Scatter — current execution ledger
 
-This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the user's full requested outcomes; current conversation scope governs action. **Current delivery: 0.86.8.2 clearance UI and visible Relax, with separately qualified Max 2024/2026/2027 packages; see the [delivery report](../source-clearance/DELIVERY_08682.md). Historical packages retain their prior versions. Unrelated roadmap work remains outside this delivery.** [Knowledge maintenance](../../../tools/rag/README.md) records the separate documentation/index work. P, I, PG, N and local D tasks are not release versions.
+**23 October gallery repair — 0.86.8.6:** [release identity correction](../combined-installer/DELIVERY_08686.md). The gallery now matches the script; native Scatter and Analyzer payloads are unchanged. This does not resume other roadmap work.
+
+**22 October combined delivery — 0.86.8.5:** [one EXE installs Scatter and Analyzer 0.14.1 for Max 2024/2026/2027](../combined-installer/DELIVERY_08685.md). This is the explicitly requested compatibility/installer scope; original Paint, schema 59 and calculation contracts remain unchanged. Exact evidence and remaining limits are in that report.
+
+**22 October correction — 0.86.8.4:** [saved rollout order, legacy installer migration and focused Max 2027 evidence](../installer-panels/DELIVERY_08684.md). Preserves original Paint and the current calculation/schema contracts. Independent Analyzer remains 0.14.1; older-host qualification is unchanged.
+
+This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the full requested outcomes; current conversation scope governs action. **Current combined test delivery: [Scatter 0.86.8.6 and Analyzer 0.14.1 for Max 2024/2026/2027](../combined-installer/DELIVERY_08686.md).** The [0.86.8.2 three-host report](../source-clearance/DELIVERY_08682.md) retains its original qualification. The six-refinement delivery does not close unexecuted lifecycle/fault/renderer/soak subcases or resume unrelated roadmap work. [Knowledge maintenance](../../../tools/rag/README.md) remains separate. P, I, PG, N and local D tasks are not release versions. A documentation or knowledge-index maintenance request alone does not authorize plugin implementation; the current user request must explicitly authorize coding.
+
+## 0.86.8.3 six refinements — 22 October 2026
+
+The user authorized implementation of the six-refinement plan and selected
+0.86.8.3. Analyzer is independently 0.14.1. The Max 2027 test delivery implements
+verified Analyzer pairing/install, optimized read-only Paint exports, bounded dense
+Bands, owned UI/lifecycle tests, scoped source cleanup and source/material access.
+Clean builds passed 51 native tests and the Analyzer core; 190 Python tests and
+41 scenarios on the final Max pair passed. Installer/restart/recovery and package
+identities are recorded in the [delivery](../refinement-program/DELIVERY_08683.md).
+Broader physical, fault-tail, renderer and soak acceptance stays open. The
+remaining P/I/PG/N roadmap is not marked complete by this scoped delivery.
 
 ## 0.86.8.2 clearance UI and Relax correction — 21 October 2026
 

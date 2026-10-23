@@ -1,14 +1,16 @@
 # Install and build Cyrus Scatter
 
-The **0.86.8.2 / schema 59** delivery provides separate matched Max 2024, 2026 and 2027 MZPs and one Windows EXE containing all three. See the [delivery report](plans/source-clearance/DELIVERY_08682.md) for exact evidence and limits. Artist profiles and sessions were not modified or restarted by qualification.
+The **0.86.8.6 / schema 59** combined installer contains matched **Max 2024, 2026 and 2027** Scatter payloads and **Surface Analyzer 0.14.1**. See the [current qualification report](plans/combined-installer/DELIVERY_08686.md). Earlier packages retain their original host scope.
 
 ## Install
 
-Run `dist/CyrusScatter-0.86.8.2-20261021/CyrusScatter-0.86.8.2-Setup.exe`.
-Close the Max versions you want to update, select their cards, then click
+Run `dist/CyrusScatter-0.86.8.6-20261023/CyrusScatter-0.86.8.6-Setup.exe`.
+Close the selected Max versions, select their cards, then click
 **Install** or **Update**. Detection, validation and storage checks run
 automatically. **Uninstall** keeps shared content and other hosts. Success shows
 **Installation completed**. **Error details** is available only after a failure.
+
+A profile without an installation receipt can migrate exact recognized startup/macro files from 0.81.6, 0.85.0, 0.86.8.2, 0.86.8.3 or 0.86.8.4. Original bytes are preserved under `scripts/CyrusScatter/Backups/wrappers-<hash>/` before registration changes. A valid receipt continues to own its exact recorded files. Unknown/custom files are retained; **Error details** names the Max version and conflicting paths. Do not delete an unrecognized file just to bypass the check.
 
 Leave **Install / update plant library** unchecked to update only the plugin
 and reuse the registered library or recognized older runtime's library.
@@ -19,10 +21,8 @@ not unpack an extra temporary library or create a copy for each Max version.
 Identical installed content is reused. Content remains revision 0.86.7 because
 the models, materials and previews have not been regenerated.
 
-Alternatively use **Scripting > Run Script** with the matching
-`CyrusScatter-0.86.8.2-Max2024.mzp`, `CyrusScatter-0.86.8.2-Max2026.mzp` or
-`CyrusScatter-0.86.8.2-Max2027.mzp` in its matching Max version, then
-**Install/Update** and restart that Max version.
+The combined EXE installs both products for each selected host. Save your work and restart Max after installation. **Uninstall Scatter** retains the independent Analyzer and shared library. Matched MZPs remain embedded/recovery artifacts; separate MZP installation is not required when using this EXE.
+Analyzer's **Analyze / Update Analyzer** button recalculates guides rather than updating installed software.
 The hosted route resolves an existing shared or legacy library. For a fresh
 recipient, use the EXE with the content ZIP and its library checkbox.
 There is no automatic online content download.
@@ -42,7 +42,7 @@ the implemented P01–P07 features and the preceding
 The scripts and native modules must be installed and loaded together.
 
 1. Save the scene and use a copy for development-build acceptance.
-2. Run [CyrusScatter-0.86.8.2-Setup.exe](../dist/CyrusScatter-0.86.8.2-20261021/CyrusScatter-0.86.8.2-Setup.exe), select Max 2024, 2026 and/or 2027 and click **Install/Update**. Alternatively use **Scripting > Run Script** with the matching MZP from that folder. Follow the installer result before restarting.
+2. For the historical three-host 0.86.8.2 delivery only, run [CyrusScatter-0.86.8.2-Setup.exe](../dist/CyrusScatter-0.86.8.2-20261021/CyrusScatter-0.86.8.2-Setup.exe), select Max 2024, 2026 and/or 2027 and click **Install/Update**. Alternatively use **Scripting > Run Script** with the matching MZP from that folder. Follow the installer result before restarting.
 3. Restart Max so both scripts and their native modules load together. Do not load a loose new script over older DLLs.
 4. Open **Layers > Recipes** or the **Cyrus Library** action. Plant models offers **Merge model** or **Add to selected layer**. Personal recipes remain separate. Manual setup remains **Geometry > Cyrus > Cyrus Scatter**, then Layer → Surfaces → Models → Amount → Update scatter.
 
@@ -69,7 +69,7 @@ original scenes and never combine a new script with stale native modules.
 
 Existing Analyzer guides without the new saved freshness record need one explicit **Analyze / Update Analyzer**, followed by **Update scatter** when Scatter is Manual. The previous complete Scatter result is preserved if a successor encounters a stale guide. Analyzer's [guide](../CyrusSurfaceAnalyzer/README.md) explains supported planar inputs; Analyzer remains separate from the surface brush, which now supports manifold curved receivers.
 
-## Historical compatibility reference
+## Historical 0.86.2 installer: Max version support
 
 The **0.86.2 / schema 58** delivery included matched Max 2024, 2026 and 2027 MZPs and a universal EXE, with scoped runtime qualification, eight examples and three starter masks. Its [original delivery report](plans/preset-gallery-improvements/DELIVERY_0862.md) retains exact files, the same-version installer correction and limits. That historical release is not the current installation target.
 

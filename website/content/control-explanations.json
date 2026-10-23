@@ -33,10 +33,10 @@
   },
   "general.previewUI.displayModeDrop": {
     "label": "Display mode",
-    "help": "Choose Point Cloud samples, a simplified Proxy, source Mesh, or one Plant centres marker per shown placement. Representation and display budgets are separate from accepted and final-output counts.",
+    "help": "Choose Point Cloud, Proxy, Mesh, Placement points or Textured mesh. Placement points shows one marker per accepted placement. Textured mesh uses supported source materials and cutout opacity with Mesh triangle budgets.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3057",
-      "AminScatter/tools/ui/templates/unified-core.ms:3085"
+      "AminScatter/tools/ui/templates/unified-core.ms:4384",
+      "docs/plans/preset-gallery-improvements/DELIVERY_08672.md:10"
     ]
   },
   "general.previewUI.proxyShapeDrop": {
@@ -65,9 +65,10 @@
   },
   "general.previewUI.identificationDrop": {
     "label": "Color by",
-    "help": "Use model, layer or accepted Band identification colors in Points, Proxy and Mesh previews. These colors do not replace source render materials.",
+    "help": "Use Model, Layer or Bands identification colors in nontextured display modes. Choose Textured mesh in Display mode for materials and textures.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3688"
+      "AminScatter/tools/ui/templates/unified-core.ms:4388",
+      "docs/plans/preset-gallery-improvements/DELIVERY_08672.md:10"
     ]
   },
   "general.previewUI.pointColorRadio": {
@@ -439,20 +440,10 @@
     "owner_context": "Selected source rows of the layer"
   },
   "layer.sourceUI.addPlant": {
-    "label": "Pick model",
-    "help": "Pick a scene model for this layer. The settings apply to the selected layer.",
+    "label": "+ (add model)",
+    "help": "Use + below Models & Points to pick and add an eligible scene object as a model source. Add Point is beside Make point.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3259",
-      "AminScatter/tools/ui/templates/unified-core.ms:3377"
-    ],
-    "owner_context": "Selected source rows of the layer"
-  },
-  "layer.sourceUI.addSelected": {
-    "label": "Add selection",
-    "help": "Add the currently selected scene objects to this layer.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3260",
-      "AminScatter/tools/ui/templates/unified-core.ms:3378"
+      "docs/ARTIST_GUIDE.md:73"
     ],
     "owner_context": "Selected source rows of the layer"
   },
@@ -497,10 +488,11 @@
   },
   "layer.sourceUI.replacePoint": {
     "label": "Pick object",
-    "help": "Use a scene model for one selected Point, preserving the row identity, settings and Band assignments. You may restore its registered model or choose another unused model.",
+    "help": "Replace one selected Point or existing model with an unused scene object while preserving its row identity, settings and Band assignments. The original scene object remains. Duplicate sources and receiver picks are rejected.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:1123",
-      "AminScatter/tools/ui/templates/unified-core.ms:3722"
+      "AminScatter/tools/ui/templates/unified-core.ms:4587",
+      "AminScatter/tools/ui/templates/unified-core.ms:4668",
+      "docs/ARTIST_GUIDE.md:73"
     ]
   },
   "layer.sourceUI.existingGroups": {
@@ -1599,8 +1591,8 @@
     ]
   },
   "layer.proceduralUI.scopeList": {
-    "label": "Spacing scope",
-    "help": "Choose spacing within the selected layer or between it and another layer.",
+    "label": "Edit default rule",
+    "help": "Edit the selected layer’s within-layer or layer-pair defaults. Each model independently inherits or overrides its own-copy, same-layer and other-layer requests.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4187",
       "AminScatter/tools/ui/templates/unified-core.ms:4248"
@@ -1618,7 +1610,7 @@
   },
   "layer.proceduralUI.enabledCheck": {
     "label": "Enable this spacing",
-    "help": "Enable the selected within-layer or layer-pair clearance rule. Each relationship has independent settings; earlier accepted layers normally reserve their space first.",
+    "help": "Enable this selected layer-default relationship. Explicit model clearance requests remain independently authored in Models & Points.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4189",
       "AminScatter/tools/ui/templates/unified-core.ms:4250"
@@ -1627,7 +1619,7 @@
   },
   "layer.proceduralUI.multiplierSpin": {
     "label": "Radius factor",
-    "help": "Multiply the sum of the two effective collision radii in this rule: clearance = factor × (radius A + radius B) + gap. These are simplified footprints, not exact mesh intersections.",
+    "help": "For this selected layer-default rule, clearance = factor × (radius A + radius B) + gap. Models can independently override their relevant scopes. Radii are simplified pivot footprints.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4190",
       "AminScatter/tools/ui/templates/unified-core.ms:4251"
@@ -1706,7 +1698,7 @@
   },
   "layer.spacingUI.relaxCheck": {
     "label": "Point Relax",
-    "help": "Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed.",
+    "help": "Enable candidate separation for this layer. Find Point Relax directly in Spacing & cleanup above Advanced. Candidate movement precedes Painting, artist edits and clearance.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4288",
       "AminScatter/tools/ui/templates/unified-core.ms:4309"
@@ -1714,11 +1706,11 @@
     "owner_context": "Selected layer candidate preparation"
   },
   "layer.spacingUI.spacingSpin": {
-    "label": "Desired spacing",
-    "help": "Set the desired candidate separation for Point Relax, in scene units. Relax is bounded candidate movement, not a guarantee of final accepted plant clearance.",
+    "label": "Relax distance",
+    "help": "Layer-owned distance shared by both Relax modes: desired candidate separation for Point Relax and neighbor-search radius for Boundary Relax. It is editable when either mode is on; later clearance still filters the moved candidates.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:4289",
-      "AminScatter/tools/ui/templates/unified-core.ms:4310"
+      "AminScatter/tools/ui/templates/unified-core.ms:6271",
+      "AminScatter/tools/ui/templates/unified-core.ms:6283"
     ],
     "owner_context": "Selected layer candidate preparation"
   },
@@ -1742,7 +1734,7 @@
   },
   "layer.spacingUI.boundaryRelaxCheck": {
     "label": "Boundary Relax",
-    "help": "Smooth candidate neighborhoods with bounded movement. Eligibility is checked before publication; author edits run afterwards.",
+    "help": "Enable bounded candidate-neighborhood smoothing independently of Point Relax. Its settings appear directly in Spacing & cleanup, and use the shared Relax distance for neighbor search.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4292",
       "AminScatter/tools/ui/templates/unified-core.ms:4313"
@@ -1893,7 +1885,7 @@
     ]
   },
   "general.host.licenseButton": {
-    "label": "License / activation…",
+    "label": "License / activationÃ¢â‚¬Â¦",
     "help": "Open the local team-license activation and status dialog. Import a returned license or inspect its expiry. Existing scenes remain loadable and renderable after expiry; supported creation and editing require a valid license.",
     "owner_context": "Controller / local view",
     "evidence": [
@@ -2189,10 +2181,10 @@
   },
   "layer.brushUI.exportSpline": {
     "label": "Export spline",
-    "help": "Export an independent editable border spline. Terrain uses local XY; curved receivers keep their 3D surface border. An unchanged surface snapshot restores exact coverage. Keeps the Paint Area. Stop the brush first.",
+    "help": "Open Optimized and Exact snapshot export options. Optimized reduces planar spline knots within the world-unit deviation limit, initially 1 mm, and reports the result. Attached-surface borders default to Exact; uncertifiable reductions retain Exact geometry. Original Paint and completed plants stay unchanged. Stop the brush first.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:4539",
-      "docs/plans/eleven-phase-roadmap/P05.md:1"
+      "docs/ARTIST_GUIDE.md:321",
+      "docs/plans/refinement-program/DELIVERY_08683.md:31"
     ]
   },
   "layer.brushUI.importMode": {
@@ -2616,6 +2608,103 @@
     "help": "Choose an authored mesh channel or relative local elevation. Elevation uses 0 at the lowest referenced vertex and 1 at the highest; flat terrain is 0.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4878"
+    ]
+  },
+  "general.surface.surfaceVisibility": {
+    "label": "Hide surface / Show surface",
+    "help": "Hide selected receiving surfaces in viewports while keeping painting and rendering. The preference belongs to each scene node, is shared across setups using it, and supports Undo and scene saving.",
+    "owner_context": "Selected receiving scene nodes",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4304",
+      "docs/plans/preset-gallery-improvements/DELIVERY_08672.md:10"
+    ]
+  },
+  "layer.sourceUI.clearanceCopiesList": {
+    "label": "Own copies",
+    "help": "Choose whether this model inherits the layer rule, makes no own-copy request, or requests space between its own instances.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4730"
+    ]
+  },
+  "layer.sourceUI.clearanceOthersList": {
+    "label": "Other models in this layer",
+    "help": "Set this model’s request independently for other sources in the same layer. Keep apart uses the sum of both effective radii.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4731"
+    ]
+  },
+  "layer.sourceUI.clearanceExternalList": {
+    "label": "Other layers",
+    "help": "Independently inherit, turn off this request, or keep this model clear of selected or all other layers in this Scatter setup.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4732"
+    ]
+  },
+  "layer.sourceUI.clearanceLayerList": {
+    "label": "Target layers",
+    "help": "Select other layers for this model’s Selected layers request. Persistent layer identity survives renaming; removing a target makes that relationship inactive.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4733"
+    ]
+  },
+  "layer.sourceUI.clearancePriorityList": {
+    "label": "Conflict priority",
+    "help": "Prefer this model wins conflicts against normal models after Count admission. Protected artist edits win first; preference does not take extra Count slots.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4734"
+    ]
+  },
+  "layer.sourceUI.clearanceFactorSpin": {
+    "label": "Radius factor",
+    "help": "For this model’s explicit clearance requests, multiply the sum of both effective radii, then add Extra gap. Inherited scopes keep their layer-rule distances.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4736"
+    ]
+  },
+  "layer.sourceUI.clearanceGapSpin": {
+    "label": "Extra gap",
+    "help": "Add a world-space gap to this model’s explicit clearance distance. This does not change either saved source radius.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4737"
+    ]
+  },
+  "layer.sourceUI.clearanceMetricList": {
+    "label": "Measure distance",
+    "help": "Use full 3D distance or XY ground-plane distance for this model’s explicit clearance requests. XY can reject points at different heights.",
+    "owner_context": "Selected model row(s)",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4738"
+    ]
+  },
+  "layer.sourceUI.showSources": {
+    "label": "Show sources",
+    "help": "Unhide the selected scene source nodes in one Undo. Their renderable flags are preserved. Layer, group and category visibility restrictions remain.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4684",
+      "docs/ARTIST_GUIDE.md:5"
+    ]
+  },
+  "layer.sourceUI.hideSources": {
+    "label": "Hide sources",
+    "help": "Hide the selected scene source nodes in one Undo. Keep materials, registration, renderable flags and completed placements.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4685",
+      "docs/ARTIST_GUIDE.md:5"
+    ]
+  },
+  "layer.sourceUI.editMaterial": {
+    "label": "Edit material",
+    "help": "Open the selected model's assigned scene material in Slate. Shared material instances change together. Library asset files are kept.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4686",
+      "docs/ARTIST_GUIDE.md:5"
     ]
   }
 }

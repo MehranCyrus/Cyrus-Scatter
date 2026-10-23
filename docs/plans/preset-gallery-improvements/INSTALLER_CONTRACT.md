@@ -1,6 +1,6 @@
-# Installer contract — current 0.86.2
+# Installer contract and versioned qualification
 
-## Current 0.86.2 artist-install correction
+## Historical 0.86.2 artist-install correction
 
 The artist reported legacy .NET path-length rejection and a clipped EXE path
 error on Max 2024. The corrected [delivery](DELIVERY_0862.md) keeps 0.86.2 and
@@ -70,3 +70,7 @@ The final `setup-candidate-04`/`package-pilot-5c04e564059e4039873d53ead00ab520` 
 ## 0.86.2 distribution
 
 The [current delivery](DELIVERY_0862.md) contains matching Max 2024/2026/2027 MZPs in one universal EXE. The installer/archive changed; the qualified native/script/gallery/library bytes are retained. Max 2024 now has actual scoped runtime qualification. Product `Patterns/` filenames are closed and hash-pinned inside the immutable release. Three original starter masks are included. An empty catalog is also supported; final artist-supplied artwork remains future content. New legacy-path and actual-handler checks supersede the earlier 68 distribution checks for current installer acceptance. Those prior receipts, including 0.86.1 upgrades, remain historical evidence. Current same-version legacy-to-compact upgrades, repair, interrupted publication, cancellation and unregister are exercised in disposable paths. Artist profiles, personal libraries, activation and running artist sessions were not changed.
+
+## 22 October 2026 — 0.86.8.4 correction
+
+The current Max 2027 installer recognizes the exact no-receipt wrapper pairs from 0.81.6, 0.85.0, 0.86.8.2 and 0.86.8.3. [Archived package hashes](../installer-panels/LEGACY_WRAPPERS_08684.json) document the finite allowlist. Missing one recognized wrapper is supported. Before publication, original existing bytes are preserved in a content-addressed `scripts/CyrusScatter/Backups/wrappers-<hash>/` folder; repeat/retry reuses the same verified backup. Unknown/custom bytes and mismatches against a valid receipt are rejected with host/file details. Journal rollback remains authoritative for registration; backups survive rollback. This replaces the older no-receipt 0.85.0-only fallback for this correction, without retrospectively qualifying historical deliveries. See [current evidence](../installer-panels/DELIVERY_08684.md).

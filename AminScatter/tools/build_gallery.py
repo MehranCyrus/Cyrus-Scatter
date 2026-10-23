@@ -1,8 +1,15 @@
 """Compile the bounded gallery against the selected Max host's managed runtime."""
 from pathlib import Path
-import argparse, hashlib, json, subprocess
+import argparse, hashlib, json, re, subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
+
+def release_version():
+    versions = re.findall(r'project\(CyrusScatter VERSION ([0-9.]+) LANGUAGES CXX\)',
+                          (ROOT/'AminScatter/CMakeLists.txt').read_text(encoding='utf-8'))
+    if len(versions) != 1:
+        raise ValueError('One Scatter release version is required for the gallery assembly.')
+    return '.'.join(versions[0].split('.') + ['0'] * (4-len(versions[0].split('.'))))
 
 def build(output: Path, year: int = 2027):
     compiler = Path('C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/Roslyn/csc.exe')
@@ -24,15 +31,24 @@ def build(output: Path, year: int = 2027):
     for path in [compiler, source, *references]:
         if not path.is_file(): raise FileNotFoundError(path)
     output.parent.mkdir(parents=True, exist_ok=True)
+    version = release_version()
+    identity = output.with_suffix('.identity.cs')
+    identity.write_text('[assembly:System.Reflection.AssemblyVersion("'+version+'")]\n'+
+                        '[assembly:System.Reflection.AssemblyFileVersion("'+version+'")]\n', encoding='utf-8')
     args = [str(compiler), '/nologo', '/noconfig', '/nostdlib+', '/langversion:latest', '/nullable:enable',
             '/warnaserror+', '/target:library', '/optimize+', '/deterministic+', '/platform:x64', '/out:' + str(output),
-            *('/reference:' + str(p) for p in references), str(source), str(ROOT/'AminScatter/shared/LibraryLocation.cs')]
+            *('/reference:' + str(p) for p in references), str(source), str(ROOT/'AminScatter/shared/LibraryLocation.cs'), str(identity)]
     result = subprocess.run(args, text=True, capture_output=True)
     output.with_suffix('.build.log').write_text(result.stdout + result.stderr, encoding='utf-8')
     if result.returncode: raise RuntimeError(result.stdout + result.stderr)
+    assembly_path = str(output).replace("'", "''")
+    actual = subprocess.check_output(['powershell.exe','-NoProfile','-NonInteractive','-Command',
+        "[Reflection.AssemblyName]::GetAssemblyName('"+assembly_path+"').Version.ToString()"], text=True).strip()
+    if actual != version:
+        raise RuntimeError('Compiled gallery assembly version differs from the Scatter release: '+actual)
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
     output.with_suffix('.build.json').write_text(json.dumps({'compiler': str(compiler), 'compiler_sha256': sha(compiler),
-        'source_sha256': sha(source), 'shared_source_sha256':sha(ROOT/'AminScatter/shared/LibraryLocation.cs'), 'artifact_sha256': sha(output), 'max_year':year,'framework': 'net48' if year==2024 else 'net'+runtime+'-windows',
+        'source_sha256': sha(source), 'shared_source_sha256':sha(ROOT/'AminScatter/shared/LibraryLocation.cs'), 'artifact_sha256': sha(output), 'assembly_version':actual, 'identity_sha256':sha(identity), 'max_year':year,'framework': 'net48' if year==2024 else 'net'+runtime+'-windows',
         'references': {str(p): sha(p) for p in references}}, indent=2) + '\n', encoding='utf-8')
     print('Built', output)
 

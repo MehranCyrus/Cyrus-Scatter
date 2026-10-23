@@ -13,6 +13,44 @@ Value* cyrusReceiverShapeKey_cf(Value** a,int n){
             for(int k=0;k<steps;++k){const auto p=shape->InterpCurve3D(t,curve,float(k)/steps,PARAM_SIMPLE)*tm;add(p.x);add(p.y);add(p.z);}}}
     return new String(std::to_wstring(hash).c_str());
 }
+// Bands consume bounded Bezier controls rather than the legacy Area sampler.
+// Hash exactly those authored controls so dense linear Paths do not acquire a
+// second 16-samples-per-piece admission limit just to build a cache key.
+def_visible_primitive(cyrusBandShapeKey,"cyrusBandShapeKey");
+Value* cyrusBandShapeKey_cf(Value** arguments,int count){
+    check_arg_count(cyrusBandShapeKey,1,count);
+    auto* nodes=groupArray(arguments[0]);
+    if(nodes->size>32)throw RuntimeError(_T("Spline fields support at most 32 Paths."));
+    std::uint64_t hash=1469598103934665603ULL;
+    const auto add=[&](double value){std::uint64_t bits=0;std::memcpy(&bits,&value,sizeof(bits));for(int byte=0;byte<8;++byte){hash^=(bits>>(byte*8))&255;hash*=1099511628211ULL;}};
+    const auto time=GetCOREInterface()->GetTime();std::size_t total=0;
+    add(nodes->size);
+    for(int index=0;index<nodes->size;++index){
+        auto* node=nodes->data[index]->to_node();auto* object=node?node->EvalWorldState(time).obj:nullptr;
+        if(!object||object->SuperClassID()!=SHAPE_CLASS_ID)throw RuntimeError(_T("Band Paths require closed spline shapes."));
+        auto* shape=static_cast<ShapeObject*>(object);const int curves=shape->NumberOfCurves(time);
+        if(curves<1||curves>2730)throw RuntimeError(_T("Path has no bounded closed curves."));
+        std::size_t pieces=0;
+        for(int curve=0;curve<curves;++curve){const int size=shape->NumberOfPieces(time,curve);
+            if(size<1||std::size_t(size)>8192-total-pieces)throw RuntimeError(_T("Band Paths exceed 8,192 total knots."));pieces+=size;}
+        if(!shape->CanMakeBezier())throw RuntimeError(_T("This Path cannot provide bounded Bezier geometry."));
+        BezierShape bezier;shape->MakeBezier(time,bezier);
+        if(bezier.SplineCount()!=curves)throw RuntimeError(_T("Path Bezier conversion changed its curve topology."));
+        const auto tm=node->GetObjectTM(time);const auto x=tm.GetRow(0),y=tm.GetRow(1),z=tm.GetRow(2),offset=tm.GetTrans();
+        const auto point=[&](Point3 p){add(double(p.x)*x.x+double(p.y)*y.x+double(p.z)*z.x+offset.x);add(double(p.x)*x.y+double(p.y)*y.y+double(p.z)*z.y+offset.y);add(double(p.x)*x.z+double(p.y)*y.z+double(p.z)*z.z+offset.z);};
+        add(curves);
+        for(int curve=0;curve<curves;++curve){
+            auto* spline=bezier.GetSpline(curve);const int knots=spline?spline->KnotCount():0;
+            if(!spline||!spline->Closed()||knots<1||std::size_t(knots)>8192-total)throw RuntimeError(_T("Invalid or oversized closed Bezier Path."));
+            total+=knots;add(knots);
+            for(int knot=0;knot<knots;++knot){const int next=(knot+1)%knots;const bool linear=spline->GetLineType(knot)==LTYPE_LINE;
+                const auto first=spline->GetKnotPoint(knot),last=spline->GetKnotPoint(next);
+                point(first);point(linear?first:spline->GetOutVec(knot));point(linear?last:spline->GetInVec(next));point(last);}
+        }
+    }
+    return new String(std::to_wstring(hash).c_str());
+}
+
 def_visible_primitive(cyrusReceiverPlan,"cyrusReceiverPlan");
 Value* cyrusReceiverPlan_cf(Value** a,int n){
     check_arg_count(cyrusReceiverPlan,5,n);auto* input=groupArray(a[0]);std::vector<cyrus::receivers::Input> entries;

@@ -275,6 +275,18 @@
       },
       {
         "kind": "button",
+        "name": "showSources"
+      },
+      {
+        "kind": "button",
+        "name": "hideSources"
+      },
+      {
+        "kind": "button",
+        "name": "editMaterial"
+      },
+      {
+        "kind": "button",
         "name": "addPoint"
       },
       {

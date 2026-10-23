@@ -1,0 +1,66 @@
+{
+  "release": "0.86.7",
+  "catalog": "dist/CyrusScatter-0.86.7-20261020/Content/Library/model-catalog.json",
+  "selection": [
+    {
+      "id": "A073",
+      "thumbnail": "Models/Trees/A073 - Broadleaf Tree 02/preview.jpg",
+      "publicImage": "broadleaf-tree-02.jpg"
+    },
+    {
+      "id": "A075",
+      "thumbnail": "Models/Trees/A075 - Cypress Tree/preview.jpg",
+      "publicImage": "cypress-tree.jpg"
+    },
+    {
+      "id": "A098",
+      "thumbnail": "Models/Trees/A098 - Norway Maple - Red Foliage/preview.jpg",
+      "publicImage": "norway-maple-red-foliage.jpg"
+    },
+    {
+      "id": "A083",
+      "thumbnail": "Models/Shrubs/A083 - Lavender - 01/preview.jpg",
+      "publicImage": "lavender-01.jpg"
+    },
+    {
+      "id": "A086",
+      "thumbnail": "Models/Shrubs/A086 - Rugosa Rose - 02/preview.jpg",
+      "publicImage": "rugosa-rose-02.jpg"
+    },
+    {
+      "id": "A068",
+      "thumbnail": "Models/Grasses/A068 - Grass - Bushy Clump/preview.jpg",
+      "publicImage": "grass-bushy-clump.jpg"
+    },
+    {
+      "id": "A070",
+      "thumbnail": "Models/Groundcover/A070 - Clover - Patch 04/preview.jpg",
+      "publicImage": "clover-patch-04.jpg"
+    },
+    {
+      "id": "A088",
+      "thumbnail": "Models/Groundcover/A088 - Arthropodium - 01/preview.jpg",
+      "publicImage": "arthropodium-01.jpg"
+    },
+    {
+      "id": "A062",
+      "thumbnail": "Models/Flowers/A062 - Common Blue Violet - 04/preview.jpg",
+      "publicImage": "common-blue-violet-04.jpg"
+    },
+    {
+      "id": "A065",
+      "thumbnail": "Models/Flowers/A065 - Creeping Phlox - 02/preview.jpg",
+      "publicImage": "creeping-phlox-02.jpg"
+    },
+    {
+      "id": "A023",
+      "thumbnail": "Models/Leaves/A023 - Sycamore Leaf 15 - Faded Gold/preview.jpg",
+      "publicImage": "sycamore-leaf-15-faded-gold.jpg"
+    },
+    {
+      "id": "A007",
+      "thumbnail": "Models/Leaves/A007 - Leaf 07 - Curled Leaf - Dry Brown/preview.jpg",
+      "publicImage": "leaf-07-curled-leaf-dry-brown.jpg"
+    }
+  ]
+}

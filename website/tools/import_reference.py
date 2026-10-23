@@ -129,7 +129,9 @@ def build():
         control["displayOwner"] = explanation.get("owner_context", control["owner_context"])
     history = json.loads((SITE/'content/changelog.json').read_text(encoding='utf-8'))
     public_history = [{k:v for k,v in entry.items() if k != 'evidence'} for entry in history['entries']]
-    result = {"schema": "cyrus.public-guide/3.0", "developmentVersion": catalog["development_version"], "artistWorkflowVersion": manifest["artistWorkflowVersion"], "analyzerVersion": "0.14", "mcpVersion": catalog["mcp_version"], "reviewed": manifest["reviewed"], "documents": sources, 'changelog':public_history, "features": catalog["features"], "controls": catalog["controls"]}
+    analyzer_doc = next(doc for doc in docs if doc['id'] == 'surface-analyzer')
+    analyzer_version = re.search(r'^# Cyrus Surface Analyzer ([0-9.]+)\s*$', decode((REPO / analyzer_doc['path']).read_bytes()), re.MULTILINE).group(1)
+    result = {"schema": "cyrus.public-guide/3.0", "developmentVersion": catalog["development_version"], "artistWorkflowVersion": manifest["artistWorkflowVersion"], "analyzerVersion": analyzer_version, "mcpVersion": catalog["mcp_version"], "reviewed": manifest["reviewed"], "documents": sources, 'changelog':public_history, "features": catalog["features"], "controls": catalog["controls"]}
     output[SITE / "src" / "content" / "reference.json"] = (json.dumps(result, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     return output
 

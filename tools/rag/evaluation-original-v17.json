@@ -1,0 +1,2935 @@
+{
+  "schema": "cyrus.evaluation/1",
+  "version": "1.0-candidate",
+  "review_status": "Provisional candidate gold; same agent selected corpus and authored labels; no independent human review",
+  "split_policy": "25 development / 15 stratified holdout; holdout does not guide ranking adjustments. No ranking tuning in initial delivery; all labels frozen first.",
+  "queries": [
+    {
+      "id": "W01",
+      "language": "en",
+      "category": "workflow",
+      "query": "Manual Live cached statistics Update scatter pending edits",
+      "mode": "keyword",
+      "information_need": "Which reads publish pending Manual edits?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W01-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 380,
+              "end_line": 380
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Cached reads and passive browsing do not publish; explicit Update/refresh calculation actions can.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "W02",
+      "language": "en",
+      "category": "workflow",
+      "query": "Paint Areas layer models population coverage union",
+      "mode": "keyword",
+      "information_need": "Coverage versus population ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W02-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+              "start_line": 17,
+              "end_line": 17
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARCHITECTURE.md"
+          ]
+        },
+        {
+          "id": "W02-e2",
+          "alternatives": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+              "start_line": 60,
+              "end_line": 60
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARCHITECTURE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Areas share their layer's models and amount; max/union coverage admits a candidate once.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "W03",
+      "language": "fa",
+      "category": "workflow",
+      "query": "شعاع Radius قلم 100 mm و قطر Paint Brush چقدر است؟",
+      "mode": "keyword",
+      "information_need": "Brush radius versus diameter",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W03-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 336,
+              "end_line": 336
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Radius 100 mm corresponds to diameter 200 mm.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "W04",
+      "language": "finglish",
+      "category": "workflow",
+      "query": "Source containers collection aval off hast? model ha park mishan?",
+      "mode": "keyword",
+      "information_need": "Default collection and parked row preservation",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W04-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 113,
+              "end_line": 113
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Collection starts disabled; enable after arranging. Parked rows keep settings.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "W05",
+      "language": "en",
+      "category": "workflow",
+      "query": "Inside fade Outside fade density scale curves zero widths",
+      "mode": "keyword",
+      "information_need": "Independent feather controls and hard edge",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W05-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 340,
+              "end_line": 342
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Separate density/scale curves; zero widths give hard edge and interior endpoint scale.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "W06",
+      "language": "en",
+      "category": "workflow",
+      "query": "Point Empty Accepted target Candidate budget rendered geometry",
+      "mode": "keyword",
+      "information_need": "Point versus weighted Empty semantics",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W06-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 109,
+              "end_line": 109
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Points accept placements without final geometry; positive-weight Empty is rejected in Accepted target.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "W07",
+      "language": "fa",
+      "category": "workflow",
+      "query": "Analyzer قدیمی stale در Manual؛ Analyze و Update scatter چه ترتیبی دارند؟",
+      "mode": "keyword",
+      "information_need": "Stale Analyzer recovery",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W07-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 394,
+              "end_line": 394
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "CyrusSurfaceAnalyzer/README.md",
+          "sha256": "899909b52cb6c0617dab1b5c4f46321202806018f659a69038658d4913708611",
+          "start_line": 32,
+          "end_line": 32
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Previous scatter remains; explicitly Analyze then Update Manual Scatter.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "W08",
+      "language": "finglish",
+      "category": "workflow",
+      "query": "clearance factor radius A radius B gap XY 3D spacing",
+      "mode": "keyword",
+      "information_need": "Independent spacing formula",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W08-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 366,
+              "end_line": 366
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Clearance is factor times sum of radii plus gap; XY ignores vertical distance.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "W09",
+      "language": "fa",
+      "category": "workflow",
+      "query": "افزودن receiver در Density و Fixed Total جای قبلی گیاهان را عوض می‌کند؟",
+      "mode": "keyword",
+      "information_need": "Survivor stability and bounded quotas",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W09-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 95,
+              "end_line": 97
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Unchanged base candidates survive; fixed total/caps redistribute quotas; acceptance can change.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "W10",
+      "language": "finglish",
+      "category": "workflow",
+      "query": "Spline bands width 200 mm scale rectangle world XY chetor?",
+      "mode": "keyword",
+      "information_need": "Band width under scaling",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W10-e1",
+          "alternatives": [
+            {
+              "path": "docs/LAYOUT_AND_FALLOFF.md",
+              "sha256": "29a924aa0124f787d4fe8fca4fc0432fbdda1b95f79c5ab81ef9029d079d4091",
+              "start_line": 13,
+              "end_line": 13
+            }
+          ],
+          "canonical_paths": [
+            "docs/LAYOUT_AND_FALLOFF.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "sha256": "29a924aa0124f787d4fe8fca4fc0432fbdda1b95f79c5ab81ef9029d079d4091",
+          "start_line": 9,
+          "end_line": 9
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Band width is a physical world-space distance: scaling a rectangle leaves a 200 mm width unchanged. Paths use world XY; Consecutive ranges use first-match ownership while Independent ranges combine contributions.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "O01",
+      "language": "en",
+      "category": "ownership",
+      "query": "Which template generator owns AminScatterObject.ms unified-core.ms?",
+      "mode": "keyword",
+      "information_need": "Canonical UI generation owner",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O01-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/generate.cjs",
+              "sha256": "7a8484b6bd19371de91611b4a8ac561c815a37231e718472edbf0f256fbc7fe8",
+              "start_line": 5,
+              "end_line": 17
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/generate.cjs"
+          ]
+        },
+        {
+          "id": "O01-e2",
+          "alternatives": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+              "start_line": 195,
+              "end_line": 195
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARCHITECTURE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Edit authoritative template/modules, then regenerate output.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "O02",
+      "language": "en",
+      "category": "ownership",
+      "query": "forRanges workers join earliest failure numeric data",
+      "mode": "keyword",
+      "information_need": "Worker lifecycle and deterministic failures",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O02-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/include/execution.h",
+              "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+              "start_line": 32,
+              "end_line": 34
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/include/execution.h"
+          ]
+        },
+        {
+          "id": "O02-e2",
+          "alternatives": [
+            {
+              "path": "AminScatter/include/execution.h",
+              "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+              "start_line": 71,
+              "end_line": 74
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/include/execution.h"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Contiguous synchronous work joins every worker before propagating indexed failures.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "O03",
+      "language": "en",
+      "category": "ownership",
+      "query": "receiver identity slot ordinal reorder Density fixed total tests",
+      "mode": "keyword",
+      "information_need": "Stable receiver identities and test ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O03-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/include/receiver_plan.h",
+              "sha256": "f0616163138d83af9bc24bf3bba4e4d79bdec052da9ff4b3d657182e8d5d1b55",
+              "start_line": 7,
+              "end_line": 14
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/include/receiver_plan.h"
+          ]
+        },
+        {
+          "id": "O03-e2",
+          "alternatives": [
+            {
+              "path": "AminScatter/tests/receiver_tests.cpp",
+              "sha256": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+              "start_line": 26,
+              "end_line": 32
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tests/receiver_tests.cpp"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "receiver_plan.h defines slots/ordinals; receiver_tests verifies unchanged candidates and survivors.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "O04",
+      "language": "en",
+      "category": "ownership",
+      "query": "test_stale_identity_and_incomplete_page_rejected",
+      "mode": "identifier",
+      "information_need": "Focused publication rejection test",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O04-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/tests/test_publication.py",
+              "sha256": "43175166105b006d61cc2365cfc2f8aac7d1bcb29c9d59e446891a30d7b19d42",
+              "start_line": 56,
+              "end_line": 61
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/tests/test_publication.py"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "test_publication.py asserts stale identity and incomplete row counts fail.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "O05",
+      "language": "fa",
+      "category": "ownership",
+      "query": "تست feature catalog تعداد 241 controls و 34 capability را کجا بررسی می‌کند؟",
+      "mode": "keyword",
+      "information_need": "Catalog coverage test ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O05-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/tests/test_feature_catalog.py",
+              "sha256": "c54d43464cc4cce3fb4b1ca7c33e7c7ac761113627c86fff4f4bc5e5b40f594d",
+              "start_line": 6,
+              "end_line": 17
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/tests/test_feature_catalog.py"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "The question names the older 241-control/C01-C34 snapshot. Current test_feature_catalog.py checks 296 controls and C01-C36 for 0.86.0; it checks semantic membership, not physical UI behavior.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "O06",
+      "language": "finglish",
+      "category": "ownership",
+      "query": "AminScatterObjectDraw icon CyrusTimeOwners kodum source?",
+      "mode": "keyword",
+      "information_need": "Canonical creation-icon draw implementation",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O06-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/templates/unified-core.ms",
+              "sha256": "82cb26d9728cd6f0b624aa2b1a908b7e14b36312e4d1030cbd831d8a3f6f244f",
+              "start_line": 6500,
+              "end_line": 6518
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/templates/unified-core.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "AminScatter/scripts/AminScatterObject.ms",
+          "sha256": "c56cee163dbd0a0fffb700c390d0142d0e8ea8df4d8b0e34f31eef98f8180ac5",
+          "start_line": 18748,
+          "end_line": 18766
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "The template draws registered nodes independently of placement records.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "O07",
+      "language": "fa",
+      "category": "ownership",
+      "query": "sourceRowIDs هویت Point بعد Replace و حذف ردیف دیگر چگونه حفظ می‌شود؟",
+      "mode": "keyword",
+      "information_need": "Source row identity ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O07-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+              "start_line": 209,
+              "end_line": 209
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARCHITECTURE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Stable row IDs separate node references; replacement keeps ID and removal preserves dormant band choices.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "O08",
+      "language": "finglish",
+      "category": "ownership",
+      "query": "CyrusLoadedScriptFingerprint",
+      "mode": "identifier",
+      "information_need": "Exact saved generated payload fingerprint",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O08-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/scripts/AminScatterObject.ms",
+              "sha256": "c56cee163dbd0a0fffb700c390d0142d0e8ea8df4d8b0e34f31eef98f8180ac5",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/scripts/AminScatterObject.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "AminScatter/tools/ui/generate.cjs",
+          "sha256": "7a8484b6bd19371de91611b4a8ac561c815a37231e718472edbf0f256fbc7fe8",
+          "start_line": 19,
+          "end_line": 24
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "The generated first line declares payload fingerprint 827af832d5ecd6006e3131e18583c7fc6f668f14bf1e06200c3f1b79d28f05e8; this differs from whole-file SHA-256.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "H01",
+      "language": "en",
+      "category": "history",
+      "query": "0.75 system qualification schema 54 current handoff historical",
+      "mode": "keyword",
+      "information_need": "Historical current wording applicability",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H01-e1",
+          "alternatives": [
+            {
+              "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+              "sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/System_Qualification_0.75_2026-10-09/README.md"
+          ]
+        },
+        {
+          "id": "H01-e2",
+          "alternatives": [
+            {
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "b67647ec3d2f41731ca97857e32eabdf7beb799c9705e80ed65b6378b391a735",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/ARCHITECTURE.md",
+            "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+            "start_line": 3,
+            "end_line": 3
+          },
+          "reason": "Current schema55 architecture is not the 0.75 tested snapshot"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Recorded 0.75/schema54 applies only to that campaign; it does not qualify 0.79.5.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "H02",
+      "language": "fa",
+      "category": "history",
+      "query": "آیا تاریخ پوشه Current_System_2026-10-05 یعنی CAPABILITY_MATRIX قدیمی است؟",
+      "mode": "keyword",
+      "information_need": "Maintained dated matrix authority",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H02-e1",
+          "alternatives": [
+            {
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "b67647ec3d2f41731ca97857e32eabdf7beb799c9705e80ed65b6378b391a735",
+              "start_line": 7,
+              "end_line": 7
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+          "sha256": "d6867ab03d401d739ff875b309d30cd5664fc52cf658ddae840aaaf55e1c77aa",
+          "start_line": 3,
+          "end_line": 5
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Maintained matrix stays at dated path for generator/references; date does not make it obsolete.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "H03",
+      "language": "finglish",
+      "category": "history",
+      "query": "B14 0.79.1 inches 696 centimeters 918 fade units hal shode?",
+      "mode": "keyword",
+      "information_need": "Unknown-authority linked report still records a failing witness",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H03-e1",
+          "alternatives": [
+            {
+              "path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+              "sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+              "start_line": 50,
+              "end_line": 52
+            }
+          ],
+          "canonical_paths": [
+            "docs/Point_Workflow_0.79.1_2026-10-11/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+          "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+          "start_line": 75,
+          "end_line": 75
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "B14 is not passed: 400 mm/696 becomes 157.48 mm/918 on conversion. Use saved units.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "H04",
+      "language": "fa",
+      "category": "history",
+      "query": "آیا redraw در 0.79.2 همان FPS واقعی و تأخیر ماوس است؟",
+      "mode": "keyword",
+      "information_need": "Timing class distinction",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H04-e1",
+          "alternatives": [
+            {
+              "path": "docs/Layer_Navigation_0.79.2_2026-10-11/README.md",
+              "sha256": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
+              "start_line": 26,
+              "end_line": 26
+            }
+          ],
+          "canonical_paths": [
+            "docs/Layer_Navigation_0.79.2_2026-10-11/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Synchronous redraw is not presented FPS or physical navigation latency.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "H05",
+      "language": "en",
+      "category": "history",
+      "query": "0.79.5 creation correction script SHA original garden render rerun",
+      "mode": "keyword",
+      "information_need": "Same version, different tested scripts",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H05-e1",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 43,
+              "end_line": 44
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        },
+        {
+          "id": "H05-e2",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 30,
+              "end_line": 30
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+            "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+            "start_line": 79,
+            "end_line": 79
+          },
+          "reason": "Original garden script is not the corrected creation package"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Corrected cacf3e... differs from original 47ed50...; original garden campaign was not rerun for correction.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "H06",
+      "language": "finglish",
+      "category": "history",
+      "query": "schema 54 be schema 55 automatic conversion paint set fallback dare?",
+      "mode": "keyword",
+      "information_need": "Retired saved formats",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H06-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 99,
+              "end_line": 99
+            },
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "4228f37f00e91f4b1dad51f972f800539647b9e4fa715d0c4d8c13e90f1c8811",
+              "start_line": 188,
+              "end_line": 198
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md",
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "historical_current",
+          "evidence": {
+            "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+            "sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+            "start_line": 36,
+            "end_line": 36
+          },
+          "reason": "Old model-owning sets statement is historical; not current conversion support"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Schema-54 model-set/stroke setups remain rejected. Current schema 59 provides an explicit Undoable upgrade only from schema 58; earlier development-schema migration remains retired. Preserve original scenes with their matching build.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "H07",
+      "language": "en",
+      "category": "history",
+      "query": "creation icon correction native modules rebuilt 120 assertions physical pixels",
+      "mode": "keyword",
+      "information_need": "Precise creation qualification limits",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H07-e1",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 28,
+              "end_line": 30
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+          "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+          "start_line": 26,
+          "end_line": 26
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Native modules unchanged/reused; focused callback assertions do not qualify presented pixels or physical mouse input.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "H08",
+      "language": "fa",
+      "category": "history",
+      "query": "پشتیبانی Scatter در Max 2026 آیا authoring MCP را هم تأیید می‌کند؟",
+      "mode": "keyword",
+      "information_need": "Separate host qualification scopes",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H08-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 71,
+              "end_line": 71
+            },
+            {
+              "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+              "sha256": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+              "start_line": 34,
+              "end_line": 34
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md",
+            "docs/PRODUCT_AND_AI_ROADMAP.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Separate Scatter 2026 tests do not certify MCP authoring there.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "B01",
+      "language": "en",
+      "category": "boundary",
+      "query": "MCP catalog help Brush authoring renderer execution remote control",
+      "mode": "keyword",
+      "information_need": "Catalog versus supported write API",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B01-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        },
+        {
+          "id": "B01-e2",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 47,
+              "end_line": 47
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Catalog help does not authorize remote controls; full Brush and renderer jobs are outside contract.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "B02",
+      "language": "fa",
+      "category": "boundary",
+      "query": "بودجه MCP چند mesh source چند layer و چند candidate است؟",
+      "mode": "keyword",
+      "information_need": "Bounded enrollment budget",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B02-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 53,
+              "end_line": 53
+            },
+            {
+              "path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+              "sha256": "d6867ab03d401d739ff875b309d30cd5664fc52cf658ddae840aaaf55e1c77aa",
+              "start_line": 74,
+              "end_line": 74
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md",
+            "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "At most three sources, three regions/layers and 2000 aggregate candidates.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "B03",
+      "language": "finglish",
+      "category": "boundary",
+      "query": "apply plan local approve exact digest owned freshness",
+      "mode": "keyword",
+      "information_need": "Exact local approval and owned scope",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B03-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 22,
+              "end_line": 24
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        },
+        {
+          "id": "B03-e2",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 59,
+              "end_line": 59
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Review normalized proposal locally then apply exact digest once under ownership/freshness.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "B04",
+      "language": "fa",
+      "category": "boundary",
+      "query": "لایسنس 30 روزه از import شروع می‌شود؟ بعد expiry render صحنه ذخیره شده؟",
+      "mode": "keyword",
+      "information_need": "Fixed issuer deadline and saved-scene continuity",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B04-e1",
+          "alternatives": [
+            {
+              "path": "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+              "sha256": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+              "start_line": 8,
+              "end_line": 8
+            }
+          ],
+          "canonical_paths": [
+            "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md"
+          ]
+        },
+        {
+          "id": "B04-e2",
+          "alternatives": [
+            {
+              "path": "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+              "sha256": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+              "start_line": 25,
+              "end_line": 26
+            }
+          ],
+          "canonical_paths": [
+            "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Term starts at owner issuance, not import; tested saved scenes remain renderable after expiry.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "B05",
+      "language": "en",
+      "category": "boundary",
+      "query": "decide pure policy network clock storage signature Max calls",
+      "mode": "keyword",
+      "information_need": "Pure policy inputs versus authority proofs",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B05-e1",
+          "alternatives": [
+            {
+              "path": "CyrusLicensing/README.md",
+              "sha256": "8d877d5fc922cc5651f8126e997620b057e3fc490e1d3a7b860bf226e72187d9",
+              "start_line": 7,
+              "end_line": 7
+            }
+          ],
+          "canonical_paths": [
+            "CyrusLicensing/README.md"
+          ]
+        },
+        {
+          "id": "B05-e2",
+          "alternatives": [
+            {
+              "path": "CyrusLicensing/README.md",
+              "sha256": "8d877d5fc922cc5651f8126e997620b057e3fc490e1d3a7b860bf226e72187d9",
+              "start_line": 33,
+              "end_line": 33
+            }
+          ],
+          "canonical_paths": [
+            "CyrusLicensing/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "decide has no I/O/clock/verification/Max calls; trusted facts are inputs, not proofs.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "B06",
+      "language": "finglish",
+      "category": "boundary",
+      "query": "diagnostic recording sharing training consent yek chiz hast?",
+      "mode": "keyword",
+      "information_need": "Separate consent and bounded operational export",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B06-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 63,
+              "end_line": 63
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        },
+        {
+          "id": "B06-e2",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 69,
+              "end_line": 69
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Recording is not sharing; operational export is not training consent.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "C01",
+      "language": "en",
+      "category": "website",
+      "query": "guide-chapters.json reference.json generated website source",
+      "mode": "keyword",
+      "information_need": "Curated versus generated website ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "C01-e1",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 3,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        },
+        {
+          "id": "C01-e2",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 11,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Curated chapters are inputs; src/content/reference.json is generated.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "C02",
+      "language": "fa",
+      "category": "website",
+      "query": "source-manifest.json مسیر artist-guide و layout-falloff کدام است؟",
+      "mode": "keyword",
+      "information_need": "Exact curated document mapping",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "C02-e1",
+          "alternatives": [
+            {
+              "path": "website/content/source-manifest.json",
+              "sha256": "d8cbf8837c89fe8bf41fbe5392e0cec509fb3deb5bb5949bee161991686c022e",
+              "start_line": 6,
+              "end_line": 15
+            }
+          ],
+          "canonical_paths": [
+            "website/content/source-manifest.json"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Artist guide maps to docs/ARTIST_GUIDE.md and layout to docs/LAYOUT_AND_FALLOFF.md.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "C03",
+      "language": "finglish",
+      "category": "website",
+      "query": "concept artwork teaching diagrams render asli plugin hastan?",
+      "mode": "keyword",
+      "information_need": "Editorial images versus runtime evidence",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "C03-e1",
+          "alternatives": [
+            {
+              "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+              "sha256": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+              "start_line": 28,
+              "end_line": 28
+            },
+            {
+              "path": "website/README.md",
+              "sha256": "e97a72dc42c0ed667e90d00e8aa526f0f319eb28a85f3f032d5361d51b347235",
+              "start_line": 114,
+              "end_line": 114
+            }
+          ],
+          "canonical_paths": [
+            "docs/PRODUCT_AND_AI_ROADMAP.md",
+            "website/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Concept artwork illustrates intent; actual plugin captures carry version/scene captions.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "C04",
+      "language": "finglish",
+      "category": "website",
+      "query": "website raw Markdown internal source snapshots public distribute mishan?",
+      "mode": "keyword",
+      "information_need": "Public content export boundary",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "C04-e1",
+          "alternatives": [
+            {
+              "path": "website/README.md",
+              "sha256": "e97a72dc42c0ed667e90d00e8aa526f0f319eb28a85f3f032d5361d51b347235",
+              "start_line": 88,
+              "end_line": 88
+            },
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 11,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/README.md",
+            "website/content/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Importer renders curated text and strips internal evidence; no raw Markdown/source snapshots are shipped.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "X01",
+      "language": "en",
+      "category": "contradiction",
+      "query": "guaranteed presented FPS all scenes 0.79.5",
+      "mode": "keyword",
+      "information_need": "Requested universal presented FPS has no evidence",
+      "answerable": false,
+      "required_evidence": [],
+      "optional_evidence": [
+        {
+          "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+          "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+          "start_line": 34,
+          "end_line": 34
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": null,
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "X02",
+      "language": "en",
+      "category": "contradiction",
+      "query": "commercial price public release date Cyrus Scatter 1.0",
+      "mode": "keyword",
+      "information_need": "No approved price or release date in corpus",
+      "answerable": false,
+      "required_evidence": [],
+      "optional_evidence": [
+        {
+          "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "sha256": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+          "start_line": 3,
+          "end_line": 3
+        },
+        {
+          "path": "docs/DOCUMENTATION.md",
+          "sha256": "b67647ec3d2f41731ca97857e32eabdf7beb799c9705e80ed65b6378b391a735",
+          "start_line": 48,
+          "end_line": 48
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": null,
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    },
+    {
+      "id": "X03",
+      "language": "fa",
+      "category": "contradiction",
+      "query": "کلید خصوصی امضای لایسنس و مقدار secret را بده",
+      "mode": "keyword",
+      "information_need": "Private signing secret is excluded and absent",
+      "answerable": false,
+      "required_evidence": [],
+      "optional_evidence": [
+        {
+          "path": "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+          "sha256": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+          "start_line": 14,
+          "end_line": 14
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": null,
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "development"
+    },
+    {
+      "id": "X04",
+      "language": "finglish",
+      "category": "contradiction",
+      "query": "Point hamishe final mesh mide va Empty dar Accepted target mojaz ast?",
+      "mode": "keyword",
+      "information_need": "Contradictory placeholder assumptions",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "X04-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 109,
+              "end_line": 109
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Neither assumption holds: Point has no final geometry; positive-weight Empty is rejected in Accepted target.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "holdout"
+    }
+  ],
+  "anchors": [
+    {
+      "id": "A-W01-en",
+      "language": "en",
+      "category": "workflow",
+      "query": "Manual Live cached statistics Update scatter pending edits",
+      "mode": "keyword",
+      "information_need": "Which reads publish pending Manual edits?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W01-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 380,
+              "end_line": 380
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Cached reads and passive browsing do not publish; explicit Update/refresh calculation actions can.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W01"
+    },
+    {
+      "id": "A-W01-fa",
+      "language": "fa",
+      "category": "workflow",
+      "query": "Manual و Live؛ خواندن cached statistics آیا ویرایش pending را منتشر می‌کند؟",
+      "mode": "keyword",
+      "information_need": "Which reads publish pending Manual edits?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W01-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 380,
+              "end_line": 380
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Cached reads and passive browsing do not publish; explicit Update/refresh calculation actions can.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W01"
+    },
+    {
+      "id": "A-W01-finglish",
+      "language": "finglish",
+      "category": "workflow",
+      "query": "Manual Live cached statistics pending edit ro publish mikone?",
+      "mode": "keyword",
+      "information_need": "Which reads publish pending Manual edits?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W01-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 380,
+              "end_line": 380
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Cached reads and passive browsing do not publish; explicit Update/refresh calculation actions can.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W01"
+    },
+    {
+      "id": "A-W03-en",
+      "language": "en",
+      "category": "workflow",
+      "query": "Brush Radius 100 mm diameter Paint Brush",
+      "mode": "keyword",
+      "information_need": "Brush radius versus diameter",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W03-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 336,
+              "end_line": 336
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Radius 100 mm corresponds to diameter 200 mm.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W03"
+    },
+    {
+      "id": "A-W03-fa",
+      "language": "fa",
+      "category": "workflow",
+      "query": "شعاع Radius قلم 100 mm و قطر Paint Brush چقدر است؟",
+      "mode": "keyword",
+      "information_need": "Brush radius versus diameter",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W03-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 336,
+              "end_line": 336
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Radius 100 mm corresponds to diameter 200 mm.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W03"
+    },
+    {
+      "id": "A-W03-finglish",
+      "language": "finglish",
+      "category": "workflow",
+      "query": "Brush Radius 100 mm ghotr stroke chand mm mishe?",
+      "mode": "keyword",
+      "information_need": "Brush radius versus diameter",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W03-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 336,
+              "end_line": 336
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Radius 100 mm corresponds to diameter 200 mm.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W03"
+    },
+    {
+      "id": "A-W08-en",
+      "language": "en",
+      "category": "workflow",
+      "query": "clearance factor radius A radius B gap XY 3D spacing",
+      "mode": "keyword",
+      "information_need": "Independent spacing formula",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W08-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 366,
+              "end_line": 366
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Clearance is factor times sum of radii plus gap; XY ignores vertical distance.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W08"
+    },
+    {
+      "id": "A-W08-fa",
+      "language": "fa",
+      "category": "workflow",
+      "query": "فرمول clearance factor radius A radius B gap و XY 3D چیست؟",
+      "mode": "keyword",
+      "information_need": "Independent spacing formula",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W08-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 366,
+              "end_line": 366
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Clearance is factor times sum of radii plus gap; XY ignores vertical distance.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W08"
+    },
+    {
+      "id": "A-W08-finglish",
+      "language": "finglish",
+      "category": "workflow",
+      "query": "clearance factor radius A radius B gap XY 3D spacing",
+      "mode": "keyword",
+      "information_need": "Independent spacing formula",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "W08-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+              "start_line": 366,
+              "end_line": 366
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Clearance is factor times sum of radii plus gap; XY ignores vertical distance.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "W08"
+    },
+    {
+      "id": "A-O01-en",
+      "language": "en",
+      "category": "ownership",
+      "query": "Which template generator owns AminScatterObject.ms unified-core.ms?",
+      "mode": "keyword",
+      "information_need": "Canonical UI generation owner",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O01-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/generate.cjs",
+              "sha256": "7a8484b6bd19371de91611b4a8ac561c815a37231e718472edbf0f256fbc7fe8",
+              "start_line": 5,
+              "end_line": 17
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/generate.cjs"
+          ]
+        },
+        {
+          "id": "O01-e2",
+          "alternatives": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+              "start_line": 195,
+              "end_line": 195
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARCHITECTURE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Edit authoritative template/modules, then regenerate output.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "O01"
+    },
+    {
+      "id": "A-O01-fa",
+      "language": "fa",
+      "category": "ownership",
+      "query": "منبع اصلی AminScatterObject.ms؛ template unified-core.ms یا generator کدام است؟",
+      "mode": "keyword",
+      "information_need": "Canonical UI generation owner",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O01-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/generate.cjs",
+              "sha256": "7a8484b6bd19371de91611b4a8ac561c815a37231e718472edbf0f256fbc7fe8",
+              "start_line": 5,
+              "end_line": 17
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/generate.cjs"
+          ]
+        },
+        {
+          "id": "O01-e2",
+          "alternatives": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+              "start_line": 195,
+              "end_line": 195
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARCHITECTURE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Edit authoritative template/modules, then regenerate output.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "O01"
+    },
+    {
+      "id": "A-O01-finglish",
+      "language": "finglish",
+      "category": "ownership",
+      "query": "AminScatterObject.ms ro kodum template generator unified-core.ms misaze?",
+      "mode": "keyword",
+      "information_need": "Canonical UI generation owner",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O01-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/generate.cjs",
+              "sha256": "7a8484b6bd19371de91611b4a8ac561c815a37231e718472edbf0f256fbc7fe8",
+              "start_line": 5,
+              "end_line": 17
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/generate.cjs"
+          ]
+        },
+        {
+          "id": "O01-e2",
+          "alternatives": [
+            {
+              "path": "docs/ARCHITECTURE.md",
+              "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+              "start_line": 195,
+              "end_line": 195
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARCHITECTURE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Edit authoritative template/modules, then regenerate output.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "O01"
+    },
+    {
+      "id": "A-O06-en",
+      "language": "en",
+      "category": "ownership",
+      "query": "AminScatterObjectDraw icon CyrusTimeOwners canonical source",
+      "mode": "keyword",
+      "information_need": "Canonical creation-icon draw implementation",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O06-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/templates/unified-core.ms",
+              "sha256": "82cb26d9728cd6f0b624aa2b1a908b7e14b36312e4d1030cbd831d8a3f6f244f",
+              "start_line": 6500,
+              "end_line": 6518
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/templates/unified-core.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "AminScatter/scripts/AminScatterObject.ms",
+          "sha256": "c56cee163dbd0a0fffb700c390d0142d0e8ea8df4d8b0e34f31eef98f8180ac5",
+          "start_line": 18748,
+          "end_line": 18766
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "The template draws registered nodes independently of placement records.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "O06"
+    },
+    {
+      "id": "A-O06-fa",
+      "language": "fa",
+      "category": "ownership",
+      "query": "AminScatterObjectDraw و CyrusTimeOwners؛ منبع اصلی رسم icon چیست؟",
+      "mode": "keyword",
+      "information_need": "Canonical creation-icon draw implementation",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O06-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/templates/unified-core.ms",
+              "sha256": "82cb26d9728cd6f0b624aa2b1a908b7e14b36312e4d1030cbd831d8a3f6f244f",
+              "start_line": 6500,
+              "end_line": 6518
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/templates/unified-core.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "AminScatter/scripts/AminScatterObject.ms",
+          "sha256": "c56cee163dbd0a0fffb700c390d0142d0e8ea8df4d8b0e34f31eef98f8180ac5",
+          "start_line": 18748,
+          "end_line": 18766
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "The template draws registered nodes independently of placement records.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "O06"
+    },
+    {
+      "id": "A-O06-finglish",
+      "language": "finglish",
+      "category": "ownership",
+      "query": "AminScatterObjectDraw icon CyrusTimeOwners kodum source?",
+      "mode": "keyword",
+      "information_need": "Canonical creation-icon draw implementation",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "O06-e1",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/templates/unified-core.ms",
+              "sha256": "82cb26d9728cd6f0b624aa2b1a908b7e14b36312e4d1030cbd831d8a3f6f244f",
+              "start_line": 6500,
+              "end_line": 6518
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/templates/unified-core.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "AminScatter/scripts/AminScatterObject.ms",
+          "sha256": "c56cee163dbd0a0fffb700c390d0142d0e8ea8df4d8b0e34f31eef98f8180ac5",
+          "start_line": 18748,
+          "end_line": 18766
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "The template draws registered nodes independently of placement records.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "O06"
+    },
+    {
+      "id": "A-H01-en",
+      "language": "en",
+      "category": "history",
+      "query": "0.75 system qualification schema 54 current handoff historical",
+      "mode": "keyword",
+      "information_need": "Historical current wording applicability",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H01-e1",
+          "alternatives": [
+            {
+              "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+              "sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/System_Qualification_0.75_2026-10-09/README.md"
+          ]
+        },
+        {
+          "id": "H01-e2",
+          "alternatives": [
+            {
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "b67647ec3d2f41731ca97857e32eabdf7beb799c9705e80ed65b6378b391a735",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/ARCHITECTURE.md",
+            "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+            "start_line": 3,
+            "end_line": 3
+          },
+          "reason": "Current schema55 architecture is not the 0.75 tested snapshot"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Recorded 0.75/schema54 applies only to that campaign; it does not qualify 0.79.5.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H01"
+    },
+    {
+      "id": "A-H01-fa",
+      "language": "fa",
+      "category": "history",
+      "query": "گزارش 0.75 system qualification schema 54 جاری است یا تاریخی؟",
+      "mode": "keyword",
+      "information_need": "Historical current wording applicability",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H01-e1",
+          "alternatives": [
+            {
+              "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+              "sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/System_Qualification_0.75_2026-10-09/README.md"
+          ]
+        },
+        {
+          "id": "H01-e2",
+          "alternatives": [
+            {
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "b67647ec3d2f41731ca97857e32eabdf7beb799c9705e80ed65b6378b391a735",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/ARCHITECTURE.md",
+            "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+            "start_line": 3,
+            "end_line": 3
+          },
+          "reason": "Current schema55 architecture is not the 0.75 tested snapshot"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Recorded 0.75/schema54 applies only to that campaign; it does not qualify 0.79.5.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H01"
+    },
+    {
+      "id": "A-H01-finglish",
+      "language": "finglish",
+      "category": "history",
+      "query": "0.75 system qualification schema 54 current handoff tarikhi hast?",
+      "mode": "keyword",
+      "information_need": "Historical current wording applicability",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H01-e1",
+          "alternatives": [
+            {
+              "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+              "sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/System_Qualification_0.75_2026-10-09/README.md"
+          ]
+        },
+        {
+          "id": "H01-e2",
+          "alternatives": [
+            {
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "b67647ec3d2f41731ca97857e32eabdf7beb799c9705e80ed65b6378b391a735",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/ARCHITECTURE.md",
+            "sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+            "start_line": 3,
+            "end_line": 3
+          },
+          "reason": "Current schema55 architecture is not the 0.75 tested snapshot"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Recorded 0.75/schema54 applies only to that campaign; it does not qualify 0.79.5.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H01"
+    },
+    {
+      "id": "A-H03-en",
+      "language": "en",
+      "category": "history",
+      "query": "B14 0.79.1 inches 696 centimeters 918 fade units fixed?",
+      "mode": "keyword",
+      "information_need": "Unknown-authority linked report still records a failing witness",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H03-e1",
+          "alternatives": [
+            {
+              "path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+              "sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+              "start_line": 50,
+              "end_line": 52
+            }
+          ],
+          "canonical_paths": [
+            "docs/Point_Workflow_0.79.1_2026-10-11/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+          "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+          "start_line": 75,
+          "end_line": 75
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "B14 is not passed: 400 mm/696 becomes 157.48 mm/918 on conversion. Use saved units.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H03"
+    },
+    {
+      "id": "A-H03-fa",
+      "language": "fa",
+      "category": "history",
+      "query": "B14 در 0.79.1؛ inches 696 و centimeters 918؛ نقص units رفع شده؟",
+      "mode": "keyword",
+      "information_need": "Unknown-authority linked report still records a failing witness",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H03-e1",
+          "alternatives": [
+            {
+              "path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+              "sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+              "start_line": 50,
+              "end_line": 52
+            }
+          ],
+          "canonical_paths": [
+            "docs/Point_Workflow_0.79.1_2026-10-11/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+          "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+          "start_line": 75,
+          "end_line": 75
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "B14 is not passed: 400 mm/696 becomes 157.48 mm/918 on conversion. Use saved units.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H03"
+    },
+    {
+      "id": "A-H03-finglish",
+      "language": "finglish",
+      "category": "history",
+      "query": "B14 0.79.1 inches 696 centimeters 918 fade units hal shode?",
+      "mode": "keyword",
+      "information_need": "Unknown-authority linked report still records a failing witness",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H03-e1",
+          "alternatives": [
+            {
+              "path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+              "sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+              "start_line": 50,
+              "end_line": 52
+            }
+          ],
+          "canonical_paths": [
+            "docs/Point_Workflow_0.79.1_2026-10-11/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [
+        {
+          "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+          "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+          "start_line": 75,
+          "end_line": 75
+        }
+      ],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "B14 is not passed: 400 mm/696 becomes 157.48 mm/918 on conversion. Use saved units.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H03"
+    },
+    {
+      "id": "A-H05-en",
+      "language": "en",
+      "category": "history",
+      "query": "0.79.5 creation correction script SHA original garden render rerun",
+      "mode": "keyword",
+      "information_need": "Same version, different tested scripts",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H05-e1",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 43,
+              "end_line": 44
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        },
+        {
+          "id": "H05-e2",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 30,
+              "end_line": 30
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+            "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+            "start_line": 79,
+            "end_line": 79
+          },
+          "reason": "Original garden script is not the corrected creation package"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Corrected cacf3e... differs from original 47ed50...; original garden campaign was not rerun for correction.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H05"
+    },
+    {
+      "id": "A-H05-fa",
+      "language": "fa",
+      "category": "history",
+      "query": "اصلاح creation در 0.79.5؛ SHA script اصلی و جدید؛ garden render تکرار شد؟",
+      "mode": "keyword",
+      "information_need": "Same version, different tested scripts",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H05-e1",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 43,
+              "end_line": 44
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        },
+        {
+          "id": "H05-e2",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 30,
+              "end_line": 30
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+            "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+            "start_line": 79,
+            "end_line": 79
+          },
+          "reason": "Original garden script is not the corrected creation package"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Corrected cacf3e... differs from original 47ed50...; original garden campaign was not rerun for correction.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H05"
+    },
+    {
+      "id": "A-H05-finglish",
+      "language": "finglish",
+      "category": "history",
+      "query": "0.79.5 creation correction script SHA original garden render dobare test shod?",
+      "mode": "keyword",
+      "information_need": "Same version, different tested scripts",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H05-e1",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 43,
+              "end_line": 44
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        },
+        {
+          "id": "H05-e2",
+          "alternatives": [
+            {
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 30,
+              "end_line": 30
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [
+        {
+          "kind": "wrong_build",
+          "evidence": {
+            "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+            "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+            "start_line": 79,
+            "end_line": 79
+          },
+          "reason": "Original garden script is not the corrected creation package"
+        }
+      ],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Corrected cacf3e... differs from original 47ed50...; original garden campaign was not rerun for correction.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "H05"
+    },
+    {
+      "id": "A-B01-en",
+      "language": "en",
+      "category": "boundary",
+      "query": "MCP catalog help Brush authoring renderer execution remote control",
+      "mode": "keyword",
+      "information_need": "Catalog versus supported write API",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B01-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        },
+        {
+          "id": "B01-e2",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 47,
+              "end_line": 47
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Catalog help does not authorize remote controls; full Brush and renderer jobs are outside contract.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "B01"
+    },
+    {
+      "id": "A-B01-fa",
+      "language": "fa",
+      "category": "boundary",
+      "query": "MCP catalog help آیا مجوز Brush authoring و renderer execution می‌دهد؟",
+      "mode": "keyword",
+      "information_need": "Catalog versus supported write API",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B01-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        },
+        {
+          "id": "B01-e2",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 47,
+              "end_line": 47
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Catalog help does not authorize remote controls; full Brush and renderer jobs are outside contract.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "B01"
+    },
+    {
+      "id": "A-B01-finglish",
+      "language": "finglish",
+      "category": "boundary",
+      "query": "MCP catalog help Brush authoring renderer execution remote control dare?",
+      "mode": "keyword",
+      "information_need": "Catalog versus supported write API",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "B01-e1",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 5,
+              "end_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        },
+        {
+          "id": "B01-e2",
+          "alternatives": [
+            {
+              "path": "CyrusMCP/README.md",
+              "sha256": "2d678ea0199545a8f6eaf11fc4c03ceba635b554f3db571f326b57f52c08fbc5",
+              "start_line": 47,
+              "end_line": 47
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Catalog help does not authorize remote controls; full Brush and renderer jobs are outside contract.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "B01"
+    },
+    {
+      "id": "A-C01-en",
+      "language": "en",
+      "category": "website",
+      "query": "guide-chapters.json reference.json generated website source",
+      "mode": "keyword",
+      "information_need": "Curated versus generated website ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "C01-e1",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 3,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        },
+        {
+          "id": "C01-e2",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 11,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Curated chapters are inputs; src/content/reference.json is generated.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "C01"
+    },
+    {
+      "id": "A-C01-fa",
+      "language": "fa",
+      "category": "website",
+      "query": "guide-chapters.json یا reference.json؛ منبع website و خروجی generated کدام است؟",
+      "mode": "keyword",
+      "information_need": "Curated versus generated website ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "C01-e1",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 3,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        },
+        {
+          "id": "C01-e2",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 11,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Curated chapters are inputs; src/content/reference.json is generated.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "C01"
+    },
+    {
+      "id": "A-C01-finglish",
+      "language": "finglish",
+      "category": "website",
+      "query": "guide-chapters.json reference.json website kodum source kodum generated?",
+      "mode": "keyword",
+      "information_need": "Curated versus generated website ownership",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "C01-e1",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 3,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        },
+        {
+          "id": "C01-e2",
+          "alternatives": [
+            {
+              "path": "website/content/README.md",
+              "sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+              "start_line": 11,
+              "end_line": 11
+            }
+          ],
+          "canonical_paths": [
+            "website/content/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Use source role/status and recorded snapshot; no blanket current-host certification"
+      ],
+      "reference_conclusion": "Curated chapters are inputs; src/content/reference.json is generated.",
+      "review_status": "candidate-gold; agent-authored; human review pending",
+      "split": "anchor",
+      "base_id": "C01"
+    }
+  ]
+}

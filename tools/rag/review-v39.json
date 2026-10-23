@@ -1,0 +1,160 @@
+{
+  "corpus": {
+    "old_sha256": "1512c020cd6d04b66a0aeede3fa4dc50b0d36f2ed41a9fac868080b97d69440b",
+    "new_sha256": "8298466a2b42ce2eb20e88df75f10505be7d736fd24154bc10cef18fbff81a48",
+    "reason": "Correct duplicate rollout/migration guidance and obsolete current-version metadata found during live consumer inspection. Preserve the selected 48-parent scope, historical qualifications, authority and hard evidence gates. Agent review only; human semantic review not performed."
+  },
+  "sources": [
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "45bed8cf6406c1e7949dd92a5664e441e55406d59429452ce3c08970170f2334",
+      "new_sha256": "171313c7bc7b7d6c6a1745c01e23059f674ee9b5f571d5f189e88fd741aeb503",
+      "field_reasons": {
+        "contract_sections": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly.",
+        "ranges": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly.",
+        "sha256": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "a8b6d689aacc4068a7572197f7447ee592805afcf7b3e2d3559d779ec97e63f3",
+      "new_sha256": "a8b6d689aacc4068a7572197f7447ee592805afcf7b3e2d3559d779ec97e63f3",
+      "field_reasons": {
+        "applicability": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly."
+      },
+      "unchanged_metadata_reviewed": true,
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/Max_2027_Installation.md",
+      "old_sha256": "57adaf04304551d4987d3a1c3b292a967c583f613738208988b1418ac1543d4b",
+      "new_sha256": "3735753cfd99862007d24e3a65db70029160766277ddb50d4bd64e6bf82f09be",
+      "field_reasons": {
+        "contract_sections": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly.",
+        "ranges": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly.",
+        "sha256": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/INSTALLER_CONTRACT.md",
+      "old_sha256": "3054f82ded6f951c0d26558905f98dc899218a23e143e25ea1a346ffeafd6ed5",
+      "new_sha256": "b512c7fae4002d2cef41abbfb67f1db3ef7bc9ffc86625ea88e72b912155583e",
+      "field_reasons": {
+        "applicability": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly.",
+        "selection_reason": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly.",
+        "sha256": "Inspected documentation correction and equivalent complete evidence intervals; preserved original authority, canonical owner, historical receipts and qualification limits. Previous snapshot descriptors retained explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "2eaa7d24e404d0aab90ef5dde828d99994d693157ec90b79b6262c8d0f7e4227",
+      "new_sha256": "ba3e542e5b2fd4e26307e84f9a7e0516b38733b8762f9d80c1fd50435f076a1b",
+      "reason": "Frozen questions, split, required evidence, owners, qualifiers and answerability preserved. Only equivalent current provenance changes."
+    },
+    {
+      "old_sha256": "6c918118f6b131b18b051c3df9442232052fcfcb66baff6a38011953645bdd20",
+      "new_sha256": "8ad84e3f633177433387eef2166a1c146e5323b2b52bb9265cc81b16785809e5",
+      "reason": "Frozen questions, split, required evidence, owners, qualifiers and answerability preserved. Only equivalent current provenance changes."
+    },
+    {
+      "old_sha256": "738e56a74cf7f039bed5d251f215087bc840941c9419b82bf1bca07a29b8dc7e",
+      "new_sha256": "a4be0324c6a089730dc5f7eb37097c397759e13041f13f36cffc22bc86ed8adf",
+      "reason": "Frozen questions, split, required evidence, owners, qualifiers and answerability preserved. Only equivalent current provenance changes."
+    },
+    {
+      "old_sha256": "7e33ad84453b0055267e31126bd213a9c213def2a1969e179ee67d146a254366",
+      "new_sha256": "7e33ad84453b0055267e31126bd213a9c213def2a1969e179ee67d146a254366",
+      "reason": "Frozen questions, split, required evidence, owners, qualifiers and answerability preserved. Only equivalent current provenance changes."
+    },
+    {
+      "old_sha256": "1c9c639f38b7b438097d3382184d7001753d17363c5686a5c0448ceefa65e7dc",
+      "new_sha256": "1c9c639f38b7b438097d3382184d7001753d17363c5686a5c0448ceefa65e7dc",
+      "reason": "Frozen questions, split, required evidence, owners, qualifiers and answerability preserved. Only equivalent current provenance changes."
+    },
+    {
+      "old_sha256": "d54f64eaf8dd3bcd8b7196707df169ec5643636720e1a57d26f467a992d333f4",
+      "new_sha256": "d54f64eaf8dd3bcd8b7196707df169ec5643636720e1a57d26f467a992d333f4",
+      "reason": "Frozen questions, split, required evidence, owners, qualifiers and answerability preserved. Only equivalent current provenance changes."
+    },
+    {
+      "old_sha256": "cc6b3a839e4a5eb30e47a6f4f444cfc11d70f14586da99f4382586e129a4025d",
+      "new_sha256": "d6124e1a26220bdedbaca5dc7c7b5b52c846d59e55104a27b48764479b17dcc6",
+      "reason": "Frozen questions, split, required evidence, owners, qualifiers and answerability preserved. Only equivalent current provenance changes."
+    }
+  ],
+  "reference_conclusions": [],
+  "retrieval_tradeoffs": [
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "2eaa7d24e404d0aab90ef5dde828d99994d693157ec90b79b6262c8d0f7e4227",
+      "new_evaluation_sha256": "ba3e542e5b2fd4e26307e84f9a7e0516b38733b8762f9d80c1fd50435f076a1b",
+      "profile": "plain",
+      "comparison_sha256": "88c76cdf90a264fb795796c4690d53a2c636e3e121e1450a9b75cde69e9c51b9",
+      "agent_reviewed": true,
+      "reason": "Exact changed-source comparison inspected after correcting duplicated product guidance. Retain strict findings and all nonwaivable evidence/authority gates. Human semantic review not performed.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "H06",
+            "at_k": "10",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "H06 retired saved formats: canonical foundation contract remains rank 7 and the complete required unit remains at ten. An additional artist-guide result is replaced by the installation guide; optional-source precision changes 0.2 to 0.1. Inspection preserves the supported-format/retired-format distinction, all previously found top-ten required units and canonical owners, no new labeled misleading hits and no additional negative-query results. This is a disclosed lexical-order tradeoff, not unchanged retrieval or improved answer accuracy."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "2eaa7d24e404d0aab90ef5dde828d99994d693157ec90b79b6262c8d0f7e4227",
+      "new_evaluation_sha256": "ba3e542e5b2fd4e26307e84f9a7e0516b38733b8762f9d80c1fd50435f076a1b",
+      "profile": "terminology",
+      "comparison_sha256": "ac9b32481868c792508b8a04c3830831b0870d7e91d73a77d2d3df21ae7646e5",
+      "agent_reviewed": true,
+      "reason": "Exact changed-source comparison inspected after correcting duplicated product guidance. Retain strict findings and all nonwaivable evidence/authority gates. Human semantic review not performed.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "H06",
+            "at_k": "10",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "H06 retired saved formats: canonical foundation contract remains rank 7 and the complete required unit remains at ten. An additional artist-guide result is replaced by the installation guide; optional-source precision changes 0.2 to 0.1. Inspection preserves the supported-format/retired-format distinction, all previously found top-ten required units and canonical owners, no new labeled misleading hits and no additional negative-query results. This is a disclosed lexical-order tradeoff, not unchanged retrieval or improved answer accuracy."
+        }
+      ]
+    }
+  ]
+}

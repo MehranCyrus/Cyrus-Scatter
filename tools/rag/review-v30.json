@@ -1,0 +1,717 @@
+{
+  "corpus": {
+    "old_sha256": "95dda2fd16ed8c220712fb01c28393c2242a6f911df48bd685b1b07aa7d8e61a",
+    "new_sha256": "f31b5cd17f9ce88cae42af54ff5e283e03fccaba4f6d74bcfd2e5c6106abbd85",
+    "reason": "User requested updating the active knowledge index to current 0.86.8.2 without plugin-code changes. Preserve the active 48-parent enrollment; the unactivated v22 expansion remains a separate draft. Refresh all parent identities and equivalent evidence locations without changing questions, requirements, ranking or bounds."
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "old_sha256": "943349e0e5c4fda4dce5eaad2b4c321029e0c7ccfb6b72621c3b4d1937c8f0e8",
+      "new_sha256": "f67574470e76584654897a21ee6ca707cc938a429ea0f0ad53ac6ff78ca3e95d",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "cdbcf3da78973c2bc03df336edff773a7fd5fe000563599a8c51b23c9fa9a6fa",
+      "new_sha256": "fff13861561e5786481565b272b11d9a215eb2557dbef0fe6e672195df886aba",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "old_sha256": "4c713d5701e34efbdb037d97ae9134fcbb6edbd96dfc618c5a95f73f657d60a2",
+      "new_sha256": "debcb7d4e58545d2c2c310f7d3a0cf6d1a8f7867938ea4b7b95b22c2474caec2",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "old_sha256": "15c5f627b2db1e6ff465ffdc8ee3874c7c329934901ab4f6f703cd2b0c7c1a2a",
+      "new_sha256": "b67647ec3d2f41731ca97857e32eabdf7beb799c9705e80ed65b6378b391a735",
+      "field_reasons": {
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "old_sha256": "fccfc7d0892e33beda04f5605c41a3b36fdeb1fce324cbb83828b091ca596a17",
+      "new_sha256": "c784d2e32022f6022c4d5ea1dd2b658bdfaa5e95b2cdbeda8194edceabf2aad2",
+      "field_reasons": {
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "CyrusMCP/README.md",
+      "old_sha256": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
+      "new_sha256": "d3d5c299a7d3a260d3baf15322973c8aefe686ddad9d32dfb92c0288cfa81693",
+      "field_reasons": {
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Clarify the existing enrolled-scope MCP budgets as a labeled table, distinguish them from local Scatter capacity, and preserve every numeric limit and qualification. No API or plugin behavior changed.",
+        "ranges": "Full parent remains enrolled after the equivalent paragraph-to-table expansion.",
+        "contract_sections": "Return the complete component contract with all installation, approval, resource and recovery limits."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+      "old_sha256": "6eeb85d171089de9e84252961f38efb9eab1facdc914b82bb4f16556ea54561e",
+      "new_sha256": "d6867ab03d401d739ff875b309d30cd5664fc52cf658ddae840aaaf55e1c77aa",
+      "field_reasons": {
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "website/README.md",
+      "old_sha256": "a36fba9031040d7656ed48e669ebc9d7ec3fad501d00b5bd1d68718709bebc05",
+      "new_sha256": "e97a72dc42c0ed667e90d00e8aa526f0f319eb28a85f3f032d5361d51b347235",
+      "field_reasons": {
+        "applicability": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "website/content/README.md",
+      "old_sha256": "74c098248da1e641aece3a178392ccbeec74edff810a59e90b41f4d6cc34d2cc",
+      "new_sha256": "4ec4d161c1c3d8285a97060f1a1bddd7a553782685605d2f51832b83c7c1914b",
+      "field_reasons": {
+        "applicability": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "website/content/source-manifest.json",
+      "old_sha256": "512f77fa93617119bd80fc116ca6474f429166ff98f5009bdda88f4e7daf481e",
+      "new_sha256": "a90b49f642faeefbfa33f250b95716a5a6d1cb10ce6513cae5be51bc0888657f",
+      "field_reasons": {
+        "applicability": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed the equivalent MCP paragraph-to-table clarification, preserved all numeric limits, and updated only its website source fingerprint. All unrelated website work and authority remain preserved."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "old_sha256": "3d15b1a920bbf8e226fa6e4ccdc7f71fc0ae844c3d340828e9dc2bf802bdb3f3",
+      "new_sha256": "7a8484b6bd19371de91611b4a8ac561c815a37231e718472edbf0f256fbc7fe8",
+      "field_reasons": {
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "old_sha256": "e658045c6ec807a883fe0c483be4634930b686f0232bfa9c8107ee767d9ef6e1",
+      "new_sha256": "82cb26d9728cd6f0b624aa2b1a908b7e14b36312e4d1030cbd831d8a3f6f244f",
+      "field_reasons": {
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "old_sha256": "253165cd9d4c91aad2489387df4b083f88e78c00b0d7d7b81aafb4cd926cd341",
+      "new_sha256": "c56cee163dbd0a0fffb700c390d0142d0e8ea8df4d8b0e34f31eef98f8180ac5",
+      "field_reasons": {
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "old_sha256": "035d829c67adaf77690cc376d433fa7ab8618741a93ae7e677f0753a02345888",
+      "new_sha256": "c54d43464cc4cce3fb4b1ca7c33e7c7ac761113627c86fff4f4bc5e5b40f594d",
+      "field_reasons": {
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": "680b02606b3592951ffa8adc4053e084145d5d2f7da1bf7492d6c1bd6ba8b763",
+      "new_sha256": "4228f37f00e91f4b1dad51f972f800539647b9e4fa715d0c4d8c13e90f1c8811",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "039f2c9769d2cc232d541051f20b2e48736abc611e7c2ab32471caa8a6e5275a",
+      "new_sha256": "2ab972cfb3a4ff22c7b9bd08e7aa7fd06600e03f9ae0d883e8770b00ef991495",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/README.md",
+      "old_sha256": "830519bcadd55555c72299cb5d70c9c5ca0592dd00a2cdba891e871c06b11a1b",
+      "new_sha256": "7aa7adade23e1472606a195e7ea1ed76e81bc47b742247b9274a9308097d032f",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/improvement-program/PROGRESS.md",
+      "old_sha256": "aa5f20f5f1f7d229578b3557ecb46fbd7f3c87b1af9f40c0bb884f9977773fee",
+      "new_sha256": "97f197108576d837f1a609d55c4ad3d622811c65926f8dbaa370790d484330fa",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/Max_2027_Installation.md",
+      "old_sha256": "337fa7c74c8c0db0548aa57ddb495f54115b35286449413fecdcdf3fa1cf22f3",
+      "new_sha256": "4b02f28d9c03b885b29cb94bfa1f396a9b259f2780353e446bea0dd5bb30b7b3",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+      "old_sha256": "d7cbabd077423a12bcc51b7db4dbcc92d5aab0835dadfd68adad91a9070699f7",
+      "new_sha256": "2a6204ec9d4cfffd89bf675edbe38850451dd7c285d90679ec6751bbe6c2234a",
+      "field_reasons": {
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "review_status": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/DELIVERY_0862.md",
+      "old_sha256": "2d887d9847d47c544d441d2b3bf647664122303ed46473bc59071990cd8d5d6e",
+      "new_sha256": "2d887d9847d47c544d441d2b3bf647664122303ed46473bc59071990cd8d5d6e",
+      "field_reasons": {
+        "current_reference_sources": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "referenced_by_current_docs": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "CyrusPhysicsLab/README.md",
+      "old_sha256": "9daecae7421e196aae9859345bc8cfc804813bf9f82c025c23d83109b4af269c",
+      "new_sha256": "7c19888c7033982d23957335623f2319e8f3367a7292e0ec298c0d64dc26f1cf",
+      "field_reasons": {
+        "applicability": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md",
+      "old_sha256": "b8d1df66e42ac9685194833ecd7664a5c8e99a6eec4dfbf5551e6fff681ee6b4",
+      "new_sha256": "b2c5ca6bd682192dc01bf0ab9e5c337e48aa457cd7cce08b6e7b5bde4d08d9a9",
+      "field_reasons": {
+        "applicability": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md",
+      "old_sha256": "77e62354a12281345eb3471948ebb59f99b5be517947b1cca8bdbe7c63021c4a",
+      "new_sha256": "cd7fb8a9911a9e28f6f7047f2f4121bcc69ba134f68f6765804102efe8656f2b",
+      "field_reasons": {
+        "applicability": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "contract_sections": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "ranges": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly.",
+        "sha256": "Reviewed original baseline and current full parent, selected sections, status, canonical ownership and versioned limits. Preserve active enrollment and historical authority; refresh bytes/locators and state current website or independent Physics applicability explicitly."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "contract_sections_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "7d628a75096f1fc3a337eca830e0cb9ce8104fc490ab54df9e301b1f3749b6f6",
+      "new_sha256": "45e415fc46aaabc261c3d00eb6ded1f51de0ecc06afb0adfef7da33cb220c365",
+      "reason": "Keep original questions, split, evidence units, owners, qualifiers and answerability. Only equivalent current source hashes/locators and the previously reviewed unscored schema note change. The same MCP budget evidence now spans its equivalent labeled table and unchanged surrounding limits."
+    },
+    {
+      "old_sha256": "b45e4826ba26e67bf2a0842c9c58a71355ee8f735a78c85aa262bfc4dfea3a89",
+      "new_sha256": "5fd8b67888cde0ae622a94ff384d61ca7863aac1022227c2d51c815d08039512",
+      "reason": "Keep original questions, split, evidence units, owners, qualifiers and answerability. Only equivalent current source hashes/locators and the previously reviewed unscored schema note change. The same MCP budget evidence now spans its equivalent labeled table and unchanged surrounding limits."
+    },
+    {
+      "old_sha256": "779fc072eb8673527fb87f6efa298e95047ef2f1a13d98d2c8b8679bafb1aff5",
+      "new_sha256": "803ba31027cdd2cabd0a914290f4e5d50f9890ef07c54f27dd3adff5090ff540",
+      "reason": "Keep original questions, split, evidence units, owners, qualifiers and answerability. Only equivalent current source hashes/locators and the previously reviewed unscored schema note change. The same MCP budget evidence now spans its equivalent labeled table and unchanged surrounding limits."
+    },
+    {
+      "old_sha256": "0c74b2c83f3feafa9ee295d61bfd316a1ccde8da9c544ea2d8a0826cbceae9f5",
+      "new_sha256": "7e80d3b3ca943f1f3bdaff1e7f69da5c08bba3c5e4e2a206b816b0a197749f17",
+      "reason": "Keep original questions, split, evidence units, owners, qualifiers and answerability. Only equivalent current source hashes/locators and the previously reviewed unscored schema note change. The same MCP budget evidence now spans its equivalent labeled table and unchanged surrounding limits."
+    },
+    {
+      "old_sha256": "50d4e9fecf85091dae2919ab52b67ad2b39f6635209af76339a0e98b077d0acb",
+      "new_sha256": "438f75206a044673a3b051c81d043ffec55dd1a35f70b955e82be2d1a0779c25",
+      "reason": "Keep original questions, split, evidence units, owners, qualifiers and answerability. Only equivalent current source hashes/locators and the previously reviewed unscored schema note change. The same MCP budget evidence now spans its equivalent labeled table and unchanged surrounding limits."
+    },
+    {
+      "old_sha256": "fda91f3548cd0018bf49d3a44d24324ae7fcd282fcd257a0a6f821537431eef0",
+      "new_sha256": "1a9763e55186575c7168bdf60012954cca079b6d0f9cee0c112dee220f8f5b6a",
+      "reason": "Keep original questions, split, evidence units, owners, qualifiers and answerability. Only equivalent current source hashes/locators and the previously reviewed unscored schema note change. The same MCP budget evidence now spans its equivalent labeled table and unchanged surrounding limits."
+    },
+    {
+      "old_sha256": "3942967c8c55ff7614fb37827a44eb2fb6e1378e1208f1f4857ae02d45b261a1",
+      "new_sha256": "105e7354755fcb614a9d5ba8ba3166c04bd93603084644c4f45af3bffd8f85c1",
+      "reason": "Keep original questions, split, evidence units, owners, qualifiers and answerability. Only equivalent current source hashes/locators and the previously reviewed unscored schema note change. The same MCP budget evidence now spans its equivalent labeled table and unchanged surrounding limits."
+    }
+  ],
+  "reference_conclusions": [
+    {
+      "old_evaluation_sha256": "7d628a75096f1fc3a337eca830e0cb9ce8104fc490ab54df9e301b1f3749b6f6",
+      "group": "base",
+      "id": "H06",
+      "old_value": "Schema-54 model-set/stroke setups remain rejected. Current schema 58 rejects earlier development schemas; historical 0.79.6 schema-55 migration is retired. Preserve original scenes with their matching build.",
+      "new_value": "Schema-54 model-set/stroke setups remain rejected. Current schema 59 provides an explicit Undoable upgrade only from schema 58; earlier development-schema migration remains retired. Preserve original scenes with their matching build.",
+      "reason": "Update unscored current-schema note while preserving the original schema-54/55 rejection question, required evidence and qualifiers.",
+      "agent_reviewed": true
+    },
+    {
+      "old_evaluation_sha256": "b45e4826ba26e67bf2a0842c9c58a71355ee8f735a78c85aa262bfc4dfea3a89",
+      "group": "base",
+      "id": "H06",
+      "old_value": "Schema-54 model-set/stroke setups remain rejected. Current schema 58 rejects earlier development schemas; historical 0.79.6 schema-55 migration is retired. Preserve original scenes with their matching build.",
+      "new_value": "Schema-54 model-set/stroke setups remain rejected. Current schema 59 provides an explicit Undoable upgrade only from schema 58; earlier development-schema migration remains retired. Preserve original scenes with their matching build.",
+      "reason": "Update unscored current-schema note while preserving the original schema-54/55 rejection question, required evidence and qualifiers.",
+      "agent_reviewed": true
+    }
+  ],
+  "retrieval_tradeoffs": [
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "7d628a75096f1fc3a337eca830e0cb9ce8104fc490ab54df9e301b1f3749b6f6",
+      "new_evaluation_sha256": "45e415fc46aaabc261c3d00eb6ded1f51de0ecc06afb0adfef7da33cb220c365",
+      "profile": "plain",
+      "comparison_sha256": "fcb650856386dfae656789a2ba17f4de0feae6b8d3c3bd7fb54962bcae66ff5b",
+      "agent_reviewed": true,
+      "reason": "Reviewed current-source changes under the user delegated refresh. MCP budget retrieval is restored. Required top-ten units and canonical presence remain; rank shifts and labeled precision changes are accepted individually, with the exact comparison rechecked by candidate preparation. The final definition differs from the inspected provisional definition only in the equivalent website source-fingerprint identity.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "W07",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 2 to 3); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "W08",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "base",
+            "id": "O01",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "base",
+            "id": "O06",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "10",
+            "group": "base",
+            "id": "O06",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "H04",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 3 to 4); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "C01",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "C04",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "anchors",
+            "id": "A-W08-en",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "anchors",
+            "id": "A-W08-fa",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "anchors",
+            "id": "A-W08-finglish",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "anchors",
+            "id": "A-O01-en",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "anchors",
+            "id": "A-O01-fa",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "anchors",
+            "id": "A-O01-finglish",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "anchors",
+            "id": "A-O06-en",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "10",
+            "group": "anchors",
+            "id": "A-O06-en",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "anchors",
+            "id": "A-O06-fa",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "10",
+            "group": "anchors",
+            "id": "A-O06-fa",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "5",
+            "group": "anchors",
+            "id": "A-O06-finglish",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "at_k": "10",
+            "group": "anchors",
+            "id": "A-O06-finglish",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Required top-ten evidence and canonical source remain. The reported top-five coverage or source-precision shift reflects changed current guide/contract composition; no new labeled misleading or unanswerable-query result increase is allowed."
+        },
+        {
+          "finding": {
+            "group": "anchors",
+            "id": "A-C01-en",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "anchors",
+            "id": "A-C01-fa",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        },
+        {
+          "finding": {
+            "group": "anchors",
+            "id": "A-C01-finglish",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Canonical source remains in the top ten (rank 1 to 2); every previously found required evidence unit remains. Current qualified guides and clearer MCP budget text alter lexical ordering; no authority or requirement changes."
+        }
+      ]
+    }
+  ]
+}

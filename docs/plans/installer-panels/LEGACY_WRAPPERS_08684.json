@@ -1,0 +1,30 @@
+[
+  {
+    "version": "0.81.6",
+    "archive": "dist\\CyrusScatter-0.81.6-20261013\\CyrusScatter-0.81.6-Max2027.mzp",
+    "archive_sha256": "abe24a171edc6cad6b37171d09b70ac506c73098e6cc66c8af21a1019b301aef",
+    "startup_sha256": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "macro_sha256": "d76b48b84c4b882d4a5a40fd07e880c3b9fb3b0c12bbdac7bfccea3045c91b20"
+  },
+  {
+    "version": "0.85.0",
+    "archive": "dist\\CyrusScatter-0.85.0-20261016\\CyrusScatter-0.85.0-Max2027.mzp",
+    "archive_sha256": "53764753ce3e320aeafd977328788323cdaad8a9919736056089d2e07cdc64d0",
+    "startup_sha256": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "macro_sha256": "758c4d94d47eab5dbfe9a30b358e7ba94c5734b18968133ba78b8a5d18df262b"
+  },
+  {
+    "version": "0.86.8.2",
+    "archive": "dist\\CyrusScatter-0.86.8.2-20261021\\CyrusScatter-0.86.8.2-Max2027.mzp",
+    "archive_sha256": "9c7f80d820a2fc38d37c02f6b1a550477b98929a612e53993c2335f9f7a000f6",
+    "startup_sha256": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+    "macro_sha256": "0f22569def0cab74a0a90d8a14bbf0c2836bd4af22d667da825487e84e74b811"
+  },
+  {
+    "version": "0.86.8.3",
+    "archive": "dist\\CyrusScatter-0.86.8.3-20261022\\CyrusScatter-0.86.8.3-Max2027.mzp",
+    "archive_sha256": "c8e8609fed4d92cfb03bdd8862a49135a5cca560a3d4bbbc148c7352fc2f1ffb",
+    "startup_sha256": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+    "macro_sha256": "67da84af1e5b6ffc3711c3e540d831f90182846b7a59f4706abafa146a6de162"
+  }
+]

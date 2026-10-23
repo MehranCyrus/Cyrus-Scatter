@@ -6,7 +6,7 @@ import '../docs-design.css'
 import '../selected-refinements.css'
 
 export const artistTopics = controlSections.map(s => [s.title, `#/controls?topic=${s.id}`])
-const essentials = [['Start here','#/guide','⌂'],['First planting workflow','#/workflow','⚑'],['Visual explanations','#/visuals','▱'],['Feature posters · 19','#/gallery','▦'],['Practical examples','#/examples','♧']]
+const essentials = [['Start here','#/guide','⌂'],['First planting workflow','#/workflow','⚑'],['Visual explanations','#/visuals','▱'],['Feature posters · 19','#/gallery','▦'],['Practical examples','#/examples','♧'],['Plant library','#/library','♧'],['Download','#/download','↓']]
 const companions = [['CS Edit','#/controls?feature=C21','◇'],['Surface Analyzer','#/guide/surface-analyzer','▧'],['Automation / MCP','#/guide/mcp','⌘'],['AI & learning roadmap','#/roadmap','↗']]
 const reviews = [['Troubleshooting & limits','#/troubleshooting','?'],['Your testing walkthrough','#/checklist','✓'],['Glossary','#/glossary','≡'],['Changelog','#/changelog','◷'],['Sources & credits','#/about','↗']]
 

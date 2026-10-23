@@ -1,7 +1,279 @@
 {
-  "reviewed": "2026-10-19",
+  "reviewed": "2026-10-23",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. Historical work-state notes retain their original review date. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.86.8.6",
+      "date": "2026-10-23",
+      "title": "Library gallery version correction",
+      "era": "recent",
+      "legacy": false,
+      "note": "Repairs the gallery-opening version mismatch in 0.86.8.5. Schema 59, recipe 8, content 0.86.7 and scatter results are unchanged.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "The library gallery and script now carry matching release identities, allowing the existing library browser to open."
+        },
+        {
+          "kind": "Improved",
+          "text": "Build and packaging checks reject stale or mismatched gallery payloads before distribution."
+        }
+      ],
+      "evidence": [
+        "docs/plans/combined-installer/DELIVERY_08686.md"
+      ]
+    },
+    {
+      "version": "0.86.8.5",
+      "date": "2026-10-22",
+      "title": "Scatter and Surface Analyzer in one installer",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2024, 2026 and 2027 user-test delivery. Scatter schema 59, recipe 8 and optional content 0.86.7 are retained.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "One Windows EXE installs matching Scatter and Surface Analyzer 0.14.1 payloads for each selected Max version."
+        },
+        {
+          "kind": "Improved",
+          "text": "Both products are checked before installation, with verified runtimes, preserved known-wrapper backups and retry/recovery. Unknown edited files are retained."
+        },
+        {
+          "kind": "Changed",
+          "text": "Uninstall Scatter leaves the independently installed Analyzer, shared plant content and scenes in place. Plant content remains optional and separate."
+        }
+      ],
+      "evidence": [
+        "docs/plans/combined-installer/DELIVERY_08685.md"
+      ]
+    },
+    {
+      "version": "0.86.8.4",
+      "date": "2026-10-22",
+      "title": "Saved rollout order and older-installation updates",
+      "era": "recent",
+      "legacy": false,
+      "note": "Original correction qualified in Max 2027; the 0.86.8.5 combined successor has its own three-host scope.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Visibility refreshes preserve Max's saved rollout order. Whole rollouts retain native column packing."
+        },
+        {
+          "kind": "Improved",
+          "text": "Exact recognized older startup wrappers migrate with byte-preserving backups; custom edits remain protected."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Installer host cards and captions fit their content in the recorded presentation checks."
+        }
+      ],
+      "evidence": [
+        "docs/plans/installer-panels/DELIVERY_08684.md"
+      ]
+    },
+    {
+      "version": "0.86.8.3",
+      "date": "2026-10-22",
+      "title": "Paint export choices and scene-source access",
+      "era": "recent",
+      "legacy": false,
+      "note": "Original Max 2027 refinement delivery. Original Paint, schema 59 and recipe 8 remain unchanged.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Paint spline export offers Optimized and Exact snapshot, with a world-unit deviation limit and feedback. Uncertifiable geometry retains Exact; original Paint and plants stay unchanged."
+        },
+        {
+          "kind": "Improved",
+          "text": "Dense Bands use bounded work/storage admission and share repeated Path geometry; real limits still retain the previous complete result on failure."
+        },
+        {
+          "kind": "Added",
+          "text": "Show sources, Hide sources and Edit material act on selected scene models while preserving library assets and material instancing."
+        },
+        {
+          "kind": "Improved",
+          "text": "Surface Analyzer 0.14.1 supplies saved guide freshness and matching native/script guards."
+        }
+      ],
+      "evidence": [
+        "docs/plans/refinement-program/DELIVERY_08683.md"
+      ]
+    },
+    {
+      "version": "0.86.8.2",
+      "date": "2026-10-21",
+      "title": "Clearer clearance controls and visible Relax",
+      "era": "recent",
+      "legacy": false,
+      "note": "Matched Max 2024, 2026 and 2027 user-test build. Schema 59 and optional content revision 0.86.7 are unchanged.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Radius factor and Extra gap fields stay readable without overlapping captions in the tested narrow and wide panels."
+        },
+        {
+          "kind": "Improved",
+          "text": "Point Relax and Boundary Relax appear directly in Spacing & cleanup above Advanced, with conditional settings."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Relax distance stays editable when Boundary Relax is enabled by itself."
+        }
+      ],
+      "evidence": [
+        "docs/plans/source-clearance/DELIVERY_08682.md"
+      ]
+    },
+    {
+      "version": "0.86.8.1",
+      "date": "2026-10-20",
+      "title": "Reliable refill and retained leaf appearance",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped solver and viewport improvements; timing measurements describe a tested warm workflow, not general FPS.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Candidates rejected by a displaced blocker are reconsidered without spending another layer\u00e2\u20ac\u2122s refill allowance."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Unused model policies no longer change another layer\u00e2\u20ac\u2122s settlement schedule."
+        },
+        {
+          "kind": "Improved",
+          "text": "Colored Mesh preserves supported leaf cutouts. Radius edits reuse compatible geometry, UVs and material resources; relevant animated maps refresh their consumers."
+        }
+      ],
+      "evidence": [
+        "docs/plans/source-clearance/DELIVERY_08681.md"
+      ]
+    },
+    {
+      "version": "0.86.8",
+      "date": "2026-10-20",
+      "title": "Clearance belongs to each model",
+      "era": "recent",
+      "legacy": false,
+      "note": "Schema 59 introduces an explicit Undoable upgrade for schema-58 scenes.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Models independently inherit or override own-copy, same-layer and other-layer clearance requests."
+        },
+        {
+          "kind": "Added",
+          "text": "Prefer this model resolves conflicts after Count admission, while protected edits retain priority."
+        },
+        {
+          "kind": "Fixed",
+          "text": "The Between layers selector binds its intended owner without the previous callback exception."
+        }
+      ],
+      "evidence": [
+        "docs/plans/source-clearance/DELIVERY_0868.md"
+      ]
+    },
+    {
+      "version": "0.86.7.2",
+      "date": "2026-10-20",
+      "title": "Optional content ZIP, textured display and reliable new layers",
+      "era": "recent",
+      "legacy": false,
+      "note": "Matched Max 2024, 2026 and 2027 packages. Content remains revision 0.86.7 with unchanged models and previews.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "An explicit installer checkbox reads the matching content ZIP beside the EXE and uses one shared library. Plugin-only updates preserve existing content; successful installs show a brief completion message."
+        },
+        {
+          "kind": "Improved",
+          "text": "Textured mesh is directly in Display mode. Placement points names the one-marker display, and Color by is conditional on nontextured modes."
+        },
+        {
+          "kind": "Added",
+          "text": "Hide receiving surfaces in the viewport while keeping painting and rendering, with Undo and saved scene preferences."
+        },
+        {
+          "kind": "Fixed",
+          "text": "New layers inherit the selected layer\u00e2\u20ac\u2122s current receiving surfaces. Point and replacement-model workflows retain both layers; missing receivers get a No surface diagnosis."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Hide surface works with a single receiver even when its list row is not selected, without creating an unintended scene copy."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/DELIVERY_08672.md",
+        "docs/plans/preset-gallery-improvements/DELIVERY_08672_HIDE_CORRECTION.md"
+      ]
+    },
+    {
+      "version": "0.86.7.1",
+      "date": "2026-10-20",
+      "title": "Visible lists, automatic installation and shared content",
+      "era": "recent",
+      "legacy": false,
+      "note": "Matched Max 2024, 2026 and 2027 installers. Existing plant content keeps its revision and can be reused in place. Older scene paths are retained.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "The corrected EXE detects Max and existing content automatically, with Install, Update and Uninstall. One shared content folder is reused without copying models."
+        },
+        {
+          "kind": "Improved",
+          "text": "Standard profiles across all three Max versions share one selected content folder. Verified existing files can be adopted without copying models."
+        },
+        {
+          "kind": "Improved",
+          "text": "Common edits refresh affected panel sections and reuse unchanged layout. Saved open sections mount in complete queued batches; large all-open panels can still take time."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Layers and Models stay visible after cached refreshes, layer creation, source edits and panel remounting."
+        },
+        {
+          "kind": "Added",
+          "text": "Library additions show the model and destination in a visible success banner. Failed imports show an error banner."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/DELIVERY_08671.md",
+        "docs/plans/preset-gallery-improvements/DELIVERY_08671_CORRECTION.md"
+      ]
+    },
+    {
+      "version": "0.86.7",
+      "date": "2026-10-20",
+      "title": "Plant library and textured Mesh preview",
+      "era": "recent",
+      "legacy": false,
+      "note": "Matched Max 2024, 2026 and 2027 delivery. Actual Corona leaf appearance tested on Max 2027; other hosts require compatible renderer/map plug-ins.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Library thumbnails load as you scroll, including wheel scrolling after idle."
+        },
+        {
+          "kind": "Added",
+          "text": "Mesh > Appearance > Materials / Textures previews supported Standard/Corona base color, source UVs and cutout opacity while preserving pending Manual placement changes."
+        },
+        {
+          "kind": "Changed",
+          "text": "Models & Points uses + to add a model, places Add Point beside Make point, and lets Pick object replace a selected Point or model while preserving row settings."
+        },
+        {
+          "kind": "Improved",
+          "text": "The 96 prepared individual models retain their original previews and use shared verified content storage across Max 2024, 2026 and 2027 installations. Keep the supplied Content folder beside the EXE."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/DELIVERY_0867.md"
+      ]
+    },
     {
       "version": "0.86.6",
       "date": "2026-10-19",
@@ -239,7 +511,7 @@
       "changes": [
         {
           "kind": "Added",
-          "text": "World direction and Look at target modes, explicit source forward axes and 0Ã¢â‚¬â€œ100% geometric-normal blending."
+          "text": "World direction and Look at target modes, explicit source forward axes and 0\u00e2\u20ac\u201c100% geometric-normal blending."
         },
         {
           "kind": "Improved",
@@ -1007,7 +1279,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Surfaces ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Models ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Amount ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer \u00e2\u2020\u2019 Surfaces \u00e2\u2020\u2019 Models \u00e2\u2020\u2019 Amount \u00e2\u2020\u2019 Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

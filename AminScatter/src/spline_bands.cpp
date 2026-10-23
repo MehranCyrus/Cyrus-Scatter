@@ -1,5 +1,6 @@
 #include "spline_bands.h"
 #include "clipper2/clipper.h"
+#include "segment_index.h"
 #include <algorithm>
 #include <atomic>
 #include <cmath>
@@ -29,26 +30,36 @@ struct Reservation {
     }
     void retain(std::size_t wanted){require(wanted<=bytes,"Spline reservation accounting overflow");reservedBytes.fetch_sub(bytes-wanted,std::memory_order_relaxed);bytes=wanted;}
 };
-// Conservative admission based on potentially intersecting edge pairs. Charge
-// every operation BEFORE Clipper allocates its intersection/output structures.
-// Miter/Square offset construction charges three edges per original edge,
-// including concave joins. The 512-byte pair allowance covers output vertices,
-// records, intersection arrays and allocator/capacity overhead for this vendor
-// implementation. It is intentionally conservative, not a measured heap size.
+// Input admission is linear. The explicit clipping context admits produced
+// storage and actual numerical work before those operations can grow memory.
 void admitClip(std::size_t edges,Stats& stats,const Limits& limits){
     require(edges<=65536,"Spline clipping edge limit exceeded");
-    const auto pairs=edges*(edges+1);
-    consume(stats.constructionWork,pairs,limits.constructionWork,"Spline construction work allowance exceeded; simplify Paths, curves or overlapping Bands");
-    const auto bytes=pairs*512+2u*1024u*1024u;
+    consume(stats.constructionWork,edges,limits.constructionWork,"Spline construction work allowance exceeded; simplify Paths, curves or overlapping Bands");
+    const auto bytes=edges*1024+2u*1024u*1024u;
     require(bytes<=limits.constructionBytes,"Spline construction scratch allowance exceeded; simplify Path geometry");
     stats.scratchAllowance=std::max(stats.scratchAllowance,bytes);
 }
+struct ClipOperation {
+    Stats& stats;
+    OperationBudget budget;
+    ClipOperation(Stats& s,const Limits& limits):stats(s),budget(limits.constructionBytes,limits.constructionWork-s.constructionWork){}
+    ~ClipOperation(){stats.constructionWork+=budget.work;stats.scratchAllowance=std::max(stats.scratchAllowance,budget.bytes);}
+};
 struct Point { double x=0,y=0; };
-struct Region { std::vector<std::vector<Point>> loops; double x0=INFINITY,y0=INFINITY,x1=-INFINITY,y1=-INFINITY; };
+struct Region { std::vector<std::vector<Point>> loops; double x0=INFINITY,y0=INFINITY,x1=-INFINITY,y1=-INFINITY; std::shared_ptr<const geometry::SegmentIndex> index; };
 struct Location { bool inside=false,boundary=false; double distance=INFINITY; };
 Location locate(const Region& r,Point p,double epsilon,std::size_t& work,std::size_t limit,bool needDistance=false) {
     Location result;
     if(!needDistance && (p.x<r.x0-epsilon||p.x>r.x1+epsilon||p.y<r.y0-epsilon||p.y>r.y1+epsilon)) return result;
+    if(r.index){
+        result.distance=r.index->nearest({p.x,p.y},work,limit);
+        r.index->ray({p.x,p.y},[&](std::uint32_t,const geometry::Segment2& s){
+            const auto a=s.a,b=s.b;
+            if((a.y>p.y)!=(b.y>p.y)&&p.x<a.x+(p.y-a.y)*(b.x-a.x)/(b.y-a.y))result.inside=!result.inside;
+        },work,limit);
+        result.boundary=result.distance<=epsilon;if(result.distance==0)result.inside=true;
+        return result;
+    }
     for(const auto& loop:r.loops) for(std::size_t i=0,j=loop.size()-1;i<loop.size();j=i++) {
         consume(work,1,limit,"Spline field query limit exceeded; reduce path complexity");
         const auto a=loop[j],b=loop[i];const double dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;
@@ -80,8 +91,15 @@ Region unpack(const Paths64& paths,double quantum,Stats& stats,const Limits& lim
     }
     return r;
 }
-Paths64 boolean(ClipType operation,const Paths64& a,const Paths64& b,FillRule fill=FillRule::NonZero) {
-    Clipper64 clip;clip.AddSubject(a);clip.AddClip(b);Paths64 output;
+Paths64 boolean(ClipType operation,const Paths64& a,const Paths64& b,Stats& stats,const Limits& limits,FillRule fill=FillRule::NonZero) {
+    ClipOperation resources(stats,limits);
+    Clipper64 clip(&resources.budget);
+    std::size_t input=0;for(const auto& path:a)input+=path.size();for(const auto& path:b)input+=path.size();
+    // Inputs beyond the former 720-point admission have no older accepted
+    // representation to preserve. Exact redundant quantized vertices need not
+    // multiply every Sharp level and displayed outline on these new admissions.
+    if(input>720)clip.PreserveCollinear(false);
+    clip.AddSubject(a);clip.AddClip(b);Paths64 output;
     if(!clip.Execute(operation,fill,output)) throw std::runtime_error("Spline polygon normalization failed");
     return output;
 }
@@ -266,12 +284,19 @@ Field::Field(std::vector<Path> inputs,std::vector<Band> bands,Arrangement arrang
             }
         }
         admitClip(vertices(raw),data->stats,limits);
-        auto normalized=boolean(ClipType::Union,raw,{},FillRule::EvenOdd);
+        auto normalized=boolean(ClipType::Union,raw,{},data->stats,limits,FillRule::EvenOdd);
         require(!normalized.empty(),"Spline has no filled XY region");
         require(vertices(normalized)<=limits.inputVertices,"Normalized spline vertex limit exceeded");
         // Rounded keeps the actual sampled segments, including exact floating
         // coordinates. Sharp alone consumes normalized quantized contours.
         path.original=input.join==Join::Rounded?std::move(rounded):unpack(normalized,limits.quantum,data->stats,limits);
+        if(input.join==Join::Rounded&&vertices(raw)>=64){
+            std::vector<geometry::Segment2> segments;
+            for(std::size_t r=0;r<path.original.loops.size();++r){const auto& loop=path.original.loops[r];
+                for(std::size_t j=0;j<loop.size();++j){const auto a=loop[j],b=loop[(j+1)%loop.size()];segments.push_back({{a.x,a.y},{b.x,b.y},std::uint32_t(r),std::uint32_t(j)});}}
+            path.original.index=std::make_shared<const geometry::SegmentIndex>(std::move(segments),&data->stats.constructionWork,limits.constructionWork);
+            consume(data->stats.bytes,path.original.index->bytes(),limits.bytes,"Spline query index memory allowance exceeded");
+        }
         for(std::size_t side=0;side<2;++side) {
             consume(data->stats.levels,offsets[i][side].size(),limits.levels,"Aggregate Sharp level limit exceeded");
             consume(data->stats.bytes,offsets[i][side].size()*sizeof(Level),limits.bytes,"Spline field memory limit exceeded");
@@ -282,14 +307,15 @@ Field::Field(std::vector<Path> inputs,std::vector<Band> bands,Arrangement arrang
                 if(q==0)shape=normalized;
                 else {
                     admitClip(vertices(normalized)*3,data->stats,limits);
-                    ClipperOffset offset(2);offset.AddPaths(normalized,JoinType::Miter,EndType::Polygon);
+                    ClipOperation resources(data->stats,limits);
+                    ClipperOffset offset(2,0,false,false,&resources.budget);offset.AddPaths(normalized,JoinType::Miter,EndType::Polygon);
                     offset.Execute((side?-q:q)/limits.quantum,shape);
                     if(offset.ErrorCode())throw std::runtime_error("Sharp polygon offset failed; empty output is not collapse");
                 }
                 require(vertices(shape)<=limits.vertices,"Sharp level vertex limit exceeded");
                 if(!path.levels[side].empty()) {
                     admitClip(vertices(shape)+vertices(previous),data->stats,limits);
-                    const auto difference=side?boolean(ClipType::Difference,shape,previous):boolean(ClipType::Difference,previous,shape);
+                    const auto difference=side?boolean(ClipType::Difference,shape,previous,data->stats,limits):boolean(ClipType::Difference,previous,shape,data->stats,limits);
                     require(difference.empty(),"Sharp offset family is not nested at the declared precision");
                 }
                 path.levels[side].push_back({q,unpack(shape,limits.quantum,data->stats,limits)});previous=std::move(shape);
@@ -300,7 +326,7 @@ Field::Field(std::vector<Path> inputs,std::vector<Band> bands,Arrangement arrang
     // Retain actual container capacities, not just element counts. Temporary
     // preparation containers are covered by the larger construction reservation.
     std::size_t retained=sizeof(Data)+128+data->paths.capacity()*sizeof(PreparedPath)+data->bands.capacity()*sizeof(Band)+data->pathIndices.capacity()*sizeof(std::size_t)+(data->slopes.capacity()+data->scaleSlopes.capacity()+data->weights.capacity())*sizeof(double);
-    const auto regionBytes=[](const Region& r){std::size_t bytes=r.loops.capacity()*sizeof(std::vector<Point>);for(const auto& loop:r.loops)bytes+=loop.capacity()*sizeof(Point);return bytes;};
+    const auto regionBytes=[](const Region& r){std::size_t bytes=r.loops.capacity()*sizeof(std::vector<Point>);for(const auto& loop:r.loops)bytes+=loop.capacity()*sizeof(Point);if(r.index)bytes+=r.index->bytes();return bytes;};
     for(const auto& path:data->paths){retained+=regionBytes(path.original);for(const auto& side:path.levels){retained+=side.capacity()*sizeof(Level);for(const auto& level:side)retained+=regionBytes(level.region);}}
     for(const auto& band:data->bands){retained+=(band.curve.capacity()+band.scaleCurve.capacity())*sizeof(double)+band.sources.capacity()*sizeof(Source);for(const auto& source:band.sources)retained+=source.id.capacity()+1;}
     require(retained<=limits.bytes,"Spline retained capacity exceeds its memory allowance");data->stats.bytes=retained;
@@ -348,7 +374,7 @@ OutlineStats Field::visitOutlines(std::uint64_t selected,
                 for(auto pt:loop)packed.emplace_back(std::llround(pt.x/limits.quantum),std::llround(pt.y/limits.quantum));
                 raw.push_back(std::move(packed));}
             admitClip(vertices(raw),scratch,limits);
-            normalized=boolean(ClipType::Union,raw,{},FillRule::EvenOdd);
+            normalized=boolean(ClipType::Union,raw,{},scratch,limits,FillRule::EvenOdd);
         }
         for(std::size_t side=0;side<2;++side)for(const auto [q,tolerance]:offsets[side]){
             ++result.levels;
@@ -387,11 +413,15 @@ OutlineStats Field::visitOutlines(std::uint64_t selected,
                     edges+=cosine<=-.998?2*roundVertices+4:roundVertices+4;
                 }
                 admitClip(edges,scratch,limits);
-                ClipperOffset offset(2,arc);offset.AddPaths(raw,JoinType::Round,EndType::Joined);
-                Paths64 tube;offset.Execute(delta,tube);
-                if(offset.ErrorCode())throw std::runtime_error("Rounded boundary construction failed");
+                Paths64 tube;
+                {
+                    ClipOperation resources(scratch,limits);
+                    ClipperOffset offset(2,arc,false,false,&resources.budget);offset.AddPaths(raw,JoinType::Round,EndType::Joined);
+                    offset.Execute(delta,tube);
+                    if(offset.ErrorCode())throw std::runtime_error("Rounded boundary construction failed");
+                }
                 admitClip(vertices(tube)+vertices(normalized),scratch,limits);
-                shape=boolean(side?ClipType::Difference:ClipType::Union,normalized,tube);
+                shape=boolean(side?ClipType::Difference:ClipType::Union,normalized,tube,scratch,limits);
             }
             // Clipper output remains ephemeral. Bound conversion and callback
             // work before allocating a second representation of the contours.

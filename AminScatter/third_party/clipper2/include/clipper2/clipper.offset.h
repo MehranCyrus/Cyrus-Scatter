@@ -31,6 +31,7 @@ typedef std::function<double(const Path64& path, const PathD& path_normals, size
 
 class ClipperOffset {
 private:
+	OperationBudget* budget_ = nullptr;
 
 	class Group {
 	public:
@@ -85,7 +86,8 @@ public:
 	explicit ClipperOffset(double miter_limit = 2.0,
 		double arc_tolerance = 0.0,
 		bool preserve_collinear = false,
-		bool reverse_solution = false) :
+		bool reverse_solution = false, OperationBudget* budget = nullptr) :
+		budget_(budget),
 		miter_limit_(miter_limit), arc_tolerance_(arc_tolerance),
 		preserve_collinear_(preserve_collinear),
 		reverse_solution_(reverse_solution) { }

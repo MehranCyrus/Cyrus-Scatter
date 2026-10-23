@@ -26,10 +26,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--year", type=int, choices=(2024, 2026, 2027))
     parser.add_argument("--project", choices=("scatter", "analyzer"), default="scatter")
+    parser.add_argument("--generator",choices=("NMake Makefiles","Ninja"),default="NMake Makefiles")
+    parser.add_argument("--jobs",type=int,choices=range(1,5),default=1)
     parser.add_argument("--preview-fault-lab", action="store_true", help="NEVER SHIP: isolated Scatter SDK preview fault injection")
     parser.add_argument("--placement-qualification", action="store_true", help="NEVER SHIP: isolated native placement/Undo ownership probes")
     parser.add_argument("--output", type=Path, help="Private build directory; defaults to the dated implementation lab")
     args = parser.parse_args()
+    if args.jobs>1 and args.generator!="Ninja":parser.error("Parallel qualification builds require --generator Ninja")
     if args.preview_fault_lab and (args.project!="scatter" or not args.year):
         parser.error("Preview fault qualification requires a Scatter SDK build")
     if args.placement_qualification and (args.project!="scatter" or args.year!=2027 or args.preview_fault_lab):
@@ -44,7 +47,7 @@ def main():
     sources = source_hashes(project)
     enable_flag = "AMIN_BUILD_MAX" if args.project == "scatter" else "CYRUS_ANALYZER_BUILD_MAX"
     (folder / "receipt.json").write_text(json.dumps({"status": "pending", "project": args.project, "max_year": args.year}) + "\n", encoding="utf-8")
-    command = ["cmake", "-S", str(ROOT / project), "-B", str(folder), "-G", "NMake Makefiles", "-DCMAKE_BUILD_TYPE=Release"]
+    command = ["cmake", "-S", str(ROOT / project), "-B", str(folder), "-G", args.generator, "-DCMAKE_BUILD_TYPE=Release"]
     if args.preview_fault_lab: command += ["-DCYRUS_PREVIEW_TEST_FAULTS=ON"]
     if args.placement_qualification: command += ["-DCYRUS_PLACEMENT_QUALIFICATION=ON"]
     if args.year:
@@ -52,7 +55,12 @@ def main():
         command += [f"-D{enable_flag}=ON", f"-DCYRUS_MAX_YEAR={args.year}", f"-DMAXSDK_ROOT={sdk}"]
     else:
         command += [f"-D{enable_flag}=OFF"]
-    stages = [("configure", command), ("build", ["cmake", "--build", str(folder)]),
+    # A qualification receipt must not promote cached objects after an interrupted
+    # compile or an untracked textual .inc dependency. Always compile cleanly,
+    # including when a caller retries in its owned output directory.
+    build_command=["cmake", "--build", str(folder), "--clean-first"]
+    if args.jobs>1:build_command += ["--parallel",str(args.jobs)]
+    stages = [("configure", command), ("build", build_command),
               ("tests", ["ctest", "--test-dir", str(folder), "--output-on-failure", "-j", "1"])]
     results = []
     for stage, cmd in stages:
@@ -72,7 +80,7 @@ def main():
     if source_hashes(project) != sources:
         raise SystemExit("Build sources changed while building/testing; receipt stays pending. Rebuild the frozen source.")
     (folder / "receipt.json").write_text(json.dumps({"stages": results, "project": args.project, "max_year": args.year,
-        "host_launched": False, "installed": False,"binaries":binaries,"sources":sources,"preview_fault_lab":args.preview_fault_lab,"placement_qualification":args.placement_qualification,
+        "host_launched": False, "installed": False,"clean_compilation":True,"generator":args.generator,"build_jobs":args.jobs,"binaries":binaries,"sources":sources,"preview_fault_lab":args.preview_fault_lab,"placement_qualification":args.placement_qualification,
         "qualification":"SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."}, indent=2) + "\n", encoding="utf-8")
 
 

@@ -68,7 +68,7 @@ extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){return i==0?Cyru
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) { if(reason==DLL_PROCESS_ATTACH)CyrusEditInstance=instance;return TRUE; }
 static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match the configured host year");
 def_visible_primitive(cyrusSplineBandVersion,"cyrusSplineBandVersion");
-Value* cyrusSplineBandVersion_cf(Value** args,int count){check_arg_count(cyrusSplineBandVersion,0,count);return Integer::intern(10);}
+Value* cyrusSplineBandVersion_cf(Value** args,int count){check_arg_count(cyrusSplineBandVersion,0,count);return Integer::intern(11);}
 #include "group_spacing_bridge.inc"
 
 // Diagnostic/session controls. Scene evaluation and MAXScript values stay on

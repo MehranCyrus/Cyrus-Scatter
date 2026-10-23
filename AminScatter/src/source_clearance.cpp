@@ -16,7 +16,15 @@ struct Policy {
     unsigned copies=0,others=0,external=0,targets=0;
     DistanceRule distance;
     bool preferred=false;
+    // A source requests one scope independently; the peer can request another.
+    // This predicate does not choose conflict priority or consume Count slots.
+    bool requests(bool local,unsigned mode,unsigned target)const {
+        return local?mode==2:mode==3||(mode==2&&(targets&(1u<<target)));
+    }
 };
+bool sameDistance(const DistanceRule& a,const DistanceRule& b){
+    return a.planar==b.planar&&a.multiplier==b.multiplier&&a.gap==b.gap;
+}
 struct Rules {
     std::array<DistanceRule,2> values{};unsigned count=0;
     void add(DistanceRule r){
@@ -31,7 +39,7 @@ struct Rules {
         if(count!=b.count)return false;
         for(unsigned i=0;i<count;++i){
             bool found=false;
-            for(unsigned j=0;j<b.count;++j)found|=values[i].planar==b.values[j].planar&&values[i].multiplier==b.values[j].multiplier&&values[i].gap==b.values[j].gap;
+            for(unsigned j=0;j<b.count;++j)found|=sameDistance(values[i],b.values[j]);
             if(!found)return false;
         }
         return true;
@@ -110,9 +118,8 @@ struct Context {
         const unsigned ym=local?(same?y.copies:y.others):y.external;
         Rules out;
         if(xm==0&&ym==0){out.add(defaults.at({l,s,ol,os}));return out;}
-        const auto requests=[&](const Policy& q,unsigned mode,unsigned target){return local?mode==2:mode==3||(mode==2&&(q.targets&(1u<<target)));};
-        if(requests(x,xm,ol))out.add(x.distance);
-        if(!same&&requests(y,ym,l))out.add(y.distance);
+        if(x.requests(local,xm,ol))out.add(x.distance);
+        if(!same&&y.requests(local,ym,l))out.add(y.distance);
         return out;
     }
     const Sample& sample(Ref r)const{return plan.layers[r.layer].sets[r.set].samples[r.index];}

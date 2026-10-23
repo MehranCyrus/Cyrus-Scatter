@@ -2,8 +2,8 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "d6867ab03d401d739ff875b309d30cd5664fc52cf658ddae840aaaf55e1c77aa",
-  "control_inventory_sha256": "fa985531e5c4d86401fb1f467fa258f6ef6df1b6d6e3024182ba302fad4354ac",
-  "development_version": "0.86.8.2",
+  "control_inventory_sha256": "8ba961e577d71425dfb6a3a80cd2b7f60509824a178a51e0946dbf448b800539",
+  "development_version": "0.86.8.6",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified2",
   "features": [
@@ -1155,7 +1155,52 @@
         "C08"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Select the highlighted source models in the scene.",
+      "help": "Select highlighted source models in the scene. Selection keeps their current visibility; use Show sources to unhide their node flags.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "button",
+      "name": "showSources",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Unhide the selected scene source nodes in one Undo. Their renderable flags are preserved. Layer, group and category visibility restrictions remain.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "button",
+      "name": "hideSources",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Hide the selected scene source nodes in one Undo. Keep materials, registration, renderable flags and completed placements.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "button",
+      "name": "editMaterial",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Open the selected model's assigned scene material in Slate. Shared material instances change together. Library asset files are kept.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

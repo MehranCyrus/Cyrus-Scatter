@@ -1,4 +1,41 @@
+# 23 October 2026 — 0.86.8.6 gallery repair download
+
+- [x] Replace the faulty 0.86.8.5 EXE with the corrected 0.86.8.6 combined installer.
+- [x] Record the library version fix without changing feature or scatter behavior.
+- [x] Preserve content 0.86.7 and the independently versioned Analyzer 0.14.1.
+- [x] Complete fresh website build, browser/download and ZIP verification; see [the repair receipt](verification/WEBSITE_08686_20261023.md).
+
+# 23 October 2026 — 0.86.8.5 combined download update
+
+- [x] Match the public release metadata to the sealed combined Scatter 0.86.8.5 / Analyzer 0.14.1 EXE for Max 2024/2026/2027.
+- [x] Update installation copy, Optimized/Exact Paint export help, source-access controls and saved rollout-order notes.
+- [x] Keep plant content separate and preserve previous website/plugin receipts.
+- [x] Complete the fresh static/build/browser and exact ZIP/download checks; see the [current update receipt](verification/WEBSITE_08685_20261023.md).
+
+The current task prepares a local upload ZIP. It does not establish live deployment.
+
+# 21 October 2026 — 0.86.8.2 download update (historical)
+
+- [x] Reconcile current guides, source controls, Relax and release notes with 0.86.8.2.
+- [x] Supply the main EXE directly from the website, using a root/subfolder-relative URL.
+- [x] Include only that EXE as a release payload in the cPanel ZIP; exclude plant content and MZPs.
+- [x] Preserve the existing design, library showcase, previous receipts and unrelated work.
+
+Current validation and upload paths are in [the update receipt](verification/WEBSITE_08682_20261021.md). Live upload remains a separate action. The preceding checklist below retains its original edition and acceptance scope.
+
 # Selected landing and visual guide — delivery checklist
+
+## Individual library and download refresh — 20 October 2026
+
+See [the website refresh plan](UPDATE_PLAN_20261020.md) for evidence, twelve preview candidates, proposed layout and the deferred content-delivery decision.
+
+- [x] Review local website source, public-content freshness, current installer/content relationship and twelve existing rendered model previews.
+- [x] Record the proposed library showcase, recipe workflow and download layout without changing frontend behavior or concurrent plugin work.
+- [x] Reconcile mixed-age artist guide, feature stories, install instructions and public roadmap for the verified 0.86.7 delivery.
+- [x] Add the curated individual-model showcase and library-to-recipe workflow explanation.
+- [x] Implement the download layout with release metadata and honest content availability states.
+- [x] Complete focused website build/link/image and desktop/mobile visual checks; see [the refresh receipt](verification/LIBRARY_DOWNLOAD_REFRESH_20261020.md).
+- [ ] Decide content subsets, matching installer support and release hosting separately before enabling downloads.
 
 ## Landing image refinement — 11 October 2026
 

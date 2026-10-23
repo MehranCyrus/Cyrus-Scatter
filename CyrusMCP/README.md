@@ -50,7 +50,17 @@ Scatter 0.78 uses `cyrus.configuration/2.0` for passive configuration reads: eac
 
 ## Bounds and supported semantics
 
-At most three mesh sources, three regions/layers, **2,000 aggregate requested candidates**, two successful applications and two captures per enrollment. Plans cap 32 KiB; context 64 KiB; images 1,536-pixel long edge/2 MiB base64. There are 24 ordinary calls with defined outcome/idempotent-retry recovery exceptions. Publication pages cap 500 rows; five-minute handles expire when replaced; 2,048 attempts per enrollment include failed/stale attempts.
+The MCP budget belongs to one enrolled scope. Its source, layer and candidate limits are independent of the local Scatter controller's larger work limit:
+
+| MCP enrollment budget | Maximum |
+| --- | ---: |
+| Mesh source count | 3 |
+| Region / layer count | 3 |
+| Aggregate requested candidate count | 2,000 |
+| Successful applications | 2 |
+| Viewport captures | 2 |
+
+Plans cap 32 KiB; context 64 KiB; images 1,536-pixel long edge/2 MiB base64. There are 24 ordinary calls with defined outcome/idempotent-retry recovery exceptions. Publication pages cap 500 rows; five-minute handles expire when replaced; 2,048 attempts per enrollment include failed/stale attempts.
 
 Design geometry is baked Editable Mesh/Poly or supported primitives, without modifier stacks, keyed/constraint/procedural controllers or renderer proxies. Site/assets cap 10,000 evaluated triangles/12,000 vertices. Read-only inspection may report cached existing inputs outside this design admission, without certifying them for automated generation.
 

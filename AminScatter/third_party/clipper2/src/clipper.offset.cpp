@@ -167,19 +167,22 @@ ClipperOffset::Group::Group(const Paths64& _paths, JoinType _join_type, EndType 
 
 void ClipperOffset::AddPath(const Path64& path, JoinType jt_, EndType et_)
 {
+    BudgetItems(budget_, path.size()+1);
     groups_.emplace_back(Paths64(1, path), jt_, et_);
 }
 
 void ClipperOffset::AddPaths(const Paths64 &paths, JoinType jt_, EndType et_)
 {
 	if (paths.size() == 0) return;
+    for (const auto& path : paths) BudgetItems(budget_, path.size()+1);
     groups_.emplace_back(paths, jt_, et_);
 }
 
 void ClipperOffset::BuildNormals(const Path64& path)
 {
 	norms.clear();
-	norms.reserve(path.size());
+	BudgetItems(budget_, path.size());
+    norms.reserve(path.size());
 	if (path.size() == 0) return;
 	Path64::const_iterator path_iter, path_stop_iter = --path.cend();
 	for (path_iter = path.cbegin(); path_iter != path_stop_iter; ++path_iter)
@@ -211,8 +214,8 @@ void ClipperOffset::DoBevel(const Path64& path, size_t j, size_t k)
 		pt2 = PointD(path[j].x + group_delta_ * norms[j].x, path[j].y + group_delta_ * norms[j].y);
 #endif
 	}
-    path_out.emplace_back(pt1);
-    path_out.emplace_back(pt2);
+    path_out.emplace_back((BudgetItems(budget_), pt1));
+    path_out.emplace_back((BudgetItems(budget_), pt2));
 }
 
 void ClipperOffset::DoSquare(const Path64& path, size_t j, size_t k)
@@ -241,17 +244,17 @@ void ClipperOffset::DoSquare(const Path64& path, size_t j, size_t k)
 		PointD pt = ptQ;
 		GetLineIntersectPt(pt1, pt2, pt3, pt4, pt);
 		//get the second intersect point through reflecion
-        path_out.emplace_back(ReflectPoint(pt, ptQ));
-        path_out.emplace_back(pt);
+        path_out.emplace_back((BudgetItems(budget_), ReflectPoint(pt, ptQ)));
+        path_out.emplace_back((BudgetItems(budget_), pt));
 	}
 	else
 	{
 		PointD pt4 = GetPerpendicD(path[j], norms[k], group_delta_);
 		PointD pt = ptQ;
 		GetLineIntersectPt(pt1, pt2, pt3, pt4, pt);
-        path_out.emplace_back(pt);
+        path_out.emplace_back((BudgetItems(budget_), pt));
 		//get the second intersect point through reflecion
-        path_out.emplace_back(ReflectPoint(pt, ptQ));
+        path_out.emplace_back((BudgetItems(budget_), ReflectPoint(pt, ptQ)));
 	}
 }
 
@@ -259,13 +262,13 @@ void ClipperOffset::DoMiter(const Path64& path, size_t j, size_t k, double cos_a
 {
 	double q = group_delta_ / (cos_a + 1);
 #ifdef USINGZ
-    path_out.emplace_back(
-		path[j].x + (norms[k].x + norms[j].x) * q,
+    path_out.emplace_back((BudgetItems(budget_), 
+		path[j].x + (norms[k].x + norms[j].x) * q),
 		path[j].y + (norms[k].y + norms[j].y) * q,
         path[j].z);
 #else
-    path_out.emplace_back(
-		path[j].x + (norms[k].x + norms[j].x) * q,
+    path_out.emplace_back((BudgetItems(budget_), 
+		path[j].x + (norms[k].x + norms[j].x) * q),
         path[j].y + (norms[k].y + norms[j].y) * q);
 #endif
 }
@@ -290,9 +293,9 @@ void ClipperOffset::DoRound(const Path64& path, size_t j, size_t k, double angle
 
 	if (j == k) offsetVec.Negate();
 #ifdef USINGZ
-    path_out.emplace_back(pt.x + offsetVec.x, pt.y + offsetVec.y, pt.z);
+    path_out.emplace_back((BudgetItems(budget_), pt.x + offsetVec.x), pt.y + offsetVec.y, pt.z);
 #else
-    path_out.emplace_back(pt.x + offsetVec.x, pt.y + offsetVec.y);
+    path_out.emplace_back((BudgetItems(budget_), pt.x + offsetVec.x), pt.y + offsetVec.y);
 #endif
 	int steps = static_cast<int>(std::ceil(steps_per_rad_ * std::abs(angle))); // #448, #456
 	for (int i = 1; i < steps; ++i) // ie 1 less than steps
@@ -300,12 +303,12 @@ void ClipperOffset::DoRound(const Path64& path, size_t j, size_t k, double angle
 		offsetVec = PointD(offsetVec.x * step_cos_ - step_sin_ * offsetVec.y,
 			offsetVec.x * step_sin_ + offsetVec.y * step_cos_);
 #ifdef USINGZ
-        path_out.emplace_back(pt.x + offsetVec.x, pt.y + offsetVec.y, pt.z);
+        path_out.emplace_back((BudgetItems(budget_), pt.x + offsetVec.x), pt.y + offsetVec.y, pt.z);
 #else
-        path_out.emplace_back(pt.x + offsetVec.x, pt.y + offsetVec.y);
+        path_out.emplace_back((BudgetItems(budget_), pt.x + offsetVec.x), pt.y + offsetVec.y);
 #endif
 	}
-    path_out.emplace_back(GetPerpendic(path[j], norms[j], group_delta_));
+    path_out.emplace_back((BudgetItems(budget_), GetPerpendic(path[j], norms[j], group_delta_)));
 }
 
 void ClipperOffset::OffsetPoint(Group& group, const Path64& path, size_t j, size_t k)
@@ -329,7 +332,7 @@ void ClipperOffset::OffsetPoint(Group& group, const Path64& path, size_t j, size
 	}
 	if (std::fabs(group_delta_) <= floating_point_tolerance)
 	{
-        path_out.emplace_back(path[j]);
+        path_out.emplace_back((BudgetItems(budget_), path[j]));
 		return;
 	}
 
@@ -341,13 +344,13 @@ void ClipperOffset::OffsetPoint(Group& group, const Path64& path, size_t j, size
 		// will be removed later by the finishing union operation. This is also the best way 
 		// to ensure that path reversals (ie over-shrunk paths) are removed.
 #ifdef USINGZ
-        path_out.emplace_back(GetPerpendic(path[j], norms[k], group_delta_), path[j].z);
-        path_out.emplace_back(path[j]); // (#405, #873, #916)
-        path_out.emplace_back(GetPerpendic(path[j], norms[j], group_delta_), path[j].z);
+        path_out.emplace_back((BudgetItems(budget_), GetPerpendic(path[j], norms[k], group_delta_)), path[j].z);
+        path_out.emplace_back((BudgetItems(budget_), path[j])); // (#405, #873, #916)
+        path_out.emplace_back((BudgetItems(budget_), GetPerpendic(path[j], norms[j], group_delta_)), path[j].z);
 #else
-        path_out.emplace_back(GetPerpendic(path[j], norms[k], group_delta_));
-        path_out.emplace_back(path[j]); // (#405, #873, #916)
-        path_out.emplace_back(GetPerpendic(path[j], norms[j], group_delta_));
+        path_out.emplace_back((BudgetItems(budget_), GetPerpendic(path[j], norms[k], group_delta_)));
+        path_out.emplace_back((BudgetItems(budget_), path[j])); // (#405, #873, #916)
+        path_out.emplace_back((BudgetItems(budget_), GetPerpendic(path[j], norms[j], group_delta_)));
 #endif
 	}
 	else if (cos_a > 0.999 && join_type_ != JoinType::Round)
@@ -374,7 +377,7 @@ void ClipperOffset::OffsetPolygon(Group& group, const Path64& path)
 	path_out.clear();
 	for (Path64::size_type j = 0, k = path.size() - 1; j < path.size(); k = j, ++j)
 		OffsetPoint(group, path, j, k);	
-    solution->emplace_back(path_out);
+    solution->emplace_back((BudgetItems(budget_, path_out.size()+1), path_out));
 }
 
 void ClipperOffset::OffsetOpenJoined(Group& group, const Path64& path)
@@ -398,7 +401,7 @@ void ClipperOffset::OffsetOpenPath(Group& group, const Path64& path)
 	if (deltaCallback64_) group_delta_ = deltaCallback64_(path, norms, 0, 0);
 
 	if (std::fabs(group_delta_) <= floating_point_tolerance)
-        path_out.emplace_back(path[0]);
+        path_out.emplace_back((BudgetItems(budget_), path[0]));
 	else
 	{
 		switch (end_type_)
@@ -430,7 +433,7 @@ void ClipperOffset::OffsetOpenPath(Group& group, const Path64& path)
 		group_delta_ = deltaCallback64_(path, norms, highI, highI);
 
 	if (std::fabs(group_delta_) <= floating_point_tolerance)
-        path_out.emplace_back(path[highI]);
+        path_out.emplace_back((BudgetItems(budget_), path[highI]));
 	else
 	{
 		switch (end_type_)
@@ -449,7 +452,7 @@ void ClipperOffset::OffsetOpenPath(Group& group, const Path64& path)
 
 	for (size_t j = highI -1, k = highI; j > 0; k = j, --j)
 		OffsetPoint(group, path, j, k);
-    solution->emplace_back(path_out);
+    solution->emplace_back((BudgetItems(budget_, path_out.size()+1), path_out));
 }
 
 void ClipperOffset::DoGroupOffset(Group& group)
@@ -523,7 +526,7 @@ void ClipperOffset::DoGroupOffset(Group& group)
 #endif
 			}
 
-            solution->emplace_back(path_out);
+            solution->emplace_back((BudgetItems(budget_, path_out.size()+1), path_out));
 			continue;
 		} // end of offsetting a single point
 
@@ -606,7 +609,7 @@ void ClipperOffset::ExecuteInternal(double delta)
 
 	bool paths_reversed = CheckReverseOrientation();
 	//clean up self-intersections ...
-	Clipper64 c;
+	Clipper64 c(budget_);
 	c.PreserveCollinear(preserve_collinear_);
 	//the solution should retain the orientation of the input
 	c.ReverseSolution(reverse_solution_ != paths_reversed);

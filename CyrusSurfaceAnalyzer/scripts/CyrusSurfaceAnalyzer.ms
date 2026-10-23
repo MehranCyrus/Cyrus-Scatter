@@ -1,3 +1,6 @@
+-- Guard the pair before redefining any classes or callbacks in this process.
+if cyrusAnalyzerContractVersion==undefined or cyrusAnalyzerInputValidity==undefined or cyrusAnalyzerContractVersion()!=1 do
+ throw "Surface Analyzer 0.14.1 requires its matching native module. Install the complete Analyzer package and restart Max."
 global CyrusSurfaceAnalyzerDraw
 global CyrusSurfaceAnalyzer,CyrusAnalyzerOwners=#(),CyrusAnalyzerRestoring=false
 global CyrusAnalyzerGuardEvents,CyrusAnalyzerFlush,CyrusAnalyzerFlushing=false,CyrusAnalyzerDispatch
@@ -403,7 +406,7 @@ version:13
   button exportBoundary "Create Boundary Spline" width:144 height:24 align:#center
   button exportPath "Create Path Spline" width:144 height:24 align:#center
   button exportPoints "Create Point Helpers" width:144 height:24 align:#center
-  label note "Schematic v0.4\nPlanar elements only.\nRegion area depends\non the selected mode." width:144 height:64 align:#center
+  label note "Surface Analyzer 0.14.1\nPlanar elements only.\nRegion area depends\non the selected mode." width:144 height:64 align:#center
   on boundaryCheck changed val do redrawViews()
   on pathsCheck changed val do redrawViews()
   on pointsCheck changed val do redrawViews()

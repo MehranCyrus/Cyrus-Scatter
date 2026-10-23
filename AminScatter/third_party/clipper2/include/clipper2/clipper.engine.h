@@ -53,6 +53,7 @@ namespace Clipper2Lib {
 	};
 
 	struct OutPt {
+		OperationBudget* allocation_budget = nullptr;
 		Point64 pt;
 		OutPt*	next = nullptr;
 		OutPt*	prev = nullptr;
@@ -77,6 +78,7 @@ namespace Clipper2Lib {
 	//OutRec: contains a path in the clipping solution. Edges in the AEL will
 	//have OutRec pointers assigned when they form part of the clipping solution.
 	struct OutRec {
+		OperationBudget* budget = nullptr;
 		size_t idx = 0;
 		OutRec* owner = nullptr;
 		Active* front_edge = nullptr;
@@ -102,6 +104,7 @@ namespace Clipper2Lib {
 	///////////////////////////////////////////////////////////////////
 
 	struct Active {
+        OperationBudget* budget = nullptr;
 		Point64 bot;
 		Point64 top;
 		int64_t curr_x = 0;		//current (updated at every new scanline)
@@ -172,6 +175,9 @@ namespace Clipper2Lib {
 	typedef std::unique_ptr<LocalMinima> LocalMinima_ptr;
 	typedef std::vector<LocalMinima_ptr> LocalMinimaList;
 	typedef std::vector<IntersectNode> IntersectNodeList;
+	// Fail compilation if a vendor update invalidates the conservative envelope.
+	static_assert(sizeof(Vertex)<=128 && sizeof(OutPt)<=128 && sizeof(OutRec)<=256 && sizeof(Active)<=256 && sizeof(LocalMinima)<=64,
+		"Review Cyrus clipping item admission for changed record sizes");
 
 	// ReuseableDataContainer64 ------------------------------------------------
 
@@ -256,6 +262,7 @@ namespace Clipper2Lib {
 		inline void CheckJoinRight(Active& e,
 			const Point64& pt, bool check_curr_x = false);
 	protected:
+		OperationBudget* budget_ = nullptr;
 		bool preserve_collinear_ = true;
 		bool reverse_solution_ = false;
 		int error_code_ = 0;
@@ -275,6 +282,7 @@ namespace Clipper2Lib {
 		void AddPath(const Path64& path, PathType polytype, bool is_open);
 		void AddPaths(const Paths64& paths, PathType polytype, bool is_open);
 	public:
+		explicit ClipperBase(OperationBudget* budget = nullptr) : budget_(budget) {}
 		virtual ~ClipperBase();
 		int ErrorCode() const { return error_code_; }
 		void PreserveCollinear(bool val) { preserve_collinear_ = val; }
@@ -462,6 +470,7 @@ namespace Clipper2Lib {
 		void BuildPaths64(Paths64& solutionClosed, Paths64* solutionOpen);
 		void BuildTree64(PolyPath64& polytree, Paths64& open_paths);
 	public:
+		explicit Clipper64(OperationBudget* budget = nullptr) : ClipperBase(budget) {}
 #ifdef USINGZ
 		void SetZCallback(ZCallback64 cb) { zCallback_ = cb; }
 #endif
