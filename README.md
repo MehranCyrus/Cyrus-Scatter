@@ -2,12 +2,14 @@
 
 Native C++ scattering and generated MAXScript UI for 3ds Max.
 
-**Current combined-installer test delivery: Scatter 0.86.8.6 / schema 59 / CyrusUnified2, with Surface Analyzer 0.14.1 included for Max 2024, 2026 and 2027.** See the [single-EXE scope, exact evidence and remaining acceptance](docs/plans/combined-installer/DELIVERY_08686.md). The [0.86.8.4 correction](docs/plans/installer-panels/DELIVERY_08684.md) retains its original Max 2027 qualification. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) records remaining roadmap work.
+**Current test delivery: Scatter 0.86.8.7 / schema 59 / CyrusUnified2, with Surface Analyzer 0.14.2 for Max 2027 only.** The [delivery report](docs/plans/code-quality/DELIVERY_08687.md) records the seven review repairs, adjustable viewport memory, full-mesh and lifecycle qualification, exact packages and remaining limits. Original Paint and content revision 0.86.7 are preserved.
+
+The historical [0.86.8.6 combined delivery](docs/plans/combined-installer/DELIVERY_08686.md) retains qualification for Scatter 0.86.8.6 and Analyzer 0.14.1 on Max 2024, 2026 and 2027. The [0.86.8.4 correction](docs/plans/installer-panels/DELIVERY_08684.md) retains its original Max 2027 qualification. The [execution ledger](docs/plans/improvement-program/PROGRESS.md) records remaining roadmap work.
 
 | Need | Maintained source |
 | --- | --- |
 | Use the plugin | [Artist guide](docs/ARTIST_GUIDE.md), [Layout and falloff](docs/LAYOUT_AND_FALLOFF.md) |
-| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [combined installer, checks and limits](docs/plans/combined-installer/DELIVERY_08686.md) |
+| Install or build | [Max 2027 installation/build](docs/Max_2027_Installation.md); [0.86.8.7 delivery, checks and limits](docs/plans/code-quality/DELIVERY_08687.md) |
 | Understand implementation | [Architecture](docs/ARCHITECTURE.md), [engineering contracts](docs/ENGINEERING_FOUNDATION.md) |
 | Find remaining work | [Execution ledger](docs/plans/improvement-program/PROGRESS.md), [defects and acceptance](docs/BACKLOG.md) |
 | Work in this repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md), [version policy](docs/Release_Versioning.md) |
@@ -22,11 +24,12 @@ selected layer's current surfaces.
 **Models & Points** uses **+** to add objects, places **Add Point** beside **Make
 point**, and lets **Pick object** replace either a Point or a model.
 Put `CyrusScatter-Content-0.86.7.zip` beside the EXE and check **Install / update
-plant library** to install content. Current plugin packages are under
-`dist/CyrusScatter-0.86.8.6-20261023/`; distribute the existing content ZIP separately
+plant library** to install content. Qualified plugin packages are under
+`dist/CyrusScatter-0.86.8.7-20261023/`; distribute the existing content ZIP separately
 for recipients who need it. Leave the option unchecked to keep existing
 content. Content keeps its independent revision and is shared by standard profiles
-across all three hosts. Plugin-only updates do not copy the models. The ZIP streams
+from the historical three-host deliveries. The .7 delivery supplies only Max 2027
+plugin payloads. Plugin-only updates do not copy the models. The ZIP streams
 into one shared store, reusing verified existing bytes; success shows a brief
 completion message. Prepared files were saved back to Max 2024 format; model geometry and image
 assets were reused. Corona/Forest material dependencies still require matching
@@ -55,7 +58,7 @@ Layers own receivers, models and population rules. Paint Areas retain receiver-b
 | Path | Purpose |
 | --- | --- |
 | `AminScatter/` | Native engine, authoritative UI templates/generator, generated script and tests |
-| `CyrusSurfaceAnalyzer/` | Independently versioned Analyzer 0.14 |
+| `CyrusSurfaceAnalyzer/` | Independently versioned Analyzer 0.14.2 |
 | `CyrusMCP/` | Bounded automation, package/plan 0.73.0/0.73 |
 | `CyrusLicensing/` | Independent licensing foundation |
 | `docs/` | Maintained guidance, contracts, evidence and separately labeled research |
@@ -63,4 +66,4 @@ Layers own receivers, models and population rules. Paint Areas retain receiver-b
 
 Edit UI templates/generator modules, never only `AminScatter/scripts/AminScatterObject.ms`. Internal AminScatter names are registration identities. The [native boundary and physics/animation contract](docs/ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) governs future work; the standalone Physics Lab is separate from integrated Scatter support.
 
-Use **Scripting > Run Script** with the MZP matching your Max year, then restart that Max version. The prior 0.86.2 universal EXE retains its separate host scope. No artist installation or restart was performed. `build/`, `dist/`, `_local/` and `Test Scene/` contain ignored local artifacts and assets, not Git backups; see [workspace organization](docs/Workspace_Organization.md).
+Use **Scripting > Run Script** with `CyrusScatter-0.86.8.7-Max2027.mzp`, then restart Max 2027. The combined EXE also installs Analyzer; its standalone MZP uses the same Analyzer transaction engine. Both products retain verified create-only v2 backups and block unknown/custom startup files or registrations. Follow the [installation and recovery instructions](docs/Max_2027_Installation.md). Historical universal EXEs retain their separate host scopes. No artist installation or restart was performed. `build/`, `dist/`, `_local/` and `Test Scene/` contain ignored local artifacts and assets, not Git backups; see [workspace organization](docs/Workspace_Organization.md).

@@ -11,6 +11,8 @@
 #include <maxscript/maxwrapper/bitmaps.h>
 #include <mtl.h>
 #include "scatter.h"
+#include "projection_work.h"
+#include "receiver_mesh_validation.h"
 #include "brush.h"
 #include "area_mask.h"
 #include "diagnostics.h"
@@ -49,6 +51,7 @@
 #include "direction_orientation_value.inc"
 #include "grid_value.inc"
 #include "density_image_bridge.inc"
+#include "projection_budget_bridge.inc"
 
 extern "C" __declspec(dllexport) const TCHAR* LibDescription() {
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
@@ -186,10 +189,31 @@ std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false
     if(!tri) throw std::invalid_argument("Could not evaluate mesh");
     const auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};
     std::unique_ptr<TriObject,decltype(cleanup)> holder(tri,cleanup);
-    Matrix3 tm=node->GetObjectTM(t);
-    if(!world) tm=tm*Inverse(node->GetNodeTM(t));
     Mesh& mesh=tri->GetMesh();
-    if(std::size_t(mesh.getNumFaces())>faceLimit)throw std::invalid_argument("Evaluated receiver exceeds the surface filter face limit");
+    const int vertexCount=mesh.getNumVerts(),faceCount=mesh.getNumFaces();
+    std::vector<amin::Triangle> result;
+    try {
+        cyrus::receiver_mesh::storage(vertexCount,faceCount,mesh.verts!=nullptr,mesh.faces!=nullptr,faceLimit);
+        const auto validTransform=[](const Matrix3& matrix){for(int row=0;row<4;++row){const auto p=matrix.GetRow(row);cyrus::receiver_mesh::position(p.x,p.y,p.z,"receiver transform row",row);}};
+        Matrix3 tm=node->GetObjectTM(t);validTransform(tm);
+        if(!world){const auto nodeTM=node->GetNodeTM(t);validTransform(nodeTM);tm=tm*Inverse(nodeTM);validTransform(tm);}
+        result.reserve(static_cast<std::size_t>(faceCount));
+        for(int i=0;i<faceCount;++i) {
+            const auto& f=mesh.faces[i];std::array<amin::Vec3,3> points;
+            for(unsigned corner=0;corner<3;++corner) {
+                const auto index=f.v[corner];cyrus::receiver_mesh::index(index,vertexCount,i,corner);
+                const auto p=mesh.verts[index];cyrus::receiver_mesh::position(p.x,p.y,p.z,"geometry vertex",index);
+                const auto q=p*tm;cyrus::receiver_mesh::position(q.x,q.y,q.z,"transformed geometry vertex",index);
+                points[corner]=vec(q);
+            }
+            result.push_back({points[0],points[1],points[2]});
+        }
+    }catch(const std::exception& error){
+        const auto reason=std::string(error.what());
+        const std::wstring message=std::wstring(L"Receiver '")+node->GetName()+L"': "+std::wstring(reason.begin(),reason.end())+
+            L". Repair this receiver mesh. The last completed result is retained.";
+        throw RuntimeError(message.c_str());
+    }
     const auto uvError=[&](const wchar_t* reason) {
         const std::wstring message=std::wstring(L"Texture Density: receiver '")+node->GetName()+L"', UV channel "+std::to_wstring(uvChannel)+L": "+reason+L". Repair this channel or select a valid channel. The previous result is retained.";
         throw RuntimeError(message.c_str());
@@ -207,11 +231,9 @@ std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false
             if(!std::isfinite(p.x)||!std::isfinite(p.y)||!std::isfinite(p.z))uvError(L"nonfinite mapping coordinates");
         }
     }
-    std::vector<amin::Triangle> result;result.reserve(mesh.getNumFaces());
-    for(int i=0;i<mesh.getNumFaces();++i) {
-        const auto& f=mesh.faces[i];
-        result.push_back({vec(mesh.verts[f.v[0]]*tm),vec(mesh.verts[f.v[1]]*tm),vec(mesh.verts[f.v[2]]*tm)});
-        if(requireUv) {const auto& uvf=mesh.mapFaces(uvChannel)[i];auto* uv=mesh.mapVerts(uvChannel);result.back().uvA=vec(uv[uvf.t[0]]);result.back().uvB=vec(uv[uvf.t[1]]);result.back().uvC=vec(uv[uvf.t[2]]);}
+    if(requireUv)for(int i=0;i<faceCount;++i) {
+        const auto& uvf=mesh.mapFaces(uvChannel)[i];auto* uv=mesh.mapVerts(uvChannel);
+        result[i].uvA=vec(uv[uvf.t[0]]);result[i].uvB=vec(uv[uvf.t[1]]);result[i].uvC=vec(uv[uvf.t[2]]);
     }
     return result;
 }
@@ -269,13 +291,17 @@ Value* scatterAdvanced(Value** args,int count,bool canonical=false,std::uint64_t
     if(count!=29) throw RuntimeError(_T("Cyrus generation requires its current 29-field contract."));
     type_check(args[28],Array,_T("generation options"));
     auto* v1=static_cast<Array*>(args[28]);
-    if(v1->size!=12&&v1->size!=13&&v1->size!=14)throw RuntimeError(_T("Expected keyed generation options including density mapping and optional grid snapshot"));
+    if(v1->size!=12&&v1->size!=13&&v1->size!=14&&v1->size!=15)throw RuntimeError(_T("Expected keyed generation options including density mapping, optional grid snapshot and solve projection budget"));
     const CyrusGridSnapshot* grid=nullptr;
     if(v1->size>=13&&v1->data[12]!=&undefined){type_check(v1->data[12],CyrusGridSnapshot,_T("grid receiver snapshot"));grid=static_cast<CyrusGridSnapshot*>(v1->data[12]);}
     const int uvChannel=v1->data[11]->to_int();
     if(uvChannel<1||uvChannel>=MAX_MESHMAPS)throw RuntimeError(_T("Density UV channel must be 1..99"));
     amin::Settings s;
-    if(v1->size==14)s.densityMapping=densityMapping(v1->data[13]);
+    if(v1->size>=14)s.densityMapping=densityMapping(v1->data[13]);
+    if(v1->size==15&&v1->data[14]!=&undefined){
+        type_check(v1->data[14],CyrusProjectionBudget,_T("solve projection budget"));
+        s.projectionBudget=&static_cast<CyrusProjectionBudget*>(v1->data[14])->work;
+    }
     {
         if(v1->data[7]->to_int()!=1)throw RuntimeError(_T("Unsupported procedural sampler version"));
         const auto start=v1->data[8]->to_int64();

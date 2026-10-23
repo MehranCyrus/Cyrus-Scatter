@@ -1,8 +1,55 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.86.8.2, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification](plans/source-clearance/DELIVERY_08682.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to the Cyrus Scatter 0.86.8.7 source, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification status](plans/code-quality/DELIVERY_08687.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
 
 ## Ownership
+
+### 0.86.8.7 repairs and viewport memory
+
+The [current execution record](plans/code-quality/DELIVERY_08687.md) adds bounded
+indexed projected movement, shared density sampling for Boundary Relax, and
+checked receiver copying. A synchronous successor shares one projection work
+budget across receivers: 200 million charged build/query units and 256 MiB
+live index scratch. The index uses the same closest-point arithmetic and earliest
+eligible-face tie rule; it does not change candidate RNG consumption. These are
+incremental projection limits, not a total solve-memory bound.
+
+Mesh display admission coordinates estimated CPU/device ownership across
+controllers. CPU staging reservations transfer into immutable snapshots; GPU
+resource leases follow the shared SDK handles rather than charging the same
+physical buffers again for each logical generation. Real old/new allocations,
+history pins and SDK system/upload copies still coexist and remain charged.
+The existing instanced renderer and vertex/UV precision remain. Material input
+baking uses the host's filtered float `RenderTexmap` path, which respects bitmap
+UV/output controls. The prior direct Bitmaptexture override biased the float
+opacity samples in the owned Max 2027 regression.
+Artist draw caps retain their own box policy; memory rejection retains the
+preceding complete display instead of silently promoting a reduced successor.
+
+Presentation has separate requested and visible generations. All successor
+items must finish realization before host-thread promotion. A failed successor
+keeps the old complete visible bundle, suppresses misleading marker overlays,
+and permits explicit retry; idle drawing does not repeatedly submit a failure.
+Reuse compares exact ordered transform/Band payloads and prefers a matching
+instance stream among compatible geometry, including identical meshes in
+different layers. Shared leases track the lifetime of the actual SDK resources.
+
+The new viewport preference is installation-local and changes admission only.
+Source metadata conversion uses a separate CPU allowance plus system headroom,
+so lowering display memory does not affect Auto Radius or placement metadata.
+Metadata/display reservations share pending CPU accounting; actual committed
+host allocations are reflected in the next operating-system sample. An opaque
+host `ConvertToType` call can allocate before exposing topology; its preliminary
+reservation is an estimate. Exact geometry hashing and face-referenced bounds
+remain independent of the former two-million-face viewport restriction.
+
+Build and package admission now require complete version-2 input manifests,
+effective configuration and nested managed-producer receipts. The shared
+installer publishes verified backups using create-only atomic moves, preserves
+unknown registrations/wrappers, and binds the Analyzer MZP to the exact managed
+helper. Duplicate JSON keys invalidate host qualification results before status
+or identities are read. These claims describe source design; the linked record
+separates executed acceptance and remaining limits.
 
 The [maintained foundation](ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) specifies native bulk computation/storage and future physics/animation constraints. The default controller now uses native placement generations throughout generation, preparation, Edit, acceptance, display and output. The private controller comparison switch is removed. MAXScript retains authored parameter blocks, bounded orchestration and UI; the managed library retains bounded catalog/image work. The [N01–N09 plan](plans/native-placement/README.md) and [execution handoff](plans/native-placement/EXECUTION_0860.md) separate current qualification from historical prototypes. The independent [Physics Lab](../CyrusPhysicsLab/README.md) remains experimental and is not integrated into Scatter.
 

@@ -18,11 +18,20 @@ class IncompleteResult(ValueError):
     pass
 
 
+def _unique_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError('Duplicate JSON object key: ' + key)
+        result[key] = value
+    return result
+
+
 def read_result(path: Path, expected: Expected) -> dict:
     if not path.is_file() or path.stat().st_size > 1024 * 1024:
         raise IncompleteResult('Missing or oversized scenario result')
     try:
-        result = json.loads(path.read_text(encoding='utf-8-sig'))
+        result = json.loads(path.read_text(encoding='utf-8-sig'), object_pairs_hook=_unique_object)
     except (OSError, ValueError) as error:
         raise IncompleteResult('Unreadable or truncated scenario result') from error
     if not isinstance(result, dict):

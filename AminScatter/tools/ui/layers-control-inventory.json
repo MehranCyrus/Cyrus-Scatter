@@ -70,6 +70,10 @@
         "name": "navigationFacesSpin"
       },
       {
+        "kind": "button",
+        "name": "memoryButton"
+      },
+      {
         "kind": "spinner",
         "name": "pointsSpin"
       },

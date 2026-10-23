@@ -1,16 +1,20 @@
 # Install and build Cyrus Scatter
 
-The **0.86.8.6 / schema 59** combined installer contains matched **Max 2024, 2026 and 2027** Scatter payloads and **Surface Analyzer 0.14.1**. See the [current qualification report](plans/combined-installer/DELIVERY_08686.md). Earlier packages retain their original host scope.
+The **0.86.8.7 / schema 59 delivery** contains matched **Max 2027-only** Scatter payloads and **Surface Analyzer 0.14.2**. The [delivery report](plans/code-quality/DELIVERY_08687.md) records native, host, failure-recovery and exact-installer checks. Original Paint and content revision 0.86.7 are preserved.
+
+The historical [0.86.8.6 combined delivery](plans/combined-installer/DELIVERY_08686.md) retains its matched Max 2024, 2026 and 2027 packages and Analyzer 0.14.1 qualification. Its files remain in `dist/CyrusScatter-0.86.8.6-20261023/`; earlier packages keep their original host scope.
 
 ## Install
 
-Run `dist/CyrusScatter-0.86.8.6-20261023/CyrusScatter-0.86.8.6-Setup.exe`.
-Close the selected Max versions, select their cards, then click
+The installer is [CyrusScatter-0.86.8.7-Setup.exe](../dist/CyrusScatter-0.86.8.7-20261023/CyrusScatter-0.86.8.7-Setup.exe).
+Close Max 2027, select its card, then click
 **Install** or **Update**. Detection, validation and storage checks run
-automatically. **Uninstall** keeps shared content and other hosts. Success shows
+automatically. **Uninstall Scatter** keeps Analyzer, shared content and other hosts. Success shows
 **Installation completed**. **Error details** is available only after a failure.
 
-A profile without an installation receipt can migrate exact recognized startup/macro files from 0.81.6, 0.85.0, 0.86.8.2, 0.86.8.3 or 0.86.8.4. Original bytes are preserved under `scripts/CyrusScatter/Backups/wrappers-<hash>/` before registration changes. A valid receipt continues to own its exact recorded files. Unknown/custom files are retained; **Error details** names the Max version and conflicting paths. Do not delete an unrecognized file just to bypass the check.
+A profile without an installation receipt can migrate exact recognized startup/macro files from 0.81.6, 0.85.0, 0.86.8.2, 0.86.8.3 or 0.86.8.4. Original bytes are preserved under `scripts/CyrusScatter/Backups/v2/wrappers-<hash>/` before registration changes. Analyzer uses its independent `scripts/CyrusSurfaceAnalyzer/Backups/v2/` directory. Both use verified create-only backup publication: bytes are flushed and read back before the final backup becomes available. Interrupted temporary files do not prevent a retry; older differing final backups remain intact, with the verified replacement and migration record stored under v2.
+
+A valid receipt continues to own its exact recorded files, including repair of missing owned payload files. Unknown/custom startup or macro files, receipts and plugin registrations block the update and are retained; **Error details** names the Max version and conflicting paths. A differing v2 final backup is also preserved and reported for review. Do not delete an unrecognized file just to bypass the check.
 
 Leave **Install / update plant library** unchecked to update only the plugin
 and reuse the registered library or recognized older runtime's library.
@@ -21,19 +25,22 @@ not unpack an extra temporary library or create a copy for each Max version.
 Identical installed content is reused. Content remains revision 0.86.7 because
 the models, materials and previews have not been regenerated.
 
-The combined EXE installs both products for each selected host. Save your work and restart Max after installation. **Uninstall Scatter** retains the independent Analyzer and shared library. Matched MZPs remain embedded/recovery artifacts; separate MZP installation is not required when using this EXE.
+The combined EXE installs both products for Max 2027. Save your work and restart Max after installation. For hosted installation, use **Scripting > Run Script** with [CyrusScatter-0.86.8.7-Max2027.mzp](../dist/CyrusScatter-0.86.8.7-20261023/CyrusScatter-0.86.8.7-Max2027.mzp) and, when Analyzer is needed, [CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp](../dist/CyrusScatter-0.86.8.7-20261023/CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp), then restart Max 2027. Separate MZP installation is not required when using the EXE. Both MZPs verify the installer helper before changing the profile. A different helper already loaded in Max requires a restart before retrying.
 Analyzer's **Analyze / Update Analyzer** button recalculates guides rather than updating installed software.
 The hosted route resolves an existing shared or legacy library. For a fresh
 recipient, use the EXE with the content ZIP and its library checkbox.
 There is no automatic online content download.
 
-Standard profiles for Max 2024, 2026 and 2027 share one selected library.
+Standard profiles from the historical Max 2024, 2026 and 2027 deliveries share one selected library; the .7 delivery updates only the Max 2027 plugin.
 Content revision is independent of the plugin revision. Share the content
 separately with recipients who do not have it; the EXE/MZPs contain the plugin.
 Save your work and restart Max after installation. Old paths are retained
 because saved scenes may still reference their textures.
 Corona/Forest plug-ins matching the host are required by the supplied materials.
-The instructions below retain the separate historical 0.86.6 build evidence.
+
+## Historical scene and installation evidence
+
+The following records retain their separate original versions and host scopes.
 
 0.86.2 retains the native foundation, Modify-panel scrolling/dragging and library scale corrections. It simplifies [library loading](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md): select terrain, open Cyrus Library and Load onto surface. It retains eight examples, revisioned recipes, selective style, bounded portable assets, grids/orientation, lazy panels, complete supported Paint and mesh-channel density.
 It retains the [0.82.3 idle/panel correction](plans/eleven-phase-roadmap/PERFORMANCE_0823.md),
@@ -50,7 +57,7 @@ The [0.86.6 package record](plans/preset-gallery-improvements/DELIVERY_0866.md)
 pins the exact archive and qualified bytes. Manual installation, restart and
 normal-profile artist acceptance remain separate from the private-host tests. Earlier
 installation receipts remain historical evidence for their deliveries/backups.
-Analyzer was not changed. `dist/` is ignored and is not supplied by a source-only
+Analyzer was not changed in that 0.86.6 delivery. `dist/` is ignored and is not supplied by a source-only
 Git clone. If absent, build matching source with the documented toolchain.
 
 0.78 keeps receiver-local sampling and replaces painting with a new canonical vector format.
@@ -75,9 +82,9 @@ The **0.86.2 / schema 58** delivery included matched Max 2024, 2026 and 2027 MZP
 
 ## Installed files and recovery
 
-Standard Max profiles install the immutable runtime under `%LOCALAPPDATA%/CyrusScatter/<year>/r/<content-id>`. An explicitly relocated profile uses `<profile>/cs/r/<content-id>`. The release contains the matching script, native modules, managed gallery and a small `LibraryBinding.txt`. Standard profiles resolve `%LOCALAPPDATA%/CyrusScatter/library-state.txt` to the selected shared library. Startup, macros, the install receipt and plugin registration remain in the selected Max profile and point to that complete release. Personal recipes in `Documents/CyrusScatter/Library` and activation are preserved. Older runtime/library paths remain recovery content. Analyzer uses its separate installer and directory. No compiler or SDK is required to use either built Scatter installer.
+Standard Max profiles install the immutable runtime under `%LOCALAPPDATA%/CyrusScatter/<year>/r/<content-id>`. An explicitly relocated profile uses `<profile>/cs/r/<content-id>`. The release contains the matching script, native modules, managed gallery and a small `LibraryBinding.txt`. Standard profiles resolve `%LOCALAPPDATA%/CyrusScatter/library-state.txt` to the selected shared library. Startup, macros, the install receipt and plugin registration remain in the selected Max profile and point to that complete release. Personal recipes in `Documents/CyrusScatter/Library` and activation are preserved. Older runtime/library paths remain recovery content. Analyzer retains its independent receipt and runtime under `scripts/CyrusSurfaceAnalyzer/r/<runtime-id>/`. No compiler or SDK is required to use the built installers.
 
-Both routes use the same hash-verified staging and journal recovery engine. A locked file or changed registration can reject installation while preserving the preceding bindings. Save your work and follow the reported recovery/restart guidance. Old release folders, imported texture storage and personal recipes are intentionally retained; unregistering is not a general disk cleanup.
+Each product uses the same transaction path through its EXE and MZP routes; Analyzer .14.2's standalone adapter now invokes the managed engine used by the combined EXE. Hash-verified staging, retained v2 backups and journal recovery protect the preceding bindings. A locked file, changed registration or differing verified backup can reject installation without replacing the conflicting bytes. Save your work and follow the reported recovery/restart guidance. Old release folders, imported texture storage and personal recipes are intentionally retained; unregistering is not a general disk cleanup.
 
 Use the packaged installer, not loose legacy installer templates. If the category is missing after restart, check the selected Max year, installer error and plugin-loading log. Avoid duplicate module registrations. Use the installed `Uninstall.ms` for that product and restart as instructed; retain original scenes and unrelated plugins.
 
@@ -106,4 +113,6 @@ python tools/build_max.py --max-year 2027 --sdk-root "<path-to-the-2027-maxsdk>"
 
 The package builder regenerates owned UI, checks version consistency, builds with the target SDK, runs native tests and produces versioned archives. It does not make an old host qualification apply to newly changed source. SDKs are local build dependencies, not redistributed product files.
 
-The older boss handoff and historical smoke launchers target frozen builds. Use [current Max 2027 receipts and reproduction](plans/native-placement/DELIVERY_0860.md); older Max 2026 receipts remain historical. Physical-input, DPI and renderer claims retain their stated limits.
+Version 2 producer receipts bind selected sources, effective build configuration, compiler/SDK/reference identities and nested Gallery/installer producers before and after their work. Changed or missing inputs leave pending/failed evidence and prevent package admission. Keep native `receipt.json`, managed/package `.build.json` sidecars and their original producer outputs together; original generated identity paths remain part of the recorded inputs. Historical receipts keep their original completeness limits and are not rewritten as v2 qualification.
+
+The [0.86.8.7 report](plans/code-quality/DELIVERY_08687.md) owns current scoped qualification and remaining limits. The older boss handoff and historical smoke launchers target frozen builds. The [0.86.0 Max 2027 native-foundation receipts](plans/native-placement/DELIVERY_0860.md) and older Max 2026 receipts remain historical. Physical-input, DPI and renderer claims retain their stated limits.

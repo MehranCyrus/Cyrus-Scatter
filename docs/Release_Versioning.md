@@ -2,14 +2,14 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.8.6 | Combined three-host installation; calculation contracts retained |
-| Scatter native/package | 0.86.8.6 / Max 2024, 2026, 2027 | [Combined delivery and qualification](plans/combined-installer/DELIVERY_08686.md); previous receipts retain their identities |
+| Scatter UI | 0.86.8.7 | Review repairs and profile-owned Viewport memory preference |
+| Scatter native/package | 0.86.8.7 / Max 2027 | [Delivery and scoped qualification](plans/code-quality/DELIVERY_08687.md); historical 2024/2026 receipts retain their identities |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
 | Saved MAXScript schema | 59 | Appended source-clearance block; explicit Undoable schema-58 upgrade; earlier schemas remain unsupported |
 | Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
-| Surface Analyzer | 0.14.1 | Independently versioned product |
+| Surface Analyzer | 0.14.2 | Independent installer safety correction; Max 2027 qualification |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
 
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
@@ -23,6 +23,18 @@ the [correction report](plans/source-clearance/DELIVERY_08682.md) records the
 matched build and host evidence separately from prior material-performance work.
 
 ## Choosing the next version
+
+**23 October 2026 user-selected successor: 0.86.8.7.** The user explicitly
+authorizes the seven confirmed review repairs, the high-poly viewport memory
+work and a user-adjustable Viewport memory preference. The expanded admitted
+geometry range and new installation preference would normally justify a minor
+step; the requested label takes precedence. Keep schema 59, recipe 8, native
+placement 2, publication bridge 4 and independent content 0.86.7. Surface
+Analyzer advances independently to **0.14.2** for its corrected standalone
+installer. The preference belongs to the Max installation, not a layer, scene
+or recipe. New build/host qualification is **Max 2027 only**. Historical
+2024/2026 packages remain attached to their original qualification. The exact
+final pair and packages passed their recorded scoped checks; see the [delivery record](plans/code-quality/DELIVERY_08687.md).
 
 **23 October 2026 gallery repair: 0.86.8.6.** The user authorizes a version-pairing correction, actual library-open testing, rebuilt installer and website ZIP. Use a patch to distinguish the corrected package from 0.86.8.5. Native Scatter and Analyzer payloads are retained byte-for-byte; schema 59, recipe 8, content 0.86.7 and scatter behavior stay unchanged. New host execution is Max 2027 only. [Repair and exact evidence](plans/combined-installer/DELIVERY_08686.md).
 

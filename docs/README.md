@@ -1,12 +1,12 @@
 # Cyrus Scatter documentation
 
 Current standalone Physics Lab: [0.3.0 shared instances, persistent proxy colliders, primitive choices and drop-height handle](Scatter_Physics_Research_2026-10-16/INSTANCES_030.md). Earlier Physics Lab reports retain their versioned scope.
-**Current combined-installer test delivery: 0.86.8.6, schema 59, with Analyzer 0.14.1 for Max 2024/2026/2027.** [Scope, qualification and delivery](plans/combined-installer/DELIVERY_08686.md). Earlier reports retain their original qualification.
+**Current test delivery: 0.86.8.7, schema 59, with Analyzer 0.14.2 for Max 2027 only.** [Delivery scope, exact evidence and remaining limits](plans/code-quality/DELIVERY_08687.md). The historical [0.86.8.6 combined delivery](plans/combined-installer/DELIVERY_08686.md) retains its Max 2024/2026/2027 qualification with Analyzer 0.14.1. Original Paint and content revision 0.86.7 remain unchanged. The report distinguishes repaired findings from unexecuted broader acceptance.
 
 | Need | Current source |
 | --- | --- |
 | Use the plugin | [Artist guide](ARTIST_GUIDE.md), [Layout and falloff](LAYOUT_AND_FALLOFF.md) |
-| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [combined-installer delivery and remaining acceptance](plans/combined-installer/DELIVERY_08686.md) |
+| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.8.7 delivery and scoped qualification](plans/code-quality/DELIVERY_08687.md) |
 | Understand source and behavioral guarantees | [Architecture](ARCHITECTURE.md), [engineering foundation](ENGINEERING_FOUNDATION.md) |
 | Plan source radius, clearance and layer priority | [Implementation plan](plans/source-clearance/IMPLEMENTATION_PLAN.md) and [validation matrix](plans/source-clearance/VALIDATION.md) — implemented hierarchy, native C++ rules, deterministic priority, cleanup/refill, persistence and UI; the delivery report distinguishes exercised checks from the broader matrix |
 | Review the source-clearance implementation | [Independent code and delivery review](plans/source-clearance/REVIEW_0868_20261020.md) — historical findings preserved; [0.86.8.1 correction evidence](plans/source-clearance/DELIVERY_08681.md) resolves F1/F2 and measures F3; the [independent 0.86.8.1 review](plans/source-clearance/REVIEW_08681_20261020.md) records its separate repeat tests and limits |

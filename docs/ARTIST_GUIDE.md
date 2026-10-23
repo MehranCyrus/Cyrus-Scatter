@@ -1,6 +1,6 @@
-# Cyrus Scatter 0.86.8.6 — current artist workflow
+# Cyrus Scatter 0.86.8.7 — artist workflow
 
-The current combined EXE targets **Max 2024, 2026 and 2027** and includes **Surface Analyzer 0.14.1**. See the [changes, checks and qualification limits](plans/combined-installer/DELIVERY_08686.md). Earlier receipts retain their original scope.
+The 0.86.8.7 delivery targets **Max 2027** and includes **Surface Analyzer 0.14.2**. Exact qualification and remaining limits are recorded in the [delivery report](plans/code-quality/DELIVERY_08687.md). The [0.86.8.6 three-host delivery](plans/combined-installer/DELIVERY_08686.md) retains its original Max 2024/2026/2027 scope; those packages do not contain the new native repairs.
 
 For library models already added to a layer, highlight the row in **Models &
 Points** and use **Select sources**. **Show sources** and **Hide sources** change
@@ -20,8 +20,8 @@ receivers and distribution yourself, then **Update scatter** in Manual mode.
 Corona is required for the supplied materials. Personal recipes remain separate.
 Successful model additions now show a banner naming the model and destination
 layer. Failed imports show an error banner and retain the previous scene.
-The **0.86.8.6** installer updates Scatter and Surface Analyzer for the selected Max versions and detects your existing library.
-Choose **Install** or **Update** for those hosts.
+The **0.86.8.7** candidate installer updates Scatter and Surface Analyzer for Max 2027 and detects your existing library.
+Choose **Install** or **Update** for that host.
 **Uninstall Scatter** removes Scatter registration while keeping the independent Analyzer, your library
 and scenes. To install or update the library, put
 **CyrusScatter-Content-0.86.7.zip** beside the EXE and check
@@ -169,7 +169,7 @@ conflicts. Geometry can still overlap because those checks are not exact mesh
 collision. **Advanced**
 keeps selected-instance radius overrides and accepted-placement cleanup.
 
-Scenes saved with schema 58 show **Upgrade scene to 0.86.8.2** before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Scenes already upgraded to schema 59 in 0.86.8 need no additional upgrade. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
+Scenes saved with schema 58 show **Upgrade scene** with the installed version before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Scenes already upgraded to schema 59 in 0.86.8 need no additional upgrade. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
 
 ## Layout and Amount
 
@@ -387,7 +387,9 @@ Candidate Relax moves candidates within its bounded settings. Cleanup removes un
 
 Point Cloud, Proxy and Mesh serve different preview costs. Layer/model/Band identification colors help identify planting in simplified previews. **Color by Bands** uses the accepted Band owner, including when one source belongs to several Bands. These identification colors do not replace source render materials. Display limits can show fewer instances or faces than the accepted population. A displayed count is not the full output count. Box, Sphere and Pyramid proxies use retained instanced geometry. In **Viewport & render**, **Navigating** applies while moving the view or holding an interaction; **Idle** returns after a short pause. Point Cloud and Centres limits count points, Proxy limits count instances, and Mesh limits count triangles across this controller's visible layers. Both fields accept **0 = unlimited**. These caps affect the preview only; Update and final render retain the full accepted population.
 
-The cache prepares for both settings within its resource allowance, so navigation can be lower or higher than idle. In 0.81.7, an oversized Point Cloud request uses a bounded sample and reports the memory reduction; switching from Proxy or Mesh returns to points even with both point limits at zero. Current-publication representations are reused across mode changes. Mesh switches to cached boxes for expensive sources that cannot fit their triangle share. Memory pressure can also select boxes; zero does not disable memory/input safeguards. The Mesh allowance is a fixed internal resource bound, not a measurement of free VRAM. A graphics failure uses bounded centre markers instead of drawing source triangles on the CPU. Cached geometry counts can exceed the drawn amount. Changing a display limit or moving the camera does not publish pending Manual edits.
+The cache prepares for both settings within its resource allowance, so navigation can be lower or higher than idle. An oversized Point Cloud request uses a bounded sample and reports the memory reduction; switching from Proxy or Mesh returns to points even with both point limits at zero. Current-publication representations are reused across mode changes. Mesh switches to cached boxes for sources that cannot fit their artist-selected triangle share. Zero does not disable memory/input safeguards. Cached geometry counts can exceed the drawn amount. Changing a display limit or moving the camera does not publish pending Manual edits.
+
+In the **0.86.8.7 candidate**, **Viewport & render > Viewport memory…** selects **Automatic** or a **Custom** allowance in MiB. It is shared by Scatter objects in that Max installation and saved outside the scene. **Apply** changes future resource admission while retaining existing display resources and Undo history. **Refresh display** retries presentation using published placements; pending Manual edits remain pending. A rejected Mesh successor keeps the previous complete display when available and reports the failure. Lowering the allowance below current usage can prevent subsequent allocations until resources are released. The displayed usage is an estimate of owned CPU and graphics resources, not measured free VRAM. Native system-headroom and graphics safety limits still apply; this preference does not control placement calculation or Auto Radius. See the [qualification and limits](plans/code-quality/DELIVERY_08687.md).
 
 Within Spline Bands, **Preview Falloff** shows bounded density samples on the receiving surfaces; blue is 0% and red is 100%. **Show Boundaries** independently draws white contour lines. **Field view** selects the highlighted Band's contribution or **Combined density**. The label reports sample/face counts: this is approximate coverage, not a fully shaded receiver or the final plant count. It describes the Band stage before other masks, spacing and cleanup. These samples and lines never become render output.
 

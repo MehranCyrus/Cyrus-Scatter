@@ -121,7 +121,8 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==332  # 0.86.8.3 adds three scene-source access actions.
+    assert len(current)==333  # 0.86.8.7 adds the installation viewport memory dialog.
+    assert 'general/previewUI/memoryButton' in current
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
     assert len(layout['sections'])==12
     for section in layout['sections']:

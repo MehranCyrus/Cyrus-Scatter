@@ -24,6 +24,7 @@ std::vector<Instance> finalize(const std::vector<Triangle>& surface,const Settin
   points=std::move(kept);own=std::move(keptR);
  }
  if(!f.relax||points.empty()||f.maxMove==0||f.strength==0)return points;
+ const SurfaceDensity density(surface,s);
  SurfaceTree tree(surface);
  std::vector<AreaMask> masks;bool hasInclude=false;for(const auto& a:s.areas){masks.emplace_back(a);hasInclude|=a.include;}
  const auto bandAt=[&](Vec3 p){for(std::size_t j=0;j<s.analyzerBands.size();++j){const auto& b=s.analyzerBands[j];
@@ -40,10 +41,7 @@ std::vector<Instance> finalize(const std::vector<Triangle>& surface,const Settin
   if(s.splineField){const auto chosen=s.splineField->sample(q,s.seed,points[i].candidateKey,s.receiverSalt);
    if(!chosen.emitted||chosen.band!=points[i].bandOwner||chosen.source!=points[i].source)return false;}
   if(s.analyzerPattern&&(originalBands[i]<0||s.analyzerBands[originalBands[i]].kind==5||bandAt(q)!=originalBands[i]))return false;
-  if(s.distribution==2){const auto& t=surface[tri];auto ab=t.b-t.a,ac=t.c-t.a,ap=q-t.a;double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),d=aa*bb-cc*cc;
-   if(d<=0)return false;double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/d,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/d;auto uv=t.uvA*(1-u-v)+t.uvB*u+t.uvC*v;
-   auto x=std::uint32_t(std::clamp(uv.x,0.0,1.0)*(s.densityWidth-1)),y=std::uint32_t((1-std::clamp(uv.y,0.0,1.0))*(s.densityHeight-1));if(s.density[y*s.densityWidth+x]<=0)return false;
-  }
+  if(s.distribution==2&&density.sample(q,tri)<=0)return false;
   bool hit=false;if(reach>0)obstacles.visit(flat(q+offsets[i]),[&](std::size_t j){if(length(flat(q+offsets[i]-blockers[j].position))<own[i]+blockerRadii[j]+f.gap)hit=true;return !hit;});return !hit;
  };
  for(unsigned iteration=0;iteration<f.iterations;++iteration){

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(CyrusSurfaceAnalyzer VERSION 0.14.1 LANGUAGES CXX)
+project(CyrusSurfaceAnalyzer VERSION 0.14.2 LANGUAGES CXX)
 option(CYRUS_ANALYZER_BUILD_MAX "Build the 3ds Max extension" ON)
 if(CYRUS_ANALYZER_BUILD_MAX)
   include("${CMAKE_CURRENT_LIST_DIR}/../cmake/CyrusMaxSDK.cmake")

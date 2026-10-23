@@ -1,0 +1,727 @@
+{
+  "schema": "cyrus.remediation-qualification/1",
+  "status": "complete",
+  "scatter_version": "0.86.8.7",
+  "analyzer_version": "0.14.2",
+  "max_years": [
+    2027
+  ],
+  "checkpoint_commit": "4185f29ca6c12bb115211be2f027977a80748ca8",
+  "production_host": {
+    "scenarios": 17,
+    "assertions": 71,
+    "results": [
+      {
+        "scenario": "R7-M01",
+        "status": "pass",
+        "assertions": 6,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-8c76811110294f5193edd88161439b79.json",
+          "sha256": "d8ef45c6024947f0bd335f680b095e0caef6bd13295f8e3c5b4b8816811c5a3b"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-8c76811110294f5193edd88161439b79.json",
+          "sha256": "a5a8c480770b3836c93d75120c6985b4939c26ffba6361a866a7e2f611c52aaa"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M02",
+        "status": "pass",
+        "assertions": 6,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-fd4328cc5c384372a62bb0922aa02022.json",
+          "sha256": "edd2a008496186c887434595c1985b7e20662ace47b3dcebb029e543b022ea16"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-fd4328cc5c384372a62bb0922aa02022.json",
+          "sha256": "9536bca0e2d26576dd9cfad36d1ff21de6ee91dba9a24aa3a259cf6420df9b64"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M03",
+        "status": "pass",
+        "assertions": 5,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-f4aa67531c2c41149dae0df43a583bbc.json",
+          "sha256": "7aacf4a7927160ecffbcf563a695585a4f2c9bd31d3d86faf1413b27bba98751"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-f4aa67531c2c41149dae0df43a583bbc.json",
+          "sha256": "1c5631f8dfbbfc2e93fb6cdaf438adfe3e7af909f456411c0e06f8c9302036f5"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M04",
+        "status": "pass",
+        "assertions": 4,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-0b599f81b0a14b79a1221c1f55cc3cb8.json",
+          "sha256": "9150c7c9da5fd64b8d645f6d87973bceb1fb3b60d0d4f3ef51c81211d6e0be5d"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-0b599f81b0a14b79a1221c1f55cc3cb8.json",
+          "sha256": "90a7c71b179794d28a4123cca84ed5f56c003724948cdedcad5e1d41a8fad894"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M05",
+        "status": "pass",
+        "assertions": 4,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-d412ee42be4e48c3bb054f70ff23ac34.json",
+          "sha256": "29a54816a5e5138b5052c2c2a91b55d617981015cf2f2e07fdcdd33e2e293fb7"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-d412ee42be4e48c3bb054f70ff23ac34.json",
+          "sha256": "8531cec928e0fc0b3bb20a91637df34ecd21f999b0dac9e4e19c57cc9284d879"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M06",
+        "status": "pass",
+        "assertions": 4,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-85253e306ea248bb824e1d0dbc87ca26.json",
+          "sha256": "3f29db4a836f415579690f350c828391a1f5cbfe96c871da9fe7db6af7c4a558"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-85253e306ea248bb824e1d0dbc87ca26.json",
+          "sha256": "e2952314a1ef94f509d621fc298135dd273f81ccc3ea11e5ecacf4b3a7ed75e8"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M07",
+        "status": "pass",
+        "assertions": 4,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-9584a3e41a7944929791cffe17739708.json",
+          "sha256": "60bfaec327a7f806aa6ae4b89ecfea37968dd63a0f834b41b0c8ae611b88c05e"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-9584a3e41a7944929791cffe17739708.json",
+          "sha256": "af7d9f79060a67f6f033f799e840fd63be05802e0ce27ef1a5f7e8cb23095130"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M08",
+        "status": "pass",
+        "assertions": 7,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-52229ff0505244298507f897c5ae0bca.json",
+          "sha256": "1b0f2bdb74cfafc21dfe8028c60272e34b8757ebc9abd03bdbb38807ea768c2f"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-52229ff0505244298507f897c5ae0bca.json",
+          "sha256": "7d776b1ecc478d1afe56585cf0f6a2540fb7b9f45f7d3c560d6b305cb5dc0154"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M09",
+        "status": "pass",
+        "assertions": 6,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-d2ee5bc90d4f4835b3ec976795739ad3.json",
+          "sha256": "b66878d576545d87c3aa7e1e0bcaf8d5449490ee5d84208691f834b6f508eb05"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-d2ee5bc90d4f4835b3ec976795739ad3.json",
+          "sha256": "4f338f097903b10406ac6b2e3673ae7383430069e77c7d19b8c0fdcb2db993bf"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M10",
+        "status": "pass",
+        "assertions": 7,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-5dad940bbd2246a89777ccb3d55a7283.json",
+          "sha256": "ae7751b02d3074ef3798f872d9470719fb31732c6a00eab6aebf47d11b46d8fe"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-5dad940bbd2246a89777ccb3d55a7283.json",
+          "sha256": "e5a0e02f1f2da8b3be860a611e60b44164aae283b76c2b2c8132a1869833c36e"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M11",
+        "status": "pass",
+        "assertions": 6,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-6c0f64880a8447b093c9f8285145c9fb.json",
+          "sha256": "f01fbcd415a4a14168250badc8ae671189d06b5b45111206d3b16b6851d85077"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-6c0f64880a8447b093c9f8285145c9fb.json",
+          "sha256": "08800a6fabc4f07c434946ca9dcfd007e58d713aa268e6778b50cd7d426442c0"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-M12",
+        "status": "pass",
+        "assertions": 7,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-d225a13242f746de8a3e5112cac0e3f8.json",
+          "sha256": "95b174e48b6d05081e90476473a6912b30fac8a695ecc36c8e073ab13324824d"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-d225a13242f746de8a3e5112cac0e3f8.json",
+          "sha256": "ed760acd27ea278dfdc3f1c2d417284b140b93150731fecd1d823fc0c28561a4"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-F00",
+        "status": "pass",
+        "assertions": 1,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-e80e27e320db495d9b180db2b7c8c7d6.json",
+          "sha256": "43df5afdc15e794551a3417b902b277741dd3802ed96163dd2c7df643b4f3652"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-e80e27e320db495d9b180db2b7c8c7d6.json",
+          "sha256": "15313969a47b57e28dba79c4122142ea77c4f89409b00e67820f0c71b3214c62"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification.json",
+          "sha256": "769303025225e8757beb6eab8bb5a015a1a56e5c76f0f3f8370eab376a303551"
+        },
+        "run_id": "a21af5b7b7754332890638268e11789d",
+        "artifact_id": "9c23aeb2cd5d82d805b234b2be92f09f605715e7e8ab7d67844a8c3ef7d8a145",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R4-M11",
+        "status": "pass",
+        "assertions": 1,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-a18d756642a0418a972fe61330783f68.json",
+          "sha256": "da2475a548fe7831d616dbe10e790b6673ea1d29f044eb8489064ecc2d165337"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-a18d756642a0418a972fe61330783f68.json",
+          "sha256": "aed1de5626665713485df07454e4c3e77e790d65bef076d37dd58d4d2b9be31e"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R3-M07",
+        "status": "pass",
+        "assertions": 1,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-766154146c4941bfbbf81efd09d729b8.json",
+          "sha256": "4fae0cdd6df5b990e02ae5a6d4916d5203b0fff492be31558904d56bfb182528"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-766154146c4941bfbbf81efd09d729b8.json",
+          "sha256": "e0fa32ca3b43fd39ffd7d838be86a830d2d4c89b71a6812c99254f616741dbe4"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R3-M08",
+        "status": "pass",
+        "assertions": 1,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-254256060a8b4accb23e3c13fc1b33a2.json",
+          "sha256": "93eb31896e47f5605949568bc48d6c391a99047c00fcd3ff31548601991665f4"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-254256060a8b4accb23e3c13fc1b33a2.json",
+          "sha256": "b7c176b062df529a96205da921bfed7358621a486676f458b38bd14efd8e37eb"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R5-M02",
+        "status": "pass",
+        "assertions": 1,
+        "result": {
+          "path": "build/remediation-08687-20261023/host08/result-37dbf943b1b04fc4951110157cbb9717.json",
+          "sha256": "2523603312fc90fd0b236a751811c28c10e35e6bd4c1d596b6d63ad973cbff94"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/host08/request-37dbf943b1b04fc4951110157cbb9717.json",
+          "sha256": "62566375f0fe7d112a40ffb18379c008cad30526f4a9b27b4480ea4fffd515af"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/host08/qualification-5d0941105382453f94c135809735ccc3.json",
+          "sha256": "f0f04d0b6cfad67cd361bf6e44bf5efb1aea705e22c73c7f4a86dde872de9288"
+        },
+        "run_id": "5d0941105382453f94c135809735ccc3",
+        "artifact_id": "062ff36f2fc91eed5d26b91a57a003ed7185890292ba110447f4b1163e0b3aa4",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      }
+    ]
+  },
+  "fault_host": {
+    "scenarios": 3,
+    "assertions": 16,
+    "results": [
+      {
+        "scenario": "R7-F01",
+        "status": "pass",
+        "assertions": 6,
+        "result": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/result-4de29b569cdb42f8a588a4f048518d43.json",
+          "sha256": "25f363fb72d3048754f65046062df209b8688052be66f54f65ea034c4ef6da88"
+        },
+        "request": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/request-4de29b569cdb42f8a588a4f048518d43.json",
+          "sha256": "bffb6c13e21066ed53ecda6c24a63650b51952ad87962b1987921f7f69fc8cac"
+        },
+        "qualification": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/qualification.json",
+          "sha256": "d09ae8a44fddcff8c2450e7f18b5a725d0d047f4a4e3de3ac807fe5a037c8043"
+        },
+        "run_id": "64a68de686e74384b9412c00e2f29224",
+        "artifact_id": "d0f1ff96b33fb285f487d3725e12c8f1d990a354a84e67fb7144180324515f0b",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "ac5c286e83827edef702ca7c6818a9ec97ac3d8d9101477d216f8d894be64a68",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-F02",
+        "status": "pass",
+        "assertions": 6,
+        "result": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/result-73361b85ec8b49b595e7278fc0a832ac.json",
+          "sha256": "eb8dd68c1f8fab873a6ff096e5a808316f31325e57ca7428c40ad1ab6a2a66fa"
+        },
+        "request": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/request-73361b85ec8b49b595e7278fc0a832ac.json",
+          "sha256": "2e71053ffabe54398fd808f531c3755fcac1629a8d69cc36699bbc0d8e9228e7"
+        },
+        "qualification": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/qualification.json",
+          "sha256": "d09ae8a44fddcff8c2450e7f18b5a725d0d047f4a4e3de3ac807fe5a037c8043"
+        },
+        "run_id": "64a68de686e74384b9412c00e2f29224",
+        "artifact_id": "d0f1ff96b33fb285f487d3725e12c8f1d990a354a84e67fb7144180324515f0b",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "ac5c286e83827edef702ca7c6818a9ec97ac3d8d9101477d216f8d894be64a68",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-F03",
+        "status": "pass",
+        "assertions": 4,
+        "result": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/result-ed3f145eebad4a1cbbcd5e29cda4dde9.json",
+          "sha256": "f9c4b419a117b3108df6c9b2f8f79d164f4cde55d14d02f628b4156c5f469ac8"
+        },
+        "request": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/request-ed3f145eebad4a1cbbcd5e29cda4dde9.json",
+          "sha256": "16b761472a690867b02cececfd17bef9c645319fbfccaf7a63bcfd552e9963ce"
+        },
+        "qualification": {
+          "path": "build/mcp-qualification/foundation-spline-remediation08687-fault04/qualification.json",
+          "sha256": "d09ae8a44fddcff8c2450e7f18b5a725d0d047f4a4e3de3ac807fe5a037c8043"
+        },
+        "run_id": "64a68de686e74384b9412c00e2f29224",
+        "artifact_id": "d0f1ff96b33fb285f487d3725e12c8f1d990a354a84e67fb7144180324515f0b",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "ac5c286e83827edef702ca7c6818a9ec97ac3d8d9101477d216f8d894be64a68",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      }
+    ]
+  },
+  "installer_host": {
+    "scenarios": 2,
+    "assertions": 15,
+    "results": [
+      {
+        "scenario": "R7-I01",
+        "status": "pass",
+        "assertions": 12,
+        "result": {
+          "path": "build/remediation-08687-20261023/installer-host02/result-f0fa5c73d45e4e0482a1970fab4cb5e4.json",
+          "sha256": "6c7ba61c233872983834b05bde7acf53d5a7071bfe2329ab5ade5308d3d8b4a5"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/installer-host02/request-f0fa5c73d45e4e0482a1970fab4cb5e4.json",
+          "sha256": "237ec9afd5684d6c7b18115993ed074a2dcb0098cec6cd0806c676510680d676"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/installer-host02/pre-installer-restart-b74c76da074a4d8da3c69257d1e5f900/qualification.json",
+          "sha256": "5a3d1cf0ca026b8a95878008f0bd3b3fdced2c9cae5c1ebb0fa19f88b8e17a01"
+        },
+        "run_id": "4677509a3e7246f7b77f74d275702a77",
+        "artifact_id": "a198051619bafb881a515186b695477a61a0c64cdc4dac05cabfe1649c83dfbe",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      },
+      {
+        "scenario": "R7-I03",
+        "status": "pass",
+        "assertions": 3,
+        "result": {
+          "path": "build/remediation-08687-20261023/installer-host02/result-6b8b765d1c7e44a69c96d2b1cfd9727f.json",
+          "sha256": "21cbc0d3bb0977916341d5132185e288269a6d61112be9f786354c9801d6146c"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/installer-host02/request-6b8b765d1c7e44a69c96d2b1cfd9727f.json",
+          "sha256": "66899f8df4ffed8f349c33774565a9e4c4154e6e55dc4f12d8dd8508ecdeeb57"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/installer-host02/qualification.json",
+          "sha256": "ea3111c0e31402748a1b389560f73af8e7fcf5965ba03b6756a2558ad3a93138"
+        },
+        "run_id": "d14079dd93b54014a2075028acf9b72d",
+        "artifact_id": "342a84e67b5bab11749dbef1d60d15261ca27b009f1c6d50bd1e5d28ff9946ab",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      }
+    ]
+  },
+  "stale_helper_host": {
+    "scenarios": 1,
+    "assertions": 2,
+    "results": [
+      {
+        "scenario": "R7-I02",
+        "status": "pass",
+        "assertions": 2,
+        "result": {
+          "path": "build/remediation-08687-20261023/installer-stale02/result-9404d45e9bb1465f9a6349e19094c42a.json",
+          "sha256": "df16f66cc5b5791885bba4c7a664f9755a27138bdd9528261bbe41c0c7b9e47d"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/installer-stale02/request-9404d45e9bb1465f9a6349e19094c42a.json",
+          "sha256": "81aeebdb3a4fcb06f435fd4c64744ebc28032b8b29b13525eea9ca7d80ed54d9"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/installer-stale02/qualification.json",
+          "sha256": "2d64c5848d50662bc09f14fb8eb98b4e5bd942d93be94256daa28a3dd5cb4778"
+        },
+        "run_id": "149db59b18d94a8cbdfd2b78f353f74c",
+        "artifact_id": "6bd4df674528d0009e5663cdf26b2a676adba4cd8ad8bd36d303a75d0b09930b",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      }
+    ]
+  },
+  "scatter_stale_helper_host": {
+    "scenarios": 1,
+    "assertions": 2,
+    "results": [
+      {
+        "scenario": "R7-I04",
+        "status": "pass",
+        "assertions": 2,
+        "result": {
+          "path": "build/remediation-08687-20261023/installer-scatter-stale01/result-27e07440458e43a5bdf0aee5c50c4477.json",
+          "sha256": "69fe8d39c0d18c9427bf98bc13cf50d28adbeb55d1a372cce8d4e7b5c4a6edb5"
+        },
+        "request": {
+          "path": "build/remediation-08687-20261023/installer-scatter-stale01/request-27e07440458e43a5bdf0aee5c50c4477.json",
+          "sha256": "3f05528963078bf6337d254a13a26f00d87edf5f58e79885d891826e037e37e2"
+        },
+        "qualification": {
+          "path": "build/remediation-08687-20261023/installer-scatter-stale01/qualification.json",
+          "sha256": "3deeb3f453c1fcaff8f85d466f807df0762819f8a3d6ae38d1db9ba65e9dda18"
+        },
+        "run_id": "c6665b4245704192afcf304cb9413e8c",
+        "artifact_id": "3ba2a3d95e0c559d564f320177d524b3c5300cae86d27978f9d7206db8fb7fbe",
+        "loaded_product_hashes": {
+          "AminScatter.dlx": "6351b7410eb157bd6706a5c2d439f571f96f1884f16a136fa5d21a0c40aff817",
+          "AnalyzerScript": "256ec6a25176417d2d45ec7f7ef1262ca3ffec1332f57965c77df7883a56ae69",
+          "CyrusGallery.dll": "61b85ff35de28d5b809845a950b8db4835012a78090adfed56a57575bd85155e",
+          "CyrusSurfaceAnalyzer.dlx": "ddf00daa18fbb186ed1275e8367a4d93714762d0429cab90486dc412316f04aa",
+          "Scatter": "4d1e117a1f7d89f03a72671f55f7fbeb02895c585da1cca03d57e59fd13218cb"
+        }
+      }
+    ]
+  },
+  "host_assertions": 106,
+  "checks": {
+    "native": {
+      "path": "build/remediation-08687-20261023/scatter05/receipt.json",
+      "sha256": "68271a0a588f1594d3e5ebca96c6162e8ec6e7f7ce53332e3a00c68f21b4277d"
+    },
+    "fault_native": {
+      "path": "build/remediation-08687-20261023/scatter-fault04/receipt.json",
+      "sha256": "e2f881149f4f6da30d3e4a0395805952a62a276fe6682b3deb44bfb702381d9d"
+    },
+    "analyzer_native": {
+      "path": "build/remediation-08687-20261023/analyzer02/receipt.json",
+      "sha256": "539881509c086d16e6320d647146e3791b9bf3a5c71e646049b895540d7db58c"
+    },
+    "packages": {
+      "path": "build/remediation-08687-20261023/final-packages03/recipe-receipt.json",
+      "sha256": "12ed6aa743a0efefe2357d984bdb80f2bdbe9e94703b9aabcecd6f77255d8af7"
+    },
+    "generated": {
+      "path": "build/remediation-08687-20261023/generated-final/generated-check.json",
+      "sha256": "69828a95b515d7684e4228e8b3eb4eea6db547d78d1a42e53c8b615ab92f39f7",
+      "controls": 333
+    },
+    "python": {
+      "path": "build/remediation-08687-20261023/python-tests-final.txt",
+      "sha256": "d4e5c19e7cab0a1142983f131949274c3bc3baec7dd2f9a6096d8b75df6360dc",
+      "passed": 260
+    },
+    "exe": {
+      "path": "build/r867e06/receipt.json",
+      "sha256": "06e383100312fe6f9b9f141f4503f94c90861fdaf4a3780f180a43da48e8cdc5"
+    },
+    "package_audit": {
+      "path": "build/remediation-08687-20261023/final-packages03-audit.json",
+      "sha256": "8e5d0999dde16cf296b93a10bed2645fa655d37ccfbad2cbae1647ee8f333e90"
+    }
+  },
+  "packages": {
+    "CyrusScatter-0.86.8.7-Max2027.mzp": {
+      "path": "dist/CyrusScatter-0.86.8.7-20261023/CyrusScatter-0.86.8.7-Max2027.mzp",
+      "sha256": "a7a504ab0db219dc90c72c7f3804d5bca0710cff6550b9c3c24a8119b9f257ac"
+    },
+    "CyrusScatter-0.86.8.7-Setup.exe": {
+      "path": "dist/CyrusScatter-0.86.8.7-20261023/CyrusScatter-0.86.8.7-Setup.exe",
+      "sha256": "e8082a9d3e71189851ceb81f90197e90376f146cf6a9d350f1962bc8cbf9942f"
+    },
+    "CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp": {
+      "path": "dist/CyrusScatter-0.86.8.7-20261023/CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp",
+      "sha256": "825da3d659520c91227fd21dd5844cf41b59add0728fa86f62dd0af175542aeb"
+    }
+  },
+  "limits": [
+    "Only Max 2027 is newly qualified; earlier hosts retain their historical packages.",
+    "Fault modules are privately built test artifacts and absent from shipping packages.",
+    "Installer host checks bind the exact final03 packages; earlier adapter/candidate receipts remain historical.",
+    "CPU/device readings are owned resource estimates, not process peak or active free VRAM.",
+    "Finite 32-million-face metadata cap is not qualification of every scene at that size.",
+    "No malformed Max SDK object was injected; raw receiver guards have native tests and source-order review.",
+    "Scripted UI handler checks do not qualify physical input, DPI, every renderer, GPU device loss or a long soak.",
+    "Process-kill/retry tests do not establish power-loss durability.",
+    "Original Paint/private assets/artist profiles preserved; no artist install or website publication.",
+    "Knowledge index remains stale; maintained source documentation is authoritative."
+  ]
+}

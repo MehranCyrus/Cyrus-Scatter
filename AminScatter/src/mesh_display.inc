@@ -81,9 +81,12 @@ technique11 CyrusTextureMesh {pass P0 {
 }}
 )fx";
 
-class MeshItem final : public ICustomRenderItem {
+class MeshItem final : public PreparedRenderItem {
     const std::shared_ptr<Generation> generation;
     const std::size_t layerIndex,groupIndex;
+    // A copied SDK handle and its physical allocation lease travel together.
+    // Declare leases before handles so handles release first at last ownership.
+    std::shared_ptr<PreviewMemory> geometryMemory,instanceMemory,appearanceMemory,scratchMemory;
     VertexBufferHandleArray buffers;
     VertexBufferHandleArray boxBuffers;
     MaterialRequiredStreams format;
@@ -107,7 +110,12 @@ public:
         if(previous && previous->fullGeometry==fullGeometry) {
             const auto& before=previous->generation->layers[previous->layerIndex];
             const auto& after=generation->layers[layerIndex];
-            sharedBuffers=before.mesh==after.mesh;sharedGeometry=true;format=previous->format;++bufferReuses;
+            // Geometry compatibility was proved by reusable(). A new snapshot
+            // wrapper (for example a material refresh) need not allocate an
+            // identical instance/Band stream again. Its copied handle keeps
+            // the same physical instanceMemory lease below.
+            sharedBuffers=previous->sameInstances(after,group);
+            sharedGeometry=true;format=previous->format;++bufferReuses;
             if(sharedBuffers){buffers=previous->buffers;boxBuffers=previous->boxBuffers;}
             else for(int i=0;i<3;++i){if(fullGeometry)buffers.append(previous->buffers[i]);boxBuffers.append(previous->boxBuffers[i]);}
             sharedMaterial=sameStyle(before,after)&&before.mesh->groups[group].color==after.mesh->groups[group].color;
@@ -118,16 +126,38 @@ public:
                 texture=previous->texture;retainedUV=previous->retainedUV;sharedAppearance=previous->textured;
                 if(sharedAppearance&&sharedMaterial){textureMaterial=previous->textureMaterial;sharedTextureMaterial=true;}
             }
-            if(sharedBuffers&&sameStyle(previous->generation->layers[previous->layerIndex],generation->layers[layerIndex]) &&
+            if(sharedBuffers&&sharedMaterial &&
                previous->generation->layers[previous->layerIndex].appearance==generation->layers[layerIndex].appearance) {
                 textureMaterial=previous->textureMaterial;texture=previous->texture;textureBuffers=previous->textureBuffers;
                 textureFormat=previous->textureFormat;textured=previous->textured;
                 material=previous->material;ready.store(true,std::memory_order_release);++generation->ready;
             }
         }
+        const auto& layerData=generation->layers[layerIndex];const auto& sourceData=layerData.mesh->groups[groupIndex];
+        std::size_t appearanceBytes=0;
+        if(fullGeometry&&layerData.appearance&&groupIndex<layerData.appearance->sources.size())
+            if(const auto& data=layerData.appearance->sources[groupIndex])appearanceBytes=viewport_memory::add(
+                viewport_memory::multiply(data->uv.size(),sizeof(MaterialUV)),viewport_memory::multiply(data->pixels.size(),4));
+        const auto resources=viewport_memory::meshPlan(sourceData.faces.size(),sourceData.instances.size(),fullGeometry,
+            appearanceBytes,sizeof(Point3),4*sizeof(Point3)+sizeof(float));
+        geometryMemory=sharedGeometry?previous->geometryMemory:reserveMeshMemory(resources.geometry);
+        instanceMemory=sharedBuffers?previous->instanceMemory:reserveMeshMemory(resources.instances);
+        if(appearanceBytes)appearanceMemory=sharedAppearance?previous->appearanceMemory:reserveMeshMemory(resources.appearance);
+        scratchMemory=reserveMeshMemory({resources.scratch(!sharedGeometry,!sharedBuffers,false),0});
+        if(ready.load())scratchMemory.reset();
+        generation->accountMeshResource(geometryMemory);generation->accountMeshResource(instanceMemory);
+        generation->accountMeshResource(appearanceMemory);generation->accountMeshResource(scratchMemory);
         ++liveItems;
     }
     ~MeshItem() override { --liveItems; }
+    bool sameSlot(std::size_t layer,std::size_t group) const {
+        return layerIndex==layer&&groupIndex==group;
+    }
+    bool sameInstances(const PointLayer& next,std::size_t group) const {
+        const auto& previous=generation->layers[layerIndex];
+        return previous.mesh==next.mesh||viewport_memory::sameInstancePayload(
+            previous.mesh->groups[groupIndex],next.mesh->groups[group]);
+    }
     bool reusable(const PointLayer& next,std::size_t group) const {
         const auto& previous=generation->layers[layerIndex];
         return ready.load(std::memory_order_acquire) && !generation->failed.load() && groupIndex==group &&
@@ -136,7 +166,8 @@ public:
              previous.mesh->localBounds[group].Min()==next.mesh->localBounds[group].Min()&&
              previous.mesh->localBounds[group].Max()==next.mesh->localBounds[group].Max()));
     }
-    void Realize(DrawContext& dc) override {
+    void Realize(DrawContext& dc) override { realizeGeneration(generation,dc); }
+    void RealizeResources(DrawContext& dc) override {
         if(ready.load(std::memory_order_acquire) || generation->failed.load()) return;
         std::lock_guard<std::mutex> lock(realizeMutex);
         if(ready.load() || generation->failed.load() || !dc.GetVirtualDevice().IsValid()) return;
@@ -181,6 +212,7 @@ public:
             std::array<std::array<Point3,3>,12> boxFaces;std::size_t face=0;
             for(const auto& q:quads){boxFaces[face++]={corners[q[0]],corners[q[1]],corners[q[2]]};boxFaces[face++]={corners[q[0]],corners[q[2]],corners[q[3]]};}
             geometry(boxFaces,boxBuffers);
+            geometryMemory->commit();
             for(int field=0;field<3;++field) {
                 addField(field==0?MeshChannelPosition:MeshChannelTexcoord,field==0?0:field-1,field,0,false);
             }
@@ -198,6 +230,7 @@ public:
             }
             previewFault(4);
             upload(boxBuffers,sizeof(instances[0]),instances.size(),instances.data());
+            instanceMemory->commit();
             if(fullGeometry)buffers.append(boxBuffers[3]);
             transformUploadBytes+=4*sizeof(Point3)*instances.size();ownerUploadBytes+=sizeof(float)*instances.size();
             if(!sharedGeometry){
@@ -214,15 +247,21 @@ public:
                 if(!sharedTextureMaterial&&!textureMaterial.InitializeWithString(CStr(texturedMeshShader)))
                     throw std::runtime_error("Material shader allocation failed");
                 if(!sharedAppearance){
+                previewFault(5);
                 if(!texture.Initialize(data.width,data.width,TargetFormatA8R8G8B8))
                     throw std::runtime_error("Material texture/shader allocation failed");
                 LockedRect rect{};
                 if(!texture.WriteOnlyLockRectangle(0,rect,nullptr))throw std::runtime_error("Material texture lock failed");
+                if(!rect.pBits||rect.pitch<=0||std::size_t(rect.pitch)<std::size_t(data.width)*4){
+                    texture.WriteOnlyUnlockRectangle();throw std::runtime_error("Material texture lock returned an incomplete buffer");
+                }
                 for(int y=0;y<data.width;++y)std::memcpy(rect.pBits+std::size_t(y)*rect.pitch,data.pixels.data()+std::size_t(y)*data.width,std::size_t(data.width)*4);
                 if(!texture.WriteOnlyUnlockRectangle())throw std::runtime_error("Material texture upload failed");
+                previewFault(6);
                 if(!retainedUV.Initialize(sizeof(MaterialUV),data.uv.size(),const_cast<MaterialUV*>(data.uv.data()))||!retainedUV.RealizeToHWMemory(true))
                     throw std::runtime_error("Material UV allocation failed");
                 uploadBytes+=data.uv.size()*sizeof(MaterialUV)+data.pixels.size()*4;uploads+=2;
+                appearanceMemory->commit();
                 }
                 if(!sharedTextureMaterial){
                 textureMaterial.SetTextureParameter(_T("CyrusTexture"),texture);
@@ -244,11 +283,12 @@ public:
                 add(MeshChannelTexcoord,6,4,4*sizeof(Point3),true,VertexFieldFloat1);
                 textured=true;
             }
-            ready.store(true,std::memory_order_release);++generation->ready;
-        } catch(...) { generation->failed=true;++failures; }
+            scratchMemory.reset();ready.store(true,std::memory_order_release);++generation->ready;
+        } catch(const std::exception& error) { scratchMemory.reset();generation->fail(error.what()); }
+          catch(...) { scratchMemory.reset();generation->fail("Viewport mesh realization failed"); }
     }
     void Display(DrawContext& dc) override {
-        if(!ready.load(std::memory_order_acquire) || !generation->enabled.load() || generation->failed.load()) return;
+        if(!ready.load(std::memory_order_acquire) || !generation->visible()) return;
         auto& device=dc.GetVirtualDevice();if(!device.IsValid()) return;
         const auto world=dc.GetWorldMatrix();const auto depth=device.GetDepthStencilState();
         const auto raster=device.GetRasterizerState();const auto blend=device.GetBlendState();

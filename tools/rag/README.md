@@ -1,6 +1,16 @@
 # Local catalog and lexical search
 
-**Current maintenance — 22 October 2026:** product guidance follows
+**23 October 2026 status:** the 0.86.8.7 source/host work is recorded in the
+[current execution report](../../docs/plans/code-quality/DELIVERY_08687.md).
+The selected index remains generation
+`8a58031bf6efb27cf7c8e30a81d6059206b292269b5e5e24bf1045b704989059`.
+A final full-parent check verifies 31/48 parents and reports 17 changed parents.
+It is stale, and the watcher is stopped. Current
+source and maintained guides must be inspected directly. No successor index
+has been activated by this implementation task; documentation edits and a
+passing plugin package do not establish refreshed retrieval.
+
+**Historical maintenance — 22 October 2026:** product guidance followed
 **Scatter 0.86.8.4 / schema 59**, with scoped **Max 2027** qualification and
 independent Analyzer **0.14.1**. The corrected index is **activated**, and actual
 project-following tools verify **48/48 full-parent hashes** with no source issues.

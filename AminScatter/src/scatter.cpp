@@ -2,6 +2,7 @@
 #include "scatter.h"
 #include "spline_bands.h"
 #include "execution.h"
+#include "projected_movement.h"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -69,6 +70,36 @@ struct Sampler {
         const auto id=indices[slot]; const auto& t=triangles[id];
         const double u=std::sqrt(r.next()), v=r.next();
         return {t.a*(1-u)+t.b*(u*(1-v))+t.c*(u*v),id};
+    }
+};
+// One validated borrowed image per pass. Generation admits with its existing
+// random draw; movement only checks positive support and never consumes RNG.
+class SurfaceDensity {
+    const std::vector<Triangle>& surface_;
+    bool uv_{};
+    std::optional<cyrus::density::ImageSampler> image_;
+public:
+    SurfaceDensity(const std::vector<Triangle>& surface,const Settings& s):surface_(surface) {
+        if(s.distribution!=2)return;
+        if(s.densityImage)image_.emplace(s.densityImage->pixels,s.densityImage->width,s.densityImage->height,s.densityMapping);
+        else image_.emplace(s.density,s.densityWidth,s.densityHeight,s.densityMapping);
+        uv_=s.densityMapping.coordinates==cyrus::density::Coordinates::UV;
+        if(uv_)for(const auto& t:surface_)
+            if(!finite(t.uvA)||!finite(t.uvB)||!finite(t.uvC))
+                throw std::invalid_argument("Image density: nonfinite receiver UV coordinates; repair the selected channel. The previous result is retained.");
+    }
+    double sample(Vec3 p,std::uint32_t face) const {
+        if(!image_)return 1;
+        if(!finite(p))throw std::invalid_argument("Image density: nonfinite projected position. The previous result is retained.");
+        if(!uv_)return image_->sample(0,0,p.x,p.y,p.z);
+        if(face>=surface_.size())throw std::invalid_argument("Image density: invalid receiver face. Repair the receiver; the previous result is retained.");
+        const auto& t=surface_[face];const auto ab=t.b-t.a,ac=t.c-t.a,ap=p-t.a;
+        const double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),den=aa*bb-cc*cc;
+        if(!(den>0)||!std::isfinite(den))throw std::invalid_argument("Image density: receiver UV projection is degenerate or overflows. Repair the receiver; the previous result is retained.");
+        const double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/den,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/den;
+        const auto uv=t.uvA*(1-u-v)+t.uvB*u+t.uvC*v;
+        if(!std::isfinite(u)||!std::isfinite(v)||!finite(uv))throw std::invalid_argument("Image density: nonfinite receiver UV projection. Repair the receiver; the previous result is retained.");
+        return image_->sample(uv.x,uv.y,p.x,p.y,p.z);
     }
 };
 Vec3 closest(Vec3 p, const Triangle& t) {
@@ -148,6 +179,7 @@ std::size_t weightedIndex(const std::vector<double>& cumulative,double u) {
 #include "cluster.inc"
 }
 #include "spacing.inc"
+#include "projected_movement.inc"
 #include "orientation.inc"
 #include "boundary_falloff.inc"
 #include "edge_border.inc"
@@ -195,13 +227,7 @@ std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Se
         if(!std::isfinite(size)||size<=0) throw std::invalid_argument("Invalid cluster size");
         for(auto value:{s.clusterRoughness,s.clusterBlur,s.clusterNoise}) if(!std::isfinite(value)||value<0||value>1) throw std::invalid_argument("Invalid cluster controls");
     }
-    std::optional<cyrus::density::ImageSampler> densitySampler;
-    if(s.distribution==2) {
-        if(s.densityImage) densitySampler.emplace(s.densityImage->pixels,s.densityImage->width,s.densityImage->height,s.densityMapping);
-        else densitySampler.emplace(s.density,s.densityWidth,s.densityHeight,s.densityMapping);
-        if(s.densityMapping.coordinates==cyrus::density::Coordinates::UV)
-            for(const auto& t:surface) if(!finite(t.uvA)||!finite(t.uvB)||!finite(t.uvC)) throw std::invalid_argument("Invalid UV");
-    }
+    const SurfaceDensity density(surface,s);
     std::vector<AreaMask> masks;bool hasInclude=false;
     for(const auto& area:s.areas) {masks.emplace_back(area);hasInclude|=area.include;}
     Sampler sampler(surface); Random placement(s.seed), transforms(s.seed^0x9e3779b9u), sources(s.seed^0x85ebca6bu);
@@ -250,6 +276,10 @@ std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Se
     }
     std::vector<Instance> result; result.reserve(s.count);
     const bool moved=std::any_of(s.movement.begin(),s.movement.end(),[](Range r){return r.min!=0||r.max!=0;});
+    ProjectionWorkBudget localProjectionBudget;
+    auto& projectionBudget=s.projectionBudget?*s.projectionBudget:localProjectionBudget;
+    std::optional<detail::ProjectedMovementIndex> movementIndex;
+    if(moved&&s.projectMovement&&s.count)movementIndex.emplace(surface,sampler.indices,projectionBudget);
     Random distribution(s.seed^0xc2b2ae35u), scales(s.seed^0x27d4eb2fu), diversity(s.clusterSeed^0xa341316cu);
     const bool population=!s.analyzerPattern||std::any_of(s.analyzerBands.begin(),s.analyzerBands.end(),[](const AnalyzerBand& b){return b.kind!=5;});
     std::vector<std::pair<Vec3,std::size_t>> anchors;
@@ -319,17 +349,12 @@ std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Se
         }
         const auto densityAccepts=[&]() {
             if(s.distribution!=2||single)return true;
-            const auto& t=surface[id];const auto ab=t.b-t.a,ac=t.c-t.a,ap=p-t.a;
-            const double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),den=aa*bb-cc*cc;
-            const double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/den,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/den;
-            const auto uv=t.uvA*(1-u-v)+t.uvB*u+t.uvC*v;
-            const double weight=densitySampler->sample(uv.x,uv.y,p.x,p.y,p.z);
+            const double weight=density.sample(p,id);
             return distribution.next()<weight;
         };
         const Vec3 offset{transforms.range(s.movement[0]),transforms.range(s.movement[1]),transforms.range(s.movement[2])};
         if(moved && s.projectMovement) {
-            const Vec3 target=p+offset; double best=std::numeric_limits<double>::infinity();
-            for(auto j:sampler.indices) { const auto q=closest(target,surface[j]); const double d=dot(q-target,q-target); if(d<best) {best=d;p=q;id=j;} }
+            const auto projected=movementIndex->project(p+offset);p=projected.first;id=projected.second;
         }
         else if(moved) p=p+offset;
         if(!densityAccepts())continue;
@@ -391,11 +416,7 @@ std::vector<Instance> scatterImpl(const std::vector<Triangle>& surface, const Se
                 if(!chosen.emitted||chosen.band!=result[i].bandOwner||chosen.source!=result[i].source)return false;}
             if(s.analyzerPattern&&bandAt(p)!=originalBands[i]) return false;
             if(s.distribution==2) {
-                const auto& t=surface[tri];const auto ab=t.b-t.a,ac=t.c-t.a,ap=p-t.a;
-                const double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),den=aa*bb-cc*cc;
-                const double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/den,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/den;
-                const auto uv=t.uvA*(1-u-v)+t.uvB*u+t.uvC*v;
-                if(densitySampler->sample(uv.x,uv.y,p.x,p.y,p.z)<=0) return false;
+                if(density.sample(p,tri)<=0) return false;
             }
             return true;
         };

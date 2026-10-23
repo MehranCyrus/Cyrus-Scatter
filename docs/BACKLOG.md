@@ -1,8 +1,12 @@
 # Current work and acceptance
 
+**Current test delivery: [Scatter 0.86.8.7 with Analyzer 0.14.2, Max 2027 only](plans/code-quality/DELIVERY_08687.md).** The seven confirmed [R01–R07 findings](plans/code-quality/REVIEW_REMEDIATION_PLAN_20261023.md) are repaired within the report's evidence limits. The [high-poly Mesh work](plans/viewport-memory/HIGH_POLY_MESH_PLAN_20261023.md) adds coordinated memory admission and the Viewport memory preference. Exact host checks cover full meshes, Manual/Live, Undo/save/reopen, late failure retention, library browsing and installer recovery. Broad physical-input/DPI, renderer, device-loss and long-soak acceptance remain separate; malformed SDK-object injection was not executed.
+
+The installer correction shares Analyzer's MZP/EXE transaction path, publishes verified create-only v2 backups, preserves older differing backups with migration records and blocks unknown/custom files or registrations. Version 2 build evidence binds selected inputs and nested producers. Original Paint, schema 59 and content revision 0.86.7 remain preserved. The historical [0.86.8.6 combined delivery](plans/combined-installer/DELIVERY_08686.md) retains its original Max 2024/2026/2027 qualification with Analyzer 0.14.1.
+
 The [0.86.8.4 correction](plans/installer-panels/DELIVERY_08684.md) preserves Max's saved rollout categories and repairs recognized no-receipt installer migrations. Native whole-rollout column packing remains; this does not close B21 cold construction/performance or physical all-control acceptance.
 
-Current delivery: [0.86.8.2 clearance UI and visible Relax](plans/source-clearance/DELIVERY_08682.md), with separately matched Max 2024/2026/2027 packages. Expanded source fields now fit narrow panels; both Relax modes are visible before Advanced, and Boundary-only distance is editable. Native, host, lifecycle and installer checks passed within the report's scope. Earlier correction records below retain their original scope.
+Historical delivery: [0.86.8.2 clearance UI and visible Relax](plans/source-clearance/DELIVERY_08682.md), with separately matched Max 2024/2026/2027 packages. Expanded source fields now fit narrow panels; both Relax modes are visible before Advanced, and Boundary-only distance is editable. Native, host, lifecycle and installer checks passed within the report's scope. Earlier correction records below retain their original scope.
 
 The independent 0.86.8 review's F1 stale refill blocker and F2 unused-source
 schedule regressions are fixed with stateful native regressions. F3 compilation
@@ -144,6 +148,8 @@ and the observed cold whole-scene redraw uncertainty remain separate follow-up
 work. The installed package remains 0.81.6 until a new delivery is authorized.
 
 ## Final artist and release gates
+
+- [ ] Final Max 2027 acceptance of the [0.86.8.7 candidate](plans/code-quality/DELIVERY_08687.md), including remaining fault/lifecycle host checks, current source/package/loaded identities and explicit R01–R07 reconciliation. Older three-host passes and installer-only results do not close this gate.
 
 - [ ] Broad acceptance of the 0.81.3 source corrections remains separate from the
   [0.81.5 scoped campaign](plans/terrace-0815/REPORT.md), which compiles/tests the

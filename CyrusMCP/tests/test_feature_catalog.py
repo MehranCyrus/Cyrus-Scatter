@@ -10,7 +10,7 @@ def test_catalog_accounts_for_every_current_control_and_feature_family():
     expected={(group,section,c["name"],c["kind"]) for group,sections in inventory.items() if isinstance(sections,dict)
               for section,controls in sections.items() for c in controls}
     actual={(c["group"],c["section"],c["name"],c["kind"]) for c in catalog["controls"]}
-    assert expected==actual and len(actual)==len(catalog["controls"])==332  # Three explicit scene-source access actions.
+    assert expected==actual and len(actual)==len(catalog["controls"])==333  # Includes the installation viewport memory dialog.
     assert catalog['development_version']==re.search(r'project\(CyrusScatter VERSION ([0-9.]+)',(root/'AminScatter/CMakeLists.txt').read_text())[1]
     assert catalog['calculation_model']=='CyrusUnified2'
     features={f["feature_id"] for f in catalog["features"]}

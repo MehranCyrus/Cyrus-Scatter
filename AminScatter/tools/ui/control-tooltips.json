@@ -9,6 +9,7 @@
   "previewUI": {
     "displayModeDrop": "Placement points shows one point per placement. Textured mesh uses instanced geometry with source materials and leaf cutouts. Display limits affect preview only.",
     "identificationDrop": "Identification colors for simplified previews. Choose Textured mesh in Display mode for source materials, UV textures and leaf cutouts.",
+    "memoryButton": "Choose Automatic or a custom memory allowance for this Max installation. Changing it does not calculate scatter.",
     "radiusMetricDrop": "Inspect the published radius pair. This display choice does not change any spacing rule. 3D uses three orthogonal rings."
   },
   "surface": {

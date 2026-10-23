@@ -15,6 +15,8 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT/'tools'))
+import build_inputs
 
 
 def run(args, env):
@@ -63,6 +65,39 @@ def verify_gallery(path, version, year):
         or receipt.get('source_sha256') != sha((ROOT/'AminScatter/ui/LibraryGallery.cs').read_bytes())
         or receipt.get('shared_source_sha256') != sha((ROOT/'AminScatter/shared/LibraryLocation.cs').read_bytes())):
         raise ValueError('Gallery release/host/source/artifact differs from its verified build receipt. Rebuild the gallery.')
+    build_inputs.verify_managed(path, 'gallery', ROOT, (
+        'AminScatter/ui/LibraryGallery.cs', 'AminScatter/shared/LibraryLocation.cs',
+        'AminScatter/CMakeLists.txt', 'AminScatter/tools/build_gallery.py', 'tools/build_inputs.py'))
+    return receipt
+
+
+def verify_installer(path):
+    return build_inputs.verify_managed(path, 'installer-core', ROOT,
+        (*build_inputs.CORE_SOURCES, 'AminScatter/tools/build_installer.py', 'tools/build_inputs.py'))
+
+
+def verify_native_receipt(path, project, year, binaries):
+    receipt=json.loads(Path(path).read_text(encoding='utf-8'))
+    expected='scatter' if project=='AminScatter' else 'analyzer'
+    if (receipt.get('schema')!='cyrus.native-build/2' or receipt.get('status')!='complete'
+            or receipt.get('project')!=expected or receipt.get('max_year')!=year
+            or not receipt.get('clean_compilation') or receipt.get('preview_fault_lab')
+            or receipt.get('placement_qualification')
+            or {stage['stage'] for stage in receipt.get('stages',[])}!={'configure','build','tests'}
+            or any(stage['exit_code'] for stage in receipt['stages']) or not receipt.get('compiler_dependencies')):
+        raise ValueError('A complete matching version 2 native receipt is required; rebuild the selected product.')
+    manifest=receipt['input_manifest']
+    if receipt['input_manifest_sha256']!=build_inputs.identity(manifest):
+        raise ValueError('Native input manifest identity differs.')
+    build_inputs.verify_frozen(manifest,ROOT)
+    if build_inputs.source_manifest(ROOT,project,receipt['source_selection'])['files']!=receipt['sources']:
+        raise ValueError('Native selected source set changed after qualification.')
+    for name,artifact in binaries.items():
+        original=Path(receipt['build_directory'])/name
+        recorded=receipt['binaries'].get(build_inputs.key(original,ROOT))
+        if not recorded or recorded!=build_inputs.digest(artifact):
+            raise ValueError('Native package artifact differs from its complete build receipt: '+name)
+    return receipt
 
 
 def reject_development_binary(filename, data, *, allow_owned_preview=False, allow_owned_placement=False):
@@ -200,12 +235,28 @@ def pattern_payload(folder):
 def package(project, name, version, native_names, script_name, args, build_dir):
     if project == 'AminScatter' and version != scatter_version():
         raise ValueError('Requested Scatter version differs from generated source. Use a frozen checkout for historical versions.')
-    payload = {}
+    native_receipts=getattr(args,'native_receipts',{})
+    native_receipt_path=Path(native_receipts.get(project,build_dir/project/'receipt.json'))
+    native_receipt=verify_native_receipt(native_receipt_path,project,args.max_year,
+        {filename:build_dir/project/filename for filename in native_names})
+    installer=build_dir/'AminScatter/CyrusInstaller.dll'
+    installer_receipt=verify_installer(installer)
+    producer_receipts={'native':{'schema':native_receipt['schema'],
+        'receipt_sha256':build_inputs.digest(native_receipt_path),
+        'input_manifest_sha256':native_receipt['input_manifest_sha256']},
+        'installer':build_inputs.producer_link(installer,installer_receipt)}
+    package_inputs=build_inputs.frozen([ROOT/'tools/build_max.py',ROOT/'tools/build_inputs.py',
+        ROOT/project/'scripts'/script_name,ROOT/project/'CMakeLists.txt',native_receipt_path,
+        *list((ROOT/project/'installer').iterdir()),installer,installer.with_suffix('.build.json'),
+        *(build_dir/project/filename for filename in native_names)],
+        {'product':project,'version':version,'max_year':args.max_year,'toolset':args.tools_version,
+         'windows_sdk':args.windows_sdk,'producers':producer_receipts},ROOT)
+    payload = {'CyrusInstaller.dll':installer.read_bytes()}
     for filename in native_names:
         payload[filename] = (build_dir / project / filename).read_bytes()
         reject_development_binary(filename, payload[filename])
     team_key = require_team_authority(payload['AminScatter.dlx'], args.team_trust_header) if project == 'AminScatter' else None
-    native_id = sha(b''.join(payload[n] for n in sorted(payload)))[:12]
+    native_id = sha(b''.join(payload[n] for n in sorted(native_names)))[:12]
     analyzer_script = (ROOT / project / 'scripts' / script_name).read_bytes() if project == 'CyrusSurfaceAnalyzer' else b''
     analyzer_tokens = {
         '__MAX_YEAR__': args.max_year, '__MAX_VERSION__': (args.max_year - 1998) * 1000,
@@ -213,15 +264,26 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         '__NATIVE_SHA256__': sha(payload.get('CyrusSurfaceAnalyzer.dlx', b'')),
         '__SCRIPT_SHA256__': sha(analyzer_script),
         '__STARTUP_SHA256__': sha((ROOT/project/'installer/CyrusSurfaceAnalyzerStartup.ms').read_text(encoding='utf-8-sig').encode('utf-8')) if project == 'CyrusSurfaceAnalyzer' else '',
+        '__HELPER_SHA256__': sha(payload['CyrusInstaller.dll']),
+        '__HELPER_MVID__': installer_receipt['module_version_id'],
     }
+    if project=='CyrusSurfaceAnalyzer':
+        descriptor=('CyrusAnalyzerPackage1\n'+str(args.max_year)+'\n'+version+'\n'+analyzer_tokens['__RUNTIME_ID__']+'\n'+
+            analyzer_tokens['__NATIVE_SHA256__']+'\n'+analyzer_tokens['__SCRIPT_SHA256__']+'\n'+analyzer_tokens['__STARTUP_SHA256__']+'\n').encode('utf-8')
+        payload['AnalyzerPackage.txt']=descriptor
+        analyzer_tokens['__DESCRIPTOR_SHA256__']=sha(descriptor)
     for path in sorted((ROOT / project / 'installer').iterdir()):
         if path.is_file():
             text = path.read_text(encoding='utf-8-sig')
             if project == 'AminScatter':
                 if path.name == 'install.ms' and '__MAX_VERSION__' not in text:
                     raise RuntimeError('Missing Scatter installer host guard')
+                if path.name == 'install.ms' and any(token not in text for token in ('__HELPER_SHA256__', '__HELPER_MVID__')):
+                    raise RuntimeError('Missing Scatter installer helper identity guard')
                 for token, value in {'__MAX_YEAR__': args.max_year,
                                      '__MAX_VERSION__': (args.max_year - 1998) * 1000,
+                                     '__HELPER_SHA256__': sha(payload['CyrusInstaller.dll']),
+                                     '__HELPER_MVID__': installer_receipt['module_version_id'],
                                      '__NATIVE_ID__': native_id, '__VERSION__': version}.items():
                     text = text.replace(token, str(value))
             else:
@@ -237,13 +299,13 @@ def package(project, name, version, native_names, script_name, args, build_dir):
             payload[path.name] = text.encode('utf-8')
     payload['CyrusScatter.ms' if project == 'AminScatter' else script_name] = (ROOT / project / 'scripts' / script_name).read_bytes()
     if project == 'AminScatter':
-        verify_gallery(build_dir / project / 'CyrusGallery.dll', version, args.max_year)
+        gallery_path=build_dir/project/'CyrusGallery.dll'
+        gallery_receipt=verify_gallery(gallery_path, version, args.max_year)
+        gallery_producer=build_inputs.producer_link(gallery_path,gallery_receipt)
+        if native_receipt.get('producer_receipts',{}).get('gallery')!=gallery_producer:
+            raise ValueError('Gallery producer differs from the complete native build receipt.')
+        producer_receipts['gallery']=gallery_producer
         payload['CyrusGallery.dll'] = (build_dir / project / 'CyrusGallery.dll').read_bytes()
-        installer = build_dir / project / 'CyrusInstaller.dll'
-        installer_receipt = json.loads(installer.with_suffix('.build.json').read_text(encoding='utf-8'))
-        if installer_receipt['artifact_sha256'] != sha(installer.read_bytes()) or installer_receipt['source_sha256'] != sha((ROOT / project / 'setup/InstallEngine.cs').read_bytes()):
-            raise RuntimeError('Installer core source/artifact identity differs from its build receipt.')
-        payload['CyrusInstaller.dll'] = installer.read_bytes()
         payload['Clipper2-LICENSE.txt'] = (ROOT / project / 'third_party/clipper2/LICENSE').read_bytes()
         payload['Clipper2-NOTICE.txt'] = (ROOT / project / 'third_party/clipper2/CYRUS-CHANGES.md').read_bytes()
         payload['SurfaceGeodesic-LICENSE.txt'] = (ROOT / project / 'third_party/geodesic/LICENSE').read_bytes()
@@ -343,7 +405,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Statistics & diagnostics > Advanced records bounded process-wide events. Start, Stop and Save work without MCP.\n'
            'Read recording status explicitly; the diagnostic controls have no polling timer or background disk writes.\n'
            'Box, Sphere and Pyramid proxies use retained instanced geometry; CPU fallback remains available.\n'
-           'Surface Analyzer 0.14.1 is independently installed; this Scatter package does not change it.\n'
+           'Surface Analyzer 0.14.2 is independently installed; this Scatter package does not change it.\n'
            'Outdated guides retain the last complete scatter. Analyze first, then Update scatter in Manual mode.\n'
            if project == 'AminScatter' else 'Published guide freshness is saved. Older guides need one explicit Analyze.\n'
            'Pending geometry events are checked before validation, analysis and saving.\n') +
@@ -374,12 +436,15 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     manifest = dict(product=name, version=version, max_year=args.max_year,
                     toolset=args.tools_version, windows_sdk=args.windows_sdk,
                     configuration='Release', native_id=native_id,
-                    files={n: sha(data) for n, data in sorted(payload.items())})
+                    files={n: sha(data) for n, data in sorted(payload.items())},
+                    build_evidence_schema='cyrus.package-inputs/2',producer_receipts=producer_receipts,
+                    package_inputs_sha256=build_inputs.identity(package_inputs))
     if team_key:
         manifest['licensing'] = {'mode': 'offline-team', 'key_id': team_key, 'term_days': 30}
     payload['manifest.json'] = (json.dumps(manifest, indent=2) + '\n').encode('utf-8')
     args.output.mkdir(parents=True, exist_ok=True)
     target = args.output / f'{name.replace(" ", "")}-{version}-Max{args.max_year}.mzp'
+    target.with_suffix('.build.json').write_text(json.dumps({'schema':'cyrus.package-build/2','status':'pending'})+'\n',encoding='utf-8')
     # Deterministic ZIP metadata. No SDK headers/libraries go into the installer.
     with zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED) as z:
         for n, data in sorted(payload.items()):
@@ -392,6 +457,12 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         for n, expected in manifest['files'].items():
             if sha(z.read(n)) != expected:
                 raise RuntimeError(f'Package verification failed: {n}')
+    build_inputs.verify_frozen(package_inputs,ROOT)
+    verify_installer(installer)
+    if project=='AminScatter':verify_gallery(gallery_path,version,args.max_year)
+    target.with_suffix('.build.json').write_text(json.dumps({'schema':'cyrus.package-build/2','status':'complete',
+        'artifact_sha256':build_inputs.digest(target),'input_manifest':package_inputs,
+        'input_manifest_sha256':build_inputs.identity(package_inputs),'producer_receipts':producer_receipts},indent=2)+'\n',encoding='utf-8')
     target.with_suffix('.sha256').write_text(sha(target.read_bytes()) + '  ' + target.name + '\n')
     print(f'Package: {target}', flush=True)
 
@@ -419,18 +490,16 @@ def main():
     base = ROOT / 'build' / f'max{args.max_year}-release'
     for project in ('AminScatter', 'CyrusSurfaceAnalyzer'):
         dest = base / project
-        run(['cmake', '-S', ROOT / project, '-B', dest, '-G', 'NMake Makefiles',
-             '-DCMAKE_BUILD_TYPE=Release', f'-DCYRUS_MAX_YEAR={args.max_year}',
-             '-DCYRUS_NATIVE_LICENSE_EXPERIMENT=OFF', '-DCYRUS_LICENSE_INSTALLATION_CONTEXT=OFF',
-             *(['-DCYRUS_TEAM_LICENSE=ON', f'-DCYRUS_TEAM_TRUST_DIR={args.team_trust_header.resolve().parent}'] if project == 'AminScatter' else []),
-             f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
-        run(['cmake', '--build', dest], env)
-        run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
+        run([sys.executable,ROOT/'tools/procedural_lab/offline_build.py','--project',
+             'scatter' if project=='AminScatter' else 'analyzer','--year',args.max_year,
+             '--output',dest,'--sdk-root',args.sdk_root,'--vs-root',args.vs_root,
+             '--tools-version',args.tools_version,'--windows-sdk',args.windows_sdk,
+             '--team-trust-header',args.team_trust_header],env)
         if project == 'AminScatter':
             run([sys.executable, ROOT / project / 'tools/build_installer.py', '--output', dest / 'CyrusInstaller.dll'], env)
     package('AminScatter', 'Cyrus Scatter', scatter_version(), ['AminScatter.dlx', 'CyrusScatterEdit.dlm', 'CyrusBrush.dlx', 'CyrusBrushStorage.dlh'],
             'AminScatterObject.ms', args, base)
-    package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14.1', ['CyrusSurfaceAnalyzer.dlx'],
+    package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14.2', ['CyrusSurfaceAnalyzer.dlx'],
             'CyrusSurfaceAnalyzer.ms', args, base)
 
 

@@ -550,6 +550,268 @@
       ],
       "trigger": "Repeated open/close/select/edit/delete/reset with editor and history pins",
       "expected": "Bounded watchers/resources; no duplicate handlers/views; legitimate editor/Undo references accounted"
+    },
+    {
+      "id": "R7-M03",
+      "fixture": "tools/quality_validation/viewport_memory.ms",
+      "assertions": [
+        "R7-M03-01",
+        "R7-M03-02",
+        "R7-M03-03",
+        "R7-M03-04",
+        "R7-M03-05"
+      ],
+      "trigger": "Viewport memory button, saved preference, Manual pending edits and Undo",
+      "expected": "Bounded native memory with unchanged published placement identity and explicit failure recovery"
+    },
+    {
+      "id": "R7-M04",
+      "fixture": "tools/quality_validation/viewport_memory.ms",
+      "assertions": [
+        "R7-M04-01",
+        "R7-M04-02",
+        "R7-M04-03",
+        "R7-M04-04"
+      ],
+      "trigger": "Exact failing tree baseline, full Mesh display, idle reuse and screenshot",
+      "expected": "Bounded native memory with unchanged published placement identity and explicit failure recovery"
+    },
+    {
+      "id": "R7-M05",
+      "fixture": "tools/quality_validation/viewport_memory.ms",
+      "assertions": [
+        "R7-M05-01",
+        "R7-M05-02",
+        "R7-M05-03",
+        "R7-M05-04"
+      ],
+      "trigger": "2.4-million-face source exact bounds/signature, invalidation and actual Mesh drawing",
+      "expected": "Bounded native memory with unchanged published placement identity and explicit failure recovery"
+    },
+    {
+      "id": "R7-M06",
+      "fixture": "tools/quality_validation/viewport_memory.ms",
+      "assertions": [
+        "R7-M06-01",
+        "R7-M06-02",
+        "R7-M06-03",
+        "R7-M06-04"
+      ],
+      "trigger": "Low custom allowance, previous-result retention and recovery",
+      "expected": "Bounded native memory with unchanged published placement identity and explicit failure recovery"
+    },
+    {
+      "id": "R7-M01",
+      "fixture": "tools/quality_validation/native_remediation.ms",
+      "assertions": [
+        "R7-M01-01",
+        "R7-M01-02",
+        "R7-M01-03",
+        "R7-M01-04",
+        "R7-M01-05",
+        "R7-M01-06"
+      ],
+      "trigger": "Native image Boundary Relax UI and deterministic publication",
+      "expected": "Safe native computation with stable full publication and recovery"
+    },
+    {
+      "id": "R7-M02",
+      "fixture": "tools/quality_validation/native_remediation.ms",
+      "assertions": [
+        "R7-M02-01",
+        "R7-M02-02",
+        "R7-M02-03",
+        "R7-M02-04",
+        "R7-M02-05",
+        "R7-M02-06"
+      ],
+      "trigger": "Dense projected movement, Manual/Live and Undo/failure lifecycle",
+      "expected": "Safe native computation with stable full publication and recovery"
+    },
+    {
+      "id": "R7-M09",
+      "fixture": "tools/quality_validation/native_remediation.ms",
+      "assertions": [
+        "R7-M09-01",
+        "R7-M09-02",
+        "R7-M09-03",
+        "R7-M09-04",
+        "R7-M09-05",
+        "R7-M09-06"
+      ],
+      "trigger": "Two valid dense coincident receivers exceed one shared projection allowance",
+      "expected": "Bounded failure, zero leaked scratch, complete prior publication retained and repaired successor succeeds"
+    },
+    {
+      "id": "R7-M07",
+      "fixture": "tools/quality_validation/viewport_memory_lifecycle.ms",
+      "assertions": [
+        "R7-M07-01",
+        "R7-M07-02",
+        "R7-M07-03",
+        "R7-M07-04"
+      ],
+      "trigger": "Actual green/red and distinct copied green full meshes, material reuse and independent metadata admission",
+      "expected": "Complete full-mesh rendering with correct unique resource ownership and stable authored/publication lifecycle"
+    },
+    {
+      "id": "R7-M08",
+      "fixture": "tools/quality_validation/viewport_memory_lifecycle.ms",
+      "assertions": [
+        "R7-M08-01",
+        "R7-M08-02",
+        "R7-M08-03",
+        "R7-M08-04",
+        "R7-M08-05",
+        "R7-M08-06",
+        "R7-M08-07"
+      ],
+      "trigger": "Multiple controllers, old/new appearance ownership, Manual/Live Undo and saved scene lifecycle",
+      "expected": "Complete full-mesh rendering with correct unique resource ownership and stable authored/publication lifecycle"
+    },
+    {
+      "id": "R7-I01",
+      "fixture": "tools/quality_validation/installer_remediation.ms",
+      "assertions": [
+        "R7-I01-01",
+        "R7-I01-02",
+        "R7-I01-03",
+        "R7-I01-04",
+        "R7-I01-05",
+        "R7-I01-06",
+        "R7-I01-07",
+        "R7-I01-08",
+        "R7-I01-09",
+        "R7-I01-10",
+        "R7-I01-11",
+        "R7-I01-12"
+      ],
+      "trigger": "Exact standalone Analyzer adapter, protected writes and legacy upgrade",
+      "expected": "Exact package identity and safe owned-profile installation lifecycle"
+    },
+    {
+      "id": "R7-I02",
+      "fixture": "tools/quality_validation/installer_remediation.ms",
+      "assertions": [
+        "R7-I02-01",
+        "R7-I02-02"
+      ],
+      "trigger": "Stale managed helper refuses before changing profile",
+      "expected": "Exact package identity and safe owned-profile installation lifecycle"
+    },
+    {
+      "id": "R7-I03",
+      "fixture": "tools/quality_validation/installer_remediation.ms",
+      "assertions": [
+        "R7-I03-01",
+        "R7-I03-02",
+        "R7-I03-03"
+      ],
+      "trigger": "Restart loads exact installed Analyzer payload and analyzes successfully",
+      "expected": "Exact package identity and safe owned-profile installation lifecycle"
+    },
+    {
+      "id": "R7-I04",
+      "fixture": "tools/quality_validation/installer_remediation.ms",
+      "assertions": [
+        "R7-I04-01",
+        "R7-I04-02"
+      ],
+      "trigger": "Exact Scatter MZP with a stale loaded managed installer helper",
+      "expected": "Restart guidance before any profile publication; all destination bytes and directories remain unchanged"
+    },
+    {
+      "id": "R7-M10",
+      "fixture": "tools/quality_validation/retained_regression.ms",
+      "assertions": [
+        "R7-M10-01",
+        "R7-M10-02",
+        "R7-M10-03",
+        "R7-M10-04",
+        "R7-M10-05",
+        "R7-M10-06",
+        "R7-M10-07"
+      ],
+      "trigger": "Retained Point Cloud drawing, buffer reuse, failure retention and recovery",
+      "expected": "Actual retained display and lifecycle remain correct"
+    },
+    {
+      "id": "R7-M11",
+      "fixture": "tools/quality_validation/retained_regression.ms",
+      "assertions": [
+        "R7-M11-01",
+        "R7-M11-02",
+        "R7-M11-03",
+        "R7-M11-04",
+        "R7-M11-05",
+        "R7-M11-06"
+      ],
+      "trigger": "Canonical material color and leaf cutout pixels with unchanged Manual placements",
+      "expected": "Actual retained display and lifecycle remain correct"
+    },
+    {
+      "id": "R7-M12",
+      "fixture": "tools/quality_validation/gallery_regression.ms",
+      "assertions": [
+        "R7-M12-01",
+        "R7-M12-02",
+        "R7-M12-03",
+        "R7-M12-04",
+        "R7-M12-05",
+        "R7-M12-06",
+        "R7-M12-07"
+      ],
+      "trigger": "Generated Recipes button opens, reuses and reopens the current Gallery with a pending Manual Count",
+      "expected": "The exact staged Gallery shows all 96 models; publication and pending settings remain unchanged"
+    },
+    {
+      "id": "R7-F00",
+      "fixture": "tools/quality_validation/retained_failure.ms",
+      "assertions": [
+        "R7-F00-01"
+      ],
+      "trigger": "Shipping build excludes preview failure hooks",
+      "expected": "Complete retained display with no partial successor or buffer leaks"
+    },
+    {
+      "id": "R7-F01",
+      "fixture": "tools/quality_validation/retained_failure.ms",
+      "assertions": [
+        "R7-F01-01",
+        "R7-F01-02",
+        "R7-F01-03",
+        "R7-F01-04",
+        "R7-F01-05",
+        "R7-F01-06"
+      ],
+      "trigger": "Initial point failure, retry, hide/delete/supersede/reset lifecycle",
+      "expected": "Complete retained display with no partial successor or buffer leaks"
+    },
+    {
+      "id": "R7-F02",
+      "fixture": "tools/quality_validation/retained_failure.ms",
+      "assertions": [
+        "R7-F02-01",
+        "R7-F02-02",
+        "R7-F02-03",
+        "R7-F02-04",
+        "R7-F02-05",
+        "R7-F02-06"
+      ],
+      "trigger": "Late multi-group mesh and appearance failure preserves complete old image",
+      "expected": "Complete retained display with no partial successor or buffer leaks"
+    },
+    {
+      "id": "R7-F03",
+      "fixture": "tools/quality_validation/retained_failure.ms",
+      "assertions": [
+        "R7-F03-01",
+        "R7-F03-02",
+        "R7-F03-03",
+        "R7-F03-04"
+      ],
+      "trigger": "Exact high-poly tree late material failure retains old Mesh and recovers",
+      "expected": "Complete retained display with no partial successor or buffer leaks"
     }
   ]
 }

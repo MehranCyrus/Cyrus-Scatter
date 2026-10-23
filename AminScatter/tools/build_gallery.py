@@ -1,8 +1,10 @@
 """Compile the bounded gallery against the selected Max host's managed runtime."""
 from pathlib import Path
-import argparse, hashlib, json, re, subprocess
+import argparse, hashlib, json, re, subprocess, sys
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT/'tools'))
+from build_inputs import frozen, managed_pending, managed_complete, tool_versions
 
 def release_version():
     versions = re.findall(r'project\(CyrusScatter VERSION ([0-9.]+) LANGUAGES CXX\)',
@@ -38,6 +40,12 @@ def build(output: Path, year: int = 2027):
     args = [str(compiler), '/nologo', '/noconfig', '/nostdlib+', '/langversion:latest', '/nullable:enable',
             '/warnaserror+', '/target:library', '/optimize+', '/deterministic+', '/platform:x64', '/out:' + str(output),
             *('/reference:' + str(p) for p in references), str(source), str(ROOT/'AminScatter/shared/LibraryLocation.cs'), str(identity)]
+    inputs = frozen([compiler, source, ROOT/'AminScatter/shared/LibraryLocation.cs', identity,
+                     ROOT/'AminScatter/CMakeLists.txt', Path(__file__), ROOT/'tools/build_inputs.py',
+                     Path(sys.executable), *references],
+                    {'producer':'gallery', 'command':args, 'max_year':year, 'assembly_version':version,
+                     'tool_versions':tool_versions([compiler])}, ROOT)
+    managed_pending(output, 'gallery')
     result = subprocess.run(args, text=True, capture_output=True)
     output.with_suffix('.build.log').write_text(result.stdout + result.stderr, encoding='utf-8')
     if result.returncode: raise RuntimeError(result.stdout + result.stderr)
@@ -46,10 +54,12 @@ def build(output: Path, year: int = 2027):
         "[Reflection.AssemblyName]::GetAssemblyName('"+assembly_path+"').Version.ToString()"], text=True).strip()
     if actual != version:
         raise RuntimeError('Compiled gallery assembly version differs from the Scatter release: '+actual)
+    if release_version()!=version:
+        raise RuntimeError('Scatter release identity changed while compiling the gallery.')
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-    output.with_suffix('.build.json').write_text(json.dumps({'compiler': str(compiler), 'compiler_sha256': sha(compiler),
+    managed_complete(output, 'gallery', inputs, ROOT, {'compiler': str(compiler), 'compiler_sha256': sha(compiler),
         'source_sha256': sha(source), 'shared_source_sha256':sha(ROOT/'AminScatter/shared/LibraryLocation.cs'), 'artifact_sha256': sha(output), 'assembly_version':actual, 'identity_sha256':sha(identity), 'max_year':year,'framework': 'net48' if year==2024 else 'net'+runtime+'-windows',
-        'references': {str(p): sha(p) for p in references}}, indent=2) + '\n', encoding='utf-8')
+        'references': {str(p): sha(p) for p in references}})
     print('Built', output)
 
 if __name__ == '__main__':

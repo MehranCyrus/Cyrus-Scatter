@@ -20,6 +20,12 @@ def test_packaging_requires_verified_matching_gallery(tmp_path, mismatch):
         'source_sha256': build_max.sha((ROOT/'AminScatter/ui/LibraryGallery.cs').read_bytes()),
         'shared_source_sha256': build_max.sha((ROOT/'AminScatter/shared/LibraryLocation.cs').read_bytes()),
     }
+    inputs=build_max.build_inputs.frozen([ROOT/p for p in (
+        'AminScatter/ui/LibraryGallery.cs','AminScatter/shared/LibraryLocation.cs',
+        'AminScatter/CMakeLists.txt','AminScatter/tools/build_gallery.py','tools/build_inputs.py')],
+        {'producer':'gallery','max_year':2027,'assembly_version':version},ROOT)
+    receipt.update(schema=build_max.build_inputs.MANAGED_SCHEMA,status='complete',producer='gallery',
+        input_manifest=inputs,input_manifest_sha256=build_max.build_inputs.identity(inputs))
     if mismatch == 'version': receipt['assembly_version'] = '0.86.8.3'
     if mismatch == 'host': receipt['max_year'] = 2024
     if mismatch in ('artifact', 'source', 'shared_source'): receipt[mismatch+'_sha256'] = '0'*64

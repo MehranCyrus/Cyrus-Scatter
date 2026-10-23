@@ -12,6 +12,7 @@ text=require('./container-system.cjs')(text);
 text=fs.readFileSync('tools/ui/templates/presets.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/paint-export.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/source-access.ms','utf8').replace(/\r/g,'')+'\n'+text;
+text=fs.readFileSync('tools/ui/templates/viewport-memory.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/recipes.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/density-patterns.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=require('./asset-adapters.cjs')({check})+'\n'+fs.readFileSync('tools/ui/templates/asset-shaders.ms','utf8').replace(/\r/g,'')+'\n'+fs.readFileSync('tools/ui/templates/assets.ms','utf8').replace(/\r/g,'')+'\n'+text;

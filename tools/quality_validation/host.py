@@ -135,6 +135,7 @@ def main():
     parser.add_argument('--timeout',type=int,default=120)
     parser.add_argument('--visible', action='store_true', help='Show only this owned qualification window')
     parser.add_argument('--interactive-startup', action='store_true', help='Keep Max startup dialogs visible in the owned profile')
+    parser.add_argument('--preview-fault-lab', action='store_true', help='NEVER SHIP: require the separately recorded fault build and guarded owned profile')
     args = parser.parse_args()
     folder = args.folder.resolve()
     if not folder.is_relative_to(ROOT / 'build'):
@@ -158,6 +159,7 @@ def main():
         identity, hashes = artifact_identity(paths)
         process, _ = launch(folder, paths['Scatter'], native, transport=True, max_year=2027,
                             visible=args.visible,
+                            preview_fault_lab=args.preview_fault_lab,
                             silent_startup=not args.interactive_startup, extra_modules=('CyrusSurfaceAnalyzer.dlx',),
                             script_assets=('CyrusGallery.dll', 'CyrusSurfaceAnalyzer.ms'),
                             extra='if cyrusBandShapeKey==undefined do throw "Incomplete Bands native payload"\nfileIn (MCPFixtureDir+"scripts/CyrusSurfaceAnalyzer.ms")')

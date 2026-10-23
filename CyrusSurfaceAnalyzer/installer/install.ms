@@ -1,19 +1,10 @@
--- Expanded only by the matching package builder; never load a loose script.
+-- Expanded only by the matching package builder; run the complete MZP.
 (
  if (maxVersion())[1]!=__MAX_VERSION__ then
   messageBox "This Surface Analyzer __VERSION__ package requires 3ds Max __MAX_YEAR__." title:"Cyrus Surface Analyzer"
- else (
-  local io=dotNetClass "System.IO.File",dirs=dotNetClass "System.IO.Directory"
+ else try (
   local packageDir=getFilenamePath(getSourceFileName())
-  local root=pathConfig.appendPath (getDir #userScripts) "CyrusSurfaceAnalyzer"
-  local runtime=pathConfig.appendPath root "r\\__RUNTIME_ID__",bins=pathConfig.appendPath runtime "bin"
-  local startup=pathConfig.appendPath (getDir #userStartupScripts) "CyrusSurfaceAnalyzerStartup.ms"
-  local ini=pathConfig.appendPath (getFilenamePath(getMAXIniFile())) "Plugin.UserSettings.ini"
-  local key="CyrusSurfaceAnalyzer__MAX_YEAR__",oldEntry=getINISetting ini "Directories" key
-  local oldStartup=if io.Exists startup then io.ReadAllBytes startup else undefined
-  local unique=(dotNetClass "System.Guid").NewGuid()
-  local backup=startup+".cyrus-previous-"+(unique.ToString "N")
-  local switched=false
+  local helper=pathConfig.appendPath packageDir "CyrusInstaller.dll"
   fn digest path = (
    local hash=(dotNetClass "System.Security.Cryptography.SHA256").Create()
    local stream=(dotNetClass "System.IO.File").OpenRead path
@@ -22,37 +13,34 @@
    catch(stream.Dispose();hash.Dispose();throw())
    substituteString result "-" ""
   )
-  fn copyVerified source destination expected = (
-   local files=dotNetClass "System.IO.File"
-   if digest source!=expected do throw ("Package hash differs: "+getFilenameFile source)
-   if files.Exists destination then (
-    if digest destination!=expected do throw "An immutable Analyzer runtime contains different bytes. Preserve it and install a distinct package."
-   ) else files.Copy source destination false
-   if digest destination!=expected do throw "Installed Analyzer verification failed."
+  if digest helper!="__HELPER_SHA256__" do throw "Analyzer installer helper differs. Run the complete matching MZP."
+  local loaded=undefined
+  local assemblies=(dotNetClass "System.AppDomain").CurrentDomain.GetAssemblies()
+  for assembly in assemblies do (
+   local assemblyName=assembly.GetName()
+   if assemblyName.Name=="CyrusInstaller" do (
+    if toLower(assembly.ManifestModule.ModuleVersionId.ToString())!="__HELPER_MVID__" do
+     throw "A different Cyrus installer is already loaded. Save your work, restart Max, then run this MZP again."
+    if digest assembly.Location!="__HELPER_SHA256__" do throw "The loaded Cyrus installer identity differs. Restart Max and run the complete MZP again."
+    loaded=assembly
+   )
   )
-  try (
-   dirs.CreateDirectory bins
-   copyVerified (pathConfig.appendPath packageDir "CyrusSurfaceAnalyzer.dlx") (pathConfig.appendPath bins "CyrusSurfaceAnalyzer.dlx") "__NATIVE_SHA256__"
-   copyVerified (pathConfig.appendPath packageDir "CyrusSurfaceAnalyzer.ms") (pathConfig.appendPath runtime "CyrusSurfaceAnalyzer.ms") "__SCRIPT_SHA256__"
-   local nextStartup=io.ReadAllBytes (pathConfig.appendPath packageDir "CyrusSurfaceAnalyzerStartup.ms")
-   if digest (pathConfig.appendPath packageDir "CyrusSurfaceAnalyzerStartup.ms")!="__STARTUP_SHA256__" do throw "Analyzer startup payload differs."
-   -- Both immutable files verify before either binding is changed.
-   switched=true
-   if not setINISetting ini "Directories" key bins do throw "Analyzer plugin registration failed."
-   io.WriteAllBytes (startup+".cyrus-stage") nextStartup
-   -- MAXScript's undefined is not a .NET String null overload argument.
-   -- A unique owned backup keeps File.Replace atomic and unambiguous.
-   if io.Exists startup then io.Replace (startup+".cyrus-stage") startup backup else io.Move (startup+".cyrus-stage") startup
-   if getINISetting ini "Directories" key!=bins or digest startup!="__STARTUP_SHA256__" do throw "Analyzer startup registration verification failed."
-   if io.Exists backup do io.Delete backup
-   messageBox "Surface Analyzer __VERSION__ installed. Save your work and restart Max.\nThen Analyze / Update Analyzer, followed by Update scatter in Manual mode." title:"Cyrus Surface Analyzer"
-  )catch(
-   local reason=getCurrentException(),recovery=""
-   if switched do try (
-    if oldEntry=="" then delINISetting ini "Directories" key else setINISetting ini "Directories" key oldEntry
-    if oldStartup==undefined then (if io.Exists startup do io.Delete startup) else io.WriteAllBytes startup oldStartup
-   )catch(recovery="\nBinding recovery failed: "+getCurrentException())
-   messageBox (reason+recovery) title:"Surface Analyzer installation failed"
-  )
+  if loaded==undefined do loaded=(dotNetClass "System.Reflection.Assembly").LoadFrom helper
+  local loadedName=loaded.GetName()
+  if loadedName.Name!="CyrusInstaller" or toLower(loaded.ManifestModule.ModuleVersionId.ToString())!="__HELPER_MVID__" or digest loaded.Location!="__HELPER_SHA256__" do
+   throw "Max could not load the matching Cyrus installer. Restart Max and run the complete MZP again."
+  local entry=(loaded.GetType "Cyrus.Setup.AnalyzerInstallEngine" true).GetMethod "InstallFromHost"
+  local arguments=dotNetObject "System.Object[]" 7
+  arguments.SetValue packageDir 0
+  arguments.SetValue "__DESCRIPTOR_SHA256__" 1
+  arguments.SetValue (getDir #userScripts) 2
+  arguments.SetValue (getDir #userStartupScripts) 3
+  arguments.SetValue (getDir #userMacros) 4
+  arguments.SetValue (getFilenamePath(getMAXIniFile())) 5
+  arguments.SetValue "__MAX_YEAR__" 6
+  entry.Invoke (dotNetObject "System.Object") arguments
+  messageBox "Surface Analyzer __VERSION__ installed. Save your work and restart Max.\nThen Analyze / Update Analyzer, followed by Update scatter in Manual mode." title:"Cyrus Surface Analyzer"
+ )catch(
+  messageBox ((getCurrentException())+"\n"+(getCurrentExceptionStackTrace())) title:"Surface Analyzer installation failed"
  )
 )

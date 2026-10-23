@@ -6,7 +6,13 @@ fn QSettle milliseconds = (
 )
 fn QCalculate = (QRoot.evaluateProcedural();for leaf in QRoot.layerObjects do QRequire (leaf.previewError=="") leaf.previewError)
 fn QFingerprint = cyrusPlacementPublicationFingerprint QRoot.groupSnapshotRows QRoot.procPublishedRadii #("refinement") #()
-fn QRows = (local data=QRoot.groupSnapshotRows[1];QRequire (data.count<=2000) "Bounded fixture exceeded";cyrusPlacementPage data (cyrusPlacementToken data) 0 data.count)
+fn QRows = (
+    local data=QRoot.groupSnapshotRows[1],rows=#(),token=cyrusPlacementToken QRoot.groupSnapshotRows[1]
+    QRequire (data.count<=2000) "Bounded fixture exceeded"
+    if data.count>0 do for first=0 to (data.count-1) by 500 do
+        join rows (cyrusPlacementPage data token first (if data.count-first>500 then 500 else data.count-first))
+    rows
+)
 fn QSetup analyzer:false paint:false = (
     if not matchPattern MCPFixtureDir pattern:"*/build/*" do throw "Owned test profile required"
     resetMaxFile #noPrompt;units.SystemType=#centimeters;units.SystemScale=1

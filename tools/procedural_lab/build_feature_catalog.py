@@ -50,6 +50,7 @@ def build():
                 elif section in ('sourceUI','sourceContainersUI'):owner='Selected layer model collection'
                 elif section=='surface' and entry['name'] in ('sharedPick','removeSurfaces','surfacesButton','receiversList'):owner='Selected layer receiving surfaces'
                 elif section=='surface' and entry['name']=='surfaceVisibility':owner='Selected receiving scene nodes; viewport visibility shared by every referencing setup'
+                elif section=='previewUI' and entry['name']=='memoryButton':owner='Per-Max installation preference; shared native viewport admission across controllers'
                 controls.append(dict(group=group,section=section,**entry,capabilities=caps,owner_context=owner,
                     help=tooltips.get(section,{}).get(entry['name']),
                     view='Modify selected layer and selected container' if group=='layer' else 'Local setup controls',

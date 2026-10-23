@@ -10,6 +10,12 @@
 namespace cyrus {
 extern PreviewBudget pointPreviewBudget,meshPreviewBudget;
 std::shared_ptr<PreviewMemory> reservePreviewMemory(PreviewBudget& budget,std::size_t bytes);
+std::shared_ptr<PreviewMemory> reserveMeshMemory(viewport_memory::Cost bytes);
+std::shared_ptr<PreviewMemory> reserveSourceMetadataMemory(std::size_t bytes);
+std::size_t sourceInspectionFaceLimit();
+void growMeshMemory(const std::shared_ptr<PreviewMemory>& memory,std::size_t bytes);
+viewport_memory::Policy viewportMemoryPolicy();
+void recordPreviewFailure(const char* reason);
 struct PointGroup {
     Point3 color;
     std::vector<Point3> points;
@@ -95,7 +101,7 @@ struct MeshSnapshot {
     Box3 bounds;
     std::size_t faces=0,instances=0,bufferBytes=0,cpuBytes=0,scratchBytes=0;
     std::uint64_t fingerprint=1469598103934665603ULL;
-    explicit MeshSnapshot(std::vector<PreviewGeometry> value);
+    explicit MeshSnapshot(std::vector<PreviewGeometry> value,std::shared_ptr<PreviewMemory> storage={});
 };
 
 // All publication and reference operations run on Max's main thread.

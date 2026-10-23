@@ -121,7 +121,10 @@ MaterialBitmap materialBitmap(Texmap* map,TimeValue t) {
     BitmapInfo info;info.SetWidth(materialTileSize);info.SetHeight(materialTileSize);info.SetType(BMM_FLOAT_RGBA_32);info.SetGamma(1.f);
     result.reset(TheManager->Create(&info));
     if(!result)throw RuntimeError(_T("Viewport texture staging allocation failed"));
-    map->RenderBitmap(t,result.get(),1.f,TRUE);
+    // Evaluate the map branch with its UV/output controls. Bitmap's raw-copy
+    // RenderBitmap override skips those controls and can bias filtered float
+    // pixels above their source values, turning black opacity pixels opaque.
+    GetCOREInterface()->RenderTexmap(map,result.get(),1.f,TRUE,FALSE,0.f,t,false);
     return result;
 }
 struct AppearanceWatch;
@@ -152,7 +155,7 @@ struct AppearanceWatch : MaxSDK::SingleWeakRefMaker {
     }
 };
 AppearanceDependency::AppearanceDependency(ReferenceTarget* target,AppearanceWatch* parent)
-    :SingleWeakRefMaker(target),owner(parent),memory(cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,2048)) {++appearanceDependencyCount;}
+    :SingleWeakRefMaker(target),owner(parent),memory(cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,2048)) {memory->commit();++appearanceDependencyCount;}
 RefResult AppearanceDependency::NotifyRefChanged(const Interval& interval,RefTargetHandle target,PartID& part,RefMessage message,BOOL propagate) {
     if(message==REFMSG_CHANGE||message==REFMSG_TARGET_DELETED||message==REFMSG_SUBANIM_STRUCTURE_CHANGED){
         ++owner->revision;owner->dependenciesDirty=true;
@@ -265,6 +268,8 @@ std::wstring appearanceKey(Array* sources) {
     return key;
 }
 std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* node,const std::shared_ptr<const cyrus::MeshSnapshot>& snapshot,std::size_t source,bool textureColor) {
+    return previewGuard([&]() -> std::shared_ptr<const cyrus::SourceAppearance> {
+    if(!node||source>=snapshot->groups.size())throw RuntimeError(_T("Viewport material source correspondence differs"));
     const auto& group=snapshot->groups[source];
     if(group.placeholder||group.reducedBox||group.faces.empty()||group.instances.empty())return {};
     const auto t=GetCOREInterface()->GetTime();auto key=appearanceSourceKey(node,t);auto& watch=appearanceWatch(node);
@@ -276,10 +281,14 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
             watch.geometry=snapshot;watch.geometrySource=source;++materialReuseCount;return cached;
         }
     auto* object=node->EvalWorldState(t).obj;
-    auto* tri=object?static_cast<TriObject*>(object->ConvertToType(t,Class_ID(TRIOBJ_CLASS_ID,0))):nullptr;
+    if(!object||!object->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID,0)))throw RuntimeError(_T("Viewport material source has no triangle mesh"));
+    auto conversion=sourceConversionMemory(object,group.faces.size());
+    auto* tri=static_cast<TriObject*>(object->ConvertToType(t,Class_ID(TRIOBJ_CLASS_ID,0)));
     if(!tri)throw RuntimeError(_T("Viewport material source has no triangle mesh"));
+    if(conversion)conversion->commit();
     auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};std::unique_ptr<TriObject,decltype(cleanup)> owned(tri,cleanup);
-    auto& mesh=tri->GetMesh();
+    auto& mesh=tri->GetMesh();validateSourceMesh(mesh);
+    cyrus::viewport_memory::validateDrawCounts(group.faces.size(),group.instances.size());
     if(std::size_t(mesh.getNumFaces())!=group.faces.size())throw RuntimeError(_T("Source geometry is pending. Use Update before refreshing materials."));
     const auto transform=node->GetObjectTM(t)*Inverse(node->GetNodeTM(t));
     auto staging=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,2*materialTileSize*materialTileSize*sizeof(BMM_Color_fl)+group.faces.size()*sizeof(int));
@@ -287,8 +296,13 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
     auto* root=node->GetMtl();
     for(int f=0;f<mesh.getNumFaces();++f) {
         // Never pair pending topology/positions with frozen Manual placements.
-        for(int c=0;c<3;++c)if(mesh.verts[mesh.faces[f].v[c]]*transform!=group.faces[f][c])
-            throw RuntimeError(_T("Source geometry is pending. Use Update before refreshing materials."));
+        for(int c=0;c<3;++c) {
+            const auto vertex=mesh.faces[f].v[c];
+            cyrus::viewport_memory::validateIndex(vertex,std::size_t(mesh.getNumVerts()));
+            const auto point=mesh.verts[vertex]*transform;
+            for(int axis=0;axis<3;++axis)if(!std::isfinite(point[axis]))throw RuntimeError(_T("Viewport material source has non-finite geometry"));
+            if(point!=group.faces[f][c])throw RuntimeError(_T("Source geometry is pending. Use Update before refreshing materials."));
+        }
         Mtl* material=root;
         if(root&&root->ClassID()==Class_ID(MULTI_CLASS_ID,0))material=root->GetSubMtl(mesh.faces[f].getMatID());
         auto found=std::find(materials.begin(),materials.end(),material);
@@ -306,10 +320,12 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
     result->textureColor=textureColor;
     result->tiles=int(std::ceil(std::sqrt(double(materials.size()))));result->width=result->tiles*materialTileSize;
     const auto pixels=std::size_t(result->width)*result->width;
-    result->cpuBytes=sizeof(*result)+pixels*4+group.faces.size()*3*sizeof(cyrus::MaterialUV);
+    const auto corners=cyrus::viewport_memory::multiply(group.faces.size(),3);
+    result->cpuBytes=cyrus::viewport_memory::add(sizeof(*result),cyrus::viewport_memory::add(
+        cyrus::viewport_memory::multiply(pixels,4),cyrus::viewport_memory::multiply(corners,sizeof(cyrus::MaterialUV))));
     // Reservation includes temporary bitmap/row data and peak immutable overlap.
     result->memory=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,result->cpuBytes);
-    result->pixels.resize(pixels,0xffffffff);result->uv.resize(group.faces.size()*3);
+    result->pixels.resize(pixels,0xffffffff);result->uv.resize(corners);result->memory->commit();
     std::vector<MaterialInputs> inputs;inputs.reserve(materials.size());
     auto pipeline=MaxSDK::ColorManagement::IColorPipelineMgr::GetInstance()->GetDefaultViewingPipeline(MaxSDK::ColorManagement::DisplayViewTarget::kVIEWPORT);
     if(!pipeline)throw RuntimeError(_T("Viewport color conversion is unavailable"));
@@ -341,7 +357,8 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
     }
     auto uv=[&](int channel,int f,int c,bool needed) {
         if(!needed)return Point3(0,0,0);
-        if(!mesh.mapSupport(channel)||mesh.getNumMapVerts(channel)<1||!mesh.mapFaces(channel))
+        if(!mesh.mapSupport(channel)||mesh.getNumMapVerts(channel)<1||!mesh.mapFaces(channel)||!mesh.mapVerts(channel)||
+           mesh.Map(channel).getNumFaces()<mesh.getNumFaces())
             throw RuntimeError(_T("Viewport material needs a missing source UV channel"));
         const auto index=mesh.mapFaces(channel)[f].t[c];if(index>=unsigned(mesh.getNumMapVerts(channel)))throw RuntimeError(_T("Viewport material UV face is incomplete"));
         auto p=mesh.mapVerts(channel)[index];
@@ -349,11 +366,12 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
         p.z=float(slots[f]);return p;
     };
     for(int f=0;f<mesh.getNumFaces();++f)for(int c=0;c<3;++c) {
-        auto& input=inputs[slots[f]];auto& target=result->uv[f*3+c];
+        auto& input=inputs[slots[f]];auto& target=result->uv[std::size_t(f)*3+c];
         target.color=uv(input.colorChannel,f,c,input.colorMap!=nullptr);target.color.z=float(slots[f]);
         target.opacity=uv(input.opacityChannel,f,c,input.opacityMap!=nullptr);target.opacity.z=float(slots[f]);
     }
     watch.geometry=snapshot;watch.geometrySource=source;watch.cacheKey=appearanceSourceKey(node,t);watch.cached=result;return result;
+    });
 }
 }
 def_visible_primitive(cyrusMaterialPreviewKey,"cyrusMaterialPreviewKey");
@@ -375,7 +393,6 @@ Value* cyrusTexturePreview_cf(Value** args,int count) {
     for(int i=0;i<sources->size;++i)if(!cyrus::rows::integer(sources->data[i])) {
         auto data=prepareSourceAppearance(sources->data[i]->to_node(),cache->meshSnapshot,i,textureColor);appearance->sources[i]=data;
         if(data){appearance->cpuBytes+=data->cpuBytes;appearance->gpuBytes+=data->pixels.size()*4+data->uv.size()*sizeof(cyrus::MaterialUV);if(!data->status.empty())appearance->status=data->status;}
-        if(appearance->cpuBytes+2*appearance->gpuBytes>cyrus::meshPreviewOwnerLimit/2)throw RuntimeError(_T("Viewport material resources exceed the appearance allowance"));
     }
     appearance->key=prefix+appearanceKey(sources);
     auto result=std::make_unique<AminPointCache>();

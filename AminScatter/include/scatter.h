@@ -8,6 +8,7 @@
 namespace cyrus::bands { class Field; }
 
 namespace amin {
+struct ProjectionWorkBudget;
 struct Vec3 { double x{}, y{}, z{}; };
 Vec3 operator+(Vec3 a, Vec3 b);
 Vec3 operator-(Vec3 a, Vec3 b);
@@ -45,11 +46,14 @@ struct Settings {
     Range uniformScale{0.8, 1.2};
     std::array<Range, 3> rotationDegrees{{{0,0}, {0,0}, {0,360}}};
     // World-space movement is projected to the nearest point on the surface.
-    // Projection is exhaustive in this reference core; accelerate in the host adapter.
+    // The call-owned index preserves the first eligible face on exact ties.
     std::array<Range, 3> movement{{{0,0}, {0,0}, {0,0}}};
     bool alignToNormal{true};
     std::array<Range,3> axisScale{{{1,1},{1,1},{1,1}}};
     bool projectMovement{true};
+    // Borrowed for this synchronous call. The controller shares one allowance
+    // across all receivers in a successor; direct callers get a local default.
+    ProjectionWorkBudget* projectionBudget=nullptr;
     int distribution{0}; // 0 random, 2 UV density; clustering is source diversity.
     std::uint32_t densityWidth{}, densityHeight{};
     std::vector<double> density; // rows from v=1 to v=0; clamped UVs

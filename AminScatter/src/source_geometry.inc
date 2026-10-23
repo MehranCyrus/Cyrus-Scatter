@@ -2,8 +2,34 @@
 // future display-mode switch. The signature includes only pivot-local geometry,
 // so palette/material edits do not create a different geometric publication.
 namespace {
-constexpr std::size_t sourceInspectionFaceLimit=2000000;
 constexpr int sourceInspectionCountLimit=512;
+template<class F> auto previewGuard(F&& body)->decltype(body()) {
+    try { return body(); }
+    catch(const std::exception& error) {
+        cyrus::recordPreviewFailure(error.what());
+        const std::string message=error.what();
+        throw RuntimeError(std::wstring(message.begin(),message.end()).c_str());
+    }
+}
+void validateSourceMesh(Mesh& mesh) {
+    previewGuard([&]{cyrus::viewport_memory::validateMesh(mesh.getNumFaces(),mesh.getNumVerts(),mesh.faces!=nullptr,mesh.verts!=nullptr);});
+}
+void admitSourceFaces(std::size_t count,std::size_t& inspected,std::size_t limit) {
+    previewGuard([&]{cyrus::viewport_memory::inspectFaces(count,inspected,limit);});
+}
+// ConvertToType is a host/plugin call and can allocate before exposing counts.
+// Existing TriObjects need no additional conversion payload. For other objects
+// reserve a bounded estimate before entering the host, without using count APIs
+// that may secretly perform another conversion. This is not an allocator quota.
+enum class SourceConversionPurpose { Display, Metadata };
+std::shared_ptr<cyrus::PreviewMemory> sourceConversionMemory(Object* object,std::size_t knownFaces=0,
+        SourceConversionPurpose purpose=SourceConversionPurpose::Display) {
+    if(object->IsSubClassOf(Class_ID(TRIOBJ_CLASS_ID,0)))return {};
+    return previewGuard([&]{
+        const auto bytes=std::max<std::size_t>(64*cyrus::viewport_memory::MiB,cyrus::viewport_memory::multiply(knownFaces,128));
+        return purpose==SourceConversionPurpose::Metadata?cyrus::reserveSourceMetadataMemory(bytes):cyrus::reserveMeshMemory({bytes,0});
+    });
+}
 struct SourceGeometryInfo {
     int status=0; // 0 placeholder, 1 supported mesh, 2 unavailable/empty geometry
     ULONG handle=0;
@@ -39,14 +65,18 @@ SourceGeometryInfo extractSourceGeometry(INode* node,TimeValue time,std::size_t 
     const double det=double(a.x)*(double(b.y)*c.z-double(b.z)*c.y)-double(a.y)*(double(b.x)*c.z-double(b.z)*c.x)+double(a.z)*(double(b.x)*c.y-double(b.y)*c.x);
     if(!std::isfinite(det)||det==0){result.reason=_T("Source node transform is singular or non-finite");return result;}
     if(!object||!object->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID,0)))return result;
+    // Placement signatures and Auto Radius metadata must remain independent of
+    // the artist's display ceiling, including a ceiling below retained usage.
+    auto conversion=sourceConversionMemory(object,0,SourceConversionPurpose::Metadata);
     auto* tri=static_cast<TriObject*>(object->ConvertToType(time,Class_ID(TRIOBJ_CLASS_ID,0)));
     if(!tri)return result;
+    if(conversion)conversion->commit();
     auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};
     std::unique_ptr<TriObject,decltype(cleanup)> owned(tri,cleanup);
-    auto& mesh=tri->GetMesh();const auto count=mesh.getNumFaces();
+    auto& mesh=tri->GetMesh();validateSourceMesh(mesh);const auto count=mesh.getNumFaces();
     if(count<=0)return result;
     if(std::size_t(count)>allowance)
-        throw RuntimeError(_T("Source geometry inspection exceeds 2,000,000 faces across this population. Simplify the sources."));
+        throw RuntimeError(_T("Source geometry exceeds the finite inspected-face work allowance; previous result retained."));
     result.faces=count;result.status=1;
     result.reason=result.autoSupported?_T(""):_T("Auto is not qualified for this source type; use Manual radius");
     const auto transform=objectTM*Inverse(nodeTM);
@@ -99,11 +129,12 @@ SourceGeometryInfo inspectSourceGeometry(Value* value,TimeValue time,std::size_t
     if(watch->valid&&watch->info.validity.InInterval(time))++sourceGeometryHits;
     else {
         const auto revision=watch->revision;++sourceGeometryExtractions;
-        const auto next=extractSourceGeometry(node,time,sourceInspectionFaceLimit-faces);
+        const auto workLimit=cyrus::sourceInspectionFaceLimit();
+        if(faces>workLimit)throw RuntimeError(_T("Source geometry exceeds the finite inspected-face work allowance"));
+        const auto next=extractSourceGeometry(node,time,workLimit-faces);
         watch->info=next;watch->valid=revision==watch->revision;
     }
-    if(watch->info.faces>sourceInspectionFaceLimit-faces)throw RuntimeError(_T("Source geometry inspection exceeds 2,000,000 faces across this population. Simplify the sources."));
-    faces+=watch->info.faces;return watch->info;
+    admitSourceFaces(watch->info.faces,faces,cyrus::sourceInspectionFaceLimit());return watch->info;
 }
 }
 
