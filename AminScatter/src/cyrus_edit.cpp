@@ -16,7 +16,12 @@
 #include "placement_value.h"
 #include "placement_materialization.h"
 #include "edit_blocks.h"
+#include "edit_binding.h"
+#include "edit_feedback.h"
 #include <optional>
+#include <cmath>
+#include <algorithm>
+#include <climits>
 #include <string_view>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include <map>
@@ -34,6 +39,16 @@
 static unsigned editRevision=0;
 static std::uint64_t editRestoresLive=0,editRestoresCreated=0,editRestoreCalls=0,editRedoCalls=0,editSizeCalls=0;
 static std::wstring pointId(){GUID id{};if(FAILED(CoCreateGuid(&id)))throw RuntimeError(_T("Cannot allocate instance identity"));wchar_t text[40];StringFromGUID2(id,text,40);return text;}
+static bool hasEditTransform(const Matrix3& m){const Matrix3 identity(1);for(int i=0;i<4;++i)if(m.GetRow(i)!=identity.GetRow(i))return true;return false;}
+static bool finiteEditMatrix(const Matrix3& m){for(int i=0;i<4;++i)for(int j=0;j<3;++j)if(!std::isfinite(m.GetRow(i)[j]))return false;return true;}
+static Matrix3 inverseEditMatrix(const Matrix3& m){
+ if(!finiteEditMatrix(m))throw std::invalid_argument("Cannot edit a non-finite published transform");
+ const auto a=m.GetRow(0),b=m.GetRow(1),c=m.GetRow(2);
+ const double det=double(a.x)*(double(b.y)*c.z-double(b.z)*c.y)-double(a.y)*(double(b.x)*c.z-double(b.z)*c.x)+double(a.z)*(double(b.x)*c.y-double(b.y)*c.x);
+ const double scale=std::sqrt(double(LengthSquared(a))*LengthSquared(b)*LengthSquared(c));
+ if(!std::isfinite(det)||!std::isfinite(scale)||scale==0||std::abs(det)<=scale*1e-10)throw std::invalid_argument("Cannot edit through a singular downstream transform; restore an invertible stack");
+ auto result=Inverse(m);if(!finiteEditMatrix(result))throw std::invalid_argument("Cannot invert the published Edit transform");return result;
+}
 #include "cyrus_edit_data.inc"
 class CSEdit;
 class EditRestore:public RestoreObj { CSEdit* mod;std::map<int,EditLayer> before,after;bool sealed=false;public:EditRestore(CSEdit*);~EditRestore()override{--editRestoresLive;}void Restore(int)override;void Redo()override;void EndHold()override;int Size()override;MSTR Description()override{return _T("CS Edit");}};
@@ -41,6 +56,7 @@ class CSEdit:public Modifier,public EventUser {
 public:
  std::map<int,EditLayer> layers;
  unsigned localRevision=0;
+ AnimHandle feedbackOwner=0;std::uint64_t feedbackStage=0;
  IObjParam* ip=nullptr;HWND panel=nullptr;bool holding=false;int level=0;std::wstring lastStatus;
  MoveModBoxCMode* move=nullptr;RotateModBoxCMode* rotate=nullptr;UScaleModBoxCMode* scale=nullptr;NUScaleModBoxCMode* nscale=nullptr;SelectModBoxCMode* select=nullptr;
  CreateMouseCallBack* GetCreateMouseCallBack()override{return nullptr;}
@@ -55,31 +71,36 @@ public:
  Interval LocalValidity(TimeValue)override{return TestAFlag(A_MOD_BEING_EDITED)?NEVER:FOREVER;}
  void ModifyObject(TimeValue,ModContext&,ObjectState*,INode*)override{}
  RefResult NotifyRefChanged(const Interval&,RefTargetHandle,PartID&,RefMessage,BOOL)override{return REF_SUCCEED;}
- RefTargetHandle Clone(RemapDir& remap)override{auto m=std::make_unique<CSEdit>();m->layers=layers;for(auto& [k,l]:m->layers)for(std::size_t i=0;i<l.rows.size();++i)if(l.rows.get(i).outputId!=l.rows.get(i).inputId){auto next=l.rows.get(i);next.outputId=EditKey(pointId());l.textBytes-=EditLayer::keyBytes(l.rows.get(i));l.textBytes+=EditLayer::keyBytes(next);l.rows.write(i)=std::move(next);}BaseClone(this,m.get(),remap);return m.release();}
+ RefTargetHandle Clone(RemapDir& remap)override{auto m=std::make_unique<CSEdit>();m->layers=editAuthoredState(layers);for(auto& [k,l]:m->layers){l.published=false;for(std::size_t i=0;i<l.rows.size();++i)if(l.rows.get(i).outputId!=l.rows.get(i).inputId){auto next=l.rows.get(i);next.outputId=EditKey(pointId());l.textBytes-=EditLayer::keyBytes(l.rows.get(i));l.textBytes+=EditLayer::keyBytes(next);l.rows.write(i)=std::move(next);}}BaseClone(this,m.get(),remap);return m.release();}
  int NumSubObjTypes()override{return 1;}
  ISubObjType* GetSubObjType(int i)override{static GenSubObjType type(1);type.SetName(_T("Instances"));return i==-1||i==0?&type:nullptr;}
  void status(){
   if(!panel)return;bool invalid=false;unsigned selected=0,total=0,suspended=0;
   for(auto& [k,l]:layers){if(!l.active)continue;invalid|=l.invalid;
-   for(std::size_t i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);if(!r.deleted){if(!l.input||l.source(r)>=l.input->size()){++suspended;continue;}if(l.shown(r)){++total;if(l.selection.get(i))++selected;}}}}
-  std::wstring text=invalid?L"Layout / Seed changed. Reset Edits required.":std::to_wstring(selected)+L" selected / "+std::to_wstring(total)+L" instances; "+std::to_wstring(suspended)+L" suspended";
+   for(std::size_t i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);if(l.shown(r)){++total;if(l.selection.get(i))++selected;}else if(authoredEdit(r)&&(!l.input||l.source(r)>=l.input->size()))++suspended;}}
+  std::wstring text=invalid?L"Generation changed. Restore its matching setup or Reset all edits.":std::to_wstring(selected)+L" selected / "+std::to_wstring(total)+L" instances; "+std::to_wstring(suspended)+L" edits inactive (source or candidate unavailable)";
   if(text!=lastStatus){lastStatus=text;SetDlgItemText(panel,1001,text.c_str());}
  }
  void changed(bool geometry=true){if(geometry){++editRevision;++localRevision;}NotifyDependents(FOREVER,geometry?PART_GEOM:PART_SELECT,REFMSG_CHANGE);status();if(ip)ip->RedrawViews(ip->GetTime());}
  bool valid(){for(auto& [k,l]:layers)if(l.active&&l.invalid)return false;return true;}
+ void requireEditableFeedback()const{for(const auto& [k,l]:layers){(void)k;if(l.active&&l.feedbackPending())throw RuntimeError(_T("The viewport still shows the previous scatter. Refresh display or restore its matching setup before editing instances; saved edits are retained."));}}
  void hold(){if(theHold.Holding()&&!holding){theHold.Put(new EditRestore(this));holding=true;}}
  // Allocate/detach every changed block before publishing authored state.
  // Allocation failure cannot leave a partially selected/transformed population.
  template<class F> void author(F&& f,bool geometry=true){try{auto next=layers;f(next);hold();layers.swap(next);changed(geometry);}catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}}
  void reset(){if(!cyrusBoundaryAllows(this))return;theHold.Begin();hold();layers.clear();changed();theHold.Accept(_T("Reset CS Edit"));holding=false;}
- void Notify()override{if(level==0||!cyrusBoundaryAllows(this))return;theHold.Begin();try{author([](auto& next){for(auto& [k,l]:next)if(l.active&&!l.invalid)for(std::size_t i=0;i<l.rows.size();++i)if(l.selection.get(i)&&l.shown(l.rows.get(i)))l.rows.write(i).deleted=true;});theHold.Accept(_T("Delete scatter instances"));}catch(...){theHold.Cancel();throw;}}
+ void Notify()override{if(level==0||!cyrusBoundaryAllows(this))return;requireEditableFeedback();theHold.Begin();try{author([](auto& next){for(auto& [k,l]:next)if(l.active&&!l.invalid)for(std::size_t i=0;i<l.rows.size();++i)if(l.selection.get(i)&&l.shown(l.rows.get(i)))l.rows.write(i).deleted=true;});theHold.Accept(_T("Delete scatter instances"));}catch(...){theHold.Cancel();throw;}}
  static INT_PTR CALLBACK dlg(HWND h,UINT msg,WPARAM w,LPARAM l){auto* m=reinterpret_cast<CSEdit*>(GetWindowLongPtr(h,GWLP_USERDATA));if(msg==WM_INITDIALOG){m=reinterpret_cast<CSEdit*>(l);SetWindowLongPtr(h,GWLP_USERDATA,(LONG_PTR)m);m->panel=h;m->lastStatus.clear();m->status();return TRUE;}if(msg==WM_COMMAND&&m){if(LOWORD(w)==1002)m->reset();if(LOWORD(w)==1003)m->Notify();if(LOWORD(w)==1004&&m->ip)m->ip->SetSubObjectLevel(1);return TRUE;}return FALSE;}
  void BeginEditParams(IObjParam* p,ULONG,Animatable*)override;
  void EndEditParams(IObjParam*,ULONG,Animatable*)override;
  void ActivateSubobjSel(int l,XFormModes& modes)override{if(ip){if(l&&!level)ip->RegisterDeleteUser(this);if(!l&&level)ip->UnRegisterDeleteUser(this);}level=l;if(l)modes=XFormModes(move,rotate,nscale,scale,nullptr,select);changed(false);}
- struct Visible {int layer;unsigned row;Point3 p;};
- std::vector<Visible> visible(){std::vector<Visible> out;for(auto& [k,l]:layers)if(l.active&&!l.invalid)for(unsigned i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);if(l.shown(r))out.push_back({k,i,l.matrix(r).GetTrans()});}return out;}
- int Display(TimeValue,INode*,ViewExp* v,int,ModContext*)override{if(!level)return 0;auto* g=v->getGW();g->setTransform(Matrix3(1));for(auto item:visible()){g->setColor(LINE_COLOR,layers[item.layer].selection.get(item.row)?Point3(1,1,1):Point3(1.f,.55f,0.f));g->marker(&item.p,HOLLOW_BOX_MRKR);}return 1;}
+ struct Visible {int layer;unsigned row;Point3 p,color;};
+ ce::Vector<Visible> visible(){ce::Vector<Visible> out;for(auto& [k,l]:layers)if(l.active&&!l.invalid){const auto begin=out.size();for(unsigned i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);if(l.shown(r))out.push_back({k,i,l.displayMatrix(r).GetTrans(),l.color(r)});}
+  const auto less=[&](const Visible& a,const Visible& b){return l.rows.get(a.row).order<l.rows.get(b.row).order;};if(!std::is_sorted(out.begin()+begin,out.end(),less))std::sort(out.begin()+begin,out.end(),less);}return out;}
+ int Display(TimeValue,INode*,ViewExp* v,int,ModContext*)override{if(!level)return 0;auto* g=v->getGW();g->setTransform(Matrix3(1));for(auto item:visible()){
+  g->setColor(LINE_COLOR,item.color);g->marker(&item.p,HOLLOW_BOX_MRKR);
+  if(layers[item.layer].selection.get(item.row)){g->setColor(LINE_COLOR,Point3(0,0,0));g->marker(&item.p,X_MRKR);g->setColor(LINE_COLOR,Point3(1,1,1));g->marker(&item.p,PLUS_SIGN_MRKR);}}
+  return 1;}
  void GetWorldBoundBox(TimeValue,INode*,ViewExp*,Box3& box,ModContext*)override{box.Init();for(auto v:visible())box+=v.p;}
  int HitTest(TimeValue,INode* node,int type,int crossing,int flags,IPoint2* p,ViewExp* v,ModContext* mc)override{
   if(!level)return 0;HitRegion hr;MakeHitRegion(hr,type,crossing,4,p);auto* g=v->getGW();auto limits=g->getRndLimits();g->setRndLimits((limits|GW_PICK)&~GW_ILLUM);g->setHitRegion(&hr);g->setTransform(Matrix3(1));int hit=0;auto items=visible();
@@ -90,14 +111,29 @@ public:
  void ClearSelection(int)override{author([](auto& next){for(auto& [k,l]:next)l.selection.clear();},false);}
  void SelectAll(int)override{author([](auto& next){for(auto& [k,l]:next)for(std::size_t i=0;i<l.rows.size();++i)l.selection.set(i,l.active&&!l.invalid&&l.shown(l.rows.get(i)));},false);}
  void InvertSelection(int)override{author([](auto& next){for(auto& [k,l]:next)for(std::size_t i=0;i<l.rows.size();++i)if(l.shown(l.rows.get(i)))l.selection.set(i,!l.selection.get(i));},false);}
- void transform(const Matrix3& tm,bool localOrigin=false){if(!valid()||!cyrusBoundaryAllows(this))return;author([&](auto& next){for(auto& [k,l]:next)if(l.active)for(std::size_t i=0;i<l.rows.size();++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))){auto& r=l.rows.write(i);Point3 original=l.matrix(r).GetTrans();r.delta=r.delta*tm;if(localOrigin)r.delta.SetTrans(r.delta.GetTrans()+original-l.matrix(r).GetTrans());}});}
+ void transform(const Matrix3& tm,bool localOrigin=false){if(!valid()||!cyrusBoundaryAllows(this))return;requireEditableFeedback();author([&](auto& next){
+  if(!finiteEditMatrix(tm))throw std::invalid_argument("Edit gesture must have a finite transform");
+  for(auto& [k,l]:next)if(l.active)for(std::size_t i=0;i<l.rows.size();++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))&&!l.rows.get(i).deleted){
+   const auto& saved=l.rows.get(i);Matrix3 suffix(1);const auto final=l.displayMatrix(saved);
+   if(l.published){
+    const auto& local=l.feedbackLocal();if(!local||i>=local->rows.size())throw std::invalid_argument("Update the scatter before editing its changed instance history");
+    const auto& committed=local->rows.get(i);const auto source=l.sourceIn(committed,local->input);
+    if(committed.inputId!=saved.inputId||committed.outputId!=saved.outputId||committed.lineage!=saved.lineage||source==UINT_MAX)throw std::invalid_argument("Update the scatter before editing its changed source history");
+    const auto intermediate=local->input->matrix(source)*committed.delta;
+    bool same=true;for(int r=0;r<4;++r)if(intermediate.GetRow(r)!=final.GetRow(r))same=false;
+    if(!same)suffix=inverseEditMatrix(intermediate)*final;
+   }
+   auto gesture=tm;if(localOrigin){const auto pivot=final.GetTrans();gesture.SetTrans(gesture.GetTrans()+pivot-pivot*gesture);}
+   const auto delta=saved.delta*suffix*gesture*inverseEditMatrix(suffix);
+   if(!finiteEditMatrix(delta))throw std::invalid_argument("Edit gesture produced a non-finite transform");l.rows.write(i).delta=delta;
+  }});}
  void Move(TimeValue,Matrix3&,Matrix3& axis,Point3& v,BOOL)override{transform(TransMatrix(VectorTransform(axis,v)));}
  void Rotate(TimeValue,Matrix3&,Matrix3& axis,Quat& v,BOOL localOrigin)override{Matrix3 r;v.MakeMatrix(r);transform(Inverse(axis)*r*axis,!!localOrigin);}
  void Scale(TimeValue,Matrix3&,Matrix3& axis,Point3& v,BOOL localOrigin)override{transform(Inverse(axis)*ScaleMatrix(v)*axis,!!localOrigin);}
  void TransformStart(TimeValue)override{if(!cyrusBoundaryAllows(this))return;if(ip)ip->LockAxisTripods(TRUE);}
  void TransformFinish(TimeValue)override{if(ip)ip->LockAxisTripods(FALSE);}
  void TransformCancel(TimeValue)override{if(ip)ip->LockAxisTripods(FALSE);}
- void CloneSelSubComponents(TimeValue)override{if(!valid()||!cyrusBoundaryAllows(this))return;theHold.Begin();try{author([](auto& next){for(auto& [k,l]:next)if(l.active){auto n=l.rows.size();for(std::size_t i=0;i<n;++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))){auto copy=l.rows.get(i);copy.outputId=EditKey(pointId());l.selection.set(i,false);l.append(copy);l.selection.set(l.rows.size()-1,true);}}});theHold.Accept(_T("Copy scatter instances"));}catch(...){theHold.Cancel();throw;}}
+ void CloneSelSubComponents(TimeValue)override{if(!valid()||!cyrusBoundaryAllows(this))return;requireEditableFeedback();theHold.Begin();try{author([](auto& next){for(auto& [k,l]:next)if(l.active){auto n=l.rows.size();for(std::size_t i=0;i<n;++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))&&!l.rows.get(i).deleted){auto copy=l.rows.get(i);copy.outputId=EditKey(pointId());copy.order=l.allocateOrder();l.selection.set(i,false);l.append(copy);l.selection.set(l.rows.size()-1,true);}}});theHold.Accept(_T("Copy scatter instances"));}catch(...){theHold.Cancel();throw;}}
  void GetSubObjectCenters(SubObjAxisCallback* cb,TimeValue,INode*,ModContext*)override{Point3 p(0,0,0);int n=0;for(auto item:visible())if(layers[item.layer].selection.get(item.row)){p+=item.p;++n;}if(n)cb->Center(p/float(n),0);}
  void GetSubObjectTMs(SubObjAxisCallback* cb,TimeValue,INode*,ModContext*)override{Matrix3 tm(1);Point3 p(0,0,0);int n=0;for(auto item:visible())if(layers[item.layer].selection.get(item.row)){p+=item.p;++n;}if(n)tm.SetTrans(p/float(n));cb->TM(tm,0);}
  IOResult Save(ISave* save)override;
@@ -118,6 +154,7 @@ static CSEdit* edit(Value* v){auto* p=v->to_reftarg();if(!p||p->ClassID()!=CS_ED
 def_visible_primitive(cyrusEditRevision,"cyrusEditRevision");Value* cyrusEditRevision_cf(Value**,int){return Integer::intern(editRevision);}
 def_visible_primitive(cyrusEditFingerprint,"cyrusEditFingerprint");Value* cyrusEditFingerprint_cf(Value** a,int count){check_arg_count(cyrusEditFingerprint,2,count);type_check(a[0],Array,_T("rows"));auto* rows=static_cast<Array*>(a[0]);std::uint64_t h=1469598103934665603ULL;auto add=[&](const void* p,std::size_t n){auto* b=static_cast<const unsigned char*>(p);for(std::size_t i=0;i<n;++i){h^=b[i];h*=1099511628211ULL;}};for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("instance row"));auto* r=static_cast<Array*>(rows->data[i]);cyrus::rows::current(r);Point3 p=r->data[0]->to_matrix3().GetTrans();add(&p,sizeof(p));int src=r->data[1]->to_int();add(&src,sizeof(src));}std::wstring text=a[1]->to_string();add(text.data(),text.size()*sizeof(wchar_t));return new String(std::to_wstring(h).c_str());}
 #include "cyrus_edit_stack.inc"
+#include "cyrus_edit_feedback.inc"
 
 // Bounded diagnostics. Allocator bytes include tracked native blocks/tables,
 // derived maps and authored key strings; native input Views use their own ledger.

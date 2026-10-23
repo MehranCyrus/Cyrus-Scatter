@@ -24,6 +24,7 @@ void settlePresentation() {
     const auto& next=candidate->generation;
     if(next->complete()) {
         if(presentation->commit(next->ticket)) {
+            cyrusPresentEditFeedback(next->editFeedback);
             if(retained)retained->generation->enabled=false;
             retained.reset();
         }

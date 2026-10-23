@@ -29,7 +29,7 @@ The user's current testing rule is **Max 2027 only**, including SDK builds,
 native tests, host automation, Computer Use and performance qualification. Max
 2026 work requires a new explicit user request. This supersedes older dual-version
 requirements in plans and historical campaigns. Preserve their original results;
-label new qualification with the actual Max 2027 environment. The explicitly requested 0.86.8.2 compatibility delivery also has matched Max 2024/2026/2027 packages and scoped receipts; this does not extend the default development scope to other hosts.
+label new qualification with the actual Max 2027 environment. The explicitly requested [0.86.9 compatibility delivery](plans/edit-instances/DELIVERY_0869.md) has distinct matched Max 2024/2026/2027 SDK/native/managed payloads, focused host checks and one EXE with Surface Analyzer 0.14.2. Earlier compatibility deliveries retain their own scope and receipts. This exception does not extend ordinary development to other hosts; further older-host work still requires the user's explicit scope.
 
 All paths below are relative to the repository root. Node, Python and the documented native toolchain must be available. The existing MCP test environment is local/ignored; consult [MCP setup](../CyrusMCP/README.md) if absent, rather than assuming a clean checkout includes it.
 

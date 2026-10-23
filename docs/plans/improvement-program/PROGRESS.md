@@ -1,5 +1,7 @@
 # Cyrus Scatter — current execution ledger
 
+**23 October Edit delivery — 0.86.9:** [source-aware Edit history, colours and final displayed feedback](../edit-instances/DELIVERY_0869.md), with one EXE containing distinct Max 2024/2026/2027 Scatter and Surface Analyzer 0.14.2 payloads. Focused Undo, removal, legacy/new save/load, renderer failure and installed-startup checks passed. The real Orange Tree offset is measured asset-pivot behaviour; the pivot is preserved. Copied stacks with cross-modifier clone references retain a documented pre-existing limit. Original Paint, schema 59, recipe 8 and content 0.86.7 are unchanged.
+
 **23 October correction delivery — 0.86.8.7:** [review repairs and viewport-memory implementation](../code-quality/DELIVERY_08687.md), with independently versioned Analyzer 0.14.2 and **Max 2027-only** packages. **The seven review repairs and scoped host/installer qualification are complete; the delivery report retains broader acceptance limits.** Original Paint, schema 59, recipe 8 and content revision 0.86.7 are preserved. This scope does not resume unrelated roadmap work.
 
 **23 October gallery repair — 0.86.8.6:** [release identity correction](../combined-installer/DELIVERY_08686.md). The gallery now matches the script; native Scatter and Analyzer payloads are unchanged. This does not resume other roadmap work.
@@ -8,7 +10,21 @@
 
 **22 October correction — 0.86.8.4:** [saved rollout order, legacy installer migration and focused Max 2027 evidence](../installer-panels/DELIVERY_08684.md). Preserves original Paint and the current calculation/schema contracts. Independent Analyzer remains 0.14.1; older-host qualification is unchanged.
 
-This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the full requested outcomes; current conversation scope governs action. **Current test delivery: [Scatter 0.86.8.7 and Analyzer 0.14.2 for Max 2027](../code-quality/DELIVERY_08687.md).** The historical [0.86.8.6 combined delivery](../combined-installer/DELIVERY_08686.md) and [0.86.8.2 three-host report](../source-clearance/DELIVERY_08682.md) retain their original Max 2024/2026/2027 qualification. The six-refinement delivery does not close unexecuted lifecycle/fault/renderer/soak subcases or resume unrelated roadmap work. [Knowledge maintenance](../../../tools/rag/README.md) remains separate. P, I, PG, N and local D tasks are not release versions. A documentation or knowledge-index maintenance request alone does not authorize plugin implementation; the current user request must explicitly authorize coding.
+This is the single maintained status and remaining-work list for the program. The [activated objective](OBJECTIVE.md) preserves the full requested outcomes; current conversation scope governs action. **Current test delivery: [Scatter 0.86.9 and Analyzer 0.14.2 for Max 2024/2026/2027](../edit-instances/DELIVERY_0869.md).** Historical deliveries retain their original qualification. This Edit delivery does not close unexecuted broader lifecycle/fault/renderer/soak subcases or resume unrelated roadmap work. [Knowledge maintenance](../../../tools/rag/README.md) remains separate. P, I, PG, N and local D tasks are not release versions. A documentation or knowledge-index maintenance request alone does not authorize plugin implementation; the current user request must explicitly authorize coding.
+
+## 0.86.9 Edit preservation and compatibility — delivered, 23 October 2026
+
+The [approved plan](../edit-instances/IMPLEMENTATION_0869.md) is implemented with
+native source lineage, inactive move/delete/clone history, independently owned
+radius correspondence and one final displayed matrix/palette for Edit feedback.
+The final delivery has 56 native Scatter tests per SDK, one Analyzer native test
+per SDK, 69 affected Python tests, 46 production Max 2027 functional assertions,
+five private viewport-failure assertions and an old-reader refusal witness.
+Older-host compatibility, actual MZP/EXE handlers and fresh installed startup
+have separate exact-identity evidence in the delivery report. No artist profile
+was installed or restarted. Preserve original scenes when saving the new native
+Edit storage. Further copied-stack clone/radius remapping remains outside this
+scope; no silent reset or source reassignment was introduced.
 
 ## 0.86.8.7 review repairs and viewport memory — delivered, 23 October 2026
 
@@ -204,6 +220,15 @@ thumbnail/material/compatibility work is separate and preserved.
 
 ## Real-model library planning
 
+**23 October shared personal library — planning complete, coding deferred by the
+user:** [implementation plan](../preset-gallery-improvements/SHARED_LIBRARY_IMPLEMENTATION_PLAN.md)
+and [research](../preset-gallery-improvements/ASSET_FOUNDATION_RESEARCH_20261023.md).
+The plan covers one reusable model/texture store, pinned recipe revisions,
+collections/sharing, migration/path retention and the ten-look acceptance case.
+SL01–SL09 are local planned work packages; none is implemented or qualified by
+this documentation task. Existing P10/B35 deliveries remain complete within their
+recorded scope. No release version, build, test or installation is introduced.
+
 The artist superseded the eight mixed planting pilots as default content with
 individual real-model entries. The current private content revision **0.86.7**
 reuses **96 prepared models and previews**, accounting for all **104 catalog
@@ -216,8 +241,10 @@ records the preparation/import evidence and original B33/B34 findings.
 [0.86.7](../preset-gallery-improvements/DELIVERY_0867.md) corrected thumbnail
 progress and added supported material preview; subsequent patches added the
 shared optional ZIP installer and source-clearance/opacity reuse. The current
-[0.86.8.2 report](../source-clearance/DELIVERY_08682.md) owns the latest packages
-and focused Relax/UI checks, not new qualification of all models/renderers.
+[0.86.9 report](../edit-instances/DELIVERY_0869.md) owns the current combined
+packages. The [0.86.8.2 report](../source-clearance/DELIVERY_08682.md) retains its
+focused Relax/UI checks; neither establishes new qualification of every library
+model/material or renderer.
 
 The [preserved execution narrative](../../archive/plans/real-model-library-execution-20261020.md)
 retains pilot iterations, failed attempts, source/asset hashes, original version

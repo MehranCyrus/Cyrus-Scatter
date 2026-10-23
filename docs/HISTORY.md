@@ -2,13 +2,16 @@
 
 Use [the current index](README.md) for usage and [the backlog](BACKLOG.md) for next work. The entries below are dated records, not alternative current manuals. Paths remain stable for source hashes, tests, research citations and the excluded website.
 
-The latest scoped delivery is [0.86.0 native qualification](plans/native-placement/DELIVERY_0860.md). Earlier [0.75 qualification](System_Qualification_0.75_2026-10-09/README.md) remains a frozen historical campaign. Documentation cleanup is not another runtime qualification.
+The latest scoped delivery is [0.86.9 Edit preservation and three-host packaging](plans/edit-instances/DELIVERY_0869.md). The [0.86.8.7 review/memory delivery](plans/code-quality/DELIVERY_08687.md), [0.86.0 native qualification](plans/native-placement/DELIVERY_0860.md) and earlier [0.75 qualification](System_Qualification_0.75_2026-10-09/README.md) retain their original builds, hosts and limits. Documentation maintenance is not another runtime qualification.
 
 [Archived plans and checkpoint narratives](archive/README.md) preserve superseded work queues. The [decision register](documentation-inventory.csv) records consolidation and byte-identical retirements. Dated reports below remain archived at their original paths where hashes, tools or research depend on them.
 
 | Record | Purpose |
 | --- | --- |
-| [0.86.0 native migration](plans/native-placement/DELIVERY_0860.md) | Current scoped delivery; exact normal/fault builds, native ownership/Undo, Max 2027 matrix, one-hour soak and package hashes |
+| [0.86.9 Edit preservation](plans/edit-instances/DELIVERY_0869.md) | Source-aware history, colour/final-position feedback, saved-data boundaries, Copy limits and one matched Scatter/Analyzer EXE for Max 2024/2026/2027; [qualification manifest](plans/edit-instances/QUALIFICATION_0869.json) |
+| [0.86.8.7 review and memory repairs](plans/code-quality/DELIVERY_08687.md) | Confirmed review corrections, coordinated Mesh memory admission and the Viewport memory preference; original Max 2027 qualification |
+| [0.86.8.6 combined delivery](plans/combined-installer/DELIVERY_08686.md) | Library-browser identity correction and earlier three-host Scatter/Analyzer installer scope |
+| [0.86.0 native migration](plans/native-placement/DELIVERY_0860.md) | Native-foundation delivery; exact normal/fault builds, native ownership/Undo, Max 2027 matrix, one-hour soak and package hashes |
 | [0.85.4 Count memory correction](plans/memory-0854/README.md) | Native transient schedules/radii, reduced row transport and session workspace reservation; bounded Max 2027 Undo/Count qualification |
 | [0.85.3 ready presets](plans/preset-gallery-improvements/LOAD_0853.md) | Add layers with included models/materials, evaluated terrain, paths and Paint; exact owned Max 2027 qualification |
 | [0.78.1 Start Brush and Max 2026/2027](Brush_Start_0.78.1_2026-10-10/README.md) | Frozen button, native layout and package qualification preceding the 0.78.2 drawing patch |

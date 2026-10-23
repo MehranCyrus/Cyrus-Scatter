@@ -6,7 +6,15 @@
 
 The capability matrix and MCP agent workflow remain at their existing `Current_System_2026-10-05` paths because code/catalog generation and external references use them. Their directory date does not make their maintained content obsolete. The semantic inventory, catalog hashes and current control register are functional inputs, not disposable prose.
 
-The 21 October 2026 maintenance reconciles current guidance with [Scatter 0.86.8.2](plans/source-clearance/DELIVERY_08682.md): schema 59 and its schema-58 upgrade, source clearance ownership, visible layer Relax controls, supported textured/opacity preview and three-host packaging. Product code and its qualified artifacts remain unchanged. Earlier performance, rendering and host evidence retain their original limits. Knowledge selection, actual freshness and review evidence are recorded in the [knowledge entrypoint](../tools/rag/README.md). Separate website implementation/content edits are preserved; this task does not build or publish them.
+The 23 October 2026 maintenance reconciles current guidance with [Scatter 0.86.9](plans/edit-instances/DELIVERY_0869.md): source-aware Edit history, identification colours, final displayed feedback, native Edit storage/capability 2 and one EXE containing matched Max 2024/2026/2027 payloads with Surface Analyzer 0.14.2. Schema 59, recipe 8, original Paint and content revision 0.86.7 are preserved. The [qualification manifest](plans/edit-instances/QUALIFICATION_0869.json) retains the exact producer/package/host evidence. The remaining full-object Copy limitation is tracked as [B37](BACKLOG.md#edit-instance-findings--0869); it is not a completed fix. Earlier performance, rendering and host evidence retain their original limits. Knowledge selection, actual freshness and direct-source routing are recorded in the [knowledge entrypoint](../tools/rag/README.md). This documentation pass does not rebuild plugin packages, activate a knowledge index, build a website or publish one.
+
+This pass checked 20 maintained/campaign Markdown files: 662 local links and
+16 current anchor links resolve. Generated integration checks pass for 333
+controls and 32 bounded delimiter fixtures; the three focused installer-doc and
+catalog tests pass. The native producer source hashes and all seven qualified
+EXE/MZP hashes still match the 0.86.9 evidence. Catalog changes are help metadata
+only. Local receipts are under `build/docs-0869-20261023-01/`; no new Max runtime
+qualification is implied by these documentation checks.
 
 ## What to keep
 

@@ -1,6 +1,6 @@
-# Cyrus Scatter 0.86.8.7 — artist workflow
+# Cyrus Scatter 0.86.9 — artist workflow
 
-The 0.86.8.7 delivery targets **Max 2027** and includes **Surface Analyzer 0.14.2**. Exact qualification and remaining limits are recorded in the [delivery report](plans/code-quality/DELIVERY_08687.md). The [0.86.8.6 three-host delivery](plans/combined-installer/DELIVERY_08686.md) retains its original Max 2024/2026/2027 scope; those packages do not contain the new native repairs.
+The 0.86.9 delivery targets **Max 2024, 2026 and 2027** and includes **Surface Analyzer 0.14.2** in one EXE. Exact qualification, the Orange Tree pivot finding and copy limitations are recorded in the [delivery report](plans/edit-instances/DELIVERY_0869.md). Existing supported edits are preserved; save upgraded scenes as new copies because older plugins cannot read the new source-aware Edit format.
 
 For library models already added to a layer, highlight the row in **Models &
 Points** and use **Select sources**. **Show sources** and **Hide sources** change
@@ -20,8 +20,8 @@ receivers and distribution yourself, then **Update scatter** in Manual mode.
 Corona is required for the supplied materials. Personal recipes remain separate.
 Successful model additions now show a banner naming the model and destination
 layer. Failed imports show an error banner and retain the previous scene.
-The **0.86.8.7** candidate installer updates Scatter and Surface Analyzer for Max 2027 and detects your existing library.
-Choose **Install** or **Update** for that host.
+The **0.86.9** installer updates Scatter and Surface Analyzer 0.14.2 for Max 2024, 2026 and 2027 and detects your existing library.
+Save and close the target Max versions, then choose **Install / Update** for the versions you need and reopen them afterwards.
 **Uninstall Scatter** removes Scatter registration while keeping the independent Analyzer, your library
 and scenes. To install or update the library, put
 **CyrusScatter-Content-0.86.7.zip** beside the EXE and check
@@ -389,7 +389,7 @@ Point Cloud, Proxy and Mesh serve different preview costs. Layer/model/Band iden
 
 The cache prepares for both settings within its resource allowance, so navigation can be lower or higher than idle. An oversized Point Cloud request uses a bounded sample and reports the memory reduction; switching from Proxy or Mesh returns to points even with both point limits at zero. Current-publication representations are reused across mode changes. Mesh switches to cached boxes for sources that cannot fit their artist-selected triangle share. Zero does not disable memory/input safeguards. Cached geometry counts can exceed the drawn amount. Changing a display limit or moving the camera does not publish pending Manual edits.
 
-In the **0.86.8.7 candidate**, **Viewport & render > Viewport memory…** selects **Automatic** or a **Custom** allowance in MiB. It is shared by Scatter objects in that Max installation and saved outside the scene. **Apply** changes future resource admission while retaining existing display resources and Undo history. **Refresh display** retries presentation using published placements; pending Manual edits remain pending. A rejected Mesh successor keeps the previous complete display when available and reports the failure. Lowering the allowance below current usage can prevent subsequent allocations until resources are released. The displayed usage is an estimate of owned CPU and graphics resources, not measured free VRAM. Native system-headroom and graphics safety limits still apply; this preference does not control placement calculation or Auto Radius. See the [qualification and limits](plans/code-quality/DELIVERY_08687.md).
+**Viewport & render > Viewport memory…** selects **Automatic** or a **Custom** allowance in MiB. It is shared by Scatter objects in that Max installation and saved outside the scene. **Apply** changes future resource admission while retaining existing display resources and Undo history. **Refresh display** retries presentation using published placements; pending Manual edits remain pending. A rejected Mesh successor keeps the previous complete display when available and reports the failure. Lowering the allowance below current usage can prevent subsequent allocations until resources are released. The displayed usage is an estimate of owned CPU and graphics resources, not measured free VRAM. Native system-headroom and graphics safety limits still apply; this preference does not control placement calculation or Auto Radius. See the [current qualification and limits](plans/edit-instances/DELIVERY_0869.md) and [original memory evidence](plans/code-quality/DELIVERY_08687.md).
 
 Within Spline Bands, **Preview Falloff** shows bounded density samples on the receiving surfaces; blue is 0% and red is 100%. **Show Boundaries** independently draws white contour lines. **Field view** selects the highlighted Band's contribution or **Combined density**. The label reports sample/face counts: this is approximate coverage, not a fully shaded receiver or the final plant count. It describes the Band stage before other masks, spacing and cleanup. These samples and lines never become render output.
 
@@ -449,9 +449,56 @@ Rounded corners. No unbounded geometry refinement is triggered by size editing.
 
 From 0.82.6, saved reports include call counts, total time, longest time and failed-stage counts for input extraction, candidates, masks, transforms/radii, spacing, preview preparation, uploads, publication and panel work. Times are inclusive: a parent can contain another measured stage, so do not add all totals together. Action IDs connect an edit to invalidation and its deferred publication; unrelated host activity can have no action ID. The selected-setup snapshot reads cached requested/accepted/prepared counts and pending flags without evaluating the scene. These timings do not measure presented viewport FPS.
 
+## Edit instances in 0.86.9
+
+**Cyrus Scatter Edit > Instances** uses **Viewport & render > Color by**:
+Model, Layer or Bands. Selected handles keep a colour accent with contrasting
+selection marks. A handle marks the source pivot at its final accepted position;
+it does not mark the trunk or automatically recenter a model. The library Orange
+Tree has geometry offset from its pivot, so its trunk can remain beside a correct
+handle. Changing the source pivot intentionally changes placement semantics.
+
+Remove sources through **Models & Points**. Edits belonging to the removed model
+remain saved and inactive. Matching surviving instances keep their edits; a
+replacement model cannot inherit them merely by taking the same list position.
+Undo restores the original compatible setup. Re-adding the original scene node
+can recover its history when the generation and source settings still match;
+a different node with the same name is a different source. Point and gap entries
+also retain identity when another row is removed.
+
+In Manual mode, removal changes the authored list while the previous result
+stays visible until **Update scatter**. In Live mode the normal update runs.
+Per-instance radius values keep their own saved ownership, including inactive
+values. Seed or receiver-geometry changes still require the matching setup;
+the plugin will not guess where old edits belong. **Reset all edits** clears
+the whole modifier and supports Undo. It is not required for ordinary removal.
+
+If a viewport successor fails, the complete preceding display and its handles
+stay together. Refresh the display or restore the matching setup before making
+another instance transform or selected-radius change.
+
+Existing supported scenes load without an automatic reset. Save a new upgraded
+copy and keep the original: source-aware Edit data saved by 0.86.9 requires
+0.86.9 or later. See the [delivery evidence and limits](plans/edit-instances/DELIVERY_0869.md).
+
 ## Copy and recipe variation (0.84.0)
 
 In Layers, **Copy variation** selects **Same variation** (default) or **New variation** for the next Copy. Both create independent owners, source correspondence and Paint Areas. Same keeps the receiver random inputs; New chooses fresh inputs once. Changing this choice does not calculate anything. Named Copy rejects authored Scatter Edit or per-instance radius overrides until their transfer is supported; Max object Copy duplicates the complete setup instead.
+
+Full-object Copy has a pre-existing limit when an upper Edit modifier modifies
+clones made by a lower Edit modifier, or a radius override targets a cloned
+instance. Those cross-reference IDs need additional remapping. Preserve the
+original setup; do not use that copied-stack route to transfer those edits.
+Ordinary editing, Undo and saving/reopening the original stack are separate.
+
+For example, duplicate a tree in the first Edit modifier, then move that duplicate
+in a second Edit modifier above it. Copying the whole Scatter object currently
+gives the duplicate a new internal ID, while the second modifier remembers the
+old one. The copied arrangement can lose that movement; a deleted duplicate can
+reappear or a further copy can be missing. A custom radius on a cloned instance
+can lose its connection even with only one Edit modifier. The tested ordinary
+single-Edit Copy case does not establish support for these combinations. The
+required coordinated Copy repair is tracked as [B37](BACKLOG.md#edit-instance-findings--0869).
 
 In Recipes, **Saved variation** keeps the saved random inputs while remapping ownership. An identical result also requires matching evaluated terrain, receiver order/history, quotas, source order/weights, masks, Relax and collision context. Replacing models or terrain can change accepted placements. This is not a promise that source reordering or arbitrary terrain changes retain the arrangement. Paint still requires compatible geometry, frame and units.
 

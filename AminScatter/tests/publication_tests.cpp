@@ -13,7 +13,59 @@
 
 namespace {
 void require(bool value,const char* why) { if(!value)throw std::runtime_error(why); }
-struct INode { bool hidden=false; };
+// These hook witnesses expose only the opaque feedback contract. They do not
+// duplicate Edit row matching, MAXScript publication or Max weak references.
+// The production publication/presentation bodies below decide hook ordering.
+struct FeedbackTarget {
+    int authored=0,staged=0,visible=0;
+    std::uint64_t stagedIdentity=0,visibleIdentity=0;
+    int stages=0,presents=0,releases=0;
+};
+struct INode { bool hidden=false;std::shared_ptr<FeedbackTarget> feedback=std::make_shared<FeedbackTarget>(); };
+const auto feedbackHostThread=std::this_thread::get_id();
+std::atomic<int> liveFeedback{0},workerFeedbackCalls{0};
+std::uint64_t feedbackIdentity=0;
+bool failFeedbackCapture=false;
+struct CyrusEditFeedback {
+    const std::weak_ptr<FeedbackTarget> target;
+    const int authored;
+    const std::uint64_t identity;
+    CyrusEditFeedback(const std::shared_ptr<FeedbackTarget>& value)
+        :target(value),authored(value->authored),identity(++feedbackIdentity){++liveFeedback;}
+    ~CyrusEditFeedback(){--liveFeedback;}
+};
+bool feedbackOnHost() noexcept {
+    if(std::this_thread::get_id()==feedbackHostThread)return true;
+    ++workerFeedbackCalls;return false;
+}
+std::shared_ptr<const CyrusEditFeedback> cyrusCaptureEditFeedback(INode* node) {
+    require(feedbackOnHost(),"feedback capture used a realization worker");
+    if(failFeedbackCapture)throw std::bad_alloc();
+    return node?std::make_shared<CyrusEditFeedback>(node->feedback):nullptr;
+}
+void cyrusStageEditFeedback(const std::shared_ptr<const CyrusEditFeedback>& snapshot,bool retainVisible) noexcept {
+    if(!feedbackOnHost()||!snapshot)return;
+    if(const auto target=snapshot->target.lock()){
+        if(target->stagedIdentity>snapshot->identity)return;
+        target->staged=snapshot->authored;target->stagedIdentity=snapshot->identity;++target->stages;
+        if(!retainVisible){target->visible=0;target->visibleIdentity=0;}
+    }
+}
+void cyrusPresentEditFeedback(const std::shared_ptr<const CyrusEditFeedback>& snapshot) noexcept {
+    if(!feedbackOnHost()||!snapshot)return;
+    if(const auto target=snapshot->target.lock()){
+        if(target->stagedIdentity!=snapshot->identity)return;
+        target->visible=snapshot->authored;target->visibleIdentity=snapshot->identity;++target->presents;
+    }
+}
+void cyrusReleaseEditFeedback(const std::shared_ptr<const CyrusEditFeedback>& snapshot) noexcept {
+    if(!feedbackOnHost()||!snapshot)return;
+    if(const auto target=snapshot->target.lock()){
+        ++target->releases;
+        if(target->stagedIdentity!=snapshot->identity)return;
+        target->staged=target->visible=0;target->stagedIdentity=target->visibleIdentity=0;
+    }
+}
 struct Box3 { int identity=0; };
 struct PointGroup { std::vector<int> points{1}; };
 struct MeshGroup { std::vector<int> faces{1},instances{1},bandSlots{1}; };
@@ -45,6 +97,7 @@ struct Generation {
     std::atomic<std::size_t> ready{0};
     std::size_t groups=0;int reservation=0;
     std::shared_ptr<cyrus::RenderPublication> presentation;
+    std::shared_ptr<const CyrusEditFeedback> editFeedback;
     std::weak_ptr<RenderBundle> realization;
     std::uint64_t ticket=0;
     explicit Generation(std::vector<PointLayer> value):layers(std::move(value)) {
@@ -148,7 +201,11 @@ struct Display {
     bool presentationRefreshRequested=false;
     std::uint64_t revision=0;int notifications=0;
     void NotifyDependents(int,int,int){++notifications;}
-    ~Display(){presentation->stop();}
+    ~Display(){
+        presentation->stop();
+        if(candidate)cyrusReleaseEditFeedback(candidate->generation->editFeedback);
+        if(retained)cyrusReleaseEditFeedback(retained->generation->editFeedback);
+    }
 #include "../src/point_presentation.inc"
 #include "../src/point_publication.inc"
     void realize(DrawContext context={}){auto keepAlive=candidate;keepAlive->realize(context);}
@@ -158,19 +215,30 @@ PointLayer mixed(){PointLayer layer;layer.mesh=std::make_shared<Mesh>();return l
 struct Witness {
     std::shared_ptr<RenderBundle> candidate,visible;
     std::uint64_t revision;int notifications,items,reservations;std::size_t physical;
+    std::shared_ptr<const CyrusEditFeedback> feedback;
+    std::uint64_t feedbackVisible=0;int feedbackStages=0,feedbackPresents=0,feedbackObjects=0;
     INode* node;
     explicit Witness(const Display& display):candidate(display.candidate),visible(display.visibleBundle()),revision(display.revision),
-        notifications(display.notifications),items(liveItems),reservations(reserved),physical(physicalMeshBudget.used()),node(display.controller.node){}
+        notifications(display.notifications),items(liveItems),reservations(reserved),physical(physicalMeshBudget.used()),
+        feedback(candidate->generation->editFeedback),feedbackVisible(display.controller.node->feedback->visibleIdentity),
+        feedbackStages(display.controller.node->feedback->stages),feedbackPresents(display.controller.node->feedback->presents),
+        feedbackObjects(liveFeedback.load()),node(display.controller.node){}
     void unchanged(const Display& display) const {
         require(display.candidate==candidate&&display.visibleBundle()==visible&&visible->generation->visible(),"failure lost the complete visible publication");
         require(display.revision==revision&&display.notifications==notifications&&display.controller.node==node,"failed preparation published identity or controller changes");
         require(liveItems==items&&reserved==reservations&&physicalMeshBudget.used()==physical,"failed preparation leaked ownership");
         require(visible->itemBounds.size()==2&&visible->itemBounds[0].identity==11&&visible->itemBounds[1].identity==22,"failed preparation replaced old bounds/items");
+        require(candidate->generation->editFeedback==feedback&&node->feedback->visibleIdentity==feedbackVisible&&
+            node->feedback->stages==feedbackStages&&node->feedback->presents==feedbackPresents&&liveFeedback==feedbackObjects,
+            "failed preparation changed Edit feedback or leaked a snapshot");
     }
 };
 void preparationFailures() {
     Display display;INode node,other;require(display.publish(&node,{mixed()}),"initial publish");display.finish();
-    Witness before(display);failGeneration=true;bool threw=false;
+    Witness before(display);failFeedbackCapture=true;bool threw=false;
+    try{display.publish(&other,{mixed()});}catch(const std::bad_alloc&){threw=true;}
+    failFeedbackCapture=false;require(threw,"feedback capture fault not exercised");before.unchanged(display);
+    failGeneration=true;threw=false;
     try{display.publish(&other,{mixed()});}catch(const std::bad_alloc&){threw=true;}
     failGeneration=false;require(threw,"generation fault not exercised");before.unchanged(display);
     for(int at=0;at<2;++at){
@@ -180,6 +248,7 @@ void preparationFailures() {
     }
     reservationLimit=3;require(!display.publish(&other,{mixed()}),"real old/new preparation allowance bypassed");
     reservationLimit=100;before.unchanged(display);
+    require(other.feedback->stages==0&&other.feedback->presents==0,"failed preparation staged feedback on another controller");
 }
 void admissionAndSharing() {
     physicalMeshBudget.limits(20,10);
@@ -303,6 +372,99 @@ void initialFailureNotificationsAndConcurrentRealize() {
     require(display.visibleBundle()==display.candidate&&display.notifications==completed+1,
         "ready publication did not settle without further update work");
 }
+void editFeedbackFollowsCompleteDisplay() {
+    Display display;INode node;node.feedback->authored=10;
+    require(display.publish(&node,{mixed()}),"initial Edit feedback publication");
+    require(node.feedback->staged==10&&!node.feedback->visibleIdentity,"initial pending render presented Edit feedback");
+    DrawContext initialFault;initialFault.failAt=0;display.realize(initialFault);display.settlePresentation();
+    require(!node.feedback->visibleIdentity&&node.feedback->presents==0,"initial failed render exposed Edit handles");
+    require(display.publish(&node,{mixed()}),"initial Edit feedback retry");display.finish();
+    require(node.feedback->visible==10,"ready initial render did not present Edit feedback");
+    const auto old=display.visibleBundle();const auto previous=node.feedback->visibleIdentity;
+    const auto successor=std::vector<PointLayer>{mixed(),mixed()};node.feedback->authored=20;
+    require(display.publish(&node,successor),"late-failure Edit successor");
+    require(node.feedback->staged==20&&node.feedback->visibleIdentity==previous,
+        "staging a successor displaced the old ready Edit feedback");
+    const auto failed=display.candidate;const auto calls=node.feedback->presents;
+    DrawContext fault;fault.failAt=3;
+    fault.afterItem=[&](int){require(node.feedback->visibleIdentity==previous,"partially ready render presented Edit feedback");};
+    failed->realize(fault);display.settlePresentation();
+    require(failed->generation->failed&&display.visibleBundle()==old&&node.feedback->visibleIdentity==previous&&
+        node.feedback->presents==calls,"late resource failure advanced Edit feedback");
+    require(display.publish(&node,successor),"same-input Edit feedback recovery");
+    std::thread worker([&]{DrawContext context;display.candidate->realize(context);});worker.join();
+    require(display.candidate->generation->complete()&&node.feedback->visibleIdentity==previous&&workerFeedbackCalls==0,
+        "realization worker presented feedback or called a host hook");
+    display.settlePresentation();
+    require(display.visibleBundle()==display.candidate&&node.feedback->visible==20&&
+        node.feedback->visibleIdentity!=previous,"all-ready recovery did not move render and Edit feedback together");
+    const auto recovered=node.feedback->visibleIdentity;node.feedback->authored=30;
+    require(display.publish(&node,{mixed(),mixed()}),"supersedable Edit successor");
+    const auto superseded=display.candidate;
+    DrawContext replace;replace.afterItem=[&](int item){if(item==0){node.feedback->authored=40;require(display.publish(&node,{mixed()}),"replacement Edit successor");}};
+    superseded->realize(replace);
+    require(node.feedback->visibleIdentity==recovered&&!superseded->generation->visible(),
+        "superseded partial generation presented its Edit snapshot");
+    display.finish();require(node.feedback->visible==40,"newest complete render failed to select its captured Edit feedback");
+    node.feedback->authored=50;require(display.publish(&node,{}),"empty Edit successor");
+    require(display.visibleGeneration()->groups==0&&node.feedback->visible==50,
+        "empty complete render retained stale Edit feedback");
+}
+void editFeedbackRefreshWithoutRenderRebuild() {
+    Display display;INode node;auto layers=std::vector<PointLayer>{mixed()};node.feedback->authored=1;
+    require(display.publish(&node,layers),"pending unchanged-stream feedback publication");
+    const auto pending=display.candidate;const auto ticket=display.revision;const auto attempts=itemAttempts;
+    const auto oldFeedback=std::weak_ptr<const CyrusEditFeedback>(pending->generation->editFeedback);
+    node.feedback->authored=2;require(display.publish(&node,layers),"pending feedback-only refresh");
+    require(display.candidate==pending&&display.revision==ticket&&itemAttempts==attempts&&oldFeedback.expired()&&
+        node.feedback->staged==2&&!node.feedback->visibleIdentity,"pending same-stream refresh rebuilt or presented before readiness");
+    display.finish();require(node.feedback->visible==2,"pending refresh committed the obsolete feedback snapshot");
+    const auto ready=std::weak_ptr<const CyrusEditFeedback>(pending->generation->editFeedback);
+    node.feedback->authored=3;require(display.publish(&node,layers),"ready feedback-only refresh");
+    require(display.candidate==pending&&display.revision==ticket&&itemAttempts==attempts&&ready.expired()&&
+        node.feedback->visible==3,"already-ready stream failed to present refreshed Edit feedback without uploads");
+}
+void replacementHelperClearsFeedbackWithoutAnImage() {
+    INode node;auto previous=std::make_unique<Display>();node.feedback->authored=70;
+    require(previous->publish(&node,{mixed()}),"old helper publication");previous->finish();
+    require(node.feedback->visible==70,"old helper feedback missing");
+    Display replacement;node.feedback->authored=80;
+    require(replacement.publish(&node,{mixed()}),"replacement helper publication");
+    const auto staged=node.feedback->stagedIdentity;
+    require(!replacement.visibleBundle()&&!node.feedback->visibleIdentity,
+        "replacement helper retained Edit feedback without a visible image");
+    previous->settlePresentation();previous.reset();
+    require(node.feedback->stagedIdentity==staged&&!node.feedback->visibleIdentity,
+        "old helper completion or release displaced the replacement feedback");
+    replacement.finish();require(node.feedback->visible==80,"ready replacement helper did not present its feedback");
+}
+void editFeedbackWeakTargetsAndPinnedRetirement() {
+    const auto initialLive=liveFeedback.load();INode node;const auto target=node.feedback;
+    std::shared_ptr<ICustomRenderItem> sdkPin;
+    std::weak_ptr<const CyrusEditFeedback> oldFeedback;
+    {
+        auto display=std::make_unique<Display>();node.feedback->authored=7;
+        require(display->publish(&node,{mixed()}),"weak feedback ready publication");display->finish();
+        oldFeedback=display->candidate->generation->editFeedback;sdkPin=display->candidate->items[1].value;
+        node.feedback->authored=8;require(display->publish(&node,{mixed()}),"weak feedback pending successor");
+        display.reset();
+        require(!target->visibleIdentity&&!target->stagedIdentity&&target->releases==2,
+            "display reset failed to release both pending and last-visible Edit ownership");
+        require(!oldFeedback.expired()&&liveFeedback==initialLive+1,
+            "SDK pin did not retain its immutable feedback snapshot or pending snapshot leaked");
+    }
+    const auto releaseCalls=target->releases;
+    std::thread worker([pin=std::move(sdkPin)]()mutable{pin.reset();});worker.join();
+    require(oldFeedback.expired()&&liveFeedback==initialLive&&workerFeedbackCalls==0&&target->releases==releaseCalls,
+        "last SDK pin destruction called host feedback or retained the snapshot");
+    {
+        Display display;INode deleted;require(display.publish(&deleted,{mixed()}),"deletable feedback publication");
+        const auto weakTarget=std::weak_ptr<FeedbackTarget>(deleted.feedback);deleted.feedback.reset();
+        require(weakTarget.expired(),"feedback snapshot retained its modifier target strongly");
+        display.finish();require(display.visibleGeneration()->complete(),"deleted weak target prevented render completion");
+    }
+    require(liveFeedback==initialLive,"deleted feedback target left a snapshot resident");
+}
 void hideDeleteResetAndEmpty() {
     std::shared_ptr<ICustomRenderItem> sdkPin;
     std::shared_ptr<Generation> oldGeneration;
@@ -326,8 +488,10 @@ void hideDeleteResetAndEmpty() {
 int main() {
     try {
         preparationFailures();admissionAndSharing();identicalGeometrySelectsExactInstanceResource();laterItemFailureAndRetry();rapidReplacementAndCulledSiblings();
-        initialFailureNotificationsAndConcurrentRealize();hideDeleteResetAndEmpty();
-        require(liveItems==0&&reserved==0&&physicalMeshBudget.used()==0&&physicalInstanceBudget.used()==0,"publication fixture leaked resources");
-        std::cout<<"PASS production publication/presentation: admission, exact-instance reuse across same-shape layers, sharing, initial/late failure retention, host-only atomic commit, retry, rapid replacement, concurrent activation, culled siblings, hide/delete/reset and SDK pins\n";
+        initialFailureNotificationsAndConcurrentRealize();editFeedbackFollowsCompleteDisplay();editFeedbackRefreshWithoutRenderRebuild();
+        replacementHelperClearsFeedbackWithoutAnImage();editFeedbackWeakTargetsAndPinnedRetirement();hideDeleteResetAndEmpty();
+        require(liveItems==0&&reserved==0&&physicalMeshBudget.used()==0&&physicalInstanceBudget.used()==0&&
+            liveFeedback==0&&workerFeedbackCalls==0,"publication fixture leaked resources or called feedback from a worker");
+        std::cout<<"PASS production publication/presentation: admission, exact-instance reuse across same-shape layers, sharing, initial/late failure retention, host-only atomic commit and Edit feedback, retry, rapid replacement, concurrent activation, weak feedback targets, unchanged-stream feedback refresh, culled siblings, hide/delete/reset and SDK pins\n";
     }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}
 }

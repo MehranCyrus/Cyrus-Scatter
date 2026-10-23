@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "d6867ab03d401d739ff875b309d30cd5664fc52cf658ddae840aaaf55e1c77aa",
+  "capability_source_sha256": "bb76076526bc36fab823c2f8c15c7e38c4631ca575b07ebc0fa230be68ff7532",
   "control_inventory_sha256": "3f5efda86d25659cca1471a01435c493503b453fcf5f66c533484916a2af0321",
-  "development_version": "0.86.8.7",
+  "development_version": "0.86.9",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified2",
   "features": [
@@ -94,9 +94,9 @@
     {
       "feature_id": "C13",
       "title": "Analyzer Area/falloff / layer",
-      "native": "Separate cached Analyzer producer with Manual/Live; supported line/point Area and falloff",
+      "native": "Separate cached Analyzer 0.14.2 producer with Manual/Live; matching capability/version checks; supported line/point Area and falloff",
       "mcp": "No Analyzer mutation/binding",
-      "qualification_or_extension": "Capability/version card and separately qualified cached binding"
+      "qualification_or_extension": "Independently versioned planar Analyzer; current three-host install/analysis witnesses do not establish general curved-surface analysis"
     },
     {
       "feature_id": "C14",
@@ -108,9 +108,9 @@
     {
       "feature_id": "C15",
       "title": "Vector persistence / Paint Area",
-      "native": "Gesture and conversion Undo/Redo; independent planar spline snapshots and bounded closed-spline Replace/Add import; no stroke history or live spline links",
+      "native": "Gesture and conversion Undo/Redo; independent planar spline snapshots with bounded export optimization and closed-spline Replace/Add import; original Paint remains unchanged; no stroke history or live spline links",
       "mcp": "No history import or mutation",
-      "qualification_or_extension": "P05 conversion, physical picker/export and saved-unit persistence evidence; scene units and geometry guards apply"
+      "qualification_or_extension": "P05 conversion and 0.86.8.3 optimized-export witnesses retain their recorded scope; physical picker/export and saved-unit/geometry guards apply"
     },
     {
       "feature_id": "C16",
@@ -129,9 +129,9 @@
     {
       "feature_id": "C18",
       "title": "Layout bands / layer",
-      "native": "Stable Paths/Bands, empty interval reservation, Consecutive/Independent ranges, Rounded/Sharp joins, density curves and explicit model/Point/group membership; separate Analyzer channels",
+      "native": "Stable Paths/Bands, empty interval reservation, Consecutive/Independent ranges, Rounded/Sharp joins, density curves and explicit model/Point/group membership; separate Analyzer channels; bounded dense-Path clipping and queries",
       "mcp": "No Band/range/density/assignment mutation",
-      "qualification_or_extension": "Bounded geometry/host oracles pass; remaining physical, workload and renderer gates are tracked in the current implementation record"
+      "qualification_or_extension": "0.86.8.3 admits 8,192 sampled vertices across unique Paths with separate construction/query/outline limits. Bounded witnesses retain their scope; physical, workload and renderer gates remain separate"
     },
     {
       "feature_id": "C19",
@@ -150,9 +150,9 @@
     {
       "feature_id": "C21",
       "title": "Edit/instance radius / stable identity",
-      "native": "Protected move/clone/delete and bound world-radius/multiplier overrides; new stable-only Edit storage",
+      "native": "Protected move/clone/delete, source-aware inactive history and layer-owned world-radius/multiplier overrides; native Edit storage 2; Model/Layer/Bands handle colours and final displayed-position feedback",
       "mcp": "Read radius overrides; no Edit mutation",
-      "qualification_or_extension": "Snapshot-bound typed edits and stale correspondence rejection"
+      "qualification_or_extension": "0.86.9 focuses removal, stacked transforms, Undo, migration/save/reopen and failure retention. [B37](../BACKLOG.md#edit-instance-findings--0869) remains open for whole-object Copy of upper references to lower clones and clone-targeted radius overrides; public typed Edit mutation remains unavailable"
     },
     {
       "feature_id": "C22",
@@ -178,9 +178,9 @@
     {
       "feature_id": "C25",
       "title": "Preview / setup/layer",
-      "native": "Retained Point Cloud/Proxy/Mesh/Placement points and Textured mesh; supported material/UV/opacity preview, identification Mesh cutouts, unchanged source appearance/geometry reuse, and one field/radius inspection bundle per population",
-      "mcp": "Existing typed display subset, cached metrics and viewport capture; new Band/field controls remain local",
-      "qualification_or_extension": "Current image/fallback and allocation witnesses are scoped evidence. Cold realization, representative costs, device loss and physical presentation remain separate gates"
+      "native": "Retained Point Cloud/Proxy/Mesh/Placement points and Textured mesh; supported material/UV/opacity preview, identification Mesh cutouts, unchanged source appearance/geometry reuse, and one field/radius inspection bundle per population; coordinated Mesh admission and Viewport memory preference",
+      "mcp": "Existing typed display subset, cached metrics and viewport capture; new Band/field/memory controls remain local",
+      "qualification_or_extension": "0.86.8.7 memory and 0.86.9 compatibility witnesses preserve geometry/placement and failed-successor retention within their scope. Cold realization, renderer-material parity, device loss and physical presentation remain separate gates"
     },
     {
       "feature_id": "C26",
@@ -213,9 +213,9 @@
     {
       "feature_id": "C30",
       "title": "Save/load/Undo / scene",
-      "native": "Current schema 58 with vector payload, stable Edit/Path/Band/source identities, typed distances and saved display controls; no earlier-scene migration",
+      "native": "Current schema 59 with explicit Undoable upgrade from 58; earlier development formats remain retired. Native Edit storage 2 retains its supported legacy reader and guards older runtimes against upgraded files; typed distances and saved identities/display controls remain",
       "mcp": "Scoped own-top-Undo/journal recovery; no arbitrary scene save",
-      "qualification_or_extension": "Current native Undo, save/reopen/copy/merge and retired-format rejection pass in Max 2026/2027. Physical input, DPI, native binding rescale and long-session qualification remain separate"
+      "qualification_or_extension": "0.86.9 records exact Edit migration/roundtrip/Undo and ordinary single-Edit Copy checks; preserve original scenes and save upgraded copies. B37 copied-clone correspondence, other Copy/merge combinations, physical input, native binding rescale and long-session qualification remain separate"
     },
     {
       "feature_id": "C31",

@@ -6,5 +6,5 @@ BEGIN
  LTEXT "Select Instances to edit the scatter.",1001,6,6,148,30
  PUSHBUTTON "Instances",1004,6,40,148,16
  PUSHBUTTON "Delete selected",1003,6,61,148,16
- PUSHBUTTON "Reset Edits",1002,6,82,148,16
+ PUSHBUTTON "Reset all edits",1002,6,82,148,16
 END

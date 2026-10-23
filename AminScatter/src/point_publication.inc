@@ -1,13 +1,18 @@
 // Included inside PointDisplay and the SDK-free publication regression fixture.
 // All potentially allocating render-item preparation precedes publication.
 bool publish(INode* node,std::vector<PointLayer> layers) {
+    const auto feedback=cyrusCaptureEditFeedback(node);
     if(candidate && !candidate->generation->failed.load() && sameLayers(candidate->generation->layers,layers)) {
-        controller.SetRef(node);controller.update();requestPresentationUpdate();return true;
+        controller.SetRef(node);controller.update();
+        candidate->generation->editFeedback=feedback;cyrusStageEditFeedback(feedback,bool(visibleBundle()));
+        if(visibleBundle()==candidate)cyrusPresentEditFeedback(feedback);
+        requestPresentationUpdate();return true;
     }
     // Keep the old reservation alive during admission. A replacement can be
     // rejected at peak coexistence; rejection must retain the previous result.
     auto nextGeneration=std::make_shared<Generation>(std::move(layers));
     if(nextGeneration->failed.load()) return false;
+    nextGeneration->editFeedback=feedback;
     if(revision==std::numeric_limits<std::uint64_t>::max())throw std::overflow_error("Viewport publication ticket exhausted");
     nextGeneration->presentation=presentation;nextGeneration->ticket=revision+1;
     auto next=std::make_shared<RenderBundle>(nextGeneration);nextGeneration->realization=next;
@@ -55,6 +60,7 @@ bool publish(INode* node,std::vector<PointLayer> layers) {
     controller.SetRef(node);
     if(candidate&&candidate!=visible)candidate->generation->enabled=false;
     retained=visible;candidate=std::move(next);
+    cyrusStageEditFeedback(feedback,bool(visible));
     revision=nextGeneration->ticket;presentation->stage(revision);
     controller.generation=nextGeneration;controller.update();presentationRefreshRequested=false;
     // Empty or wholly reused successors have no pending SDK work. Other

@@ -109,7 +109,8 @@ def main():
     version=re.search(r'project\(CyrusScatter VERSION ([0-9.]+)',(ROOT/'AminScatter/CMakeLists.txt').read_text())[1]
     assert re.findall(r'fn uiVersion = "([^"]+)"',text)==[version]
     assert re.findall(r'fn CyrusLibraryVersion = "([^"]+)"',text)==[version]
-    assert re.findall(r'assemblyName.Version.ToString\(\)!="([^"]+)"',text)==[version]
+    assembly_version='.'.join((version.split('.')+['0']*4)[:4])
+    assert re.findall(r'assemblyName.Version.ToString\(\)!="([^"]+)"',text)==[assembly_version]
     assert text.count('rollout mainUI "Cyrus Scatter '+version+'"')==1
     container=text[text.index('plugin helper CyrusSourceContainer'):]
     assert re.findall(r'rollout (\w+) "',container)==['containerUI']

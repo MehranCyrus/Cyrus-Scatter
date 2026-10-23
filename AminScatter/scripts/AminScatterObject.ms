@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="12bc360f4a03eb43595a2c87ff3e107355b7b943a961b9610e0dfd5c254352c6"
+﻿global CyrusLoadedScriptFingerprint="488c5dedf63755ad2e28d5a76be015602957a843f41eedfdd97aef5facadcd3c"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -1736,7 +1736,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.8.7"
+fn CyrusLibraryVersion = "0.86.9"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -1951,7 +1951,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.8.7 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.9 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -2543,7 +2543,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.8.7 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.9 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -2719,11 +2719,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.8.7 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.9 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.8.7" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.8.7 gallery package."
+    if assemblyName.Version.ToString()!="0.86.9.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.9 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -2965,7 +2965,7 @@ fn CyrusViewportMemoryPreferences = pathConfig.appendPath (getDir #plugcfg) "Cyr
 fn CyrusInitializeViewportMemory = (
     if CyrusViewportMemoryInitialized==true do return true
     if cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined do
-        throw "Install the complete Cyrus 0.86.8.7 package and restart Max."
+        throw "Install the complete Cyrus 0.86.9 package and restart Max."
     local value=0,stored=getINISetting (CyrusViewportMemoryPreferences()) "Memory" "LimitMiB"
     if stored!="" do try(value=stored as integer)catch(value=0)
     if value!=0 and (value<256 or value>65536) do value=0
@@ -5060,6 +5060,42 @@ initialRollupState:0x8
         undo off while sourceRowIDs.count<sources.count do append sourceRowIDs (CyrusNewLayerID())
         true
     )
+    fn removeModelSources selectedRows = (
+        local chosen=#{},owner=this,suspended=CyrusPointSuspended
+        for row in selectedRows do (
+            if row<1 or row>sources.count do throw "The selected source list changed. Select the models again."
+            chosen[row]=true
+        )
+        local rows=chosen as array
+        if rows.count==0 do return false
+        this.syncColors();this.syncStrokes()
+        theHold.Begin();CyrusPointSuspended=true
+        try (
+            local descriptor=procBindingKey
+            if matchPattern descriptor pattern:"CyrusBinding2:*" do (
+                local plants=this.validSources()
+                if (this.procBinding plants procPreparedRows)!=descriptor do throw "Restore the original matching source settings and Update before removing a model from these legacy edits. Saved edits are retained."
+                descriptor=this.procSourceEditBinding plants procPreparedRows
+            )
+            if overlapOwner!=undefined do cyrusEditHydrateSources (overlapOwner.procModifiers()) editLayerKey descriptor
+            -- Hydrate old radius ownership from the exact retained generation,
+            -- before compacting source rows. This command never forces a solve.
+            if procRadiusIDs.count>0 do procRadiusBinding=cyrusSourceRadiusBind procPreparedRows procBindingKey procRadiusBinding (procRadiusIDs as array)
+            for k=rows.count to 1 by -1 do (
+                local row=rows[k]
+                owner.removeSourceClearance owner.sourceRowIDs[row]
+                deleteItem owner.sourceRowIDs row
+                if row<=owner.procSourceSlots.count do deleteItem owner.procSourceSlots row
+                for key in #(#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceForwardAxes,#sourceWeights) do (
+                    local values=getProperty owner key
+                    if row<=values.count do deleteItem values row
+                )
+                deleteItem owner.sources row;deleteItem owner.sourceColors row
+            )
+            theHold.Accept "Cyrus Scatter remove sources"
+        )catch(theHold.Cancel();CyrusPointSuspended=suspended;throw())
+        CyrusPointSuspended=suspended;owner.markInputDirty();true
+    )
     fn addEmptySource = (CyrusRequireAuthor();
         this.ensureSourceRows()
         undo "Cyrus Scatter add empty source" on (
@@ -5706,10 +5742,14 @@ initialRollupState:0x8
 
     fn removeGroupRules group = (this.procRemoveOwner group)
 
-    fn publishGroupEdits rows = (
+    fn publishGroupEdits rows metadata:undefined = (
         for node in refs.dependentNodes this where node.baseObject==this do (
             local mods=for m in node.modifiers where classof m==CyrusScatterEdit and m.enabled collect m
-            if mods.count>0 do for i=1 to this.layerObjects.count do cyrusEditPublish mods this.layerObjects[i].editLayerKey rows[i]
+            if mods.count>0 do for i=1 to this.layerObjects.count do (
+                local leaf=this.layerObjects[i]
+                if metadata==undefined then cyrusEditPublish mods leaf.editLayerKey rows[i]
+                else cyrusEditPublishPresentation mods leaf.editLayerKey rows[i] (leaf.procPreviewPalette metadata[i])
+            )
         )
     )
     fn groupInputKey = (this.procInputKey())
@@ -5867,7 +5907,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.8.7"
+    fn uiVersion = "0.86.9"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -6203,7 +6243,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.86.8.7" on (
+        undo "Upgrade Cyrus scene to 0.86.9" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -6765,6 +6805,7 @@ initialRollupState:0x8
         this.procEnsureCorrespondence()
     )
     fn procEnsureCorrespondence = (
+        this.ensureSourceRows()
         local domains=CyrusReceiverVariationDomains this,previousReceivers=procReceiverNodes.count
         -- Keep correspondence history so replacing a node and Undo can recover
         -- its original binding. This metadata never becomes an artist Undo step.
@@ -6779,7 +6820,14 @@ initialRollupState:0x8
                         append procSourceNodes node;append procSourceIDs (CyrusNewLayerID());index=procSourceNodes.count
                     )
                     append ids procSourceIDs[index]
-                ) else append ids ("placeholder:"+(i as string))
+                ) else (
+                    -- Retain saved legacy placeholder IDs for provable hydration.
+                    -- New Points/gaps use their persistent authored row identity;
+                    -- list compaction must never transfer an older row's edits.
+                    local id=if i<=procSourceSlots.count then procSourceSlots[i] else ""
+                    if not (matchPattern id pattern:"placeholder:*") do id="placeholder:"+sourceRowIDs[i]
+                    append ids id
+                )
             )
             local same=procSourceSlots.count==ids.count
             if same do for i=1 to ids.count where ids[i]!=procSourceSlots[i] do same=false
@@ -6904,40 +6952,30 @@ initialRollupState:0x8
         )
         info
     )
-    fn procRadii rows plants geometry:undefined = (
+    fn procRadii rows plants geometry:undefined inactive:false = (
         if geometry==undefined do geometry=this.procRadiusGeometry plants rows:rows
-        if procRadiusIDs.count>0 do (
-            if procRadiusBinding=="" do throw "Radius overrides have no generation binding. Explicitly clear them before updating."
-            cyrusReceiverMergeBinding procRadiusBinding procBindingKey
-        )
         local specs=if plants.count==0 then #(#(1,0.0,false,[0,0,0],[0,0,0])) else for k=1 to plants.count collect (
             local i=this.sourceRow plants[k],info=geometry[k]
             #(if this.sourceUsesAuto i and info[1]==1 then 2 else 1,this.sourceRadius i,this.sourceFollows i,info[4],info[5])
         )
+        -- Disabled populations have no prepared generation after scene load.
+        -- Their empty radii need no replay; keep all saved overrides untouched.
+        if inactive and rows.count==0 do return cyrusProceduralRadii rows specs #() #() #()
+        if procRadiusIDs.count>0 and procRadiusBinding=="" do throw "Radius overrides have no generation binding. Restore their matching setup before updating."
         if procRadiusDistances.count!=procRadiusIDs.count do throw "Instance distance metadata is incomplete."
         local values=for i=1 to procRadiusIDs.count collect (if procRadiusModes[i]==1 then procRadiusDistances[i] else procRadiusValues[i])
-        cyrusProceduralRadii rows specs (procRadiusIDs as array) (procRadiusModes as array) values
+        if procRadiusIDs.count==0 then cyrusProceduralRadii rows specs #() #() #()
+        else cyrusProceduralRadii rows specs (procRadiusIDs as array) (procRadiusModes as array) values procBindingKey procRadiusBinding
     )
     fn procSelectedRadius mode value reset:false = (CyrusRequireAuthor();
         if overlapOwner==undefined do throw "Select a paint set using Procedural 0.7."
         if mode<1 or mode>2 or value<0 do throw "Invalid instance radius."
-        if not reset do (
-            if procBindingKey=="" do throw "Update a valid binding before assigning radii."
-            if procRadiusIDs.count>0 do cyrusReceiverMergeBinding procRadiusBinding procBindingKey
-        )
+        if procBindingKey=="" do throw "Update a valid binding before assigning radii."
         local ids=cyrusEditSelectedIDs (overlapOwner.procModifiers()) editLayerKey
         if ids.count==0 do throw "Select plant instances in CS Edit first."
+        local next=cyrusSourceRadiusEdit procPreparedRows procBindingKey procRadiusBinding (procRadiusIDs as array) (procRadiusModes as array) (procRadiusValues as array) (procRadiusDistances as array) ids mode value reset
         undo "Cyrus selected instance radii" on (
-        for id in ids do (
-            local i=findItem procRadiusIDs id
-            if reset then (if i>0 do (deleteItem procRadiusIDs i;deleteItem procRadiusModes i;deleteItem procRadiusValues i;deleteItem procRadiusDistances i))
-            else (
-                if i==0 do (append procRadiusIDs id;append procRadiusModes mode;append procRadiusValues 1.0;append procRadiusDistances 0.0;i=procRadiusIDs.count)
-                procRadiusModes[i]=mode
-                if mode==1 then procRadiusDistances[i]=value else procRadiusValues[i]=value
-            )
-        )
-        procRadiusBinding=if procRadiusIDs.count>0 then cyrusReceiverMergeBinding procRadiusBinding procBindingKey else ""
+            procRadiusIDs=next[1];procRadiusModes=next[2];procRadiusValues=next[3];procRadiusDistances=next[4];procRadiusBinding=next[5]
         )
         overlapOwner.invalidateGroups()
     )
@@ -6964,14 +7002,15 @@ initialRollupState:0x8
         CyrusMeasureEnd measurement layerID procEpoch "paint_mask"
         result
     )
-    fn procBinding plants rows = (
+    fn procBinding plants rows sourceAware:false = (
         local stream=stringStream "",domains=CyrusReceiverVariationDomains this
         with printAllElements on (
             format "CyrusBinding2:%|" (this.effectiveSeed()) to:stream
+            if sourceAware do format "EditOwner:%|" layerID to:stream
             if placementMode>1 do format "Placement:%|" (this.gridKey()) to:stream
-            for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
-            for key in #(#distributionMode,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove) do format "%:%|" key (getProperty this key) to:stream
-            if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs,#pathIDs,#pathJoins,#strokeIDs,#strokePathIDs,#bandArrangement,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" key (getProperty this key) to:stream
+            if not sourceAware do for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
+            for key in #(#distributionMode,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove) where not sourceAware or findItem #(#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU) key==0 do format "%:%|" key (getProperty this key) to:stream
+            if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs,#pathIDs,#pathJoins,#strokeIDs,#strokePathIDs,#bandArrangement,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) where not sourceAware or findItem #(#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs) key==0 do format "%:%|" key (getProperty this key) to:stream
             if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" key (getProperty this key) to:stream
             format "\nCyrusReceivers2\n" to:stream
             for entry in procReceiverGeometry do (
@@ -6984,6 +7023,32 @@ initialRollupState:0x8
             )
         )
         stream as string
+    )
+
+    -- Keep the preceding descriptor byte-for-byte for provable legacy hydration.
+    -- Membership and source settings are compared by native correspondence, never
+    -- by a source-list index that changes when an earlier model is removed.
+    fn procSourceEditBinding plants rows = (
+        local legacy=this.procBinding plants rows,basis=this.procBinding plants rows sourceAware:true
+        local specs=for n in plants collect (
+            local row=this.sourceRow n,stream=stringStream ""
+            if row<1 or row>procSourceSlots.count do throw "Edit source correspondence is missing. Update the matching setup first."
+            with printAllElements on (
+                format "%|%|%|%|%|%|%|" (this.sourceWeight row) (this.sourceColor row) (this.isEmptySource row) (this.isPointSource row) (this.sourceScale row) (this.sourceZOffset row) (this.sourceForward row) to:stream
+                if diversityMode>=3 do (
+                    local assigned=#(),group=this.colorKey (this.sourceColor row),id=sourceRowIDs[row]
+                    for band=1 to strokeIDs.count do (
+                        local found=false
+                        if strokeModes[band]==1 then (for k=1 to strokeColorRows.count where strokeColorRows[k]==band and strokeColorKeys[k]==group do found=true)
+                        else (for k=1 to strokeSourceRows.count where strokeSourceRows[k]==band and strokeSourceIDs[k]==id do found=true)
+                        if found do append assigned strokeIDs[band]
+                    )
+                    format "Bands:%|" assigned to:stream
+                )
+            )
+            #(procSourceSlots[row],stream as string)
+        )
+        cyrusSourceEditBinding legacy basis specs
     )
 
     fn receiverCacheStats = (#(procReceiverBuilds,procReceiverHits,procReceiverCache.count))
@@ -7348,7 +7413,7 @@ initialRollupState:0x8
             local offsets=if plants.count==0 then #(0.0) else for n in plants collect sourceZOffset (sourceRow n)
             rows=cyrusOrientRows rows (this.lineInputs plants previewOnly:true) forward offsets
         )
-        procBindingKey=this.procBinding plants rows
+        procBindingKey=this.procSourceEditBinding plants rows
         rows=CyrusEditApplyLayer overlapOwner this rows
         CyrusNativeWorkingSetCheckpoint()
         rows=this.applySurfaceFilter rows
@@ -7357,7 +7422,7 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.8.7 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.9 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
@@ -7365,19 +7430,20 @@ initialRollupState:0x8
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.86.8.7 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.8.7 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.8.7 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.8.7 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.8.7 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.8.7 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.8.7 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.86.9 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.86.9 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.9 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.9 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.9 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.9 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.9 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.9 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.8.7 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.9 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -7592,6 +7658,7 @@ initialRollupState:0x8
         local key=this.procDisplayInputKey()
         if key!=procPublishedDisplayKey do (
             local before=for leaf in layerObjects collect leaf.procPreviewState(),previousKey=procPublishedDisplayKey,previousDirty=CyrusViewportRecordsDirty,previousMetadata=procPublishedMetadata
+            local editModifiers=this.procModifiers(),editTransaction=false
             local nextMetadata=procPublishedMetadata as array
             -- Pending Manual topology can differ from the last publication.
             -- Resolve by owner, including an empty preview for unpublished layers.
@@ -7613,6 +7680,7 @@ initialRollupState:0x8
             -- Preserve atomic failure retention: stage every changed layer
             -- before installing any successor. Unchanged snapshots stay shared.
             try (
+                cyrusEditTransaction editModifiers 0;editTransaction=true
                 for i=1 to layerObjects.count where stage[i]!=undefined do layerObjects[i].procInstallPreview stage[i] pending
                 -- Recovery also clears failure status on reused siblings.
                 for i=1 to layerObjects.count where stage[i]==undefined do (
@@ -7620,11 +7688,14 @@ initialRollupState:0x8
                 )
                 procPublishedDisplayKey=key
                 procPublishedMetadata=nextMetadata
+                for i=1 to procPublishedOwners.count do cyrusEditRecolor editModifiers procPublishedOwners[i].editLayerKey (procPublishedOwners[i].procPreviewPalette nextMetadata[i])
+                cyrusEditTransaction editModifiers 1;editTransaction=false
             ) catch (
                 local failure=getCurrentException()
                 for i=1 to layerObjects.count do layerObjects[i].procRestorePreview before[i]
                 procPublishedDisplayKey=previousKey;CyrusViewportRecordsDirty=previousDirty
                 procPublishedMetadata=previousMetadata
+                if editTransaction do cyrusEditTransaction editModifiers 2
                 throw()
             )
             try(CyrusScheduleUI())catch()
@@ -7687,6 +7758,7 @@ initialRollupState:0x8
         local publishedMetadata=for leaf in layerObjects collect undefined
         local nativePreparationKeys=for leaf in layerObjects collect "",nativeBindings=for leaf in layerObjects collect ""
         local transaction=false,previousBindings=for leaf in layerObjects collect leaf.procBindingKey
+        local previousPreparedRows=for leaf in layerObjects collect leaf.procPreparedRows
         local previousResults=for leaf in layerObjects collect leaf.procResultState()
         local projectionBudget=cyrusProjectionBudget()
         local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty,procPublishedMetadata,procNativePublication)
@@ -7708,7 +7780,7 @@ initialRollupState:0x8
                     )
                     local geometry=leaf.procRadiusGeometry plants rows:rows enabled:(cyrusEnabled and this.enabledLayer i)
                     publishedMetadata[i]=leaf.procPreviewMetadata plants geometry:geometry
-                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()),(leaf.procClearanceSpecs plants))
+                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry inactive:(not (cyrusEnabled and this.enabledLayer i))),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()),(leaf.procClearanceSpecs plants))
                     append indices i
                 )
                 append layers #(parent.layerID,(parent.placementMode==1 and parent.procPopulation==2),(parent.placementMode==1 and parent.procRepair),(if parent.placementMode==1 then parent.procRounds else 1),#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)
@@ -7731,7 +7803,7 @@ initialRollupState:0x8
             nextNativePublication=this.procStageNativePublication accepted radii stats rounds requests publishedSources publicationInfo key nativePreparationKeys nativeBindings
             local dependencyHandles=for leaf in layerObjects collect leaf.procStageDependencyHandles()
             -- Allocation and computation have finished; publish one coherent epoch.
-            this.publishGroupEdits accepted
+            this.publishGroupEdits accepted metadata:publishedMetadata
             this.procSyncEditVisibility()
             local finishedKey=this.procInputKey()
             if key!=finishedKey do throw "Inputs changed during native publication. The complete previous result is retained."
@@ -7762,7 +7834,7 @@ initialRollupState:0x8
             groupSnapshotKey=previousPublication[8];procPublishedDisplayKey=previousPublication[9];groupBuilds=previousPublication[10];CyrusViewportRecordsDirty=previousPublication[11]
             procPublishedMetadata=previousPublication[12]
             procNativePublication=previousPublication[13]
-            for i=1 to layerObjects.count do (layerObjects[i].procPreparedKey="";layerObjects[i].procCandidateCount=undefined;layerObjects[i].procBindingKey=previousBindings[i])
+            for i=1 to layerObjects.count do (layerObjects[i].procPreparedKey="";layerObjects[i].procCandidateCount=undefined;layerObjects[i].procBindingKey=previousBindings[i];layerObjects[i].procPreparedRows=previousPreparedRows[i])
             groupSolving=false
             if transaction do cyrusEditTransaction mods 2
             try(CyrusDiagnosticEmit "publication.retained" "engine" layerID procEpoch "successor_failed" correlation:diagnosticCauseID)catch()
@@ -7776,7 +7848,7 @@ initialRollupState:0x8
             -- Drop rollback-only roots before a large Count-down collection.
             -- Otherwise a tiny successor can leave its previous million-row
             -- wrappers waiting for future allocation pressure indefinitely.
-            previousPublication=undefined;previousResults=undefined
+            previousPublication=undefined;previousResults=undefined;previousPreparedRows=undefined
             if shrink*192L>=67108864L do try(CyrusNativeWorkingSetCheckpoint force:true)catch()
         )
         -- Observer failures do not relabel an already committed result as retained.
@@ -9411,24 +9483,10 @@ initialRollupState:0x8
             local eventPanel=panel,action=CyrusBeginAction root "sourceUI_removePlant"
             if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
-            sourceUI_obj.syncColors()
-            sourceUI_obj.syncStrokes()
-            local rows=sourceUI_plantList.selection as array
-            undo "Cyrus Scatter remove sources" on (
-                for k=rows.count to 1 by -1 do (
-                    sourceUI_obj.removeSourceClearance sourceUI_obj.sourceRowIDs[rows[k]]
-                    deleteItem sourceUI_obj.sourceRowIDs rows[k]
-                    for key in #(#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
-                    if rows[k]<=sourceUI_obj.sourcePoint.count do deleteItem sourceUI_obj.sourcePoint rows[k]
-                    if rows[k]<=sourceUI_obj.sourceEmpty.count do deleteItem sourceUI_obj.sourceEmpty rows[k]
-                    if rows[k]<=sourceUI_obj.sourceZOffsetsWU.count do deleteItem sourceUI_obj.sourceZOffsetsWU rows[k]
-                    if rows[k]<=sourceUI_obj.sourceScales.count do deleteItem sourceUI_obj.sourceScales rows[k]
-                    if rows[k]<=sourceUI_obj.sourceForwardAxes.count do deleteItem sourceUI_obj.sourceForwardAxes rows[k]
-                    if rows[k]<=sourceUI_obj.sourceWeights.count do deleteItem sourceUI_obj.sourceWeights rows[k]
-                    deleteItem sourceUI_obj.sources rows[k];deleteItem sourceUI_obj.sourceColors rows[k]
-                )
-            )
-            sourceUI_plantList.selection=#{};sourceUI_obj.markInputDirty();sourceUI_updateList();CyrusViewportRedraw()
+            local sourceUI_owner=sourceUI_obj,controller=sourceUI_root,rows=sourceUI_plantList.selection as array
+            sourceUI_owner.removeModelSources rows
+            if sourceUI_controlsReady and sourceUI_obj==sourceUI_owner and sourceUI_root==controller do (sourceUI_plantList.selection=#{};sourceUI_updateList())
+            CyrusViewportRedraw()
         )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
@@ -18638,14 +18696,14 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.86.8.7" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.86.9" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
-        button upgradeButton "Upgrade scene to 0.86.8.7" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
+        button upgradeButton "Upgrade scene to 0.86.9" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         timer bindTimer interval:1 active:false
@@ -18792,7 +18850,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.8.7 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.9 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()

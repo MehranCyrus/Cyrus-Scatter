@@ -1,0 +1,453 @@
+{
+  "schema": "cyrus.edit-root-qualification/1",
+  "status": "pass",
+  "version": "0.86.9",
+  "analyzer_version": "0.14.2",
+  "date": "2026-10-23",
+  "git_head": "7d5fd264f8c39e306389977d1eda7c4f358bd3c8",
+  "baseline": {
+    "path": "build/edit-0869-20261023/baseline.json",
+    "sha256": "1e320c2761c0ea7c53b36288818d699c520ae37dfc92af4b1e17d56c01072a86",
+    "bytes": 789193
+  },
+  "scope": "Focused owned-profile acceptance; physical mouse, arbitrary renderer/material parity and long-session qualification remain separate.",
+  "native": [
+    {
+      "producer": "scatter-2024-01",
+      "receipt": {
+        "path": "build/edit-0869-20261023/scatter-2024-01/receipt.json",
+        "sha256": "65b431d99c0ad4c86570078e55f2efd736ef3098a15768155cab3ac6a5c72af8",
+        "bytes": 1982633
+      },
+      "tests": {
+        "path": "build/edit-0869-20261023/scatter-2024-01/tests.log",
+        "sha256": "121d881cf25bc0282a97059664a1452d4c5758c9b4865dec028098493f9c5743",
+        "bytes": 6587
+      },
+      "never_ship": false
+    },
+    {
+      "producer": "scatter-2026-01",
+      "receipt": {
+        "path": "build/edit-0869-20261023/scatter-2026-01/receipt.json",
+        "sha256": "70bbc5801ffe841ca518ba7e04915c55122f84dbeecdc4e8bc88fd532b5a12df",
+        "bytes": 1985349
+      },
+      "tests": {
+        "path": "build/edit-0869-20261023/scatter-2026-01/tests.log",
+        "sha256": "aa90f1ea608add2a70683487f46775727a27268168a49e62224b15ea18235271",
+        "bytes": 6587
+      },
+      "never_ship": false
+    },
+    {
+      "producer": "scatter-2027-02",
+      "receipt": {
+        "path": "build/edit-0869-20261023/scatter-2027-02/receipt.json",
+        "sha256": "ef11c1c04bae39e77ad915e8b0ece7cac5433ccc10588cd062c3fe3eaa368139",
+        "bytes": 1987519
+      },
+      "tests": {
+        "path": "build/edit-0869-20261023/scatter-2027-02/tests.log",
+        "sha256": "484d84c4ce33f1f4e3c8cec5c64fb2608bb6efbcfe5ac1a2a5612fab114297ab",
+        "bytes": 6587
+      },
+      "never_ship": false
+    },
+    {
+      "producer": "scatter-fault-2027-02",
+      "receipt": {
+        "path": "build/edit-0869-20261023/scatter-fault-2027-02/receipt.json",
+        "sha256": "8b5025b149ed803904de01185c81247b18ccc43930c9938f98aac387200584f2",
+        "bytes": 1988834
+      },
+      "tests": {
+        "path": "build/edit-0869-20261023/scatter-fault-2027-02/tests.log",
+        "sha256": "6d5a3c7f5aa4aca3c16441eb9a2cfd460503d5828024af769ccd517ebcdc20a0",
+        "bytes": 6599
+      },
+      "never_ship": true
+    },
+    {
+      "producer": "analyzer-2024-01",
+      "receipt": {
+        "path": "build/edit-0869-20261023/analyzer-2024-01/receipt.json",
+        "sha256": "fd210c5f9eaf3388f0aaaf9b478f48c0ac80b26ca0c0515f6fc9cd2ecf363f16",
+        "bytes": 1399720
+      },
+      "tests": {
+        "path": "build/edit-0869-20261023/analyzer-2024-01/tests.log",
+        "sha256": "d8dc4a891f563f7b21654acb3ff2b3c6925bd76b679815b877a9a66704834576",
+        "bytes": 392
+      },
+      "never_ship": false
+    },
+    {
+      "producer": "analyzer-2026-01",
+      "receipt": {
+        "path": "build/edit-0869-20261023/analyzer-2026-01/receipt.json",
+        "sha256": "d79799ec3b593e97af21c54bc8781fe1d41dd466e0a9d6690dcd4d48c83bb6a5",
+        "bytes": 1402436
+      },
+      "tests": {
+        "path": "build/edit-0869-20261023/analyzer-2026-01/tests.log",
+        "sha256": "90372aa680d1ebc99e5435e14782292998f1f0707c1e36c0a4a3b1602787a028",
+        "bytes": 392
+      },
+      "never_ship": false
+    },
+    {
+      "producer": "analyzer-2027-01",
+      "receipt": {
+        "path": "build/edit-0869-20261023/analyzer-2027-01/receipt.json",
+        "sha256": "dd7161f89d4dced634a150a0d9fe37c1343ad41853a368ba195c1b8541dc2687",
+        "bytes": 1404609
+      },
+      "tests": {
+        "path": "build/edit-0869-20261023/analyzer-2027-01/tests.log",
+        "sha256": "593d70a4c3365bebfc0dbea2852f0bdf9d29e15dfcfc552fed35d64049420bde",
+        "bytes": 392
+      },
+      "never_ship": false
+    }
+  ],
+  "generated": {
+    "path": "build/edit-0869-20261023/generated-04/generated-check.json",
+    "sha256": "be0809274f55d65a56119a5b5f7197db2f5341cd7f57880aef89e9f67e25d128",
+    "bytes": 462
+  },
+  "python": {
+    "tests": 69,
+    "log": {
+      "path": "build/edit-0869-20261023/focused-python-final.log",
+      "sha256": "dddacab844e88c0f7e4d4025f8a3d14ce2d8fab4d29c1b449d1415bebe55cd5f",
+      "bytes": 102
+    }
+  },
+  "max2027_functional": {
+    "assertions": 46,
+    "cases": [
+      {
+        "scenario": "point_identity",
+        "assertions": 3,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-620c4fa7d3d44511ae032a26273fb871.json",
+          "sha256": "2e16c8fd5889d52ec633bd5d7afeffcb9afe201b2389a4112177175972978a8b",
+          "bytes": 737
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-620c4fa7d3d44511ae032a26273fb871.json",
+          "sha256": "9e971d9fc54fa6dc0fe7492310d046c6adf2c82ccf58988143967b25c7a41e07",
+          "bytes": 535
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-76e769421a2c4af5bf577f8861015a38.json",
+          "sha256": "23be58dd89e175a1b243d78044911191349d397adc3e82914663e5a40baca3ee",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "disabled_radius",
+        "assertions": 3,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-bf847602280f434f95fcb30a9aa6d996.json",
+          "sha256": "099d6bad542cee9bb22678caeed0d8fa8d75e6b9a1e371d226a8068f49f8f5be",
+          "bytes": 740
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-bf847602280f434f95fcb30a9aa6d996.json",
+          "sha256": "243e85674a7cbe0ab6fe4014203fdf49c2b88588b37f001f980d04abf4b9b474",
+          "bytes": 561
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-76e769421a2c4af5bf577f8861015a38.json",
+          "sha256": "23be58dd89e175a1b243d78044911191349d397adc3e82914663e5a40baca3ee",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "feedback",
+        "assertions": 7,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-1f8c4631162d41579c0b71406f64b9bc.json",
+          "sha256": "8bb4ae584349dc175cc915dcb8f3d968943272d76be8b8182133fdba429abe3a",
+          "bytes": 1289
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-1f8c4631162d41579c0b71406f64b9bc.json",
+          "sha256": "3b851e44a373418e95bd64f7e326ffbe2384c72df5a8f741155cf5254f141ea7",
+          "bytes": 633
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-76e769421a2c4af5bf577f8861015a38.json",
+          "sha256": "23be58dd89e175a1b243d78044911191349d397adc3e82914663e5a40baca3ee",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "stack",
+        "assertions": 3,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-bd26b5fa12bd49a2bc90c4e5b15ed0ea.json",
+          "sha256": "81b9e56599165d35ff522256ed64d38596dbf56d90e2fa98872e9e60ac0c9434",
+          "bytes": 639
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-bd26b5fa12bd49a2bc90c4e5b15ed0ea.json",
+          "sha256": "dc68b0d5df5274e513b74aac0b68b5151f939ac7c2fcf4eec6dceec12e1801e0",
+          "bytes": 526
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-76e769421a2c4af5bf577f8861015a38.json",
+          "sha256": "23be58dd89e175a1b243d78044911191349d397adc3e82914663e5a40baca3ee",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "bands",
+        "assertions": 2,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-5a8ac6a9f4454c849657a77f6921c5ca.json",
+          "sha256": "8ffe7e90785bfbae4eb2f0874fb8c9aeb824db2c8e877f02bf7207dc1669a0df",
+          "bytes": 537
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-5a8ac6a9f4454c849657a77f6921c5ca.json",
+          "sha256": "2f80e03c8c79f4eede6a84f184c6f3bfd293daec3335020dc129aba7fdb33acc",
+          "bytes": 498
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-76e769421a2c4af5bf577f8861015a38.json",
+          "sha256": "23be58dd89e175a1b243d78044911191349d397adc3e82914663e5a40baca3ee",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "removal",
+        "assertions": 9,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-a397cf959eb240908cf64f3e5d49d46e.json",
+          "sha256": "aa5ef48cc38c93440439c3446ac3f54ce9692feaf3a9783ac0501e592fc76009",
+          "bytes": 1482
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-a397cf959eb240908cf64f3e5d49d46e.json",
+          "sha256": "2c569d49ddd23f2849a023b2f0c3cc56d1c57a88821cc08130ab411464e451c5",
+          "bytes": 672
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-76e769421a2c4af5bf577f8861015a38.json",
+          "sha256": "23be58dd89e175a1b243d78044911191349d397adc3e82914663e5a40baca3ee",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "saved",
+        "assertions": 5,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-d3aac66ac4fe4494beef8cfc64ee12cc.json",
+          "sha256": "4c3a5b1ccd1d95f0f0d5b3b5229fbb7f5a8bb97f5eb66967bd45790089c74577",
+          "bytes": 996
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-d3aac66ac4fe4494beef8cfc64ee12cc.json",
+          "sha256": "b08bb47ed6e631ff017897114414237afa8be5c1ebab4cf08233da81bc50bb26",
+          "bytes": 588
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-76e769421a2c4af5bf577f8861015a38.json",
+          "sha256": "23be58dd89e175a1b243d78044911191349d397adc3e82914663e5a40baca3ee",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "guards",
+        "assertions": 6,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-c587498929114d13875de6197dc7c179.json",
+          "sha256": "f16f9378e6857884a7df63a91247a9fcf3eddbd53cbfb296d7c7ee5426b6bde5",
+          "bytes": 1126
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-c587498929114d13875de6197dc7c179.json",
+          "sha256": "93851935a110065f269a719b0426b33fb112b6c645e785de3f97bf25cb9e9c99",
+          "bytes": 606
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-c89e8af70edf48e494a84c4b76189555.json",
+          "sha256": "b09ee9a9f15dd4562e857c63992b99d44d926731fabf3a4bb8c298e6c2a99e9e",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "migrate",
+        "assertions": 4,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-a4e8a3e7d66d4b6da29c12e147b6ff96.json",
+          "sha256": "2dd35a6f5a7bfcf2fb89b146bffca112b674dcf8065b777e622a36442c274b84",
+          "bytes": 877
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-a4e8a3e7d66d4b6da29c12e147b6ff96.json",
+          "sha256": "16ad2a6d56be1bc11c42dd75d7820f360f4710c7ce3574c4ece732195684ad32",
+          "bytes": 586
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-248cb60624984db68e89709eb0ae88bf.json",
+          "sha256": "6464762dfa20ba3ceb72c0cd7ae4e60202397b9b4e7e1a1bef44fd54c0c99572",
+          "bytes": 12954
+        }
+      },
+      {
+        "scenario": "tree",
+        "assertions": 4,
+        "result": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/result-10a3a3f430ae4e1e8c6ff673fe808647.json",
+          "sha256": "fe8250b4db1b97e89137725e86b9427a5eece388bf7c8dd9a0e22c76f2bff85c",
+          "bytes": 877
+        },
+        "request": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/request-10a3a3f430ae4e1e8c6ff673fe808647.json",
+          "sha256": "c7859fde06c05d7e28c65fe154954c5be5bf085d41ea87716cf285870e7512fa",
+          "bytes": 556
+        },
+        "qualification": {
+          "path": "build/edit-0869-20261023/hosts/max2027-03/qualification-6aee3eb10549416d8873b2f7bd768685.json",
+          "sha256": "ba6489721598799dcc2e13db87ce2507df12501ede0bcded799ebf1fe992276f",
+          "bytes": 12954
+        }
+      }
+    ]
+  },
+  "private_renderer_failure": {
+    "scenario": "late_failure",
+    "assertions": 5,
+    "result": {
+      "path": "build/mcp-qualification/foundation-spline-edit0869-fault-02/result-fec8331849d044848f486b806daebb07.json",
+      "sha256": "81d26e1f016c00237ea55cb12701982d3ed0e9a53788cdafee068c9d857bbb33",
+      "bytes": 1002
+    },
+    "request": {
+      "path": "build/mcp-qualification/foundation-spline-edit0869-fault-02/request-fec8331849d044848f486b806daebb07.json",
+      "sha256": "4f8ca69bb6b6baf33d6598c3e77bdfc5b8ed267ce974b1a550b3a3b0a968edd4",
+      "bytes": 607
+    },
+    "qualification": {
+      "path": "build/mcp-qualification/foundation-spline-edit0869-fault-02/qualification.json",
+      "sha256": "7093e5cb9e4bee9eb37c806ee6280a1732d78b48f4a99660e61887cc71846523",
+      "bytes": 10736
+    }
+  },
+  "old_reader_refusal": {
+    "scenario": "old_reader",
+    "assertions": 1,
+    "result": {
+      "path": "build/edit-0869-20261023/hosts/legacy-2027-01/result-151c6110dc6e4a32ad1a50e8aa7129be.json",
+      "sha256": "abdd6ba518e93146837b123fa2177df52a6fc6ef11d3aefc2da480163d28497a",
+      "bytes": 459
+    },
+    "request": {
+      "path": "build/edit-0869-20261023/hosts/legacy-2027-01/request-151c6110dc6e4a32ad1a50e8aa7129be.json",
+      "sha256": "765f5454b95881fab87ec91105e347e404df4ee8f754763acae1a6f8c045e828",
+      "bytes": 492
+    },
+    "qualification": {
+      "path": "build/edit-0869-20261023/hosts/legacy-2027-01/qualification.json",
+      "sha256": "c743ebb81d2878d60ff99c3838c8e40f6525541393a58aee780124e704e0e821",
+      "bytes": 11798
+    }
+  },
+  "compatibility_and_installer": {
+    "path": "build/edit-0869-20261023/installer-compatibility-summary.json",
+    "sha256": "74ee01c5d0ae11c19f64d7fa79dea23b5134d982f7c3f5ffe2baa749f396cb6f",
+    "bytes": 45047
+  },
+  "source_and_package_audit": {
+    "path": "build/edit-0869-20261023/installer-final-audit.json",
+    "sha256": "3f572ab76a0060ac1c0113e6f24a61562c691f6d1d6a43855a347325782f8a38",
+    "bytes": 21544
+  },
+  "distribution_seal": {
+    "path": "build/edit-0869-20261023/distribution-seal.json",
+    "sha256": "2cdfc9bcb4beb7ca2363ce95a2e8f205e356051b7a1e14070fdb44f089df68e3",
+    "bytes": 1079
+  },
+  "exe": {
+    "path": "dist/CyrusScatter-0.86.9-20261023/CyrusScatter-0.86.9-Setup.exe",
+    "sha256": "e9e35f5e1c6cb4bf40abb8de293a71faf0c8598a213c9d861e01a9aa91adb208",
+    "bytes": 6437376
+  },
+  "packages": {
+    "CyrusScatter-2024": {
+      "path": "dist/CyrusScatter-0.86.9-20261023/CyrusScatter-0.86.9-Max2024.mzp",
+      "sha256": "46a6f30ddfbb3a1a4ca02d161a527420b1bb2caefecb36286660db96b2b08cbe",
+      "bytes": 2013311
+    },
+    "CyrusSurfaceAnalyzer-2024": {
+      "path": "dist/CyrusScatter-0.86.9-20261023/CyrusSurfaceAnalyzer-0.14.2-Max2024.mzp",
+      "sha256": "e95dec9ae18e7c7542d7bdd65060570f0c3617c73d4badcccf4c190cc789cecc",
+      "bytes": 91508
+    },
+    "CyrusScatter-2026": {
+      "path": "dist/CyrusScatter-0.86.9-20261023/CyrusScatter-0.86.9-Max2026.mzp",
+      "sha256": "88df2d98a4bb2eb16c644f96033a23bac8774da9f0ce4d50ebd6615facd59c0e",
+      "bytes": 2022703
+    },
+    "CyrusSurfaceAnalyzer-2026": {
+      "path": "dist/CyrusScatter-0.86.9-20261023/CyrusSurfaceAnalyzer-0.14.2-Max2026.mzp",
+      "sha256": "1cc1b09b0c7b22a0ec4492ff11650b606b3f52c5a31270e22cae68f6c7929885",
+      "bytes": 91651
+    },
+    "CyrusScatter-2027": {
+      "path": "dist/CyrusScatter-0.86.9-20261023/CyrusScatter-0.86.9-Max2027.mzp",
+      "sha256": "4a47b6daa3de2625e29edaa76f40d44cfafa0426692a0f85e7ad7aa00603cdfc",
+      "bytes": 2022956
+    },
+    "CyrusSurfaceAnalyzer-2027": {
+      "path": "dist/CyrusScatter-0.86.9-20261023/CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp",
+      "sha256": "8b1adb26709e9b73ebdff195e6c7796c54c283eec0ee46ea50b4a1685f24f011",
+      "bytes": 91988
+    }
+  },
+  "visuals": [
+    {
+      "image": {
+        "path": "build/edit-0869-20261023/hosts/max2027-03/edit-feedback.png",
+        "sha256": "6124e5b1f299f77bf3966099b5738443972ac8edccec60c7cf2d768340ae3b58",
+        "bytes": 50424
+      },
+      "inspection": "Actual viewport image shows distinct red, green and blue Edit pivot markers."
+    },
+    {
+      "image": {
+        "path": "build/edit-0869-20261023/hosts/max2027-03/orange-tree-edit.png",
+        "sha256": "0eb364f7f7b1a602b91c2ce1d81311c48c4dffb80339ba72341d6e4d2f17ce9d",
+        "bytes": 632819
+      },
+      "inspection": "Actual viewport image shows complete tree geometry and the pivot handle beside the offset trunk; no automatic recentering."
+    }
+  ],
+  "coordinates": {
+    "path": "build/edit-0869-20261023/hosts/max2027-03/orange-tree-coordinates.txt",
+    "sha256": "95c85b79306955d29f7fac66690549b5ec1da83f47bb5c441f75fd3380723d09",
+    "bytes": 1129
+  },
+  "unchanged_native_paint_inputs": {
+    "AminScatter/include/brush.h": "5f8f57d55d1312acd492f167cc4793ac62b16afea85d6fa752e44aa088039fd9",
+    "AminScatter/src/brush.cpp": "30d2cb4be270e331e775006b513c7923839ad28c2b1ae29b6d36782f7a7f2a1b",
+    "AminScatter/src/brush_atlas.cpp": "c5077baf7df9b35e5bef16ea1b402015dd2dbfc72108654db9b3ee837bc0c96e",
+    "AminScatter/src/brush_host.cpp": "7dba1e70125c6d7c14c0972badf21661d6c0a4b7b4abcbda8576a9346e8bc930",
+    "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+    "AminScatter/src/brush_surface.cpp": "d8c742bbd3fdd407bd3172b1d0b265f37718db9b42f3e1ef1599ac4e8be1411e"
+  },
+  "artist_install": false,
+  "website_built_or_published": false,
+  "git_commit_or_push": false,
+  "knowledge_index_activated": false,
+  "known_limits": [
+    "Source pivots are preserved; the measured Orange Tree trunk is offset from its pivot.",
+    "Pre-existing full-object Copy does not remap coupled upper-Edit clone or cloned-instance radius references.",
+    "Original files must be preserved; upgraded source-aware Edit data requires the new reader.",
+    "One final-pair Max startup exited before fixture initialization; its cause is unestablished and the failed attempt is retained."
+  ]
+}

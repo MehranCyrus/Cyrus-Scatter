@@ -1,13 +1,14 @@
 # Cyrus Scatter documentation
 
 Current standalone Physics Lab: [0.3.0 shared instances, persistent proxy colliders, primitive choices and drop-height handle](Scatter_Physics_Research_2026-10-16/INSTANCES_030.md). Earlier Physics Lab reports retain their versioned scope.
-**Current test delivery: 0.86.8.7, schema 59, with Analyzer 0.14.2 for Max 2027 only.** [Delivery scope, exact evidence and remaining limits](plans/code-quality/DELIVERY_08687.md). The historical [0.86.8.6 combined delivery](plans/combined-installer/DELIVERY_08686.md) retains its Max 2024/2026/2027 qualification with Analyzer 0.14.1. Original Paint and content revision 0.86.7 remain unchanged. The report distinguishes repaired findings from unexecuted broader acceptance.
+**Current test delivery: 0.86.9, schema 59, with Analyzer 0.14.2 for Max 2024, 2026 and 2027.** [Delivery scope, exact evidence and remaining limits](plans/edit-instances/DELIVERY_0869.md). Native Edit now preserves source-owned histories and uses final displayed positions and identification colours. The historical [0.86.8.7 memory/review delivery](plans/code-quality/DELIVERY_08687.md) retains its separate Max 2027 evidence. Original Paint and content revision 0.86.7 remain unchanged.
 
 | Need | Current source |
 | --- | --- |
 | Use the plugin | [Artist guide](ARTIST_GUIDE.md), [Layout and falloff](LAYOUT_AND_FALLOFF.md) |
-| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.8.7 delivery and scoped qualification](plans/code-quality/DELIVERY_08687.md) |
+| Install, build and test this version | [Installation/build](Max_2027_Installation.md), [0.86.9 delivery and scoped qualification](plans/edit-instances/DELIVERY_0869.md) |
 | Understand source and behavioral guarantees | [Architecture](ARCHITECTURE.md), [engineering foundation](ENGINEERING_FOUNDATION.md) |
+| Understand the Edit instance fixes | [0.86.9 implementation plan](plans/edit-instances/IMPLEMENTATION_0869.md), [delivery](plans/edit-instances/DELIVERY_0869.md) and [qualification manifest](plans/edit-instances/QUALIFICATION_0869.json) — marker colours and final-position feedback, source-aware preservation, focused lifecycle tests and the Max 2024/2026/2027 installer; [B37](BACKLOG.md#edit-instance-findings--0869) tracks the remaining Copy limitation |
 | Plan source radius, clearance and layer priority | [Implementation plan](plans/source-clearance/IMPLEMENTATION_PLAN.md) and [validation matrix](plans/source-clearance/VALIDATION.md) — implemented hierarchy, native C++ rules, deterministic priority, cleanup/refill, persistence and UI; the delivery report distinguishes exercised checks from the broader matrix |
 | Review the source-clearance implementation | [Independent code and delivery review](plans/source-clearance/REVIEW_0868_20261020.md) — historical findings preserved; [0.86.8.1 correction evidence](plans/source-clearance/DELIVERY_08681.md) resolves F1/F2 and measures F3; the [independent 0.86.8.1 review](plans/source-clearance/REVIEW_08681_20261020.md) records its separate repeat tests and limits |
 | Understand panel latency and possible threading | [20 October investigation and measured baseline](plans/panel-performance-0826/PANEL_THREADING_20261020.md) — UI-thread boundaries, existing laziness, fresh bounded probe and implementation recommendation; B21 remains open |

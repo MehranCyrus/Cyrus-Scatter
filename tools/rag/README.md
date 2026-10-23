@@ -1,14 +1,51 @@
 # Local catalog and lexical search
 
-**23 October 2026 status:** the 0.86.8.7 source/host work is recorded in the
-[current execution report](../../docs/plans/code-quality/DELIVERY_08687.md).
+**23 October 2026 documentation status:** the current source and guidance follow
+**Scatter 0.86.9 / schema 59**, native Edit storage/capability **2**, recipe **8**
+and the independently versioned **Surface Analyzer 0.14.2**. The
+[current execution report](../../docs/plans/edit-instances/DELIVERY_0869.md) and
+[qualification manifest](../../docs/plans/edit-instances/QUALIFICATION_0869.json)
+record matched Max 2024/2026/2027 producers, focused Edit/lifecycle checks and the
+exact combined EXE. Content retains revision 0.86.7. Earlier reports and frozen
+corpus/evaluation definitions keep their original versions and qualifications.
+
+**Selected retrieval is not current:**
 The selected index remains generation
 `8a58031bf6efb27cf7c8e30a81d6059206b292269b5e5e24bf1045b704989059`.
-A final full-parent check verifies 31/48 parents and reports 17 changed parents.
-It is stale, and the watcher is stopped. Current
-source and maintained guides must be inspected directly. No successor index
-has been activated by this implementation task; documentation edits and a
-passing plugin package do not establish refreshed retrieval.
+The final full-parent check after this documentation pass verified 26/48
+parents and reported 22 changed parents. Further edits require another current
+status check; this count is a dated observation, not a live freshness claim.
+The index is stale, and the watcher is stopped. No successor index or watcher
+was activated by the 0.86.9 implementation or this documentation pass. Updating
+these documents and pushing source does not refresh retrieval. A source-only
+Git clone does not contain ignored index, build, scene or installer artifacts.
+
+### Route current Edit questions to their owners
+
+- Artist operation, example and upgrade precautions:
+  [Edit instances](../../docs/ARTIST_GUIDE.md#edit-instances-in-0869) and
+  [Copy/recipe variation](../../docs/ARTIST_GUIDE.md#copy-and-recipe-variation-0840).
+- Implemented ownership, source lineage and final displayed feedback:
+  [architecture](../../docs/ARCHITECTURE.md#0869-source-aware-edit-and-displayed-feedback).
+- Required persistence rather than a promise that every Copy case is implemented:
+  [F11](../../docs/ENGINEERING_FOUNDATION.md#f11-saved-state-and-schema-boundaries).
+- Remaining whole-object Copy defect and required repair:
+  [B37](../../docs/BACKLOG.md#edit-instance-findings--0869). An upper Edit's old
+  clone inputs and clone-targeted layer radius history need one shared Copy ID
+  translation. This is open work; normal original-stack save/load and the tested
+  single-Edit Copy do not close it.
+- Exact executed scope, source/payload identities, earlier failures and limits:
+  [delivery](../../docs/plans/edit-instances/DELIVERY_0869.md) and
+  [manifest](../../docs/plans/edit-instances/QUALIFICATION_0869.json). The Orange
+  Tree witness is an asset-pivot offset, not a delivered trunk-recentering fix.
+
+The current 0.86.9 delivery and native helper files were not enrolled in the
+selected v31 corpus. Stale or missing retrieval must fall back to direct source
+inspection; do not use old snippets as current qualification. A later refresh
+needs reviewed enrollment/ranges and unchanged historical obligations, paired
+candidate verification/retrieval checks, complete-contract consumer checks and
+an explicitly authorized activation. Preserve sealed v31 hashes and the failed
+historical candidates instead of rewriting them to pass.
 
 **Historical maintenance — 22 October 2026:** product guidance followed
 **Scatter 0.86.8.4 / schema 59**, with scoped **Max 2027** qualification and

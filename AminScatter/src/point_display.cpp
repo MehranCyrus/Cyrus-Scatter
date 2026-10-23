@@ -1,6 +1,7 @@
 #include "point_preview.h"
 #include "diagnostics.h"
 #include "render_publication.h"
+#include "edit_feedback.h"
 #include <iparamb2.h>
 #include <SingleWeakRefMaker.h>
 #include <Graphics/CustomRenderItemHandle.h>
@@ -196,6 +197,9 @@ inline void previewFault(int) {}
 struct RenderBundle;
 struct Generation {
     const std::vector<PointLayer> layers;
+    // Host-thread feedback follows the exact bundle selected for display.
+    // Workers never inspect this opaque authored/presentation reference.
+    std::shared_ptr<const CyrusEditFeedback> editFeedback;
     std::atomic<bool> enabled{true},failed{false},submitted{false};
     std::atomic<std::size_t> ready{0};
     std::size_t count=0,groups=0,reservation=0,meshReservation=0;
@@ -497,7 +501,11 @@ public:
     std::shared_ptr<RenderBundle> candidate,retained;
     bool presentationRefreshRequested=false;
     std::uint64_t revision=0,prepares=0,nodeUpdates=0;
-    ~PointDisplay() override { presentation->stop(); }
+    ~PointDisplay() override {
+        presentation->stop();
+        if(candidate)cyrusReleaseEditFeedback(candidate->generation->editFeedback);
+        if(retained)cyrusReleaseEditFeedback(retained->generation->editFeedback);
+    }
     Class_ID ClassID() override { return displayID; }
     void GetClassName(MSTR& name,bool) const override { name=_T("Cyrus Point Display"); }
     const MCHAR* GetObjectName(bool) const override { return _T("Cyrus Point Display"); }

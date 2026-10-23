@@ -1,3 +1,4 @@
+#include "source_radius.h"
 namespace {
 std::string proceduralID(Value* value){
     const std::wstring text=value->to_string();std::string out;
@@ -188,10 +189,12 @@ Value* cyrusProceduralPublicationVersion_cf(Value**,int n){
 def_visible_primitive(cyrusProceduralRadii,"cyrusProceduralRadii");
 Value* cyrusProceduralRadii_cf(Value** a,int n){
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Attributes);
-    check_arg_count(cyrusProceduralRadii,5,n);try{ProceduralRows rows(a[0]);auto* input=groupArray(a[1]);
-    auto* ids=groupArray(a[2]);auto* modes=groupArray(a[3]);const auto values=groupRadii(a[4]);
+    if(n!=7){check_arg_count(cyrusProceduralRadii,5,n);}try{ProceduralRows rows(a[0]);auto* input=groupArray(a[1]);
+    auto* ids=groupArray(a[2]);auto* modes=groupArray(a[3]);auto* valueArray=groupArray(a[4]);
     if(rows.size()>1000000||input->size>512)throw RuntimeError(_T("Radius input exceeds 1,000,000 placements or 512 sources"));
-    if(ids->size!=modes->size||values.size()!=std::size_t(ids->size))throw RuntimeError(_T("Radius metadata length mismatch"));
+    if(ids->size>int(cyrus::sourceradius::maxOverrides))throw RuntimeError(_T("Radius history exceeds one million overrides"));
+    if(ids->size!=modes->size||valueArray->size!=ids->size)throw RuntimeError(_T("Radius metadata length mismatch"));
+    const auto values=groupRadii(valueArray);
     struct Source {int mode;double manual;bool follow;amin::Vec3 minimum,maximum;};
     std::vector<Source> sources;
     const std::array<amin::Vec3,3> identity={amin::Vec3{1,0,0},{0,1,0},{0,0,1}};
@@ -206,11 +209,20 @@ Value* cyrusProceduralRadii_cf(Value** a,int n){
     }
     std::unordered_map<std::string,std::pair<int,double>> overrides;
     std::unordered_map<std::uint64_t,std::pair<int,double>> numericOverrides;
+    std::vector<std::string> lineageIDs;std::size_t lineageBytes=0;if(n==7)lineageIDs.reserve(ids->size);
     for(int i=0;i<ids->size;++i){const int mode=modes->data[i]->to_int();if((mode!=1&&mode!=2)||!std::isfinite(values[i])||values[i]<0)throw RuntimeError(_T("Invalid instance radius override"));
         const auto id=proceduralID(ids->data[i]);std::uint64_t key=0;
-        if(rows.native&&proceduralCandidate(id,key)){
+        if(n==7){if(id.size()>cyrus::sourceradius::maxBindingBytes-lineageBytes)throw RuntimeError(_T("Radius identity metadata exceeds 64 MiB"));lineageBytes+=id.size();lineageIDs.push_back(id);}
+        else if(rows.native&&proceduralCandidate(id,key)){
             if(!numericOverrides.emplace(key,std::make_pair(mode,values[i])).second)throw RuntimeError(_T("Duplicate radius override"));
         }else if(!overrides.emplace(id,std::make_pair(mode,values[i])).second)throw RuntimeError(_T("Duplicate radius override"));
+    }
+    std::unique_ptr<cyrus::sourceradius::Replay> lineage;
+    if(n==7){
+        if(!rows.native)throw RuntimeError(_T("Source-aware radii require native placements"));
+        const auto current=cyrus::placements::host::text(a[5],cyrus::editbinding::maxDescriptorBytes,cyrus::editbinding::maxDescriptorBytes);
+        const auto previous=cyrus::placements::host::text(a[6],cyrus::sourceradius::maxBindingBytes,cyrus::sourceradius::maxBindingBytes);
+        lineage=std::make_unique<cyrus::sourceradius::Replay>(*rows.native,current,previous,lineageIDs);
     }
     std::vector<CyrusRadiusPair> result;result.reserve(rows.size());
     for(std::size_t i=0;i<rows.size();++i){auto* row=rows.native?nullptr:groupArray(rows.rows->data[i]);if(row)cyrus::rows::edited(row);
@@ -226,7 +238,9 @@ Value* cyrusProceduralRadii_cf(Value** a,int n){
             }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
         }
         const std::pair<int,double>* override=nullptr;
-        if(rows.native){const auto& record=rows.native->at(i);
+        std::pair<int,double> lineageOverride;
+        if(lineage){const auto found=lineage->find(*rows.native,i);if(found){lineageOverride={modes->data[*found]->to_int(),values[*found]};override=&lineageOverride;}}
+        else if(rows.native){const auto& record=rows.native->at(i);
             if(record.flags&cyrus::placements::Authored){
                 const auto text=rows.native->authored(i);std::uint64_t key=0;
                 if(proceduralCandidate(text,key)){const auto found=numericOverrides.find(key);if(found!=numericOverrides.end())override=&found->second;}

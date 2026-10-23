@@ -2,14 +2,15 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.8.7 | Review repairs and profile-owned Viewport memory preference |
-| Scatter native/package | 0.86.8.7 / Max 2027 | [Delivery and scoped qualification](plans/code-quality/DELIVERY_08687.md); historical 2024/2026 receipts retain their identities |
+| Scatter UI | 0.86.9 | Source-aware Edit preservation, identification colours and final displayed feedback |
+| Scatter native/package | 0.86.9 / Max 2024, 2026, 2027 | [Delivery and scoped qualification](plans/edit-instances/DELIVERY_0869.md); historical receipts retain their identities |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
+| Native Edit capability / storage | 2 / 2 | Source lineage and inactive history; supported legacy reader and explicit old-reader rejection of upgraded scenes |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
 | Saved MAXScript schema | 59 | Appended source-clearance block; explicit Undoable schema-58 upgrade; earlier schemas remain unsupported |
 | Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
-| Surface Analyzer | 0.14.2 | Independent installer safety correction; Max 2027 qualification |
+| Surface Analyzer | 0.14.2 | Independent installer safety correction; matched 2024/2026/2027 payloads qualified with Scatter 0.86.9 |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
 
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
@@ -23,6 +24,18 @@ the [correction report](plans/source-clearance/DELIVERY_08682.md) records the
 matched build and host evidence separately from prior material-performance work.
 
 ## Choosing the next version
+
+**23 October 2026 user-selected delivery: 0.86.9.** The user explicitly selects
+this label for the three Edit-instance refinements and requests installation
+support for Max 2024, 2026 and 2027. The [implementation plan](plans/edit-instances/IMPLEMENTATION_0869.md)
+covers identification colours, measured pivot alignment, source-aware active
+and inactive edit histories, saved-state preservation and focused host tests.
+The [delivery report](plans/edit-instances/DELIVERY_0869.md) records the completed
+focused checks and exact installer. Native Edit persistence/capability advances
+to 2; schema 59 and recipe 8 are preserved. Upgraded source-aware scenes require
+the new reader, so keep original files. Analyzer remains independently versioned
+at 0.14.2, with new matched builds and qualification on all three hosts. Content
+stays 0.86.7. The three-host request applies to this delivery, not unrelated work.
 
 **23 October 2026 user-selected successor: 0.86.8.7.** The user explicitly
 authorizes the seven confirmed review repairs, the high-poly viewport memory

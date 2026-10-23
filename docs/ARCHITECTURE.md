@@ -1,8 +1,43 @@
 # Current codebase architecture
 
-Applies to the Cyrus Scatter 0.86.8.7 source, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification status](plans/code-quality/DELIVERY_08687.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to the Cyrus Scatter 0.86.9 source, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification status](plans/edit-instances/DELIVERY_0869.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
 
 ## Ownership
+
+### 0.86.9 source-aware Edit and displayed feedback
+
+Native Edit owns authored deltas, deletion/clone IDs, selection, deterministic
+order and persistent source lineage. Candidate IDs remain scoped to their
+population; a changed source assignment selects a different source-specific
+history. Missing histories remain inactive. The binding separates generation
+and receiver guards from source inventory/settings. `source_radius.cpp` applies
+the same proven correspondence to independently layer-owned radius overrides.
+
+Display, hit testing and gizmos resolve one immutable final accepted view.
+Modifier-local input and shared authored blocks provide the intermediate matrix
+for downstream gesture conversion. The existing palette supplies Model, Layer
+and Bands colours. Recolouring does not solve placements. Native renderer
+capture/stage/present uses bounded snapshots, weak host handles and serial checks;
+handles remain tied to the actual visible result through a late realization
+failure. Authoring rejects a displayed/prepared mismatch. SDK access stays on
+the host thread; worker/snapshot destruction has no host callback.
+
+Storage capability 2 adds the validated `0x7302` chunk, retains the supported
+`0x7301` legacy reader and places an explicit downgrade guard in that older
+recognized chunk. Migration requires the original compatible generation;
+unresolved legacy records keep their recovery proof. The [delivery record](plans/edit-instances/DELIVERY_0869.md)
+separates final qualification, asset-pivot findings and copied-stack limitations.
+
+Full-object Copy currently regenerates clone `outputId` values in each native
+Edit modifier independently. An upper modifier's `inputId` can still name a
+lower modifier's old clone; layer-owned radius history can retain that old ID
+too. Missing correspondence keeps the old authored record inactive and does
+not infer a replacement by position or source name. The original setup is intact.
+The required [B37 correction](BACKLOG.md#edit-instance-findings--0869) needs one
+bounded old-to-new ID map across the entire copied controller/stack, including
+input/output references, inactive variants, selection and radius metadata.
+Generated candidate identities must retain their existing semantics. This is
+remaining implementation work, not a capability of 0.86.9.
 
 ### 0.86.8.7 repairs and viewport memory
 
@@ -96,7 +131,7 @@ of every independent component's acceptance output.
 
 Admission uses checked candidate-count arithmetic and conservative native coexistence/scratch allowances against available Windows commit, leaving a 256 MiB reserve. Bounded authored/script work retains an 8 MiB workspace guard; native Count no longer requests script heap proportional to placement rows. These are admission allowances, not exact OS allocation predictions. A light-GC checkpoint after 64 MiB of tracked native allocation churn releases unreachable wrappers; a sufficiently large Count decrease releases rollback roots before collection. Cached/passive UI never triggers these checkpoints. Required publication, Undo and render pins are not evicted. Failed successors retain the previous complete result. No full GC, Undo flush or saved heap-preference change is requested.
 
-CS Edit separates derived candidate input from authored deltas/identities/selection. Authored rows use immutable copy-on-write blocks of 128; selection uses compact bit blocks. Identity rows remain to preserve order and dormant behavior. Undo snapshots share unchanged authored blocks, omit derived matrices and charge changed blocks rather than both complete generations. Unique tracked Edit bytes and conservative owner/history attribution are separate measurements. Structural layer commands include native Edit ownership in the same host hold. Preset publication restore moves the native frame, epoch, manifest and display together; ordinary scalar Undo still changes authored parameters and re-evaluates according to Manual/Live behavior. Save/Load retains the existing Edit field chunk.
+CS Edit separates derived candidate input from authored deltas/identities/selection. Authored rows use immutable copy-on-write blocks of 128; selection uses compact bit blocks. Identity rows remain to preserve order and dormant behavior. Undo snapshots share unchanged authored blocks, omit derived matrices and charge changed blocks rather than both complete generations. Unique tracked Edit bytes and conservative owner/history attribution are separate measurements. Structural layer commands include native Edit ownership in the same host hold. Preset publication restore moves the native frame, epoch, manifest and display together; ordinary scalar Undo still changes authored parameters and re-evaluates according to Manual/Live behavior. Save/Load uses the versioned source-history extension described above.
 
 Native publication owns accepted views, radii, source correspondence, receiver revisions and statistics. Host-thread staging validates all owners before atomic installation; the Edit transaction remains rollback-capable through the install tail. PFlow pins immutable native groups and reads per-particle transforms without a persistent script matrix array. Bake and public inspection materialize pages of at most 500 records. Those explicit queries and real baked scene nodes have separate costs. Rendering remains a host integration with bounded script dispatch, not a new native Particle Flow channel-fill implementation or asynchronous solver.
 
@@ -110,7 +145,7 @@ Candidate IDs encode an append-only saved receiver slot plus local ordinal, with
 
 Receiver-local row caches include generation settings, source state, receiver geometry/UV hashes, relevant spline geometry, Analyzer revisions and texture state. Adding a receiver can reuse old candidate rows, but Update still reads geometry/area for validation and runs shared acceptance/publication. This does not claim zero host geometry evaluation or incremental GPU upload. Projection and candidate Relax use the candidate's receiver; changing its own quota/neighborhood can change Relax positions. Shared masks, collision scopes, cleanup and protected edits can change which candidates survive.
 
-Receiver-aware Edit/radius receipts compare common generation settings and known receiver geometry while allowing membership changes. Missing targets remain inactive; geometry changes are guarded. Current-schema save/reopen/copy/merge remain supported within the documented binding limits. Earlier scenes require recreation; current source never guesses a migration.
+Receiver-aware Edit/radius receipts compare common generation settings and known receiver geometry while allowing compatible membership changes. Missing targets remain inactive; geometry changes are guarded. Supported older Edit chunks hydrate only from proven matching inputs. Current-schema save/reopen and ordinary full-controller copy retain the documented binding limits; copied upper edits targeting lower clones and clone-targeted radius copy need additional identity remapping. Retired development scene formats remain unsupported.
 
 ### Spline fields, provenance and radii
 

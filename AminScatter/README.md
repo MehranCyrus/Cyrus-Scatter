@@ -1,13 +1,13 @@
 # Cyrus Scatter native engine and UI
 
-Current development/package version **0.86.8.2**, saved schema **59**, model **CyrusUnified2**. The [current delivery](../docs/plans/source-clearance/DELIVERY_08682.md) contains matched Max 2024/2026/2027 packages and focused clearance UI, Relax and lifecycle qualification. The [0.86.8.1 correction](../docs/plans/source-clearance/DELIVERY_08681.md) retains its solver/viewport performance evidence. Schema 58 has an explicit Undoable upgrade; earlier development schemas remain unsupported. Ordinary development remains Max 2027 unless another host is explicitly requested. Licensing and internal registration identities are unchanged.
+Current development/package version **0.86.9**, saved schema **59**, model **CyrusUnified2**. The [current delivery](../docs/plans/edit-instances/DELIVERY_0869.md) contains matched Max 2024/2026/2027 packages, source-aware Edit history, identification colours and final displayed feedback. Native Edit capability/storage is 2; preserve original scenes and save upgraded copies. Schema 58 has an explicit Undoable upgrade; earlier development schemas remain unsupported. Ordinary development remains Max 2027 unless another host is explicitly requested. Licensing and internal registration identities are unchanged.
 
 - [Current artist workflow](../docs/ARTIST_GUIDE.md)
 - [Architecture and source ownership](../docs/ARCHITECTURE.md)
 - [Layout, Analyzer and falloff details](../docs/LAYOUT_AND_FALLOFF.md)
 - [Build/install instructions](../docs/Max_2027_Installation.md)
 - [Current limits and work](../docs/BACKLOG.md)
-- [Latest qualification](../docs/plans/source-clearance/DELIVERY_08682.md)
+- [Latest qualification](../docs/plans/edit-instances/DELIVERY_0869.md)
 
 ## Development
 

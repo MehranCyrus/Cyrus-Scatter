@@ -1,37 +1,20 @@
 struct EditInput {Matrix3 tm;int source;EditKey id;bool protectedEdit=false;int face=0;Point3 bary{1,0,0};std::uint64_t owner=0;};
-static bool hasEditTransform(const Matrix3& m){const Matrix3 identity(1);for(int i=0;i<4;++i)if(m.GetRow(i)!=identity.GetRow(i))return true;return false;}
-static void bindStable(EditLayer& l,const std::wstring& signature,std::shared_ptr<const EditDerived> input){
-    l.active=true;
-    if(l.signature.empty())l.signature=signature;
-    if(l.signature!=signature){try{l.signature=receiverWide(cyrus::receivers::mergeBinding(receiverUTF8(l.signature),receiverUTF8(signature)));}catch(const std::exception&){l.invalid=true;}}
-    l.input=std::move(input);
-    if(l.invalid)return;
-    if(!l.originals){auto originals=ce::make<EditKeySet>();originals->reserve(l.rows.size());for(std::size_t i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);if(r.inputId==r.outputId)originals->insert(r.inputId);}l.originals=std::move(originals);}
-    std::shared_ptr<EditKeySet> successor;
-    for(unsigned i=0;i<l.input->size();++i){
-        const auto id=l.input->native?editKey(*l.input->native,i):l.input->order[i];
-        if((successor?successor.get():l.originals.get())->count(id))continue;
-        if(!successor)successor=ce::make<EditKeySet>(*l.originals);
-        successor->insert(id);EditRow row;row.savedSource=i;row.inputId=row.outputId=id;l.append(row);
-    }
-    if(successor)l.originals=std::move(successor);
-}
+#include "cyrus_edit_binding.inc"
 static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<EditInput>& input,const std::wstring& signature){
     auto derived=ce::make<EditDerived>();derived->matrices.reserve(input.size());derived->order.reserve(input.size());derived->incoming.reserve(input.size());
     for(unsigned i=0;i<input.size();++i){derived->incoming.emplace(input[i].id,i);derived->matrices.push_back(input[i].tm);derived->order.push_back(input[i].id);}
     auto& l=m->layers[key];bindStable(l,signature,std::move(derived));if(l.invalid){m->status();return input;}
     std::vector<EditInput> output;output.reserve(l.rows.size());
-    for(std::size_t i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);const auto source=l.source(r);if(!r.deleted&&source<input.size()){
-        auto next=input[source];next.tm=next.tm*r.delta;next.id=r.outputId;next.protectedEdit=next.protectedEdit||r.inputId!=r.outputId||hasEditTransform(r.delta);output.push_back(std::move(next));}}
+    for(auto i:activeEditOrder(l)){const auto& r=l.rows.get(i);const auto source=l.source(r);
+        auto next=input[source];next.tm=next.tm*r.delta;next.id=r.outputId;next.protectedEdit=next.protectedEdit||r.inputId!=r.outputId||hasEditTransform(r.delta);output.push_back(std::move(next));}
     m->status();return output;
 }
 static ep::View applyStableNative(CSEdit* m,int key,const ep::View& input,const std::wstring& signature){
-    auto derived=ce::make<EditDerived>();derived->native=input;derived->incoming.reserve(input.size());
-    for(unsigned i=0;i<input.size();++i)derived->incoming.emplace(editKey(input,i),i);
+    auto derived=nativeEditInput(input);
     auto& l=m->layers[key];bindStable(l,signature,std::move(derived));
     if(l.invalid)throw RuntimeError(_T("CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup."));
     ep::Builder output(input.token().owner,ep::Stage::Edited,input.sources(),std::min(l.rows.size(),ep::maxRecords),input.sourceCohort(),input.receiverCohort());
-    for(std::size_t i=0;i<l.rows.size();++i){const auto& row=l.rows.get(i);const auto source=l.source(row);if(row.deleted||source>=input.size())continue;
+    for(auto i:activeEditOrder(l)){const auto& row=l.rows.get(i);const auto source=l.source(row);
         auto record=input.at(source);const auto tm=editMatrix(input,source)*row.delta;
         for(int j=0;j<4;++j)for(int k=0;k<3;++k)record.transform[j*3+k]=tm.GetRow(j)[k];
         record.flags&=~ep::Authored;
@@ -40,6 +23,27 @@ static ep::View applyStableNative(CSEdit* m,int key,const ep::View& input,const 
         else {record.identity=row.outputId.candidate;output.appendGenerated(record);}
     }
     m->status();return output.freeze();
+}
+// The source-list command captures legacy ownership before removing a model.
+// This uses only the previously bound exact input, never the pending recipe.
+// Author history and command Undo include hydration; publication is untouched.
+def_visible_primitive(cyrusEditHydrateSources,"cyrusEditHydrateSources");
+Value* cyrusEditHydrateSources_cf(Value** a,int count){
+    check_arg_count(cyrusEditHydrateSources,3,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const auto key=a[1]->to_int();const std::wstring signature=a[2]->to_string();
+    if(!mods->size)return &ok;if(!theHold.Holding())throw RuntimeError(_T("Edit source hydration requires the source command's Undo hold"));
+    try{
+        std::vector<std::pair<CSEdit*,std::map<int,EditLayer>>> staged;
+        for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end())continue;
+            if(found->second.sourceAware&&found->second.legacyProof.empty())continue;
+            if(!found->second.input||!found->second.input->native){if(found->second.hasAuthored())throw std::invalid_argument("Legacy Edit source ownership is not bound. Restore its matching generation and Update before removing a source; saved edits are retained");continue;}
+            auto next=m->layers;auto& layer=next.at(key);auto input=ce::make<EditDerived>(*layer.input);bindStable(layer,signature,std::move(input));
+            if(layer.published){auto local=ce::make<EditPublishedLocal>();local->input=layer.input;local->rows=layer.rows;layer.publishedLocal=std::move(local);}
+            staged.emplace_back(m,std::move(next));
+        }
+        for(auto& entry:staged)entry.first->hold(); // register all restores first
+        for(auto& entry:staged)entry.first->layers.swap(entry.second);
+        return &ok;
+    }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
 }
 // Candidate IDs and a base-population signature are independent of coverage.
 def_visible_primitive(cyrusEditStack,"cyrusEditStack");
@@ -92,15 +96,16 @@ Value* cyrusEditStack_cf(Value** a,int count) {
 }
 
 // Transient selection/display publication, separate from immutable Edit binding.
+#include "cyrus_edit_presentation.inc"
 def_visible_primitive(cyrusEditPublish,"cyrusEditPublish");
 Value* cyrusEditPublish_cf(Value** a,int count){
     check_arg_count(cyrusEditPublish,3,count);type_check(a[0],Array,_T("modifiers"));
     auto* mods=static_cast<Array*>(a[0]);if(mods->size==0)return &ok;const int key=a[1]->to_int();
-    auto ids=ce::make<EditKeySet>();
-    if(cyrusIsPlacementValue(a[2])){const auto& view=cyrusPlacementView(a[2]);if(view.stage()!=ep::Stage::Edited)throw RuntimeError(_T("Edit publication requires edited rows"));ids->reserve(view.size());for(std::size_t i=0;i<view.size();++i)ids->insert(editKey(view,i));}
-    else {type_check(a[2],Array,_T("final rows"));auto* rows=static_cast<Array*>(a[2]);ids->reserve(rows->size);
-        for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("final row"));auto* row=static_cast<Array*>(rows->data[i]);cyrus::rows::edited(row);ids->insert(EditKey(row->data[2]->to_string()));}}
-    for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);auto found=m->layers.find(key);if(found==m->layers.end())continue;auto& l=found->second;l.published=true;l.publishedIDs=ids;m->status();}
+    auto next=ce::make<EditPresentation>();
+    if(cyrusIsPlacementValue(a[2])){const auto& view=cyrusPlacementView(a[2]);if(view.stage()!=ep::Stage::Edited)throw RuntimeError(_T("Edit publication requires edited rows"));next->final=nativeEditInput(view);}
+    else {type_check(a[2],Array,_T("final rows"));auto* rows=static_cast<Array*>(a[2]);auto final=ce::make<EditDerived>();final->incoming.reserve(rows->size);
+        for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("final row"));auto* row=static_cast<Array*>(rows->data[i]);cyrus::rows::edited(row);final->incoming.emplace(EditKey(row->data[2]->to_string()),i);final->matrices.push_back(row->data[0]->to_matrix3());}next->final=std::move(final);}
+    installEditPresentation(mods,key,std::move(next));
     return &ok;
 }
 
@@ -170,7 +175,7 @@ def_visible_primitive(cyrusEditSelectedIDs,"cyrusEditSelectedIDs");
 Value* cyrusEditSelectedIDs_cf(Value** a,int count){
     check_arg_count(cyrusEditSelectedIDs,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int key=a[1]->to_int();EditKeySet seen;
     one_typed_value_local(Array* result);vl.result=new Array(0);
-    for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end()||found->second.invalid)continue;
+    for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);m->requireEditableFeedback();const auto found=m->layers.find(key);if(found==m->layers.end()||found->second.invalid)continue;
         for(std::size_t i=0;i<found->second.rows.size();++i){const auto& row=found->second.rows.get(i);if(found->second.selection.get(i)&&found->second.shown(row)&&seen.insert(row.outputId).second)vl.result->append(new String(row.outputId.text().c_str()));}
     }
     return_value(vl.result);

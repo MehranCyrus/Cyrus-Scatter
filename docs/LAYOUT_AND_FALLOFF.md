@@ -86,7 +86,18 @@ Area-line falloff follows its inside/outside world-XY domain. Analyzer falloff u
 
 ## Edit and preview distinctions
 
-CS Edit targets stable instance identities. Suspended/missing identities are not silently remapped by row index. Generation changes can invalidate a binding; preserve the scene before clearing edits. Current schema 58 has no earlier-scene migration or older placement reader.
+CS Edit targets stable candidate/source identities. Missing source histories remain
+inactive and are not silently remapped by row index or source name. In 0.86.9,
+removing a source preserves compatible surviving edits and recoverable inactive
+history; incompatible generation or receiver changes remain guarded. Handle
+colours follow Model/Layer/Bands, and drawing, picking and gizmos use the final
+displayed placement. Current schema 59 supports an explicit Undoable upgrade from
+58; earlier development-scene formats remain retired. Native Edit storage 2 has
+its own supported legacy reader and downgrade guard, so preserve originals and
+save upgraded copies. Whole-object Copy of clone-dependent Edit stacks or
+clone-targeted radius overrides remains limited by [B37](BACKLOG.md#edit-instance-findings--0869).
+See the [current delivery](plans/edit-instances/DELIVERY_0869.md) for exact tests
+and the asset-pivot finding; the tree was not automatically recentered.
 
 Point Cloud, Proxy and Mesh change preview representation and budgets, not the accepted output population. Mesh uses evaluated viewport geometry and preview coloring; it is not a guarantee of final renderer material/texture fidelity. Color by Bands follows accepted owner IDs. Auto Radius bounds supported geometry around the pivot using each final instance basis, without translation or a second scale application. Published XY/3D radii are selected per spacing rule; the radius display selector is independent. Points, Empty and unqualified source types remain Manual. Radius overlays are simplified collision bounds, not exact mesh collisions. A Point placeholder and an Empty choice have different placement/output semantics.
 

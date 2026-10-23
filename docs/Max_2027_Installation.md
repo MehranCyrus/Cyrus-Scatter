@@ -1,13 +1,13 @@
 # Install and build Cyrus Scatter
 
-The **0.86.8.7 / schema 59 delivery** contains matched **Max 2027-only** Scatter payloads and **Surface Analyzer 0.14.2**. The [delivery report](plans/code-quality/DELIVERY_08687.md) records native, host, failure-recovery and exact-installer checks. Original Paint and content revision 0.86.7 are preserved.
+The **0.86.9 / schema 59 delivery** contains distinct matched **Max 2024, 2026 and 2027** Scatter payloads and **Surface Analyzer 0.14.2** in one EXE. The [delivery report](plans/edit-instances/DELIVERY_0869.md) records native, Edit lifecycle, failure-recovery, exact-installer and fresh installed-startup checks. Original Paint and content revision 0.86.7 are preserved. Keep original scenes and save upgraded copies: the new source-aware Edit storage requires 0.86.9 or later.
 
 The historical [0.86.8.6 combined delivery](plans/combined-installer/DELIVERY_08686.md) retains its matched Max 2024, 2026 and 2027 packages and Analyzer 0.14.1 qualification. Its files remain in `dist/CyrusScatter-0.86.8.6-20261023/`; earlier packages keep their original host scope.
 
 ## Install
 
-The installer is [CyrusScatter-0.86.8.7-Setup.exe](../dist/CyrusScatter-0.86.8.7-20261023/CyrusScatter-0.86.8.7-Setup.exe).
-Close Max 2027, select its card, then click
+The installer is [CyrusScatter-0.86.9-Setup.exe](../dist/CyrusScatter-0.86.9-20261023/CyrusScatter-0.86.9-Setup.exe).
+Save work and close the target Max versions, select their cards, then click
 **Install** or **Update**. Detection, validation and storage checks run
 automatically. **Uninstall Scatter** keeps Analyzer, shared content and other hosts. Success shows
 **Installation completed**. **Error details** is available only after a failure.
@@ -25,13 +25,13 @@ not unpack an extra temporary library or create a copy for each Max version.
 Identical installed content is reused. Content remains revision 0.86.7 because
 the models, materials and previews have not been regenerated.
 
-The combined EXE installs both products for Max 2027. Save your work and restart Max after installation. For hosted installation, use **Scripting > Run Script** with [CyrusScatter-0.86.8.7-Max2027.mzp](../dist/CyrusScatter-0.86.8.7-20261023/CyrusScatter-0.86.8.7-Max2027.mzp) and, when Analyzer is needed, [CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp](../dist/CyrusScatter-0.86.8.7-20261023/CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp), then restart Max 2027. Separate MZP installation is not required when using the EXE. Both MZPs verify the installer helper before changing the profile. A different helper already loaded in Max requires a restart before retrying.
+The combined EXE installs both products for each selected supported host. Reopen Max after installation. For hosted installation, use **Scripting > Run Script** with the matching Scatter and Analyzer MZPs, then restart that host. The [package folder](../dist/CyrusScatter-0.86.9-20261023/) contains all three versions, including [CyrusScatter-0.86.9-Max2027.mzp](../dist/CyrusScatter-0.86.9-20261023/CyrusScatter-0.86.9-Max2027.mzp) and [CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp](../dist/CyrusScatter-0.86.9-20261023/CyrusSurfaceAnalyzer-0.14.2-Max2027.mzp). Separate MZP installation is not required when using the EXE. Both MZPs verify the installer helper before changing the profile. A different helper already loaded in Max requires a restart before retrying.
 Analyzer's **Analyze / Update Analyzer** button recalculates guides rather than updating installed software.
 The hosted route resolves an existing shared or legacy library. For a fresh
 recipient, use the EXE with the content ZIP and its library checkbox.
 There is no automatic online content download.
 
-Standard profiles from the historical Max 2024, 2026 and 2027 deliveries share one selected library; the .7 delivery updates only the Max 2027 plugin.
+Standard Max 2024, 2026 and 2027 profiles share one selected library.
 Content revision is independent of the plugin revision. Share the content
 separately with recipients who do not have it; the EXE/MZPs contain the plugin.
 Save your work and restart Max after installation. Old paths are retained
@@ -115,4 +115,4 @@ The package builder regenerates owned UI, checks version consistency, builds wit
 
 Version 2 producer receipts bind selected sources, effective build configuration, compiler/SDK/reference identities and nested Gallery/installer producers before and after their work. Changed or missing inputs leave pending/failed evidence and prevent package admission. Keep native `receipt.json`, managed/package `.build.json` sidecars and their original producer outputs together; original generated identity paths remain part of the recorded inputs. Historical receipts keep their original completeness limits and are not rewritten as v2 qualification.
 
-The [0.86.8.7 report](plans/code-quality/DELIVERY_08687.md) owns current scoped qualification and remaining limits. The older boss handoff and historical smoke launchers target frozen builds. The [0.86.0 Max 2027 native-foundation receipts](plans/native-placement/DELIVERY_0860.md) and older Max 2026 receipts remain historical. Physical-input, DPI and renderer claims retain their stated limits.
+The [0.86.9 report](plans/edit-instances/DELIVERY_0869.md) and [qualification manifest](plans/edit-instances/QUALIFICATION_0869.json) own current focused Edit and three-host installation evidence. The [0.86.8.7 review/memory report](plans/code-quality/DELIVERY_08687.md), older boss handoff and historical smoke launchers retain their original builds and scope. The [0.86.0 Max 2027 native-foundation receipts](plans/native-placement/DELIVERY_0860.md) and older Max 2026 receipts remain historical. Physical-input, DPI and renderer claims retain their stated limits. Save upgraded Edit scenes as new copies; B37's clone-dependent full-object Copy limit remains open.
