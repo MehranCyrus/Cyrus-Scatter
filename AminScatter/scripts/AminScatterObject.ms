@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="0ad7c6d83f3e3bf7518a9636b895435897c9ebd845b87868f695f2dc03ec9aff"
+﻿global CyrusLoadedScriptFingerprint="7ab4f6baf4855debdacdc89b492071929404eedd302f8bc0f31c94421d86b287"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -1405,7 +1405,9 @@ fn CyrusAssetBoundNode data bindings = (
     if found>0 and found!=roles.count do throw "Bind every role of a shared packaged context node together."
     node
 )
-fn CyrusAssetStage package bindings = (
+global CyrusAssetStageTrackingVersion
+fn CyrusAssetStageTrackingVersion = 1
+fn CyrusAssetStage package bindings createdNodes:undefined = (
     if not theHold.Holding() do throw "Portable source staging requires the recipe's authored transaction."
     local graph=package[1],directory=package[2],metres=(units.decodeValue "1m") as double,materials=#(),maps=#(),files=CyrusRecipeGet graph "files",meshes=CyrusRecipeGet graph "meshes",resolved=for pair in bindings collect #(pair[1],pair[2])
     fn colorValue values = (color values[1] values[2] values[3])
@@ -1497,6 +1499,7 @@ fn CyrusAssetStage package bindings = (
         for row in files where (CyrusRecipeGet row "id")==(CyrusRecipeGet meshData "file") do fileData=row
         local sha=CyrusRecipeGet fileData "sha256",file=pathConfig.appendPath directory ("assets/"+sha+"."+(CyrusRecipeGet fileData "suffix"))
         local node=if package.count>2 and package[3]>0 then cyrusAssetPreparedMeshCreate package[3] (CyrusRecipeGet fileData "id") metres (CyrusRecipeGet data "name") else cyrusAssetMeshCreate file sha metres (CyrusRecipeGet data "name")
+        if createdNodes!=undefined do append createdNodes node
         local values=CyrusRecipeGet data "transform"
         node.transform=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
         node.wireColor=colorValue (CyrusRecipeGet data "wireColor")
@@ -1509,6 +1512,7 @@ fn CyrusAssetStage package bindings = (
     )
     if (CyrusRecipeGet graph "version")>=2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
         local node=splineShape name:(CyrusRecipeGet data "name"),values=CyrusRecipeGet data "transform",index=0
+        if createdNodes!=undefined do append createdNodes node
         fn pointValue value metres = [value[1]*metres,value[2]*metres,value[3]*metres]
         for curve in (CyrusRecipeGet data "curves") do (
             addNewSpline node;index+=1
@@ -1736,7 +1740,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.9.2"
+fn CyrusLibraryVersion = "0.87.0"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -1951,7 +1955,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.9.2 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.87.0 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -1959,6 +1963,7 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     if owners.count==0 or owners.count!=selected.count do throw "Select one or more current layers to save."
     for edit in root.procModifiers() where cyrusEditRecipeHasData edit do throw "Save Everything cannot yet export authored Scatter Edit changes. The modifier and scene are preserved."
     for owner in owners where owner.procRadiusIDs.count>0 do throw ("Save Everything cannot yet export per-instance radius overrides: "+root.layerCaption owner)
+    for owner in owners where owner.interactionCollider or owner.interactionReact or owner.interactionSourceIDs.count>0 do throw "Save this interaction setup as a Max scene. Recipe packages do not yet carry reviewed contact definitions."
     local context=CyrusRecipeCaptureContext root:root node:node owners:owners metres:((units.decodeValue "1m") as double)
     local rootSettings=CyrusRecipeCaptureSettings context root,layers=#(),rules=#()
     for owner in owners do (
@@ -2543,7 +2548,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.9.2 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.87.0 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -2551,6 +2556,7 @@ fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:
     cyrusRecipeCheckStatic owner
     for edit in root.procModifiers() where cyrusEditRecipeHasData edit do throw "Apply Style currently requires a setup without authored Scatter Edit records. The existing edits are preserved."
     for member in (join #(owner) (owner.paintAreas as array)) where member.procRadiusIDs.count>0 do throw "Apply Style currently requires a destination without per-instance radius overrides. Existing overrides are preserved."
+    if owner.interactionCollider or owner.interactionReact or owner.interactionSourceIDs.count>0 do throw "Apply Style requires a layer without contact roles or reviewed contact definitions. The existing setup is preserved."
     if (cyrusRecipeInfo path)[11]!=digest do throw "The recipe changed. Refresh and review it again."
     local document=cyrusRecipeReadMetadata path,record=undefined
     for layer in (CyrusRecipeGet document "layers") where (CyrusRecipeGet layer "id")==recordID do record=layer
@@ -2719,11 +2725,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.9.2 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.87.0 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.9.2" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.9.2 gallery package."
+    if assemblyName.Version.ToString()!="0.87.0.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.87.0 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -2965,7 +2971,7 @@ fn CyrusViewportMemoryPreferences = pathConfig.appendPath (getDir #plugcfg) "Cyr
 fn CyrusInitializeViewportMemory = (
     if CyrusViewportMemoryInitialized==true do return true
     if cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined do
-        throw "Install the complete Cyrus 0.86.9.2 package and restart Max."
+        throw "Install the complete Cyrus 0.87.0 package and restart Max."
     local value=0,stored=getINISetting (CyrusViewportMemoryPreferences()) "Memory" "LimitMiB"
     if stored!="" do try(value=stored as integer)catch(value=0)
     if value!=0 and (value<256 or value>65536) do value=0
@@ -3143,12 +3149,13 @@ fn CyrusOpenPaintExport controller area = (
     exportOptions
 )
 
-global CyrusFalloffGraph,CyrusPointSuspended,CyrusViewportRedraw,CyrusNewLayerID
+global CyrusFalloffGraph,CyrusPointSuspended,CyrusViewportRedraw,CyrusNewLayerID,CyrusFallPack,CyrusFallUnpack,CyrusFallGraphsEqual
 -- Named data presets. Scene bindings are captured here, never stored in files.
 global CyrusPresetBinding,CyrusPresetBrowser,CyrusPresetOpenBinding,CyrusOpenPresets
-global CyrusPresetMakeBinding,CyrusPresetCheckBinding,CyrusPresetCapture,CyrusPresetApply
+global CyrusPresetMakeBinding,CyrusPresetCheckBinding,CyrusPresetCapture,CyrusPresetApply,CyrusPresetTransactionVersion
 global CyrusPresetDirectory,CyrusPresetRead,CyrusPresetWrite,CyrusPresetEntries,CyrusPresetSameValues
 struct CyrusPresetBinding (root,node,owner,ownerID,category,peer=undefined,peerID="",editor=undefined)
+fn CyrusPresetTransactionVersion = 1
 
 fn CyrusPresetMakeBinding root owner category peer:undefined editor:undefined = (
     if root==undefined or owner==undefined do throw "Select a layer before opening presets."
@@ -3169,7 +3176,16 @@ fn CyrusPresetCheckBinding target = (
 fn CyrusPresetCapture target = (
     CyrusPresetCheckBinding target
     if target.editor!=undefined do return target.editor.presetValues()
-    local meters=units.decodeValue "1m",schema=cyrusPresetSchema target.category
+    if findItem #("density_curve","scale_curve") target.category>0 do (
+        if target.owner.isPaintArea do throw "Choose the explicit receiver-bound Paint curve target."
+        local density=target.category=="density_curve"
+        local stored=if density then target.owner.fallDensityCurve else target.owner.fallScaleCurve,packed=if density then target.owner.fallDensityGraph else target.owner.fallScaleGraph
+        if stored.count>257 or packed.count>65536 do throw "Stored curve exceeds the preset inspection bound."
+        return #(stored as array,CyrusFallUnpack packed,not density)
+    )
+    -- Preserve stored PB2 floats across metre conversion and a later import.
+    -- Float/Float division rounds the physical value before native serialization.
+    local meters=(units.decodeValue "1m") as double,schema=cyrusPresetSchema target.category
     if target.category=="spacing" do (
         local values=target.owner.procSelfRule()
         if target.peer!=undefined do (
@@ -3192,15 +3208,38 @@ fn CyrusPresetSameValues a b = (
         (a as float)==(b as float)
     ) else a==b
 )
-fn CyrusPresetApply target document seedPolicy:#saved = (
+fn CyrusPresetApply target document seedPolicy:#saved transaction:#owned = (
+    if findItem #(#owned,#caller) transaction==0 do throw "Choose an owned or caller preset transaction."
     if findItem #(#saved,#current,#new) seedPolicy==0 do throw "Choose Saved, Current or New seed."
     if target.category!="population" and seedPolicy!=#saved do throw "Seed choices apply only to Amount presets."
     CyrusRequireAuthor();CyrusPresetCheckBinding target
-    if theHold.Holding() do throw "Finish the current undoable operation before applying a preset."
+    local ownHold=transaction==#owned
+    if ownHold and theHold.Holding() do throw "Finish the current undoable operation before applying a preset."
+    -- A composed command owns rollback, configuration tags and publication.
+    -- Keep its owners suspended until the complete command is committed.
+    -- Interactive curve views retain their separate preparation lifecycle.
+    if not ownHold do (
+        if not theHold.Holding() do throw "A caller preset transaction requires an active authored hold."
+        if target.editor!=undefined do throw "Caller transactions require a stored native target, not a curve editor."
+        if not target.root.getLayerTransfer() or not target.owner.getLayerTransfer() do throw "Suspend both preset owners for the complete caller transaction."
+        if seedPolicy==#new do throw "Resolve a new seed before reviewing a caller transaction."
+    )
     -- Revalidate the entire typed proposal even for callers that bypass the browser.
     document=cyrusPresetDecode (cyrusPresetEncode document[1] document[2] document[3])
     if document[1]!=target.category do throw "This preset belongs to a different category."
-    local schema=cyrusPresetSchema target.category,values=deepCopy document[3],owner=target.owner,meters=units.decodeValue "1m"
+    local schema=cyrusPresetSchema target.category,values=deepCopy document[3],owner=target.owner,meters=(units.decodeValue "1m") as double
+    local globalCurve=target.editor==undefined and findItem #("density_curve","scale_curve") target.category>0,curveSamples=undefined,curveGraph=undefined
+    if globalCurve do (
+        if owner.isPaintArea do throw "Choose the explicit receiver-bound Paint curve target."
+        if CyrusFalloffGraph!=undefined do throw "Close the curve editor before applying a global curve preset. Pending editor changes are not committed automatically."
+        if cyrusPresetCurveVersion==undefined or cyrusPresetCurveVersion()!=1 do throw "Load the matching native curve preset evaluator."
+        local stored=if target.category=="density_curve" then owner.fallDensityCurve else owner.fallScaleCurve,packed=if target.category=="density_curve" then owner.fallDensityGraph else owner.fallScaleGraph
+        if stored.count>257 or packed.count>65536 do throw "Stored curve exceeds the preset application bound."
+        local prepared=cyrusPresetDecode (cyrusPresetPrepareCurve (cyrusPresetEncode document[1] document[2] values) (target.category=="scale_curve"))
+        values=prepared[3]
+        curveSamples=for v in values[1] collect (v as float)
+        curveGraph=CyrusFallPack (for v in values[2] collect (v as float))
+    )
     local fields=for f in schema collect (f[1] as name)
     if target.category=="population" do (
         local index=findItem fields #randomSeed
@@ -3216,7 +3255,7 @@ fn CyrusPresetApply target document seedPolicy:#saved = (
         fields=if target.peer==undefined then #(#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar) else #()
         values[3]*=meters
     ) else if target.editor==undefined do for i=1 to fields.count where schema[i][3] do values[i]*=meters
-    if target.editor==undefined do for v in values where classof v!=BooleanClass do if v!=v or abs v>1e30 do throw "Preset units exceed the scene's supported numeric range."
+    if target.editor==undefined and not globalCurve do for v in values where classof v!=BooleanClass do if v!=v or abs v>1e30 do throw "Preset units exceed the scene's supported numeric range."
     if target.category=="transforms" do (
         local modeIndex=findItem fields #orientationMode
         if values[modeIndex]==3 and not isValidNode owner.orientationTarget do throw "Pick a destination target before applying Look at target settings, or import a complete recipe with its target binding."
@@ -3232,7 +3271,11 @@ fn CyrusPresetApply target document seedPolicy:#saved = (
     -- A valid identical apply is passive. Inheritance/explicit relationship
     -- ownership and a pending curve edit are authored differences too.
     local unchanged=false
-    if target.editor!=undefined then (
+    if globalCurve then (
+        local density=target.category=="density_curve"
+        unchanged=CyrusPresetSameValues ((if density then owner.fallDensityCurve else owner.fallScaleCurve) as array) curveSamples
+        unchanged=unchanged and CyrusFallGraphsEqual (if density then owner.fallDensityGraph else owner.fallScaleGraph) curveGraph
+    ) else if target.editor!=undefined then (
         unchanged=not target.editor.pendingCurve and CyrusPresetSameValues (target.editor.presetValues()) values
     ) else if target.category=="spacing" then (
         local prior=CyrusPresetCapture target
@@ -3248,13 +3291,17 @@ fn CyrusPresetApply target document seedPolicy:#saved = (
     -- Reconstruct and validate editor-only data before starting authored Undo.
     local curveRollback=if target.editor==undefined then undefined else target.editor.presetPrepare values
     local priorTransfer=owner.getLayerTransfer(),priorSuspended=CyrusPointSuspended
-    theHold.Begin();CyrusPointSuspended=true;owner.setLayerTransfer true
+    if ownHold do theHold.Begin()
+    CyrusPointSuspended=true;owner.setLayerTransfer true
     try (
         with animate off (
             -- Detach static controllers before changing their values, preserving
             -- other owners that shared the original controller.
             for pair in controllers do setPropertyController owner pair[1] (copy pair[2])
-            if target.editor!=undefined then target.editor.presetApply values
+            if globalCurve then (
+                if target.category=="density_curve" then (owner.fallDensityCurve=curveSamples;owner.fallDensityGraph=curveGraph)
+                else (owner.fallScaleCurve=curveSamples;owner.fallScaleGraph=curveGraph)
+            ) else if target.editor!=undefined then target.editor.presetApply values
             else if target.category=="spacing" and target.peer!=undefined then target.root.procSetPair 2 owner target.peer values[1] values[2] values[3] values[4]
             else (
                 if target.category=="spacing" do owner.procSelfOverride=true
@@ -3262,14 +3309,17 @@ fn CyrusPresetApply target document seedPolicy:#saved = (
             )
         )
         owner.setLayerTransfer priorTransfer;CyrusPointSuspended=priorSuspended
-        theHold.Accept "Cyrus apply preset"
+        if ownHold do theHold.Accept "Cyrus apply preset"
     )catch(
         local failure=getCurrentException()
-        theHold.Cancel();owner.setLayerTransfer priorTransfer;CyrusPointSuspended=priorSuspended
+        if ownHold do theHold.Cancel()
+        owner.setLayerTransfer priorTransfer;CyrusPointSuspended=priorSuspended
         if target.editor!=undefined do target.editor.presetRestore curveRollback
         throw()
     )
-    owner.markInputDirty();target.root.bindNativeUI();CyrusViewportRedraw();true
+    owner.markInputDirty()
+    if ownHold do (target.root.bindNativeUI();CyrusViewportRedraw())
+    true
 )
 fn CyrusPresetDirectory = (pathConfig.appendPath (getDir #plugcfg) "CyrusScatter\\Presets")
 fn CyrusPresetRead path = (
@@ -3632,9 +3682,31 @@ global cyrusFilterSourceRows,cyrusApplySourceTransforms
 global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
  global CyrusPreviewActivity,CyrusPreviewIdleTimer,CyrusPreviewView=undefined,CyrusPreviewProjection=undefined,CyrusPreviewViewID=undefined
 fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))
-global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
-fn CyrusFallPack values = (local s=stringStream "";for i=1 to values.count do format "% %" values[i] (if i<values.count then "," else "") to:s;s as string)
+global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph,CyrusFallValidPackedGraph,CyrusFallGraphsEqual
+-- PB2 curve samples and editable coordinates are Float values. Nine significant
+-- digits retain those values; ordinary display formatting is not serialization.
+fn CyrusFallPack values = (local s=stringStream "";for i=1 to values.count do format "% %" (formattedPrint (values[i] as float) format:".9g" userLocale:false) (if i<values.count then "," else "") to:s;s as string)
 fn CyrusFallUnpack data = (for v in filterString data "," collect (v as float))
+fn CyrusFallValidPackedGraph packed = (
+    if packed.count<16 or packed.count>2056 or mod packed.count 8!=0 do return false
+    local previous=-1.0
+    for i=1 to packed.count by 8 do (
+        for j=0 to 7 do if packed[i+j]!=packed[i+j] or abs packed[i+j]>1e8 do return false
+        if packed[i]<0 or packed[i]>1 or packed[i]<=previous do return false
+        if findItem #(0,1) packed[i+6]==0 or findItem #(0,1) packed[i+7]==0 do return false
+        previous=packed[i]
+    )
+    packed[1]==0 and packed[packed.count-7]==1
+)
+fn CyrusFallGraphsEqual a b = (
+    if a==b do return true
+    if a=="" or b=="" or a.count>65536 or b.count>65536 do return false
+    local left=try(CyrusFallUnpack a)catch(undefined),right=try(CyrusFallUnpack b)catch(undefined)
+    if left==undefined or right==undefined do return false
+    if not CyrusFallValidPackedGraph left or not CyrusFallValidPackedGraph right or left.count!=right.count do return false
+    for i=1 to left.count where left[i]!=right[i] do return false
+    true
+)
 global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0,CyrusFallGraphMeshMask=false,CyrusFallGraphImageMask=false
 global CyrusFallGraphOwnerRoot,CyrusFallGraphOwnerNode
 fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMask:false = (
@@ -3650,7 +3722,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
     if bandRoot==undefined do throw "The curve controller is no longer in this scene."
     if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
     rollout editor "Area Falloff - Edit Graph" width:760 height:505 (
-        local obj,area,isDensity=false,isMeshMask=false,isImageMask=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
+        local obj,area,isDensity=false,isMeshMask=false,isImageMask=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph="",graphEdited=false
         curveControl graph "" pos:[8,8] width:744 height:396 numCurves:1 x_range:[0,1] y_range:[0,100] commandMode:#move_xy asPopup:false
         button presetsButton "Presets..." pos:[12,464] width:120
         button applyButton "Apply" pos:[538,424] width:100
@@ -3690,6 +3762,9 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
             if curveTimer!=undefined do curveTimer.Stop()
             if invalidated do return false
             if not loading do (
+                -- Loading a saved graph does not authorize resampling it or
+                -- replacing an older packed representation on Apply/Close.
+                if not graphEdited do return true
                 local bandRow=bandTargetRow()
                 if ownerBandID>0 and bandRow==0 do return false
                 local trace=curveTrace()
@@ -3726,6 +3801,10 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
                 if ownerBandID>0 and identity==lastGraphTrace do return true
                 local samplesChanged=oldValues.count!=values.count
                 if not samplesChanged do for i=1 to values.count where oldValues[i]!=values[i] do samplesChanged=true
+                -- Browsing an already stored curve has no authored or display
+                -- effect. In particular, do not force pending post-save native
+                -- presentation work from an unchanged editor close.
+                if not samplesChanged and CyrusFallGraphsEqual oldGraph packedGraph do (lastGraphTrace=identity;return true)
                 if ownerBandID==0 do cfg[curveIndex]=values
                 if ownerBandID>0 then (
                     local samples=bandSamples(),graphs=bandGraphs()
@@ -3742,8 +3821,10 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
                         obj.setFallGraph area isDensity packedGraph
                     )
                 ) else (
-                    obj.setFallConfig area cfg
-                    obj.setFallGraph area isDensity packedGraph
+                    if samplesChanged or (obj.getFallGraph area isDensity)!=packedGraph do (
+                        obj.setFallConfig area cfg
+                        obj.setFallGraph area isDensity packedGraph
+                    )
                 )
                 CyrusViewportRedraw()
             )
@@ -3777,25 +3858,29 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
             graph.y_range=[0,(if isDensity or obj.isPaintArea then 100 else amax 200.0 ((amax samples)*100))]
             c.numPoints=if packed.count>0 then packed.count/8 else samples.count
             for i=1 to c.numPoints do (
-                local point=c.points[i],j=(i-1)*8
+                -- ccPoint is detached. Editing c.points[i] updates the live SDK
+                -- point on every property assignment, before setPoint's flags.
+                local point=ccPoint [0,0] [0,0] [0,0] end:(i==1 or i==c.numPoints),j=(i-1)*8
                 if packed.count>0 then (
                     point.value=[packed[j+1],packed[j+2]];point.inTangent=[packed[j+3],packed[j+4]];point.outTangent=[packed[j+5],packed[j+6]]
                     point.bezier=packed[j+7]>0;point.corner=packed[j+8]>0
                 ) else (point.value=[(i-1.0)/(samples.count-1),samples[i]*100];point.bezier=false;point.corner=true)
-                point.lock_x=(i==1 or i==c.numPoints);c.points[i]=point
+                -- Full typed preset data is validated before this restoration.
+                -- Initial SDK neighbors are not the destination graph yet.
+                point.lock_x=(i==1 or i==c.numPoints);setPoint c i point checkConstraints:false
             )
             zoom graph #all
         )
         fn presetRestore state = (
             loading=true
             undo off (presetLoadGraph state[1])
-            lastGraphTrace=state[2];lastPresetTrace=state[3];presetStoredValues=state[4];presetStoredGraph=state[5]
+            lastGraphTrace=state[2];lastPresetTrace=state[3];presetStoredValues=state[4];presetStoredGraph=state[5];graphEdited=state[6]
             loading=false;true
         )
         fn presetPrepare values = (
             if not presetTargetValid() do throw "The curve target was removed or replaced."
             if values[3] and (isDensity or obj.isPaintArea) do throw "This target requires a unit-range curve."
-            local state=#(presetValues(),lastGraphTrace,lastPresetTrace,presetStoredValues,presetStoredGraph)
+            local state=#(presetValues(),lastGraphTrace,lastPresetTrace,presetStoredValues,presetStoredGraph,graphEdited)
             if curveTimer!=undefined do curveTimer.Stop()
             pendingCurve=false;loading=true
             try (
@@ -3812,6 +3897,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
             state
         )
         fn presetApply values = (
+            graphEdited=true
             lastGraphTrace="";lastPresetTrace="";presetStoredValues=undefined
             if not storeCurve() do throw "The curve could not be stored."
             local trace=curveTrace(),row=bandTargetRow()
@@ -3852,18 +3938,20 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
                 zoom graph #all
                 densityZoom=graph.zoomValues;densityScroll=graph.scrollValues
             )
-            if packed.count>=16 and mod packed.count 8==0 then (
+            if packed.count>0 and not CyrusFallValidPackedGraph packed do throw "The stored curve graph is invalid or exceeds 257 points. Its saved settings were preserved."
+            if packed.count>0 then (
                 c.numPoints=packed.count/8
                 for i=1 to c.numPoints do (
-                    local j=(i-1)*8,p=c.points[i]
+                    local j=(i-1)*8,p=ccPoint [0,0] [0,0] [0,0] end:(i==1 or i==c.numPoints)
                     p.value=[packed[j+1],packed[j+2]];p.inTangent=[packed[j+3],packed[j+4]];p.outTangent=[packed[j+5],packed[j+6]]
                     p.bezier=packed[j+7]>0;p.corner=packed[j+8]>0;p.lock_x=(i==1 or i==c.numPoints)
-                    c.points[i]=p
+                    setPoint c i p checkConstraints:false
                 )
             ) else (
                 c.numPoints=values.count
                 for i=1 to c.numPoints do (
-                    local p=c.points[i];p.value=[(i-1.0)/(c.numPoints-1),values[i]*100];p.bezier=false;p.corner=true;p.lock_x=(i==1 or i==c.numPoints);c.points[i]=p
+                    local p=ccPoint [(i-1.0)/(c.numPoints-1),values[i]*100] [0,0] [0,0] corner:true end:(i==1 or i==c.numPoints)
+                    p.lock_x=(i==1 or i==c.numPoints);setPoint c i p checkConstraints:false
                 )
             )
             if ownerBandID>0 or isMeshMask then (graph.zoomValues=densityZoom;graph.scrollValues=densityScroll) else zoom graph #all
@@ -3873,8 +3961,16 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
         fn flushCurve sender args = (
             if pendingCurve and not (CyrusInteractionHeld()) do (pendingCurve=false;if curveTimer!=undefined do curveTimer.Stop();storeCurve())
         )
+        fn retainCurveUndo = (
+            -- View history remains live even after its authored owner has been
+            -- invalidated. Retention must not depend on model edit permission.
+            if loading or not theHold.Holding() do return false
+            cyrusPresetTrackCurveUndo graph.curves[1]
+        )
         fn queueCurve = (
             if loading do return false
+            retainCurveUndo()
+            graphEdited=true
             if ownerBandID==0 and not isMeshMask then storeCurve() else (
                 pendingCurve=true
                 if curveTimer==undefined do (curveTimer=dotNetObject "System.Windows.Forms.Timer";curveTimer.Interval=100;dotNet.addEventHandler curveTimer "Tick" flushCurve)
@@ -3883,6 +3979,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false imageMa
                 curveTimer.Start()
             )
         )
+        on graph selChanged ci val do retainCurveUndo()
         on graph ptChanged ci val do queueCurve()
         on graph tangentChanged ci val kind do queueCurve()
         on graph ptInserted ci val do queueCurve()
@@ -3988,7 +4085,7 @@ fn CyrusRemapLayerCorrespondence owner variation:#same = (
         )
     )
     local domains=CyrusReceiverVariationDomains owner,before=#(),after=#()
-    for key in #(#sourceRowIDs,#clearanceSourceIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
+    for key in #(#sourceRowIDs,#clearanceSourceIDs,#interactionSourceIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#procReceiverIDs) do (
         local values=(getProperty owner key) as array
         for i=1 to values.count do if not matchPattern values[i] pattern:"placeholder:*" do (
             local index=findItem before values[i]
@@ -4027,6 +4124,8 @@ fn AminScatterCopyLayer origin destination variation:#same = (
         destination.bandArrangement=origin.bandArrangement
         destination.analyzerNode=origin.analyzerNode
         destination.layerIDColor=origin.layerIDColor
+        for key in #(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumWU,#interactionFoliage,#interactionDefinitionRevision) do setProperty destination key (getProperty origin key)
+        destination.interactionSourceIDs=origin.interactionSourceIDs as array;destination.interactionDefinitions=origin.interactionDefinitions as array
         destination.surfaceNodes=origin.validSurfaces();destination.surface=undefined
         destination.paintAreas=#();destination.uiAreaID=""
         for area in origin.paintAreas do (
@@ -4080,7 +4179,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:59
+version:60
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -5907,7 +6006,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.86.9.2"
+    fn uiVersion = "0.87.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -6235,6 +6334,171 @@ initialRollupState:0x8
             #(sourceRowIDs[row],procSourceSlots[row],policy[1],policy[2],policy[3],filterString policy[4] "|",policy[5],#(true,policy[6],policy[7],policy[8]))
         )
     )
+    -- Append-only scene data. Prepared definitions are source-local, never poses.
+    parameters interactionSettings (
+        interactionCollider type:#boolean default:false
+        interactionReact type:#boolean default:false
+        interactionCoverRoots type:#boolean default:true
+        interactionGapWU type:#worldUnits default:0.0
+        interactionStiffness type:#float default:0.5
+        interactionColliderMode type:#integer default:1
+        interactionMinimumWU type:#worldUnits default:(units.decodeValue "5mm")
+        interactionFoliage type:#float default:0.05
+        interactionSourceIDs type:#stringTab tabSize:0 tabSizeVariable:true
+        interactionDefinitions type:#stringTab tabSize:0 tabSizeVariable:true
+        interactionDefinitionRevision type:#integer default:0
+        on interactionCollider postSet v do this.interactionsChanged()
+        on interactionReact postSet v do this.interactionsChanged()
+        on interactionCoverRoots postSet v do this.interactionsChanged()
+        on interactionGapWU postSet v do this.interactionsChanged()
+        on interactionStiffness postSet v do this.interactionsChanged()
+        on interactionColliderMode postSet v do this.interactionsChanged()
+
+        on interactionCollider preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionCollider and not (cyrusLicenseAllows()) then interactionCollider else value)
+        on interactionReact preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionReact and not (cyrusLicenseAllows()) then interactionReact else value)
+        on interactionCoverRoots preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionCoverRoots and not (cyrusLicenseAllows()) then interactionCoverRoots else value)
+        on interactionGapWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionGapWU and not (cyrusLicenseAllows()) then interactionGapWU else value)
+        on interactionStiffness preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionStiffness and not (cyrusLicenseAllows()) then interactionStiffness else value)
+        on interactionColliderMode preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionColliderMode and not (cyrusLicenseAllows()) then interactionColliderMode else value)
+        on interactionMinimumWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionMinimumWU and not (cyrusLicenseAllows()) then interactionMinimumWU else value)
+        on interactionFoliage preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionFoliage and not (cyrusLicenseAllows()) then interactionFoliage else value)
+        on interactionDefinitionRevision preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionDefinitionRevision and not (cyrusLicenseAllows()) then interactionDefinitionRevision else value)
+    )
+    local interactionState=undefined,interactionStateKey="",interactionError="",interactionOutputNodes=#(),interactionOutputKey=""
+    local interactionSourceCache=#(),interactionReview=undefined,interactionReviewNode=undefined,interactionGuides=#()
+    fn interactionsRoot = (if overlapOwner==undefined then this else overlapOwner)
+    fn interactionsChanged = (
+        if this.getLayerTransfer() do return true
+        local root=this.interactionsRoot()
+        root.interactionStateKey="";CyrusViewportRecordsDirty=true
+        if CyrusScheduleUI!=undefined do CyrusScheduleUI()
+        true
+    )
+    fn interactionsClearGuides = (
+        undo off for node in interactionGuides where isValidNode node do delete node
+        interactionGuides=#();true
+    )
+    fn interactionsSettings = (#(interactionMinimumWU/(units.decodeValue "1m"),interactionFoliage,interactionColliderMode))
+    fn interactionsAnalyze node = (
+        if not CyrusLicenseCanEdit() do throw "Active Cyrus authoring license required to prepare a model."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=1 do throw "Load the matched CyrusScatter 0.87 native modules and restart Max."
+        if not isValidNode node or findItem (this.validSources()) node==0 do throw "Choose a current mesh model in this layer."
+        this.interactionsClearGuides()
+        local next=cyrusInteractionSource node undefined (this.interactionsSettings()) 1
+        interactionReview=next;interactionReviewNode=node
+        local paths=cyrusInteractionGuides next
+        local frame=node.transform,root=this.interactionsRoot()
+        -- Review a frozen copy at a published instance; library source nodes
+        -- commonly live hidden, far outside the artist's working view.
+        for i=1 to root.procPublishedOwners.count where (root.logicalParent root.procPublishedOwners[i])==this do (
+            local source=findItem root.procPublishedSources[i] node
+            if source>0 do (
+                local groups=cyrusPlacementTransformGroups root.groupSnapshotRows[i]
+                if groups[source].count>0 do (frame=groups[source][1];exit)
+            )
+        )
+        if paths.count>0 do undo off (
+            local model=cyrusInteractionReviewModel next frame
+            setUserProp model "CyrusInteractionTransient" true
+            interactionGuides=#(model)
+            local shape=splineShape name:"Cyrus_Interaction_Guide_Review" wirecolor:(color 80 240 90)
+            append interactionGuides shape
+            for path in paths do (addNewSpline shape;for p in path do addKnot shape (numSplines shape) #corner #line p;updateShape shape)
+            shape.transform=frame;shape.renderable=false;setUserProp shape "CyrusInteractionTransient" true
+        )
+        format "Cyrus source analysis:\n%\n" (cyrusInteractionSourceInfo next)
+        cyrusInteractionSourceInfo next
+    )
+    fn interactionsAccept = (
+        if interactionReview==undefined or not isValidNode interactionReviewNode do throw "Analyze a model and inspect its roots and branch guides first."
+        local row=this.sourceRow interactionReviewNode
+        if row<1 or row>sourceRowIDs.count do throw "The reviewed source was removed. Analyze again."
+        -- Recapture verifies geometry, units and settings before acceptance.
+        local current=cyrusInteractionSource interactionReviewNode undefined (this.interactionsSettings()) 1
+        if (cyrusInteractionSourceInfo current)!=(cyrusInteractionSourceInfo interactionReview) do throw "The source changed after analysis. Analyze and review again."
+        local accepted=cyrusInteractionAccept current,id=sourceRowIDs[row],slot=findItem interactionSourceIDs id
+        undo "Accept Cyrus source guides" on (
+            if slot==0 then (append interactionSourceIDs id;append interactionDefinitions (cyrusInteractionSerialize accepted))
+            else interactionDefinitions[slot]=cyrusInteractionSerialize accepted
+            interactionDefinitionRevision+=1
+        )
+        interactionSourceCache=#();interactionReview=undefined;this.interactionsClearGuides();this.interactionsChanged();true
+    )
+    fn interactionsSources plants role = (
+        if role==0 do return #()
+        local result=#(),flags=(if bit.get role 1 then 2 else 0)+(if bit.get role 2 then 1 else 0),settings=this.interactionsSettings(),nextCache=#()
+        if interactionDefinitions.count!=interactionSourceIDs.count do throw "Prepared model data is incomplete. Analyze again."
+        for node in plants do (
+            if not isValidNode node do throw "Interactions require mesh models; Points and Empty sources are unsupported."
+            local row=this.sourceRow node,slot=if row>0 then findItem interactionSourceIDs sourceRowIDs[row] else 0
+            local saved=if bit.get role 2 then (if slot>0 then interactionDefinitions[slot] else throw ("Analyze and accept guides for "+node.name+" before enabling React to colliders.")) else undefined
+            local value=cyrusInteractionSource node saved settings flags
+            append result value;append nextCache #(node,value)
+        )
+        interactionSourceCache=nextCache;result
+    )
+    fn interactionsKey owners epoch = (
+        local stream=stringStream ""
+        format "%|%|" epoch cyrusEnabled to:stream
+        for leaf in owners do (
+            local parent=this.logicalParent leaf
+            format "%:%:%:%:%:%:%:%:%:%:%|" leaf.layerID parent.interactionCollider parent.interactionReact parent.interactionCoverRoots parent.interactionGapWU parent.interactionStiffness parent.interactionColliderMode parent.interactionMinimumWU parent.interactionFoliage parent.interactionDefinitionRevision leaf.autoRender to:stream
+        )
+        stream as string
+    )
+    fn interactionsStage rows owners plants previous:undefined retargetEdits:false = (
+        local active=false
+        for leaf in owners do (local parent=this.logicalParent leaf;if parent.interactionCollider or parent.interactionReact do active=true)
+        if not active and previous!=undefined and cyrusInteractionHasEdits!=undefined do active=cyrusInteractionHasEdits previous
+        if not active or not cyrusEnabled do return undefined
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=1 do throw "CyrusScatter 0.87 requires its matched native interaction modules. Restart after installing."
+        local payload=for i=1 to owners.count collect (
+            local leaf=owners[i],parent=this.logicalParent leaf
+            local role=(if parent.interactionCollider then 1 else 0)+(if parent.interactionReact then 2 else 0)
+            if not this.enabledLayer (findItem layerObjects leaf) do role=0
+            #(leaf.layerID,leaf.editLayerKey,rows[i],(parent.interactionsSources plants[i] role),role,parent.interactionCoverRoots,parent.interactionGapWU/(units.decodeValue "1m"),parent.interactionStiffness,leaf.autoRender)
+        )
+        if retargetEdits then cyrusInteractionRestage (CyrusRecipeOwnerNode this) payload previous else cyrusInteractionStageFrom (CyrusRecipeOwnerNode this) payload previous
+    )
+    fn interactionsEnsure = (
+        if procPublishedOwners.count==0 do return undefined
+        if interactionState!=undefined and not (cyrusInteractionOwner interactionState (CyrusRecipeOwnerNode this)) do (interactionState=undefined;interactionStateKey="";interactionOutputNodes=#();interactionOutputKey="")
+        if interactionState!=undefined and not (cyrusInteractionSourcesFresh interactionState) do interactionStateKey=""
+        local key=this.interactionsKey procPublishedOwners procEpoch,owner=CyrusRecipeOwnerNode this
+        local outputKey=key+"|hidden:"+(if isValidNode owner then owner.isHidden as string else "true")
+        local outputsValid=true
+        for node in interactionOutputNodes where not isValidNode node do outputsValid=false
+        if key==interactionStateKey and outputKey==interactionOutputKey and outputsValid do return interactionState
+        if key!=interactionStateKey do for i=1 to procPublishedOwners.count do procPublishedOwners[i].procCheckPublishedGeometry procPublishedSources[i] procPublishedMetadata[i]
+        local stage=if key==interactionStateKey then interactionState else this.interactionsStage groupSnapshotRows procPublishedOwners procPublishedSources previous:interactionState retargetEdits:true
+        -- Source bindings and numeric solve must succeed before replacing state.
+        local outputs=if stage==undefined or not isValidNode owner or owner.isHidden then #() else cyrusInteractionRenderNodes stage (for n in interactionOutputNodes where isValidNode n collect n)
+        for node in outputs do setUserProp node "CyrusInteractionTransient" true
+        if stage==undefined and interactionState!=undefined do cyrusInteractionLive interactionState false
+        undo off for node in interactionOutputNodes where isValidNode node and findItem outputs node==0 do delete node
+        interactionOutputNodes=outputs;interactionState=stage;interactionStateKey=key;interactionOutputKey=outputKey;interactionError=""
+        stage
+    )
+    fn interactionsRestRows leaf original = (
+        local state=this.interactionsEnsure(),slot=findItem procPublishedOwners leaf
+        if state==undefined or slot==0 then original else leaf.filterSourceRowsByPolicy (cyrusInteractionRows state slot) procPublishedFinalKeep[slot]
+    )
+    fn interactionsStatus = (
+        if interactionError!="" do return ("Previous contact result retained: "+interactionError)
+        if interactionState==undefined then "No active contact result. Enable Collider on stones, analyze plant models, then enable React to colliders."
+        else cyrusInteractionSummary interactionState
+    )
+    fn interactionsStatistics = (if interactionState==undefined then throw "No active interaction publication" else cyrusInteractionInfo interactionState)
+    fn interactionsRelease = (
+        this.interactionsClearGuides()
+        interactionState=undefined;interactionStateKey="";interactionOutputKey="";interactionSourceCache=#();interactionReview=undefined;interactionReviewNode=undefined
+        interactionOutputNodes=#();true
+    )
+    fn interactionsBeforeSave = (
+        this.interactionsClearGuides()
+        undo off for node in interactionOutputNodes where isValidNode node do delete node
+        interactionOutputNodes=#();interactionOutputKey="";true
+    )
     fn needsClearanceUpgrade = (
         if clearanceUpgradePending do return true
         for leaf in layerObjects where leaf.clearanceUpgradePending do return true
@@ -6243,7 +6507,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.86.9.2" on (
+        undo "Upgrade Cyrus scene to 0.87.0" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -6575,12 +6839,15 @@ initialRollupState:0x8
     )
     fn bakeInstances ownerNode = (CyrusRequireAuthor();
         local plants=this.outputSources()
-        local data=placements plants
+        local controller=this.interactionsRoot(),data=controller.interactionsRestRows this (placements plants),contactSlot=findItem controller.procPublishedOwners this
         local fresh=#()
         local ownerKey=ownerNode.handle as string
         undo "Cyrus Scatter build" on (
             try (
                 with redraw off (
+                    if controller.interactionState!=undefined and contactSlot>0 do for node in (cyrusInteractionBake controller.interactionState contactSlot) do (
+                        append fresh node;setUserProp node "AminScatterOwner" ownerKey
+                    )
                     local token=if cyrusPlacementIsNative data then cyrusPlacementToken data else undefined
                     for first=0 to data.count-1 by 500 do (
                      local page=if token!=undefined then cyrusPlacementPage data token first (amin 500 (data.count-first)) else for j=first+1 to (amin data.count (first+500)) collect data[j]
@@ -7422,7 +7689,7 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 59. Create a new Cyrus 0.86.9.2 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 60. Create a new Cyrus 0.87.0 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
@@ -7430,20 +7697,21 @@ initialRollupState:0x8
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.86.9.2 requires its matching source-aware Edit modules. Restart Max with the complete package."
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.86.9.2 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.86.9.2 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.86.9.2 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.86.9.2 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.86.9.2 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.86.9.2 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.86.9.2 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=1 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.0 requires its matched native interaction modules. Restart Max with the complete package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.0 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.0 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.0 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.0 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.0 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.0 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.0 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.0 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.86.9.2 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -7613,6 +7881,7 @@ initialRollupState:0x8
     fn procReleaseRetiredDisplay = (
         -- Max can retain detached scripted objects after scene reset. These
         -- transient resources belong to the departed scene, not its saved data.
+        this.interactionsRelease()
         cachedPoints=undefined;inspectionCache=undefined;cachedDisabledPreview=undefined
         procPreviewModes=#();procPreviewModesEpoch=-1
         procReceiverCache=#();procOrientationReceivers=#();paintBaseRows=#();paintBaseKey=""
@@ -7761,7 +8030,7 @@ initialRollupState:0x8
         local previousPreparedRows=for leaf in layerObjects collect leaf.procPreparedRows
         local previousResults=for leaf in layerObjects collect leaf.procResultState()
         local projectionBudget=cyrusProjectionBudget()
-        local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty,procPublishedMetadata,procNativePublication)
+        local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty,procPublishedMetadata,procNativePublication,interactionState,interactionStateKey)
         groupSolving=true
         try (
             for leaf in layerObjects do leaf.procProjectionBudget=projectionBudget
@@ -7797,6 +8066,8 @@ initialRollupState:0x8
             local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1) metadata:publishedMetadata[i]
             local displayKey=this.procDisplayInputKey epoch:(procEpoch+1)
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
+            local nextInteractions=this.interactionsStage accepted publishedOwners publishedSources
+            local nextInteractionKey=this.interactionsKey publishedOwners (procEpoch+1)
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
             local publicationInfo=this.procStagePublication accepted requests publishedSources finalKeep
             local nextNativePublication=undefined
@@ -7821,6 +8092,7 @@ initialRollupState:0x8
             procPublishedOwners=publishedOwners;procPublishedSources=publishedSources;procPublishedFinalKeep=finalKeep
             procPublishedRadii=radii;procPublishedInfo=publicationInfo
             procNativePublication=nextNativePublication
+            interactionState=nextInteractions;interactionStateKey=nextInteractionKey
             procPublishedMetadata=publishedMetadata
             groupSnapshotRows=accepted;groupSnapshotKey=finishedKey;procPublishedDisplayKey=displayKey;groupBuilds+=1
             -- Keep native Edit rollback alive until every script owner agrees.
@@ -7834,6 +8106,7 @@ initialRollupState:0x8
             groupSnapshotKey=previousPublication[8];procPublishedDisplayKey=previousPublication[9];groupBuilds=previousPublication[10];CyrusViewportRecordsDirty=previousPublication[11]
             procPublishedMetadata=previousPublication[12]
             procNativePublication=previousPublication[13]
+            interactionState=previousPublication[14];interactionStateKey=previousPublication[15]
             for i=1 to layerObjects.count do (layerObjects[i].procPreparedKey="";layerObjects[i].procCandidateCount=undefined;layerObjects[i].procBindingKey=previousBindings[i];layerObjects[i].procPreparedRows=previousPreparedRows[i])
             groupSolving=false
             if transaction do cyrusEditTransaction mods 2
@@ -7961,6 +8234,7 @@ initialRollupState:0x8
     local spacingUI=undefined
     local displayUI=undefined
     local statisticsUI=undefined
+    local interactionsUI=undefined
     fn createmanagerUI = (
     rollout managerUI "" width:#cmdPanel category:10 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
@@ -18716,14 +18990,528 @@ initialRollupState:0x8
     )
         statisticsUI
     )
-    rollout mainUI "Cyrus Scatter 0.86.9.2" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
+
+    fn createinteractionsUI = (
+    rollout interactionsUI "" width:#cmdPanel category:130 autoLayoutOnResize:false (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
+        local hostPage=undefined
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
+        checkbox interactionsUI_colliderCheck "Collider" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/67.6))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/67.6))))) tooltip:"Use the accepted instances in this layer as obstacles. Move an individual stone with Cyrus Edit to update nearby reacting plants."
+        checkbox interactionsUI_reactCheck "React to colliders" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/119.60000000000001))))) tooltip:"Bend prepared plant models near collider layers. Analyze and review each unique source once."
+        checkbox interactionsUI_rootsCheck "Hide roots under colliders" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/161.20000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/161.20000000000002))))) tooltip:"Hide rooted groups below a collider's footprint within the plant's reach, or inside its solid base. When off, covered groups retain their original shape. Nearby uncovered roots stay planted and react."
+        spinner interactionsUI_gapSpin "" type:#worldUnits range:[0,(units.decodeValue "10cm"),0] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/144.4))))) tooltip:"Additional visible clearance beyond the collider surface, up to 10 cm. Zero uses the prepared stem thickness only." fieldWidth:58
+        label interactionsUI_gapSpin_caption "Contact gap:" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_stiffnessSpin "" type:#float range:[0,1,0.5] scale:0.05 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/191.2))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/191.2))))) tooltip:"Resistance used when a guide needs iterative refinement. The fast contact fit preserves original guide curves by rotation; this setting does not change those rotations." fieldWidth:58
+        label interactionsUI_stiffnessSpin_caption "Refinement stiffness:" pos:[6,6] width:(interactionsUI.width-12) height:18
+        dropdownlist interactionsUI_proxyList "" items:#("Closed source mesh","Bounding box proxy") selection:1 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))) tooltip:"Mesh requires a closed manifold source. Box is an explicit conservative approximation."
+        label interactionsUI_proxyList_caption "Collider shape" pos:[6,6] width:(interactionsUI.width-12) height:18
+        listbox interactionsUI_modelList "" items:#() height:4 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58)))))
+        label interactionsUI_modelList_caption "Plant source to prepare" pos:[6,6] width:(interactionsUI.width-12) height:18
+        button interactionsUI_analyzeButton "Analyze model" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/85.60000000000001))))) height:22
+        button interactionsUI_acceptButton "Accept reviewed guides" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/132.4))))) height:22 tooltip:"Accept only after inspecting root positions, branch directions and foliage attachments."
+        button interactionsUI_clearButton "Hide guide review" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/106.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/106.4))))) height:22
+        button interactionsUI_applyButton "Apply interactions" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/111.60000000000001))))) height:22 tooltip:"Apply contact settings to the last completed scatter result. Pending Manual amount and seed edits wait for Update scatter."
+        button interactionsUI_validateButton "Validate full visible mesh" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/153.20000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/153.20000000000002))))) height:22 tooltip:"Independently check complete plant triangles near colliders. This slower check also reports root drift and stem/leaf strain."
+        spinner interactionsUI_minimumSpin "" type:#worldUnits range:[0.001,10000,5] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/149.60000000000002))))) fieldWidth:58
+        label interactionsUI_minimumSpin_caption "Minimum stem:" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_foliageSpin "" type:#float range:[0.1,100,5] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/227.6))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/227.6))))) tooltip:"Draw a stable sample of complete leaves or grass blades in Mesh preview. Stem tubes use fewer rings. Full render and Bake retain all visible source faces." fieldWidth:58
+        label interactionsUI_foliageSpin_caption "Preview leaves / blades (%):" pos:[6,6] width:(interactionsUI.width-12) height:18
+        label interactionsUI_info "" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))) height:100
+        dotNetControl interactionsUI_modelList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        checkbutton advancedToggle "Advanced" pos:[6,6] width:(interactionsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        local interactionsUI_bodyHeight=0
+        local interactionsUI_controlsReady=false
+        local interactionsUI_root=undefined,interactionsUI_owner=undefined,interactionsUI_panel=undefined,interactionsUI_obj=undefined,interactionsUI_controlsReady=false,interactionsUI_binding=false,interactionsUI_models=#()
+        fn interactionsUI_bind leaf = (
+            interactionsUI_binding=true;interactionsUI_obj=leaf;interactionsUI_models=interactionsUI_obj.validSources()
+            interactionsUI_colliderCheck.checked=interactionsUI_obj.interactionCollider;interactionsUI_reactCheck.checked=interactionsUI_obj.interactionReact;interactionsUI_rootsCheck.checked=interactionsUI_obj.interactionCoverRoots
+            interactionsUI_gapSpin.value=interactionsUI_obj.interactionGapWU;interactionsUI_stiffnessSpin.value=interactionsUI_obj.interactionStiffness;interactionsUI_proxyList.selection=interactionsUI_obj.interactionColliderMode
+            interactionsUI_minimumSpin.value=interactionsUI_obj.interactionMinimumWU;interactionsUI_foliageSpin.value=interactionsUI_obj.interactionFoliage*100
+            interactionsUI_modelList.items=for node in interactionsUI_models collect (if isValidNode node then node.name else "Unsupported source")
+            interactionsUI_acceptButton.enabled=interactionsUI_obj.interactionReview!=undefined
+            interactionsUI_info.text=interactionsUI_root.interactionsStatus();interactionsUI_controlsReady=true;interactionsUI_binding=false;true
+        )
+        fn interactionsUI_apply = (
+            try(interactionsUI_root.interactionsEnsure();CyrusViewportRecordsDirty=true;CyrusViewportRedraw();interactionsUI_info.text=interactionsUI_root.interactionsStatus())
+            catch(interactionsUI_root.interactionError=getCurrentException();interactionsUI_info.text=interactionsUI_root.interactionsStatus())
+            true
+        )
+        on interactionsUI_colliderCheck changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_colliderCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (local target=interactionsUI_obj;undo "Cyrus collider layer" on (target.interactionCollider=v;if v do target.interactionReact=false);interactionsUI_bind target;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_reactCheck changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_reactCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (local target=interactionsUI_obj;undo "Cyrus reacting layer" on (target.interactionReact=v;if v do target.interactionCollider=false);interactionsUI_bind target;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_rootsCheck changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_rootsCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (undo "Cyrus root coverage" on interactionsUI_obj.interactionCoverRoots=v;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_gapSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_gapSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (undo "Cyrus contact gap" on interactionsUI_obj.interactionGapWU=v;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_stiffnessSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_stiffnessSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (undo "Cyrus contact stiffness" on interactionsUI_obj.interactionStiffness=v;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_proxyList selected v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_proxyList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (undo "Cyrus collider shape" on interactionsUI_obj.interactionColliderMode=v;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_minimumSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_minimumSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (interactionsUI_obj.interactionMinimumWU=v;interactionsUI_obj.interactionSourceCache=#();interactionsUI_obj.interactionReview=undefined;interactionsUI_acceptButton.enabled=false;interactionsUI_obj.interactionsChanged();interactionsUI_info.text="Preparation settings changed. Analyze the model and review its guides again.")
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_foliageSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_foliageSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (interactionsUI_obj.interactionFoliage=v/100;interactionsUI_obj.interactionSourceCache=#();interactionsUI_obj.interactionReview=undefined;interactionsUI_acceptButton.enabled=false;interactionsUI_obj.interactionsChanged();interactionsUI_info.text="Preview preparation changed. Analyze the model and review its guides again.")
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_analyzeButton pressed do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_analyzeButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local target=interactionsUI_obj,row=interactionsUI_modelList.selection
+            if row>0 and row<=interactionsUI_models.count do try(target.interactionsAnalyze interactionsUI_models[row];interactionsUI_info.text=cyrusInteractionSourceSummary target.interactionReview;interactionsUI_acceptButton.enabled=true)catch(interactionsUI_info.text=getCurrentException())
+        )
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_acceptButton pressed do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_acceptButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do try(interactionsUI_obj.interactionsAccept();interactionsUI_acceptButton.enabled=false;interactionsUI_apply())catch(interactionsUI_info.text=getCurrentException())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_clearButton pressed do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_clearButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady do interactionsUI_obj.interactionsClearGuides()
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_applyButton pressed do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_applyButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding do interactionsUI_apply()
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_validateButton pressed do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_validateButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding do try(
+            local state=interactionsUI_root.interactionsEnsure()
+            if state==undefined do throw "Apply interactions first."
+            local report=cyrusInteractionValidate state 2000000
+            interactionsUI_info.text=report[2];format "Cyrus full mesh contact validation:\n%\n" report[3]
+        )catch(interactionsUI_info.text=getCurrentException())
+        -- A dotNetControl has both a managed child and a native rollout host.
+        -- Hiding only the child leaves its host over other controls on first open.
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        fn setHostedVisible control visibleState = (
+            if control.visible!=visibleState do control.visible=visibleState
+            for handle in control.hwnd where handle!=0 do (if (bit.get (windows.getWindowLong handle #style) 29)!=visibleState do windows.showWindow handle (if visibleState then #showNoActivate else #hide))
+            true
+        )
+        local textMetrics=#()
+        fn textHeight control available = (
+            local key=findItem (for row in textMetrics collect row[1]) control
+            local text=control.text,scale=GetUIScaleFactor(),pixels=amax 1 (floor (available*scale))
+            if key>0 and textMetrics[key][2]==text and textMetrics[key][3]==pixels do return textMetrics[key][4]
+            local measured=ceil ((cyrusMeasureWrappedText control.hwnd[1] text pixels)/scale)+2
+            local entry=#(control,text,pixels,measured)
+            if key>0 then textMetrics[key]=entry else append textMetrics entry
+            measured
+        )
+        fn fitLabel control minimum available = (control.height=amax minimum (textHeight control (available-2));true)
+        fn fitCheck control available = (
+            local height=amax 20 (textHeight control (available-26))
+            for handle in control.hwnd do (
+                local style=windows.getWindowLong handle #style
+                if not bit.get style 14 do windows.setWindowLong handle #style (bit.set style 14 true)
+                local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle
+                local position=windows.screenToClient data[2] rectangle.x rectangle.y
+                if rectangle.h!=height do windows.setWindowPos handle position.x position.y available height true
+            )
+            height
+        )
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
+        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked),#(interactionsUI_modelList.height))
+        fn restoreView state = (
+            if state[2]==undefined do return true
+            advancedToggle.checked=state[2][1]
+            interactionsUI_modelList.height=state[3][1]
+            true
+        )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
+        fn setupGrips = (
+            if gripsReady do return true
+            for grip in #(interactionsUI_modelList_grip) do (
+                grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
+            )
+            gripsReady=true;true
+        )
+        on interactionsUI_modelList_grip MouseDown sender args do beginListDrag sender args interactionsUI_modelList
+        on interactionsUI_modelList_grip MouseMove sender args do moveListDrag sender args
+        on interactionsUI_modelList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on interactionsUI_modelList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on interactionsUI_modelList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                local current=windows.screenToClient data[2] boxes[i].x boxes[i].y
+                if current.x!=position.x or current.y!=position.y do windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
+        fn fitPairField control available stacked:false = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-(if stacked then 12 else 46))
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
+        fn fitWidth control available = (
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    local target=amax 1 (available as integer)
+                    if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
+                )
+            ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
+                local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
+                if rectangle.w!=target do (
+                    local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y target rectangle.h true
+                )
+            )
+            true
+        )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,interactionsUI_colliderCheck.text,interactionsUI_reactCheck.text,interactionsUI_rootsCheck.text,interactionsUI_analyzeButton.text,interactionsUI_acceptButton.text,interactionsUI_clearButton.text,interactionsUI_applyButton.text,interactionsUI_validateButton.text,interactionsUI_info.text,interactionsUI_gapSpin_caption.text,interactionsUI_stiffnessSpin_caption.text,interactionsUI_proxyList_caption.text,interactionsUI_modelList_caption.text,interactionsUI_minimumSpin_caption.text,interactionsUI_foliageSpin_caption.text,interactionsUI_modelList.height,interactionsUI_colliderCheck.visible,interactionsUI_reactCheck.visible,interactionsUI_rootsCheck.visible,interactionsUI_gapSpin.visible,interactionsUI_stiffnessSpin.visible,interactionsUI_proxyList.visible,interactionsUI_analyzeButton.visible,interactionsUI_acceptButton.visible,interactionsUI_clearButton.visible,interactionsUI_applyButton.visible,interactionsUI_validateButton.visible,interactionsUI_minimumSpin.visible,interactionsUI_foliageSpin.visible,interactionsUI_info.visible,interactionsUI_info.height)
+        fn layout = (
+            local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
+            try (
+                local measuredResult=(
+
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos interactionsUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
+            rowControls=#(interactionsUI_colliderCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/67.6))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck interactionsUI_colliderCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_reactCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/119.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck interactionsUI_reactCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_rootsCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/161.20000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck interactionsUI_rootsCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_gapSpin);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_gapSpin_caption.visible!=show do interactionsUI_gapSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_gapSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_gapSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_gapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_gapSpin_caption.width=cellWidth-78) else (interactionsUI_gapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_gapSpin_caption.width=cellWidth);interactionsUI_gapSpin_caption.enabled=interactionsUI_gapSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_modelList);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_modelList_caption.visible!=show do interactionsUI_modelList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_modelList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(interactionsUI_modelList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(interactionsUI_modelList.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                interactionsUI_modelList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_modelList_caption.width=cellWidth;interactionsUI_modelList_caption.enabled=interactionsUI_modelList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_modelList_grip);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            setHostedVisible interactionsUI_modelList_grip show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_analyzeButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_acceptButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/132.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_clearButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_applyButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/111.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_validateButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/153.20000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_info);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_info 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(interactionsUI_info.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            rowControls=#(interactionsUI_proxyList);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_proxyList_caption.visible!=show do interactionsUI_proxyList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_proxyList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(interactionsUI_proxyList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                interactionsUI_proxyList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_proxyList_caption.width=cellWidth;interactionsUI_proxyList_caption.enabled=interactionsUI_proxyList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_minimumSpin);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_minimumSpin_caption.visible!=show do interactionsUI_minimumSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/149.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_minimumSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<145.60000000000002;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_minimumSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_minimumSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_minimumSpin_caption.width=cellWidth-78) else (interactionsUI_minimumSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_minimumSpin_caption.width=cellWidth);interactionsUI_minimumSpin_caption.enabled=interactionsUI_minimumSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_foliageSpin);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_foliageSpin_caption.visible!=show do interactionsUI_foliageSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/227.6))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_foliageSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<223.6;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_foliageSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_foliageSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_foliageSpin_caption.width=cellWidth-78) else (interactionsUI_foliageSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_foliageSpin_caption.width=cellWidth);interactionsUI_foliageSpin_caption.enabled=interactionsUI_foliageSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_stiffnessSpin);show=(advancedToggle.checked and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_stiffnessSpin_caption.visible!=show do interactionsUI_stiffnessSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/191.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_stiffnessSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<187.2;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_stiffnessSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_stiffnessSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_stiffnessSpin_caption.width=cellWidth-78) else (interactionsUI_stiffnessSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_stiffnessSpin_caption.width=cellWidth);interactionsUI_stiffnessSpin_caption.enabled=interactionsUI_stiffnessSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;interactionsUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+
+                )
+                CyrusMeasureEnd measurement measuredOwner measuredEpoch "interactionsUI.layout"
+                measuredResult
+            )catch(CyrusMeasureEnd measurement measuredOwner measuredEpoch "interactionsUI.layout" failed:true;throw())
+        )
+        fn bind layer = (
+            local measurement=CyrusMeasureBegin 13,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
+            try (
+                local measuredResult=(
+
+            if root==undefined do return false
+            stopListDrag();binding=true;controlsReady=false
+            try (
+                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
+                obj=owner
+                interactionsUI_root=root;interactionsUI_owner=owner;interactionsUI_panel=panel;interactionsUI_controlsReady=controlsReady;interactionsUI_binding=binding
+            if owner!=undefined then (interactionsUI_bind owner;) else (for c in #(interactionsUI_colliderCheck,interactionsUI_reactCheck,interactionsUI_rootsCheck,interactionsUI_gapSpin,interactionsUI_stiffnessSpin,interactionsUI_proxyList,interactionsUI_modelList,interactionsUI_analyzeButton,interactionsUI_acceptButton,interactionsUI_clearButton,interactionsUI_applyButton,interactionsUI_validateButton,interactionsUI_minimumSpin,interactionsUI_foliageSpin,interactionsUI_info) do c.enabled=false;interactionsUI_controlsReady=false)
+                interactionsUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
+            )catch(binding=false;controlsReady=false;throw())
+
+                )
+                CyrusMeasureEnd measurement measuredOwner measuredEpoch "interactionsUI.bind"
+                measuredResult
+            )catch(CyrusMeasureEnd measurement measuredOwner measuredEpoch "interactionsUI.bind" failed:true;throw())
+        )
+
+
+        on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:false
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos interactionsUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on interactionsUI open do (controlsReady=false)
+        on interactionsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;interactionsUI_controlsReady=false;interactionsUI_root=undefined;interactionsUI_owner=undefined;interactionsUI_obj=undefined)
+
+    )
+        interactionsUI
+    )
+    rollout mainUI "Cyrus Scatter 0.87.0" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
-        button upgradeButton "Upgrade scene to 0.86.9.2" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
+        button upgradeButton "Upgrade scene to 0.87.0" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         timer bindTimer interval:1 active:false
@@ -18870,13 +19658,13 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.86.9.2 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.87.0 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
-            view.transformsUI=createtransformsUI();view.spacingUI=createspacingUI();view.displayUI=createdisplayUI();view.statisticsUI=createstatisticsUI()
-            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
-            slots=#(view.managerUISlot,view.surfacesUISlot,view.modelsUISlot,view.containersUISlot,view.layoutUISlot,view.populationUISlot,view.coverageUISlot,view.areasUISlot,view.transformsUISlot,view.spacingUISlot,view.displayUISlot,view.statisticsUISlot)
+            view.transformsUI=createtransformsUI();view.spacingUI=createspacingUI();view.displayUI=createdisplayUI();view.statisticsUI=createstatisticsUI();view.interactionsUI=createinteractionsUI()
+            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI,view.interactionsUI)
+            slots=#(view.managerUISlot,view.surfacesUISlot,view.modelsUISlot,view.containersUISlot,view.layoutUISlot,view.populationUISlot,view.coverageUISlot,view.areasUISlot,view.transformsUISlot,view.spacingUISlot,view.displayUISlot,view.statisticsUISlot,view.interactionsUISlot)
             if root==undefined do (
                 for r in slots do cyrusSetRolloutVisible r.hwnd false 0
                 return false
@@ -19093,11 +19881,23 @@ initialRollupState:0x8
         on statisticsUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 12
     )
 
+    rollout interactionsUISlot "Interactions" width:#cmdPanel height:4 category:130 autoLayoutOnResize:false (
+        local view=undefined,headerInset=0
+        subRollout body "" pos:[0,0] width:200 height:2 autoLayoutOnResize:false scrollBar:#off
+        on interactionsUISlot open do view=this
+        on interactionsUISlot close do view=undefined
+        on interactionsUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
+            view.mainUI.bindSection view.mainUI.editors[13]
+            view.mainUI.rememberViews()
+        )
+        on interactionsUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 13
+    )
+
 
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version==58 then clearanceUpgradePending=true else if version!=59 do procSchemaValid=false
+        if version==58 then clearanceUpgradePending=true else if findItem #(59,60) version==0 do procSchemaValid=false
         if not procSchemaValid do throw "Unsupported Cyrus scene schema; the scene is preserved."
         syncColors();markInputDirty()
     )
@@ -19222,6 +20022,7 @@ fn CyrusPFKey = (
   for n in objects where classof n.baseObject==AminScatterObject do (
    local r=n.baseObject
    format "Enabled:%|" r.cyrusEnabled to:s
+   format "Contacts:%:%|" r.interactionStateKey (if r.interactionState==undefined then true else cyrusInteractionSourcesFresh r.interactionState) to:s
    for layer in r.layerObjects do format "Brush:%:%:%|" layer.paintEnabled layer.paintDensity (layer.paintKey()) to:s
    format "|Edit:%|" (CyrusEditStackKey r) to:s
    format "%|%|%|%|%|" n.handle n.isHidden r.autoRender r.layerEnabled r.updateMode to:s
@@ -19244,8 +20045,11 @@ fn CyrusPFBuild = (
  try (
   undo off (
 
+   -- Hidden controllers must retire their private contact outputs as well.
+   for owner in before where isValidNode owner and classof owner.baseObject==AminScatterObject do owner.baseObject.interactionsEnsure()
    for owner in before where isValidNode owner and classof owner.baseObject==AminScatterObject and not owner.isHidden do (
     local root=owner.baseObject
+    if root.interactionsEnsure()!=undefined do root.interactionOutputNodes=cyrusInteractionRenderNodes root.interactionState (for node in root.interactionOutputNodes where isValidNode node collect node)
     for entry in (root.layerEntries includeDisabled:true) do (
      local obj=entry[2];local enabled=root.cyrusEnabled and root.enabledLayer entry[1]
      if not enabled or obj.autoRender do for old in obj.bakedNodes where isValidNode old do (
@@ -19253,7 +20057,7 @@ fn CyrusPFBuild = (
      )
      local sources=obj.outputSources()
      if enabled and obj.autoRender and sources.count>0 do (
-      local rows=obj.placements sources
+      local rows=root.interactionsRestRows obj (obj.placements sources)
       if not cyrusPlacementIsNative rows do throw "Render requires a current native placement publication."
       local groups=cyrusPlacementTransformGroups rows
       if root.procNativePublication!=undefined do appendIfUnique CyrusPFPublications root.procNativePublication
@@ -19294,7 +20098,7 @@ fn CyrusPFBuild = (
    )
    ParticleFlow.EndEdit()
    for link in links do link[1].appendInitialActionList link[2]
-   CyrusPFNodes=for n in objects where findItem before n==0 collect n
+   CyrusPFNodes=for n in objects where findItem before n==0 and (getUserProp n "CyrusInteractionTransient")!=true collect n
    for n in CyrusPFNodes do setUserProp n "CyrusPFTransient" true
    local observed=0;local expected=0
    for a in CyrusPFData do expected+=a.count
@@ -19534,7 +20338,7 @@ fn CyrusPointSync = (
         )
         CyrusPointOwners=surviving
         for n in CyrusTimeOwners where isValidNode n and classof n.baseObject==AminScatterObject do (
-            local caches=#(),styles=#(),fallback=#()
+            local caches=#(),styles=#(),fallback=#(),interactionTags=#()
             local limits=#(n.baseObject.previewBudget,n.baseObject.viewportNavigationPoints,n.baseObject.viewportInstances,n.baseObject.viewportNavigationInstances,n.baseObject.viewportFaces,n.baseObject.viewportNavigationFaces)
             local entries=if n.isHidden then #() else n.baseObject.viewportLayerEntries false,refreshLeaf=undefined
             -- Observe every visible dependency before staging the root once.
@@ -19546,17 +20350,19 @@ fn CyrusPointSync = (
                 if obj.dirty and not obj.cachedDisabledInput do refreshLeaf=obj
             )
             if refreshLeaf!=undefined do refreshLeaf.refreshPreview()
+            local interactionState=undefined
+            try(interactionState=n.baseObject.interactionsEnsure())catch(n.baseObject.interactionError=getCurrentException();throw())
             for entry in entries do (
                 local obj=entry[2],cache=if obj.cachedDisabledInput then obj.cachedDisabledPreview else obj.cachedPoints
                 for analyzer in #(obj.analyzerNode,obj.areaAnalyzer,obj.fallAnalyzer) where isValidNode analyzer do appendIfUnique analyzers analyzer
                 if (obj.showPoints or obj.showCenters) and cache!=undefined do (
                     if CyrusPointAvailable and ((obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled)) then (
-                        append caches cache;append styles (join #(obj.pointColorMode==1,obj.solidPointColor) limits)
+                        append caches cache;append styles (join #(obj.pointColorMode==1,obj.solidPointColor) limits);append interactionTags (findItem n.baseObject.procPublishedOwners obj)
                     ) else append fallback #(cache,obj.pointColorMode==1,obj.solidPointColor)
                 )
                 if obj.inspectionCache!=undefined and not obj.disabledAnalyzerInput() do (
                     if CyrusPointAvailable and (CyrusPointEnabled or CyrusMeshEnabled) then (
-                        append caches obj.inspectionCache;append styles #(false,white)
+                        append caches obj.inspectionCache;append styles #(false,white);append interactionTags 0
                     ) else append fallback #(obj.inspectionCache,false,white)
                 )
             )
@@ -19568,7 +20374,7 @@ fn CyrusPointSync = (
                 if not wasDirty do setSaveRequired false
             )
             if isValidNode owner do (
-                if not cyrusRetainedPublish owner n caches styles then publishError="Viewport update could not finish. The previous complete display is retained when available. Check Viewport memory, then refresh."
+                if not (if interactionState==undefined then cyrusRetainedPublish owner n caches styles else cyrusInteractionRetainedPublish owner n interactionState caches styles interactionTags) then publishError="Viewport update could not finish. The previous complete display is retained when available. Check Viewport memory, then refresh."
                 else if n.baseObject.viewportMode==1 and n.baseObject.viewportPointMemoryReduced() then detailStatus="Point Cloud sampled to fit the preview memory allowance; draw limits still apply."
                 else if n.baseObject.viewportMode==3 do (
                     local detail=cyrusRetainedViewportStats owner
@@ -19597,7 +20403,7 @@ fn CyrusViewportRedraw = (
     if not CyrusPointBusy do CyrusPointSync()
     redrawViews()
 )
-fn CyrusPointBeforeSave = (CyrusPointSuspended=true;CyrusPointClear())
+fn CyrusPointBeforeSave = (CyrusPointSuspended=true;for node in objects where classof node.baseObject==AminScatterObject do node.baseObject.interactionsBeforeSave();CyrusPointClear())
 fn CyrusPointAfterSave = (CyrusPointSuspended=false;(CyrusPointPending=true;CyrusScheduleRelease()))
 fn CyrusPointBeforeScene = (
     -- Capture owners before Max detaches the departed scene's reference graph.

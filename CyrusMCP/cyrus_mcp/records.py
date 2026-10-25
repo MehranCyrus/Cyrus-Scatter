@@ -10,7 +10,9 @@ def execution_record(context, plan, receipt, layout):
     return {"record_schema":"cyrus.execution/1.0","units":{"length":"metres","angles":"degrees","matrix":"column-vector 4x4, right-handed Z up"},
             "context":{"record_schema":"cyrus.context/1.0","snapshot":deepcopy(context)},"context_digest":digest(context),"plan":deepcopy(plan),"plan_digest":digest(plan),
             "receipt":deepcopy(receipt),"layout":deepcopy(layout),
-            "lineage":{"replaces_generation_id":plan.get("generation_id"),"kind":"whole_layout_generation","instance_correspondence":None},
+            "lineage":{"replaces_generation_id":plan.get("generation_id"),
+                       "kind":"stable_layer_update" if receipt.get("operation_kind") in ("update","configure_and_update") else "whole_layout_generation",
+                       "instance_correspondence":None},
             "provenance":{"producer":"Cyrus Scatter MCP","ui_version":receipt.get("ui_version"),"source":"enrolled_local_scene","training_eligible":False,"consent_record_id":None},
             "missing_value_semantics":"null means unknown or not recorded; never zero or a negative example"}
 

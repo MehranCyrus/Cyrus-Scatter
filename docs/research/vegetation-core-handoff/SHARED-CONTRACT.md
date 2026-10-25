@@ -1,0 +1,61 @@
+# Frozen shared contract v1
+
+This document and `starter/include/cyrus_vegetation/prototype_v1.hpp` jointly define the first external prototype. `FROZEN-FILES.json` also pins the starter CMake file and fixture catalog. Do not edit frozen files in a handback. Describe an inconsistency or necessary extension in `CONTRACT_CHANGE_REQUEST.md`; wait for a coordinated edition rather than guessing a new public signature.
+
+## Scope and coordinates
+
+Portable C++20, one prepared guide/ribbon per solve, static fixed sphere or rigid oriented-box obstacles. No Max SDK, UI, source extraction, rigid settling, time integration, self-contact, GPU, authored normal preservation, general mesh solids, multi-guide skinning or renderer integration in v1. Unsupported cases must have explicit status. This intentionally narrow sampler does not claim to solve the full R11 asset/large-twist problem.
+
+All physical values are metres in a local right-handed, Y-up patch. Positions use double precision in the contract. A host adapter later performs Max units/transforms/rebasing outside the core. Quaternions are finite unit xyzw, active local-to-patch rotations. Guide material local +Z is the tangent convention; Jolt capsule local +Y must be explicitly transformed. No nonuniform scale/shear on obstacles; bake dimensions into positive radii/half-extents before admission. Boxes support rigid orientation. Sphere orientation has no geometric effect.
+
+Stable IDs are caller-owned nonzero integers; never expose a Jolt BodyID as an asset, obstacle or guide identity. Generation and revision values must be nonzero and echoed exactly. Node/span semantic order and source revision are immutable. IDs must be unique within their applicable object, node, span, or render-vertex namespace. Distinct render vertices may share a logical vertex ID for seams; coincident positions do not imply identity.
+
+## Admission and bounds
+
+Validate finite numbers, positive dimensions and tolerances, array counts, index bounds, distinct span endpoints, unit frames and positive explicit limits before allocating large buffers or querying. Every `Limits` field must be nonzero; zero never means unlimited. A limit that would be exceeded produces `ResourceLimit`/`WorkLimit`, with no accepted partial result. Weights are finite nonnegative dimensionless experiment coefficients, not botanical material constants. Clearance is nonnegative and added exactly once. Query tolerance, supported minimum feature and proposal step are positive, explicitly recorded experiment inputs.
+
+`RestGuide` has N>=2 nodes, N node IDs, N material frames, N-1 span IDs, radii and maximum-bound-offset values. `GuidePose` has the same guide ID, node/frame counts and order. `PreparedRibbon` has one binding per rest/render vertex, matching source revision; every binding references an existing span with finite u in [0,1] and a complete xyz local offset. Face material IDs count equals triangle count. Reject zero-area/invalid input triangles or report a documented Unsupported case; do not erase them silently.
+
+For each span, `max_bound_offset_m` is at least the maximum norm of all bound full offsets, and `span_radius_m >= max_bound_offset_m`, both excluding clearance. The caller authors these prepared envelopes; the fitter receives the envelope but not the mesh. C checks envelope declarations against the actual bindings. Insufficient width/envelope is invalid and never a successful fit.
+
+Frame samples must be unit and have a meaningful tangent relationship to adjacent nonzero spans. Use at internal node i the normalized sum of normalized incoming/outgoing directed tangents, at endpoints the single span tangent. Reject an undefined antiparallel bisector. Local +Z must agree with this node tangent within `frame_radians`. Adjacent frame rotations must remain strictly below pi; reject ambiguous pi rotation, hidden full turns and `requires_full_turn_twist=true`. The narrow v1 profile supports generated untwisted ribbons. Quaternion sign changes alone must not change geometry.
+
+## Immutable scene and collision semantics — A
+
+`make_jolt_world` deep-copies admitted obstacle geometry, poses, revisions and generation. The returned world owns all runtime/shape resources it needs. No borrowed input, host pointer or mutable-world lookup can change a query's snapshot. V1 serializes queries per world; no concurrency claim follows from const. Multiple worlds must coexist and survive destruction in either order. Process-global allocator/factory/type registration needs an explicit shared lifecycle owner; do not unregister a surviving world's types. This is a standalone executable profile, not proof of safe DLL/runtime sharing inside Max.
+
+`classify_point(point, exclusion_radius)` returns one result for every obstacle on complete success. The exclusion radius is nonnegative. Positive gap means outside the obstacle enlarged by that radius; negative means inside; the declared query tolerance defines the boundary band. Raw surface-hit absence is never evidence of solid containment. Ambiguous or unsupported data cannot become Outside.
+
+`query_capsule` examines the entire directed segment a→b with radius=`geometric_radius_m + clearance_m`. Include every obstacle contact with gap <= the declared query tolerance; do not stop at the nearest object. If a complete contact set cannot be returned under its budget, `complete=false` and a non-Ok outcome. No contact on a successful complete query means clear under the declared profile, not proof for a render mesh.
+
+Every returned contact must identify the obstacle/guide/span, finite unit obstacle-outward normal, an obstacle witness on its surface and an axis point at `a + u*(b-a)`, u in [0,1]. The signed gap is `dot(n, axis_point-obstacle_point)-radius-clearance`. Qualify the witness against the primitive geometry and contact gap. Do not rename an unverified raw hit or COM-space position to material u. If qualification fails, return non-Ok/ambiguous, never a successful empty set. Handle center/axis degeneracy deterministically or return ambiguity. Document multi-contact/manifold reduction and retain all relevant obstacle constraints.
+
+Pin Jolt commit `1b2e77e3c6c09709e5edc79dc208459b8ff32051`. The researched header says 5.6.1 while its CMake project says 5.6.0; the commit is the dependency identity. Public APIs only, no engine fork. Return exact backend source/build/precision identity. An analytically refined primitive witness may supplement a real public-query adapter; disclose its role. A purely analytic stand-in is useful for tests but does not count as the requested Jolt backend.
+
+## Static response and roots — B
+
+Every invocation starts from immutable rest data. No cached deformed state, velocities, world stepping, hidden scene access or source mutation. `generation` must equal the world's generation before and throughout the synchronous solve. Build a private candidate; outputs are diagnostic unless status is `ConvergedCandidate`. All metrics must be computed, with counts/bounds honestly distinguished from measured allocator peaks.
+
+Root position is `rest.nodes[0]` and is fixed for all modes. PositionOnly allows root orientation to respond. ClampFrame fixes the root material frame and initial outgoing span direction. SoftFrame penalizes the root angular deviation with the supplied weight while keeping position fixed. If a mode is not implemented, return Unsupported; do not silently substitute. Root-angle error is the geodesic quaternion angle of the root frame from rest. ClampFrame must also check the initial span direction. Finite tolerances control comparisons, not permission to move the planted anchor deliberately.
+
+Preserve rest span lengths to `relative_length`; maintain valid tangent-aligned material frames; report root, angle, length and penetration residuals. Empty scenes and already-clear unchanged guides should preserve rest exactly. The root-envelope containment check can establish a local RootConflict; an unsuccessful search elsewhere is `UnresolvedContact`/`WorkLimit`, not proof of global infeasibility.
+
+For a *locally frozen and qualified* contact witness, endpoint gradients are `(1-u)n`, `u*n`; denominator is `w0*(1-u)^2 + w1*u^2`. A negative gap with zero denominator is a local immovable conflict. This is a local correction ingredient, not a complete solver derivation. Refresh witnesses after finite updates, couple all relevant contacts with lengths/rest/bend terms, bound proposals, and recheck final contacts. Never claim endpoint-only projection covers segment interiors.
+
+Record every query, iteration and memory budget. Cancellation must be checked at bounded loops and before accepting. Never report convergence when queries are incomplete, inputs unsupported, budgets exceeded or the independent mesh check is still missing.
+
+## Geometry and independent acceptance — C
+
+Binding is explicit; do not infer roots or nearest guide from coincident positions. For binding (span i,u,offset), use center `(1-u)*node[i]+u*node[i+1]` plus rotation of the complete offset by normalized shortest-path slerp of node frames. Capture/rest reconstruction and deformed evaluation use this same sampler and material u. Test u=0/1, seams, quaternion sign, nonzero longitudinal offset and unsupported full turns. Preserve triangle indices, face materials, UVs, IDs through the binding association and source revision. Output geometric normals and finite exact position bounds; no authored split-normal or tangent guarantee is implied.
+
+`evaluate_ribbon` validates data and rest reconstruction before success. `validate_candidate` uses independent primitive/triangle mathematics and must not call A, Jolt or B. It checks source/reconstruction, planted root, lengths, frames/root policy, envelope declarations, mesh correspondence, topology/UV/material/bounds/normals, and the **whole visible triangle surface** against obstacle exclusion envelopes. Vertex-only checks cannot pass triangles whose interiors cross an obstacle. A supplied mesh must match re-evaluation of its pose; do not trust its metadata.
+
+For spheres, triangle minimum distance to the center supplies the surface clearance test, including triangle interiors and wholly contained triangles. For boxes, an explicit conservative test against the OBB expanded by clearance on each local axis is acceptable in v1: this is an L-infinity conservative envelope of Euclidean clearance, so it may reject extra cases. Use full triangle/box separation, not only vertices or edges. Disclose conservative rejections and metric conventions. If no sound clearance certificate can be computed, return Ambiguous/Unsupported, never Pass. Degenerate surface boundary comparisons use declared tolerances, not arbitrary success epsilons. A penetration metric without exact depth must be labeled as a bound in issues; it cannot be advertised as an exact depth.
+
+Independent validation Pass means this narrow primitive fixture met the declared numerical criteria. Publication additionally requires a matching SolveResult generation/source revision and current dependency identity, enforced by the coordinator/host adapter. It does not qualify viewport, render, Bake, Undo, performance or arbitrary imported assets.
+
+## Failure and evidence
+
+Inputs are const and outputs are privately staged. Cancellation, unsupported cases, allocation failure, ambiguity, budget exhaustion and stale identity must never publish a partial successor. Catch allocation failures at public boundaries where possible; the caller still owns previous accepted data. Exception/message allocation under catastrophic exhaustion is best effort; no exception may be translated to Ok.
+
+Use deterministic ordering by stable IDs for contacts/results. Same input/build/profile must repeat within declared tolerances; cross-platform bit identity is not required. Report exact compiler, dependency commit/options, commands, exit codes, fixtures and observed errors. Distinguish an authored positive control, an analytic expectation, an executed test, a measured runtime and a host pass. Supplied research records stay historical external evidence. The first profile intentionally leaves many research cases unsupported and Pending.

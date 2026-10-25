@@ -1,0 +1,590 @@
+{
+  "schema": 1,
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "role": "A",
+  "owned_directory": "docs/research/vegetation-core-handoff/starter/collision",
+  "frozen_header_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+  "base_frozen_files": [
+    {
+      "path": "SHARED-CONTRACT.md",
+      "bytes": 12222,
+      "sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80"
+    },
+    {
+      "path": "starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "bytes": 8709,
+      "sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+    },
+    {
+      "path": "starter/CMakeLists.txt",
+      "bytes": 594,
+      "sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086"
+    },
+    {
+      "path": "fixtures/catalog.json",
+      "bytes": 20047,
+      "sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f"
+    }
+  ],
+  "base_frozen_paths_relative_to": "docs/research/vegetation-core-handoff",
+  "files": [
+    {
+      "path": "RETURN-REPORT.md",
+      "bytes": 15329,
+      "sha256": "953a4fc1f273b02c72faf605f0010e4b7dc21a228e7cc14b9660f80bc7dd10e5"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/ASSIGNMENT.md",
+      "bytes": 186,
+      "sha256": "fcc793b718f57fcb5dc5b853fd4faddae1da93165a4f4c92ffea992f7ecb7476"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/CMakeLists.txt",
+      "bytes": 6917,
+      "sha256": "30a34fc11d63a0b6da191c1619044602d9adc5b97b573746933c783e96196253"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/README.md",
+      "bytes": 23003,
+      "sha256": "9371cec7690df4e259f8072390df36eb457c0b3fb4c26d9eaa91aa9b1cc6a464"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/cmake/Jolt-LICENSE.txt",
+      "bytes": 1052,
+      "sha256": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/cmake/VerifyJoltSource.cmake",
+      "bytes": 2800,
+      "sha256": "1cc1d2ebd214f4f7d860362ab5836ca7ed012070259270eff17225d1f1587a03"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/cmake/collision_build_profile.hpp.in",
+      "bytes": 2617,
+      "sha256": "6a8da474b7ff52e5ebf1b0494ea7545eefd01299f3540b4e9df1e67cbae96a8b"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/cmake/jolt-source.sha256",
+      "bytes": 63456,
+      "sha256": "5d8705b5bb190532e45b0c09e5a9bbd851626b052cb622caec0fff924e771525"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/base-integrity.json",
+      "bytes": 35402,
+      "sha256": "63c9f8e377fae42c759f4332d7873de001c34b636a79a060075ae5b10fcd2b8a"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-options-release.txt",
+      "bytes": 1124,
+      "sha256": "9e985e642a496d5747830ca71b3021115180cf5fdf8f035633010eb80d67aa55"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-options-sanitizers.txt",
+      "bytes": 1184,
+      "sha256": "8ad874aa7facca2f8bd0aa73ed0d85a23f7b5c9434f71ed8fe8ce69b5a4c8a36"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-final.json",
+      "bytes": 509,
+      "sha256": "68d7b663b4854f7d8c92f8d02d39f54ea281d081edb206687a6558766b3fda33"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-final.log",
+      "bytes": 725,
+      "sha256": "8813702fcc1df82f5dfa17755e71b010521ce5e04d8f45928502137212427d6c"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-initial.json",
+      "bytes": 512,
+      "sha256": "8da468369bf1febe94e06b20891f213d3e2106f14c63d7812d0b52c9b10bdffc"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-initial.log",
+      "bytes": 22914,
+      "sha256": "1e688273a4ab39d01da4794773fa99608e3c97c769ee316e7f034c070252bc1c"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-sanitizers.json",
+      "bytes": 509,
+      "sha256": "dee27f34016f78813bece18dc1a7f19db93a9627f751adea498522a5d4afc344"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-sanitizers.log",
+      "bytes": 22917,
+      "sha256": "fcc2bbe542987abe36ecaaee2f19d9ee23d7c3a619358f4ffbde28707323b20c"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/compile-commands-release.json",
+      "bytes": 9727,
+      "sha256": "8547291fbb9e3c9b2aa96eb03d3993fa1f1b8cbef16f1a1c235bbff37ccc0dfb"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/compile-commands-sanitizers.json",
+      "bytes": 10255,
+      "sha256": "fd256cd08ae22590dc4dec6993843aa0badf39da5a8ee00783e2abbe67a2bb73"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-release.json",
+      "bytes": 717,
+      "sha256": "ec13573636438e55ad46273008614f16d71ed7cfbd95b4a2450e8a95b6a6d072"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-release.log",
+      "bytes": 1008,
+      "sha256": "265cd25157f729820c1ecfe28df481aea3330b83b044fa1189e2ad21a6a1a387"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-sanitizers.json",
+      "bytes": 861,
+      "sha256": "5eb789e7afd5c5eb54e12274260d90543d9468a6c46d5f8c2cba44ca9246137f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-sanitizers.log",
+      "bytes": 1143,
+      "sha256": "0f4c804e28b5fccafb64f284f88333941f716ca3dae7e69b7410a7a96d61b90d"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-asan-ubsan-no-lsan.json",
+      "bytes": 731,
+      "sha256": "0eaa619e0dc7a1a6e4bd3f5f4d45784a3706ef2edb42b1ba0d9a0aaf8c56f3ca"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-asan-ubsan-no-lsan.log",
+      "bytes": 11975,
+      "sha256": "246bf68b371640d38d490e8b30441407d0811ed481bd4ddf3087599a3fbb7ab6"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-final.json",
+      "bytes": 508,
+      "sha256": "e74c9e7a1ef4dc077bfd20a2c5275e99a96e86f4656292c0241eea8f1f33a1bc"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-final.log",
+      "bytes": 11619,
+      "sha256": "a7ea58a9592e0039233df89c1b2f3addc2f33e5fea7fe46b2f1ca0f66ffe8eb9"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-initial.json",
+      "bytes": 510,
+      "sha256": "70590f9ad170f22f2f3c3cecf51ed7fbd442eac13585601c651d7d5a40dea85f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-initial.log",
+      "bytes": 11618,
+      "sha256": "31bc74254400edccc524f16aac4e0d10ad44ced623e7407b3ccc739bfcfd9126"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-sanitizers.json",
+      "bytes": 507,
+      "sha256": "b19e1c751f48f781be3c2c7a3290c6553dd0c594697b3a6e194f107571453f79"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-sanitizers.log",
+      "bytes": 15066,
+      "sha256": "3c7600dbda02520605c109a2da86130c32ae68aa0b9f882c0da2023c7c0cafe1"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/dependency-admission.json",
+      "bytes": 651,
+      "sha256": "77bf4abefade8929f16f5fb8ca96bb0b0d9a38559c900e1676c826476c2b3a22"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/dependency-admission.log",
+      "bytes": 2014,
+      "sha256": "bf7a6127282abc31b79132b48e6cacc9bdb26cac3009e584d9deb773fb3a2872"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/environment.json",
+      "bytes": 867,
+      "sha256": "7ed37e46f342bc734acb1a4390f773b62870fbacb10d4b1d90e23eac5505fe9b"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/final-results.json",
+      "bytes": 13597,
+      "sha256": "6c19979af7c6868b4721976dd71973e4a0f068b690ec786c406bfc2882313ef5"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/record_command.py",
+      "bytes": 1974,
+      "sha256": "94451fb1cff85449e8c05b35feaf198176162bd82299ba47e06e1497c0a47090"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/source-audit.md",
+      "bytes": 15860,
+      "sha256": "1b27b7fee46b226de4fac110d917de9b2b9859793cac76c551df09e82d3f7e9f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/source-verification.json",
+      "bytes": 2196,
+      "sha256": "8486eb3f3f35218d8c35e1fa49aeaff8dcbcde72c71dc1ca1eef79f6e21ac2c7"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/verify_base.py",
+      "bytes": 6802,
+      "sha256": "02705e61e21d88b10db89f16093267193aa5b0287f1c4e93b51cbcfdcacf7137"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/evidence/verify_dependency.py",
+      "bytes": 3036,
+      "sha256": "e27733ab2d6f0bc571e90eb61e795411f7b4e1206e7f80a96012c6ce95fbf746"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/src/collision_world.cpp",
+      "bytes": 31961,
+      "sha256": "f1c34cc26d8a3c22ad78c334a7e036f94476bad0c2706cd2d6a834c8151eab6d"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/src/jolt_runtime.cpp",
+      "bytes": 10198,
+      "sha256": "c085e34acf9928a5896efd55b88bd3ca7e186dce64fb1122d91cb81e149b58a1"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/src/jolt_runtime.hpp",
+      "bytes": 1417,
+      "sha256": "395a2b4c9e0b950f7a2be3e285fc221cebf3a2f68933838c4ec7b7e537fd27d1"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/src/primitive_geometry.cpp",
+      "bytes": 11933,
+      "sha256": "8bdbacce63b77ba03b0ece1a3fc82c38c2f9486648ec9de8ffbe8fd7d4707f6f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/src/primitive_geometry.hpp",
+      "bytes": 1619,
+      "sha256": "167f542277d63522fc8c29ee69406ae1ddf3a30b653999e959fb323746d9a4cd"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/src/query_diagnostics.hpp",
+      "bytes": 1253,
+      "sha256": "a2c047141397fbe5ce5efb8c522c7800f0a1e035767f6b6b9eefb6e54ae1066f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/tests/README.md",
+      "bytes": 5761,
+      "sha256": "e676291a4cda20c20a04c9b5fdb48b9e69902cb01c5abaebb089fa6d867c9cb0"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/tests/collision_tests.cpp",
+      "bytes": 41152,
+      "sha256": "41a0584c04675153437b7a1ebead719bfa1fc34c15f26dc0cfa93602f03985b3"
+    }
+  ],
+  "environment": {
+    "os": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "build_system": "cmake version 4.1.0; Unix Makefiles",
+    "dependencies": [
+      {
+        "name": "Jolt Physics",
+        "commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "header_version": "5.6.1",
+        "cmake_project_version": "5.6.0",
+        "archive_url": "https://codeload.github.com/jrouwe/JoltPhysics/tar.gz/1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "archive_sha256": "6bb6d626b7b70096cd07f1b25c0c223df035ab6386885f07f77baa88ae7d3998",
+        "source_files_verified": 613,
+        "offline_option": "CYRUS_COLLISION_JOLT_SOURCE_ROOT",
+        "profile": "double world positions; assertions; SSE2 observed; higher x86 SIMD and compute OFF; deterministic mode; exceptions/RTTI ON",
+        "actual_compile_options": [
+          "docs/research/vegetation-core-handoff/starter/collision/evidence/build-options-release.txt",
+          "docs/research/vegetation-core-handoff/starter/collision/evidence/build-options-sanitizers.txt"
+        ]
+      }
+    ]
+  },
+  "executions": [
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake -S owner_a_packet/docs/research/vegetation-core-handoff/starter -B owner_a_build_release -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TESTING=ON -DCYRUS_COLLISION_JOLT_SOURCE_ROOT=/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+        "-S",
+        "owner_a_packet/docs/research/vegetation-core-handoff/starter",
+        "-B",
+        "owner_a_build_release",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-DBUILD_TESTING=ON",
+        "-DCYRUS_COLLISION_JOLT_SOURCE_ROOT=/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-release.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-release.json",
+      "observed_summary": "Exit 0; exact source admission and Release configuration completed."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake --build owner_a_build_release --target cyrus_collision_tests --parallel 2",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+        "--build",
+        "owner_a_build_release",
+        "--target",
+        "cyrus_collision_tests",
+        "--parallel",
+        "2"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-initial.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-initial.json",
+      "observed_summary": "Exit 0; initial new native adapter build completed."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest --test-dir owner_a_build_release --output-on-failure -V -R '^collision_'",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest",
+        "--test-dir",
+        "owner_a_build_release",
+        "--output-on-failure",
+        "-V",
+        "-R",
+        "^collision_"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-initial.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-initial.json",
+      "observed_summary": "15/15 initial CTests passed; earlier receipt kept separately from reviewed source."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake --build owner_a_build_release --target cyrus_collision_tests --parallel 2",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+        "--build",
+        "owner_a_build_release",
+        "--target",
+        "cyrus_collision_tests",
+        "--parallel",
+        "2"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-final.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-release-final.json",
+      "observed_summary": "Exit 0; final reviewed runtime and additional admission tests compiled."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest --test-dir owner_a_build_release --output-on-failure -V -R '^collision_'",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest",
+        "--test-dir",
+        "owner_a_build_release",
+        "--output-on-failure",
+        "-V",
+        "-R",
+        "^collision_"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-final.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-release-final.json",
+      "observed_summary": "15/15 final Release CTests passed."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake -S owner_a_packet/docs/research/vegetation-core-handoff/starter -B owner_a_build_sanitizers -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TESTING=ON '-DCMAKE_CXX_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer' -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=address,undefined -DCYRUS_COLLISION_JOLT_SOURCE_ROOT=/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+        "-S",
+        "owner_a_packet/docs/research/vegetation-core-handoff/starter",
+        "-B",
+        "owner_a_build_sanitizers",
+        "-DCMAKE_BUILD_TYPE=Debug",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-DBUILD_TESTING=ON",
+        "-DCMAKE_CXX_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer",
+        "-DCMAKE_EXE_LINKER_FLAGS=-fsanitize=address,undefined",
+        "-DCYRUS_COLLISION_JOLT_SOURCE_ROOT=/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-sanitizers.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/configure-sanitizers.json",
+      "observed_summary": "Exit 0; separate Debug ASan/UBSan profile configured."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake --build owner_a_build_sanitizers --target cyrus_collision_tests --parallel 2",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+        "--build",
+        "owner_a_build_sanitizers",
+        "--target",
+        "cyrus_collision_tests",
+        "--parallel",
+        "2"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-sanitizers.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/build-sanitizers.json",
+      "observed_summary": "Exit 0; Jolt, adapter and tests compiled with ASan/UBSan."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest --test-dir owner_a_build_sanitizers --output-on-failure -V -R '^collision_'",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest",
+        "--test-dir",
+        "owner_a_build_sanitizers",
+        "--output-on-failure",
+        "-V",
+        "-R",
+        "^collision_"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 8,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-sanitizers.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-sanitizers.json",
+      "observed_summary": "Exit 8; all15 processes failed because LeakSanitizer could not read /proc task data. No valid leak result."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake -E env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 /workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest --test-dir owner_a_build_sanitizers --output-on-failure -V -R '^collision_'",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+        "-E",
+        "env",
+        "ASAN_OPTIONS=detect_leaks=0:halt_on_error=1",
+        "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest",
+        "--test-dir",
+        "owner_a_build_sanitizers",
+        "--output-on-failure",
+        "-V",
+        "-R",
+        "^collision_"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-asan-ubsan-no-lsan.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/ctest-asan-ubsan-no-lsan.json",
+      "observed_summary": "15/15 passed, with ASan and UBSan halt_on_error enabled and LeakSanitizer disabled. No sanitizer diagnostic appeared."
+    },
+    {
+      "command": "python3 owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/verify_dependency.py --archive collision_study/vendor/jolt_pin.tar.gz --source collision_study/vendor/jolt_pin --cmake /workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+      "command_argv": [
+        "python3",
+        "owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/verify_dependency.py",
+        "--archive",
+        "collision_study/vendor/jolt_pin.tar.gz",
+        "--source",
+        "collision_study/vendor/jolt_pin",
+        "--cmake",
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/dependency-admission.log",
+      "receipt_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/dependency-admission.json",
+      "observed_summary": "Exact archive SHA matched, 613 source/build/license files matched; wrong temporary hash manifest rejected with expected native exit1."
+    },
+    {
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/verify_base.py --original-zip upload/CyrusScatter_Vegetation_Core_Handoff_v1.zip --packet-root owner_a_packet --output owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/base-integrity.json",
+      "command_argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/verify_base.py",
+        "--original-zip",
+        "upload/CyrusScatter_Vegetation_Core_Handoff_v1.zip",
+        "--packet-root",
+        "owner_a_packet",
+        "--output",
+        "owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/base-integrity.json"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/base-integrity.json",
+      "observed_summary": "80 original files byte-identical; 4/4 frozen records verified; 0 additions outside the owned module."
+    },
+    {
+      "command": "/usr/bin/c++ --version",
+      "command_argv": [
+        "/usr/bin/c++",
+        "--version"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/environment.json",
+      "observed_summary": "Observed compiler version captured via successful check_output."
+    },
+    {
+      "command": "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake --version",
+      "command_argv": [
+        "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+        "--version"
+      ],
+      "cwd": "/workspace/scratch/eb3b91c272e0",
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/collision/evidence/environment.json",
+      "observed_summary": "Observed CMake version captured via successful check_output."
+    }
+  ],
+  "not_executed": [
+    {
+      "requirement_or_test": "Successful leak qualification",
+      "reason": "LeakSanitizer attempted but blocked by inability to read /proc/<pid>/task. Successful ASan/UBSan run explicitly disabled leak checking."
+    },
+    {
+      "requirement_or_test": "Max 2027 / renderer / Bake / host or cross-DLL ABI qualification",
+      "reason": "Standalone owner-A scope; no Max or renderer access used."
+    },
+    {
+      "requirement_or_test": "Joint A/B/C prepared ribbon fitting and full fixture catalog acceptance",
+      "reason": "Owners B/C modules are outside this ownership boundary; local coordinator must integrate and validate."
+    },
+    {
+      "requirement_or_test": "Windows/MSVC, macOS/Clang, ARM and other platform execution",
+      "reason": "Only Linux x86-64 GCC13.3 executed."
+    },
+    {
+      "requirement_or_test": "CMake configure-time network fetching",
+      "reason": "Executed exact-source offline option; URL_HASH path implemented but network configure path not executed."
+    },
+    {
+      "requirement_or_test": "Forced allocator-failure injection and foreign-runtime mutation stress",
+      "reason": "Failure paths source-reviewed; no forced allocation or global-state corruption injected."
+    },
+    {
+      "requirement_or_test": "Parallel-query/race stress and cancellation latency",
+      "reason": "Per-world serialization implemented; deterministic already-requested cancellation tested. No hard real-time/preemption claim."
+    },
+    {
+      "requirement_or_test": "Measured allocator peaks or performance benchmark",
+      "reason": "Capacity/payload/reservation accounting supplied; native internal/global allocations not exactly instrumented. Command timings are not a benchmark."
+    }
+  ],
+  "implemented_requirements": [
+    "Frozen make_jolt_world plus all CollisionWorld methods, real public Jolt queries for admitted spheres/rigid OBBs.",
+    "Immutable copied geometry/pose/revisions/generation; stable caller IDs and deterministic ordering.",
+    "Complete point solid/exclusion classification and continuous whole-segment capsule primitive contacts.",
+    "Separately labelled double analytic refinement with qualified u, surface, unit outward normal and signed-gap reconstruction.",
+    "Capsule+Y vs material+Z, COM/rebased local transforms, normal sign, radius/clearance once.",
+    "Explicit invalid/unsupported/ambiguous/limit/cancel/allocation/error outcomes; incomplete data never clear.",
+    "Fixed-capacity native collectors, bounded population/work/result capacity and payload/reservation accounting.",
+    "Shared standalone global runtime lifetime permitting simultaneously alive worlds and teardown in either order.",
+    "15 newly executed CTest cases with independent analytic controls and separate raw Jolt observations.",
+    "Exact upstream archive hash enforcement, verified offline source option, source manifest and retained MIT notice."
+  ],
+  "unsupported_or_partial": [
+    "Only spheres and rigid oriented boxes in declared numeric profile; no triangle meshes, open surfaces, hulls, SDFs or scale/shear matrices.",
+    "One deepest centerline-SDF witness per relevant obstacle, not full feature manifold or exact rigid-capsule MTD.",
+    "Memory budget is payload/reservation accounting, not a hard process allocation cap or measured peak.",
+    "Cooperative cancellation between native calls; no native-kernel or mutex-wait preemption.",
+    "Worlds must release before Jolt global static teardown; foreign runtime/global mutation and host cross-DLL sharing unsupported.",
+    "Jolt internal OOM exception safety is limited; initialization failure releases reachable resources, poisons owner and requires restart.",
+    "backend() has no Outcome in frozen API; identity-string bad_alloc can propagate.",
+    "No dynamics, fitting, plant binding, rendering, Bake or mesh acceptance in this owner-A module."
+  ],
+  "known_limitations": [
+    "Admitted coordinate/tolerance combinations can still return Ambiguous; roundoff allowance is an engineering estimate, not formal interval arithmetic.",
+    "One native dispatch per obstacle per public operation; no broadphase/cache/simulation world and no hidden cumulative quota.",
+    "Jolt local primitive arithmetic remains float despite double world-position build; returned qualified refinement uses double.",
+    "Finite sampling controls are falsification checks, not proof of continuously clear geometry from positive samples.",
+    "LeakSanitizer validation blocked; address/undefined-behavior suite passes only with detect_leaks=0.",
+    "No cross-platform bit-identity, latency, throughput, measured memory-peak or Max claim."
+  ],
+  "contract_change_requested": false,
+  "max_host_validation": "Not executed; reserved for local Max 2027 integration",
+  "change_list": [
+    "Added collision module target and pinned source admission/profile/license metadata.",
+    "Added collision adapter, analytic refinement, standalone runtime owner and private query diagnostics.",
+    "Added fifteen public adapter tests, README and source/evidence records.",
+    "Original ASSIGNMENT.md included unchanged; no base or shared file edited."
+  ],
+  "coordinator_integration_note": "Restore only owned module into the same frozen packet; configure starter, link cyrus_vegetation_collision; keep one immutable world generation per solve; require Ok and complete; refresh contacts after B updates and require C independent mesh validation. No shared API change requested."
+}

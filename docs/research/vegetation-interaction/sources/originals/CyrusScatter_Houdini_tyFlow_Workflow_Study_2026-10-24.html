@@ -1,0 +1,2147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CyrusScatter — Houdini and tyFlow Workflow Study</title>
+<style>
+:root{--bg:#f4f6f8;--paper:#fff;--text:#17202a;--muted:#5d6d7e;--line:#dfe5eb;--accent:#166b8f;--accent2:#0d8a73;--code:#0f1720;--nav:#101820;--warn:#a45a00}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.62}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.layout{display:grid;grid-template-columns:310px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:var(--nav);color:#e8f1f5;padding:24px 20px}.brand{font-weight:800;font-size:18px;letter-spacing:.2px;margin-bottom:5px}.subbrand{font-size:12px;color:#9fb1bd;margin-bottom:20px}.toc{display:flex;flex-direction:column;gap:3px}.toc a{display:block;color:#bfd0da;border-left:2px solid transparent;padding:5px 8px;font-size:12.5px;line-height:1.25}.toc a:hover{color:#fff;border-left-color:#54c4bd;text-decoration:none;background:#192731}.toc-l1{font-weight:750;margin-top:9px}.toc-l2{padding-left:15px!important}.toc-l3{padding-left:27px!important;color:#93a9b6!important}.main{min-width:0;padding:42px 5vw 90px}.paper{max-width:1120px;margin:auto;background:var(--paper);box-shadow:0 8px 35px rgba(15,30,45,.08);border:1px solid #e2e7ec;border-radius:14px;padding:52px 64px}.status{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}.status span{border-radius:999px;padding:6px 11px;font-size:12px;font-weight:700;background:#edf4f7;color:#244a5c}.status .critical{background:#fff0d9;color:#7f4a00}h1,h2,h3{scroll-margin-top:24px;line-height:1.2;color:#102833}h1{font-size:39px;margin:0 0 10px;border-bottom:0}h2{font-size:27px;margin-top:52px;border-bottom:1px solid var(--line);padding-bottom:10px}h3{font-size:21px;margin-top:34px}h4{font-size:17px;margin-top:26px;color:#244b5b}.anchor{opacity:0;margin-left:8px;font-size:.72em}.paper h1:hover .anchor,.paper h2:hover .anchor,.paper h3:hover .anchor{opacity:.45}p{margin:12px 0}strong{color:#102833}hr{border:0;border-top:1px solid var(--line);margin:30px 0}blockquote{margin:20px 0;padding:12px 18px;border-left:4px solid var(--accent2);background:#f2fbf8;color:#25443d}code{background:#edf1f4;border-radius:4px;padding:2px 5px;font-family:Consolas,Menlo,monospace;font-size:.92em}pre{background:var(--code);color:#e7eef4;border-radius:9px;padding:18px 20px;overflow:auto;line-height:1.45;border:1px solid #20303e}pre code{background:transparent;padding:0;color:inherit}table{border-collapse:collapse;width:100%;display:block;overflow-x:auto;margin:18px 0 28px;font-size:13.2px}th,td{border:1px solid var(--line);padding:9px 11px;vertical-align:top;min-width:125px}th{background:#eaf2f5;color:#183c4a;text-align:left;position:sticky;top:0}tr:nth-child(even) td{background:#fafbfc}ul,ol{padding-left:24px}.badge{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:22px;border-radius:5px;margin-right:3px;font-size:11px;letter-spacing:.4px;color:#fff}.badge.doc{background:#18775c}.badge.example{background:#3167a5}.badge.proposal{background:#a15f00}.badge.test{background:#943e68}.badge.executed{background:#555}.refs a{overflow-wrap:anywhere}.footer-note{margin-top:50px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;max-height:350px}.main{padding:20px}.paper{padding:35px 28px}}@media(max-width:600px){.paper{padding:28px 18px;border-radius:0}.main{padding:0}h1{font-size:30px}h2{font-size:23px}}
+@media print{body{background:#fff}.layout{display:block}.sidebar{display:none}.main{padding:0}.paper{box-shadow:none;border:0;max-width:none;padding:0}a{color:#000}pre{white-space:pre-wrap}.anchor{display:none}table{display:table;font-size:9pt;page-break-inside:auto}tr{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar"><div class="brand">CyrusScatter Research</div><div class="subbrand">Houdini + tyFlow practical workflow study · 24 Oct 2026</div><nav class="toc"><a class="toc-l2" href="#practical-houdini-and-tyflow-workflow-study">Practical Houdini and tyFlow Workflow Study</a>
+<a class="toc-l2" href="#1-what-this-report-does-and-does-not-do">1. What this report does—and does not do</a>
+<a class="toc-l3" href="#1-1-evidence-labels">1.1 Evidence labels</a>
+<a class="toc-l3" href="#1-2-execution-boundary">1.2 Execution boundary</a>
+<a class="toc-l3" href="#1-3-version-boundary">1.3 Version boundary</a>
+<a class="toc-l1" href="#2-decision-summary">2. Decision summary</a>
+<a class="toc-l2" href="#2-1-best-documented-reference-workflow-by-problem">2.1 Best documented reference workflow by problem</a>
+<a class="toc-l2" href="#2-2-central-findings">2.2 Central findings</a>
+<a class="toc-l1" href="#3-root-position-anchoring-versus-root-orientation-stiffness">3. Root-position anchoring versus root-orientation stiffness</a>
+<a class="toc-l2" href="#3-1-root-position">3.1 Root position</a>
+<a class="toc-l2" href="#3-2-root-orientation">3.2 Root orientation</a>
+<a class="toc-l1" href="#4-houdini-common-asset-and-network-contract">4. Houdini: common asset and network contract</a>
+<a class="toc-l2" href="#4-1-supported-source-representation">4.1 Supported source representation</a>
+<a class="toc-l3" href="#guide-input">Guide input</a>
+<a class="toc-l3" href="#visible-input">Visible input</a>
+<a class="toc-l3" href="#obstacle-input">Obstacle input</a>
+<a class="toc-l2" href="#4-2-collision-thickness">4.2 Collision thickness</a>
+<a class="toc-l2" href="#4-3-dense-output-deformation">4.3 Dense-output deformation</a>
+<a class="toc-l2" href="#4-4-initialization-rule">4.4 Initialization rule</a>
+<a class="toc-l2" href="#4-5-cache-freeze-output-rule">4.5 Cache/freeze/output rule</a>
+<a class="toc-l1" href="#5-houdini-recipe-h1-rooted-grass-bending-around-one-fixed-stone">5. Houdini recipe H1 — rooted grass bending around one fixed stone</a>
+<a class="toc-l2" href="#5-1-input-geometry">5.1 Input geometry</a>
+<a class="toc-l2" href="#5-2-node-order">5.2 Node order</a>
+<a class="toc-l2" href="#5-3-root-controls">5.3 Root controls</a>
+<a class="toc-l3" href="#root-position">Root position</a>
+<a class="toc-l3" href="#root-orientation">Root orientation</a>
+<a class="toc-l2" href="#5-4-collision-representation-and-settings">5.4 Collision representation and settings</a>
+<a class="toc-l2" href="#5-5-timeline-versus-static-fitting">5.5 Timeline versus static fitting</a>
+<a class="toc-l3" href="#automatic-result">Automatic result</a>
+<a class="toc-l3" href="#manual-static-alternative">Manual static alternative</a>
+<a class="toc-l2" href="#5-6-initialization-reset-obstacle-changes-caching">5.6 Initialization, reset, obstacle changes, caching</a>
+<a class="toc-l2" href="#5-7-geometry-sharing-and-instancing">5.7 Geometry sharing and instancing</a>
+<a class="toc-l2" href="#5-8-common-failure-cases-and-remedies">5.8 Common failure cases and remedies</a>
+<a class="toc-l2" href="#5-9-artist-preparation-and-major-manual-actions">5.9 Artist preparation and major manual actions</a>
+<a class="toc-l2" href="#5-10-reproducible-local-acceptance-test">5.10 Reproducible local acceptance test</a>
+<a class="toc-l1" href="#6-houdini-recipe-h2-rooted-grass-constrained-between-two-stones">6. Houdini recipe H2 — rooted grass constrained between two stones</a>
+<a class="toc-l2" href="#6-1-node-order">6.1 Node order</a>
+<a class="toc-l2" href="#6-2-feasibility-precheck">6.2 Feasibility precheck</a>
+<a class="toc-l2" href="#6-3-root-controls">6.3 Root controls</a>
+<a class="toc-l2" href="#6-4-important-settings">6.4 Important settings</a>
+<a class="toc-l2" href="#6-5-reset-change-freeze">6.5 Reset/change/freeze</a>
+<a class="toc-l2" href="#6-6-sharing-and-output">6.6 Sharing and output</a>
+<a class="toc-l2" href="#6-7-failure-cases">6.7 Failure cases</a>
+<a class="toc-l2" href="#6-8-artist-actions">6.8 Artist actions</a>
+<a class="toc-l2" href="#6-9-reproducible-local-acceptance-test">6.9 Reproducible local acceptance test</a>
+<a class="toc-l1" href="#7-houdini-recipe-h3-rigid-pebbles-settling-on-irregular-terrain">7. Houdini recipe H3 — rigid pebbles settling on irregular terrain</a>
+<a class="toc-l2" href="#7-1-input-geometry-and-attributes">7.1 Input geometry and attributes</a>
+<a class="toc-l2" href="#7-2-node-order">7.2 Node order</a>
+<a class="toc-l2" href="#7-3-collision-representation">7.3 Collision representation</a>
+<a class="toc-l2" href="#7-4-important-settings">7.4 Important settings</a>
+<a class="toc-l2" href="#7-5-initialization-reset-change-freeze">7.5 Initialization/reset/change/freeze</a>
+<a class="toc-l2" href="#7-6-geometry-sharing-and-instancing">7.6 Geometry sharing and instancing</a>
+<a class="toc-l2" href="#7-7-failure-cases-and-remedies">7.7 Failure cases and remedies</a>
+<a class="toc-l2" href="#7-8-artist-actions">7.8 Artist actions</a>
+<a class="toc-l1" href="#8-houdini-recipe-h4-fallen-leaves-against-a-curb">8. Houdini recipe H4 — fallen leaves against a curb</a>
+<a class="toc-l2" href="#8-1-h4-r-rigid-leaves">8.1 H4-R: rigid leaves</a>
+<a class="toc-l3" href="#inputs">Inputs</a>
+<a class="toc-l3" href="#node-order">Node order</a>
+<a class="toc-l3" href="#sharing">Sharing</a>
+<a class="toc-l3" href="#failures">Failures</a>
+<a class="toc-l3" href="#artist-actions">Artist actions</a>
+<a class="toc-l2" href="#8-2-h4-d-deforming-leaves">8.2 H4-D: deforming leaves</a>
+<a class="toc-l3" href="#input-preparation">Input preparation</a>
+<a class="toc-l3" href="#node-order-2">Node order</a>
+<a class="toc-l3" href="#root-distinction">Root distinction</a>
+<a class="toc-l3" href="#sharing-2">Sharing</a>
+<a class="toc-l3" href="#failures-remedies">Failures/remedies</a>
+<a class="toc-l3" href="#artist-actions-2">Artist actions</a>
+<a class="toc-l1" href="#9-tyflow-current-documented-capability-boundary">9. tyFlow: current documented capability boundary</a>
+<a class="toc-l2" href="#9-1-current-host-version">9.1 Current host/version</a>
+<a class="toc-l2" href="#9-2-three-relevant-simulation-systems">9.2 Three relevant simulation systems</a>
+<a class="toc-l2" href="#9-3-cache-reset-output-behavior">9.3 Cache/reset/output behavior</a>
+<a class="toc-l1" href="#10-tyflow-recipe-t1-rooted-grass-bending-around-one-fixed-stone">10. tyFlow recipe T1 — rooted grass bending around one fixed stone</a>
+<a class="toc-l2" href="#10-1-t1-a-direct-cloth-card-clump-workflow">10.1 T1-A — direct cloth-card/clump workflow</a>
+<a class="toc-l3" href="#10-1-1-input-preparation">10.1.1 Input preparation</a>
+<a class="toc-l3" href="#10-1-2-operator-order">10.1.2 Operator order</a>
+<a class="toc-l3" href="#10-1-3-root-position-versus-orientation">10.1.3 Root position versus orientation</a>
+<a class="toc-l3" href="#10-1-4-collision-and-settings">10.1.4 Collision and settings</a>
+<a class="toc-l3" href="#10-1-5-initialization-reset-change-cache">10.1.5 Initialization/reset/change/cache</a>
+<a class="toc-l3" href="#10-1-6-sharing-and-instancing">10.1.6 Sharing and instancing</a>
+<a class="toc-l3" href="#10-1-7-failures-and-remedies">10.1.7 Failures and remedies</a>
+<a class="toc-l3" href="#10-1-8-artist-preparation-and-steps">10.1.8 Artist preparation and steps</a>
+<a class="toc-l2" href="#10-2-t1-b-guide-chain-bindings-typarticleskin">10.2 T1-B — guide-chain + bindings + tyParticleSkin</a>
+<a class="toc-l3" href="#10-2-1-why-this-route-is-attractive">10.2.1 Why this route is attractive</a>
+<a class="toc-l3" href="#10-2-2-proposed-operator-order">10.2.2 Proposed operator order</a>
+<a class="toc-l3" href="#10-2-3-unresolved-points-that-require-a-local-test">10.2.3 Unresolved points that require a local test</a>
+<a class="toc-l3" href="#10-2-4-collision-limitation">10.2.4 Collision limitation</a>
+<a class="toc-l3" href="#10-2-5-position-hair-exclusion">10.2.5 Position Hair exclusion</a>
+<a class="toc-l3" href="#10-2-6-artist-effort">10.2.6 Artist effort</a>
+<a class="toc-l1" href="#11-tyflow-recipe-t2-grass-constrained-between-two-stones">11. tyFlow recipe T2 — grass constrained between two stones</a>
+<a class="toc-l2" href="#11-1-direct-cloth-card-workflow">11.1 Direct cloth-card workflow</a>
+<a class="toc-l3" href="#required-additions">Required additions</a>
+<a class="toc-l3" href="#initialization">Initialization</a>
+<a class="toc-l3" href="#failure-policy">Failure policy</a>
+<a class="toc-l2" href="#11-2-guide-chain-workflow">11.2 Guide-chain workflow</a>
+<a class="toc-l2" href="#11-3-artist-actions">11.3 Artist actions</a>
+<a class="toc-l1" href="#12-tyflow-recipe-t3-rigid-pebbles-settling-on-irregular-terrain">12. tyFlow recipe T3 — rigid pebbles settling on irregular terrain</a>
+<a class="toc-l2" href="#12-1-inputs">12.1 Inputs</a>
+<a class="toc-l2" href="#12-2-operator-order">12.2 Operator order</a>
+<a class="toc-l2" href="#12-3-collision-shape-rules">12.3 Collision-shape rules</a>
+<a class="toc-l2" href="#12-4-initialization-reset-change-cache">12.4 Initialization/reset/change/cache</a>
+<a class="toc-l2" href="#12-5-sharing-and-instancing">12.5 Sharing and instancing</a>
+<a class="toc-l2" href="#12-6-failures-and-documented-remedies">12.6 Failures and documented remedies</a>
+<a class="toc-l2" href="#12-7-artist-actions">12.7 Artist actions</a>
+<a class="toc-l1" href="#13-tyflow-recipe-t4-fallen-leaves-against-a-curb">13. tyFlow recipe T4 — fallen leaves against a curb</a>
+<a class="toc-l2" href="#13-1-t4-r-rigid-leaves">13.1 T4-R: rigid leaves</a>
+<a class="toc-l3" href="#input-preparation-2">Input preparation</a>
+<a class="toc-l3" href="#operator-order">Operator order</a>
+<a class="toc-l3" href="#sharing-3">Sharing</a>
+<a class="toc-l3" href="#failures-2">Failures</a>
+<a class="toc-l3" href="#artist-actions-3">Artist actions</a>
+<a class="toc-l2" href="#13-2-t4-d-deforming-leaves">13.2 T4-D: deforming leaves</a>
+<a class="toc-l3" href="#input-preparation-3">Input preparation</a>
+<a class="toc-l3" href="#operator-order-2">Operator order</a>
+<a class="toc-l3" href="#root-distinction-2">Root distinction</a>
+<a class="toc-l3" href="#important-settings">Important settings</a>
+<a class="toc-l3" href="#cccs-failure-remedies-from-documentation">CCCS failure remedies from documentation</a>
+<a class="toc-l3" href="#sharing-4">Sharing</a>
+<a class="toc-l3" href="#artist-actions-4">Artist actions</a>
+<a class="toc-l1" href="#14-guide-collision-and-guide-to-mesh-deformation-direct-comparison">14. Guide collision and guide-to-mesh deformation: direct comparison</a>
+<a class="toc-l2" href="#14-1-houdini">14.1 Houdini</a>
+<a class="toc-l3" href="#guide-collision">Guide collision</a>
+<a class="toc-l3" href="#guide-to-visible-deformation">Guide-to-visible deformation</a>
+<a class="toc-l2" href="#14-2-tyflow">14.2 tyFlow</a>
+<a class="toc-l3" href="#guide-collision-2">Guide collision</a>
+<a class="toc-l3" href="#guide-to-visible-deformation-2">Guide-to-visible deformation</a>
+<a class="toc-l2" href="#14-3-product-lesson-for-cyrus">14.3 Product lesson for Cyrus</a>
+<a class="toc-l1" href="#15-initialization-reset-caching-rendering-and-export-matrix">15. Initialization, reset, caching, rendering, and export matrix</a>
+<a class="toc-l1" href="#16-geometry-sharing-and-instancing-consequences">16. Geometry sharing and instancing consequences</a>
+<a class="toc-l2" href="#16-1-transform-only-rigid-results">16.1 Transform-only rigid results</a>
+<a class="toc-l2" href="#16-2-guide-deformed-grass">16.2 Guide-deformed grass</a>
+<a class="toc-l2" href="#16-3-cloth-leaves-cards">16.3 Cloth leaves/cards</a>
+<a class="toc-l2" href="#16-4-practical-cyrus-implication">16.4 Practical Cyrus implication</a>
+<a class="toc-l1" href="#17-common-failure-taxonomy-across-both-applications">17. Common failure taxonomy across both applications</a>
+<a class="toc-l1" href="#18-artist-preparation-and-manual-step-comparison">18. Artist preparation and manual-step comparison</a>
+<a class="toc-l1" href="#19-required-local-validation-scenes">19. Required local validation scenes</a>
+<a class="toc-l2" href="#19-1-houdini-22-0-package">19.1 Houdini 22.0 package</a>
+<a class="toc-l2" href="#19-2-tyflow-2-010-max-2027-package">19.2 tyFlow 2.010 / Max 2027 package</a>
+<a class="toc-l2" href="#19-3-measurements-common-to-both-applications">19.3 Measurements common to both applications</a>
+<a class="toc-l2" href="#19-4-specific-decision-rules">19.4 Specific decision rules</a>
+<a class="toc-l1" href="#20-proposed-cyrus-artist-workflow">20. Proposed Cyrus artist workflow</a>
+<a class="toc-l2" href="#20-1-what-the-artist-selects">20.1 What the artist selects</a>
+<a class="toc-l2" href="#20-2-controls-the-artist-needs">20.2 Controls the artist needs</a>
+<a class="toc-l3" href="#layer-controls">Layer controls</a>
+<a class="toc-l3" href="#source-controls">Source controls</a>
+<a class="toc-l3" href="#obstacle-binding-controls">Obstacle-binding controls</a>
+<a class="toc-l2" href="#20-3-what-update-does">20.3 What Update does</a>
+<a class="toc-l2" href="#20-4-how-failures-appear">20.4 How failures appear</a>
+<a class="toc-l2" href="#20-5-what-happens-after-moving-a-stone">20.5 What happens after moving a stone</a>
+<a class="toc-l3" href="#manual-mode">Manual mode</a>
+<a class="toc-l3" href="#live-mode">Live mode</a>
+<a class="toc-l3" href="#removed-obstacle">Removed obstacle</a>
+<a class="toc-l3" href="#source-edit">Source edit</a>
+<a class="toc-l1" href="#21-direct-answers">21. Direct answers</a>
+<a class="toc-l2" href="#which-application-offers-the-strongest-reference-for-cyrus-grass-interaction">Which application offers the strongest reference for Cyrus grass interaction?</a>
+<a class="toc-l2" href="#is-tyflow-still-useful-to-study">Is tyFlow still useful to study?</a>
+<a class="toc-l2" href="#does-either-application-prove-that-cyrus-needs-timeline-physics">Does either application prove that Cyrus needs timeline physics?</a>
+<a class="toc-l2" href="#what-preparation-is-unavoidable">What preparation is unavoidable?</a>
+<a class="toc-l2" href="#what-should-be-copied-into-cyrus">What should be copied into Cyrus?</a>
+<a class="toc-l2" href="#what-should-not-be-copied">What should not be copied?</a>
+<a class="toc-l1" href="#22-official-source-map">22. Official source map</a>
+<a class="toc-l1" href="#reference-links">Reference links</a></nav></aside>
+<main class="main"><article class="paper">
+<div class="status"><span>Research addendum</span><span>Houdini 22.0 docs</span><span>tyFlow 2.010 docs</span><span class="critical">No runtime tests executed</span></div>
+<h1 id="cyrusscatter-vegetation-interaction">CyrusScatter Vegetation Interaction<a class="anchor" href="#cyrusscatter-vegetation-interaction" aria-label="Link to this section">#</a></h1>
+<h2 id="practical-houdini-and-tyflow-workflow-study">Practical Houdini and tyFlow Workflow Study<a class="anchor" href="#practical-houdini-and-tyflow-workflow-study" aria-label="Link to this section">#</a></h2>
+<p><strong>Date:</strong> 24 October 2026<br />
+<strong>Purpose:</strong> Workflow-focused extension to the earlier <em>CyrusScatter Vegetation–Obstacle Interaction Engineering Research</em>.<br />
+<strong>Target Cyrus qualification host:</strong> Autodesk 3ds Max 2027.<br />
+<strong>Scope:</strong> Research and reproducible workflow design only. No Cyrus repository changes and no production implementation were performed.</p>
+<hr />
+<h2 id="1-what-this-report-does-and-does-not-do">1. What this report does—and does not do<a class="anchor" href="#1-what-this-report-does-and-does-not-do" aria-label="Link to this section">#</a></h2>
+<p>This addendum does <strong>not</strong> repeat the earlier literature survey or re-argue the general choice between procedural fields, XPBD, rods, cloth, and rigid-body engines. It studies how two mature DCC applications expose the practical artist workflow for the same four scenes:</p>
+<ol>
+<li>rooted grass bending around one fixed stone;</li>
+<li>rooted grass constrained between two stones;</li>
+<li>rigid pebbles settling on irregular terrain;</li>
+<li>fallen leaves settling against a curb, with rigid and deforming leaves treated separately.</li>
+</ol>
+<p>The purpose is to learn from documented authoring, initialization, constraint, collision, cache, rendering, and export behavior—not to infer any vendor’s private solver algorithms.</p>
+<h3 id="1-1-evidence-labels">1.1 Evidence labels<a class="anchor" href="#1-1-evidence-labels" aria-label="Link to this section">#</a></h3>
+<p>Every workflow is marked with one or more labels:</p>
+<table>
+<thead>
+<tr>
+  <th>Label</th>
+  <th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong><span class="badge doc">D</span> — Documented</strong></td>
+  <td>The stated node/operator capability is explicitly described in current official documentation.</td>
+</tr>
+<tr>
+  <td><strong><span class="badge example">X</span> — Inspectable vendor example</strong></td>
+  <td>The vendor documentation exposes a named loadable/launchable example or example <code>.max</code> scene. It was identified, but not executed here.</td>
+</tr>
+<tr>
+  <td><strong><span class="badge proposal">P</span> — Proposed recipe</strong></td>
+  <td>The node order is an engineering synthesis of documented components. The vendor does not document the complete end-to-end use case.</td>
+</tr>
+<tr>
+  <td><strong><span class="badge test">T</span> — Local test required</strong></td>
+  <td>A specific host test is necessary before the workflow can be treated as qualified.</td>
+</tr>
+<tr>
+  <td><strong><span class="badge executed">E</span> — Executed here</strong></td>
+  <td>The workflow was run and measured in this research environment. <strong>There are no E-labelled results in this report.</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-2-execution-boundary">1.2 Execution boundary<a class="anchor" href="#1-2-execution-boundary" aria-label="Link to this section">#</a></h3>
+<p>No Houdini or 3ds Max/tyFlow runtime was available in this environment. Therefore:</p>
+<ul>
+<li>node and operator capabilities were verified against official documentation;</li>
+<li>official example names were recorded where public documentation exposes them;</li>
+<li>no <code>.hip</code> or <code>.max</code> scene was opened;</li>
+<li>no simulation timing, memory result, contact quality, renderer result, or export round-trip is claimed as measured;</li>
+<li>every proposed recipe has an explicit local acceptance test.</li>
+</ul>
+<h3 id="1-3-version-boundary">1.3 Version boundary<a class="anchor" href="#1-3-version-boundary" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>The SideFX pages inspected are the <strong>Houdini 22.0</strong> documentation. <code>Guide Utility</code> and the expanded <code>Guide Deform</code> node are marked <strong>Since 22.0</strong>; Vellum Solver and Hair Generate are older, established nodes. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guideutility.html">H-GUIDE-UTILITY</a> <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidedeform.html">H-GUIDE-DEFORM</a> <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html">H-VELLUM-SOLVER</a> <a href="https://www.sidefx.com/docs/houdini/nodes/sop/hairgen.html">H-HAIR-GENERATE</a></li>
+<li>The current tyFlow version history inspected lists <strong>tyFlow v2.010, 25 May 2026</strong>, as the newest documented release. The current system requirements state that the latest build supports <strong>3ds Max 2020 and above</strong>. This places Max 2027 within the stated host-version range, but it is not a substitute for an executed Max 2027 qualification. <a href="https://docs.tyflow.com/download/version/">T-VERSION</a> <a href="https://docs.tyflow.com/download/system_requirements/">T-SYSTEM</a></li>
+<li>tyFlow’s current system-requirements page states that CCCS requires an NVIDIA GPU supporting <strong>CUDA 11.2 or higher</strong> and that several core CCCS algorithms have no CPU fallback. An older FAQ page still says CUDA 10.0. This report treats the current system-requirements page as authoritative and records the FAQ discrepancy as a documentation risk. <a href="https://docs.tyflow.com/download/system_requirements/">T-SYSTEM</a> <a href="https://docs.tyflow.com/faq/CUDA_collisions/">T-CCCS-FAQ</a></li>
+</ul>
+<hr />
+<h1 id="2-decision-summary">2. Decision summary<a class="anchor" href="#2-decision-summary" aria-label="Link to this section">#</a></h1>
+<h2 id="2-1-best-documented-reference-workflow-by-problem">2.1 Best documented reference workflow by problem<a class="anchor" href="#2-1-best-documented-reference-workflow-by-problem" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Problem</th>
+  <th>Houdini</th>
+  <th>tyFlow</th>
+  <th>Practical conclusion for Cyrus</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Rooted grass, one stone</td>
+  <td><strong>D/X:</strong> Vellum Hair guides, explicit position/orientation pins, external collision, guide-to-dense deformation</td>
+  <td><strong>D/P/T:</strong> direct cloth-card workflow is documented; generic guide-chain + <code>tyParticleSkin</code> is only a proposed test</td>
+  <td>Houdini is the stronger reference for a source-guide contract and separate root controls.</td>
+</tr>
+<tr>
+  <td>Rooted grass, two stones</td>
+  <td><strong>D/P:</strong> same Vellum setup with multiple colliders; infeasibility remains visible</td>
+  <td><strong>D/P/T:</strong> cloth cards can collide; guide chain remains unqualified and point-radius collision is a limitation</td>
+  <td>Cyrus must expose “unresolved/infeasible,” not merely “solve completed.”</td>
+</tr>
+<tr>
+  <td>Pebbles on terrain</td>
+  <td><strong>D/X:</strong> packed RBD + proxy geometry + Bullet</td>
+  <td><strong>D:</strong> PhysX Shape + PhysX Collision</td>
+  <td>Both validate a transform-only rigid-body path; this is not the same architecture as deforming grass.</td>
+</tr>
+<tr>
+  <td>Rigid leaves at curb</td>
+  <td><strong>D/P:</strong> packed RBD with a finite-thickness collision proxy</td>
+  <td><strong>D/P:</strong> PhysX rigid bodies with box/convex/compound hull</td>
+  <td>Rigid leaves can retain source sharing until export/materialization.</td>
+</tr>
+<tr>
+  <td>Deforming leaves at curb</td>
+  <td><strong>D:</strong> Vellum Cloth</td>
+  <td><strong>D/X:</strong> Cloth Bind + Collision, optional CCCS</td>
+  <td>Per-leaf shape state breaks ordinary transform-only instancing.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-2-central-findings">2.2 Central findings<a class="anchor" href="#2-2-central-findings" aria-label="Link to this section">#</a></h2>
+<ol>
+<li><strong>Root position and root orientation must remain separate controls.</strong> Houdini documents this directly: <code>Pin Type</code> controls point position, while <code>Orientation Pin Type</code> controls hair orientation. tyFlow’s <code>Object Bind</code> likewise exposes Position and Rotation as separate bind types. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumconstraints.html">H-VELLUM-CONSTRAINTS</a> <a href="https://docs.tyflow.com/tyflow_operators/particles/object_bind/">T-OBJECT-BIND</a></li>
+<li><strong>Automatic obstacle fitting in both applications is normally a timeline solve.</strong> Houdini Vellum Solver is explicitly dynamic; tyFlow bindings, Cloth Bind, and PhysX are evaluated through simulation time. A settled frame can be frozen, but that does not make the original process a static one-cook fit. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html">H-VELLUM-SOLVER</a> <a href="https://docs.tyflow.com/tyflow_objects/tyFlow/particleBindSolver/">T-BIND-SOLVER</a> <a href="https://docs.tyflow.com/tyflow_objects/tyFlow/physx/">T-PHYSX</a></li>
+<li><strong>Houdini also exposes a manual static shaping workflow.</strong> Guide Groom provides Brush, Deintersect, Sculpt with Physics, root locking/orientation, and Set Rest State. This is artist-directed grooming, not a documented automatic static obstacle fitter. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidegroom.html">H-GUIDE-GROOM</a></li>
+<li><strong>Guide collision is not the same as final render-geometry collision.</strong> A guide can be clear while a card, leaf width, or clump envelope still penetrates. Collision thickness must include the render envelope or the final geometry must be validated after deformation.</li>
+<li><strong>Houdini’s sparse-guide-to-dense-output pattern is the strongest product reference.</strong> Simulate a bounded guide set, then deform or regenerate dense render curves/meshes. <code>Guide Deform</code> 22.0 supports captured guide weights and a quasi-static Preserve Shape pass; <code>Hair Generate</code> can produce stable output when skin and guides carry rest data. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidedeform.html">H-GUIDE-DEFORM</a> <a href="https://www.sidefx.com/docs/houdini/nodes/sop/hairgen.html">H-HAIR-GENERATE</a></li>
+<li><strong>tyFlow’s generic particle Collision operator documents particle-radius collision, not segment/capsule collision.</strong> A long binding can cross an obstacle while endpoint particles remain clear. A guide-chain workflow therefore needs short particle spacing and still requires a local crossing test. <a href="https://docs.tyflow.com/tyflow_operators/particles/collisions/">T-COLLISION</a></li>
+<li><strong><code>tyParticleSkin</code> is a real guide-to-mesh candidate, but not an end-to-end grass proof.</strong> It deforms a regular mesh from a particle system or mesh and supports reference-frame capture, distance/falloff, influence count, reinitialization, and element-ID matching. The quality and isolation of a many-clump grass binding require testing. <a href="https://docs.tyflow.com/tyflow_modifiers/tyParticleSkin/">T-PARTICLE-SKIN</a></li>
+<li><strong>tyFlow <code>Position Hair</code> is Ornatrix-specific.</strong> It cannot be cited as generic spline/grass support. <a href="https://docs.tyflow.com/tyflow_operators/particles/position_hair/">T-POSITION-HAIR</a></li>
+<li><strong>Rigid and deforming leaves must be separate product modes.</strong> Rigid leaves use one transform per leaf and can preserve instance sharing. Deforming leaves require vertex/guide state and become unique shapes unless approximated by reusable variants.</li>
+</ol>
+<hr />
+<h1 id="3-root-position-anchoring-versus-root-orientation-stiffness">3. Root-position anchoring versus root-orientation stiffness<a class="anchor" href="#3-root-position-anchoring-versus-root-orientation-stiffness" aria-label="Link to this section">#</a></h1>
+<p>This distinction is important enough to define once before the recipes.</p>
+<h2 id="3-1-root-position">3.1 Root position<a class="anchor" href="#3-1-root-position" aria-label="Link to this section">#</a></h2>
+<p>Root-position anchoring answers: <strong>May the base of the plant move?</strong></p>
+<p>Typical modes:</p>
+<ul>
+<li><strong>Fixed:</strong> zero positional drift. In Houdini, a Permanent Vellum pin sets mass to zero; in tyFlow Cloth Bind, deactivated cloth particles have infinite mass. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumconstraints.html">H-VELLUM-CONSTRAINTS</a> <a href="https://docs.tyflow.com/tyflow_operators/particles/cloth_bind/">T-CLOTH-BIND</a></li>
+<li><strong>Stopped/releasable:</strong> hard position at first, but later dynamics can be restored. Houdini documents <code>Stopped</code> separately from <code>Permanent</code>. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumconstraints.html">H-VELLUM-CONSTRAINTS</a></li>
+<li><strong>Soft:</strong> the root is pulled toward its target with finite stiffness and damping. Houdini creates a zero-length distance constraint for Soft pins; tyFlow Object Bind offers linear/dynamic springs for position. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumconstraints.html">H-VELLUM-CONSTRAINTS</a> <a href="https://docs.tyflow.com/tyflow_operators/particles/object_bind/">T-OBJECT-BIND</a></li>
+</ul>
+<p>For the initial Cyrus feature, <strong>Fixed</strong> should be the default. A soft root is a future or advanced option because visible root drift undermines the “planted vegetation” contract.</p>
+<h2 id="3-2-root-orientation">3.2 Root orientation<a class="anchor" href="#3-2-root-orientation" aria-label="Link to this section">#</a></h2>
+<p>Root-orientation stiffness answers: <strong>May the first segment rotate at the root?</strong></p>
+<ul>
+<li>A fixed root position with <strong>free orientation</strong> allows the blade to hinge immediately at ground level.</li>
+<li>A <strong>soft orientation</strong> preserves the authored emergence direction but allows bending under contact.</li>
+<li>A <strong>fixed orientation</strong> preserves the first segment’s frame and pushes bending farther up the blade.</li>
+</ul>
+<p>Houdini directly documents Orientation Pin Type as separate from Pin Type. Guide Groom also exposes <code>Constrain Root Orientation</code>. tyFlow Object Bind exposes a separate Rotation bind with Force %. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumconstraints.html">H-VELLUM-CONSTRAINTS</a> <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidegroom.html">H-GUIDE-GROOM</a> <a href="https://docs.tyflow.com/tyflow_operators/particles/object_bind/">T-OBJECT-BIND</a></p>
+<p>For Cyrus, the initial UI should not merge these into a single “root stiffness” slider. It should expose:</p>
+<ul>
+<li>Root position: <code>Fixed</code> / <code>Soft</code>;</li>
+<li>Root orientation: <code>Free</code> / <code>Soft</code> / <code>Fixed</code>.</li>
+</ul>
+<hr />
+<h1 id="4-houdini-common-asset-and-network-contract">4. Houdini: common asset and network contract<a class="anchor" href="#4-houdini-common-asset-and-network-contract" aria-label="Link to this section">#</a></h1>
+<h2 id="4-1-supported-source-representation">4.1 Supported source representation<a class="anchor" href="#4-1-supported-source-representation" aria-label="Link to this section">#</a></h2>
+<p>For the grass workflows, use a low-resolution guide representation plus a separate visible representation:</p>
+<h3 id="guide-input">Guide input<a class="anchor" href="#guide-input" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>polygon curves with enough segments to bend;</li>
+<li>the <strong>first vertex of each curve is the root</strong>;</li>
+<li>root point group, normally named <code>roots</code>;</li>
+<li>stable curve identity (<code>id</code> or a piece/name attribute is recommended for a reproducible test);</li>
+<li><code>rest</code> positions for stable capture/regeneration;</li>
+<li><code>pscale</code> representing collision radius or half-envelope;</li>
+<li><code>skinprim</code> and <code>skinprimuv</code> when roots are attached to a receiving surface;</li>
+<li><code>orient</code>/<code>restorient</code> when transferring orientation through guide-based point deformation.</li>
+</ul>
+<p><code>Guide Utility</code> 22.0 can snap roots to a skin and create a roots group from the first vertex. It uses or computes <code>skinprim</code>/<code>skinprimuv</code>. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guideutility.html">H-GUIDE-UTILITY</a></p>
+<h3 id="visible-input">Visible input<a class="anchor" href="#visible-input" aria-label="Link to this section">#</a></h3>
+<p>Choose one:</p>
+<ol>
+<li><strong>Dense render curves:</strong> use <code>Guide Deform</code> or <code>Hair Generate</code> after the guide solve.</li>
+<li><strong>Polygonal grass cards or a clump mesh:</strong> use <code>Point Deform</code> with rest-guide points and solved-guide points as the deformation lattice. <code>Point Deform</code> documents rest/deformed lattice inputs, capture weights, piece isolation, and normal transformation. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/pointdeform.html">H-POINT-DEFORM</a></li>
+<li><strong>Procedurally generated blades:</strong> regenerate geometry from solved guides, preserving width/UV/material rules downstream.</li>
+</ol>
+<h3 id="obstacle-input">Obstacle input<a class="anchor" href="#obstacle-input" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>one or more polygon meshes merged into the Vellum Solver third input in Full mode; or</li>
+<li>VDB Collider output when using Vellum Minimal mode or when a VDB representation is specifically desired.</li>
+</ul>
+<p>A static VDB collider is sourced once and retained, while rigid/deforming animated modes have increasing update cost. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vdbcollider.html">H-VDB-COLLIDER</a></p>
+<h2 id="4-2-collision-thickness">4.2 Collision thickness<a class="anchor" href="#4-2-collision-thickness" aria-label="Link to this section">#</a></h2>
+<p>Vellum visualizes thickness from <code>pscale</code>, and its failed-collision diagnostics identify points that have been removed from collision participation. The collision radius used for the guide must represent more than the mathematical centerline if the visible blade/card has width. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html">H-VELLUM-SOLVER</a></p>
+<p>A reproducible test should use:</p>
+<pre><code class="language-text">pscale = requested_clearance + visible_half_width + numerical_margin
+</code></pre>
+<p>The numerical margin must be measured in scene units; it is not a universal constant.</p>
+<h2 id="4-3-dense-output-deformation">4.3 Dense-output deformation<a class="anchor" href="#4-3-dense-output-deformation" aria-label="Link to this section">#</a></h2>
+<p><code>Guide Deform</code> 22.0 offers:</p>
+<ul>
+<li>Guide Shape Interpolation;</li>
+<li>Guide Weights using precomputed <code>guides</code>/<code>weights</code>;</li>
+<li>Guide Interpolation Mesh;</li>
+<li>Point Deform mode;</li>
+<li>capture-only and deform-only operation;</li>
+<li>a Preserve Shape pass described as Cosserat-rod quasi-static relaxation, with stretch stiffness, bend stiffness, reference-position strength, and root locking.</li>
+</ul>
+<p>The Preserve Shape pass is valuable after guide-driven deformation, but it is <strong>not documented as an obstacle collision solve</strong>. It should not be mistaken for the stone-contact stage. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidedeform.html">H-GUIDE-DEFORM</a></p>
+<h2 id="4-4-initialization-rule">4.4 Initialization rule<a class="anchor" href="#4-4-initialization-rule" aria-label="Link to this section">#</a></h2>
+<p>For reliable local tests, initialize guides and colliders without unresolved penetration. If the final stone overlaps the source rest shape, use one of these clearly labelled setups:</p>
+<ul>
+<li><strong><span class="badge proposal">P</span> — collider ramp:</strong> start the stone clear and animate it into the final transform over a short interval;</li>
+<li><strong><span class="badge proposal">P</span> — scale ramp:</strong> start the collider at reduced scale and grow it to final size while preserving topology;</li>
+<li><strong><span class="badge proposal">P</span> — authored clear start:</strong> pre-shape the guide with Guide Groom, then run a short settle.</li>
+</ul>
+<p>The public Vellum documentation supports animated third-input collision geometry with matching topology, but does not prescribe one of these exact vegetation recipes. They are controlled initialization proposals. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html">H-VELLUM-SOLVER</a></p>
+<h2 id="4-5-cache-freeze-output-rule">4.5 Cache/freeze/output rule<a class="anchor" href="#4-5-cache-freeze-output-rule" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Use <strong>Reset Simulation</strong> after a source, constraint, or collider change.</li>
+<li>Save the sequence with <strong>Vellum I/O</strong> when constraints must also be retained, or <strong>File Cache</strong> for ordinary geometry caching. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumio.html">H-VELLUM-IO</a> <a href="https://www.sidefx.com/docs/houdini/nodes/sop/filecache.html">H-FILE-CACHE</a></li>
+<li>Enable Load from Disk after caching.</li>
+<li>Use <strong>TimeShift</strong> to retrieve the chosen settled frame. TimeShift does not cache by itself. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/timeshift.html">H-TIME-SHIFT</a></li>
+<li>Export rigid packed objects with Alembic instancing where possible; export unique deformed geometry as deformed shapes or USD time samples. <a href="https://www.sidefx.com/docs/houdini/nodes/out/alembic.html">H-ALEMBIC</a> <a href="https://www.sidefx.com/docs/houdini/nodes/out/usd.html">H-USD</a></li>
+</ul>
+<hr />
+<h1 id="5-houdini-recipe-h1-rooted-grass-bending-around-one-fixed-stone">5. Houdini recipe H1 — rooted grass bending around one fixed stone<a class="anchor" href="#5-houdini-recipe-h1-rooted-grass-bending-around-one-fixed-stone" aria-label="Link to this section">#</a></h1>
+<p><strong>Evidence:</strong> D + X + P.<br />
+<strong>Automatic fitting:</strong> timeline simulation required.<br />
+<strong>Manual static alternative:</strong> available through Guide Groom, but artist-directed.<br />
+<strong>Recommended Houdini version for this exact recipe:</strong> 22.0 because the workflow uses Guide Utility and the current Guide Deform.</p>
+<h2 id="5-1-input-geometry">5.1 Input geometry<a class="anchor" href="#5-1-input-geometry" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Input</th>
+  <th>Required preparation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Ground/receiving surface</td>
+  <td>Polygon mesh with stable topology; correct scale and normals.</td>
+</tr>
+<tr>
+  <td>Sparse grass guides</td>
+  <td>Polyline curves, root first, 4–12 segments per blade/guide as a starting test range, <code>rest</code>, <code>pscale</code>, stable piece/guide ID.</td>
+</tr>
+<tr>
+  <td>Dense curves or grass mesh</td>
+  <td>Rest-pose visible geometry corresponding to the guide set.</td>
+</tr>
+<tr>
+  <td>Stone</td>
+  <td>Closed or collision-suitable polygon mesh; static final transform, plus optional animation from a clear start.</td>
+</tr>
+</tbody>
+</table>
+<p>The segment-count range is a proposed benchmark range, not a SideFX requirement. The correct count depends on length and required curvature.</p>
+<h2 id="5-2-node-order">5.2 Node order<a class="anchor" href="#5-2-node-order" aria-label="Link to this section">#</a></h2>
+<pre><code class="language-text">GUIDE PREP
+Guide curves
+  → Guide Utility
+      • Snap to Skin: Root Only
+      • Create Roots Group: roots
+  → Attribute/Rest preparation
+      • rest, pscale, id/piece
+      • orient/restorient when used by mesh deformation
+
+CONSTRAINTS
+Prepared guides
+  → Vellum Constraints: Hair
+  → Vellum Constraints: Pin to Animation (group = roots)
+      • Position Pin Type: Permanent or Soft
+      • Orientation Pin Type: Free / Same as Position / Soft
+  → merge geometry and constraint streams
+
+COLLISION SOLVE
+Stone (+ ground if needed)
+  → optional collision cleanup/proxy
+  → Vellum Solver input 3
+
+Guide geometry + constraints
+  → Vellum Solver
+      • Full mode
+      • gravity off or reduced for contact fitting
+      • Substeps: begin at 2; raise toward 5 if contact/stretch is unstable
+      • Constraint Iterations: raise for stiff/long chains
+      • Collision/Post-Collision passes: raise only after checking initialization
+
+VALIDATE AND OUTPUT
+Vellum Solver result
+  → Vellum Post-Process / collision visualizers
+  → Guide Deform (dense curves) OR Point Deform (polygon mesh)
+  → final mesh/curve collision validation
+  → Vellum I/O or File Cache
+  → TimeShift at accepted settled frame
+  → render / Alembic / USD / bgeo
+</code></pre>
+<p>SideFX’s <code>HairOrient</code> example is an official loadable example for stable guide orientation outside standard grooming tools. It is useful background for the orientation path, but it is not a stone-contact example. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html#examples">H-VELLUM-EXAMPLES</a></p>
+<h2 id="5-3-root-controls">5.3 Root controls<a class="anchor" href="#5-3-root-controls" aria-label="Link to this section">#</a></h2>
+<h3 id="root-position">Root position<a class="anchor" href="#root-position" aria-label="Link to this section">#</a></h3>
+<ul>
+<li><code>Permanent</code>: hard root; <code>mass=0</code>; simplest planted behavior.</li>
+<li><code>Soft</code>: finite positional stiffness and damping; use only to test a deliberately compliant soil attachment.</li>
+</ul>
+<h3 id="root-orientation">Root orientation<a class="anchor" href="#root-orientation" aria-label="Link to this section">#</a></h3>
+<ul>
+<li><code>None/Free</code>: root can hinge immediately.</li>
+<li><code>Same as Position</code>: hard orientation when the positional pin is hard.</li>
+<li><code>Soft</code>: separate bend/twist stiffness; recommended production reference because it preserves emergence direction without making the whole blade rigid.</li>
+</ul>
+<p>Do not evaluate a workflow that only reports root translation. Record both root drift and first-segment angular drift.</p>
+<h2 id="5-4-collision-representation-and-settings">5.4 Collision representation and settings<a class="anchor" href="#5-4-collision-representation-and-settings" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Full Vellum mode: polygon stone directly in solver input 3.</li>
+<li>Minimal mode: must use VDB Collider; animated pins and Attach to Geometry are not supported in Minimal mode, making it a poor first choice for the complete rooted-grass test. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html">H-VELLUM-SOLVER</a></li>
+<li>Guide collision thickness: <code>pscale</code> must cover blade/card envelope.</li>
+<li>Stone friction: begin low-to-moderate so guides can slide around the stone rather than stick unnaturally.</li>
+<li>Self-collision: disable for the first isolated one-stone test; add later only if clump self-contact is required.</li>
+</ul>
+<h2 id="5-5-timeline-versus-static-fitting">5.5 Timeline versus static fitting<a class="anchor" href="#5-5-timeline-versus-static-fitting" aria-label="Link to this section">#</a></h2>
+<h3 id="automatic-result">Automatic result<a class="anchor" href="#automatic-result" aria-label="Link to this section">#</a></h3>
+<p>Requires stepping the Vellum simulation from the start frame to a settled frame. It is not a one-node static fit.</p>
+<h3 id="manual-static-alternative">Manual static alternative<a class="anchor" href="#manual-static-alternative" aria-label="Link to this section">#</a></h3>
+<pre><code class="language-text">Guide Groom
+  → Brush / Deintersect / Sculpt with Physics
+  → Lock Root
+  → Constrain Root Orientation as desired
+  → Damped or Settle mode
+  → Set Rest State
+  → Apply
+</code></pre>
+<p>This can produce a frozen authored shape without maintaining a simulation timeline, but the artist must paint/sculpt the result. Guide Groom documents Deintersect, Maintain Length, Lock Root, root-orientation constraint, bend/stretch stiffness, and Set Rest State. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidegroom.html">H-GUIDE-GROOM</a></p>
+<h2 id="5-6-initialization-reset-obstacle-changes-caching">5.6 Initialization, reset, obstacle changes, caching<a class="anchor" href="#5-6-initialization-reset-obstacle-changes-caching" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Action</th>
+  <th>Procedure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Initialize</td>
+  <td>Frame 1 must be nonintersecting, or use a proposed animated collider ramp. Confirm roots and first-segment orientation before solving.</td>
+</tr>
+<tr>
+  <td>Reset</td>
+  <td>Press Vellum Solver <strong>Reset Simulation</strong>; if cached, disable Load from Disk or increment cache version before recomputing.</td>
+</tr>
+<tr>
+  <td>Move stone</td>
+  <td>Update its final transform; reset; re-run from the start. If using a ramp, update the final key while preserving a clear initial key.</td>
+</tr>
+<tr>
+  <td>Freeze</td>
+  <td>Cache the accepted frame range, enable Load from Disk, and TimeShift to the accepted frame.</td>
+</tr>
+<tr>
+  <td>Render</td>
+  <td>Render cached dense curves/mesh. Keep guide visualization disabled for final output.</td>
+</tr>
+<tr>
+  <td>Export</td>
+  <td>Alembic/USD/bgeo. Unique deformation is exported as unique shape data; guide-only export is insufficient unless the destination reproduces the same deformation.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-7-geometry-sharing-and-instancing">5.7 Geometry sharing and instancing<a class="anchor" href="#5-7-geometry-sharing-and-instancing" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Sparse simulated guides are compact and can share source preprocessing.</li>
+<li>Once different clumps produce different guide states, those guide states are per instance.</li>
+<li>Dense curves generated from guides are unique at the affected locations.</li>
+<li>A polygon grass source deformed with Point Deform becomes unique vertex geometry for each affected instance unless the result is quantized into reusable variants.</li>
+<li>Unaffected grass can remain ordinary packed/instanced geometry in a hybrid network.</li>
+</ul>
+<h2 id="5-8-common-failure-cases-and-remedies">5.8 Common failure cases and remedies<a class="anchor" href="#5-8-common-failure-cases-and-remedies" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Failure</th>
+  <th>Detection</th>
+  <th>Remedy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Roots move</td>
+  <td>Compare root <code>P</code> to rest; inspect pin visualization</td>
+  <td>Use Permanent pin; ensure only root group is pinned; do not confuse root-position and orientation settings.</td>
+</tr>
+<tr>
+  <td>Root direction collapses</td>
+  <td>First segment rotates excessively</td>
+  <td>Use Soft orientation pin; raise orientation bend/twist stiffness; pin a short root zone only if justified.</td>
+</tr>
+<tr>
+  <td>Solver reports orange external failures</td>
+  <td>Vellum failed external collision visualization</td>
+  <td>Fix initial penetration; lower thickness; increase guide segmentation/substeps; simplify collider; do not merely raise iterations on an impossible start.</td>
+</tr>
+<tr>
+  <td>Guide clears stone but card penetrates</td>
+  <td>Final mesh validation</td>
+  <td>Increase guide <code>pscale</code> by visible half-width; improve guide-to-mesh binding; add final mesh collision diagnostic.</td>
+</tr>
+<tr>
+  <td>Stretchy blades</td>
+  <td>Segment-length error</td>
+  <td>Increase Substeps first, then Constraint Iterations and stretch stiffness. SideFX explicitly recommends 2–5 substeps as a first response to stretchiness. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html">H-VELLUM-SOLVER</a></td>
+</tr>
+<tr>
+  <td>Dense hair changes unpredictably</td>
+  <td>Compare dense IDs/roots between frames</td>
+  <td>Ensure <code>rest</code> exists on skin/guides; cache guide weights; use Capture then Deform.</td>
+</tr>
+<tr>
+  <td>Point Deform bleeds between clumps</td>
+  <td>Visual folds between adjacent sources</td>
+  <td>Use a piece attribute and pre-separate pieces; reduce capture radius; retain stable rest/deformed correspondence. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/pointdeform.html">H-POINT-DEFORM</a></td>
+</tr>
+<tr>
+  <td>Guide interpolation fails in tangled or dissimilar shapes</td>
+  <td>Stretching/cross-influence</td>
+  <td>Use Guide Weights with authored assignments or Point Deform/tet capture; Guide Deform documents this limitation. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidedeform.html">H-GUIDE-DEFORM</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-9-artist-preparation-and-major-manual-actions">5.9 Artist preparation and major manual actions<a class="anchor" href="#5-9-artist-preparation-and-major-manual-actions" aria-label="Link to this section">#</a></h2>
+<p><strong>Prepared source already has guides:</strong> approximately <strong>10–12 major setup actions</strong>.</p>
+<ol>
+<li>bring in skin, guides, render geometry, stone;</li>
+<li>create/snap roots group;</li>
+<li>verify rest and thickness attributes;</li>
+<li>create Hair constraints;</li>
+<li>create Pin constraints;</li>
+<li>set position pin;</li>
+<li>set orientation pin;</li>
+<li>connect collision geometry;</li>
+<li>tune solver;</li>
+<li>connect guide-to-render deformation;</li>
+<li>cache;</li>
+<li>choose/freeze/export frame.</li>
+</ol>
+<p><strong>Unprepared arbitrary grass mesh:</strong> add <strong>4–10+ authoring actions</strong> for root identification, guide creation, segmentation, piece IDs, and capture validation. Dense photogrammetry or opaque proxy sources may be unsuitable.</p>
+<h2 id="5-10-reproducible-local-acceptance-test">5.10 Reproducible local acceptance test<a class="anchor" href="#5-10-reproducible-local-acceptance-test" aria-label="Link to this section">#</a></h2>
+<p>Create <code>H01_grass_one_stone.hip</code>:</p>
+<ul>
+<li>20 identical clumps, 8 guides per clump, 8 segments per guide;</li>
+<li>one irregular stone;</li>
+<li>10 affected clumps and 10 controls outside influence;</li>
+<li>hard root position, soft root orientation;</li>
+<li>record root drift, first-segment angular drift, length error, maximum residual guide penetration, final mesh penetration, cook time, and cached size;</li>
+<li>save the settled frame, reopen, verify the same guide IDs and geometry;</li>
+<li>render and export one frame; compare bounds and sampled vertices.</li>
+</ul>
+<p><strong>Pass condition:</strong> no control clump changes; roots remain within declared tolerance; no unresolved contacts in the feasible subset; viewport, render, and export agree within the declared geometric tolerance.</p>
+<hr />
+<h1 id="6-houdini-recipe-h2-rooted-grass-constrained-between-two-stones">6. Houdini recipe H2 — rooted grass constrained between two stones<a class="anchor" href="#6-houdini-recipe-h2-rooted-grass-constrained-between-two-stones" aria-label="Link to this section">#</a></h1>
+<p><strong>Evidence:</strong> D + P.<br />
+<strong>Automatic fitting:</strong> timeline simulation required.<br />
+<strong>Core difference from H1:</strong> all relevant obstacles must participate simultaneously, and the scene can be geometrically infeasible.</p>
+<h2 id="6-1-node-order">6.1 Node order<a class="anchor" href="#6-1-node-order" aria-label="Link to this section">#</a></h2>
+<p>Use H1 unchanged, except merge both stones into the collision input:</p>
+<pre><code class="language-text">Stone_A ─┐
+         ├─ Merge / collision proxy ─→ Vellum Solver input 3
+Stone_B ─┘
+</code></pre>
+<p>If stones are animated into place for initialization, both must maintain stable topology. Move them symmetrically or in a deliberately staged order and record the choice because the final local minimum may differ.</p>
+<h2 id="6-2-feasibility-precheck">6.2 Feasibility precheck<a class="anchor" href="#6-2-feasibility-precheck" aria-label="Link to this section">#</a></h2>
+<p>Before simulation, estimate the available gap:</p>
+<pre><code class="language-text">available_gap = minimum surface-to-surface distance
+required_gap  = 2 × guide_collision_radius + visible_envelope + margin
+</code></pre>
+<p>If <code>available_gap &lt; required_gap</code>, a collision-free result may be impossible without bending out of the gap, changing clearance, compressing geometry, or moving a root. The workflow must not silently delete the plant or move the root.</p>
+<h2 id="6-3-root-controls">6.3 Root controls<a class="anchor" href="#6-3-root-controls" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Root position: hard by default.</li>
+<li>Root orientation: start soft. A hard orientation may make a narrow-gap solve impossible even when a free hinge could escape.</li>
+<li>Record whether a successful solve required reducing orientation stiffness; that is a product-relevant diagnostic.</li>
+</ul>
+<h2 id="6-4-important-settings">6.4 Important settings<a class="anchor" href="#6-4-important-settings" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>More substeps/collision passes than H1 may be necessary because the guide can alternate contacts between two surfaces.</li>
+<li>Increasing iterations does not make an impossible gap feasible. SideFX notes that impossible configurations leave error; smoothing can distribute error more attractively but does not satisfy incompatible constraints. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html">H-VELLUM-SOLVER</a></li>
+<li>Friction should be low enough for the blade to slide out of a pinch.</li>
+<li>Keep collision thickness physically honest; do not “solve” the test by shrinking the blade below its visible width without reporting it.</li>
+</ul>
+<h2 id="6-5-reset-change-freeze">6.5 Reset/change/freeze<a class="anchor" href="#6-5-reset-change-freeze" aria-label="Link to this section">#</a></h2>
+<p>Same as H1. Moving either stone invalidates the simulation from the start frame. Cache versioning should include both collider identities and transforms.</p>
+<h2 id="6-6-sharing-and-output">6.6 Sharing and output<a class="anchor" href="#6-6-sharing-and-output" aria-label="Link to this section">#</a></h2>
+<p>Same as H1. Two-stone contact generally increases per-instance uniqueness and makes reusable bend variants less reliable because the shape depends on two distances, normals, and the route out of the gap.</p>
+<h2 id="6-7-failure-cases">6.7 Failure cases<a class="anchor" href="#6-7-failure-cases" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Failure</th>
+  <th>Artist-facing interpretation</th>
+  <th>Remedy/order</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Guide remains trapped</td>
+  <td>Infeasible or local-minimum result</td>
+  <td>Lower orientation stiffness; allow more segments; initialize with staged collider motion; reduce clearance only with explicit approval.</td>
+</tr>
+<tr>
+  <td>Oscillation between stones</td>
+  <td>Insufficient damping/substeps or high friction</td>
+  <td>Raise substeps; add damping; lower friction; slow collider ramp.</td>
+</tr>
+<tr>
+  <td>Root inside either stone</td>
+  <td>Invalid input</td>
+  <td>Mark root as infeasible; do not move it automatically. Ask artist to move stone/root or permit an override.</td>
+</tr>
+<tr>
+  <td>Final mesh folds</td>
+  <td>Guide-to-mesh binding failure</td>
+  <td>Increase guides, reduce capture radius, use piece isolation, or reject the source.</td>
+</tr>
+<tr>
+  <td>Post-process detangle damages shape</td>
+  <td>Large correction required</td>
+  <td>Do not rely on detangle for primary solve; SideFX warns large independent corrections can look ugly. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumpostprocess.html">H-VELLUM-POST</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-8-artist-actions">6.8 Artist actions<a class="anchor" href="#6-8-artist-actions" aria-label="Link to this section">#</a></h2>
+<p>Approximately <strong>11–13 major setup actions</strong> with a prepared source—H1 plus adding/merging the second collider, performing a gap check, and tuning feasibility-related settings.</p>
+<h2 id="6-9-reproducible-local-acceptance-test">6.9 Reproducible local acceptance test<a class="anchor" href="#6-9-reproducible-local-acceptance-test" aria-label="Link to this section">#</a></h2>
+<p>Create three two-stone gaps:</p>
+<ol>
+<li>feasible by a wide margin;</li>
+<li>just feasible at declared clearance;</li>
+<li>intentionally infeasible.</li>
+</ol>
+<p>The third case must end with an <strong>unresolved/infeasible</strong> status rather than disappearing vegetation or hidden root movement.</p>
+<hr />
+<h1 id="7-houdini-recipe-h3-rigid-pebbles-settling-on-irregular-terrain">7. Houdini recipe H3 — rigid pebbles settling on irregular terrain<a class="anchor" href="#7-houdini-recipe-h3-rigid-pebbles-settling-on-irregular-terrain" aria-label="Link to this section">#</a></h1>
+<p><strong>Evidence:</strong> D + X.<br />
+<strong>Simulation:</strong> timeline Bullet solve required.<br />
+<strong>Purpose for Cyrus research:</strong> demonstrates transform-only rigid settling and packed-instance preservation, not deformable vegetation.</p>
+<h2 id="7-1-input-geometry-and-attributes">7.1 Input geometry and attributes<a class="anchor" href="#7-1-input-geometry-and-attributes" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Input</th>
+  <th>Preparation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Pebble sources</td>
+  <td>Closed meshes; consistent scale; packed pieces; primitive/point <code>name</code> attributes kept consistent.</td>
+</tr>
+<tr>
+  <td>Proxy geometry</td>
+  <td>Convex hulls or simplified collision proxies.</td>
+</tr>
+<tr>
+  <td>Terrain</td>
+  <td>Static irregular polygon mesh or heightfield; collision-suitable scale and normals.</td>
+</tr>
+</tbody>
+</table>
+<p>The RBD Bullet Solver uses input 1 for render geometry, input 3 for proxy geometry, and input 4 for collision geometry. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/rbdbulletsolver.html">H-RBD-SOLVER</a></p>
+<h2 id="7-2-node-order">7.2 Node order<a class="anchor" href="#7-2-node-order" aria-label="Link to this section">#</a></h2>
+<pre><code class="language-text">Pebble meshes
+  → Assemble / Pack / name pieces
+  → RBD Configure
+      • Active = on
+      • Enable Sleeping = on
+      • Geometry Representation = Convex Hull (default first test)
+      • Density / friction / bounce / damping
+      • Collision Padding + Shrink Amount
+  ────────────────→ RBD Bullet Solver input 1 (render geometry)
+Collision proxies ─→ RBD Bullet Solver input 3 (proxy geometry)
+Terrain ───────────→ RBD Bullet Solver input 4 (collision geometry)
+
+RBD Bullet Solver
+  → simulate until sleeping
+  → File Cache / RBD I/O
+  → TimeShift settled frame
+  → render packed pieces
+  → Alembic with Use Instancing Where Possible / USD
+</code></pre>
+<p>Official RBD Bullet Solver examples are loadable from the node documentation, including a general <code>RBDBulletSolver</code> example. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/rbdbulletsolver.html#examples">H-RBD-EXAMPLES</a></p>
+<h2 id="7-3-collision-representation">7.3 Collision representation<a class="anchor" href="#7-3-collision-representation" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Pebbles: Convex Hull first. It is the default and normally appropriate for rounded stones.</li>
+<li>Concave pebble: Compound if the concavity materially affects settling; Concave is slower and should be used only when necessary. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/rbdconfigure.html">H-RBD-CONFIG</a></li>
+<li>Terrain: static concave polygon collision or a suitable terrain representation.</li>
+<li>Padding: scale with scene units; pair with shrink so pebbles do not visibly float.</li>
+</ul>
+<h2 id="7-4-important-settings">7.4 Important settings<a class="anchor" href="#7-4-important-settings" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Bullet Substeps: raise if fast/small pebbles tunnel through terrain.</li>
+<li>Constraint Iterations: affects collision/constraint accuracy.</li>
+<li>Bullet World Scale: use when very small pieces behave poorly; SideFX documents this specifically. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/rbdbulletsolver.html">H-RBD-SOLVER</a></li>
+<li>Friction: high enough to stop endless sliding, low enough to allow natural settling.</li>
+<li>Sleeping: enabled so the accepted settled frame is stable.</li>
+</ul>
+<h2 id="7-5-initialization-reset-change-freeze">7.5 Initialization/reset/change/freeze<a class="anchor" href="#7-5-initialization-reset-change-freeze" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Start pebbles above terrain without overlap.</li>
+<li>Reset Simulation after changing terrain, source geometry, mass, hull type, or initial transforms.</li>
+<li>Moving terrain invalidates the solve.</li>
+<li>Cache the frame range; TimeShift to a frame after all relevant pebbles sleep.</li>
+</ul>
+<h2 id="7-6-geometry-sharing-and-instancing">7.6 Geometry sharing and instancing<a class="anchor" href="#7-6-geometry-sharing-and-instancing" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Packed pebbles can preserve shared source geometry and carry only unique transforms.</li>
+<li>Alembic can use instancing where possible for packed objects. <a href="https://www.sidefx.com/docs/houdini/nodes/out/alembic.html">H-ALEMBIC</a></li>
+<li>If every pebble is unpacked/deformed before export, sharing is lost.</li>
+<li>This path is directly analogous to a Cyrus rigid-settle feature and fundamentally different from per-instance grass deformation.</li>
+</ul>
+<h2 id="7-7-failure-cases-and-remedies">7.7 Failure cases and remedies<a class="anchor" href="#7-7-failure-cases-and-remedies" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Failure</th>
+  <th>Remedy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Pebbles pass through terrain</td>
+  <td>Raise Bullet Substeps; verify collision proxy and scale.</td>
+</tr>
+<tr>
+  <td>Pebbles float</td>
+  <td>Reduce effective padding or increase shrink; inspect collision geometry.</td>
+</tr>
+<tr>
+  <td>Tiny pebbles jitter/explode</td>
+  <td>Use Bullet World Scale; check mass and initial overlap.</td>
+</tr>
+<tr>
+  <td>Concave hull is slow</td>
+  <td>Use Convex or Compound proxy.</td>
+</tr>
+<tr>
+  <td>Names are lost/mismatched</td>
+  <td>Normalize <code>name</code> attribute ownership/type before solver; SideFX warns mixed point/primitive names produce bad results.</td>
+</tr>
+<tr>
+  <td>Simulation never settles</td>
+  <td>Increase damping/friction or sleeping thresholds; inspect constant forces/interpenetration.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7-8-artist-actions">7.8 Artist actions<a class="anchor" href="#7-8-artist-actions" aria-label="Link to this section">#</a></h2>
+<p>Approximately <strong>6–8 major setup actions</strong> after pebble and proxy assets exist.</p>
+<hr />
+<h1 id="8-houdini-recipe-h4-fallen-leaves-against-a-curb">8. Houdini recipe H4 — fallen leaves against a curb<a class="anchor" href="#8-houdini-recipe-h4-fallen-leaves-against-a-curb" aria-label="Link to this section">#</a></h1>
+<h2 id="8-1-h4-r-rigid-leaves">8.1 H4-R: rigid leaves<a class="anchor" href="#8-1-h4-r-rigid-leaves" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> D + P.<br />
+<strong>Simulation:</strong> timeline Bullet solve.<br />
+<strong>Visual model:</strong> each leaf is an undeformed rigid plate.</p>
+<h3 id="inputs">Inputs<a class="anchor" href="#inputs" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>visible leaf mesh with UVs/material;</li>
+<li>finite-thickness collision proxy—thin box, convex hull, or small compound hull;</li>
+<li>curb and ground collision geometry.</li>
+</ul>
+<p>A zero-thickness render card is not a robust rigid collision shape. The proxy may be slightly simplified but must represent leaf thickness and edge extent.</p>
+<h3 id="node-order">Node order<a class="anchor" href="#node-order" aria-label="Link to this section">#</a></h3>
+<pre><code class="language-text">Leaf source(s)
+  → Copy/pack leaves; assign stable name/source ID
+  → RBD Configure
+      • Active
+      • Box / Convex / Compound representation
+      • low mass, moderate angular damping
+      • friction and restitution
+  → RBD Bullet Solver
+      • curb + ground on collision input
+      • substeps appropriate to thin fast objects
+  → cache
+  → TimeShift settled frame
+  → packed render / Alembic instancing / USD
+</code></pre>
+<h3 id="sharing">Sharing<a class="anchor" href="#sharing" aria-label="Link to this section">#</a></h3>
+<p>Rigid leaves can reuse one or a small set of source meshes. Only transforms differ until export or materialization. This is the most efficient leaf mode.</p>
+<h3 id="failures">Failures<a class="anchor" href="#failures" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Card tunnels through curb: increase thickness proxy/substeps.</li>
+<li>Leaf balances unnaturally on edge: improve proxy and center of mass; add damping.</li>
+<li>Visible gap: collision proxy is thicker than render leaf.</li>
+<li>Interpenetrating initial pile: spread initial transforms or solve a staged drop.</li>
+</ul>
+<h3 id="artist-actions">Artist actions<a class="anchor" href="#artist-actions" aria-label="Link to this section">#</a></h3>
+<p>Approximately <strong>6–8 major setup actions</strong> after source and proxy creation.</p>
+<h2 id="8-2-h4-d-deforming-leaves">8.2 H4-D: deforming leaves<a class="anchor" href="#8-2-h4-d-deforming-leaves" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> D.<br />
+<strong>Simulation:</strong> timeline Vellum Cloth solve.<br />
+<strong>Visual model:</strong> the leaf can bend/fold around the curb.</p>
+<h3 id="input-preparation">Input preparation<a class="anchor" href="#input-preparation" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>leaf polygon mesh with enough subdivisions for desired curvature;</li>
+<li>UV/material attributes retained;</li>
+<li>optional <code>rest</code> state;</li>
+<li>finite collision thickness;</li>
+<li>curb and ground collider mesh.</li>
+</ul>
+<h3 id="node-order-2">Node order<a class="anchor" href="#node-order-2" aria-label="Link to this section">#</a></h3>
+<pre><code class="language-text">Leaf meshes
+  → Vellum Constraints: Cloth
+      • high stretch stiffness
+      • appropriate shear stiffness
+      • moderate bend stiffness
+      • thickness / friction
+      • no root pins for fully fallen leaves
+      • optional petiole/root group for attached leaves
+  → Vellum Solver input 1/2
+Curb + ground
+  → Vellum Solver input 3
+  → solve / validate failed collisions
+  → Vellum Post-Process
+  → Vellum I/O or File Cache
+  → TimeShift settled frame
+  → render/export unique deformed mesh
+</code></pre>
+<h3 id="root-distinction">Root distinction<a class="anchor" href="#root-distinction" aria-label="Link to this section">#</a></h3>
+<p>A fully fallen leaf has no root constraint. If testing a leaf still attached by its petiole:</p>
+<ul>
+<li>position-pin the petiole point/group;</li>
+<li>choose orientation pin separately;</li>
+<li>do not treat broad-leaf bend stiffness as root orientation stiffness.</li>
+</ul>
+<h3 id="sharing-2">Sharing<a class="anchor" href="#sharing-2" aria-label="Link to this section">#</a></h3>
+<p>Each deformed leaf has unique vertex state. Ordinary transform-only instancing is lost. A future system can recover some efficiency by clustering similar final shapes into reusable variants, but exact per-leaf deformation does not preserve one shared mesh.</p>
+<h3 id="failures-remedies">Failures/remedies<a class="anchor" href="#failures-remedies" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Leaf stretches: increase substeps and stretch stiffness.</li>
+<li>Leaf remains too flat: lower bend stiffness or increase subdivisions.</li>
+<li>Leaf folds sharply at coarse edges: improve topology/segmentation.</li>
+<li>Curb penetration: improve initialization, thickness, substeps, collision passes.</li>
+<li>Post-process detangle causes visible damage: reduce the amount of correction required in the primary solve.</li>
+</ul>
+<h3 id="artist-actions-2">Artist actions<a class="anchor" href="#artist-actions-2" aria-label="Link to this section">#</a></h3>
+<p>Approximately <strong>8–10 major setup actions</strong> per leaf class, excluding modeling/subdivision.</p>
+<hr />
+<h1 id="9-tyflow-current-documented-capability-boundary">9. tyFlow: current documented capability boundary<a class="anchor" href="#9-tyflow-current-documented-capability-boundary" aria-label="Link to this section">#</a></h1>
+<h2 id="9-1-current-host-version">9.1 Current host/version<a class="anchor" href="#9-1-current-host-version" aria-label="Link to this section">#</a></h2>
+<p>The official version history lists v2.010 dated 25 May 2026. The current requirements page supports Max 2020+. <a href="https://docs.tyflow.com/download/version/">T-VERSION</a> <a href="https://docs.tyflow.com/download/system_requirements/">T-SYSTEM</a></p>
+<h2 id="9-2-three-relevant-simulation-systems">9.2 Three relevant simulation systems<a class="anchor" href="#9-2-three-relevant-simulation-systems" aria-label="Link to this section">#</a></h2>
+<ol>
+<li><strong>Particle Bind Solver:</strong> solves inter-particle bindings created by Particle Bind, Angle Bind, and cloth conversion. It has its own step count and can use OpenCL with CPU fallback. <a href="https://docs.tyflow.com/tyflow_operators/particles/particle_bind/">T-PARTICLE-BIND</a> <a href="https://docs.tyflow.com/tyflow_objects/tyFlow/particleBindSolver/">T-BIND-SOLVER</a> <a href="https://docs.tyflow.com/download/system_requirements/">T-SYSTEM</a></li>
+<li><strong>PhysX:</strong> rigid-body simulation through PhysX Shape/Collision; PGS is the documented default, while TGS is described as experimental for bindings. <a href="https://docs.tyflow.com/tyflow_operators/particles/physx_shape/">T-PHYSX-SHAPE</a> <a href="https://docs.tyflow.com/tyflow_operators/particles/physx_collision/">T-PHYSX-COLLISION</a> <a href="https://docs.tyflow.com/tyflow_objects/tyFlow/physx/">T-PHYSX</a></li>
+<li><strong>CCCS:</strong> GPU cloth collision solver. Current requirements: NVIDIA/CUDA 11.2+, with no CPU fallback for several core algorithms. <a href="https://docs.tyflow.com/download/system_requirements/">T-SYSTEM</a></li>
+</ol>
+<p>Do not combine these labels into a generic claim that “tyFlow physics supports rooted grass.” Each workflow below states which subsystem is actually involved.</p>
+<h2 id="9-3-cache-reset-output-behavior">9.3 Cache/reset/output behavior<a class="anchor" href="#9-3-cache-reset-output-behavior" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Auto reset:</strong> input/settings changes can clear caches and re-simulate to the current frame.</li>
+<li><strong>Manual reset:</strong> caches remain; critical changes freeze the simulation until refresh; non-critical changes can produce history-inconsistent results and trigger a warning. <a href="https://docs.tyflow.com/faq/reset/">T-RESET</a></li>
+<li>Playback cache supports real-time timeline playback; caching subframes increases memory. <a href="https://docs.tyflow.com/tyflow_objects/tyFlow/cache/">T-CACHE</a></li>
+<li><code>tyCache</code> modifier can preserve changing topology, animated UVs, and explicit normals, but its file format is not interchangeable with Particle Export’s tyCache format. <a href="https://docs.tyflow.com/tyflow_modifiers/tyCache/">T-TYCACHE</a></li>
+<li>Mesh operator <code>Triangle Mesh</code> produces editable mesh output; <code>Render Instances</code> is available for compatible renderers. Trimesh is documented as compatible with all 3ds Max renderers. <a href="https://docs.tyflow.com/tyflow_operators/particles/mesh/">T-MESH</a> <a href="https://docs.tyflow.com/faq/rendering/">T-RENDER</a></li>
+<li>Particle Export can create scene objects or write multiple formats, including Alembic modes and tyCache. <a href="https://docs.tyflow.com/tyflow_operators/particles/export/">T-EXPORT</a></li>
+</ul>
+<hr />
+<h1 id="10-tyflow-recipe-t1-rooted-grass-bending-around-one-fixed-stone">10. tyFlow recipe T1 — rooted grass bending around one fixed stone<a class="anchor" href="#10-tyflow-recipe-t1-rooted-grass-bending-around-one-fixed-stone" aria-label="Link to this section">#</a></h1>
+<p>There are two materially different approaches. They must not be presented as one qualified workflow.</p>
+<h2 id="10-1-t1-a-direct-cloth-card-clump-workflow">10.1 T1-A — direct cloth-card/clump workflow<a class="anchor" href="#10-1-t1-a-direct-cloth-card-clump-workflow" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> D + P.<br />
+<strong>Support level:</strong> practical for polygon grass cards/clumps; not a hair-guide workflow.<br />
+<strong>Simulation:</strong> timeline required.<br />
+<strong>Root-position control:</strong> documented.<br />
+<strong>Independent root-orientation control:</strong> limited; not a direct documented scalar equivalent to Vellum’s Orientation Pin Type.</p>
+<h3 id="10-1-1-input-preparation">10.1.1 Input preparation<a class="anchor" href="#10-1-1-input-preparation" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>one grass card or connected clump mesh per particle shape;</li>
+<li>enough subdivisions for bending;</li>
+<li>root faces/vertices assigned a dedicated material ID;</li>
+<li>UVs/material IDs preserved;</li>
+<li>stone and ground as scene geometry;</li>
+<li>finite collision thickness.</li>
+</ul>
+<h3 id="10-1-2-operator-order">10.1.2 Operator order<a class="anchor" href="#10-1-2-operator-order" aria-label="Link to this section">#</a></h3>
+<pre><code class="language-text">Birth Objects / Position Object / Shape
+  → Cloth Bind: Shape to Cloth
+      • De-activate by material ID = root strip
+      • root-strip particles become infinite mass
+      • Stretch stiffness: high
+      • Shear stiffness: high enough to preserve card width
+      • Bend stiffness: source-dependent
+      • optional stiffness maps near root
+      • Object collisions: on
+  → Collision
+      • stone + ground as colliders
+      • Absolute radius = desired collision thickness
+      • friction tuned for sliding
+  → forces / gravity as required
+  → optional CCCS for difficult cloth contact
+  → settle on timeline
+  → Cloth Bind: Cloth to Shape when a particle shape is needed downstream
+  → Mesh operator: Triangle Mesh for universal rendering
+  → playback cache / tyCache / Particle Export
+</code></pre>
+<p>Cloth Bind documents Shape-to-Cloth conversion, material-ID activation/deactivation, infinite mass for deactivated particles, stretch/shear/bend stiffness, and object collision through a Collision operator. Only Collision’s Absolute Radius is used as the object-collision thickness. <a href="https://docs.tyflow.com/tyflow_operators/particles/cloth_bind/">T-CLOTH-BIND</a></p>
+<h3 id="10-1-3-root-position-versus-orientation">10.1.3 Root position versus orientation<a class="anchor" href="#10-1-3-root-position-versus-orientation" aria-label="Link to this section">#</a></h3>
+<ul>
+<li><strong>Position:</strong> the deactivated root strip is hard-fixed because those particles have infinite mass.</li>
+<li><strong>Orientation:</strong> there is no documented root-orientation pin field in Cloth Bind. Approximate orientation resistance with:<ul>
+<li>a short fixed root strip rather than one fixed row;</li>
+<li>higher bend stiffness near the root using a texmap;</li>
+<li>sufficient topology above the root.</li>
+</ul>
+</li>
+</ul>
+<p>This approximation couples root orientation to mesh topology and bend stiffness. It is not equivalent to the separate Vellum orientation pin and should be reported as a limitation.</p>
+<h3 id="10-1-4-collision-and-settings">10.1.4 Collision and settings<a class="anchor" href="#10-1-4-collision-and-settings" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Collision operator supports static/deforming geometry.</li>
+<li>Its documented collision radius is particle-based; cloth object collisions use Absolute Radius as thickness. <a href="https://docs.tyflow.com/tyflow_operators/particles/collisions/">T-COLLISION</a> <a href="https://docs.tyflow.com/tyflow_operators/particles/cloth_bind/">T-CLOTH-BIND</a></li>
+<li>CCCS may improve difficult cloth intersections, but requires compatible NVIDIA hardware under the current requirements.</li>
+<li>Start with a nonintersecting state. The CCCS FAQ recommends lower timesteps, more collision steps, and avoiding direct position edits when artifacts occur. <a href="https://docs.tyflow.com/faq/CUDA_collisions/">T-CCCS-FAQ</a></li>
+</ul>
+<h3 id="10-1-5-initialization-reset-change-cache">10.1.5 Initialization/reset/change/cache<a class="anchor" href="#10-1-5-initialization-reset-change-cache" aria-label="Link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+  <th>Action</th>
+  <th>Procedure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Initialize</td>
+  <td>Place cloth clumps clear of stone or animate stone into place; root strip already fixed.</td>
+</tr>
+<tr>
+  <td>Reset</td>
+  <td>Auto mode reinitializes after changes; Manual mode requires explicit refresh for a history-consistent result.</td>
+</tr>
+<tr>
+  <td>Move stone</td>
+  <td>Refresh from the start frame. Do not continue from an old cache and call it equivalent.</td>
+</tr>
+<tr>
+  <td>Freeze</td>
+  <td>Keep playback cache for review; export a tyCache/Alembic or convert the accepted frame to scene geometry.</td>
+</tr>
+<tr>
+  <td>Render</td>
+  <td>Use Mesh Triangle Mesh for universal compatibility; verify UV/material continuity.</td>
+</tr>
+<tr>
+  <td>Export</td>
+  <td>Particle Export or tyCache/Alembic; the cloth shape is unique.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-1-6-sharing-and-instancing">10.1.6 Sharing and instancing<a class="anchor" href="#10-1-6-sharing-and-instancing" aria-label="Link to this section">#</a></h3>
+<p>Shape sharing is lost once each grass card/clump deforms differently. Before conversion, particles may share an input shape; after cloth deformation the vertex state is per cloth element. Triangle Mesh materializes the result.</p>
+<h3 id="10-1-7-failures-and-remedies">10.1.7 Failures and remedies<a class="anchor" href="#10-1-7-failures-and-remedies" aria-label="Link to this section">#</a></h3>
+<table>
+<thead>
+<tr>
+  <th>Failure</th>
+  <th>Remedy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Root peels off</td>
+  <td>Confirm correct root material ID is deactivated and border inclusion is appropriate.</td>
+</tr>
+<tr>
+  <td>Root is fixed but hinges too freely</td>
+  <td>Use a deeper fixed strip or root-weighted bend map; report that orientation is topology-controlled.</td>
+</tr>
+<tr>
+  <td>Card stretches</td>
+  <td>Increase stretch stiffness and bind-solver steps; use Constrained stiffness mode where appropriate.</td>
+</tr>
+<tr>
+  <td>Stone penetrates thin card</td>
+  <td>Increase mesh subdivisions, collision thickness, solver steps, or CCCS collision steps; start nonintersecting.</td>
+</tr>
+<tr>
+  <td>CCCS freezes/errors</td>
+  <td>Verify current CUDA 11.2-compatible GPU/driver and DLL requirements; inspect warnings; cache accepted runs.</td>
+</tr>
+<tr>
+  <td>Direct reposition creates artifacts</td>
+  <td>Reinitialize rather than editing simulated particle positions mid-history; the CCCS FAQ warns against direct position edits.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-1-8-artist-preparation-and-steps">10.1.8 Artist preparation and steps<a class="anchor" href="#10-1-8-artist-preparation-and-steps" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Source preparation: <strong>3–6 major actions</strong>—subdivide, assign root material ID, verify UV/materials, create collision thickness/proxy if needed.</li>
+<li>Flow setup: <strong>8–11 major operator/configuration actions</strong>.</li>
+</ul>
+<p>This is practical for card grass but not an efficient representation for thousands of independently deforming clumps.</p>
+<h2 id="10-2-t1-b-guide-chain-bindings-typarticleskin">10.2 T1-B — guide-chain + bindings + <code>tyParticleSkin</code><a class="anchor" href="#10-2-t1-b-guide-chain-bindings-typarticleskin" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> D for individual components; P + T for the complete chain.<br />
+<strong>Support level:</strong> research prototype only until a Max 2027 scene proves adjacency, collision, root frame behavior, skin isolation, and export.<br />
+<strong>Simulation:</strong> timeline required.</p>
+<h3 id="10-2-1-why-this-route-is-attractive">10.2.1 Why this route is attractive<a class="anchor" href="#10-2-1-why-this-route-is-attractive" aria-label="Link to this section">#</a></h3>
+<p>It resembles the recommended Cyrus architecture:</p>
+<ul>
+<li>sparse guide particles;</li>
+<li>distance bindings for segment length;</li>
+<li>angle bindings for bend shape;</li>
+<li>independent root position and rotation binds;</li>
+<li>guide visualization through splines;</li>
+<li>high-resolution mesh deformation through <code>tyParticleSkin</code>.</li>
+</ul>
+<p>The problem is that the official docs document each component, not the complete vegetation workflow.</p>
+<h3 id="10-2-2-proposed-operator-order">10.2.2 Proposed operator order<a class="anchor" href="#10-2-2-proposed-operator-order" aria-label="Link to this section">#</a></h3>
+<pre><code class="language-text">Authored guide splines
+  → Birth Spline
+      • Distance Along Spline or Interpolated Knots
+      • Save birth index to a custom channel
+  → assign each spline/strand to an isolated family/cluster/group [P/T]
+  → Particle Bind
+      • create only adjacent-chain distance binds [P/T]
+      • constrained stiffness
+      • rest/min/max length limits as required
+  → Angle Bind
+      • applied after regular binds
+      • maintain local angular offset
+  → select root particles [P/T]
+  → Object Bind (Position)
+      • Lock to surface / ground
+      • hard or spring position behavior
+  → Object Bind (Rotation), separate operator/stage
+      • Force % controls orientation resistance
+  → Collision
+      • stone + ground
+      • Absolute radius
+  → Particle Bind Solver
+      • timestep and bind steps tuned
+  → Spline Paths
+      • export bindings/relationships to tySplines for inspection
+  → tyParticleSkin on the visible grass mesh
+      • Ref frame = initialization frame
+      • element-ID matching where multiple clumps share one object
+      • distance/falloff/max count
+      • Re-initialize after topology/reference changes
+  → cache/render/export
+</code></pre>
+<p>Documented facts behind the proposal:</p>
+<ul>
+<li>Birth Spline can distribute particles by distance/knots and save the source-spline birth index. <a href="https://docs.tyflow.com/tyflow_operators/particles/birth_spline/">T-BIRTH-SPLINE</a></li>
+<li>Particle Bind creates persistent binds solved by the global bind solver. <a href="https://docs.tyflow.com/tyflow_operators/particles/particle_bind/">T-PARTICLE-BIND</a></li>
+<li>Angle Bind works on adjacent existing binds and must be applied after regular binds. <a href="https://docs.tyflow.com/tyflow_operators/particles/angle_bind/">T-ANGLE-BIND</a></li>
+<li>Object Bind independently binds Position and Rotation; Rotation has a Force %. <a href="https://docs.tyflow.com/tyflow_operators/particles/object_bind/">T-OBJECT-BIND</a></li>
+<li>Spline Paths can convert bindings/relationships into splines. <a href="https://docs.tyflow.com/tyflow_operators/particles/spline_paths/">T-SPLINE-PATHS</a></li>
+<li><code>tyParticleSkin</code> deforms a regular mesh from a particle system or mesh and supports reference-frame capture and element matching. <a href="https://docs.tyflow.com/tyflow_modifiers/tyParticleSkin/">T-PARTICLE-SKIN</a></li>
+</ul>
+<h3 id="10-2-3-unresolved-points-that-require-a-local-test">10.2.3 Unresolved points that require a local test<a class="anchor" href="#10-2-3-unresolved-points-that-require-a-local-test" aria-label="Link to this section">#</a></h3>
+<ol>
+<li><strong>Adjacent-chain construction:</strong> Birth Spline gives particles and a spline index, but the docs do not provide a complete operator-only recipe that guarantees binds only between sequential particles on each spline. Family/cluster assignment and nearest-neighbor settings must be proven.</li>
+<li><strong>Segment collision:</strong> Collision is documented in terms of particle radii. A long bound segment can cross a stone between clear endpoints. The test must include the “endpoints outside, segment crosses” case.</li>
+<li><strong>Root orientation:</strong> Binding the rotation of a root particle may not by itself create the intended first-segment frame. The test must compare one root particle versus a two-particle root frame.</li>
+<li><strong>Skin bleed:</strong> <code>tyParticleSkin</code> may capture vertices to nearby particles from another clump. Element-ID matching, reference frame, influence distance, and particle mesh consideration must be qualified.</li>
+<li><strong>Topology changes:</strong> after guide count/topology changes, <code>tyParticleSkin</code> must be explicitly reinitialized.</li>
+<li><strong>Performance:</strong> no capacity claim is justified for many clumps.</li>
+</ol>
+<h3 id="10-2-4-collision-limitation">10.2.4 Collision limitation<a class="anchor" href="#10-2-4-collision-limitation" aria-label="Link to this section">#</a></h3>
+<p>Because Collision uses particle radius rather than a documented segment/capsule shape, a conservative test should keep guide particle spacing below the smallest collider feature that must not be crossed. Even then, the workflow remains an approximation until the crossing fixture passes.</p>
+<h3 id="10-2-5-position-hair-exclusion">10.2.5 <code>Position Hair</code> exclusion<a class="anchor" href="#10-2-5-position-hair-exclusion" aria-label="Link to this section">#</a></h3>
+<p><code>Position Hair</code> positions particles on <strong>Ornatrix</strong> hair strands. It is not evidence that arbitrary grass splines can be imported and solved as generic hair. <a href="https://docs.tyflow.com/tyflow_operators/particles/position_hair/">T-POSITION-HAIR</a></p>
+<h3 id="10-2-6-artist-effort">10.2.6 Artist effort<a class="anchor" href="#10-2-6-artist-effort" aria-label="Link to this section">#</a></h3>
+<p>Approximately <strong>11–14 major setup actions</strong>, plus the creation of guide splines and a <code>tyParticleSkin</code> modifier. Because multiple steps remain unqualified, this is not recommended as the production reference until the local test passes.</p>
+<hr />
+<h1 id="11-tyflow-recipe-t2-grass-constrained-between-two-stones">11. tyFlow recipe T2 — grass constrained between two stones<a class="anchor" href="#11-tyflow-recipe-t2-grass-constrained-between-two-stones" aria-label="Link to this section">#</a></h1>
+<h2 id="11-1-direct-cloth-card-workflow">11.1 Direct cloth-card workflow<a class="anchor" href="#11-1-direct-cloth-card-workflow" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> D + P.<br />
+Use T1-A with both stones in the Collision object list.</p>
+<h3 id="required-additions">Required additions<a class="anchor" href="#required-additions" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>evaluate the available gap against card thickness and collision radius;</li>
+<li>use lower friction if the card must slide out of a pinch;</li>
+<li>raise timestep resolution/collision steps before raising stiffness indefinitely;</li>
+<li>keep root material-ID anchoring unchanged;</li>
+<li>report unresolved contact if the gap is smaller than the card envelope.</li>
+</ul>
+<h3 id="initialization">Initialization<a class="anchor" href="#initialization" aria-label="Link to this section">#</a></h3>
+<p>Start with stones clear or with the cloth outside both stones. A staged inward motion is more reproducible than starting deeply intersecting.</p>
+<h3 id="failure-policy">Failure policy<a class="anchor" href="#failure-policy" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Do not reduce the root fixed region automatically.</li>
+<li>Do not change collision thickness silently.</li>
+<li>Do not accept a result where the cloth exits through the stone between frames without recording tunneling.</li>
+<li>A visually compressed card may technically satisfy particle collision but be unacceptable as grass.</li>
+</ul>
+<h2 id="11-2-guide-chain-workflow">11.2 Guide-chain workflow<a class="anchor" href="#11-2-guide-chain-workflow" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> P + T.<br />
+Use T1-B, add the second collider, and add the following test gates:</p>
+<ul>
+<li>segment-crossing test against each stone;</li>
+<li>narrow-gap feasibility test;</li>
+<li>bind-order independence/stability test;</li>
+<li>root-position and root-rotation drift test;</li>
+<li><code>tyParticleSkin</code> fold/inversion test.</li>
+</ul>
+<p>The two-stone case is the decisive qualification scene for the proposed guide-chain route. If the chain can only succeed by using extremely dense particles or many bind steps, it is not a good reference architecture for Cyrus.</p>
+<h2 id="11-3-artist-actions">11.3 Artist actions<a class="anchor" href="#11-3-artist-actions" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Cloth-card: <strong>9–12 major flow actions</strong> plus source preparation.</li>
+<li>Guide-chain: <strong>12–15 major actions</strong> plus guides/skin setup and local debugging.</li>
+</ul>
+<hr />
+<h1 id="12-tyflow-recipe-t3-rigid-pebbles-settling-on-irregular-terrain">12. tyFlow recipe T3 — rigid pebbles settling on irregular terrain<a class="anchor" href="#12-tyflow-recipe-t3-rigid-pebbles-settling-on-irregular-terrain" aria-label="Link to this section">#</a></h1>
+<p><strong>Evidence:</strong> D.<br />
+<strong>Simulation:</strong> timeline PhysX solve.<br />
+<strong>Recommended solver:</strong> PGS first; TGS is documented as experimental when bindings are involved. <a href="https://docs.tyflow.com/tyflow_objects/tyFlow/physx/">T-PHYSX</a></p>
+<h2 id="12-1-inputs">12.1 Inputs<a class="anchor" href="#12-1-inputs" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>pebble source shapes assigned to particles;</li>
+<li>terrain mesh;</li>
+<li>optional low-resolution pebble collision shapes;</li>
+<li>correct scene scale and nonintersecting initial transforms.</li>
+</ul>
+<h2 id="12-2-operator-order">12.2 Operator order<a class="anchor" href="#12-2-operator-order" aria-label="Link to this section">#</a></h2>
+<pre><code class="language-text">Birth Objects / Position Object
+  → Shape (assign pebble source mesh)
+  → PhysX Shape
+      • Hull: Convex Hull for rounded pebbles
+      • Compound for materially concave dynamic stones
+      • mass / density
+      • static + dynamic friction
+      • restitution
+      • damping and sleep-related behavior
+  → PhysX Collision
+      • terrain collider
+      • Mesh for static detailed terrain, or SDF when justified
+      • collider friction/restitution
+  → Global PhysX settings
+      • PGS default
+      • gravity
+      • simulation steps/substeps
+  → Mesh
+      • Render Instances for compatible renderer
+      • Triangle Mesh for universal renderer path
+  → playback cache / Particle Export / tyCache
+</code></pre>
+<h2 id="12-3-collision-shape-rules">12.3 Collision-shape rules<a class="anchor" href="#12-3-collision-shape-rules" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>PhysX Shape documents Box, Compound, Convex Hull, Mesh, SDF, and Sphere.</li>
+<li>Dynamic Mesh hulls are not supported; particles using Mesh hull are set kinematic. Use Compound for dynamic concave bodies. <a href="https://docs.tyflow.com/tyflow_operators/particles/physx_shape/">T-PHYSX-SHAPE</a></li>
+<li>SDF collision is most accurate for SDF-to-SDF. Mixed SDF/other hull pairs fall back to less-accurate mesh procedures, and SDF generation can be slow. <a href="https://docs.tyflow.com/tyflow_operators/particles/physx_shape/">T-PHYSX-SHAPE</a> <a href="https://docs.tyflow.com/tyflow_operators/particles/physx_collision/">T-PHYSX-COLLISION</a></li>
+<li>Terrain is static, so Mesh is a reasonable first reference. Use SDF only after measuring contact and preprocessing cost.</li>
+</ul>
+<h2 id="12-4-initialization-reset-change-cache">12.4 Initialization/reset/change/cache<a class="anchor" href="#12-4-initialization-reset-change-cache" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Action</th>
+  <th>Procedure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Initialize</td>
+  <td>Spawn pebbles above terrain with no overlap; ensure shape is assigned before PhysX Shape.</td>
+</tr>
+<tr>
+  <td>Reset</td>
+  <td>Auto mode re-simulates after input changes; Manual mode requires refresh for consistent history.</td>
+</tr>
+<tr>
+  <td>Change terrain</td>
+  <td>Full refresh from start; collider hull/SDF may need rebuilding.</td>
+</tr>
+<tr>
+  <td>Freeze</td>
+  <td>Use playback cache for review; export accepted frames to tyCache/Alembic or scene objects.</td>
+</tr>
+<tr>
+  <td>Render</td>
+  <td>Prefer Render Instances where renderer support is verified; use Triangle Mesh as universal fallback.</td>
+</tr>
+<tr>
+  <td>Export</td>
+  <td>Particle Export can create scene objects or save supported formats.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-5-sharing-and-instancing">12.5 Sharing and instancing<a class="anchor" href="#12-5-sharing-and-instancing" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>Particles can share source shape meshes and differ only by transform.</li>
+<li>Mesh <code>Render Instances</code> preserves this efficiency for compatible renderers.</li>
+<li>Triangle Mesh combines shapes into editable geometry and loses ordinary object-level instance sharing.</li>
+<li>Exporting scene objects can preserve references only if the export mode/target supports it; validate per output format.</li>
+</ul>
+<h2 id="12-6-failures-and-documented-remedies">12.6 Failures and documented remedies<a class="anchor" href="#12-6-failures-and-documented-remedies" aria-label="Link to this section">#</a></h2>
+<table>
+<thead>
+<tr>
+  <th>Failure</th>
+  <th>Remedy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Dynamic pebble becomes kinematic</td>
+  <td>Do not use Mesh hull; use Convex or Compound.</td>
+</tr>
+<tr>
+  <td>Concavity is ignored</td>
+  <td>Use Compound or SDF/SDF pair; inspect displayed hull.</td>
+</tr>
+<tr>
+  <td>SDF is slow/heavy</td>
+  <td>Increase cell size, use simpler proxy, or return to convex/compound.</td>
+</tr>
+<tr>
+  <td>Pebbles tunnel</td>
+  <td>Increase simulation time resolution; check scale and collider shape.</td>
+</tr>
+<tr>
+  <td>Pebbles never sleep</td>
+  <td>Increase damping/friction, remove constant forces, inspect penetrations.</td>
+</tr>
+<tr>
+  <td>Render differs from viewport</td>
+  <td>Use Triangle Mesh control path, then qualify renderer-specific instance mode.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-7-artist-actions">12.7 Artist actions<a class="anchor" href="#12-7-artist-actions" aria-label="Link to this section">#</a></h2>
+<p>Approximately <strong>6–8 major flow actions</strong> after source meshes exist.</p>
+<hr />
+<h1 id="13-tyflow-recipe-t4-fallen-leaves-against-a-curb">13. tyFlow recipe T4 — fallen leaves against a curb<a class="anchor" href="#13-tyflow-recipe-t4-fallen-leaves-against-a-curb" aria-label="Link to this section">#</a></h1>
+<h2 id="13-1-t4-r-rigid-leaves">13.1 T4-R: rigid leaves<a class="anchor" href="#13-1-t4-r-rigid-leaves" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> D + P.<br />
+<strong>Simulation:</strong> PhysX timeline solve.</p>
+<h3 id="input-preparation-2">Input preparation<a class="anchor" href="#input-preparation-2" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>visible leaf card/mesh;</li>
+<li>finite-thickness collision proxy represented by Box, Convex, or Compound;</li>
+<li>curb and ground mesh colliders;</li>
+<li>mass, friction, damping tuned for light rigid plates.</li>
+</ul>
+<h3 id="operator-order">Operator order<a class="anchor" href="#operator-order" aria-label="Link to this section">#</a></h3>
+<pre><code class="language-text">Birth Objects / Position Object
+  → Shape
+  → PhysX Shape
+      • Box / Convex / Compound
+      • low mass
+      • angular damping
+      • friction/restitution
+  → PhysX Collision
+      • curb + ground
+  → Global PhysX (PGS first)
+  → Mesh: Render Instances or Triangle Mesh
+  → cache/export
+</code></pre>
+<h3 id="sharing-3">Sharing<a class="anchor" href="#sharing-3" aria-label="Link to this section">#</a></h3>
+<p>Rigid leaves preserve source sharing until a Triangle Mesh or unique scene geometry is created.</p>
+<h3 id="failures-2">Failures<a class="anchor" href="#failures-2" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>zero-thickness cards tunnel or sit edge-on: use finite-thickness proxy;</li>
+<li>visible floating: proxy too thick;</li>
+<li>excessive spinning: increase angular damping and adjust mass/inertia via a more representative hull;</li>
+<li>kinematic behavior: avoid dynamic Mesh hull.</li>
+</ul>
+<h3 id="artist-actions-3">Artist actions<a class="anchor" href="#artist-actions-3" aria-label="Link to this section">#</a></h3>
+<p>Approximately <strong>6–8 major flow actions</strong>, plus proxy preparation.</p>
+<h2 id="13-2-t4-d-deforming-leaves">13.2 T4-D: deforming leaves<a class="anchor" href="#13-2-t4-d-deforming-leaves" aria-label="Link to this section">#</a></h2>
+<p><strong>Evidence:</strong> D + X + P.<br />
+<strong>Simulation:</strong> Particle Bind/cloth timeline solve; optional CCCS.<br />
+<strong>Official example reference:</strong> <code>tyFlow_cloth_CCCS_papers_001.max</code> is listed as an example of CCCS preventing cloth intersections with sharp colliders. It was not executed here. <a href="https://docs.tyflow.com/download/version/">T-EXAMPLE-SCENES</a></p>
+<h3 id="input-preparation-3">Input preparation<a class="anchor" href="#input-preparation-3" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>subdivided leaf mesh with UVs/materials;</li>
+<li>curb and ground colliders;</li>
+<li>optional material ID for a petiole/root region if testing attached leaves;</li>
+<li>nonintersecting initial placement.</li>
+</ul>
+<h3 id="operator-order-2">Operator order<a class="anchor" href="#operator-order-2" aria-label="Link to this section">#</a></h3>
+<pre><code class="language-text">Birth Objects / Shape
+  → Cloth Bind: Shape to Cloth
+      • fallen leaf: Activate all
+      • attached leaf: De-activate petiole/root material ID
+      • high stretch and shear stiffness
+      • moderate bend stiffness
+      • thickness and friction
+      • object collisions enabled
+  → Collision
+      • curb + ground
+      • Absolute radius defines collider thickness used by cloth
+  → optional CCCS
+      • only on qualified NVIDIA/CUDA system
+  → settle
+  → Cloth Bind: Cloth to Shape if required downstream
+  → Mesh: Triangle Mesh
+  → playback cache / tyCache / Particle Export
+</code></pre>
+<h3 id="root-distinction-2">Root distinction<a class="anchor" href="#root-distinction-2" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Fully fallen leaf: no root position or orientation constraint.</li>
+<li>Attached petiole:<ul>
+<li>root position can be made hard by deactivating the petiole vertices;</li>
+<li>root orientation is not a separate Cloth Bind control. Approximate with a fixed strip and root-zone bend stiffness, or build a separate binding rig and qualify it as a proposed extension.</li>
+</ul>
+</li>
+</ul>
+<h3 id="important-settings">Important settings<a class="anchor" href="#important-settings" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Stretch/shear high enough to preserve leaf area.</li>
+<li>Bend low enough to fold at the curb but high enough to avoid cloth-like collapse.</li>
+<li>Absolute collision radius consistent with visible thickness.</li>
+<li>CCCS collision steps/time step tuned conservatively.</li>
+</ul>
+<h3 id="cccs-failure-remedies-from-documentation">CCCS failure remedies from documentation<a class="anchor" href="#cccs-failure-remedies-from-documentation" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>lower simulation timestep—often to 1/4 frame or smaller for difficult cases;</li>
+<li>begin without intersections;</li>
+<li>increase maximum collision steps;</li>
+<li>avoid direct position changes that bypass solver history;</li>
+<li>inspect warnings in the MAXScript Listener;</li>
+<li>cache accepted simulations because GPU collision results should not be assumed reproducible across all hardware/settings without testing. <a href="https://docs.tyflow.com/faq/CUDA_collisions/">T-CCCS-FAQ</a></li>
+</ul>
+<h3 id="sharing-4">Sharing<a class="anchor" href="#sharing-4" aria-label="Link to this section">#</a></h3>
+<p>Each deforming leaf produces unique vertex state. Render Instances is no longer the natural representation unless the simulation is baked into a small reusable variant library.</p>
+<h3 id="artist-actions-4">Artist actions<a class="anchor" href="#artist-actions-4" aria-label="Link to this section">#</a></h3>
+<p>Approximately <strong>8–11 major flow actions</strong>, excluding mesh subdivision and root material setup.</p>
+<hr />
+<h1 id="14-guide-collision-and-guide-to-mesh-deformation-direct-comparison">14. Guide collision and guide-to-mesh deformation: direct comparison<a class="anchor" href="#14-guide-collision-and-guide-to-mesh-deformation-direct-comparison" aria-label="Link to this section">#</a></h1>
+<h2 id="14-1-houdini">14.1 Houdini<a class="anchor" href="#14-1-houdini" aria-label="Link to this section">#</a></h2>
+<h3 id="guide-collision">Guide collision<a class="anchor" href="#guide-collision" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Curves are first-class Vellum Hair geometry.</li>
+<li>Position and orientation pins are explicit and separate.</li>
+<li>External collision comes through the solver’s collision input; thickness is visible/debuggable.</li>
+<li>Failed external collision points are visualized in orange.</li>
+<li>Official HairOrient and DynamicAttach examples provide inspectable reference networks, though not the exact stone scene. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumsolver.html#examples">H-VELLUM-EXAMPLES</a></li>
+</ul>
+<h3 id="guide-to-visible-deformation">Guide-to-visible deformation<a class="anchor" href="#guide-to-visible-deformation" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Guide Deform/Hair Generate for dense curves.</li>
+<li>Point Deform for arbitrary mesh driven by rest/deformed guide lattices.</li>
+<li>Piece attributes can isolate clumps.</li>
+<li>Capture can be separated from deform for caching and repeatability.</li>
+<li>Guide Deform’s Preserve Shape can repair stretch/bend after guide interpolation but does not replace contact collision.</li>
+</ul>
+<h2 id="14-2-tyflow">14.2 tyFlow<a class="anchor" href="#14-2-tyflow" aria-label="Link to this section">#</a></h2>
+<h3 id="guide-collision-2">Guide collision<a class="anchor" href="#guide-collision-2" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Particle Bind + Angle Bind can create a chain-like constrained particle structure.</li>
+<li>Object Bind separates position and rotation constraints.</li>
+<li>Collision is documented as particle versus scene geometry using particle radius.</li>
+<li>No current official page inspected documents segment/capsule collision for generic bind chains.</li>
+</ul>
+<h3 id="guide-to-visible-deformation-2">Guide-to-visible deformation<a class="anchor" href="#guide-to-visible-deformation-2" aria-label="Link to this section">#</a></h3>
+<ul>
+<li><code>tyParticleSkin</code> can deform a regular mesh from particles or another mesh.</li>
+<li>It captures at a reference frame, uses distance/falloff/max influence count, and can match element IDs.</li>
+<li>It must be reinitialized after binding/topology/reference changes.</li>
+<li>The complete grass guide-chain workflow remains P/T because adjacency, root frame, collision crossing, and clump isolation are not documented as one solution.</li>
+</ul>
+<h2 id="14-3-product-lesson-for-cyrus">14.3 Product lesson for Cyrus<a class="anchor" href="#14-3-product-lesson-for-cyrus" aria-label="Link to this section">#</a></h2>
+<p>A Cyrus implementation should not copy either DCC graph literally. It should preserve the useful contract:</p>
+<pre><code class="language-text">stable placement
+  + source-level prepared guides/binding
+  + separate root position/orientation constraints
+  + segment/capsule obstacle contact
+  + validation
+  → sparse per-instance deformation
+  → dense viewport/render/Bake representation
+</code></pre>
+<p>The DCC studies strengthen the previous recommendation to make guide state sparse and final-mesh validation explicit.</p>
+<hr />
+<h1 id="15-initialization-reset-caching-rendering-and-export-matrix">15. Initialization, reset, caching, rendering, and export matrix<a class="anchor" href="#15-initialization-reset-caching-rendering-and-export-matrix" aria-label="Link to this section">#</a></h1>
+<table>
+<thead>
+<tr>
+  <th>Application/workflow</th>
+  <th>Initialization</th>
+  <th>Change obstacle</th>
+  <th>Reset</th>
+  <th>Freeze/cache</th>
+  <th>Render</th>
+  <th>Export</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Houdini Vellum grass</td>
+  <td>Nonintersecting guides/collider or proposed collider ramp</td>
+  <td>Reset from start; preserve topology</td>
+  <td>Vellum Reset Simulation</td>
+  <td>Vellum I/O or File Cache; TimeShift accepted frame</td>
+  <td>Dense curves/Point-Deformed mesh</td>
+  <td>Alembic/USD/bgeo; unique deformed shape</td>
+</tr>
+<tr>
+  <td>Houdini Bullet pebbles/rigid leaves</td>
+  <td>Packed pieces above collider</td>
+  <td>Reset from start</td>
+  <td>RBD Reset Simulation</td>
+  <td>File Cache/RBD I/O; TimeShift</td>
+  <td>Packed render geometry</td>
+  <td>Alembic instancing where possible/USD</td>
+</tr>
+<tr>
+  <td>Houdini Vellum deforming leaves</td>
+  <td>Nonintersecting subdivided leaves</td>
+  <td>Reset from start</td>
+  <td>Vellum Reset Simulation</td>
+  <td>Vellum I/O/File Cache</td>
+  <td>Deformed mesh</td>
+  <td>Alembic/USD unique mesh</td>
+</tr>
+<tr>
+  <td>tyFlow cloth grass/deforming leaves</td>
+  <td>Nonintersecting cloth, root material set</td>
+  <td>Auto re-sim or Manual refresh</td>
+  <td>Auto/Manual refresh rules</td>
+  <td>Playback cache; tyCache/Particle Export</td>
+  <td>Triangle Mesh universal; renderer-specific modes only after test</td>
+  <td>tyCache/Alembic/scene objects</td>
+</tr>
+<tr>
+  <td>tyFlow proposed guide chain</td>
+  <td>Guides and capture initialized at reference frame</td>
+  <td>Full refresh + reinitialize skin if needed</td>
+  <td>Manual/Auto reset plus <code>tyParticleSkin</code> Re-initialize</td>
+  <td>Playback cache/Particle Export</td>
+  <td><code>tyParticleSkin</code> mesh</td>
+  <td>Materialized mesh/cache; guide splines alone are insufficient</td>
+</tr>
+<tr>
+  <td>tyFlow PhysX pebbles/rigid leaves</td>
+  <td>Nonoverlapping particles with valid shape</td>
+  <td>Full refresh; rebuild hull/SDF if required</td>
+  <td>Auto/Manual refresh</td>
+  <td>Playback cache/Particle Export</td>
+  <td>Render Instances or Triangle Mesh</td>
+  <td>Scene objects/tyCache/Alembic</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="16-geometry-sharing-and-instancing-consequences">16. Geometry sharing and instancing consequences<a class="anchor" href="#16-geometry-sharing-and-instancing-consequences" aria-label="Link to this section">#</a></h1>
+<h2 id="16-1-transform-only-rigid-results">16.1 Transform-only rigid results<a class="anchor" href="#16-1-transform-only-rigid-results" aria-label="Link to this section">#</a></h2>
+<p>Pebbles and rigid leaves are the favorable case:</p>
+<pre><code class="language-text">shared source mesh + per-instance transform
+</code></pre>
+<p>Both Houdini packed RBD and tyFlow PhysX can retain this representation through most of the pipeline. Renderer/export decisions determine whether sharing survives final output.</p>
+<h2 id="16-2-guide-deformed-grass">16.2 Guide-deformed grass<a class="anchor" href="#16-2-guide-deformed-grass" aria-label="Link to this section">#</a></h2>
+<p>Exact deformation introduces per-instance guide state. Three representations are possible:</p>
+<ol>
+<li><strong>Sparse guide state + shader/procedural deformation:</strong> best sharing, highest renderer integration burden.</li>
+<li><strong>Sparse guide state + CPU-materialized affected mesh:</strong> easiest correctness path, higher memory and upload cost.</li>
+<li><strong>Quantized reusable variants:</strong> middle ground; approximation and cache-management risk.</li>
+</ol>
+<p>Houdini’s guide pipeline demonstrates the value of simulating sparse guides before generating dense output, but its exported deformed geometry is still unique where the shapes differ.</p>
+<h2 id="16-3-cloth-leaves-cards">16.3 Cloth leaves/cards<a class="anchor" href="#16-3-cloth-leaves-cards" aria-label="Link to this section">#</a></h2>
+<p>Cloth directly produces per-vertex state. Transform-only instancing is lost unless the final shapes are clustered into reusable variants. Triangle Mesh and ordinary geometry cache output materialize the unique state.</p>
+<h2 id="16-4-practical-cyrus-implication">16.4 Practical Cyrus implication<a class="anchor" href="#16-4-practical-cyrus-implication" aria-label="Link to this section">#</a></h2>
+<p>For a first Cyrus prototype:</p>
+<ul>
+<li>unaffected instances stay on the current transform-only path;</li>
+<li>affected instances receive sparse deformation records keyed by stable placement ID;</li>
+<li>viewport/render/Bake qualification may initially materialize only affected geometry;</li>
+<li>memory and upload counters must distinguish guide state from expanded mesh state.</li>
+</ul>
+<hr />
+<h1 id="17-common-failure-taxonomy-across-both-applications">17. Common failure taxonomy across both applications<a class="anchor" href="#17-common-failure-taxonomy-across-both-applications" aria-label="Link to this section">#</a></h1>
+<table>
+<thead>
+<tr>
+  <th>Category</th>
+  <th>Example</th>
+  <th>Detection</th>
+  <th>Correct response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Invalid root</td>
+  <td>Root lies inside stone</td>
+  <td>point-in-solid/closest-distance test</td>
+  <td>Mark invalid; preserve root and previous result; request artist correction.</td>
+</tr>
+<tr>
+  <td>Infeasible gap</td>
+  <td>Two stones narrower than visible envelope</td>
+  <td>gap/clearance precheck + residual contact</td>
+  <td>Mark infeasible; do not delete or move root.</td>
+</tr>
+<tr>
+  <td>Under-segmented source</td>
+  <td>Card/guide forms one sharp hinge</td>
+  <td>curvature and segment-count check</td>
+  <td>Request more segments/guides; do not hide with smoothing alone.</td>
+</tr>
+<tr>
+  <td>Collision discretization</td>
+  <td>endpoints outside but segment crosses obstacle</td>
+  <td>segment/capsule test</td>
+  <td>Reject point-only workflow or increase sampling; Cyrus should use segment/capsule contact.</td>
+</tr>
+<tr>
+  <td>Initial penetration</td>
+  <td>solver immediately reports failed contacts</td>
+  <td>start-frame overlap diagnostics</td>
+  <td>use clear start/ramp; do not treat iteration count as cure.</td>
+</tr>
+<tr>
+  <td>Binding bleed</td>
+  <td>one clump influenced by neighboring guide</td>
+  <td>piece/element ID audit</td>
+  <td>isolate pieces, reduce capture radius, or reject source.</td>
+</tr>
+<tr>
+  <td>Visible-envelope mismatch</td>
+  <td>guide clears but card/leaf penetrates</td>
+  <td>final-mesh collision validation</td>
+  <td>increase guide radius or improve binding.</td>
+</tr>
+<tr>
+  <td>Cache staleness</td>
+  <td>obstacle moved but old result shown</td>
+  <td>dependency revision mismatch</td>
+  <td>show Pending/Stale; preserve old complete result until explicit update.</td>
+</tr>
+<tr>
+  <td>Renderer divergence</td>
+  <td>viewport differs from render/export</td>
+  <td>sampled geometry/bounds comparison</td>
+  <td>use materialized control path; block unsupported output mode.</td>
+</tr>
+<tr>
+  <td>Budget/iteration limit</td>
+  <td>solver stops with residual penetration</td>
+  <td>residual count/depth and iteration flag</td>
+  <td>label partial/unresolved; never call it successful solely because computation ended.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="18-artist-preparation-and-manual-step-comparison">18. Artist preparation and manual-step comparison<a class="anchor" href="#18-artist-preparation-and-manual-step-comparison" aria-label="Link to this section">#</a></h1>
+<p>Counts below are <strong>major authoring actions</strong>, not mouse clicks. Modeling an asset from scratch is excluded but required metadata/preparation is listed separately.</p>
+<table>
+<thead>
+<tr>
+  <th>Workflow</th>
+  <th style="text-align:right">Source prep</th>
+  <th style="text-align:right">Network/flow setup</th>
+  <th style="text-align:right">Cache/output</th>
+  <th style="text-align:right">Typical major actions</th>
+  <th>Evidence confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Houdini grass, one stone</td>
+  <td style="text-align:right">3–8</td>
+  <td style="text-align:right">7–9</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">10–19</td>
+  <td>High for nodes; medium for exact vegetation tuning</td>
+</tr>
+<tr>
+  <td>Houdini grass, two stones</td>
+  <td style="text-align:right">3–8</td>
+  <td style="text-align:right">8–10</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">11–20</td>
+  <td>High/medium</td>
+</tr>
+<tr>
+  <td>Houdini pebbles</td>
+  <td style="text-align:right">2–4</td>
+  <td style="text-align:right">4–5</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">6–11</td>
+  <td>High</td>
+</tr>
+<tr>
+  <td>Houdini rigid leaves</td>
+  <td style="text-align:right">2–4</td>
+  <td style="text-align:right">4–5</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">6–11</td>
+  <td>High/medium</td>
+</tr>
+<tr>
+  <td>Houdini deforming leaves</td>
+  <td style="text-align:right">3–5</td>
+  <td style="text-align:right">6–8</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">8–15</td>
+  <td>High</td>
+</tr>
+<tr>
+  <td>tyFlow cloth grass, one stone</td>
+  <td style="text-align:right">3–6</td>
+  <td style="text-align:right">6–8</td>
+  <td style="text-align:right">2–3</td>
+  <td style="text-align:right">8–17</td>
+  <td>Medium-high</td>
+</tr>
+<tr>
+  <td>tyFlow cloth grass, two stones</td>
+  <td style="text-align:right">3–6</td>
+  <td style="text-align:right">7–9</td>
+  <td style="text-align:right">2–3</td>
+  <td style="text-align:right">9–18</td>
+  <td>Medium</td>
+</tr>
+<tr>
+  <td>tyFlow guide chain + skin</td>
+  <td style="text-align:right">5–10</td>
+  <td style="text-align:right">9–12</td>
+  <td style="text-align:right">2–3</td>
+  <td style="text-align:right">11–25</td>
+  <td>Low until test</td>
+</tr>
+<tr>
+  <td>tyFlow pebbles</td>
+  <td style="text-align:right">2–3</td>
+  <td style="text-align:right">4–6</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">6–11</td>
+  <td>High</td>
+</tr>
+<tr>
+  <td>tyFlow rigid leaves</td>
+  <td style="text-align:right">2–4</td>
+  <td style="text-align:right">4–6</td>
+  <td style="text-align:right">2</td>
+  <td style="text-align:right">6–12</td>
+  <td>High/medium</td>
+</tr>
+<tr>
+  <td>tyFlow deforming leaves</td>
+  <td style="text-align:right">3–5</td>
+  <td style="text-align:right">6–9</td>
+  <td style="text-align:right">2–3</td>
+  <td style="text-align:right">8–17</td>
+  <td>High for cloth components; medium for leaf tuning</td>
+</tr>
+</tbody>
+</table>
+<p>The largest recurring preparation cost is not “adding a physics node.” It is defining roots, creating adequate segmentation/guides, choosing a collision envelope, and proving how sparse deformation reaches the final render mesh.</p>
+<hr />
+<h1 id="19-required-local-validation-scenes">19. Required local validation scenes<a class="anchor" href="#19-required-local-validation-scenes" aria-label="Link to this section">#</a></h1>
+<h2 id="19-1-houdini-22-0-package">19.1 Houdini 22.0 package<a class="anchor" href="#19-1-houdini-22-0-package" aria-label="Link to this section">#</a></h2>
+<p>Create:</p>
+<ul>
+<li><code>H01_grass_one_stone.hip</code></li>
+<li><code>H02_grass_two_stones.hip</code></li>
+<li><code>H03_pebbles_terrain.hip</code></li>
+<li><code>H04a_leaves_rigid.hip</code></li>
+<li><code>H04b_leaves_cloth.hip</code></li>
+</ul>
+<p>Each file must include:</p>
+<ul>
+<li>a <code>README</code> sticky note with exact node versions and units;</li>
+<li>source, guide, collider, and output nulls;</li>
+<li>a parameter preset with baseline solver settings;</li>
+<li>diagnostic geometry for roots, guide thickness, failed contacts, and final mesh collision;</li>
+<li>a File Cache/Vellum I/O path using a relative project directory;</li>
+<li>a frozen accepted frame;</li>
+<li>Alembic/USD export nodes where relevant.</li>
+</ul>
+<h2 id="19-2-tyflow-2-010-max-2027-package">19.2 tyFlow 2.010 / Max 2027 package<a class="anchor" href="#19-2-tyflow-2-010-max-2027-package" aria-label="Link to this section">#</a></h2>
+<p>Create:</p>
+<ul>
+<li><code>T01a_grass_cloth_one_stone.max</code></li>
+<li><code>T01b_grass_guides_skin_one_stone.max</code></li>
+<li><code>T02a_grass_cloth_two_stones.max</code></li>
+<li><code>T02b_grass_guides_skin_two_stones.max</code></li>
+<li><code>T03_pebbles_terrain.max</code></li>
+<li><code>T04a_leaves_rigid.max</code></li>
+<li><code>T04b_leaves_cloth.max</code></li>
+</ul>
+<p>The guide-chain scenes are qualification experiments, not assumed supported workflows.</p>
+<h2 id="19-3-measurements-common-to-both-applications">19.3 Measurements common to both applications<a class="anchor" href="#19-3-measurements-common-to-both-applications" aria-label="Link to this section">#</a></h2>
+<p>Record:</p>
+<ul>
+<li>software/build number, Max/Houdini version, CPU/GPU/driver;</li>
+<li>scene units;</li>
+<li>guide/vertex/particle/triangle counts;</li>
+<li>collider representation and preprocessing time;</li>
+<li>root positional drift;</li>
+<li>root first-segment angular drift;</li>
+<li>segment-length/stretch error;</li>
+<li>residual penetration depth and count for guides and visible mesh;</li>
+<li>settled frame and total solve time;</li>
+<li>peak RAM/VRAM where observable;</li>
+<li>cache size;</li>
+<li>viewport/render/export agreement;</li>
+<li>reset/recompute behavior after moving one stone by a known transform.</li>
+</ul>
+<h2 id="19-4-specific-decision-rules">19.4 Specific decision rules<a class="anchor" href="#19-4-specific-decision-rules" aria-label="Link to this section">#</a></h2>
+<ul>
+<li><strong>Houdini guide workflow passes</strong> if sparse guides remain stable, dense deformation stays in the correct clump, and the final mesh passes collision tolerance.</li>
+<li><strong>tyFlow cloth-card workflow passes</strong> if hard roots remain fixed and the result is visually acceptable without impractical subdivisions/solver steps.</li>
+<li><strong>tyFlow guide-chain workflow passes</strong> only if:<ol>
+<li>chain adjacency is deterministic per spline;</li>
+<li>the segment-crossing fixture does not penetrate;</li>
+<li>root position and orientation can be tuned independently in practice;</li>
+<li><code>tyParticleSkin</code> does not bleed between clumps;</li>
+<li>reset/reinitialize/cache/export is reproducible.</li>
+</ol>
+</li>
+<li><strong>Rigid workflows pass</strong> if packed/instance sharing survives the intended render/export path and collision proxies do not create visible float or tunneling.</li>
+</ul>
+<hr />
+<h1 id="20-proposed-cyrus-artist-workflow">20. Proposed Cyrus artist workflow<a class="anchor" href="#20-proposed-cyrus-artist-workflow" aria-label="Link to this section">#</a></h1>
+<p>The DCC workflows suggest a small, explicit Cyrus workflow rather than exposing a general simulation graph.</p>
+<h2 id="20-1-what-the-artist-selects">20.1 What the artist selects<a class="anchor" href="#20-1-what-the-artist-selects" aria-label="Link to this section">#</a></h2>
+<ol>
+<li>Select a <strong>vegetation Scatter layer</strong>.</li>
+<li>Enable <strong>Vegetation Contact Fit</strong>.</li>
+<li>Pick one or more obstacle bindings:<ul>
+<li>ordinary scene objects;</li>
+<li>explicitly ordered obstacle Scatter layers.</li>
+</ul>
+</li>
+<li>For each source model, choose or validate its preparation profile:<ul>
+<li>Auto root from pivot/local height <strong>only when the asset contract passes</strong>;</li>
+<li>authored root group and guide set;</li>
+<li>visible-mesh binding to guides;</li>
+<li>collision envelope.</li>
+</ul>
+</li>
+</ol>
+<h2 id="20-2-controls-the-artist-needs">20.2 Controls the artist needs<a class="anchor" href="#20-2-controls-the-artist-needs" aria-label="Link to this section">#</a></h2>
+<h3 id="layer-controls">Layer controls<a class="anchor" href="#layer-controls" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Enable Interaction</li>
+<li>Obstacles</li>
+<li>Influence Distance</li>
+<li>Quality / Work Budget</li>
+<li>Manual / Live</li>
+<li>Update / Fit</li>
+<li>Reset Deformation</li>
+<li>Show Affected</li>
+<li>Show Guides</li>
+<li>Show Unresolved Contacts</li>
+</ul>
+<h3 id="source-controls">Source controls<a class="anchor" href="#source-controls" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>Root definition</li>
+<li>Guide definition / segment density</li>
+<li>Root Position: <code>Fixed</code> / <code>Soft</code></li>
+<li>Root Orientation: <code>Free</code> / <code>Soft</code> / <code>Fixed</code></li>
+<li>Bend Stiffness / Flexibility</li>
+<li>Shape Preservation</li>
+<li>Collision Thickness / Clearance</li>
+<li>Maximum Bend</li>
+<li>Binding mode and validation status</li>
+</ul>
+<h3 id="obstacle-binding-controls">Obstacle-binding controls<a class="anchor" href="#obstacle-binding-controls" aria-label="Link to this section">#</a></h3>
+<ul>
+<li>enabled/disabled;</li>
+<li>collision proxy choice if available;</li>
+<li>clearance override;</li>
+<li>priority/direction when binding to another Scatter layer;</li>
+<li>diagnostic display.</li>
+</ul>
+<p>Do not expose substeps, solver iterations, compliance formulas, or internal tolerances as primary artist controls unless testing proves they solve a meaningful artistic decision. Quality/Work Budget should map to bounded internal settings.</p>
+<h2 id="20-3-what-update-does">20.3 What Update does<a class="anchor" href="#20-3-what-update-does" aria-label="Link to this section">#</a></h2>
+<pre><code class="language-text">1. Host thread snapshots:
+   accepted placements + stable IDs
+   source/preparation revisions
+   obstacle geometry/transforms
+   authored interaction settings
+
+2. Native worker stage:
+   select affected instances
+   reuse source guide/binding preprocessing
+   build/query obstacle acceleration
+   solve static root-preserving fit
+   deform/validate visible envelope
+   collect diagnostics and cost counters
+
+3. Validation:
+   root drift
+   orientation drift
+   length/stretch error
+   residual penetration
+   maximum bend
+   budget/iteration status
+   final mesh/bounds validity
+
+4. Publication:
+   if complete and current, atomically publish successor
+   if cancelled/stale/failed, keep prior complete result
+</code></pre>
+<p>Unlike Houdini Vellum and tyFlow, the initial Cyrus feature should not require the artist to choose a start frame, play a timeline, or select a settled frame. The DCC workflows are evidence for the asset and control contract; Cyrus should compute the bounded static result directly.</p>
+<h2 id="20-4-how-failures-appear">20.4 How failures appear<a class="anchor" href="#20-4-how-failures-appear" aria-label="Link to this section">#</a></h2>
+<p>Use explicit categories, not a single red “failed” label:</p>
+<ul>
+<li><strong>Orange — residual contact:</strong> solve completed but penetration exceeds tolerance.</li>
+<li><strong>Magenta — invalid/infeasible:</strong> root inside obstacle, impossible gap, or max bend/length contract cannot be satisfied.</li>
+<li><strong>Yellow — budget-limited:</strong> work/iteration/memory budget ended before quality target.</li>
+<li><strong>Blue — stale/pending:</strong> an obstacle or source changed; previous complete result remains visible until Update.</li>
+<li><strong>Gray — unsupported source:</strong> missing guides/root/binding, opaque proxy, or insufficient segmentation.</li>
+</ul>
+<p>The artist should be able to isolate affected instances and unresolved guides in the viewport. Cyrus must distinguish <strong>computation completed</strong> from <strong>contact quality achieved</strong>.</p>
+<h2 id="20-5-what-happens-after-moving-a-stone">20.5 What happens after moving a stone<a class="anchor" href="#20-5-what-happens-after-moving-a-stone" aria-label="Link to this section">#</a></h2>
+<h3 id="manual-mode">Manual mode<a class="anchor" href="#manual-mode" aria-label="Link to this section">#</a></h3>
+<ol>
+<li>Keep the previous complete deformation visible.</li>
+<li>Mark the layer <strong>Pending: obstacle changed</strong>.</li>
+<li>Do not recompute while the artist continues moving the stone.</li>
+<li>On Update, recompute only instances whose influence/contact region or obstacle dependency changed.</li>
+<li>Publish atomically if successful.</li>
+<li>If the new configuration is infeasible or fails, retain the old complete result and overlay diagnostics; do not silently show a half-built successor.</li>
+</ol>
+<h3 id="live-mode">Live mode<a class="anchor" href="#live-mode" aria-label="Link to this section">#</a></h3>
+<ol>
+<li>Relevant obstacle transform/geometry revision schedules a bounded recompute.</li>
+<li>Coalesce rapid edits and cancel stale jobs.</li>
+<li>Camera motion, selection changes, unrelated animation, and browsing do not invalidate the fit.</li>
+<li>Publish only a complete result whose dependency revisions still match.</li>
+</ol>
+<h3 id="removed-obstacle">Removed obstacle<a class="anchor" href="#removed-obstacle" aria-label="Link to this section">#</a></h3>
+<p>Recompute affected instances toward their source rest shape while preserving placement IDs. Reset does not regenerate scatter distribution.</p>
+<h3 id="source-edit">Source edit<a class="anchor" href="#source-edit" aria-label="Link to this section">#</a></h3>
+<p>Guide topology, root metadata, rest mesh, or binding changes invalidate source preprocessing and all dependent deformation. A material-only change should not invalidate geometry unless it changes opacity-derived visible envelope or collision contract.</p>
+<hr />
+<h1 id="21-direct-answers">21. Direct answers<a class="anchor" href="#21-direct-answers" aria-label="Link to this section">#</a></h1>
+<h2 id="which-application-offers-the-strongest-reference-for-cyrus-grass-interaction">Which application offers the strongest reference for Cyrus grass interaction?<a class="anchor" href="#which-application-offers-the-strongest-reference-for-cyrus-grass-interaction" aria-label="Link to this section">#</a></h2>
+<p><strong>Houdini 22.0.</strong> It has the clearest documented chain from roots and hair constraints, through separate root-position/orientation pins and external collision, to sparse-guide deformation of dense output, caching, diagnostics, and export.</p>
+<h2 id="is-tyflow-still-useful-to-study">Is tyFlow still useful to study?<a class="anchor" href="#is-tyflow-still-useful-to-study" aria-label="Link to this section">#</a></h2>
+<p>Yes. Its rigid-body and cloth-card workflows are practical references for Max-side artist expectations, reset/cache behavior, renderer output, and collision-shape choices. Its generic guide-chain + <code>tyParticleSkin</code> path is a valuable experiment, not yet a qualified reference.</p>
+<h2 id="does-either-application-prove-that-cyrus-needs-timeline-physics">Does either application prove that Cyrus needs timeline physics?<a class="anchor" href="#does-either-application-prove-that-cyrus-needs-timeline-physics" aria-label="Link to this section">#</a></h2>
+<p>No. They show how general-purpose DCCs expose simulation. The earlier Cyrus recommendation remains stronger: implement a bounded static fit for the first release. The DCC study informs controls, asset preparation, validation, and output—not the requirement to copy a timeline solver.</p>
+<h2 id="what-preparation-is-unavoidable">What preparation is unavoidable?<a class="anchor" href="#what-preparation-is-unavoidable" aria-label="Link to this section">#</a></h2>
+<p>For deformable grass: root definition, sufficient guide/mesh segmentation, stable rest state, collision envelope, and guide-to-visible binding. Arbitrary unprepared meshes cannot be assumed to produce meaningful rooted bending.</p>
+<h2 id="what-should-be-copied-into-cyrus">What should be copied into Cyrus?<a class="anchor" href="#what-should-be-copied-into-cyrus" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>separate root position and root orientation;</li>
+<li>sparse guides before dense output;</li>
+<li>explicit collision thickness;</li>
+<li>final visible-geometry validation;</li>
+<li>clear reset/stale state;</li>
+<li>cache/reuse of source preprocessing;</li>
+<li>unresolved-contact diagnostics;</li>
+<li>transform-only sharing for unaffected/rigid instances.</li>
+</ul>
+<h2 id="what-should-not-be-copied">What should not be copied?<a class="anchor" href="#what-should-not-be-copied" aria-label="Link to this section">#</a></h2>
+<ul>
+<li>a visible general-purpose node graph;</li>
+<li>mandatory timeline playback for a static archviz fit;</li>
+<li>point-only guide collision;</li>
+<li>silent auto-reset during every edit in Manual mode;</li>
+<li>a claim that a completed solve is necessarily a successful contact fit;</li>
+<li>renderer-specific output without a materialized universal control path.</li>
+</ul>
+<hr />
+<h1 id="22-official-source-map">22. Official source map<a class="anchor" href="#22-official-source-map" aria-label="Link to this section">#</a></h1>
+<table>
+<thead>
+<tr>
+  <th>Key</th>
+  <th>Official source</th>
+  <th>What it establishes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>H-GUIDE-UTILITY</td>
+  <td>SideFX Guide Utility, Houdini 22.0</td>
+  <td>Root is first curve vertex; roots group; skinprim/skinprimuv; since 22.0.</td>
+</tr>
+<tr>
+  <td>H-GUIDE-DEFORM</td>
+  <td>SideFX Guide Deform, Houdini 22.0</td>
+  <td>Guide interpolation/capture, Point Deform mode, Preserve Shape quasi-static pass; since 22.0.</td>
+</tr>
+<tr>
+  <td>H-HAIR-GENERATE</td>
+  <td>SideFX Hair Generate 2.0</td>
+  <td>Dense hair from guides; stable output with rest attributes.</td>
+</tr>
+<tr>
+  <td>H-VELLUM-CONSTRAINTS</td>
+  <td>SideFX Vellum Constraints</td>
+  <td>Position Pin Type and separate Orientation Pin Type.</td>
+</tr>
+<tr>
+  <td>H-VELLUM-SOLVER</td>
+  <td>SideFX Vellum Solver</td>
+  <td>Dynamic solve, collision input, reset, Full/Minimal limits, substeps/iterations, diagnostics.</td>
+</tr>
+<tr>
+  <td>H-GUIDE-GROOM</td>
+  <td>SideFX Guide Groom</td>
+  <td>Manual sculpt/deintersect, physics brush, root lock/orientation, Set Rest State.</td>
+</tr>
+<tr>
+  <td>H-VELLUM-POST</td>
+  <td>SideFX Vellum Post-Process</td>
+  <td>Collision correction and failed-collision visualization; detangle limitation.</td>
+</tr>
+<tr>
+  <td>H-VELLUM-IO</td>
+  <td>SideFX Vellum I/O 2.0</td>
+  <td>Save/load geometry and optional constraints.</td>
+</tr>
+<tr>
+  <td>H-FILE-CACHE</td>
+  <td>SideFX File Cache 2.0</td>
+  <td>Write once/read from disk workflow.</td>
+</tr>
+<tr>
+  <td>H-TIME-SHIFT</td>
+  <td>SideFX TimeShift</td>
+  <td>Retrieve a specific frame; not itself a cache.</td>
+</tr>
+<tr>
+  <td>H-VDB-COLLIDER</td>
+  <td>SideFX VDB Collider 1.0</td>
+  <td>Static/rigid/deforming VDB collider modes; since 20.5.</td>
+</tr>
+<tr>
+  <td>H-POINT-DEFORM</td>
+  <td>SideFX Point Deform</td>
+  <td>Rest/deformed lattice, piece isolation, capture/deform, normals/attributes.</td>
+</tr>
+<tr>
+  <td>H-RBD-CONFIG</td>
+  <td>SideFX RBD Configure</td>
+  <td>Bullet collision representations, padding/shrink, sleeping.</td>
+</tr>
+<tr>
+  <td>H-RBD-SOLVER</td>
+  <td>SideFX RBD Bullet Solver</td>
+  <td>Input contract, proxy/collision geometry, reset, substeps/world scale.</td>
+</tr>
+<tr>
+  <td>H-ALEMBIC</td>
+  <td>SideFX Alembic ROP</td>
+  <td>Packed transforms and Use Instancing Where Possible.</td>
+</tr>
+<tr>
+  <td>H-USD</td>
+  <td>SideFX USD ROP</td>
+  <td>USD file and animation output.</td>
+</tr>
+<tr>
+  <td>H-VELLUM-EXAMPLES</td>
+  <td>SideFX Vellum Solver examples</td>
+  <td>HairOrient, DynamicAttach and other loadable examples.</td>
+</tr>
+<tr>
+  <td>H-RBD-EXAMPLES</td>
+  <td>SideFX RBD Bullet Solver examples</td>
+  <td>General loadable Bullet examples.</td>
+</tr>
+<tr>
+  <td>T-VERSION</td>
+  <td>tyFlow Version History</td>
+  <td>v2.010 dated 25 May 2026.</td>
+</tr>
+<tr>
+  <td>T-SYSTEM</td>
+  <td>tyFlow System Requirements</td>
+  <td>Max 2020+; CPU/GPU fallbacks; current CCCS CUDA requirement.</td>
+</tr>
+<tr>
+  <td>T-BIRTH-SPLINE</td>
+  <td>tyFlow Birth Spline</td>
+  <td>Particle birth along curves and source-spline index channel.</td>
+</tr>
+<tr>
+  <td>T-OBJECT-BIND</td>
+  <td>tyFlow Object Bind</td>
+  <td>Independent Position/Rotation/Scale binds and rotation Force %.</td>
+</tr>
+<tr>
+  <td>T-PARTICLE-BIND</td>
+  <td>tyFlow Particle Bind</td>
+  <td>Persistent inter-particle binds solved globally.</td>
+</tr>
+<tr>
+  <td>T-ANGLE-BIND</td>
+  <td>tyFlow Angle Bind</td>
+  <td>Angular constraint between adjacent existing binds.</td>
+</tr>
+<tr>
+  <td>T-BIND-SOLVER</td>
+  <td>tyFlow Particle Bind Solver</td>
+  <td>Global bind solver and step tuning.</td>
+</tr>
+<tr>
+  <td>T-COLLISION</td>
+  <td>tyFlow Collision</td>
+  <td>Particle radius against static/deforming scene geometry.</td>
+</tr>
+<tr>
+  <td>T-SPLINE-PATHS</td>
+  <td>tyFlow Spline Paths</td>
+  <td>Convert trajectories/bindings/relationships to splines.</td>
+</tr>
+<tr>
+  <td>T-PARTICLE-SKIN</td>
+  <td>tyFlow tyParticleSkin</td>
+  <td>Deform regular mesh from particles/mesh; capture and element matching.</td>
+</tr>
+<tr>
+  <td>T-POSITION-HAIR</td>
+  <td>tyFlow Position Hair</td>
+  <td>Ornatrix-specific hair positioning.</td>
+</tr>
+<tr>
+  <td>T-CLOTH-BIND</td>
+  <td>tyFlow Cloth Bind</td>
+  <td>Shape/cloth conversion, infinite-mass deactivated particles, cloth stiffness, object collision.</td>
+</tr>
+<tr>
+  <td>T-CCCS</td>
+  <td>tyFlow CCCS</td>
+  <td>Global CUDA cloth collision settings.</td>
+</tr>
+<tr>
+  <td>T-CCCS-FAQ</td>
+  <td>tyFlow CCCS FAQ</td>
+  <td>Troubleshooting; contains older CUDA 10.0 wording.</td>
+</tr>
+<tr>
+  <td>T-PHYSX-SHAPE</td>
+  <td>tyFlow PhysX Shape</td>
+  <td>Dynamic rigid bodies and collision hull choices/limitations.</td>
+</tr>
+<tr>
+  <td>T-PHYSX-COLLISION</td>
+  <td>tyFlow PhysX Collision</td>
+  <td>Static collider hull choices and SDF behavior.</td>
+</tr>
+<tr>
+  <td>T-PHYSX</td>
+  <td>tyFlow PhysX rollout</td>
+  <td>PGS/TGS guidance and global world settings.</td>
+</tr>
+<tr>
+  <td>T-RESET</td>
+  <td>tyFlow Reset FAQ</td>
+  <td>Auto/manual reset and consistency warning behavior.</td>
+</tr>
+<tr>
+  <td>T-CACHE</td>
+  <td>tyFlow Cache</td>
+  <td>Playback cache and subframe memory.</td>
+</tr>
+<tr>
+  <td>T-TYCACHE</td>
+  <td>tyFlow tyCache modifier</td>
+  <td>Changing-topology cache and format non-interchangeability.</td>
+</tr>
+<tr>
+  <td>T-EXPORT</td>
+  <td>tyFlow Particle Export</td>
+  <td>Scene-object and file-format export.</td>
+</tr>
+<tr>
+  <td>T-MESH</td>
+  <td>tyFlow Mesh operator</td>
+  <td>Triangle Mesh and Render Instances modes.</td>
+</tr>
+<tr>
+  <td>T-RENDER</td>
+  <td>tyFlow Rendering FAQ</td>
+  <td>Trimesh universal renderer compatibility.</td>
+</tr>
+<tr>
+  <td>T-EXAMPLE-SCENES</td>
+  <td>tyFlow Version History example list</td>
+  <td>Named CCCS example scenes, including papers against sharp colliders.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="reference-links">Reference links<a class="anchor" href="#reference-links" aria-label="Link to this section">#</a></h1>
+
+<div class="footer-note">Prepared as an evidence-backed workflow extension to the CyrusScatter vegetation-interaction engineering study. Vendor capabilities are classified as documented, inspectable example, proposed recipe, local-test required, or executed.</div>
+</article></main></div>
+</body></html>

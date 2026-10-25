@@ -1,0 +1,3481 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Evidence-backed engineering research on static rooted vegetation contact fitting for CyrusScatter and 3ds Max 2027."><title>CyrusScatter — Vegetation Contact Research</title><style>
+:root{--ink:#182f2b;--muted:#5a6c66;--accent:#17664e;--paper:#fff;--line:#dbe5de;--soft:#eff5f1;--nav:#f4f6f2}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#f7f8f5;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.7;font-size:16px}
+.sidebar{position:fixed;inset:0 auto 0 0;width:282px;padding:30px 22px;background:var(--nav);border-right:1px solid var(--line);overflow-y:auto;z-index:2}
+.brand{font-size:15px;letter-spacing:2.2px;font-weight:800;margin-bottom:8px;color:var(--accent)}.sidetitle{font-size:13px;color:var(--muted);margin-bottom:24px}
+.sidebar nav a{display:block;font-size:12.5px;line-height:1.45;text-decoration:none;padding:9px 10px;margin:2px 0;border-radius:7px;color:#40544d}
+.sidebar nav a:hover{background:#e2ece5;color:var(--accent)}.sidefoot{font-size:11px;color:#718078;border-top:1px solid var(--line);padding-top:16px;margin-top:22px}
+main{margin-left:282px;padding:40px 50px 90px;max-width:1560px}.cover{border-radius:18px;background:linear-gradient(125deg,#173f35,#285347);padding:42px 44px;color:#fff;box-shadow:0 8px 30px #173f350b;margin-bottom:40px}
+.cover .eyebrow{color:#adcebb;font-weight:700;font-size:11px;letter-spacing:2px;margin-bottom:16px}.cover h1{font-size:44px;line-height:1.13;letter-spacing:-1.4px;font-weight:700;margin:0 0 18px;max-width:800px}.cover p{font-size:16px;line-height:1.65;color:#d7e5de;max-width:770px;margin:0 0 20px}
+.meta{display:flex;gap:10px;flex-wrap:wrap;font-size:11px}.meta span{padding:5px 10px;border:1px solid #ffffff30;border-radius:20px;color:#dfebe5}
+.decision-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:28px}.decision-cards div{background:#ffffff0a;border:1px solid #ffffff1d;border-radius:9px;padding:14px 16px}.decision-cards small{display:block;color:#a8c9b7;text-transform:uppercase;letter-spacing:1.2px;font-size:10px;margin-bottom:5px}.decision-cards strong{display:block;font-size:14px;font-weight:600;line-height:1.4}
+.tools{display:flex;justify-content:flex-end;margin-bottom:18px;gap:12px}.tools button{font-family:inherit;font-size:12px;font-weight:600;color:var(--accent);padding:9px 14px;background:var(--paper);border:1px solid var(--line);border-radius:7px;cursor:pointer}
+article{background:var(--paper);border:1px solid var(--line);padding:38px 42px;border-radius:14px}.report-kicker{font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:28px;font-weight:700}
+section.level1{margin:0 0 60px;scroll-margin-top:24px}section.level1+section.level1{border-top:2px solid var(--line);padding-top:40px}
+h1,h2,h3{line-height:1.27;letter-spacing:-.35px;color:#173f35}article h1{font-size:28px;margin:0 0 22px}h2{font-size:20px;margin:34px 0 16px}h3{font-size:17px;margin:28px 0 12px}p{margin:0 0 17px}li{margin-bottom:9px}ul,ol{padding-left:25px;margin:16px 0 22px}
+strong{font-weight:680}a{color:#17694f;text-decoration-thickness:1px;text-underline-offset:3px;overflow-wrap:anywhere}.citation{display:inline-block;font-size:10px;font-weight:700;text-decoration:none;background:#edf5ef;border:1px solid #d7e7dc;padding:0 5px;margin-left:2px;border-radius:4px;vertical-align:middle;line-height:1.7}
+.table-scroll{width:100%;overflow:auto;margin:24px 0 28px;border:1px solid var(--line);border-radius:8px}.table-scroll:focus{outline:2px solid #8bbda4;outline-offset:3px}
+table{border-collapse:collapse;width:100%;min-width:610px;font-size:12.5px;line-height:1.55;margin:0}th{text-align:left;background:#eaf1ec;padding:12px 14px;font-weight:700;color:#23473a;border-bottom:1px solid #cbdcd0;vertical-align:top}td{padding:12px 14px;border-bottom:1px solid #e5ebe6;vertical-align:top;overflow-wrap:break-word}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fafcf9}td:first-child{font-weight:550}
+math{font-size:1.02em}math[display=block]{display:block;overflow-x:auto;overflow-y:hidden;margin:22px 0;padding:18px;background:#f6f8f5;border-left:3px solid #9fc4ad;border-radius:0 6px 6px 0;text-align:center}
+.architecture{margin:30px 0 20px;max-width:100%}.architecture svg{display:block;width:100%;height:auto}
+code{font-family:"Cascadia Code",Consolas,monospace;font-size:.85em;background:#f1f5f0;padding:2px 4px;border-radius:4px}
+footer{font-size:12px;color:var(--muted);margin-top:26px;padding:0 4px}.level1:last-child{margin-bottom:0}
+@media(min-width:1600px){main{margin-left:320px;padding-left:60px;padding-right:60px}.sidebar{width:320px;padding-left:30px;padding-right:30px}}
+@media(max-width:1100px){.sidebar{width:230px;padding:24px 14px}main{margin-left:230px;padding:26px}.cover{padding:30px}.cover h1{font-size:36px}article{padding:28px}.decision-cards{grid-template-columns:1fr}.decision-cards div{padding:10px 14px}}
+@media(max-width:760px){.sidebar{position:relative;width:100%;max-height:270px;border-right:0;border-bottom:1px solid var(--line);padding:20px}.sidebar nav{columns:2;column-gap:18px}.sidetitle,.sidefoot{display:none}.brand{margin-bottom:10px}main{margin-left:0;padding:18px 12px 50px}.cover{padding:28px 22px}.cover h1{font-size:33px}.cover p{font-size:14px}.decision-cards{display:none}article{padding:25px 18px;border-radius:9px}article h1{font-size:24px}h2{font-size:19px}p,li{font-size:14px}.tools{margin-bottom:12px}table{font-size:12px;min-width:680px}.table-scroll{margin-left:0;max-width:100%}}
+@media print{@page{size:A4;margin:16mm 15mm}body{font-size:10pt;background:#fff;line-height:1.5}.sidebar,.tools{display:none}main{margin:0;padding:0;max-width:none}.cover{background:#fff;color:#173f35;padding:15mm 0;border:0;border-bottom:2pt solid #173f35;border-radius:0;box-shadow:none}.cover h1{font-size:30pt}.cover p,.cover .eyebrow{color:#43584d}.meta span{color:#43584d;border-color:#bbcbbf}.decision-cards{display:none}article{padding:0;border:0}section.level1{break-before:page;margin:0}section.level1:first-of-type{break-before:auto}section.level1+section.level1{border:0;padding-top:0}h1{font-size:20pt!important}h2{font-size:13pt;break-after:avoid}p{orphans:3;widows:3}table{min-width:0;font-size:8pt}.table-scroll{overflow:visible;border-radius:0}tr{break-inside:avoid}th,td{padding:6pt}a{color:inherit}.citation{background:none;border:0;font-size:8pt;padding:0 2pt}math[display=block]{font-size:10pt;overflow:visible}.architecture{break-inside:avoid;max-height:230mm}.architecture svg{max-height:230mm}footer{font-size:8pt}}
+</style></head>
+<body>
+<aside class="sidebar" aria-label="Contents"><div class="brand">CYRUSSCATTER</div><div class="sidetitle">Engineering research / 24 Oct 2026</div><nav><a href="#executive-recommendation">1. Executive recommendation</a><a href="#precise-feature-definition-and-initial-limits">2. Precise feature definition and initial limits</a><a href="#comparison-of-plausible-approaches">3. Comparison of plausible approaches</a><a href="#geometry-asset-preparation-and-collision">4. Geometry, asset preparation and collision</a><a href="#recommended-architecture-and-data-flow">5. Recommended architecture and data flow</a><a href="#viewport-rendering-and-bakeexport">6. Viewport, rendering and Bake/export</a><a href="#analytical-cost-and-memory-model">7. Analytical cost and memory model</a><a href="#dependency-and-licensing-assessment">8. Dependency and licensing assessment</a><a href="#artist-workflow-and-controls">9. Artist workflow and controls</a><a href="#bounded-prototype-plan-and-gono-go-gates">10. Bounded prototype plan and go/no-go gates</a><a href="#reproducible-validation-matrix">11. Reproducible validation matrix</a><a href="#open-questions-ranked-by-decision-impact">12. Open questions ranked by decision impact</a><a href="#annotated-bibliography">13. Annotated bibliography</a><a href="#direct-answers">14. Direct answers</a></nav><div class="sidefoot">Research and architecture only<br>50 reference entries · 34 validation cases<br>Equations and diagrams work offline</div></aside>
+<main><div class="tools"><button type="button" onclick="window.print()">Print / save as PDF</button></div>
+<header class="cover"><div class="eyebrow">CONTACT FITTING / ENGINEERING DECISION</div><h1>Vegetation contact<br>without losing the scatter.</h1><p>A technical evaluation of rooted grass deformation, geometry delivery and the evidence required before building the feature.</p><div class="meta"><span>24 October 2026</span><span>3ds Max 2027</span><span>Research only</span><span>No production changes</span></div><div class="decision-cards"><div><small>Recommendation</small><strong>Proceed to a bounded prototype</strong></div><div><small>First scope</small><strong>Prepared grass · fixed obstacles</strong></div><div><small>First gate</small><strong>Viewport / render / Bake agreement</strong></div></div></header>
+<article><div class="report-kicker">
+CYRUSSCATTER / ENGINEERING DECISION REPORT
+</div>
+<section id="executive-recommendation" class="level1">
+<h1>1. Executive recommendation</h1>
+<p><strong>Proceed with a bounded research prototype for static, rooted
+vegetation contact fitting. Do not yet commit to a general vegetation
+physics system or an arbitrary-mesh deformation promise.</strong></p>
+<p>The useful first feature is an optional deformation stage
+<strong>after placements have been accepted</strong>. Prepared grass
+blades retain their roots and instance identities while their shapes are
+adjusted around selected fixed scene objects or fixed objects in another
+Scatter layer. Results are validated, cached, and published as a
+complete generation shared by viewport, rendering, and Bake.</p>
+<p>Use a small CPU implementation with an explicit asset contract and a
+canonical mesh evaluator. Compare three numerical candidates through the
+same input/output path:</p>
+<ol type="1">
+<li><strong>P0 — Static guide fitting:</strong> a length-preserving,
+root-fixed procedural initialization, followed by bounded contact-aware
+refinement of guide directions.</li>
+<li><strong>P1 — XPBD guides:</strong> stretch, rest-bend and root
+constraints with external contact, used to produce a stored pose.</li>
+<li><strong>P2 — Jolt CPU rods:</strong> a separate comparator if the
+actual Physics Lab dependency version and build can be identified and
+qualified.</li>
+</ol>
+<p>P0 is the preferred <em>starting baseline</em>, not a proven winner.
+If it meets the visual and contact requirements more simply, keep it. If
+XPBD or Jolt passes substantially more of the required cases at
+acceptable total cost, choose that evidence instead. A small static
+constrained problem can still require iterations and robust contact
+detection; avoiding dynamics does not make competing constraints
+disappear.</p>
+<section id="what-the-evidence-changes" class="level2">
+<h2>1.1 What the evidence changes</h2>
+<p><strong>A full physical simulation is unnecessary for the initial
+promise.</strong> SideFX documents a Guide Collide With VDB operation
+that fits guide curves against distance fields, separately from its
+Vellum simulation workflow. This establishes a relevant procedural
+workflow precedent, not the implementation or guarantees of a
+prospective Cyrus feature. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidecollidevdb" class="citation" target="_blank" rel="noopener noreferrer">H01</a></p>
+<p><strong>Current Jolt deserves a real comparison.</strong> CPU
+Cosserat rod constraints were added in Jolt 5.4.0, including a
+vegetation example. Jolt 5.6.0 also adds a separate, experimental GPU
+hair path whose environment collisions are limited to convex hulls and
+compound shapes. Neither establishes what is bundled in Physics Lab or
+solves Scatter integration. <a href="https://github.com/jrouwe/JoltPhysics/releases" class="citation" target="_blank" rel="noopener noreferrer">J01</a> <a href="https://github.com/jrouwe/JoltPhysics/releases/tag/v5.6.0" class="citation" target="_blank" rel="noopener noreferrer">J02</a></p>
+<p><strong>Geometry delivery is a first-order risk.</strong> Max 2027
+render-time instancing groups targets around a shared source Mesh or
+INode. Arbitrary different bends are different geometry unless the
+consumer evaluates a supported deformation representation. Compact guide
+storage does not by itself preserve renderer geometry sharing. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" class="citation" target="_blank" rel="noopener noreferrer">M01</a></p>
+<p><strong>There is no universal asset conversion.</strong> Imported
+meshes may be usable, but the system needs roots, meaningful deformable
+pieces, sufficient segmentation, and reliable vertex binding. Opacity
+artwork and dense scans do not provide this anatomical structure
+automatically.</p>
+</section>
+<section id="confidence-and-largest-risks" class="level2">
+<h2>1.2 Confidence and largest risks</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Recommendation or conclusion</th>
+<th>Confidence</th>
+<th>What is still missing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Static contact fitting is practical for prepared narrow grass
+blades</td>
+<td>High as a technical direction</td>
+<td>A Cyrus/Max prototype and visual acceptance</td>
+</tr>
+<tr class="even">
+<td>Preserve existing placements and add sparse deformation by stable
+ID</td>
+<td>High architectural confidence</td>
+<td>Inspection of actual placement identity and publication
+contracts</td>
+</tr>
+<tr class="odd">
+<td>A CPU mesh reference path should precede custom viewport
+shaders</td>
+<td>High</td>
+<td>Exact renderer adapter behavior and costs</td>
+</tr>
+<tr class="even">
+<td>Per-blade guides outperform a single clump guide near contact</td>
+<td>Medium to high for close-up geometry</td>
+<td>Blind comparison on actual Cyrus asset library</td>
+</tr>
+<tr class="odd">
+<td>P0 will be sufficient for the intended first scenes</td>
+<td>Medium</td>
+<td>Multiple-obstacle, initial-penetration and corner tests</td>
+</tr>
+<tr class="even">
+<td>Jolt CPU rods reduce total engineering cost</td>
+<td>Undetermined</td>
+<td>Lab version, whole-segment contact quality, cancellation and
+integration measurements</td>
+</tr>
+<tr class="odd">
+<td>10,000 affected clumps fit an acceptable work/memory budget</td>
+<td>Undetermined</td>
+<td>Measurements on recorded hardware and asset configurations</td>
+</tr>
+<tr class="even">
+<td>Ordinary instancing efficiency survives arbitrary unique bends</td>
+<td>Not a safe assumption</td>
+<td>Renderer-specific measurements or a validated approximation</td>
+</tr>
+</tbody>
+</table>
+</div><p>The biggest unresolved risks are <strong>renderer expansion</strong>,
+<strong>asset preparation effort</strong>, <strong>contact missed by
+reduced geometry</strong>, and <strong>the memory/lifetime cost of
+retaining old and new generations</strong>. Solver choice follows these
+questions.</p>
+</section>
+<section id="research-scope-and-evidence-status" class="level2">
+<h2>1.3 Research scope and evidence status</h2>
+<p>The supplied brief describes Scatter 0.86.9.2, scene schema 59, a
+native C++ core with generated MAXScript authoring, transform-only
+retained geometry, acceptance/rejection collision, and a separate
+Jolt-based Physics Lab 0.3.0. Those statements are treated as
+<strong>supplied context</strong>.</p>
+<p>No CyrusScatter or Physics Lab checkout was present in the provided
+workspace. The listed repository files were not inspected. No repository
+was modified, no production feature was implemented, and no Max,
+renderer, or solver benchmark was executed.</p>
+<p>This report separates:</p>
+<ul>
+<li><strong>Documented facts:</strong> supported by linked primary
+sources.</li>
+<li><strong>Engineering proposals:</strong> suggested representations,
+algorithms, policies and gates.</li>
+<li><strong>Analytical estimates:</strong> arithmetic and scaling under
+stated assumptions.</li>
+<li><strong>Unverified integration:</strong> specific questions assigned
+to local experiments.</li>
+</ul>
+<p>Research was checked on <strong>24 October 2026</strong>. Max
+<strong>2027</strong> is the qualification target. References to
+older-host release notes are labeled historical precedent and do not
+imply tested compatibility. Version numbers identify the
+documentation/releases examined; they are not a claim that every
+installed component is current.</p>
+</section>
+</section>
+<section id="precise-feature-definition-and-initial-limits" class="level1">
+<h1>2. Precise feature definition and initial limits</h1>
+<section id="proposed-feature-rooted-contact-fit" class="level2">
+<h2>2.1 Proposed feature: Rooted Contact Fit</h2>
+<p>Given an already accepted vegetation instance, its prepared rest
+geometry, root constraints, and a set of fixed obstacle snapshots, find
+a visually plausible shape that reduces intersections while respecting
+declared root, length, bend and clearance limits.</p>
+<p>The result is a <strong>static authored pose</strong>. It is not a
+placement filter. Enabling, changing, or resetting contact fitting must
+not change the distribution seed, create different placement identities,
+move roots, or silently delete accepted instances.</p>
+<p>Ordinary scene objects and other-layer objects use the same
+collision-query interface after snapshotting. A scatter-produced stone
+has two identities: its source geometry identity and its stable
+obstacle-layer placement identity. Its center alone is not its collision
+shape.</p>
+</section>
+<section id="honest-claims" class="level2">
+<h2>2.2 Honest claims</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Effect</th>
+<th>Meaning</th>
+<th>What the first version may claim</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Artist-directed shaping</td>
+<td>A plausible stored shape chosen to improve composition/contact</td>
+<td><strong>Yes:</strong> prepared vegetation bends around selected
+obstacles subject to reported limits</td>
+</tr>
+<tr class="even">
+<td>Mechanical bending</td>
+<td>Elastic response to loads and contact, with a specified rest shape
+and constitutive model</td>
+<td><strong>Only if validated:</strong> a rod/static-equilibrium option
+may be described as physically based within its assumptions</td>
+</tr>
+<tr class="odd">
+<td>Dynamic settling</td>
+<td>Time evolution with mass, damping, contact history and convergence
+criteria</td>
+<td>Optional prototype technique, not a required user feature</td>
+</tr>
+<tr class="even">
+<td>Biological growth</td>
+<td>Development driven by light, gravity, growth, branching and
+time</td>
+<td><strong>No:</strong> requires a separate growth model and
+evidence</td>
+</tr>
+<tr class="odd">
+<td>Compression</td>
+<td>Reduced occupied height or sideways accommodation</td>
+<td>Yes as geometric bending; do not imply realistic material crushing
+or volume compression</td>
+</tr>
+<tr class="even">
+<td>Collision-free output</td>
+<td>No forbidden intersection for a stated representation and
+tolerance</td>
+<td>Claim only for a validated generation and specified geometry; no
+universal promise</td>
+</tr>
+</tbody>
+</table>
+</div><p>A plant forced around a pre-existing stone is not necessarily the
+shape produced by physically lowering the stone into the plant.
+Friction, trapping and loading history can change the result. A static
+solver also cannot infer that grass should never have grown beneath a
+rock.</p>
+</section>
+<section id="first-release-boundary" class="level2">
+<h2>2.3 First-release boundary</h2>
+<p>Support prepared, segmented, nonbranching blades or clumps of such
+blades; fixed roots; one-way interaction with static obstacles; positive
+uniform instance scale; exact CPU output for affected plants; and a
+bounded, explicit Update/Fit workflow.</p>
+<p>Include multiple obstacles, irregular closed rocks, and diagnosis of
+impossible contacts. Initially require explicit collision proxies or
+sheet semantics for ambiguous open/nonmanifold obstacles. Unsupported
+sources remain visible and undeformed with an explanation.</p>
+<p>Defer plant–plant interaction, branching mechanics, broad-leaf
+crumpling, moving roots, continuous wind, animated/deforming colliders,
+two-way stone motion, automatic biological reconstruction, and arbitrary
+renderer-only proxy deformation.</p>
+<p><strong>Time policy:</strong> Fit samples the scene at a recorded
+evaluation frame. Scrubbing does not resimulate or silently substitute
+animated source, receiver or placement state. A control labeled “Fit at
+current frame” changes that sample. Live mode reacts to relevant
+authoring edits evaluated at that sample. Time-dependent behavior is a
+separate later contract.</p>
+</section>
+</section>
+<section id="comparison-of-plausible-approaches" class="level1">
+<h1>3. Comparison of plausible approaches</h1>
+<p>The ratings below are qualitative engineering judgments for the
+stated task, not measured rankings. “Memory” distinguishes compact
+control state from the mesh a consumer eventually needs.</p>
+<div class="table-scroll" tabindex="0"><table style="width:100%;">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>Contact appearance and robustness</th>
+<th>Preparation</th>
+<th>Implementation and numerical cost</th>
+<th>Memory and presentation</th>
+<th>Future animation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A. Root-weighted vertex/proximity field</td>
+<td>Good broad outward bending; weak at corners, cavities, conflicting
+obstacles</td>
+<td>Low for coherent upright objects; poor blade independence</td>
+<td>Low initial complexity; roughly query plus vertex work</td>
+<td>Small parameters, but unique rendered positions still expand</td>
+<td>Easy temporal evaluation, difficult stable contact</td>
+</tr>
+<tr class="even">
+<td>A/B. Length-preserving guide fit</td>
+<td>Good candidate for narrow blades; bounded refinement needed for
+competing contacts</td>
+<td>Root and guide per blade/group</td>
+<td>Moderate; few degrees of freedom; local minima and infeasibility
+explicit</td>
+<td>Shared bindings plus sparse guide state; CPU mesh baseline</td>
+<td>Useful rest/binding foundation; no velocity history</td>
+</tr>
+<tr class="odd">
+<td>B. Cage/lattice or one clump guide</td>
+<td>Coherent broad shaping; often a rubber-bundle effect at local
+contact</td>
+<td>Authored cage or capture; modest for clump guide</td>
+<td>Low/moderate depending on basis</td>
+<td>Compact state; sharing survives only if consumer evaluates it</td>
+<td>Good art direction; weak independent blade response</td>
+</tr>
+<tr class="even">
+<td>B. Several guides/bones per clump</td>
+<td>More local response than one guide; coupled binding can fold</td>
+<td>Moderate authoring and binding</td>
+<td>Moderate; guide count trades quality for work</td>
+<td>Shared source/weights; palettes per instance</td>
+<td>Natural extension to animated guides</td>
+</tr>
+<tr class="odd">
+<td>C. PBD / XPBD chains</td>
+<td>Flexible constraints; finite-budget contact and strain errors
+remain</td>
+<td>Rest lengths, bend definition, root conditions</td>
+<td>Moderate; iterations/contact refresh can dominate</td>
+<td>Guide state small relative to mesh; no automatic renderer
+support</td>
+<td>Good dynamic route if state/time semantics added</td>
+</tr>
+<tr class="even">
+<td>C. Discrete elastic / Cosserat rods</td>
+<td>Better twist, anisotropy and mechanical interpretation</td>
+<td>Rest material frames and stiffness meaning</td>
+<td>Higher complexity; robust contact still separate</td>
+<td>Orientations plus positions; explicit mesh binding</td>
+<td>Strong for stems, torsion and branching extensions</td>
+</tr>
+<tr class="odd">
+<td>C. Mass-spring</td>
+<td>Easy experiment; topology/calibration sensitive</td>
+<td>Springs/rest lengths; bend springs needed</td>
+<td>Stiff explicit springs restrict steps; implicit solve adds
+complexity</td>
+<td>Similar reduced state; output still required</td>
+<td>Possible, but not an inherent advantage over rod constraints</td>
+</tr>
+<tr class="even">
+<td>D. Cloth/shell</td>
+<td>Appropriate for broad leaves and wide segmented cards</td>
+<td>2D rest mesh, seams/attachments, orientation</td>
+<td>Higher contact and constraint count</td>
+<td>Mesh-level state and contact; less reduction</td>
+<td>Strong for leaf flutter/folding</td>
+</tr>
+<tr class="odd">
+<td>D. Volumetric soft body</td>
+<td>Usually the wrong model for narrow thin grass</td>
+<td>Tetrahedralization and material model</td>
+<td>High preparation and integration cost</td>
+<td>Volume mesh/state plus render binding</td>
+<td>Useful later for genuinely thick deformable objects</td>
+</tr>
+<tr class="even">
+<td>E. Bent variants</td>
+<td>Excellent efficiency when few shapes cover the scene</td>
+<td>Reusable validated prototypes</td>
+<td>Selection/validation cost; quantization error</td>
+<td>Potentially O(KV + A); repetition and cache growth</td>
+<td>Switching can pop unless continuity is managed</td>
+</tr>
+<tr class="odd">
+<td>E. Hybrid</td>
+<td>Best practical balance if exact fitting is sparse</td>
+<td>Prepared sources and explicit quality rules</td>
+<td>Moderate system complexity</td>
+<td>Unaffected instances shared; exact/variant near contact</td>
+<td>Can evolve later without forcing GPU/dynamics now</td>
+</tr>
+</tbody>
+</table>
+</div><section id="proximity-deformation-useful-baseline-insufficient-guarantee" class="level2">
+<h2>3.1 Proximity deformation: useful baseline, insufficient
+guarantee</h2>
+<p>For rest centerline position
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_0(s)</annotation></semantics></math>,
+a simple rule is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>x</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>w</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mi>w</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">x(s)=x_0(s)+w(s)d(x_0(s)),\qquad w(0)=0.</annotation></semantics></math></p>
+<p>Here
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+is an obstacle-derived displacement, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math>
+controls influence along the plant. Requiring
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mi>′</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">w'(0)=0</annotation></semantics></math>
+helps preserve the root tangent for a smooth field. A height mask is
+reasonable for a consistently oriented single plant; it is not
+equivalent to each blade’s arc coordinate.</p>
+<p>This method can reduce visible intersections without physics.
+However:</p>
+<ul>
+<li>Offset vectors alter lengths and can stretch the mesh.</li>
+<li>Nearest-surface normals can jump at edges and medial axes.</li>
+<li>Summed obstacle repulsion can cancel in a narrow gap.</li>
+<li>A locally outward direction may lead into another obstacle.</li>
+<li>Repeated projection and smoothing can shrink, stretch or
+oscillate.</li>
+<li>Overhangs and cavities require a route around geometry, not simply
+an outward vector.</li>
+<li>A distant root may have a long blade already touching the
+object.</li>
+</ul>
+<p>SideFX’s Guide Process explicitly provides per-segment rotation and
+bend operations. It is a useful authoring precedent; its private
+internals are not evidence for a specific Cyrus algorithm. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guideprocess.html" class="citation" target="_blank" rel="noopener noreferrer">H02</a></p>
+</section>
+<section id="a-stronger-procedural-baseline" class="level2">
+<h2>3.2 A stronger procedural baseline</h2>
+<p>Represent a blade by a pinned root
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>,
+rest lengths
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mo>ℓ</mo><mi>j</mi></msub><annotation encoding="application/x-tex">\ell_j</annotation></semantics></math>,
+and segment frames
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>j</mi></msub><annotation encoding="application/x-tex">R_j</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>=</mo><mi>r</mi><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>x</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>x</mi><mi>j</mi></msub><mo>+</mo><msub><mo>ℓ</mo><mi>j</mi></msub><msub><mi>R</mi><mi>j</mi></msub><msub><mi>e</mi><mi>z</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">x_0=r,\qquad x_{j+1}=x_j+\ell_jR_j e_z.</annotation></semantics></math></p>
+<p>Provided
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>j</mi></msub><annotation encoding="application/x-tex">R_j</annotation></semantics></math>
+is a valid rotation, each <strong>guide segment</strong> keeps its
+length. The first tangent or frame may be clamped, or allowed a declared
+base flexibility. A root-position pin alone permits swiveling of the
+whole blade.</p>
+<p>Start with one or two distributed bend controls for simple rocks.
+Increase to independent segment rotations only when the visual/contact
+test demonstrates the need. Preserve the original curved rest
+configuration; do not make “shape preservation” mean straightening.</p>
+<p>Changing that control basis changes the feasible deformation space.
+Record it in preprocessing/fit keys and compare it separately from an
+iteration or time budget.</p>
+<p>A proposed static objective is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>min</mo><mrow><mi>x</mi><mo>,</mo><mi>R</mi></mrow></munder><mspace width="1.0em"></mspace><msub><mi>w</mi><mi>b</mi></msub><munder><mo>∑</mo><mi>j</mi></munder><mo stretchy="false" form="postfix">∥</mo><msub><mi>κ</mi><mi>j</mi></msub><mo>−</mo><msubsup><mi>κ</mi><mi>j</mi><mn>0</mn></msubsup><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><msub><mover><mo>ℓ</mo><mo accent="true">‾</mo></mover><mi>j</mi></msub><mo>+</mo><msub><mi>w</mi><mi>t</mi></msub><munder><mo>∑</mo><mi>j</mi></munder><mo stretchy="false" form="postfix">∥</mo><msub><mi>τ</mi><mi>j</mi></msub><mo>−</mo><msubsup><mi>τ</mi><mi>j</mi><mn>0</mn></msubsup><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><msub><mover><mo>ℓ</mo><mo accent="true">‾</mo></mover><mi>j</mi></msub><mo>+</mo><msub><mi>w</mi><mi>r</mi></msub><munder><mo>∑</mo><mi>j</mi></munder><msub><mi>a</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>x</mi><mi>j</mi></msub><mo>−</mo><msubsup><mi>x</mi><mi>j</mi><mn>0</mn></msubsup><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">\min_{x,R}\quad
+w_b\sum_j \|\kappa_j-\kappa_j^0\|^2\bar\ell_j
++w_t\sum_j\|\tau_j-\tau_j^0\|^2\bar\ell_j
++w_r\sum_j a_j\|x_j-x_j^0\|^2,</annotation></semantics></math></p>
+<p>subject to roots, guide length, maximum bend, and obstacle clearance
+constraints. Here
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>κ</mi><annotation encoding="application/x-tex">\kappa</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>
+are consistently defined discrete rest-relative bend/twist measures.
+Scale or normalize weights explicitly; arbitrary artist parameters are
+not automatically elastic moduli.</p>
+<p>One concrete convention uses the rotation logarithm of the change
+from each rest relative material-frame rotation to its fitted
+counterpart. Resolve quaternion signs/logarithm branches consistently,
+divide by the associated rest arc length, and separate bend from twist
+in the declared material axes. Scalar bend angles alone cannot preserve
+a three-dimensional rest shape.</p>
+<p>A practical prototype can use bounded coordinate updates or projected
+optimization with a contact penalty</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>E</mi><mi>c</mi></msub><mo>=</mo><msub><mi>w</mi><mi>c</mi></msub><munder><mo>∑</mo><mi>k</mi></munder><mo>min</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><msub><mi>g</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">E_c=w_c\sum_k \min(0,g_k)^2,</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>g</mi><mi>k</mi></msub><annotation encoding="application/x-tex">g_k</annotation></semantics></math>
+is the clearance residual. Penalty minimization <strong>permits
+penetration</strong>; it must be followed by independent validation. An
+explicit feasibility phase or constrained solve may improve this but
+does not guarantee a solution to an infeasible scene. Strong pointwise
+rest attraction can also oppose natural sliding; prioritize rest
+curvature over unnecessarily pinning the entire blade in space.</p>
+<p>This is a geometric fitting problem. It is not a claim that a general
+optimizer will beat XPBD in complexity or runtime.</p>
+</section>
+<section id="xpbd-reasons-to-test-it-reasons-not-to-assume-it-wins" class="level2">
+<h2>3.3 XPBD: reasons to test it, reasons not to assume it wins</h2>
+<p>XPBD introduces compliance and accumulated constraint multipliers to
+address PBD’s timestep/iteration-dependent stiffness. The standard
+scalar update is: <a href="https://mmacklin.com/xpbd.pdf" class="citation" target="_blank" rel="noopener noreferrer">P01</a></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>α</mi><mo accent="true">̃</mo></mover><mo>=</mo><mi>α</mi><mi>/</mi><mi>Δ</mi><msup><mi>t</mi><mn>2</mn></msup><mo>,</mo><mspace width="2.0em"></mspace><mi>Δ</mi><mi>λ</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>C</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mover><mi>α</mi><mo accent="true">̃</mo></mover><mi>λ</mi></mrow><mrow><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>w</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>∇</mi><mi>i</mi></msub><mi>C</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>+</mo><mover><mi>α</mi><mo accent="true">̃</mo></mover></mrow></mfrac><mo>,</mo></mrow><annotation encoding="application/x-tex">\tilde\alpha=\alpha/\Delta t^2,\qquad
+\Delta\lambda=
+\frac{-C(x)-\tilde\alpha\lambda}
+{\sum_i w_i\|\nabla_i C\|^2+\tilde\alpha},</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><msub><mi>w</mi><mi>i</mi></msub><msub><mi>∇</mi><mi>i</mi></msub><mi>C</mi><mspace width="0.167em"></mspace><mi>Δ</mi><mi>λ</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>λ</mi><mo>←</mo><mi>λ</mi><mo>+</mo><mi>Δ</mi><mi>λ</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\Delta x_i=w_i\nabla_i C\,\Delta\lambda,\qquad
+\lambda\leftarrow\lambda+\Delta\lambda.</annotation></semantics></math></p>
+<p>For contact, the multiplier and update must respect the inequality’s
+sign convention and unilateral active set. Equality formulas cannot
+simply be copied without this treatment.</p>
+<p>Initialize multipliers from a declared state for each timestep/fit,
+accumulate them within that solve, and explicitly specify any cross-step
+or cross-fit warm start.</p>
+<p>Use zero inverse mass for pinned positional degrees of freedom. Root
+orientation needs an additional tangent/frame constraint. Rest bend
+angles or material frames preserve the source shape; distance
+constraints alone do not. Position-only chains have no independent
+material twist.</p>
+<p>A finite solve still has convergence error, ordering effects,
+incomplete contacts and different local minima. The Small Steps paper
+explicitly investigates how substeps and iterations alter results; XPBD
+should not be marketed as insensitive to all work-budget choices. <a href="https://mmacklin.com/smallsteps.pdf" class="citation" target="_blank" rel="noopener noreferrer">P02</a></p>
+<p>For static art direction, dynamic settling adds mass, damping,
+timestep and stop conditions that may have no user value. Compare at
+<strong>equal final visual/contact quality</strong>, not equal iteration
+counts. Reset from the same rest pose for comparison; an undocumented
+previous-pose warm start introduces history dependence. Warm starts may
+be a later speed optimization only if their result difference is
+measured.</p>
+</section>
+<section id="rods-shells-and-alternatives" class="level2">
+<h2>3.4 Rods, shells and alternatives</h2>
+<p>Discrete Elastic Rods provides a framed-curve mechanical treatment
+with rest geometry, bending/twist coupling and inextensibility. Position
+and Orientation Based Cosserat Rods offers a position/orientation
+constraint model. These are relevant when cross-section direction and
+twist matter. Neither paper supplies automatic imported-plant
+interpretation or Max presentation. <a href="https://www.cs.columbia.edu/cg/rods/index.html" class="citation" target="_blank" rel="noopener noreferrer">P03</a> <a href="https://animation.rwth-aachen.de/media/papers/2016-SCA-Cosserat-Rods.pdf" class="citation" target="_blank" rel="noopener noreferrer">P04</a></p>
+<p>If local iterations become inefficient for stiff long guides, a
+direct stiff-rod/tree solve and the newer Stable Cosserat Rods
+formulation are credible alternatives. Their existence is a reason to
+keep the test interface small and solver-neutral, not to build a general
+framework in advance. <a href="https://onlinelibrary.wiley.com/doi/10.1111/cgf.13326" class="citation" target="_blank" rel="noopener noreferrer">P05</a> <a href="https://graphics.cs.utah.edu/research/projects/stable-cosserat-rods/" class="citation" target="_blank" rel="noopener noreferrer">P06</a></p>
+<p>Thin shell models are useful for a broad leaf whose two sides curl
+differently. A centerline cannot express those degrees of freedom.
+Discrete Shells explicitly addresses thin structures with curved rest
+shapes. A four-vertex alpha card still needs subdivision before it can
+fold convincingly. <a href="https://multires.caltech.edu/pubs/DS-CDROM/" class="citation" target="_blank" rel="noopener noreferrer">P07</a></p>
+<p>General volumetric simulation is poorly matched to narrow blades: it
+adds interior meshing, volume behavior and state that the visual goal
+rarely needs. Retain it only as a future possibility for thick succulent
+leaves or other soft objects.</p>
+</section>
+<section id="reusable-variants-and-hybrids" class="level2">
+<h2>3.5 Reusable variants and hybrids</h2>
+<p>A variant is a shared deformed source mesh plus ordinary instance
+transforms. Quantize bend direction, bend magnitude, contact height and
+source scale only as far as the resulting error budget allows.</p>
+<p>Selection must be followed by <strong>per-placement validation
+against the actual obstacles</strong>. Two similar guide poses may
+differ at the exact contact point; a visually small variant error can
+reintroduce penetration. Let an instance fall back to a unique shape
+when no variant passes.</p>
+<p>Cache keys include source/preprocessing revision, evaluator version,
+quantized state, transform class and shading layout. A capped cache may
+evict only unreferenced variants. If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+approaches
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>,
+sharing disappears. Material differences can multiply render submissions
+even when geometry is shared.</p>
+<p>For static Fit, discrete shape changes on the next explicit update
+are understandable. In Live mode, thresholds can create jumps.
+Hysteresis reduces switching but adds history dependence; interpolation
+can violate clearance. Do not add temporal interpolation without
+revalidation.</p>
+<p>The strongest initial hybrid is <strong>existing transform-only
+output for unaffected plants plus exact CPU-deformed output near
+contact</strong>. Variants are an optimization to earn through
+measurements.</p>
+</section>
+</section>
+<section id="geometry-asset-preparation-and-collision" class="level1">
+<h1>4. Geometry, asset preparation and collision</h1>
+<section id="asset-class-contract" class="level2">
+<h2>4.1 Asset-class contract</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Asset class</th>
+<th>Useful representation</th>
+<th>Required preparation and honest limit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Single segmented grass blade</td>
+<td>One rest guide with oriented frames and cross-section offsets</td>
+<td>Root group/ring, root tangent, rest shape and enough longitudinal
+edges</td>
+</tr>
+<tr class="even">
+<td>Disconnected clump of many blades</td>
+<td>One guide per blade initially; optional authored subgroups</td>
+<td>Component identity and root for each blade. A common low-height mask
+is only a candidate-generation aid</td>
+</tr>
+<tr class="odd">
+<td>Crossed alpha cards</td>
+<td>Segmented card guides or a small cloth patch</td>
+<td>Card roots and subdivisions. Several painted blades on one card
+cannot move independently without changing the asset</td>
+</tr>
+<tr class="even">
+<td>Dense photogrammetry mesh</td>
+<td>Authored guide/cage plus render binding or prepared replacement</td>
+<td>Density does not identify anatomy; fused blades, holes and noisy
+topology make automatic inference unreliable</td>
+</tr>
+<tr class="odd">
+<td>Broad leaves</td>
+<td>Midrib plus lateral controls for mild bending; shell for
+folding</td>
+<td>Petiole attachment, rest orientation, lateral segmentation and
+surface contact</td>
+</tr>
+<tr class="even">
+<td>Multi-stem/branching plant</td>
+<td>Rooted guide graph with shared junction constraints</td>
+<td>Explicit parent/child and attachment frames; independent fits can
+tear junctions or cause self-contact</td>
+</tr>
+<tr class="odd">
+<td>Renderer proxy</td>
+<td>Verified full render geometry or an explicit prepared source</td>
+<td>A preview mesh is not proof of render geometry. Opaque proxy
+internals are outside the first contract</td>
+</tr>
+</tbody>
+</table>
+</div><p><strong>Minimum prototype contract:</strong> an explicit static
+triangle mesh made of identifiable, nonbranching, narrow blades;
+authored or user-approved roots and guides; stable vertex/face/map
+correspondence; known units; preserved material and normal information;
+translation, rotation and positive uniform scale. Prototype guide counts
+should cover 4, 8 and 16 segments per blade. These are test levels, not
+universal adequacy rules.</p>
+<p>Reject or mark unsupported transforms/assets visibly until qualified.
+Do not quietly substitute a low-resolution proxy, flatten an entire
+clump into one mechanical stem, or claim that arbitrary imports are
+prepared automatically.</p>
+<p><strong>Broader future contract:</strong> versioned authored guide
+graphs, root weights, per-length thickness/flexibility, rest frames,
+branch junctions, shell patches, explicit bone/cage binding, and a
+supported full-geometry adapter for each proxy type.</p>
+</section>
+<section id="root-and-guide-identification" class="level2">
+<h2>4.2 Root and guide identification</h2>
+<p>A pivot/local-height mask is sufficient for a coarse artistic bend of
+a consistently upright coherent object. It can also identify candidate
+roots on clean strip-like blades with a reliable growth axis.</p>
+<p>It fails for curled or hanging leaves, blades whose tips return near
+the ground, several root elevations, sloped planting, inconsistent
+pivots and cards containing many painted plants. Neither a pivot nor
+vertex count establishes the growth direction.</p>
+<p>A bounded automatic assistant may:</p>
+<ol type="1">
+<li>Find logical connected components while preserving render
+seams.</li>
+<li>Use an artist-selected growth axis or root region to propose root
+candidates.</li>
+<li>Recognize a strip/tube topology, trace its centerline and resample
+by arc length.</li>
+<li>Display roots, guide direction and confidence for approval.</li>
+<li>Refuse ambiguous branches, fused blades and non-strip
+components.</li>
+</ol>
+<p>Do not indiscriminately weld close vertices: separate blades can
+touch in space. UV or normal seams may split a single blade into
+apparent components. Mesh inference therefore needs logical connectivity
+distinct from the final render indexing.</p>
+<p>Authored root groups, vertex colors or curves are useful when their
+semantics are explicit. A random vertex-color channel cannot be assumed
+to mean stiffness. Bones are an optional preparation route, not a
+requirement for every source.</p>
+<p>SideFX Vellum Hair distinguishes root position from orientation
+constraints, and explicitly treats its basic hair model as unbranching,
+with splitting/welding for branched input. That is a useful preparation
+precedent, not proof of a general plant extractor. <a href="https://www.sidefx.com/docs/houdini/shelf/vellumhair.html" class="citation" target="_blank" rel="noopener noreferrer">H03</a></p>
+</section>
+<section id="binding-visible-geometry-to-reduced-guides" class="level2">
+<h2>4.3 Binding visible geometry to reduced guides</h2>
+<p>For a render vertex
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+assigned to guide
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>,
+store rest arc coordinate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>,
+a segment/interpolation coordinate, and cross-section offset</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>o</mi><mi>v</mi></msub><mo>=</mo><msubsup><mi>R</mi><mi>g</mi><mn>0</mn></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>T</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>v</mi><mo>−</mo><msubsup><mi>c</mi><mi>g</mi><mn>0</mn></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">o_v=R_g^0(s)^T\left(v-c_g^0(s)\right).</annotation></semantics></math></p>
+<p>The proposed deformation is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mi>′</mi><mo>=</mo><msub><mi>c</mi><mi>g</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>R</mi><mi>g</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>s</mi><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>o</mi><mi>v</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">v'=c_g(s)+R_g(s)o_v.</annotation></semantics></math></p>
+<p>Capture is restricted to the blade/component ID. Nearest-guide
+binding across interleaved blades causes cross-talk. A root ring can be
+held exactly fixed, with a smooth transition above it. Multiple-guide
+weights require explicit piece/junction rules and normalization.</p>
+<p>Use rotation-minimizing transport or another documented stable
+material-frame rule; a Frenet frame is undefined at zero curvature and
+can flip. Preserve authored twist where present. Detect zero-length
+segments, nearly reversed directions and inconsistent quaternion signs.
+The RMF literature supplies a relevant frame-construction reference. <a href="https://www.microsoft.com/en-us/research/publication/computation-rotation-minimizing-frames/" class="citation" target="_blank" rel="noopener noreferrer">P08</a></p>
+<p>This mapping does <strong>not</strong> make the visible surface
+inextensible. The outside of a wide bend can stretch even when the
+centerline length is exact. Measure mesh edge/area strain, folding and
+contacts separately. An ordinary rotation can reverse a triangle normal
+relative to its world-space rest normal; that alone is not an inversion
+test. Use transported local orientation, nondegenerate area and
+intersection checks.</p>
+<p>SideFX Wire Deform documents rest/deformed capture, frame behavior
+and normal handling; it also warns that a coordinate-only cache
+assumption becomes invalid when topology or attributes change. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/wiredeform.html" class="citation" target="_blank" rel="noopener noreferrer">H04</a></p>
+</section>
+<section id="segmentation-shading-and-opacity" class="level2">
+<h2>4.4 Segmentation, shading and opacity</h2>
+<p>For a locally circular bend with curvature
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>κ</mi><annotation encoding="application/x-tex">\kappa</annotation></semantics></math>
+and segment length
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>ℓ</mo><annotation encoding="application/x-tex">\ell</annotation></semantics></math>,
+small-angle chord error is approximately</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mtext mathvariant="normal">chord</mtext></msub><mo>≈</mo><mi>κ</mi><msup><mo>ℓ</mo><mn>2</mn></msup><mi>/</mi><mn>8</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">e_{\text{chord}}\approx\kappa\ell^2/8.</annotation></semantics></math></p>
+<p>A proposed preparation criterion is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>ℓ</mo><mo>≤</mo><msqrt><mrow><mn>8</mn><msub><mi>ϵ</mi><mtext mathvariant="normal">shape</mtext></msub><mi>/</mi><msub><mi>κ</mi><mo>max</mo></msub></mrow></msqrt></mrow><annotation encoding="application/x-tex">\ell\leq\sqrt{8\epsilon_{\text{shape}}/\kappa_{\max}}</annotation></semantics></math>,
+together with a maximum turn per segment. For a 0.10 m bend radius and
+0.025 m segments, the estimate is about <strong>0.78 mm</strong>. This
+is geometry arithmetic, not a visual-quality measurement. A sharp rock
+edge still needs a finite bend radius.</p>
+<p>Increasing guide samples does not add visible mesh vertices.
+Non-destructive preprocessing subdivision can be offered explicitly, but
+it creates new topology, binding, memory and export obligations.</p>
+<p>Preserve UV coordinates and UV-face indexing, face material IDs,
+vertex colors, smoothing groups and split-normal identity. Recompute
+geometric normals/bounds from final positions. For authored normals,
+choose a documented transport rule or a nonsingular deformation-Jacobian
+inverse transpose; blindly regenerating smooth normals can destroy
+deliberately edited grass shading. Tangents must remain consistent with
+UVs, deformed positions and handedness.</p>
+<p>Opacity affects appearance, not the geometric collision boundary. A
+full rectangle is conservative but can push transparent card regions
+away unnecessarily. Alpha-aware collision would require texture access,
+threshold/filter semantics, UV interpretation, resolution and
+invalidation. Defer it initially. Label the mode “card fitting” and test
+silhouettes/shadows separately from mesh geometry.</p>
+<p>Post-solve smoothing or subdivision must precede final contact
+validation. SideFX explicitly documents that these operations can
+reintroduce collisions and that independent corrective point moves can
+harm appearance. <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumpostprocess.html" class="citation" target="_blank" rel="noopener noreferrer">H05</a></p>
+</section>
+<section id="scale-mirroring-shear-and-invalidation" class="level2">
+<h2>4.5 Scale, mirroring, shear and invalidation</h2>
+<p>Convert Max system units into a declared solver unit, preferably
+meters. Root anchoring and clearances must use physical scale, not
+display-unit labels. Rebase solve regions near the plant and use double
+precision for snapshot/query arithmetic where needed. Rebasing cannot
+recover detail already lost in a float world-coordinate conversion.</p>
+<p>For positive uniform scale, rest lengths, blade width, offsets and
+collision thickness scale coherently. An artistic “flexibility” can be
+scale-normalized; a physical bending stiffness follows a
+material/cross-section model and cannot use that same rule without
+explanation.</p>
+<p>For nonuniform scale or shear, transform the rest geometry fully and
+recompute rest lengths/frames in the solve metric. A local sphere
+becomes an ellipsoid; multiplying local SDF distances by one scale is
+generally wrong. Mirroring changes orientation and tangent handedness.
+Qualify winding, one/two-sided materials and normals explicitly. Reject
+singular transforms.</p>
+<p>Invalidate preprocessing/bindings on changes to topology, vertex
+order, rest positions, logical blade IDs, roots, guides, pivot/growth
+convention, source object-space transform, subdivision or binding
+algorithm version. A same-count reordered mesh is still a different
+binding.</p>
+<p>UV/material-only edits normally invalidate shading/output caches, not
+the guide solve, unless collision geometry was derived from
+alpha/displacement. A source rest-position edit invalidates the solve
+even when topology is unchanged. Renderer displacement and any
+downstream geometry modifier must either be represented in the collision
+contract or explicitly excluded.</p>
+</section>
+<section id="broad-phase-select-reachable-geometry-not-nearest-centers" class="level2">
+<h2>4.6 Broad phase: select reachable geometry, not nearest centers</h2>
+<p>Use a spatial index over plant reach envelopes and obstacle-instance
+bounds. A BVH handles mixed sizes without a mandatory uniform cell size;
+a grid/hash may be simpler for regular grass populations, but long
+objects occupy many cells and dense buckets can degenerate.</p>
+<p>For maximum permitted blade length
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mo>max</mo></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><msub><mi>ϵ</mi><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">h</mi><mo mathvariant="normal">,</mo><mi mathvariant="normal">m</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>L</mi><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">L_{\max}=(1+\epsilon_{\mathrm{stretch,max}})L_{\mathrm{rest}}</annotation></semantics></math>,
+a conservative contact-reach sphere is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mtext mathvariant="normal">reach</mtext></msub><mo>=</mo><msub><mi>L</mi><mo>max</mo></msub><mo>+</mo><msub><mi>r</mi><mo>max</mo></msub><mo>+</mo><mi>c</mi><mo>+</mo><msub><mi>ϵ</mi><mtext mathvariant="normal">budget</mtext></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">R_{\text{reach}}=L_{\max}+r_{\max}+c+\epsilon_{\text{budget}},</annotation></semantics></math></p>
+<p>where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><mo>max</mo></msub><annotation encoding="application/x-tex">r_{\max}</annotation></semantics></math>
+bounds the maximum binding-offset norm and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+is clearance. Include binding/chord uncertainty in the budget. Expand
+the query by the extra artistic influence/push range when that mode can
+shape plants without contact. A tighter bound is valid only if the fit’s
+permitted displacement/bend range proves it conservative.</p>
+<p>Rest bounds alone can miss geometry reached after bending. Include
+prior deformed bounds for update discovery and either the full reach
+envelope or swept/current bounds with candidate refresh. Influence
+distance is an artistic falloff <strong>in addition to</strong> contact
+discovery, not a root-center cutoff.</p>
+<p>Collect every relevant obstacle. Use a top-level index for
+scene/obstacle instances and reusable source-local triangle BVHs for
+rigid geometry. Another Scatter layer can provide many transforms
+referencing one shared rock collision mesh.</p>
+<p>If a stone moves, query the union of its old/new bounds, the plants
+previously depending on it, and the reach index. Plants that stop
+touching must be refitted or restored to rest on the next update. No
+longer intersecting the new obstacle bounds does not make their old
+deformation valid.</p>
+</section>
+<section id="narrow-phase-and-contact-semantics" class="level2">
+<h2>4.7 Narrow phase and contact semantics</h2>
+<p>The initial reference path should use <strong>analytic spheres/boxes
+where authored and triangle BVHs elsewhere</strong>, with explicit
+segment/capsule contact. CGAL’s AABB manual documents segment
+intersection queries, but its stock distance interface is point-based;
+citing the library is not proof of a ready capsule-distance solution. <a href="https://doc.cgal.org/latest/AABB_tree/" class="citation" target="_blank" rel="noopener noreferrer">C01</a></p>
+<p>A simple falsification case is a segment from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(-2,0,0)</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(2,0,0)</annotation></semantics></math>
+through a unit sphere. Both endpoints are outside; the segment crosses
+the sphere. Sparse point-only tests miss it.</p>
+<p>For each guide edge, check segment–triangle distance against its
+envelope radius plus clearance, and detect crossings. A segment wholly
+inside a closed solid also needs inside/outside classification. At a
+zero-distance crossing, the separation vector supplies no unique normal:
+use geometric features/manifolds, a known feasible side, or an explicit
+recovery preference. Report ambiguity instead of normalizing a zero
+vector.</p>
+<p>A centerline capsule with half-width radius may be overly
+conservative for flat ribbons. Compare that baseline with a thin ribbon
+collision proxy. In either case, validate the <strong>final deformed
+render triangles</strong>. A clear centerline does not certify the leaf
+edges.</p>
+<p>Half-width alone also does not prove that a capsule encloses
+triangles across guide joints or interpolated frames. Derive the
+envelope from the binding/proxy or add a justified chord/binding margin.
+Treat an unproven capsule as a fitting approximation.</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Obstacle case</th>
+<th>Required interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Closed solid</td>
+<td>Inside/outside classification plus surface contact and
+thickness</td>
+</tr>
+<tr class="even">
+<td>Open thin sheet</td>
+<td>Two-sided finite-thickness surface; no inferred solid interior</td>
+</tr>
+<tr class="odd">
+<td>Concave rock/cavity</td>
+<td>Triangle geometry or a verified approximation; a single convex hull
+fills cavities</td>
+</tr>
+<tr class="even">
+<td>Sharp corner</td>
+<td>Geometric feature normals or contact manifold; avoid smoothed
+shading normals for contact</td>
+</tr>
+<tr class="odd">
+<td>Multiple stones/narrow gap</td>
+<td>Separate constraints; compare available gap to envelope/clearance;
+do not average opposing forces away</td>
+</tr>
+<tr class="even">
+<td>Nonmanifold/self-intersecting mesh</td>
+<td>Explicit topology warning and proxy/classification policy</td>
+</tr>
+<tr class="odd">
+<td>Deep initial penetration</td>
+<td>Recovery stage plus pinned-region feasibility test; nearest
+projection alone may choose the wrong side</td>
+</tr>
+<tr class="even">
+<td>Thin object</td>
+<td>Thickness and segment tests; do not assume voxelization or coarse
+stepping preserves it</td>
+</tr>
+</tbody>
+</table>
+</div><p>Fast winding numbers provide a useful approximate classification
+technique for imperfect geometry. Their numerical interpretation does
+not determine the artist’s intended interior of an open object. <a href="https://www.dgp.toronto.edu/projects/fast-winding-numbers/" class="citation" target="_blank" rel="noopener noreferrer">C02</a></p>
+<p>Contact generation must refresh after a fit moves the blade into new
+regions. A contact budget cannot silently truncate the obstacle list and
+still produce a quality-passed status.</p>
+<p><strong>Clearance error budget:</strong> reserve separate bounds for
+obstacle-proxy approximation, sampled-field error, guide/binding/chord
+approximation, variant/output quantization, floating-point error and
+permitted downstream expansion. Their conservative sum must fit inside
+the chosen safety margin. Direct final-mesh validation against full
+obstacle geometry can replace relevant proxy/binding terms, but it does
+not remove output rounding or later displacement. Report a missed
+positive clearance separately from actual geometric penetration.</p>
+</section>
+<section id="bvh-versus-sdf" class="level2">
+<h2>4.8 BVH versus SDF</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Triangle BVH</th>
+<th>Signed/unsigned distance field</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Preprocessing</td>
+<td>Typical O(T log T) build; reusable per rigid source</td>
+<td>Sampling/rasterization, sign/flood operations and optional gradient
+construction</td>
+</tr>
+<tr class="even">
+<td>Query scaling</td>
+<td>Often O(log T + hits); worst O(T)</td>
+<td>Dense point lookup O(1); sparse traversal and segment sampling add
+work</td>
+</tr>
+<tr class="odd">
+<td>Shape fidelity</td>
+<td>Source triangles within numerical tolerance</td>
+<td>Depends on voxel size, interpolation and field error</td>
+</tr>
+<tr class="even">
+<td>Corners/thin features</td>
+<td>Preserved by geometry; contact feature changes need care</td>
+<td>Can round corners, close gaps or erase thin surfaces</td>
+</tr>
+<tr class="odd">
+<td>Open meshes</td>
+<td>Surface contact available; sign is separate</td>
+<td>Signed interior requires an interpretation; unsigned shell still has
+escape-side ambiguity</td>
+</tr>
+<tr class="even">
+<td>Transform reuse</td>
+<td>Local BVH and transform; handle metric changes</td>
+<td>Rigid/uniform transform easy; affine distance scaling requires
+care</td>
+</tr>
+<tr class="odd">
+<td>Memory</td>
+<td>O(T + obstacle vertices)</td>
+<td>Dense O(nx ny nz); sparse surface band plus tree overhead</td>
+</tr>
+<tr class="even">
+<td>Best first role</td>
+<td>Baseline contact and final validator</td>
+<td>Optional amortized accelerator for repeated smooth queries</td>
+</tr>
+</tbody>
+</table>
+</div><p>OpenVDB’s examined MeshToVolume documentation distinguishes signed
+and unsigned conversion and explicitly requires a closed surface for its
+signed conversion. Retrieved docs identify version 13.1.0; this is a
+documentation version, not a verified latest-stable-release claim. <a href="https://www.openvdb.org/documentation/doxygen/MeshToVolume_8h_source.html" class="citation" target="_blank" rel="noopener noreferrer">C03</a></p>
+<p><strong>Analytical dense-grid storage, scalar float32 only:</strong>
+256³ = 64 MiB; 512³ = 512 MiB; 1024³ = 4 GiB. Stored float3 gradients
+add three times the scalar bytes. Halving voxel spacing multiplies dense
+storage by eight. A 10 m domain at 512 samples has roughly 19.5 mm
+spacing—too coarse to assume millimeter contact fidelity.</p>
+<p>For a surface area
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>,
+voxel spacing
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>
+and narrow-band half-width
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+a rough active-voxel estimate is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>Q</mi><mi>b</mi><mi>/</mi><msup><mi>h</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">2Qb/h^3</annotation></semantics></math>,
+before overlap and tree overhead. If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mi>k</mi><mi>h</mi></mrow><annotation encoding="application/x-tex">b=kh</annotation></semantics></math>,
+this becomes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>k</mi><mi>Q</mi><mi>/</mi><msup><mi>h</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">2kQ/h^2</annotation></semantics></math>.
+A narrow band saves storage but may have no usable gradient deep inside
+a stone.</p>
+<p>For an illustrative binary BVH with fewer than
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>T</mi></mrow><annotation encoding="application/x-tex">2T</annotation></semantics></math>
+nodes of 32 bytes, uint32 triangle indices and float3 obstacle vertices,
+storage is roughly</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mi>T</mi><mo>+</mo><mn>12</mn><mi>T</mi><mo>+</mo><mn>12</mn><msub><mi>V</mi><mi>o</mi></msub><mspace width="0.222em"></mspace><mtext mathvariant="normal">bytes</mtext><mi>.</mi></mrow><annotation encoding="application/x-tex">64T+12T+12V_o\ \text{bytes}.</annotation></semantics></math></p>
+<p>At
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><msup><mn>10</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">T=10^6</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mi>o</mi></msub><mo>=</mo><mn>0.5</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">V_o=0.5\times10^6</annotation></semantics></math>,
+these arrays total about <strong>82 MB decimal / 78.2 MiB</strong>,
+excluding scratch, metadata and extra caches. This is not CGAL’s
+measured allocation.</p>
+<p>A useful analytical check: an exact distance field is 1-Lipschitz.
+Samples spaced at most
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>
+along a straight segment, all above required clearance by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">h/2</annotation></semantics></math>,
+bound the unsampled distance. An interpolated SDF needs an additional
+verified field-error bound. Without that bound, sampling remains a
+heuristic.</p>
+<p><strong>Recommendation:</strong> BVH first; add an SDF only if
+measured repeated-query cost justifies build time, memory and a verified
+error budget. Keep geometric validation even if an SDF supplies the fit
+direction.</p>
+</section>
+<section id="independence-and-coupling" class="level2">
+<h2>4.9 Independence and coupling</h2>
+<p>With fixed obstacles, no plant–plant contact, no shared cage and no
+branch junctions, different blades can be solved independently. Several
+stones still couple the constraints within each blade.</p>
+<p>A shared clump cage, plant–plant collision, a branch graph or moving
+obstacle response creates coupled islands. Influence can propagate
+beyond the original selection. Vegetation-to-vegetation contact also
+changes the candidate-pair count from vegetation-versus-fixed-obstacles
+to a potentially dense deformable contact graph. Treat it as a separate
+future problem.</p>
+</section>
+<section id="infeasible-and-ambiguous-cases" class="level2">
+<h2>4.10 Infeasible and ambiguous cases</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Case</th>
+<th>Detection</th>
+<th>Feedback and default action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pinned root/ring inside solid or forbidden shell</td>
+<td>Root and pinned-region classification</td>
+<td>“Root conflicts with obstacle.” Preserve result; require an explicit
+obstacle/root/clearance change</td>
+</tr>
+<tr class="even">
+<td>Blade trapped or gap too small</td>
+<td>Available-gap bound where possible; opposing persistent
+residuals</td>
+<td>Highlight both obstacles; no silent clearance reduction</td>
+</tr>
+<tr class="odd">
+<td>Excessive stretch/bend needed</td>
+<td>Separate strain, angle and contact limits</td>
+<td>Reject successor; offer authored flexibility/shape change</td>
+</tr>
+<tr class="even">
+<td>Too few visible segments</td>
+<td>Preflight curvature/edge test and rendered close-up</td>
+<td>Request prepared source or explicit subdivision</td>
+</tr>
+<tr class="odd">
+<td>Folded/degenerate binding</td>
+<td>Area, local orientation, edge strain and intersection checks</td>
+<td>Reject affected proposal; highlight faces; rebind or reduce
+bend</td>
+</tr>
+<tr class="even">
+<td>Contact or memory budget exceeded</td>
+<td>Admission estimates and checked counters</td>
+<td>Cancel whole successor; retain prior complete generation</td>
+</tr>
+<tr class="odd">
+<td>Iteration cap reached</td>
+<td>Fresh final contact and strain evaluation</td>
+<td>“Completed; quality not achieved,” with residuals</td>
+</tr>
+<tr class="even">
+<td>Unknown inside/outside or unstable normal</td>
+<td>Topology/sign checks and feature ambiguity</td>
+<td>Request proxy or explicit sheet semantics</td>
+</tr>
+<tr class="odd">
+<td>Missing source/obstacle</td>
+<td>Stable-reference resolution</td>
+<td>Keep frozen output when available; show stale/missing dependency; no
+implicit rebinding</td>
+</tr>
+</tbody>
+</table>
+</div><p>Default publication is strict: an incomplete or quality-failing
+successor is not published. A future explicit <strong>Accept partial
+fit</strong> action may create a complete, flagged generation containing
+known unresolved instances, but that is a deliberate authored choice. It
+is not a hidden fallback during a failed job.</p>
+<p>Diagnostics store stable plant ID; guide/segment or render-face ID;
+obstacle node/layer/instance identity; feature ID; contact
+position/normal; target clearance; residual; and failure reason. Cap
+rendered diagnostic markers separately from total counts and disclose
+truncation.</p>
+<p>Job status and quality status are distinct. “Finished iterating” is a
+computational event; “passed contact quality” is a validation
+result.</p>
+</section>
+</section>
+<section id="recommended-architecture-and-data-flow" class="level1">
+<h1>5. Recommended architecture and data flow</h1>
+<section id="integrate-after-accepted-placement" class="level2">
+<h2>5.1 Integrate after accepted placement</h2>
+<p>The ordering is:</p>
+<p><strong>placement generation → projection/spacing/acceptance/Relax →
+accepted placement snapshot → contact fitting → final validation →
+presentation.</strong></p>
+<p>Contact fitting consumes accepted placements. The receiving ground is
+not automatically a collider: if it is selected, the authored attachment
+region needs an explicit ground-contact exemption; that exemption must
+not suppress stone contacts. Contact fitting does not reuse the
+acceptance/rejection machinery to remove vegetation. An upstream
+placement edit invalidates corresponding deformation; a downstream
+cleanup/Relax step must not silently move the fitted roots.</p>
+<p>If future placement rules deliberately avoid roots beneath rocks,
+expose that as a separate placement decision. Its changed population is
+not a successful deformation result.</p>
+<figure class="architecture">
+<svg role="img" aria-labelledby="flowtitle flowdesc" viewbox="0 0 1000 970" xmlns="http://www.w3.org/2000/svg">
+<title id="flowtitle">
+Static contact fit: ownership and publication
+</title>
+<desc id="flowdesc">Host captures sources, settings and obstacles.
+Numerical workers select affected plants, fit guides and validate final
+meshes. Host stages output and atomically publishes a complete
+generation. Failed, cancelled or stale jobs preserve previous output.
+Viewport, render and Bake read a
+generation.</desc><defs><marker id="arrow" viewbox="0 0 10 10" refx="9" refy="5" markerwidth="7" markerheight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#43816e"></path></marker></defs><rect width="1000" height="970" rx="16" fill="#f8faf9"></rect><text x="40" y="33" font-size="14" font-weight="700" fill="#647b73" letter-spacing="1.5">HOST
+CAPTURE</text><rect x="70" y="55" width="570" height="65" rx="12" fill="#eef2f9" stroke="#a9bbd7" stroke-width="1.5"></rect><text x="355.0" y="83.5" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Settings
++ accepted
+placements</text><text x="355.0" y="110.5" text-anchor="middle" font-size="15" fill="#526963">Stable
+identities; no placement
+rejection</text><path d="M355 120 V138 H205 V155" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><path d="M355 138 H505 V155" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><rect x="70" y="155" width="270" height="75" rx="12" fill="#eef2f9" stroke="#a9bbd7" stroke-width="1.5"></rect><text x="205.0" y="188.5" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Prepared
+sources</text><text x="205.0" y="215.5" text-anchor="middle" font-size="15" fill="#526963">Roots,
+guides, vertex
+binding</text><rect x="370" y="155" width="270" height="75" rx="12" fill="#eef2f9" stroke="#a9bbd7" stroke-width="1.5"></rect><text x="505.0" y="188.5" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Obstacle
+snapshots</text><text x="505.0" y="215.5" text-anchor="middle" font-size="15" fill="#526963">Scene
+objects or fixed
+layers</text><path d="M205 230 V252 H355 V282" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><path d="M505 230 V252 H355" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><text x="720" y="302" font-size="14" font-weight="700" fill="#647b73" letter-spacing="1.5">NATIVE
+WORKERS</text><rect x="70" y="282" width="570" height="72" rx="12" fill="#eef5f3" stroke="#93b9ac" stroke-width="1.5"></rect><text x="355.0" y="314.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Select
+all reachable
+contacts</text><text x="355.0" y="341.0" text-anchor="middle" font-size="15" fill="#526963">Owned
+arrays and reusable spatial
+indices</text><path d="M355 354 V390" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><rect x="70" y="390" width="570" height="80" rx="12" fill="#eef5f3" stroke="#93b9ac" stroke-width="1.5"></rect><text x="355.0" y="426.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Prepare
+/ fit
+guides</text><text x="355.0" y="453.0" text-anchor="middle" font-size="15" fill="#526963">P0
+static fit · P1 XPBD · P2 Jolt CPU
+comparison</text><path d="M355 470 V510" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><rect x="70" y="510" width="570" height="80" rx="12" fill="#eef5f3" stroke="#93b9ac" stroke-width="1.5"></rect><text x="355.0" y="546.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Validate
+final mesh +
+constraints</text><text x="355.0" y="573.0" text-anchor="middle" font-size="15" fill="#526963">Contact,
+roots, strain, folds and error
+budget</text><path d="M640 550 H720" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)" stroke-dasharray="6 5"></path><rect x="720" y="505" width="245" height="90" rx="12" fill="#fff3df" stroke="#d1ae6e" stroke-width="1.5"></rect><text x="842.5" y="546.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Failed
+/
+cancelled</text><text x="842.5" y="573.0" text-anchor="middle" font-size="15" fill="#526963">Or
+stale dependency
+token</text><text x="842" y="625" text-anchor="middle" font-size="17" fill="#765322">Keep
+previous
+complete</text><text x="842" y="648" text-anchor="middle" font-size="17" fill="#765322">generation
+and report
+why</text><path d="M355 590 V635" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><text x="720" y="712" font-size="14" font-weight="700" fill="#647b73" letter-spacing="1.5">HOST
+PUBLICATION</text><rect x="70" y="635" width="570" height="80" rx="12" fill="#eef2f9" stroke="#a9bbd7" stroke-width="1.5"></rect><text x="355.0" y="671.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Stage
+native / display
+resources</text><text x="355.0" y="698.0" text-anchor="middle" font-size="15" fill="#526963">Recheck
+revisions; account for pinned
+memory</text><path d="M355 715 V755" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><rect x="70" y="755" width="570" height="70" rx="12" fill="#173f35" stroke="#173f35" stroke-width="1.5"></rect><text x="355.0" y="786.0" text-anchor="middle" font-size="20" font-weight="650" fill="#ffffff">Atomically
+publish
+generation</text><text x="355.0" y="813.0" text-anchor="middle" font-size="15" fill="#cde6dc">Immutable
+geometry + sparse
+deformation</text><rect x="720" y="755" width="245" height="80" rx="12" fill="#fff3df" stroke="#d1ae6e" stroke-width="1.5"></rect><text x="842.5" y="791.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Older
+generations</text><text x="842.5" y="818.0" text-anchor="middle" font-size="15" fill="#526963">Leased
+until safe
+release</text><path d="M355 825 V850 H160 V882" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><path d="M355 850 V882" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><path d="M355 850 H550 V882" fill="none" stroke="#43816e" stroke-width="2.4" marker-end="url(#arrow)"></path><rect x="70" y="882" width="180" height="60" rx="12" fill="#eef2f9" stroke="#a9bbd7" stroke-width="1.5"></rect><text x="160.0" y="918.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Viewport</text><rect x="265" y="882" width="180" height="60" rx="12" fill="#eef2f9" stroke="#a9bbd7" stroke-width="1.5"></rect><text x="355.0" y="918.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Renderer</text><rect x="460" y="882" width="180" height="60" rx="12" fill="#eef2f9" stroke="#a9bbd7" stroke-width="1.5"></rect><text x="550.0" y="918.0" text-anchor="middle" font-size="20" font-weight="650" fill="#183c33">Bake
+/ export</text>
+</svg>
+</figure>
+<p><em>Proposed data flow. Host interaction occurs at
+snapshot/preparation/publication boundaries. Workers consume owned
+numerical data. The failure path keeps the previous complete
+generation.</em></p>
+</section>
+<section id="concrete-proposed-representations" class="level2">
+<h2>5.2 Concrete proposed representations</h2>
+<p>These names describe proposed structures, not repository findings or
+existing SDK types.</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Representation</th>
+<th>Authoritative owner and identity</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>AuthoredInteractionSettings</td>
+<td>Layer host object; persistent layer identity and settings
+revision</td>
+<td>Enabled sources, obstacle bindings, sample time,
+flexibility/clearance, mode, budgets</td>
+</tr>
+<tr class="even">
+<td>PreparedSource</td>
+<td>Native immutable source cache; source ID plus preparation key</td>
+<td>Rest mesh arrays, logical blade IDs, roots/guides/frames, vertex
+binding, material/map layout, bounds</td>
+</tr>
+<tr class="odd">
+<td>AcceptedPlacementSnapshot</td>
+<td>Existing placement owner, copied/leased numerical snapshot</td>
+<td>Stable IDs, source correspondence, transforms, receiver
+correspondence, placement revision</td>
+</tr>
+<tr class="even">
+<td>ObstacleSnapshot</td>
+<td>Native immutable obstacle cache; node/layer/instance identity</td>
+<td>Geometry arrays/proxy type, BLAS, transforms, TLAS, interpretation,
+revision</td>
+</tr>
+<tr class="odd">
+<td>FitJob</td>
+<td>Native job manager; monotonic generation token and authoring/Undo
+epoch</td>
+<td>Input revision tuple, selected IDs, budgets, cancellation flag, work
+buffers</td>
+</tr>
+<tr class="even">
+<td>DeformationResult</td>
+<td>Native result store; sparse records indexed by stable placement
+ID</td>
+<td>Source binding key, guide state or variant ID, deformed bounds,
+quality metrics/status</td>
+</tr>
+<tr class="odd">
+<td>PresentationGeneration</td>
+<td>Native committed owner; immutable generation ID</td>
+<td>Compatible placements, frozen source geometry, sparse deformation,
+CPU mesh buffers, host/native output handles, draw/pick mappings and
+render descriptors</td>
+</tr>
+<tr class="even">
+<td>DiagnosticSnapshot</td>
+<td>Generation/job owner; result token</td>
+<td>Counts, residual records, stale/partial flags and failure
+explanations</td>
+</tr>
+</tbody>
+</table>
+</div><p>Use stable identity plus revision, not a transient array index or
+pointer address. Reused/deleted IDs need the placement owner’s
+generation/identity rules. If those guarantees are absent in the actual
+code, that is a prerequisite to resolve rather than invent.</p>
+<p>A sparse map/packed index means instances without a deformation
+record use the original transform-only path. A zero bend does not
+require a unique mesh. Preprocessing and topology remain shared at
+source level.</p>
+</section>
+<section id="stage-by-stage-responsibility" class="level2">
+<h2>5.3 Stage-by-stage responsibility</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stage</th>
+<th>Input → output</th>
+<th>Revisions/cache keys</th>
+<th>Thread and temporary/retained memory</th>
+<th>Cancellation/staleness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. Authoring</td>
+<td>UI/settings → bounded native command</td>
+<td>Layer/settings revision, authoring epoch</td>
+<td>MAXScript UI only; host stores authored data</td>
+<td>Edit increments epoch; Manual only marks pending</td>
+</tr>
+<tr class="even">
+<td>2. Source capture/preprocess</td>
+<td>Evaluated source → owned rest arrays/bindings</td>
+<td>Source geometry/topology, root/guide/mask, transform convention,
+evaluator version</td>
+<td>Host evaluates/copies Max data; workers process copied arrays;
+source cache retained</td>
+<td>Failed preparation cannot replace prior cache/result</td>
+</tr>
+<tr class="odd">
+<td>3. Obstacle snapshot</td>
+<td>Scene objects or fixed-layer accepted instances → geometry and
+transforms</td>
+<td>Node/source geometry, topology, transform, layer placement, proxy
+interpretation, sample time</td>
+<td>Host copies; workers build native indices; snapshot and build
+scratch budgeted</td>
+<td>No borrowed Max Mesh/INode pointers in workers</td>
+</tr>
+<tr class="even">
+<td>4. Affected selection</td>
+<td>Reach index + old/new obstacle bounds → stable IDs and candidate
+bindings</td>
+<td>Placement/source/obstacle revisions; prior dependency set</td>
+<td>Worker native queries; retained sparse dependency summary if
+useful</td>
+<td>Changed/deleted inputs invalidate token</td>
+</tr>
+<tr class="odd">
+<td>5. Preparation/fit</td>
+<td>Rest guides, transforms, colliders → private guide states</td>
+<td>All numerical settings, solver/version/precision policy</td>
+<td>Workers; per-task guides, contacts and solver scratch</td>
+<td>Poll bounded chunks/iterations; engine calls need measured abort
+latency</td>
+</tr>
+<tr class="even">
+<td>6. Mesh evaluation/validation</td>
+<td>Guides + shared bindings → final arrays, bounds and diagnostics</td>
+<td>Binding/evaluator/shading layout; output tolerance policy</td>
+<td>Worker numerical mesh evaluation; O(AV) if materialized</td>
+<td>No quality-pass until final mesh/contact checks finish</td>
+</tr>
+<tr class="odd">
+<td>7. Host staging</td>
+<td>Valid arrays → native Mesh/display resources and render
+descriptors</td>
+<td>Complete captured key tuple</td>
+<td>Host only; old and successor coexist; prepare lazy
+normals/bounds</td>
+<td>Allocation/upload failure discards successor</td>
+</tr>
+<tr class="even">
+<td>8. Atomic publication</td>
+<td>Fully staged successor → new current generation</td>
+<td>Recheck token, all relevant revisions, Undo/load/reset epoch</td>
+<td>Host swaps one generation reference and notifies consumers</td>
+<td>Stale completion discarded, even if numerically valid</td>
+</tr>
+<tr class="odd">
+<td>9. Consume/reclaim</td>
+<td>Generation lease → viewport/render/Bake</td>
+<td>Generation ID + consumer capability/version</td>
+<td>Read-only numerical access; host-managed disposal; GPU completion
+tracked</td>
+<td>Reader leases/fences keep old resources alive</td>
+</tr>
+</tbody>
+</table>
+</div><p>Native C++ owns bulk queries, arithmetic, storage, task state and
+resource lifetimes. MAXScript must not iterate over every blade/vertex
+or poll per-instance deformation.</p>
+<p>Autodesk documents main-thread restrictions on important host
+operations. Its render-time instancing interface also permits
+multithreaded iteration. Therefore renderer callbacks cannot be assumed
+to run on the host thread: prepare everything needed beforehand, then
+make getters read immutable owned data only. If an adapter requires new
+host evaluation from an off-thread callback, it is unqualified until a
+safe preparation path exists. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_threading_debugging_tools.html" class="citation" target="_blank" rel="noopener noreferrer">M02</a>
+<a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_render_time_instancing_1_1_render_time_instancing_interface.html" class="citation" target="_blank" rel="noopener noreferrer">M03</a></p>
+</section>
+<section id="cache-keys-and-precise-invalidation" class="level2">
+<h2>5.4 Cache keys and precise invalidation</h2>
+<p>A representative source key is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>s</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">source ID</mtext><mo>,</mo><msub><mi>r</mi><mrow><mi mathvariant="normal">t</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">p</mi><mi mathvariant="normal">o</mi></mrow></msub><mo>,</mo><msub><mi>r</mi><mrow><mi mathvariant="normal">g</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">m</mi></mrow></msub><mo>,</mo><msub><mi>r</mi><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">s</mi></mrow></msub><mo>,</mo><msub><mi>r</mi><mrow><mi mathvariant="normal">g</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">d</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi></mrow></msub><mo>,</mo><msub><mi>r</mi><mrow><mi mathvariant="normal">b</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">g</mi></mrow></msub><mo>,</mo><msub><mi>r</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">p</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi></mrow></msub><mo>,</mo><mtext mathvariant="normal">units</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">K_s=(\text{source ID},r_{\mathrm{topo}},r_{\mathrm{geom}},r_{\mathrm{roots}},
+r_{\mathrm{guides}},r_{\mathrm{binding}},r_{\mathrm{prepare}},\text{units}).</annotation></semantics></math></p>
+<p>A fit key includes stable placement ID, source key, placement
+transform/receiver revision, obstacle identities and relevant
+geometry/transform revisions, fitting settings, sample time,
+solver/evaluator version and precision policy.</p>
+<p>A <strong>placement-set change</strong> is not automatically a reason
+to recompute every surviving plant. Retain a surviving result only if
+its source, transform, receiver and obstacle dependencies are
+compatible. Added IDs are prepared; removed IDs disappear because the
+upstream population changed, not because contact failed.</p>
+<p>Maintain geometric and shading revisions separately. Material
+selection, camera movement, selection highlighting and UI browsing must
+not dirty the numerical fit. Source map-channel changes may rebuild
+render streams without changing guide positions. Opacity/displacement
+changes matter if used by the declared collision representation.</p>
+<p>An obstacle change can affect plants that previously had no contact.
+Reverse dependency records alone are insufficient; combine them with
+reach-index queries over changed bounds. An obstacle deletion also
+affects plants formerly bent around it.</p>
+</section>
+<section id="manual-live-and-complete-generations" class="level2">
+<h2>5.5 Manual, Live and complete generations</h2>
+<p>In <strong>Manual</strong>, pending edits do not run source
+preprocessing, obstacle builds, fits or geometry uploads merely to
+present a new fit. Reuse the last complete generation. UI diagnostics
+must say that it was fitted against earlier revisions.</p>
+<p>Moving the actual scene stone still moves that stone; the old grass
+result may now intersect it. “Preserved last result” is not “still
+contact-valid against the current scene.”</p>
+<p>In <strong>Live</strong>, coalesce relevant authoring edits, snapshot
+on the host thread, and allow one successor job per affected publication
+group. Cancel or invalidate older work. Compare captured dependency
+values before recomputing when notifications are broad. Browsing,
+selecting, camera movement and unrelated animation should show zero
+fit/snapshot/mesh-upload increments.</p>
+<p>Keep placement/source snapshots compatible across a publication. In
+Manual, a changed source topology must not silently feed old bindings.
+The current generation owns the geometry it needs; pending source
+geometry is used only by the successor.</p>
+<p>Live quality may finish later than a drag. It is acceptable to show
+the completed previous generation plus “pending,” rather than publish
+half the instances.</p>
+</section>
+<section id="other-scatter-layers-and-cycles" class="level2">
+<h2>5.6 Other Scatter layers and cycles</h2>
+<p>For v1, obstacle layers contain <strong>fixed, nondeforming accepted
+instances</strong>. Snapshot their geometry source references and
+transforms once per relevant revision. Do not create a Max scene node
+for every obstacle instance solely for collision.</p>
+<p>A foliage layer can depend on a stone layer. A changed stone-layer
+source invalidates its BLAS; changed transforms/placements update the
+top-level index and affected regions.</p>
+<p>Reject self-dependencies and cycles at authoring time. A small
+traversal of the existing layer relationship list is enough; no generic
+graph framework is justified.</p>
+<p>Future deformed obstacle layers would need the <strong>published
+deformed geometry</strong>, not an undeformed approximation presented as
+exact contact. They also need a topological publication schedule or
+explicitly frozen external generations. Simultaneous mutual fitting is a
+coupled solve and is outside this feature.</p>
+</section>
+<section id="atomicity-resource-lifetime-and-failure" class="level2">
+<h2>5.7 Atomicity, resource lifetime and failure</h2>
+<p>A generation is publishable only after numerical validation and all
+required <strong>plugin-owned</strong> CPU/native/display resources and
+render descriptors are ready. Renderer-owned BVHs and translation may be
+allocated later by the renderer; do not claim those were atomically
+prebuilt.</p>
+<p>An in-flight render leases generation G while the viewport may move
+to G+1. This is valid. Parity comparisons use the <strong>same
+generation</strong>, not necessarily the same wall-clock moment.</p>
+<p>Readers hold immutable geometry. Host-owned destruction is queued to
+the host thread after CPU leases end; GPU buffers also require safe
+completion/fence handling. Prepare native lazy caches such as
+normals/bounds before exposing them, and test whether any consumer still
+mutates returned data.</p>
+<p>Old generations must own usable geometry, not raw source-node
+pointers that deletion can invalidate. Material/texture appearance is a
+separate policy: retain safe host references, prepare renderer material
+access on the host, and allow ordinary material edits without a
+numerical refit when geometry is unaffected. Do not describe the
+geometry snapshot as a frozen copy of all external texture files.</p>
+<p>Cancellation, out-of-memory, device failure, invalid binding, missing
+dependencies or a stale token discard the successor. The previous
+complete result remains. Do not evict leased buffers to satisfy a new
+job.</p>
+</section>
+<section id="undoredo-saveload-and-reset" class="level2">
+<h2>5.8 Undo/Redo, save/load and reset</h2>
+<p><strong>Undo/Redo proposal:</strong> authored edits create normal
+host Undo records. A Fit completion creates one result-publication
+record only if its request token still matches the current
+authoring/Undo epoch. Undo, reset, load, deletion or intervening edits
+invalidate obsolete completions. Live-derived updates should be
+associated with the initiating authoring state or a clearly specified
+result policy; do not hold a Max Undo transaction open throughout worker
+execution.</p>
+<p>Undo restores the compatible authored state and generation reference.
+Redo restores the corresponding completed generation where retained. If
+history buffers have been explicitly pruned, rebuilding numeric output
+from stored guides/bindings is allowed; silently resolving to a
+different physical pose is not.</p>
+<p><strong>Save proposal:</strong> store one committed generation’s
+versioned source/binding/rest geometry, sparse guide states or variants,
+stable placement correspondence, evaluation frame, relevant input
+fingerprints and diagnostics, plus authored pending settings and a
+pending/stale flag. Sharing/compression is permitted; GPU resources, raw
+pointers and an opaque engine-world blob are not the persistence
+format.</p>
+<p>Save/reopen may rebuild derived host/display resources from saved
+numeric data. It must not require a fresh fit, silently apply old
+bindings to new topology, or lose Manual pending state. Missing
+source/obstacle dependencies leave the frozen result available where
+saved geometry suffices, with a stale/missing label. Missing
+materials/textures are reported separately.</p>
+<p><strong>Reset deformation</strong> is an explicit undoable authoring
+command producing a compatible rest-output generation. It removes sparse
+shape records, not placements. A failed fit must never call Reset
+automatically.</p>
+</section>
+</section>
+<section id="viewport-rendering-and-bakeexport" class="level1">
+<h1>6. Viewport, rendering and Bake/export</h1>
+<section id="recommended-first-path" class="level2">
+<h2>6.1 Recommended first path</h2>
+<p>Use one canonical CPU mesh evaluator from source preparation plus
+committed deformation. Cache its final positions and the required
+normal/tangent streams for affected instances. Unchanged instances
+retain ordinary source geometry and transforms.</p>
+<p>Do not mutate the shared source mesh or shared cached display
+handles. Max 2027’s IMeshDisplay2 documentation specifically warns that
+returned geometry handles may be shared. Its viewport instance geometry
+API supplies transform/material-related instance streams; a grass guide
+palette is additional work. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_mesh_display2.html" class="citation" target="_blank" rel="noopener noreferrer">M04</a>
+<a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_viewport_instancing_1_1_instance_display_geometry.html" class="citation" target="_blank" rel="noopener noreferrer">M05</a></p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Output strategy</th>
+<th>What remains shared</th>
+<th>Principal cost/risk</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Unique CPU meshes</td>
+<td>Rest topology/binding may be shared internally</td>
+<td>O(AV) positions/normals; native/render copies, bounds and
+submissions</td>
+<td>Correctness baseline</td>
+</tr>
+<tr class="even">
+<td>Compact parameters, CPU evaluated</td>
+<td>Source plus O(AGS) or smaller shape state</td>
+<td>Still O(AV) when materialized</td>
+<td>Preferred retained representation</td>
+</tr>
+<tr class="odd">
+<td>Guide/skinning viewport shader</td>
+<td>Source vertices/weights plus per-instance palettes</td>
+<td>Custom material/shader path, CPU parity, picking/bounds; render
+expansion may remain</td>
+<td>Defer until measured need</td>
+</tr>
+<tr class="even">
+<td>Reusable bent variants</td>
+<td>K meshes plus instance assignments</td>
+<td>Quantization/repetition and contact revalidation</td>
+<td>Optional optimization</td>
+</tr>
+<tr class="odd">
+<td>Renderer-specific procedural</td>
+<td>Potential lazy expansion/custom sharing</td>
+<td>Separate SDK/version/device/licensing paths</td>
+<td>Conditional future work</td>
+</tr>
+</tbody>
+</table>
+</div><p>Unique meshes do not necessarily mean one draw call or one Max node
+per clump. Compare spatial/material batching with per-instance render
+sources. A giant combined mesh reduces some submissions but harms
+culling granularity and incremental updates. Preserve range-to-stable-ID
+mappings for picking.</p>
+</section>
+<section id="max-2027-integration-facts-and-limits" class="level2">
+<h2>6.2 Max 2027 integration facts and limits</h2>
+<p>The documented render-time interface has a source/target model,
+validity and release hooks, and permits concurrent reads. It
+conditionally depends on the renderer consuming the interface. Distinct
+bent prototypes can be distinct sources, each instanced many times.
+Target transforms and data channels are not automatic arbitrary vertex
+deformation. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" class="citation" target="_blank" rel="noopener noreferrer">M01</a>
+<a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_render_time_instancing_1_1_render_time_instancing_interface.html" class="citation" target="_blank" rel="noopener noreferrer">M03</a></p>
+<p>GeomObject documents GetRenderMesh and multiple-render-mesh
+mechanisms with lifetime/ownership requirements. They are candidates for
+output, not evidence that every renderer handles a new plugin
+identically. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_geom_object.html" class="citation" target="_blank" rel="noopener noreferrer">M06</a></p>
+<p>An aggregate fallback can expand <strong>all N instances</strong>,
+including unaffected plants. A small scene rendering correctly through
+that fallback does not pass the scalability gate. Detect and budget the
+chosen path. If no efficient adapter exists for a renderer, offer a
+bounded explicit Bake workflow or limit supported scope; never silently
+expand a huge population.</p>
+<p>Custom HLSL viewport facilities exist, but they do not supply
+matching Corona/Arnold/V-Ray geometry. GPU deformation also needs
+matching normals, final bounds, picking and a CPU/Bake equivalent. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_h_l_s_l_material_handle.html" class="citation" target="_blank" rel="noopener noreferrer">M07</a></p>
+</section>
+<section id="concrete-renderer-qualification-targets" class="level2">
+<h2>6.3 Concrete renderer qualification targets</h2>
+<p>These are official releases located during research, not tested
+CyrusScatter support and not a claim that no newer patch exists.</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Renderer</th>
+<th>Located candidate</th>
+<th>Documented Max 2027 evidence</th>
+<th>Required local verification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Arnold</td>
+<td>MAXtoA 5.9.4.2, 2 Sep 2026; Arnold 7.5.3.2</td>
+<td>Release lists Max 2027</td>
+<td>Actual translation API, CPU/GPU shape agreement, cache/lifetime
+behavior</td>
+</tr>
+<tr class="even">
+<td>Corona</td>
+<td>Corona 15 Hotfix 2, 29 Jul 2026</td>
+<td>14 Update 1 HF2 explicitly added Max 2027; Corona 15 changes also
+list support</td>
+<td>Native instancing/particle/fallback path; memory sharing and
+interactive updates</td>
+</tr>
+<tr class="odd">
+<td>V-Ray</td>
+<td>7.40.04, 13 Aug 2026</td>
+<td>7.30.02 explicitly added Max 2027</td>
+<td>CPU and GPU separately; proxy/export and instance translation</td>
+</tr>
+</tbody>
+</table>
+</div><p>Sources: <a href="https://help.autodesk.com/cloudhelp/ENU/AR-3DSMax/files/arnold-3dsmax/ax-release-notes/ax-5x/arnold_for_3ds_max_5942_html.html" class="citation" target="_blank" rel="noopener noreferrer">R01</a>
+<a href="https://forums.chaos.com/t/chaos-corona-14-update-1-hotfix-2-released-for-3ds-max/160584" class="citation" target="_blank" rel="noopener noreferrer">R02</a>
+<a href="https://forums.chaos.com/t/corona-15-hotfix-2-released-for-3ds-max/188253" class="citation" target="_blank" rel="noopener noreferrer">R03</a>
+<a href="https://documentation.chaos.com/space/VMAX/707559558/7.30.02" class="citation" target="_blank" rel="noopener noreferrer">R04</a>
+<a href="https://documentation.chaos.com/space/VMAX/1115029538/7.40.04" class="citation" target="_blank" rel="noopener noreferrer">R05</a>
+<a href="https://forums.chaos.com/t/complete-list-of-smaller-changes-bug-fixes-etc-from-corona-15/189733" class="citation" target="_blank" rel="noopener noreferrer">R06</a>.
+Generic requirements pages can lag dated release announcements; record
+exact installed builds in every experiment.</p>
+<p>Official Corona/tyFlow documentation distinguishes memory-saving
+particle instancing from a modifier-compatible path with instancing
+disabled. It demonstrates a public integration trade-off, not Cyrus
+compatibility or Chaos’s private implementation. <a href="https://support.chaos.com/hc/en-us/articles/4526288619793-How-to-use-tyFlow-in-Corona-for-3ds-Max" class="citation" target="_blank" rel="noopener noreferrer">R07</a></p>
+</section>
+<section id="proxies-normals-bounds-and-picking" class="level2">
+<h2>6.4 Proxies, normals, bounds and picking</h2>
+<p>A proxy’s viewport representation may be a box, points or a reduced
+mesh. Full geometry must be verified through a supported extraction path
+before deformation. Corona documents that Full Mesh remains loaded in
+RAM; V-Ray documents use of full-mesh display with modifiers. That path
+warrants a separate memory test. Proxy conversion should be an explicit
+preparation action with an estimate. <a href="https://documentation.chaos.com/space/CRMAX/124625498/Corona%2BProxy" class="citation" target="_blank" rel="noopener noreferrer">R08</a>
+<a href="https://documentation.chaos.com/space/VMAX/113575423/VRayProxy" class="citation" target="_blank" rel="noopener noreferrer">R09</a></p>
+<p>Bounds include the final render mesh, width and any declared
+downstream expansion. Guide-point bounds alone can incorrectly cull leaf
+edges. Picking must query committed deformed geometry or a declared
+bounded approximation and return stable placement identity.</p>
+<p>Preserve UVs, materials and authored-normal intent as specified in
+Section 4. A two-sided leaf cannot be fixed by ignoring winding changes
+under mirroring. Handle geometry and shading parity separately.</p>
+</section>
+<section id="parity-and-bake-contract" class="level2">
+<h2>6.5 Parity and Bake contract</h2>
+<p>For a given generation, the viewport’s full-quality geometry, render
+geometry and Bake must use the same evaluation/version and transform
+convention. A reduced preview mode must be labeled and have a declared
+approximation bound.</p>
+<p>A proposed exact-path tolerance is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mi>v</mi></msub><mo>=</mo><mo>max</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.01</mn><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> mm</mtext></mrow><mo>,</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup><mi>L</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\epsilon_v=\max(0.01\text{ mm},10^{-5}L),</annotation></semantics></math></p>
+<p>with maximum matching-vertex position error below
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ϵ</mi><mi>v</mi></msub><annotation encoding="application/x-tex">\epsilon_v</annotation></semantics></math>
+and normal angular error below 0.1° where identical normals are
+intended. These are proposed test thresholds, not certified guarantees.
+Reject scales/coordinates for which they are unrepresentable.</p>
+<p>Quantized variants and export conversions need their own measured
+error limits, included in the total clearance margin. Compare
+geometry/depth/silhouette with a fixed camera; beauty-render color is
+confounded by lighting, material filtering and noise.</p>
+<p>Bake materializes the committed mesh, map channels, material
+assignments, transform and stable-ID metadata where the target format
+supports it. Reimport may reorder/split vertices, so compare geometric
+surfaces and attribute correspondence rather than raw array order
+only.</p>
+<p>Unbounded renderer displacement, renderer subdivision that moves the
+surface, or unmodeled post-modifiers invalidate the contact claim.
+Initially exclude these or require a verified maximum expansion
+envelope.</p>
+</section>
+</section>
+<section id="analytical-cost-and-memory-model" class="level1">
+<h1>7. Analytical cost and memory model</h1>
+<p>No performance measurements were performed. Every numerical storage
+example in this section is an <strong>analytical estimate under an
+explicit layout assumption</strong>.</p>
+<section id="variables" class="level2">
+<h2>7.1 Variables</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>N</td>
+<td>Total accepted scatter instances</td>
+</tr>
+<tr class="even">
+<td>A</td>
+<td>Affected instances selected for fitting</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>Guides per affected instance</td>
+</tr>
+<tr class="even">
+<td>S</td>
+<td>Segments per guide</td>
+</tr>
+<tr class="odd">
+<td>Q</td>
+<td>Guide vertices, A G (S + 1)</td>
+</tr>
+<tr class="even">
+<td>V, F</td>
+<td>Expanded render vertices and triangles per source; include seam
+splits</td>
+</tr>
+<tr class="odd">
+<td>T</td>
+<td>Obstacle triangles considered by the collision representation</td>
+</tr>
+<tr class="even">
+<td>O</td>
+<td>Obstacle instances; source-local sharing can reduce unique stored
+triangles</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>Candidate/contact pairs retained for a contact refresh/solve
+pass</td>
+</tr>
+<tr class="even">
+<td>I</td>
+<td>Solver iterations or comparable full passes</td>
+</tr>
+<tr class="odd">
+<td>K</td>
+<td>Retained deformed variants</td>
+</tr>
+<tr class="even">
+<td>U</td>
+<td>Distinct prepared source models</td>
+</tr>
+<tr class="odd">
+<td>J</td>
+<td>Number of contact-generation refreshes</td>
+</tr>
+<tr class="even">
+<td>H</td>
+<td>Simultaneously retained generations/history states</td>
+</tr>
+</tbody>
+</table>
+</div><p>Use sums over sources when G, S or V vary. A single average conceals
+a few expensive scan/proxy assets.</p>
+</section>
+<section id="separate-the-work" class="level2">
+<h2>7.2 Separate the work</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>Analytical scaling / principal driver</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cold source preparation</td>
+<td>Roughly O(V + F) for validation/connectivity; guide capture may be
+O(V log(GS)) or more; sophisticated skeleton inference is not
+assumed</td>
+</tr>
+<tr class="even">
+<td>Obstacle evaluation/copy</td>
+<td>O(T + obstacle vertices + O) for copied geometry/transforms; host
+cost must be measured separately</td>
+</tr>
+<tr class="odd">
+<td>Obstacle BVH preparation</td>
+<td>Typical O(T log T) build; reusable per source; refit/rebuild policy
+affects quality</td>
+</tr>
+<tr class="even">
+<td>Plant reach index</td>
+<td>O(N log N) initial tree build, or expected O(N) grid insertion;
+storage O(N)</td>
+</tr>
+<tr class="odd">
+<td>Affected-instance selection</td>
+<td>Typical changed-region queries O(log N + A) per region; broad/full
+overlap can reach O(N)</td>
+</tr>
+<tr class="even">
+<td>Contact generation</td>
+<td>Typical O(J A G S log T + total candidates), plus top-level obstacle
+queries; worst O(J A G S T)</td>
+</tr>
+<tr class="odd">
+<td>Local iterative guide solve</td>
+<td>O(I (A G S + C)) for bounded-cost constraint visits; not a universal
+bound for every solver</td>
+</tr>
+<tr class="even">
+<td>P0 naive coordinate sweep</td>
+<td>Can be O(A G S²) per sweep if each control change
+reconstructs/requeries the entire downstream chain</td>
+</tr>
+<tr class="odd">
+<td>Mesh deformation/normals/bounds</td>
+<td>O(AV + AF) for unique affected geometry</td>
+</tr>
+<tr class="even">
+<td>Final mesh contact validation</td>
+<td>Surface-query/intersection cost over affected triangles; can exceed
+guide-solve time</td>
+</tr>
+<tr class="odd">
+<td>Host/native publication staging</td>
+<td>O(AV + AF) if arrays must be converted/copied; final generation swap
+itself is small</td>
+</tr>
+<tr class="even">
+<td>GPU upload</td>
+<td>Bytes of changed vertex/index streams and instance palettes, not
+just solver state</td>
+</tr>
+<tr class="odd">
+<td>Drawing</td>
+<td>Visible geometry, material streams, alpha overdraw and submissions;
+not simply A</td>
+</tr>
+<tr class="even">
+<td>Rendering/Bake</td>
+<td>Unique shape translation, renderer acceleration structures and
+output expansion; unsupported aggregate paths can reach O(NV)</td>
+</tr>
+<tr class="odd">
+<td>Undo/save</td>
+<td>Changed source/binding/state snapshots and retained generations;
+compression/structural sharing reduce constants</td>
+</tr>
+</tbody>
+</table>
+</div><p>The O(log T) query term describes a typical balanced hierarchy, not a
+guaranteed bound. Coherent triangles, poor bounds, large envelopes and
+dense contacts can drive worst-case traversal.</p>
+<p>If a backend tests points only, its lower cost is not comparable to a
+segment/surface-validating implementation until the same quality test
+passes. Likewise, a cheap fit whose mesh validator rejects most
+instances is not a successful optimization.</p>
+<p>For
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mn>10</mn><mo>,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">A=10{,}000</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>12</mn></mrow><annotation encoding="application/x-tex">G=12</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">S=8</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mn>24</mn></mrow><annotation encoding="application/x-tex">I=24</annotation></semantics></math>,
+there are <strong>23.04 million structural segment visits</strong> under
+the local-pass model, before bends, contact queries, mesh evaluation or
+rendering. This arithmetic cannot be converted to milliseconds without
+measurement.</p>
+</section>
+<section id="storage-arithmetic-for-one-illustrative-source" class="level2">
+<h2>7.3 Storage arithmetic for one illustrative source</h2>
+<p>Assume:</p>
+<ul>
+<li>12 guides per clump, 8 segments each.</li>
+<li>1,000 expanded render vertices and 1,600 triangles per clump.</li>
+<li>Float3 guide positions and one float4 frame per segment.</li>
+<li>Dynamic mesh streams: position 12 B + normal 12 B + tangent 16 B =
+40 B/vertex.</li>
+<li>Illustrative expanded mesh: those streams + one float2 UV channel +
+uint32 triangle indices = 48V + 12F bytes.</li>
+<li>No compression, material metadata, native Mesh overhead or renderer
+acceleration structure included.</li>
+</ul>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Affected clumps</th>
+<th style="text-align: right;">Guide vertices Q</th>
+<th style="text-align: right;">Guide positions + frames</th>
+<th style="text-align: right;">Dynamic mesh streams</th>
+<th style="text-align: right;">Expanded illustrative mesh</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">10,800</td>
+<td style="text-align: right;">0.270 MiB</td>
+<td style="text-align: right;">3.815 MiB</td>
+<td style="text-align: right;">6.409 MiB</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">108,000</td>
+<td style="text-align: right;">2.701 MiB</td>
+<td style="text-align: right;">38.147 MiB</td>
+<td style="text-align: right;">64.087 MiB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">10,000</td>
+<td style="text-align: right;">1,080,000</td>
+<td style="text-align: right;">27.008 MiB</td>
+<td style="text-align: right;">381.470 MiB</td>
+<td style="text-align: right;">640.869 MiB</td>
+</tr>
+</tbody>
+</table>
+</div><p>Guide state and mesh buffers may coexist; these columns are not
+alternatives unless the selected output path makes them alternatives.
+Internal shared topology can avoid some index/UV copies, but a
+host/renderer adapter may duplicate them.</p>
+<p>At 10,000 affected clumps, two expanded generations alone are about
+<strong>1.25 GiB</strong>. Add guides, source snapshots, contact
+buffers, GPU allocations, renderer translation, history and allocator
+overhead.</p>
+<p>Under an illustrative average of two candidate pairs per guide
+segment and a 64-byte pair record, the contact buffer is another
+<strong>117.19 MiB</strong> at that scale. Actual pair count and record
+layout must be measured.</p>
+<p>With K = 64 validated variants, the same illustrative mesh payload is
+about <strong>4.10 MiB</strong>, plus assignments and shared instance
+data. This is attractive only if those 64 shapes satisfy contact/visual
+requirements. It does not establish that they will.</p>
+</section>
+<section id="peak-memory-history-and-ownership" class="level2">
+<h2>7.4 Peak memory, history and ownership</h2>
+<p>A practical admission estimate is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">k</mi></mrow></msub><mo>≥</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">b</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi></mrow></msub><mo>+</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">p</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">d</mi><mspace width="0.222em"></mspace><mi mathvariant="normal">g</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">s</mi></mrow></msub><mo>+</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">r</mi></mrow></msub><mo>+</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">h</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">t</mi><mspace width="0.222em"></mspace><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">p</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">s</mi></mrow></msub><mo>+</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">e</mi><mspace width="0.222em"></mspace><mi mathvariant="normal">s</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">h</mi></mrow></msub><mo>+</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">t</mi></mrow></msub><mo>+</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">G</mi><mi mathvariant="normal">P</mi><mi mathvariant="normal">U</mi></mrow></msub><mo>+</mo><msub><mi>M</mi><mrow><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">n</mi><mi mathvariant="normal">d</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">r</mi></mrow></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">M_{\mathrm{peak}}\geq M_{\mathrm{baseline}}
++M_{\mathrm{pinned\ generations}}
++M_{\mathrm{successor}}
++M_{\mathrm{snapshot\ copies}}
++M_{\mathrm{solve\ scratch}}
++M_{\mathrm{contact}}
++M_{\mathrm{GPU}}
++M_{\mathrm{renderer}}.</annotation></semantics></math></p>
+<p>“Old + new” is only the simplest case. Several renders, Undo states
+and queued GPU work can pin more than two generations. Count the actual
+live references. Do not assume that deleting the latest result frees
+every old buffer.</p>
+<p>Use one successor at a time per publication group, checked allocation
+reservations, bounded task scratch and contact buffers, shared immutable
+sources, and an explicit cache/history budget. Pruning an unleased cache
+is different from dropping data needed by Undo, an active render or a
+saved-state promise.</p>
+<p>Disk persistence should measure source snapshots, shared bindings,
+sparse guide state and optional diagnostics separately. Native engine
+serialization is not a durable cross-version scene format.</p>
+</section>
+<section id="reproducible-benchmark-suite" class="level2">
+<h2>7.5 Reproducible benchmark suite</h2>
+<p>Run on a <strong>recorded</strong> Windows/Max 2027 environment: CPU
+model/core count, RAM, GPU/driver, exact Max patch, compiler/options,
+renderer builds, plugin/dependency commits, thread budget and scene
+units. Do not infer test hardware from the user’s workstation
+history.</p>
+<p>Use fixed seeds and versioned fixture files. For each configuration,
+record one cold run and at least five warm runs for exploratory costs;
+use at least 30 warm repetitions for the baseline latency gate. Report
+sample count, median, empirical p95, maximum and failure count. Include
+all timed phases rather than solver time alone.</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Axis</th>
+<th>Proposed levels</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Affected clumps</td>
+<td>Approximately 100, 1,000, 10,000</td>
+</tr>
+<tr class="even">
+<td>Mostly unaffected population</td>
+<td>100,000 and 1,000,000 as stress scenarios, not supported-capacity
+claims</td>
+</tr>
+<tr class="odd">
+<td>Guides/blades per clump</td>
+<td>1, 12, 32</td>
+</tr>
+<tr class="even">
+<td>Guide segments</td>
+<td>4, 8, 16</td>
+</tr>
+<tr class="odd">
+<td>Render vertices</td>
+<td>256, 1,000, 4,000; same silhouette family where possible</td>
+</tr>
+<tr class="even">
+<td>Obstacle triangles</td>
+<td>Analytic primitive; 10k, 100k, 1M triangle scenes</td>
+</tr>
+<tr class="odd">
+<td>Obstacle instances</td>
+<td>One rock; repeated source rocks; several distinct meshes</td>
+</tr>
+<tr class="even">
+<td>Contact density</td>
+<td>None; light exterior touch; dense wrapping; opposing narrow-gap
+contacts</td>
+</tr>
+<tr class="odd">
+<td>Presentation</td>
+<td>Exact meshes; spatial chunks; K = 8, 32, 128 variants</td>
+</tr>
+<tr class="even">
+<td>Update pattern</td>
+<td>First Fit; same-input repeat; one moved stone; source edit; density
+change; obstacle removal</td>
+</tr>
+<tr class="odd">
+<td>Lifecycle</td>
+<td>Cancel; stale completion; concurrent render; Undo/Redo;
+save/reopen</td>
+</tr>
+</tbody>
+</table>
+</div><p>Do not run the full Cartesian product blindly. Start with a baseline
+row and vary one axis, then stress the combinations revealed as
+expensive. Include a 10,000-clump high-G/high-S case explicitly to
+expose nonlinear growth.</p>
+<p>Counters should include source evaluations, obstacle copies/builds,
+candidate refreshes, fit invocations, CPU mesh evaluations, native
+conversions, bytes uploaded, draw submissions, renderer source counts,
+all-population fallback use, and live-generation count.</p>
+<p>A particularly valuable test holds A fixed while increasing N.
+Incremental solve/mesh work should follow A; document any remaining O(N)
+notification, index or renderer cost. Repeated pan/select/scrub
+operations should reuse numerical results even when view-dependent
+culling/drawing naturally changes.</p>
+</section>
+</section>
+<section id="dependency-and-licensing-assessment" class="level1">
+<h1>8. Dependency and licensing assessment</h1>
+<section id="main-candidates" class="level2">
+<h2>8.1 Main candidates</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Candidate</th>
+<th>Version/capability examined</th>
+<th>CPU/GPU, Windows and runtime concerns</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Focused native fit kernel</td>
+<td>Proposed P0; no implementation here</td>
+<td>CPU numerical snapshots; small explicit task boundary; owns
+cancellation and allocations</td>
+<td>Preferred baseline; total maintenance cost must still be
+measured</td>
+</tr>
+<tr class="even">
+<td>PositionBasedDynamics</td>
+<td>Documentation/master 2.2.2; latest packaged release observed 2.2.0;
+rods, XPBD and cubic SDF examples</td>
+<td>CMake/C++/Eigen; documented Windows Visual Studio route; build a
+headless subset with Max’s actual toolset</td>
+<td>Strong comparator/reference; do not import demo/UI/Python
+dependencies indiscriminately</td>
+</tr>
+<tr class="odd">
+<td>Jolt CPU rods</td>
+<td>5.6.0 examined; CPU rods introduced in 5.4.0</td>
+<td>C++/CPU jobs; Windows/MSVC route; independent numerical world; need
+full-segment contact verification</td>
+<td>Serious conditional P2 contender; Lab familiarity helps only where
+the code/version actually overlaps</td>
+</tr>
+<tr class="even">
+<td>Jolt GPU hair</td>
+<td>5.6.0, explicitly work in progress</td>
+<td>New GPU compute/device/readback integration; convex/compound
+collider limitation</td>
+<td>Defer; does not justify a GPU subsystem for static v1</td>
+</tr>
+<tr class="odd">
+<td>NVIDIA PhysX / ovphysx</td>
+<td>ovphysx 0.7.0 release reports PhysX 5.12; current surface/volume
+deformables</td>
+<td>Current deformable docs require GPU/CUDA and exclude CPU deformable
+simulation; broader cooking/runtime dependencies</td>
+<td>Reject for initial narrow-blade feature; revisit for a justified
+shell/volume need</td>
+</tr>
+<tr class="even">
+<td>Stable Cosserat Rods research code</td>
+<td>SIGGRAPH 2025 CPU author implementation; stable production release
+not verified</td>
+<td>Example Visual Studio/graphics build; production ABI, cancellation
+and packaging not established</td>
+<td>Secondary comparator if stiffness/convergence defeats simpler
+methods</td>
+</tr>
+</tbody>
+</table>
+</div><p>Sources: <a href="https://positionbaseddynamics.readthedocs.io/en/latest/about.html" class="citation" target="_blank" rel="noopener noreferrer">D01</a>
+<a href="https://github.com/InteractiveComputerGraphics/PositionBasedDynamics/releases" class="citation" target="_blank" rel="noopener noreferrer">D02</a>
+<a href="https://positionbaseddynamics.readthedocs.io/en/latest/build_from_source.html" class="citation" target="_blank" rel="noopener noreferrer">D03</a>
+<a href="https://github.com/jrouwe/JoltPhysics/releases" class="citation" target="_blank" rel="noopener noreferrer">J01</a> <a href="https://github.com/jrouwe/JoltPhysics/releases/tag/v5.6.0" class="citation" target="_blank" rel="noopener noreferrer">J02</a>
+<a href="https://jrouwe.github.io/JoltPhysicsDocs/5.6.0/_soft_body_shared_settings_8h_source.html" class="citation" target="_blank" rel="noopener noreferrer">J03</a>
+<a href="https://jrouwe.github.io/JoltPhysicsDocs/5.6.0/class_soft_body_motion_properties.html" class="citation" target="_blank" rel="noopener noreferrer">J04</a>
+<a href="https://github.com/NVIDIA-Omniverse/PhysX/releases/tag/ovphysx-0.7.0" class="citation" target="_blank" rel="noopener noreferrer">D04</a>
+<a href="https://nvidia-omniverse.github.io/PhysX/ovphysx/latest/simulation_setup/deformables.html" class="citation" target="_blank" rel="noopener noreferrer">D05</a>
+<a href="https://github.com/jerry060599/StableCosseratRods" class="citation" target="_blank" rel="noopener noreferrer">D06</a>.</p>
+<p>PBD exposes useful constraint families, but selecting it does not
+select a suitable collision representation or imported-asset workflow.
+Its development documentation and released package versions differ; pin
+the exact commit and record which constraints are actually used. <a href="https://positionbaseddynamics.readthedocs.io/en/latest/about.html" class="citation" target="_blank" rel="noopener noreferrer">D01</a>
+<a href="https://github.com/InteractiveComputerGraphics/PositionBasedDynamics/releases" class="citation" target="_blank" rel="noopener noreferrer">D02</a></p>
+<p>Jolt’s documented CPU soft-body collision interface emphasizes
+vertices and a particle radius. The triangle helper does not document
+whole-rod capsule coverage. Test endpoints-outside crossings, dense
+initial penetration and final ribbon edges before relying on the stock
+path. Custom whole-segment contact may erase some expected integration
+savings. <a href="https://jrouwe.github.io/JoltPhysicsDocs/5.6.0/class_collide_soft_body_vertices_vs_triangles.html" class="citation" target="_blank" rel="noopener noreferrer">J05</a></p>
+<p>Jolt CustomUpdate is a documented caller-thread path useful for
+manual settling, while its normal world path can use jobs. A library’s
+general threading support is not a safe interruption contract. Poll
+between bounded steps/chunks, and discard private results after
+cancellation; never terminate a worker inside arbitrary library state.
+<a href="https://jrouwe.github.io/JoltPhysicsDocs/5.6.0/class_soft_body_motion_properties.html" class="citation" target="_blank" rel="noopener noreferrer">J04</a></p>
+</section>
+<section id="build-maintenance-and-determinism" class="level2">
+<h2>8.2 Build, maintenance and determinism</h2>
+<p>The official Autodesk July 2026 guidance lists VS2022 17.14.13, the
+v143 <strong>14.38</strong> toolset, C++20 and Windows SDK 10.0.19041.0
+for Max 2027. Its linked requirements page was unavailable during
+review, so verify the installed SDK/readme and compile an official
+sample before fixing CI. A library building with “Visual Studio” does
+not prove compatible CRT, ABI, exception, SIMD or allocation settings.
+<a href="https://blog.autodesk.io/setting-up-3ds-max-2027-sdk-development-with-visual-studio-2026/" class="citation" target="_blank" rel="noopener noreferrer">M08</a></p>
+<p>For every selected dependency:</p>
+<ul>
+<li>Pin version/commit and compiler flags; isolate it behind a small
+native numerical interface.</li>
+<li>Build the smallest runtime subset; measure actual binary size and
+transitive DLL/package footprint.</li>
+<li>Confirm allocation ownership across DLL/CRT boundaries.</li>
+<li>Cap nested thread pools to avoid oversubscription with Max and
+rendering.</li>
+<li>Test cancellation latency, repeated initialization/destruction and
+memory recovery.</li>
+<li>Keep application persistence independent of solver-world
+serialization.</li>
+<li>Record API changes and security/maintenance ownership; a research
+example is not a supported plugin runtime.</li>
+</ul>
+<p>No exact deterministic guarantee is established here. Fixed inputs,
+ordering, seed, precision, backend and build can support repeatability
+tests; floating-point reductions, thread scheduling, solver order and
+GPU backends may change results. Store the accepted pose so ordinary use
+does not depend on rerunning the solver identically.</p>
+</section>
+<section id="license-terms-and-unresolved-redistribution-questions" class="level2">
+<h2>8.3 License terms and unresolved redistribution questions</h2>
+<p>These are source-license observations, not legal conclusions.</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Primary-source terms observed</th>
+<th>Distribution work still needed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PositionBasedDynamics</td>
+<td>MIT; copyright and permission notice retention</td>
+<td>Audit the chosen Eigen/Discregrid/utilities and any shipped demo
+dependencies separately</td>
+</tr>
+<tr class="even">
+<td>Jolt core</td>
+<td>MIT in official project/license material</td>
+<td>Confirm exact pinned files, enabled backend/toolchain dependencies
+and notices; Lab distribution does not automatically settle Scatter
+packaging</td>
+</tr>
+<tr class="odd">
+<td>StableCosseratRods CPU example</td>
+<td>MIT-style default with possible per-file exceptions</td>
+<td>Check copied files and dependencies; do not substitute the separate
+GPU repository’s terms</td>
+</tr>
+<tr class="even">
+<td>YarnBall GPU implementation</td>
+<td>Separate GPL-3.0 repository label</td>
+<td>Materially different redistribution questions; not a proposed v1
+dependency</td>
+</tr>
+<tr class="odd">
+<td>Current PhysX component</td>
+<td>Examined component license is Apache 2.0; a separately retrieved
+root license is BSD 3-Clause</td>
+<td>This may reflect component scope or cached revision; inspect the
+exact selected archive, notices, modification terms and bundled
+runtimes</td>
+</tr>
+<tr class="even">
+<td>OpenVDB reference</td>
+<td>MeshToVolume source carries Apache-2.0 identifier</td>
+<td>If adopted, audit full build/transitives and shipping footprint
+rather than only one header</td>
+</tr>
+</tbody>
+</table>
+</div><p>Sources: <a href="https://github.com/InteractiveComputerGraphics/PositionBasedDynamics/blob/master/LICENSE" class="citation" target="_blank" rel="noopener noreferrer">L01</a>
+<a href="https://github.com/jrouwe/JoltPhysics/blob/master/LICENSE" class="citation" target="_blank" rel="noopener noreferrer">L02</a>
+<a href="https://github.com/jerry060599/StableCosseratRods#license" class="citation" target="_blank" rel="noopener noreferrer">L03</a>
+<a href="https://github.com/jerry060599/YarnBall" class="citation" target="_blank" rel="noopener noreferrer">L04</a> <a href="https://github.com/NVIDIA-Omniverse/PhysX/blob/main/physx/LICENSE.md" class="citation" target="_blank" rel="noopener noreferrer">L05</a>
+<a href="https://github.com/NVIDIA-Omniverse/PhysX/blob/main/LICENSE.md" class="citation" target="_blank" rel="noopener noreferrer">L06</a>
+<a href="https://www.openvdb.org/documentation/doxygen/MeshToVolume_8h_source.html" class="citation" target="_blank" rel="noopener noreferrer">C03</a>.</p>
+<p>MIT notice retention, Apache license/notice and modification
+obligations where applicable, and BSD attribution/non-endorsement
+language require packaging attention. An academic paper being available
+to read is not a software redistribution license.</p>
+<p>Exact tag-level license archive retrieval was not completed for Jolt
+5.6.0 or ovphysx 0.7.0. Jolt’s versioned 5.6.0 rod header carries an MIT
+identifier; current full license texts provide additional evidence. The
+differing PhysX pages are not proof of a license conflict within one
+pinned archive. Audit that archive before distribution.</p>
+<p>CGAL/libigl can supply valuable geometry algorithms or validation
+references, but no decision to ship them is made here. If their code is
+adopted, check exact package/file licensing and transitive dependencies
+before choosing an implementation. Renderer SDK access and
+redistribution terms also remain vendor-specific verification items.</p>
+<p><strong>Dependency recommendation:</strong> do not make a general
+physics dependency mandatory before the baseline is tested. Equally, do
+not spend months rebuilding a rod solver if a qualified Jolt/PBD subset
+wins the same quality, contact, memory and integration tests.</p>
+</section>
+</section>
+<section id="artist-workflow-and-controls" class="level1">
+<h1>9. Artist workflow and controls</h1>
+<section id="a-small-initial-panel" class="level2">
+<h2>9.1 A small initial panel</h2>
+<p>The default panel should answer five practical questions:
+<strong>which plants, which obstacles, how flexible, how much clearance,
+and when to update?</strong></p>
+<p>Recommended visible controls:</p>
+<ul>
+<li><strong>Enable interaction</strong> and eligible source
+selection.</li>
+<li><strong>Obstacle objects / obstacle layers</strong>, with clear
+missing-reference indicators.</li>
+<li><strong>Flexibility</strong> and <strong>clearance</strong>,
+expressed with current units.</li>
+<li><strong>Manual / Live</strong>, <strong>Fit at current
+frame</strong>, and <strong>Reset deformation</strong>.</li>
+<li>A status line: committed sample frame, pending/stale state,
+fitted/unsupported/unresolved counts.</li>
+<li><strong>Show guides</strong>, <strong>show affected plants</strong>,
+<strong>show unresolved contacts</strong>.</li>
+</ul>
+<p>Keep preparation, root direction, bend limits and obstacle
+interpretation in source/advanced settings. Do not put timestep,
+damping, Lagrange multipliers or raw iterations in the default artist
+workflow.</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Setting</th>
+<th>Owner</th>
+<th>Meaning / initial behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Enable, obstacle list, mode, Update/Fit</td>
+<td>Layer</td>
+<td>Scope and scheduling</td>
+</tr>
+<tr class="even">
+<td>Influence distance</td>
+<td>Layer or obstacle binding</td>
+<td>Extra artistic push range; does not replace complete contact
+discovery</td>
+</tr>
+<tr class="odd">
+<td>Root anchoring</td>
+<td>Source</td>
+<td>Root position fixed; explicit clamped or bounded-flexible
+orientation</td>
+</tr>
+<tr class="even">
+<td>Flexibility</td>
+<td>Source default, layer multiplier</td>
+<td>Relative bend resistance/artistic response; label physical units
+only for a calibrated model</td>
+</tr>
+<tr class="odd">
+<td>Shape preservation</td>
+<td>Source</td>
+<td>Preserve rest curvature/twist; optional advanced override</td>
+</tr>
+<tr class="even">
+<td>Blade thickness/width</td>
+<td>Source</td>
+<td>Collision envelope derived from geometry or explicit profile</td>
+</tr>
+<tr class="odd">
+<td>Clearance</td>
+<td>Layer default, obstacle override</td>
+<td>Desired visible gap in physical units, separate from numerical
+tolerance</td>
+</tr>
+<tr class="even">
+<td>Maximum bend</td>
+<td>Source</td>
+<td>Local curvature/adjacent-segment turn bound; base orientation limit
+is separate</td>
+</tr>
+<tr class="odd">
+<td>Quality/work budget</td>
+<td>Layer</td>
+<td>Iteration/contact-refresh/admission limits with reported
+residuals</td>
+</tr>
+<tr class="even">
+<td>Preparation detail</td>
+<td>Source</td>
+<td>Guide/control basis and visible segmentation; changing it
+invalidates binding/fit</td>
+</tr>
+<tr class="odd">
+<td>Solid/sheet, collision proxy, extra offset</td>
+<td>Obstacle binding</td>
+<td>Explicit collision semantics</td>
+</tr>
+<tr class="even">
+<td>Exclude, flexibility override, fit override</td>
+<td>Stable instance ID</td>
+<td>Sparse explicit exception; never silently applied to fix
+failure</td>
+</tr>
+</tbody>
+</table>
+</div><p>Source thickness and layer clearance should not be conflated.
+Increasing “quality” should not secretly change the plant’s material
+stiffness or deformation basis.</p>
+<p>A readable status example is: <strong>“Fit complete: 972 passed, 21
+roots blocked, 7 unresolved. Previous result retained.”</strong> If a
+partial-fit policy is enabled explicitly, say <strong>“972 fits
+published; 28 plants retained with unresolved status.”</strong></p>
+</section>
+<section id="expected-authoring-behavior" class="level2">
+<h2>9.2 Expected authoring behavior</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Artist action</th>
+<th>Manual</th>
+<th>Live</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Move a stone</td>
+<td>Mark pending; preserve old grass; contact diagnostics become
+stale</td>
+<td>Fit affected regions after relevant changes coalesce</td>
+</tr>
+<tr class="even">
+<td>Edit source geometry/root/guide</td>
+<td>Mark pending and incompatible preparation; preserve frozen current
+generation</td>
+<td>Reprepare affected source, refit compatible placements, publish
+together</td>
+</tr>
+<tr class="odd">
+<td>Change source UV/material only</td>
+<td>Refresh allowed shading/output data without a fit when geometry
+semantics permit</td>
+<td>Same dependency distinction</td>
+</tr>
+<tr class="even">
+<td>Change density</td>
+<td>Pending accepted-placement successor plus compatible fit</td>
+<td>Process new/changed placements; reuse surviving compatible IDs</td>
+</tr>
+<tr class="odd">
+<td>Remove obstacle</td>
+<td>Pending; old pose remains until Fit</td>
+<td>Refit prior dependents, returning to rest where appropriate</td>
+</tr>
+<tr class="even">
+<td>Pan/select/browse UI</td>
+<td>Reuse result</td>
+<td>Reuse result</td>
+</tr>
+<tr class="odd">
+<td>Scrub unrelated animation</td>
+<td>Reuse sampled static pose</td>
+<td>Reuse sampled static pose</td>
+</tr>
+<tr class="even">
+<td>Switch Manual → Live</td>
+<td>Schedule latest pending relevant state once</td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Switch Live → Manual</td>
+<td>Cancel/invalidate unpublished work; freeze last complete result</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Reset deformation</td>
+<td>Explicit undoable rest-output publication; preserve placements</td>
+<td>Same; next relevant Live edit may fit again as clearly
+documented</td>
+</tr>
+</tbody>
+</table>
+</div><p>Deleting a source or changing its topology must not produce a
+mismatched old binding/new mesh. Restore the saved frozen output with a
+warning where possible; otherwise retain the previous complete
+generation.</p>
+</section>
+<section id="why-static-comes-first-and-what-animation-would-add" class="level2">
+<h2>9.3 Why static comes first, and what animation would add</h2>
+<p>A static result needs rest data, committed shape and dependency
+versions. Continuous simulation additionally needs:</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Addition</th>
+<th>Required behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Velocities/angular velocities and solver state</td>
+<td>Clear ownership and reset rules; compatible masses/frames</td>
+</tr>
+<tr class="even">
+<td>Fixed steps/substeps</td>
+<td>A real time-integration contract independent of viewport frame
+rate</td>
+</tr>
+<tr class="odd">
+<td>Start/reset state</td>
+<td>Authored start frame, initial pose and initial-penetration
+handling</td>
+</tr>
+<tr class="even">
+<td>Forward/backward seeking</td>
+<td>Replay from a valid checkpoint; no accidental dependence on scrub
+order</td>
+</tr>
+<tr class="odd">
+<td>Checkpoints/cache</td>
+<td>Versioned invalidation and bounded memory/disk storage</td>
+</tr>
+<tr class="even">
+<td>Animated/deforming colliders</td>
+<td>Time-sampled geometry, velocity/CCD, topology-change rules</td>
+</tr>
+<tr class="odd">
+<td>Wind and moving roots</td>
+<td>Loads, receiver motion and attachment frames</td>
+</tr>
+<tr class="even">
+<td>Motion blur/subframe rendering</td>
+<td>Coherent samples across the shutter and renderer-specific
+support</td>
+</tr>
+<tr class="odd">
+<td>Temporal contact stability</td>
+<td>Persistent contacts, friction policy, transition/hysteresis
+tests</td>
+</tr>
+<tr class="even">
+<td>Two-way interaction</td>
+<td>Shared solve islands, mass ratios and obstacle response</td>
+</tr>
+<tr class="odd">
+<td>Vegetation-to-vegetation contact</td>
+<td>Growing contact graph and propagation beyond an edited region</td>
+</tr>
+</tbody>
+</table>
+</div><p>Preserve a future path with versioned rest guides/material frames,
+stable identity, owned snapshots, canonical mesh evaluation, and
+generation lifetimes. Keep numerical solver state separate from public
+pose output.</p>
+<p>Do not build an animation graph, checkpoint scheduler, GPU resource
+system or general physical-material authoring framework for v1. A static
+fitted pose can later be an initial condition; that alone is not an
+animation implementation.</p>
+</section>
+</section>
+<section id="bounded-prototype-plan-and-gono-go-gates" class="level1">
+<h1>10. Bounded prototype plan and go/no-go gates</h1>
+<p>This section proposes experiments; none have been run. The prototype
+is an evaluation harness, not an instruction to merge production
+code.</p>
+<section id="gate-0-prove-the-output-path-before-solver-investment" class="level2">
+<h2>Gate 0 — Prove the output path before solver investment</h2>
+<p><strong>Input:</strong> one prepared 0.20 m blade with 8 longitudinal
+segments, two UV channels, two material IDs and explicit normals. Three
+placements use fixed straight, 30° and 70° guide bends; include an
+unaffected fourth placement. Replicate the setup to expose accidental
+geometry sharing.</p>
+<p><strong>Observe:</strong> Max 2027 viewport, Corona, Arnold, V-Ray,
+Bake/reimport; final bounds/picking; source immutability; stable IDs;
+actual renderer callbacks/threads; CPU/native/GPU/renderer
+allocations.</p>
+<p><strong>Go:</strong> required production render paths receive
+distinct correct geometry within the declared tolerance, without source
+mutation or an unbudgeted all-N expansion. <strong>No-go:</strong> only
+the viewport bends, one instance overwrites another, callbacks evaluate
+the host off-thread, or output lifetimes are unsafe.</p>
+<p>If one renderer cannot be qualified, decide a narrower supported
+renderer scope explicitly. Do not let a solver prototype disguise a
+missing product output path.</p>
+</section>
+<section id="gate-1-establish-the-asset-contract" class="level2">
+<h2>Gate 1 — Establish the asset contract</h2>
+<p><strong>Input:</strong> at least six prepared fixtures: straight
+blade, curved blade, disconnected clump, segmented alpha card,
+deliberately undersegmented card, and a dense scan that should be
+rejected or require authored preparation.</p>
+<p><strong>Observe:</strong> preparation time, ambiguity count, binding
+errors, artist steps and preserved shading. Include a real commercial
+grass source with appropriate permission, not only clean synthetic
+geometry.</p>
+<p><strong>Go:</strong> prepared narrow blades/clumps bind reliably and
+unsupported assets receive precise instructions. <strong>No-go for a
+broad import promise:</strong> automatic inference silently merges
+blades, guesses the wrong roots or requires extensive repair on
+representative assets.</p>
+<p><strong>Decision:</strong> if manual preparation is dominant, a
+source-preparation tool and documented supported library become
+prerequisites to product release.</p>
+</section>
+<section id="gate-2-compare-only-three-numerical-candidates-initially" class="level2">
+<h2>Gate 2 — Compare only three numerical candidates initially</h2>
+<p>Use P0 static fitting, P1 XPBD and conditional P2 Jolt CPU rods.
+Share rest geometry, root settings, contact representation, final mesh
+evaluator and validator. Compare one blade against sphere/box/irregular
+rock, one clump, two competing stones and initial interpenetration.</p>
+<p><strong>Go:</strong> one candidate passes the feasible fixture suite
+with acceptable visuals and bounded cost. <strong>No-go:</strong> it
+reports success while changing roots, deleting plants, missing segment
+crossings or exceeding strain/bend limits.</p>
+<p>If P0 passes, stop solver expansion. If it fails multi-contact cases
+but P1/P2 passes, compare total complexity/performance. If all fail
+because the render binding folds, fix the asset/output representation
+before trying a fourth solver.</p>
+<p>Only escalate to direct stiff-rod or Stable Cosserat research when
+measured convergence identifies a concrete need.</p>
+</section>
+<section id="gate-3-qualify-lifecycle-and-dependencies" class="level2">
+<h2>Gate 3 — Qualify lifecycle and dependencies</h2>
+<p><strong>Input:</strong> automated host scenarios for Manual/Live,
+relevant/unrelated edits, source topology changes, obstacle deletion,
+Undo/Redo, save/reopen, cancellation, stale completion, memory fault
+injection and concurrent renders.</p>
+<p><strong>Go:</strong> every completed consumer session sees one
+compatible generation; stale/failed jobs never replace it; pending state
+survives save/reopen; counters show no numerical work from unrelated
+interaction.</p>
+<p><strong>No-go:</strong> any dangling resource, mixed binding/source
+revision, surprise Undo result, hidden solve on reopening, or scene
+access from workers.</p>
+<p>This gate also checks that source geometry is frozen while
+material/texture references follow the declared separate policy.</p>
+</section>
+<section id="gate-4-measure-scale-and-choose-optimization" class="level2">
+<h2>Gate 4 — Measure scale and choose optimization</h2>
+<p>Run Section 7’s 100/1,000/10,000 affected-clump scenarios and large
+mostly unaffected populations. First measure exact CPU output; then
+compare batching and variants only where a bottleneck exists.</p>
+<p><strong>Proposed provisional product budgets</strong>, to be fixed
+against a named baseline machine before the run:</p>
+<ul>
+<li>For the 1,000-clump baseline (G = 12, S = 8, V = 1,000, 100k
+obstacle triangles), end-to-end warm Fit p95 ≤ 10 seconds and additional
+peak host memory ≤ 1 GiB.</li>
+<li>Cooperative cancel response ≤ 250 ms for bounded worker work;
+separately disclose any noninterruptible host snapshot/library
+call.</li>
+<li>Host publication and staging slices should avoid a &gt;50 ms UI
+stall target; measure total host work separately.</li>
+<li>Panning/selection/unrelated animation: zero fit invocations and zero
+deformation-buffer reuploads.</li>
+<li>10,000 affected clumps are a stress/architecture test, not an
+initial capacity commitment.</li>
+</ul>
+<p>These are <strong>suggested acceptance budgets, not
+predictions</strong>. Revise them with product requirements before
+comparison, not after seeing a favored solver’s result.</p>
+<p><strong>Go:</strong> a supported scope fits agreed budgets;
+incremental work follows changed/affected geometry. <strong>No-go for
+Live mode:</strong> repeated relevant edits create unbounded backlog,
+allocation growth or unacceptable stalls. A useful Manual-only release
+remains an explicit alternative.</p>
+</section>
+<section id="gate-5-visual-review-and-failure-usability" class="level2">
+<h2>Gate 5 — Visual review and failure usability</h2>
+<p>Use fixed close-up and medium-distance cameras with neutral clay,
+final material, silhouette and contact-debug views. Compare P0/P1/P2
+blind where practical. Ask artists to rate natural curvature, root
+planting, local flattening, clump diversity, edge clipping and visible
+repetition.</p>
+<p>Measure the frequency of infeasible roots in realistic scatters. If a
+single blocked root routinely prevents useful work, strict whole-job
+rejection is insufficient as the only product behavior.</p>
+<p><strong>Required refinement if frequent:</strong> an explicit “Use
+successful fits; retain unresolved plants” action publishes one complete
+generation with compatible prior/rest shapes for failures and visible
+unresolved status. A prior shape is reused only with a compatible
+source/transform; otherwise use the current prepared rest shape. Atomic
+completeness and universal quality success are distinct.</p>
+<p><strong>Go:</strong> the result improves the scene and failure
+handling is usable. <strong>No-go:</strong> numerical clearance passes
+but vegetation looks melted, bundled, stretched or conspicuously
+quantized.</p>
+</section>
+<section id="what-would-falsify-the-main-recommendations" class="level2">
+<h2>10.1 What would falsify the main recommendations?</h2>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Recommendation</th>
+<th>Falsifying observation</th>
+<th>Resulting decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P0 is the simplest useful baseline</td>
+<td>Frequent feasible cases need many retries while P1/P2 passes with
+lower total cost</td>
+<td>Choose the measured constraint/rod path</td>
+</tr>
+<tr class="even">
+<td>Per-blade reduced guides are sufficient</td>
+<td>Final mesh repeatedly folds/clips despite refined guides and
+acceptable preparation</td>
+<td>Use richer ribbon/shell controls or narrow supported assets</td>
+</tr>
+<tr class="odd">
+<td>One-way local solves are sufficient</td>
+<td>Required art direction depends on neighboring plants pushing each
+other</td>
+<td>Re-scope explicitly to coupled islands; do not fake with independent
+fits</td>
+</tr>
+<tr class="even">
+<td>BVH first is appropriate</td>
+<td>Queries dominate and a bounded-error local SDF wins total
+build+query+memory cost</td>
+<td>Add a verified hybrid field accelerator</td>
+</tr>
+<tr class="odd">
+<td>Sparse results preserve efficiency</td>
+<td>A local bend forces all-N geometry regeneration/translation</td>
+<td>Fix output/dependency adapters before solver optimization</td>
+</tr>
+<tr class="even">
+<td>CPU baseline is a viable shipping path</td>
+<td>Output/upload memory/time dominates despite sparse A and reasonable
+batching</td>
+<td>Evaluate variants or a justified GPU/procedural adapter</td>
+</tr>
+<tr class="odd">
+<td>Variants are a good optimization</td>
+<td>K approaches A, contact rejection is frequent, or repetition is
+visible</td>
+<td>Use exact states and keep variants optional</td>
+</tr>
+<tr class="even">
+<td>Static v1 serves the use case</td>
+<td>Artists need moving objects/wind/history to obtain acceptable
+results</td>
+<td>Reassess scope with explicit animation cost</td>
+</tr>
+<tr class="odd">
+<td>Existing Jolt integration helps</td>
+<td>Required segment contact/binding changes exceed a focused solver’s
+cost</td>
+<td>Keep Lab separate; adopt only justified code</td>
+</tr>
+<tr class="even">
+<td>Strict whole-job rejection is usable</td>
+<td>Common impossible roots block most practical updates</td>
+<td>Add explicit partial-fit acceptance before release</td>
+</tr>
+</tbody>
+</table>
+</div></section>
+</section>
+<section id="reproducible-validation-matrix" class="level1">
+<h1>11. Reproducible validation matrix</h1>
+<section id="metrics-and-proposed-tolerances" class="level2">
+<h2>11.1 Metrics and proposed tolerances</h2>
+<p>Let L be rest guide length,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mo>ℓ</mo><mi>j</mi></msub><annotation encoding="application/x-tex">\ell_j</annotation></semantics></math>
+rest segment length, r a root position and c the requested
+clearance.</p>
+<ul>
+<li><strong>Root drift:</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>r</mi><mi>′</mi><mo>−</mo><mi>r</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|r'-r\|</annotation></semantics></math>
+and maximum drift of every pinned root-ring vertex.</li>
+<li><strong>Orientation drift:</strong> angle between intended and
+fitted root tangent/frame; report hard-pin and allowed-flexible cases
+separately.</li>
+<li><strong>Stretch:</strong> maximum
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">|</mo><mo>ℓ</mo><msub><mi>′</mi><mi>j</mi></msub><mi>/</mi><msub><mo>ℓ</mo><mi>j</mi></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">|</mo></mrow><annotation encoding="application/x-tex">|\ell'_j/\ell_j-1|</annotation></semantics></math>
+and total arc-length error.</li>
+<li><strong>Clearance violation:</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>max</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>c</mi><mo>−</mo><msub><mi>d</mi><mrow><mi mathvariant="normal">s</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">f</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">e</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\max(0,c-d_{\mathrm{surface}})</annotation></semantics></math>
+under the declared physical thickness convention.</li>
+<li><strong>Penetration:</strong> signed overlap depth where solid
+classification is meaningful, plus surface-crossing counts; report
+separately from a missed positive clearance.</li>
+<li><strong>Shape:</strong> rest-relative curvature/twist change,
+maximum turn/curvature, mesh edge/area strain and within-blade
+self-intersections.</li>
+<li><strong>Repeatability:</strong> maximum geometric difference for
+repeated identical inputs with fixed backend/build/thread policy.</li>
+<li><strong>Output parity:</strong> maximum matching-vertex or surface
+discrepancy, normal/tangent differences, silhouette/depth
+discrepancy.</li>
+<li><strong>System behavior:</strong> phase times, peak/retained CPU/GPU
+memory, counters, live-generation count and cancellation latency.</li>
+</ul>
+<p>For 0.2–0.5 m test blades, proposed starting gates are: root/output
+position tolerance from Section 6; hard root orientation ≤0.1°; P0
+guide-length error
+≤<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup><annotation encoding="application/x-tex">10^{-5}</annotation></semantics></math>
+relative; P1/P2 guide-length error ≤0.5% with the same bound enforced in
+reach selection; zero detected forbidden crossings; clearance residual
+≤<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>max</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0.02</mn><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> mm</mtext></mrow><mo>,</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>4</mn></mrow></msup><mi>L</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\max(0.02\text{ mm},10^{-4}L)</annotation></semantics></math>;
+no degenerate/inverted/folded binding accepted.</p>
+<p>Mesh strain and curvature limits are source-specific and must be
+fixed before comparing methods. A narrow ribbon’s longitudinal edge
+strain target of 5% is a proposed initial visual gate, not a physical
+material model. Report the full distribution, not only a maximum.</p>
+<p>Tolerance floors must remain meaningfully below blade
+thickness/clearance. At unsupported scales or coordinates, report
+insufficient numerical resolution rather than widening tolerance until a
+test passes.</p>
+</section>
+<section id="fixture-matrix" class="level2">
+<h2>11.2 Fixture matrix</h2>
+<p>Use source IDs, seeds, numeric transforms and obstacle dimensions
+stored with each fixture. Except where stated, use a 0.30 m blade, 5 mm
+width, 8 longitudinal segments, 0.5 mm requested clearance and a root at
+the origin. Sweep segmentation separately.</p>
+<div class="table-scroll" tabindex="0"><table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Reproducible input/action</th>
+<th>Expected observation / pass rule</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>V01</td>
+<td>Blade against 0.10 m sphere; root outside</td>
+<td>Fixed root, bounded length/bend; no forbidden final mesh
+contact</td>
+</tr>
+<tr class="even">
+<td>V02</td>
+<td>Same blade against box corner; vary bend limit</td>
+<td>Smooth bounded curvature or clear infeasible status; no spike at
+corner</td>
+</tr>
+<tr class="odd">
+<td>V03</td>
+<td>Irregular closed rock with concavity</td>
+<td>Contact follows the selected representation; no convex-hull cavity
+closure presented as exact</td>
+</tr>
+<tr class="even">
+<td>V04</td>
+<td>12-blade clump around one stone</td>
+<td>Independent plausible bends; no rubber-bundle collapse or
+cross-binding</td>
+</tr>
+<tr class="odd">
+<td>V05</td>
+<td>Two stones; gap below/equal/above required envelope</td>
+<td>Correct constraints from both; unresolved status for incompatible
+clearance</td>
+</tr>
+<tr class="even">
+<td>V06</td>
+<td>Root and part of fixed root ring inside sphere</td>
+<td>No root movement/deletion; blocked diagnostic and retained prior
+result</td>
+</tr>
+<tr class="odd">
+<td>V07</td>
+<td>Long segment endpoints outside sphere/box but midpoint crossing</td>
+<td>Crossing detected; point-only path fails the test</td>
+</tr>
+<tr class="even">
+<td>V08</td>
+<td>Root outside artistic influence range, tip intersects stone</td>
+<td>Plant still selected by conservative contact reach</td>
+</tr>
+<tr class="odd">
+<td>V09</td>
+<td>Thin closed slab and open two-sided plane</td>
+<td>Explicit solid/sheet behavior; stable thickness and ambiguous-side
+reporting</td>
+</tr>
+<tr class="even">
+<td>V10</td>
+<td>U-shaped concave obstacle; open/nonmanifold variants</td>
+<td>Correct cavity treatment or explicit proxy/unsupported status</td>
+</tr>
+<tr class="odd">
+<td>V11</td>
+<td>Initial deep overlap with unpinned tip; then trapped case</td>
+<td>Recovery assessed separately; no fabricated success or unbounded
+stretching</td>
+</tr>
+<tr class="even">
+<td>V12</td>
+<td>Bend initially away from one stone into a second</td>
+<td>Contact candidate refresh catches the newly relevant obstacle</td>
+</tr>
+<tr class="odd">
+<td>V13</td>
+<td>4/8/16 guides segments and 2-triangle versus subdivided render
+card</td>
+<td>Guide refinement alone does not pretend to fix coarse render
+geometry</td>
+</tr>
+<tr class="even">
+<td>V14</td>
+<td>Crossed alpha cards and multi-blade opacity texture</td>
+<td>Card semantics visible; no unsupported claim of independent
+painted-blade mechanics</td>
+</tr>
+<tr class="odd">
+<td>V15</td>
+<td>Same source with three different bends plus one unaffected
+instance</td>
+<td>Source unchanged; distinct results; unaffected ID/transform
+unchanged</td>
+</tr>
+<tr class="even">
+<td>V16</td>
+<td>Uniform scales 0.01, 1, 100; separate
+nonuniform/mirror/shear/singular cases</td>
+<td>Qualified transforms correct; unsupported transforms flagged without
+bad publication</td>
+</tr>
+<tr class="odd">
+<td>V17</td>
+<td>Translate fixture by 1 km and 100 km; compare rebased results</td>
+<td>Declared tolerance holds or precision limitation is correctly
+reported</td>
+</tr>
+<tr class="even">
+<td>V18</td>
+<td>Move stone in Manual; pan/select/scrub 100 times</td>
+<td>No fit/reupload; last generation retained and diagnostics marked
+stale</td>
+</tr>
+<tr class="odd">
+<td>V19</td>
+<td>Relevant Live edit versus unrelated light/camera/animation edit</td>
+<td>Relevant work coalesced; unrelated fit counters remain zero</td>
+</tr>
+<tr class="even">
+<td>V20</td>
+<td>Increase/decrease density</td>
+<td>Compatible surviving IDs/transforms retained; added/removed IDs
+handled upstream</td>
+</tr>
+<tr class="odd">
+<td>V21</td>
+<td>Undo/Redo Fit and edits; Undo while job runs</td>
+<td>Compatible state restored; late completion cannot overwrite
+Undo</td>
+</tr>
+<tr class="even">
+<td>V22</td>
+<td>Save/reopen with pending Manual edits</td>
+<td>Committed shape and pending status restored without a new fit</td>
+</tr>
+<tr class="odd">
+<td>V23</td>
+<td>Reorder source vertices with same counts; alter roots/rest
+geometry</td>
+<td>Old bindings rejected by revision/fingerprint; source topology not
+guessed</td>
+</tr>
+<tr class="even">
+<td>V24</td>
+<td>Delete/miss obstacle/source/proxy dependency</td>
+<td>Frozen compatible output preserved where available; diagnostics
+accurate</td>
+</tr>
+<tr class="odd">
+<td>V25</td>
+<td>Cancel during query, solve, validation and host staging</td>
+<td>Previous generation intact; allocations reclaimed safely</td>
+</tr>
+<tr class="even">
+<td>V26</td>
+<td>Force stale completion by editing twice; inject allocation
+failure</td>
+<td>No mixed or failed successor publication</td>
+</tr>
+<tr class="odd">
+<td>V27</td>
+<td>Render G while publishing G+1; retain Undo/GPU leases</td>
+<td>No premature frees; same-generation parity holds</td>
+</tr>
+<tr class="even">
+<td>V28</td>
+<td>Viewport, Corona, Arnold, V-Ray, Bake/reimport</td>
+<td>Qualified paths within tolerance; correct normals/UVs/material
+IDs</td>
+</tr>
+<tr class="odd">
+<td>V29</td>
+<td>Add post-smoothing/displacement after fit</td>
+<td>Revalidation/declared exclusion; no inherited collision-free
+label</td>
+</tr>
+<tr class="even">
+<td>V30</td>
+<td>Contact-pair cap, output-memory cap, variant-cache cap</td>
+<td>Budget diagnostic; no silently dropped contacts or leased-data
+eviction</td>
+</tr>
+<tr class="odd">
+<td>V31</td>
+<td>Repeat identical Fit with fixed settings and worker counts</td>
+<td>Measured repeatability reported; no unqualified cross-platform
+determinism claim</td>
+</tr>
+<tr class="even">
+<td>V32</td>
+<td>Vegetation–vegetation collision across selected-region boundary</td>
+<td>Deliberately unsupported in v1; future island propagation test
+identified</td>
+</tr>
+<tr class="odd">
+<td>V33</td>
+<td>Full proxy, preview proxy and original native source</td>
+<td>Full geometry/attributes verified or deformable proxy rejected</td>
+</tr>
+<tr class="even">
+<td>V34</td>
+<td>One blocked root among 1,000 otherwise valid plants</td>
+<td>Strict behavior accurate; explicit partial acceptance, if supported,
+preserves every placement and labels failures</td>
+</tr>
+</tbody>
+</table>
+</div><p>Numerical validation is necessary but not sufficient. Review contact
+close-ups, overall clump silhouette, plausible local curvature and
+material shading. A nonintersecting result that looks like stretched
+rubber fails visual acceptance.</p>
+</section>
+</section>
+<section id="open-questions-ranked-by-decision-impact" class="level1">
+<h1>12. Open questions ranked by decision impact</h1>
+<div class="table-scroll" tabindex="0"><table style="width:100%;">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Rank</th>
+<th>Question</th>
+<th>Specific experiment/evidence needed</th>
+<th>Decision consequence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td>Can each required renderer consume sparse unique bends without
+expanding every placement?</td>
+<td>Gate 0; record API path and renderer source/triangle counts</td>
+<td>Determines feasible output architecture and supported renderer
+scope</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td>How much of the actual asset library meets a useful blade/root
+contract?</td>
+<td>Six-fixture gate plus representative imported sources; time
+preparation</td>
+<td>Determines source tools, support claims and adoption cost</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td>Do segment proxies and final ribbon meshes both meet contact
+quality?</td>
+<td>V05–V14 with independent mesh validation</td>
+<td>Determines minimum collision and binding representation</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td>Is P0 sufficient, or does a rod solver materially improve required
+scenes?</td>
+<td>Equal-quality P0/P1/P2 comparison</td>
+<td>Selects numerical method and dependency</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td>How often are roots infeasible in real scatters?</td>
+<td>V34 and real archviz scene sample</td>
+<td>Determines need for explicit partial-fit acceptance</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td>What Jolt revision/build is in Physics Lab, and what code can be
+reused safely?</td>
+<td>Inspect actual dependency manifest/source/build in a later
+authorized implementation phase</td>
+<td>Determines whether P2 reduces work or requires an upgrade/separate
+build</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td>What are true peak memory and UI stalls across retained
+generations?</td>
+<td>Gate 4 plus concurrent render/history tests</td>
+<td>Sets workload caps, history policy and Live eligibility</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td>Do stable placement IDs survive relevant upstream changes as
+assumed?</td>
+<td>Repository inspection and V15/V20/V23</td>
+<td>Prerequisite for sparse results and correct reuse</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td>Are proxy extraction and material/map data available through
+supported APIs?</td>
+<td>V33; vendor API/license review</td>
+<td>Supports prepared proxy mode or requires native source
+conversion</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td>What repeatability tolerance is achievable across
+builds/threading?</td>
+<td>V31 with documented precision/order policies</td>
+<td>Sets reproducibility promise and save format</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td>Do variants improve total cost without excessive K/contact
+rejection?</td>
+<td>Gate 4 shape/assignment sweep</td>
+<td>Optional optimization, not first architecture</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td>Are animated roots/wind actually required for the first useful
+delivery?</td>
+<td>Product review of static renders</td>
+<td>Determines whether animation remains deferred</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13</td>
+<td>What exact dependency/vendor redistribution terms apply to the
+chosen artifacts?</td>
+<td>Pinned release/license/NOTICE/runtime audit</td>
+<td>Must be resolved before distribution, not guessed from engine
+branding</td>
+</tr>
+</tbody>
+</table>
+</div></section>
+<section id="annotated-bibliography" class="level1">
+<h1>13. Annotated bibliography</h1>
+<p>All links below were checked through primary-site retrieval or
+indexed primary-site evidence on 24 October 2026. Live documentation can
+change. Paper dates refer to publication; version labels refer to
+examined documentation/releases. No external benchmark is presented as a
+measurement of CyrusScatter.</p>
+<section id="papers" class="level2">
+<h2>13.1 Papers</h2>
+<ul>
+<li><p><strong>P01 — <a href="https://mmacklin.com/xpbd.pdf" target="_blank" rel="noopener noreferrer">Macklin,
+Müller &amp; Chentanez — XPBD</a></strong>. MIG 2016. Original
+compliant-constraint formulation; supports the XPBD equation and its
+purpose, not a Cyrus performance estimate.</p></li>
+<li><p><strong>P02 — <a href="https://mmacklin.com/smallsteps.pdf" target="_blank" rel="noopener noreferrer">Macklin et al. — Small Steps
+in Physics Simulation</a></strong>. SCA 2019. Substep/iteration and
+damping trade-offs. Paper scene timings are not transferred to
+vegetation in Max.</p></li>
+<li><p><strong>P03 — <a href="https://www.cs.columbia.edu/cg/rods/index.html" target="_blank" rel="noopener noreferrer">Bergou et al. —
+Discrete Elastic Rods</a></strong>. SIGGRAPH / TOG 2008. Framed rods,
+rest shape, inextensibility and bending/twist coupling.</p></li>
+<li><p><strong>P04 — <a href="https://animation.rwth-aachen.de/media/papers/2016-SCA-Cosserat-Rods.pdf" target="_blank" rel="noopener noreferrer">Kugelstadt
+&amp; Schömer — Position and Orientation Based Cosserat
+Rods</a></strong>. SCA 2016. Primary author paper. Direct fetch was
+intermittent; indexed primary content and the authors’ implementation
+corroborate the formulation.</p></li>
+<li><p><strong>P05 — <a href="https://onlinelibrary.wiley.com/doi/10.1111/cgf.13326" target="_blank" rel="noopener noreferrer">Deul et
+al. — Direct Position-Based Solver for Stiff Rods</a></strong>. Computer
+Graphics Forum 2018. Alternative for stiff rod/tree convergence;
+changing contacts still need treatment.</p></li>
+<li><p><strong>P06 — <a href="https://graphics.cs.utah.edu/research/projects/stable-cosserat-rods/" target="_blank" rel="noopener noreferrer">Hsu
+et al. — Stable Cosserat Rods</a></strong>. SIGGRAPH 2025. Modern
+position/orientation optimization alternative. Author GPU timings are
+not evidence of Scatter capacity.</p></li>
+<li><p><strong>P07 — <a href="https://multires.caltech.edu/pubs/DS-CDROM/" target="_blank" rel="noopener noreferrer">Grinspun et al. —
+Discrete Shells</a></strong>. SCA 2003. Thin structures with curved rest
+shape, including leaves; supports later shell evaluation.</p></li>
+<li><p><strong>P08 — <a href="https://www.microsoft.com/en-us/research/publication/computation-rotation-minimizing-frames/" target="_blank" rel="noopener noreferrer">Wang
+et al. — Computation of Rotation Minimizing Frames</a></strong>. TOG,
+March 2008. Stable frame transport reference for guide-to-mesh
+binding.</p></li>
+</ul>
+</section>
+<section id="geometry-and-workflow" class="level2">
+<h2>13.2 Geometry and workflow</h2>
+<ul>
+<li><p><strong>H01 — <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guidecollidevdb" target="_blank" rel="noopener noreferrer">SideFX
+— Guide Collide With VDB</a></strong>. Live docs labeled Houdini 22.0;
+node since 16.0. Procedural curve-contact workflow, curve masks, offsets
+and push range; no inference about private internals.</p></li>
+<li><p><strong>H02 — <a href="https://www.sidefx.com/docs/houdini/nodes/sop/guideprocess.html" target="_blank" rel="noopener noreferrer">SideFX
+— Guide Process</a></strong>. Live documentation, accessed 2026-10-24.
+Per-segment rotation, bending and guide masks as authoring
+precedents.</p></li>
+<li><p><strong>H03 — <a href="https://www.sidefx.com/docs/houdini/shelf/vellumhair.html" target="_blank" rel="noopener noreferrer">SideFX
+— Vellum Hair</a></strong>. Live docs labeled Houdini 22.0. Root
+position/orientation and unbranching-curve preparation.</p></li>
+<li><p><strong>H04 — <a href="https://www.sidefx.com/docs/houdini/nodes/sop/wiredeform.html" target="_blank" rel="noopener noreferrer">SideFX
+— Wire Deform</a></strong>. Live docs labeled Houdini 22.0. Capture
+correspondence, local frames, normals and topology-sensitive
+caching.</p></li>
+<li><p><strong>H05 — <a href="https://www.sidefx.com/docs/houdini/nodes/sop/vellumpostprocess.html" target="_blank" rel="noopener noreferrer">SideFX
+— Vellum Post-Process</a></strong>. Live docs labeled Houdini 22.0.
+Documents post-smoothing/subdivision collision risks and failed-contact
+visualization.</p></li>
+<li><p><strong>C01 — <a href="https://doc.cgal.org/latest/AABB_tree/" target="_blank" rel="noopener noreferrer">CGAL — AABB Tree
+manual</a></strong>. Retrieved documentation 6.2.1. Static hierarchy,
+segment intersection and point-distance interfaces. Not a claim that
+stock APIs supply every capsule query needed here.</p></li>
+<li><p><strong>C02 — <a href="https://www.dgp.toronto.edu/projects/fast-winding-numbers/" target="_blank" rel="noopener noreferrer">Barill
+et al. — Fast Winding Numbers for Soups and Clouds</a></strong>.
+SIGGRAPH 2018. Approximate robust inside/outside classification;
+artistic solid interpretation remains separate.</p></li>
+<li><p><strong>C03 — <a href="https://www.openvdb.org/documentation/doxygen/MeshToVolume_8h_source.html" target="_blank" rel="noopener noreferrer">OpenVDB
+— MeshToVolume source documentation</a></strong>. Retrieved docs 13.1.0;
+stable-release status not established. Signed versus unsigned
+conversion, closed-surface requirement, Apache-2.0 source
+identifier.</p></li>
+</ul>
+</section>
+<section id="max-and-renderers" class="level2">
+<h2>13.3 Max and renderers</h2>
+<ul>
+<li><p><strong>M01 — <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" target="_blank" rel="noopener noreferrer">Autodesk
+— RenderTimeInstancing namespace</a></strong>. 3ds Max 2027 C++ SDK.
+Shared source Mesh/INode and instance targets; renderer participation is
+conditional.</p></li>
+<li><p><strong>M02 — <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_threading_debugging_tools.html" target="_blank" rel="noopener noreferrer">Autodesk
+— ThreadingDebuggingTools</a></strong>. 3ds Max 2027 C++ SDK.
+Main-thread operations and narrowly controlled exceptions. This report
+follows the brief’s stricter host-thread contract.</p></li>
+<li><p><strong>M03 — <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_render_time_instancing_1_1_render_time_instancing_interface.html" target="_blank" rel="noopener noreferrer">Autodesk
+— RenderTimeInstancingInterface</a></strong>. 3ds Max 2027 C++ SDK.
+Concurrent iteration, validity/release and aggregate fallback; motivates
+generation leases and fallback budgets.</p></li>
+<li><p><strong>M04 — <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_mesh_display2.html" target="_blank" rel="noopener noreferrer">Autodesk
+— IMeshDisplay2</a></strong>. 3ds Max 2027 C++ SDK. Returned geometry
+handles may be shared and must not be mutated.</p></li>
+<li><p><strong>M05 — <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_viewport_instancing_1_1_instance_display_geometry.html" target="_blank" rel="noopener noreferrer">Autodesk
+— ViewportInstancing::InstanceDisplayGeometry</a></strong>. 3ds Max 2027
+C++ SDK. Retained geometry/instance streams; input lifetime and updates
+must follow actual headers.</p></li>
+<li><p><strong>M06 — <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_geom_object.html" target="_blank" rel="noopener noreferrer">Autodesk
+— GeomObject</a></strong>. 3ds Max 2027 C++ SDK. Render meshes,
+ownership flags and multiple-mesh interfaces; renderer handling still
+requires tests.</p></li>
+<li><p><strong>M07 — <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_h_l_s_l_material_handle.html" target="_blank" rel="noopener noreferrer">Autodesk
+— HLSLMaterialHandle</a></strong>. 3ds Max 2027 C++ SDK. Custom viewport
+shader facility; not automatic cross-renderer deformation.</p></li>
+<li><p><strong>M08 — <a href="https://blog.autodesk.io/setting-up-3ds-max-2027-sdk-development-with-visual-studio-2026/" target="_blank" rel="noopener noreferrer">Autodesk
+Developer Blog — Max 2027 SDK development</a></strong>. Allan K. Koech,
+31 July 2026. Toolchain guidance. Linked requirements page was
+unavailable; installed SDK/sample build remains the qualification
+authority.</p></li>
+<li><p><strong>R01 — <a href="https://help.autodesk.com/cloudhelp/ENU/AR-3DSMax/files/arnold-3dsmax/ax-release-notes/ax-5x/arnold_for_3ds_max_5942_html.html" target="_blank" rel="noopener noreferrer">Autodesk
+— MAXtoA 5.9.4.2 release notes</a></strong>. 2 September 2026; Arnold
+7.5.3.2. Lists Max 2027; a concrete test candidate, not Cyrus support
+certification.</p></li>
+<li><p><strong>R02 — <a href="https://forums.chaos.com/t/chaos-corona-14-update-1-hotfix-2-released-for-3ds-max/160584" target="_blank" rel="noopener noreferrer">Chaos
+— Corona 14 Update 1 Hotfix 2 announcement</a></strong>. 23 April 2026.
+Vendor announcement explicitly adding Max 2027 compatibility.</p></li>
+<li><p><strong>R03 — <a href="https://forums.chaos.com/t/corona-15-hotfix-2-released-for-3ds-max/188253" target="_blank" rel="noopener noreferrer">Chaos
+— Corona 15 Hotfix 2 announcement</a></strong>. 29 July 2026. Concrete
+renderer build for qualification; lists fixes rather than a new geometry
+API.</p></li>
+<li><p><strong>R04 — <a href="https://documentation.chaos.com/space/VMAX/707559558/7.30.02" target="_blank" rel="noopener noreferrer">Chaos
+— V-Ray 7.30.02 release notes</a></strong>. 3 April 2026. Official
+indexed release text explicitly adds Max 2027. Direct page extraction
+was limited.</p></li>
+<li><p><strong>R05 — <a href="https://documentation.chaos.com/space/VMAX/1115029538/7.40.04" target="_blank" rel="noopener noreferrer">Chaos
+— V-Ray 7.40.04 release notes</a></strong>. 13 August 2026; page updated
+14 August. Concrete qualification candidate. Direct page extraction was
+limited; official indexed release text was retrieved.</p></li>
+<li><p><strong>R06 — <a href="https://forums.chaos.com/t/complete-list-of-smaller-changes-bug-fixes-etc-from-corona-15/189733" target="_blank" rel="noopener noreferrer">Chaos
+— Corona 15 complete changes</a></strong>. List posted 14 August 2026.
+Confirms Max 2027 support; posting date is not treated as the release
+date.</p></li>
+<li><p><strong>R07 — <a href="https://support.chaos.com/hc/en-us/articles/4526288619793-How-to-use-tyFlow-in-Corona-for-3ds-Max" target="_blank" rel="noopener noreferrer">Chaos
+— Using tyFlow in Corona</a></strong>. Updated 12 August 2026. Public
+instancing/modifier trade-off; not evidence of private implementation or
+Cyrus compatibility.</p></li>
+<li><p><strong>R08 — <a href="https://documentation.chaos.com/space/CRMAX/124625498/Corona%2BProxy" target="_blank" rel="noopener noreferrer">Chaos
+— Corona Proxy</a></strong>. Live official documentation. Full Mesh RAM
+behavior and display modes; extraction must be verified.</p></li>
+<li><p><strong>R09 — <a href="https://documentation.chaos.com/space/VMAX/113575423/VRayProxy" target="_blank" rel="noopener noreferrer">Chaos
+— VRayProxy</a></strong>. Updated 2 June 2026. Proxy and full-mesh
+modifier documentation; native access/memory needs local
+qualification.</p></li>
+</ul>
+</section>
+<section id="libraries-and-licenses" class="level2">
+<h2>13.4 Libraries and licenses</h2>
+<ul>
+<li><p><strong>D01 — <a href="https://positionbaseddynamics.readthedocs.io/en/latest/about.html" target="_blank" rel="noopener noreferrer">PositionBasedDynamics
+— About</a></strong>. Documentation 2.2.2. Constraint families and cubic
+SDF collision; not a guarantee about a Cyrus fit.</p></li>
+<li><p><strong>D02 — <a href="https://github.com/InteractiveComputerGraphics/PositionBasedDynamics/releases" target="_blank" rel="noopener noreferrer">PositionBasedDynamics
+— releases</a></strong>. Latest packaged release observed: 2.2.0.
+Distinguish released package from documentation/master version; pin
+tested commit.</p></li>
+<li><p><strong>D03 — <a href="https://positionbaseddynamics.readthedocs.io/en/latest/build_from_source.html" target="_blank" rel="noopener noreferrer">PositionBasedDynamics
+— build instructions</a></strong>. Documentation 2.2.2. Windows Visual
+Studio route and dependency context; Max 2027 toolchain not
+certified.</p></li>
+<li><p><strong>D04 — <a href="https://github.com/NVIDIA-Omniverse/PhysX/releases/tag/ovphysx-0.7.0" target="_blank" rel="noopener noreferrer">NVIDIA
+— ovphysx 0.7.0 release</a></strong>. Observed release October 2026;
+contains PhysX 5.12. Pre-1.0 API maturity caveat; exact shipped package
+must be pinned.</p></li>
+<li><p><strong>D05 — <a href="https://nvidia-omniverse.github.io/PhysX/ovphysx/latest/simulation_setup/deformables.html" target="_blank" rel="noopener noreferrer">NVIDIA
+— Deformable Bodies</a></strong>. Current ovphysx documentation.
+GPU/CUDA requirement and simulation-mesh preparation; does not support
+CPU deformable simulation.</p></li>
+<li><p><strong>D06 — <a href="https://github.com/jerry060599/StableCosseratRods" target="_blank" rel="noopener noreferrer">Hsu —
+StableCosseratRods CPU reference</a></strong>. SIGGRAPH 2025 author
+repository; no stable release verified. Research implementation;
+production build, cancellation and dependency subset require
+evaluation.</p></li>
+<li><p><strong>J01 — <a href="https://github.com/jrouwe/JoltPhysics/releases" target="_blank" rel="noopener noreferrer">Jolt — release
+history</a></strong>. 5.4.0 CPU rods; 5.6.0 current examined release.
+Separates CPU rod capability from the later GPU hair subsystem.</p></li>
+<li><p><strong>J02 — <a href="https://github.com/jrouwe/JoltPhysics/releases/tag/v5.6.0" target="_blank" rel="noopener noreferrer">Jolt —
+5.6.0 release</a></strong>. 5.6.0, accessed 2026-10-24. Experimental GPU
+hair, guide/follow strands and restricted environment shape
+support.</p></li>
+<li><p><strong>J03 — <a href="https://jrouwe.github.io/JoltPhysicsDocs/5.6.0/_soft_body_shared_settings_8h_source.html" target="_blank" rel="noopener noreferrer">Jolt
+— SoftBodySharedSettings source</a></strong>. Version-pinned 5.6.0 docs.
+Rod stretch/shear and bend/twist structures, rest data and MIT header
+identifier.</p></li>
+<li><p><strong>J04 — <a href="https://jrouwe.github.io/JoltPhysicsDocs/5.6.0/class_soft_body_motion_properties.html" target="_blank" rel="noopener noreferrer">Jolt
+— SoftBodyMotionProperties</a></strong>. Version-pinned 5.6.0 docs. Rod
+state, vertex radius and caller-thread CustomUpdate; no inferred
+interrupt guarantee.</p></li>
+<li><p><strong>J05 — <a href="https://jrouwe.github.io/JoltPhysicsDocs/5.6.0/class_collide_soft_body_vertices_vs_triangles.html" target="_blank" rel="noopener noreferrer">Jolt
+— CollideSoftBodyVerticesVsTriangles</a></strong>. Version-pinned 5.6.0
+docs. Vertex/triangle contact interface; not proof of continuous capsule
+coverage.</p></li>
+<li><p><strong>L01 — <a href="https://github.com/InteractiveComputerGraphics/PositionBasedDynamics/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">PositionBasedDynamics
+— LICENSE</a></strong>. Current repository text, accessed 2026-10-24.
+MIT notice terms; transitive dependencies remain separate.</p></li>
+<li><p><strong>L02 — <a href="https://github.com/jrouwe/JoltPhysics/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Jolt —
+LICENSE</a></strong>. Current repository text, accessed 2026-10-24. MIT
+terms; version-pinned header provides additional evidence, but no
+release archive audit was performed.</p></li>
+<li><p><strong>L03 — <a href="https://github.com/jerry060599/StableCosseratRods#license" target="_blank" rel="noopener noreferrer">StableCosseratRods
+— license section</a></strong>. Current author repository. Default
+MIT-style terms with per-file exceptions; inspect any copied
+subset.</p></li>
+<li><p><strong>L04 — <a href="https://github.com/jerry060599/YarnBall" target="_blank" rel="noopener noreferrer">YarnBall —
+repository/license</a></strong>. Current author repository. Separate GPU
+codebase labeled GPL-3.0; not interchangeable with CPU example
+licensing.</p></li>
+<li><p><strong>L05 — <a href="https://github.com/NVIDIA-Omniverse/PhysX/blob/main/physx/LICENSE.md" target="_blank" rel="noopener noreferrer">PhysX
+— component LICENSE</a></strong>. Current retrieved component text.
+Apache 2.0; exact selected package/NOTICE/runtime scope remains to be
+audited.</p></li>
+<li><p><strong>L06 — <a href="https://github.com/NVIDIA-Omniverse/PhysX/blob/main/LICENSE.md" target="_blank" rel="noopener noreferrer">PhysX
+— root LICENSE</a></strong>. Separately retrieved root text. BSD
+3-Clause observed; component scope or cached revision may explain
+difference. No asserted same-archive conflict.</p></li>
+</ul>
+</section>
+</section>
+<section id="direct-answers" class="level1">
+<h1>14. Direct answers</h1>
+<section id="is-this-practical-for-cyrusscatter" class="level2">
+<h2>Is this practical for CyrusScatter?</h2>
+<p><strong>Yes, for a deliberately supported static scope.</strong>
+Sparse contact fitting fits the supplied native placement architecture
+without replacing the scatter engine. Practicality is conditional on
+geometry delivery, asset preparation and the measured affected workload.
+No repository inspection or host experiment here proves a shipping
+implementation.</p>
+</section>
+<section id="what-is-the-simplest-useful-first-version" class="level2">
+<h2>What is the simplest useful first version?</h2>
+<p><strong>Root-fixed, prepared grass blades fitted around fixed scene
+objects or fixed obstacle-layer instances, with one stored pose and
+exact CPU mesh output for affected instances.</strong> Start with
+length-preserving procedural guide bending plus bounded static contact
+refinement, reliable segment/surface validation, explicit Update, and
+clear unresolved-contact feedback.</p>
+</section>
+<section id="does-that-version-require-actual-physics" class="level2">
+<h2>Does that version require actual physics?</h2>
+<p><strong>No continuous physics simulation is required.</strong> It may
+use a numerical constrained fit. If XPBD or Jolt’s CPU rods materially
+improve the tested result, adopt the measured winner as the fitting
+backend without turning the product into a timeline simulation
+system.</p>
+</section>
+<section id="can-ordinary-imported-grass-models-work-and-what-preparation-is-unavoidable" class="level2">
+<h2>Can ordinary imported grass models work, and what preparation is
+unavoidable?</h2>
+<p><strong>Many can, if their geometry represents identifiable,
+sufficiently segmented blades.</strong> Roots, growth/rest direction,
+component identity and vertex-to-guide binding are unavoidable
+information. Automatic proposals can reduce authoring, but cards
+containing multiple painted blades, fused scans and opaque proxies
+require a narrower contract or explicit preparation.</p>
+</section>
+<section id="how-do-we-retain-efficiency-when-each-affected-instance-bends-differently" class="level2">
+<h2>How do we retain efficiency when each affected instance bends
+differently?</h2>
+<p><strong>Keep N−A instances on the existing shared transform path;
+share rest geometry/binding; store only sparse guide states; reuse
+obstacle/source indices; and cache completed output.</strong> Exact
+unique rendered shapes still have a cost. Validate variants when K is
+small, and consider shaders/procedurals only if measured output
+bottlenecks justify their integration.</p>
+</section>
+<section id="what-should-we-measure-before-committing-to-an-architecture" class="level2">
+<h2>What should we measure before committing to an architecture?</h2>
+<p><strong>Renderer path/parity first; then asset preparation,
+final-mesh contact and naturalness; then P0/P1/P2 total cost.</strong>
+Measure all phases, peak retained generations, cancellation and UI
+stalls, incremental changes, source/obstacle invalidation, Undo/Redo,
+save/reopen, and 100/1,000/10,000 affected-clump scenarios.</p>
+</section>
+<section id="which-effects-should-be-deferred-and-why" class="level2">
+<h2>Which effects should be deferred, and why?</h2>
+<p><strong>Wind, moving/deforming obstacles, animation replay and motion
+blur</strong> add temporal state and sampling contracts.
+<strong>Plant–plant/two-way interaction</strong> adds coupled islands
+and propagation. <strong>Broad-leaf folding, branching and arbitrary
+scans/proxies</strong> need richer asset/deformation models.
+<strong>Biological growth</strong> is a different phenomenon. <strong>A
+generic graph, mandatory GPU backend and whole-engine
+replacement</strong> are not justified by the initial static goal.</p>
+</section>
+</section>
+</article>
+<footer>CyrusScatter vegetation contact research · Evidence reviewed 24 October 2026. Analytical estimates and proposed gates are distinguished from measured results. No host benchmark or repository modification was performed.</footer>
+</main></body></html>

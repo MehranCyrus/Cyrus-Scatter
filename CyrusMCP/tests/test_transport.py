@@ -1,4 +1,5 @@
 import concurrent.futures
+import http.client
 import json
 import threading
 import time
@@ -30,10 +31,24 @@ def send(request):
         return json.loads(response.read())
 
 
-@pytest.mark.parametrize("headers",[{"X-Cyrus-Signature":"wrong"},{"Origin":"https://attacker.invalid"},{"Host":"attacker.invalid"},{"X-Cyrus-Time":"0"},{"Transfer-Encoding":"chunked"}])
+@pytest.mark.parametrize("headers",[{"X-Cyrus-Signature":"wrong"},{"Origin":"https://attacker.invalid"},{"Host":"attacker.invalid"},{"X-Cyrus-Time":"0"}])
 def test_auth_and_browser_requests_rejected(bridge,headers):
     assert not send(request(bridge,headers=headers))["ok"]
     assert bridge.queue.empty()
+
+
+def test_unsupported_chunked_framing_never_queues_even_a_signed_write(bridge):
+    # Early rejection deliberately does not parse/drain unsupported framing.
+    # Windows may reset that TCP connection while its body is still arriving;
+    # unlike a validly framed RPC, it cannot promise a delivered JSON response.
+    for _ in range(5):
+        try:
+            result=send(request(bridge,data={"method":"scatter.apply_plan","args":{}},headers={"Transfer-Encoding":"chunked"}))
+        except (ConnectionAbortedError,ConnectionResetError,http.client.RemoteDisconnected):
+            pass
+        else:
+            assert result["ok"] is False
+        assert bridge.queue.empty()
 
 
 def test_authenticated_calls_run_on_dispatch_thread_and_nonce_replay_fails(bridge):

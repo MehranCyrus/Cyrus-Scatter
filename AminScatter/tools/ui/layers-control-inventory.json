@@ -1338,6 +1338,64 @@
         "name": "planarCheck"
       }
     ],
+    "interactionsUI": [
+      {
+        "kind": "checkbox",
+        "name": "colliderCheck"
+      },
+      {
+        "kind": "checkbox",
+        "name": "reactCheck"
+      },
+      {
+        "kind": "checkbox",
+        "name": "rootsCheck"
+      },
+      {
+        "kind": "spinner",
+        "name": "gapSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "stiffnessSpin"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "proxyList"
+      },
+      {
+        "kind": "listbox",
+        "name": "modelList"
+      },
+      {
+        "kind": "button",
+        "name": "analyzeButton"
+      },
+      {
+        "kind": "button",
+        "name": "acceptButton"
+      },
+      {
+        "kind": "button",
+        "name": "clearButton"
+      },
+      {
+        "kind": "button",
+        "name": "applyButton"
+      },
+      {
+        "kind": "button",
+        "name": "validateButton"
+      },
+      {
+        "kind": "spinner",
+        "name": "minimumSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "foliageSpin"
+      }
+    ],
     "detailsUI": [
       {
         "kind": "button",

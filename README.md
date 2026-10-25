@@ -4,7 +4,11 @@ Native C++ scattering and generated MAXScript UI for 3ds Max.
 
 **0.86.9.1 acceptance is withdrawn:** its Modify-panel crash was reproduced. Use the corrected 0.86.9.2 package below. Max owns native column sizing again; small native insets may remain.
 
-**Current test delivery: Scatter 0.86.9.2 / schema 59 / CyrusUnified2, with Surface Analyzer 0.14.2.** One EXE includes distinct Max 2024, 2026 and 2027 builds; **this patch is tested in Max 2027 only; 2024/2026 are built and untested**. The [delivery report](docs/plans/edit-instances/DELIVERY_08692.md) records procedural map thumbnails, empty map drag/drop, safe native Modify column ownership, live Edit gizmo movement and focused preservation checks. Original Paint, source-clearance calculation, native Edit storage 2 and content revision 0.86.7 are preserved. Save upgraded Edit scenes as new copies; older plugins cannot read the source-aware Edit format introduced in 0.86.9.
+**Current artist-test delivery: Scatter 0.87.0 / schema 60 / CyrusUnified2, Max 2027 only.** The [Interactions delivery](docs/plans/scatter-interactions-garden-20261025/DELIVERY_0870.md) adds reviewed shared plant preparation, Collider/React layer roles, local contact poses, reversible covered roots and individual Cyrus Edit stone movement. Its report distinguishes large-scene command measurements, held-pointer evidence, full-mesh audits and remaining artist checks. Use the matching Max 2027 MZP and saved trial copies. Surface Analyzer 0.14.2 and content 0.86.7 remain independently versioned; this delivery does not update their packages or older Max hosts. Original Paint, source-clearance calculation and native Edit storage 2 remain in place. Preserve original scenes when saving schema 60.
+
+**New build-only installer:** [0.87.0 EXE for Max 2024, 2026 and 2027](docs/plans/scatter-interactions-garden-20261025/INSTALLER_0870_COMPATIBILITY.md). The user requested packaging without further tests: 2024/2026 are newly built and untested; the 2027 package is unchanged from r4. Analyzer and content installations remain independent. No Max session was launched or installed for this packaging request.
+
+The historical [0.86.9.2 delivery](docs/plans/edit-instances/DELIVERY_08692.md) retains its Max 2027 patch evidence and built-only Max 2024/2026 counterparts. Its combined EXE does not install 0.87.0. Plugins older than 0.86.9 cannot read source-aware Edit storage.
 
 Whole-object Copy of Edit stacks that reference lower-modifier clones, and radius
 overrides targeting cloned instances, still needs coordinated ID remapping. The
@@ -19,7 +23,7 @@ The historical [0.86.8.7 review and memory delivery](docs/plans/code-quality/DEL
 | Need | Maintained source |
 | --- | --- |
 | Use the plugin | [Artist guide](docs/ARTIST_GUIDE.md), [Layout and falloff](docs/LAYOUT_AND_FALLOFF.md) |
-| Install or build | [Installation/build](docs/Max_2027_Installation.md); [0.86.9.2 delivery, checks and limits](docs/plans/edit-instances/DELIVERY_08692.md) |
+| Install or build | [Installation/build](docs/Max_2027_Installation.md); [0.87.0 delivery, checks and limits](docs/plans/scatter-interactions-garden-20261025/DELIVERY_0870.md) |
 | Understand implementation | [Architecture](docs/ARCHITECTURE.md), [engineering contracts](docs/ENGINEERING_FOUNDATION.md) |
 | Find remaining work | [Execution ledger](docs/plans/improvement-program/PROGRESS.md), [defects and acceptance](docs/BACKLOG.md) |
 | Work in this repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md), [version policy](docs/Release_Versioning.md) |
@@ -34,7 +38,7 @@ selected layer's current surfaces.
 **Models & Points** uses **+** to add objects, places **Add Point** beside **Make
 point**, and lets **Pick object** replace either a Point or a model.
 Put `CyrusScatter-Content-0.86.7.zip` beside the EXE and check **Install / update
-plant library** to install content. Qualified plugin packages are under
+plant library** to install content. Historical compatibility packages are under
 `dist/CyrusScatter-0.86.9.2-20261023/`; distribute the existing content ZIP separately
 for recipients who need it. Leave the option unchecked to keep existing
 content. Content keeps its independent revision and is shared by standard profiles
@@ -63,7 +67,7 @@ scene-dependent paths and fully lazy Advanced controls remain future work.
 
 The current controller keeps bulk placement generation, masks/Paint, transforms, Edit, acceptance and preview preparation in native storage. MAXScript retains authored parameter blocks, UI and bounded coordination. Particle Flow still uses a Script Operator over native transforms; Bake creates real scene nodes through bounded pages. Heavy operations remain synchronous and the one-million candidate cap remains. Read the delivery report for measurements rather than assuming every operation is native or instantaneous.
 
-Layers own receivers, models and population rules. Paint Areas retain receiver-bound vector coverage; overlapping areas union coverage. Painting keeps the terrain vector path and adds surface-attached vector regions for spheres, boxes and manifold curved receivers. Curved strokes follow surface distance; disconnected sheets stay independent. Current schema 59 is required. Schema 58 has an explicit Undoable upgrade; earlier development schemas remain unsupported. Preserve original scenes and saved units for guarded Paint/Edit bindings.
+Layers own receivers, models and population rules. Paint Areas retain receiver-bound vector coverage; overlapping areas union coverage. Painting keeps the terrain vector path and adds surface-attached vector regions for spheres, boxes and manifold curved receivers. Curved strokes follow surface distance; disconnected sheets stay independent. Current schema 60 stores prepared contact definitions. Schema 59 opens with Interactions off; schema 58 retains its explicit Undoable upgrade. Earlier development schemas remain unsupported. Preserve original scenes and saved units for guarded Paint/Edit bindings.
 
 | Path | Purpose |
 | --- | --- |
@@ -71,9 +75,10 @@ Layers own receivers, models and population rules. Paint Areas retain receiver-b
 | `CyrusSurfaceAnalyzer/` | Independently versioned Analyzer 0.14.2 |
 | `CyrusMCP/` | Bounded automation, package/plan 0.73.0/0.73 |
 | `CyrusLicensing/` | Independent licensing foundation |
+| `CyrusVegetationLab/` | [Independent preparation/interaction Lab 0.3.1](CyrusVegetationLab/experiments/stem-live/GUIDE_031.md), with the [historical grass/stone Lab 0.1.0](CyrusVegetationLab/README.md); separate from Scatter support |
 | `docs/` | Maintained guidance, contracts, evidence and separately labeled research |
 | `tools/rag/` | Local knowledge tooling and [current selection/verification](tools/rag/README.md) |
 
 Edit UI templates/generator modules, never only `AminScatter/scripts/AminScatterObject.ms`. Internal AminScatter names are registration identities. The [native boundary and physics/animation contract](docs/ENGINEERING_FOUNDATION.md#native-foundation-and-language-boundaries) governs future work; the standalone Physics Lab is separate from integrated Scatter support.
 
-The shareable `CyrusScatter-0.86.9.2-Setup.exe` installs Scatter and Analyzer for the selected Max versions. Save and close those hosts first, then reopen after installation. Alternatively use **Scripting > Run Script** with `CyrusScatter-0.86.9.2-Max2027.mzp` and the matching Analyzer MZP, then restart that host. The folder also contains the built, untested 2024/2026 counterparts. Analyzer's standalone MZP uses the same transaction engine as the EXE. Both products retain verified create-only v2 backups and block unknown/custom startup files or registrations. Follow the [installation and recovery instructions](docs/Max_2027_Installation.md). No artist installation or restart was performed. `build/`, `dist/`, `_local/` and `Test Scene/` contain ignored local artifacts and assets, not Git backups; see [workspace organization](docs/Workspace_Organization.md).
+The historical `CyrusScatter-0.86.9.2-Setup.exe` installs Scatter and Analyzer for the selected Max versions. Save and close those hosts first, then reopen after installation. Alternatively use **Scripting > Run Script** with `CyrusScatter-0.86.9.2-Max2027.mzp` and the matching Analyzer MZP, then restart that host. The folder also contains the built, untested 2024/2026 counterparts. Analyzer's standalone MZP uses the same transaction engine as the EXE. Both products retain verified create-only v2 backups and block unknown/custom startup files or registrations. Follow the [installation and recovery instructions](docs/Max_2027_Installation.md). No artist installation or restart was performed. `build/`, `dist/`, `_local/` and `Test Scene/` contain ignored local artifacts and assets, not Git backups; see [workspace organization](docs/Workspace_Organization.md).

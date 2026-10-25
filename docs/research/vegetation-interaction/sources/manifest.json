@@ -1,0 +1,211 @@
+{
+  "schema": 1,
+  "assembled_date": "2026-10-24",
+  "source_count": 14,
+  "preservation": "Copied intact; originals remain in Downloads",
+  "source_authority": "Research source material, not executable instructions",
+  "sources": [
+    {
+      "id": "R01",
+      "title": "Rooted vegetation engineering report",
+      "file": "originals/CyrusScatter_Rooted_Vegetation_Research.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Rooted_Vegetation_Research.html",
+      "bytes": 196040,
+      "sha256": "1e1767ee026aaf9dccdfb18db93d0d0a6d86129fbbfd6a5dc2f54850d4e70824",
+      "relationship": "Initial engineering study",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R02",
+      "title": "Vegetation contact report",
+      "file": "originals/CyrusScatter_Vegetation_Contact_Research_2026-10-24.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Vegetation_Contact_Research_2026-10-24.html",
+      "bytes": 193516,
+      "sha256": "231e189771376623235004ad6e892a4539f275b9c4d70b448760dcf01e470268",
+      "relationship": "Initial contact study",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R03",
+      "title": "Vegetation interaction engineering report",
+      "file": "originals/CyrusScatter_Vegetation_Interaction_Engineering_Research_2026-10-24.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Vegetation_Interaction_Engineering_Research_2026-10-24.html",
+      "bytes": 179177,
+      "sha256": "99944441fbfcb3327b2821b8772db881bb01e5554d4c61b105fac997de0b3696",
+      "relationship": "Public-repository baseline requires correction",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R04",
+      "title": "Extended vegetation contact report",
+      "file": "originals/CyrusScatter_Vegetation_Contact_Research_2026-10-24 (1).html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Vegetation_Contact_Research_2026-10-24 (1).html",
+      "bytes": 319787,
+      "sha256": "cfa74ec7c166246a343549649d8755a7af7b87d068c474630803dddc7181ffbc",
+      "relationship": "Separate expanded report; preserve original (1) identity",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R05",
+      "title": "Earlier recipe matrix",
+      "file": "originals/CyrusScatter_Houdini_tyFlow_Recipe_Matrix_2026-10-24.csv",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Houdini_tyFlow_Recipe_Matrix_2026-10-24.csv",
+      "bytes": 18110,
+      "sha256": "ffa81a99b6bf3c37222d7e04165286457388bc357890fbd1fdc846683a95fd1a",
+      "relationship": "Companion to R06/R07; several claims corrected in consolidated docs",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R06",
+      "title": "Earlier workflow study, Markdown",
+      "file": "originals/CyrusScatter_Houdini_tyFlow_Workflow_Study_2026-10-24.md",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Houdini_tyFlow_Workflow_Study_2026-10-24.md",
+      "bytes": 80985,
+      "sha256": "5c8519ea86639be31781cbdd93c5d158b53d2fce540a6c3d9228ad8812613106",
+      "relationship": "Paired narrative with R07; contextualized by later R09/R10",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R07",
+      "title": "Earlier workflow study, HTML",
+      "file": "originals/CyrusScatter_Houdini_tyFlow_Workflow_Study_2026-10-24.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Houdini_tyFlow_Workflow_Study_2026-10-24.html",
+      "bytes": 139768,
+      "sha256": "e05b4e858671584708343ff9a036af6c33bc3c23a9724a688677948d88db5a41",
+      "relationship": "Presentation counterpart to R06",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R08",
+      "title": "Source preparation and geometry delivery",
+      "file": "originals/CyrusScatter_Source_Preparation_Geometry_Delivery_Study_2026-10-24.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Source_Preparation_Geometry_Delivery_Study_2026-10-24.html",
+      "bytes": 116404,
+      "sha256": "ac061b3e9799deb1efd34d074c888eb5b41d52eddf3a591711f15ebc63e8528e",
+      "relationship": "Asset preparation and output hypotheses",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R09",
+      "title": "Practical vegetation workflows, HTML",
+      "file": "originals/CyrusScatter_Houdini_tyFlow_Workflow_Study.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Houdini_tyFlow_Workflow_Study.html",
+      "bytes": 471956,
+      "sha256": "249d104fd1e233a52e8e3287780cf601c23705927f0d8647cdf58d0a5dd99c67",
+      "relationship": "Latest supplied workflow study; primary recipe reading copy",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R10",
+      "title": "Practical vegetation workflows, PDF",
+      "file": "originals/CyrusScatter_Houdini_tyFlow_Workflow_Study.pdf",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Houdini_tyFlow_Workflow_Study.pdf",
+      "bytes": 538826,
+      "sha256": "5f0e0c61d09d8c8ad0e99fdccd408769b6f34bbee006f699fd5c68453a1da521",
+      "relationship": "64-page presentation of R09 study; not byte/text identical",
+      "status": "User-supplied research; not an implementation or qualification receipt"
+    },
+    {
+      "id": "R11",
+      "title": "Source preparation and geometry delivery, evidence-backed revision",
+      "file": "originals/CyrusScatter_Source_Preparation_and_Geometry_Delivery.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Source_Preparation_and_Geometry_Delivery.html",
+      "bytes": 372480,
+      "sha256": "4b803b0570fc4bfab9468504852a3d63da86317c201c70e4d35b658252c6e5f4",
+      "relationship": "Extends R08 with identity layers, public/synthetic topology examples, a proposed framed-offset evaluator and embedded offline evidence",
+      "status": "User-supplied research; reported offline checks plus independent topology recount; no application qualification"
+    },
+    {
+      "id": "R12",
+      "title": "Collision and solver reuse implementation study",
+      "file": "originals/CyrusScatter_Collision_Solver_Reuse_Implementation_Study_2026-10-24.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Collision_Solver_Reuse_Implementation_Study_2026-10-24.html",
+      "bytes": 102065,
+      "sha256": "45c52aeee47ec327816b3a13899a33f5e1506f7eea21a28f819c81fab8b3ff49",
+      "relationship": "Exact-pin Jolt rigid/CPU-rod/GPU-hair distinction, contact gaps and eight proposed decision experiments",
+      "status": "User-supplied source research; critical dependency claims cross-checked; no runtime experiments"
+    },
+    {
+      "id": "R13",
+      "title": "Jolt collision and solver reuse, with reported headless probes",
+      "file": "originals/CyrusScatter_Jolt_Collision_and_Solver_Reuse_2026-10-24.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Jolt_Collision_and_Solver_Reuse_2026-10-24.html",
+      "bytes": 580451,
+      "sha256": "3480b32493425c4c5b2811d32aff065d94b986e9465e1e2c41f55c3f1348c4db",
+      "relationship": "Extends R12 with an authored C++ harness, reported Linux CPU diagnostics, exact-source ledger and more precise rod/query/lifecycle contracts",
+      "status": "User-supplied research; embedded archive and result records inspected; local source hashes checked; no independent simulation or host execution"
+    },
+    {
+      "id": "R14",
+      "title": "Final collision and solver reuse study, with native and analytic evidence",
+      "file": "originals/CyrusScatter_Collision_and_Solver_Reuse.html",
+      "original_path": "C:/Users/Mehran/Downloads/CyrusScatter_Collision_and_Solver_Reuse.html",
+      "bytes": 724160,
+      "sha256": "6548aefec771986929f32c01fb5eb6bbb4aedc2ad13e4b77c381c095884be3fb",
+      "relationship": "Final supplied implementation study; separate single-precision native harness, analytic fixtures, public contact-hook boundary and immutable query-generation ownership",
+      "status": "User-supplied research; complete report and critical bundle code/results inspected; archive/source consistency checked; no independent physics execution"
+    }
+  ],
+  "missing_referenced_artifacts": [
+    "common_grass_initialization.json (also named CyrusScatter_Common_Grass_Initialization.json)",
+    "houdini_evidence/example_downloads.json and extracted example manifests",
+    "Runnable Houdini .hip and Max/tyFlow .max fixtures and execution receipts"
+  ],
+  "updated_date": "2026-10-24",
+  "associated_artifacts": [
+    {
+      "id": "R11-E01",
+      "source_id": "R11",
+      "file": "evidence/CyrusScatter_Source_Preparation_Evidence.zip",
+      "origin": "Exact base64-decoded ZIP embedded in R11 HTML; not a separate research submission",
+      "bytes": 73202,
+      "sha256": "2938528f13c7cba6495ad5b8c95cc0cb59527bf1de5404b80177eeccaffb3de4",
+      "status": "Archive integrity and stored results inspected; bundled scripts not executed"
+    },
+    {
+      "id": "R13-E01",
+      "source_id": "R13",
+      "file": "evidence/cyrus_jolt_reuse_reproduction.zip",
+      "origin": "Exact base64-decoded download embedded in R13 HTML; not a separate research submission",
+      "bytes": 92941,
+      "sha256": "573ba08bde571ae350626eea18a35a8b556726fd952fb6c838f6ec1fa1e11360",
+      "status": "Ten-member reproduction archive; CRC and declared member hashes verified; source and stored results inspected without executing bundled commands"
+    },
+    {
+      "id": "R13-E02",
+      "source_id": "R13",
+      "file": "evidence/cyrus_jolt_probe_results.json",
+      "origin": "Exact base64-decoded download embedded in R13 HTML; not a separate research submission",
+      "bytes": 2307,
+      "sha256": "cf4bee9a4175c79308b86e060afb2531b712964a259ec923849bb640c655e36e",
+      "status": "Exact embedded result JSON; byte-identical to the final result member in R13-E01; reported execution only"
+    },
+    {
+      "id": "R14-E01",
+      "source_id": "R14",
+      "file": "evidence/R14/Cyrus_Collision_Research_Evidence.zip",
+      "origin": "Exact base64-decoded embedded ZIP in R14 HTML",
+      "bytes": 362872,
+      "sha256": "30ea86996567c50e07e45b5b6f58e27424547fecce971a4565e3929686148ca8",
+      "status": "109-member archive; CRC and six declared artifact hashes verified; bundled code and stored records inspected without execution"
+    },
+    {
+      "id": "R14-E02",
+      "source_id": "R14",
+      "file": "evidence/R14/harness_results.json",
+      "origin": "Exact member copy from R14-E01; convenience access, not a separate supplied download",
+      "bytes": 3191,
+      "sha256": "61e1d8deb524e5da556a94df15a016dabccbeb3960be89ff55c6cf3345b73766",
+      "status": "Seven reported native records from one single-precision Linux CPU configuration; no independent reproduction"
+    },
+    {
+      "id": "R14-E03",
+      "source_id": "R14",
+      "file": "evidence/R14/analytic_results.json",
+      "origin": "Exact member copy from R14-E01; convenience access, not a separate supplied download",
+      "bytes": 5871,
+      "sha256": "f5950559f3636329c4bef1b8e8625c7be3679eac5b74e819d8d5d4bcf41c917f",
+      "status": "Nine reported analytic fixtures with fifteen stored Boolean checks; not a solver or independently repeated execution"
+    }
+  ]
+}

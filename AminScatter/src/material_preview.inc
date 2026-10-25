@@ -271,28 +271,28 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
     return previewGuard([&]() -> std::shared_ptr<const cyrus::SourceAppearance> {
     if(!node||source>=snapshot->groups.size())throw RuntimeError(_T("Viewport material source correspondence differs"));
     const auto& group=snapshot->groups[source];
-    if(group.placeholder||group.reducedBox||group.faces.empty()||group.instances.empty())return {};
+    if(group.placeholder||group.reducedBox||group.faceData().empty()||!group.instanceCount())return {};
     const auto t=GetCOREInterface()->GetTime();auto key=appearanceSourceKey(node,t);auto& watch=appearanceWatch(node);
     // Instance transforms and radius decisions do not change source UVs or
     // materials. Verify the immutable source triangles, not the whole placement
     // snapshot's address. Weak ownership keeps retired geometry reclaimable.
     if(watch.cacheKey==key)if(auto cached=watch.cached.lock())if(auto previous=watch.geometry.lock())
-        if((!textureColor||cached->textureColor)&&watch.geometrySource<previous->groups.size()&&previous->groups[watch.geometrySource].faces==group.faces){
+        if((!textureColor||cached->textureColor)&&watch.geometrySource<previous->groups.size()&&previous->groups[watch.geometrySource].faceData()==group.faceData()){
             watch.geometry=snapshot;watch.geometrySource=source;++materialReuseCount;return cached;
         }
     auto* object=node->EvalWorldState(t).obj;
     if(!object||!object->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID,0)))throw RuntimeError(_T("Viewport material source has no triangle mesh"));
-    auto conversion=sourceConversionMemory(object,group.faces.size());
+    auto conversion=sourceConversionMemory(object,group.faceData().size());
     auto* tri=static_cast<TriObject*>(object->ConvertToType(t,Class_ID(TRIOBJ_CLASS_ID,0)));
     if(!tri)throw RuntimeError(_T("Viewport material source has no triangle mesh"));
     if(conversion)conversion->commit();
     auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};std::unique_ptr<TriObject,decltype(cleanup)> owned(tri,cleanup);
     auto& mesh=tri->GetMesh();validateSourceMesh(mesh);
-    cyrus::viewport_memory::validateDrawCounts(group.faces.size(),group.instances.size());
-    if(std::size_t(mesh.getNumFaces())!=group.faces.size())throw RuntimeError(_T("Source geometry is pending. Use Update before refreshing materials."));
+    cyrus::viewport_memory::validateDrawCounts(group.faceData().size(),group.instanceCount());
+    if(std::size_t(mesh.getNumFaces())!=group.faceData().size())throw RuntimeError(_T("Source geometry is pending. Use Update before refreshing materials."));
     const auto transform=node->GetObjectTM(t)*Inverse(node->GetNodeTM(t));
-    auto staging=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,2*materialTileSize*materialTileSize*sizeof(BMM_Color_fl)+group.faces.size()*sizeof(int));
-    std::vector<Mtl*> materials;std::vector<int> slots;slots.reserve(group.faces.size());
+    auto staging=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,2*materialTileSize*materialTileSize*sizeof(BMM_Color_fl)+group.faceData().size()*sizeof(int));
+    std::vector<Mtl*> materials;std::vector<int> slots;slots.reserve(group.faceData().size());
     auto* root=node->GetMtl();
     for(int f=0;f<mesh.getNumFaces();++f) {
         // Never pair pending topology/positions with frozen Manual placements.
@@ -301,7 +301,7 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
             cyrus::viewport_memory::validateIndex(vertex,std::size_t(mesh.getNumVerts()));
             const auto point=mesh.verts[vertex]*transform;
             for(int axis=0;axis<3;++axis)if(!std::isfinite(point[axis]))throw RuntimeError(_T("Viewport material source has non-finite geometry"));
-            if(point!=group.faces[f][c])throw RuntimeError(_T("Source geometry is pending. Use Update before refreshing materials."));
+            if(point!=group.faceData()[f][c])throw RuntimeError(_T("Source geometry is pending. Use Update before refreshing materials."));
         }
         Mtl* material=root;
         if(root&&root->ClassID()==Class_ID(MULTI_CLASS_ID,0))material=root->GetSubMtl(mesh.faces[f].getMatID());
@@ -320,7 +320,7 @@ std::shared_ptr<const cyrus::SourceAppearance> prepareSourceAppearance(INode* no
     result->textureColor=textureColor;
     result->tiles=int(std::ceil(std::sqrt(double(materials.size()))));result->width=result->tiles*materialTileSize;
     const auto pixels=std::size_t(result->width)*result->width;
-    const auto corners=cyrus::viewport_memory::multiply(group.faces.size(),3);
+    const auto corners=cyrus::viewport_memory::multiply(group.faceData().size(),3);
     result->cpuBytes=cyrus::viewport_memory::add(sizeof(*result),cyrus::viewport_memory::add(
         cyrus::viewport_memory::multiply(pixels,4),cyrus::viewport_memory::multiply(corners,sizeof(cyrus::MaterialUV))));
     // Reservation includes temporary bitmap/row data and peak immutable overlap.

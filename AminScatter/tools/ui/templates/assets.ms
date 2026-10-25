@@ -521,7 +521,9 @@ fn CyrusAssetBoundNode data bindings = (
     if found>0 and found!=roles.count do throw "Bind every role of a shared packaged context node together."
     node
 )
-fn CyrusAssetStage package bindings = (
+global CyrusAssetStageTrackingVersion
+fn CyrusAssetStageTrackingVersion = 1
+fn CyrusAssetStage package bindings createdNodes:undefined = (
     if not theHold.Holding() do throw "Portable source staging requires the recipe's authored transaction."
     local graph=package[1],directory=package[2],metres=(units.decodeValue "1m") as double,materials=#(),maps=#(),files=CyrusRecipeGet graph "files",meshes=CyrusRecipeGet graph "meshes",resolved=for pair in bindings collect #(pair[1],pair[2])
     fn colorValue values = (color values[1] values[2] values[3])
@@ -613,6 +615,7 @@ fn CyrusAssetStage package bindings = (
         for row in files where (CyrusRecipeGet row "id")==(CyrusRecipeGet meshData "file") do fileData=row
         local sha=CyrusRecipeGet fileData "sha256",file=pathConfig.appendPath directory ("assets/"+sha+"."+(CyrusRecipeGet fileData "suffix"))
         local node=if package.count>2 and package[3]>0 then cyrusAssetPreparedMeshCreate package[3] (CyrusRecipeGet fileData "id") metres (CyrusRecipeGet data "name") else cyrusAssetMeshCreate file sha metres (CyrusRecipeGet data "name")
+        if createdNodes!=undefined do append createdNodes node
         local values=CyrusRecipeGet data "transform"
         node.transform=matrix3 [values[1],values[2],values[3]] [values[4],values[5],values[6]] [values[7],values[8],values[9]] [values[10]*metres,values[11]*metres,values[12]*metres]
         node.wireColor=colorValue (CyrusRecipeGet data "wireColor")
@@ -625,6 +628,7 @@ fn CyrusAssetStage package bindings = (
     )
     if (CyrusRecipeGet graph "version")>=2 do for data in (CyrusRecipeGet graph "splines") where (CyrusAssetBoundNode data bindings)==undefined do (
         local node=splineShape name:(CyrusRecipeGet data "name"),values=CyrusRecipeGet data "transform",index=0
+        if createdNodes!=undefined do append createdNodes node
         fn pointValue value metres = [value[1]*metres,value[2]*metres,value[3]*metres]
         for curve in (CyrusRecipeGet data "curves") do (
             addNewSpline node;index+=1

@@ -1,0 +1,11 @@
+Jolt commit: 1b2e77e3c6c09709e5edc79dc208459b8ff32051
+Archive SHA256: 6bb6d626b7b70096cd07f1b25c0c223df035ab6386885f07f77baa88ae7d3998
+Compiler: GNU 13.3.0
+System: Linux x86_64
+Config: Debug
+Profile: DOUBLE_PRECISION=ON; USE_ASSERTS=ON; CROSS_PLATFORM_DETERMINISTIC=ON; CPP_EXCEPTIONS_ENABLED=ON; CPP_RTTI_ENABLED=ON; x86_SSE2_baseline=ON; SSE4/AVX/AVX2/AVX512/LZCNT/TZCNT/F16C/FMA=OFF; compute_DX12/Vulkan/Metal/CPU=OFF; OBJECT_LAYER_BITS=16; OBJECT_STREAM=OFF; CUSTOM_ALLOCATOR=ON; FLOATING_POINT_EXCEPTIONS_ENABLED=OFF; debug_renderer/profiler/IPO=OFF; static_Jolt=ON; FP_contraction=OFF; MSVC_fp=precise; MSVC_runtime=inherited
+Inherited CXX flags: -fsanitize=address,undefined -fno-omit-frame-pointer
+Jolt direct compile options: -frtti;-fexceptions;-Wno-stringop-overflow;-Wno-psabi;-ffp-contract=off;-msse2;-mfpmath=sse;-pthread;-fno-fast-math;-ffp-contract=off
+Jolt public compile options: -msse2;-mfpmath=sse;-pthread
+Jolt public definitions: JPH_DEBUG;JPH_ENABLE_ASSERTS;JPH_DOUBLE_PRECISION;JPH_CROSS_PLATFORM_DETERMINISTIC;JPH_OBJECT_LAYER_BITS=16
+Adapter direct options: -fexceptions;-fno-fast-math;-ffp-contract=off;-Wall;-Wextra;-Wpedantic;-msse2;-mfpmath=sse;-pthread

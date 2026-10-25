@@ -36,6 +36,17 @@ int main(){try{
     auto capped=plan({{0,"a",1,0},{1,"b",1,0}},0,800000,32);check(capped.capped&&capped.budget==limit&&capped.order.size()==limit);
     auto shareCap=plan({{0,"a",1,0}},0,80000,1,25000);check(shareCap.capped&&shareCap.budget==25000);
     auto retry=plan({{0,"a",1,0},{1,"b",3,0}},100,-1,4);check(retry.order.size()==400&&retry.receivers[0].budget==25&&retry.receivers[1].budget==75);
+    // Admission uses precisely the native quotas without allocating a schedule,
+    // including million-candidate proposals that callers will reject.
+    for(const auto& inputs:std::vector<std::vector<Input>>{{{0,"a",1,0}},{{0,"a",1,700},{1,"b",3,10}}}){
+        for(double density:{-1.,0.,12.5,1e9})for(unsigned factor:{1u,8u,32u}){
+            const auto s=allocation(inputs,100,density,factor),p=plan(inputs,100,density,factor);
+            check(s.order.empty()&&s.order.capacity()==0&&s.budget==p.budget&&s.attempts==p.attempts&&s.capped==p.capped);
+            check(s.receivers.size()==p.receivers.size());
+            for(std::size_t i=0;i<s.receivers.size();++i){const auto& x=s.receivers[i];const auto& y=p.receivers[i];check(x.slot==y.slot&&x.budget==y.budget&&x.attempts==y.attempts&&x.pool==y.pool);}
+        }
+    }
+    rejected([]{allocation({{0,"a",1,0}},100,INFINITY,1);});
     for(unsigned i=0;i<100;++i){unsigned slot=0,ordinal=0;check(decode(retry.order[i],slot,ordinal));check(ordinal<(slot==0?25u:75u));}
     for(unsigned slot=0;slot<128;++slot)for(unsigned ordinal:{0u,99999u,100000u,131071u,131072u,262144u,999999u}){
         unsigned s=999,o=999;check(decode(identity(slot,ordinal),s,o)&&s==slot&&o==ordinal);

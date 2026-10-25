@@ -69,6 +69,11 @@ def source_paths(root, project, options=None):
         if (root/project/name).is_dir():
             paths += tree(root/project/name)
     if project == "AminScatter":
+        rig = root/"CyrusVegetationLab/experiments/stem-live"
+        paths += [rig/name for name in ("stem_core.cpp", "stem_core.hpp", "analysis.cpp", "analysis.hpp", "connectivity.cpp", "connectivity.hpp")]
+        core = root/"CyrusVegetationLab/core"
+        paths += tree(core/"include") + [core/"fitter/fitter.cpp"] + tree(core/"fitter/private")
+        paths += [core/"delivery/src/geometry.hpp", core/"PROVENANCE.json"]
         paths += [root/"CyrusLicensing/third_party/nlohmann/json.hpp", root/"CyrusLicensing/third_party/nlohmann/LICENSE.MIT"]
         paths += [root/"AminScatter/ui/LibraryGallery.cs", root/"AminScatter/shared/LibraryLocation.cs",
                   root/"AminScatter/tools/build_gallery.py", root/"AminScatter/tools/build_installer.py"]

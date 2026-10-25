@@ -1,0 +1,10 @@
+command: /workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake -S /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter -B /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized -DCMAKE_CXX_COMPILER=/usr/bin/x86_64-linux-gnu-g++-13 -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCYRUS_FITTER_SANITIZERS=ON
+cwd: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter
+environment_overrides: {}
+started_utc: 2026-10-24T14:58:02.106576+00:00
+
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized
+
+exit_code: 0

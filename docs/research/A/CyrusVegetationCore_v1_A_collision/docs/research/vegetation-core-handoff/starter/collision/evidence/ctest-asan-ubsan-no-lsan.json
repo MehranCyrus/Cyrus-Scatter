@@ -1,0 +1,22 @@
+{
+  "command_argv": [
+    "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+    "-E",
+    "env",
+    "ASAN_OPTIONS=detect_leaks=0:halt_on_error=1",
+    "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+    "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest",
+    "--test-dir",
+    "owner_a_build_sanitizers",
+    "--output-on-failure",
+    "-V",
+    "-R",
+    "^collision_"
+  ],
+  "cwd": "/workspace/scratch/eb3b91c272e0",
+  "started_utc": "2026-10-24T14:56:41.110153+00:00",
+  "exit_code": 0,
+  "elapsed_seconds_observed": 0.6622014160020626,
+  "timing_scope": "command wall time; not a collision/update benchmark",
+  "log_path": "ctest-asan-ubsan-no-lsan.log"
+}

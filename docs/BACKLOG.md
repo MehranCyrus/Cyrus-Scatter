@@ -141,6 +141,23 @@ Layer-panel Copy and portable recipes currently reject unsupported authored
 Edit/radius transfer. The repair above is a proposed implementation direction;
 this documentation update adds no Copy implementation or qualification.
 
+## B38 — Individual model merge loses prior Undo history
+
+Open, reproduced in owned Max 2027 profiles on 24 October 2026.
+`CyrusModelMerge` calls `getMAXFileObjectNames` and `mergeMAXFile`; direct
+MAXScript probes show the header read clears earlier Undo history, and merge
+without that header does so independently. The library's accepted hold label
+does not make Undo remove the imported model. Earlier unrelated edits consequently
+cannot be undone. Failure cleanup of captured nodes does not restore that history.
+Standard A027 and real A069 grass / A062 flower cases are recorded in
+[the MCP source/asset report](../CyrusMCP/M03_SOURCE_METADATA.md#import-history-finding-and-implementation-decision).
+
+Do not expose this path as transactional MCP asset use or use header loading as
+a harmless artist-scene preflight. Qualify the existing portable native
+mesh/material staging path, including retained prior history, Undo/Redo, a failure
+after staging, dependency denial and stale input admission. Native GUI import
+still needs its own correction and acceptance; no production fix is claimed.
+
 ## Adaptive viewport follow-up
 
 [0.81.6](plans/terrace-0815/VIEWPORT_0816.md) fixes the CPU Mesh triangle fallback

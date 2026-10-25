@@ -1,0 +1,83 @@
+--- a/docs/research/vegetation-core-handoff/starter/delivery/src/evaluator.cpp
++++ b/docs/research/vegetation-core-handoff/starter/delivery/src/evaluator.cpp
+@@ -111,6 +111,15 @@
+             out = fail(AdmissionState::Invalid, "radius_below_declared_bound", "span_radius_m is smaller than max_bound_offset_m.", rest.guide_id, rest.span_ids[i]);
+             return false;
+         }
++    }
++    // Frame validation owns a directed-tangent vector independently of the
++    // later render-vertex payload. Admit this stage before its reserve().
++    std::size_t frame_scratch_bytes = 0;
++    if (!checked_mul(n - 1, sizeof(Vec3), frame_scratch_bytes) ||
++        frame_scratch_bytes > limits.max_owned_and_scratch_bytes) {
++        out = fail(AdmissionState::Resource, "frame_scratch_budget",
++                   "Frame-validation tangent payload exceeds max_owned_and_scratch_bytes.", rest.guide_id);
++        return false;
+     }
+     const FrameCheck rest_frames = check_frames(rest.nodes, rest.material_frames, rest.span_ids,
+                                                 tolerances.frame_radians, rest.requires_full_turn_twist);
+--- a/docs/research/vegetation-core-handoff/starter/delivery/src/geometry.hpp
++++ b/docs/research/vegetation-core-handoff/starter/delivery/src/geometry.hpp
+@@ -91,7 +91,9 @@
+         d = -d;
+     }
+     d = std::clamp(d, 0.0, 1.0);
+-    if (d > 0.9999995) {
++    // Nlerp over a finite angle can exceed an explicitly tight positional
++    // reconstruction tolerance. Use it only at the coincident-frame limit.
++    if (d == 1.0) {
+         return normalized(quat_add(quat_mul_scalar(*qa, 1.0 - u), quat_mul_scalar(*qb, u)));
+     }
+     const double theta = std::acos(d);
+--- a/docs/research/vegetation-core-handoff/starter/delivery/src/validator.cpp
++++ b/docs/research/vegetation-core-handoff/starter/delivery/src/validator.cpp
+@@ -73,7 +73,7 @@
+     c = std::clamp(c, 0.0, 1.0);
+     const double angle = std::acos(c);
+     Quat q;
+-    if (angle < 1.0e-7) {
++    if (c == 1.0) {
+         q = {a.x + u*(b.x-a.x), a.y + u*(b.y-a.y), a.z + u*(b.z-a.z), a.w + u*(b.w-a.w)};
+     } else {
+         const double inv_sin = 1.0 / std::sin(angle);
+@@ -122,6 +122,12 @@
+         add_issue(result.issues, "invalid_solve_options", "Clearance/weights/proposal step violate the frozen admission profile.");
+         return false;
+     }
++    if (options.root_mode != RootMode::PositionOnly && options.root_mode != RootMode::ClampFrame &&
++        options.root_mode != RootMode::SoftFrame) {
++        result.status = ValidationStatus::InvalidInput;
++        add_issue(result.issues, "invalid_root_mode", "Root mode is not a supported contract enumerator.");
++        return false;
++    }
+     if (options.root_mode == RootMode::SoftFrame && options.root_angle_weight <= 0.0) {
+         result.status = ValidationStatus::InvalidInput;
+         add_issue(result.issues, "soft_frame_zero_weight", "SoftFrame requires a positive root_angle_weight in this validator.");
+@@ -148,6 +154,12 @@
+         if (o.id == 0 || o.geometry_revision == 0 || o.pose_revision == 0 || !finite(o.center) || !approximately_unit(o.orientation)) {
+             result.status = ValidationStatus::InvalidInput;
+             add_issue(result.issues, "invalid_obstacle_identity_or_pose", "Obstacle identity, revisions, center and orientation must be valid.", o.id);
++            return false;
++        }
++        if (!finite(o.sphere_radius) || !finite(o.box_half_extents)) {
++            result.status = ValidationStatus::InvalidInput;
++            add_issue(result.issues, "nonfinite_obstacle_dimensions",
++                      "All obstacle dimensions, including inactive fields, must be finite.", o.id);
+             return false;
+         }
+         for (std::size_t j = 0; j < i; ++j) if (snapshot.obstacles[j].id == o.id) {
+@@ -236,6 +248,14 @@
+             add_issue(result.issues, "radius_below_declared_bound", "span_radius_m is smaller than max_bound_offset_m.", rest.guide_id, rest.span_ids[i]);
+             return false;
+         }
++    }
++    std::size_t frame_scratch_bytes = 0;
++    if (!checked_mul(n - 1, sizeof(Vec3), frame_scratch_bytes) ||
++        frame_scratch_bytes > limits.max_owned_and_scratch_bytes) {
++        result.status = ValidationStatus::ResourceLimit;
++        add_issue(result.issues, "frame_scratch_budget",
++                  "Frame-validation tangent payload exceeds max_owned_and_scratch_bytes.", rest.guide_id);
++        return false;
+     }
+     const FrameCheck rest_check = check_frames(rest.nodes, rest.material_frames, rest.span_ids, tol.frame_radians, rest.requires_full_turn_twist);
+     if (rest_check.state != FrameCheck::State::Ok) {

@@ -95,5 +95,5 @@ Value* cyrusEditHandleMatrix_cf(Value** a,int count){
     if(found==m->layers.end()||index<1||std::uint64_t(index)>found->second.rows.size())throw RuntimeError(_T("Unknown Edit handle"));
     const auto& l=found->second;const auto i=unsigned(index-1);
     if(!l.active||l.invalid||!l.shown(l.rows.get(i)))return &undefined;
-    return new Matrix3Value(m->handleMatrix(l,i));
+    return new Matrix3Value(m->handleMatrix(l,i,found->first));
 }

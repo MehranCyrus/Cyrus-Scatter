@@ -1,0 +1,8 @@
+{
+  "branch": "codex/workflow-0.75",
+  "head": "588abff0ce211d7dc63798b8c5310631895465c7",
+  "scatter_package": "dist\\CyrusScatter-0.86.9.2-20261023\\CyrusScatter-0.86.9.2-Max2027.mzp",
+  "scatter_package_sha256": "83b017c14a255d5a6d31dcde810b6c97121486838f36507ae7ec16ca1e896168",
+  "rock_files": 11,
+  "mutation_scope": "Owned benchmark scenes and investigation docs/scripts only; no production integration changes"
+}

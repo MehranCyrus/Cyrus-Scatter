@@ -1,0 +1,203 @@
+{
+  "kind": "Analytic fixture checks; not solver execution",
+  "units": "metres except stated dimensionless values",
+  "fixture_count": 9,
+  "boolean_check_count": 15,
+  "all_checks_passed": true,
+  "fixtures": [
+    {
+      "id": "F01",
+      "title": "Endpoints clear; segment crosses",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "a": [
+          -2.0,
+          0.0,
+          0.0
+        ],
+        "b": [
+          2.0,
+          0.0,
+          0.0
+        ],
+        "sphere_radius": 1.0,
+        "guide_radius": 0.01
+      },
+      "checks": {
+        "endpoints_outside": true,
+        "segment_overlaps": true
+      },
+      "interpretation": "A particle-only witness set misses the interior of this span. Native H01/H02 test the same boundary."
+    },
+    {
+      "id": "F02",
+      "title": "Blade completely inside a solid",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "corners": [
+          [
+            -0.25,
+            -0.1,
+            0.0
+          ],
+          [
+            -0.25,
+            0.1,
+            0.0
+          ],
+          [
+            0.25,
+            -0.1,
+            0.0
+          ],
+          [
+            0.25,
+            0.1,
+            0.0
+          ]
+        ],
+        "sphere_radius": 1.0,
+        "maximum_corner_radius": 0.26925824035672524
+      },
+      "checks": {
+        "entire_rectangle_inside": true
+      },
+      "interpretation": "Convexity of the ball proves the whole rectangular patch is inside. Surface intersection alone is insufficient."
+    },
+    {
+      "id": "F03",
+      "title": "Root inside obstacle",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "root": [
+          0.2,
+          0.0,
+          0.0
+        ],
+        "sphere_radius": 1.0,
+        "clearance": 0.01
+      },
+      "checks": {
+        "hard_anchor_infeasible": true
+      },
+      "interpretation": "A hard position equality conflicts with positive obstacle clearance. No iteration count can satisfy both."
+    },
+    {
+      "id": "F04",
+      "title": "Narrow gap and width",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "gap": 0.12,
+        "projected_blade_width": 0.2,
+        "guide_diameter": 0.02,
+        "clearance_each_side": 0.01
+      },
+      "checks": {
+        "guide_fits": true,
+        "fixed_width_does_not": true
+      },
+      "interpretation": "This impossibility assumes the declared cross-section orientation. Allowing twist may permit an edge-on solution."
+    },
+    {
+      "id": "F05",
+      "title": "Sharp corner requires multiple contacts",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "start": [
+          -0.1,
+          -0.1
+        ],
+        "after_x_projection": [
+          0.0,
+          -0.1
+        ],
+        "feasible_halfspaces": [
+          "x>=0",
+          "y>=0"
+        ]
+      },
+      "checks": {
+        "one_plane_leaves_violation": true,
+        "multi_plane_solution_exists": true
+      },
+      "interpretation": "One face projection leaves another active inequality violated. This is a simplified corner algebra check, not a Jolt corner simulation."
+    },
+    {
+      "id": "F06",
+      "title": "Open mesh has no declared solid interior",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "square_boundary_edges": 4,
+        "manifold_closed": false
+      },
+      "checks": {
+        "volume_contract_fails": true
+      },
+      "interpretation": "A single square is an open surface. Inside/outside must be replaced by an explicit surface, half-space or closed-proxy policy."
+    },
+    {
+      "id": "F07",
+      "title": "Millimetre features and metre defaults",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "asset_height_m": 0.005,
+        "thickness_m": 0.0001,
+        "rigid_penetration_slop_m": 0.02,
+        "gjk_collision_tolerance_m": 0.0001,
+        "slop_over_height": 4.0,
+        "tolerance_over_thickness": 1.0
+      },
+      "checks": {
+        "slop_larger_than_asset": true,
+        "tolerance_equals_thickness": true
+      },
+      "interpretation": "Dimensionless ratios only. Rigid settings are not automatically CPU-soft-body settings; this is not a millimetre Jolt simulation."
+    },
+    {
+      "id": "F08",
+      "title": "Large coordinates erase small offsets before rebasing",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "origin": 100000000.0,
+        "offset": 0.01,
+        "cast_before_rebase": 0.0,
+        "rebase_before_cast": 0.01000000536441803
+      },
+      "checks": {
+        "cast_before_rebase_loses_offset": true,
+        "rebase_first_retains_offset": true
+      },
+      "interpretation": "IEEE float arithmetic only, not a Jolt double-precision build test. Rebase while host values still retain the needed precision."
+    },
+    {
+      "id": "F09",
+      "title": "Visible edge reaches beyond a clear guide",
+      "evidence": "Executed analytic oracle; no physics integration",
+      "inputs": {
+        "guide_a": [
+          1.1,
+          -0.4,
+          0.0
+        ],
+        "guide_b": [
+          1.1,
+          0.4,
+          0.0
+        ],
+        "sphere_radius": 1.0,
+        "guide_radius": 0.01,
+        "blade_width": 0.3,
+        "inner_edge_midpoint": [
+          0.95,
+          0.0,
+          0.0
+        ]
+      },
+      "checks": {
+        "guide_clear": true,
+        "edge_inside": true
+      },
+      "interpretation": "A clear narrow guide cannot certify the evaluated blade. Width, twist and between-sample surface regions need a declared envelope or final-surface test."
+    }
+  ]
+}

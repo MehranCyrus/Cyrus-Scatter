@@ -1,0 +1,113 @@
+{
+  "status": "pass",
+  "scope": "Local investigation artifact/input verification; not production release certification",
+  "preserved_inputs": [
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Rock_10.max",
+      "sha256": "3b540ffcaf3b20faebb62dbf46d10f4adc1da9d70bc199596b4882021a77ea85"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stone_10_A.tga",
+      "sha256": "160febac641745ace9f85c183c431f42fe42f4a58f4c405d2276e3891b3f0706"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stone_10_MSA.tga",
+      "sha256": "56d1550f8aba4b6a4f8a76460b9dc48c7255ec9f8b67ac6473cf248fe78107f4"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stone_10_N.tga",
+      "sha256": "de072656164686ebfd34e09932a33f369aebee14091f2f9a316254fc158274ae"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\stones.obj",
+      "sha256": "9dfb8065d29af5675a4b94611917a18e1b084287ee61c156fb7a1e5ea4eb9044"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_AO.png",
+      "sha256": "2879c143e20b30385242b0572d7719630ae052d702f2c47ac961ab77a7889714"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_baseColor.png",
+      "sha256": "ecf133e04b9d5db19117da5373b2f8833085ee37ca6d0d2183eb14535c6e80ff"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_Metalness.png",
+      "sha256": "f790625c24510389aba626a3b4ea80806ad5012b1f838bfbee3b69dd87e3a70e"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_Normal.png",
+      "sha256": "abc382633ddf85537ab31114650cb0ed65f5ed6b275dffbcda2bea338febe1f8"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_NormalDX.png",
+      "sha256": "700c5d29b467966c98d90b9e3ad6f9dd87ec71aa3ef812df891831dea21cc5b1"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_Roughness.png",
+      "sha256": "78d5ee30026df6111a8f1e1acd524f90ff1044713b121dae4a4158df594522b4"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Rock_10.max",
+      "sha256": "3b540ffcaf3b20faebb62dbf46d10f4adc1da9d70bc199596b4882021a77ea85"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\stones.obj",
+      "sha256": "9dfb8065d29af5675a4b94611917a18e1b084287ee61c156fb7a1e5ea4eb9044"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Grasses\\A069 - Grass - Small Clump\\model.max",
+      "sha256": "1dfd5c19cc56eb490b06a3881bdbec3a8e2932088e89c7fb37de8264d62f4e23"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Grasses\\A068 - Grass - Bushy Clump\\model.max",
+      "sha256": "4088897cce7a7ef8bd777d9e7cf6b4e0fde16cca3c158442d680df269dd0c0cd"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Shrubs\\A083 - Lavender - 01\\model.max",
+      "sha256": "ecfc86908a46a60bd9fa9028197074e099264f4d40679c8c1ec5e2fee60ee080"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A064 - Creeping Phlox - 01\\model.max",
+      "sha256": "85f207484af39580baaa3972c86bc131468b19e292843e193782482d12282eef"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A066 - Herb Robert Geranium - 04\\model.max",
+      "sha256": "3706166ce67a2f068c5e19a5d8b7df8006cbce38b7fe540210824ef3cdc76078"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A072 - Broadleaf Tree 01\\model.max",
+      "sha256": "25dcf25664a865e6dc49c1a77be3f694b25d3a0e2dd0b75386541c1b6646b7e7"
+    }
+  ],
+  "frozen_contract_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+  "source_sha256": {
+    "AminScatter/tools/ui/templates/unified-core.ms": "e2bd9b78a8f9cd8c42a1d2b18011b25768d5c1069b28d5b954d70986a8ce1b83",
+    "AminScatter/tools/ui/templates/recipes.ms": "48c8c1e802f7aa7339b65f0449c0292f6100ae47bdb3b49ccaeabfc0503827f3",
+    "AminScatter/include/placement_store.h": "a11b1663aac89f18a173253b0bc0a7025fcddfd85b3d915e455eba88165ac70c",
+    "AminScatter/include/placement_binding.h": "cb14b0195b3c40563c4c84c9fd29640bcd854d734263813191cfbfab4839e230",
+    "AminScatter/include/placement_publication.h": "53b6aa7296e622ada5ea9c273cebaff2cc982f6c9336cd91f1256ddc2b809e5b",
+    "AminScatter/include/procedural.h": "8b5e8c7305929cfc8d83548a69b0346d6a528651440047a162b63d6640d33d16",
+    "AminScatter/src/source_geometry.inc": "a4dcde7e4e32089b138b0f772c68371f7a657ac0e1fc0d520ef7ad130f9c81cb",
+    "AminScatter/src/mesh_display.inc": "70326839305ff3573deb282eb02125b8d2dd6d70e56fe108651568243939e764",
+    "AminScatter/src/point_publication.inc": "06b8605a2906abdf178edd6a5dc954136bdc1d75928de6a3fd0c53aa1d92fe07",
+    "AminScatter/src/source_clearance.cpp": "c63835aa12c9af8a1bf7191920d292763391468e54cc4b278784db53fe53c285",
+    "CyrusVegetationLab/experiments/stem-live/analysis.cpp": "ef12e0e5c21988a749b1a9ecfeac41baaca25a53a9e7294ea59be6451bf8d6f8",
+    "CyrusVegetationLab/experiments/stem-live/preparation_host.inl": "2e4a2d2579dee7c18ba4157a0674b58cd9a51f0a02ac9a18be3414484384d872",
+    "CyrusVegetationLab/experiments/stem-live/stem_core.cpp": "64f5e0faa629306dc9abf3d81526b02b4e11c526d3d8fdb9bc02ca0f277bfe66",
+    "CyrusVegetationLab/experiments/stem-live/plugin.cpp": "ca84224a804b615c4316615c65ecde72038ba23c4dbc9c057b7bb17b8836bcb4",
+    "CyrusVegetationLab/core/include/cyrus_vegetation/prototype_v1.hpp": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+  },
+  "artifacts": {
+    "build\\garden-baseline-host-20261025-03\\Cyrus_Garden_Baseline_Max2027.max": "1f52e0e085f0d55873c244c31a3188d8ec31d54f909287ca518929b425732d20",
+    "build\\garden-baseline-host-20261025-03\\receipt.json": "f15d3fd4c853d2cab0067c7e0ffce9eab0e5be76c0bdfad624358e93bde4f264",
+    "build\\garden-baseline-host-20261025-03\\scene-report.json": "990e794c917e313e0b295ceef5c1ca4e0e923bdea75c4dee161a13647e7c77e4",
+    "build\\garden-baseline-host-20261025-03\\spatial-probe.json": "649de2212db114f7c3c55bfba2d4f875c0564197180481e7a50a33daecf9c1e7",
+    "build\\garden-reopen-host-20261025-02\\loaded-identity.json": "c6381c75d6e818207a2f62cc84680b918cbc3688ccd0369feae52c191f0d191e",
+    "build\\garden-reopen-host-20261025-02\\reopen-report.json": "0af9778a71f18bf3559d2e94ff1906bd40bef76ed1371b57303858050a616b77",
+    "build\\garden-reopen-host-20261025-02\\receipt.json": "b355afa10706a9248c077551b2d36f9cbdf40bbe985b238b162c398b8cf901cf"
+  },
+  "local_links_checked": 38,
+  "branch": "codex/workflow-0.75",
+  "head": "588abff0ce211d7dc63798b8c5310631895465c7",
+  "production_mutation_scope": "None; new investigation scripts/docs and ignored owned artifacts only"
+}

@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Evidence-backed CyrusScatter study of vegetation source preparation, guide-to-mesh evaluation, and Max 2027 geometry delivery.">
+<title>CyrusScatter — Vegetation Source Preparation and Geometry Delivery</title>
+<style>
+:root{
+  --bg:#eef2f4;--paper:#ffffff;--ink:#17242b;--muted:#60717b;--line:#dbe3e7;
+  --nav:#0f1b21;--nav2:#16262e;--accent:#147d74;--accent2:#196b8c;--accent3:#8b5b18;
+  --ok:#16724c;--warn:#9a5a00;--bad:#9a3d4c;--code:#0e171d;--shadow:0 18px 52px rgba(16,34,44,.10)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:linear-gradient(135deg,#edf2f4 0%,#f7f9fa 55%,#edf1f4 100%);color:var(--ink);font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.64}
+a{color:var(--accent2);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:315px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:linear-gradient(180deg,var(--nav),#0b1419);color:#e6f0f3;padding:25px 20px;border-right:1px solid #1e3038}
+.brand{font-size:18px;font-weight:850;letter-spacing:.2px}.subbrand{font-size:12px;line-height:1.45;color:#9fb2bc;margin:5px 0 16px}
+.sidebar-meta{display:grid;gap:7px;margin:0 0 18px}.sidebar-meta span{display:inline-flex;width:max-content;max-width:100%;border:1px solid #2b444f;background:#13242c;color:#cfe1e7;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:750}
+.toc{display:flex;flex-direction:column;gap:2px;padding-bottom:30px}.toc a{display:block;border-left:2px solid transparent;color:#b9cbd3;padding:6px 8px;line-height:1.28;font-size:12.5px;border-radius:0 5px 5px 0}.toc a:hover,.toc a.active{background:var(--nav2);color:#fff;border-left-color:#57c7ba;text-decoration:none}.toc-section{font-weight:760;margin-top:8px}.toc-subsection{padding-left:20px!important;color:#91a9b4!important;font-size:12px!important}
+.main{min-width:0;padding:42px 5vw 90px}.paper{max-width:1160px;margin:auto;background:var(--paper);border:1px solid #e1e7ea;border-radius:16px;box-shadow:var(--shadow);padding:54px 68px 72px;overflow:hidden}
+.report-kicker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}.report-kicker span{border-radius:999px;padding:6px 11px;background:#edf6f5;color:#155c57;font-weight:780;font-size:12px}.report-kicker .test{background:#fff2df;color:#81500c}.report-kicker .host{background:#ebf2f8;color:#295672}
+.report-summary{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin:14px 0 34px}.summary-card{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fbfcfd}.summary-card strong{display:block;margin-bottom:4px}.summary-card.key{border-color:#b7ddd8;background:#f2fbf9}.summary-card.boundary{border-color:#efd2a9;background:#fff9ef}
+h1,h2,h3,h4{scroll-margin-top:24px;line-height:1.22;color:#102832}h1{font-size:40px;margin:0 0 6px;letter-spacing:-.6px}h2{font-size:27px;margin:54px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line)}h3{font-size:21px;margin:34px 0 12px}h4{font-size:17px;margin:28px 0 9px;color:#28515f}.anchor{opacity:0;margin-left:8px;font-size:.70em;color:#78909a}.paper h1:hover .anchor,.paper h2:hover .anchor,.paper h3:hover .anchor,.paper h4:hover .anchor{opacity:.7;text-decoration:none}
+p{margin:12px 0}strong{color:#102832}em{color:#314c58}hr{border:0;border-top:1px solid var(--line);margin:34px 0}ul,ol{padding-left:25px}li{margin:5px 0}
+blockquote{margin:20px 0;padding:13px 18px;border-left:4px solid var(--accent);background:#f1faf8;color:#274942;border-radius:0 7px 7px 0}
+.decision-card{margin:18px 0 22px;padding:19px 22px;border-radius:12px;border:1px solid #a7d7d1;background:linear-gradient(135deg,#edf9f7,#f8fcfb);box-shadow:inset 4px 0 0 var(--accent);font-size:1.03em}.decision-card strong{color:#0d5953}
+code{background:#edf2f4;border-radius:4px;padding:2px 5px;font-family:"Cascadia Code",Consolas,Menlo,monospace;font-size:.91em;color:#183d4c}pre{position:relative;background:var(--code);color:#e5edf1;border:1px solid #22353f;border-radius:10px;padding:19px 21px;overflow:auto;line-height:1.48;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}pre code{background:transparent;color:inherit;padding:0}pre[data-language]::before{content:attr(data-language);position:absolute;right:12px;top:8px;color:#7f9aa6;font-size:10px;font-weight:800;letter-spacing:.8px}
+.table-wrap{width:100%;overflow-x:auto;margin:18px 0 30px;border:1px solid var(--line);border-radius:9px}.table-wrap table{border-collapse:collapse;width:100%;min-width:720px;margin:0;font-size:13.1px}.table-wrap th,.table-wrap td{padding:10px 11px;vertical-align:top;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.table-wrap th:last-child,.table-wrap td:last-child{border-right:0}.table-wrap tr:last-child td{border-bottom:0}.table-wrap th{background:#eaf3f5;color:#173d49;text-align:left;position:sticky;top:0;z-index:1}.table-wrap tbody tr:nth-child(even) td{background:#fafcfd}.table-wrap tbody tr:hover td{background:#f1f8f9}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:25px;height:22px;padding:0 6px;border-radius:5px;margin-right:3px;color:#fff;font-size:10.5px;font-weight:850;letter-spacing:.45px}.badge.doc{background:#18795d}.badge.repo{background:#355f94}.badge.proposal{background:#a5660c}.badge.test{background:#963f68}
+.ref-tag{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:20px;padding:0 5px;margin:0 1px;border-radius:4px;background:#e7f0f4;color:#285f77;font-size:10.5px;font-weight:850;vertical-align:1px}.ref-tag:hover{text-decoration:none;background:#d3e6ed}.reference-entry{scroll-margin-top:30px;padding:9px 11px;border-left:3px solid #cbdce3;background:#fafcfd;border-radius:0 6px 6px 0}.external-link::after{content:"↗";font-size:.78em;margin-left:3px;color:#78909a}
+.ui-mock{margin:22px 0 28px;border:1px solid #b9c8cf;border-radius:10px;background:#eff2f4;box-shadow:0 8px 22px rgba(25,47,58,.09);max-width:760px;padding:0;overflow:hidden;font-size:13px}.ui-title{background:#273842;color:#fff;font-weight:800;padding:10px 14px}.ui-row{display:grid;grid-template-columns:190px 1fr;border-bottom:1px solid #d5dde1;padding:8px 13px;background:#fafbfc}.ui-row span{color:#5b6b73}.ui-status{margin:12px;border-radius:6px;padding:9px 11px;font-weight:750}.ui-status.ok{background:#e6f6ee;color:#166642;border:1px solid #b9e3cf}.ui-actions{display:flex;flex-wrap:wrap;gap:7px;padding:0 12px 13px}.ui-actions span{border:1px solid #b5c2c8;border-radius:5px;background:#fff;padding:6px 9px;font-weight:700;color:#344b55}.ui-actions span.primary{background:#177c73;color:#fff;border-color:#177c73}
+.checklist{margin:22px 0;border:1px solid #c8d5da;border-radius:11px;background:#fbfcfd;overflow:hidden}.checklist h4{margin:0;padding:11px 15px;background:#eaf2f4;border-top:1px solid #d6e1e5;color:#244753}.checklist h4:first-child{border-top:0}.checklist label{display:flex;gap:10px;align-items:flex-start;padding:8px 15px;border-top:1px solid #edf1f3;cursor:pointer}.checklist label:hover{background:#f1f8f8}.checklist input{margin-top:4px;accent-color:var(--accent);transform:scale(1.08)}.checklist label.completed{color:#536a73;text-decoration:line-through;background:#f3faf7}.check-progress{position:sticky;bottom:0;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;background:#15262e;color:#fff}.check-progress strong{color:#fff}.check-progress button{border:1px solid #59727e;background:#203842;color:#fff;border-radius:5px;padding:6px 10px;cursor:pointer}.check-progress button:hover{background:#2a4854}
+.callout{border-radius:9px;padding:14px 17px;margin:18px 0}.callout.warning{background:#fff6e8;border:1px solid #edcf9f;color:#6f470d}.callout.info{background:#eef7fb;border:1px solid #bcd8e6;color:#275065}
+.back-top{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;border:0;background:#15313e;color:#fff;box-shadow:0 6px 18px rgba(10,29,38,.25);cursor:pointer;opacity:0;pointer-events:none;transition:.2s}.back-top.visible{opacity:.92;pointer-events:auto}.back-top:hover{background:#1d5064}
+.footer-note{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;max-height:380px}.main{padding:24px}.paper{padding:40px 34px}.report-summary{grid-template-columns:1fr}}
+@media(max-width:650px){.main{padding:0}.paper{border-radius:0;border-left:0;border-right:0;padding:30px 18px}h1{font-size:31px}h2{font-size:23px}.ui-row{grid-template-columns:1fr;gap:3px}.check-progress{align-items:flex-start;flex-direction:column}.table-wrap{border-radius:5px}}
+@media print{body{background:#fff}.layout{display:block}.sidebar,.back-top{display:none}.main{padding:0}.paper{max-width:none;border:0;box-shadow:none;padding:0}.report-summary{grid-template-columns:1fr 1fr}.anchor{display:none}.table-wrap{overflow:visible;border:0}.table-wrap table{min-width:0;font-size:8.5pt}.table-wrap tr{page-break-inside:avoid}.check-progress{position:relative;background:#fff;color:#000;border-top:1px solid #bbb}.check-progress strong{color:#000}.check-progress button{display:none}a{color:#000}.external-link::after{display:none}pre{white-space:pre-wrap;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">CyrusScatter Research</div>
+  <div class="subbrand">Vegetation source preparation and geometry delivery · 24 Oct 2026</div>
+  <div class="sidebar-meta">
+    <span>Max 2027 target</span>
+    <span>Source-level preparation</span>
+    <span>Interactive asset audit</span>
+  </div>
+  <nav class="toc" aria-label="Report contents"><a class="toc-section" href="#supported-asset-contract-source-audit-canonical-evaluator-and-max-2027-publication-study">Supported-asset contract, source audit, canonical evaluator, and Max 2027 publication study</a>
+<a class="toc-section" href="#1-executive-answer">1. Executive answer</a>
+<a class="toc-subsection" href="#1-1-recommended-first-implementation-boundary">1.1 Recommended first implementation boundary</a>
+<a class="toc-subsection" href="#1-2-biggest-unresolved-risks">1.2 Biggest unresolved risks</a>
+<a class="toc-section" href="#2-evidence-boundary">2. Evidence boundary</a>
+<a class="toc-subsection" href="#2-1-decision-critical-documented-facts">2.1 Decision-critical documented facts</a>
+<a class="toc-section" href="#3-source-level-preparation-model">3. Source-level preparation model</a>
+<a class="toc-subsection" href="#3-1-one-preparation-many-placements">3.1 One preparation, many placements</a>
+<a class="toc-subsection" href="#3-2-what-preparation-is-authoritative">3.2 What preparation is authoritative</a>
+<a class="toc-section" href="#4-comparison-of-preparation-methods">4. Comparison of preparation methods</a>
+<a class="toc-subsection" href="#4-1-root-masks">4.1 Root masks</a>
+<a class="toc-subsection" href="#4-2-connected-component-analysis">4.2 Connected-component analysis</a>
+<a class="toc-subsection" href="#4-3-strip-recognition">4.3 Strip recognition</a>
+<a class="toc-subsection" href="#4-4-automatic-centerline-extraction">4.4 Automatic centerline extraction</a>
+<a class="toc-subsection" href="#4-5-authored-curves">4.5 Authored curves</a>
+<a class="toc-subsection" href="#4-6-existing-bones-and-skin">4.6 Existing bones and Skin</a>
+<a class="toc-subsection" href="#4-7-cages-and-low-resolution-lattices">4.7 Cages and low-resolution lattices</a>
+<a class="toc-subsection" href="#4-8-recommended-hybrid-preparation">4.8 Recommended hybrid preparation</a>
+<a class="toc-section" href="#5-asset-class-evaluation">5. Asset-class evaluation</a>
+<a class="toc-subsection" href="#5-1-segmented-individual-blades">5.1 Segmented individual blades</a>
+<a class="toc-subsection" href="#5-2-disconnected-multi-blade-clumps">5.2 Disconnected multi-blade clumps</a>
+<a class="toc-subsection" href="#5-3-welded-shared-base-clumps">5.3 Welded/shared-base clumps</a>
+<a class="toc-subsection" href="#5-4-crossed-opacity-cards">5.4 Crossed opacity cards</a>
+<a class="toc-subsection" href="#5-5-dense-scanned-vegetation">5.5 Dense scanned vegetation</a>
+<a class="toc-subsection" href="#5-6-renderer-proxies-with-limited-geometry-access">5.6 Renderer proxies with limited geometry access</a>
+<a class="toc-section" href="#6-three-source-preparation-levels">6. Three source-preparation levels</a>
+<a class="toc-subsection" href="#6-1-level-1-simple-whole-clump-artistic-bending">6.1 Level 1 — Simple whole-clump artistic bending</a>
+<a class="toc-subsection" href="#6-2-level-2-independent-blade-fitting">6.2 Level 2 — Independent blade fitting</a>
+<a class="toc-subsection" href="#6-3-level-3-advanced-leaf-stem-deformation">6.3 Level 3 — Advanced leaf/stem deformation</a>
+<a class="toc-section" href="#7-canonical-guide-to-mesh-evaluator">7. Canonical guide-to-mesh evaluator</a>
+<a class="toc-subsection" href="#7-1-one-evaluator-for-all-delivery-paths">7.1 One evaluator for all delivery paths</a>
+<a class="toc-subsection" href="#7-2-rest-guide-frames">7.2 Rest guide frames</a>
+<a class="toc-subsection" href="#7-3-vertex-capture">7.3 Vertex capture</a>
+<a class="toc-subsection" href="#7-4-fitted-frames-and-twist">7.4 Fitted frames and twist</a>
+<a class="toc-subsection" href="#7-5-multi-influence-blending">7.5 Multi-influence blending</a>
+<a class="toc-subsection" href="#7-6-normals-tangents-uvs-and-materials">7.6 Normals, tangents, UVs, and materials</a>
+<a class="toc-subsection" href="#7-7-why-this-evaluator-is-canonical">7.7 Why this evaluator is canonical</a>
+<a class="toc-section" href="#8-geometry-delivery-to-max-2027-viewport-renderer-and-bake">8. Geometry delivery to Max 2027 viewport, renderer, and Bake</a>
+<a class="toc-subsection" href="#8-1-source-immutability-and-output-classes">8.1 Source immutability and output classes</a>
+<a class="toc-subsection" href="#8-2-max-2027-viewport-correctness-path">8.2 Max 2027 viewport — correctness path</a>
+<a class="toc-subsection" href="#8-3-max-2027-viewport-later-compact-path">8.3 Max 2027 viewport — later compact path</a>
+<a class="toc-subsection" href="#8-4-bounds-culling-and-picking">8.4 Bounds, culling, and picking</a>
+<a class="toc-subsection" href="#8-5-production-renderer-supported-baseline">8.5 Production renderer — supported baseline</a>
+<a class="toc-subsection" href="#8-6-renderer-qualification-matrix">8.6 Renderer qualification matrix</a>
+<a class="toc-subsection" href="#8-7-bake-and-export">8.7 Bake and export</a>
+<a class="toc-subsection" href="#8-8-unique-geometry-variants-and-memory-behavior">8.8 Unique geometry, variants, and memory behavior</a>
+<a class="toc-subsection" href="#8-9-renderer-proxies">8.9 Renderer proxies</a>
+<a class="toc-section" href="#9-source-edits-and-binding-invalidation">9. Source edits and binding invalidation</a>
+<a class="toc-subsection" href="#9-1-safe-lifecycle-after-a-source-edit">9.1 Safe lifecycle after a source edit</a>
+<a class="toc-section" href="#10-minimal-source-preparation-ui">10. Minimal source-preparation UI</a>
+<a class="toc-subsection" href="#10-1-controls-that-should-remain-visible">10.1 Controls that should remain visible</a>
+<a class="toc-subsection" href="#10-2-advanced-foldout-only-when-needed">10.2 Advanced foldout only when needed</a>
+<a class="toc-subsection" href="#10-3-artist-interaction-sequence">10.3 Artist interaction sequence</a>
+<a class="toc-section" href="#11-practical-supported-asset-contract">11. Practical supported-asset contract</a>
+<a class="toc-subsection" href="#11-1-first-supported-contract">11.1 First supported contract</a>
+<a class="toc-subsection" href="#11-2-supported-with-limitations">11.2 Supported with limitations</a>
+<a class="toc-subsection" href="#11-3-unsupported-in-the-first-contract">11.3 Unsupported in the first contract</a>
+<a class="toc-section" href="#12-asset-audit-checklist">12. Asset-audit checklist</a>
+<a class="toc-subsection" href="#geometry-access-and-identity">Geometry access and identity</a>
+<a class="toc-subsection" href="#topology-and-pieces">Topology and pieces</a>
+<a class="toc-subsection" href="#roots-and-guides">Roots and guides</a>
+<a class="toc-subsection" href="#bindings-and-deformation-quality">Bindings and deformation quality</a>
+<a class="toc-subsection" href="#render-channels-and-delivery">Render channels and delivery</a>
+<a class="toc-subsection" href="#lifecycle">Lifecycle</a>
+<a class="toc-subsection" href="#12-1-suggested-audit-result-states">12.1 Suggested audit result states</a>
+<a class="toc-section" href="#13-representative-fixtures-and-public-examples">13. Representative fixtures and public examples</a>
+<a class="toc-subsection" href="#13-1-public-examples-used-as-method-evidence">13.1 Public examples used as method evidence</a>
+<a class="toc-subsection" href="#13-2-proposed-cyrus-audit-fixtures">13.2 Proposed Cyrus audit fixtures</a>
+<a class="toc-subsection" href="#13-3-qualification-observations-and-decision-rules">13.3 Qualification observations and decision rules</a>
+<a class="toc-section" href="#14-proposed-cyrus-product-workflow">14. Proposed Cyrus product workflow</a>
+<a class="toc-subsection" href="#14-1-library-preparation">14.1 Library preparation</a>
+<a class="toc-subsection" href="#14-2-scatter-fitting">14.2 Scatter fitting</a>
+<a class="toc-subsection" href="#14-3-what-happens-after-moving-a-stone">14.3 What happens after moving a stone</a>
+<a class="toc-subsection" href="#14-4-how-source-preparation-failures-appear">14.4 How source-preparation failures appear</a>
+<a class="toc-section" href="#15-direct-answers">15. Direct answers</a>
+<a class="toc-subsection" href="#can-the-artist-prepare-a-source-once-and-reuse-it-across-thousands-of-placements">Can the artist prepare a source once and reuse it across thousands of placements?</a>
+<a class="toc-subsection" href="#can-cyrus-avoid-manually-rigging-every-blade">Can Cyrus avoid manually rigging every blade?</a>
+<a class="toc-subsection" href="#what-is-the-minimum-useful-preparation-level">What is the minimum useful preparation level?</a>
+<a class="toc-subsection" href="#which-preparation-should-be-the-default">Which preparation should be the default?</a>
+<a class="toc-subsection" href="#what-is-the-canonical-deformation-representation">What is the canonical deformation representation?</a>
+<a class="toc-subsection" href="#how-should-exact-results-reach-the-production-renderer">How should exact results reach the production renderer?</a>
+<a class="toc-subsection" href="#what-should-be-rejected-from-the-first-version">What should be rejected from the first version?</a>
+<a class="toc-section" href="#16-reference-map">16. Reference map</a>
+<a class="toc-subsection" href="#supplied-cyrus-context-and-public-cyrus-source">Supplied Cyrus context and public Cyrus source</a>
+<a class="toc-subsection" href="#sidefx-source-preparation-references">SideFX source-preparation references</a>
+<a class="toc-subsection" href="#geometry-processing-references">Geometry processing references</a>
+<a class="toc-subsection" href="#autodesk-3ds-max-2027-sdk-references">Autodesk 3ds Max 2027 SDK references</a>
+<a class="toc-section" href="#17-final-recommendation">17. Final recommendation</a></nav>
+</aside>
+<main class="main">
+<article class="paper">
+  <div class="report-kicker">
+    <span>Engineering research</span>
+    <span class="host">Viewport · Renderer · Bake</span>
+    <span>Prepare once, reuse by source</span>
+    <span class="test">No Max/renderer runtime tests executed</span>
+  </div>
+  <div class="report-summary">
+    <div class="summary-card key"><strong>Recommended product promise</strong>Prepare supported vegetation once, review ambiguity once, and reuse the accepted immutable source rig across every stable Scatter placement.</div>
+    <div class="summary-card boundary"><strong>Qualification boundary</strong>Automatic preparation is deliberately limited. Cards, scans, welded topology, and opaque proxies escalate to authored guides, cages, or reduced support levels.</div>
+  </div>
+  <h1 id="cyrusscatter-vegetation-source-preparation-and-geometry-delivery">CyrusScatter Vegetation Source Preparation and Geometry Delivery<a aria-label="Link to this section" class="anchor" href="#cyrusscatter-vegetation-source-preparation-and-geometry-delivery">#</a></h1>
+<h2 id="supported-asset-contract-source-audit-canonical-evaluator-and-max-2027-publication-study">Supported-asset contract, source audit, canonical evaluator, and Max 2027 publication study<a aria-label="Link to this section" class="anchor" href="#supported-asset-contract-source-audit-canonical-evaluator-and-max-2027-publication-study">#</a></h2>
+<p><strong>Date:</strong> 24 October 2026<br/>
+<strong>Purpose:</strong> Focused extension to the earlier CyrusScatter vegetation-interaction research.<br/>
+<strong>Target qualification host:</strong> Autodesk 3ds Max 2027.<br/>
+<strong>Status:</strong> Research and architecture proposal only. No Max, renderer, or Cyrus production implementation was executed for this report.</p>
+<hr/>
+<h2 id="1-executive-answer">1. Executive answer<a aria-label="Link to this section" class="anchor" href="#1-executive-answer">#</a></h2>
+<div class="decision-card">
+<strong>Product answer:</strong> an artist can prepare a vegetation source once and reuse that preparation across thousands of Scatter placements. The preparation must be stored at the <em>source</em> level as immutable guides, root metadata, and mesh bindings. Individual placements then need only a small fitted guide state or a reference to a reusable deformation variant. The artist must not rig every placement.
+</div>
+<p>That answer is conditional. Cyrus can eliminate per-placement rigging, but it cannot promise zero preparation for arbitrary imported assets:</p>
+<ul>
+<li><strong>Clean segmented ribbon blades</strong> can usually be recognized and bound automatically.</li>
+<li><strong>Disconnected clumps</strong> can usually be separated by geometric connected components, provided each component really represents one blade or card.</li>
+<li><strong>Welded/shared-base clumps</strong> can often be separated by removing a confirmed root region and finding the components above it.</li>
+<li><strong>Crossed opacity cards</strong> can be prepared at card or whole-clump level, but geometry alone cannot recover the individual blades painted into the alpha texture.</li>
+<li><strong>Dense scanned vegetation</strong> normally needs an authored cage, guide graph, or deliberately simplified deformation proxy.</li>
+<li><strong>Opaque renderer proxies</strong> are not deformable unless Cyrus can obtain canonical geometry or a renderer-specific adapter; a viewport bounding box or point-cloud preview is not enough.</li>
+</ul>
+<p>The recommended product is therefore a <strong>hybrid source-preparation pipeline</strong>:</p>
+<pre data-language="TEXT"><code class="language-text">Evaluate accessible source mesh
+        ↓
+Audit topology, channels, transforms, and proxy access
+        ↓
+Choose preparation level
+        ↓
+Auto-segment where evidence is strong
+        ↓
+Generate/import guides and vertex bindings
+        ↓
+Show ambiguity overlays and require confirmation
+        ↓
+Store immutable source preparation by stable ID + content hashes
+        ↓
+Reuse it for every placement of that source
+</code></pre>
+<h3 id="1-1-recommended-first-implementation-boundary">1.1 Recommended first implementation boundary<a aria-label="Link to this section" class="anchor" href="#1-1-recommended-first-implementation-boundary">#</a></h3>
+<p>The first supported contract should accept:</p>
+<ol>
+<li>a static, accessible triangle mesh;</li>
+<li>baked or rigid-plus-uniform source transforms;</li>
+<li>an explicit or confirmed root region and local growth axis;</li>
+<li>either:<ul>
+<li>recognized ribbon strips,</li>
+<li>separated components with one guide each, or</li>
+<li>authored guide curves / existing Skin data;</li>
+</ul>
+</li>
+<li>complete vertex-to-guide bindings with no unresolved vertices;</li>
+<li>unchanged topology while fitted results are in use.</li>
+</ol>
+<p>The first delivery path should use the <strong>same CPU guide-to-mesh evaluator</strong> for Max viewport reference geometry, production render geometry, and Bake. Compact GPU guide evaluation should be treated as a later optimization, not as the first correctness path.</p>
+<h3 id="1-2-biggest-unresolved-risks">1.2 Biggest unresolved risks<a aria-label="Link to this section" class="anchor" href="#1-2-biggest-unresolved-risks">#</a></h3>
+<ol>
+<li><strong>Automatic semantics:</strong> topology can reveal connected pieces, but it cannot always reveal botanical meaning.</li>
+<li><strong>Welded clumps:</strong> removing the shared root region works only when blades become topologically separate above that region.</li>
+<li><strong>Opacity cards:</strong> the visible blade silhouette may exist only in the texture.</li>
+<li><strong>Renderer proxies:</strong> vendor objects may expose only a display proxy or renderer-owned file, not an evaluable mesh.</li>
+<li><strong>Production rendering scale:</strong> standard Max render meshes are the safest interoperability path, but exact per-instance deformation expands affected geometry and must be measured in the intended renderer.</li>
+</ol>
+<hr/>
+<h2 id="2-evidence-boundary">2. Evidence boundary<a aria-label="Link to this section" class="anchor" href="#2-evidence-boundary">#</a></h2>
+<p>This report uses four evidence labels:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge doc">D</span></td>
+<td>Current official documentation establishes the capability or data contract.</td>
+</tr>
+<tr>
+<td><span class="badge repo">R</span></td>
+<td>Public Cyrus source or the supplied Cyrus context establishes the current architecture boundary.</td>
+</tr>
+<tr>
+<td><span class="badge proposal">P</span></td>
+<td>Proposed Cyrus algorithm or workflow assembled from documented primitives.</td>
+</tr>
+<tr>
+<td><span class="badge test">T</span></td>
+<td>A Max 2027 or renderer experiment is still required before a product claim.</td>
+</tr>
+</tbody>
+</table></div>
+<p>No result is labelled as an executed runtime test. The public Cyrus repository is useful for architectural evidence, but it is not treated as proof of the supplied local version or private source tree.</p>
+<h3 id="2-1-decision-critical-documented-facts">2.1 Decision-critical documented facts<a aria-label="Link to this section" class="anchor" href="#2-1-decision-critical-documented-facts">#</a></h3>
+<ul>
+<li>Houdini 22.0 treats the first curve vertex as the root and can create a root group; its guide utilities preserve explicit root/skin correspondence. <a class="ref-tag" href="#ref-s1">S1</a></li>
+<li>Houdini Guide Deform supports sparse-guide deformation, precomputed guide weights, Point Deform capture, and guide orientation attributes; this demonstrates a mature source-level capture/deform split. <a class="ref-tag" href="#ref-s2">S2</a><a class="ref-tag" href="#ref-s3">S3</a></li>
+<li>CGAL connected components are defined by face adjacency across unconstrained edges; this is a suitable basis for strict component discovery. <a class="ref-tag" href="#ref-c1">C1</a></li>
+<li>CGAL mean-curvature-flow skeletonization requires a triangulated, borderless, single connected component; that requirement excludes many open grass cards and noisy plant scans from reliable automatic use. <a class="ref-tag" href="#ref-c2">C2</a></li>
+<li>CGAL’s shape-diameter segmentation is designed around a surface bounding a 3D solid; it is not a safe default for open ribbon foliage. <a class="ref-tag" href="#ref-c3">C3</a></li>
+<li>Max stores geometric vertices, texture vertices/faces, vertex colors, face material IDs, smoothing groups, and explicit normals as distinct channels. UV seams and shading splits therefore must not automatically define botanical pieces. <a class="ref-tag" href="#ref-a3">A3</a><a class="ref-tag" href="#ref-a4">A4</a><a class="ref-tag" href="#ref-a5">A5</a><a class="ref-tag" href="#ref-a6">A6</a></li>
+<li>Max Skin exposes bone initial transforms and per-vertex bone assignments/weights; existing rigs can be imported rather than rebuilt manually. <a class="ref-tag" href="#ref-a7">A7</a><a class="ref-tag" href="#ref-a8">A8</a><a class="ref-tag" href="#ref-a9">A9</a></li>
+<li>A Max <code>GeomObject</code> can provide instance-dependent render meshes, while <code>ICustomRenderItem</code> supplies retained viewport realization, display, and hit-testing hooks. <a class="ref-tag" href="#ref-a1">A1</a><a class="ref-tag" href="#ref-a2">A2</a></li>
+</ul>
+<hr/>
+<h2 id="3-source-level-preparation-model">3. Source-level preparation model<a aria-label="Link to this section" class="anchor" href="#3-source-level-preparation-model">#</a></h2>
+<h3 id="3-1-one-preparation-many-placements">3.1 One preparation, many placements<a aria-label="Link to this section" class="anchor" href="#3-1-one-preparation-many-placements">#</a></h3>
+<p>Cyrus should not create a Max rig, bones, or helper objects for every Scatter instance. It should capture one immutable source representation and let each placement reference it:</p>
+<pre data-language="CPP"><code class="language-cpp">struct PreparedVegetationSource {
+    SourceStableId sourceId;
+    Revision sourceNodeRevision;
+    Hash geometryHash;          // positions + topology + vertex order
+    Hash channelHash;           // UVs, materials, normals, colors
+    Hash authoringHash;         // roots, guides, bones, cages, piece labels
+    uint32_t evaluatorVersion;
+
+    RestMesh mesh;              // immutable source channels
+    std::vector&lt;PreparedPiece&gt; pieces;
+    std::vector&lt;RestGuide&gt; guides;
+    std::vector&lt;VertexBinding&gt; bindings;
+    SourceAudit audit;
+};
+
+struct RestGuide {
+    GuideStableId id;
+    PieceStableId piece;
+    std::vector&lt;Vec3&gt; restNodes;
+    std::vector&lt;Quat&gt; restFrames;
+    std::vector&lt;float&gt; halfWidth;
+    std::vector&lt;float&gt; thickness;
+    RootAnchor root;
+};
+
+struct VertexBinding {
+    uint32_t vertex;
+    float deformWeight;       // 0 at a fixed root, 1 for full deformation
+    uint8_t influenceCount;
+    GuideInfluence influence[4];
+};
+
+struct GuideInfluence {
+    GuideStableId guide;
+    uint16_t segment;
+    float segmentT;
+    Vec3 localOffset;         // rest guide frame coordinates
+    float weight;
+};
+</code></pre>
+<p>Every affected placement stores only its fitted guide state, diagnostics, and the prepared-source revision it was solved against. Unaffected placements remain on the existing transform-only path.</p>
+<h3 id="3-2-what-preparation-is-authoritative">3.2 What preparation is authoritative<a aria-label="Link to this section" class="anchor" href="#3-2-what-preparation-is-authoritative">#</a></h3>
+<p>The authoritative preparation is the accepted combination of:</p>
+<ul>
+<li>source geometry snapshot identity;</li>
+<li>piece IDs;</li>
+<li>root region and root anchor for each piece;</li>
+<li>guide topology and node order;</li>
+<li>rest frames, width/thickness, and optional twist data;</li>
+<li>vertex bindings;</li>
+<li>preparation level and evaluator version;</li>
+<li>an audit record listing auto-inferred, artist-confirmed, and unsupported regions.</li>
+</ul>
+<p>Display names, node names, or approximate bounding boxes are not sufficient identity.</p>
+<hr/>
+<h2 id="4-comparison-of-preparation-methods">4. Comparison of preparation methods<a aria-label="Link to this section" class="anchor" href="#4-comparison-of-preparation-methods">#</a></h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Best use</th>
+<th>Reliable inference</th>
+<th>Main ambiguity</th>
+<th>Artist responsibility</th>
+<th>Recommended status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Root mask</td>
+<td>Anchor region and deform falloff</td>
+<td>Which vertices must remain planted</td>
+<td>Blade identity and root orientation</td>
+<td>Confirm root region and growth axis</td>
+<td>Core input for all levels</td>
+</tr>
+<tr>
+<td>Connected components</td>
+<td>Disconnected blades/cards</td>
+<td>Strict topological pieces</td>
+<td>UV-split duplicates, touching pieces, welded bases</td>
+<td>Accept virtual welds or relabel pieces</td>
+<td>Core automatic stage</td>
+</tr>
+<tr>
+<td>Strip recognition</td>
+<td>Segmented ribbon blades/cards</td>
+<td>Centerline, width rail, rest twist</td>
+<td>Branches, irregular topology, double surfaces</td>
+<td>Confirm rejected/ambiguous strips</td>
+<td>Core Level 2 stage</td>
+</tr>
+<tr>
+<td>Automatic centerline extraction</td>
+<td>Closed tubular components or controlled proxies</td>
+<td>Medial graph under strong assumptions</td>
+<td>Open surfaces, branches, noise, semantic root</td>
+<td>Confirm graph and prune branches</td>
+<td>Optional, not default</td>
+</tr>
+<tr>
+<td>Authored curves</td>
+<td>Hero/complex assets</td>
+<td>Exact intended guides and root order</td>
+<td>Binding radius and piece correspondence</td>
+<td>Supply/approve curves</td>
+<td>Preferred explicit contract</td>
+</tr>
+<tr>
+<td>Existing bones/Skin</td>
+<td>Already rigged assets</td>
+<td>Bone hierarchy and vertex weights</td>
+<td>Whether rig semantics match vegetation</td>
+<td>Map root bone and allowed joints</td>
+<td>Supported import path</td>
+</tr>
+<tr>
+<td>Cage/lattice</td>
+<td>Whole clump, broad leaves, scans</td>
+<td>Smooth low-dimensional deformation</td>
+<td>Cross-piece bleeding and cage quality</td>
+<td>Author/approve cage and capture</td>
+<td>Level 1 or Level 3</td>
+</tr>
+<tr>
+<td>Hybrid</td>
+<td>Real production library</td>
+<td>Uses strong automatic evidence first</td>
+<td>Remaining local ambiguities</td>
+<td>Correct only flagged pieces</td>
+<td>Recommended product workflow</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="4-1-root-masks">4.1 Root masks<a aria-label="Link to this section" class="anchor" href="#4-1-root-masks">#</a></h3>
+<p><strong>Required information and assumptions</strong></p>
+<p>A root mask is a scalar on geometric vertices or corners, normally <code>0</code> for fully fixed and <code>1</code> for fully deformable, with a transition zone between them. It can come from:</p>
+<ul>
+<li>a named vertex selection or root group;</li>
+<li>a vertex-color channel;</li>
+<li>an explicit root face set;</li>
+<li>an imported root-bone weight;</li>
+<li>a confirmed pivot/local-height heuristic.</li>
+</ul>
+<p>A root mask requires a declared source-local growth axis. It does not by itself identify individual blades.</p>
+<p><strong>What can be inferred reliably</strong></p>
+<ul>
+<li>the planted region;</li>
+<li>a deformation falloff from root to free geometry;</li>
+<li>the shared-base region that may be temporarily removed for welded-clump partitioning;</li>
+<li>a root centroid or root boundary for each already known piece.</li>
+</ul>
+<p><strong>Ambiguity detection</strong></p>
+<p>Flag the mask when it produces:</p>
+<ul>
+<li>no root vertices or nearly the whole mesh as root;</li>
+<li>multiple disjoint root islands inside one purported blade;</li>
+<li>roots at both ends of a strip;</li>
+<li>roots far above the declared support plane;</li>
+<li>a root transition that cuts across the middle of visible leaves.</li>
+</ul>
+<p>No fixed numeric thresholds are proposed here; thresholds must scale with source dimensions and be qualified on the asset library.</p>
+<p><strong>What the artist confirms or corrects</strong></p>
+<p>The artist confirms the root overlay and local up axis, or paints/adds/removes root vertices. Root position and root orientation are separate: the root mask fixes translation, while orientation stiffness acts on the first guide segment or root frame.</p>
+<p><strong>Preservation</strong></p>
+<ul>
+<li>Root position is preserved by an identity/placement influence where mask weight is zero.</li>
+<li>Rest curvature is preserved by the guide, not by the mask.</li>
+<li>Width and twist require guide frames or strip cross-sections.</li>
+</ul>
+<p><strong>UV seams and duplicated vertices</strong></p>
+<p>Root data must be reconciled across coincident geometric duplicates. A UV seam alone is not a root boundary because Max stores texture topology separately from geometry. <a class="ref-tag" href="#ref-a3">A3</a><a class="ref-tag" href="#ref-a6">A6</a></p>
+<p><strong>Invalidation</strong></p>
+<p>Changing the mask, root group, color channel used as the mask, local up axis, or pivot policy invalidates preparation and all fitted guide states for that source.</p>
+<h3 id="4-2-connected-component-analysis">4.2 Connected-component analysis<a aria-label="Link to this section" class="anchor" href="#4-2-connected-component-analysis">#</a></h3>
+<p><span class="badge doc">D</span> Strict connected components should be computed on face adjacency using geometric topology. CGAL documents the same fundamental definition: faces are connected when an adjacency path exists across non-constrained edges. <a class="ref-tag" href="#ref-c1">C1</a></p>
+<p><strong>Required information and assumptions</strong></p>
+<ul>
+<li>an accessible triangle/poly mesh;</li>
+<li>valid face indices;</li>
+<li>a policy for non-manifold edges and hidden/support geometry;</li>
+<li>optional artist-authored piece IDs that override automatic components.</li>
+</ul>
+<p><strong>Reliable inference</strong></p>
+<ul>
+<li>truly disconnected blades;</li>
+<li>separate crossed cards;</li>
+<li>separate leaves or stems that do not share geometry;</li>
+<li>tiny debris/support components that can be reported separately.</li>
+</ul>
+<p><strong>UV seams and render-vertex splits</strong></p>
+<p>Segmentation must use geometric adjacency, not UV vertices, material IDs, smoothing groups, or explicit normals. Max’s mesh model keeps those channels separate. <a class="ref-tag" href="#ref-a3">A3</a><a class="ref-tag" href="#ref-a4">A4</a><a class="ref-tag" href="#ref-a5">A5</a> Imported files may nevertheless duplicate geometric vertices at UV or normal seams. Therefore Cyrus may offer an optional <strong>virtual weld</strong> pass:</p>
+<ol>
+<li>find boundary edges whose endpoints are coincident within a source-scaled tolerance;</li>
+<li>require a one-to-one reversed edge match;</li>
+<li>reject matches with competing candidates or incompatible face orientation;</li>
+<li>create virtual adjacency without modifying the source mesh;</li>
+<li>show every virtual weld in the preview.</li>
+</ol>
+<p>Virtual welding must never be silently accepted when two real blades merely touch or intersect.</p>
+<p><strong>Ambiguity detection</strong></p>
+<ul>
+<li>many tiny components that collapse into a few pieces after virtual welding;</li>
+<li>coincident boundaries with multiple possible mates;</li>
+<li>non-manifold edges;</li>
+<li>components with multiple root islands;</li>
+<li>a component whose shape is broad or branched rather than blade-like.</li>
+</ul>
+<p><strong>Artist correction</strong></p>
+<p>The artist accepts/rejects virtual weld groups, merges or splits piece IDs, or supplies an explicit piece channel.</p>
+<p><strong>Preservation and invalidation</strong></p>
+<p>Connected components do not preserve curvature, width, or twist by themselves; they only define pieces. Any topology or vertex-order change invalidates component IDs unless a stable author-provided piece channel can be remapped exactly.</p>
+<h3 id="4-3-strip-recognition">4.3 Strip recognition<a aria-label="Link to this section" class="anchor" href="#4-3-strip-recognition">#</a></h3>
+<p><span class="badge proposal">P</span> Strip recognition is the preferred automatic method for segmented grass blades and rectangular cards. It is deliberately narrower than generic skeletonization.</p>
+<p><strong>Supported assumptions</strong></p>
+<p>A candidate component should be:</p>
+<ul>
+<li>an open, non-branching ribbon or thin shell;</li>
+<li>topologically disk-like;</li>
+<li>longer than it is wide;</li>
+<li>segmented along its length;</li>
+<li>attached to one confirmed root end;</li>
+<li>free of major self-overlap in the rest pose.</li>
+</ul>
+<p><strong>Proposed recognition order</strong></p>
+<pre data-language="TEXT"><code class="language-text">component
+  → validate manifold/boundary structure
+  → identify root end from root mask
+  → find geodesically farthest tip region
+  → split the boundary into two longitudinal rails and two end regions
+  → pair rail samples or recover quad/triangle cross-sections
+  → centerline = cross-section midpoint
+  → half-width vector = rail difference / 2
+  → build rest frame and twist sequence
+  → bind component vertices by arc coordinate + frame offset
+</code></pre>
+<p>For a regular quad strip, edge-ring traversal is the highest-confidence case. For triangulated strips, Cyrus can reconstruct cross-sections from the face graph, but confidence should fall when multiple valid traversals exist.</p>
+<p><strong>What can be inferred reliably</strong></p>
+<ul>
+<li>one center guide;</li>
+<li>root-to-tip order;</li>
+<li>rest arc length and curvature;</li>
+<li>width at each cross-section;</li>
+<li>a width direction that seeds the guide frame;</li>
+<li>rest twist as the width direction rotates around the centerline.</li>
+</ul>
+<p><strong>Ambiguity detection</strong></p>
+<p>Reject or request confirmation when:</p>
+<ul>
+<li>the component branches;</li>
+<li>there is no unique root or tip end;</li>
+<li>boundary traversal produces more than two plausible rails;</li>
+<li>width changes sign or paired rails cross;</li>
+<li>the component has internal holes;</li>
+<li>duplicated front/back surfaces form two coincident shells;</li>
+<li>segmentation is too sparse to approximate the requested bend;</li>
+<li>the component is volumetric rather than ribbon-like.</li>
+</ul>
+<p>UV <code>V</code> direction may be used as supporting evidence, but never as the sole authority. UVs can be mirrored, tiled, rotated, or shared across multiple blades.</p>
+<p><strong>Artist correction</strong></p>
+<p>The artist can reverse root/tip, select two boundary rails, choose a guide curve, or mark the component as whole-piece/cage deformation instead.</p>
+<p><strong>Invalidation</strong></p>
+<p>Any change to geometry positions, topology, vertex order, root assignment, or the accepted rail pairing invalidates the generated guide and binding. UV edits invalidate only those preparations whose audit says UV direction was used as evidence.</p>
+<h3 id="4-4-automatic-centerline-extraction">4.4 Automatic centerline extraction<a aria-label="Link to this section" class="anchor" href="#4-4-automatic-centerline-extraction">#</a></h3>
+<p>Generic skeletonization is useful only under much stronger assumptions than most vegetation libraries satisfy.</p>
+<p><span class="badge doc">D</span> CGAL’s mean-curvature-flow skeletonizer requires a triangulated mesh with no boundary and one connected component. It produces a curve graph and associates source vertices with skeleton vertices. <a class="ref-tag" href="#ref-c2">C2</a> This is useful for closed stems or deliberately watertight deformation proxies, but not for ordinary open grass ribbons or crossed cards.</p>
+<p><span class="badge doc">D</span> CGAL’s shape-diameter segmentation assumes a mesh bounding a 3D solid and derives local diameter by inward ray sampling. <a class="ref-tag" href="#ref-c3">C3</a> Open foliage and thin cards violate that model or make the result unstable.</p>
+<p><strong>Potentially reliable cases</strong></p>
+<ul>
+<li>a closed tubular stem;</li>
+<li>a watertight simplified proxy around a dense scanned clump;</li>
+<li>a single closed leaf/stem object with a known root and no ambiguous branches.</li>
+</ul>
+<p><strong>Ambiguous or unsupported cases</strong></p>
+<ul>
+<li>open ribbons and cards;</li>
+<li>fused scanned leaves with holes;</li>
+<li>multi-component scans;</li>
+<li>one mesh containing multiple touching plants;</li>
+<li>branching skeletons without authored botanical piece labels.</li>
+</ul>
+<p><strong>Artist responsibility</strong></p>
+<p>An automatically extracted graph must be shown as a preview. The artist must choose the root, prune/merge branches, and confirm which graph edges drive which render regions. Automatic skeletonization should never silently become authoritative.</p>
+<h3 id="4-5-authored-curves">4.5 Authored curves<a aria-label="Link to this section" class="anchor" href="#4-5-authored-curves">#</a></h3>
+<p>Authored curves are the clearest contract for hero assets and complex clumps.</p>
+<p><strong>Required information</strong></p>
+<ul>
+<li>one or more ordered curves;</li>
+<li>first point/root convention or explicit root index;</li>
+<li>piece ID;</li>
+<li>optional width/thickness samples;</li>
+<li>a root normal, width vector, or orientation frame when twist matters.</li>
+</ul>
+<p>Houdini’s guide utilities use the first curve vertex as the root, illustrating a simple and inspectable convention. <a class="ref-tag" href="#ref-s1">S1</a></p>
+<p><strong>Reliable inference</strong></p>
+<ul>
+<li>root-to-tip direction;</li>
+<li>rest curvature and length;</li>
+<li>guide topology;</li>
+<li>local frames when an orientation attribute or cross-section direction is supplied.</li>
+</ul>
+<p><strong>Artist responsibility</strong></p>
+<p>The artist supplies or approves curves and resolves any region captured by multiple guides. Cyrus may auto-generate curves from recognized strips and store them internally; the artist does not need visible spline helpers in the scene unless editing is requested.</p>
+<p><strong>Binding</strong></p>
+<p>Vertices are captured by piece ID first, then nearest guide arc coordinate and frame offset. Houdini Guide Deform and Point Deform document the practical value of separating capture from repeated deformation and of limiting capture by piece attributes. <a class="ref-tag" href="#ref-s2">S2</a><a class="ref-tag" href="#ref-s3">S3</a></p>
+<p><strong>Invalidation</strong></p>
+<p>Curve point count/order, curve shape, root order, piece assignment, width/thickness, or source rest geometry changes require recapture.</p>
+<h3 id="4-6-existing-bones-and-skin">4.6 Existing bones and Skin<a aria-label="Link to this section" class="anchor" href="#4-6-existing-bones-and-skin">#</a></h3>
+<p>Existing Skin rigs are a valuable import path, especially for broad leaves, stems, and purchased assets that are already animated.</p>
+<p><span class="badge doc">D</span> Max <code>ISkin</code> exposes bone initial transforms and the reference frame. <code>ISkinContextData</code> exposes each vertex’s assigned bones and weights. <code>ISkinImportData</code> can add bones and weights. <a class="ref-tag" href="#ref-a7">A7</a><a class="ref-tag" href="#ref-a8">A8</a><a class="ref-tag" href="#ref-a9">A9</a></p>
+<p><strong>Cyrus policy</strong></p>
+<ul>
+<li>Import the rig into the immutable source-preparation representation.</li>
+<li>Do not instantiate a full Max bone hierarchy per Scatter placement.</li>
+<li>Treat each bone chain as a guide chain with full rigid frames.</li>
+<li>Map the designated root bone to root-position and root-orientation controls.</li>
+<li>Preserve original weights and DQ blend preference as metadata.</li>
+</ul>
+<p><strong>Width, curvature, and twist</strong></p>
+<p>Bones preserve rest curvature through their bind transforms and twist through full rotations. Linear blend skinning can collapse near large opposing rotations; dual-quaternion blending is a documented alternative and Max exposes a DQ-blending state. <a class="ref-tag" href="#ref-l2">L2</a><a class="ref-tag" href="#ref-a7">A7</a></p>
+<p><strong>Ambiguity</strong></p>
+<ul>
+<li>helper bones unrelated to vegetation deformation;</li>
+<li>multiple skeletons affecting one mesh;</li>
+<li>missing root designation;</li>
+<li>scale/shear in bone transforms;</li>
+<li>weights spanning unrelated leaves.</li>
+</ul>
+<p>The artist maps or disables ambiguous bones once at source-preparation time.</p>
+<h3 id="4-7-cages-and-low-resolution-lattices">4.7 Cages and low-resolution lattices<a aria-label="Link to this section" class="anchor" href="#4-7-cages-and-low-resolution-lattices">#</a></h3>
+<p>Cages are appropriate when individual blade semantics are unavailable or unnecessary.</p>
+<p><strong>Best uses</strong></p>
+<ul>
+<li>Level 1 whole-clump deformation;</li>
+<li>broad leaves or compound foliage requiring area preservation;</li>
+<li>dense scans driven by a simplified authored proxy;</li>
+<li>art-directed deformation where exact per-blade contact is not required.</li>
+</ul>
+<p><strong>Binding choices</strong></p>
+<ul>
+<li>direct point-capture weights;</li>
+<li>surface/volume barycentric coordinates;</li>
+<li>bounded biharmonic weights or biharmonic coordinates;</li>
+<li>piece-restricted capture to prevent cross-clump bleeding.</li>
+</ul>
+<p>Libigl documents bounded biharmonic weights as smooth, nonnegative, partition-of-unity weights for bones, points, regions, or cages, and documents GPU-friendly linear blend evaluation. <a class="ref-tag" href="#ref-l1">L1</a> Those methods still require meaningful handles/cages and do not infer plant semantics.</p>
+<p><strong>Ambiguity and correction</strong></p>
+<p>Flag vertices outside the cage, negative/invalid coordinates, cross-piece influences, and excessive influence spread. The artist adjusts the cage or piece restriction.</p>
+<p><strong>Invalidation</strong></p>
+<p>Cage topology/rest shape, capture weights, or source rest positions invalidate the binding.</p>
+<h3 id="4-8-recommended-hybrid-preparation">4.8 Recommended hybrid preparation<a aria-label="Link to this section" class="anchor" href="#4-8-recommended-hybrid-preparation">#</a></h3>
+<p>The product should choose the strongest available evidence in this order:</p>
+<pre data-language="TEXT"><code class="language-text">Existing accepted Cyrus prep
+  → existing Skin/bones or authored guide curves
+  → explicit piece/root channels
+  → strict connected components
+  → virtual seam weld (previewed)
+  → strip recognition
+  → root-cut partition for welded bases
+  → authored cage / manual correction
+  → unsupported
+</code></pre>
+<p>This avoids forcing every asset into one algorithm and avoids pretending that interface behavior reveals a vendor’s private implementation.</p>
+<hr/>
+<h2 id="5-asset-class-evaluation">5. Asset-class evaluation<a aria-label="Link to this section" class="anchor" href="#5-asset-class-evaluation">#</a></h2>
+<h3 id="5-1-segmented-individual-blades">5.1 Segmented individual blades<a aria-label="Link to this section" class="anchor" href="#5-1-segmented-individual-blades">#</a></h3>
+<p><strong>Recommended level:</strong> Level 2, independent blade fitting.<br/>
+<strong>Automatic confidence:</strong> High for clean ribbon topology.</p>
+<p><strong>Preparation recipe</strong></p>
+<ol>
+<li>identify the blade component;</li>
+<li>confirm root end from root mask or pivot/local-height rule;</li>
+<li>recognize longitudinal strip topology;</li>
+<li>generate one center guide and rest frames;</li>
+<li>bind every blade vertex to guide arc coordinate and local offset;</li>
+<li>audit segmentation density and unbound vertices;</li>
+<li>artist accepts the overlay.</li>
+</ol>
+<p><strong>Preservation</strong></p>
+<ul>
+<li>root position: mask/guide root;</li>
+<li>root orientation: first guide frame, controlled separately;</li>
+<li>rest curvature: rest guide nodes;</li>
+<li>blade width: local frame offset and half-width samples;</li>
+<li>twist: width-vector rotation along the guide.</li>
+</ul>
+<p><strong>Failure cases</strong></p>
+<ul>
+<li>only one or two segments along the blade;</li>
+<li>irregular branch-like geometry;</li>
+<li>double-layered coincident surfaces;</li>
+<li>root and tip equally plausible;</li>
+<li>nonuniform source transform not baked.</li>
+</ul>
+<p>A clean library can therefore be prepared once without manually drawing one guide per blade.</p>
+<h3 id="5-2-disconnected-multi-blade-clumps">5.2 Disconnected multi-blade clumps<a aria-label="Link to this section" class="anchor" href="#5-2-disconnected-multi-blade-clumps">#</a></h3>
+<p><strong>Recommended level:</strong> Level 2 when each component is a blade; Level 1 when components are entire cards or clusters.<br/>
+<strong>Automatic confidence:</strong> Medium to high after seam audit.</p>
+<p><strong>Preparation recipe</strong></p>
+<ol>
+<li>strict component discovery;</li>
+<li>optional previewed virtual weld for imported seam splits;</li>
+<li>classify each component as ribbon, card, stem, debris, or ambiguous;</li>
+<li>run strip recognition per ribbon/card;</li>
+<li>assign one stable piece ID and guide per accepted blade;</li>
+<li>report rejected components.</li>
+</ol>
+<p><strong>Ambiguity</strong></p>
+<p>A disconnected component is not necessarily a biological blade. It may be:</p>
+<ul>
+<li>a crossed card containing many texture blades;</li>
+<li>a hidden support mesh;</li>
+<li>one side of a duplicated two-sided card;</li>
+<li>a leaf cluster;</li>
+<li>an importer-created fragment.</li>
+</ul>
+<p>The audit must show component colors and classification, not merely a count.</p>
+<h3 id="5-3-welded-shared-base-clumps">5.3 Welded/shared-base clumps<a aria-label="Link to this section" class="anchor" href="#5-3-welded-shared-base-clumps">#</a></h3>
+<p><strong>Recommended level:</strong> Level 2 only when the shared base can be isolated cleanly; otherwise Level 1 or authored Level 3.<br/>
+<strong>Automatic confidence:</strong> Medium and explicitly conditional.</p>
+<p><strong>Proposed root-cut partition</strong></p>
+<pre data-language="TEXT"><code class="language-text">confirmed root mask
+      ↓
+mark shared root/base faces
+      ↓
+remove those faces only in the analysis graph
+      ↓
+connected components of remaining upper geometry
+      ↓
+for each upper component, find its interface to the root region
+      ↓
+create one blade piece + root anchor at that interface
+      ↓
+reattach root-region render vertices using root/cage influences
+</code></pre>
+<p>This method is reliable when blades are connected only through the base. It fails when blades share faces above the root, merge into a continuous tuft, or the root mask cuts through blade bodies.</p>
+<p><strong>Artist correction</strong></p>
+<p>The artist adjusts the root mask, manually splits piece labels, supplies curves, or accepts whole-clump deformation. Cyrus must not physically detach the source mesh; the cut exists only in the analysis graph.</p>
+<h3 id="5-4-crossed-opacity-cards">5.4 Crossed opacity cards<a aria-label="Link to this section" class="anchor" href="#5-4-crossed-opacity-cards">#</a></h3>
+<p><strong>Recommended level:</strong> Level 1 whole-clump bend, or card-level Level 2.<br/>
+<strong>Automatic confidence:</strong> High for recognizing the cards; low for inferring visible individual blades.</p>
+<p>The geometry exposes card planes and segmentation, not the opacity silhouette. Therefore Cyrus can preserve:</p>
+<ul>
+<li>card root edge;</li>
+<li>card centerline;</li>
+<li>card width and twist;</li>
+<li>UVs and material IDs;</li>
+</ul>
+<p>but cannot claim individual blade fitting for blades painted inside the texture. Contact uses the geometric card envelope plus a declared thickness/clearance, not alpha pixels.</p>
+<p><strong>Artist options</strong></p>
+<ul>
+<li>whole-clump guide/cage;</li>
+<li>one guide per card;</li>
+<li>authored simplified blade guides for hero cards;</li>
+<li>replace with geometric grass for Level 2 contact.</li>
+</ul>
+<p>Opacity texture edits do not necessarily invalidate geometric bindings, but they invalidate the visual audit and may change whether the preparation level remains acceptable.</p>
+<h3 id="5-5-dense-scanned-vegetation">5.5 Dense scanned vegetation<a aria-label="Link to this section" class="anchor" href="#5-5-dense-scanned-vegetation">#</a></h3>
+<p><strong>Recommended level:</strong> Level 1 cage or authored Level 3.<br/>
+<strong>Automatic confidence:</strong> Low.</p>
+<p>Dense scans commonly contain fused leaves, holes, duplicated surfaces, disconnected debris, and topology unrelated to botanical structure. Generic skeletonization is not a dependable solution because common documented methods require closed, single-component input or produce graphs without semantic root/leaf assignment. <a class="ref-tag" href="#ref-c2">C2</a><a class="ref-tag" href="#ref-c3">C3</a></p>
+<p><strong>Supported preparation</strong></p>
+<ul>
+<li>author a low-resolution deformation cage or guide graph;</li>
+<li>decimate only for deformation control, not as the render source;</li>
+<li>capture the high-resolution scan to that proxy by piece-restricted weights;</li>
+<li>validate folds, inversions, and unbound regions.</li>
+</ul>
+<p><strong>Unsupported claim</strong></p>
+<p>Cyrus should not promise automatic independent leaf extraction from arbitrary scans.</p>
+<h3 id="5-6-renderer-proxies-with-limited-geometry-access">5.6 Renderer proxies with limited geometry access<a aria-label="Link to this section" class="anchor" href="#5-6-renderer-proxies-with-limited-geometry-access">#</a></h3>
+<p><strong>Recommended level:</strong> Unsupported as deformable sources unless canonical geometry is accessible.<br/>
+<strong>Automatic confidence:</strong> Determined by a Max 2027 access test.</p>
+<p>The source audit should attempt, on the host thread:</p>
+<ol>
+<li>evaluate the object at the preparation time;</li>
+<li>query whether it can convert to a triangle/poly representation;</li>
+<li>verify that the returned geometry is the canonical render geometry rather than only a bounding box, point cloud, or low-detail preview;</li>
+<li>verify stable topology and channels;</li>
+<li>compare a test render to the evaluated mesh.</li>
+</ol>
+<p>If any step fails, the artist must provide one of:</p>
+<ul>
+<li>the original source mesh;</li>
+<li>a renderer-vendor export/materialization path;</li>
+<li>a matching deformation sidecar mesh plus a renderer-specific adapter;</li>
+<li>prebuilt bent proxy variants.</li>
+</ul>
+<p>An opaque proxy may still be used as an <strong>obstacle</strong> through an explicit collision mesh, but not as an exactly deformable vegetation source.</p>
+<hr/>
+<h2 id="6-three-source-preparation-levels">6. Three source-preparation levels<a aria-label="Link to this section" class="anchor" href="#6-three-source-preparation-levels">#</a></h2>
+<h3 id="6-1-level-1-simple-whole-clump-artistic-bending">6.1 Level 1 — Simple whole-clump artistic bending<a aria-label="Link to this section" class="anchor" href="#6-1-level-1-simple-whole-clump-artistic-bending">#</a></h3>
+<p><strong>Representation</strong></p>
+<ul>
+<li>one principal guide, two-to-four guide handles, or one coarse cage per clump;</li>
+<li>one root region;</li>
+<li>one root orientation frame;</li>
+<li>all render vertices captured to the clump guide/cage.</li>
+</ul>
+<p><strong>Visually sufficient when</strong></p>
+<ul>
+<li>vegetation is mid-ground or background;</li>
+<li>the clump is small relative to the obstacle;</li>
+<li>the contact is a broad push-away rather than a narrow gap;</li>
+<li>individual blade silhouettes are not scrutinized;</li>
+<li>the asset is crossed cards, a dense scan, or a compact tuft;</li>
+<li>art direction matters more than per-blade physical plausibility.</li>
+</ul>
+<p><strong>Not sufficient when</strong></p>
+<ul>
+<li>two stones trap individual blades;</li>
+<li>hero close-ups reveal rubber-bundle motion;</li>
+<li>blades should split around opposite sides of an obstacle;</li>
+<li>a wide clump contacts several unrelated surfaces.</li>
+</ul>
+<p><strong>Artist preparation</strong></p>
+<p>Select source → choose Level 1 → confirm root region/up axis → accept generated guide/cage or edit a few handles → save preparation. There is no per-placement rigging.</p>
+<h3 id="6-2-level-2-independent-blade-fitting">6.2 Level 2 — Independent blade fitting<a aria-label="Link to this section" class="anchor" href="#6-2-level-2-independent-blade-fitting">#</a></h3>
+<p><strong>Representation</strong></p>
+<ul>
+<li>one guide per recognized blade/card/stem piece;</li>
+<li>per-blade root anchor and root frame;</li>
+<li>one-influence bindings for most vertices, with limited blending near a shared root;</li>
+<li>per-guide width/thickness and rest twist.</li>
+</ul>
+<p><strong>Visually sufficient when</strong></p>
+<ul>
+<li>grass or narrow stems are the dominant source;</li>
+<li>stones and curbs are visible near camera;</li>
+<li>blades must separate around obstacles;</li>
+<li>narrow gaps and multiple obstacles matter;</li>
+<li>broad leaf area deformation and branching are not required.</li>
+</ul>
+<p><strong>Preparation boundary</strong></p>
+<p>Automatic preparation is practical for separated or root-cut ribbon blades. Ambiguous components require one-time source correction, not per-instance rigging.</p>
+<h3 id="6-3-level-3-advanced-leaf-stem-deformation">6.3 Level 3 — Advanced leaf/stem deformation<a aria-label="Link to this section" class="anchor" href="#6-3-level-3-advanced-leaf-stem-deformation">#</a></h3>
+<p><strong>Representation</strong></p>
+<ul>
+<li>authored guide graph, bone hierarchy, oriented rods, multi-guide bindings, or a leaf/stem cage;</li>
+<li>full local frames and twist;</li>
+<li>branch/junction semantics;</li>
+<li>optional broad-leaf surface coordinates or multiple guide influences.</li>
+</ul>
+<p><strong>Visually necessary when</strong></p>
+<ul>
+<li>broad leaves fold or twist against a surface;</li>
+<li>stems branch or share load;</li>
+<li>leaf orientation is a major shading cue;</li>
+<li>scanned/complex plants require a cage;</li>
+<li>hero assets must preserve leaf area and branch structure.</li>
+</ul>
+<p><strong>Preparation cost characteristic</strong></p>
+<p>Level 3 is still source-level and reusable, but it cannot be honestly advertised as automatic for arbitrary assets. Existing Skin rigs or authored curves can substantially reduce authoring.</p>
+<hr/>
+<h2 id="7-canonical-guide-to-mesh-evaluator">7. Canonical guide-to-mesh evaluator<a aria-label="Link to this section" class="anchor" href="#7-canonical-guide-to-mesh-evaluator">#</a></h2>
+<h3 id="7-1-one-evaluator-for-all-delivery-paths">7.1 One evaluator for all delivery paths<a aria-label="Link to this section" class="anchor" href="#7-1-one-evaluator-for-all-delivery-paths">#</a></h3>
+<p>Cyrus should define one mathematical evaluator for source preparation, CPU reference output, GPU viewport output, render materialization, and Bake. The evaluator is <strong>piecewise-rigid guide-frame skinning with up to four guide influences, blended by normalized dual quaternions</strong>.</p>
+<p>For simple Level 2 blades, each vertex normally has one guide influence. Multiple influences are reserved for shared roots, cages, branch junctions, and advanced leaves.</p>
+<h3 id="7-2-rest-guide-frames">7.2 Rest guide frames<a aria-label="Link to this section" class="anchor" href="#7-2-rest-guide-frames">#</a></h3>
+<p>For each guide:</p>
+<ol>
+<li>sample or use authored rest nodes <code>c⁰_i</code>;</li>
+<li>compute tangents from neighboring nodes;</li>
+<li>seed the root frame from an authored root orientation, strip width vector, or confirmed source axis;</li>
+<li>propagate a rotation-minimizing frame along the guide;</li>
+<li>record authored/rest twist as rotation around the tangent relative to that frame;</li>
+<li>store width and thickness separately from the frame.</li>
+</ol>
+<p>A round stem with no meaningful width direction may omit rest twist. A ribbon blade must have a stable width direction.</p>
+<h3 id="7-3-vertex-capture">7.3 Vertex capture<a aria-label="Link to this section" class="anchor" href="#7-3-vertex-capture">#</a></h3>
+<p>For each render vertex and each selected guide influence, store:</p>
+<ul>
+<li>guide and segment ID;</li>
+<li>segment parameter <code>u</code>;</li>
+<li>local rest offset in the rest guide frame;</li>
+<li>influence weight;</li>
+<li>root/deformation weight.</li>
+</ul>
+<p>For one influence:</p>
+<pre data-language="TEXT"><code class="language-text">p⁰ = c⁰(u) + F⁰(u) · o
+p¹ = c¹(u) + F¹(u) · o
+</code></pre>
+<p>where <code>F⁰</code> and <code>F¹</code> are rest and fitted orthonormal frames and <code>o</code> is the stored local offset. This preserves the source’s cross-section, width, and local twist while the guide supplies the new centerline.</p>
+<h3 id="7-4-fitted-frames-and-twist">7.4 Fitted frames and twist<a aria-label="Link to this section" class="anchor" href="#7-4-fitted-frames-and-twist">#</a></h3>
+<p>The fitted guide provides new nodes <code>c¹_i</code>. Cyrus recomputes a rotation-minimizing frame from the fitted tangents, seeded by the fitted root orientation. It then applies:</p>
+<ul>
+<li>preserved rest twist for Level 1/2 sources;</li>
+<li>an authored/solved twist delta for Level 3 sources.</li>
+</ul>
+<p>Root-position anchoring changes the root node position. Root-orientation stiffness changes only the root frame / first segment target. These controls remain independent.</p>
+<h3 id="7-5-multi-influence-blending">7.5 Multi-influence blending<a aria-label="Link to this section" class="anchor" href="#7-5-multi-influence-blending">#</a></h3>
+<p>Each influence yields a rigid transform from its rest frame to fitted frame. Blend the transforms with normalized dual quaternions and apply the blended transform to the vertex. Libigl documents dual-quaternion skinning as a remedy for matrix-blend collapse around large rotations. <a class="ref-tag" href="#ref-l2">L2</a></p>
+<p>The root mask is represented as an additional identity/placement influence with weight <code>1 - deformWeight</code>, rather than as an unrelated post-deformation displacement. This makes the transition an explicit part of the evaluator.</p>
+<h3 id="7-6-normals-tangents-uvs-and-materials">7.6 Normals, tangents, UVs, and materials<a aria-label="Link to this section" class="anchor" href="#7-6-normals-tangents-uvs-and-materials">#</a></h3>
+<ul>
+<li><strong>Topology, UV arrays/faces, material IDs, and smoothing groups remain unchanged.</strong> Max stores them in distinct channels. <a class="ref-tag" href="#ref-a3">A3</a><a class="ref-tag" href="#ref-a5">A5</a><a class="ref-tag" href="#ref-a6">A6</a></li>
+<li>If explicit per-corner normals exist, transform them by the evaluator’s blended rotation and preserve explicit-normal indexing. Max exposes explicit normal storage and recomputation APIs. <a class="ref-tag" href="#ref-a4">A4</a></li>
+<li>If normals are not explicit, recompute them from the deformed triangles using the original smoothing groups.</li>
+<li>Recompute tangents from deformed positions and unchanged UVs for the final materialized mesh.</li>
+<li>Audit transformed explicit normals against geometric normals in high-curvature regions; warn rather than silently discarding authored shading.</li>
+</ul>
+<h3 id="7-7-why-this-evaluator-is-canonical">7.7 Why this evaluator is canonical<a aria-label="Link to this section" class="anchor" href="#7-7-why-this-evaluator-is-canonical">#</a></h3>
+<ul>
+<li>It is simple for one-guide blades.</li>
+<li>It preserves width and rest twist better than centerline-only displacement.</li>
+<li>It can import Skin/bone weights.</li>
+<li>It can represent cage/branch blending without a second deformation system.</li>
+<li>It has a CPU implementation and a plausible shader implementation.</li>
+<li>It does not require changing source topology or modifying the shared source object.</li>
+</ul>
+<p>The evaluator does not solve collision or physics. It consumes the fitted guide state produced by whatever static fitting method Cyrus adopts.</p>
+<hr/>
+<h2 id="8-geometry-delivery-to-max-2027-viewport-renderer-and-bake">8. Geometry delivery to Max 2027 viewport, renderer, and Bake<a aria-label="Link to this section" class="anchor" href="#8-geometry-delivery-to-max-2027-viewport-renderer-and-bake">#</a></h2>
+<h3 id="8-1-source-immutability-and-output-classes">8.1 Source immutability and output classes<a aria-label="Link to this section" class="anchor" href="#8-1-source-immutability-and-output-classes">#</a></h3>
+<p>Cyrus keeps the source mesh immutable and divides placements into:</p>
+<ol>
+<li><strong>Unaffected:</strong> shared source geometry + transform, using the existing fast path.</li>
+<li><strong>Affected exact:</strong> unique fitted guide state, evaluated to unique vertex positions when required.</li>
+<li><strong>Affected variant:</strong> optional reference to one of <code>K</code> accepted reusable deformed meshes.</li>
+</ol>
+<p>The fitted guide state is authoritative. Expanded meshes and GPU buffers are derived caches.</p>
+<h3 id="8-2-max-2027-viewport-correctness-path">8.2 Max 2027 viewport — correctness path<a aria-label="Link to this section" class="anchor" href="#8-2-max-2027-viewport-correctness-path">#</a></h3>
+<p>The first viewport implementation should materialize affected geometry on the CPU using the canonical evaluator, then upload retained batches grouped by:</p>
+<ul>
+<li>prepared source ID and revision;</li>
+<li>material layout;</li>
+<li>evaluator version;</li>
+<li>display mode;</li>
+<li>optional variant ID.</li>
+</ul>
+<p><code>ICustomRenderItem</code> is the documented retained hook: <code>Realize()</code> prepares/caches geometry, <code>Display()</code> draws it, and <code>HitTest()</code> handles selection. Autodesk recommends caching to avoid rebuilding every frame. <a class="ref-tag" href="#ref-a1">A1</a></p>
+<p><strong>Batching policy</strong></p>
+<ul>
+<li>One scene node per Scatter controller, not per plant.</li>
+<li>Combine affected vertices into source/material chunks.</li>
+<li>Store per-instance ranges and stable IDs for picking.</li>
+<li>Keep unaffected transform instances in their existing shared draw path.</li>
+<li>Atomically replace complete affected buffers and bounds after Update.</li>
+</ul>
+<p>No fixed batch size is proposed without measurement.</p>
+<h3 id="8-3-max-2027-viewport-later-compact-path">8.3 Max 2027 viewport — later compact path<a aria-label="Link to this section" class="anchor" href="#8-3-max-2027-viewport-later-compact-path">#</a></h3>
+<p>After CPU parity is qualified, Cyrus may evaluate the same guide-frame formula in a custom shader using:</p>
+<ul>
+<li>shared rest vertex/index buffers;</li>
+<li>source-level binding streams;</li>
+<li>per-instance fitted guide transforms/frames;</li>
+<li>instance-to-guide-buffer indices.</li>
+</ul>
+<p>This can preserve geometry sharing, but exact buffer/stream layout and device support must be prototyped against the Max 2027 SDK. The public <code>ICustomRenderItem</code> contract establishes custom retained rendering and instanced draws; it does not by itself prove a particular structured-buffer design. <a class="ref-tag" href="#ref-a1">A1</a></p>
+<h3 id="8-4-bounds-culling-and-picking">8.4 Bounds, culling, and picking<a aria-label="Link to this section" class="anchor" href="#8-4-bounds-culling-and-picking">#</a></h3>
+<ul>
+<li>Calculate an exact deformed bound for every affected placement after evaluation.</li>
+<li>Use source reach bounds only for affected-instance selection and temporary conservative display.</li>
+<li>Update geometry and bounds in the same publication revision.</li>
+<li>Hit test against the deformed triangles in the CPU path; a guide/capsule approximation may be offered only as a documented fast selection mode.</li>
+<li>Preserve stable placement IDs in hit records.</li>
+</ul>
+<p>Max’s object contract includes local/world bounds and hit testing; source-rest bounds are insufficient after sideways bending. <a class="ref-tag" href="#ref-a2">A2</a></p>
+<h3 id="8-5-production-renderer-supported-baseline">8.5 Production renderer — supported baseline<a aria-label="Link to this section" class="anchor" href="#8-5-production-renderer-supported-baseline">#</a></h3>
+<p>The renderer-neutral baseline is a standard Max render-mesh path:</p>
+<ul>
+<li>a renderable <code>GeomObject</code> provides <code>GetRenderMesh()</code> or multiple render meshes;</li>
+<li>affected placements are materialized by the canonical CPU evaluator;</li>
+<li>unchanged placements continue through the existing renderer instancing path where supported;</li>
+<li>output chunks preserve face material IDs, UV channels, smoothing, and normal policy.</li>
+</ul>
+<p>Autodesk documents <code>GetRenderMesh()</code> for renderable geometry and <code>IsInstanceDependent()</code> for objects whose mesh differs by instance. <a class="ref-tag" href="#ref-a2">A2</a></p>
+<p>Because the prompt does not name one renderer and public documentation does not establish a universal compact guide-deformation interface across Arnold, Corona, and V-Ray, the product claim should be:</p>
+<blockquote>
+<p>Exact vegetation fitting is supported through standard Max-compatible geometry after the intended production renderer passes the Max 2027 parity matrix.</p>
+</blockquote>
+<p>Renderer-specific procedural deformation is an optional optimization, not the baseline contract.</p>
+<h3 id="8-6-renderer-qualification-matrix">8.6 Renderer qualification matrix<a aria-label="Link to this section" class="anchor" href="#8-6-renderer-qualification-matrix">#</a></h3>
+<p><span class="badge test">T</span> Run the following in the actual production renderer:</p>
+<ol>
+<li>one source, two placements, visibly different fitted shapes;</li>
+<li>opaque mesh and opacity-card variants;</li>
+<li>multiple material IDs and UV channels;</li>
+<li>explicit-normal and smoothing-group variants;</li>
+<li>save/reopen and Undo/Redo;</li>
+<li>deformation-only update without distribution regeneration;</li>
+<li>motionless still render from two cameras;</li>
+<li>render after changing the source material only;</li>
+<li>render after moving the obstacle and pressing Update;</li>
+<li>compare viewport, rendered mesh, and Bake positions/normals.</li>
+</ol>
+<p>Record translation time, peak memory, retained memory, and whether the renderer duplicates unchanged source geometry internally. No capacity or performance claim should precede this test.</p>
+<h3 id="8-7-bake-and-export">8.7 Bake and export<a aria-label="Link to this section" class="anchor" href="#8-7-bake-and-export">#</a></h3>
+<p>Bake should materialize affected placements as ordinary mesh/poly geometry or a documented supported deformation stack. It must preserve:</p>
+<ul>
+<li>fitted world-space shape;</li>
+<li>stable source and placement IDs in custom metadata;</li>
+<li>topology, UVs, material IDs, and smoothing groups;</li>
+<li>explicit-normal policy and recomputed tangents;</li>
+<li>exact local/world bounds;</li>
+<li>prepared-source revision and evaluator version.</li>
+</ul>
+<p>Unchanged placements may remain instances if the chosen Bake/export target supports them. A Bake that returns the undeformed source for affected placements is a failure.</p>
+<h3 id="8-8-unique-geometry-variants-and-memory-behavior">8.8 Unique geometry, variants, and memory behavior<a aria-label="Link to this section" class="anchor" href="#8-8-unique-geometry-variants-and-memory-behavior">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Delivery mode</th>
+<th>Geometry sharing</th>
+<th>Best use</th>
+<th>Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transform-only source</td>
+<td>Full sharing</td>
+<td>Unaffected population</td>
+<td>Cannot represent different bends</td>
+</tr>
+<tr>
+<td>CPU unique affected mesh</td>
+<td>None among exact affected shapes</td>
+<td>Correctness and renderer compatibility</td>
+<td><code>O(A·V)</code> expanded geometry</td>
+</tr>
+<tr>
+<td>Compact guide shader</td>
+<td>Shared source + bindings</td>
+<td>Viewport scale after qualification</td>
+<td>SDK/shader parity and picking complexity</td>
+</tr>
+<tr>
+<td>Reusable variants</td>
+<td><code>K</code> shared deformed meshes</td>
+<td>Distant/low-salience populations</td>
+<td>Quantization error and repetition</td>
+</tr>
+<tr>
+<td>Renderer-specific procedural</td>
+<td>Potentially strong</td>
+<td>Only after vendor qualification</td>
+<td>Separate maintenance and divergent behavior</td>
+</tr>
+</tbody>
+</table></div>
+<p>Variants are generated by the same canonical evaluator. Variant assignment must be error-bounded and stable; moving an obstacle must not cause unreviewed popping between distant variants.</p>
+<h3 id="8-9-renderer-proxies">8.9 Renderer proxies<a aria-label="Link to this section" class="anchor" href="#8-9-renderer-proxies">#</a></h3>
+<p>Opaque renderer proxies are a separate contract:</p>
+<ul>
+<li>if the proxy exposes the full canonical mesh through supported Max evaluation, it can enter the normal preparation path;</li>
+<li>if it exposes only preview geometry, preparation is invalid;</li>
+<li>a sidecar mesh is sufficient only when the renderer path can consume the same deformation or a matching set of proxy variants;</li>
+<li>vendor file internals must not be reverse-engineered from interface behavior.</li>
+</ul>
+<hr/>
+<h2 id="9-source-edits-and-binding-invalidation">9. Source edits and binding invalidation<a aria-label="Link to this section" class="anchor" href="#9-source-edits-and-binding-invalidation">#</a></h2>
+<p>Cyrus should maintain separate hashes so it can invalidate only what changed:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Change</th>
+<th style="text-align:right">Rebuild preparation?</th>
+<th style="text-align:right">Refit placements?</th>
+<th style="text-align:right">Rebuild delivery cache?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vertex positions</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Vertex count/order or face topology</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Root mask / root group / local up</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Guide/cage/bone rest data</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Skin weights / vertex bindings</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>UVs only</td>
+<td style="text-align:right">No, unless UV aided recognition</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Material IDs/material assignment</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Explicit normals/smoothing only</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Opacity texture only</td>
+<td style="text-align:right">No geometric recapture</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">Visual audit + renderer cache</td>
+</tr>
+<tr>
+<td>Source pivot/object transform policy</td>
+<td style="text-align:right">Usually yes</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Uniform per-placement scale</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">Refit in scaled metric if contact changes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Obstacle moved</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">Yes for affected dependency region</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Density/distribution changed</td>
+<td style="text-align:right">No</td>
+<td style="text-align:right">New/removed stable placements only</td>
+<td style="text-align:right">Yes</td>
+</tr>
+<tr>
+<td>Preparation algorithm version</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+<td style="text-align:right">Yes</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="9-1-safe-lifecycle-after-a-source-edit">9.1 Safe lifecycle after a source edit<a aria-label="Link to this section" class="anchor" href="#9-1-safe-lifecycle-after-a-source-edit">#</a></h3>
+<ol>
+<li>detect the source revision/hash change on the host thread;</li>
+<li>keep the previous complete fitted result visible but mark it <strong>Source changed — preparation stale</strong>;</li>
+<li>do not publish partially remapped bindings;</li>
+<li>in Manual mode, wait for <strong>Analyze/Update</strong>;</li>
+<li>rebuild preparation in a new owned snapshot;</li>
+<li>require confirmation if auto classification changed;</li>
+<li>refit against the current obstacle snapshot;</li>
+<li>atomically publish only after preparation, fit, validation, and delivery all succeed.</li>
+</ol>
+<p>If the source is missing or becomes an opaque proxy, preserve the old result as stale and report the dependency failure; do not silently delete plants or roots.</p>
+<hr/>
+<h2 id="10-minimal-source-preparation-ui">10. Minimal source-preparation UI<a aria-label="Link to this section" class="anchor" href="#10-minimal-source-preparation-ui">#</a></h2>
+<div class="ui-mock">
+<div class="ui-title">Vegetation Source Preparation</div>
+<div class="ui-row"><span>Source</span><strong>Grass_Clump_07</strong></div>
+<div class="ui-row"><span>Preparation level</span><strong>Independent blades</strong></div>
+<div class="ui-row"><span>Roots</span><strong>Auto: local Z band · confirmed</strong></div>
+<div class="ui-row"><span>Segmentation</span><strong>Components + ribbon strips</strong></div>
+<div class="ui-row"><span>Guide source</span><strong>Generated from strips</strong></div>
+<div class="ui-status ok">24 blades accepted · 1 ambiguous piece · 0 unbound vertices</div>
+<div class="ui-actions"><span>Analyze</span><span>Paint Roots</span><span>Review Ambiguities</span><span class="primary">Accept Preparation</span></div>
+</div>
+<h3 id="10-1-controls-that-should-remain-visible">10.1 Controls that should remain visible<a aria-label="Link to this section" class="anchor" href="#10-1-controls-that-should-remain-visible">#</a></h3>
+<ul>
+<li><strong>Preparation level:</strong> Whole clump / Independent blades / Advanced.</li>
+<li><strong>Root source:</strong> Auto height / selection set / vertex color / root bone.</li>
+<li><strong>Segmentation:</strong> Auto / strict components / components + virtual weld / authored pieces.</li>
+<li><strong>Guide source:</strong> Generate / selected splines / existing Skin / cage.</li>
+<li><strong>Local growth axis:</strong> source axis or pick direction.</li>
+<li><strong>Analyze source.</strong></li>
+<li><strong>Display:</strong> pieces, roots, guides, unbound vertices, virtual welds, ambiguity.</li>
+<li><strong>Accept preparation / Revert.</strong></li>
+</ul>
+<h3 id="10-2-advanced-foldout-only-when-needed">10.2 Advanced foldout only when needed<a aria-label="Link to this section" class="anchor" href="#10-2-advanced-foldout-only-when-needed">#</a></h3>
+<ul>
+<li>virtual-weld tolerance and candidate list;</li>
+<li>rail selection for rejected strips;</li>
+<li>piece merge/split labels;</li>
+<li>maximum guide influences;</li>
+<li>cage capture settings;</li>
+<li>explicit normal policy;</li>
+<li>LOD preparation mapping.</li>
+</ul>
+<p>The main UI should not expose numerical skeletonization or weighting parameters unless an artist can make a meaningful visual decision from them.</p>
+<h3 id="10-3-artist-interaction-sequence">10.3 Artist interaction sequence<a aria-label="Link to this section" class="anchor" href="#10-3-artist-interaction-sequence">#</a></h3>
+<p><strong>Clean separated ribbon clump</strong></p>
+<p>Select source → Analyze → inspect roots/guides → Accept. No blade-by-blade manual rig is expected when all strips pass.</p>
+<p><strong>Welded-base clump</strong></p>
+<p>Select source → Analyze → adjust/confirm root region → inspect root-cut blade pieces → correct only flagged merges/splits → Accept.</p>
+<p><strong>Crossed cards</strong></p>
+<p>Select source → choose Whole Clump or Per Card → confirm card roots → Accept. The UI must state that texture blades are not individually represented.</p>
+<p><strong>Dense scan / complex leaf asset</strong></p>
+<p>Select source → choose Advanced → select cage/curves/Skin → inspect capture and unbound regions → correct → Accept.</p>
+<p>These are designed interaction sequences, not measured preparation times.</p>
+<hr/>
+<h2 id="11-practical-supported-asset-contract">11. Practical supported-asset contract<a aria-label="Link to this section" class="anchor" href="#11-practical-supported-asset-contract">#</a></h2>
+<h3 id="11-1-first-supported-contract">11.1 First supported contract<a aria-label="Link to this section" class="anchor" href="#11-1-first-supported-contract">#</a></h3>
+<p>A source is <strong>Supported</strong> only when all conditions below pass:</p>
+<ol>
+<li><strong>Geometry access:</strong> full evaluated triangle/poly geometry is available in Max 2027.</li>
+<li><strong>Static rest topology:</strong> vertex order and topology are stable during the static fit.</li>
+<li><strong>Transform policy:</strong> shear is absent; nonuniform source scale is baked or explicitly rejected.</li>
+<li><strong>Root authority:</strong> every deforming piece has one accepted root region and a declared growth axis.</li>
+<li><strong>Piece authority:</strong> pieces come from accepted components, root-cut components, or authored IDs.</li>
+<li><strong>Guide authority:</strong> every deforming piece has a valid ordered guide or cage/bone representation.</li>
+<li><strong>Binding coverage:</strong> all deforming vertices have valid influences; no silent nearest-guide fallback across unrelated pieces.</li>
+<li><strong>Segmentation adequacy:</strong> guide/render segmentation can represent the requested curvature.</li>
+<li><strong>Channel preservation:</strong> UVs, material IDs, smoothing, and explicit normals can be copied and validated.</li>
+<li><strong>Revision identity:</strong> source geometry, authoring metadata, and evaluator version are hashed and saved.</li>
+</ol>
+<h3 id="11-2-supported-with-limitations">11.2 Supported with limitations<a aria-label="Link to this section" class="anchor" href="#11-2-supported-with-limitations">#</a></h3>
+<ul>
+<li><strong>Crossed cards:</strong> whole-clump or card-level only; no alpha-silhouette blade semantics.</li>
+<li><strong>Welded clumps:</strong> independent blades only when root-cut partition succeeds.</li>
+<li><strong>Broad leaves:</strong> advanced guide/cage/Skin preparation required.</li>
+<li><strong>Dense scans:</strong> authored deformation proxy required.</li>
+<li><strong>Multiple LODs:</strong> separate preparation per LOD or a verified shared guide mapping.</li>
+</ul>
+<h3 id="11-3-unsupported-in-the-first-contract">11.3 Unsupported in the first contract<a aria-label="Link to this section" class="anchor" href="#11-3-unsupported-in-the-first-contract">#</a></h3>
+<ul>
+<li>opaque renderer proxies with no canonical geometry;</li>
+<li>arbitrary scanned foliage with automatic leaf semantics;</li>
+<li>animated source topology;</li>
+<li>shear or unbaked nonuniform source transforms;</li>
+<li>a component with unresolved branch/piece ambiguity;</li>
+<li>unbound vertices accepted by silent global nearest-neighbor capture;</li>
+<li>exact collision against alpha pixels;</li>
+<li>one source preparation automatically transferred to topologically unrelated replacement geometry.</li>
+</ul>
+<hr/>
+<h2 id="12-asset-audit-checklist">12. Asset-audit checklist<a aria-label="Link to this section" class="anchor" href="#12-asset-audit-checklist">#</a></h2>
+<div class="checklist" id="audit-checklist">
+<h3 id="geometry-access-and-identity">Geometry access and identity<a aria-label="Link to this section" class="anchor" href="#geometry-access-and-identity">#</a></h3>
+<label><input type="checkbox"/> Evaluated full mesh is accessible in Max 2027.</label>
+<label><input type="checkbox"/> Source is not only a renderer preview/bounding box/point cloud.</label>
+<label><input type="checkbox"/> Vertex order and topology are static at the preparation frame.</label>
+<label><input type="checkbox"/> Source stable ID and geometry hash are recorded.</label>
+<label><input type="checkbox"/> Shear is absent; nonuniform scale is baked or rejected.</label>
+<h3 id="topology-and-pieces">Topology and pieces<a aria-label="Link to this section" class="anchor" href="#topology-and-pieces">#</a></h3>
+<label><input type="checkbox"/> Strict connected-component count is recorded.</label>
+<label><input type="checkbox"/> Non-manifold edges, internal holes, and isolated debris are reported.</label>
+<label><input type="checkbox"/> UV/material/normal seams are not treated as piece boundaries by default.</label>
+<label><input type="checkbox"/> Any virtual weld is shown and artist-approved.</label>
+<label><input type="checkbox"/> Welded-base assets have a confirmed root-cut partition or explicit piece IDs.</label>
+<h3 id="roots-and-guides">Roots and guides<a aria-label="Link to this section" class="anchor" href="#roots-and-guides">#</a></h3>
+<label><input type="checkbox"/> Every piece has exactly one accepted root region or declared shared-root policy.</label>
+<label><input type="checkbox"/> Root position and root orientation are represented separately.</label>
+<label><input type="checkbox"/> Local growth axis is declared and previewed.</label>
+<label><input type="checkbox"/> Every guide has stable root-to-tip order.</label>
+<label><input type="checkbox"/> Width direction/twist is defined where the source is ribbon-like.</label>
+<h3 id="bindings-and-deformation-quality">Bindings and deformation quality<a aria-label="Link to this section" class="anchor" href="#bindings-and-deformation-quality">#</a></h3>
+<label><input type="checkbox"/> Every deforming vertex is bound to the correct piece/guide/cage.</label>
+<label><input type="checkbox"/> Maximum influence count and weights are valid.</label>
+<label><input type="checkbox"/> No cross-piece capture occurs near tightly packed blades.</label>
+<label><input type="checkbox"/> Guide and render segmentation are adequate for the intended bend.</label>
+<label><input type="checkbox"/> Root, rest curvature, width, and twist survive a test bend.</label>
+<h3 id="render-channels-and-delivery">Render channels and delivery<a aria-label="Link to this section" class="anchor" href="#render-channels-and-delivery">#</a></h3>
+<label><input type="checkbox"/> UV channels and face mapping are preserved.</label>
+<label><input type="checkbox"/> Face material IDs and smoothing groups are preserved.</label>
+<label><input type="checkbox"/> Explicit-normal policy is selected and validated.</label>
+<label><input type="checkbox"/> Deformed bounds and picking are correct.</label>
+<label><input type="checkbox"/> Viewport, intended renderer, and Bake agree on a two-instance test.</label>
+<h3 id="lifecycle">Lifecycle<a aria-label="Link to this section" class="anchor" href="#lifecycle">#</a></h3>
+<label><input type="checkbox"/> Source edits correctly mark preparation and fits stale.</label>
+<label><input type="checkbox"/> Save/reopen restores preparation identity and bindings.</label>
+<label><input type="checkbox"/> Undo/Redo restores the previous accepted preparation.</label>
+<label><input type="checkbox"/> Missing source/proxy dependencies preserve the previous complete result and show an error.</label>
+<label><input type="checkbox"/> Preparation level and limitations are visible to the artist.</label>
+<div class="check-progress"><strong id="check-count">0 / 30 checks complete</strong><button id="reset-checks" type="button">Reset checklist</button></div>
+</div>
+<h3 id="12-1-suggested-audit-result-states">12.1 Suggested audit result states<a aria-label="Link to this section" class="anchor" href="#12-1-suggested-audit-result-states">#</a></h3>
+<ul>
+<li><strong>Green — Supported:</strong> all required gates pass for the selected level.</li>
+<li><strong>Amber — Supported with limitations:</strong> preparation is valid, but only whole-clump/card-level behavior or a declared proxy/LOD restriction is available.</li>
+<li><strong>Red — Unsupported:</strong> inaccessible geometry, unresolved pieces, invalid bindings, or insufficient segmentation.</li>
+</ul>
+<p>The report should list reasons, not only a color.</p>
+<hr/>
+<h2 id="13-representative-fixtures-and-public-examples">13. Representative fixtures and public examples<a aria-label="Link to this section" class="anchor" href="#13-representative-fixtures-and-public-examples">#</a></h2>
+<h3 id="13-1-public-examples-used-as-method-evidence">13.1 Public examples used as method evidence<a aria-label="Link to this section" class="anchor" href="#13-1-public-examples-used-as-method-evidence">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Public example</th>
+<th>Use in this report</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SideFX Guide Utility / Guide Deform / Point Deform documentation</td>
+<td>Demonstrates explicit roots, capture/deform separation, guide weights, piece restriction, and orientation-aware deformation. <a class="ref-tag" href="#ref-s1">S1</a><a class="ref-tag" href="#ref-s2">S2</a><a class="ref-tag" href="#ref-s3">S3</a></td>
+<td>Hair workflow reference, not a Max/Cyrus implementation.</td>
+</tr>
+<tr>
+<td>CGAL skeletonization <code>elephant.off</code> example</td>
+<td>Demonstrates curve-skeleton output and source-vertex correspondence. <a class="ref-tag" href="#ref-c2">C2</a></td>
+<td>Closed, single-component sample; not proof for open grass.</td>
+</tr>
+<tr>
+<td>Libigl Bounded Biharmonic Weights example</td>
+<td>Demonstrates source-level handle weights and reusable deformation capture. <a class="ref-tag" href="#ref-l1">L1</a></td>
+<td>Character/tet example, not automatic vegetation semantics.</td>
+</tr>
+<tr>
+<td>Libigl Dual Quaternion Skinning example</td>
+<td>Demonstrates rotation blending without linear-blend collapse. <a class="ref-tag" href="#ref-l2">L2</a></td>
+<td>Does not solve guide extraction or collision.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="13-2-proposed-cyrus-audit-fixtures">13.2 Proposed Cyrus audit fixtures<a aria-label="Link to this section" class="anchor" href="#13-2-proposed-cyrus-audit-fixtures">#</a></h3>
+<p>These fixtures should be generated procedurally or stored as internally licensed test assets so their topology is known exactly:</p>
+<ol>
+<li><strong>Ribbon blade:</strong> one triangulated blade with root mask, eight longitudinal rings, UV seam, and explicit normals.</li>
+<li><strong>Disconnected clump:</strong> twelve ribbon blades, one duplicated seam split, one hidden debris component, and one reversed blade.</li>
+<li><strong>Welded-base clump:</strong> eight blades sharing a root disk, with one pair intentionally fused above the root to test ambiguity.</li>
+<li><strong>Crossed cards:</strong> two and three crossed opacity cards with several painted blades per texture.</li>
+<li><strong>Dense scan surrogate:</strong> noisy, holed, multi-component leaf patch plus an authored coarse cage.</li>
+<li><strong>Proxy access fixture:</strong> ordinary mesh, full-geometry proxy if available, and preview-only proxy, all sharing the same nominal source.</li>
+<li><strong>Existing Skin fixture:</strong> broad leaf and stem chain with known weights and DQ setting.</li>
+</ol>
+<p>No benchmark or preparation-time claim is attached to these proposed fixtures.</p>
+<h3 id="13-3-qualification-observations-and-decision-rules">13.3 Qualification observations and decision rules<a aria-label="Link to this section" class="anchor" href="#13-3-qualification-observations-and-decision-rules">#</a></h3>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Observation needed</th>
+<th>Decision rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UV seam duplication</td>
+<td>Strict vs virtual-weld component result</td>
+<td>Virtual weld is acceptable only with unique one-to-one edge matches and unchanged piece semantics.</td>
+</tr>
+<tr>
+<td>Welded base</td>
+<td>Components after root-region removal</td>
+<td>Level 2 accepted only if each upper blade becomes an unambiguous piece or is artist-labelled.</td>
+</tr>
+<tr>
+<td>Card opacity</td>
+<td>Geometry vs visible texture silhouette</td>
+<td>Product language must remain card-level; no individual texture-blade claim.</td>
+</tr>
+<tr>
+<td>Existing Skin import</td>
+<td>Bone/weight parity against original pose</td>
+<td>Import path accepted only if CPU evaluator reproduces reference poses within declared tolerance.</td>
+</tr>
+<tr>
+<td>Two different fitted placements</td>
+<td>Same source, different shapes</td>
+<td>Source remains unchanged; IDs/transforms remain stable; viewport/render/Bake agree.</td>
+</tr>
+<tr>
+<td>Source geometry edit</td>
+<td>Hash and stale-state response</td>
+<td>No old binding may be silently applied to changed topology.</td>
+</tr>
+<tr>
+<td>Proxy audit</td>
+<td>Evaluated geometry compared with render</td>
+<td>Proxy supported only if canonical geometry and channel parity are demonstrated.</td>
+</tr>
+</tbody>
+</table></div>
+<hr/>
+<h2 id="14-proposed-cyrus-product-workflow">14. Proposed Cyrus product workflow<a aria-label="Link to this section" class="anchor" href="#14-proposed-cyrus-product-workflow">#</a></h2>
+<h3 id="14-1-library-preparation">14.1 Library preparation<a aria-label="Link to this section" class="anchor" href="#14-1-library-preparation">#</a></h3>
+<ol>
+<li>Artist selects one vegetation source in the Cyrus source list.</li>
+<li>Cyrus runs <strong>Audit Source</strong> on the host thread and copies an owned geometry snapshot.</li>
+<li>The artist selects a preparation level or accepts the recommended level.</li>
+<li>Cyrus analyzes components, roots, strips, guides, or existing Skin/cage data.</li>
+<li>Cyrus displays piece colors, roots, guides, virtual welds, and ambiguity markers.</li>
+<li>The artist corrects only flagged issues and accepts preparation.</li>
+<li>Cyrus stores the immutable preparation under the source stable ID and hashes.</li>
+<li>Every current and future placement of that source reuses it.</li>
+</ol>
+<h3 id="14-2-scatter-fitting">14.2 Scatter fitting<a aria-label="Link to this section" class="anchor" href="#14-2-scatter-fitting">#</a></h3>
+<p>When interaction Update runs:</p>
+<ul>
+<li>placements keep their stable IDs and source correspondence;</li>
+<li>Cyrus selects affected placements using their prepared reach bounds;</li>
+<li>the fitting stage modifies guide states only;</li>
+<li>the canonical evaluator produces validation and delivery geometry;</li>
+<li>a complete successor is published atomically;</li>
+<li>unaffected placements remain transform instances.</li>
+</ul>
+<h3 id="14-3-what-happens-after-moving-a-stone">14.3 What happens after moving a stone<a aria-label="Link to this section" class="anchor" href="#14-3-what-happens-after-moving-a-stone">#</a></h3>
+<ul>
+<li><strong>Source preparation remains valid</strong> because the vegetation source did not change.</li>
+<li>Only obstacle and affected-placement fit revisions become stale.</li>
+<li>Manual mode keeps the previous complete deformation visible and shows <strong>Pending interaction update</strong>.</li>
+<li>Pressing Update recomputes fitted guide states and derived geometry.</li>
+<li>Live mode coalesces the relevant obstacle change and cancels stale work.</li>
+<li>Camera movement, browsing, selection, and unrelated animation do not recapture the source or rebuild completed geometry.</li>
+</ul>
+<h3 id="14-4-how-source-preparation-failures-appear">14.4 How source-preparation failures appear<a aria-label="Link to this section" class="anchor" href="#14-4-how-source-preparation-failures-appear">#</a></h3>
+<p>Examples:</p>
+<ul>
+<li><code>3 pieces could not be classified as blades.</code></li>
+<li><code>Shared base remains connected above the accepted root region.</code></li>
+<li><code>Opacity card contains no geometric representation of individual blades.</code></li>
+<li><code>24 vertices are unbound after piece-restricted capture.</code></li>
+<li><code>Renderer proxy exposes preview geometry only; supply the original mesh or a supported adapter.</code></li>
+<li><code>Source topology changed; existing preparation is stale and was not applied.</code></li>
+</ul>
+<p>A failure never silently switches to global nearest-guide binding, moves roots, deletes vegetation, or modifies the shared source.</p>
+<hr/>
+<h2 id="15-direct-answers">15. Direct answers<a aria-label="Link to this section" class="anchor" href="#15-direct-answers">#</a></h2>
+<h3 id="can-the-artist-prepare-a-source-once-and-reuse-it-across-thousands-of-placements">Can the artist prepare a source once and reuse it across thousands of placements?<a aria-label="Link to this section" class="anchor" href="#can-the-artist-prepare-a-source-once-and-reuse-it-across-thousands-of-placements">#</a></h3>
+<p><strong>Yes.</strong> The preparation is source-level and immutable; placements reference it and store only fitted guide state or a variant ID. This eliminates per-placement rigging.</p>
+<h3 id="can-cyrus-avoid-manually-rigging-every-blade">Can Cyrus avoid manually rigging every blade?<a aria-label="Link to this section" class="anchor" href="#can-cyrus-avoid-manually-rigging-every-blade">#</a></h3>
+<p><strong>For clean segmented ribbon blades and well-separated clumps, yes.</strong> Connected-component analysis plus strip recognition can generate guides and bindings automatically. Welded-base clumps are often automatable with a confirmed root-cut partition. Arbitrary cards, scans, and proxies are not.</p>
+<h3 id="what-is-the-minimum-useful-preparation-level">What is the minimum useful preparation level?<a aria-label="Link to this section" class="anchor" href="#what-is-the-minimum-useful-preparation-level">#</a></h3>
+<p>Whole-clump deformation is enough for mid/far assets, crossed cards, compact tufts, and broad push-away contact. Independent blades are needed for close grass, narrow gaps, and multiple obstacles. Advanced guides/bones/cages are needed for broad leaves, branching stems, and scans.</p>
+<h3 id="which-preparation-should-be-the-default">Which preparation should be the default?<a aria-label="Link to this section" class="anchor" href="#which-preparation-should-be-the-default">#</a></h3>
+<p>A hybrid audit: import explicit rig data first, then strict components, previewed seam welds, ribbon recognition, and root-cut partition. Anything still ambiguous is shown for correction rather than guessed.</p>
+<h3 id="what-is-the-canonical-deformation-representation">What is the canonical deformation representation?<a aria-label="Link to this section" class="anchor" href="#what-is-the-canonical-deformation-representation">#</a></h3>
+<p>Ordered guides with rest/fitted rotation-minimizing frames, local vertex offsets, up to four influences, a root identity influence, and normalized dual-quaternion blending. The same evaluator supplies CPU reference, viewport, render materialization, and Bake.</p>
+<h3 id="how-should-exact-results-reach-the-production-renderer">How should exact results reach the production renderer?<a aria-label="Link to this section" class="anchor" href="#how-should-exact-results-reach-the-production-renderer">#</a></h3>
+<p>Through standard Max-compatible materialized render geometry first. Compact renderer-specific guide procedures can be added only after the actual intended renderer passes a Max 2027 parity and memory test.</p>
+<h3 id="what-should-be-rejected-from-the-first-version">What should be rejected from the first version?<a aria-label="Link to this section" class="anchor" href="#what-should-be-rejected-from-the-first-version">#</a></h3>
+<p>Automatic semantic decomposition of arbitrary scans, individual-blade recovery from alpha textures, exact deformation of opaque proxies, animated topology, and silent application of stale bindings after source edits.</p>
+<hr/>
+<h2 id="16-reference-map">16. Reference map<a aria-label="Link to this section" class="anchor" href="#16-reference-map">#</a></h2>
+<h3 id="supplied-cyrus-context-and-public-cyrus-source">Supplied Cyrus context and public Cyrus source<a aria-label="Link to this section" class="anchor" href="#supplied-cyrus-context-and-public-cyrus-source">#</a></h3>
+<p class="reference-entry" id="ref-r1"><strong>R1.</strong> Supplied Cyrus vegetation-interaction brief and local architecture summary, 24 October 2026. Used as provided context; not independently verified.<br/>
+<strong>R2.</strong> Cyrus public retained mesh implementation: <code>AminScatter/src/mesh_display.inc</code>. Shared source triangles plus per-instance transforms establish why distinct bends require a new representation.<br/>
+<a class="external-link" href="https://github.com/MehranCyrus/Cyrus-Scatter/blob/main/AminScatter/src/mesh_display.inc" rel="noopener noreferrer" target="_blank">https://github.com/MehranCyrus/Cyrus-Scatter/blob/main/AminScatter/src/mesh_display.inc</a></p>
+<h3 id="sidefx-source-preparation-references">SideFX source-preparation references<a aria-label="Link to this section" class="anchor" href="#sidefx-source-preparation-references">#</a></h3>
+<p class="reference-entry" id="ref-s1"><strong>S1. Guide Utility, Houdini 22.0.</strong> First vertex is root; roots group; skin correspondence.<br/>
+<a class="external-link" href="https://www.sidefx.com/docs/houdini/nodes/sop/guideutility.html" rel="noopener noreferrer" target="_blank">https://www.sidefx.com/docs/houdini/nodes/sop/guideutility.html</a></p>
+<p class="reference-entry" id="ref-s2"><strong>S2. Guide Deform, Houdini 22.0.</strong> Sparse guide interpolation, precomputed guide weights, Point Deform mode, preserve-shape options.<br/>
+<a class="external-link" href="https://www.sidefx.com/docs/houdini/nodes/sop/guidedeform.html" rel="noopener noreferrer" target="_blank">https://www.sidefx.com/docs/houdini/nodes/sop/guidedeform.html</a></p>
+<p class="reference-entry" id="ref-s3"><strong>S3. Point Deform.</strong> Capture/deform split, connected lattice transforms, stable IDs, piece attributes, influence limits.<br/>
+<a class="external-link" href="https://www.sidefx.com/docs/houdini/nodes/sop/pointdeform.html" rel="noopener noreferrer" target="_blank">https://www.sidefx.com/docs/houdini/nodes/sop/pointdeform.html</a></p>
+<p class="reference-entry" id="ref-s4"><strong>S4. Hair Generate 2.0.</strong> Stable guide-based generation, guide weights, uniform-segment optimization, output guide/weight attributes.<br/>
+<a class="external-link" href="https://www.sidefx.com/docs/houdini/nodes/sop/hairgen.html" rel="noopener noreferrer" target="_blank">https://www.sidefx.com/docs/houdini/nodes/sop/hairgen.html</a></p>
+<h3 id="geometry-processing-references">Geometry processing references<a aria-label="Link to this section" class="anchor" href="#geometry-processing-references">#</a></h3>
+<p class="reference-entry" id="ref-c1"><strong>C1. CGAL 6.2 Polygon Mesh Processing — Connected Components.</strong><br/>
+<a class="external-link" href="https://doc.cgal.org/latest/Polygon_mesh_processing/group__PMP__keep__connected__components__grp.html" rel="noopener noreferrer" target="_blank">https://doc.cgal.org/latest/Polygon_mesh_processing/group__PMP__keep__connected__components__grp.html</a></p>
+<p class="reference-entry" id="ref-c2"><strong>C2. CGAL 6.2 Triangulated Surface Mesh Skeletonization.</strong> Borderless single-component requirement and source-vertex correspondence.<br/>
+<a class="external-link" href="https://doc.cgal.org/latest/Surface_mesh_skeletonization/index.html" rel="noopener noreferrer" target="_blank">https://doc.cgal.org/latest/Surface_mesh_skeletonization/index.html</a></p>
+<p class="reference-entry" id="ref-c3"><strong>C3. CGAL 6.2 Triangulated Surface Mesh Segmentation.</strong> Shape Diameter Function and bounded-solid assumptions.<br/>
+<a class="external-link" href="https://doc.cgal.org/latest/Surface_mesh_segmentation/index.html" rel="noopener noreferrer" target="_blank">https://doc.cgal.org/latest/Surface_mesh_segmentation/index.html</a></p>
+<p class="reference-entry" id="ref-l1"><strong>L1. Libigl tutorial — Bounded Biharmonic Weights and Biharmonic Coordinates.</strong><br/>
+<a class="external-link" href="https://libigl.github.io/tutorial/#bounded-biharmonic-weights" rel="noopener noreferrer" target="_blank">https://libigl.github.io/tutorial/#bounded-biharmonic-weights</a></p>
+<p class="reference-entry" id="ref-l2"><strong>L2. Libigl tutorial — Dual Quaternion Skinning.</strong><br/>
+<a class="external-link" href="https://libigl.github.io/tutorial/#dual-quaternion-skinning" rel="noopener noreferrer" target="_blank">https://libigl.github.io/tutorial/#dual-quaternion-skinning</a></p>
+<h3 id="autodesk-3ds-max-2027-sdk-references">Autodesk 3ds Max 2027 SDK references<a aria-label="Link to this section" class="anchor" href="#autodesk-3ds-max-2027-sdk-references">#</a></h3>
+<p class="reference-entry" id="ref-a1"><strong>A1. <code>MaxSDK::Graphics::ICustomRenderItem</code>.</strong> Realize, Display, caching, instanced drawing, and hit testing.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_custom_render_item.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_custom_render_item.html</a></p>
+<p class="reference-entry" id="ref-a2"><strong>A2. <code>GeomObject</code>.</strong> Instance-dependent objects, render mesh delivery, bounds, and hit testing.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_geom_object.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_geom_object.html</a></p>
+<p class="reference-entry" id="ref-a3"><strong>A3. <code>Mesh</code>.</strong> Separate geometry, UV, vertex-color, and render-item channels.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_mesh.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_mesh.html</a></p>
+<p class="reference-entry" id="ref-a4"><strong>A4. <code>MeshNormalSpec</code>.</strong> Explicit per-corner normals and recomputation/transform operations.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_mesh_normal_spec.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_mesh_normal_spec.html</a></p>
+<p class="reference-entry" id="ref-a5"><strong>A5. <code>Face</code>.</strong> Per-face material IDs and smoothing groups.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_face.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_face.html</a></p>
+<p class="reference-entry" id="ref-a6"><strong>A6. <code>MNMesh</code>.</strong> Mapping seams, map channels, vertex data, barycentric utilities, and topology access.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_m_n_mesh.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_m_n_mesh.html</a></p>
+<p class="reference-entry" id="ref-a7"><strong>A7. <code>ISkin</code>.</strong> Bone initial transforms, reference frame, bone list, and DQ setting.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_skin.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_skin.html</a></p>
+<p class="reference-entry" id="ref-a8"><strong>A8. <code>ISkinContextData</code>.</strong> Per-vertex assigned bones and weights.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_skin_context_data.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_skin_context_data.html</a></p>
+<p class="reference-entry" id="ref-a9"><strong>A9. <code>ISkinImportData</code>.</strong> Adding bones and weights.<br/>
+<a class="external-link" href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_skin_import_data.html" rel="noopener noreferrer" target="_blank">https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_skin_import_data.html</a></p>
+<hr/>
+<h2 id="17-final-recommendation">17. Final recommendation<a aria-label="Link to this section" class="anchor" href="#17-final-recommendation">#</a></h2>
+<p>Build the source-preparation system before committing to a large-scale vegetation solver or renderer-specific procedural. The source contract is the dependency that every later approach needs.</p>
+<p>The recommended sequence is:</p>
+<ol>
+<li>implement the audit and immutable preparation data model;</li>
+<li>support Level 1 whole-clump guides/cages;</li>
+<li>add strict components, root-cut partitioning, and ribbon-strip recognition for Level 2;</li>
+<li>import authored curves and Skin data;</li>
+<li>implement the canonical CPU evaluator and Max 2027 materialized delivery;</li>
+<li>qualify the actual production renderer and Bake;</li>
+<li>only then measure compact viewport guide evaluation and reusable variants;</li>
+<li>defer generic scan skeletonization and opaque-proxy deformation until asset evidence justifies them.</li>
+</ol>
+<p>The most valuable product promise is not “any plant bends automatically.” It is:</p>
+<blockquote>
+<p><strong>Prepare supported vegetation once, review any ambiguity once, and reuse the accepted source rig across every stable Scatter placement without modifying the original asset.</strong></p>
+</blockquote>
+
+  <div class="footer-note">Generated as a self-contained HTML research artifact. External references open in a new tab. The audit checklist is stored locally in this browser only.</div>
+</article>
+</main>
+</div>
+<button class="back-top" type="button" aria-label="Back to top">↑</button>
+<script>
+(() => {
+  const tocLinks = [...document.querySelectorAll('.toc a')];
+  const headings = tocLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  const byId = new Map(tocLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const observer = new IntersectionObserver(entries => {
+    const visible = entries.filter(e => e.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (!visible.length) return;
+    tocLinks.forEach(a => a.classList.remove('active'));
+    const active = byId.get(visible[0].target.id);
+    if (active) { active.classList.add('active'); active.scrollIntoView({block:'nearest'}); }
+  }, {rootMargin:'-12% 0px -74% 0px', threshold:[0,1]});
+  headings.forEach(h => observer.observe(h));
+
+  const checklist = document.getElementById('audit-checklist');
+  if (checklist) {
+    const boxes = [...checklist.querySelectorAll('input[type="checkbox"]')];
+    const count = document.getElementById('check-count');
+    const key = 'cyrus-source-prep-audit-v1';
+    const update = () => {
+      boxes.forEach(b => b.closest('label')?.classList.toggle('completed', b.checked));
+      const done = boxes.filter(b => b.checked).length;
+      if (count) count.textContent = `${done} / ${boxes.length} checks complete`;
+      try { localStorage.setItem(key, JSON.stringify(boxes.map(b => b.checked))); } catch (_) {}
+    };
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || '[]');
+      saved.forEach((v,i) => { if (boxes[i]) boxes[i].checked = !!v; });
+    } catch (_) {}
+    boxes.forEach(b => b.addEventListener('change', update));
+    document.getElementById('reset-checks')?.addEventListener('click', () => { boxes.forEach(b => b.checked = false); update(); });
+    update();
+  }
+
+  const top = document.querySelector('.back-top');
+  window.addEventListener('scroll', () => top?.classList.toggle('visible', window.scrollY > 700), {passive:true});
+  top?.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+})();
+</script>
+</body>
+</html>

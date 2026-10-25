@@ -1,0 +1,2128 @@
+{
+  "date": "2026-10-24",
+  "source_id": "R14",
+  "source_sha256": "6548aefec771986929f32c01fb5eb6bbb4aedc2ad13e4b77c381c095884be3fb",
+  "source_bytes": 724160,
+  "read_scope": "Complete 17-section report and 94-entry register; authored native harness, analytic oracle, recorded outputs, build recipe, logs, provenance and reproduction wrapper inspected as data",
+  "extracted_text_characters": 128951,
+  "extracted_text_words": 16839,
+  "extracted_text_lines": 1457,
+  "source_register_namespace": "R14-local P/R/C/U/X labels; not library R01-R14 submission identities",
+  "archive": {
+    "file": "../sources/evidence/R14/Cyrus_Collision_Research_Evidence.zip",
+    "bytes": 362872,
+    "sha256": "30ea86996567c50e07e45b5b6f58e27424547fecce971a4565e3929686148ca8",
+    "crc_outcome": "pass",
+    "member_count": 109,
+    "members": [
+      {
+        "file": "collision_study/harness/probe.cpp",
+        "bytes": 9003,
+        "sha256": "a752f39418a634d22ffa857e8899b6ad2759e4b1a014f8da657af3b6038ac14c"
+      },
+      {
+        "file": "collision_study/harness/CMakeLists.txt",
+        "bytes": 1217,
+        "sha256": "fea4d2ff0a005fdc86ca78a14a5f1c9022055e37b6602b577d08de3c6c83e465"
+      },
+      {
+        "file": "collision_study/harness_results.json",
+        "bytes": 3191,
+        "sha256": "61e1d8deb524e5da556a94df15a016dabccbeb3960be89ff55c6cf3345b73766"
+      },
+      {
+        "file": "collision_study/harness_stderr.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "file": "collision_study/configure.log",
+        "bytes": 403,
+        "sha256": "2ca3c62ddff90d4e1c92d56dd2ee10faeaa00ec192ab15fde887402d285b3989"
+      },
+      {
+        "file": "collision_study/build_harness.log",
+        "bytes": 180,
+        "sha256": "5f9f30d8bdb6fb4648e10462f5e27afcc360bf9db9d2c37805929e95ad0eeeec"
+      },
+      {
+        "file": "collision_study/reproduce.py",
+        "bytes": 2656,
+        "sha256": "8c3f98a1c9f5f00bc5bf6748caa11436aace1b872fee6c00ed76f8d9374416be"
+      },
+      {
+        "file": "collision_study/pin_notes.md",
+        "bytes": 11125,
+        "sha256": "8783ed995e16ab2d767cabdf593eaf9221dc56c8404d8c8dc614851684e97258"
+      },
+      {
+        "file": "collision_study/pin_sources.json",
+        "bytes": 5168,
+        "sha256": "eae2b3f89ba581d3974c0be7621389361f5ea55b26d2010525eb137d92f7419d"
+      },
+      {
+        "file": "collision_study/pin_provenance.json",
+        "bytes": 2840,
+        "sha256": "faf860f63cf2c673a251b6133a19bb5103b81e7f018c9b345e83eef652c2f473"
+      },
+      {
+        "file": "collision_study/rods_notes.md",
+        "bytes": 29396,
+        "sha256": "0de97db6f3de0eadc47422fe655f1b62b3a42ec2a8b4a10f5d1f985834005109"
+      },
+      {
+        "file": "collision_study/rods_sources.json",
+        "bytes": 29468,
+        "sha256": "ce9b838060674af0c7609cec7b642139911d3d6457fbb5236ac30887e03c7ddc"
+      },
+      {
+        "file": "collision_study/shapes_notes.md",
+        "bytes": 24276,
+        "sha256": "8a019980dab0fce4997bc6e1eaff941d7d036e2a665527de0526ff291f6028bf"
+      },
+      {
+        "file": "collision_study/shapes_sources.json",
+        "bytes": 17367,
+        "sha256": "5e677ab689e07a65a2cf76b398f9a957d9d4e980b7bd3587e58d2dc07a38d235"
+      },
+      {
+        "file": "collision_study/infrastructure_sources.json",
+        "bytes": 10776,
+        "sha256": "e61ffb777a33a509070f8678e42981a5337550c44f0ae38c75563ac010ba5178"
+      },
+      {
+        "file": "collision_study/fixture_oracles.py",
+        "bytes": 4918,
+        "sha256": "49f6098b0d38439efc0ee2dcedc5057c04a9c472f47aa4c4609c04a130f58139"
+      },
+      {
+        "file": "collision_study/analytic_results.json",
+        "bytes": 5871,
+        "sha256": "f5950559f3636329c4bef1b8e8625c7be3679eac5b74e819d8d5d4bcf41c917f"
+      },
+      {
+        "file": "collision_study/vendor/pin_commit.json",
+        "bytes": 9640,
+        "sha256": "5b7dc0479b32be7a6d9bb5714cc845639654ac4b3e67570b534f92b7668b8564"
+      },
+      {
+        "file": "collision_study/vendor/tag_ref.json",
+        "bytes": 383,
+        "sha256": "a2655b60f6feaacc67200b7d254590b4f9a274c249683d8d2b6ef97444edd688"
+      },
+      {
+        "file": "collision_study/vendor/compare_tag_pin.json",
+        "bytes": 536095,
+        "sha256": "7ed1b8bdd87e65b735eaa59eb6d33541e7d642a33159c4f6f0492ff02b29d616"
+      },
+      {
+        "file": "collision_study/evidence/P01_excerpt.txt",
+        "bytes": 614,
+        "sha256": "4a6ce8ce544c3c802c36ed1797b4fdab40f2e7954f9aac69b01d50ec8e2144b8"
+      },
+      {
+        "file": "collision_study/evidence/P02_excerpt.txt",
+        "bytes": 8639,
+        "sha256": "92346f0808c304e8409d012561726990102083800a81ce2c3192b660ac5969bb"
+      },
+      {
+        "file": "collision_study/evidence/P06_excerpt.txt",
+        "bytes": 9198,
+        "sha256": "27770bcaa7cb3fa5772ce31b126588c3d9a0e63e2c81d9253c33d0bf51bb010d"
+      },
+      {
+        "file": "collision_study/evidence/P07_excerpt.txt",
+        "bytes": 1989,
+        "sha256": "0c7ee30f3c1dbc9e65eb17ec4ca9ded0f97d748fd1c037841d6195f523744cb6"
+      },
+      {
+        "file": "collision_study/evidence/P08_excerpt.txt",
+        "bytes": 2584,
+        "sha256": "3d71536304d9a336a7c88ca3d60928aac5eeff59f7299bf0e34f04c155f0d6aa"
+      },
+      {
+        "file": "collision_study/evidence/P09_excerpt.txt",
+        "bytes": 3180,
+        "sha256": "1e4ee01ca54d781aad928b8ea7253ebee783e1b217367c57d7e17fa484e51aa4"
+      },
+      {
+        "file": "collision_study/evidence/P10_excerpt.txt",
+        "bytes": 8251,
+        "sha256": "2d187c4f1d42bc3786a64a9419d4eb2ae7139d5e32535b5c972e44f601dc26ff"
+      },
+      {
+        "file": "collision_study/evidence/R01_excerpt.txt",
+        "bytes": 11935,
+        "sha256": "6b92afe2f310cccaf39030d5874536fffe8d9c70d6c6a7cbe09c7a8ec25f847f"
+      },
+      {
+        "file": "collision_study/evidence/R02_excerpt.txt",
+        "bytes": 18993,
+        "sha256": "00779a1749f8f183b7d6ca079527f5d9215af65629a846bf892688eded71c7a5"
+      },
+      {
+        "file": "collision_study/evidence/R03_excerpt.txt",
+        "bytes": 5286,
+        "sha256": "da03a5cade42d15d35f3bc1265b52a3f00d92d9584ef4b45c82b51197c21a925"
+      },
+      {
+        "file": "collision_study/evidence/R04_excerpt.txt",
+        "bytes": 4409,
+        "sha256": "5f121b873305d69d6cda60ab64303b16f6bd650bc5d73d08ca55a5e40f18f397"
+      },
+      {
+        "file": "collision_study/evidence/R05_excerpt.txt",
+        "bytes": 7575,
+        "sha256": "97ed3cc352221bec444cebdb00f5f567607153b4455f26782be78fa39b4c1187"
+      },
+      {
+        "file": "collision_study/evidence/R06_excerpt.txt",
+        "bytes": 15549,
+        "sha256": "250898485ad1550f738594e0b4b7831e15de16e4480731c0e6563739598304f7"
+      },
+      {
+        "file": "collision_study/evidence/R07_excerpt.txt",
+        "bytes": 25451,
+        "sha256": "815b9c2d8c4281ed845c5e7a593ecce0f499b648582ee6d8a5f8c1b1b3e66b7a"
+      },
+      {
+        "file": "collision_study/evidence/R08_excerpt.txt",
+        "bytes": 8712,
+        "sha256": "8d78b557c0571e42ed06241df4673399fa9cc127daab7c49b70e8f6e0d1ad953"
+      },
+      {
+        "file": "collision_study/evidence/R09_excerpt.txt",
+        "bytes": 2393,
+        "sha256": "ea2607e4f6751d5d9de6aa94a8b8db303b820c77278b40aaab4d0d9ab0fd6248"
+      },
+      {
+        "file": "collision_study/evidence/R10_excerpt.txt",
+        "bytes": 3920,
+        "sha256": "5feabe910ef5e5c78f734f823583d36ffc866d0105980fd134f0ddb1e07dd622"
+      },
+      {
+        "file": "collision_study/evidence/R11_excerpt.txt",
+        "bytes": 3360,
+        "sha256": "96e024df37719c250afc35570ea8cda6e08713bcc77e90bdf0d01e2eebcbc36b"
+      },
+      {
+        "file": "collision_study/evidence/R12_excerpt.txt",
+        "bytes": 3907,
+        "sha256": "98ecc5ba5ecaf5281e12787ecfb8b53b87fafe4e66584544d2e40f6d61ee8361"
+      },
+      {
+        "file": "collision_study/evidence/R13_excerpt.txt",
+        "bytes": 10135,
+        "sha256": "89b3a48d91cf2728678fe7f825a00b1bcaeda27c602578d871ad3fae4b4bdd80"
+      },
+      {
+        "file": "collision_study/evidence/R14_excerpt.txt",
+        "bytes": 65691,
+        "sha256": "8cb2e4ae818312c5badebf1cd98fa8005ec9d2c9a72c9dfe83b001ae48e59842"
+      },
+      {
+        "file": "collision_study/evidence/R15_excerpt.txt",
+        "bytes": 3265,
+        "sha256": "e5b6e07f1bb1191edbe5e40e8c369967dc28211f9e7a4aab4bc26e26cd24db74"
+      },
+      {
+        "file": "collision_study/evidence/R16_excerpt.txt",
+        "bytes": 3621,
+        "sha256": "09befef2d5c4cc04463dc060a8b78e165721ad969c7a3ed81afe2bcbc8393c24"
+      },
+      {
+        "file": "collision_study/evidence/R17_excerpt.txt",
+        "bytes": 2655,
+        "sha256": "903d1b80a3df9973d0b142ee6d7459305ba12aff25019e4bd833c5db212488aa"
+      },
+      {
+        "file": "collision_study/evidence/R18_excerpt.txt",
+        "bytes": 7396,
+        "sha256": "08db14d9d97685dc38545d5ad1ba044783474092778a4a229563f8e16d7c1665"
+      },
+      {
+        "file": "collision_study/evidence/R19_excerpt.txt",
+        "bytes": 6231,
+        "sha256": "9c9f290c926d444c829118793ff3bbc58dec94242aa486b37f218f1df5be66a6"
+      },
+      {
+        "file": "collision_study/evidence/R20_excerpt.txt",
+        "bytes": 5692,
+        "sha256": "36bf3df41663957cfacf37db1b279716cb3a5af314e73349761a2be93613437a"
+      },
+      {
+        "file": "collision_study/evidence/R21_excerpt.txt",
+        "bytes": 4320,
+        "sha256": "7cb6eeae88d636258ff6a03a5f590fe22504a46cee991b5c275f599b52c476bf"
+      },
+      {
+        "file": "collision_study/evidence/R22_excerpt.txt",
+        "bytes": 3034,
+        "sha256": "b065768c6da2fcf63d8e6fa0f98acd807f5f1f2f127c4a0a5c91994f4ded3eff"
+      },
+      {
+        "file": "collision_study/evidence/R23_excerpt.txt",
+        "bytes": 1512,
+        "sha256": "2680e26daa516cd01da742e35c4d33b171390fbee8991d472cd40dc657113aab"
+      },
+      {
+        "file": "collision_study/evidence/R24_excerpt.txt",
+        "bytes": 2231,
+        "sha256": "b00cea9f2ac1616a09fef687b908333b178e75d6c9235f5449b5ae9ee55e684c"
+      },
+      {
+        "file": "collision_study/evidence/R25_excerpt.txt",
+        "bytes": 8793,
+        "sha256": "1d97dbdc0a62034732c86bdc028d83169069a3a21b109ba807bc4e5d448e3d29"
+      },
+      {
+        "file": "collision_study/evidence/R26_excerpt.txt",
+        "bytes": 6204,
+        "sha256": "33ed26f4929bff7db70a2c391e5b2bc8d9e82db0bc4afb25f1dd92717b0058e2"
+      },
+      {
+        "file": "collision_study/evidence/R27_excerpt.txt",
+        "bytes": 981,
+        "sha256": "f65eb19da1bb4448d5701d630ae7bb247edcfa2a2de67d9bc82f9101ce8ea6f7"
+      },
+      {
+        "file": "collision_study/evidence/R28_excerpt.txt",
+        "bytes": 2672,
+        "sha256": "5dcc48382a5a74b0dd157f594766a7a5425de42b6cb688fa0b8539b32f010096"
+      },
+      {
+        "file": "collision_study/evidence/R29_excerpt.txt",
+        "bytes": 9624,
+        "sha256": "005191a773fbf2f229fb1f0c3c740879fdd1874330d873e3371e46b2e1bbaf3b"
+      },
+      {
+        "file": "collision_study/evidence/R30_excerpt.txt",
+        "bytes": 1980,
+        "sha256": "cbef61b4762018776014ef53b8675b5786de318f70586a17de4eea9eba3e1df3"
+      },
+      {
+        "file": "collision_study/evidence/R31_excerpt.txt",
+        "bytes": 1274,
+        "sha256": "d94e358bd0f7e3b66a6f52a58757ba627d13a90b20f1b781a187486c09e98316"
+      },
+      {
+        "file": "collision_study/evidence/R32_excerpt.txt",
+        "bytes": 4240,
+        "sha256": "8a51b55a171f192c7a80706223a105a727ad02918e4c1377b4d9ebb2c326e522"
+      },
+      {
+        "file": "collision_study/evidence/R33_excerpt.txt",
+        "bytes": 2115,
+        "sha256": "4272b77e02d51dd797dc6ce6a5445bac15829473118c24389116e671699ca254"
+      },
+      {
+        "file": "collision_study/evidence/C01_excerpt.txt",
+        "bytes": 14146,
+        "sha256": "d0c845c576d3f3e8104d0e1c19e0725d466b4b8e9ed0161a4354698030cebdc1"
+      },
+      {
+        "file": "collision_study/evidence/C02_excerpt.txt",
+        "bytes": 6024,
+        "sha256": "96a0b886150c94b30fd09d91f5a5953c4a325c846bd2890689588bee05a7d3c6"
+      },
+      {
+        "file": "collision_study/evidence/C03_excerpt.txt",
+        "bytes": 3887,
+        "sha256": "1ff6496358a17cbae9fc2806e471aea03f1c1f81e84a80a75577e331bd6e8b94"
+      },
+      {
+        "file": "collision_study/evidence/C04_excerpt.txt",
+        "bytes": 5239,
+        "sha256": "0570239597b3053eef6e7937aa88e0b2a1f4f044097ea79146492f4f4e6fb0bb"
+      },
+      {
+        "file": "collision_study/evidence/C05_excerpt.txt",
+        "bytes": 2707,
+        "sha256": "7d30deb0c2aa9b2bd722b86d5514d7bfb831ce7bcc4f1385f6352b488d162a61"
+      },
+      {
+        "file": "collision_study/evidence/C06_excerpt.txt",
+        "bytes": 6002,
+        "sha256": "a2cd11ad937f296bc05557c0dd5bb5d12c6e1ac99411aeb3331769344c2eaae4"
+      },
+      {
+        "file": "collision_study/evidence/C07_excerpt.txt",
+        "bytes": 1940,
+        "sha256": "096dc93ba2b3dceae18b920f29e7aacc0296be96a0e3f864d9ad7214a649fb47"
+      },
+      {
+        "file": "collision_study/evidence/C08_excerpt.txt",
+        "bytes": 4964,
+        "sha256": "4dc96dc78d2ce5a26adc80dec568db17e11ef39e5cbc5c14575676c84e93e2ac"
+      },
+      {
+        "file": "collision_study/evidence/C09_excerpt.txt",
+        "bytes": 2595,
+        "sha256": "1edff08807aa42c6c83a5e122d3100d14292bad4852022165496a0d189764e0d"
+      },
+      {
+        "file": "collision_study/evidence/C10_excerpt.txt",
+        "bytes": 6406,
+        "sha256": "93fd7aec470bbf422703078d0e2077ed48f87011660de75a4b129a02225354a3"
+      },
+      {
+        "file": "collision_study/evidence/C11_excerpt.txt",
+        "bytes": 6204,
+        "sha256": "eca5546800549c7b09329d28236b3509da14c3cbdc8672ef9047fe42a0acd533"
+      },
+      {
+        "file": "collision_study/evidence/C12_excerpt.txt",
+        "bytes": 5860,
+        "sha256": "9a11bb1454db4f9f81e9195894843137f306c77c291ac36565288cc99ad4f682"
+      },
+      {
+        "file": "collision_study/evidence/C13_excerpt.txt",
+        "bytes": 5956,
+        "sha256": "0dc5755a9da76fb93df2863e285b8e53cc4c7a19c92561b2eaeeca9f448fe507"
+      },
+      {
+        "file": "collision_study/evidence/C14_excerpt.txt",
+        "bytes": 10088,
+        "sha256": "265fe7f5d514614f9e48795d443976a0ca2f5d4fb28124cae38254a2ab26d7f0"
+      },
+      {
+        "file": "collision_study/evidence/C15_excerpt.txt",
+        "bytes": 8476,
+        "sha256": "cd918b2fb698a35b8f452dcb1f14245fd283cd29fa17f270211c1e99802f77f3"
+      },
+      {
+        "file": "collision_study/evidence/C16_excerpt.txt",
+        "bytes": 2244,
+        "sha256": "d73157bf98a9c5e8465665b23658985c2f11320a0ba786ddd3cc2452c2e6e69b"
+      },
+      {
+        "file": "collision_study/evidence/C17_excerpt.txt",
+        "bytes": 1353,
+        "sha256": "ed09064e6ad494bfd328730336515cfb976755daf5ceb6668290c4af6ce1d430"
+      },
+      {
+        "file": "collision_study/evidence/C18_excerpt.txt",
+        "bytes": 11062,
+        "sha256": "b7d144f96db65a9d42053b07f4ad9cf4fca5f106f77827f2097c422f522cd247"
+      },
+      {
+        "file": "collision_study/evidence/C19_excerpt.txt",
+        "bytes": 1740,
+        "sha256": "6056852734b116646a2eedf169c8e0c3871537bd8e491522b80b484f80eca08d"
+      },
+      {
+        "file": "collision_study/evidence/C20_excerpt.txt",
+        "bytes": 3621,
+        "sha256": "6d969ee7b3729f5fe1e858fc3f246d95875176c99377a24a94684259f6f1918d"
+      },
+      {
+        "file": "collision_study/evidence/C21_excerpt.txt",
+        "bytes": 3855,
+        "sha256": "44aba1a4e64b6ff66cee995c983c8ad21e42896ff1a73f0508d5e7c9cd55c25f"
+      },
+      {
+        "file": "collision_study/evidence/C22_excerpt.txt",
+        "bytes": 2415,
+        "sha256": "f62eda0f2d8aa089762dd51e7cc650afc995e7302fbfd0f5ae3387158916ab99"
+      },
+      {
+        "file": "collision_study/evidence/C23_excerpt.txt",
+        "bytes": 2943,
+        "sha256": "5449626f6c9750c03637eeeb02832a905b46a7661f128e041f273f40c30cbf10"
+      },
+      {
+        "file": "collision_study/evidence/C24_excerpt.txt",
+        "bytes": 2530,
+        "sha256": "5608b55a9cfb3bd4bbf6381481d405eef222190f0fa8086eb2d8c91d4f7e5cbe"
+      },
+      {
+        "file": "collision_study/evidence/C25_excerpt.txt",
+        "bytes": 4961,
+        "sha256": "8febd2eedcedffe3b17d3bbc73fb1db4f52b7332951d8a4be68f447530e5a298"
+      },
+      {
+        "file": "collision_study/evidence/C26_excerpt.txt",
+        "bytes": 1823,
+        "sha256": "e6ccb696991653cc337480faf32f72302b2fd0b229f4af47588e1c5cbef16c70"
+      },
+      {
+        "file": "collision_study/evidence/C27_excerpt.txt",
+        "bytes": 2158,
+        "sha256": "7780a022af7df32e079085ac0ccbb8e0169ed2f90fdffa1348f178abfacbee77"
+      },
+      {
+        "file": "collision_study/evidence/C28_excerpt.txt",
+        "bytes": 1195,
+        "sha256": "5d3be11e3de28d8d99d6cd2e2afbb54ff90d7230918c183c251b5bb835876072"
+      },
+      {
+        "file": "collision_study/evidence/C29_excerpt.txt",
+        "bytes": 1481,
+        "sha256": "56af68519a510c12318a862015206d38ffb1da5ece7ba24843ef1e912f8c14cb"
+      },
+      {
+        "file": "collision_study/evidence/C30_excerpt.txt",
+        "bytes": 9688,
+        "sha256": "def5c99810c4045ff3183eb755c000bc16d7f11ee8d6a6483ed93c4b9b32898c"
+      },
+      {
+        "file": "collision_study/evidence/C31_excerpt.txt",
+        "bytes": 1980,
+        "sha256": "66e75db3a1ccf98cac5e3e1b35340a3164ddc76ee608ea3ff61f0eaa92bb4088"
+      },
+      {
+        "file": "collision_study/evidence/U01_excerpt.txt",
+        "bytes": 12033,
+        "sha256": "28cf10c4ae8c1b0cd54fef695a31761d8072e50594c42e159f56a08b0cda5ae1"
+      },
+      {
+        "file": "collision_study/evidence/U02_excerpt.txt",
+        "bytes": 2931,
+        "sha256": "4c441083fccef12dd6f28dddc4ca3ed99ec7c81a919095f05729556c53e7ce33"
+      },
+      {
+        "file": "collision_study/evidence/U03_excerpt.txt",
+        "bytes": 1362,
+        "sha256": "624dfffb5ffd5250b192cfa7850a4a818b3b0f4001fcc28590d84d92ee63e8cd"
+      },
+      {
+        "file": "collision_study/evidence/U04_excerpt.txt",
+        "bytes": 1586,
+        "sha256": "172bb0d55b4f593ee211360a2025d4c2607bd393e6c6a52c5a3d484c8ff74dfd"
+      },
+      {
+        "file": "collision_study/evidence/U05_excerpt.txt",
+        "bytes": 5091,
+        "sha256": "ee03595f40a36a288870e5d424d91806d28c0a4da780ee7b7633bf2cf9c3dc55"
+      },
+      {
+        "file": "collision_study/evidence/U06_excerpt.txt",
+        "bytes": 2309,
+        "sha256": "2da7c2967a7d0176698f81f89849b4d71f3ed9d83c8a16309e8387d159a09b4a"
+      },
+      {
+        "file": "collision_study/evidence/U07_excerpt.txt",
+        "bytes": 1896,
+        "sha256": "5cf9c6f2427ccaeca30b1075a85be46f5fff12c6143ded8cd2f97a0795d6ac17"
+      },
+      {
+        "file": "collision_study/evidence/U08_excerpt.txt",
+        "bytes": 2917,
+        "sha256": "a4f4891bdbcd210ea8c70d67339d7db351849234f639165cfc7f66a3fb74a35b"
+      },
+      {
+        "file": "collision_study/evidence/U09_excerpt.txt",
+        "bytes": 2000,
+        "sha256": "fe1caa08054810c58c02c8ab643d418b6947e5b80c151a2c89b22f07f26f8c4d"
+      },
+      {
+        "file": "collision_study/evidence/U10_excerpt.txt",
+        "bytes": 6204,
+        "sha256": "0047ac129f1b333deb12078231e94cc4cb5d4df958a20adc858d7af11b83061c"
+      },
+      {
+        "file": "collision_study/evidence/U11_excerpt.txt",
+        "bytes": 6767,
+        "sha256": "a2d50c08fbebac6a3b3ad571cdf85a1272abf2a7ec2f3bb759715483cbe9d4f8"
+      },
+      {
+        "file": "collision_study/evidence/U12_excerpt.txt",
+        "bytes": 1673,
+        "sha256": "0b5309d964d46222a0e5591d083f70f6e749c913b97d95125420fd949ba56990"
+      },
+      {
+        "file": "collision_study/evidence/U13_excerpt.txt",
+        "bytes": 3646,
+        "sha256": "03a367051d9612f68c2502f5f0cfe739b7f43a0584b8b9d7af19009f0ecda993"
+      },
+      {
+        "file": "collision_study/evidence/U14_excerpt.txt",
+        "bytes": 9101,
+        "sha256": "75bcfebb608249259d5380e742823df84b9c7923adabf8150bb527cfba5084be"
+      },
+      {
+        "file": "collision_study/evidence/U15_excerpt.txt",
+        "bytes": 4857,
+        "sha256": "2af9fc3edf5d9d49c92d4b3144d7eb146636fa3fd00ff4090e2b0878fdc4de6d"
+      },
+      {
+        "file": "collision_study/evidence/source_register.json",
+        "bytes": 75938,
+        "sha256": "2ded56769d485fb7e8f859a2923ecf48d919ba48434ac02e208b6a68098a0de7"
+      },
+      {
+        "file": "collision_study/evidence/Jolt_LICENSE.txt",
+        "bytes": 1052,
+        "sha256": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3"
+      },
+      {
+        "file": "README.txt",
+        "bytes": 708,
+        "sha256": "bcc19658d4c3d547d7e12acc4e0922927f6cc8c8c6a8a02dd068a10973366e28"
+      }
+    ]
+  },
+  "consistency_checks": {
+    "source_register_entries": 94,
+    "unique_local_source_files": 49,
+    "source_ranges": 86,
+    "ranges_within_local_files": 86,
+    "source_hash_matches": 49,
+    "non_file_hash_records": [
+      "P03",
+      "P04",
+      "P05",
+      "P11",
+      "P12",
+      "U16",
+      "X01",
+      "X02"
+    ],
+    "source_mismatches": [],
+    "declared_artifact_checks": [
+      {
+        "file": "harness/CMakeLists.txt",
+        "bytes": 1217,
+        "expected_sha256": "fea4d2ff0a005fdc86ca78a14a5f1c9022055e37b6602b577d08de3c6c83e465",
+        "matches": true
+      },
+      {
+        "file": "harness/probe.cpp",
+        "bytes": 9003,
+        "expected_sha256": "a752f39418a634d22ffa857e8899b6ad2759e4b1a014f8da657af3b6038ac14c",
+        "matches": true
+      },
+      {
+        "file": "harness_results.json",
+        "bytes": 3191,
+        "expected_sha256": "61e1d8deb524e5da556a94df15a016dabccbeb3960be89ff55c6cf3345b73766",
+        "matches": true
+      },
+      {
+        "file": "configure.log",
+        "bytes": 403,
+        "expected_sha256": "2ca3c62ddff90d4e1c92d56dd2ee10faeaa00ec192ab15fde887402d285b3989",
+        "matches": true
+      },
+      {
+        "file": "build_harness.log",
+        "bytes": 180,
+        "expected_sha256": "5f9f30d8bdb6fb4648e10462f5e27afcc360bf9db9d2c37805929e95ad0eeeec",
+        "matches": true
+      },
+      {
+        "file": "reproduce.py",
+        "bytes": 2656,
+        "expected_sha256": "8c3f98a1c9f5f00bc5bf6748caa11436aace1b872fee6c00ed76f8d9374416be",
+        "matches": true
+      }
+    ],
+    "native_records": 7,
+    "native_dynamic_records": 5,
+    "reported_analytic_fixture_count": 9,
+    "reported_analytic_checks": 15,
+    "stored_analytic_checks_all_true": true,
+    "reported_compare": {
+      "ahead_by": 62,
+      "total_changed_files_in_record": 78,
+      "changed_under_Jolt": 47
+    }
+  },
+  "local_source_review": {
+    "files": [
+      {
+        "path": "Jolt/Core/Core.h",
+        "expected_sha256": "8dd35545f20ec75b4dd7730502a8dd646c1292f50d0ce8ad410ee56655058a5a",
+        "local_sha256": "8dd35545f20ec75b4dd7730502a8dd646c1292f50d0ce8ad410ee56655058a5a",
+        "local_lf_sha256": "8dd35545f20ec75b4dd7730502a8dd646c1292f50d0ce8ad410ee56655058a5a",
+        "matches": true
+      },
+      {
+        "path": "Build/CMakeLists.txt",
+        "expected_sha256": "53aaddf57cfa007ddf449c6cc3ad2bd9518f66334e9dd24482f5e8158de5601f",
+        "local_sha256": "53aaddf57cfa007ddf449c6cc3ad2bd9518f66334e9dd24482f5e8158de5601f",
+        "local_lf_sha256": "53aaddf57cfa007ddf449c6cc3ad2bd9518f66334e9dd24482f5e8158de5601f",
+        "matches": true
+      },
+      {
+        "path": "Docs/ReleaseNotes.md",
+        "expected_sha256": "ae4fd2a6ed85057e3f980e1f36bdc39498382d6eb7e8e6073e7eb178e983d24e",
+        "local_sha256": "ae4fd2a6ed85057e3f980e1f36bdc39498382d6eb7e8e6073e7eb178e983d24e",
+        "local_lf_sha256": "ae4fd2a6ed85057e3f980e1f36bdc39498382d6eb7e8e6073e7eb178e983d24e",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/Shape.cpp",
+        "expected_sha256": "fc0c1c2eb8198d9dde430d55d8ccf0e7c994411a5a312036378a460028cae051",
+        "local_sha256": "fc0c1c2eb8198d9dde430d55d8ccf0e7c994411a5a312036378a460028cae051",
+        "local_lf_sha256": "fc0c1c2eb8198d9dde430d55d8ccf0e7c994411a5a312036378a460028cae051",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+        "expected_sha256": "75e579649b8087ca4c06925869f3281d82cff3a384bfc8a79649d52885ea4697",
+        "local_sha256": "75e579649b8087ca4c06925869f3281d82cff3a384bfc8a79649d52885ea4697",
+        "local_lf_sha256": "75e579649b8087ca4c06925869f3281d82cff3a384bfc8a79649d52885ea4697",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/MeshShape.cpp",
+        "expected_sha256": "6f2ac4774d069e436b05ac2fbf8362b4d99421bd070e33abd64c4df1b550c10b",
+        "local_sha256": "6f2ac4774d069e436b05ac2fbf8362b4d99421bd070e33abd64c4df1b550c10b",
+        "local_lf_sha256": "6f2ac4774d069e436b05ac2fbf8362b4d99421bd070e33abd64c4df1b550c10b",
+        "matches": true
+      },
+      {
+        "path": "Samples/Tests/SoftBody/SoftBodyCosseratRodConstraintTest.cpp",
+        "expected_sha256": "79325e5de58cd0babd4f744e53a1f9d8b602b033336ef2dc221d7770fbdf606b",
+        "local_sha256": "79325e5de58cd0babd4f744e53a1f9d8b602b033336ef2dc221d7770fbdf606b",
+        "local_lf_sha256": "79325e5de58cd0babd4f744e53a1f9d8b602b033336ef2dc221d7770fbdf606b",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodySharedSettings.h",
+        "expected_sha256": "7b5074c9ba88463d2f017433478df597c4350062a9db206a61b9d6f75a8f6146",
+        "local_sha256": "7b5074c9ba88463d2f017433478df597c4350062a9db206a61b9d6f75a8f6146",
+        "local_lf_sha256": "7b5074c9ba88463d2f017433478df597c4350062a9db206a61b9d6f75a8f6146",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodySharedSettings.cpp",
+        "expected_sha256": "720afd1a6915883e9a5cc4b2748f2dbd00dbc75c894ea1e34e7ff8dbb7c41cb9",
+        "local_sha256": "720afd1a6915883e9a5cc4b2748f2dbd00dbc75c894ea1e34e7ff8dbb7c41cb9",
+        "local_lf_sha256": "720afd1a6915883e9a5cc4b2748f2dbd00dbc75c894ea1e34e7ff8dbb7c41cb9",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodyVertex.h",
+        "expected_sha256": "d3a74919fcaa83b8bb9c515e9b9a8a0c81300c302ae2db8ac8ddb872690e1d91",
+        "local_sha256": "d3a74919fcaa83b8bb9c515e9b9a8a0c81300c302ae2db8ac8ddb872690e1d91",
+        "local_lf_sha256": "d3a74919fcaa83b8bb9c515e9b9a8a0c81300c302ae2db8ac8ddb872690e1d91",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodyContactListener.h",
+        "expected_sha256": "a9f8b02f3cad01e6861793a81471666c82ba507b7c71f0a06c90161f8190e9a7",
+        "local_sha256": "a9f8b02f3cad01e6861793a81471666c82ba507b7c71f0a06c90161f8190e9a7",
+        "local_lf_sha256": "a9f8b02f3cad01e6861793a81471666c82ba507b7c71f0a06c90161f8190e9a7",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodyManifold.h",
+        "expected_sha256": "42248f5b0cc4aa44d3b9feee23dd79c9899914c8357132e7d47db8c29b43672b",
+        "local_sha256": "42248f5b0cc4aa44d3b9feee23dd79c9899914c8357132e7d47db8c29b43672b",
+        "local_lf_sha256": "42248f5b0cc4aa44d3b9feee23dd79c9899914c8357132e7d47db8c29b43672b",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodyCreationSettings.h",
+        "expected_sha256": "87a128c71016deefb053d52c77950bc3d3cb655ce17b8c11f932f5f17dd6af6d",
+        "local_sha256": "87a128c71016deefb053d52c77950bc3d3cb655ce17b8c11f932f5f17dd6af6d",
+        "local_lf_sha256": "87a128c71016deefb053d52c77950bc3d3cb655ce17b8c11f932f5f17dd6af6d",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.h",
+        "expected_sha256": "d2251c0f45caa50453194fe111737b0c4e5b5aca63aefe76e7ab572954f45dd2",
+        "local_sha256": "d2251c0f45caa50453194fe111737b0c4e5b5aca63aefe76e7ab572954f45dd2",
+        "local_lf_sha256": "d2251c0f45caa50453194fe111737b0c4e5b5aca63aefe76e7ab572954f45dd2",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Body/Body.cpp",
+        "expected_sha256": "efc180941e7a7138f404faf29edcffce5d9dfd535e54a92781c36e577e8417ab",
+        "local_sha256": "efc180941e7a7138f404faf29edcffce5d9dfd535e54a92781c36e577e8417ab",
+        "local_lf_sha256": "efc180941e7a7138f404faf29edcffce5d9dfd535e54a92781c36e577e8417ab",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/CollideSoftBodyVerticesVsTriangles.h",
+        "expected_sha256": "15838aef09889e494a837a299569e16370995b9c63ff37d7e448a433a84f29bb",
+        "local_sha256": "15838aef09889e494a837a299569e16370995b9c63ff37d7e448a433a84f29bb",
+        "local_lf_sha256": "15838aef09889e494a837a299569e16370995b9c63ff37d7e448a433a84f29bb",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/BoxShape.cpp",
+        "expected_sha256": "90f3ce3a1522b9d4886184757a8694bb05ebe41161cb7a4d4515ca91a48bbfdc",
+        "local_sha256": "90f3ce3a1522b9d4886184757a8694bb05ebe41161cb7a4d4515ca91a48bbfdc",
+        "local_lf_sha256": "90f3ce3a1522b9d4886184757a8694bb05ebe41161cb7a4d4515ca91a48bbfdc",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Hair/Hair.h",
+        "expected_sha256": "f159a3a1f68d6b130da2bb1b96fef8f44904d6bfeb51a3f5844354c62ccb2cfb",
+        "local_sha256": "f159a3a1f68d6b130da2bb1b96fef8f44904d6bfeb51a3f5844354c62ccb2cfb",
+        "local_lf_sha256": "f159a3a1f68d6b130da2bb1b96fef8f44904d6bfeb51a3f5844354c62ccb2cfb",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Hair/HairSettings.h",
+        "expected_sha256": "7183c1f5166cb04587ee42c168822b40d573b3d3271ac79567f0eb9f70706b4c",
+        "local_sha256": "7183c1f5166cb04587ee42c168822b40d573b3d3271ac79567f0eb9f70706b4c",
+        "local_lf_sha256": "7183c1f5166cb04587ee42c168822b40d573b3d3271ac79567f0eb9f70706b4c",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Hair/Hair.cpp",
+        "expected_sha256": "feff13fa73c64db5fedb80fe69aa838b527cb74b011b7ec015e72dbee4748639",
+        "local_sha256": "feff13fa73c64db5fedb80fe69aa838b527cb74b011b7ec015e72dbee4748639",
+        "local_lf_sha256": "feff13fa73c64db5fedb80fe69aa838b527cb74b011b7ec015e72dbee4748639",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Shaders/HairCalculateCollisionPlanes.hlsl",
+        "expected_sha256": "d194409f6e6a216bde7f3a110fe4cd2d30b321de0531a64405495e6986d9d89a",
+        "local_sha256": "d194409f6e6a216bde7f3a110fe4cd2d30b321de0531a64405495e6986d9d89a",
+        "local_lf_sha256": "d194409f6e6a216bde7f3a110fe4cd2d30b321de0531a64405495e6986d9d89a",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Shaders/HairUpdateVelocity.h",
+        "expected_sha256": "123d7ab88d6e23176ac22770b3178a537eb434f52547a616b0744f9d326f035f",
+        "local_sha256": "123d7ab88d6e23176ac22770b3178a537eb434f52547a616b0744f9d326f035f",
+        "local_lf_sha256": "123d7ab88d6e23176ac22770b3178a537eb434f52547a616b0744f9d326f035f",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Shaders/HairUpdateRoots.hlsl",
+        "expected_sha256": "1dd50557a0162061dc50186dac9896fdd34944b4a2245d953281e35c0d393709",
+        "local_sha256": "1dd50557a0162061dc50186dac9896fdd34944b4a2245d953281e35c0d393709",
+        "local_lf_sha256": "1dd50557a0162061dc50186dac9896fdd34944b4a2245d953281e35c0d393709",
+        "matches": true
+      },
+      {
+        "path": "Samples/Tests/Constraints/PointConstraintTest.cpp",
+        "expected_sha256": "45fb09c471833e7205d31fc52384db6efcf240731022f6f3b838161503ea584d",
+        "local_sha256": "45fb09c471833e7205d31fc52384db6efcf240731022f6f3b838161503ea584d",
+        "local_lf_sha256": "45fb09c471833e7205d31fc52384db6efcf240731022f6f3b838161503ea584d",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Constraints/SwingTwistConstraint.h",
+        "expected_sha256": "7f60699f89b02b971613063680138b55189c6172cf224a819bdc117d824be1ce",
+        "local_sha256": "7f60699f89b02b971613063680138b55189c6172cf224a819bdc117d824be1ce",
+        "local_lf_sha256": "7f60699f89b02b971613063680138b55189c6172cf224a819bdc117d824be1ce",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/NarrowPhaseQuery.h",
+        "expected_sha256": "548e528119a50e5723291274f1735bb57065464d455cf4a4d7df30f4e96d6dfc",
+        "local_sha256": "548e528119a50e5723291274f1735bb57065464d455cf4a4d7df30f4e96d6dfc",
+        "local_lf_sha256": "548e528119a50e5723291274f1735bb57065464d455cf4a4d7df30f4e96d6dfc",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/PhysicsSystem.h",
+        "expected_sha256": "fcb6f9500c59535c86d8823c4b9f31863e272df5d4646e33e4d745d171986bd4",
+        "local_sha256": "fcb6f9500c59535c86d8823c4b9f31863e272df5d4646e33e4d745d171986bd4",
+        "local_lf_sha256": "fcb6f9500c59535c86d8823c4b9f31863e272df5d4646e33e4d745d171986bd4",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/PhysicsSystem.cpp",
+        "expected_sha256": "381de3fa5a83354f2cc725e76a288bac896d9bcdbd6f1f49fde32beb3538ad34",
+        "local_sha256": "381de3fa5a83354f2cc725e76a288bac896d9bcdbd6f1f49fde32beb3538ad34",
+        "local_lf_sha256": "381de3fa5a83354f2cc725e76a288bac896d9bcdbd6f1f49fde32beb3538ad34",
+        "matches": true
+      },
+      {
+        "path": "Samples/Tests/Hair/HairCollisionTest.cpp",
+        "expected_sha256": "007c7a5ee1ed57edbfeb706ef6b15dac385aa54a4fa7aed498521af77ed3676b",
+        "local_sha256": "007c7a5ee1ed57edbfeb706ef6b15dac385aa54a4fa7aed498521af77ed3676b",
+        "local_lf_sha256": "007c7a5ee1ed57edbfeb706ef6b15dac385aa54a4fa7aed498521af77ed3676b",
+        "matches": true
+      },
+      {
+        "path": "Docs/Architecture.md",
+        "expected_sha256": "3bdc4a9fd7f37302b42299269be9df90531c286a2410a88b52f0462fbc63ec5f",
+        "local_sha256": "3bdc4a9fd7f37302b42299269be9df90531c286a2410a88b52f0462fbc63ec5f",
+        "local_lf_sha256": "3bdc4a9fd7f37302b42299269be9df90531c286a2410a88b52f0462fbc63ec5f",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/MeshShape.h",
+        "expected_sha256": "41e74234697e00fdde1c059265eccfa869ee95d09612d93fa8a07ef482bb390c",
+        "local_sha256": "41e74234697e00fdde1c059265eccfa869ee95d09612d93fa8a07ef482bb390c",
+        "local_lf_sha256": "41e74234697e00fdde1c059265eccfa869ee95d09612d93fa8a07ef482bb390c",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/ConvexHullShape.h",
+        "expected_sha256": "2a0dee83996177742c65073aa4739c38b77a18e8b307e3e321f27f1df297f194",
+        "local_sha256": "2a0dee83996177742c65073aa4739c38b77a18e8b307e3e321f27f1df297f194",
+        "local_lf_sha256": "2a0dee83996177742c65073aa4739c38b77a18e8b307e3e321f27f1df297f194",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/HeightFieldShape.h",
+        "expected_sha256": "176b7a31a20d74efe6fca10728dab0115185ad16ed26615d34fe2fb9508ed153",
+        "local_sha256": "176b7a31a20d74efe6fca10728dab0115185ad16ed26615d34fe2fb9508ed153",
+        "local_lf_sha256": "176b7a31a20d74efe6fca10728dab0115185ad16ed26615d34fe2fb9508ed153",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/PlaneShape.h",
+        "expected_sha256": "e5dea98c3c72d3ed788d3fb5b4a5725ff3fa3c5afc8cd1aeb60ff23885fe0be7",
+        "local_sha256": "e5dea98c3c72d3ed788d3fb5b4a5725ff3fa3c5afc8cd1aeb60ff23885fe0be7",
+        "local_lf_sha256": "e5dea98c3c72d3ed788d3fb5b4a5725ff3fa3c5afc8cd1aeb60ff23885fe0be7",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/Shape.h",
+        "expected_sha256": "ff4867ed90b0484f3829ca97b0e9274a8f166b6115a72d4e0691da0439edbfe3",
+        "local_sha256": "ff4867ed90b0484f3829ca97b0e9274a8f166b6115a72d4e0691da0439edbfe3",
+        "local_lf_sha256": "ff4867ed90b0484f3829ca97b0e9274a8f166b6115a72d4e0691da0439edbfe3",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/CapsuleShape.h",
+        "expected_sha256": "76e29fcb553958a56add40552369df70213f5de3066b373f7d454c96ccc2d29e",
+        "local_sha256": "76e29fcb553958a56add40552369df70213f5de3066b373f7d454c96ccc2d29e",
+        "local_lf_sha256": "76e29fcb553958a56add40552369df70213f5de3066b373f7d454c96ccc2d29e",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/PhysicsSettings.h",
+        "expected_sha256": "4126ea1380dc6c54c720eb08d3c78331323cfda615a0e2f2ececdc5bb8ebb08f",
+        "local_sha256": "4126ea1380dc6c54c720eb08d3c78331323cfda615a0e2f2ececdc5bb8ebb08f",
+        "local_lf_sha256": "4126ea1380dc6c54c720eb08d3c78331323cfda615a0e2f2ececdc5bb8ebb08f",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/CollideShape.h",
+        "expected_sha256": "7fe92fcbbe248512aba2556e2dd09d282b53505a577395f1d2ed40083421098d",
+        "local_sha256": "7fe92fcbbe248512aba2556e2dd09d282b53505a577395f1d2ed40083421098d",
+        "local_lf_sha256": "7fe92fcbbe248512aba2556e2dd09d282b53505a577395f1d2ed40083421098d",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/ShapeCast.h",
+        "expected_sha256": "4b148a36b2c86e4d9c45d154ac2a65e0d6522ca2cceb196ac6cf93e69339ca49",
+        "local_sha256": "4b148a36b2c86e4d9c45d154ac2a65e0d6522ca2cceb196ac6cf93e69339ca49",
+        "local_lf_sha256": "4b148a36b2c86e4d9c45d154ac2a65e0d6522ca2cceb196ac6cf93e69339ca49",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Body/BodyCreationSettings.h",
+        "expected_sha256": "16970b628de3fd6c4dc94591879e0da4b191fe7b23129bdee912e84464dee989",
+        "local_sha256": "16970b628de3fd6c4dc94591879e0da4b191fe7b23129bdee912e84464dee989",
+        "local_lf_sha256": "16970b628de3fd6c4dc94591879e0da4b191fe7b23129bdee912e84464dee989",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Body/BodyInterface.h",
+        "expected_sha256": "d6ea48d9a97456f6b88c64ece2721b9b29e78f9be962926ce7ddd8f65ef29115",
+        "local_sha256": "d6ea48d9a97456f6b88c64ece2721b9b29e78f9be962926ce7ddd8f65ef29115",
+        "local_lf_sha256": "d6ea48d9a97456f6b88c64ece2721b9b29e78f9be962926ce7ddd8f65ef29115",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/EPhysicsUpdateError.h",
+        "expected_sha256": "d18eb5b2e3b931418347437192447e5c892b529dab12e9342462cb7c9b9094d8",
+        "local_sha256": "d18eb5b2e3b931418347437192447e5c892b529dab12e9342462cb7c9b9094d8",
+        "local_lf_sha256": "d18eb5b2e3b931418347437192447e5c892b529dab12e9342462cb7c9b9094d8",
+        "matches": true
+      },
+      {
+        "path": "HelloWorld/HelloWorld.cpp",
+        "expected_sha256": "f05a9ac9cce7c119358ce39bb6704d19b71c11c603e377e273f227d3d3d0ac0c",
+        "local_sha256": "f05a9ac9cce7c119358ce39bb6704d19b71c11c603e377e273f227d3d3d0ac0c",
+        "local_lf_sha256": "f05a9ac9cce7c119358ce39bb6704d19b71c11c603e377e273f227d3d3d0ac0c",
+        "matches": true
+      },
+      {
+        "path": "Samples/Tests/General/DynamicMeshTest.cpp",
+        "expected_sha256": "0faeeefd20a028f5646ec16c6ffd57c44580eeb6d98a093b7724d30d014c64d7",
+        "local_sha256": "0faeeefd20a028f5646ec16c6ffd57c44580eeb6d98a093b7724d30d014c64d7",
+        "local_lf_sha256": "0faeeefd20a028f5646ec16c6ffd57c44580eeb6d98a093b7724d30d014c64d7",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Collision/Shape/ConvexHullShape.cpp",
+        "expected_sha256": "ae8a9bb804d28b9ba969a7beaee2d8607c26a87fd7acfd1db87bc8d6c294b7db",
+        "local_sha256": "ae8a9bb804d28b9ba969a7beaee2d8607c26a87fd7acfd1db87bc8d6c294b7db",
+        "local_lf_sha256": "ae8a9bb804d28b9ba969a7beaee2d8607c26a87fd7acfd1db87bc8d6c294b7db",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/Constraints/ContactConstraintManager.cpp",
+        "expected_sha256": "a8f58e2e600781dbe63a97ddc2fdc0898d22b421230c19b6b9c137b10ad3220a",
+        "local_sha256": "a8f58e2e600781dbe63a97ddc2fdc0898d22b421230c19b6b9c137b10ad3220a",
+        "local_lf_sha256": "a8f58e2e600781dbe63a97ddc2fdc0898d22b421230c19b6b9c137b10ad3220a",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Physics/PhysicsStepListener.h",
+        "expected_sha256": "8c8fca84377ad2b77759bcd145ee7eefe95e1668c95b0eb9aa2779180acf548e",
+        "local_sha256": "8c8fca84377ad2b77759bcd145ee7eefe95e1668c95b0eb9aa2779180acf548e",
+        "local_lf_sha256": "8c8fca84377ad2b77759bcd145ee7eefe95e1668c95b0eb9aa2779180acf548e",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Core/JobSystem.h",
+        "expected_sha256": "d884df960c24ec0fff2f531c7b15883d9535f91189697c3165fdf71c912dc57a",
+        "local_sha256": "d884df960c24ec0fff2f531c7b15883d9535f91189697c3165fdf71c912dc57a",
+        "local_lf_sha256": "d884df960c24ec0fff2f531c7b15883d9535f91189697c3165fdf71c912dc57a",
+        "matches": true
+      },
+      {
+        "path": "Jolt/Core/JobSystemThreadPool.h",
+        "expected_sha256": "d263a2617008982850d8459c2672876dea0a3083b9284f1489d54bcf1b5e6578",
+        "local_sha256": "d263a2617008982850d8459c2672876dea0a3083b9284f1489d54bcf1b5e6578",
+        "local_lf_sha256": "d263a2617008982850d8459c2672876dea0a3083b9284f1489d54bcf1b5e6578",
+        "matches": true
+      }
+    ],
+    "ranges": [
+      {
+        "source_id": "P01",
+        "path": "Jolt/Core/Core.h",
+        "start": 7,
+        "end": 10,
+        "within_local_file": true
+      },
+      {
+        "source_id": "P02",
+        "path": "Build/CMakeLists.txt",
+        "start": 1,
+        "end": 128,
+        "within_local_file": true
+      },
+      {
+        "source_id": "P06",
+        "path": "Docs/ReleaseNotes.md",
+        "start": 21,
+        "end": 94,
+        "within_local_file": true
+      },
+      {
+        "source_id": "P07",
+        "path": "Jolt/Physics/Collision/Shape/Shape.cpp",
+        "start": 288,
+        "end": 321,
+        "within_local_file": true
+      },
+      {
+        "source_id": "P08",
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+        "start": 825,
+        "end": 875,
+        "within_local_file": true
+      },
+      {
+        "source_id": "P09",
+        "path": "Jolt/Physics/Collision/Shape/MeshShape.cpp",
+        "start": 828,
+        "end": 880,
+        "within_local_file": true
+      },
+      {
+        "source_id": "P10",
+        "path": "Samples/Tests/SoftBody/SoftBodyCosseratRodConstraintTest.cpp",
+        "start": 1,
+        "end": 186,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R01",
+        "path": "Docs/ReleaseNotes.md",
+        "start": 5,
+        "end": 101,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R02",
+        "path": "Jolt/Physics/SoftBody/SoftBodySharedSettings.h",
+        "start": 59,
+        "end": 356,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R03",
+        "path": "Jolt/Physics/SoftBody/SoftBodySharedSettings.cpp",
+        "start": 381,
+        "end": 480,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R04",
+        "path": "Jolt/Physics/SoftBody/SoftBodySharedSettings.cpp",
+        "start": 1093,
+        "end": 1177,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R05",
+        "path": "Samples/Tests/SoftBody/SoftBodyCosseratRodConstraintTest.cpp",
+        "start": 19,
+        "end": 185,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R06",
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+        "start": 325,
+        "end": 686,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R07",
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+        "start": 257,
+        "end": 824,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R08",
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+        "start": 937,
+        "end": 1104,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R09",
+        "path": "Jolt/Physics/SoftBody/SoftBodyVertex.h",
+        "start": 11,
+        "end": 41,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R10",
+        "path": "Jolt/Physics/SoftBody/SoftBodyContactListener.h",
+        "start": 19,
+        "end": 52,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R11",
+        "path": "Jolt/Physics/SoftBody/SoftBodyManifold.h",
+        "start": 12,
+        "end": 79,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R12",
+        "path": "Jolt/Physics/SoftBody/SoftBodyCreationSettings.h",
+        "start": 39,
+        "end": 72,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R13",
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.h",
+        "start": 49,
+        "end": 183,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R14",
+        "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+        "start": 59,
+        "end": 1502,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R15",
+        "path": "Jolt/Physics/Body/Body.cpp",
+        "start": 438,
+        "end": 491,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R16",
+        "path": "Jolt/Physics/Collision/CollideSoftBodyVerticesVsTriangles.h",
+        "start": 24,
+        "end": 89,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R17",
+        "path": "Jolt/Physics/Collision/Shape/BoxShape.cpp",
+        "start": 234,
+        "end": 282,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R18",
+        "path": "Jolt/Physics/Hair/Hair.h",
+        "start": 21,
+        "end": 105,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R19",
+        "path": "Jolt/Physics/Hair/HairSettings.h",
+        "start": 186,
+        "end": 244,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R20",
+        "path": "Jolt/Physics/Hair/Hair.cpp",
+        "start": 111,
+        "end": 228,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R21",
+        "path": "Jolt/Shaders/HairCalculateCollisionPlanes.hlsl",
+        "start": 8,
+        "end": 114,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R22",
+        "path": "Jolt/Shaders/HairUpdateVelocity.h",
+        "start": 7,
+        "end": 49,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R23",
+        "path": "Jolt/Shaders/HairUpdateRoots.hlsl",
+        "start": 12,
+        "end": 29,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R24",
+        "path": "Samples/Tests/Constraints/PointConstraintTest.cpp",
+        "start": 19,
+        "end": 54,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R25",
+        "path": "Jolt/Physics/Constraints/SwingTwistConstraint.h",
+        "start": 15,
+        "end": 145,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R26",
+        "path": "Jolt/Physics/Collision/NarrowPhaseQuery.h",
+        "start": 28,
+        "end": 70,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R27",
+        "path": "Build/CMakeLists.txt",
+        "start": 116,
+        "end": 128,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R28",
+        "path": "Jolt/Physics/PhysicsSystem.h",
+        "start": 92,
+        "end": 108,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R29",
+        "path": "Jolt/Physics/PhysicsSystem.cpp",
+        "start": 1056,
+        "end": 1235,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R30",
+        "path": "Jolt/Physics/Collision/Shape/Shape.cpp",
+        "start": 288,
+        "end": 320,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R31",
+        "path": "Jolt/Physics/Collision/Shape/MeshShape.cpp",
+        "start": 828,
+        "end": 842,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R32",
+        "path": "Samples/Tests/Hair/HairCollisionTest.cpp",
+        "start": 19,
+        "end": 95,
+        "within_local_file": true
+      },
+      {
+        "source_id": "R33",
+        "path": "Jolt/Physics/Hair/Hair.cpp",
+        "start": 42,
+        "end": 68,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C01",
+        "path": "Docs/Architecture.md",
+        "start": 166,
+        "end": 317,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C02",
+        "path": "Docs/Architecture.md",
+        "start": 565,
+        "end": 599,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C03",
+        "path": "Docs/Architecture.md",
+        "start": 742,
+        "end": 762,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C04",
+        "path": "Jolt/Physics/Collision/Shape/MeshShape.h",
+        "start": 30,
+        "end": 94,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C05",
+        "path": "Jolt/Physics/Collision/Shape/ConvexHullShape.h",
+        "start": 25,
+        "end": 47,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C06",
+        "path": "Jolt/Physics/Collision/Shape/HeightFieldShape.h",
+        "start": 50,
+        "end": 117,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C07",
+        "path": "Jolt/Physics/Collision/Shape/PlaneShape.h",
+        "start": 24,
+        "end": 41,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C08",
+        "path": "Jolt/Physics/Collision/Shape/Shape.h",
+        "start": 49,
+        "end": 136,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C09",
+        "path": "Jolt/Physics/Collision/Shape/CapsuleShape.h",
+        "start": 20,
+        "end": 53,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C10",
+        "path": "Jolt/Physics/PhysicsSettings.h",
+        "start": 9,
+        "end": 102,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C11",
+        "path": "Jolt/Physics/Collision/NarrowPhaseQuery.h",
+        "start": 28,
+        "end": 70,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C12",
+        "path": "Jolt/Physics/Collision/CollideShape.h",
+        "start": 21,
+        "end": 106,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C13",
+        "path": "Jolt/Physics/Collision/ShapeCast.h",
+        "start": 13,
+        "end": 112,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C14",
+        "path": "Jolt/Physics/Body/BodyCreationSettings.h",
+        "start": 35,
+        "end": 128,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C15",
+        "path": "Jolt/Physics/Body/BodyInterface.h",
+        "start": 87,
+        "end": 200,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C16",
+        "path": "Jolt/Physics/PhysicsSystem.h",
+        "start": 142,
+        "end": 162,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C17",
+        "path": "Jolt/Physics/EPhysicsUpdateError.h",
+        "start": 9,
+        "end": 15,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C18",
+        "path": "HelloWorld/HelloWorld.cpp",
+        "start": 211,
+        "end": 365,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C19",
+        "path": "Samples/Tests/General/DynamicMeshTest.cpp",
+        "start": 24,
+        "end": 45,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C20",
+        "path": "Jolt/Physics/Collision/CollideSoftBodyVerticesVsTriangles.h",
+        "start": 24,
+        "end": 89,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C21",
+        "path": "Jolt/Physics/Collision/Shape/MeshShape.cpp",
+        "start": 828,
+        "end": 895,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C22",
+        "path": "Docs/Architecture.md",
+        "start": 669,
+        "end": 677,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C23",
+        "path": "Docs/Architecture.md",
+        "start": 679,
+        "end": 699,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C24",
+        "path": "Jolt/Physics/Collision/Shape/Shape.h",
+        "start": 423,
+        "end": 445,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C25",
+        "path": "Docs/Architecture.md",
+        "start": 267,
+        "end": 317,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C26",
+        "path": "Jolt/Physics/Collision/Shape/Shape.h",
+        "start": 139,
+        "end": 157,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C27",
+        "path": "Jolt/Physics/Collision/Shape/ConvexHullShape.cpp",
+        "start": 48,
+        "end": 84,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C28",
+        "path": "Jolt/Physics/Collision/Shape/BoxShape.cpp",
+        "start": 55,
+        "end": 75,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C29",
+        "path": "Jolt/Physics/Constraints/ContactConstraintManager.cpp",
+        "start": 1913,
+        "end": 1923,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C30",
+        "path": "Docs/Architecture.md",
+        "start": 603,
+        "end": 655,
+        "within_local_file": true
+      },
+      {
+        "source_id": "C31",
+        "path": "Jolt/Physics/Collision/Shape/Shape.cpp",
+        "start": 288,
+        "end": 320,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U01",
+        "path": "Jolt/Physics/PhysicsSystem.h",
+        "start": 51,
+        "end": 174,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U02",
+        "path": "Jolt/Physics/PhysicsSystem.cpp",
+        "start": 625,
+        "end": 687,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U03",
+        "path": "Jolt/Physics/EPhysicsUpdateError.h",
+        "start": 9,
+        "end": 16,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U04",
+        "path": "Jolt/Physics/PhysicsStepListener.h",
+        "start": 21,
+        "end": 34,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U05",
+        "path": "Jolt/Core/JobSystem.h",
+        "start": 16,
+        "end": 68,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U06",
+        "path": "Jolt/Core/JobSystemThreadPool.h",
+        "start": 20,
+        "end": 48,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U07",
+        "path": "Jolt/Physics/Collision/Shape/Shape.h",
+        "start": 140,
+        "end": 163,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U08",
+        "path": "Jolt/Physics/Collision/Shape/Shape.h",
+        "start": 367,
+        "end": 390,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U09",
+        "path": "Jolt/Physics/Body/BodyInterface.h",
+        "start": 154,
+        "end": 176,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U10",
+        "path": "Jolt/Physics/Collision/NarrowPhaseQuery.h",
+        "start": 28,
+        "end": 70,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U11",
+        "path": "Docs/Architecture.md",
+        "start": 742,
+        "end": 783,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U12",
+        "path": "Docs/Architecture.md",
+        "start": 853,
+        "end": 867,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U13",
+        "path": "HelloWorld/HelloWorld.cpp",
+        "start": 211,
+        "end": 254,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U14",
+        "path": "Docs/Architecture.md",
+        "start": 789,
+        "end": 851,
+        "within_local_file": true
+      },
+      {
+        "source_id": "U15",
+        "path": "Docs/Architecture.md",
+        "start": 367,
+        "end": 395,
+        "within_local_file": true
+      }
+    ]
+  },
+  "reported_build_provenance": {
+    "pin": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+    "header_version": "5.6.1",
+    "cmake_project_version": "5.6.0",
+    "tag_v5_6_0_commit": "e77f175595e64cb44218cc9d9d56fc365ad0e36a",
+    "archive_sha256": "6bb6d626b7b70096cd07f1b25c0c223df035ab6386885f07f77baa88ae7d3998",
+    "archive_bytes": 19399443,
+    "compiler": "GCC13.3.0(Ubuntu13.3.0-6ubuntu2~24.04)",
+    "cmake": "4.1.0",
+    "system": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "source_sha256": {
+      "Jolt/Core/Core.h": "8dd35545f20ec75b4dd7730502a8dd646c1292f50d0ce8ad410ee56655058a5a",
+      "Build/CMakeLists.txt": "53aaddf57cfa007ddf449c6cc3ad2bd9518f66334e9dd24482f5e8158de5601f",
+      "Jolt/Physics/SoftBody/SoftBodySharedSettings.h": "7b5074c9ba88463d2f017433478df597c4350062a9db206a61b9d6f75a8f6146",
+      "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp": "75e579649b8087ca4c06925869f3281d82cff3a384bfc8a79649d52885ea4697",
+      "Samples/Tests/SoftBody/SoftBodyCosseratRodConstraintTest.cpp": "79325e5de58cd0babd4f744e53a1f9d8b602b033336ef2dc221d7770fbdf606b",
+      "Jolt/Physics/Hair/Hair.h": "f159a3a1f68d6b130da2bb1b96fef8f44904d6bfeb51a3f5844354c62ccb2cfb",
+      "Jolt/Physics/Collision/Shape/Shape.cpp": "fc0c1c2eb8198d9dde430d55d8ccf0e7c994411a5a312036378a460028cae051",
+      "Jolt/Physics/Collision/Shape/MeshShape.cpp": "6f2ac4774d069e436b05ac2fbf8362b4d99421bd070e33abd64c4df1b550c10b"
+    },
+    "tag_comparisons": {
+      "Jolt/Core/Core.h": {
+        "byte_identical": false,
+        "tag_sha256": "471073e2d94e39c8d002cbc2b218396a7a30fd724b512099575bb9729462458b"
+      },
+      "Jolt/Physics/SoftBody/SoftBodySharedSettings.h": {
+        "byte_identical": true,
+        "tag_sha256": "7b5074c9ba88463d2f017433478df597c4350062a9db206a61b9d6f75a8f6146"
+      },
+      "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp": {
+        "byte_identical": false,
+        "tag_sha256": "05bc9fa6bccf0f0ea3fe648bb384ef805eef281526903cb58885f7763e51c393"
+      },
+      "Samples/Tests/SoftBody/SoftBodyCosseratRodConstraintTest.cpp": {
+        "byte_identical": true,
+        "tag_sha256": "79325e5de58cd0babd4f744e53a1f9d8b602b033336ef2dc221d7770fbdf606b"
+      },
+      "Jolt/Physics/Hair/Hair.h": {
+        "byte_identical": true,
+        "tag_sha256": "f159a3a1f68d6b130da2bb1b96fef8f44904d6bfeb51a3f5844354c62ccb2cfb"
+      }
+    },
+    "artifact_sha256": {
+      "harness/CMakeLists.txt": "fea4d2ff0a005fdc86ca78a14a5f1c9022055e37b6602b577d08de3c6c83e465",
+      "harness/probe.cpp": "a752f39418a634d22ffa857e8899b6ad2759e4b1a014f8da657af3b6038ac14c",
+      "harness_results.json": "61e1d8deb524e5da556a94df15a016dabccbeb3960be89ff55c6cf3345b73766",
+      "configure.log": "2ca3c62ddff90d4e1c92d56dd2ee10faeaa00ec192ab15fde887402d285b3989",
+      "build_harness.log": "5f9f30d8bdb6fb4648e10462f5e27afcc360bf9db9d2c37805929e95ad0eeeec",
+      "reproduce.py": "8c3f98a1c9f5f00bc5bf6748caa11436aace1b872fee6c00ed76f8d9374416be"
+    }
+  },
+  "reported_native_results": {
+    "pin": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+    "version": "5.6.1",
+    "precision": "single",
+    "compute_backends": "all disabled",
+    "jobs": "single threaded",
+    "results": [
+      {
+        "id": "H01",
+        "case": "endpoints outside sphere, segment crosses",
+        "endpoint_minus_hits": 0,
+        "endpoint_plus_hits": 0,
+        "capsule_overlap_hits": 1
+      },
+      {
+        "id": "H02_rod_crosses_sphere",
+        "steps": 60,
+        "dt": 0.0166666667,
+        "iterations": 5,
+        "vertex_radius": 0.01,
+        "first_rod_inverse_mass": 0,
+        "update_error_bits": 0,
+        "positions": [
+          [
+            -2,
+            0,
+            0
+          ],
+          [
+            2.00000048,
+            0,
+            4.76837158e-07
+          ],
+          [
+            3,
+            0,
+            4.17232457e-07
+          ]
+        ],
+        "first_step_positions": [
+          [
+            -2,
+            0,
+            0
+          ],
+          [
+            2.00000048,
+            0,
+            4.61940402e-07
+          ],
+          [
+            3,
+            0,
+            7.59981219e-07
+          ]
+        ],
+        "max_vertex_displacement": 6.74349565e-07,
+        "final_max_vertex_speed": 0,
+        "listener_callbacks": 0,
+        "total_vertex_contact_observations": 0,
+        "max_contacting_vertices_in_one_step": 0
+      },
+      {
+        "id": "H02b_rod_crosses_sphere_more_iterations",
+        "steps": 60,
+        "dt": 0.0166666667,
+        "iterations": 50,
+        "vertex_radius": 0.01,
+        "first_rod_inverse_mass": 0,
+        "update_error_bits": 0,
+        "positions": [
+          [
+            -2,
+            0,
+            0
+          ],
+          [
+            2.00000048,
+            0,
+            4.76837158e-07
+          ],
+          [
+            3,
+            0,
+            4.17232457e-07
+          ]
+        ],
+        "first_step_positions": [
+          [
+            -2,
+            0,
+            0
+          ],
+          [
+            2.00000048,
+            0,
+            4.74899934e-07
+          ],
+          [
+            3,
+            0,
+            4.07546423e-07
+          ]
+        ],
+        "max_vertex_displacement": 6.74349565e-07,
+        "final_max_vertex_speed": 0,
+        "listener_callbacks": 0,
+        "total_vertex_contact_observations": 0,
+        "max_contacting_vertices_in_one_step": 0
+      },
+      {
+        "id": "H03",
+        "case": "capsule wholly contained",
+        "box_overlap_hits": 1,
+        "mesh_overlap_ignore_backfaces": 0,
+        "mesh_overlap_collide_backfaces": 0,
+        "box_center_point_hits": 1,
+        "mesh_center_point_hits": 0,
+        "mesh_off_axis_point_hits": 1,
+        "mesh_center_parity_ray_fractions": [
+          0.454545438,
+          0.454545438
+        ],
+        "mesh_off_axis_parity_ray_fractions": [
+          0.386363626
+        ]
+      },
+      {
+        "id": "H04_rod_inside_mesh",
+        "steps": 60,
+        "dt": 0.0166666667,
+        "iterations": 5,
+        "vertex_radius": 0.01,
+        "first_rod_inverse_mass": 1,
+        "update_error_bits": 0,
+        "positions": [
+          [
+            0.0999999791,
+            0,
+            -1.19206787e-08
+          ],
+          [
+            0.200000003,
+            0,
+            2.51089405e-13
+          ],
+          [
+            0.300000012,
+            0,
+            1.19211814e-08
+          ]
+        ],
+        "first_step_positions": [
+          [
+            0.0999999791,
+            0,
+            -1.16031664e-08
+          ],
+          [
+            0.200000003,
+            0,
+            -1.50180729e-10
+          ],
+          [
+            0.300000012,
+            0,
+            1.17533512e-08
+          ]
+        ],
+        "max_vertex_displacement": 2.53318557e-08,
+        "final_max_vertex_speed": 2.93832341e-13,
+        "listener_callbacks": 0,
+        "total_vertex_contact_observations": 0,
+        "max_contacting_vertices_in_one_step": 0
+      },
+      {
+        "id": "H04b_rod_inside_sphere",
+        "steps": 60,
+        "dt": 0.0166666667,
+        "iterations": 5,
+        "vertex_radius": 0.01,
+        "first_rod_inverse_mass": 1,
+        "update_error_bits": 0,
+        "positions": [
+          [
+            12.7012653,
+            0,
+            2.23323468e-07
+          ],
+          [
+            12.8012648,
+            0,
+            2.35244386e-07
+          ],
+          [
+            12.9012651,
+            0,
+            2.47165303e-07
+          ]
+        ],
+        "first_step_positions": [
+          [
+            1.04500294,
+            0,
+            -9.47852996e-09
+          ],
+          [
+            1.1640594,
+            0,
+            2.94023073e-09
+          ],
+          [
+            1.26476574,
+            0,
+            1.48796113e-08
+          ]
+        ],
+        "max_vertex_displacement": 12.601265,
+        "final_max_vertex_speed": 11.2730026,
+        "listener_callbacks": 1,
+        "total_vertex_contact_observations": 3,
+        "max_contacting_vertices_in_one_step": 3
+      },
+      {
+        "id": "H05_root_inside_sphere",
+        "steps": 60,
+        "dt": 0.0166666667,
+        "iterations": 5,
+        "vertex_radius": 0.01,
+        "first_rod_inverse_mass": 0,
+        "update_error_bits": 0,
+        "positions": [
+          [
+            0.200000003,
+            0,
+            0
+          ],
+          [
+            1.50000012,
+            0,
+            1.54972057e-07
+          ],
+          [
+            2.5,
+            0,
+            2.74181275e-07
+          ]
+        ],
+        "first_step_positions": [
+          [
+            0.200000003,
+            0,
+            0
+          ],
+          [
+            1.50000012,
+            0,
+            1.72576193e-07
+          ],
+          [
+            2.5,
+            0,
+            3.62202002e-07
+          ]
+        ],
+        "max_vertex_displacement": 2.74181275e-07,
+        "final_max_vertex_speed": 0,
+        "listener_callbacks": 0,
+        "total_vertex_contact_observations": 0,
+        "max_contacting_vertices_in_one_step": 0
+      }
+    ]
+  },
+  "reported_analytic_results": {
+    "kind": "Analytic fixture checks; not solver execution",
+    "units": "metres except stated dimensionless values",
+    "fixture_count": 9,
+    "boolean_check_count": 15,
+    "all_checks_passed": true,
+    "fixtures": [
+      {
+        "id": "F01",
+        "title": "Endpoints clear; segment crosses",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "a": [
+            -2.0,
+            0.0,
+            0.0
+          ],
+          "b": [
+            2.0,
+            0.0,
+            0.0
+          ],
+          "sphere_radius": 1.0,
+          "guide_radius": 0.01
+        },
+        "checks": {
+          "endpoints_outside": true,
+          "segment_overlaps": true
+        },
+        "interpretation": "A particle-only witness set misses the interior of this span. Native H01/H02 test the same boundary."
+      },
+      {
+        "id": "F02",
+        "title": "Blade completely inside a solid",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "corners": [
+            [
+              -0.25,
+              -0.1,
+              0.0
+            ],
+            [
+              -0.25,
+              0.1,
+              0.0
+            ],
+            [
+              0.25,
+              -0.1,
+              0.0
+            ],
+            [
+              0.25,
+              0.1,
+              0.0
+            ]
+          ],
+          "sphere_radius": 1.0,
+          "maximum_corner_radius": 0.26925824035672524
+        },
+        "checks": {
+          "entire_rectangle_inside": true
+        },
+        "interpretation": "Convexity of the ball proves the whole rectangular patch is inside. Surface intersection alone is insufficient."
+      },
+      {
+        "id": "F03",
+        "title": "Root inside obstacle",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "root": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "sphere_radius": 1.0,
+          "clearance": 0.01
+        },
+        "checks": {
+          "hard_anchor_infeasible": true
+        },
+        "interpretation": "A hard position equality conflicts with positive obstacle clearance. No iteration count can satisfy both."
+      },
+      {
+        "id": "F04",
+        "title": "Narrow gap and width",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "gap": 0.12,
+          "projected_blade_width": 0.2,
+          "guide_diameter": 0.02,
+          "clearance_each_side": 0.01
+        },
+        "checks": {
+          "guide_fits": true,
+          "fixed_width_does_not": true
+        },
+        "interpretation": "This impossibility assumes the declared cross-section orientation. Allowing twist may permit an edge-on solution."
+      },
+      {
+        "id": "F05",
+        "title": "Sharp corner requires multiple contacts",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "start": [
+            -0.1,
+            -0.1
+          ],
+          "after_x_projection": [
+            0.0,
+            -0.1
+          ],
+          "feasible_halfspaces": [
+            "x>=0",
+            "y>=0"
+          ]
+        },
+        "checks": {
+          "one_plane_leaves_violation": true,
+          "multi_plane_solution_exists": true
+        },
+        "interpretation": "One face projection leaves another active inequality violated. This is a simplified corner algebra check, not a Jolt corner simulation."
+      },
+      {
+        "id": "F06",
+        "title": "Open mesh has no declared solid interior",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "square_boundary_edges": 4,
+          "manifold_closed": false
+        },
+        "checks": {
+          "volume_contract_fails": true
+        },
+        "interpretation": "A single square is an open surface. Inside/outside must be replaced by an explicit surface, half-space or closed-proxy policy."
+      },
+      {
+        "id": "F07",
+        "title": "Millimetre features and metre defaults",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "asset_height_m": 0.005,
+          "thickness_m": 0.0001,
+          "rigid_penetration_slop_m": 0.02,
+          "gjk_collision_tolerance_m": 0.0001,
+          "slop_over_height": 4.0,
+          "tolerance_over_thickness": 1.0
+        },
+        "checks": {
+          "slop_larger_than_asset": true,
+          "tolerance_equals_thickness": true
+        },
+        "interpretation": "Dimensionless ratios only. Rigid settings are not automatically CPU-soft-body settings; this is not a millimetre Jolt simulation."
+      },
+      {
+        "id": "F08",
+        "title": "Large coordinates erase small offsets before rebasing",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "origin": 100000000.0,
+          "offset": 0.01,
+          "cast_before_rebase": 0.0,
+          "rebase_before_cast": 0.01000000536441803
+        },
+        "checks": {
+          "cast_before_rebase_loses_offset": true,
+          "rebase_first_retains_offset": true
+        },
+        "interpretation": "IEEE float arithmetic only, not a Jolt double-precision build test. Rebase while host values still retain the needed precision."
+      },
+      {
+        "id": "F09",
+        "title": "Visible edge reaches beyond a clear guide",
+        "evidence": "Executed analytic oracle; no physics integration",
+        "inputs": {
+          "guide_a": [
+            1.1,
+            -0.4,
+            0.0
+          ],
+          "guide_b": [
+            1.1,
+            0.4,
+            0.0
+          ],
+          "sphere_radius": 1.0,
+          "guide_radius": 0.01,
+          "blade_width": 0.3,
+          "inner_edge_midpoint": [
+            0.95,
+            0.0,
+            0.0
+          ]
+        },
+        "checks": {
+          "guide_clear": true,
+          "edge_inside": true
+        },
+        "interpretation": "A clear narrow guide cannot certify the evaluated blade. Width, twist and between-sample surface regions need a declared envelope or final-surface test."
+      }
+    ]
+  },
+  "independent_source_observations": [
+    "Rigid SetSimCollideBodyVsBody callback exists; body-pair handling diverts soft bodies before that invocation",
+    "SoftBodyContactListener exposes pair settings and a post-solve const particle manifold rather than insertion of endpoint/frame constraint rows",
+    "Process-level Jolt Factory, registration/dispatch, allocator and diagnostic hooks are shared across PhysicsSystems; bodies/constraints are world-specific",
+    "Official HairCollisionTest demonstrates a no-scalp setup in source; compute hair remains separate and was not run",
+    "Per-query locking and a final revision check alone do not ensure one coherent obstacle generation across iterative queries"
+  ],
+  "review_limits": [
+    "No native harness, wrapper, analytic script or embedded HTML script was executed here",
+    "Reported R14 single-world-precision/SSE2/assert configuration differs from R13 double-world-precision/AVX build; results remain separate profiles",
+    "Native H02/H02b are clamped detection counterexamples, not feasible-routing quality comparisons",
+    "H04b is free-rod dynamic ejection with continuing velocity, not a rooted or static-fit success",
+    "R14 tiny-asset and large-origin fixtures are analytic calculations; R13 supplies separate native query diagnostics",
+    "Equal-fraction ray deduplication alone is not established as a complete solid classifier",
+    "Reported 78 changed files and 47 under Jolt have different scopes; metadata was inspected, not independently re-fetched or tag-diffed",
+    "Local source-file matches do not identify built/loaded Cyrus modules or qualify wrapper/global-service ownership",
+    "Local frozen-witness projection equations are proposed; no complete fitter, custom rod contact adapter or Max/renderer experiment was implemented",
+    "All Cyrus validation and decision-experiment acceptance remains Pending"
+  ]
+}

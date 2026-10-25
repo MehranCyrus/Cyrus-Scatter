@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Implementation-level research on Jolt collision and solver reuse for CyrusScatter rigid settling and rooted vegetation fitting.">
+<title>CyrusScatter — Collision and Solver Reuse</title>
+<style>
+:root{
+  --bg:#eef2f4;--paper:#fff;--ink:#17242b;--muted:#60717b;--line:#dbe3e7;
+  --nav:#0f1b21;--nav2:#16262e;--accent:#147d74;--accent2:#196b8c;--accent3:#8b5b18;
+  --ok:#16724c;--warn:#9a5a00;--bad:#9a3d4c;--code:#0e171d;--shadow:0 18px 52px rgba(16,34,44,.10)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:linear-gradient(135deg,#edf2f4 0%,#f7f9fa 55%,#edf1f4 100%);color:var(--ink);font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.64}
+a{color:var(--accent2);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:315px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:linear-gradient(180deg,var(--nav),#0b1419);color:#e6f0f3;padding:25px 20px;border-right:1px solid #1e3038}.brand{font-size:18px;font-weight:850}.subbrand{font-size:12px;line-height:1.45;color:#9fb2bc;margin:5px 0 16px}.sidebar-meta{display:grid;gap:7px;margin:0 0 18px}.sidebar-meta span{display:inline-flex;width:max-content;max-width:100%;border:1px solid #2b444f;background:#13242c;color:#cfe1e7;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:750}.toc{display:flex;flex-direction:column;gap:2px;padding-bottom:30px}.toc a{display:block;border-left:2px solid transparent;color:#b9cbd3;padding:6px 8px;line-height:1.28;font-size:12.5px;border-radius:0 5px 5px 0}.toc a:hover,.toc a.active{background:var(--nav2);color:#fff;border-left-color:#57c7ba;text-decoration:none}.toc-section{font-weight:760;margin-top:8px}.toc-subsection{padding-left:20px!important;color:#91a9b4!important;font-size:12px!important}
+.main{min-width:0;padding:42px 5vw 90px}.paper{max-width:1220px;margin:auto;background:var(--paper);border:1px solid #e1e7ea;border-radius:16px;box-shadow:var(--shadow);padding:54px 68px 72px;overflow:hidden}.report-kicker{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}.report-kicker span{border-radius:999px;padding:6px 11px;background:#edf6f5;color:#155c57;font-weight:780;font-size:12px}.report-kicker .test{background:#fff2df;color:#81500c}.report-kicker .host{background:#ebf2f8;color:#295672}.report-summary{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0 34px}.summary-card{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:#fbfcfd}.summary-card strong{display:block;margin-bottom:4px}.summary-card.key{border-color:#b7ddd8;background:#f2fbf9}.summary-card.boundary{border-color:#efd2a9;background:#fff9ef}
+h1,h2,h3,h4{scroll-margin-top:24px;line-height:1.22;color:#102832}h1{font-size:40px;margin:0 0 6px;letter-spacing:-.6px}h2{font-size:27px;margin:54px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--line)}h3{font-size:21px;margin:34px 0 12px}h4{font-size:17px;margin:28px 0 9px;color:#28515f}.anchor{opacity:0;margin-left:8px;font-size:.70em;color:#78909a}.paper h1:hover .anchor,.paper h2:hover .anchor,.paper h3:hover .anchor,.paper h4:hover .anchor{opacity:.7}p{margin:12px 0}strong{color:#102832}em{color:#314c58}hr{border:0;border-top:1px solid var(--line);margin:34px 0}ul,ol{padding-left:25px}li{margin:5px 0}blockquote{margin:20px 0;padding:13px 18px;border-left:4px solid var(--accent);background:#f1faf8;color:#274942;border-radius:0 7px 7px 0}.decision-card{margin:18px 0 22px;padding:19px 22px;border-radius:12px;border:1px solid #a7d7d1;background:linear-gradient(135deg,#edf9f7,#f8fcfb);box-shadow:inset 4px 0 0 var(--accent);font-size:1.03em}.decision-card strong{color:#0d5953}
+.verdict-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}.verdict{border:1px solid var(--line);border-radius:10px;padding:15px 17px;background:#fbfcfd}.verdict h3{margin:0 0 7px;font-size:17px}.verdict.good{border-top:4px solid var(--ok)}.verdict.warn{border-top:4px solid var(--warn)}.verdict.bad{border-top:4px solid var(--bad)}
+code{background:#edf2f4;border-radius:4px;padding:2px 5px;font-family:"Cascadia Code",Consolas,Menlo,monospace;font-size:.91em;color:#183d4c}pre{position:relative;background:var(--code);color:#e5edf1;border:1px solid #22353f;border-radius:10px;padding:19px 21px;overflow:auto;line-height:1.48;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}pre code{background:transparent;color:inherit;padding:0}pre[data-language]::before{content:attr(data-language);position:absolute;right:12px;top:8px;color:#7f9aa6;font-size:10px;font-weight:800;letter-spacing:.8px}.code-fact{border:1px solid #d2dee4;border-radius:10px;padding:15px 17px;background:#f8fbfc;margin:18px 0}.code-fact pre{margin-bottom:0}
+.table-wrap{width:100%;overflow-x:auto;margin:18px 0 30px;border:1px solid var(--line);border-radius:9px}.table-wrap table{border-collapse:collapse;width:100%;min-width:760px;margin:0;font-size:13.1px}.table-wrap.wide table{min-width:1050px}.table-wrap th,.table-wrap td{padding:10px 11px;vertical-align:top;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.table-wrap th:last-child,.table-wrap td:last-child{border-right:0}.table-wrap tr:last-child td{border-bottom:0}.table-wrap th{background:#eaf3f5;color:#173d49;text-align:left;position:sticky;top:0;z-index:1}.table-wrap tbody tr:nth-child(even) td{background:#fafcfd}.table-wrap tbody tr:hover td{background:#f1f8f9}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:25px;height:22px;padding:0 6px;border-radius:5px;margin-right:3px;color:#fff;font-size:10.5px;font-weight:850;letter-spacing:.45px}.badge.inspected{background:#355f94}.badge.tag{background:#18795d}.badge.context{background:#6a538d}.badge.proposal{background:#a5660c}.badge.experiment{background:#963f68}.ref-tag{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:20px;padding:0 5px;margin:0 1px;border-radius:4px;background:#e7f0f4;color:#285f77;font-size:10.5px;font-weight:850;vertical-align:1px}.ref-tag:hover{text-decoration:none;background:#d3e6ed}.reference-entry{scroll-margin-top:30px;padding:9px 11px;border-left:3px solid #cbdce3;background:#fafcfd;border-radius:0 6px 6px 0}.external-link::after{content:"↗";font-size:.78em;margin-left:3px;color:#78909a}
+.confidence{font-size:11px;font-weight:800;border-radius:999px;padding:3px 7px}.confidence.high{background:#e4f5eb;color:#176643}.confidence.med{background:#fff2da;color:#85520a}.reuse{font-size:11px;font-weight:800;border-radius:4px;padding:3px 6px;white-space:nowrap}.reuse.yes{background:#e5f5eb;color:#176643}.reuse.maybe,.reuse.partial{background:#fff1d7;color:#85520a}.reuse.no{background:#f9e7ea;color:#8a3444}
+.callout{border-radius:9px;padding:14px 17px;margin:18px 0}.callout.warning{background:#fff6e8;border:1px solid #edcf9f;color:#6f470d}.callout.info{background:#eef7fb;border:1px solid #bcd8e6;color:#275065}.experiment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:20px 0}.experiment{border:1px solid #d6e1e5;border-radius:10px;padding:15px 17px;background:#fbfcfd}.experiment h3{font-size:17px;margin:0 0 8px}.experiment p{font-size:13px;margin:7px 0}.experiment.critical{border-color:#d7aab3;box-shadow:inset 4px 0 0 var(--bad)}
+.back-top{position:fixed;right:22px;bottom:22px;width:42px;height:42px;border-radius:50%;border:0;background:#15313e;color:#fff;box-shadow:0 6px 18px rgba(10,29,38,.25);cursor:pointer;opacity:0;pointer-events:none;transition:.2s}.back-top.visible{opacity:.92;pointer-events:auto}.back-top:hover{background:#1d5064}.footer-note{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{position:relative;height:auto;max-height:380px}.main{padding:24px}.paper{padding:40px 34px}.report-summary{grid-template-columns:1fr}.verdict-grid{grid-template-columns:1fr}.experiment-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.main{padding:0}.paper{border-radius:0;border-left:0;border-right:0;padding:30px 18px}h1{font-size:31px}h2{font-size:23px}.table-wrap{border-radius:5px}}
+@media print{body{background:#fff}.layout{display:block}.sidebar,.back-top{display:none}.main{padding:0}.paper{max-width:none;border:0;box-shadow:none;padding:0}.report-summary,.verdict-grid,.experiment-grid{grid-template-columns:1fr 1fr}.anchor{display:none}.table-wrap{overflow:visible;border:0}.table-wrap table{min-width:0;font-size:8.2pt}.table-wrap tr{page-break-inside:avoid}a{color:#000}.external-link::after{display:none}pre{white-space:pre-wrap;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand">CyrusScatter Research</div>
+  <div class="subbrand">Collision and solver reuse · exact Jolt pin · 24 Oct 2026</div>
+  <div class="sidebar-meta">
+    <span>Jolt commit 1b2e77e…</span>
+    <span>Header 5.6.1</span>
+    <span>Max 2027 target</span>
+  </div>
+  <nav class="toc" aria-label="Report contents"><a class="toc-section" href="#cyrusscatter-collision-and-solver-reuse">CyrusScatter Collision and Solver Reuse </a>
+<a class="toc-section" href="#exact-pin-jolt-assessment-rigid-settling-path-rooted-guide-gaps-and-decision-experiments">Exact-pin Jolt assessment, rigid-settling path, rooted-guide gaps, and decision experiments </a>
+<a class="toc-section" href="#1-executive-recommendation">1. Executive recommendation </a>
+<a class="toc-subsection" href="#case-a-reuse-broadly">Case A: reuse broadly </a>
+<a class="toc-subsection" href="#case-b-reuse-selectively">Case B: reuse selectively </a>
+<a class="toc-subsection" href="#do-not-substitute-gpu-hair">Do not substitute GPU hair </a>
+<a class="toc-subsection" href="#1-1-confidence-and-unresolved-risks">1.1 Confidence and unresolved risks </a>
+<a class="toc-subsection" href="#1-2-what-this-report-does-not-claim">1.2 What this report does not claim </a>
+<a class="toc-section" href="#2-evidence-boundary-and-exact-version-provenance">2. Evidence boundary and exact version provenance </a>
+<a class="toc-subsection" href="#2-1-evidence-labels">2.1 Evidence labels </a>
+<a class="toc-subsection" href="#2-2-the-pin-is-a-post-5-6-0-source-snapshot-whose-header-says-5-6-1">2.2 The pin is a post-5.6.0 source snapshot whose header says 5.6.1 </a>
+<a class="toc-subsection" href="#2-3-the-cpu-rods-and-gpu-hair-are-separate-systems">2.3 The CPU rods and GPU hair are separate systems </a>
+<a class="toc-section" href="#3-case-a-rigid-stones-and-debris-settling-against-fixed-terrain">3. Case A — rigid stones and debris settling against fixed terrain </a>
+<a class="toc-subsection" href="#3-1-recommended-documented-path">3.1 Recommended documented path </a>
+<a class="toc-subsection" href="#3-2-shape-policy-for-dynamic-debris">3.2 Shape policy for dynamic debris </a>
+<a class="toc-subsection" href="#3-3-initialization-and-settling">3.3 Initialization and settling </a>
+<a class="toc-subsection" href="#3-4-freeze-cache-and-publication">3.4 Freeze, cache, and publication </a>
+<a class="toc-subsection" href="#3-5-what-genuinely-transfers-from-physics-lab">3.5 What genuinely transfers from Physics Lab </a>
+<a class="toc-section" href="#4-case-b-rooted-flexible-guides-fitting-around-fixed-stones">4. Case B — rooted flexible guides fitting around fixed stones </a>
+<a class="toc-subsection" href="#4-1-what-jolt-s-cpu-rod-model-genuinely-supplies">4.1 What Jolt’s CPU rod model genuinely supplies </a>
+<a class="toc-subsection" href="#4-2-root-position-and-root-orientation-are-distinct-but-the-stock-sample-couples-them">4.2 Root position and root orientation are distinct—but the stock sample couples them </a>
+<a class="toc-subsection" href="#4-3-the-decisive-stock-contact-limitation">4.3 The decisive stock-contact limitation </a>
+<a class="toc-subsection" href="#4-4-pinned-roots-are-omitted-from-stock-collision-response">4.4 Pinned roots are omitted from stock collision response </a>
+<a class="toc-subsection" href="#4-5-visible-blade-width-is-not-represented-by-a-centerline-alone">4.5 Visible blade width is not represented by a centerline alone </a>
+<a class="toc-subsection" href="#4-6-rest-shape-versus-contact-feasibility">4.6 Rest shape versus contact feasibility </a>
+<a class="toc-section" href="#5-experimental-gpu-hair-is-not-the-cpu-rod-answer">5. Experimental GPU hair is not the CPU rod answer </a>
+<a class="toc-section" href="#6-infrastructure-reuse-map">6. Infrastructure reuse map </a>
+<a class="toc-subsection" href="#6-1-shared-data-contracts">6.1 Shared data contracts </a>
+<a class="toc-section" href="#7-collision-representation-comparison">7. Collision representation comparison </a>
+<a class="toc-subsection" href="#7-1-convex-hull-limits-that-matter-for-source-cooking">7.1 Convex hull limits that matter for source cooking </a>
+<a class="toc-subsection" href="#7-2-triangle-meshes-are-surfaces-not-automatically-solids">7.2 Triangle meshes are surfaces, not automatically solids </a>
+<a class="toc-section" href="#8-physical-scale-margins-initial-penetration-and-coordinates">8. Physical scale, margins, initial penetration, and coordinates </a>
+<a class="toc-subsection" href="#8-1-defaults-are-in-meters">8.1 Defaults are in meters </a>
+<a class="toc-subsection" href="#8-2-initial-penetration-policy">8.2 Initial penetration policy </a>
+<a class="toc-subsection" href="#8-3-large-coordinates">8.3 Large coordinates </a>
+<a class="toc-section" href="#9-adversarial-fixtures-and-expected-capability-gaps">9. Adversarial fixtures and expected capability gaps </a>
+<a class="toc-section" href="#10-focused-static-fitter-versus-jolt-rods">10. Focused static fitter versus Jolt rods </a>
+<a class="toc-subsection" href="#10-1-focused-static-fitter">10.1 Focused static fitter </a>
+<a class="toc-subsection" href="#10-2-stock-jolt-cpu-rods">10.2 Stock Jolt CPU rods </a>
+<a class="toc-subsection" href="#10-3-jolt-rods-plus-custom-segment-contact">10.3 Jolt rods plus custom segment contact </a>
+<a class="toc-subsection" href="#10-4-jolt-collision-queries-plus-a-cyrus-fitter">10.4 Jolt collision queries plus a Cyrus fitter </a>
+<a class="toc-subsection" href="#10-5-total-cost-comparison">10.5 Total-cost comparison </a>
+<a class="toc-section" href="#11-smallest-experiments-that-decide-the-architecture">11. Smallest experiments that decide the architecture </a>
+<a class="toc-subsection" href="#e1-exact-pin-build-and-provenance">E1 — exact-pin build and provenance </a>
+<a class="toc-subsection" href="#e2-root-anchoring-modes">E2 — root anchoring modes </a>
+<a class="toc-subsection" href="#e3-segment-crossing-falsification">E3 — segment-crossing falsification </a>
+<a class="toc-subsection" href="#e4-deep-inside-and-pinned-root-cases">E4 — deep-inside and pinned-root cases </a>
+<a class="toc-subsection" href="#e5-narrow-gap-and-sharp-corner">E5 — narrow gap and sharp corner </a>
+<a class="toc-subsection" href="#e6-jolt-capsule-query-vs-own-bvh">E6 — Jolt capsule query vs own BVH </a>
+<a class="toc-subsection" href="#e7-rigid-debris-baseline">E7 — rigid debris baseline </a>
+<a class="toc-subsection" href="#e8-static-fit-parity-and-publication">E8 — static-fit parity and publication </a>
+<a class="toc-subsection" href="#11-1-go-no-go-rules">11.1 Go/no-go rules </a>
+<a class="toc-section" href="#12-proposed-cyrus-implementation-architecture">12. Proposed Cyrus implementation architecture </a>
+<a class="toc-subsection" href="#12-1-shared-front-end">12.1 Shared front end </a>
+<a class="toc-subsection" href="#12-2-ownership-and-invalidation">12.2 Ownership and invalidation </a>
+<a class="toc-subsection" href="#12-3-jobs-and-cancellation">12.3 Jobs and cancellation </a>
+<a class="toc-subsection" href="#12-4-completed-result-publication">12.4 Completed-result publication </a>
+<a class="toc-section" href="#13-failure-and-diagnostic-contract">13. Failure and diagnostic contract </a>
+<a class="toc-section" href="#14-recommended-method-by-total-integration-and-maintenance-cost">14. Recommended method by total integration and maintenance cost </a>
+<a class="toc-subsection" href="#14-1-case-a">14.1 Case A </a>
+<a class="toc-subsection" href="#14-2-case-b">14.2 Case B </a>
+<a class="toc-subsection" href="#14-3-when-to-reconsider-jolt-rods">14.3 When to reconsider Jolt rods </a>
+<a class="toc-subsection" href="#14-4-explicit-rejections">14.4 Explicit rejections </a>
+<a class="toc-section" href="#15-direct-answers">15. Direct answers </a>
+<a class="toc-subsection" href="#what-can-be-shared-between-rigid-settling-and-rooted-fitting">What can be shared between rigid settling and rooted fitting? </a>
+<a class="toc-subsection" href="#what-cannot-be-shared-as-is">What cannot be shared as-is? </a>
+<a class="toc-subsection" href="#does-jolt-5-6-1-at-the-pin-contain-cpu-rods">Does Jolt 5.6.1 at the pin contain CPU rods? </a>
+<a class="toc-subsection" href="#do-those-rods-collide-as-capsules-or-full-segments">Do those rods collide as capsules or full segments? </a>
+<a class="toc-subsection" href="#can-root-position-and-orientation-be-controlled-separately">Can root position and orientation be controlled separately? </a>
+<a class="toc-subsection" href="#what-is-the-smallest-useful-experiment">What is the smallest useful experiment? </a>
+<a class="toc-subsection" href="#what-should-be-built-first">What should be built first? </a>
+<a class="toc-section" href="#16-source-and-reference-map">16. Source and reference map </a>
+<a class="toc-subsection" href="#exact-pin-and-release-provenance">Exact pin and release provenance </a>
+<a class="toc-subsection" href="#rigid-shapes-scale-and-queries">Rigid shapes, scale, and queries </a>
+<a class="toc-subsection" href="#cpu-rods-and-soft-body-collision">CPU rods and soft-body collision </a>
+<a class="toc-subsection" href="#update-jobs-gpu-hair-and-license">Update, jobs, GPU hair, and license </a>
+<a class="toc-section" href="#17-final-decision">17. Final decision </a></nav>
+</aside>
+<main class="main"><article class="paper">
+<div class="report-kicker">
+<span>Implementation-level research</span>
+<span class="host">Exact Jolt pin inspected</span>
+<span>Rigid settling · rooted guides</span>
+<span class="test">No Max/Jolt runtime tests executed</span>
+</div>
+<div class="report-summary">
+<div class="summary-card key"><strong>Case A — rigid stones/debris</strong>Reuse Jolt’s rigid-body path. Use shared convex or compound-convex source shapes, fixed mesh/heightfield terrain, fixed-step settling, sleeping, and stable-ID transform capture.</div>
+<div class="summary-card boundary"><strong>Case B — rooted flexible guides</strong>Reuse infrastructure, not the stock contact model. Jolt’s CPU Cosserat rods are real and useful, but stock soft-body collision is per movable vertex—not whole rod segment/capsule contact.</div>
+</div>
+<h1 id="cyrusscatter-collision-and-solver-reuse">CyrusScatter Collision and Solver Reuse<a aria-label="Link to this section" class="anchor" href="#cyrusscatter-collision-and-solver-reuse">#</a></h1>
+<h2 id="exact-pin-jolt-assessment-rigid-settling-path-rooted-guide-gaps-and-decision-experiments">Exact-pin Jolt assessment, rigid-settling path, rooted-guide gaps, and decision experiments<a aria-label="Link to this section" class="anchor" href="#exact-pin-jolt-assessment-rigid-settling-path-rooted-guide-gaps-and-decision-experiments">#</a></h2>
+<p><strong>Date:</strong> 24 October 2026<br/>
+<strong>Target host:</strong> Autodesk 3ds Max 2027<br/>
+<strong>Jolt source inspected:</strong> commit <code>1b2e77e3c6c09709e5edc79dc208459b8ff32051</code><br/>
+<strong>Status:</strong> Engineering research and architecture evaluation only. No repository was modified and no production feature was implemented.</p>
+<hr/>
+<h2 id="1-executive-recommendation">1. Executive recommendation<a aria-label="Link to this section" class="anchor" href="#1-executive-recommendation">#</a></h2>
+<div class="decision-card">
+<strong>Recommendation:</strong> keep two implementation tracks. For rigid stones and debris, continue with the existing Jolt rigid-body path. For rooted vegetation, build a focused static guide fitter first and optionally reuse Jolt’s cooked obstacle shapes and collision-query layer. Do not adopt stock Jolt CPU rods as the first production solution unless the adversarial tests below show that vertex-only collision is acceptable for the supported assets—which is unlikely for long grass segments and thin obstacles.
+</div>
+<div class="verdict-grid">
+<section class="verdict good"><h3 id="case-a-reuse-broadly">Case A: reuse broadly<a aria-label="Link to this section" class="anchor" href="#case-a-reuse-broadly">#</a></h3><p>Jolt is a natural fit for dynamic convex/compound stones settling against fixed terrain. Its body model, broad phase, narrow phase, contact solver, sleeping, shape sharing, and job graph address the actual problem.</p></section>
+<section class="verdict warn"><h3 id="case-b-reuse-selectively">Case B: reuse selectively<a aria-label="Link to this section" class="anchor" href="#case-b-reuse-selectively">#</a></h3><p>The CPU rod constraints preserve length, shear, bend, twist, and rest orientation. The stock collision path, however, produces one deepest collision plane per movable particle. Rod connectivity is not passed into collision.</p></section>
+<section class="verdict bad"><h3 id="do-not-substitute-gpu-hair">Do not substitute GPU hair<a aria-label="Link to this section" class="anchor" href="#do-not-substitute-gpu-hair">#</a></h3><p>The experimental GPU hair system is a separate compute subsystem, not the Physics Lab rigid path. Its own source labels it work in progress, limits environmental shapes, stores CPU and GPU state, and describes CPU readback as slow debugging functionality.</p></section>
+</div>
+<h3 id="1-1-confidence-and-unresolved-risks">1.1 Confidence and unresolved risks<a aria-label="Link to this section" class="anchor" href="#1-1-confidence-and-unresolved-risks">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Conclusion</th><th>Confidence</th><th>Basis</th><th>Remaining risk</th></tr></thead>
+<tbody>
+<tr><td>Rigid stones should use Jolt rigid bodies</td><td><span class="confidence high">High</span></td><td>Exact shape/body/update APIs and the existing supplied Physics Lab context.</td><td>Local wrapper details and Max 2027 qualification were not available publicly.</td></tr>
+<tr><td>Stock CPU rods do not provide whole-segment contact</td><td><span class="confidence high">High</span></td><td>Exact iterator and soft-body collision source expose vertex position/inverse mass only.</td><td>A downstream local fork could have changed behavior; no such source was accessible.</td></tr>
+<tr><td>A focused static fitter is the lowest total-cost first vegetation solution</td><td><span class="confidence med">Medium–high</span></td><td>Static product goal, exact Jolt contact gap, simpler cancellation/publication, no temporal state.</td><td>Must be falsified by the proposed side-by-side prototypes.</td></tr>
+<tr><td>Jolt collision queries may still be worth reusing inside that fitter</td><td><span class="confidence med">Medium</span></td><td>Exact public capsule/shape query APIs and reusable cooked shapes.</td><td>Per-segment query overhead and multi-contact behavior require measurement.</td></tr>
+</tbody></table></div>
+<h3 id="1-2-what-this-report-does-not-claim">1.2 What this report does not claim<a aria-label="Link to this section" class="anchor" href="#1-2-what-this-report-does-not-claim">#</a></h3>
+<ul>
+<li>It does not claim that an existing physics engine solves source preparation, guide-to-mesh binding, viewport delivery, renderer delivery, or Bake.</li>
+<li>It does not claim that “solver completed” means contact quality was achieved.</li>
+<li>It does not report performance measurements. Every capacity and timing item below is an experiment, formula, or decision gate.</li>
+<li>It does not independently verify the local <code>CyrusPhysicsLab</code> wrapper. The public Cyrus repository did not expose the listed Physics Lab files during this review; wrapper-specific statements are therefore limited to the supplied project context.</li>
+</ul>
+<hr/>
+<h2 id="2-evidence-boundary-and-exact-version-provenance">2. Evidence boundary and exact version provenance<a aria-label="Link to this section" class="anchor" href="#2-evidence-boundary-and-exact-version-provenance">#</a></h2>
+<h3 id="2-1-evidence-labels">2.1 Evidence labels<a aria-label="Link to this section" class="anchor" href="#2-1-evidence-labels">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Label</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><span class="badge inspected">I</span></td><td>Source inspected at the exact dependency commit.</td></tr>
+<tr><td><span class="badge tag">T</span></td><td>Behavior or metadata from the public <code>v5.6.0</code> tag/release baseline.</td></tr>
+<tr><td><span class="badge context">C</span></td><td>User-supplied Cyrus local-source context, not independently verified.</td></tr>
+<tr><td><span class="badge proposal">P</span></td><td>Proposed Cyrus design or interpretation.</td></tr>
+<tr><td><span class="badge experiment">E</span></td><td>Required local experiment; not executed in this environment.</td></tr>
+</tbody></table></div>
+<h3 id="2-2-the-pin-is-a-post-5-6-0-source-snapshot-whose-header-says-5-6-1">2.2 The pin is a post-5.6.0 source snapshot whose header says 5.6.1<a aria-label="Link to this section" class="anchor" href="#2-2-the-pin-is-a-post-5-6-0-source-snapshot-whose-header-says-5-6-1">#</a></h3>
+<p><span class="badge inspected">I</span> The exact commit is publicly accessible. Its <code>Jolt/Core/Core.h</code> defines version <code>5.6.1</code>. The same header at tag <code>v5.6.0</code> defines patch version <code>0</code>. GitHub’s compare endpoint reports that the pin is <strong>62 commits ahead</strong> of the <code>v5.6.0</code> base. During this review, no corresponding public <code>v5.6.1</code> tag was available through the repository API. Treat the dependency as a precisely pinned post-release snapshot—not as a tagged binary release. <a class="ref-tag" href="#ref-j1">J1</a><a class="ref-tag" href="#ref-j2">J2</a><a class="ref-tag" href="#ref-j3">J3</a><a class="ref-tag" href="#ref-j4">J4</a></p>
+<div class="code-fact"><strong>Exact dependency identity</strong><pre data-language="TEXT"><code>Commit: 1b2e77e3c6c09709e5edc79dc208459b8ff32051
+Header: JPH_VERSION_MAJOR 5
+        JPH_VERSION_MINOR 6
+        JPH_VERSION_PATCH 1
+Relationship to tag v5.6.0: ahead by 62 commits</code></pre></div>
+<p>The compare file list contains no changes under <code>Jolt/Physics/Hair/</code>, so the pin carries the GPU hair system introduced in 5.6.0 rather than a separate post-release redesign. The exact pin does contain unreleased fixes and maintenance changes elsewhere, including collision-related fixes listed under “Unreleased changes”; those are reasons to preserve the exact SHA in all experiments.</p>
+<h3 id="2-3-the-cpu-rods-and-gpu-hair-are-separate-systems">2.3 The CPU rods and GPU hair are separate systems<a aria-label="Link to this section" class="anchor" href="#2-3-the-cpu-rods-and-gpu-hair-are-separate-systems">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>System</th><th>Execution</th><th>Representation</th><th>Collision path</th><th>Output</th><th>Relevance</th></tr></thead>
+<tbody>
+<tr><td>Rigid bodies</td><td>CPU, <code>PhysicsSystem::Update</code></td><td>Bodies + immutable collision shapes</td><td>Rigid broad/narrow phase + contact manifolds</td><td>Body transforms and velocities</td><td>Direct fit for stones/debris.</td></tr>
+<tr><td>CPU soft-body Cosserat rods</td><td>CPU soft-body jobs inside <code>PhysicsSystem::Update</code></td><td>Vertices, rod rotations, stretch/shear and bend/twist constraints</td><td>Per movable vertex; one selected collision plane per vertex</td><td>Soft-body vertices and rod states</td><td>Mechanically relevant, contact-incomplete for long guides.</td></tr>
+<tr><td>GPU hair</td><td>Compute system/queue and shaders</td><td>Guide strands, follow/render strands, GPU buffers</td><td>Experimental convex-hull environmental collision</td><td>GPU position/render buffers; CPU readback for debugging</td><td>Not a drop-in extension of Physics Lab or the recommended first static path.</td></tr>
+</tbody></table></div>
+<hr/>
+<h2 id="3-case-a-rigid-stones-and-debris-settling-against-fixed-terrain">3. Case A — rigid stones and debris settling against fixed terrain<a aria-label="Link to this section" class="anchor" href="#3-case-a-rigid-stones-and-debris-settling-against-fixed-terrain">#</a></h2>
+<h3 id="3-1-recommended-documented-path">3.1 Recommended documented path<a aria-label="Link to this section" class="anchor" href="#3-1-recommended-documented-path">#</a></h3>
+<pre data-language="FLOW"><code>Max host thread
+  evaluate source/terrain meshes and transforms
+        ↓
+Cyrus-owned snapshots in meters and a local solve origin
+        ↓
+shape cache
+  source → analytic / convex / compound-convex shape
+  terrain → static mesh or heightfield
+        ↓
+create stable-ID dynamic bodies + fixed terrain body
+        ↓
+fixed-step Jolt updates until sleep / convergence / work cap
+        ↓
+validate contacts, errors, transforms and unresolved overlaps
+        ↓
+atomically publish final transforms keyed by placement ID
+        ↓
+discard transient world or retain only an explicit diagnostic cache</code></pre>
+<p>This is a genuine reuse case. Rigid debris needs the exact services a rigid engine provides: broad-phase pairs, shape-to-shape contact generation, friction, mass/inertia, rotational response, sleeping, and stable stepping. A replacement static drop-to-surface routine would have to recreate pile interaction and rotational settling.</p>
+<h3 id="3-2-shape-policy-for-dynamic-debris">3.2 Shape policy for dynamic debris<a aria-label="Link to this section" class="anchor" href="#3-2-shape-policy-for-dynamic-debris">#</a></h3>
+<ul>
+<li><strong>Analytic primitive:</strong> use for genuinely simple geometry or an intentionally simplified collision proxy.</li>
+<li><strong>Single convex hull:</strong> default for approximately convex pebbles and stones. It preserves dynamic support and stable mass properties while discarding concavities.</li>
+<li><strong>Compound of convex hulls:</strong> use when a visible concavity materially affects settling. Keep the child count bounded and cache the compound per source revision.</li>
+<li><strong>Triangle mesh:</strong> use for fixed terrain, curbs, walls, and other static receivers. Do not make it the normal dynamic-stone representation.</li>
+<li><strong>Heightfield:</strong> use for regular terrain without overhangs when the existing terrain data naturally matches a heightfield.</li>
+</ul>
+<h3 id="3-3-initialization-and-settling">3.3 Initialization and settling<a aria-label="Link to this section" class="anchor" href="#3-3-initialization-and-settling">#</a></h3>
+<p><span class="badge proposal">P</span> The rigid workflow should start from accepted Scatter placements, not regenerate distribution. Each physics body carries the stable placement ID in application metadata. Initial transform, linear/angular velocity, source shape, friction, restitution, damping, gravity factor, and body layer are explicit snapshot inputs.</p>
+<ul>
+<li>Run at a fixed step. The exact release notes warn that wildly changing delta times can destabilize warm starting, and <code>PhysicsSystem::Update</code> divides the supplied interval into collision steps. <a class="ref-tag" href="#ref-j5">J5</a><a class="ref-tag" href="#ref-j22">J22</a></li>
+<li>Stop only when all target bodies satisfy a declared sleeping/convergence rule, or when a step/work cap is reached.</li>
+<li>Record <code>EPhysicsUpdateError</code>; a completed call can still report that contacts were ignored because caches or buffers were full. <a class="ref-tag" href="#ref-j23">J23</a></li>
+<li>Before simulation, detect severe initial overlap. Do not rely on a finite position-iteration correction budget to rescue arbitrary embedded geometry.</li>
+<li>After simulation, validate residual penetration against the product tolerance. “Asleep” is not equivalent to “acceptable.”</li>
+</ul>
+<h3 id="3-4-freeze-cache-and-publication">3.4 Freeze, cache, and publication<a aria-label="Link to this section" class="anchor" href="#3-4-freeze-cache-and-publication">#</a></h3>
+<p>The durable result for Case A is a compact array of final transforms and status records keyed by stable placement ID. It is <em>not</em> the transient Jolt world. This keeps camera navigation, renderer evaluation, save/reopen, and Bake independent from simulation state.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>State</th><th>Owner</th><th>Persistence</th><th>Reason</th></tr></thead>
+<tbody>
+<tr><td>Source collision shape</td><td>Shared source/shape cache</td><td>Retained by source revision</td><td>Thousands of placements can share one immutable shape.</td></tr>
+<tr><td>Terrain shape</td><td>Obstacle snapshot/cache</td><td>Retained by obstacle revision</td><td>Avoid recooking unchanged terrain.</td></tr>
+<tr><td>Jolt bodies/world</td><td>Transient solve job</td><td>Normally discarded after capture</td><td>Prevents hidden temporal state from becoming product truth.</td></tr>
+<tr><td>Final transforms</td><td>Cyrus completed result</td><td>Saved/Undoable</td><td>Stable, cheap, renderer-independent output.</td></tr>
+<tr><td>Diagnostics</td><td>Cyrus completed result</td><td>Saved only if product requires it</td><td>Communicates unresolved overlaps, caps, and input failures.</td></tr>
+</tbody></table></div>
+<h3 id="3-5-what-genuinely-transfers-from-physics-lab">3.5 What genuinely transfers from Physics Lab<a aria-label="Link to this section" class="anchor" href="#3-5-what-genuinely-transfers-from-physics-lab">#</a></h3>
+<p><span class="badge context">C</span> The supplied context says Physics Lab already has a Jolt rigid-body workflow and retained instance/proxy output. The public repository did not expose the listed Lab source, so this report cannot verify its snapshot format, cache keys, thread model, cancellation, or publication semantics. The local audit should therefore check those items explicitly rather than assuming they already meet Scatter’s stricter lifecycle rules.</p>
+<hr/>
+<h2 id="4-case-b-rooted-flexible-guides-fitting-around-fixed-stones">4. Case B — rooted flexible guides fitting around fixed stones<a aria-label="Link to this section" class="anchor" href="#4-case-b-rooted-flexible-guides-fitting-around-fixed-stones">#</a></h2>
+<h3 id="4-1-what-jolt-s-cpu-rod-model-genuinely-supplies">4.1 What Jolt’s CPU rod model genuinely supplies<a aria-label="Link to this section" class="anchor" href="#4-1-what-jolt-s-cpu-rod-model-genuinely-supplies">#</a></h3>
+<p><span class="badge inspected">I</span> The exact pin contains a CPU soft-body Cosserat-rod implementation and a public sample with a helix, a branching tree, and a “weed-like structure” of 50 strands × 64 vertices. The sample pins each strand’s first vertex with inverse mass zero, adds one stretch/shear constraint per segment and one bend/twist constraint per adjacent rod pair, calculates rod properties, optimizes constraint order, and creates a soft body. <a class="ref-tag" href="#ref-j14">J14</a></p>
+<p>The data model preserves:</p>
+<ul>
+<li><strong>segment rest length</strong> through <code>RodStretchShear::mLength</code>;</li>
+<li><strong>rod rest orientation</strong> through the Bishop frame;</li>
+<li><strong>rest bend/twist</strong> through <code>RodBendTwist::mOmega0</code>;</li>
+<li><strong>compliance</strong> for stretch/shear and bend/twist;</li>
+<li><strong>render orientation</strong> because a rod rotation is an explicit state and the source comments call out attached plant leaves as a use case. <a class="ref-tag" href="#ref-j15">J15</a><a class="ref-tag" href="#ref-j16">J16</a><a class="ref-tag" href="#ref-j18">J18</a></li>
+</ul>
+<h3 id="4-2-root-position-and-root-orientation-are-distinct-but-the-stock-sample-couples-them">4.2 Root position and root orientation are distinct—but the stock sample couples them<a aria-label="Link to this section" class="anchor" href="#4-2-root-position-and-root-orientation-are-distinct-but-the-stock-sample-couples-them">#</a></h3>
+<p>This distinction is implementation-critical.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Desired behavior</th><th>Jolt construction</th><th>Consequence</th><th>Cyrus implication</th></tr></thead>
+<tbody>
+<tr><td>Hard root position + hard root orientation</td><td>Set root vertex inverse mass to 0, then call <code>CalculateRodProperties()</code>.</td><td>The adjacent rod’s rotational inverse mass is calculated as the minimum of its two endpoint inverse masses, so it becomes 0. Its initial rod rotation is effectively fixed while the dynamic second vertex is driven to the rod.</td><td>This matches a fully clamped root, but it is stronger than a position-only pin.</td></tr>
+<tr><td>Hard root position + free/soft root orientation</td><td>Do not rely on the inverse-mass-zero recipe alone. A possible route is a hard skin-position constraint on a movable root, or an explicit reference construction with controlled compliance.</td><td>The public rod API has no single “root orientation stiffness” field.</td><td>Requires a prepared root contract and a local prototype; expose position and orientation separately in the product.</td></tr>
+<tr><td>Soft root position + soft root orientation</td><td>Use finite positional constraint/compliance plus a separate orientation reference rod/bend-twist relationship.</td><td>Not demonstrated by the weed sample.</td><td>Proposed recipe, not qualified behavior.</td></tr>
+</tbody></table></div>
+<p><span class="badge inspected">I</span> <code>CalculateRodProperties()</code> explicitly sets each rod’s inverse mass to the minimum inverse mass of its endpoints. This subtle rule is why a zero-mass root can lock the adjacent rod’s orientation. <a class="ref-tag" href="#ref-j16">J16</a></p>
+<h3 id="4-3-the-decisive-stock-contact-limitation">4.3 The decisive stock-contact limitation<a aria-label="Link to this section" class="anchor" href="#4-3-the-decisive-stock-contact-limitation">#</a></h3>
+<div class="callout warning"><strong>Stock CPU soft-body collision is vertex-based.</strong> The collision iterator exposes a vertex position and inverse mass, and stores one selected collision plane plus one colliding-shape index. Shape collision functions do not receive rod endpoints, rod indices, or segment thickness. <a class="ref-tag" href="#ref-j19">J19</a></div>
+<p>The exact soft-body update:</p>
+<ol>
+<li>builds a soft-body AABB from current/predicted vertex positions and expands it by the single body-wide <code>mVertexRadius</code>;</li>
+<li>collects overlapping rigid shapes through the broad phase;</li>
+<li>asks each shape to collide the <em>vertices</em>;</li>
+<li>keeps the largest penetration for each vertex;</li>
+<li>projects only vertices whose inverse mass is greater than zero. <a class="ref-tag" href="#ref-j18">J18</a><a class="ref-tag" href="#ref-j19">J19</a></li>
+</ol>
+<pre data-language="ADVERSARIAL CASE"><code>endpoint A ●──────────────● endpoint B
+                 █
+              stone
+
+A and B are outside.
+The rod segment crosses the stone.
+Vertex-only collision reports no contact.</code></pre>
+<p>This is not a theoretical edge case; it is the minimum falsification fixture for using stock rods as a vegetation-contact solution.</p>
+<h3 id="4-4-pinned-roots-are-omitted-from-stock-collision-response">4.4 Pinned roots are omitted from stock collision response<a aria-label="Link to this section" class="anchor" href="#4-4-pinned-roots-are-omitted-from-stock-collision-response">#</a></h3>
+<p><span class="badge inspected">I</span> The soft-body collision code and collision-projection loop skip vertices with inverse mass zero. A root embedded in a stone can therefore remain embedded without being depenetrated by the stock vertex path. That is correct for a kinematic particle, but it means Cyrus must preflight and diagnose root conflicts rather than expecting Jolt to repair them. <a class="ref-tag" href="#ref-j18">J18</a><a class="ref-tag" href="#ref-j20">J20</a></p>
+<h3 id="4-5-visible-blade-width-is-not-represented-by-a-centerline-alone">4.5 Visible blade width is not represented by a centerline alone<a aria-label="Link to this section" class="anchor" href="#4-5-visible-blade-width-is-not-represented-by-a-centerline-alone">#</a></h3>
+<p><code>SoftBodyCreationSettings::mVertexRadius</code> is one scalar radius for all soft-body particles. It can add clearance around vertices, but it does not represent:</p>
+<ul>
+<li>a varying blade width from root to tip;</li>
+<li>the two long edges of a ribbon;</li>
+<li>anisotropic card thickness;</li>
+<li>crossed cards whose visible envelope is far from the guide;</li>
+<li>opacity silhouettes extending beyond geometric card edges.</li>
+</ul>
+<p>A production contact contract needs a per-segment envelope—at minimum a capsule radius <code>r(s)</code>, and for broad leaves possibly two edge guides, an oriented ribbon, or several offset collision samples. This requirement exists regardless of the numerical solver.</p>
+<h3 id="4-6-rest-shape-versus-contact-feasibility">4.6 Rest shape versus contact feasibility<a aria-label="Link to this section" class="anchor" href="#4-6-rest-shape-versus-contact-feasibility">#</a></h3>
+<p>Jolt’s rod constraints preserve rest length and relative rod rotation through compliance-scaled iterative projections. That does not guarantee a feasible shape. A guide can be trapped in a gap narrower than its requested envelope, begin wholly inside a closed solid, or require a bend beyond the artist’s limit. Cyrus must retain independent validation metrics:</p>
+<ul>
+<li>root position drift;</li>
+<li>root orientation drift;</li>
+<li>segment length error;</li>
+<li>rest-curvature/twist deviation;</li>
+<li>residual visible-envelope penetration;</li>
+<li>maximum bend violation;</li>
+<li>unresolved-contact count and reason.</li>
+</ul>
+<hr/>
+<h2 id="5-experimental-gpu-hair-is-not-the-cpu-rod-answer">5. Experimental GPU hair is not the CPU rod answer<a aria-label="Link to this section" class="anchor" href="#5-experimental-gpu-hair-is-not-the-cpu-rod-answer">#</a></h2>
+<p><span class="badge tag">T</span> Jolt 5.6.0 introduced a strand-based GPU hair system and compute backends. <span class="badge inspected">I</span> At the exact pin, <code>Hair.h</code> still labels the subsystem “currently still in development” and lists missing LOD, wind, grid advection, non-convex-hull collision support, memory optimization, and multiple neutral poses. It also states that reading GPU state back to CPU is slow and intended for debugging. <a class="ref-tag" href="#ref-j5">J5</a><a class="ref-tag" href="#ref-j24">J24</a></p>
+<p>Exact <code>Hair.cpp</code> behavior is narrower than a generic rigid collision world:</p>
+<ul>
+<li>it gathers leaf shapes from Jolt bodies;</li>
+<li>it serializes only leaves whose subtype is <code>ConvexHull</code> into GPU collision buffers;</li>
+<li>compounds work only by expanding to supported convex-hull leaves;</li>
+<li>ordinary analytic leaves and triangle meshes are not converted by that path. <a class="ref-tag" href="#ref-j25">J25</a></li>
+</ul>
+<div class="callout info"><strong>Decision:</strong> GPU hair is a future research track for continuous animation, guide/follow-strand generation, and GPU-resident rendering. It is not a low-cost way to add a static Max 2027 vegetation fitting feature to the current CPU/retained-mesh architecture.</div>
+<hr/>
+<h2 id="6-infrastructure-reuse-map">6. Infrastructure reuse map<a aria-label="Link to this section" class="anchor" href="#6-infrastructure-reuse-map">#</a></h2>
+<div class="table-wrap wide"><table>
+<thead><tr><th>Infrastructure</th><th>Case A: rigid settling</th><th>Case B: focused static fitter</th><th>Case B: Jolt CPU rods</th><th>Precise boundary</th></tr></thead>
+<tbody>
+<tr><td><strong>Max geometry snapshots</strong></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td>Host-thread evaluation and owned local-space triangles/points are common. Do not let workers evaluate Max nodes.</td></tr>
+<tr><td><strong>Stable source/instance IDs</strong></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td>Physics body IDs are transient; Cyrus IDs remain authoritative.</td></tr>
+<tr><td><strong>Transform conversion</strong></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td>One canonical Max↔solver transform contract, handedness policy, and local solve origin.</td></tr>
+<tr><td><strong>Unit conversion</strong></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse</span></td><td>Convert scene units to meters before applying Jolt defaults or product tolerances.</td></tr>
+<tr><td><strong>Cooked analytic/convex/mesh shapes</strong></td><td><span class="reuse yes">Reuse directly</span></td><td><span class="reuse maybe">Potentially</span></td><td><span class="reuse yes">Reuse</span></td><td>A fitter can query Jolt bodies/shapes, but an independent triangle BVH may be simpler and more cancellable.</td></tr>
+<tr><td><strong>Shape cache</strong></td><td><span class="reuse yes">Reuse</span></td><td><span class="reuse yes">Reuse concept</span></td><td><span class="reuse yes">Reuse</span></td><td>Cache by geometry revision, representation, scale policy, and cooking settings. Jolt’s settings cache is not a complete application cache.</td></tr>
+<tr><td><strong>Broad phase</strong></td><td><span class="reuse yes">Reuse directly</span></td><td><span class="reuse maybe">Optional</span></td><td><span class="reuse yes">Reuse</span></td><td>For static fitting, per-instance obstacle lists can come from a Cyrus BVH or Jolt broad phase. Measure both.</td></tr>
+<tr><td><strong>Rigid contact solver</strong></td><td><span class="reuse yes">Reuse directly</span></td><td><span class="reuse no">Not applicable</span></td><td><span class="reuse no">Does not solve rods</span></td><td>Rigid manifolds do not supply root/rest-shape constraints.</td></tr>
+<tr><td><strong>CPU rod constraints</strong></td><td><span class="reuse no">Not needed</span></td><td><span class="reuse maybe">Reference/optional</span></td><td><span class="reuse yes">Reuse</span></td><td>Mechanics are reusable; contact correctness is not complete.</td></tr>
+<tr><td><strong>Whole-segment contact</strong></td><td><span class="reuse yes">Rigid convex shapes</span></td><td><span class="reuse no">Must implement/query</span></td><td><span class="reuse no">Missing</span></td><td>Stock soft-body contact sees particles, not rod connectivity.</td></tr>
+<tr><td><strong>Job system</strong></td><td><span class="reuse yes">Reuse/adapt</span></td><td><span class="reuse maybe">Share pool carefully</span></td><td><span class="reuse yes">Jolt internal jobs</span></td><td>Jolt update creates jobs and waits. Avoid oversubscription/deadlock when adapting an external pool.</td></tr>
+<tr><td><strong>Cancellation</strong></td><td><span class="reuse partial">Between steps</span></td><td><span class="reuse yes">Cooperative</span></td><td><span class="reuse partial">Between updates</span></td><td>The public Jolt job/update API has no mid-update cancellation operation. A fitter can check a token per batch/iteration.</td></tr>
+<tr><td><strong>Diagnostics</strong></td><td><span class="reuse partial">Engine + Cyrus</span></td><td><span class="reuse partial">Cyrus-owned</span></td><td><span class="reuse partial">Engine + Cyrus</span></td><td>Profiler/update errors are useful; artist-facing feasibility/contact metrics remain product-specific.</td></tr>
+<tr><td><strong>Completed result</strong></td><td><span class="reuse no">Capture transforms</span></td><td><span class="reuse no">Store guide state</span></td><td><span class="reuse no">Extract vertices/rotations</span></td><td>Never make the live physics world the sole durable product state.</td></tr>
+<tr><td><strong>Guide-to-mesh/render/Bake</strong></td><td><span class="reuse no">Not required</span></td><td><span class="reuse no">Cyrus feature</span></td><td><span class="reuse no">Cyrus feature</span></td><td>Jolt does not preserve Max UVs/material IDs/normals or publish deformed renderer geometry.</td></tr>
+</tbody></table></div>
+<h3 id="6-1-shared-data-contracts">6.1 Shared data contracts<a aria-label="Link to this section" class="anchor" href="#6-1-shared-data-contracts">#</a></h3>
+<pre data-language="C++ SKETCH"><code>struct CollisionGeometrySnapshot {
+    StableObjectId objectId;
+    Revision geometryRevision;
+    Mat4d worldFromLocal;
+    Aabb3d worldBounds;
+    std::vector<vec3f> positions;     // owned, solver-local after capture
+    std::vector<triangleindex> faces;
+    bool closedManifoldKnown;
+    bool closedManifold;
+};
+
+struct CookedShapeKey {
+    StableObjectId sourceId;
+    Revision geometryRevision;
+    CollisionRepresentation representation;
+    ScalePolicy scalePolicy;
+    Hash cookingSettings;
+};
+
+struct CompletedRigidResult {
+    Revision inputRevision;
+    std::vector&lt;StableInstanceId&gt; ids;
+    std::vector&lt;Transform&gt; finalTransforms;
+    std::vector&lt;RigidStatus&gt; status;
+};
+
+struct CompletedGuideResult {
+    Revision inputRevision;
+    std::vector&lt;StableInstanceId&gt; ids;
+    std::vector&lt;GuideState&gt; fittedGuides;
+    std::vector&lt;GuideValidation&gt; validation;
+};</triangleindex></vec3f></code></pre>
+<hr/>
+<h2 id="7-collision-representation-comparison">7. Collision representation comparison<a aria-label="Link to this section" class="anchor" href="#7-collision-representation-comparison">#</a></h2>
+<div class="table-wrap wide"><table>
+<thead><tr><th>Representation</th><th>Static/dynamic role</th><th>Concavity</th><th>Thin/open geometry</th><th>Margins &amp; scale</th><th>Best Cyrus use</th></tr></thead>
+<tbody>
+<tr><td><strong>Analytic sphere/box/capsule</strong></td><td>Static, kinematic, or dynamic convex body.</td><td>None.</td><td>Stable if dimensions are meaningful; cannot reproduce arbitrary thin rock features.</td><td>Boxes default to Jolt’s convex radius unless overridden; small objects need scale-aware values.</td><td>Simple proxies, test fixtures, capsule queries for guide segments.</td></tr>
+<tr><td><strong>Single convex hull</strong></td><td>Preferred dynamic stone/debris shape.</td><td>All concavities filled.</td><td>Thin parts can be lost or dominated by hull tolerance/convex radius.</td><td>Exact source limits hull points after reduction and may reduce convex radius when geometry is too small.</td><td>Default physical pebble/stone representation.</td></tr>
+<tr><td><strong>Compound convex hulls</strong></td><td>Dynamic if all children support it; immutable static compound has a hierarchy for many children.</td><td>Approximates concavity as a union.</td><td>Can capture separated lobes; narrow cavities depend on decomposition quality.</td><td>More children increase cooking, contacts, memory, and traversal work.</td><td>Concave stones whose cavities affect visible settling.</td></tr>
+<tr><td><strong>Triangle mesh</strong></td><td>Use as static terrain/curb/architecture. Exact header marks it <code>MustBeStatic()</code>.</td><td>Full surface concavity.</td><td>Simulation triangles are single-sided; open meshes have no reliable solid interior. Active/internal edges need correct handling.</td><td>Soft-body triangle contact uses a global backward thickness of 0.1 m by default; inappropriate scene scale is dangerous.</td><td>Fixed receivers and irregular terrain, not dynamic pebbles.</td></tr>
+<tr><td><strong>Heightfield</strong></td><td>Static only.</td><td>Height function only; no overhangs.</td><td>Efficient regular terrain; not suitable for curbs/caves/vertical overhangs.</td><td>Sampling resolution defines smallest feature.</td><td>Large regular landscapes.</td></tr>
+<tr><td><strong>SDF</strong></td><td>Not a built-in shape in the exact Jolt shape enum. Would be Cyrus-owned or a custom user shape.</td><td>Excellent for closed solids at adequate resolution.</td><td>Sign is ambiguous for open meshes; thin features disappear if under-resolved.</td><td>Voxel size is the effective tolerance. Dense memory is <code>Nx·Ny·Nz·bytes</code>; a 256³ float scalar field is 64 MiB before gradients/metadata (analytical arithmetic, not a benchmark).</td><td>Deep-inside recovery or many repeated distance/gradient queries when preprocessing is justified.</td></tr>
+</tbody></table></div>
+<h3 id="7-1-convex-hull-limits-that-matter-for-source-cooking">7.1 Convex hull limits that matter for source cooking<a aria-label="Link to this section" class="anchor" href="#7-1-convex-hull-limits-that-matter-for-source-cooking">#</a></h3>
+<p><span class="badge inspected">I</span> The exact convex-hull settings accept a point cloud, discard interior points, and document a maximum of 256 resulting hull points. The default hull tolerance is <code>1e-3</code> in solver units. These values reinforce the need to convert to meters and to avoid treating millimeter-scale source data as if it were already in Jolt units. <a class="ref-tag" href="#ref-j9">J9</a></p>
+<h3 id="7-2-triangle-meshes-are-surfaces-not-automatically-solids">7.2 Triangle meshes are surfaces, not automatically solids<a aria-label="Link to this section" class="anchor" href="#7-2-triangle-meshes-are-surfaces-not-automatically-solids">#</a></h3>
+<p>For rigid collision, mesh triangle winding, active edges, and internal-edge removal affect contact. For point-inside queries, Jolt’s narrow-phase documentation says mesh results are sensible only for closed manifold meshes. For soft-body vertex collision, triangle contact uses the nearest triangle and a finite backward thickness rather than a global watertight inside/outside classifier. <a class="ref-tag" href="#ref-j11">J11</a><a class="ref-tag" href="#ref-j12">J12</a><a class="ref-tag" href="#ref-j20">J20</a></p>
+<hr/>
+<h2 id="8-physical-scale-margins-initial-penetration-and-coordinates">8. Physical scale, margins, initial penetration, and coordinates<a aria-label="Link to this section" class="anchor" href="#8-physical-scale-margins-initial-penetration-and-coordinates">#</a></h2>
+<h3 id="8-1-defaults-are-in-meters">8.1 Defaults are in meters<a aria-label="Link to this section" class="anchor" href="#8-1-defaults-are-in-meters">#</a></h3>
+<p>The exact physics settings explicitly label distances in meters. Important defaults include:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Setting</th><th>Default</th><th>Risk if Max units are passed directly</th></tr></thead>
+<tbody>
+<tr><td>Default convex radius</td><td>0.05 m</td><td>Five centimeters can dominate a pebble, curb edge, or guide clearance.</td></tr>
+<tr><td>Speculative contact distance</td><td>0.02 m</td><td>Can create visible early/ghost contact at small scales.</td></tr>
+<tr><td>Penetration slop</td><td>0.02 m</td><td>Allows two centimeters of sinking before correction.</td></tr>
+<tr><td>Maximum penetration correction per position iteration</td><td>0.2 m</td><td>Not a substitute for handling severe initial embedding.</td></tr>
+<tr><td>Soft-body triangle backward thickness</td><td>0.1 m</td><td>Ten centimeters can protrude through thin walls; reducing it increases tunneling risk.</td></tr>
+<tr><td>Capsule projection slop</td><td>0.02 m</td><td>Needs review for tiny capsule/guide queries.</td></tr>
+</tbody></table></div>
+<p><a class="ref-tag" href="#ref-j7">J7</a><a class="ref-tag" href="#ref-j20">J20</a></p>
+<div class="callout warning"><strong>Required product rule:</strong> define one explicit scene-unit-to-meter scale in the snapshot. Derive artist clearance and collision envelopes in scene units, convert once, and record the scale in diagnostics. Do not silently retune global Jolt constants per object.</div>
+<h3 id="8-2-initial-penetration-policy">8.2 Initial penetration policy<a aria-label="Link to this section" class="anchor" href="#8-2-initial-penetration-policy">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Case</th><th>Rigid debris</th><th>Rooted guide</th><th>Recommended product response</th></tr></thead>
+<tbody>
+<tr><td>Shallow overlap</td><td>Rigid solver may separate through position iterations.</td><td>Movable vertices may project out if they receive a valid plane.</td><td>Allow within a declared initialization tolerance; validate afterward.</td></tr>
+<tr><td>Deep overlap in convex solid</td><td>Can produce large corrections/energy and poor settling.</td><td>Dynamic vertices may recover, but root remains pinned and segment contact is absent.</td><td>Preflight; classify as recoverable or invalid rather than relying on dynamics.</td></tr>
+<tr><td>Entire guide inside triangle mesh</td><td>Not applicable.</td><td>Nearest-triangle contact can be rejected when backward penetration exceeds triangle thickness; global exit direction is not guaranteed.</td><td>Use closed-solid inside test/SDF or report “inside solid; authored correction required.”</td></tr>
+<tr><td>Pinned root inside stone</td><td>Not applicable.</td><td>Stock collision skips inverse-mass-zero root.</td><td>Hard error or explicit preserve-root unresolved state; never move root silently.</td></tr>
+</tbody></table></div>
+<h3 id="8-3-large-coordinates">8.3 Large coordinates<a aria-label="Link to this section" class="anchor" href="#8-3-large-coordinates">#</a></h3>
+<p>Jolt’s query API accepts a <code>base offset</code> specifically to improve float precision far from the origin, and the project supports an optional double-precision position build. For a bounded archviz solve, the lower-cost policy is usually:</p>
+<ol>
+<li>choose a local solve origin near the affected batch;</li>
+<li>subtract it before float geometry/collision work;</li>
+<li>use <code>RVec3</code>/base offsets at the Jolt boundary;</li>
+<li>restore world coordinates only when publishing final results.</li>
+</ol>
+<p><a class="ref-tag" href="#ref-j12">J12</a></p>
+<hr/>
+<h2 id="9-adversarial-fixtures-and-expected-capability-gaps">9. Adversarial fixtures and expected capability gaps<a aria-label="Link to this section" class="anchor" href="#9-adversarial-fixtures-and-expected-capability-gaps">#</a></h2>
+<div class="table-wrap wide"><table>
+<thead><tr><th>Fixture</th><th>Stock rigid path</th><th>Stock CPU rods</th><th>Focused static fitter requirement</th><th>Pass metric</th></tr></thead>
+<tbody>
+<tr><td><strong>Endpoints outside; segment crosses stone</strong></td><td>N/A</td><td>Expected miss: no vertex penetration.</td><td>Capsule/segment-triangle contact over the entire segment.</td><td>Zero residual capsule penetration; endpoints/root preserved within tolerance.</td></tr>
+<tr><td><strong>Blade entirely inside closed solid</strong></td><td>N/A</td><td>Convex shape may give vertex planes; triangle mesh path can be ambiguous/depth-limited.</td><td>Inside classification and a deterministic recovery/failure policy.</td><td>Either valid exit with bounded strain or explicit infeasible status.</td></tr>
+<tr><td><strong>Root inside stone</strong></td><td>N/A</td><td>Pinned root skipped by contact response.</td><td>Preflight root-envelope query.</td><td>Root remains fixed and case is reported unresolved; no silent relocation.</td></tr>
+<tr><td><strong>Narrow gap below requested clearance</strong></td><td>Rigid body may fail to enter/settle.</td><td>One collision plane per vertex can alternate between obstacles.</td><td>Multi-contact set plus feasibility test.</td><td>Clear “gap infeasible” diagnostic, not endless iterations.</td></tr>
+<tr><td><strong>Sharp convex corner</strong></td><td>Convex/mesh manifold behavior depends on active edges and margins.</td><td>Deepest plane may not represent both faces.</td><td>Keep all relevant capsule contacts or solve a local cone of normals.</td><td>No corner cutting; bounded bend and penetration.</td></tr>
+<tr><td><strong>Open mesh</strong></td><td>Works as a one-sided surface if winding is correct; no reliable volume.</td><td>No global inside/outside; back-facing behavior and thickness matter.</td><td>Unsigned surface contact or explicit sidedness; never imply solid containment.</td><td>Behavior matches declared surface/solid mode.</td></tr>
+<tr><td><strong>Very small assets</strong></td><td>Defaults can dominate dimensions.</td><td>Vertex radius/triangle thickness can dominate.</td><td>Scale-normalized tolerances and minimum feature audit.</td><td>Dimensionless error remains bounded after scaling fixture by ×0.01/×100.</td></tr>
+<tr><td><strong>Large world coordinates</strong></td><td>Use local origin/base offset/double position.</td><td>Soft-body local vertices are floats even when world position uses high precision.</td><td>Local batch coordinates.</td><td>Same local result near origin and at large translated coordinate within tolerance.</td></tr>
+<tr><td><strong>Visible card edge beyond guide</strong></td><td>N/A</td><td>Centerline particles can be clear while card intersects.</td><td>Per-segment envelope or offset edge guides.</td><td>Rendered/Baked mesh, not just guide, passes collision tolerance.</td></tr>
+</tbody></table></div>
+<hr/>
+<h2 id="10-focused-static-fitter-versus-jolt-rods">10. Focused static fitter versus Jolt rods<a aria-label="Link to this section" class="anchor" href="#10-focused-static-fitter-versus-jolt-rods">#</a></h2>
+<h3 id="10-1-focused-static-fitter">10.1 Focused static fitter<a aria-label="Link to this section" class="anchor" href="#10-1-focused-static-fitter">#</a></h3>
+<p>The smallest coherent static solver stores only the state needed by the product:</p>
+<pre data-language="MODEL"><code>Guide i:
+  rest points        x⁰₀ … x⁰ₙ
+  fitted points      x₀ … xₙ
+  rest lengths       ℓⱼ = |x⁰ⱼ₊₁ - x⁰ⱼ|
+  rest frames        q⁰ⱼ
+  contact envelope   rⱼ (or oriented ribbon data)
+  root position mode and compliance
+  root orientation mode and compliance
+  maximum bend / shape-preservation weights
+</code></pre>
+<p>A static iteration minimizes or projects constraints such as:</p>
+<pre data-language="CONSTRAINTS"><code>root position:       x₀ = p_root                          (hard or compliant)
+root orientation:    dir(x₀,x₁) ≈ d_root                 (independent stiffness)
+segment length:      |xⱼ₊₁ - xⱼ| = ℓⱼ
+rest curvature:      relative_frame(qⱼ,qⱼ₊₁) ≈ Ω⁰ⱼ
+contact:             distance(capsule(segmentⱼ,rⱼ), obstacle) ≥ clearance
+bend limit:          angle(dirⱼ,dirⱼ₊₁) ≤ θ_max
+</code></pre>
+<p>It can use Gauss–Seidel/XPBD-style projections without carrying velocities, gravity, contact impulses, sleep state, or a timeline. The result is a fitted static guide state plus explicit validation.</p>
+<h4>Advantages</h4>
+<ul>
+<li>Directly matches the first product use case.</li>
+<li>Whole-segment and visible-envelope contact are first-class.</li>
+<li>Root position and orientation are explicit independent controls.</li>
+<li>Cooperative cancellation is straightforward.</li>
+<li>Multi-contact/infeasibility diagnostics can be designed for artists rather than inherited from a game-time solver.</li>
+<li>No fork of Jolt soft-body internals is required.</li>
+</ul>
+<h4>Costs</h4>
+<ul>
+<li>Cyrus owns and tests the constraint loop.</li>
+<li>Collision query choice must be qualified: own triangle BVH, Jolt capsule query, or optional SDF.</li>
+<li>Future continuous animation would require adding velocities/timestepping rather than simply replaying a static fit.</li>
+</ul>
+<h3 id="10-2-stock-jolt-cpu-rods">10.2 Stock Jolt CPU rods<a aria-label="Link to this section" class="anchor" href="#10-2-stock-jolt-cpu-rods">#</a></h3>
+<h4>Advantages</h4>
+<ul>
+<li>Existing tested rod mechanics and explicit rod orientations.</li>
+<li>Shared settings and optimized constraint grouping.</li>
+<li>Natural path toward dynamic wind/moving roots later.</li>
+<li>Existing integration dependency and job system.</li>
+</ul>
+<h4>Blocking gaps</h4>
+<ul>
+<li>Vertex-only environment contact.</li>
+<li>One selected collision plane per vertex.</li>
+<li>One body-wide vertex radius rather than per-segment blade envelope.</li>
+<li>Pinned roots skipped by collision.</li>
+<li>Timeline/fixed-step convergence and temporal state for a static product.</li>
+<li>Still requires Cyrus guide-to-mesh binding, result extraction, renderer delivery, and Bake.</li>
+</ul>
+<h3 id="10-3-jolt-rods-plus-custom-segment-contact">10.3 Jolt rods plus custom segment contact<a aria-label="Link to this section" class="anchor" href="#10-3-jolt-rods-plus-custom-segment-contact">#</a></h3>
+<p>This is the most attractive-looking but highest-maintenance hybrid. A custom obstacle shape alone cannot fix the issue because <code>Shape::CollideSoftBodyVertices</code> receives only a vertex iterator. The public <code>SoftBodyContactListener</code> can accept/reject a body pair and alter mass scales, but it does not supply new rod-segment contacts. <a class="ref-tag" href="#ref-j19">J19</a><a class="ref-tag" href="#ref-j21">J21</a></p>
+<p>A correctness-complete implementation would likely need to:</p>
+<ol>
+<li>expose rod connectivity to collision generation;</li>
+<li>generate capsule/segment contacts against each relevant shape;</li>
+<li>store more than one contact where corners/gaps require it;</li>
+<li>distribute contact corrections to both segment endpoints and potentially rod rotations;</li>
+<li>integrate those contacts into each soft-body iteration, friction, callbacks, and diagnostics;</li>
+<li>maintain the fork across Jolt updates.</li>
+</ol>
+<p>That is no longer “reuse Jolt rods with a small adapter.” It is a soft-body collision extension.</p>
+<h3 id="10-4-jolt-collision-queries-plus-a-cyrus-fitter">10.4 Jolt collision queries plus a Cyrus fitter<a aria-label="Link to this section" class="anchor" href="#10-4-jolt-collision-queries-plus-a-cyrus-fitter">#</a></h3>
+<p>This is the most credible selective-reuse option. Build a <code>CapsuleShape</code> for a guide segment, align it to the segment, and call <code>NarrowPhaseQuery::CollideShape</code> with a controlled separation distance and collector. The API returns penetration axis/depth and contact points, and supports a local base offset. <a class="ref-tag" href="#ref-j12">J12</a><a class="ref-tag" href="#ref-j13">J13</a></p>
+<p>Questions that must be measured:</p>
+<ul>
+<li>cost of many small capsule queries versus direct BVH segment-triangle queries;</li>
+<li>collector behavior at corners and compounds;</li>
+<li>how many contacts are needed per segment;</li>
+<li>shape/body locking overhead in an offline worker context;</li>
+<li>whether a query-only PhysicsSystem complicates cancellation more than it saves in collision code.</li>
+</ul>
+<h3 id="10-5-total-cost-comparison">10.5 Total-cost comparison<a aria-label="Link to this section" class="anchor" href="#10-5-total-cost-comparison">#</a></h3>
+<div class="table-wrap wide"><table>
+<thead><tr><th>Option</th><th>Mechanics</th><th>Contact correctness</th><th>Integration</th><th>Maintenance</th><th>First-release recommendation</th></tr></thead>
+<tbody>
+<tr><td>Focused fitter + Cyrus BVH</td><td>Purpose-built static constraints</td><td>Can implement exact segment/envelope contract</td><td>Medium</td><td>Low–medium, fully owned</td><td><strong>Primary candidate</strong></td></tr>
+<tr><td>Focused fitter + Jolt queries</td><td>Purpose-built static constraints</td><td>Capsule/shape contacts through Jolt</td><td>Medium</td><td>Medium, tied to Jolt query API</td><td><strong>Benchmark against own BVH</strong></td></tr>
+<tr><td>Stock Jolt rods + dense vertices</td><td>Strong</td><td>Approximate; no segment guarantee</td><td>Low prototype</td><td>Low</td><td>Control baseline only</td></tr>
+<tr><td>Jolt rods + core contact fork</td><td>Strong</td><td>Potentially complete</td><td>High</td><td>High; upstream merge burden</td><td>Reject unless experiments show decisive advantage</td></tr>
+<tr><td>Rigid capsule chain + joints</td><td>Dynamic</td><td>Whole capsules</td><td>High body/joint count</td><td>Medium–high</td><td>Not suitable for many grass guides</td></tr>
+<tr><td>GPU hair</td><td>Dynamic GPU rods/follow strands</td><td>Experimental, convex-hull-only path</td><td>Very high for current product</td><td>High and evolving</td><td>Future animation research only</td></tr>
+</tbody></table></div>
+<hr/>
+<h2 id="11-smallest-experiments-that-decide-the-architecture">11. Smallest experiments that decide the architecture<a aria-label="Link to this section" class="anchor" href="#11-smallest-experiments-that-decide-the-architecture">#</a></h2>
+<p>These experiments should be standalone C++ fixtures against the exact pin before Max UI or renderer work. They are deliberately small and falsifiable.</p>
+<div class="experiment-grid">
+<section class="experiment"><h3 id="e1-exact-pin-build-and-provenance">E1 — exact-pin build and provenance<a aria-label="Link to this section" class="anchor" href="#e1-exact-pin-build-and-provenance">#</a></h3><p><strong>Input:</strong> build Jolt and the existing Lab wrapper from SHA <code>1b2e…</code>; log <code>JPH_VERSION_*</code> and binary hash.</p><p><strong>Observe:</strong> compiler flags, double/single precision, enabled shape/soft-body modules, job adapter.</p><p><strong>Decision:</strong> stop if the local binary does not correspond to the inspected source or if local patches affect soft-body collision.</p></section>
+<section class="experiment"><h3 id="e2-root-anchoring-modes">E2 — root anchoring modes<a aria-label="Link to this section" class="anchor" href="#e2-root-anchoring-modes">#</a></h3><p><strong>Input:</strong> one curved 8-segment rod, no obstacle. Compare root <code>invMass=0</code>, hard skin-position pin with movable root, and static reference-rod construction.</p><p><strong>Measure:</strong> root position drift, first-segment orientation drift, length and rest-curvature error.</p><p><strong>Decision:</strong> document which construction maps to hard/soft position and orientation controls.</p></section>
+<section class="experiment critical"><h3 id="e3-segment-crossing-falsification">E3 — segment-crossing falsification<a aria-label="Link to this section" class="anchor" href="#e3-segment-crossing-falsification">#</a></h3><p><strong>Input:</strong> one rod with both endpoints outside a sphere/box while the segment crosses it. Repeat with 1, 2, 4, and 8 subdivisions and controlled vertex radius.</p><p><strong>Measure:</strong> reported contacts and residual segment/capsule penetration.</p><p><strong>Decision:</strong> if stock rods miss the one-segment case, they are not a correctness-complete contact solution. Subdivision is only an approximation, not a fix.</p></section>
+<section class="experiment"><h3 id="e4-deep-inside-and-pinned-root-cases">E4 — deep-inside and pinned-root cases<a aria-label="Link to this section" class="anchor" href="#e4-deep-inside-and-pinned-root-cases">#</a></h3><p><strong>Input:</strong> dynamic guide entirely inside convex hull; same inside closed mesh; pinned root inside each.</p><p><strong>Measure:</strong> contact generation, exit direction, strain, unresolved status.</p><p><strong>Decision:</strong> require a Cyrus preflight/inside policy regardless of chosen solver.</p></section>
+<section class="experiment"><h3 id="e5-narrow-gap-and-sharp-corner">E5 — narrow gap and sharp corner<a aria-label="Link to this section" class="anchor" href="#e5-narrow-gap-and-sharp-corner">#</a></h3><p><strong>Input:</strong> guide between two planes/convex stones with gap above, equal to, and below requested diameter; then a 90° corner.</p><p><strong>Measure:</strong> oscillation, simultaneous contact count, residual penetration, bend limit.</p><p><strong>Decision:</strong> if single-plane vertex contact cannot stabilize without excessive tessellation, prefer multi-contact fitter.</p></section>
+<section class="experiment"><h3 id="e6-jolt-capsule-query-vs-own-bvh">E6 — Jolt capsule query vs own BVH<a aria-label="Link to this section" class="anchor" href="#e6-jolt-capsule-query-vs-own-bvh">#</a></h3><p><strong>Input:</strong> identical segment capsules against analytic, convex, compound, and mesh obstacles.</p><p><strong>Measure:</strong> contact agreement, query count, cold cooking, warm query time, peak scratch, cancellation latency.</p><p><strong>Decision:</strong> choose Jolt queries only if they materially reduce implementation risk without unacceptable overhead or lifecycle coupling.</p></section>
+<section class="experiment"><h3 id="e7-rigid-debris-baseline">E7 — rigid debris baseline<a aria-label="Link to this section" class="anchor" href="#e7-rigid-debris-baseline">#</a></h3><p><strong>Input:</strong> 100, 1,000, and 10,000 dynamic convex/compound stones over static irregular terrain.</p><p><strong>Measure:</strong> steps to sleep, update errors, residual overlap, peak memory, repeatability, final transform capture.</p><p><strong>Decision:</strong> qualify Case A independently from vegetation.</p></section>
+<section class="experiment"><h3 id="e8-static-fit-parity-and-publication">E8 — static-fit parity and publication<a aria-label="Link to this section" class="anchor" href="#e8-static-fit-parity-and-publication">#</a></h3><p><strong>Input:</strong> two instances of one prepared source bending differently around two stones.</p><p><strong>Measure:</strong> stable IDs, source immutability, guide-to-mesh output, viewport/render/Bake vertex parity, cancellation/stale publication.</p><p><strong>Decision:</strong> no solver is production-ready until this non-physics delivery gate passes.</p></section>
+</div>
+<h3 id="11-1-go-no-go-rules">11.1 Go/no-go rules<a aria-label="Link to this section" class="anchor" href="#11-1-go-no-go-rules">#</a></h3>
+<div class="table-wrap"><table>
+<thead><tr><th>Observation</th><th>Decision</th></tr></thead>
+<tbody>
+<tr><td>Stock rods miss E3 unless guide tessellation is driven below every obstacle feature size.</td><td><strong>No-go</strong> for stock rods as the first supported contact solver.</td></tr>
+<tr><td>Jolt rods pass mechanics tests but custom segment contact requires changes inside soft-body collision/storage/iteration code.</td><td>Prefer focused fitter unless dynamic animation is an immediate funded requirement.</td></tr>
+<tr><td>Jolt capsule queries match a direct BVH and have acceptable warm cost/cancellation behavior.</td><td>Reuse Jolt cooked shapes/query layer inside the fitter.</td></tr>
+<tr><td>Direct BVH is simpler, faster, or more deterministic for static obstacle snapshots.</td><td>Keep Jolt only for Case A; use Cyrus collision for Case B.</td></tr>
+<tr><td>Focused fitter cannot preserve rest shape or resolve multi-obstacle contact at acceptable quality.</td><td>Reconsider Jolt rods with a deliberately scoped contact extension or another maintained rod library.</td></tr>
+<tr><td>Viewport/render/Bake cannot consume unique deformed results consistently.</td><td>Stop feature work; solver selection is premature until geometry delivery is solved.</td></tr>
+</tbody></table></div>
+<hr/>
+<h2 id="12-proposed-cyrus-implementation-architecture">12. Proposed Cyrus implementation architecture<a aria-label="Link to this section" class="anchor" href="#12-proposed-cyrus-implementation-architecture">#</a></h2>
+<h3 id="12-1-shared-front-end">12.1 Shared front end<a aria-label="Link to this section" class="anchor" href="#12-1-shared-front-end">#</a></h3>
+<pre data-language="DATA FLOW"><code>HOST THREAD
+  evaluate Max nodes at time t
+  capture canonical local geometry + transforms + units + revisions
+  validate closed/open/scale/shape policy
+        ↓
+WORKER-SAFE SHARED SERVICES
+  CollisionGeometrySnapshot
+  CookedShapeCache
+  local solve origin
+  stable source / object / instance IDs
+  cancellation token
+        ↓
+      ┌──────────────────────────────┬─────────────────────────────┐
+      │ Case A: Jolt rigid world     │ Case B: static guide fitter │
+      │ bodies + fixed terrain       │ guides + capsule contacts   │
+      │ fixed-step to completion     │ constraint iterations       │
+      └──────────────────────────────┴─────────────────────────────┘
+        ↓
+  validate complete successor
+        ↓
+HOST THREAD
+  atomic publication
+  invalidate viewport/render/Bake caches once
+</code></pre>
+<h3 id="12-2-ownership-and-invalidation">12.2 Ownership and invalidation<a aria-label="Link to this section" class="anchor" href="#12-2-ownership-and-invalidation">#</a></h3>
+<div class="table-wrap wide"><table>
+<thead><tr><th>Object</th><th>Owner</th><th>Cache key / revision</th><th>Invalidated by</th><th>Not invalidated by</th></tr></thead>
+<tbody>
+<tr><td>Canonical source snapshot</td><td>Source preparation</td><td>Source ID + topology/position hash + transform policy</td><td>Source mesh/topology/transform-policy edit</td><td>Stone movement, camera, selection</td></tr>
+<tr><td>Cooked source collision shape</td><td>Shape cache</td><td>Snapshot revision + representation + cooking settings</td><td>Source geometry/representation/scale-policy change</td><td>Placement transform</td></tr>
+<tr><td>Obstacle snapshot/shape</td><td>Obstacle binding cache</td><td>Object ID + geometry revision + transform revision</td><td>Obstacle geometry or relevant transform</td><td>Unrelated animation or viewport state</td></tr>
+<tr><td>Rigid completed result</td><td>Layer result</td><td>Placement population revision + physics settings + obstacle revisions</td><td>Relevant placement/obstacle/settings change</td><td>Camera and selection</td></tr>
+<tr><td>Guide completed result</td><td>Sparse deformation result</td><td>Stable instance IDs + source-prep revision + obstacle revisions + fit settings</td><td>Relevant source, obstacle, population, or fit-setting change</td><td>Unrelated layers and navigation</td></tr>
+</tbody></table></div>
+<h3 id="12-3-jobs-and-cancellation">12.3 Jobs and cancellation<a aria-label="Link to this section" class="anchor" href="#12-3-jobs-and-cancellation">#</a></h3>
+<ul>
+<li><strong>Rigid Jolt solve:</strong> an outer Cyrus job owns the world and calls fixed <code>PhysicsSystem::Update</code> steps. Check cancellation between steps. The exact update call internally schedules jobs and waits until they finish; the public job API does not expose cancellation. <a class="ref-tag" href="#ref-j22">J22</a><a class="ref-tag" href="#ref-j26">J26</a></li>
+<li><strong>Focused fitter:</strong> partition affected instances or independent guide groups. Check cancellation between contact-generation batches and solver iterations. Never publish a partial instance set.</li>
+<li><strong>Shared thread pool:</strong> possible through a Jolt <code>JobSystem</code> adapter, but only after proving that barrier waits cannot deadlock and that nested scheduling does not oversubscribe Cyrus workers.</li>
+<li><strong>Stale results:</strong> compare captured revisions before publication. Discard a completed but stale successor without replacing the previous complete result.</li>
+</ul>
+<h3 id="12-4-completed-result-publication">12.4 Completed-result publication<a aria-label="Link to this section" class="anchor" href="#12-4-completed-result-publication">#</a></h3>
+<p>Both cases should publish immutable result generations:</p>
+<ul>
+<li>Case A publishes transforms, body status, residual-overlap metrics, and source correspondence.</li>
+<li>Case B publishes sparse fitted guide states, contact diagnostics, and the source-preparation revision used for guide-to-mesh evaluation.</li>
+<li>Unchanged instances remain on the existing transform-instanced path.</li>
+<li>Affected vegetation is evaluated into exact geometry or a qualified compact deformation representation; this remains separate from collision/solver selection.</li>
+</ul>
+<hr/>
+<h2 id="13-failure-and-diagnostic-contract">13. Failure and diagnostic contract<a aria-label="Link to this section" class="anchor" href="#13-failure-and-diagnostic-contract">#</a></h2>
+<div class="table-wrap wide"><table>
+<thead><tr><th>Condition</th><th>Detection</th><th>Artist message</th><th>Publication rule</th></tr></thead>
+<tbody>
+<tr><td>Root inside obstacle</td><td>Root envelope overlaps closed solid / capsule query</td><td><code>Root intersects Stone_07; root was preserved.</code></td><td>Keep previous result or publish unresolved marker; never move root automatically.</td></tr>
+<tr><td>Gap too narrow</td><td>Opposing contacts leave less space than diameter + clearance</td><td><code>Requested 18 mm envelope cannot fit in 11 mm gap.</code></td><td>Partial fit only if explicitly allowed; mark unresolved.</td></tr>
+<tr><td>Open mesh used as solid</td><td>Topology audit / failed closed-manifold test</td><td><code>Obstacle is open; switched to surface-only contact.</code></td><td>Require confirmation or reject solid mode.</td></tr>
+<tr><td>Iteration cap</td><td>Residual/contact metrics above tolerance at cap</td><td><code>Fit stopped at work limit: 7 unresolved contacts.</code></td><td>Do not label result “collision free.”</td></tr>
+<tr><td>Jolt update capacity error</td><td><code>EPhysicsUpdateError</code> bits</td><td><code>Rigid solve ignored contacts: contact buffer capacity exceeded.</code></td><td>Reject successor unless a documented degraded mode exists.</td></tr>
+<tr><td>Cancellation</td><td>Cancellation token before complete validation</td><td><code>Update cancelled; previous complete result retained.</code></td><td>No partial publication.</td></tr>
+<tr><td>Stale obstacle/source</td><td>Revision mismatch at publication</td><td><code>Completed result was superseded by a newer edit.</code></td><td>Discard successor silently or show bounded status; retain prior complete generation.</td></tr>
+</tbody></table></div>
+<p>Diagnostics should distinguish:</p>
+<ul>
+<li><strong>execution status:</strong> completed, cancelled, failed, stale;</li>
+<li><strong>quality status:</strong> passed, passed with warnings, unresolved, infeasible;</li>
+<li><strong>resource status:</strong> within budget, capped, contact capacity exceeded, memory allocation failed.</li>
+</ul>
+<hr/>
+<h2 id="14-recommended-method-by-total-integration-and-maintenance-cost">14. Recommended method by total integration and maintenance cost<a aria-label="Link to this section" class="anchor" href="#14-recommended-method-by-total-integration-and-maintenance-cost">#</a></h2>
+<h3 id="14-1-case-a">14.1 Case A<a aria-label="Link to this section" class="anchor" href="#14-1-case-a">#</a></h3>
+<div class="decision-card"><strong>Use Jolt rigid bodies.</strong> This is where the existing dependency earns its cost. Share immutable source shapes, simulate dynamic convex/compound bodies over static mesh/heightfield terrain, and capture stable-ID transforms as the completed product result.</div>
+<h3 id="14-2-case-b">14.2 Case B<a aria-label="Link to this section" class="anchor" href="#14-2-case-b">#</a></h3>
+<div class="decision-card"><strong>Build a focused static fitter first.</strong> Reuse the front-end snapshot/unit/transform/cache infrastructure. Benchmark two collision back ends: direct segment/capsule-to-triangle BVH and Jolt capsule queries. Keep the solver and artist diagnostics Cyrus-owned.</div>
+<h3 id="14-3-when-to-reconsider-jolt-rods">14.3 When to reconsider Jolt rods<a aria-label="Link to this section" class="anchor" href="#14-3-when-to-reconsider-jolt-rods">#</a></h3>
+<p>Reconsider a Jolt rod integration only when at least one of these becomes a near-term requirement:</p>
+<ul>
+<li>continuous wind and moving obstacles;</li>
+<li>temporal inertia and damping are visible product requirements;</li>
+<li>roots move with animated characters/vehicles;</li>
+<li>the team is willing to maintain a tested segment-contact extension or upstream it;</li>
+<li>the focused static fitter demonstrably fails quality gates that Jolt rods pass.</li>
+</ul>
+<h3 id="14-4-explicit-rejections">14.4 Explicit rejections<a aria-label="Link to this section" class="anchor" href="#14-4-explicit-rejections">#</a></h3>
+<ul>
+<li><strong>Reject “Jolt is already present, therefore plants are solved.”</strong> The mechanics/contact/delivery layers are distinct.</li>
+<li><strong>Reject dynamic triangle meshes for ordinary pebbles.</strong> Use convex or compound-convex bodies.</li>
+<li><strong>Reject vertex subdivision as a proof of segment collision.</strong> It is a sampling approximation whose required density depends on unseen obstacle features.</li>
+<li><strong>Reject GPU hair for the first static feature.</strong> It adds a compute/render subsystem while still leaving Max delivery and product lifecycle unresolved.</li>
+<li><strong>Reject SDF as a default dependency.</strong> Add it only if deep-inside recovery or repeated distance queries justify its preprocessing and memory.</li>
+</ul>
+<hr/>
+<h2 id="15-direct-answers">15. Direct answers<a aria-label="Link to this section" class="anchor" href="#15-direct-answers">#</a></h2>
+<h3 id="what-can-be-shared-between-rigid-settling-and-rooted-fitting">What can be shared between rigid settling and rooted fitting?<a aria-label="Link to this section" class="anchor" href="#what-can-be-shared-between-rigid-settling-and-rooted-fitting">#</a></h3>
+<p>Host-thread geometry capture, stable identities, transform/unit conversion, local solve origins, obstacle/source revisions, immutable collision-shape caches, broad affected-region selection, worker lifecycle, diagnostics framework, cancellation tokens at the outer level, and atomic completed-result publication.</p>
+<h3 id="what-cannot-be-shared-as-is">What cannot be shared as-is?<a aria-label="Link to this section" class="anchor" href="#what-cannot-be-shared-as-is">#</a></h3>
+<p>The rigid contact solver, stock soft-body vertex contact, durable result representation, guide-to-mesh deformation, renderer/Bake delivery, artist feasibility diagnostics, and mid-update cancellation.</p>
+<h3 id="does-jolt-5-6-1-at-the-pin-contain-cpu-rods">Does Jolt 5.6.1 at the pin contain CPU rods?<a aria-label="Link to this section" class="anchor" href="#does-jolt-5-6-1-at-the-pin-contain-cpu-rods">#</a></h3>
+<p>Yes. The exact source contains CPU soft-body Cosserat rod constraints and a weed-like sample. The pin is a post-5.6.0 snapshot whose header says 5.6.1, not a publicly tagged 5.6.1 release.</p>
+<h3 id="do-those-rods-collide-as-capsules-or-full-segments">Do those rods collide as capsules or full segments?<a aria-label="Link to this section" class="anchor" href="#do-those-rods-collide-as-capsules-or-full-segments">#</a></h3>
+<p>No in the stock CPU soft-body path. Collision receives movable vertices and writes one collision plane per vertex. Whole-segment contact requires a separate query/fitter or a nontrivial Jolt extension.</p>
+<h3 id="can-root-position-and-orientation-be-controlled-separately">Can root position and orientation be controlled separately?<a aria-label="Link to this section" class="anchor" href="#can-root-position-and-orientation-be-controlled-separately">#</a></h3>
+<p>They must be separate product controls. In the stock zero-inverse-mass recipe, the first rod’s rotational inverse mass also becomes zero, effectively hard-clamping orientation. A position-only or softly oriented root needs a different construction and qualification.</p>
+<h3 id="what-is-the-smallest-useful-experiment">What is the smallest useful experiment?<a aria-label="Link to this section" class="anchor" href="#what-is-the-smallest-useful-experiment">#</a></h3>
+<p>The segment-crossing fixture: two endpoints outside a stone with the rod passing through it. It immediately distinguishes vertex-only contact from a correct segment/capsule contract.</p>
+<h3 id="what-should-be-built-first">What should be built first?<a aria-label="Link to this section" class="anchor" href="#what-should-be-built-first">#</a></h3>
+<p>Keep Jolt for rigid debris. For vegetation, implement a bounded static guide fitter with independent root position/orientation constraints, rest-length/rest-curvature preservation, and full segment/envelope contact. Benchmark Jolt collision queries against a Cyrus-owned BVH before selecting the collision back end.</p>
+<hr/>
+<h2 id="16-source-and-reference-map">16. Source and reference map<a aria-label="Link to this section" class="anchor" href="#16-source-and-reference-map">#</a></h2>
+<h3 id="exact-pin-and-release-provenance">Exact pin and release provenance<a aria-label="Link to this section" class="anchor" href="#exact-pin-and-release-provenance">#</a></h3>
+<p class="reference-entry" id="ref-j1"><strong>J1 — Exact dependency commit.</strong> Commit <code>1b2e77e3c6c09709e5edc79dc208459b8ff32051</code>, 14 Oct 2026.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/commit/1b2e77e3c6c09709e5edc79dc208459b8ff32051" rel="noopener noreferrer" target="_blank">Open exact commit</a></p>
+<p class="reference-entry" id="ref-j2"><strong>J2 — Exact version header.</strong> <code>Jolt/Core/Core.h</code> at the pin: 5.6.1.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Core/Core.h" rel="noopener noreferrer" target="_blank">Open exact file</a></p>
+<p class="reference-entry" id="ref-j3"><strong>J3 — Compare v5.6.0 to exact pin.</strong> 62 commits ahead at review time.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/compare/v5.6.0...1b2e77e3c6c09709e5edc79dc208459b8ff32051" rel="noopener noreferrer" target="_blank">Open comparison</a></p>
+<p class="reference-entry" id="ref-j4"><strong>J4 — Tagged 5.6.0 version header.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/v5.6.0/Jolt/Core/Core.h" rel="noopener noreferrer" target="_blank">Open v5.6.0 header</a></p>
+<p class="reference-entry" id="ref-j5"><strong>J5 — Release notes at exact pin.</strong> v5.6.0 GPU hair introduction and post-release unreleased fixes.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Docs/ReleaseNotes.md" rel="noopener noreferrer" target="_blank">Open release notes</a></p>
+<h3 id="rigid-shapes-scale-and-queries">Rigid shapes, scale, and queries<a aria-label="Link to this section" class="anchor" href="#rigid-shapes-scale-and-queries">#</a></h3>
+<p class="reference-entry" id="ref-j6"><strong>J6 — Shape types and settings cache.</strong> Exact <code>Shape.h</code>; no built-in SDF subtype.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/Shape/Shape.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j7"><strong>J7 — Physics settings and meter-scale defaults.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/PhysicsSettings.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j8"><strong>J8 — Box shape and convex-radius default.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/Shape/BoxShape.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j9"><strong>J9 — Convex hull settings and limits.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/Shape/ConvexHullShape.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j10"><strong>J10 — Static compound hierarchy.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/Shape/StaticCompoundShape.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j11"><strong>J11 — Mesh shape roles, single-sided simulation triangles, active edges.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/Shape/MeshShape.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j12"><strong>J12 — Broad/narrow phase queries, point/shape/cast operations, base offsets.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/NarrowPhaseQuery.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j13"><strong>J13 — Shape overlap result and separation/contact settings.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/CollideShape.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<h3 id="cpu-rods-and-soft-body-collision">CPU rods and soft-body collision<a aria-label="Link to this section" class="anchor" href="#cpu-rods-and-soft-body-collision">#</a></h3>
+<p class="reference-entry" id="ref-j14"><strong>J14 — Cosserat rod sample.</strong> Helix, tree, and weed-like strands with pinned roots.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Samples/Tests/SoftBody/SoftBodyCosseratRodConstraintTest.cpp" rel="noopener noreferrer" target="_blank">Open sample</a></p>
+<p class="reference-entry" id="ref-j15"><strong>J15 — CPU rod constraint data.</strong> Rest length, Bishop frame, compliance, bend/twist rest rotation.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodySharedSettings.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j16"><strong>J16 — Rod property calculation.</strong> Bishop transport, endpoint-minimum rod inverse mass, rest bend/twist rotation.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodySharedSettings.cpp" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j17"><strong>J17 — Soft-body creation settings.</strong> Iterations, damping, gravity, body-wide vertex radius; soft bodies marked in development.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodyCreationSettings.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j18"><strong>J18 — CPU soft-body solver and collision projection.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j19"><strong>J19 — Soft-body collision iterator.</strong> Vertex position/inverse mass; one largest penetration and collision plane per vertex.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/CollideSoftBodyVertexIterator.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j20"><strong>J20 — Soft-body vertices versus triangles.</strong> Closest triangle, one-sided behavior, global 0.1 m backward thickness.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/CollideSoftBodyVerticesVsTriangles.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j21"><strong>J21 — Soft-body contact listener.</strong> Pair validation/settings and post-contact manifold callback; not a contact-generator API.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodyContactListener.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<h3 id="update-jobs-gpu-hair-and-license">Update, jobs, GPU hair, and license<a aria-label="Link to this section" class="anchor" href="#update-jobs-gpu-hair-and-license">#</a></h3>
+<p class="reference-entry" id="ref-j22"><strong>J22 — Physics update and query interfaces.</strong> Internal jobs are complete when <code>Update</code> returns.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/PhysicsSystem.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j23"><strong>J23 — Update errors.</strong> Contact/manifold/body-pair capacity errors indicate ignored contacts.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/EPhysicsUpdateError.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j24"><strong>J24 — Experimental GPU hair public interface and stated limitations.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Hair/Hair.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j25"><strong>J25 — GPU hair collision-shape collection and buffer conversion.</strong><br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Hair/Hair.cpp" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j26"><strong>J26 — Jolt job system.</strong> Dependencies and barriers; no public cancellation operation in this interface.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Core/JobSystem.h" rel="noopener noreferrer" target="_blank">Open file</a></p>
+<p class="reference-entry" id="ref-j27"><strong>J27 — MIT license at exact pin.</strong> Preserve copyright and permission notice in distributed copies/substantial portions; this report does not give legal advice.<br/><a class="external-link" href="https://github.com/jrouwe/JoltPhysics/blob/1b2e77e3c6c09709e5edc79dc208459b8ff32051/LICENSE" rel="noopener noreferrer" target="_blank">Open license</a></p>
+<hr/>
+<h2 id="17-final-decision">17. Final decision<a aria-label="Link to this section" class="anchor" href="#17-final-decision">#</a></h2>
+<blockquote><strong>Use Jolt where the product problem is rigid-body settling. Reuse its collision infrastructure selectively where that lowers risk. Do not force rooted vegetation into a vertex-contact soft-body path merely because rod constraints exist.</strong></blockquote>
+<p>The first vegetation implementation should be a static, sparse, root-preserving guide fitter with whole-segment or visible-envelope contact, explicit infeasibility diagnostics, cooperative cancellation, and immutable completed results. Jolt CPU rods remain a valuable control prototype and a future-animation candidate. They become a production candidate only after the segment, deep-inside, narrow-gap, root, scale, and delivery gates pass.</p>
+</article>
+<div class="footer-note" style="max-width:1220px;margin:18px auto 0">Self-contained HTML research artifact. Source links point to the exact inspected Jolt commit unless a tagged baseline is explicitly named.</div>
+</main>
+</div>
+<button class="back-top" type="button" aria-label="Back to top">↑</button>
+<script>
+(() => {
+  const tocLinks = [...document.querySelectorAll('.toc a')];
+  const headings = tocLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  const byId = new Map(tocLinks.map(a => [a.getAttribute('href').slice(1), a]));
+  const observer = new IntersectionObserver(entries => {
+    const visible = entries.filter(e => e.isIntersecting).sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (!visible.length) return;
+    tocLinks.forEach(a => a.classList.remove('active'));
+    const active = byId.get(visible[0].target.id);
+    if (active) { active.classList.add('active'); active.scrollIntoView({block:'nearest'}); }
+  }, {rootMargin:'-12% 0px -74% 0px', threshold:[0,1]});
+  headings.forEach(h => observer.observe(h));
+  const top = document.querySelector('.back-top');
+  window.addEventListener('scroll', () => top?.classList.toggle('visible', window.scrollY > 700), {passive:true});
+  top?.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+})();
+</script>
+</body>
+</html>

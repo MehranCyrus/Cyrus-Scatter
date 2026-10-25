@@ -64,7 +64,7 @@ std::uint64_t salt(const std::string& id){
     require(!id.empty()&&id.size()<=256,"Invalid persistent receiver identity");std::uint64_t value=1469598103934665603ULL;
     for(unsigned char c:id){value^=c;value*=1099511628211ULL;}return value;
 }
-Plan plan(std::vector<Input> input,unsigned total,double density,unsigned factor,unsigned densityCap){
+Plan allocation(std::vector<Input> input,unsigned total,double density,unsigned factor,unsigned densityCap){
     require(input.size()<=slots&&total<=limit&&densityCap<=limit&&std::isfinite(density)&&factor>=1&&factor<=32,"Invalid receiver plan limits");
     std::sort(input.begin(),input.end(),[](const auto& a,const auto& b){return a.slot<b.slot;});
     std::set<unsigned> used;std::set<std::string> ids;std::vector<double> weights;double wanted=0;
@@ -83,6 +83,11 @@ Plan plan(std::vector<Input> input,unsigned total,double density,unsigned factor
     for(std::size_t i=0;i<input.size();++i){const unsigned count=std::max(attempts[i],input[i].required);
         out.receivers.push_back({input[i].slot,budgets[i],attempts[i],count});pool+=count;}
     require(pool<=limit,"Receiver candidate admission exceeds 1,000,000 including protected edits");
+    out.budget=budget;out.attempts=std::accumulate(attempts.begin(),attempts.end(),0u);return out;
+}
+Plan plan(std::vector<Input> input,unsigned total,double density,unsigned factor,unsigned densityCap){
+    auto out=allocation(std::move(input),total,density,factor,densityCap);
+    std::size_t pool=0;for(const auto& r:out.receivers)pool+=r.pool;
     out.order.reserve(pool);
     // Initial quotas first, then refill capacity, then protected-only suffix.
     // Stable receiver slot order means appending a surface cannot change the
@@ -91,7 +96,7 @@ Plan plan(std::vector<Input> input,unsigned total,double density,unsigned factor
         const unsigned begin=phase==0?0:phase==1?r.budget:r.attempts;
         const unsigned end=phase==0?r.budget:phase==1?r.attempts:r.pool;
         for(unsigned i=begin;i<end;++i)out.order.push_back(identity(r.slot,i));}
-    out.budget=budget;out.attempts=std::accumulate(attempts.begin(),attempts.end(),0u);return out;
+    return out;
 }
 std::string mergeBinding(const std::string& previous,const std::string& current){
     if(previous.empty())return current;

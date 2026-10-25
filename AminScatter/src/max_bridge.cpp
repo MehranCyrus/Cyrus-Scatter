@@ -1,4 +1,5 @@
 #include <max.h>
+#include <bcrypt.h>
 #include <filesystem>
 #include "native_fault_qualification.h"
 #include <triobj.h>
@@ -32,6 +33,7 @@
 #include "placement_materialization.h"
 #include "orientation.h"
 #include "grid.h"
+#include "source_measurement.h"
 #include <sstream>
 #include <locale>
 #include <memory>
@@ -43,6 +45,7 @@
 #include <cstring>
 #include <tuple>
 #include <cmath>
+#include <type_traits>
 #include <charconv>
 #include <maxscript/macros/define_instantiation_functions.h>
 #undef ScripterExport
@@ -178,6 +181,7 @@ namespace {
 amin::Vec3 vec(Point3 p) { return {p.x,p.y,p.z}; }
 Point3 point(amin::Vec3 p) { return {static_cast<float>(p.x),static_cast<float>(p.y),static_cast<float>(p.z)}; }
 #include "placement_identity.inc"
+#include "source_measurement_bridge.inc"
 std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false, std::size_t faceLimit=std::numeric_limits<std::size_t>::max(), int uvChannel=1) {
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Geometry);
     if(!node) throw std::invalid_argument("Missing node");

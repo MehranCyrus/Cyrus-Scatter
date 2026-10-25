@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-24",
+  "revision": "Final supplied study R14 and complete research-set consolidation",
+  "pdf": "../handbook.pdf",
+  "pdf_sha256": "a2a2b49c5e02e56a13afadd1ee1fc3c384f2791b034cf9b280be16670a7ff904",
+  "pages_rendered": 52,
+  "render_tool": "Poppler pdftoppm, 1400-pixel page scale",
+  "review_scope": "All 52 pages in three contact sheets; full-page inspection of reported native data page 14, local contact math page 16, generation/runtime ownership page 20, validation page 41, evidence register page 48 and primary references/limits page 52",
+  "outcome": "No clipping, overlapping text, broken table wrapping, missing content, empty pages or stray single-line continuation pages observed",
+  "limits": "Layout review only; supplied native/analytic records and source/hash checks do not establish independent physics execution or Cyrus/Max/renderer qualification",
+  "previous_reviews": [
+    {
+      "date": "2026-10-24",
+      "pdf": "../handbook.pdf",
+      "pdf_sha256": "5c25af9ebfd4612677cddd214d538c75d9a31fde75d9735a26d1c30dc0258483",
+      "pages_rendered": 31,
+      "render_tool": "Poppler pdftoppm, 1400-pixel page scale",
+      "review_scope": "All pages in two contact sheets; full-page views of cover and dense table pages 18 and 27",
+      "outcome": "No clipping, overlapping text, broken table wrapping, empty pages or stray single-line continuation pages observed",
+      "limits": "Layout review only; no application simulation, rendering or solver qualification"
+    },
+    {
+      "date": "2026-10-24",
+      "revision": "R11 source-preparation update",
+      "pdf": "../handbook.pdf",
+      "pdf_sha256": "2e7e0d3095a877a6d8af4861a0321b56d1d6ba437c59ee9d8e0e51fa3f547ea1",
+      "pages_rendered": 36,
+      "render_tool": "Poppler pdftoppm, 1400-pixel page scale",
+      "review_scope": "All 36 pages in two contact sheets; full-page inspection of equation page 9, validation page 31 and source register page 33",
+      "outcome": "No clipping, overlapping text, missing equation glyphs, broken table wrapping or stray single-line continuation pages observed",
+      "limits": "Layout review only; supplied offline check records and independent topology recount do not qualify Max/renderer/solver integration"
+    },
+    {
+      "date": "2026-10-24",
+      "revision": "R12 collision and solver reuse update",
+      "pdf": "../handbook.pdf",
+      "pdf_sha256": "b1caa3c757c5dd454ec0a6c0e85c1ef2962ffae4c4a85b496fbc50fb67696da6",
+      "pages_rendered": 44,
+      "render_tool": "Poppler pdftoppm, 1400-pixel page scale",
+      "review_scope": "All 44 pages in three contact sheets; full-page inspection of pinned-source/method page 13, validation page 35, experiment page 36, original register page 40 and primary references page 43",
+      "outcome": "No clipping, overlapping text, broken table wrapping, missing content, empty pages or stray single-line continuation pages observed",
+      "limits": "Layout review only; exact-pin source comparisons and supplied offline results do not qualify runtime solver behavior, Max output or renderer support"
+    },
+    {
+      "date": "2026-10-24",
+      "revision": "R13 headless evidence and geometry-adapter update",
+      "pdf": "../handbook.pdf",
+      "pdf_sha256": "d5e0f48d31f8a218f6cd3ea50caa9a7cb33aa6ba07c18c13236753a0f5866e76",
+      "pages_rendered": 49,
+      "render_tool": "Poppler pdftoppm, 1400-pixel page scale",
+      "review_scope": "All 49 pages in three contact sheets; full-page inspection of reported results/methods page 14, new validation page 39, R13 gate map page 40, embedded evidence page 45 and primary references page 48",
+      "outcome": "No clipping, overlapping text, broken table wrapping, missing content, empty pages or stray single-line continuation pages observed",
+      "limits": "Layout review only; supplied Linux headless diagnostics and local source consistency checks do not qualify an independent engine run or Cyrus/Max/renderer integration"
+    }
+  ]
+}

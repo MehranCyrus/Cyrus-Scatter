@@ -3,6 +3,7 @@ static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match th
 extern "C" __declspec(dllimport) ClassDesc* CyrusEditDesc();
 extern "C" __declspec(dllimport) ClassDesc* CyrusPointDisplayDesc();
 extern "C" __declspec(dllimport) ClassDesc* CyrusSourceFrameDesc();
+extern "C" __declspec(dllimport) ClassDesc* CyrusInteractionsOutputDesc();
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
 extern "C" __declspec(dllimport) ClassDesc* CyrusOwnedRevisionDesc();
 #endif
@@ -10,14 +11,17 @@ extern "C" __declspec(dllexport) const MCHAR* LibDescription(){return _T("Cyrus 
 extern "C" __declspec(dllexport) ULONG LibVersion(){return VERSION_3DSMAX;}
 extern "C" __declspec(dllexport) int LibNumberClasses(){
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
-return 4;
+return 5;
 #else
-return 3;
+return 4;
 #endif
 }
 extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
 if(i==3)return CyrusOwnedRevisionDesc();
+if(i==4)return CyrusInteractionsOutputDesc();
+#else
+if(i==3)return CyrusInteractionsOutputDesc();
 #endif
 return i==0?CyrusEditDesc():(i==1?CyrusPointDisplayDesc():(i==2?CyrusSourceFrameDesc():nullptr));}
 extern "C" __declspec(dllexport) ULONG CanAutoDefer(){return 0;}

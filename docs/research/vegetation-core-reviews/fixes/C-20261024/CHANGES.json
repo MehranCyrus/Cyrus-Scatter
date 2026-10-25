@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "scope": "Local correction variant of owner C, keeping handoff v1 declarations frozen. No product release or host qualification.",
+  "original_archive": "docs/research/C/CyrusVegetationCore_v1_C_delivery.zip",
+  "original_archive_sha256": "94e486313f5ea514a234d1e86ccc95d797798b9f04054d210b1efeacd8b0db78",
+  "changed_files": [
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/delivery/src/evaluator.cpp",
+      "before": {
+        "bytes": 19809,
+        "sha256": "a744ed58ff39bbc8dc7bee0941628a5181fa33b0fe530d53029fe6d8f3c927c1"
+      },
+      "after": {
+        "bytes": 20340,
+        "sha256": "05322eef75c804bc4a49d93815e5c6ceb93d94c0c47289548975e10f0440684c"
+      }
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/delivery/src/geometry.hpp",
+      "before": {
+        "bytes": 14575,
+        "sha256": "841a598740f18843c52a29830f067bc7dc11fac6e8c55dd33579919309d22a7e"
+      },
+      "after": {
+        "bytes": 14721,
+        "sha256": "2881c73a606fb727e67de3ec7609d654649c7c097a4b07b9a721cbb4155a085b"
+      }
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/delivery/src/validator.cpp",
+      "before": {
+        "bytes": 36772,
+        "sha256": "1db35a494aa144cca5fec87d7e70a0a3a7e12dd118fcce2ba35278c273e554e3"
+      },
+      "after": {
+        "bytes": 37871,
+        "sha256": "bc39034b72c761eb06209f4bd30b6b84687e8ad9df830c63b3d32fc45906d862"
+      }
+    }
+  ],
+  "coordinator_files": [
+    {
+      "path": "coordinator/box_distance_check.py",
+      "bytes": 3569,
+      "sha256": "bcfb8388b4a93b5853a0ce5b268adf38dbd4d5100a704411e8ccd7dd6a2b8b3e"
+    },
+    {
+      "path": "coordinator/catalog_fixture.hpp",
+      "bytes": 5423,
+      "sha256": "0a56181c4ca7704d68efc2850e11e179acfd391766886404e1e51b71deac6969"
+    },
+    {
+      "path": "coordinator/CMakeLists.txt",
+      "bytes": 970,
+      "sha256": "5d8cbccbb0ce82bc92119789a9d33d0ecc7f7deb7f09b479cc05b0a87bee7cab"
+    },
+    {
+      "path": "coordinator/pipeline.cpp",
+      "bytes": 16635,
+      "sha256": "82a10952473d8159e36ba82cc821f057733cdb7620c61b855b38278e0db2c30a"
+    },
+    {
+      "path": "coordinator/run_local.py",
+      "bytes": 3133,
+      "sha256": "3acae571bf38a7595cb208f0c30ec7d246253ece29a7b405e7963f3f6e1c59a0"
+    }
+  ]
+}

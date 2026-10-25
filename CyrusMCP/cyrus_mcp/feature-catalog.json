@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "82fe26dffc31794ac9520b8d50c49212abed050ffa86be1d26a67dbd6f29c92e",
-  "control_inventory_sha256": "99709c56823f762a9568a7d635ad5dbd6cc58bb57e2d13517041d9ddcdc86c4a",
-  "development_version": "0.86.9.2",
+  "capability_source_sha256": "370d78dd318a422c93bccaa363182b7829d47dbed29e3730f2fd463b874868e2",
+  "control_inventory_sha256": "3e603b320d14fcd38a8e14c5fe6132c3632be89b8ca93d5ff46a0c02f5966257",
+  "development_version": "0.87.0",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified2",
   "features": [
@@ -213,7 +213,7 @@
     {
       "feature_id": "C30",
       "title": "Save/load/Undo / scene",
-      "native": "Current schema 59 with explicit Undoable upgrade from 58; earlier development formats remain retired. Native Edit storage 2 retains its supported legacy reader and guards older runtimes against upgraded files; typed distances and saved identities/display controls remain",
+      "native": "Current schema 60 stores prepared contact definitions; 59 opens with Interactions off and 58 retains its explicit Undoable upgrade; earlier development formats remain retired. Native Edit storage 2 retains its supported legacy reader and guards older runtimes against upgraded files; typed distances and saved identities/display controls remain",
       "mcp": "Scoped own-top-Undo/journal recovery; no arbitrary scene save",
       "qualification_or_extension": "0.86.9 records exact Edit migration/roundtrip/Undo and ordinary single-Edit Copy checks; preserve original scenes and save upgraded copies. B37 copied-clone correspondence, other Copy/merge combinations, physical input, native binding rescale and long-session qualification remain separate"
     },
@@ -258,6 +258,13 @@
       "native": "Development implementation: per-layer world-up geometric slope, world-Z anchors, inside fades, protected Edit bypass",
       "mcp": "No authoring write; documentation only",
       "qualification_or_extension": "P03 scoped Max qualification passed; independent eligibility channel, post-Relax/Edit placement, atomic cached diagnostics"
+    },
+    {
+      "feature_id": "C37",
+      "title": "Layer interactions and prepared plant contact",
+      "native": "0.87.0 Max 2027 artist trial: Collider/React roles, reviewed tube/blade definitions, shared source rigs, sparse instance poses, bounded nearby queries and reversible covered roots",
+      "mcp": "Help only; no plan-schema authoring or simulation tool",
+      "qualification_or_extension": "Scoped exact-package native Edit/Undo/Redo, pending Manual preservation, terrace tiers through 282,500 plants, complete-mesh audit and renderer/Bake checks. Final physical Undo/Redo is inconclusive; arbitrary topology, production renderers, dynamics and broader soak coverage remain open. [Delivery](../plans/scatter-interactions-garden-20261025/DELIVERY_0870.md)"
     }
   ],
   "controls": [
@@ -4726,6 +4733,188 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "checkbox",
+      "name": "colliderCheck",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Use the accepted instances in this layer as obstacles. Move an individual stone with Cyrus Edit to update nearby reacting plants.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "checkbox",
+      "name": "reactCheck",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Bend prepared plant models near collider layers. Analyze and review each unique source once.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "checkbox",
+      "name": "rootsCheck",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Hide rooted groups below a collider's footprint within the plant's reach, or inside its solid base. When off, covered groups retain their original shape. Nearby uncovered roots stay planted and react.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "gapSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Additional visible clearance beyond the collider surface, up to 10 cm. Zero uses the prepared stem thickness only.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "stiffnessSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Resistance used when a guide needs iterative refinement. The fast contact fit preserves original guide curves by rotation; this setting does not change those rotations.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "dropdownlist",
+      "name": "proxyList",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Mesh requires a closed manifold source. Box is an explicit conservative approximation.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "listbox",
+      "name": "modelList",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "analyzeButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "acceptButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Accept only after inspecting root positions, branch directions and foliage attachments.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "clearButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "applyButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Apply contact settings to the last completed scatter result. Pending Manual amount and seed edits wait for Update scatter.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "validateButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Independently check complete plant triangles near colliders. This slower check also reports root drift and stem/leaf strain.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "minimumSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "foliageSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Draw a stable sample of complete leaves or grass blades in Mesh preview. Stem tubes use fewer rings. Full render and Bake retain all visible source faces.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

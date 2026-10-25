@@ -1,10 +1,12 @@
 #include "recipe_library.h"
 #include <map>
 #include "recipe_store.h"
+#include "presets.h"
 #include <algorithm>
 #include <fstream>
 #include <set>
 #include <stdexcept>
+#include <limits>
 #ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -15,6 +17,27 @@
 namespace cyrus::recipes {
 namespace {
 void require(bool ok,const char* message){if(!ok)throw std::invalid_argument(message);}
+void confinedPath(const std::filesystem::path& path){
+    require(path.is_absolute(),"Catalog paths must be absolute local paths.");
+#ifdef _WIN32
+    require(!path.native().starts_with(L"\\\\"),"Catalog paths must be local.");
+#endif
+    for(auto at=path;!at.empty();){
+#ifdef _WIN32
+        const auto checked=nativePath(at,true);
+        const auto attributes=GetFileAttributesW(checked.c_str());
+        if(attributes==INVALID_FILE_ATTRIBUTES){
+            const auto error=GetLastError();
+            require(error==ERROR_FILE_NOT_FOUND||error==ERROR_PATH_NOT_FOUND,"Catalog path could not be verified.");
+        }else require((attributes&FILE_ATTRIBUTE_REPARSE_POINT)==0,"Catalog paths cannot traverse linked files or folders.");
+#else
+        std::error_code error;
+        const auto status=std::filesystem::symlink_status(at,error);
+        require(!std::filesystem::is_symlink(status),"Catalog paths cannot traverse linked files or folders.");
+#endif
+        const auto parent=at.parent_path();if(parent==at)break;at=parent;
+    }
+}
 std::string utf8(const std::filesystem::path& path){const auto s=path.u8string();return {s.begin(),s.end()};}
 std::string load(const std::filesystem::path& path,std::size_t limit){
     std::ifstream in(path,std::ios::binary|std::ios::ate);require(bool(in),"Cannot read library file.");
@@ -46,6 +69,18 @@ std::string fold(const std::string& input){
 #else
     auto out=input;for(auto& c:out)if(c>='A'&&c<='Z')c+=32;return out;
 #endif
+}
+Json presetSummary(const std::filesystem::path& path){
+    const auto source=load(path,cyrus::presets::maxBytes);
+    const auto document=cyrus::presets::parse(source);
+    const auto normalized=cyrus::presets::serialize(document);
+    const auto hash=[](const std::string& value){return digest(std::vector<unsigned char>(value.begin(),value.end()));};
+    const auto sourceHash=hash(source);
+    return {{"entry_key",hash(utf8(path)+"\n"+sourceHash)},{"name",document.name},{"category",document.category},
+            {"preset_sha256",sourceHash},{"document_sha256",hash(normalized)},{"source_bytes",source.size()},
+            {"field_count",document.values.size()},{"sample_count",document.samples.size()},{"graph_count",document.graph.size()},
+            {"domain",cyrus::presets::curve(document.category)?(document.multiplier?"multiplier":"unit"):"settings"},
+            {"document_text",normalized}};
 }
 Json presentation(const std::filesystem::path& recipe,const std::string& hash){
     const auto path=metadataPath(recipe);if(!std::filesystem::exists(path))return nullptr;
@@ -91,7 +126,11 @@ void writePresentation(const std::filesystem::path& recipe,const Json& info,cons
         write(temp,record.dump(2));std::filesystem::rename(temp,path);
     }catch(...){std::error_code ec;std::filesystem::remove(temp,ec);if(tempOwned)std::filesystem::remove(imageTemp,ec);if(imageWritten)std::filesystem::remove(imageTarget,ec);throw;}
 }
-Json summary(const std::filesystem::path& recipe){
+Json summary(const std::filesystem::path& recipe,bool confined){
+    if(confined){
+        confinedPath(recipe);
+        confinedPath(metadataPath(recipe));
+    }
     std::string hash;const auto d=read(recipe,false,&hash);std::size_t paints=0;Json layers=Json::array(),roles=Json::array();
     for(const auto& l:d["layers"]){layers.push_back(l["name"]);if(!l["paint"].is_null())++paints;for(const auto& a:l["areas"])if(!a["paint"].is_null())++paints;}
     for(const auto& r:d["roles"]){if(roles.size()==8)break;roles.push_back(r["name"]);}
@@ -122,6 +161,7 @@ Json summary(const std::filesystem::path& recipe){
     if(localFrame)requirements+="Saved local image frame is retained. ";
     if(requirements.empty())requirements="No authored channel or Paint requirements.";
     const auto package=recipe.parent_path()/"Presets"/hash,manifest=package/"cyrus.package.json";
+    if(confined)confinedPath(manifest);
     std::string readiness="Settings only";
     try{
         if(std::filesystem::exists(manifest)){
@@ -147,7 +187,10 @@ Library::~Library(){stop_=true;if(worker_.joinable()){
 std::uint64_t Library::start(std::vector<std::filesystem::path> roots){
     require(done_.load(),"The previous library scan is still stopping. Try Refresh after it finishes.");
     require(!roots.empty()&&roots.size()<=4,"Choose one to four library folders.");
-    for(const auto& root:roots)require(root.is_absolute(),"Library folders must be absolute paths.");
+    for(auto& root:roots){
+        require(root.is_absolute(),"Library folders must be absolute paths.");
+        if(limits_.confined){confinedPath(root);root=root.lexically_normal();}
+    }
     if(worker_.joinable())worker_.join();
     {std::lock_guard lock(mutex_);entries_.clear();collections_.clear();collectionsDirty_=true;roots_=roots;scanned_=invalid_=metadataBytes_=0;limited_=false;error_.clear();++generation_;}
     stop_=false;done_=false;try{worker_=std::thread(&Library::scan,this,std::move(roots));}catch(...){done_=true;throw;}return generation_;
@@ -165,12 +208,18 @@ void Library::scan(std::vector<std::filesystem::path> roots) noexcept {
             for(const auto& item:std::filesystem::directory_iterator(root)){
                 if(stop_)break;
                 if(++visited>limits_.directoryEntries){std::lock_guard lock(mutex_);limited_=true;break;}
-                if(!item.is_regular_file()||!fold(utf8(item.path().filename())).ends_with(".csrecipe.json"))continue;
-                const auto path=std::filesystem::weakly_canonical(item.path());if(!seen.insert(path).second)continue;
+                if(!item.is_regular_file()||!fold(utf8(item.path().filename())).ends_with(limits_.settingsPresets?".cspreset.json":".csrecipe.json"))continue;
+                if(!limits_.confined){const auto path=std::filesystem::weakly_canonical(item.path());if(!seen.insert(path).second)continue;}
                 {std::lock_guard lock(mutex_);if(scanned_>=limits_.entries){limited_=true;break;}++scanned_;}
                 try{
-                    auto info=summary(path);auto search=info[0].get<std::string>()+" "+info[4].get<std::string>()+" "+info[6].get<std::string>();for(const auto& tag:info[5])search+=" "+tag.get<std::string>();for(const auto& name:info[8])search+=" "+name.get<std::string>();
-                    Entry entry{utf8(path),fold(search),info[4].get<std::string>(),std::move(info)};
+                    if(limits_.confined)confinedPath(item.path());
+                    const auto path=std::filesystem::weakly_canonical(item.path());
+                    if(limits_.confined){require(path.parent_path()==std::filesystem::weakly_canonical(root),"Catalog entry escapes its granted folder.");if(!seen.insert(path).second)continue;}
+                    auto info=limits_.settingsPresets?presetSummary(path):summary(path,limits_.confined);
+                    auto category=limits_.settingsPresets?info.at("category").get<std::string>():info[4].get<std::string>();
+                    auto search=limits_.settingsPresets?info.at("name").get<std::string>()+" "+category:info[0].get<std::string>()+" "+category+" "+info[6].get<std::string>();
+                    if(!limits_.settingsPresets){for(const auto& tag:info[5])search+=" "+tag.get<std::string>();for(const auto& name:info[8])search+=" "+name.get<std::string>();}
+                    Entry entry{utf8(path),fold(search),std::move(category),std::move(info)};
                     const auto size=entry.path.size()+entry.search.size()+entry.category.size()+entry.info.dump().size()+256;entry.bytes=size;
                     std::lock_guard lock(mutex_);if(bytes+size>limits_.metadataBytes){limited_=true;break;}bytes+=size;metadataBytes_=bytes;entries_.push_back(std::move(entry));collectionsDirty_=true;
                 }catch(const std::exception&){std::lock_guard lock(mutex_);++invalid_;}
@@ -182,6 +231,7 @@ void Library::scan(std::vector<std::filesystem::path> roots) noexcept {
     done_=true;
 }
 void Library::update(std::uint64_t token,const std::filesystem::path& recipe){
+    require(!limits_.settingsPresets,"Settings preset catalogs are read-only; open a fresh snapshot.");
     require(done_.load()&&token==generation_,"Finish the current catalog scan before updating one entry.");
     require(recipe.is_absolute(),"Entry refresh requires an absolute path.");
     const auto path=std::filesystem::weakly_canonical(recipe);bool included=false;
@@ -207,7 +257,7 @@ Json Library::page(std::uint64_t token,const std::string& search,const std::stri
             const auto& entry=entries_[i];if(entry.category.empty())continue;
             auto [it,added]=grouped.try_emplace(entry.category,Collection{entry.category,0,i});
             ++it->second.count;
-            if(entries_[it->second.representative].info[13].empty()&&!entry.info[13].empty())it->second.representative=i;
+            if(!limits_.settingsPresets&&entries_[it->second.representative].info[13].empty()&&!entry.info[13].empty())it->second.representative=i;
         }
         std::vector<Collection> next;next.reserve(grouped.size());for(auto& item:grouped)next.push_back(std::move(item.second));
         collections_=std::move(next);collectionsDirty_=false;
@@ -216,13 +266,69 @@ Json Library::page(std::uint64_t token,const std::string& search,const std::stri
     for(const auto& entry:entries_){
         if(!category.empty()&&entry.category!=category)continue;
         if(!query.empty()&&entry.search.find(query)==std::string::npos)continue;
-        if(matched>=(number-1)*128&&rows.size()<128)rows.push_back(Json::array({entry.path,entry.info}));++matched;
+        if(matched>=(number-1)*128&&rows.size()<128){auto info=entry.info;if(limits_.settingsPresets)info.erase("document_text");rows.push_back(Json::array({entry.path,std::move(info)}));}++matched;
     }
     Json collectionRows=Json::array();std::size_t index=0;
     for(const auto& item:collections_){
         categories.push_back(item.name);
-        if(index++>=(number-1)*128&&collectionRows.size()<128)collectionRows.push_back(Json::array({item.name,item.count,entries_[item.representative].info[13]}));
+        if(index++>=(number-1)*128&&collectionRows.size()<128)collectionRows.push_back(Json::array({item.name,item.count,limits_.settingsPresets?Json::array():entries_[item.representative].info[13]}));
     }
     return Json::array({done_.load()?(stop_.load()?"cancelled":"complete"):"scanning",scanned_,entries_.size(),invalid_,limited_,error_,matched,std::max<std::size_t>(1,(matched+127)/128),categories,rows,collectionRows,std::max<std::size_t>(1,(collections_.size()+127)/128),collections_.size()});
+}
+Json Library::preset(std::uint64_t token,const std::string& key) const {
+    std::lock_guard lock(mutex_);
+    require(limits_.settingsPresets&&token==generation_&&done_&&!stop_&&error_.empty(),"Preset catalog is unavailable or stale.");
+    for(const auto& entry:entries_)if(entry.info.at("entry_key")==key){
+        const auto& document=entry.info.at("document_text");
+        Json fields=Json::array();
+        for(const auto& field:cyrus::presets::fields(entry.category))fields.push_back({{"name",field.name},
+            {"kind",field.kind==cyrus::presets::Kind::boolean?"boolean":field.kind==cyrus::presets::Kind::integer?"integer":"number"},
+            {"minimum",field.minimum},{"maximum",field.maximum},{"distance_metres",field.distance}});
+        return {{"document_json",document},{"fields",std::move(fields)},{"preset_sha256",entry.info.at("preset_sha256")},
+                {"document_sha256",entry.info.at("document_sha256")}};
+    }
+    throw std::invalid_argument("Unknown preset in this native catalog.");
+}
+
+std::uint64_t Catalogs::open(const std::filesystem::path& root){
+    reap();
+    require(readers_.size()<2,"Catalog readers are busy or stopping. Try again after they finish.");
+    require(next_<static_cast<std::uint64_t>(std::numeric_limits<std::int64_t>::max()),"Catalog handle space exhausted.");
+    const auto handle=next_+1;
+    const auto limits=settingsPresets_?LibraryLimits{512,8192,8*1024*1024,true,true}:LibraryLimits{256,8192,2*1024*1024,true};
+    auto [at,inserted]=readers_.emplace(handle,Reader{std::make_unique<Library>(limits),0,false});
+    try{at->second.token=at->second.library->start({root});}
+    catch(...){readers_.erase(at);throw;}
+    next_=handle;
+    return handle;
+}
+Json Catalogs::page(std::uint64_t handle,const std::string& search,const std::string& category,std::size_t number) const {
+    const auto found=readers_.find(handle);
+    require(found!=readers_.end()&&!found->second.closed,"Unknown or closed catalog handle.");
+    const auto& reader=found->second;
+    return reader.library->page(reader.token,search,category,number);
+}
+Json Catalogs::presetPage(std::uint64_t handle,std::size_t number)const{
+    require(settingsPresets_&&number>=1&&number<=4,"Invalid settings preset catalog page.");
+    const auto data=page(handle,"","",number);Json entries=Json::array();
+    if(data[0]=="complete"&&data[5]=="")for(const auto& row:data[9])entries.push_back(row[1]);
+    return {{"state",data[0]},{"scanned",data[1]},{"entry_count",data[2]},{"invalid",data[3]},
+            {"limited",data[4]},{"has_error",data[5]!=""},{"pages",data[7]},{"entries",std::move(entries)}};
+}
+Json Catalogs::preset(std::uint64_t handle,const std::string& key)const{
+    require(settingsPresets_&&key.size()==64,"Invalid preset reference.");
+    const auto found=readers_.find(handle);require(found!=readers_.end()&&!found->second.closed,"Unknown or closed preset catalog handle.");
+    return found->second.library->preset(found->second.token,key);
+}
+void Catalogs::close(std::uint64_t handle){
+    const auto found=readers_.find(handle);
+    require(found!=readers_.end()&&!found->second.closed,"Unknown or closed catalog handle.");
+    found->second.library->cancel(found->second.token);
+    found->second.closed=true;
+}
+void Catalogs::reap(){
+    for(auto at=readers_.begin();at!=readers_.end();){
+        if(at->second.closed&&at->second.library->terminal())at=readers_.erase(at);else ++at;
+    }
 }
 }

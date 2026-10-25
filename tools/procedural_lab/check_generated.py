@@ -114,7 +114,7 @@ def main():
     assert text.count('rollout mainUI "Cyrus Scatter '+version+'"')==1
     container=text[text.index('plugin helper CyrusSourceContainer'):]
     assert re.findall(r'rollout (\w+) "',container)==['containerUI']
-    assert 'version:59\ninitialRollupState' in text and 'CyrusUnified2' in text
+    assert 'version:60\ninitialRollupState' in text and 'CyrusUnified2' in text
     for obsolete in ('groupPolicy','procUpgrade','paintIdentity','Layer priority','legacyUI','if true then','if false then'):
         assert obsolete not in text,obsolete
     for name in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations',
@@ -122,10 +122,10 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==333  # 0.86.8.7 adds the installation viewport memory dialog.
+    assert len(current)==347  # 0.87.0 adds 14 layer interaction controls.
     assert 'general/previewUI/memoryButton' in current
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
-    assert len(layout['sections'])==12
+    assert len(layout['sections'])==13
     for section in layout['sections']:
         assert len(re.findall(r'rollout '+section['name']+r'\b',text))==1,section['name']
         for control in section['controls']:
@@ -151,7 +151,7 @@ def main():
     assert schema['properties']['schema_version']['const']=='0.73'
     catalog=json.loads((ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json').read_text())
     assert catalog['development_version']==version and catalog['calculation_model']=='CyrusUnified2'
-    assert len(catalog['controls'])==len(current) and len(catalog['features'])==36
+    assert len(catalog['controls'])==len(current) and len(catalog['features'])==37
     assert catalog['control_inventory_sha256']==hashlib.sha256(products[1].read_bytes()).hexdigest()
     assert catalog['capability_source_sha256']==hashlib.sha256((ROOT/'docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md').read_bytes()).hexdigest()
     fixtures=sorted((ROOT/'tools/procedural_lab').glob('Max_*073*.ms'))

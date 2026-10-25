@@ -2,7 +2,9 @@
 #include "recipe_library.h"
 #include "recipe_store.h"
 #include "asset_package.h"
+#include "prepared_package_leases.h"
 #include "asset_mesh.h"
+#include "source_measurement.h"
 #include "placement_value.h"
 #include "script_buffers.h"
 #include <max.h>
@@ -193,6 +195,7 @@ class PackageTask {
     std::thread worker_;std::atomic<bool> stop_{false},done_{true};std::mutex mutex_;
     std::uint64_t token_=0,bytes_=0;std::string state_="idle",stage_,error_,result_;
     std::shared_ptr<const cyrus::assets::PreparedPackage> prepared_;
+    cyrus::assets::PreparedPackageLeases retained_;
 public:
     ~PackageTask(){stop_=true;if(worker_.joinable())worker_.join();}
     std::uint64_t start(std::filesystem::path output,std::filesystem::path recipe,std::string hash,r::Json graph,std::map<std::string,std::filesystem::path> inputs,std::string declaration){
@@ -219,10 +222,12 @@ public:
         });}catch(...){done_=true;std::lock_guard lock(mutex_);state_="failed";throw;}
         return token_;
     }
-    std::shared_ptr<const cyrus::assets::PreparedPackage> prepared(std::uint64_t token){std::lock_guard lock(mutex_);if(token!=token_||state_!="ready"||!prepared_)throw std::runtime_error("Package snapshot is missing, still preparing or replaced. Review again.");return prepared_;}
-    r::Json poll(std::uint64_t token){std::lock_guard lock(mutex_);if(token!=token_)throw std::runtime_error("Package task was replaced.");return r::Json::array({state_,stage_,bytes_,error_,result_});}
-    void cancel(std::uint64_t token){std::lock_guard lock(mutex_);if(token!=token_)throw std::runtime_error("Package task was replaced.");stop_=true;}
-    void release(std::uint64_t token){std::lock_guard lock(mutex_);if(token!=token_)return;stop_=true;prepared_.reset();if(state_=="ready")state_="released";}
+    std::shared_ptr<const cyrus::assets::PreparedPackage> prepared(std::uint64_t token){std::lock_guard lock(mutex_);if(cyrus::assets::PreparedPackageLeases::isLease(token))return retained_.get(token);if(token!=token_||state_!="ready"||!prepared_)throw std::runtime_error("Package snapshot is missing, still preparing or replaced. Review again.");return prepared_;}
+    std::uint64_t retain(std::uint64_t token){std::lock_guard lock(mutex_);if(token!=token_||state_!="ready"||!prepared_)throw std::runtime_error("Only the current ready package can be retained.");return retained_.retain(prepared_);}
+    std::size_t retainedCount(){std::lock_guard lock(mutex_);return retained_.size();}
+    r::Json poll(std::uint64_t token){std::lock_guard lock(mutex_);if(cyrus::assets::PreparedPackageLeases::isLease(token)){retained_.get(token);return r::Json::array({"ready","retained",0,"",""});}if(token!=token_)throw std::runtime_error("Package task was replaced.");return r::Json::array({state_,stage_,bytes_,error_,result_});}
+    void cancel(std::uint64_t token){std::lock_guard lock(mutex_);if(cyrus::assets::PreparedPackageLeases::isLease(token))return;if(token!=token_)throw std::runtime_error("Package task was replaced.");stop_=true;}
+    void release(std::uint64_t token){std::lock_guard lock(mutex_);if(cyrus::assets::PreparedPackageLeases::isLease(token)){retained_.release(token);return;}if(token!=token_)return;stop_=true;prepared_.reset();if(state_=="ready")state_="released";}
 };
 PackageTask* packageTask=nullptr;
 r::Library& recipeLibrary();
@@ -291,6 +296,12 @@ def_visible_primitive(cyrusAssetPackagePrepare,"cyrusAssetPackagePrepare");
 Value* cyrusAssetPackagePrepare_cf(Value** a,int n){check_arg_count(cyrusAssetPackagePrepare,2,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("package directory"));type_check(a[1],String,_T("owned bitmap directory"));return Integer64::intern(packages().read(std::filesystem::path(a[0]->to_string()),std::filesystem::path(a[1]->to_string())));});}
 def_visible_primitive(cyrusAssetPackagePrepared,"cyrusAssetPackagePrepared");
 Value* cyrusAssetPackagePrepared_cf(Value** a,int n){check_arg_count(cyrusAssetPackagePrepared,2,n);return recipeAPI([&]()->Value*{const auto snapshot=packages().prepared(a[0]->to_int64());return recipeValue(a[1]->to_bool()?snapshot->document:snapshot->metadata);});}
+def_visible_primitive(cyrusAssetPackageRetainVersion,"cyrusAssetPackageRetainVersion");
+Value* cyrusAssetPackageRetainVersion_cf(Value**,int n){check_arg_count(cyrusAssetPackageRetainVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusAssetPackageRetain,"cyrusAssetPackageRetain");
+Value* cyrusAssetPackageRetain_cf(Value** a,int n){check_arg_count(cyrusAssetPackageRetain,1,n);return recipeAPI([&]()->Value*{return Integer64::intern(packages().retain(a[0]->to_int64()));});}
+def_visible_primitive(cyrusAssetPackageRetainedCount,"cyrusAssetPackageRetainedCount");
+Value* cyrusAssetPackageRetainedCount_cf(Value**,int n){check_arg_count(cyrusAssetPackageRetainedCount,0,n);return recipeAPI([&]()->Value*{return Integer::intern(static_cast<int>(packages().retainedCount()));});}
 def_visible_primitive(cyrusAssetPackageRelease,"cyrusAssetPackageRelease");
 Value* cyrusAssetPackageRelease_cf(Value** a,int n){check_arg_count(cyrusAssetPackageRelease,1,n);return recipeAPI([&]()->Value*{packages().release(a[0]->to_int64());return &ok;});}
 def_visible_primitive(cyrusAssetFileInfo,"cyrusAssetFileInfo");
@@ -357,6 +368,21 @@ Value* cyrusAssetDefaultCurves_cf(Value** a,int n){check_arg_count(cyrusAssetDef
     if(!same)throw RuntimeError(_T("Authored texture-output curves require a separate portable adapter, including disabled curves"));return &ok;
 });}
 // Read the admitted immutable mesh without creating a temporary scene node.
+def_visible_primitive(cyrusAssetPreparedSourceVersion,"cyrusAssetPreparedSourceVersion");
+Value* cyrusAssetPreparedSourceVersion_cf(Value**,int n){check_arg_count(cyrusAssetPreparedSourceVersion,0,n);return Integer::intern(1);}
+
+def_visible_primitive(cyrusAssetPreparedSourceInfo,"cyrusAssetPreparedSourceInfo");
+Value* cyrusAssetPreparedSourceInfo_cf(Value** a,int n){check_arg_count(cyrusAssetPreparedSourceInfo,2,n);return recipeAPI([&]()->Value*{
+    const auto snapshot=packages().prepared(a[0]->to_int64());const auto id=recipeUTF8(a[1],80);
+    const auto found=snapshot->meshes.find(id);if(found==snapshot->meshes.end())throw RuntimeError(_T("Source mesh is absent from the prepared package"));
+    const auto& mesh=*found->second;
+    cyrus::source_measurement::storage(mesh.vertices.size(),mesh.faces.size(),cyrus::source_measurement::maxVertices,cyrus::source_measurement::maxFaces);
+    cyrus::source_measurement::Bounds bounds;for(const auto& p:mesh.vertices)bounds.add(p);
+    return recipeValue(r::Json{{"schema","cyrus.prepared-source/1.0"},{"vertices",mesh.vertices.size()},{"triangles",mesh.faces.size()},
+        {"minimum_m",bounds.minimum},{"maximum_m",bounds.maximum},{"radius_xy_m",bounds.radiusXY},{"radius_xyz_m",bounds.radiusXYZ},
+        {"mesh_storage_bytes",cyrus::assets::meshStorageBytes(mesh)},{"mapping_channels",mesh.maps.size()},{"stored_normals",bool(mesh.normals)}});
+});}
+
 def_visible_primitive(cyrusAssetPreparedMeshBounds,"cyrusAssetPreparedMeshBounds");
 Value* cyrusAssetPreparedMeshBounds_cf(Value** a,int n){check_arg_count(cyrusAssetPreparedMeshBounds,2,n);return recipeAPI([&]()->Value*{
     const auto snapshot=packages().prepared(a[0]->to_int64());const auto id=recipeUTF8(a[1],80);
@@ -535,29 +561,79 @@ namespace {
 // Destroy the worker before Max unloads DLLs; joining a thread from a static
 // destructor under the Windows loader lock can deadlock its thread teardown.
 r::Library* libraryValue=nullptr;
+r::Catalogs* catalogValue=nullptr;
+r::Catalogs* presetCatalogValue=nullptr;
 bool libraryShuttingDown=false;
+bool libraryShutdownRegistered=false;
 void libraryShutdown(void*,NotifyInfo*) {
-    libraryShuttingDown=true;delete libraryValue;libraryValue=nullptr;delete packageTask;packageTask=nullptr;
+    libraryShuttingDown=true;delete presetCatalogValue;presetCatalogValue=nullptr;delete catalogValue;catalogValue=nullptr;delete libraryValue;libraryValue=nullptr;delete packageTask;packageTask=nullptr;
+}
+void registerLibraryShutdown(){
+    if(!libraryShutdownRegistered){
+        if(!RegisterNotification(libraryShutdown,nullptr,NOTIFY_SYSTEM_SHUTDOWN))throw std::runtime_error("Cannot register library shutdown.");
+        libraryShutdownRegistered=true;
+    }
 }
 r::Library& recipeLibrary(){
     if(libraryShuttingDown)throw std::runtime_error("The library is shutting down.");
     if(!libraryValue){
         auto value=std::make_unique<r::Library>();
-        if(!RegisterNotification(libraryShutdown,nullptr,NOTIFY_SYSTEM_SHUTDOWN))throw std::runtime_error("Cannot register library shutdown.");
+        registerLibraryShutdown();
         libraryValue=value.release();
     }
     return *libraryValue;
+}
+r::Catalogs& recipeCatalogs(){
+    if(libraryShuttingDown)throw std::runtime_error("The library is shutting down.");
+    if(!catalogValue){
+        auto value=std::make_unique<r::Catalogs>();
+        registerLibraryShutdown();catalogValue=value.release();
+    }
+    return *catalogValue;
+}
+r::Catalogs& presetCatalogs(){
+    if(libraryShuttingDown)throw std::runtime_error("The library is shutting down.");
+    if(!presetCatalogValue){auto value=std::make_unique<r::Catalogs>(true);registerLibraryShutdown();presetCatalogValue=value.release();}
+    return *presetCatalogValue;
 }
 }
 void cyrusRecipeLibraryShutdown(){
     libraryShutdown(nullptr,nullptr);
     UnRegisterNotification(libraryShutdown,nullptr,NOTIFY_SYSTEM_SHUTDOWN);
+    libraryShutdownRegistered=false;
 }
 #ifndef CYRUS_TEAM_LICENSE
 extern "C" __declspec(dllexport) int LibShutdown(){cyrusRecipeLibraryShutdown();return TRUE;}
 #endif
 def_visible_primitive(cyrusRecipeLibraryVersion,"cyrusRecipeLibraryVersion");
 Value* cyrusRecipeLibraryVersion_cf(Value**,int n){check_arg_count(cyrusRecipeLibraryVersion,0,n);return Integer::intern(4);}
+// Separate bounded owners; never borrow/replace the gallery's singleton scan.
+def_visible_primitive(cyrusRecipeCatalogVersion,"cyrusRecipeCatalogVersion");
+Value* cyrusRecipeCatalogVersion_cf(Value**,int n){check_arg_count(cyrusRecipeCatalogVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusRecipeCatalogOpen,"cyrusRecipeCatalogOpen");
+Value* cyrusRecipeCatalogOpen_cf(Value** a,int n){check_arg_count(cyrusRecipeCatalogOpen,1,n);return recipeAPI([&]()->Value*{
+    type_check(a[0],String,_T("locally granted recipe folder"));
+    return Integer64::intern(recipeCatalogs().open(std::filesystem::path(a[0]->to_string())));});}
+def_visible_primitive(cyrusRecipeCatalogPage,"cyrusRecipeCatalogPage");
+Value* cyrusRecipeCatalogPage_cf(Value** a,int n){check_arg_count(cyrusRecipeCatalogPage,4,n);return recipeAPI([&]()->Value*{
+    return recipeValue(recipeCatalogs().page(a[0]->to_int64(),recipeUTF8(a[1],1024),recipeUTF8(a[2],96),a[3]->to_int()));});}
+def_visible_primitive(cyrusRecipeCatalogClose,"cyrusRecipeCatalogClose");
+Value* cyrusRecipeCatalogClose_cf(Value** a,int n){check_arg_count(cyrusRecipeCatalogClose,1,n);return recipeAPI([&]()->Value*{
+    recipeCatalogs().close(a[0]->to_int64());recipeCatalogs().reap();return &ok;});}
+def_visible_primitive(cyrusPresetCatalogVersion,"cyrusPresetCatalogVersion");
+Value* cyrusPresetCatalogVersion_cf(Value**,int n){check_arg_count(cyrusPresetCatalogVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusPresetCatalogOpen,"cyrusPresetCatalogOpen");
+Value* cyrusPresetCatalogOpen_cf(Value** a,int n){check_arg_count(cyrusPresetCatalogOpen,1,n);return recipeAPI([&]()->Value*{
+    type_check(a[0],String,_T("locally granted settings preset folder"));return Integer64::intern(presetCatalogs().open(std::filesystem::path(a[0]->to_string())));});}
+def_visible_primitive(cyrusPresetCatalogPage,"cyrusPresetCatalogPage");
+Value* cyrusPresetCatalogPage_cf(Value** a,int n){check_arg_count(cyrusPresetCatalogPage,2,n);return recipeAPI([&]()->Value*{
+    return recipeString(presetCatalogs().presetPage(a[0]->to_int64(),a[1]->to_int()).dump());});}
+def_visible_primitive(cyrusPresetCatalogInspect,"cyrusPresetCatalogInspect");
+Value* cyrusPresetCatalogInspect_cf(Value** a,int n){check_arg_count(cyrusPresetCatalogInspect,2,n);return recipeAPI([&]()->Value*{
+    return recipeString(presetCatalogs().preset(a[0]->to_int64(),recipeUTF8(a[1],64)).dump());});}
+def_visible_primitive(cyrusPresetCatalogClose,"cyrusPresetCatalogClose");
+Value* cyrusPresetCatalogClose_cf(Value** a,int n){check_arg_count(cyrusPresetCatalogClose,1,n);return recipeAPI([&]()->Value*{
+    presetCatalogs().close(a[0]->to_int64());presetCatalogs().reap();return &ok;});}
 def_visible_primitive(cyrusRecipeLibraryStart,"cyrusRecipeLibraryStart");
 Value* cyrusRecipeLibraryStart_cf(Value** a,int n){check_arg_count(cyrusRecipeLibraryStart,1,n);return recipeAPI([&]()->Value*{
     type_check(a[0],Array,_T("library folders"));auto* rows=static_cast<Array*>(a[0]);if(rows->size<1||rows->size>4)throw RuntimeError(_T("Choose one to four library folders"));

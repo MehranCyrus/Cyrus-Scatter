@@ -8,6 +8,13 @@ The patch implements B35's independent updates/shared location and a bounded
 B21 panel improvement. Residual cold latency, fully lazy Advanced controls and
 safe retirement of old scene paths remain separate.
 
+**Shared personal library — planning only, 23 October 2026:** the
+[full implementation plan](SHARED_LIBRARY_IMPLEMENTATION_PLAN.md) extends the
+existing content foundation to models/textures stored once, pinned recipe
+revisions, collections, portable sharing, migration and ten-look acceptance.
+It follows the [asset research](ASSET_FOUNDATION_RESEARCH_20261023.md).
+SL01–SL09 are planned; no implementation or qualification is claimed.
+
 **Historical individual-model candidate: 0.86.6.2.** The user superseded mixed
 default planting presets with 96 individual assets covering the original 104
 catalog cards, simple categories and original Corona previews. Native MAX content

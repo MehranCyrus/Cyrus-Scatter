@@ -18,6 +18,7 @@
 #include "edit_blocks.h"
 #include "edit_binding.h"
 #include "edit_feedback.h"
+#include "interactions_edit.h"
 #include <optional>
 #include <cmath>
 #include <algorithm>
@@ -38,6 +39,8 @@
 #define CS_EDIT_ID Class_ID(0x43b612e9,0x578124cd)
 static unsigned editRevision=0;
 static constexpr UINT editFeedbackMessage=WM_APP+0x2c3;
+static UINT editFrameReadyMessage=0;
+static UINT frameReadyMessage(){if(!editFrameReadyMessage){editFrameReadyMessage=RegisterWindowMessageW(L"CyrusScatter.FrameReady.43B612E9.578124CD");if(!editFrameReadyMessage)throw std::runtime_error("Cannot register the native viewport readiness message");}return editFrameReadyMessage;}
 static std::uint64_t editRestoresLive=0,editRestoresCreated=0,editRestoreCalls=0,editRedoCalls=0,editSizeCalls=0;
 static std::wstring pointId(){GUID id{};if(FAILED(CoCreateGuid(&id)))throw RuntimeError(_T("Cannot allocate instance identity"));wchar_t text[40];StringFromGUID2(id,text,40);return text;}
 static bool hasEditTransform(const Matrix3& m){const Matrix3 identity(1);for(int i=0;i<4;++i)if(m.GetRow(i)!=identity.GetRow(i))return true;return false;}
@@ -60,6 +63,10 @@ public:
  // Gesture feedback is derived from committed input plus current authored
  // deltas. It owns no extra placement array and never changes renderer state.
  bool transformPreview=false,feedbackRefreshPending=false;
+ // A native pointer gesture is admitted against one complete displayed frame.
+ // Retain only shared feedback/COW blocks while asynchronous frames catch up.
+ bool pointerGesture=false,pointerAllowed=false;
+ std::map<int,EditLayer> pointerFeedback;
  AnimHandle feedbackOwner=0;std::uint64_t feedbackStage=0;
  IObjParam* ip=nullptr;HWND panel=nullptr;bool holding=false;int level=0;std::wstring lastStatus;
  MoveModBoxCMode* move=nullptr;RotateModBoxCMode* rotate=nullptr;UScaleModBoxCMode* scale=nullptr;NUScaleModBoxCMode* nscale=nullptr;SelectModBoxCMode* select=nullptr;
@@ -85,7 +92,16 @@ public:
   std::wstring text=invalid?L"Generation changed. Restore its matching setup or Reset all edits.":std::to_wstring(selected)+L" selected / "+std::to_wstring(total)+L" instances; "+std::to_wstring(suspended)+L" edits inactive (source or candidate unavailable)";
   if(text!=lastStatus){lastStatus=text;SetDlgItemText(panel,1001,text.c_str());}
  }
- void changed(bool geometry=true,bool preview=false){transformPreview=preview;if(geometry){++editRevision;++localRevision;}NotifyDependents(FOREVER,geometry?PART_GEOM:PART_SELECT,REFMSG_CHANGE);status();if(ip)ip->RedrawViews(ip->GetTime());}
+ void interactionChanged()noexcept{try{
+  if(!feedbackOwner)return;std::vector<cyrus::InteractionEditPatch> patches;
+  for(const auto& [key,l]:layers)if(l.active&&!l.invalid&&cyrus::interactionLayer(feedbackOwner,key)){
+   const bool obstacle=cyrus::interactionObstacleLayer(feedbackOwner,key);
+   for(unsigned i=0;i<l.rows.size();++i){const auto& row=l.rows.get(i);const auto wide=row.outputId.text();std::string id(wide.begin(),wide.end());if(!row.deleted&&!l.shown(row)&&!cyrus::interactionHasOverride(feedbackOwner,key,id))continue;
+    if(!row.deleted&&!obstacle&&!l.selection.get(i)&&!cyrus::interactionHasOverride(feedbackOwner,key,id))continue;
+    patches.push_back({key,std::move(id),authoredFeedbackMatrix(l,i,key),row.deleted});}}
+  if(!patches.empty())cyrus::interactionEdit(feedbackOwner,patches);
+ }catch(const std::exception& e){cyrus::interactionFailure(feedbackOwner,e.what());}catch(...){cyrus::interactionFailure(feedbackOwner,"Edit contact preparation failed; previous contact publication retained");}}
+ void changed(bool geometry=true,bool preview=false){transformPreview=preview;if(geometry){++editRevision;++localRevision;interactionChanged();}NotifyDependents(FOREVER,geometry?PART_GEOM:PART_SELECT,REFMSG_CHANGE);status();if(ip)ip->RedrawViews(ip->GetTime());}
  // Renderer publication can occur inside a display update. Invalidate Max's
  // cached axes on the next owned UI dispatch, never recursively from rendering.
  void refreshFeedback()noexcept{
@@ -106,13 +122,27 @@ public:
    if(m->ip)try{m->NotifyDependents(FOREVER,PART_SELECT,REFMSG_CHANGE);m->ip->RedrawViews(m->ip->GetTime());}catch(...){/* Optional display refresh; authored data is intact. */}
    return TRUE;
   }
+  if(editFrameReadyMessage&&msg==editFrameReadyMessage&&m&&w==static_cast<WPARAM>(Animatable::GetHandleByAnim(m))){
+   // A GPU worker never calls Max. A registered message cannot be confused
+   // with an unrelated recycled window's private WM_APP protocol.
+   if(cyrusRequestReadyPointDisplay(std::uint64_t(l),m->feedbackOwner)&&m->ip)try{m->ip->RedrawViews(m->ip->GetTime());}catch(...){}
+   return TRUE;
+  }
   if(msg==WM_COMMAND&&m){if(LOWORD(w)==1002)m->reset();if(LOWORD(w)==1003)m->Notify();if(LOWORD(w)==1004&&m->ip)m->ip->SetSubObjectLevel(1);return TRUE;}return FALSE;}
  void BeginEditParams(IObjParam* p,ULONG,Animatable*)override;
  void EndEditParams(IObjParam*,ULONG,Animatable*)override;
  void ActivateSubobjSel(int l,XFormModes& modes)override{if(ip){if(l&&!level)ip->RegisterDeleteUser(this);if(!l&&level)ip->UnRegisterDeleteUser(this);}level=l;if(l)modes=XFormModes(move,rotate,nscale,scale,nullptr,select);changed(false);}
  struct Visible {int layer;unsigned row;Point3 p,color;};
- Matrix3 handleMatrix(const EditLayer& l,unsigned i)const{
+ const EditLayer& gestureFeedback(const EditLayer& l,int key)const{if(pointerGesture&&pointerAllowed){auto found=pointerFeedback.find(key);if(found!=pointerFeedback.end())return found->second;}return l;}
+ Matrix3 authoredFeedbackMatrix(const EditLayer& l,unsigned i,int key)const{
+  const auto& row=l.rows.get(i);const auto& frame=gestureFeedback(l,key);const auto final=frame.displayMatrix(row);const auto& local=frame.feedbackLocal();
+  if(!local||i>=local->rows.size())return final;const auto& committed=local->rows.get(i);const auto source=l.sourceIn(committed,local->input);
+  if(committed.inputId!=row.inputId||committed.outputId!=row.outputId||committed.lineage!=row.lineage||source==UINT_MAX)return final;
+  try{const auto input=local->input->matrix(source);const auto suffix=inverseEditMatrix(input*committed.delta)*final;const auto matrix=input*row.delta*suffix;return finiteEditMatrix(matrix)?matrix:final;}catch(const std::exception&){return final;}
+ }
+ Matrix3 handleMatrix(const EditLayer& l,unsigned i,int key)const{
   const auto& row=l.rows.get(i);const auto final=l.displayMatrix(row);
+  if(pointerGesture&&pointerAllowed&&l.selection.get(i))return authoredFeedbackMatrix(l,i,key);
   if(!transformPreview||!l.selection.get(i)||!l.published)return final;
   const auto& local=l.feedbackLocal();if(!local||i>=local->rows.size())return final;
   const auto& committed=local->rows.get(i);const auto source=l.sourceIn(committed,local->input);
@@ -124,7 +154,7 @@ public:
    return finiteEditMatrix(preview)?preview:final;
   }catch(const std::exception&){return final;}
  }
- ce::Vector<Visible> visible(){ce::Vector<Visible> out;for(auto& [k,l]:layers)if(l.active&&!l.invalid){const auto begin=out.size();for(unsigned i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);if(l.shown(r))out.push_back({k,i,handleMatrix(l,i).GetTrans(),l.color(r)});}
+ ce::Vector<Visible> visible(){ce::Vector<Visible> out;for(auto& [k,l]:layers)if(l.active&&!l.invalid){const auto begin=out.size();for(unsigned i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);if(l.shown(r))out.push_back({k,i,handleMatrix(l,i,k).GetTrans(),l.color(r)});}
   const auto less=[&](const Visible& a,const Visible& b){return l.rows.get(a.row).order<l.rows.get(b.row).order;};if(!std::is_sorted(out.begin()+begin,out.end(),less))std::sort(out.begin()+begin,out.end(),less);}return out;}
  int Display(TimeValue,INode*,ViewExp* v,int,ModContext*)override{if(!level)return 0;auto* g=v->getGW();g->setTransform(Matrix3(1));for(auto item:visible()){
   g->setColor(LINE_COLOR,item.color);g->marker(&item.p,HOLLOW_BOX_MRKR);
@@ -140,36 +170,39 @@ public:
  void ClearSelection(int)override{author([](auto& next){for(auto& [k,l]:next)l.selection.clear();},false);}
  void SelectAll(int)override{author([](auto& next){for(auto& [k,l]:next)for(std::size_t i=0;i<l.rows.size();++i)l.selection.set(i,l.active&&!l.invalid&&l.shown(l.rows.get(i)));},false);}
  void InvertSelection(int)override{author([](auto& next){for(auto& [k,l]:next)for(std::size_t i=0;i<l.rows.size();++i)if(l.shown(l.rows.get(i)))l.selection.set(i,!l.selection.get(i));},false);}
- void transform(const Matrix3& tm,bool localOrigin=false){if(!valid()||!cyrusBoundaryAllows(this))return;requireEditableFeedback();author([&](auto& next){
+ void transform(const Matrix3& tm,bool localOrigin=false,bool pointer=false){if(!valid()||!cyrusBoundaryAllows(this))return;if(!pointer)requireEditableFeedback();else if(!pointerGesture||!pointerAllowed)return;author([&](auto& next){
   if(!finiteEditMatrix(tm))throw std::invalid_argument("Edit gesture must have a finite transform");
   for(auto& [k,l]:next)if(l.active)for(std::size_t i=0;i<l.rows.size();++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))&&!l.rows.get(i).deleted){
-   const auto& saved=l.rows.get(i);Matrix3 suffix(1);const auto final=l.displayMatrix(saved);
+   const auto& saved=l.rows.get(i);const auto& frame=pointer?gestureFeedback(l,k):l;Matrix3 suffix(1);const auto final=frame.displayMatrix(saved);
    if(l.published){
-    const auto& local=l.feedbackLocal();if(!local||i>=local->rows.size())throw std::invalid_argument("Update the scatter before editing its changed instance history");
+    const auto& local=frame.feedbackLocal();if(!local||i>=local->rows.size())throw std::invalid_argument("Update the scatter before editing its changed instance history");
     const auto& committed=local->rows.get(i);const auto source=l.sourceIn(committed,local->input);
     if(committed.inputId!=saved.inputId||committed.outputId!=saved.outputId||committed.lineage!=saved.lineage||source==UINT_MAX)throw std::invalid_argument("Update the scatter before editing its changed source history");
     const auto intermediate=local->input->matrix(source)*committed.delta;
     bool same=true;for(int r=0;r<4;++r)if(intermediate.GetRow(r)!=final.GetRow(r))same=false;
     if(!same)suffix=inverseEditMatrix(intermediate)*final;
    }
-   auto gesture=tm;if(localOrigin){const auto pivot=handleMatrix(l,unsigned(i)).GetTrans();gesture.SetTrans(gesture.GetTrans()+pivot-pivot*gesture);}
+   auto gesture=tm;if(localOrigin){const auto pivot=handleMatrix(l,unsigned(i),k).GetTrans();gesture.SetTrans(gesture.GetTrans()+pivot-pivot*gesture);}
    const auto delta=saved.delta*suffix*gesture*inverseEditMatrix(suffix);
    if(!finiteEditMatrix(delta))throw std::invalid_argument("Edit gesture produced a non-finite transform");l.rows.write(i).delta=delta;
   }},true,true);}
+ void pointerFailure(const char* reason)noexcept{pointerAllowed=false;cyrus::interactionFailure(feedbackOwner,reason);try{lastStatus=L"Gesture stopped safely. Refresh the viewport before editing; saved edits are retained.";if(panel)SetDlgItemText(panel,1001,lastStatus.c_str());}catch(...){} }
+ void pointerTransform(const Matrix3& tm,bool localOrigin=false)noexcept{try{transform(tm,localOrigin,true);}catch(const std::exception& e){pointerFailure(e.what());}catch(...){pointerFailure("Native Edit gesture rejected; previous complete contact result retained");}}
  void Move(TimeValue,Matrix3&,Matrix3& axis,Point3& v,BOOL)override{
   // Translation changes the displayed center, not the axis orientation.
   // Keep rotation/scale's start pivot locked, but let Move's gizmo follow the
   // same live center as its selected handles throughout the gesture.
   if(ip)ip->LockAxisTripods(FALSE);
-  transform(TransMatrix(VectorTransform(axis,v)));
+  pointerTransform(TransMatrix(VectorTransform(axis,v)));
  }
- void Rotate(TimeValue,Matrix3&,Matrix3& axis,Quat& v,BOOL localOrigin)override{Matrix3 r;v.MakeMatrix(r);transform(Inverse(axis)*r*axis,!!localOrigin);}
- void Scale(TimeValue,Matrix3&,Matrix3& axis,Point3& v,BOOL localOrigin)override{transform(Inverse(axis)*ScaleMatrix(v)*axis,!!localOrigin);}
- void TransformStart(TimeValue)override{if(!cyrusBoundaryAllows(this))return;if(ip)ip->LockAxisTripods(TRUE);}
- void TransformFinish(TimeValue)override{if(ip)ip->LockAxisTripods(FALSE);}
- void TransformCancel(TimeValue)override{transformPreview=false;if(ip)ip->LockAxisTripods(FALSE);}
+ void Rotate(TimeValue,Matrix3&,Matrix3& axis,Quat& v,BOOL localOrigin)override{Matrix3 r;v.MakeMatrix(r);pointerTransform(Inverse(axis)*r*axis,!!localOrigin);}
+ void Scale(TimeValue,Matrix3&,Matrix3& axis,Point3& v,BOOL localOrigin)override{pointerTransform(Inverse(axis)*ScaleMatrix(v)*axis,!!localOrigin);}
+ void TransformStart(TimeValue)override{pointerFeedback.clear();pointerGesture=true;pointerAllowed=false;try{if(!valid()||!cyrusBoundaryAllows(this))return;requireEditableFeedback();for(const auto& [key,layer]:layers)if(layer.active){if(pointerFeedback.size()>=4096)throw std::length_error("Native Edit gesture layer limit exceeded");pointerFeedback.emplace(key,layer);}pointerAllowed=true;if(ip)ip->LockAxisTripods(TRUE);}catch(const std::exception& e){pointerFailure(e.what());}catch(...){pointerFailure("The viewport still shows a previous scatter; refresh it before starting a new gesture");}}
+ void finishPointer(bool cancel)noexcept{pointerGesture=false;pointerAllowed=false;pointerFeedback.clear();transformPreview=!cancel;if(ip)ip->LockAxisTripods(FALSE);refreshFeedback();}
+ void TransformFinish(TimeValue)override{finishPointer(false);}
+ void TransformCancel(TimeValue)override{finishPointer(true);}
  void CloneSelSubComponents(TimeValue)override{if(!valid()||!cyrusBoundaryAllows(this))return;requireEditableFeedback();theHold.Begin();try{author([](auto& next){for(auto& [k,l]:next)if(l.active){auto n=l.rows.size();for(std::size_t i=0;i<n;++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))&&!l.rows.get(i).deleted){auto copy=l.rows.get(i);copy.outputId=EditKey(pointId());copy.order=l.allocateOrder();l.selection.set(i,false);l.append(copy);l.selection.set(l.rows.size()-1,true);}}});theHold.Accept(_T("Copy scatter instances"));}catch(...){theHold.Cancel();throw;}}
- std::pair<Point3,unsigned> selectedCenter()const{Point3 p(0,0,0);unsigned n=0;for(const auto& [key,l]:layers){(void)key;if(l.active&&!l.invalid)for(unsigned i=0;i<l.rows.size();++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))){p+=handleMatrix(l,i).GetTrans();++n;}}return {n?p/float(n):p,n};}
+ std::pair<Point3,unsigned> selectedCenter()const{Point3 p(0,0,0);unsigned n=0;for(const auto& [key,l]:layers){if(l.active&&!l.invalid)for(unsigned i=0;i<l.rows.size();++i)if(l.selection.get(i)&&l.shown(l.rows.get(i))){p+=handleMatrix(l,i,key).GetTrans();++n;}}return {n?p/float(n):p,n};}
  void GetSubObjectCenters(SubObjAxisCallback* cb,TimeValue,INode*,ModContext*)override{const auto [p,n]=selectedCenter();if(n)cb->Center(p,0);}
  void GetSubObjectTMs(SubObjAxisCallback* cb,TimeValue,INode*,ModContext*)override{Matrix3 tm(1);const auto [p,n]=selectedCenter();if(n)tm.SetTrans(p);cb->TM(tm,0);}
  IOResult Save(ISave* save)override;
@@ -182,8 +215,22 @@ int EditRestore::Size(){++editSizeCalls;const auto bytes=sizeof(*this)+editHisto
 void EditRestore::Redo(){++editRedoCalls;auto next=editRestoreState(after,mod->layers);mod->layers.swap(next);mod->changed();}
 extern HINSTANCE CyrusEditInstance;
 void CSEdit::BeginEditParams(IObjParam* p,ULONG,Animatable*){ip=p;feedbackRefreshPending=false;SetAFlag(A_MOD_BEING_EDITED);NotifyDependents(FOREVER,PART_ALL,REFMSG_MOD_DISPLAY_ON);move=new MoveModBoxCMode(this,p);rotate=new RotateModBoxCMode(this,p);scale=new UScaleModBoxCMode(this,p);nscale=new NUScaleModBoxCMode(this,p);select=new SelectModBoxCMode(this,p);panel=p->AddRollupPage(CyrusEditInstance,MAKEINTRESOURCE(101),dlg,_T("CS Edit"),(LPARAM)this);}
-void CSEdit::EndEditParams(IObjParam* p,ULONG,Animatable*){feedbackRefreshPending=false;ClearAFlag(A_MOD_BEING_EDITED);NotifyDependents(FOREVER,PART_ALL,REFMSG_MOD_DISPLAY_OFF);if(level)p->UnRegisterDeleteUser(this);for(auto* mode:std::vector<CommandMode*>{move,rotate,scale,nscale,select}){p->DeleteMode(mode);delete mode;}move=nullptr;rotate=nullptr;scale=nullptr;nscale=nullptr;select=nullptr;if(panel)p->DeleteRollupPage(panel);panel=nullptr;ip=nullptr;level=0;}
+void CSEdit::EndEditParams(IObjParam* p,ULONG,Animatable*){pointerGesture=false;pointerAllowed=false;pointerFeedback.clear();feedbackRefreshPending=false;ClearAFlag(A_MOD_BEING_EDITED);NotifyDependents(FOREVER,PART_ALL,REFMSG_MOD_DISPLAY_OFF);if(level)p->UnRegisterDeleteUser(this);for(auto* mode:std::vector<CommandMode*>{move,rotate,scale,nscale,select}){p->DeleteMode(mode);delete mode;}move=nullptr;rotate=nullptr;scale=nullptr;nscale=nullptr;select=nullptr;if(panel)p->DeleteRollupPage(panel);panel=nullptr;ip=nullptr;level=0;}
 #include "cyrus_edit_storage.inc"
+namespace cyrus {
+std::vector<InteractionEditPatch> interactionAuthoredEdits(INode* node,const std::vector<int>& historyLayers,bool collect){
+ std::vector<InteractionEditPatch> result;CSEdit* owner=nullptr;auto* object=node?node->GetObjectRef():nullptr;unsigned depth=0;
+ while(object&&object->SuperClassID()==GEN_DERIVOB_CLASS_ID){if(++depth>256)throw std::runtime_error("Interaction Edit stack exceeds 256 levels");auto* derived=static_cast<IDerivedObject*>(object);
+  for(int i=0;i<derived->NumModifiers();++i){auto* modifier=derived->GetModifier(i);if(modifier&&modifier->ClassID()==CS_EDIT_ID){if(owner)throw std::runtime_error("Interactions currently require one Cyrus Edit modifier per controller");owner=static_cast<CSEdit*>(modifier);}}object=derived->GetObjRef();}
+ if(owner&&owner->feedbackOwner&&owner->feedbackOwner!=Animatable::GetHandleByAnim(node))throw std::runtime_error("Interactions require a separate Cyrus Edit modifier for each controller");
+ if(!owner||!collect)return result;
+ for(const auto& [key,layer]:owner->layers){if(layer.invalid)continue;const bool history=std::find(historyLayers.begin(),historyLayers.end(),key)!=historyLayers.end();
+  for(unsigned i=0;i<layer.rows.size();++i){const auto& row=layer.rows.get(i);if(!authoredEdit(row)&&!history)continue;const auto wide=row.outputId.text();std::string id(wide.begin(),wide.end());
+   if(!authoredEdit(row)&&!interactionHasOverride(Animatable::GetHandleByAnim(node),key,id))continue;
+   if(result.size()>=4096)throw std::runtime_error("More than 4096 uncommitted instance edits; Update scatter before restaging interactions");result.push_back({key,std::move(id),owner->authoredFeedbackMatrix(layer,i,key),row.deleted});}}
+ return result;
+}
+}
 class EditDesc:public ClassDesc2 {public:int IsPublic()override{return TRUE;}void* Create(BOOL)override{return new CSEdit;}const MCHAR* ClassName()override{return _T("Cyrus Scatter Edit");}const MCHAR* NonLocalizedClassName()override{return _T("Cyrus Scatter Edit");}SClass_ID SuperClassID()override{return OSM_CLASS_ID;}Class_ID ClassID()override{return CS_EDIT_ID;}const MCHAR* Category()override{return _T("Cyrus");}const MCHAR* InternalName()override{return _T("CyrusScatterEdit");}HINSTANCE HInstance()override{return CyrusEditInstance;}};
 extern "C" __declspec(dllexport) ClassDesc* CyrusEditDesc(){static EditDesc desc;return &desc;}
 static CSEdit* edit(Value* v){auto* p=v->to_reftarg();if(!p||p->ClassID()!=CS_EDIT_ID)throw RuntimeError(_T("Expected Cyrus Scatter Edit"));return static_cast<CSEdit*>(p);}
@@ -243,4 +290,4 @@ Value* cyrusEditOwnerLayers_cf(Value** a,int count){
 
 def_visible_primitive(cyrusEditSelect,"cyrusEditSelect");Value* cyrusEditSelect_cf(Value** a,int count){check_arg_count(cyrusEditSelect,2,count);auto* m=edit(a[0]);type_check(a[1],Array,_T("selection indices"));auto* ids=static_cast<Array*>(a[1]);auto visible=m->visible();m->author([&](auto& next){for(auto& [k,l]:next)l.selection.clear();for(int i=0;i<ids->size;++i){int id=ids->data[i]->to_int()-1;if(id>=0&&id<int(visible.size())){auto v=visible[id];next[v.layer].selection.set(v.row,true);}}},false);return &ok;}
 
-def_visible_primitive(cyrusEditTransform,"cyrusEditTransform");Value* cyrusEditTransform_cf(Value** a,int count){check_arg_count(cyrusEditTransform,5,count);auto* m=edit(a[0]);if(!cyrusBoundaryAllows(m))throw RuntimeError(_T("Cyrus authoring denied; edits retained"));int op=a[1]->to_int();Matrix3 part(1),axis=a[3]->to_matrix3();BOOL local=a[4]->to_bool();m->TransformStart(0);if(op==0){Point3 v=a[2]->to_point3();m->Move(0,part,axis,v,local);}else if(op==1){Quat v=a[2]->to_quat();m->Rotate(0,part,axis,v,local);}else if(op==2){Point3 v=a[2]->to_point3();m->Scale(0,part,axis,v,local);}m->TransformFinish(0);return &ok;}
+def_visible_primitive(cyrusEditTransform,"cyrusEditTransform");Value* cyrusEditTransform_cf(Value** a,int count){check_arg_count(cyrusEditTransform,5,count);auto* m=edit(a[0]);if(!cyrusBoundaryAllows(m))throw RuntimeError(_T("Cyrus authoring denied; edits retained"));int op=a[1]->to_int();Matrix3 axis=a[3]->to_matrix3(),tm(1);BOOL local=a[4]->to_bool();if(op==0)tm=TransMatrix(VectorTransform(axis,a[2]->to_point3()));else if(op==1){auto q=a[2]->to_quat();Matrix3 r;q.MakeMatrix(r);tm=Inverse(axis)*r*axis;}else if(op==2)tm=Inverse(axis)*ScaleMatrix(a[2]->to_point3())*axis;else throw RuntimeError(_T("Unknown Cyrus Edit transform operation"));m->transform(tm,op!=0&&local);return &ok;}

@@ -1,0 +1,10 @@
+command: /workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --build /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized --parallel 4
+cwd: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter
+environment_overrides: {}
+started_utc: 2026-10-24T14:58:02.146910+00:00
+
+[ 33%] Built target fitter_analytic_tests
+[ 66%] Built target cyrus_vegetation_fitter
+[100%] Built target fitter_tests
+
+exit_code: 0

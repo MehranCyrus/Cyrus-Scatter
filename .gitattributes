@@ -239,3 +239,56 @@
 
 # Exact-byte aggregate evidence for the qualified 0.86.9 Edit delivery.
 /docs/plans/edit-instances/QUALIFICATION_0869.json -text whitespace=cr-at-eol
+
+
+# Exact-byte source/research inputs for the 0.87.0 checkpoint.
+# Preserve imported manifests and the already built source without editing it.
+/CyrusVegetationLab/** -text whitespace=cr-at-eol
+/docs/plans/scatter-interactions-garden-20261025/** -text whitespace=cr-at-eol
+/docs/research/A/** -text -whitespace
+/docs/research/B/** -text -whitespace
+/docs/research/C/** -text -whitespace
+/docs/research/vegetation-core-handoff/** -text -whitespace
+/docs/research/vegetation-core-reviews/** -text -whitespace
+/docs/research/vegetation-interaction/** -text -whitespace
+/AminScatter/include/asset_jpeg.h -text whitespace=cr-at-eol
+/AminScatter/setup/InstallEngine.cs -text whitespace=cr-at-eol
+/AminScatter/src/asset_bitmap_host.inc -text whitespace=cr-at-eol
+/AminScatter/src/asset_jpeg.c -text whitespace=cr-at-eol
+/AminScatter/src/asset_shader.cpp -text whitespace=cr-at-eol
+/AminScatter/src/interactions_geometry.cpp -text whitespace=cr-at-eol
+/AminScatter/src/interactions_host.cpp -text whitespace=cr-at-eol
+/AminScatter/src/interactions_preview.cpp -text whitespace=cr-at-eol
+/AminScatter/src/interactions_render.cpp -text whitespace=cr-at-eol
+/AminScatter/src/interactions_source.cpp -text whitespace=cr-at-eol
+/AminScatter/src/material_preview.inc -text whitespace=cr-at-eol
+/AminScatter/src/point_publication.inc -text whitespace=cr-at-eol
+/AminScatter/src/preview_compare.inc -text whitespace=cr-at-eol
+/AminScatter/tests/asset_image_tests.cpp -text whitespace=cr-at-eol
+/AminScatter/tests/asset_package_tests.cpp -text whitespace=cr-at-eol
+/AminScatter/tests/asset_shader_tests.cpp -text whitespace=cr-at-eol
+/AminScatter/tests/data/recipe_v7_defaults.json -text whitespace=cr-at-eol
+/AminScatter/tests/data/recipe_v8_defaults.json -text whitespace=cr-at-eol
+/AminScatter/tests/interactions_tests.cpp -text whitespace=cr-at-eol
+/AminScatter/third_party/geodesic/CYRUS_CHANGES.md -text whitespace=cr-at-eol
+/AminScatter/third_party/geodesic/UPSTREAM.json -text whitespace=cr-at-eol
+/AminScatter/third_party/geodesic/geodesic_algorithm_exact.h -text whitespace=cr-at-eol
+/AminScatter/third_party/geodesic/geodesic_memory.h -text whitespace=cr-at-eol
+/AminScatter/third_party/geodesic/geodesic_mesh.h -text whitespace=cr-at-eol
+/AminScatter/third_party/libjpeg-turbo-3.2.0/CYRUS-INTEGRATION.md -text whitespace=cr-at-eol
+/AminScatter/third_party/libjpeg-turbo-3.2.0/CYRUS-SOURCE-PIN.json -text whitespace=cr-at-eol
+/AminScatter/tools/ui/approved-layout-rows.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/approved-layout.test.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/colored-lists.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/container-system.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/inventory.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/licensing.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/asset-shaders.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/density-patterns.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/interactions-ui.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/licensing.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/preset-loading.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/presets.ms -text whitespace=cr-at-eol
+/CyrusLicensing/src/local_store.cpp -text whitespace=cr-at-eol
+/CyrusLicensing/src/signed_license.cpp -text whitespace=cr-at-eol
+/CyrusLicensing/team/team_public_key.h -text whitespace=cr-at-eol

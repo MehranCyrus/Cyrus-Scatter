@@ -1,0 +1,17 @@
+{
+  "command_argv": [
+    "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+    "--build",
+    "owner_a_build_sanitizers",
+    "--target",
+    "cyrus_collision_tests",
+    "--parallel",
+    "2"
+  ],
+  "cwd": "/workspace/scratch/eb3b91c272e0",
+  "started_utc": "2026-10-24T14:54:12.600725+00:00",
+  "exit_code": 0,
+  "elapsed_seconds_observed": 86.74388632000046,
+  "timing_scope": "command wall time; not a collision/update benchmark",
+  "log_path": "build-sanitizers.log"
+}

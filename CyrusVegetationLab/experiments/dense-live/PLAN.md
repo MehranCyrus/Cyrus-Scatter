@@ -1,0 +1,13 @@
+# Dense asset / moving sphere experiment — 24 October 2026
+
+Authorized scope: pick an existing dense plant model, test a moving sphere against it in an owned Max 2027 session, measure and report integration lessons. This private experiment does not modify Scatter or the qualified Vegetation Lab 0.1.0 pair and is not a new artist release.
+
+Use the Cyrus engineering skill and direct current source because the selected knowledge generation is stale (48 parents checked, 21 verified). Preserve source assets and all pre-existing tracked/untracked work.
+
+Acceptance: identify actual source file/hash/topology; separate native preparation, low-resolution fitting, dense deformation, exact sphere/triangle checking, Max mesh realization and redraw timings; test automatic movement response and away/re-entry, fixed roots, source immutability, unsupported/failure retention and unrelated/idle reuse. Inspect rendered or viewport witnesses. Report unresolved contact, distortion and scalability honestly; a low-resolution guide solve does not certify a dense plant.
+
+Ownership: an experiment-only native DLX owns bounded copied source meshes/bindings and private successor buffers. Max scene access stays on its thread. Use a small guide cage to study dense-mesh delivery costs; a whole clump's single guide is explicitly an approximate preparation control, not a botanical stem rig. Original topology, UV channels and face materials remain copied. Live experiment updates coalesce latest input and reuse immutable rest data; no history-dependent simulation or repeated bending of already bent geometry. Failed candidates retain the previous result. Sample the current sphere pose deterministically; no timestep/inertia claim. No per-tick Undo records; original sources stay retained and final witnesses are ordinary baked meshes. Delete/reset retires the private registry. Cap mesh sizes and test populations; record payload and process memory independently.
+
+Current Scatter integration evidence to inspect: native source/template/publication caches; stable layer/instance IDs; Live event scheduling; Edit handle feedback versus full mesh commits. Results will inform a subsequent scoped layer-integration design, not change current contracts.
+
+Completed evidence and limitations: [REPORT.md](REPORT.md), [machine-readable report](REPORT.json). A private sorted-ID admission variant was necessary after the original quadratic check stalled the owned heavy-asset run. The automatic full-resolution test passed its scoped contact/retention controls; physical drags were exercised, but no publication while the mouse was held was recorded. Smooth continuous dragging and natural multi-stem deformation remain open. No new artist release or integration was produced.

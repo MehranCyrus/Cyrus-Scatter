@@ -13,6 +13,7 @@ bool publish(INode* node,std::vector<PointLayer> layers) {
     auto nextGeneration=std::make_shared<Generation>(std::move(layers));
     if(nextGeneration->failed.load()) return false;
     nextGeneration->editFeedback=feedback;
+    nextGeneration->displayOwner=displayHandle();
     if(revision==std::numeric_limits<std::uint64_t>::max())throw std::overflow_error("Viewport publication ticket exhausted");
     nextGeneration->presentation=presentation;nextGeneration->ticket=revision+1;
     auto next=std::make_shared<RenderBundle>(nextGeneration);nextGeneration->realization=next;
@@ -34,7 +35,7 @@ bool publish(INode* node,std::vector<PointLayer> layers) {
                 next->itemBounds.push_back(layer.snapshot->groupBounds[g]);
             }
         if(layer.mesh) for(std::size_t g=0;g<layer.mesh->groups.size();++g)
-            if(!layer.mesh->groups[g].faces.empty() && !layer.mesh->groups[g].instances.empty()) {
+            if(!layer.mesh->groups[g].faceData().empty() && layer.mesh->groups[g].instanceCount()) {
                 const MeshItem* previous=nullptr;
                 // Prefer the corresponding old slot when its geometry still
                 // matches. Identical source shapes in separate layers can

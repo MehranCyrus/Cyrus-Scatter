@@ -69,6 +69,8 @@ def manifest(info):
                 freshness="Last complete publication. Does not certify that pending inputs or source geometry are current.",
                 recipe_completeness="Publication identities, budgets and pair rules; input signature is opaque. Full reconstructable recipe/asset export is not implemented.",
                 units={"length":"metres","transform":"4x4 column-vector, right-handed Z-up; translation in metres"},
+                page_schema="cyrus.procedural-publication-page/2.0",
+                radius_metrics=["xy", "xyz"],
                 training_eligible=False)
     require(len(canonical(result).encode()) <= 1_500_000, "Publication manifest exceeds byte budget", "BUDGET_EXCEEDED")
     return result
@@ -96,7 +98,9 @@ def page(raw, published, offset, limit):
         seen.add((owner["set_id"],key))
         require(type(entry[4]) is bool and type(entry[6]) is bool and
                 entry[6] == source["included_in_exact_output"], "Invalid published output/protection flags")
-        number(entry[5], 0, 1e30)
+        _array(entry[5], 2)
+        for radius in entry[5]:
+            number(radius, 0, 1e30)
         _array(entry[1], 4)
         for row in entry[1]:
             _array(row, 3)
@@ -104,9 +108,10 @@ def page(raw, published, offset, limit):
         matrix=max_to_column_matrix(entry[1], published["metres_per_unit"])
         rows.append(dict(set_id=owner["set_id"],layer_id=owner["layer_id"],instance_id=key,
                          source_entry_id=source["source_entry_id"],transform=matrix,
-                         effective_radius_m=entry[5]*published["metres_per_unit"],
+                         effective_radii_m={"xy":entry[5][0]*published["metres_per_unit"],
+                                            "xyz":entry[5][1]*published["metres_per_unit"]},
                          protected=entry[4],included_in_exact_output=entry[6]))
-    result=dict(schema="cyrus.procedural-publication-page/1.0", publication_id=published["publication_id"],
+    result=dict(schema="cyrus.procedural-publication-page/2.0", publication_id=published["publication_id"],
                 offset=offset,next_offset=raw[2],total=raw[1],has_more=raw[2]<raw[1],
                 rows=rows,rows_sha256=digest(rows),training_eligible=False)
     require(len(canonical(result).encode()) <= 1_500_000, "Publication page exceeds byte budget", "BUDGET_EXCEEDED")

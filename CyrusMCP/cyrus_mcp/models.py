@@ -73,3 +73,28 @@ class DesignPlan(Closed):
 class ResponseEnvelope(BaseModel):
     model_config=ConfigDict(extra="allow")
     ok: bool
+
+
+class OwnedLayerChange(Closed):
+    layer_id: Identifier
+    count: Annotated[int, Field(ge=0, le=2000)] | None = None
+    seed: Annotated[int, Field(ge=0, le=2147483646)] | None = None
+
+
+class OwnedChange(Closed):
+    change_schema: Literal["cyrus.owned-change/1.0"]
+    context_id: Identifier
+    controller_id: Identifier
+    generation_id: Identifier
+    configuration_id: Identifier
+    mode: Literal["configure", "update", "configure_and_update"]
+    layers: Annotated[list[OwnedLayerChange], Field(max_length=3)] = Field(default_factory=list)
+
+class AssetUse(Closed):
+    use_schema: Literal["cyrus.asset-use/1.0"]
+    scope_id: Identifier
+    task_id: Identifier
+    task_revision: Annotated[int,Field(ge=0,le=2**53)]
+    grant_id: Identifier
+    asset_refs: Annotated[list[Identifier],Field(min_length=1,max_length=3)]
+    destination: Literal["task_sources"]

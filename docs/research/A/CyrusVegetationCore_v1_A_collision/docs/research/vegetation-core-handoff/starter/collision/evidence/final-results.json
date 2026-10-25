@@ -1,0 +1,404 @@
+{
+  "evidence_scope": "New Owner-A headless implementation; parsed from preserved actual CTest output",
+  "release": {
+    "exit_code": 0,
+    "ctest_cases_passed": 15,
+    "records": [
+      {
+        "case": "identity_empty",
+        "status": "passed",
+        "checks": 15,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "point_sphere",
+        "status": "passed",
+        "checks": 75,
+        "largest_expected_numeric_error": 1.9028849269952033e-16,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "point_box",
+        "status": "passed",
+        "checks": 66,
+        "largest_expected_numeric_error": 2.498001805406602e-16,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "capsule_sphere",
+        "status": "passed",
+        "checks": 200,
+        "largest_expected_numeric_error": 4.163336342344337e-17,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "control": "independent_analytic_sampled_obb",
+        "trials": 200,
+        "samples_per_span": 501,
+        "sampled_contacts": 139,
+        "returned_contacts": 139,
+        "max_gap_above_sampled_minimum": 4.85722573273506e-16,
+        "max_witness_sdf_error": 9.020562075079397e-16
+      },
+      {
+        "case": "capsule_box",
+        "status": "passed",
+        "checks": 5388,
+        "largest_expected_numeric_error": 1.8318679906315083e-15,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "capsule_axes",
+        "status": "passed",
+        "checks": 262,
+        "largest_expected_numeric_error": 9.71445146547012e-17,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "two_obstacles",
+        "status": "passed",
+        "checks": 124,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "invalid_inputs",
+        "status": "passed",
+        "checks": 69,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "limits",
+        "status": "passed",
+        "checks": 77,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "cancellation",
+        "status": "passed",
+        "checks": 27,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "snapshot",
+        "status": "passed",
+        "checks": 74,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "lifetime",
+        "status": "passed",
+        "checks": 79,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "scale_profile",
+        "status": "passed",
+        "checks": 108,
+        "largest_expected_numeric_error": 2.910380270115809e-12,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "repeatability",
+        "status": "passed",
+        "checks": 413,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "sphere_span_X",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000028342008591,
+        "raw_consistency_error_m": 7.450580916112948e-09,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4464,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "sphere_span_Z",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000028342008591,
+        "raw_consistency_error_m": 7.450580916112948e-09,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4464,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "rotated_box_local_span_Y",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000000029802322,
+        "raw_consistency_error_m": 6.513513389760917e-08,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4496,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "rotated_box_local_span_Z",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000003010034561,
+        "raw_consistency_error_m": 3.1578438391965946e-08,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4496,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "case": "native_observations",
+        "status": "passed",
+        "checks": 192,
+        "largest_expected_numeric_error": 2.834200859003211e-07,
+        "evidence": "new raw public-Jolt observations; explicit float-engine tolerance"
+      }
+    ]
+  },
+  "address_and_undefined_behavior_sanitizers": {
+    "exit_code": 0,
+    "ctest_cases_passed": 15,
+    "leak_detection": false,
+    "records": [
+      {
+        "case": "identity_empty",
+        "status": "passed",
+        "checks": 15,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "point_sphere",
+        "status": "passed",
+        "checks": 75,
+        "largest_expected_numeric_error": 1.9028849269952033e-16,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "point_box",
+        "status": "passed",
+        "checks": 66,
+        "largest_expected_numeric_error": 2.498001805406602e-16,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "capsule_sphere",
+        "status": "passed",
+        "checks": 200,
+        "largest_expected_numeric_error": 4.163336342344337e-17,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "control": "independent_analytic_sampled_obb",
+        "trials": 200,
+        "samples_per_span": 501,
+        "sampled_contacts": 139,
+        "returned_contacts": 139,
+        "max_gap_above_sampled_minimum": 4.85722573273506e-16,
+        "max_witness_sdf_error": 9.020562075079397e-16
+      },
+      {
+        "case": "capsule_box",
+        "status": "passed",
+        "checks": 5388,
+        "largest_expected_numeric_error": 1.8318679906315083e-15,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "capsule_axes",
+        "status": "passed",
+        "checks": 262,
+        "largest_expected_numeric_error": 9.71445146547012e-17,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "two_obstacles",
+        "status": "passed",
+        "checks": 124,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "invalid_inputs",
+        "status": "passed",
+        "checks": 69,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "limits",
+        "status": "passed",
+        "checks": 77,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "cancellation",
+        "status": "passed",
+        "checks": 27,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "snapshot",
+        "status": "passed",
+        "checks": 74,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "lifetime",
+        "status": "passed",
+        "checks": 79,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "scale_profile",
+        "status": "passed",
+        "checks": 108,
+        "largest_expected_numeric_error": 2.910380270115809e-12,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "case": "repeatability",
+        "status": "passed",
+        "checks": 413,
+        "largest_expected_numeric_error": 0,
+        "evidence": "new public-adapter test; independent analytic controls"
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "sphere_span_X",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000028342008591,
+        "raw_consistency_error_m": 7.450580916112948e-09,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4464,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "sphere_span_Z",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000028342008591,
+        "raw_consistency_error_m": 7.450580916112948e-09,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4464,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "rotated_box_local_span_Y",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000000029802322,
+        "raw_consistency_error_m": 6.513513389760917e-08,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4496,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "control": "raw_public_jolt_observation",
+        "fixture": "rotated_box_local_span_Z",
+        "native_calls": 1,
+        "native_hits": 1,
+        "raw_penetration_depth_m": 0.07000003010034561,
+        "raw_consistency_error_m": 3.1578438391965946e-08,
+        "allowed_float_error_m": 0.0003,
+        "accounted_owned_bytes": 4496,
+        "accounted_scratch_bytes": 65656
+      },
+      {
+        "case": "native_observations",
+        "status": "passed",
+        "checks": 192,
+        "largest_expected_numeric_error": 2.834200859003211e-07,
+        "evidence": "new raw public-Jolt observations; explicit float-engine tolerance"
+      }
+    ]
+  },
+  "first_sanitizer_attempt": {
+    "exit_code": 8,
+    "status": "Blocked by LeakSanitizer environment failure",
+    "reason": "Cannot open /proc/<pid>/task; no clean leak result claimed",
+    "log": "ctest-sanitizers.log"
+  },
+  "source_at_final_build": [
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 6917,
+      "sha256": "30a34fc11d63a0b6da191c1619044602d9adc5b97b573746933c783e96196253"
+    },
+    {
+      "path": "src/collision_world.cpp",
+      "bytes": 31961,
+      "sha256": "f1c34cc26d8a3c22ad78c334a7e036f94476bad0c2706cd2d6a834c8151eab6d"
+    },
+    {
+      "path": "src/jolt_runtime.cpp",
+      "bytes": 10198,
+      "sha256": "c085e34acf9928a5896efd55b88bd3ca7e186dce64fb1122d91cb81e149b58a1"
+    },
+    {
+      "path": "src/primitive_geometry.cpp",
+      "bytes": 11933,
+      "sha256": "8bdbacce63b77ba03b0ece1a3fc82c38c2f9486648ec9de8ffbe8fd7d4707f6f"
+    },
+    {
+      "path": "src/jolt_runtime.hpp",
+      "bytes": 1417,
+      "sha256": "395a2b4c9e0b950f7a2be3e285fc221cebf3a2f68933838c4ec7b7e537fd27d1"
+    },
+    {
+      "path": "src/primitive_geometry.hpp",
+      "bytes": 1619,
+      "sha256": "167f542277d63522fc8c29ee69406ae1ddf3a30b653999e959fb323746d9a4cd"
+    },
+    {
+      "path": "src/query_diagnostics.hpp",
+      "bytes": 1253,
+      "sha256": "a2c047141397fbe5ce5efb8c522c7800f0a1e035767f6b6b9eefb6e54ae1066f"
+    },
+    {
+      "path": "cmake/Jolt-LICENSE.txt",
+      "bytes": 1052,
+      "sha256": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3"
+    },
+    {
+      "path": "cmake/VerifyJoltSource.cmake",
+      "bytes": 2800,
+      "sha256": "1cc1d2ebd214f4f7d860362ab5836ca7ed012070259270eff17225d1f1587a03"
+    },
+    {
+      "path": "cmake/collision_build_profile.hpp.in",
+      "bytes": 2617,
+      "sha256": "6a8da474b7ff52e5ebf1b0494ea7545eefd01299f3540b4e9df1e67cbae96a8b"
+    },
+    {
+      "path": "cmake/jolt-source.sha256",
+      "bytes": 63456,
+      "sha256": "5d8705b5bb190532e45b0c09e5a9bbd851626b052cb622caec0fff924e771525"
+    },
+    {
+      "path": "tests/collision_tests.cpp",
+      "bytes": 41152,
+      "sha256": "41a0584c04675153437b7a1ebead719bfa1fc34c15f26dc0cfa93602f03985b3"
+    }
+  ],
+  "performance": "No collision/update benchmark; command wall times are receipts only",
+  "memory": "Payload/reservation charges; no measured peaks or complete allocator instrumentation",
+  "max_host_validation": "Not executed",
+  "historical_harnesses": "Not modified, rerun or relabelled as this implementation evidence"
+}

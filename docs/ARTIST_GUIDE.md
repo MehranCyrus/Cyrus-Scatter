@@ -1,4 +1,8 @@
-# Cyrus Scatter 0.86.9.2 — artist workflow
+# Cyrus Scatter 0.87.0 — artist workflow
+
+The current **Max 2027 Interactions trial** adds Collider/React layer roles, reviewed shared plant guides, local bending and reversible covered roots. Follow the [Interactions artist guide](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0870.md) and [delivery report](plans/scatter-interactions-garden-20261025/DELIVERY_0870.md) for the installer, saved terrace scenes, measured costs and supported profiles. Run its matching MZP through **Scripting > Run Script**, then restart Max. This package updates Scatter for Max 2027 only; Analyzer and library content retain their independent versions. Save schema 60 scenes as copies. Physical Undo/Redo, bend feel and wider production sources remain artist checks.
+
+The following 0.86.9.2 compatibility installation details are historical; its EXE does not install 0.87.0.
 
 The 0.86.9.2 EXE includes distinct **Max 2024, 2026 and 2027** builds and **Surface Analyzer 0.14.2**. **This patch was tested only in Max 2027; the 2024/2026 builds are untested.** The [delivery report](plans/edit-instances/DELIVERY_08692.md) records the density controls, native column lifecycle, live Edit movement and preservation checks. Existing supported edits are preserved; save upgraded scenes as new copies because plugins older than 0.86.9 cannot read source-aware Edit data.
 

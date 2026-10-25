@@ -1,0 +1,519 @@
+{
+  "schema": 1,
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "role": "B",
+  "owned_directory": "docs/research/vegetation-core-handoff/starter/fitter",
+  "starting_contract_header_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+  "input_zip_sha256": "fa6b7ac48f8e62b589c012959a9968759962e8a398fba698487164cee243689c",
+  "base_frozen_files": [
+    {
+      "path": "SHARED-CONTRACT.md",
+      "bytes": 12222,
+      "sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80"
+    },
+    {
+      "path": "starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "bytes": 8709,
+      "sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+    },
+    {
+      "path": "starter/CMakeLists.txt",
+      "bytes": 594,
+      "sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086"
+    },
+    {
+      "path": "fixtures/catalog.json",
+      "bytes": 20047,
+      "sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f"
+    }
+  ],
+  "files": [
+    {
+      "path": "RETURN-REPORT.md",
+      "bytes": 13291,
+      "sha256": "d878bfaa098e08dc1acbd0dacbbc0eee9ebd572699e391126fee681352f883c3"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/ASSIGNMENT.md",
+      "bytes": 188,
+      "sha256": "09d90d024342fd5cc6254ab77cc12a90d0de0530e85acb8aa951dbe757282600"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/CMakeLists.txt",
+      "bytes": 968,
+      "sha256": "e208cad670ba469167b1fdf7f24d2beecb3d43050a5eeeeb7a427f1ace32c05a"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/CONTRACT_CHANGE_REQUEST.md",
+      "bytes": 7107,
+      "sha256": "c7609264533a2338f98ebf5e46e090cf07d58fdb28297149e411229f59a2df4e"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/README.md",
+      "bytes": 19462,
+      "sha256": "6db8e6ce9b35983622814fd036815cfb2d6338daa426d5a245bff068525c354a"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/VALIDATION-NOTES.md",
+      "bytes": 5794,
+      "sha256": "aac10065873add911dc0a5c639086ef017b0bdb5365f900d4cfd64a563a48cdf"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/cmake_version.log",
+      "bytes": 372,
+      "sha256": "6bb9c09b7d11d6827878d4b1f0a33cd05fd9e0a89a44ba7b810af967a3295e44"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/compiler_version.log",
+      "bytes": 502,
+      "sha256": "f9ada4fb970302a70f040457c0314eabbd841935a6436a0bc2abc7de3a1e2b60"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/execution_summary.json",
+      "bytes": 32758,
+      "sha256": "6940771da03f1608832d1db46543a7fe49ec7c40617ce547037ae59e2a3cbba2"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/release_build.log",
+      "bytes": 966,
+      "sha256": "f5c665d562f5351f680b77cefc0c92e7658a5cb66705d118221e6dc0c9e01a35"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/release_configure.log",
+      "bytes": 1114,
+      "sha256": "42be6fc0d0c39355163c9428d365ac4632bd993e5a51471a7faf927340064c5f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/release_ctest.log",
+      "bytes": 29065,
+      "sha256": "2254e38c16541c91b3a99b3428dba02f4f11abae3e11114de2960cbcbe00b32c"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/sanitized_build.log",
+      "bytes": 968,
+      "sha256": "dac8283dc0d9a76cef9d37c0530de4d2507fb9469783595625ab8c5d83f01bf9"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/sanitized_configure.log",
+      "bytes": 1115,
+      "sha256": "2624409d11f80d8de351b15b39143cf561c0e45e2cc01e6edf78a72c9332bc4c"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/sanitized_ctest.log",
+      "bytes": 22147,
+      "sha256": "85e59724a00da2daa14d29c7379135af3612534ecf03d8fef2f77079a829f7a4"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/cmake_version.log",
+      "bytes": 372,
+      "sha256": "8cc75bb7f2fb7ba4caa832d81400d29d65079d425d6ea40379dc77a60b8a29fe"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/compiler_version.log",
+      "bytes": 502,
+      "sha256": "20a998f3ff0e9d257b9b90cb8ed32aac25b18bdaf39a66818d234504b07f1a43"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/execution_summary.json",
+      "bytes": 30712,
+      "sha256": "ea74dbafad90941b8598c5491a82655281b8540534bbdf469b4b4c28b914d3f9"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/sanitized_build.log",
+      "bytes": 535,
+      "sha256": "7e78642d10ec9ea6ba6ba0984625635da3f437c945ea2f793772ad4ac1011d8a"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/sanitized_configure.log",
+      "bytes": 836,
+      "sha256": "19dd3c7499513c882d112479b264066c2aeaf7a8ec4d783c34199e22c60e4d16"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/sanitized_ctest.log",
+      "bytes": 29258,
+      "sha256": "225e5646c3376a594a4d9bd9076fa161f7209a3bb84c9c20a6d38323228d949d"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/numerical_review.md",
+      "bytes": 6417,
+      "sha256": "a8ade9b47ce1865f10b9fe18bd1730fa5a21c034eb9dac705aa969e5b439ef90"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/research_and_contract_review.md",
+      "bytes": 10472,
+      "sha256": "7d6d7a5296387bce758816e56586437f97fdc58eaeec99d5e862ae72bfaa9ea9"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/scope_verification.json",
+      "bytes": 1244,
+      "sha256": "01fe9a55561542e636ce69611a9af142e3362543e81b797e752d54eb151912f0"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/fitter.cpp",
+      "bytes": 29742,
+      "sha256": "0f0e75e6f866ac2741ab8d795ac609c497c3cde249484619ba0dd34983c3ece4"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/private/math.hpp",
+      "bytes": 3035,
+      "sha256": "b960b987375068fa29b95bcd9893e16b23b9975297bdf734058139c99ac4f271"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tests/CMakeLists.txt",
+      "bytes": 1108,
+      "sha256": "635956370a0d8eec1dcc8d8d6ff841af0f9a62df8a7ecadc67705bbec78b6275"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tests/README.md",
+      "bytes": 6585,
+      "sha256": "874f8ebf91b3ee374080158d25f8216264350e8b0cbbfcf9105433d44e0caac7"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tests/analytic_world.hpp",
+      "bytes": 11013,
+      "sha256": "34659651e60c18f5abadba06606cb5fb4c54c90b05c26af6f7022e986e72f20c"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tests/test_analytic_world.cpp",
+      "bytes": 2579,
+      "sha256": "dfb4fec690eaffa91e8bf096ce02d935d89b36e0cc84747fd0617b0d6be1302d"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tests/test_fitter.cpp",
+      "bytes": 26106,
+      "sha256": "0c174940f49bfdee5af38143db1186afc0826efdeaefbdd4627db653b8069715"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tools/package_return.py",
+      "bytes": 22138,
+      "sha256": "110cc8ac0ce5543e8ff23e5e71a8bb8a9ba68025a857587d89e873148a0f95ba"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tools/run_checks.py",
+      "bytes": 6240,
+      "sha256": "a0cf8028a20b621b1298fbb0ce6f5da8fd3664919c7a1c3a96e5ff4b8c7e3b9b"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/tools/verify_return.py",
+      "bytes": 2849,
+      "sha256": "394fd26af556913de600f314bea265823620fa4fe566d928ee9e291d7d85aa4d"
+    }
+  ],
+  "environment": {
+    "os": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "compiler_executable": "/usr/bin/x86_64-linux-gnu-g++-13",
+    "cmake_executable": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake",
+    "dependencies": [
+      "C++20 standard library",
+      "frozen cyrus_prototype_contract"
+    ],
+    "compiler": "GCC 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04)",
+    "build_system": "CMake 3.31.6; Unix Makefiles; C++20; Release and ASan+UBSan Debug"
+  },
+  "executions": [
+    {
+      "label": "compiler_version",
+      "command": "/usr/bin/x86_64-linux-gnu-g++-13 --version",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/compiler_version.log",
+      "started_utc": "2026-10-24T14:57:14.883364+00:00"
+    },
+    {
+      "label": "cmake_version",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --version",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/cmake_version.log",
+      "started_utc": "2026-10-24T14:57:14.885038+00:00"
+    },
+    {
+      "label": "release_configure",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake -S /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter -B /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/release -DCMAKE_CXX_COMPILER=/usr/bin/x86_64-linux-gnu-g++-13 -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON -DCYRUS_FITTER_SANITIZERS=OFF",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/release_configure.log",
+      "started_utc": "2026-10-24T14:57:14.889461+00:00"
+    },
+    {
+      "label": "release_build",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --build /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/release --parallel 4",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/release_build.log",
+      "started_utc": "2026-10-24T14:57:15.094417+00:00"
+    },
+    {
+      "label": "release_ctest",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/ctest --test-dir /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/release -R '^fitter_' -V --output-on-failure -j1",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/release_ctest.log",
+      "started_utc": "2026-10-24T14:57:21.639192+00:00",
+      "observed_summary": "100% tests passed, 0 tests failed out of 19"
+    },
+    {
+      "label": "sanitized_configure",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake -S /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter -B /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized -DCMAKE_CXX_COMPILER=/usr/bin/x86_64-linux-gnu-g++-13 -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCYRUS_FITTER_SANITIZERS=ON",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/sanitized_configure.log",
+      "started_utc": "2026-10-24T14:57:21.683139+00:00"
+    },
+    {
+      "label": "sanitized_build",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --build /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized --parallel 4",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/sanitized_build.log",
+      "started_utc": "2026-10-24T14:57:21.850774+00:00"
+    },
+    {
+      "label": "sanitized_ctest",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/ctest --test-dir /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized -R '^fitter_' -V --output-on-failure -j1",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {
+        "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+      },
+      "exit_code": 8,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed/sanitized_ctest.log",
+      "started_utc": "2026-10-24T14:57:29.175966+00:00",
+      "observed_summary": "0% tests passed, 19 tests failed out of 19"
+    },
+    {
+      "label": "compiler_version",
+      "command": "/usr/bin/x86_64-linux-gnu-g++-13 --version",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/compiler_version.log",
+      "started_utc": "2026-10-24T14:58:02.098854+00:00"
+    },
+    {
+      "label": "cmake_version",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --version",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/cmake_version.log",
+      "started_utc": "2026-10-24T14:58:02.101551+00:00"
+    },
+    {
+      "label": "sanitized_configure",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake -S /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter -B /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized -DCMAKE_CXX_COMPILER=/usr/bin/x86_64-linux-gnu-g++-13 -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCYRUS_FITTER_SANITIZERS=ON",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/sanitized_configure.log",
+      "started_utc": "2026-10-24T14:58:02.106576+00:00"
+    },
+    {
+      "label": "sanitized_build",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --build /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized --parallel 4",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/sanitized_build.log",
+      "started_utc": "2026-10-24T14:58:02.146910+00:00"
+    },
+    {
+      "label": "sanitized_ctest",
+      "command": "/workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/ctest --test-dir /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized -R '^fitter_' -V --output-on-failure -j1",
+      "cwd": "/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter",
+      "environment_overrides": {
+        "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1",
+        "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+      },
+      "exit_code": 0,
+      "log_path": "docs/research/vegetation-core-handoff/starter/fitter/evidence/executed_sanitized_without_leaks/sanitized_ctest.log",
+      "started_utc": "2026-10-24T14:58:02.184140+00:00",
+      "observed_summary": "100% tests passed, 0 tests failed out of 19"
+    }
+  ],
+  "not_executed": [
+    {
+      "requirement_or_test": "Owner A / Jolt backend and combined A+B+C integration",
+      "reason": "Independent module; no other owner implementation used"
+    },
+    {
+      "requirement_or_test": "C canonical evaluator and independent visible-mesh validation",
+      "reason": "Not B's module; mandatory later integration gate"
+    },
+    {
+      "requirement_or_test": "Windows/MSVC, Max 2027, renderer, viewport, Bake/export",
+      "reason": "No host/renderer dependency or access in this task"
+    },
+    {
+      "requirement_or_test": "Production asset/scale/origin qualification, threaded orchestration and controlled performance",
+      "reason": "Only recorded synthetic analytic/fake headless fixtures executed"
+    }
+  ],
+  "implemented_requirements": [
+    "Frozen C++20 entry point / exported target / isolated ownership",
+    "Array/numeric/frame/ID/revision/budget admission",
+    "PositionOnly root",
+    "ClampFrame root",
+    "Whole-span capsule contact and simultaneous obstacles",
+    "Conservative width-envelope admission",
+    "Rest-shape/bend/length coupling",
+    "Zero gradient / tiny coefficient handling",
+    "Unit tangent frames / signs / incremental roll",
+    "Bounded work/proposals and cancellation",
+    "B-controlled memory bounds and visible payload accounting",
+    "Complete final checks and honest residuals",
+    "Rest reset, input immutability and generation matching",
+    "Release and ASan/UBSan execution"
+  ],
+  "unsupported_or_partial": [
+    {
+      "requirement": "SoftFrame root",
+      "status": "Unsupported",
+      "reason": "Explicit Unsupported; no substitution or finite-compliance claim"
+    },
+    {
+      "requirement": "Hidden full turns / antipodal chart",
+      "status": "Unsupported",
+      "reason": "No winding inference or arbitrary transport axis"
+    },
+    {
+      "requirement": "Strict total cap across opaque backend allocations",
+      "status": "Partial",
+      "reason": "Owning v1 query returns cannot be preempted; CONTRACT_CHANGE_REQUEST.md records needed extension"
+    },
+    {
+      "requirement": "LeakSanitizer qualification",
+      "status": "Partial",
+      "reason": "Attempt failed with process-inspection fatal errors; failure retained, no leak pass claimed"
+    }
+  ],
+  "coverage": [
+    {
+      "requirement": "Frozen C++20 entry point / exported target / isolated ownership",
+      "status": "Implemented",
+      "evidence_or_limit": "Only fitter/ plus root handback metadata; frozen hashes verified"
+    },
+    {
+      "requirement": "Array/numeric/frame/ID/revision/budget admission",
+      "status": "Implemented",
+      "evidence_or_limit": "Malformed data and tight-memory ordering tests pass; external prepared-mesh revision comparison belongs to C/coordinator"
+    },
+    {
+      "requirement": "PositionOnly root",
+      "status": "Implemented",
+      "evidence_or_limit": "Exact planted point; first span and frame may turn; actual root-angle residual reported"
+    },
+    {
+      "requirement": "ClampFrame root",
+      "status": "Implemented",
+      "evidence_or_limit": "Exact first two nodes and root quaternion; independently tested feasible and conflicting controls"
+    },
+    {
+      "requirement": "SoftFrame root",
+      "status": "Unsupported",
+      "evidence_or_limit": "Explicit Unsupported; no substitution or finite-compliance claim"
+    },
+    {
+      "requirement": "Whole-span capsule contact and simultaneous obstacles",
+      "status": "Implemented",
+      "evidence_or_limit": "All returned qualified rows retained/refreshed; independent sphere/OBB positive controls"
+    },
+    {
+      "requirement": "Conservative width-envelope admission",
+      "status": "Implemented",
+      "evidence_or_limit": "radius >= full bound-offset norm; no oriented-ribbon edge optimization"
+    },
+    {
+      "requirement": "Rest-shape/bend/length coupling",
+      "status": "Implemented",
+      "evidence_or_limit": "Normalized rest gradient, endpoint contact projections, alternating length sweeps and full final audit"
+    },
+    {
+      "requirement": "Zero gradient / tiny coefficient handling",
+      "status": "Implemented",
+      "evidence_or_limit": "Actual zero gives local RootConflict; u=1e-200 numerical row remains diagnostic WorkLimit"
+    },
+    {
+      "requirement": "Unit tangent frames / signs / incremental roll",
+      "status": "Implemented",
+      "evidence_or_limit": "Positive deformed roll test and q/-q equivalence; chart limits explicit"
+    },
+    {
+      "requirement": "Hidden full turns / antipodal chart",
+      "status": "Unsupported",
+      "evidence_or_limit": "No winding inference or arbitrary transport axis"
+    },
+    {
+      "requirement": "Bounded work/proposals and cancellation",
+      "status": "Implemented",
+      "evidence_or_limit": "Iteration/query/node/contact limits; numerical-loop checkpoints; backend cancellation remains its responsibility"
+    },
+    {
+      "requirement": "B-controlled memory bounds and visible payload accounting",
+      "status": "Implemented",
+      "evidence_or_limit": "Checked reservations and counting allocator; metric is payload accounting plus declared allowance"
+    },
+    {
+      "requirement": "Strict total cap across opaque backend allocations",
+      "status": "Partial",
+      "evidence_or_limit": "Owning v1 query returns cannot be preempted; CONTRACT_CHANGE_REQUEST.md records needed extension"
+    },
+    {
+      "requirement": "Complete final checks and honest residuals",
+      "status": "Implemented",
+      "evidence_or_limit": "Only audited installed pose can be candidate; unknown metrics are explicit sentinels"
+    },
+    {
+      "requirement": "Rest reset, input immutability and generation matching",
+      "status": "Implemented",
+      "evidence_or_limit": "Repeated calls, changed obstacle and stale generations tested"
+    },
+    {
+      "requirement": "Independent visible-mesh validation / A+B+C integration",
+      "status": "Not executed",
+      "evidence_or_limit": "C and A are not dependencies or available implementations here"
+    },
+    {
+      "requirement": "Release and ASan/UBSan execution",
+      "status": "Implemented",
+      "evidence_or_limit": "19/19 in each successful profile; leak detection disabled in successful sanitizer profile"
+    },
+    {
+      "requirement": "LeakSanitizer qualification",
+      "status": "Partial",
+      "evidence_or_limit": "Attempt failed with process-inspection fatal errors; failure retained, no leak pass claimed"
+    },
+    {
+      "requirement": "Windows/MSVC, Max 2027, renderer, Bake/export",
+      "status": "Not executed",
+      "evidence_or_limit": "Reserved for coordinator host/delivery qualification"
+    },
+    {
+      "requirement": "Production scale/origin and performance qualification",
+      "status": "Not executed",
+      "evidence_or_limit": "Synthetic local fixtures only; CTest timing is not benchmark evidence"
+    }
+  ],
+  "known_limitations": [
+    "First feasible local projection result, not minimum energy/global convergence/infeasibility proof",
+    "Second-difference regularization depends on guide discretization; weights are not material properties",
+    "SoftFrame, hidden full turns, antipodal charts and oriented-ribbon contact are unsupported",
+    "B trusts qualified complete whole-span witnesses from the immutable CollisionWorld",
+    "Payload accounting is not OS/allocator/backend scratch peak; opaque returned allocations cannot be preempted",
+    "LeakSanitizer attempt failed with runtime process-inspection errors; successful ASan/UBSan profile disables leaks",
+    "No general small/large-coordinate, production-asset, Windows/Max/renderer or performance qualification",
+    "ConvergedCandidate still requires C's independent visible-mesh validation and coordinator revision checks"
+  ],
+  "contract_change_requested": true,
+  "contract_change_request_path": "docs/research/vegetation-core-handoff/starter/fitter/CONTRACT_CHANGE_REQUEST.md",
+  "max_host_validation": "Not executed; reserved for local Max 2027 integration"
+}

@@ -18,7 +18,9 @@ class Host:
         if self.fail:raise Fault("GENERATION_FAILED","Injected",rollback="verified")
         self.revision+=1;self.generated+=1
         return {"controller_id":"controller_1","generation_id":"generation_"+str(self.generated),"emitted":99,"undo_label":"Cyrus"}
-    def undo(self,*_):self.revision+=1
+    def undo(self,*_):
+        self.revision+=1
+        return {"native_undo_verified":True}
     def capture(self):return {"fixture_image":True}
 
 

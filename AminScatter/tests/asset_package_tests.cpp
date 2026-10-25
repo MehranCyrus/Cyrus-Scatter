@@ -1,4 +1,5 @@
 #include "asset_package.h"
+#include "prepared_package_leases.h"
 #include "asset_mesh.h"
 #include "asset_bitmap.h"
 #include "recipe_store.h"
@@ -49,6 +50,24 @@ Json shader(const char* kind,const char* id){
 }
 }
 int main(){std::filesystem::path folder;try{
+    {
+        assets::PreparedPackageLeases leases;
+        auto make=[](std::uint64_t bytes=1){auto p=std::make_shared<assets::PreparedPackage>();p->payloadBytes=bytes;
+            p->metadata={{"graph",{{"nodes",Json::array({Json::object()})},{"maps",Json::array()},{"materials",Json::array()},{"splines",Json::array()}}}};return p;};
+        auto worker=make();std::weak_ptr<const assets::PreparedPackage> lifetime=worker;
+        const auto first=leases.retain(worker);worker.reset();check(!lifetime.expired());
+        const auto second=leases.retain(make()),third=leases.retain(make());
+        check(first!=second&&second!=third&&assets::PreparedPackageLeases::isLease(first)&&leases.size()==3);
+        rejects([&]{leases.retain(make());});check(leases.size()==3&&leases.get(first)->payloadBytes==1);
+        leases.release(second);leases.release(second);check(leases.size()==2&&leases.get(first));rejects([&]{leases.get(second);});
+        auto inFlight=leases.get(first);leases.release(first);check(!lifetime.expired());inFlight.reset();check(lifetime.expired());
+        leases.release(third);check(leases.size()==0);
+        const auto large=leases.retain(make(50ull*1024*1024));rejects([&]{leases.retain(make(20ull*1024*1024));});
+        check(leases.size()==1&&leases.get(large)->payloadBytes==50ull*1024*1024);leases.release(large);
+        auto image=make();image->metadata["graph"]["maps"]=Json::array({{{"kind","bitmap"},{"size",{8000,8000}}}});
+        const auto imageLease=leases.retain(image);rejects([&]{leases.retain(image);});check(leases.size()==1);leases.release(imageLease);
+        auto invalid=make();invalid->metadata["graph"]["nodes"]=Json::array();rejects([&]{leases.retain(invalid);});check(leases.size()==0);
+    }
     const auto settings=recipes::parse(load(CYRUS_RECIPE_DEFAULTS));
     brush::Document brush;brush.surface=42;brush.contours={{{0,0},{4,0},{4,4},{0,4}},{{1,1},{1,2},{2,2},{2,1}}};
     Json paint={{"payload",recipes::hex(brush::encode(brush))},{"receiverRole",nullptr},{"radius",1.},{"erase",false},{"frame",nullptr}};

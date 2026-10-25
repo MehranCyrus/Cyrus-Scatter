@@ -17,7 +17,7 @@ SECTION_CAPS={
     'backgroundUI':['C16'],'randomUI':['C19'],'diversityUI':['C17','C18'],
     'proceduralUI':['C20'],'instanceRadiusUI':['C21'],'spacingUI':['C23'],
     'separationUI':['C22'],'detailsUI':['C27'],'workflowUI':['C26'],
-    'properties':['C07','C26'],
+    'properties':['C07','C26'],'interactionsUI':['C37'],
 }
 
 def build():
@@ -28,7 +28,7 @@ def build():
             columns=[s.strip() for s in line.strip('|').split('|')]
             if len(columns)==5 and columns[0][1:].isdigit():
                 rows.append(dict(feature_id=columns[0],title=columns[1],native=columns[2],mcp=columns[3],qualification_or_extension=columns[4]))
-    assert len(rows)==36 and len({r['feature_id'] for r in rows})==36
+    assert len(rows)==37 and len({r['feature_id'] for r in rows})==37
     inventory_path=ROOT/'AminScatter/tools/ui/layers-control-inventory.json'
     inventory=json.loads(inventory_path.read_text(encoding='utf-8'))
     old=json.loads((ROOT/'docs/Current_System_2026-10-05/evidence/control-inventory.json').read_text(encoding='utf-8'))

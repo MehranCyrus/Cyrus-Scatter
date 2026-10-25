@@ -1,0 +1,13 @@
+# Scatter 0.87.0 — source checkpoint
+
+25 October 2026. The user requested committing and pushing the current codebase and documentation. The destination is the existing `MehranCyrus/Cyrus-Scatter` repository, checkpoint branch `codex/scatter-0.87-checkpoint`, based on `588abff0ce211d7dc63798b8c5310631895465c7`. The current `codex/workflow-0.75` working branch remains in place.
+
+The checkpoint contains the current Scatter source, generated MAXScript plus its authoritative templates, MCP source/work-in-progress, shared vegetation core and preparation lab, curated research and handoffs, implementation/qualification guides, and build/package/reproduction tools. Existing preset/source-metadata work used by the current source snapshot is included. This is a source checkpoint, not a claim that every included workstream is complete or newly qualified.
+
+The frozen 2027 build's source inputs were compared with the working files: no source differences or missing source dependencies were found. Exact-byte attributes preserve the relevant Windows source and imported research manifests without modifying their contents. The fitter's reviewed `private/math.hpp` is tracked as implementation code; licensing secrets remain excluded. The help-only MCP catalog was regenerated from the maintained capability guide and control inventory, without changing the native/script payloads.
+
+Scenes, model libraries, SDKs, compiled binaries, installers, local configuration/secrets and ignored build outputs remain outside Git. Small documented CC0/synthetic research fixtures remain inside their original curated evidence archive. The unrelated Arrange, standalone Physics Lab, website/design and SplineDynamics work remains local and unchanged. Build receipts and scene/installer paths referenced by the delivery reports are local artifacts unless explicitly stored under documentation.
+
+An empty index lock dating from the preceding day was preserved in the ignored local backup folder. Another process subsequently recreated a recent lock. An isolated temporary Git index is therefore used for this checkpoint; the normal index, existing working branch and unrelated work are not replaced or reset.
+
+No Max session, installer or functional test was run for this checkpoint. The preceding three-host EXE request likewise ran no new tests: 2024/2026 are built and untested; 2027 preserves the earlier r4 archive and its separate scope. Git/credential/source-dependency and staged-content checks are repository safety checks, not runtime qualification. The final commit and remote identity are reported after the push.

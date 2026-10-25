@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "scope": "Immutable shared source boundary and authored fixture inputs, not implementation or qualification",
+  "files": [
+    {
+      "path": "SHARED-CONTRACT.md",
+      "bytes": 12222,
+      "sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80"
+    },
+    {
+      "path": "starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "bytes": 8709,
+      "sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+    },
+    {
+      "path": "starter/CMakeLists.txt",
+      "bytes": 594,
+      "sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086"
+    },
+    {
+      "path": "fixtures/catalog.json",
+      "bytes": 20047,
+      "sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f"
+    }
+  ]
+}

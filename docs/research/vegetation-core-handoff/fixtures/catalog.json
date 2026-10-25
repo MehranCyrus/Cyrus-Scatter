@@ -1,0 +1,895 @@
+{
+  "schema": 1,
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "status": "Authored experiment inputs and expected outcomes; not executed solver or host results",
+  "encoding": "JSON arrays encode Vec3/Quat/UV in header field order. Names mirror C++ fields. Implementers may construct equivalent C++ fixtures; no JSON library is required.",
+  "units": "metres; right-handed Y-up local patch; quaternion xyzw active local-to-patch",
+  "criteria_status": "Proposed explicit prototype thresholds and budgets, not artist defaults or production acceptance",
+  "defaults": {
+    "limits": {
+      "max_obstacles": 32,
+      "max_nodes": 64,
+      "max_contacts_per_query": 32,
+      "max_query_calls": 20000,
+      "max_iterations": 400,
+      "max_render_vertices": 10000,
+      "max_render_triangles": 20000,
+      "max_owned_and_scratch_bytes": 67108864
+    },
+    "tolerances": {
+      "root_m": 1e-08,
+      "penetration_m": 1e-05,
+      "relative_length": 0.001,
+      "frame_radians": 0.001,
+      "rest_reconstruction_m": 1e-08
+    },
+    "root_mode": "PositionOnly",
+    "clearance_m": 0.005,
+    "rest_shape_weight": 0.01,
+    "bend_weight": 1,
+    "root_angle_weight": 0,
+    "max_proposal_step_m": 0.02,
+    "backend_query_tolerance_m": 1e-06,
+    "backend_min_supported_feature_m": 0.001
+  },
+  "prepared_inputs": {
+    "rest_guide": {
+      "guide_id": 1,
+      "source_revision": 1,
+      "node_ids": [
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108
+      ],
+      "span_ids": [
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207
+      ],
+      "nodes": [
+        [
+          -0.2,
+          0.0,
+          0
+        ],
+        [
+          -0.2,
+          0.075,
+          0
+        ],
+        [
+          -0.2,
+          0.15,
+          0
+        ],
+        [
+          -0.2,
+          0.22499999999999998,
+          0
+        ],
+        [
+          -0.2,
+          0.3,
+          0
+        ],
+        [
+          -0.2,
+          0.375,
+          0
+        ],
+        [
+          -0.2,
+          0.44999999999999996,
+          0
+        ],
+        [
+          -0.2,
+          0.525,
+          0
+        ],
+        [
+          -0.2,
+          0.6,
+          0
+        ]
+      ],
+      "material_frames": [
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ],
+        [
+          -0.7071067811865476,
+          0,
+          0,
+          0.7071067811865476
+        ]
+      ],
+      "span_radius_m": [
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015
+      ],
+      "max_bound_offset_m": [
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015,
+        0.015
+      ],
+      "requires_full_turn_twist": false
+    },
+    "prepared_ribbon": {
+      "source_id": 10,
+      "source_revision": 1,
+      "rest_positions": [
+        [
+          -0.21500000000000002,
+          0.0,
+          0
+        ],
+        [
+          -0.185,
+          0.0,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.075,
+          0
+        ],
+        [
+          -0.185,
+          0.075,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.15,
+          0
+        ],
+        [
+          -0.185,
+          0.15,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.22499999999999998,
+          0
+        ],
+        [
+          -0.185,
+          0.22499999999999998,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.3,
+          0
+        ],
+        [
+          -0.185,
+          0.3,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.375,
+          0
+        ],
+        [
+          -0.185,
+          0.375,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.44999999999999996,
+          0
+        ],
+        [
+          -0.185,
+          0.44999999999999996,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.525,
+          0
+        ],
+        [
+          -0.185,
+          0.525,
+          0
+        ],
+        [
+          -0.21500000000000002,
+          0.6,
+          0
+        ],
+        [
+          -0.185,
+          0.6,
+          0
+        ]
+      ],
+      "bindings": [
+        {
+          "render_vertex_id": 1000,
+          "logical_vertex_id": 1000,
+          "span_id": 200,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.0
+          ]
+        },
+        {
+          "render_vertex_id": 1001,
+          "logical_vertex_id": 1001,
+          "span_id": 200,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.0
+          ]
+        },
+        {
+          "render_vertex_id": 1002,
+          "logical_vertex_id": 1002,
+          "span_id": 201,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.125
+          ]
+        },
+        {
+          "render_vertex_id": 1003,
+          "logical_vertex_id": 1003,
+          "span_id": 201,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.125
+          ]
+        },
+        {
+          "render_vertex_id": 1004,
+          "logical_vertex_id": 1004,
+          "span_id": 202,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.25
+          ]
+        },
+        {
+          "render_vertex_id": 1005,
+          "logical_vertex_id": 1005,
+          "span_id": 202,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.25
+          ]
+        },
+        {
+          "render_vertex_id": 1006,
+          "logical_vertex_id": 1006,
+          "span_id": 203,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.375
+          ]
+        },
+        {
+          "render_vertex_id": 1007,
+          "logical_vertex_id": 1007,
+          "span_id": 203,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.375
+          ]
+        },
+        {
+          "render_vertex_id": 1008,
+          "logical_vertex_id": 1008,
+          "span_id": 204,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.5
+          ]
+        },
+        {
+          "render_vertex_id": 1009,
+          "logical_vertex_id": 1009,
+          "span_id": 204,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.5
+          ]
+        },
+        {
+          "render_vertex_id": 1010,
+          "logical_vertex_id": 1010,
+          "span_id": 205,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.625
+          ]
+        },
+        {
+          "render_vertex_id": 1011,
+          "logical_vertex_id": 1011,
+          "span_id": 205,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.625
+          ]
+        },
+        {
+          "render_vertex_id": 1012,
+          "logical_vertex_id": 1012,
+          "span_id": 206,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.75
+          ]
+        },
+        {
+          "render_vertex_id": 1013,
+          "logical_vertex_id": 1013,
+          "span_id": 206,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.75
+          ]
+        },
+        {
+          "render_vertex_id": 1014,
+          "logical_vertex_id": 1014,
+          "span_id": 207,
+          "material_u": 0,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            0.875
+          ]
+        },
+        {
+          "render_vertex_id": 1015,
+          "logical_vertex_id": 1015,
+          "span_id": 207,
+          "material_u": 0,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            0.875
+          ]
+        },
+        {
+          "render_vertex_id": 1016,
+          "logical_vertex_id": 1016,
+          "span_id": 207,
+          "material_u": 1,
+          "rest_local_offset": [
+            -0.015,
+            0,
+            0
+          ],
+          "uv": [
+            0,
+            1.0
+          ]
+        },
+        {
+          "render_vertex_id": 1017,
+          "logical_vertex_id": 1017,
+          "span_id": 207,
+          "material_u": 1,
+          "rest_local_offset": [
+            0.015,
+            0,
+            0
+          ],
+          "uv": [
+            1,
+            1.0
+          ]
+        }
+      ],
+      "triangles": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          3,
+          2
+        ],
+        [
+          2,
+          3,
+          4
+        ],
+        [
+          3,
+          5,
+          4
+        ],
+        [
+          4,
+          5,
+          6
+        ],
+        [
+          5,
+          7,
+          6
+        ],
+        [
+          6,
+          7,
+          8
+        ],
+        [
+          7,
+          9,
+          8
+        ],
+        [
+          8,
+          9,
+          10
+        ],
+        [
+          9,
+          11,
+          10
+        ],
+        [
+          10,
+          11,
+          12
+        ],
+        [
+          11,
+          13,
+          12
+        ],
+        [
+          12,
+          13,
+          14
+        ],
+        [
+          13,
+          15,
+          14
+        ],
+        [
+          14,
+          15,
+          16
+        ],
+        [
+          15,
+          17,
+          16
+        ]
+      ],
+      "face_material_ids": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "one_sphere_snapshot": {
+      "generation": 1,
+      "obstacles": [
+        {
+          "id": 900,
+          "geometry_revision": 1,
+          "pose_revision": 1,
+          "kind": "Sphere",
+          "center": [
+            0,
+            0.2,
+            0
+          ],
+          "orientation": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "sphere_radius": 0.25,
+          "box_half_extents": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "authored_feasible_pose": {
+      "guide_id": 1,
+      "nodes": [
+        [
+          -0.2,
+          0.0,
+          0
+        ],
+        [
+          -0.2530330085889911,
+          0.05303300858899106,
+          0
+        ],
+        [
+          -0.3060660171779821,
+          0.10606601717798211,
+          0
+        ],
+        [
+          -0.35909902576697317,
+          0.15909902576697316,
+          0
+        ],
+        [
+          -0.41213203435596424,
+          0.21213203435596423,
+          0
+        ],
+        [
+          -0.4651650429449553,
+          0.2651650429449553,
+          0
+        ],
+        [
+          -0.5181980515339464,
+          0.3181980515339463,
+          0
+        ],
+        [
+          -0.5712310601229375,
+          0.37123106012293744,
+          0
+        ],
+        [
+          -0.6242640687119285,
+          0.42426406871192845,
+          0
+        ]
+      ],
+      "material_frames": [
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ],
+        [
+          -0.6532814824381883,
+          -0.2705980500730985,
+          0.2705980500730985,
+          0.6532814824381883
+        ]
+      ]
+    }
+  },
+  "positive_control_reasoning": "The rest guide at x=-0.2 intersects the sphere near y=0.2. The authored pose rotates the straight guide 45 degrees away, preserving every 0.075 m span and root. Its nearest centerline point to sphere center is the root, distance sqrt(0.08); subtract sphere radius 0.25 and envelope+clearance 0.02 leaves about 0.0128427 m. This is a mathematical authored control, not a fitter output.",
+  "cases": [
+    {
+      "id": "F01",
+      "name": "clear-rest",
+      "change": "Use empty obstacle snapshot generation 1 and exact rest pose",
+      "expected": "B preserves rest; C rest reconstruction and visible validation Pass if implemented correctly; inputs unchanged"
+    },
+    {
+      "id": "F02",
+      "name": "one-sphere-fit",
+      "change": "Use supplied one_sphere_snapshot and rest; B computes its own fit",
+      "expected": "Known-feasible search target. ConvergedCandidate must pass C; honest unresolved is not completion of this gate. Authored feasible pose independently tests C."
+    },
+    {
+      "id": "F03",
+      "name": "root-contained",
+      "change": "Move sphere center to the rest root [-0.2,0,0]",
+      "expected": "RootConflict or explicit containment failure; root unchanged; no accepted candidate"
+    },
+    {
+      "id": "F04",
+      "name": "segment-interior-crossing",
+      "query": {
+        "guide_id": 2,
+        "span_id": 300,
+        "a": [
+          -2,
+          0,
+          0
+        ],
+        "b": [
+          2,
+          0,
+          0
+        ],
+        "geometric_radius_m": 0.01,
+        "clearance_m": 0
+      },
+      "sphere": {
+        "center": [
+          0,
+          0,
+          0
+        ],
+        "radius_m": 1
+      },
+      "expected": "Whole capsule overlap detected although both endpoints lie outside. Detection test, not a routing benchmark."
+    },
+    {
+      "id": "F05",
+      "name": "visible-width-invalid-envelope",
+      "geometry": {
+        "guide_x_m": 1.1,
+        "guide_y_interval_m": [
+          -0.4,
+          0.4
+        ],
+        "sphere_center": [
+          0,
+          0,
+          0
+        ],
+        "sphere_radius_m": 1,
+        "declared_span_radius_m": 0.01,
+        "ribbon_half_width_m": 0.15,
+        "clearance_m": 0
+      },
+      "expected": "Deliberately invalid envelope. Admission rejects radius < bound offset. Independent visible triangles also overlap: inner edge x=0.95 near y=0. Not a correctly admitted fitter false-success."
+    },
+    {
+      "id": "F06",
+      "name": "two-obstacles",
+      "change": "Implementer authors two spheres and rotated boxes with explicit feasible and blocked controls",
+      "expected": "All contacts retained; exact dimensions/control reasoning returned; unsuccessful search not called global infeasibility"
+    },
+    {
+      "id": "F07",
+      "name": "cancel-budget-stale",
+      "change": "Use set cancellation, too-small work/contact/memory budgets, and requested generation != world generation",
+      "expected": "Explicit non-success; bounded exit; no complete accepted successor"
+    },
+    {
+      "id": "F08",
+      "name": "bad-inputs",
+      "change": "Nonfinite data, zero span, invalid counts/IDs/revision, nonunit/ambiguous frame and unsupported full turn",
+      "expected": "InvalidInput/Unsupported as applicable; no mutation or partial success"
+    },
+    {
+      "id": "F09",
+      "name": "repeat-and-snapshot",
+      "change": "Repeat same static inputs; mutate caller snapshot after A constructs world; build/destroy two worlds in both orders",
+      "expected": "Deterministic within declared profile, immutable owned generation, no dangling runtime resources"
+    },
+    {
+      "id": "F10",
+      "name": "surface-interior-and-metadata",
+      "change": "Implementer authors triangles with vertices outside but interior crossing sphere/rotated box, wholly contained triangles, mismatched mesh/UV/topology/bounds, seams and nonzero longitudinal offsets",
+      "expected": "C rejects actual overlaps and mismatched output, reconstructs valid offsets/seams and passes independent clear controls"
+    },
+    {
+      "id": "F11",
+      "name": "root-angle-policies",
+      "change": "Independently exercise PositionOnly, ClampFrame and SoftFrame; use feasible controls with a clear root/initial span",
+      "expected": "Root position preserved for all. Missing modes Unsupported. Fixed-angle constraints and soft weights tested independently; supplied PositionOnly rotated pose is not a ClampFrame control"
+    }
+  ]
+}

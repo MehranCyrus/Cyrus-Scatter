@@ -22,6 +22,9 @@ struct Allocation { unsigned slot,budget,attempts,pool; };
 struct Plan { std::vector<Allocation> receivers; std::vector<std::uint64_t> order; unsigned budget=0,attempts=0; bool capped=false; };
 // density < 0 means fixed total. Otherwise density is candidates/world-unit^2.
 Plan plan(std::vector<Input> inputs,unsigned total,double density,unsigned attemptFactor,unsigned densityCap=limit);
+// Identical native allocation without constructing a candidate identity
+// schedule. Admission can reject a large proposal before placement-sized work.
+Plan allocation(std::vector<Input> inputs,unsigned total,double density,unsigned attemptFactor,unsigned densityCap=limit);
 // Receiver membership is not an Edit generation change. Changed geometry on
 // a previously bound receiver remains a guarded change. Missing entries stay
 // in the receipt so removing/re-adding cannot erase that guard.

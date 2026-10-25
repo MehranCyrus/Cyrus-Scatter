@@ -1,0 +1,350 @@
+{
+  "schema": 1,
+  "reviewed_at_utc": "2026-10-24T15:13:26.744747+00:00",
+  "owner": "A",
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "verdict": "APPROVE for bounded standalone primitive prototype integration; full contract/host qualification remains pending",
+  "confidence": "Medium: source review and unchanged-source Windows tests; no fault injection or independent full-mesh validation",
+  "input_archive": {
+    "path": "docs/research/A/CyrusVegetationCore_v1_A_collision.zip",
+    "bytes": 143679,
+    "sha256": "8619c923062b6f03977e7c4a80d70f55d7e24ef22aff5bbe6ad69c9773122785"
+  },
+  "intake": {
+    "scope": "Intake identity and allowed paths only; no solver/host acceptance",
+    "outcome": "pass",
+    "zip_sha256": "8619c923062b6f03977e7c4a80d70f55d7e24ef22aff5bbe6ad69c9773122785",
+    "archive_files": 49,
+    "manifest_files_hashed": 48,
+    "frozen_files_verified": 4,
+    "extracted_copy_identical": true,
+    "starter": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-A-review-20261024-01\\starter",
+    "branch": "codex/workflow-0.75",
+    "head": "588abff0ce211d7dc63798b8c5310631895465c7"
+  },
+  "frozen_files": [
+    {
+      "path": "SHARED-CONTRACT.md",
+      "bytes": 12222,
+      "sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80"
+    },
+    {
+      "path": "starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "bytes": 8709,
+      "sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+    },
+    {
+      "path": "starter/CMakeLists.txt",
+      "bytes": 594,
+      "sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086"
+    },
+    {
+      "path": "fixtures/catalog.json",
+      "bytes": 20047,
+      "sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f"
+    }
+  ],
+  "source_edits": "None: source/starter/frozen files and original handback preserved byte-for-byte",
+  "dependency_source_files_independently_hashed": 613,
+  "dependency_commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+  "toolchain": {
+    "os": "Windows",
+    "compiler": "MSVC 19.38.33145.0, installed tools 14.38.33130",
+    "sdk": "Windows SDK 10.0.19041.0",
+    "generator": "Ninja",
+    "configuration": "Release",
+    "max_sdk_or_host_used": false
+  },
+  "stages": {
+    "configure": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "-S",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-A-review-20261024-01\\starter",
+        "-B",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-A-review-20261024-01\\release",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DCMAKE_CXX_COMPILER=cl",
+        "-DCYRUS_COLLISION_JOLT_SOURCE_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-dependencies\\jolt-1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 15.5,
+      "toolchain": "MSVC 14.38.33130 / Windows SDK 10.0.19041.0; headless only"
+    },
+    "build": {
+      "command": [
+        "C:/Users/Mehran/AppData/Local/Programs/Python/Python310/Scripts/cmake.exe",
+        "--build",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-A-review-20261024-01\\release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 25.469000000040978
+    },
+    "ctest": {
+      "command": [
+        "C:/Users/Mehran/AppData/Local/Programs/Python/Python310/Scripts/ctest.exe",
+        "--test-dir",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-A-review-20261024-01\\release",
+        "-C",
+        "Release",
+        "-R",
+        "^collision_",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 1.047000000020489,
+      "scope": "Local Windows headless collision tests; no Max launch or plant solver acceptance"
+    }
+  },
+  "local_test_count": 15,
+  "local_results": [
+    {
+      "case": "identity_empty",
+      "status": "passed",
+      "checks": 15,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "point_sphere",
+      "status": "passed",
+      "checks": 75,
+      "largest_expected_numeric_error": 1.9028849269952033e-16,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "point_box",
+      "status": "passed",
+      "checks": 66,
+      "largest_expected_numeric_error": 2.498001805406602e-16,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "capsule_sphere",
+      "status": "passed",
+      "checks": 200,
+      "largest_expected_numeric_error": 4.163336342344337e-17,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "control": "independent_analytic_sampled_obb",
+      "trials": 200,
+      "samples_per_span": 501,
+      "sampled_contacts": 139,
+      "returned_contacts": 139,
+      "max_gap_above_sampled_minimum": 3.885780586188048e-16,
+      "max_witness_sdf_error": 1.2628786905111156e-15
+    },
+    {
+      "case": "capsule_box",
+      "status": "passed",
+      "checks": 5388,
+      "largest_expected_numeric_error": 1.8318679906315083e-15,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "capsule_axes",
+      "status": "passed",
+      "checks": 262,
+      "largest_expected_numeric_error": 9.71445146547012e-17,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "two_obstacles",
+      "status": "passed",
+      "checks": 124,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "invalid_inputs",
+      "status": "passed",
+      "checks": 69,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "limits",
+      "status": "passed",
+      "checks": 77,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "cancellation",
+      "status": "passed",
+      "checks": 27,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "snapshot",
+      "status": "passed",
+      "checks": 74,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "lifetime",
+      "status": "passed",
+      "checks": 79,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "scale_profile",
+      "status": "passed",
+      "checks": 108,
+      "largest_expected_numeric_error": 2.910380270115809e-12,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "case": "repeatability",
+      "status": "passed",
+      "checks": 413,
+      "largest_expected_numeric_error": 0,
+      "evidence": "new public-adapter test; independent analytic controls"
+    },
+    {
+      "control": "raw_public_jolt_observation",
+      "fixture": "sphere_span_X",
+      "native_calls": 1,
+      "native_hits": 1,
+      "raw_penetration_depth_m": 0.07000028342008591,
+      "raw_consistency_error_m": 7.450580916112948e-09,
+      "allowed_float_error_m": 0.0003,
+      "accounted_owned_bytes": 4512,
+      "accounted_scratch_bytes": 65656
+    },
+    {
+      "control": "raw_public_jolt_observation",
+      "fixture": "sphere_span_Z",
+      "native_calls": 1,
+      "native_hits": 1,
+      "raw_penetration_depth_m": 0.07000028342008591,
+      "raw_consistency_error_m": 7.450580916112948e-09,
+      "allowed_float_error_m": 0.0003,
+      "accounted_owned_bytes": 4512,
+      "accounted_scratch_bytes": 65656
+    },
+    {
+      "control": "raw_public_jolt_observation",
+      "fixture": "rotated_box_local_span_Y",
+      "native_calls": 1,
+      "native_hits": 1,
+      "raw_penetration_depth_m": 0.07000000029802322,
+      "raw_consistency_error_m": 6.513513389760917e-08,
+      "allowed_float_error_m": 0.0003,
+      "accounted_owned_bytes": 4536,
+      "accounted_scratch_bytes": 65656
+    },
+    {
+      "control": "raw_public_jolt_observation",
+      "fixture": "rotated_box_local_span_Z",
+      "native_calls": 1,
+      "native_hits": 1,
+      "raw_penetration_depth_m": 0.07000003010034561,
+      "raw_consistency_error_m": 3.1578438391965946e-08,
+      "allowed_float_error_m": 0.0003,
+      "accounted_owned_bytes": 4536,
+      "accounted_scratch_bytes": 65656
+    },
+    {
+      "case": "native_observations",
+      "status": "passed",
+      "checks": 192,
+      "largest_expected_numeric_error": 2.834200859003211e-07,
+      "evidence": "new raw public-Jolt observations; explicit float-engine tolerance"
+    }
+  ],
+  "findings": [],
+  "remaining_acceptance": [
+    "Combine A with B and C against one immutable scene generation and source revision.",
+    "Independent whole-visible-triangle clearance, root/length/frame and reconstruction validation.",
+    "Exact/global/aggregate peak-memory admission: current payload and reservation charges exclude Jolt internals, allocators, other worlds and retained results.",
+    "Forced allocation failure, asynchronous cancellation/concurrency stress and clean leak qualification were not executed locally.",
+    "Native local Jolt geometry uses float despite double world positions; supported features/tolerances are limited to the admitted profile.",
+    "One deepest centerline-SDF witness per obstacle is not a full contact manifold or rigid-capsule minimum translation vector.",
+    "Actual Max 2027 SDK adapter, DLL/runtime coexistence, host-thread publication, Undo, viewport/renderer/Bake and source preservation."
+  ],
+  "external_results": "Linux Release and ASan/UBSan records preserved as supplied; not independently repeated here. Their LeakSanitizer attempt remains blocked.",
+  "production_integration": "Not performed; no Max launch/install/restart, product version or packaging delivery",
+  "repository": {
+    "branch": "codex/workflow-0.75",
+    "head": "588abff0ce211d7dc63798b8c5310631895465c7",
+    "preexisting_tracked_changed_paths": 95,
+    "knowledge_scope": "Selected generation 8a58031bf6efb27cf7c8e30a81d6059206b292269b5e5e24bf1045b704989059 is stale; handoff contract not enrolled; direct current source inspected. No refresh performed."
+  },
+  "local_artifacts": [
+    {
+      "path": "build/vegetation-A-review-20261024-01/intake.json",
+      "bytes": 512,
+      "sha256": "b0d26e27b0b795b86b290710ec876fda4daef2c405fdb11a33d82f716e7a00fa"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/configure.json",
+      "bytes": 825,
+      "sha256": "754b6cca36a16e9d4e604f37267a9edc96e2e737ddd5f00cc2b3a8bf7898eafb"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/configure.log",
+      "bytes": 646,
+      "sha256": "e00537a2524c4b7d94533e8bde0d42d82ac0b5692ce52a4f5cf207e1c4762a47"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/build.json",
+      "bytes": 357,
+      "sha256": "7cb877e5f0ca5bc1037dfe87e49fbea6cea236a72fcf3ac557e71d4c1f4a2305"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/build.log",
+      "bytes": 24770,
+      "sha256": "82e009f1e0df04933fc870301191b9f377225c010f83922d737a905d9782098a"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/ctest.json",
+      "bytes": 523,
+      "sha256": "82d7a86e63095fa73ec7d8fa47a34d39375ef5c356999f9b271862051fcb42a4"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/ctest.log",
+      "bytes": 12694,
+      "sha256": "79f652c72d961eb829bbddf2bd1e3bfb38dc188ebd31851ecbd6c16bfafe80eb"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/release/compile_commands.json",
+      "bytes": 237257,
+      "sha256": "bbe111482883be83767dc22b813a4ce328f46b9ecc47e40930a17402e6337857"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/release/collision/collision-build-options-Release.txt",
+      "bytes": 1038,
+      "sha256": "00baafb9466d4e52acaa127b2cee602fdfb034b0fdcec2f584f1e50823dba95e"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/release/collision/cyrus_vegetation_collision.lib",
+      "bytes": 774344,
+      "sha256": "38db211e15b8f02243313532d8f7cc9e1b8956f1a375746bcabbf3d8f3cdfe44"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/release/collision/cyrus_collision_tests.exe",
+      "bytes": 1120256,
+      "sha256": "5615574ca5e33a252b568c2217e7204a10bf61877a97c4d3451659d91c9d7855"
+    },
+    {
+      "path": "build/vegetation-A-review-20261024-01/release/collision/jolt/Jolt.lib",
+      "bytes": 10901162,
+      "sha256": "61257d471eabde9592b70ff23bd198e3cd837cad0077286166ffbcd8228a7d26"
+    }
+  ]
+}

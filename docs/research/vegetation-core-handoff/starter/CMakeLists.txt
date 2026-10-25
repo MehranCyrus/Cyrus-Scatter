@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.20)
+project(CyrusVegetationCorePrototype LANGUAGES CXX)
+include(CTest)
+add_library(cyrus_prototype_contract INTERFACE)
+target_include_directories(cyrus_prototype_contract INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_compile_features(cyrus_prototype_contract INTERFACE cxx_std_20)
+# Frozen coordinator scaffold. Each external chat only adds its own module directory.
+foreach(module IN ITEMS collision fitter delivery)
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${module}/CMakeLists.txt")
+        add_subdirectory("${module}")
+    endif()
+endforeach()

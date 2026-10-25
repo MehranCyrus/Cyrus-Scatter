@@ -15,9 +15,9 @@ def publication():
 
 def native_rows():
     tm=[[0,2,0],[-3,0,0],[.25,0,4],[100,200,300]]
-    return [[1,deepcopy(tm),1,"c:2",False,10,True],
-            [1,deepcopy(tm),1,"clone:7",True,25,True],
-            [2,deepcopy(tm),1,"c:2",False,5,False]]
+    return [[1,deepcopy(tm),1,"c:2",False,[10,20],True],
+            [1,deepcopy(tm),1,"clone:7",True,[25,40],True],
+            [2,deepcopy(tm),1,"c:2",False,[5,5],False]]
 
 
 def test_source_set_identity_units_and_matrix_preserve_published_values():
@@ -27,7 +27,9 @@ def test_source_set_identity_units_and_matrix_preserve_published_values():
     assert m["sets"][0]["sources"][0]["source_entry_id"]=="source-tree"
     assert m["pair_rules"][0]["gap_m"]==.5
     assert p["rows"][0]["transform"]==[[0,-3,.25,1],[2,0,0,2],[0,0,4,3],[0,0,0,1]]
-    assert p["rows"][1]["effective_radius_m"]==.25 and p["rows"][1]["protected"]
+    assert p["schema"]==m["page_schema"]=="cyrus.procedural-publication-page/2.0"
+    assert m["radius_metrics"]==["xy","xyz"]
+    assert p["rows"][1]["effective_radii_m"]=={"xy":.25,"xyz":.4} and p["rows"][1]["protected"]
     assert p["rows"][0]["instance_id"]==p["rows"][2]["instance_id"]  # IDs include their set owner.
     assert not p["rows"][2]["included_in_exact_output"] and not p["training_eligible"]
     assert not p["has_more"] and p["next_offset"]==3
@@ -45,6 +47,10 @@ def test_page_crosses_set_boundary_and_empty_tail():
     lambda rows:rows[0].__setitem__(2,2),
     lambda rows:rows[1].__setitem__(3,"c:2"),
     lambda rows:rows[0].__setitem__(5,-1),
+    lambda rows:rows[0][5].__setitem__(0,-1),
+    lambda rows:rows[0][5].__setitem__(1,float("nan")),
+    lambda rows:rows[0].__setitem__(5,[1]),
+    lambda rows:rows[0].__setitem__(5,[1,2,3]),
     lambda rows:rows[2].__setitem__(6,True),
     lambda rows:rows[0][1][0].__setitem__(0,float("nan")),
 ])

@@ -1,5 +1,16 @@
 # Panel responsiveness and shared content — implementation plan
 
+## Shared personal library extension — planned, 23 October 2026
+
+The user requested a full plan and explicitly deferred coding. The
+[shared library implementation plan](SHARED_LIBRARY_IMPLEMENTATION_PLAN.md)
+extends this document's existing byte-store/installer foundation to personal
+models, shared textures, immutable recipe references, collections, portable
+export/import and explicit migration. It includes the ten-look acceptance case
+and retains old scene-path protections. SL01–SL09 are pending; this planning work
+does not alter the delivered scope or qualification recorded below. Status stays
+in the [execution ledger](../improvement-program/PROGRESS.md).
+
 ## Authorized 0.86.7.2 follow-up — 20 October 2026
 
 The user authorizes an explicit optional content ZIP beside the EXE, concise
