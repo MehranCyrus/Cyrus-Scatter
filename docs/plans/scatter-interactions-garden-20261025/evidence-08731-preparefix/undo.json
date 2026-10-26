@@ -1,0 +1,35 @@
+{
+  "before": {
+    "minimum": 0.004999999888241291,
+    "definitions": "8d777fb0b219d2d0a749373ece5eb4f98b2fe4242bb297c533564d752418299e",
+    "source_ids": [
+      "28b0eb49-02d5-443b-af95-e7da9bac3f12"
+    ],
+    "error": ""
+  },
+  "after": {
+    "minimum": 0.006000000052154064,
+    "definitions": "1629f63263836f0fbd54e6eb214f088ce79880bac0e28fbb961663517c2f7a61",
+    "source_ids": [
+      "28b0eb49-02d5-443b-af95-e7da9bac3f12"
+    ],
+    "error": ""
+  },
+  "undo": {
+    "minimum": 0.004999999888241291,
+    "definitions": "8d777fb0b219d2d0a749373ece5eb4f98b2fe4242bb297c533564d752418299e",
+    "source_ids": [
+      "28b0eb49-02d5-443b-af95-e7da9bac3f12"
+    ],
+    "error": ""
+  },
+  "redo": {
+    "minimum": 0.006000000052154064,
+    "definitions": "1629f63263836f0fbd54e6eb214f088ce79880bac0e28fbb961663517c2f7a61",
+    "source_ids": [
+      "28b0eb49-02d5-443b-af95-e7da9bac3f12"
+    ],
+    "error": ""
+  },
+  "status": "pass"
+}

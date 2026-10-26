@@ -2506,44 +2506,44 @@
       "controls": [
         {
           "component": "interactionsUI",
-          "control": "colliderCheck",
-          "presentation": "interactionsUI_colliderCheck",
+          "control": "roleList",
+          "presentation": "interactionsUI_roleList",
           "advanced": false
         },
         {
           "component": "interactionsUI",
-          "control": "reactCheck",
-          "presentation": "interactionsUI_reactCheck",
-          "advanced": false
-        },
-        {
-          "component": "interactionsUI",
-          "control": "rootsCheck",
-          "presentation": "interactionsUI_rootsCheck",
-          "advanced": false
-        },
-        {
-          "component": "interactionsUI",
-          "control": "gapSpin",
-          "presentation": "interactionsUI_gapSpin",
-          "advanced": false
-        },
-        {
-          "component": "interactionsUI",
-          "control": "stiffnessSpin",
-          "presentation": "interactionsUI_stiffnessSpin",
-          "advanced": true
-        },
-        {
-          "component": "interactionsUI",
-          "control": "proxyList",
-          "presentation": "interactionsUI_proxyList",
+          "control": "workflowInfo",
+          "presentation": "interactionsUI_workflowInfo",
           "advanced": false
         },
         {
           "component": "interactionsUI",
           "control": "modelList",
           "presentation": "interactionsUI_modelList",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "sourcePickButton",
+          "presentation": "interactionsUI_sourcePickButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "sourceRemoveButton",
+          "presentation": "interactionsUI_sourceRemoveButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "focusSourceButton",
+          "presentation": "interactionsUI_focusSourceButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "proxyList",
+          "presentation": "interactionsUI_proxyList",
           "advanced": false
         },
         {
@@ -2566,57 +2566,129 @@
         },
         {
           "component": "interactionsUI",
-          "control": "repairSettingsButton",
-          "presentation": "interactionsUI_repairSettingsButton",
+          "control": "prepareButton",
+          "presentation": "interactionsUI_prepareButton",
           "advanced": false
         },
         {
           "component": "interactionsUI",
-          "control": "analyzeButton",
-          "presentation": "interactionsUI_analyzeButton",
+          "control": "editorButton",
+          "presentation": "interactionsUI_editorButton",
           "advanced": false
         },
         {
           "component": "interactionsUI",
-          "control": "acceptButton",
-          "presentation": "interactionsUI_acceptButton",
+          "control": "guideReviewButton",
+          "presentation": "interactionsUI_guideReviewButton",
           "advanced": false
         },
         {
           "component": "interactionsUI",
-          "control": "clearButton",
-          "presentation": "interactionsUI_clearButton",
+          "control": "rootsCheck",
+          "presentation": "interactionsUI_rootsCheck",
           "advanced": false
         },
         {
           "component": "interactionsUI",
-          "control": "applyButton",
-          "presentation": "interactionsUI_applyButton",
+          "control": "gapSpin",
+          "presentation": "interactionsUI_gapSpin",
           "advanced": false
-        },
-        {
-          "component": "interactionsUI",
-          "control": "validateButton",
-          "presentation": "interactionsUI_validateButton",
-          "advanced": false
-        },
-        {
-          "component": "interactionsUI",
-          "control": "minimumSpin",
-          "presentation": "interactionsUI_minimumSpin",
-          "advanced": true
         },
         {
           "component": "interactionsUI",
           "control": "foliageSpin",
           "presentation": "interactionsUI_foliageSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "interactionsUI",
           "control": "info",
           "presentation": "interactionsUI_info",
           "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "retryButton",
+          "presentation": "interactionsUI_retryButton",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "validateButton",
+          "presentation": "interactionsUI_validateButton",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "repairSettingsButton",
+          "presentation": "interactionsUI_repairSettingsButton",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "minimumSpin",
+          "presentation": "interactionsUI_minimumSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "stiffnessSpin",
+          "presentation": "interactionsUI_stiffnessSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "connectionSpin",
+          "presentation": "interactionsUI_connectionSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "verticesLimitSpin",
+          "presentation": "interactionsUI_verticesLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "trianglesLimitSpin",
+          "presentation": "interactionsUI_trianglesLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "partsLimitSpin",
+          "presentation": "interactionsUI_partsLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "guidesLimitSpin",
+          "presentation": "interactionsUI_guidesLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "previewLimitSpin",
+          "presentation": "interactionsUI_previewLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "memoryLimitSpin",
+          "presentation": "interactionsUI_memoryLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "workLimitSpin",
+          "presentation": "interactionsUI_workLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "cleanColliderLinksButton",
+          "presentation": "interactionsUI_cleanColliderLinksButton",
+          "advanced": true
         }
       ]
     }

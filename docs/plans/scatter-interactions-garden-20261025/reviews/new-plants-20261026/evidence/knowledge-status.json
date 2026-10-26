@@ -1,0 +1,8 @@
+{
+  "index_generation": "637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a",
+  "stale": false,
+  "all_sources_verified": true,
+  "sources_verified": 64,
+  "source_issues": [],
+  "freshness_scope": "All enrolled parents individually rehashed; no filesystem transaction"
+}

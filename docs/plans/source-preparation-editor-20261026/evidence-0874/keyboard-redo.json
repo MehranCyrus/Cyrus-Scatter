@@ -1,0 +1,55 @@
+{
+  "analyses": 4,
+  "geometry_uploads": 5,
+  "message": "Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.",
+  "open": true,
+  "parts": 2079,
+  "pick_ms": 1.4347000122070312,
+  "preparation_ms": 430.4330999851227,
+  "ready": true,
+  "report": {
+    "basal_band_m": 0.02322103729471564,
+    "cache_realization_ms": 430.3979,
+    "can_prepare": true,
+    "complex_foliage_parts": 0,
+    "crown_root_guides": 35,
+    "delivered_preview_triangles": 50382,
+    "fixed_parts": 48,
+    "ground_level_m": -0.013978717538217703,
+    "ground_roots": 546,
+    "guides": 546,
+    "max_attachment_distance_m": 0.030179874672971237,
+    "max_parent_distance_m": 0.0,
+    "parts": 2079,
+    "preview_triangles": 50382,
+    "profile": "Connectivity-derived tubes and geodesic ribbons",
+    "review_required": true,
+    "ribbon_guides": 546,
+    "seconds": 0.3308662,
+    "source_payload_bytes": 8158281,
+    "tube_guides": 0,
+    "unattached_parts": 0,
+    "unresolved_guides": 0,
+    "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+    "work_units": 13599299
+  },
+  "revision": 4,
+  "selected": [
+    2051
+  ],
+  "selection_operations": 1,
+  "source_triangles": 50382,
+  "source_vertices": 38818,
+  "sphere": false,
+  "authoring_summary": {
+    "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+    "version": 1,
+    "parts": 1,
+    "roles": {
+      "3": 1
+    },
+    "sha256": "af66e0dcf5ceb1f6100b5c82b0343daed1a7c4d6e77d757faf8dfd608f72a9a5"
+  },
+  "status": "pass",
+  "scene_source": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001"
+}

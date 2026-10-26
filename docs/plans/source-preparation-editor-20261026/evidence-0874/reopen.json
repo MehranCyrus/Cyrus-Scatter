@@ -1,0 +1,29 @@
+{
+  "Fern": {
+    "schema": 62,
+    "ready": true,
+    "authoring_summary": {
+      "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+      "version": 1,
+      "parts": 1,
+      "roles": {
+        "1": 1
+      },
+      "sha256": "8f32c9b41e4eaac0c12341980ec8280f92a09158489f7ad087b7725c0bb41701"
+    }
+  },
+  "Grass": {
+    "schema": 62,
+    "ready": true,
+    "authoring_summary": {
+      "fingerprint": "681ae79bacf4acb51c4d0b15fa7843523495012ea5ea6fd72a0899725e37f026",
+      "version": 1,
+      "parts": 1,
+      "roles": {
+        "1": 1
+      },
+      "sha256": "c7591fcc9f99966153e1522ab11742df87d60fc86a6c8161db7cbae78af8af9c"
+    }
+  },
+  "status": "pass"
+}

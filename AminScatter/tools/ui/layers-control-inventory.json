@@ -1340,12 +1340,52 @@
     ],
     "interactionsUI": [
       {
-        "kind": "checkbox",
-        "name": "colliderCheck"
+        "kind": "dropdownlist",
+        "name": "roleList"
       },
       {
-        "kind": "checkbox",
-        "name": "reactCheck"
+        "kind": "listbox",
+        "name": "modelList"
+      },
+      {
+        "kind": "pickbutton",
+        "name": "sourcePickButton"
+      },
+      {
+        "kind": "button",
+        "name": "sourceRemoveButton"
+      },
+      {
+        "kind": "button",
+        "name": "focusSourceButton"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "proxyList"
+      },
+      {
+        "kind": "button",
+        "name": "buildTrunksButton"
+      },
+      {
+        "kind": "button",
+        "name": "pickColliderButton"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "reviewColliderButton"
+      },
+      {
+        "kind": "button",
+        "name": "prepareButton"
+      },
+      {
+        "kind": "button",
+        "name": "editorButton"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "guideReviewButton"
       },
       {
         "kind": "checkbox",
@@ -1357,51 +1397,19 @@
       },
       {
         "kind": "spinner",
-        "name": "stiffnessSpin"
-      },
-      {
-        "kind": "dropdownlist",
-        "name": "proxyList"
-      },
-      {
-        "kind": "listbox",
-        "name": "modelList"
+        "name": "foliageSpin"
       },
       {
         "kind": "button",
-        "name": "buildTrunksButton"
-      },
-      {
-        "kind": "pickbutton",
-        "name": "pickColliderButton"
-      },
-      {
-        "kind": "button",
-        "name": "reviewColliderButton"
-      },
-      {
-        "kind": "button",
-        "name": "repairSettingsButton"
-      },
-      {
-        "kind": "button",
-        "name": "analyzeButton"
-      },
-      {
-        "kind": "button",
-        "name": "acceptButton"
-      },
-      {
-        "kind": "button",
-        "name": "clearButton"
-      },
-      {
-        "kind": "button",
-        "name": "applyButton"
+        "name": "retryButton"
       },
       {
         "kind": "button",
         "name": "validateButton"
+      },
+      {
+        "kind": "button",
+        "name": "repairSettingsButton"
       },
       {
         "kind": "spinner",
@@ -1409,7 +1417,43 @@
       },
       {
         "kind": "spinner",
-        "name": "foliageSpin"
+        "name": "stiffnessSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "connectionSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "verticesLimitSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "trianglesLimitSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "partsLimitSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "guidesLimitSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "previewLimitSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "memoryLimitSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "workLimitSpin"
+      },
+      {
+        "kind": "button",
+        "name": "cleanColliderLinksButton"
       }
     ],
     "detailsUI": [

@@ -1,0 +1,61 @@
+{
+  "Fern": {
+    "definition_sha256": "915a1e30cd924d4aa14eeebb5f393c31756c880352747f9c74f7f129bd6b1bfa",
+    "audit": {
+      "passed": true,
+      "quality_limit_maximum_stem_edge_change": 0.25,
+      "results": [
+        {
+          "audit_ms": 738.5332,
+          "delivered_float": false,
+          "identity": "c:4294967296",
+          "instance": 0,
+          "layer": 1,
+          "maximum_rigid_part_edge_change": 0.0,
+          "maximum_stem_edge_change": 0.12886516045000207,
+          "minimum_surface_gap_m": 0.004742468641199056,
+          "penetrating_vertex_obstacle_pairs": 0,
+          "root_anchor_error_m": 0.0,
+          "touching_triangle_obstacle_pairs": 0,
+          "triangles": 50382
+        }
+      ],
+      "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+      "triangles": 50382
+    },
+    "review_layer": "Layer_01",
+    "epoch_before": 2,
+    "epoch_after": 2,
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\CyrusScatter_0874_OwnedTests\\Fern_Preparation_0874.max"
+  },
+  "Grass": {
+    "definition_sha256": "a837d352712c2928d7c867f126f522c64d682c8b33080ac7ba1b930957596633",
+    "audit": {
+      "passed": true,
+      "quality_limit_maximum_stem_edge_change": 0.25,
+      "results": [
+        {
+          "audit_ms": 456.4578,
+          "delivered_float": false,
+          "identity": "c:4294967296",
+          "instance": 0,
+          "layer": 1,
+          "maximum_rigid_part_edge_change": 1.0302869668521453e-13,
+          "maximum_stem_edge_change": 0.08396746971967695,
+          "minimum_surface_gap_m": 0.0008528500651433006,
+          "penetrating_vertex_obstacle_pairs": 0,
+          "root_anchor_error_m": 0.0,
+          "touching_triangle_obstacle_pairs": 0,
+          "triangles": 27501
+        }
+      ],
+      "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+      "triangles": 27501
+    },
+    "review_layer": "Layer_01",
+    "epoch_before": 2,
+    "epoch_after": 2,
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\CyrusScatter_0874_OwnedTests\\Grass_Preparation_0874.max"
+  },
+  "status": "pass"
+}

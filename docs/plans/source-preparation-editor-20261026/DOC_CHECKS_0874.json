@@ -1,0 +1,22 @@
+{
+  "kind": "0.87.4 documentation link/format validation only",
+  "date": "2026-10-27",
+  "markdown_files": 9,
+  "local_links_checked": 72,
+  "heading_anchors_checked": 1,
+  "scoped_git_diff_whitespace_check": "pass; diff-check-final.log",
+  "errors": [],
+  "status": "pass",
+  "runtime_acceptance": "Separate QUALIFICATION_0874.json",
+  "document_hashes": {
+    "01_RESEARCH_AND_DECISIONS.md": "afa98e5ff632cf4cb730d4dc04b02b044af2ed4ac8681c0a38975eac24b79c7c",
+    "02_EDITOR_WORKFLOW.md": "095e7accdbe5e2e37589b01ff8dd21d3b20e6b122089c3eb3b6779be8eab45e4",
+    "03_TECHNICAL_DESIGN.md": "3fad6da12806b8073b47dbb7135fec14752d17cfe4b1b0d2d2eb076e61fd727b",
+    "04_IMPLEMENTATION_PLAN.md": "ff97aed776baea1daebc98b834bde8220c071f2bd80520e83f2ff947e924f944",
+    "05_VALIDATION_MATRIX.md": "eb94b00f18f33277da6d2c1f1ed05e227b67dd88846bc7826be6f2f70f1aab55",
+    "ARTIST_WORKFLOW_0874.md": "6d7f2917a4f37a275ed51396a71ab3ee52c63cd48911b53485dc8f177a0a5516",
+    "DELIVERY_0874.md": "2a0061e6b18f4af547dc4db0001e992a37f7ceb3d6c56aade35556a3a8372f09",
+    "IMPLEMENTATION_0874.md": "98acca0162c44da9220c3fc7b4b6bccef50bea41b0daa46004e22a5b65fcb4c0",
+    "README.md": "1b06da01d2babecc994a1fe1ebb8119cf5fae811b267f89c40d83d73eac35680"
+  }
+}

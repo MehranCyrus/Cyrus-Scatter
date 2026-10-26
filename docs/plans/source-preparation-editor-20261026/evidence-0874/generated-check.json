@@ -1,0 +1,13 @@
+{
+  "check": "unified_073_generator_integration",
+  "passed": true,
+  "development_version": "0.87.4",
+  "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+  "maxscript_compiled": false,
+  "ui_controls_in_inventory": 362,
+  "baseline_controls_accounted": 245,
+  "generated_sha256": "ecb336b12ad01607fd8b6e7a412a7b864f93eb5059330b3aa1d404202cf72e18",
+  "preserved_files": [],
+  "fixture_delimiters_checked": 32,
+  "interactive_max_run": false
+}

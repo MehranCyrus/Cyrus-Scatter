@@ -1,0 +1,566 @@
+{
+  "plants": [
+    {
+      "name": "Outdoor_Plants_01_Rhapis_Excelsa_Small02_001",
+      "handle": 3823,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups",
+          "seconds": 0.061157000018283725
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.03971099993214011
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.04225210007280111
+        }
+      ],
+      "viewport_count": {
+        "faces": 74159,
+        "vertices": 100163
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.9036466217041016,
+          -0.86073974609375,
+          -0.0032098886370658876
+        ],
+        [
+          0.8892655181884765,
+          0.67909912109375,
+          1.1695558166503905
+        ]
+      ],
+      "dimensions_m": [
+        1.7929121398925782,
+        1.5398388671875,
+        1.1727657052874565
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-3823.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+      "handle": 3871,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups",
+          "seconds": 0.08736720005981624
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.02631049999035895
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.04563830001279712
+        }
+      ],
+      "viewport_count": {
+        "faces": 26220,
+        "vertices": 38818
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.7035952758789062,
+          -0.7124134063720703,
+          -0.01894106149673462
+        ],
+        [
+          0.709580078125,
+          0.6879312133789063,
+          0.7550935363769531
+        ]
+      ],
+      "dimensions_m": [
+        1.4131753540039063,
+        1.4003446197509766,
+        0.7740345978736878
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-3871.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush05_001",
+      "handle": 3919,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups",
+          "seconds": 0.10043530003167689
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.06070040003396571
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.04955510003492236
+        }
+      ],
+      "viewport_count": {
+        "faces": 101819,
+        "vertices": 125845
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.7326314544677734,
+          -0.7501996612548828,
+          -8.43481586798589e-09
+        ],
+        [
+          0.8882372283935547,
+          0.800050048828125,
+          1.6176039123535157
+        ]
+      ],
+      "dimensions_m": [
+        1.6208686828613281,
+        1.550249710083008,
+        1.6176039207883315
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-3919.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+      "handle": 3967,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip",
+          "seconds": 0.0699825999327004
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.021406499901786447
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.021830699872225523
+        }
+      ],
+      "viewport_count": {
+        "faces": 57036,
+        "vertices": 58750
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.3195148277282715,
+          -0.45733406066894533,
+          -0.002060711830854416
+        ],
+        [
+          0.4137746047973633,
+          0.31851850509643553,
+          0.7148855590820312
+        ]
+      ],
+      "dimensions_m": [
+        0.7332894325256348,
+        0.7758525657653809,
+        0.7169462709128857
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-3967.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Brainea_Insignis_Fern_Medium03_001",
+      "handle": 4057,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups",
+          "seconds": 0.22508740006014705
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.14027590001933277
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.14272999996319413
+        }
+      ],
+      "viewport_count": {
+        "faces": 329373,
+        "vertices": 377133
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.4192277526855469,
+          -0.9652913665771484,
+          -0.03869179248809815
+        ],
+        [
+          1.0163970947265626,
+          0.01202377200126648,
+          1.4321430969238282
+        ]
+      ],
+      "dimensions_m": [
+        1.4356248474121094,
+        0.9773151385784149,
+        1.4708348894119263
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-4057.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Lemon_Balm_rly_001",
+      "handle": 4105,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip",
+          "seconds": 0.00892250007018447
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.0032167001627385616
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.0026192001532763243
+        }
+      ],
+      "viewport_count": {
+        "faces": 6136,
+        "vertices": 7030
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.025140776634216308,
+          -0.06938308715820313,
+          -0.00014493582770228386
+        ],
+        [
+          0.1178535270690918,
+          0.08076150894165039,
+          0.06912224292755127
+        ]
+      ],
+      "dimensions_m": [
+        0.1429943037033081,
+        0.1501445960998535,
+        0.06926717875525355
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-4105.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Lemon_Balm_rly3_001",
+      "handle": 4153,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip",
+          "seconds": 0.005239700200036168
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.0028182000387459993
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.0020891998428851366
+        }
+      ],
+      "viewport_count": {
+        "faces": 3834,
+        "vertices": 4254
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.027459800243377686,
+          -0.04752933979034424,
+          -0.00011982002295553685
+        ],
+        [
+          0.07236732482910156,
+          0.046574306488037114,
+          0.044624009132385255
+        ]
+      ],
+      "dimensions_m": [
+        0.09982712507247925,
+        0.09410364627838134,
+        0.044743829155340795
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-4153.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+      "handle": 4201,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade sections are not connected in authored vertex order",
+          "seconds": 0.015235499944537878
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.0010581000242382288
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.001134099904447794
+        }
+      ],
+      "viewport_count": {
+        "faces": 14291,
+        "vertices": 22032
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.09766653060913086,
+          -0.10999773979187012,
+          -0.0011362755298614502
+        ],
+        [
+          0.09248103141784668,
+          0.09917189598083496,
+          0.0949942970275879
+        ]
+      ],
+      "dimensions_m": [
+        0.19014756202697755,
+        0.2091696357727051,
+        0.09613057255744935
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-4201.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+      "handle": 4249,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade sections are not connected in authored vertex order",
+          "seconds": 0.00987339997664094
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.0059079998172819614
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.0038649998605251312
+        }
+      ],
+      "viewport_count": {
+        "faces": 7736,
+        "vertices": 11900
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.08384555816650391,
+          -0.09140926361083984,
+          -0.00045316822826862335
+        ],
+        [
+          0.0979198932647705,
+          0.08359262466430664,
+          0.06331797122955322
+        ]
+      ],
+      "dimensions_m": [
+        0.18176545143127443,
+        0.17500188827514648,
+        0.06377113945782184
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-4249.bin"
+    },
+    {
+      "name": "Outdoor_Plants_01_Carex_Elata_Aurea_Grass_001",
+      "handle": 4297,
+      "analyses": [
+        {
+          "minimum_m": 0.005,
+          "preview_fraction": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip",
+          "seconds": 0.03769359993748367
+        },
+        {
+          "minimum_m": 0.001,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 1.000000 mm / 1.000000%.",
+          "seconds": 0.012532500084489584
+        },
+        {
+          "minimum_m": 0.01,
+          "preview_fraction": 0.01,
+          "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 10.000000 mm / 1.000000%.",
+          "seconds": 0.01250810013152659
+        }
+      ],
+      "viewport_count": {
+        "faces": 25533,
+        "vertices": 54214
+      },
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "class": "Editable_Poly",
+      "bounds_m": [
+        [
+          -0.24833492279052735,
+          -0.32284534454345704,
+          -0.005751156806945801
+        ],
+        [
+          0.27444557189941404,
+          0.2591753196716309,
+          0.4658359146118164
+        ]
+      ],
+      "dimensions_m": [
+        0.5227804946899414,
+        0.5820206642150879,
+        0.4715870714187622
+      ],
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\source-4297.bin"
+    }
+  ],
+  "colliders": [
+    {
+      "layer": 1,
+      "source": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+      "collider_enabled": false,
+      "react_enabled": true,
+      "mode": 3,
+      "resolved_proxy": "None",
+      "saved_proxy_names": [
+        "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001 - Trunk collider001"
+      ]
+    },
+    {
+      "layer": 2,
+      "source": "Sphere001",
+      "collider_enabled": true,
+      "react_enabled": false,
+      "mode": 3,
+      "resolved_proxy": "$Editable_Mesh:Sphere001 - Trunk collider001 @ [1017.978882,-776.538818,0.000000]",
+      "saved_proxy_names": [
+        "Sphere001 - Trunk collider001"
+      ],
+      "info": {
+        "accepted": false,
+        "analysis_count": 0,
+        "fingerprint": "bb33416ea0f5d5b8842692a38a7b75b2c3eaddeda9e8a75743bd321ec216326c",
+        "has_solid_collider": true,
+        "proxy_mode": 3
+      },
+      "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\assigned-collider-2.bin"
+    }
+  ],
+  "metres_per_unit": 0.01,
+  "layer_enabled": [
+    true,
+    true
+  ],
+  "layer_visible": [
+    true,
+    true
+  ],
+  "status": "complete"
+}

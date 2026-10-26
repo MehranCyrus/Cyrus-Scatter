@@ -1,0 +1,475 @@
+[
+  {
+    "name": "Outdoor_Plants_01_Rhapis_Excelsa_Small02_001",
+    "handle": 3823,
+    "snapshot_sha256": "3262157d49b5a51ba7faf785d487a323132f0559225030d51b1b4027e8e9af6e",
+    "vertices": 100163,
+    "triangles": 142403,
+    "dimensions_m": [
+      1.7929121255874634,
+      1.5398389101028442,
+      1.1727656126022339
+    ],
+    "components_raw": 3216,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "16": 2948,
+      "287": 121,
+      "35": 110,
+      "672": 13,
+      "408": 13,
+      "28": 6,
+      "42": 5
+    },
+    "raw_component_face_histogram": {
+      "14": 2948,
+      "560": 121,
+      "49": 110,
+      "1320": 13,
+      "792": 13,
+      "35": 6,
+      "63": 5
+    },
+    "largest_raw_component_vertices": 672,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 101131,
+      "1": 41272
+    },
+    "exact_unique_positions": 100002,
+    "components_after_exact_position_merge": 3202,
+    "largest_exact_merged_component_vertices": 1070,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+    "handle": 3871,
+    "snapshot_sha256": "48b99a1ac1109f668967ecdddcfdaaa6fb5c79c0087f66abe252ed469b1b7a26",
+    "vertices": 38818,
+    "triangles": 50382,
+    "dimensions_m": [
+      1.413175344467163,
+      1.4003446102142334,
+      0.7740345597267151
+    ],
+    "components_raw": 2079,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "13": 1930,
+      "81": 22,
+      "152": 15,
+      "48": 15,
+      "80": 15,
+      "24": 15,
+      "17": 15,
+      "94": 13,
+      "78": 9,
+      "82": 8,
+      "74": 7,
+      "87": 6
+    },
+    "raw_component_face_histogram": {
+      "14": 1930,
+      "131": 20,
+      "284": 15,
+      "60": 15,
+      "32": 15,
+      "24": 15,
+      "154": 13,
+      "127": 9,
+      "125": 9,
+      "130": 8,
+      "135": 8,
+      "117": 7
+    },
+    "largest_raw_component_vertices": 1848,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 2043,
+      "1": 2465,
+      "2": 2330,
+      "3": 3142,
+      "4": 3518,
+      "5": 9864,
+      "6": 27020
+    },
+    "exact_unique_positions": 38512,
+    "components_after_exact_position_merge": 2047,
+    "largest_exact_merged_component_vertices": 2971,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush05_001",
+    "handle": 3919,
+    "snapshot_sha256": "14cc4701e73d90634402bc6115be2a57999a325a64e18701e3f9d4272ea02f0c",
+    "vertices": 125845,
+    "triangles": 183030,
+    "dimensions_m": [
+      1.6208686828613281,
+      1.550249695777893,
+      1.6176038980484009
+    ],
+    "components_raw": 4756,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "13": 3470,
+      "24": 309,
+      "17": 309,
+      "48": 275,
+      "152": 220,
+      "154": 89,
+      "60": 34,
+      "80": 11,
+      "81": 8,
+      "87": 7,
+      "94": 6,
+      "79": 5
+    },
+    "raw_component_face_histogram": {
+      "14": 3470,
+      "32": 309,
+      "24": 309,
+      "60": 275,
+      "284": 220,
+      "288": 89,
+      "84": 34,
+      "139": 7,
+      "131": 7,
+      "130": 6,
+      "127": 6,
+      "154": 6
+    },
+    "largest_raw_component_vertices": 859,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 9099,
+      "1": 1604,
+      "2": 1801,
+      "3": 1167,
+      "4": 1575,
+      "5": 119204,
+      "6": 48580
+    },
+    "exact_unique_positions": 120817,
+    "components_after_exact_position_merge": 4135,
+    "largest_exact_merged_component_vertices": 1783,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+    "handle": 3967,
+    "snapshot_sha256": "3eba1f84b215011d1bdc737d42d1254ac6d3864ea364da03a3126abc33e95406",
+    "vertices": 58750,
+    "triangles": 111172,
+    "dimensions_m": [
+      0.7332894206047058,
+      0.7758525609970093,
+      0.7169462442398071
+    ],
+    "components_raw": 150,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "909": 50,
+      "106": 40,
+      "167": 40,
+      "127": 12,
+      "107": 8
+    },
+    "raw_component_face_histogram": {
+      "1800": 50,
+      "169": 40,
+      "264": 40,
+      "207": 12,
+      "171": 8
+    },
+    "largest_raw_component_vertices": 909,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 90000,
+      "1": 10202,
+      "2": 7118,
+      "3": 3852
+    },
+    "exact_unique_positions": 58750,
+    "components_after_exact_position_merge": 150,
+    "largest_exact_merged_component_vertices": 909,
+    "coincident_triangle_groups": 8,
+    "coincident_extra_triangles": 8
+  },
+  {
+    "name": "Outdoor_Plants_01_Brainea_Insignis_Fern_Medium03_001",
+    "handle": 4057,
+    "snapshot_sha256": "0c6f7a65d4e3dbe1df3d12078e340c0e84542b146c5ec0d9c1c1fac21b6f0c26",
+    "vertices": 377133,
+    "triangles": 593787,
+    "dimensions_m": [
+      1.4356248378753662,
+      0.9773151278495789,
+      1.4708348512649536
+    ],
+    "components_raw": 9401,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "13": 1826,
+      "23": 1219,
+      "29": 1167,
+      "24": 1082,
+      "48": 1031,
+      "17": 1000,
+      "30": 650,
+      "152": 611,
+      "154": 390,
+      "27": 261,
+      "15": 41,
+      "21": 34
+    },
+    "raw_component_face_histogram": {
+      "14": 1826,
+      "28": 1219,
+      "36": 1201,
+      "24": 1041,
+      "60": 1004,
+      "32": 1000,
+      "54": 650,
+      "284": 611,
+      "288": 390,
+      "48": 261,
+      "42": 82,
+      "72": 26
+    },
+    "largest_raw_component_vertices": 3333,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 69684,
+      "1": 398296,
+      "2": 24099,
+      "3": 70432,
+      "4": 25564,
+      "5": 5712
+    },
+    "exact_unique_positions": 360891,
+    "components_after_exact_position_merge": 7377,
+    "largest_exact_merged_component_vertices": 3433,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Lemon_Balm_rly_001",
+    "handle": 4105,
+    "snapshot_sha256": "f31755f80fba6ebce4bef1ce665dc4e48bfad8da6658d513efe0bcef5475384b",
+    "vertices": 7030,
+    "triangles": 12192,
+    "dimensions_m": [
+      0.14299431443214417,
+      0.15014459192752838,
+      0.06926717609167099
+    ],
+    "components_raw": 120,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "17": 82,
+      "22": 13,
+      "20": 11,
+      "560": 9,
+      "18": 5
+    },
+    "raw_component_face_histogram": {
+      "20": 74,
+      "19": 13,
+      "24": 13,
+      "23": 11,
+      "1100": 9
+    },
+    "largest_raw_component_vertices": 560,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 9900,
+      "1": 720,
+      "2": 200,
+      "3": 200,
+      "4": 260,
+      "5": 312,
+      "6": 247,
+      "7": 100,
+      "8": 253
+    },
+    "exact_unique_positions": 7030,
+    "components_after_exact_position_merge": 120,
+    "largest_exact_merged_component_vertices": 560,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Lemon_Balm_rly3_001",
+    "handle": 4153,
+    "snapshot_sha256": "f749037d9916b4e208576f2ea1943b0060ba46a167dcf90ecf6e3a192b69c693",
+    "vertices": 4254,
+    "triangles": 7630,
+    "dimensions_m": [
+      0.0998271256685257,
+      0.09410364925861359,
+      0.04474382847547531
+    ],
+    "components_raw": 56,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "17": 34,
+      "18": 7,
+      "560": 6,
+      "22": 5,
+      "20": 4
+    },
+    "raw_component_face_histogram": {
+      "20": 39,
+      "1100": 6,
+      "24": 5,
+      "23": 4,
+      "19": 2
+    },
+    "largest_raw_component_vertices": 560,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 6600,
+      "1": 220,
+      "2": 180,
+      "3": 80,
+      "4": 160,
+      "5": 120,
+      "6": 38,
+      "7": 140,
+      "8": 92
+    },
+    "exact_unique_positions": 4254,
+    "components_after_exact_position_merge": 56,
+    "largest_exact_merged_component_vertices": 560,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+    "handle": 4201,
+    "snapshot_sha256": "f3760edce988efd33d1510ff3409083f1211ba39f284f506866c4c792e391964",
+    "vertices": 22032,
+    "triangles": 27501,
+    "dimensions_m": [
+      0.19014756381511688,
+      0.20916962623596191,
+      0.09613057225942612
+    ],
+    "components_raw": 566,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "52": 366,
+      "15": 200
+    },
+    "raw_component_face_histogram": {
+      "66": 215,
+      "67": 151,
+      "15": 73,
+      "17": 67,
+      "16": 60
+    },
+    "largest_raw_component_vertices": 52,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 7102,
+      "1": 7920,
+      "2": 3015,
+      "3": 3234,
+      "4": 1139,
+      "5": 1095,
+      "6": 960,
+      "7": 3036
+    },
+    "exact_unique_positions": 22032,
+    "components_after_exact_position_merge": 566,
+    "largest_exact_merged_component_vertices": 52,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+    "handle": 4249,
+    "snapshot_sha256": "8753e9caa81915b443c0549981ae3ff175422c79de736bb90e928d0dc53858f4",
+    "vertices": 11900,
+    "triangles": 14887,
+    "dimensions_m": [
+      0.18176545202732086,
+      0.17500188946723938,
+      0.06377113610506058
+    ],
+    "components_raw": 300,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "52": 200,
+      "15": 100
+    },
+    "raw_component_face_histogram": {
+      "66": 109,
+      "67": 91,
+      "16": 36,
+      "15": 34,
+      "17": 30
+    },
+    "largest_raw_component_vertices": 52,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 4154,
+      "1": 3960,
+      "2": 1943,
+      "3": 1320,
+      "4": 510,
+      "5": 510,
+      "6": 576,
+      "7": 1914
+    },
+    "exact_unique_positions": 11900,
+    "components_after_exact_position_merge": 300,
+    "largest_exact_merged_component_vertices": 52,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  },
+  {
+    "name": "Outdoor_Plants_01_Carex_Elata_Aurea_Grass_001",
+    "handle": 4297,
+    "snapshot_sha256": "a40ab112c68488bdd15a2cd9dbf7b291a72a960d8eeba2c8264701ee449866e9",
+    "vertices": 54214,
+    "triangles": 51066,
+    "dimensions_m": [
+      0.5227804780006409,
+      0.58202064037323,
+      0.47158706188201904
+    ],
+    "components_raw": 1574,
+    "unused_vertices": 0,
+    "raw_component_vertex_histogram": {
+      "34": 699,
+      "30": 206,
+      "36": 193,
+      "32": 189,
+      "40": 183,
+      "38": 104
+    },
+    "raw_component_face_histogram": {
+      "32": 699,
+      "28": 206,
+      "34": 193,
+      "30": 189,
+      "38": 183,
+      "36": 104
+    },
+    "largest_raw_component_vertices": 40,
+    "mixed_material_components": 0,
+    "material_ids": {
+      "0": 51066
+    },
+    "exact_unique_positions": 54214,
+    "components_after_exact_position_merge": 1574,
+    "largest_exact_merged_component_vertices": 40,
+    "coincident_triangle_groups": 0,
+    "coincident_extra_triangles": 0
+  }
+]

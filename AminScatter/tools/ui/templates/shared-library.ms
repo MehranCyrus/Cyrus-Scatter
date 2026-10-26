@@ -18,12 +18,12 @@ fn CyrusSharedProvenance directory = (
 if CyrusSharedSaveJobs==undefined do CyrusSharedSaveJobs=#()
 
 fn CyrusSharedStore = (
-    if cyrusSharedLibraryVersion==undefined or cyrusSharedLibraryVersion()!=1 or cyrusAssetModelPrepare==undefined or cyrusAssetOpenStaticImage==undefined do throw "Install the complete CyrusScatter 0.87.3 package and restart Max."
+    if cyrusSharedLibraryVersion==undefined or cyrusSharedLibraryVersion()!=1 or cyrusAssetModelPrepare==undefined or cyrusAssetOpenStaticImage==undefined do throw "Install the complete CyrusScatter 0.87.4 package and restart Max."
     if CyrusSharedLibraryInstance!=undefined do return CyrusSharedLibraryInstance
     local assembly=dotNet.loadAssembly (pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll")
     if assembly==undefined do throw "The Cyrus shared library assembly could not load."
     local identity=assembly.GetName()
-    if identity.Version.ToString()!="0.87.3.0" do throw "Load the matching CyrusScatter 0.87.3 gallery."
+    if identity.Version.ToString()!="0.87.4" do throw "Load the matching CyrusScatter 0.87.4 gallery."
     local io=dotNetClass "System.IO.File",root=CyrusSharedLibraryRootOverride
     if root==undefined or root=="" do (
         local config=pathConfig.appendPath ((dotNetClass "System.Environment").GetEnvironmentVariable "LOCALAPPDATA") "CyrusScatter\\personal-library.txt"

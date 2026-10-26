@@ -131,6 +131,10 @@ function page(s,definition,{name=definition.name,category=0}={}){
   const minimum=Math.max(...(row?.controls||[c]).map(cellMinimum));
   const columns=table?count:'(amin '+count+' (amax 1 (floor (('+name+'.width-8)/'+(minimum+4)+'))))';
   line=line.replace(/width:\([^\n]+?\)(?=\s+(?:height|fieldWidth|tooltip|range|type|scale|modal|notifyAfterAccept|checked|items|columns|labels|color|pos)|$)/,'width:(('+name+'.width-16-('+columns+'-1)*4)/'+columns+')');
+  // Inline name swatches reserve a 22-pixel slot; a responsive field width here
+  // creates an oversized native ColorSwatch beyond the rollout's right edge.
+  if(c.kind==='colorpicker'&&row?.controls.length===2&&row.controls[1].id===c.id)
+   line=line.replace(/width:\([^\n]+?\)(?=\s+(?:height|fieldWidth|tooltip|range|type|scale|modal|notifyAfterAccept|checked|items|columns|labels|color|pos)|$)/,'width:22');
   line=line.replace(/fieldWidth:\d+/g,'fieldWidth:58');
   // A spinner without fieldWidth lets Max derive the edit field from its
   // original width. Moving its arrows later does not resize that field, so
@@ -164,7 +168,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
  const disclosures=rows.filter(r=>r.toggle);
  for(const r of disclosures)declarations+='\n        checkbutton '+r.toggle+' '+JSON.stringify(r.caption)+' pos:[6,6] width:('+name+'.width-12) height:22';
  for(const c of lists)declarations+='\n        dotNetControl '+c.id+'_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8';
- declarations+='\n        checkbutton advancedToggle '+JSON.stringify(definition.advancedLabel||'Advanced')+' pos:[6,6] width:('+name+'.width-12) height:22 tooltip:'+JSON.stringify(definition.advancedTooltip||'Show less-used controls. Expanding this section does not calculate or change saved settings.');
+ declarations+='\n        checkbutton advancedToggle '+JSON.stringify(definition.advancedLabel||'Advanced')+' pos:[6,6] width:('+name+'.width-12) height:22 tooltip:'+JSON.stringify(name==='interactionsUI'?'':definition.advancedTooltip||'Show less-used controls. Expanding this section does not calculate or change saved settings.');
  let code=components.map(p=>'        local '+p.key+'_bodyHeight=0\n'+p.code.replaceAll('__PAGE__',name)).join('\n');
  const reset=components.map(p=>['root','owner','panel','controlsReady','binding'].map(v=>p.key+'_'+v+'='+v).join(';')).join('\n            ');
  const binding=components.map(p=>{
@@ -226,7 +230,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
   const reserved=top.length?'(amax #('+top.map(c=>c.captionID+'.height').join(',')+'))':'0';
   const stacked=inline.length?'(amax #('+inline.map(c=>c.captionID+'.height').join(',')+'))':'0';
   const positions=swatch
-   ? `rowControls[1].pos=[6,y+captionHeight];fitWidth rowControls[1] cellWidth;rowControls[2].pos=[widthValue-28,y]`
+   ? `rowControls[1].pos=[6,y+captionHeight];fitWidth rowControls[1] cellWidth;rowControls[2].pos=[widthValue-28,y];fitWidth rowControls[2] 22`
    : table
    ? `rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)`
    : `for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] ${bitmapOnly?'(amin 72 cellWidth)':'cellWidth'})`;

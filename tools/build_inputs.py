@@ -70,7 +70,7 @@ def source_paths(root, project, options=None):
             paths += tree(root/project/name)
     if project == "AminScatter":
         rig = root/"CyrusVegetationLab/experiments/stem-live"
-        paths += [rig/name for name in ("stem_core.cpp", "stem_core.hpp", "analysis.cpp", "analysis.hpp", "connectivity.cpp", "connectivity.hpp")]
+        paths += [rig/name for name in ("stem_core.cpp", "stem_core.hpp", "analysis.cpp", "analysis.hpp", "connectivity.cpp", "connectivity.hpp", "topology_analysis.cpp", "preparation_spatial.hpp", "preparation_authoring.cpp", "preparation_authoring.hpp")]
         core = root/"CyrusVegetationLab/core"
         paths += tree(core/"include") + [core/"fitter/fitter.cpp"] + tree(core/"fitter/private")
         paths += [core/"delivery/src/geometry.hpp", core/"PROVENANCE.json"]

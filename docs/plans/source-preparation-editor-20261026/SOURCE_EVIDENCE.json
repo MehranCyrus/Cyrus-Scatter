@@ -1,0 +1,275 @@
+{
+  "kind": "research_source_inspection",
+  "schema": 1,
+  "date": "2026-10-26",
+  "status": "proposal_only; no product changes, new builds, host tests or performance measurements",
+  "repository": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "branch": "codex/workflow-0.75",
+  "head": "2a68691da59e80d6d24ea248d8e386b836883dae",
+  "working_tree": "dirty with substantial pre-existing tracked/untracked work; HEAD is not the inspected source identity; no repository-wide cleanup or reset",
+  "current_worktree_status_entry_count": 314,
+  "baseline": {
+    "product": "Scatter 0.87.3.2",
+    "qualified_host": "Max 2027 only",
+    "scene_schema": 61,
+    "native_interactions": 7,
+    "qualification": "docs/plans/scatter-interactions-garden-20261025/QUALIFICATION_08732.json",
+    "scope": "Prior receipt, not re-executed in this task"
+  },
+  "knowledge": {
+    "generation": "637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a",
+    "verify_sources": true,
+    "sources_checked": 64,
+    "sources_verified": 50,
+    "stale_parents": 14,
+    "result": "stale_evidence",
+    "search": {
+      "mode": "path",
+      "query": "interactions_source.cpp",
+      "results": 0
+    },
+    "fallback": "direct original-file inspection; index not refreshed"
+  },
+  "sources": [
+    {
+      "path": "README.md",
+      "sha256": "51631c8e65e316b3448ee18bced9255a00af5cc4248a44f32a36b10fc37265dd",
+      "bytes": 14881,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "sha256": "fc73d9bd4bdad91cd46502da44aabea8f0a33ece5f6cd1a686c0647024917a2d",
+      "bytes": 14279,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+      "bytes": 33319,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "7e1ca538d514ed4f37aacf33e1e8c68e517ad8b0ac29a5eb94a8c3fc3a024e28",
+      "bytes": 61265,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "sha256": "d43be7efbd75628751633caec40170b65a599631ae8341500ef3b766fd0fa9a5",
+      "bytes": 40925,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/Release_Versioning.md",
+      "sha256": "4c5335bb5f574e29d568b7eba351b276d56796a01d6bde10fdddb5e3c5baa4a5",
+      "bytes": 44450,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/plans/scatter-interactions-garden-20261025/DELIVERY_08732.md",
+      "sha256": "ea20885869a5b2fafded45c2acf5aa119bdeff7f8199c6923086d2d50bb44d4a",
+      "bytes": 6842,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08732.md",
+      "sha256": "b967873cd8ef5b67010adee95400f8ef8b6f1b6c048cc06a8d5e2dde396a997c",
+      "bytes": 3059,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/plans/scatter-interactions-garden-20261025/QUALIFICATION_08732.json",
+      "sha256": "ef9fcf04bad4595c5824c8fb8d56adfe5c9a4198f608535c6146123a6abd3eb3",
+      "bytes": 85082,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/03-SOURCE-PREPARATION.md",
+      "sha256": "ee7a202a295f86d6de987058f8fe2e0b24ce412d2d1514c2c8bbd3c374649a8c",
+      "bytes": 11568,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "sha256": "9d93436ec961460e9e394780501efe6585181bf534b5a12aaea36771c9f2aa06",
+      "bytes": 23229,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/include/interactions_source.h",
+      "sha256": "f25fbe3353eaef6ffbe7bd06af9daac0ead5c9310ecc2cbe2655fcfa3c86a0b0",
+      "bytes": 2508,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/src/interactions_source.cpp",
+      "sha256": "c6dbe7e29bc23c36bd5e7b88c65f0e5df7f65a395bf421112a98210a46e7e4e0",
+      "bytes": 41635,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/src/interactions_host.cpp",
+      "sha256": "a4e1051f7aae0e5f5ffe152cefef2b3caeb509d895ac062318d73819d62646f0",
+      "bytes": 57081,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-authoring.ms",
+      "sha256": "ec575ec0cb3b03fb03d5d217027717d289ec01f77015e20f2fd0be0e092362ff",
+      "bytes": 25419,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-ui.ms",
+      "sha256": "9e68e5a10a4b27c7f3ac8d6c69613bbb38743f0b02e8ef1c5c4b1be2b48e6a74",
+      "bytes": 16033,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "4b40e2562954de1cb73cbadf99122eb6f48fe5fb290135af14baf0b908d8ded8",
+      "bytes": 549045,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/recipes.ms",
+      "sha256": "ca75f8f685a34ddac889bceb4feb62e4aac50fb509c12ad882c7c4ce4de03155",
+      "bytes": 98542,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "CyrusVegetationLab/experiments/stem-live/analysis.hpp",
+      "sha256": "fbdfdffb316d5354d2af4e12afa1af37f3723dfcd74df1d0772602390d24e3a5",
+      "bytes": 1254,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "CyrusVegetationLab/experiments/stem-live/analysis.cpp",
+      "sha256": "409b7f770b99434c59e395e3080603df723bd4c99b0f38f77b34c285a59064cb",
+      "bytes": 18712,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "CyrusVegetationLab/experiments/stem-live/topology_analysis.cpp",
+      "sha256": "dec55f64412c12113b9cbf1abdba35679e0c2b18370170b2908bf1a3fa7576e9",
+      "bytes": 18903,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "CyrusVegetationLab/experiments/stem-live/stem_core.hpp",
+      "sha256": "c66f40f4e7935db0eb07de7227a2c59ec92c21a71da1607cab9d72f407c52c73",
+      "bytes": 1810,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "CyrusVegetationLab/experiments/stem-live/stem_core.cpp",
+      "sha256": "04e36191cd6a0e0474363c0e8aab25456a592ba42210cbbe11cd882a10efb0a3",
+      "bytes": 17417,
+      "inspection": "targeted relevant sections/symbols; hash identifies full file, not an exhaustive audit"
+    },
+    {
+      "path": "AminScatter/src/interactions_geometry.cpp",
+      "sha256": "e03a6e68e4e24a8ea165d5ef50fe2d88599db1c2c7edbcfef5bc82b1195da1ac",
+      "bytes": 21949,
+      "inspection": "Transform::scale admission only; full-file hash is not an exhaustive audit"
+    }
+  ],
+  "local_sdk_evidence": [
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include\\maxapi.h",
+      "sha256": "c609ea9274057b35c25349760bd4d8db208d2f622f011a69c14ad8b0087dc95a",
+      "inspection": "ViewWindow or createGW declaration and surrounding documentation"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include\\gfx.h",
+      "sha256": "0679571d4e492d195bec5eb6d423d1f93cb7674afa3986931bf1672361391912",
+      "inspection": "ViewWindow or createGW declaration and surrounding documentation"
+    }
+  ],
+  "qt_runtime_observation": {
+    "directory": "C:/Program Files/Autodesk/3ds Max 2027",
+    "dlls": [
+      "Qt6Core.dll",
+      "Qt6Gui.dll",
+      "Qt6Widgets.dll",
+      "Qt6OpenGL.dll",
+      "Qt6OpenGLWidgets.dll"
+    ],
+    "file_version": "6.8.3.Adsk-002",
+    "limit": "File inspection only; no viewer compiled or executed; matching development libraries and driver compatibility unverified"
+  },
+  "external_sources": [
+    {
+      "title": "Autodesk Qt integration, 2027",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Developer/files/writing_plug-ins/using_qt_with_3ds_max_plug-ins.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    },
+    {
+      "title": "Autodesk SDK requirements, 2027",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Developer/files/about_the_3ds_max_sdk/sdk_requirements.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    },
+    {
+      "title": "Qt QOpenGLWidget, 6.8",
+      "url": "https://doc.qt.io/qt-6.8/qopenglwidget.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    },
+    {
+      "title": "Autodesk ViewWindow, 2027",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_view_window.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    },
+    {
+      "title": "Autodesk gfx.h/createGW, 2027",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/gfx_8h.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    },
+    {
+      "title": "Autodesk CommandMode, 2027",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_command_mode.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    },
+    {
+      "title": "SideFX Guide Groom",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/sop/guidegroom.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    },
+    {
+      "title": "SideFX Joint Capture Paint",
+      "url": "https://www.sidefx.com/docs/houdini/nodes/sop/kinefx--jointcapturepaint.html",
+      "accessed": "2026-10-26",
+      "kind": "primary vendor documentation",
+      "limit": "Design evidence only; not Cyrus execution or acceptance"
+    }
+  ],
+  "checks_this_task": [
+    "Read-only repository, SDK and runtime file inspection",
+    "Primary-source web research",
+    "Documentation local-link and consistency checks (recorded at task completion)"
+  ],
+  "not_executed": [
+    "Plugin edits",
+    "Native builds/tests",
+    "Max launches or scene mutations",
+    "Installer creation/installation",
+    "Git commit/push",
+    "Website publication",
+    "Knowledge index refresh"
+  ]
+}

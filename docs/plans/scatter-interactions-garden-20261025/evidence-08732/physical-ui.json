@@ -1,0 +1,14 @@
+{
+  "status": "pass",
+  "hwnd": 7346954,
+  "physical_actions": [
+    "Frame source",
+    "Prepare model",
+    "Show source guides"
+  ],
+  "source_definition_changed_after_prepare": true,
+  "guides": 547,
+  "crown_guides": 36,
+  "review_helpers": 1,
+  "interaction_error": ""
+}

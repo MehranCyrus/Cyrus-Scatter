@@ -1,0 +1,105 @@
+{
+  "checks": [
+    "Modify flow_layersUI_layerColor stays inside its column",
+    "Modify sourceUI_idColor stays inside its column",
+    "Layers 170 flow_layersUI_layerColor stays inside its column",
+    "Layers 210 flow_layersUI_layerColor stays inside its column",
+    "Layers 290 flow_layersUI_layerColor stays inside its column",
+    "Models 170 sourceUI_idColor stays inside its column",
+    "Models 210 sourceUI_idColor stays inside its column",
+    "Models 290 sourceUI_idColor stays inside its column"
+  ],
+  "rows": [
+    {
+      "scope": "Modify",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        126.0,
+        164.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "scope": "Modify",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        126.0,
+        144.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "scope": "Layers 170",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        142.0,
+        164.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "scope": "Layers 210",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        159.0,
+        164.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "scope": "Layers 290",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        159.0,
+        164.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "scope": "Models 170",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        142.0,
+        144.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "scope": "Models 210",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        159.0,
+        144.0,
+        22.0,
+        22.0
+      ]
+    },
+    {
+      "scope": "Models 290",
+      "page_width": 187.0,
+      "native_rollout_width": 187.0,
+      "swatch": [
+        159.0,
+        144.0,
+        22.0,
+        22.0
+      ]
+    }
+  ],
+  "hwnd": 7346954,
+  "ui_scale": 1.0,
+  "status": "pass"
+}

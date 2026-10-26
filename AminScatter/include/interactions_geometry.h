@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <optional>
+#include <limits>
 
 namespace cyrus::interactions {
 namespace v=cyrus::vegetation::prototype_v1;
@@ -36,7 +37,8 @@ public:
     Witness point(Vec)const;
     Witness segment(Vec,Vec)const;
     std::optional<Witness> contactSegment(Vec,Vec,double radius)const;
-    double triangleDistance(Vec,Vec,Vec)const;
+    // Finite maximum returns min(actual distance, maximum), a contact-band proof.
+    double triangleDistance(Vec,Vec,Vec,double maximum=std::numeric_limits<double>::infinity())const;
     bool rayHit(Vec origin,Vec direction,double maximumDistance)const;
     bool projectedNear(Vec origin,Vec direction,double radius)const;
     bool overlapsSolid(const Bounds&)const;

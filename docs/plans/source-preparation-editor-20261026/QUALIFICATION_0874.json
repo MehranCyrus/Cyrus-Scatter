@@ -1,0 +1,90 @@
+{
+  "schema": "cyrus.preparation-editor-0874/1",
+  "date": "2026-10-27",
+  "status": "scoped Max 2027 artist-testing delivery",
+  "version": "0.87.4",
+  "max_year": 2027,
+  "scene_schema": 62,
+  "native_interactions": 8,
+  "authored_host_and_source_format": 2,
+  "authoring_version": 1,
+  "repository": {
+    "branch": "codex/workflow-0.75",
+    "head": "2a68691da59e80d6d24ea248d8e386b836883dae",
+    "dirty_worktree": "Pre-existing and concurrent work preserved; exact frozen source hashes, not HEAD alone, identify the build."
+  },
+  "package": {
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.4-20261027-final\\CyrusScatter-0.87.4-Max2027.mzp",
+    "sha256": "40f28bfbc5383660c59ef9d6673cfbc3506f383191f9d1b5a23f1a80a32bf318",
+    "producer": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-0874-20261026-01\\native-04\\receipt.json",
+    "tests_run": true,
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.",
+    "files": {
+      "AminScatter.dlx": "adc909380715a40eafa542b59fcf6d05131c1c16defbc2c24bf746611369ad8a",
+      "CyrusBrush.dlx": "b1d982903cf794514b03814c5ad736f1a907fdf2a0ea27c891363f110ff6d29e",
+      "CyrusBrushStorage.dlh": "1711224daa5786405f3a087f53713794928df43f2f7b39305b5f5f148894cb1f",
+      "CyrusGallery.dll": "917a7395bdbba0cb74ea9c1384d27936fd903357b93e64a2d4f6ecb243cc8ad4",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.ms": "ecb336b12ad01607fd8b6e7a412a7b864f93eb5059330b3aa1d404202cf72e18",
+      "CyrusScatterEdit.dlm": "d417e2a4a6125dcd7ef0fcc3165b4ab84b445c4941793e89c3648b9b2389addd"
+    }
+  },
+  "archive_files_verified": 30,
+  "native_input_manifest_sha256": "a8fd30ae142981d18d736a57b9c0170fcc4005d92866667f2501863bd6c8fd76",
+  "frozen_source_files_verified_again": 613,
+  "native_tests": "60/60 passed; final native-04/tests.log",
+  "generator_checks": "362 controls; generated-check.json and layout-final.log retained in evidence-0874",
+  "final_host": {
+    "pid": 34720,
+    "profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-0874-20261026-01\\final-host-02",
+    "loaded_identity": "evidence-0874/loaded-identity.json"
+  },
+  "executed_reports": [
+    "evidence-0874/fern.json",
+    "evidence-0874/grass.json",
+    "evidence-0874/contacts-fern.json",
+    "evidence-0874/contacts-grass.json",
+    "evidence-0874/keyboard-undo.json",
+    "evidence-0874/keyboard-redo.json",
+    "evidence-0874/physical-selection.json",
+    "evidence-0874/physical-commit.json",
+    "evidence-0874/undo-after.json",
+    "evidence-0874/undo-read.json",
+    "evidence-0874/redo-read.json",
+    "evidence-0874/extra.json",
+    "evidence-0874/sphere-contact.json",
+    "evidence-0874/lifecycle.json",
+    "evidence-0874/reopen.json",
+    "evidence-0874/trial-review.json"
+  ],
+  "input_scene": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\New Plants test.max",
+    "sha256_at_delivery": "70e2807fd2041f9f06766db71a09b565752c18a383c0a5ccf24684009a257f8d",
+    "mtime_note": "On-disk input last written 2026-10-26 23:38:39 local, before first owned host launch at 23:47. Historical scene hashes are not asserted to equal this newer file. Campaigns save only their named owned trial copies."
+  },
+  "trials": [
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\CyrusScatter_0874_OwnedTests\\Fern_Preparation_0874.max",
+      "bytes": 282001408,
+      "sha256": "7a81341ed2cf88cd8e19f49aec2ba36ed84636b98cbd196b0718b28e12ce2eff"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\CyrusScatter_0874_OwnedTests\\Grass_Preparation_0874.max",
+      "bytes": 283566080,
+      "sha256": "a9403acbe6ea09baf8d2ce4e35cd05243df23435dcc66a6bd166dd36bdea74b6"
+    }
+  ],
+  "artist_ini_unchanged": true,
+  "artist_ini_sha256": "6579ecf2ecd5004b6d4bf955b73fcf91cf5392afda9425da9311d42720d87a2c",
+  "installed_in_artist_profile": false,
+  "older_host_work": false,
+  "website_build_or_publish": false,
+  "commit_or_push": false,
+  "remaining_limits": [
+    "Whole connected-piece selection only; no arbitrary welded face regions or opacity-aware picking.",
+    "One deeper grass overlap in native-03 cleared collision but exceeded the existing 25% stem-edge strain quality limit (28.5417% observed). This is retained as a solver limitation, not counted among final passing lighter contacts.",
+    "Production renderer/float-delivery qualification, large gardens, additional plant families, multiple DPI/driver setups, process-memory peaks and long-session soak remain unexecuted.",
+    "E0-E6 implement the scoped editor; not every original proposal validation-matrix row has passed."
+  ],
+  "known_failure_report": "evidence-0874/known-limit-grass.json"
+}

@@ -1,4 +1,5 @@
 #include "interactions_host.h"
+#include "preparation_editor.h"
 #include "license_boundary.h"
 #include <filesystem>
 #include <fstream>
@@ -18,6 +19,7 @@
 #include <iomanip>
 #include <numeric>
 #include <MeshNormalSpec.h>
+#include <hold.h>
 #include <maxscript/macros/define_instantiation_functions.h>
 #undef ScripterExport
 #define ScripterExport __declspec(dllexport)
@@ -39,19 +41,23 @@ std::unordered_map<AnimHandle,std::weak_ptr<InteractionRuntime>> runtimes;
 template<class F> Value* guarded(F fn){try{return fn();}catch(const std::exception& e){const std::string s=e.what();throw RuntimeError(std::wstring(s.begin(),s.end()).c_str());}}
 std::string utf8(const MCHAR* text){if(!text)return {};int n=WideCharToMultiByte(CP_UTF8,0,text,-1,nullptr,0,nullptr,nullptr);std::string out(std::max(0,n-1),'\0');if(n>1){std::vector<char> bytes(n);WideCharToMultiByte(CP_UTF8,0,text,-1,bytes.data(),n,nullptr,nullptr);out.assign(bytes.data(),n-1);}return out;}
 Value* stringValue(const std::string& s){int n=MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),nullptr,0);std::wstring out(n,L'\0');if(n)MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),out.data(),n);return new String(out.c_str());}
+ci::Json limitsJson(prep::Limits l){return ci::Json::array({l.vertices,l.triangles,l.parts,l.guides,l.previewTriangles,l.memoryMiB,l.workMillions});}
+bool settingsMatch(const ci::Json& data,const prep::Settings& cfg){return data.at("settings").size()==2&&data.at("settings")[0]==cfg.minimumLength&&std::abs(data.value("connection_reach_m",.15)-cfg.connectionReach)<1e-7;}
 ci::Vec core(Point3 p,double unit){return {double(p.x)*unit,double(p.z)*unit,-double(p.y)*unit};}
-std::shared_ptr<const InteractionHostSource> capture(INode* node,const std::string& saved,prep::Settings settings,int flags,int proxy){
-    if(!node||(flags&~3)||flags==0||proxy<1||proxy>2||saved.size()>32*1024*1024)throw std::runtime_error("Invalid interaction source request or definition over 32 MiB");
-    const auto time=GetCOREInterface()->GetTime();const double unit=GetSystemUnitScale(UNITS_METERS);std::shared_ptr<const InteractionHostSource> old;
+std::shared_ptr<const InteractionHostSource> capture(INode* node,const std::string& saved,prep::Settings settings,int flags,int proxy,bool rebuild=false){
+    HoldSuspend capturedReferences;
+    if(!node||(flags!=1&&flags!=2&&flags!=3&&flags!=4)||proxy<1||proxy>2||saved.size()>256*1024*1024)throw std::runtime_error("Invalid interaction source request or definition over 256 MiB");
+    prep::validateLimits(settings.limits);const auto time=GetCOREInterface()->GetTime();const double unit=GetSystemUnitScale(UNITS_METERS);std::shared_ptr<const InteractionHostSource> old;
     if(auto found=sourceCache.find(node->GetHandle());found!=sourceCache.end())old=found->second.lock();
-    const bool fresh=old&&old->watch&&old->watch->GetRef()==node&&old->watch->valid&&old->watch->validity.InInterval(time)&&old->unit==unit;
-    const bool sameSettings=fresh&&old->settings.minimumLength==settings.minimumLength&&old->settings.foliageFraction==settings.foliageFraction;
+    const auto definitionHash=(flags&1)?(saved.empty()?std::string("inferred"):prep::textHash(saved))+(rebuild?":rebuild":""):std::string{};
+    const bool fresh=old&&old->visualMesh&&old->watch&&old->watch->GetRef()==node&&old->watch->valid&&old->watch->validity.InInterval(time)&&old->unit==unit;
+    const bool sameSettings=fresh&&old->settings.minimumLength==settings.minimumLength&&old->settings.foliageFraction==settings.foliageFraction&&old->settings.connectionReach==settings.connectionReach&&old->settings.limits==settings.limits;
     const bool sameProxy=fresh&&old->proxy==proxy;
-    if(sameSettings&&sameProxy&&(!(flags&1)||old->rig)&&(!(flags&2)||old->collider)){
-        if(!saved.empty()){auto data=ci::Json::parse(saved);if(data.at("format")!=1||!data.value("accepted",false)||data.at("source").at("fingerprint")!=old->fingerprint||data.at("settings")!=ci::Json::array({settings.minimumLength,settings.foliageFraction}))throw std::runtime_error("Prepared source or settings changed; Analyze and review again");}
+    if(!rebuild&&sameSettings&&sameProxy&&(!(flags&1)||(old->rig&&old->definitionHash==definitionHash))&&(!(flags&2)||old->collider)){
+        if(!saved.empty()){auto data=ci::Json::parse(saved);if((data.at("format")!=1&&data.at("format")!=2)||!data.value("accepted",false)||data.at("source").at("fingerprint")!=old->fingerprint||!settingsMatch(data,settings))throw std::runtime_error("Prepared source or settings changed; Analyze and review again");}
         return old;
     }
-    auto result=std::make_shared<InteractionHostSource>();result->nodeHandle=Animatable::GetHandleByAnim(node);result->unit=unit;result->settings=settings;result->proxy=proxy;
+    auto result=std::make_shared<InteractionHostSource>();result->nodeHandle=Animatable::GetHandleByAnim(node);result->unit=unit;result->settings=settings;result->proxy=proxy;result->definitionHash=definitionHash;
     prep::Snapshot snapshot;
     if(fresh){result->mesh=old->mesh;result->cornerNormals=old->cornerNormals;result->memory=old->memory;result->watch=old->watch;result->fingerprint=old->fingerprint;result->bounds=old->bounds;}
     else {
@@ -63,9 +69,10 @@ std::shared_ptr<const InteractionHostSource> capture(INode* node,const std::stri
         auto reservation=reserveSourceMetadataMemory(64*viewport_memory::MiB);
         auto* tri=static_cast<TriObject*>(object->ConvertToType(time,Class_ID(TRIOBJ_CLASS_ID,0)));if(!tri)throw std::runtime_error("Interaction source conversion failed");
         auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};std::unique_ptr<TriObject,decltype(cleanup)> owned(tri,cleanup);
-        const auto& mesh=tri->GetMesh();if(mesh.getNumVerts()<3||mesh.getNumVerts()>1000000||mesh.getNumFaces()<1||mesh.getNumFaces()>2000000)throw std::runtime_error("Interaction source admission: 1M vertices / 2M triangles");
+        const auto& mesh=tri->GetMesh();if(mesh.getNumVerts()<3||mesh.getNumVerts()>int(settings.limits.vertices)||mesh.getNumFaces()<1||mesh.getNumFaces()>int(settings.limits.triangles))throw std::runtime_error("Interaction source has "+std::to_string(mesh.getNumVerts())+" vertices / "+std::to_string(mesh.getNumFaces())+" triangles; increase Source vertices / triangles in Preparation limits.");
         auto bytes=std::size_t(mesh.getNumVerts())*192+std::size_t(mesh.getNumFaces())*128;
         for(int channel=-NUM_HIDDENMAPS;channel<mesh.getNumMaps();++channel)if(mesh.mapSupport(channel))bytes+=2*(std::size_t(mesh.getNumMapVerts(channel))*sizeof(UVVert)+std::size_t(mesh.getNumMapFaces(channel))*sizeof(TVFace));
+        if(bytes>std::size_t(settings.limits.memoryMiB)*viewport_memory::MiB)throw std::runtime_error("Source capture exceeds Memory MiB in Preparation limits.");
         if(bytes>64*viewport_memory::MiB)reservation=reserveSourceMetadataMemory(bytes);
         auto copy=std::make_shared<Mesh>(mesh);auto tm=node->GetObjectTM(time)*Inverse(node->GetNodeTM(time));
 
@@ -78,19 +85,19 @@ std::shared_ptr<const InteractionHostSource> capture(INode* node,const std::stri
         copy->InvalidateGeomCache();copy->buildBoundingBox();result->mesh=std::move(copy);result->memory=std::move(reservation);result->memory->trimCPU(bytes);result->memory->commit();
         result->watch=std::make_shared<InteractionSourceWatch>(node);result->watch->validity=state.Validity(time);node->GetNodeTM(time,&result->watch->validity);node->GetObjectTM(time,&result->watch->validity);
     }
-    const auto& mesh=*result->mesh;snapshot.positions.reserve(mesh.getNumVerts());snapshot.faces.reserve(mesh.getNumFaces());snapshot.materials.reserve(mesh.getNumFaces());
+    const auto& mesh=*result->mesh;if(mesh.getNumVerts()>int(settings.limits.vertices)||mesh.getNumFaces()>int(settings.limits.triangles))throw std::runtime_error("Cached visual source exceeds current Preparation limits.");snapshot.positions.reserve(mesh.getNumVerts());snapshot.faces.reserve(mesh.getNumFaces());snapshot.materials.reserve(mesh.getNumFaces());
     for(int i=0;i<mesh.getNumVerts();++i){auto p=mesh.verts[i];snapshot.positions.push_back({float(double(p.x)*unit),float(double(p.y)*unit),float(double(p.z)*unit)});}
     for(int i=0;i<mesh.getNumFaces();++i){auto f=mesh.faces[i];snapshot.faces.push_back({f.v[0],f.v[1],f.v[2]});snapshot.materials.push_back(f.getMatID());}
     result->fingerprint=prep::fingerprint(snapshot);
     if(flags&1){
-        const auto cacheKey=result->fingerprint+":"+ci::Json::array({settings.minimumLength,settings.foliageFraction}).dump();
+        const auto cacheKey=result->fingerprint+":5:"+ci::Json::array({settings.minimumLength,settings.foliageFraction,settings.connectionReach}).dump()+":"+limitsJson(settings.limits).dump()+":"+definitionHash;
         ci::Json serialized;const ci::Json* definition=nullptr;
-        if(!saved.empty()){if(saved.size()>32*1024*1024)throw std::runtime_error("Saved interaction definition exceeds 32 MiB");serialized=ci::Json::parse(saved);if(serialized.at("format")!=1||!serialized.value("accepted",false)||serialized.at("settings")!=ci::Json::array({settings.minimumLength,settings.foliageFraction}))throw std::runtime_error("Preparation settings changed; review and accept the source guides first");definition=&serialized.at("source");if(definition->at("fingerprint")!=result->fingerprint)throw std::runtime_error("Prepared source changed; Analyze and review again");}
+        if(!saved.empty()){if(saved.size()>256*1024*1024)throw std::runtime_error("Saved interaction definition exceeds 256 MiB");serialized=ci::Json::parse(saved);if((serialized.at("format")!=1&&serialized.at("format")!=2)||!serialized.value("accepted",false)||(!rebuild&&!settingsMatch(serialized,settings)))throw std::runtime_error("Preparation settings changed; prepare the source again");definition=&serialized.at("source");if(definition->at("fingerprint")!=result->fingerprint)throw std::runtime_error("Prepared source changed; authored edits retained but incompatible with this geometry");}
         if(auto found=rigCache.find(cacheKey);found!=rigCache.end())result->rig=found->second.lock();
         if(!result->rig){
             if(rigCache.size()>=512)for(auto it=rigCache.begin();it!=rigCache.end();)if(it->second.expired())it=rigCache.erase(it);else++it;
             if(rigCache.size()>=512&&!rigCache.contains(cacheKey))throw std::runtime_error("Prepared profile budget: 512 retained geometry/settings definitions");
-            result->rig=ci::prepareSource(snapshot,settings,definition);result->analysisCount=definition?0:1;rigCache[cacheKey]=result->rig;}
+            try{ci::Json authoring=definition?definition->value("authoring",ci::Json::object()):ci::Json::object();result->rig=ci::prepareSource(snapshot,settings,rebuild?nullptr:definition,rebuild?&authoring:nullptr);result->analysisCount=definition&&!rebuild?0:1;rigCache[cacheKey]=result->rig;}catch(const ci::PreparationFailure& failure){if(definition)throw;result->failedAnalysis=failure.analysis;result->analysisCount=1;}}
     }else if(sameSettings)result->rig=old->rig;
     if(result->rig){if(old&&old->rig==result->rig&&old->unit==unit&&old->lightGeometry)result->lightGeometry=old->lightGeometry;
         else {PreviewGeometry light;light.faces.reserve(result->rig->previewTriangles.size());const auto& rig=*result->rig->rig;
@@ -112,6 +119,7 @@ std::shared_ptr<const InteractionHostSource> capture(INode* node,const std::stri
 // only the independent closed collision mesh. No visual maps/normals or full tree
 // copies enter the contact budget for a proxy.
 std::shared_ptr<const InteractionHostSource> captureCollider(INode* visual,INode* proxy,int mode){
+    HoldSuspend capturedReferences;
     if(!visual||mode<1||mode>3)throw std::runtime_error("Choose a valid collider source and shape");
     if(mode==1)return capture(visual,"",{},2,1);
     if(mode==3&&(!proxy||proxy==visual))throw std::runtime_error("Build or pick a separate closed collider for this model");
@@ -121,7 +129,7 @@ std::shared_ptr<const InteractionHostSource> captureCollider(INode* visual,INode
         const bool proxyFresh=mode==2||(old->proxyWatch&&old->proxyWatch->GetRef()==proxy&&old->proxyWatch->valid&&old->proxyWatch->validity.InInterval(time));
         if(fresh&&proxyFresh&&old->proxy==mode&&old->collider)return old;
     }
-    auto result=std::make_shared<InteractionHostSource>();result->nodeHandle=Animatable::GetHandleByAnim(visual);result->unit=unit;result->proxy=mode;
+    auto result=std::make_shared<InteractionHostSource>();result->nodeHandle=Animatable::GetHandleByAnim(visual);result->unit=unit;result->proxy=mode;result->visualMesh=false;
     auto reservation=reserveSourceMetadataMemory(1024*1024);auto mesh=std::make_shared<Mesh>();Interval validity=FOREVER;
     if(mode==2){
         auto state=visual->EvalWorldState(time);if(!state.obj)throw std::runtime_error("Collider visual source is missing");
@@ -247,15 +255,17 @@ namespace cyrus {
 std::shared_ptr<InteractionRuntime> interactionRuntime(Value* value){type_check(value,CyrusInteractionStateValue,_T("interaction publication"));return static_cast<CyrusInteractionStateValue*>(value)->runtime;}
 }
 def_visible_primitive(cyrusInteractionVersion,"cyrusInteractionVersion");
-Value* cyrusInteractionVersion_cf(Value**,int n){check_arg_count(cyrusInteractionVersion,0,n);return Integer::intern(2);}
+Value* cyrusInteractionVersion_cf(Value**,int n){check_arg_count(cyrusInteractionVersion,0,n);return Integer::intern(8);}
 
 def_visible_primitive(cyrusInteractionOwner,"cyrusInteractionOwner");
 Value* cyrusInteractionOwner_cf(Value** a,int n){check_arg_count(cyrusInteractionOwner,2,n);auto runtime=cyrus::interactionRuntime(a[0]);return runtime->controller==Animatable::GetHandleByAnim(a[1]->to_node())?&true_value:&false_value;}
 def_visible_primitive(cyrusInteractionSource,"cyrusInteractionSource");
-Value* cyrusInteractionSource_cf(Value** a,int n){check_arg_count(cyrusInteractionSource,4,n);return cyrus::guarded([&]()->Value*{
-    type_check(a[2],Array,_T("source preparation settings"));auto* settings=static_cast<Array*>(a[2]);if(settings->size!=3)throw std::runtime_error("Preparation settings require minimum length, foliage fraction and collider mode");
+Value* cyrusInteractionSource_cf(Value** a,int n){if(n!=4&&n!=5)throw RuntimeError(_T("Source preparation requires 4 arguments and optional rebuild flag"));return cyrus::guarded([&]()->Value*{
+    type_check(a[2],Array,_T("source preparation settings"));auto* settings=static_cast<Array*>(a[2]);if(settings->size<3||settings->size>5)throw std::runtime_error("Preparation settings require minimum length, foliage fraction, collider mode, optional limits and connection distance");
     const auto saved=a[1]==&undefined?std::string{}:cyrus::utf8(a[1]->to_string());prep::Settings cfg{settings->data[0]->to_float(),settings->data[1]->to_float()};
-    auto source=cyrus::capture(a[0]->to_node(),saved,cfg,a[3]->to_int(),settings->data[2]->to_int());return new CyrusInteractionSourceValue(std::move(source),!saved.empty());});}
+    if(settings->size>=4){type_check(settings->data[3],Array,_T("preparation limits"));auto* limits=static_cast<Array*>(settings->data[3]);if(limits->size!=7)throw std::runtime_error("Preparation limits require vertices, triangles, parts, guides, preview triangles, memory MiB and work millions");auto& l=cfg.limits;l.vertices=limits->data[0]->to_int();l.triangles=limits->data[1]->to_int();l.parts=limits->data[2]->to_int();l.guides=limits->data[3]->to_int();l.previewTriangles=limits->data[4]->to_int();l.memoryMiB=limits->data[5]->to_int();l.workMillions=limits->data[6]->to_int();prep::validateLimits(l);}
+    if(settings->size==5)cfg.connectionReach=settings->data[4]->to_float();
+    auto source=cyrus::capture(a[0]->to_node(),saved,cfg,a[3]->to_int(),settings->data[2]->to_int(),n==5&&a[4]->to_bool());return new CyrusInteractionSourceValue(std::move(source),!saved.empty());});}
 
 def_visible_primitive(cyrusInteractionColliderSource,"cyrusInteractionColliderSource");
 Value* cyrusInteractionColliderSource_cf(Value** a,int n){check_arg_count(cyrusInteractionColliderSource,3,n);return cyrus::guarded([&]()->Value*{
@@ -264,6 +274,7 @@ Value* cyrusInteractionColliderSource_cf(Value** a,int n){check_arg_count(cyrusI
 def_visible_primitive(cyrusInteractionBuildTrunk,"cyrusInteractionBuildTrunk");
 Value* cyrusInteractionBuildTrunk_cf(Value** a,int n){check_arg_count(cyrusInteractionBuildTrunk,1,n);return cyrus::guarded([&]()->Value*{
     auto* source=a[0]->to_node();if(!source||!cyrusBoundaryAllows(source))throw std::runtime_error("Active Cyrus authoring license required to build a trunk collider");
+    auto* base=source->GetObjectRef()?source->GetObjectRef()->FindBaseObject():nullptr;if(base&&(base->ClassID()==Class_ID(SPHERE_CLASS_ID,0)||base->ClassID()==Class_ID(BOXOBJ_CLASS_ID,0)))throw std::runtime_error("Use Closed source mesh for a sphere or box. Trunk fitting is for tree trunks; it does not enclose the complete object.");
     const auto time=GetCOREInterface()->GetTime();auto state=source->EvalWorldState(time);
     if(!state.obj||!state.obj->CanConvertToType(triObjectClassID))throw std::runtime_error("Build trunk requires a static mesh source");
     auto memory=cyrus::reserveSourceMetadataMemory(256*cyrus::viewport_memory::MiB);
@@ -302,21 +313,45 @@ Value* cyrusInteractionBuildTrunk_cf(Value** a,int n){check_arg_count(cyrusInter
     }catch(...){GetCOREInterface()->DeleteNode(node,FALSE);throw;}
 });}
 def_visible_primitive(cyrusInteractionAccept,"cyrusInteractionAccept");
-Value* cyrusInteractionAccept_cf(Value** a,int n){check_arg_count(cyrusInteractionAccept,1,n);type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto* value=static_cast<CyrusInteractionSourceValue*>(a[0]);if(!cyrusBoundaryAllows(value->source.get()))throw RuntimeError(_T("Active Cyrus authoring license required to accept prepared guides"));return new CyrusInteractionSourceValue(value->source,true);}
+Value* cyrusInteractionAccept_cf(Value** a,int n){check_arg_count(cyrusInteractionAccept,1,n);type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto* value=static_cast<CyrusInteractionSourceValue*>(a[0]);if(!cyrusBoundaryAllows(value->source.get()))throw RuntimeError(_T("Active Cyrus authoring license required to accept prepared guides"));if(!value->source->rig||!value->source->rig->rig)throw RuntimeError(_T("Preparation needs guide repair. Resolve its reported root/attachment failures."));return new CyrusInteractionSourceValue(value->source,true);}
 
 def_visible_primitive(cyrusInteractionReviewModel,"cyrusInteractionReviewModel");
-Value* cyrusInteractionReviewModel_cf(Value** a,int n){check_arg_count(cyrusInteractionReviewModel,2,n);return cyrus::guarded([&]()->Value*{type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto source=static_cast<CyrusInteractionSourceValue*>(a[0])->source;
+Value* cyrusInteractionReviewModel_cf(Value** a,int n){if(n!=2&&n!=3)throw RuntimeError(_T("Model review requires a source, transform and optional collider-overlay flag"));return cyrus::guarded([&]()->Value*{type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto source=static_cast<CyrusInteractionSourceValue*>(a[0])->source;const bool colliderOverlay=n==3&&a[2]->to_bool();
+    HoldSuspend transientReview;
     if(!cyrusBoundaryAllows(source.get()))throw std::runtime_error("Active Cyrus authoring license required for model review");
     const auto frame=a[1]->to_matrix3();for(int row=0;row<4;++row)for(int axis=0;axis<3;++axis)if(!std::isfinite(frame.GetRow(row)[axis]))throw std::runtime_error("Nonfinite model review transform");
     auto reservation=cyrus::reserveSourceMetadataMemory(std::size_t(source->mesh->getNumVerts())*192+std::size_t(source->mesh->getNumFaces())*128);
-    auto deleter=[](TriObject* value){value->DeleteThis();};std::unique_ptr<TriObject,decltype(deleter)> pending(CreateNewTriObject(),deleter);pending->GetMesh()=*source->mesh;auto* node=GetCOREInterface()->CreateObjectNode(pending.get());if(!node)throw std::runtime_error("Model review creation failed");pending.release();
-    try{node->SetNodeTM(GetCOREInterface()->GetTime(),frame);node->SetRenderable(FALSE);node->SetName(_T("Cyrus_Analyzed_Model_Review"));auto* original=Animatable::GetAnimByHandle(source->nodeHandle);if(original&&original->SuperClassID()==BASENODE_CLASS_ID)node->SetMtl(static_cast<INode*>(original)->GetMtl());return MAXNode::intern(node);}
+    auto deleter=[](TriObject* value){value->DeleteThis();};std::unique_ptr<TriObject,decltype(deleter)> pending(CreateNewTriObject(),deleter);auto& mesh=pending->GetMesh();
+    if(colliderOverlay){
+        // A review shape owns fresh display data; copied render caches, material
+        // channels and picking data from a captured source must not escape here.
+        const auto& input=*source->mesh;
+        if(!mesh.setNumVerts(input.getNumVerts())||!mesh.setNumFaces(input.getNumFaces()))throw std::runtime_error("Collider review mesh allocation failed");
+        for(int i=0;i<input.getNumVerts();++i)mesh.verts[i]=input.verts[i];
+        for(int i=0;i<input.getNumFaces();++i){const auto& face=input.faces[i];mesh.faces[i].setVerts(face.v[0],face.v[1],face.v[2]);mesh.faces[i].setEdgeVisFlags(1,1,1);mesh.faces[i].setSmGroup(0);mesh.faces[i].setMatID(0);}
+    }else mesh=*source->mesh;
+    if(auto* normals=mesh.GetSpecifiedNormals())normals->SetParent(&mesh);
+    mesh.InvalidateTopologyCache();mesh.InvalidateGeomCache();mesh.buildBoundingBox();
+    auto* node=GetCOREInterface()->CreateObjectNode(pending.get());if(!node)throw std::runtime_error("Model review creation failed");pending.release();
+    try{node->SetNodeTM(GetCOREInterface()->GetTime(),frame);node->SetRenderable(FALSE);node->SetName(_T("Cyrus_Analyzed_Model_Review"));auto* original=Animatable::GetAnimByHandle(source->nodeHandle);if(!colliderOverlay&&original&&original->SuperClassID()==BASENODE_CLASS_ID)node->SetMtl(static_cast<INode*>(original)->GetMtl());return MAXNode::intern(node);}
     catch(...){GetCOREInterface()->DeleteNode(node,FALSE);throw;}});}
 def_visible_primitive(cyrusInteractionSourceInfo,"cyrusInteractionSourceInfo");
 Value* cyrusInteractionSourceInfo_cf(Value** a,int n){check_arg_count(cyrusInteractionSourceInfo,1,n);type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto* value=static_cast<CyrusInteractionSourceValue*>(a[0]);auto source=value->source;
-    auto data=source->rig?source->rig->report:cyrus::interactions::Json::object();data["accepted"]=value->accepted;data["fingerprint"]=source->fingerprint;data["has_solid_collider"]=bool(source->collider);data["proxy_mode"]=source->proxy;data["analysis_count"]=source->analysisCount;return cyrus::stringValue(data.dump());}
+    auto data=source->rig?source->rig->report:source->failedAnalysis?source->failedAnalysis->report:cyrus::interactions::Json::object();data["accepted"]=value->accepted;data["fingerprint"]=source->fingerprint;data["has_solid_collider"]=bool(source->collider);data["proxy_mode"]=source->proxy;data["analysis_count"]=source->analysisCount;data["source_vertices"]=source->mesh->getNumVerts();data["source_triangles"]=source->mesh->getNumFaces();data["limits"]=cyrus::limitsJson(source->settings.limits);data["review_guides_shown"]=std::min<std::size_t>(4096,source->rig?source->rig->rig->guides.size():source->failedAnalysis?source->failedAnalysis->metadata.value("guides",cyrus::interactions::Json::array()).size():0);return cyrus::stringValue(data.dump());}
 def_visible_primitive(cyrusInteractionSerialize,"cyrusInteractionSerialize");
-Value* cyrusInteractionSerialize_cf(Value** a,int n){check_arg_count(cyrusInteractionSerialize,1,n);return cyrus::guarded([&]()->Value*{type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto* value=static_cast<CyrusInteractionSourceValue*>(a[0]);if(!value->accepted||!value->source->rig)throw std::runtime_error("Review the prepared source before saving it");return cyrus::stringValue(cyrus::interactions::Json{{"format",1},{"accepted",true},{"settings",cyrus::interactions::Json::array({value->source->settings.minimumLength,value->source->settings.foliageFraction})},{"source",cyrus::interactions::saveSource(*value->source->rig)}}.dump());});}
+Value* cyrusInteractionSerialize_cf(Value** a,int n){check_arg_count(cyrusInteractionSerialize,1,n);return cyrus::guarded([&]()->Value*{type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto* value=static_cast<CyrusInteractionSourceValue*>(a[0]);if(!value->accepted||!value->source->rig)throw std::runtime_error("Review the prepared source before saving it");auto source=cyrus::interactions::saveSource(*value->source->rig);return cyrus::stringValue(cyrus::interactions::Json{{"format",source.at("format")},{"accepted",true},{"settings",cyrus::interactions::Json::array({value->source->settings.minimumLength,value->source->settings.foliageFraction})},{"connection_reach_m",value->source->settings.connectionReach},{"source",source}}.dump());});}
+def_visible_primitive(cyrusPreparationEditorOpen,"cyrusPreparationEditorOpen");
+Value* cyrusPreparationEditorOpen_cf(Value** a,int n){if(n<3||n>5)throw RuntimeError(_T("Editor requires source, definition, title, optional owner and stiffness"));return cyrus::guarded([&]()->Value*{type_check(a[0],CyrusInteractionSourceValue,_T("captured source"));auto source=static_cast<CyrusInteractionSourceValue*>(a[0])->source;if(!cyrusBoundaryAllows(source.get()))throw std::runtime_error("Active Cyrus authoring license required for preparation editing");prep::Snapshot snapshot;const auto& mesh=*source->mesh;for(int i=0;i<mesh.getNumVerts();++i){auto p=mesh.verts[i];snapshot.positions.push_back({float(p.x*source->unit),float(p.y*source->unit),float(p.z*source->unit)});}for(int i=0;i<mesh.getNumFaces();++i){auto f=mesh.faces[i];snapshot.faces.push_back({f.v[0],f.v[1],f.v[2]});snapshot.materials.push_back(f.getMatID());}cyrus::interactions::Json saved=cyrus::interactions::Json::object();if(a[1]!=&undefined){auto envelope=cyrus::interactions::Json::parse(cyrus::utf8(a[1]->to_string()));if((envelope.at("format")!=1&&envelope.at("format")!=2)||!envelope.value("accepted",false))throw std::runtime_error("Unsupported preparation definition");saved=envelope.at("source");if(saved.at("fingerprint")!=prep::fingerprint(snapshot))throw std::runtime_error("Source changed; previous preparation is retained");}auto owner=n>=4?Animatable::GetHandleByAnim(a[3]->to_node()):0;auto reservation=cyrus::reserveSourceMetadataMemory(snapshot.positions.size()*192+snapshot.faces.size()*128+64*cyrus::viewport_memory::MiB);reservation->commit();struct Lease {std::shared_ptr<const cyrus::InteractionHostSource> source;std::shared_ptr<cyrus::PreviewMemory> extra;};auto lease=std::make_shared<Lease>(Lease{source,reservation});cyrus::preparationEditorOpen(std::move(snapshot),source->settings,std::move(saved),a[2]->to_string(),lease,[source,owner]{return (!owner||Animatable::GetAnimByHandle(owner))&&source->watch&&source->watch->valid&&Animatable::GetAnimByHandle(source->nodeHandle);},n==5?a[4]->to_float():.5);return &true_value;});}
+def_visible_primitive(cyrusPreparationEditorInfo,"cyrusPreparationEditorInfo");
+Value* cyrusPreparationEditorInfo_cf(Value**,int n){check_arg_count(cyrusPreparationEditorInfo,0,n);return cyrus::guarded([&]()->Value*{return cyrus::stringValue(cyrus::preparationEditorInfo().dump());});}
+def_visible_primitive(cyrusPreparationEditorDefinition,"cyrusPreparationEditorDefinition");
+Value* cyrusPreparationEditorDefinition_cf(Value**,int n){check_arg_count(cyrusPreparationEditorDefinition,0,n);return cyrus::guarded([&]()->Value*{return cyrus::stringValue(cyrus::preparationEditorDefinition().dump());});}
+def_visible_primitive(cyrusPreparationEditorCommand,"cyrusPreparationEditorCommand");
+Value* cyrusPreparationEditorCommand_cf(Value** a,int n){check_arg_count(cyrusPreparationEditorCommand,1,n);return cyrus::guarded([&]()->Value*{auto text=cyrus::utf8(a[0]->to_string());if(text.size()>8*1024*1024)throw std::runtime_error("Editor command exceeds 8 MiB");cyrus::preparationEditorCommand(cyrus::interactions::Json::parse(text));return &true_value;});}
+def_visible_primitive(cyrusPreparationEditorClose,"cyrusPreparationEditorClose");
+Value* cyrusPreparationEditorClose_cf(Value**,int n){check_arg_count(cyrusPreparationEditorClose,0,n);cyrus::preparationEditorClose();return &true_value;}
+def_visible_primitive(cyrusPreparationEditorCommitResult,"cyrusPreparationEditorCommitResult");
+Value* cyrusPreparationEditorCommitResult_cf(Value** a,int n){check_arg_count(cyrusPreparationEditorCommitResult,2,n);cyrus::preparationEditorCommitResult(a[0]->to_bool(),cyrus::utf8(a[1]->to_string()));return &true_value;}
 static Value* buildInteractionStage(Value** a,int n,bool retargetEdits=false){return cyrus::guarded([&]()->Value*{
     auto* owner=a[0]->to_node();if(!owner)throw std::runtime_error("Interaction owner is missing");type_check(a[1],Array,_T("interaction layers"));auto* layers=static_cast<Array*>(a[1]);if(layers->size>10)throw std::runtime_error("Interaction layers exceed ten");
     auto runtime=std::make_shared<cyrus::InteractionRuntime>();runtime->controller=Animatable::GetHandleByAnim(owner);auto layout=std::make_shared<cyrus::interactions::Layout>();layout->metresPerUnit=GetSystemUnitScale(UNITS_METERS);
@@ -375,8 +410,9 @@ Value* cyrusInteractionSourcesFresh_cf(Value** a,int n){check_arg_count(cyrusInt
     for(const auto& layer:p->sources)for(const auto& source:layer)if(!source->watch||!source->watch->valid||!source->watch->GetRef()||!source->watch->validity.InInterval(time)||source->unit!=unit||(source->proxy==3&&(!source->proxyWatch||!source->proxyWatch->valid||!source->proxyWatch->GetRef()||!source->proxyWatch->validity.InInterval(time))))return &false_value;return &true_value;}
 
 def_visible_primitive(cyrusInteractionSourceSummary,"cyrusInteractionSourceSummary");
-Value* cyrusInteractionSourceSummary_cf(Value** a,int n){check_arg_count(cyrusInteractionSourceSummary,1,n);type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));const auto& p=*static_cast<CyrusInteractionSourceValue*>(a[0])->source;if(!p.rig)throw RuntimeError(_T("Analyze a plant source first"));std::ostringstream text;
-    text<<p.rig->rig->guides.size()<<" guides / "<<p.rig->roots<<" planted roots\n"<<p.rig->previewFaces.size()<<" preview triangles\nInspect the green guides, root locations and branch directions, then accept. Detailed measurements are in the Listener.";return cyrus::stringValue(text.str());}
+Value* cyrusInteractionSourceSummary_cf(Value** a,int n){check_arg_count(cyrusInteractionSourceSummary,1,n);type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));const auto& p=*static_cast<CyrusInteractionSourceValue*>(a[0])->source;std::ostringstream text;
+    if(p.failedAnalysis){const auto& r=p.failedAnalysis->report;text<<"Needs guide repair: "<<r.value("unresolved_guides",0)<<" unresolved guides / "<<r.value("unattached_parts",0)<<" unattached parts.\n"<<r.value("warning",std::string{})<<"\nDetailed analysis is retained in the Listener.";return cyrus::stringValue(text.str());}
+    if(!p.rig)throw RuntimeError(_T("Analyze a plant source first"));text<<p.rig->rig->guides.size()<<" guides / "<<p.rig->roots<<" planted roots\n"<<p.rig->previewFaces.size()<<" preview triangles\nSource prepared. Show guides to inspect roots and branch directions.";if(p.rig->rig->guides.size()>4096)text<<" Guide overlay samples 4096 of the complete definition.";text<<" Detailed measurements are in the Listener.";return cyrus::stringValue(text.str());}
 def_visible_primitive(cyrusInteractionRows,"cyrusInteractionRows");
 Value* cyrusInteractionRows_cf(Value** a,int n){check_arg_count(cyrusInteractionRows,2,n);return cyrus::guarded([&]()->Value*{auto runtime=cyrus::interactionRuntime(a[0]);int li=a[1]->to_int()-1;if(li<0||li>=int(runtime->rows.size()))throw std::runtime_error("Invalid interaction layer");return cyrusPlacementValue(cyrus::interactionRows(*runtime,*runtime->current,li,true));});}
 def_visible_primitive(cyrusInteractionInfo,"cyrusInteractionInfo");
@@ -394,14 +430,14 @@ Value* cyrusInteractionValidate_cf(Value** a,int n){check_arg_count(cyrusInterac
 
 def_visible_primitive(cyrusInteractionSummary,"cyrusInteractionSummary");
 Value* cyrusInteractionSummary_cf(Value** a,int n){check_arg_count(cyrusInteractionSummary,1,n);auto runtime=cyrus::interactionRuntime(a[0]);const auto& s=runtime->current->statistics;std::ostringstream text;
-    text<<s.plants<<" plants / "<<s.obstacles<<" colliders\n"<<s.posed<<" bent plants / "<<s.hiddenRoots<<" covered rooted groups\nLast contact fit: "<<std::fixed<<std::setprecision(2)<<s.fitMs<<" ms; "<<s.affected<<" nearby candidates";
+    text<<s.plants<<" plants / "<<s.obstacles<<" colliders\n"<<s.posed<<" bent plants / "<<s.hiddenRoots<<" hidden rooted groups\nLast contact fit: "<<std::fixed<<std::setprecision(2)<<s.fitMs<<" ms; "<<s.affected<<" nearby candidates";
     if(!runtime->error.empty())text<<"\nPrevious result retained: "<<runtime->error;return cyrus::stringValue(text.str());}
 
 def_visible_primitive(cyrusInteractionGuides,"cyrusInteractionGuides");
 Value* cyrusInteractionGuides_cf(Value** a,int n){check_arg_count(cyrusInteractionGuides,1,n);type_check(a[0],CyrusInteractionSourceValue,_T("interaction source"));auto source=static_cast<CyrusInteractionSourceValue*>(a[0])->source;
-    if(!source->rig)throw RuntimeError(_T("Analyze a plant source first"));const auto& guides=source->rig->rig->guides;
-    if(guides.size()>4096)throw RuntimeError(_T("Guide review exceeds 4096 guides"));std::size_t count=0;for(const auto& guide:guides)count+=guide.rest.nodes.size();if(count>65536)throw RuntimeError(_T("Guide review exceeds 65536 stations"));
-    two_typed_value_locals(Array* result,Array* path);vl.result=new Array(int(guides.size()));
-    for(const auto& guide:guides){vl.path=new Array(int(guide.rest.nodes.size()));vl.result->append(vl.path);for(auto p:guide.rest.nodes)vl.path->append(new Point3Value(Point3(float(p.x/source->unit),float(-p.z/source->unit),float(p.y/source->unit))));}
+    if(!source->rig&&!source->failedAnalysis)throw RuntimeError(_T("Analyze a plant source first"));
+    const auto& rows=source->rig?source->rig->metadata.at("guides"):source->failedAnalysis->metadata.at("guides");const auto shown=std::min<std::size_t>(rows.size(),4096);
+    two_typed_value_locals(Array* result,Array* path);vl.result=new Array(int(shown));
+    for(std::size_t i=0;i<shown;++i){const auto& nodes=rows[i*rows.size()/shown].at("nodes");vl.path=new Array(int(nodes.size()));vl.result->append(vl.path);for(const auto& p:nodes)vl.path->append(new Point3Value(Point3(float(p[0].get<double>()/source->unit),float(-p[2].get<double>()/source->unit),float(p[1].get<double>()/source->unit))));}
     return_value(vl.result);
 }

@@ -1,0 +1,156 @@
+{
+  "schema": "cyrus.preparation-qualification/1",
+  "version": "0.87.3.1",
+  "host": 2027,
+  "native_capability": 6,
+  "saved_schema": 61,
+  "archive": {
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3.1-20261026-preparefix\\CyrusScatter-0.87.3.1-Max2027.mzp",
+    "sha256": "f558f95b25ca3cc5c7d83161da536e3f79760c19b2331b568cba8213ce36f4ae",
+    "producer": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08731-preparefix-20261026-01\\native-01\\receipt.json",
+    "tests_run": true,
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.",
+    "files": {
+      "AminScatter.dlx": "05d4c9eb8785b870106c3535b5d744ff64443f07861b40aa834cc244174659e7",
+      "CyrusBrush.dlx": "959c8d843e69ec50ddd7e4caaa0da77ac900f6486dc93bb545e855d574eaab24",
+      "CyrusBrushStorage.dlh": "9b33efe6562e89898e8c931bee620ac1b44a19d1d97c0c8e832b81a23f606947",
+      "CyrusGallery.dll": "64943f588a43baf1b90bb45670a5d334391748f0c6d4228dab1690a374783c79",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.ms": "4ad83319536f25ac55895bcbef636824b7a11da7f470de4fa728c57f183f3eeb",
+      "CyrusScatterEdit.dlm": "68f354f41ee1b16a19cdf8fdf0c7e9cf0b557d4e66661c2312f766ce1d55e5db"
+    }
+  },
+  "intake": {
+    "original_scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\New Plants test.max",
+    "sha256": "62af55f1b9f8c826aa0b07261e11b706e71aaa6cc2ffa87b5e1a7e9d41c75399",
+    "branch": "codex/workflow-0.75",
+    "head": "2a68691da59e80d6d24ea248d8e386b836883dae"
+  },
+  "checks": {
+    "native_tests": "59/59",
+    "generated_handler_assertions": 22,
+    "lifecycle_assertions": 11,
+    "hover_positions": 5,
+    "full_mesh_audits": "5/5 pass",
+    "preparation_undo_redo": "pass",
+    "physical_click": "Interrupted by manual-input guard; not claimed"
+  },
+  "contact_metrics": [
+    {
+      "step": 0,
+      "fitted_guides": 120,
+      "hidden_roots": 0,
+      "command_seconds": 0.6179664998780936,
+      "fit_ms": 105.8763,
+      "triangles": 55002,
+      "passed": true
+    },
+    {
+      "step": 1,
+      "fitted_guides": 120,
+      "hidden_roots": 0,
+      "command_seconds": 0.7466257999185473,
+      "fit_ms": 133.6283,
+      "triangles": 55002,
+      "passed": true
+    },
+    {
+      "step": 2,
+      "fitted_guides": 89,
+      "hidden_roots": 0,
+      "command_seconds": 0.6666202999185771,
+      "fit_ms": 94.2276,
+      "triangles": 55002,
+      "passed": true
+    },
+    {
+      "step": 3,
+      "fitted_guides": 79,
+      "hidden_roots": 0,
+      "command_seconds": 0.5478562000207603,
+      "fit_ms": 67.1782,
+      "triangles": 55002,
+      "passed": true
+    },
+    {
+      "step": 4,
+      "fitted_guides": 0,
+      "hidden_roots": 0,
+      "command_seconds": 0.3776897999923676,
+      "fit_ms": 0.0009,
+      "triangles": 0,
+      "passed": true
+    }
+  ],
+  "scope": "Final exact MZP payload, owned standard-plugin Max 2027 profile. Handler and numeric mesh evidence; renderer float/material delivery, physical drag FPS and large-scale/long-session behavior remain separate.",
+  "evidence": {
+    "intake.json": {
+      "path": "evidence-08731-preparefix/intake.json",
+      "sha256": "aef2b485f7044128e5e8c1afe0b633f901c43c7cadd28f098b2f3d5defdbf2bb"
+    },
+    "baseline-probe.json": {
+      "path": "evidence-08731-preparefix/baseline-probe.json",
+      "sha256": "b98bc0f018db7e90a16ebf773d028ee182b9b10bfac17ce93f572dacee9bf3af"
+    },
+    "baseline-loaded.json": {
+      "path": "evidence-08731-preparefix/baseline-loaded.json",
+      "sha256": "bcada6931318fdfb5c06d2fe5a9065e605d725bbbca2cb30b7fbebe37d7cc3b5"
+    },
+    "native-receipt.json": {
+      "path": "evidence-08731-preparefix/native-receipt.json",
+      "sha256": "d4a0648b9f6c506cd9dbbf7ed20c2cd69ed5276eb30b2abda72d573271adaaf7"
+    },
+    "native-tests.log": {
+      "path": "evidence-08731-preparefix/native-tests.log",
+      "sha256": "700e9107bf50d972167df90efab6e1b02ef9e126ec264d5488d0bd271a6b4fe9"
+    },
+    "package-identity.json": {
+      "path": "evidence-08731-preparefix/package-identity.json",
+      "sha256": "2d38020aa20c69041a4115bca88c7f529e1762ff393895d100fe8d44df2ec36d"
+    },
+    "loaded-identity.json": {
+      "path": "evidence-08731-preparefix/loaded-identity.json",
+      "sha256": "39d109e60c2ee7998fe682f1581f0778e9b24a7b93845931796e797e60f91647"
+    },
+    "controls.json": {
+      "path": "evidence-08731-preparefix/controls.json",
+      "sha256": "178a9af4b513c2c45aac9e70f024d5a40d4449c7fcd62649c97a7831cf923810"
+    },
+    "contacts.json": {
+      "path": "evidence-08731-preparefix/contacts.json",
+      "sha256": "f261308d8cc1dd57a62cc8984fe3aa642e00dfc95dbc683dd2795b603a45aae0"
+    },
+    "undo.json": {
+      "path": "evidence-08731-preparefix/undo.json",
+      "sha256": "a30f889142cda08846c19fac2fcf3f58f7432e44cfa99ed1c261e16571366614"
+    },
+    "lifecycle.json": {
+      "path": "evidence-08731-preparefix/lifecycle.json",
+      "sha256": "a94f895d0952fafc2272eb6576c856e1b3f5756c35d1b56292f70b7933e76a86"
+    },
+    "initial-contact-expectation.json": {
+      "path": "evidence-08731-preparefix/initial-contact-expectation.json",
+      "sha256": "975a8c5dfafa114d2ac77bedf8c8c79bb1d0fcd78181c4accaeea442adff3ebd"
+    },
+    "initial-lifecycle-command-scope.json": {
+      "path": "evidence-08731-preparefix/initial-lifecycle-command-scope.json",
+      "sha256": "23f9b98cf20e2226fefb35d379f45a4a5a63a6cae7237d02f079f8011f5cc725"
+    },
+    "initial-lifecycle-diagnostic.json": {
+      "path": "evidence-08731-preparefix/initial-lifecycle-diagnostic.json",
+      "sha256": "73eeef950ed784854bc238c838942988f342f1da48fa127df810ff2ee09c239a"
+    },
+    "generated-check.json": {
+      "path": "evidence-08731-preparefix/generated-check.json",
+      "sha256": "e74ea5d863bae656984d70013dc24f748a43df41298d40c0640682fd45ef811c"
+    },
+    "template-eol-normalization.json": {
+      "path": "evidence-08731-preparefix/template-eol-normalization.json",
+      "sha256": "ba3eee9ef1085b1e806a64b38c7cd4823aa4c8e126948281f318f5d56d13585d"
+    },
+    "template-as-built.ms": {
+      "path": "evidence-08731-preparefix/template-as-built.ms",
+      "sha256": "3937d5986484b63c64ee5f1e19515a8002f709708a89b4ac060a4010e6b8f591"
+    }
+  }
+}

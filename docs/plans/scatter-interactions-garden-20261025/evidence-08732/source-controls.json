@@ -1,0 +1,23 @@
+{
+  "checks": [
+    "Technical admission remains folded",
+    "Everyday preparation settings are visible",
+    "Plus enrolls the original model in the same layer",
+    "Models and Interactions show the same two rows",
+    "Plus preserves Manual pending placements",
+    "Picking an enrolled source does not duplicate it",
+    "Remove unregisters the row and keeps its scene object",
+    "Both source views refresh after removal",
+    "Undo restores the exact stable row identity",
+    "Redo removes only the row again"
+  ],
+  "original_ids": [
+    "28b0eb49-02d5-443b-af95-e7da9bac3f12"
+  ],
+  "epoch": 3,
+  "added_ids": [
+    "28b0eb49-02d5-443b-af95-e7da9bac3f12",
+    "b192096c-59b9-473d-a5e9-93134b85ff62"
+  ],
+  "status": "pass"
+}

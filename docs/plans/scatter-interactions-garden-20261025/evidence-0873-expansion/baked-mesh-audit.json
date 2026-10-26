@@ -1,0 +1,57 @@
+{
+  "delivery_audit": {
+    "minimum_surface_gap_m": 0.00042995399217557863,
+    "penetrating_vertex_obstacle_pairs": 0,
+    "scope": "Actual native Bake mesh exported in world SI float coordinates by the private Max inspector",
+    "touching_triangle_obstacle_pairs": 0,
+    "triangles": 25848
+  },
+  "full_mesh_audit": {
+    "results": [
+      {
+        "audit_ms": 1969.8719,
+        "delivered_float": false,
+        "identity": "c:4294967296",
+        "instance": 0,
+        "layer": 1,
+        "maximum_rigid_part_edge_change": 1.887379141862766e-14,
+        "maximum_stem_edge_change": 0.09763295096095936,
+        "minimum_surface_gap_m": 0.00042985631131481404,
+        "penetrating_vertex_obstacle_pairs": 0,
+        "root_anchor_error_m": 0.0,
+        "touching_triangle_obstacle_pairs": 0,
+        "triangles": 25848
+      }
+    ],
+    "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+    "triangles": 25848
+  },
+  "initial": {
+    "affected": 1,
+    "compute_participants": 1,
+    "coverage_queries": 496,
+    "covered": 0,
+    "fit_ms": 14.8321,
+    "fitted_guides": 29,
+    "hidden_roots": 28,
+    "hinge_fits": 29,
+    "index_ms": 0.0089,
+    "index_payload_bytes": 200,
+    "iterations": 0,
+    "layout_payload_bytes": 318,
+    "obstacles": 1,
+    "plants": 1,
+    "pose_payload_bytes": 17740,
+    "posed": 1,
+    "queries": 3477,
+    "query_ms": 0.0023,
+    "restored": 0,
+    "reused_poses": 0,
+    "separation_queries": 1,
+    "thread_launch_fallback": false,
+    "total_ms": 14.838
+  },
+  "prepare_and_index_ms": 38.2487,
+  "scope": "Captured numeric kernel replay; not Max presented FPS",
+  "steps": []
+}

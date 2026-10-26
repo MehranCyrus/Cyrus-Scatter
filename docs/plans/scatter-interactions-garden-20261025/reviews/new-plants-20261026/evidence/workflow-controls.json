@@ -1,0 +1,25 @@
+{
+  "authoring_analyze_error": "MAXScript exception raised.\n-- Runtime error: Blade sections are not connected in authored vertex order",
+  "before": {
+    "epoch": 0,
+    "builds": 0,
+    "generated": [
+      0,
+      0
+    ]
+  },
+  "react_disabled_update": {
+    "returned": true,
+    "epoch": 1,
+    "builds": 1,
+    "generated": [
+      1,
+      1
+    ],
+    "errors": [
+      "",
+      ""
+    ]
+  },
+  "status": "complete"
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "path": "Test Scene\\New Plants test.max",
+    "sha256": "62af55f1b9f8c826aa0b07261e11b706e71aaa6cc2ffa87b5e1a7e9d41c75399",
+    "unchanged": true
+  },
+  {
+    "path": "dist\\CyrusScatter-0.87.2-20261026-r2\\Trials\\Small_Test_Interaction_0.87.2.max",
+    "sha256": "5ceb835c0f0537bb651ee7a1f3a78be322beb930a46bce94d382e4fbc81b0c63",
+    "unchanged": true
+  }
+]

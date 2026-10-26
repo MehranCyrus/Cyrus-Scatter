@@ -73,7 +73,7 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
     if(overrides.size()>4096)throw std::runtime_error("More than 4096 transient edited instances; commit the layout before further live edits");
     for(const auto& [index,tm]:overrides){if(index>=layout().instances.size())throw std::runtime_error("Unknown edited interaction instance");const auto& cfg=layout().layers[layout().instances[index].layer];if(cfg.obstacle||cfg.react)tm.scale();}
     for(auto index:disabled)if(index>=layout().instances.size())throw std::runtime_error("Unknown disabled interaction instance");
-    if(previous){next->poses=previous->poses;next->statistics.indexMs=0;}
+    if(previous){next->poses=previous->poses;next->retainedRootCounts=previous->retainedRootCounts;next->statistics.indexMs=0;}
     auto tmFor=[&](std::size_t index,const auto& map){auto found=map.find(index);return found==map.end()?layout().transform(index):found->second;};
     std::set<std::size_t> affected;auto queryStart=Clock::now();
     auto addNear=[&](const Bounds& box){
@@ -83,7 +83,7 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
     };
     if(!previous||changed.empty()){
         for(auto stone:impl_->obstacles){auto box=tmFor(stone,overrides).bounds(impl_->definition(stone).collider->bounds());addNear(box);}
-        if(previous)for(const auto& [plant,pose]:previous->poses){(void)pose;affected.insert(plant);}
+        if(previous){for(const auto& [plant,pose]:previous->poses){(void)pose;affected.insert(plant);}for(const auto& [plant,count]:previous->retainedRootCounts){(void)count;affected.insert(plant);}}
     }else for(auto stone:changed){
         const auto& instance=layout().instances.at(stone);const auto& cfg=layout().layers[instance.layer];
         if(cfg.obstacle)for(auto box:{tmFor(stone,previous->overrides).bounds(impl_->definition(stone).collider->bounds()),tmFor(stone,overrides).bounds(impl_->definition(stone).collider->bounds())})addNear(box);
@@ -110,7 +110,8 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
     // Join every numeric worker and validate all results before mutating the
     // staged pose map. Ordered merge preserves deterministic failure identity.
     for(const auto& result:results)if(result.error)std::rethrow_exception(result.error);
-    for(std::size_t job=0;job<jobs.size();++job){auto& pose=results[job].pose;auto index=jobs[job];if(pose){next->statistics.fittedGuides+=pose->activeGuides;next->statistics.queries+=pose->queries;next->statistics.coverageQueries+=pose->coverageQueries;next->statistics.separationQueries+=pose->separationQueries;next->statistics.iterations+=pose->iterations;next->statistics.hinges+=pose->hinges;}
+    for(std::size_t job=0;job<jobs.size();++job){auto& pose=results[job].pose;auto index=jobs[job];if(pose){next->statistics.fittedGuides+=pose->activeGuides;next->statistics.queries+=pose->queries;next->statistics.coverageQueries+=pose->coverageQueries;next->statistics.separationQueries+=pose->separationQueries;next->statistics.iterations+=pose->iterations;next->statistics.hinges+=pose->hinges;next->statistics.meshRefinements+=pose->meshRefinements;next->statistics.meshRefinementWork+=pose->meshRefinementWork;}
+        if(pose&&pose->retainedCoveredRoots)next->retainedRootCounts[index]=pose->retainedCoveredRoots;else next->retainedRootCounts.erase(index);
         if(pose&&pose->changed){auto old=previous?previous->poses.find(index):next->poses.end();
             if(previous&&old!=previous->poses.end()&&pose->activeGuides==0&&old->second->activeGuides==0&&pose->allHidden==old->second->allHidden&&pose->hiddenRoots==old->second->hiddenRoots){next->poses[index]=old->second;++next->statistics.reusedPoses;}
             else next->poses[index]=std::move(pose);
@@ -118,12 +119,14 @@ std::shared_ptr<const Snapshot> Engine::evaluate(const std::shared_ptr<const Sna
     next->statistics.fitMs=elapsed(fitStart);
     for(const auto& [index,pose]:next->poses){(void)index;next->statistics.covered+=pose->allHidden;next->statistics.posed+=!pose->allHidden;
         next->statistics.posePayloadBytes+=pose->bytes;next->statistics.hiddenRoots+=pose->coveredRoots;}
+    for(const auto& [index,count]:next->retainedRootCounts){(void)index;next->statistics.retainedCoveredRoots+=count;}
+    next->statistics.posePayloadBytes+=next->retainedRootCounts.size()*(2*sizeof(std::size_t)+3*sizeof(void*))+next->retainedRootCounts.bucket_count()*sizeof(void*);
     for(const auto& [index,pose]:next->poses){(void)pose;if(!affected.contains(index))++next->statistics.reusedPoses;}
     if(next->statistics.posePayloadBytes>256ull*1024*1024)throw std::runtime_error("Interaction pose payload exceeds 256 MiB admission");
     next->statistics.totalMs=elapsed(start);return next;
 }
-Json statisticsJson(const Statistics& s){return {{"plants",s.plants},{"obstacles",s.obstacles},{"affected",s.affected},{"posed",s.posed},{"covered",s.covered},{"hidden_roots",s.hiddenRoots},
-    {"fitted_guides",s.fittedGuides},{"queries",s.queries},{"coverage_queries",s.coverageQueries},{"separation_queries",s.separationQueries},{"iterations",s.iterations},{"hinge_fits",s.hinges},{"compute_participants",s.participants},{"thread_launch_fallback",s.threadFallback},{"reused_poses",s.reusedPoses},{"restored",s.restored},
+Json statisticsJson(const Statistics& s){return {{"plants",s.plants},{"obstacles",s.obstacles},{"affected",s.affected},{"posed",s.posed},{"covered",s.covered},{"hidden_roots",s.hiddenRoots},{"retained_covered_roots",s.retainedCoveredRoots},
+    {"fitted_guides",s.fittedGuides},{"queries",s.queries},{"coverage_queries",s.coverageQueries},{"separation_queries",s.separationQueries},{"iterations",s.iterations},{"hinge_fits",s.hinges},{"mesh_refinements",s.meshRefinements},{"mesh_refinement_work",s.meshRefinementWork},{"compute_participants",s.participants},{"thread_launch_fallback",s.threadFallback},{"reused_poses",s.reusedPoses},{"restored",s.restored},
     {"layout_payload_bytes",s.layoutPayloadBytes},{"index_payload_bytes",s.indexPayloadBytes},{"pose_payload_bytes",s.posePayloadBytes},
     {"index_ms",s.indexMs},{"query_ms",s.queryMs},{"fit_ms",s.fitMs},{"total_ms",s.totalMs}};}
 Json Engine::audit(const Snapshot& snapshot,std::size_t triangleBudget)const{

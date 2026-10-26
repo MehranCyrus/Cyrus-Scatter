@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "Unprepared second source remains pending without a runtime error",
+    "Hidden source receives a review copy and guides",
+    "All source preparation enables reactions",
+    "Rejected open proxy keeps working collider",
+    "Failed preparation retains the complete publication",
+    "Saved source review reopens"
+  ],
+  "open_mesh_rejection": "MAXScript exception raised.\n-- Runtime error: Collider proxy admission: 100k vertices / 200k triangles",
+  "limit_rejection": "MAXScript exception raised.\n-- Runtime error: Cached visual source exceeds current Preparation limits.",
+  "trial": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3-20261026-workflow-r2\\Trials\\New_Plants_Interaction_Workflow_0.87.3.max",
+  "trial_sha256": "f1c09ca677b20420819f74d27855267ee76815e5bfb4a38a2cb9583f37d6b605",
+  "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions0873\\workflow_lifecycle.py\", line 39, in <module>\n    check('Save removes transient review helpers',len(grass.interactionGuides)==0);save()\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions0873\\workflow_lifecycle.py\", line 8, in check\n    assert value,name;report['checks'].append(name);save()\n           ^^^^^\nAssertionError: Save removes transient review helpers\n"
+}

@@ -10,7 +10,7 @@ namespace v=cyrus::vegetation::prototype_v1;
 using Json=nlohmann::json;using Vec=v::Vec3;using Quat=v::Quat;
 struct Rigid {Quat q;Vec shift;};
 struct Guide {v::RestGuide rest;int parent=-1,parentSpan=0;double parentU=0;std::vector<unsigned> anchors;};
-struct Part {unsigned guide=0,span=0;double u=0;bool stem=false;Vec restCentre;Quat restFrame;};
+struct Part {unsigned guide=0,span=0;double u=0;bool stem=false,fixed=false;Vec restCentre;Quat restFrame;};
 struct Binding {unsigned part=0,span=0;double u=0;Vec offset;};
 struct Prepared {
     std::vector<Vec> positions;

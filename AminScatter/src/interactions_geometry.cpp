@@ -127,7 +127,7 @@ struct MeshGeometry::Impl {
     }
 };
 MeshGeometry::MeshGeometry(std::vector<Vec> vertices,std::vector<Tri> triangles,bool requireSolid){
-    if(vertices.size()<3||vertices.size()>2000000||triangles.empty()||triangles.size()>4000000)throw std::runtime_error("Interaction collider exceeds geometry admission");
+    if(vertices.size()<3||vertices.size()>8000000||triangles.empty()||triangles.size()>16000000)throw std::runtime_error("Interaction collider exceeds geometry admission");
     auto p=std::make_shared<Impl>();p->vertices=std::move(vertices);
     std::map<std::tuple<long long,long long,long long>,unsigned> welded;std::vector<unsigned> ids;ids.reserve(p->vertices.size());
     for(auto q:p->vertices){if(!finite(q)||length(q)>10000)throw std::runtime_error("Invalid collider source coordinates");p->box.include(q);auto key=std::make_tuple(std::llround(q.x/1e-7),std::llround(q.y/1e-7),std::llround(q.z/1e-7));auto [it,inserted]=welded.emplace(key,unsigned(welded.size()));(void)inserted;ids.push_back(it->second);}
@@ -177,8 +177,9 @@ bool MeshGeometry::overlapsSolid(const Bounds& box)const{
         else{stack.push_back(node.left);stack.push_back(node.right);}}
     return impl_->inside(centre);
 }
-double MeshGeometry::triangleDistance(Vec a,Vec b,Vec c)const{
-    const Vec query[3]{a,b,c};Bounds box;for(auto p:query)box.include(p);double best=1e100;std::vector<unsigned> stack{0};
+double MeshGeometry::triangleDistance(Vec a,Vec b,Vec c,double maximum)const{
+    if(std::isnan(maximum)||maximum<0)throw std::runtime_error("Invalid triangle distance band");
+    const Vec query[3]{a,b,c};Bounds box;for(auto p:query)box.include(p);double best=std::isfinite(maximum)?maximum*maximum:1e100;std::vector<unsigned> stack{0};
     auto distance=[&](Vec p,Vec q){const auto d=sub(p,q);best=std::min(best,dot(d,d));};
     while(!stack.empty()){auto id=stack.back();stack.pop_back();const auto& node=impl_->nodes[id];if(node.box.distanceSq(box)>best)continue;
         if(node.count)for(unsigned i=node.begin;i<node.begin+node.count;++i){auto tri=impl_->triangles[impl_->order[i]];Vec target[3]{impl_->vertices[tri[0]],impl_->vertices[tri[1]],impl_->vertices[tri[2]]};

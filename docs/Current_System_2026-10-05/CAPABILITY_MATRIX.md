@@ -1,5 +1,31 @@
 # Native and MCP capability coverage
 
+The [0.87.4 Source Preparation Editor](../plans/source-preparation-editor-20261026/DELIVERY_0874.md) adds local whole-piece authoring, guide corrections and reusable source-slot intent. Native Interactions 8 and scene schema 62 guard the matched implementation. Its fern/grass Max 2027 tests are scoped in the delivery; no MCP write authority is added.
+
+The [tested 0.87.3.1 preparation correction](../plans/scatter-interactions-garden-20261025/PREPARATION_FIX_08731.md) repairs ParamBlock2 tab copying. Final Max 2027 local Prepare/settings/contact/Undo/persistence checks and 59 native tests pass within the report's scope. Native Interactions 6 / schema 61 are retained. No MCP write authority is added.
+
+The [0.87.3.1 complete-stem revision](../plans/scatter-interactions-garden-20261025/DELIVERY_08731.md) uses native Interactions **6** and saved schema 61. Actual-root classification replaces footprint-based skipping; local UI provides single-step preparation and automatic settings refresh. This is a user-requested build-only delivery, with native/host acceptance deferred. It adds no MCP write authority.
+
+The [0.87.3 workflow repair](../plans/scatter-interactions-garden-20261025/DELIVERY_WORKFLOW_0873.md)
+adds one local layer-role selector, original-source review toggles, automatic
+contact updates, shared 1–100% foliage preview and bounded actual-mesh refinement
+for conservative-envelope failures. Native Interactions capability **5** identifies
+the matched pair; schema 61 is unchanged. Max 2027 qualification is scoped in that
+report. These local UI/native changes add no MCP mutation authority.
+
+The [0.87.3 blade preview follow-up](../plans/scatter-interactions-garden-20261025/PREVIEW_100_0873.md)
+extends local preview selection to 1–100%, with Native Interactions capability 4.
+It is a user-requested build-only delivery; tests and Max execution are deferred
+to the user. This adds no MCP mutation authority. Earlier capability 3 evidence
+below retains its original scope.
+
+The user-requested [0.87.3 plant preparation revision](../plans/scatter-interactions-garden-20261025/IMPLEMENTATION_0873_EXPANSION.md)
+adds local topology preparation and explicit source/guide/preview/memory/work limits,
+branch connection distance and unused collider-link cleanup. Native Interactions
+capability 3 requires the revised matched script/native pair. Scoped Max 2027 qualification
+is recorded in [the delivery](../plans/scatter-interactions-garden-20261025/DELIVERY_0873_EXPANSION.md); original Library-only receipts retain their original scope.
+These local authoring controls add no MCP mutation authority.
+
 The [0.87.3 Library startup correction](../plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md) fixes the default configuration read/write helper and qualifies normal Recipes opening in Max 2027. Shared-library and Interactions capabilities remain unchanged; no remote write authority is added.
 
 The preceding [0.87.1 shared personal library](../plans/preset-gallery-improvements/DELIVERY_0871.md) adds shared model/image storage, personal model import, pinned recipes, collections and `.cyruslib` transport through the local library UI. Its three-host checks do not add MCP write authority or widen existing prepared-source/catalog admission. Native data-only verification is not a remote arbitrary-file or scene mutation API.
@@ -8,7 +34,7 @@ Reconciled 26 October 2026 for **Scatter 0.87.3 / MCP 0.73.0**, calculation mode
 
 There is one procedural model. Old scene policies and MCP plans 1/2 are retired and rejected, rather than reinterpreted. The **closed plan 0.73** ports the previously useful bounded authoring subset into that model. It does not expose every native field. Native availability, catalog help and cached inspection do not grant remote mutation authority. Current [server registrations](../../CyrusMCP/cyrus_mcp/server.py), [settings](../../CyrusMCP/cyrus_mcp/settings.py), [schema](../../CyrusMCP/cyrus_mcp/plan.schema.json) and [passive recipe reader](../../CyrusMCP/cyrus_mcp/procedural.py) define the actual boundary.
 
-The [generated semantic inventory](../../AminScatter/tools/ui/layers-control-inventory.json) has **347 controls**. Scatter Modify and selected-container Modify reuse these definitions. The historical [CONTROL_PORT_RESULTS.csv](../Unified_System_0.73_2026-10-06/CONTROL_PORT_RESULTS.csv) accounts for the earlier 245 controls, including merges and moves. Counts are source coverage, not exhaustive behavioral qualification.
+The [generated semantic inventory](../../AminScatter/tools/ui/layers-control-inventory.json) has **362 controls**. Scatter Modify and selected-container Modify reuse these definitions. The historical [CONTROL_PORT_RESULTS.csv](../Unified_System_0.73_2026-10-06/CONTROL_PORT_RESULTS.csv) accounts for the earlier 245 controls, including merges and moves. Counts are source coverage, not exhaustive behavioral qualification.
 
 ## Feature families
 

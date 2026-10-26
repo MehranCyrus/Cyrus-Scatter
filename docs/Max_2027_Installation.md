@@ -1,8 +1,12 @@
 # Install and build Cyrus Scatter
 
-Current [0.87.3 three-host EXE](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) packages Max 2024, 2026 and 2027 separately; native checks do not establish older-host runtime acceptance. Save work, close selected Max versions, run the EXE and reopen.
+## Current 0.87.4 Source Preparation Editor — Max 2027
 
-## Current 0.87.3 Library startup correction — Max 2027
+Run [CyrusScatter-0.87.4-Max2027.mzp](../dist/CyrusScatter-0.87.4-20261027-final/CyrusScatter-0.87.4-Max2027.mzp) through **Scripting > Run Script**, follow the installer result, then restart Max. The editor is under **Interactions > Edit preparation…**. [Exact payload, fern/grass trials and remaining limits](plans/source-preparation-editor-20261026/DELIVERY_0874.md). This package uses schema 62 and native Interactions 8. Preserve original scenes when saving upgraded copies. Existing plant content and the independent Analyzer are retained. No artist installation or restart was performed.
+
+The preceding [0.87.3 three-host EXE](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) packages Max 2024, 2026 and 2027 separately; native checks do not establish older-host runtime acceptance. Save work, close selected Max versions, run the EXE and reopen.
+
+## Preceding 0.87.3 Library startup correction — Max 2027
 
 Run [CyrusScatter-0.87.3-Max2027.mzp](../dist/CyrusScatter-0.87.3-20261026/CyrusScatter-0.87.3-Max2027.mzp) through **Scripting > Run Script**, follow the result and restart Max. Existing schema-61 scenes and plant content are retained. [Cause, tests and limits](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md). This package updates Scatter for Max 2027 only; no artist installation or restart was performed.
 

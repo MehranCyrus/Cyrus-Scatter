@@ -1,0 +1,103 @@
+{
+  "controls": [
+    {
+      "name": "verticesLimitSpin",
+      "value": 3000000,
+      "visible": true
+    },
+    {
+      "name": "trianglesLimitSpin",
+      "value": 6000000,
+      "visible": true
+    },
+    {
+      "name": "partsLimitSpin",
+      "value": 100000,
+      "visible": true
+    },
+    {
+      "name": "guidesLimitSpin",
+      "value": 12000,
+      "visible": true
+    },
+    {
+      "name": "previewLimitSpin",
+      "value": 500000,
+      "visible": true
+    },
+    {
+      "name": "memoryLimitSpin",
+      "value": 4096,
+      "visible": true
+    },
+    {
+      "name": "workLimitSpin",
+      "value": 256,
+      "visible": true
+    }
+  ],
+  "connection_visible": true,
+  "statistics": {
+    "affected": 1,
+    "compute_participants": 1,
+    "coverage_queries": 496,
+    "covered": 0,
+    "error": "",
+    "failures": 0,
+    "fit_ms": 17.908,
+    "fitted_guides": 29,
+    "generation": 1,
+    "hidden_roots": 28,
+    "hinge_fits": 29,
+    "host_runtime_reservation_bytes": 1049616,
+    "index_ms": 0.0037,
+    "index_payload_bytes": 200,
+    "iterations": 0,
+    "layout_payload_bytes": 318,
+    "obstacles": 1,
+    "plants": 1,
+    "pose_payload_bytes": 17740,
+    "posed": 1,
+    "preview_ms": 0.0023,
+    "queries": 3477,
+    "query_ms": 0.0023,
+    "restored": 0,
+    "reused_poses": 0,
+    "reuses": 0,
+    "separation_queries": 1,
+    "thread_launch_fallback": false,
+    "total_ms": 17.9122,
+    "updates": 1
+  },
+  "preview_errors": [
+    "",
+    ""
+  ],
+  "audit": {
+    "passed": true,
+    "quality_limit_maximum_stem_edge_change": 0.25,
+    "results": [
+      {
+        "audit_ms": 1944.5362,
+        "delivered_float": false,
+        "identity": "c:4294967296",
+        "instance": 0,
+        "layer": 1,
+        "maximum_rigid_part_edge_change": 1.9984014443252818e-14,
+        "maximum_stem_edge_change": 0.09763293903561043,
+        "minimum_surface_gap_m": 0.00042985828860110957,
+        "penetrating_vertex_obstacle_pairs": 0,
+        "root_anchor_error_m": 0.0,
+        "touching_triangle_obstacle_pairs": 0,
+        "triangles": 25848
+      }
+    ],
+    "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+    "triangles": 25848
+  },
+  "trial": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3-20261026-interactions-r4\\Trials\\New_Plants_Interaction_0.87.3.max",
+  "trial_sha256": "0c6cdef18792966632106c3bc71422839cdc31e6d11c614a1d91a09acdb3ac8c",
+  "materials": "Opaque diagnostic Standard materials on the trial grass and sphere only; original input preserved. Original Corona material presentation is not qualified.",
+  "physical_drag": "Not qualified: Computer Use returned pixels from an unrelated foreground app; those captures were excluded and no pointer action was sent.",
+  "status": "pass"
+}

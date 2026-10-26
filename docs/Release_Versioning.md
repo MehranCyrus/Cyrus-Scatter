@@ -1,6 +1,14 @@
 # Release and saved-data versioning
 
-**Current 26 October correction: 0.87.3, Max 2027 only.** A patch fixes B39 default Library settings read/write without changing schema 61, Interactions 2, recipe/numeric/Edit or independent product versions. [Exact delivery and remaining scope](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md).
+**26 October 2026 authorized editor delivery: 0.87.4.** The user explicitly selects this version for the Source Preparation Editor, fern/grass Max 2027 qualification and a matched MZP. This supersedes the research proposal's tentative 0.88.0 label. The authoring UI and native bridge require Interactions 8; scene class schema advances to 62 and authored definitions use guarded envelope 2. Existing format-1 preparations remain readable without authored overrides. Independent product versions remain separate. See the [implementation record](plans/source-preparation-editor-20261026/IMPLEMENTATION_0874.md); [the delivery](plans/source-preparation-editor-20261026/DELIVERY_0874.md) records its scoped acceptance and remaining limits.
+
+**26 October 2026 authorized successor: 0.87.3.2.** The user explicitly selects this patch for canonical Interactions source +/remove controls, primary preparation settings, bounded broad-leaf crown inference and native swatch sizing. Native Interactions advances from 6 to 7 to enforce its matched script/native pair; saved scene schema remains 61. Analyzer, content, licensing, MCP and the independent Lab versions do not change. See the [scope and qualification plan](plans/scatter-interactions-garden-20261025/PLAN_08732.md). Max 2027 acceptance and the MZP identity are recorded in the successor delivery; earlier 0.87.3.1 receipts keep their original identities.
+
+**Current 26 October correction: 0.87.3.1, Max 2027 only.** Retain the user-selected patch label for ordinary-array staging. Native Interactions 6 and schema 61 remain unchanged. The latest request resumes Max testing; [this exact package](plans/scatter-interactions-garden-20261025/PREPARATION_FIX_08731.md) has scoped native/host evidence, while previous receipts retain their reported failures.
+
+**Original 26 October user-selected revision: 0.87.3.1, Max 2027 only.** Four-part patch label explicitly requested for complete stem contact and simpler automatic preparation. Native Interactions becomes 6; saved schema 61 and independent products retain their versions. The user requests compilation/package only and will perform testing. [Delivery and evidence scope](plans/scatter-interactions-garden-20261025/DELIVERY_08731.md).
+
+**Preceding 26 October revision: 0.87.3, Max 2027 only.** The user retained this label for the source-first interaction workflow and contact repair. Native Interactions was 5; schema 61, recipe/numeric/Edit and independent products retain their versions. [Original delivery and scope](plans/scatter-interactions-garden-20261025/DELIVERY_WORKFLOW_0873.md). The earlier [B39 Library correction](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md) retains its original receipt.
 
 **26 October user-selected successor: 0.87.2, Max 2027 only.** The user explicitly chose this patch label for the SI preparation repair, rooted flower extension and separate tree collider feature. Saved schema advances to 61; native Interactions capability is 2. Recipe 8, numeric 3, placement/Brush 2/2, Edit 2 and independent product versions are retained. The preceding 0.87.1 three-host qualification remains historical and does not qualify new 0.87.2 bytes. [Exact delivery](plans/scatter-interactions-garden-20261025/DELIVERY_0872.md).
 
@@ -8,13 +16,14 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.87.3 | Default Library startup/settings correction; Interactions and shared library retained |
-| Scatter native/package | 0.87.3 / Max 2027 | [Delivery and scoped qualification](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md); historical 0.87.1/0.87.2 receipts retain their scope |
+| Scatter UI | 0.87.4 | Optional authored source preparation editor |
+| Scatter native/package | 0.87.4 / Max 2027 | [Scoped editor delivery](plans/source-preparation-editor-20261026/DELIVERY_0874.md); historical receipts retain their scope |
+| Native Interactions capability | 8 | Authored source inspection/editor bridge and guarded definition format 2 |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Native Edit capability / storage | 2 / 2 | Source lineage and inactive history; supported legacy reader and explicit old-reader rejection of upgraded scenes |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
 | Library / portable-package capability | 4 / 3; shared-store 1 | Closed renderer graph 3 and shared static graph 4; standalone model-package 1; lower type/profile bounds remain |
-| Saved MAXScript schema | 61 | SI minimums and source-bound collider references; explicit schema-60 preparation repair, schema-59 defaults and Undoable schema-58 upgrade |
+| Saved MAXScript schema | 62 | Authored source intent; deliberate readers for preceding 59/60/61 scenes and retained historical upgrades |
 | Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
 | Surface Analyzer | 0.14.2 | Independent installer safety correction; current matched builds tested in Max 2027 only. Three-host 0.86.9 receipts retain their original scope |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
@@ -30,6 +39,29 @@ the [correction report](plans/source-clearance/DELIVERY_08682.md) records the
 matched build and host evidence separately from prior material-performance work.
 
 ## Choosing the next version
+
+**26 October 2026 workflow/contact repair:** retain the user's selected 0.87.3
+label. The role/review changes are user-visible, but do not change saved schema 61
+or independent product versions. Native capability 5 and a separate `workflow-r2`
+package identify the required new native/script pair. The current request explicitly
+authorizes Max 2027 tests, superseding the earlier build-only preview scope for this
+successor. Preserve all previous same-version qualification hashes.
+
+**26 October 2026 blade-preview follow-up:** the user explicitly keeps 0.87.3
+and requests a 1–100% preview range with no tests or EXE. Keep schema 61 and
+saved settings unchanged. Native Interactions capability 4 identifies the
+matching wider-range native/script pair; it does not bump the product version.
+Package a separate Max 2027 MZP from a build-only receipt and label runtime
+qualification as deferred to the user. Preserve prior tested revision receipts.
+
+**26 October 2026 user-selected 0.87.3 revision:** the user explicitly retains
+0.87.3 for the New Plants cache/endpoint corrections, topology-derived plant
+preparation and configurable admission/connection controls. Native Interactions
+capability becomes 3 to reject a stale native/script pair; scene schema 61 gains
+append-only settings. Keep the original Library-only 0.87.3 receipts and packages
+under their original hashes, and publish a separately identified revised Max
+2027 MZP. This scope has no new older-host qualification. Exact updated delivery
+evidence remains pending in [the implementation record](plans/scatter-interactions-garden-20261025/IMPLEMENTATION_0873_EXPANSION.md).
 
 **26 October 2026 Library startup correction: 0.87.3.** The user authorizes
 repairing the normal Library startup failure and leaves exposed-root collider

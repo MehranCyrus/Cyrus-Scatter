@@ -2,7 +2,7 @@
     parameters interactionSettings (
         interactionCollider type:#boolean default:false
         interactionReact type:#boolean default:false
-        interactionCoverRoots type:#boolean default:true
+        interactionCoverRoots type:#boolean default:false
         interactionGapWU type:#worldUnits default:0.0
         interactionStiffness type:#float default:0.5
         interactionColliderMode type:#integer default:1
@@ -16,6 +16,15 @@
         interactionSourceIDs type:#stringTab tabSize:0 tabSizeVariable:true
         interactionDefinitions type:#stringTab tabSize:0 tabSizeVariable:true
         interactionDefinitionRevision type:#integer default:0
+        -- Keep all original parameter IDs above unchanged for saved schema 61.
+        interactionMaxVertices type:#integer default:2000000
+        interactionMaxTriangles type:#integer default:4000000
+        interactionMaxParts type:#integer default:100000
+        interactionMaxGuides type:#integer default:8192
+        interactionMaxPreview type:#integer default:500000
+        interactionMemoryMiB type:#integer default:2048
+        interactionWorkMillions type:#integer default:256
+        interactionConnectionM type:#float default:0.15
         on interactionCollider set v do this.interactionsChanged()
         on interactionReact set v do this.interactionsChanged()
         on interactionCoverRoots set v do this.interactionsChanged()
@@ -24,7 +33,7 @@
         on interactionColliderMode set v do this.interactionsChanged()
     )
     local interactionState=undefined,interactionStateKey="",interactionError="",interactionOutputNodes=#(),interactionOutputKey=""
-    local interactionSourceCache=#(),interactionReview=undefined,interactionReviewNode=undefined,interactionGuides=#()
+    local interactionSourceCache=#(),interactionReview=undefined,interactionReviewNode=undefined,interactionGuides=#(),interactionReviewKind=undefined,interactionReviewApproved=false
     fn interactionsRoot = (if overlapOwner==undefined then this else overlapOwner)
     fn interactionsChanged = (
         if this.getLayerTransfer() do return true
@@ -35,7 +44,24 @@
     )
     fn interactionsClearGuides = (
         undo off for node in interactionGuides where isValidNode node do delete node
-        interactionGuides=#();true
+        interactionGuides=#();interactionReviewKind=undefined;true
+    )
+    fn interactionsReviewVisible kind node = (interactionReviewKind==kind and interactionReviewNode==node and (for n in interactionGuides where isValidNode n collect n).count>0)
+    fn interactionsReady plants = (
+        if plants.count==0 or interactionDefinitions.count!=interactionSourceIDs.count do return false
+        for node in plants do (
+            if not isValidNode node do return false
+            local row=this.sourceRow node,slot=if row>0 then findItem interactionSourceIDs sourceRowIDs[row] else 0
+            if slot==0 or interactionDefinitions[slot]=="" do return false
+        )
+        true
+    )
+    fn interactionsPreparationStatus = (
+        local plants=this.validSources(),ready=0
+        for node in plants where isValidNode node do (local row=this.sourceRow node;if row>0 and findItem interactionSourceIDs sourceRowIDs[row]>0 do ready+=1)
+        if plants.count==0 then "Add a source model in Models & Points."
+        else if ready<plants.count then ((ready as string)+" / "+(plants.count as string)+" sources prepared. Select each source and click Prepare model. Instances react when all sources are ready.")
+        else "All source models prepared. Contact changes update automatically; Manual placement edits still wait for Update scatter."
     )
     fn interactionsRepairSettings = (
         local minimum=if interactionUnitsPending then interactionMinimumWU/(units.decodeValue "1m") else interactionMinimumM
@@ -43,31 +69,84 @@
         undo "Repair Cyrus preparation units" on (
             if repaired do (minimum=0.005;interactionSourceIDs=#();interactionDefinitions=#();interactionDefinitionRevision+=1)
             interactionMinimumM=minimum;interactionMinimumWU=minimum*(units.decodeValue "1m");interactionUnitsPending=false
-            interactionUnitsNotice=if repaired then "Legacy minimum was outside 1-100 mm; repaired to 5 mm. Analyze and review this source again." else "Preparation distance stored in metres; scene geometry was not rescaled."
-            if interactionFoliage<0.01 or interactionFoliage>0.25 do (interactionFoliage=0.05;interactionSourceIDs=#();interactionDefinitions=#();interactionDefinitionRevision+=1)
+            interactionUnitsNotice=if repaired then "Legacy minimum was outside 1-100 mm; repaired to 5 mm. Click Prepare model again." else "Preparation distance stored in metres; scene geometry was not rescaled."
+            if interactionFoliage<0.01 or interactionFoliage>1.0 do (interactionFoliage=0.05;interactionSourceIDs=#();interactionDefinitions=#();interactionDefinitionRevision+=1)
         )
         interactionSourceCache=#();interactionReview=undefined;this.interactionsChanged();interactionUnitsNotice
     )
     fn interactionsSettings = (
         if interactionUnitsPending do throw "Legacy preparation units need review. Click Repair settings or Analyze model; scene geometry will not be rescaled."
         if interactionMinimumM<0.001 or interactionMinimumM>0.10000001 do throw "Minimum stem must be between 1 mm and 100 mm. Use Repair settings to restore 5 mm."
-        if interactionFoliage<0.01 or interactionFoliage>0.25 do throw "Preview leaves / blades must be between 1% and 25%."
-        #(interactionMinimumM,interactionFoliage,1)
+        if interactionFoliage<0.01 or interactionFoliage>1.0 do throw "Preview leaves / blades must be between 1% and 100%."
+        #(interactionMinimumM,interactionFoliage,1,this.interactionsLimits(),interactionConnectionM)
+    )
+    fn interactionsLimits = (#(interactionMaxVertices,interactionMaxTriangles,interactionMaxParts,interactionMaxGuides,interactionMaxPreview,interactionMemoryMiB,interactionWorkMillions))
+    fn interactionsLimitsChanged = (
+        interactionSourceCache=#();interactionReview=undefined;interactionDefinitionRevision+=1;this.interactionsChanged();true
+    )
+    fn interactionsColliderValue node = (
+        if interactionColliderMode==1 then cyrusInteractionSource node undefined #(0.005,0.05,1,this.interactionsLimits()) 2
+        else cyrusInteractionColliderSource node (this.interactionsProxy node) interactionColliderMode
+    )
+    fn interactionsCleanProxies = (
+        local ids=#(),nodes=#(),removed=0
+        for i=1 to interactionProxySourceIDs.count do (
+            if findItem sourceRowIDs interactionProxySourceIDs[i]>0 then (append ids interactionProxySourceIDs[i];append nodes interactionProxyNodes[i]) else removed+=1
+        )
+        undo "Clean unused Cyrus collider links" on (interactionProxySourceIDs=ids;interactionProxyNodes=nodes;interactionDefinitionRevision+=1)
+        this.interactionsChanged();removed
+    )
+    fn interactionsSourceCaption node = (
+        local row=this.sourceRow node,id=if row>0 then sourceRowIDs[row] else "",slot=findItem interactionSourceIDs id
+        node.name+" | "+(if interactionCollider then (if interactionColliderMode==1 then "Full source" else if interactionColliderMode==2 then "Box" else if this.interactionsProxy node==undefined then "Missing collider" else "Separate collider") else if slot>0 then "Saved guides" else "Needs preparation")
+    )
+    fn interactionsCanAccept node:undefined = (
+        if interactionReview==undefined or interactionReviewApproved or (node!=undefined and node!=interactionReviewNode) do return false
+        local value=(dotNetClass "System.Text.RegularExpressions.Regex").IsMatch (cyrusInteractionSourceInfo interactionReview) "\"can_prepare\"\\s*:\\s*true"
+        value
     )
     fn interactionsProxy node = (
         if interactionProxySourceIDs.count!=interactionProxyNodes.count do throw "Collider source bindings are incomplete; restore the saved scene or repair its source links."
         local row=this.sourceRow node,slot=if row>0 then findItem interactionProxySourceIDs sourceRowIDs[row] else 0
         if slot>0 and slot<=interactionProxyNodes.count and isValidNode interactionProxyNodes[slot] then interactionProxyNodes[slot] else undefined
     )
+    fn interactionsValidateProxy node proxy = (
+        if not isValidNode proxy do throw "Pick a closed mesh, or cancel to keep the current collider."
+        if this.sourceRow node<1 do throw "Choose the visual source model first."
+        if node==proxy then cyrusInteractionSource node undefined #(0.005,0.05,1,this.interactionsLimits()) 2
+        else cyrusInteractionColliderSource node proxy 3
+        true
+    )
     fn interactionsSetProxy node proxy = (
-        if not isValidNode proxy or node==proxy do throw "Pick a separate closed collider mesh."
+        this.interactionsValidateProxy node proxy
+        if node==proxy do (
+            interactionColliderMode=1;this.interactionsChanged();return true
+        )
         local row=this.sourceRow node
         if row<1 do throw "Choose the visual source model first."
-        cyrusInteractionColliderSource node proxy 3
         local id=sourceRowIDs[row],slot=findItem interactionProxySourceIDs id
         if slot==0 then (if interactionProxySourceIDs.count>=512 do throw "Collider assignment budget: 512 source bindings.";append interactionProxySourceIDs id;append interactionProxyNodes proxy)
         else interactionProxyNodes[slot]=proxy
-        interactionColliderMode=3;interactionDefinitionRevision+=1;this.interactionsChanged();true
+        -- Validate every source before switching the layer to custom mode. A
+        -- partial assignment is saved without breaking its current collider.
+        local complete=true
+        for source in (this.validSources()) where this.interactionsProxy source==undefined do complete=false
+        if complete do interactionColliderMode=3
+        interactionDefinitionRevision+=1;this.interactionsChanged();true
+    )
+    fn interactionsValidateColliderMode mode = (
+        if mode<1 or mode>3 do throw "Choose a collider shape."
+        for node in (this.validSources()) do (
+            if not isValidNode node do throw "Collider layers require mesh source models."
+            if mode==3 and this.interactionsProxy node==undefined do throw ("Assign a custom collider for "+node.name+" first. The current shape is still active.")
+            if mode==1 then cyrusInteractionSource node undefined #(0.005,0.05,1,this.interactionsLimits()) 2
+            else cyrusInteractionColliderSource node (this.interactionsProxy node) mode
+        )
+        true
+    )
+    fn interactionsSetColliderMode mode = (
+        this.interactionsValidateColliderMode mode
+        interactionColliderMode=mode;this.interactionsClearGuides();true
     )
     fn interactionsBuildTrunks = (
         local created=#(),pending=#(),previousIDs=interactionProxySourceIDs as array,previousNodes=interactionProxyNodes as array,previousRevision=interactionDefinitionRevision
@@ -82,49 +161,50 @@
         true
     )
     fn interactionsReviewCollider node = (
-        local value=cyrusInteractionColliderSource node (this.interactionsProxy node) interactionColliderMode
+        local value=this.interactionsColliderValue node
         this.interactionsClearGuides()
-        local frame=node.transform,root=this.interactionsRoot()
-        for i=1 to root.procPublishedOwners.count where (root.logicalParent root.procPublishedOwners[i])==this do (
-            local source=findItem root.procPublishedSources[i] node
-            if source>0 do (local groups=cyrusPlacementTransformGroups root.groupSnapshotRows[i];if groups[source].count>0 do (frame=groups[source][1];exit))
-        )
-        undo off (local model=cyrusInteractionReviewModel value frame;model.wirecolor=(color 60 240 90);model.xray=true;setUserProp model "CyrusInteractionTransient" true;interactionGuides=#(model))
+        undo off (local model=cyrusInteractionReviewModel value node.transform true;model.wirecolor=(color 60 240 90);model.isFrozen=true;model.showFrozenInGray=false;model.xray=true;setUserProp model "CyrusInteractionTransient" true;interactionGuides=#(model))
+        interactionReview=undefined;interactionReviewApproved=false;interactionReviewNode=node;interactionReviewKind=#collider
         true
+    )
+    fn interactionsShowGuides node = (
+        if not isValidNode node or findItem (this.validSources()) node==0 do throw "Choose a current source model."
+        if interactionReview==undefined or interactionReviewNode!=node do (
+            local row=this.sourceRow node,slot=findItem interactionSourceIDs sourceRowIDs[row]
+            if slot==0 do throw "Analyze this source model first."
+            interactionReview=cyrusInteractionSource node interactionDefinitions[slot] (this.interactionsSettings()) 1
+            interactionReviewNode=node;interactionReviewApproved=true
+        )
+        local value=interactionReview,paths=cyrusInteractionGuides value
+        this.interactionsClearGuides()
+        -- Source-local preparation is reviewed at the original source. Hidden
+        -- library sources get a transient display copy without visibility edits.
+        undo off (
+            if node.isHidden do (local model=cyrusInteractionReviewModel value node.transform;setUserProp model "CyrusInteractionTransient" true;append interactionGuides model)
+            if paths.count>0 do (
+                local shape=splineShape name:"Cyrus_Interaction_Source_Guides" wirecolor:(color 80 240 90)
+                append interactionGuides shape
+                for path in paths do (addNewSpline shape;for p in path do addKnot shape (numSplines shape) #corner #line p;updateShape shape)
+                shape.transform=node.transform;shape.renderable=false;shape.isFrozen=true;shape.showFrozenInGray=false;setUserProp shape "CyrusInteractionTransient" true
+            )
+        )
+        interactionReviewNode=node;interactionReviewKind=#guides;true
     )
     fn interactionsAnalyze node = (
         if not CyrusLicenseCanEdit() do throw "Active Cyrus authoring license required to prepare a model."
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=2 do throw "Load the matched CyrusScatter 0.87 native modules and restart Max."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=8 do throw "Load the revised matched CyrusScatter 0.87.4 native modules and restart Max."
         if not isValidNode node or findItem (this.validSources()) node==0 do throw "Choose a current mesh model in this layer."
         if interactionUnitsPending do this.interactionsRepairSettings()
         this.interactionsClearGuides()
         local next=cyrusInteractionSource node undefined (this.interactionsSettings()) 1
-        interactionReview=next;interactionReviewNode=node
-        local paths=cyrusInteractionGuides next
-        local frame=node.transform,root=this.interactionsRoot()
-        -- Review a frozen copy at a published instance; library source nodes
-        -- commonly live hidden, far outside the artist's working view.
-        for i=1 to root.procPublishedOwners.count where (root.logicalParent root.procPublishedOwners[i])==this do (
-            local source=findItem root.procPublishedSources[i] node
-            if source>0 do (
-                local groups=cyrusPlacementTransformGroups root.groupSnapshotRows[i]
-                if groups[source].count>0 do (frame=groups[source][1];exit)
-            )
-        )
-        if paths.count>0 do undo off (
-            local model=cyrusInteractionReviewModel next frame
-            setUserProp model "CyrusInteractionTransient" true
-            interactionGuides=#(model)
-            local shape=splineShape name:"Cyrus_Interaction_Guide_Review" wirecolor:(color 80 240 90)
-            append interactionGuides shape
-            for path in paths do (addNewSpline shape;for p in path do addKnot shape (numSplines shape) #corner #line p;updateShape shape)
-            shape.transform=frame;shape.renderable=false;setUserProp shape "CyrusInteractionTransient" true
-        )
+        interactionReview=next;interactionReviewNode=node;interactionReviewApproved=false
+        this.interactionsShowGuides node
         format "Cyrus source analysis:\n%\n" (cyrusInteractionSourceInfo next)
         cyrusInteractionSourceInfo next
     )
     fn interactionsAccept = (
         if interactionReview==undefined or not isValidNode interactionReviewNode do throw "Analyze a model and inspect its roots and branch guides first."
+        if not this.interactionsCanAccept() do throw "This source is not ready. Inspect its retained analysis report and repair unresolved guides/attachments before accepting."
         local row=this.sourceRow interactionReviewNode
         if row<1 or row>sourceRowIDs.count do throw "The reviewed source was removed. Analyze again."
         -- Recapture verifies geometry, units and settings before acceptance.
@@ -135,8 +215,39 @@
             if slot==0 then (append interactionSourceIDs id;append interactionDefinitions (cyrusInteractionSerialize accepted))
             else interactionDefinitions[slot]=cyrusInteractionSerialize accepted
             interactionDefinitionRevision+=1
+            interactionReact=true;interactionCollider=false
         )
-        interactionSourceCache=#();interactionReview=undefined;this.interactionsClearGuides();this.interactionsChanged();true
+        interactionSourceCache=#();interactionReview=accepted;interactionReviewApproved=true;this.interactionsClearGuides();this.interactionsChanged();true
+    )
+    fn interactionsPrepare nodes rebuild:true enable:true = (
+        if not CyrusLicenseCanEdit() do throw "Active Cyrus authoring license required to prepare a model."
+        if nodes.count==0 do return true
+        if interactionUnitsPending do this.interactionsRepairSettings()
+        -- ParamBlock2 tabs expose ArrayParameter wrappers; collect values, not the block.
+        local settings=this.interactionsSettings()
+        local ids=for value in interactionSourceIDs collect value
+        local definitions=for value in interactionDefinitions collect value
+        local reviewNode=if interactionReviewKind==#guides then interactionReviewNode else undefined
+        -- Capture/validate every successor before changing persistent definitions.
+        -- Instances share these source-local definitions; no placement is rebuilt.
+        for node in nodes do (
+            if not isValidNode node or findItem (this.validSources()) node==0 do throw "Choose a current source model."
+            local row=this.sourceRow node,id=sourceRowIDs[row],slot=findItem ids id
+            local saved=if slot>0 then definitions[slot] else undefined
+            local value=cyrusInteractionSource node saved settings 1 rebuild
+            local accepted=cyrusInteractionAccept value
+            local definition=cyrusInteractionSerialize accepted
+            if slot==0 then (append ids id;append definitions definition) else definitions[slot]=definition
+        )
+        interactionSourceIDs=ids;interactionDefinitions=definitions;interactionDefinitionRevision+=1
+        if enable do (interactionReact=true;interactionCollider=false)
+        interactionSourceCache=#();interactionReview=undefined;interactionReviewApproved=false;this.interactionsClearGuides();this.interactionsChanged()
+        if isValidNode reviewNode and findItem nodes reviewNode>0 do this.interactionsShowGuides reviewNode
+        true
+    )
+    fn interactionsRefreshPreparation rebuild:false = (
+        local prepared=for node in this.validSources() where isValidNode node and findItem interactionSourceIDs sourceRowIDs[this.sourceRow node]>0 collect node
+        if prepared.count>0 then this.interactionsPrepare prepared rebuild:rebuild enable:false else (this.interactionsLimitsChanged();true)
     )
     fn interactionsSources plants role = (
         if role==0 do return #()
@@ -145,8 +256,8 @@
         for node in plants do (
             if not isValidNode node do throw "Interactions require mesh models; Points and Empty sources are unsupported."
             local row=this.sourceRow node,slot=if row>0 then findItem interactionSourceIDs sourceRowIDs[row] else 0
-            local saved=if bit.get role 2 then (if slot>0 then interactionDefinitions[slot] else throw ("Analyze and accept guides for "+node.name+" before enabling React to colliders.")) else undefined
-            local value=if role==1 then cyrusInteractionColliderSource node (this.interactionsProxy node) interactionColliderMode else cyrusInteractionSource node saved settings flags
+            local saved=if bit.get role 2 then (if slot>0 then interactionDefinitions[slot] else throw ("Click Prepare model for "+node.name+" before enabling React to colliders.")) else undefined
+            local value=if role==1 then this.interactionsColliderValue node else cyrusInteractionSource node saved settings flags
             append result value;append nextCache #(node,value)
         )
         interactionSourceCache=nextCache;result
@@ -156,7 +267,7 @@
         format "%|%|" epoch cyrusEnabled to:stream
         for leaf in owners do (
             local parent=this.logicalParent leaf
-            format "%:%:%:%:%:%:%:%:%:%:%|" leaf.layerID parent.interactionCollider parent.interactionReact parent.interactionCoverRoots parent.interactionGapWU parent.interactionStiffness parent.interactionColliderMode parent.interactionMinimumM parent.interactionFoliage parent.interactionDefinitionRevision leaf.autoRender to:stream
+            format "%:%:%:%:%:%:%:%:%:%:%:%:%|" leaf.layerID parent.interactionCollider parent.interactionReact parent.interactionCoverRoots parent.interactionGapWU parent.interactionStiffness parent.interactionColliderMode parent.interactionMinimumM parent.interactionFoliage parent.interactionDefinitionRevision leaf.autoRender (parent.interactionsLimits()) parent.interactionConnectionM to:stream
         )
         stream as string
     )
@@ -165,10 +276,13 @@
         for leaf in owners do (local parent=this.logicalParent leaf;if parent.interactionCollider or parent.interactionReact do active=true)
         if not active and previous!=undefined and cyrusInteractionHasEdits!=undefined do active=cyrusInteractionHasEdits previous
         if not active or not cyrusEnabled do return undefined
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=2 do throw "CyrusScatter 0.87 requires its matched native interaction modules. Restart after installing."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=8 do throw "CyrusScatter 0.87.4 requires its revised matched native interaction modules. Restart after installing."
         local payload=for i=1 to owners.count collect (
             local leaf=owners[i],parent=this.logicalParent leaf
             local role=(if parent.interactionCollider then 1 else 0)+(if parent.interactionReact then 2 else 0)
+            -- React is an authored intent. Incomplete source preparation stays
+            -- visibly pending; it cannot fail an unrelated layer publication.
+            if role==2 and not (parent.interactionsReady plants[i]) do role=0
             if not this.enabledLayer (findItem layerObjects leaf) do role=0
             #(leaf.layerID,leaf.editLayerKey,rows[i],(parent.interactionsSources plants[i] role),role,parent.interactionCoverRoots,parent.interactionGapWU/(units.decodeValue "1m"),parent.interactionStiffness,leaf.autoRender)
         )
@@ -187,7 +301,7 @@
         local stage=if key==interactionStateKey then interactionState else this.interactionsStage groupSnapshotRows procPublishedOwners procPublishedSources previous:interactionState retargetEdits:true
         -- Source bindings and numeric solve must succeed before replacing state.
         local outputs=if stage==undefined or not isValidNode owner or owner.isHidden then #() else cyrusInteractionRenderNodes stage (for n in interactionOutputNodes where isValidNode n collect n)
-        for node in outputs do setUserProp node "CyrusInteractionTransient" true
+        undo off for node in outputs do setUserProp node "CyrusInteractionTransient" true
         if stage==undefined and interactionState!=undefined do cyrusInteractionLive interactionState false
         undo off for node in interactionOutputNodes where isValidNode node and findItem outputs node==0 do delete node
         interactionOutputNodes=outputs;interactionState=stage;interactionStateKey=key;interactionOutputKey=outputKey;interactionError=""
@@ -199,7 +313,7 @@
     )
     fn interactionsStatus = (
         if interactionError!="" do return ("Previous contact result retained: "+interactionError)
-        if interactionState==undefined then "No active contact result. Enable Collider on stones, analyze plant models, then enable React to colliders."
+        if interactionState==undefined then "Choose a layer role. Prepare reacting source models once; contact updates are automatic."
         else cyrusInteractionSummary interactionState
     )
     fn interactionsStatistics = (if interactionState==undefined then throw "No active interaction publication" else cyrusInteractionInfo interactionState)
@@ -210,6 +324,9 @@
     )
     fn interactionsBeforeSave = (
         this.interactionsClearGuides()
+        -- Layer objects are reference targets, not scene nodes: the scene's
+        -- save callback reaches the root only. Review helpers belong to leaves.
+        if overlapOwner==undefined do for leaf in layerObjects where leaf!=undefined and leaf!=this do leaf.interactionsBeforeSave()
         undo off for node in interactionOutputNodes where isValidNode node do delete node
         interactionOutputNodes=#();interactionOutputKey="";true
     )

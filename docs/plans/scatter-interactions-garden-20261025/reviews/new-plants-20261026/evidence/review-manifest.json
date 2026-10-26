@@ -1,0 +1,192 @@
+{
+  "scope": "Investigation and recommendations only; no product changes",
+  "host": 2027,
+  "generated_utc": "2026-10-26T09:46:30.992918+00:00",
+  "branch": "codex/workflow-0.75",
+  "head": "2a68691da59e80d6d24ea248d8e386b836883dae",
+  "original_scene": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\New Plants test.max",
+    "bytes": 271441754,
+    "sha256_before_and_after": "62af55f1b9f8c826aa0b07261e11b706e71aaa6cc2ffa87b5e1a7e9d41c75399",
+    "copied_scene_matches": true
+  },
+  "runtime_payload": {
+    "AminScatter.dlx": {
+      "sha256": "616693be6623a8d7bf6db71335a670198b8aeca15886d30b541ae9bb760faca0",
+      "matches_release": true
+    },
+    "CyrusBrush.dlx": {
+      "sha256": "bedab716797866d2e00af0f26ffefad88c8930014c4d88fb72d7a2910854d6e3",
+      "matches_release": true
+    },
+    "CyrusBrushStorage.dlh": {
+      "sha256": "85771e21ddd4e6c7a3e846d1412a2ab242b9d46f5b366667caec11b4b41fc5a5",
+      "matches_release": true
+    },
+    "CyrusGallery.dll": {
+      "sha256": "31d66a25a9b27c9fcb2af7e808effb563867e288eaab487cfafe0da9c75dc5fa",
+      "matches_release": true
+    },
+    "CyrusInstaller.dll": {
+      "sha256": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "matches_release": true
+    },
+    "CyrusScatter.ms": {
+      "sha256": "4c192c5f9b61c964cdaa93229f0c5f9135437ffe3a47170049bab23f64ffb05a",
+      "matches_release": true
+    },
+    "CyrusScatterEdit.dlm": {
+      "sha256": "73f6e60cffa8f821101dae70c7ba3ce5def0595084a6fa6a7ae797004ce97a23",
+      "matches_release": true
+    }
+  },
+  "loaded_identity": "loaded-identity.json",
+  "artist_ini_matches_launch_snapshot": true,
+  "source_hashes": {
+    "AminScatter/src/interactions_host.cpp": "8c2c0487a189c65b83f945d488f650468ab25477407605876712d2a91a405331",
+    "AminScatter/src/interactions_source.cpp": "56fa07b0aae522463a0f24e92e48dd03b253f830bded3e411d5096d8a272ca99",
+    "AminScatter/src/interactions_engine.cpp": "66d778ec575717ec414334b78e2fea8b8344fece42d6f675b3449f2218e522d3",
+    "AminScatter/tools/ui/templates/interactions-authoring.ms": "f72b412bd9b6e20844ca935bbf74fea4455cafe8503956eef40ae19091eba049",
+    "AminScatter/tools/ui/templates/interactions-ui.ms": "a84bf6a557f99424c46d47409a237352bcc8e664186dc155d2e5619562e06965",
+    "CyrusVegetationLab/experiments/stem-live/analysis.cpp": "b5ffa8348c16968c8304220c8c1d398060af606eac616859e35062f4fc97465e",
+    "CyrusVegetationLab/experiments/stem-live/connectivity.cpp": "521ef2a2da65873d3548d657df5d4a5cefb38c8440037424dc021d626b04099e"
+  },
+  "diagnostic_drivers": {
+    "inspect_scene.py": "0ff76f281ed417ed9f91a4f986c6c9f0c57dd4b8ab338b84bc2fa84a1f746b59",
+    "geometry_audit.py": "7dee49fb14c98c795e1a3e2d0dbfeeb827ff33de3f400f7d4515e9e1c1cb2a34",
+    "cache_controls.py": "de43fd5b14c92469ba6ee2db324bf2e7611d6e3f47bf9de7f81743e7eb3cdbbc",
+    "followup.py": "1fea4c2c91c2bd3a8c501dca35c23e813599450f031a137c45bfe26bd1fcc78f",
+    "inspect_all.py": "c44bd6c3bbc624066f536aed58ca9cf2f762409639c41b6f8fc88bb5e08c35fa",
+    "preflight.py": "1c4b27d233d7ed5692055780a492f642d019a5ea69e410b5969030120941c9b6",
+    "role_cache_control.py": "08a0d38441c44820e59b5ad55ab6a890c4c13b4eda74ca0ef0bed21887eb88a8",
+    "workflow_controls.py": "a5d2346112427166515eefeb158f0cf3d14630ae1958433fc858bc204d1df3e7"
+  },
+  "raw_evidence_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01",
+  "snapshot_headers": {
+    "assigned-collider-2.bin": {
+      "vertices": 34,
+      "triangles": 64,
+      "sha256": "20ddb9d5c3680e561e2a460a7e13ce072007c50753b1ea7fa01206731219eb08"
+    },
+    "control-sphere-box.bin": {
+      "vertices": 8,
+      "triangles": 12,
+      "sha256": "98547b69098cf058bd5b6090ed39510935a1b0a935d81438c85c8205e1c37d1c"
+    },
+    "control-sphere-closed-after-box.bin": {
+      "vertices": 8,
+      "triangles": 12,
+      "sha256": "98547b69098cf058bd5b6090ed39510935a1b0a935d81438c85c8205e1c37d1c"
+    },
+    "control-sphere-fresh-closed.bin": {
+      "vertices": 482,
+      "triangles": 960,
+      "sha256": "8863cee567b461220972310f7bbce1b11f6983e9aed51cabb9c7995ca4450959"
+    },
+    "source-3823.bin": {
+      "vertices": 100163,
+      "triangles": 142403,
+      "sha256": "3262157d49b5a51ba7faf785d487a323132f0559225030d51b1b4027e8e9af6e"
+    },
+    "source-3871.bin": {
+      "vertices": 38818,
+      "triangles": 50382,
+      "sha256": "48b99a1ac1109f668967ecdddcfdaaa6fb5c79c0087f66abe252ed469b1b7a26"
+    },
+    "source-3919.bin": {
+      "vertices": 125845,
+      "triangles": 183030,
+      "sha256": "14cc4701e73d90634402bc6115be2a57999a325a64e18701e3f9d4272ea02f0c"
+    },
+    "source-3967.bin": {
+      "vertices": 58750,
+      "triangles": 111172,
+      "sha256": "3eba1f84b215011d1bdc737d42d1254ac6d3864ea364da03a3126abc33e95406"
+    },
+    "source-4057.bin": {
+      "vertices": 377133,
+      "triangles": 593787,
+      "sha256": "0c6f7a65d4e3dbe1df3d12078e340c0e84542b146c5ec0d9c1c1fac21b6f0c26"
+    },
+    "source-4105.bin": {
+      "vertices": 7030,
+      "triangles": 12192,
+      "sha256": "f31755f80fba6ebce4bef1ce665dc4e48bfad8da6658d513efe0bcef5475384b"
+    },
+    "source-4153.bin": {
+      "vertices": 4254,
+      "triangles": 7630,
+      "sha256": "f749037d9916b4e208576f2ea1943b0060ba46a167dcf90ecf6e3a192b69c693"
+    },
+    "source-4201.bin": {
+      "vertices": 22032,
+      "triangles": 27501,
+      "sha256": "f3760edce988efd33d1510ff3409083f1211ba39f284f506866c4c792e391964"
+    },
+    "source-4249.bin": {
+      "vertices": 11900,
+      "triangles": 14887,
+      "sha256": "8753e9caa81915b443c0549981ae3ff175422c79de736bb90e928d0dc53858f4"
+    },
+    "source-4297.bin": {
+      "vertices": 54214,
+      "triangles": 51066,
+      "sha256": "a40ab112c68488bdd15a2cd9dbf7b291a72a960d8eeba2c8264701ee449866e9"
+    },
+    "source-4561.bin": {
+      "vertices": 482,
+      "triangles": 960,
+      "sha256": "8863cee567b461220972310f7bbce1b11f6983e9aed51cabb9c7995ca4450959"
+    },
+    "sphere-closed-after-custom.bin": {
+      "vertices": 34,
+      "triangles": 64,
+      "sha256": "20ddb9d5c3680e561e2a460a7e13ce072007c50753b1ea7fa01206731219eb08"
+    },
+    "sphere-selected-custom.bin": {
+      "vertices": 34,
+      "triangles": 64,
+      "sha256": "20ddb9d5c3680e561e2a460a7e13ce072007c50753b1ea7fa01206731219eb08"
+    }
+  },
+  "evidence_files": {
+    "all-plants.json": {
+      "sha256": "93e7000a0373200c730bfec7b4ee4d5ad61ff80fc3afe234bd71dac8ca8d3875",
+      "bytes": 18331
+    },
+    "cache-controls.json": {
+      "sha256": "362222422e0009ee997fc1b8e9597f2d1fb58215ccad13409fa5702d0ed730dc",
+      "bytes": 4880
+    },
+    "followup.json": {
+      "sha256": "93cc1ec26b88c9ef8ea1450f55f64fda5b72fa7225420a9de8d8ca342b9f0e47",
+      "bytes": 6946
+    },
+    "geometry-audit.json": {
+      "sha256": "7ecac65646731c82ad06354e3eced6ca622bd5a71cc556a4680f38d8286243da",
+      "bytes": 11835
+    },
+    "loaded-identity.json": {
+      "sha256": "eccc85650714d61b055168ffaf20de035df9ca71b6c54d72d2a97720106e8344",
+      "bytes": 1099
+    },
+    "role-cache-control.json": {
+      "sha256": "29b74734c52a62049fb872243660e3252085c00ec7abc819f4660ffe7212e03e",
+      "bytes": 1102
+    },
+    "workflow-controls.json": {
+      "sha256": "cdf751fd6813c284824e311aa7a9a2a1c28b1a6170e8f9236050c460a215900a",
+      "bytes": 454
+    },
+    "knowledge-status.json": {
+      "bytes": 286,
+      "sha256": "25bdc8e85aba24092401b96c06e0c21a0f281f2fabdf4cf15d800115fadbc3be"
+    }
+  },
+  "limits": [
+    "No product fix, rebuild, acceptance, installation or Git publication",
+    "No physical drag, renderer or FPS qualification",
+    "No plant accepted/prepared for contact from this ten-asset corpus",
+    "No source remeshing or geometry repair; exact-position merge was numeric diagnostics only"
+  ]
+}

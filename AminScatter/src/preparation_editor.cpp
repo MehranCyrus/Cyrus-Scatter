@@ -1,0 +1,225 @@
+#include "preparation_editor.h"
+#include "preparation_authoring.hpp"
+#include <max.h>
+#include <maxscript/maxscript.h>
+#include <notify.h>
+#include <d3d11.h>
+#include <d3dcompiler.h>
+#include <wrl/client.h>
+#include <windowsx.h>
+#include <commctrl.h>
+#include <atomic>
+#include <thread>
+#include <mutex>
+#include <set>
+#include <chrono>
+#include <numeric>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+
+namespace cyrus {
+namespace {
+using J=interactions::Json;using V=interactions::Vec;using Microsoft::WRL::ComPtr;
+using namespace interactions;
+constexpr UINT Timer=51;constexpr unsigned Selected=4,Invisible=8;
+enum { View=100,Pick,Box,Brush,Visible,Isolate,Frame,Undo,Redo,Automatic,Bend,Follow,Fixed,Root,Flip,MovePoint,Parent,MakeRoot,All,Invert,Clear,Reset,Material,Guides,Sphere,Use,Cancel,Radius,Gap,Status,Selection,GuideTools };
+struct Vertex {float x,y,z;unsigned part;};
+struct Constants {float matrix[16];float tint[4];unsigned mode;float pad[3];};
+void check(HRESULT h){if(FAILED(h))throw std::runtime_error("Preparation viewer graphics operation failed ("+std::to_string(unsigned(h))+")");}
+std::wstring wide(const std::string& s){int n=MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),nullptr,0);std::wstring r(n,0);if(n)MultiByteToWideChar(CP_UTF8,0,s.data(),int(s.size()),r.data(),n);return r;}
+double clockMs(){return std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now().time_since_epoch()).count();}
+struct Graphics {
+    HWND window=nullptr;int width=1,height=1;ComPtr<ID3D11Device> device;ComPtr<ID3D11DeviceContext> context;ComPtr<IDXGISwapChain> swap;
+    ComPtr<ID3D11RenderTargetView> target,idTarget;ComPtr<ID3D11DepthStencilView> depth;ComPtr<ID3D11Texture2D> idTexture;
+    ComPtr<ID3D11Buffer> vertices,indices,attributes,constant,lines;ComPtr<ID3D11ShaderResourceView> attributeView;
+    ComPtr<ID3D11VertexShader> vs;ComPtr<ID3D11PixelShader> ps;ComPtr<ID3D11InputLayout> layout;ComPtr<ID3D11RasterizerState> raster;
+    unsigned faces=0,vertexCount=0;std::size_t uploads=0,draws=0;std::vector<Vertex> cpu;
+    void initialize(HWND hwnd){window=hwnd;DXGI_SWAP_CHAIN_DESC desc{};desc.BufferCount=1;desc.BufferDesc.Format=DXGI_FORMAT_R8G8B8A8_UNORM;desc.BufferUsage=DXGI_USAGE_RENDER_TARGET_OUTPUT;desc.OutputWindow=hwnd;desc.SampleDesc.Count=1;desc.Windowed=TRUE;desc.SwapEffect=DXGI_SWAP_EFFECT_DISCARD;
+        D3D_FEATURE_LEVEL level;const D3D_FEATURE_LEVEL requested[]={D3D_FEATURE_LEVEL_11_0};check(D3D11CreateDeviceAndSwapChain(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,0,requested,1,D3D11_SDK_VERSION,&desc,&swap,&device,&level,&context));
+        const char* shader=R"(
+cbuffer Camera : register(b0) {row_major float4x4 mvp;float4 tint;uint mode;float3 padding;};
+StructuredBuffer<uint> attributes : register(t0);
+struct Input {float3 p:POSITION;uint part:PART;};
+struct Output {float4 p:SV_POSITION;float3 w:TEXCOORD0;nointerpolation uint part:PART;};
+Output vertex(Input a){Output o;o.p=mul(float4(a.p,1),mvp);o.w=a.p;o.part=a.part;return o;}
+float4 pixel(Output p):SV_TARGET {
+ if(mode==2)return tint;
+ uint a=attributes[p.part];if((a&8)!=0)discard;
+ if(mode==1){uint v=p.part+1;return float4(v&255,(v>>8)&255,(v>>16)&255,255)/255.0;}
+ float3 color=float3(.50,.54,.56);uint role=a&3;
+ if(role==1)color=float3(.22,.64,.39);if(role==2)color=float3(.25,.52,.82);if(role==3)color=float3(.55,.40,.28);if((a&4)!=0)color=float3(1,.72,.18);
+ float3 normal=normalize(cross(ddx(p.w),ddy(p.w)));float light=.45+.55*abs(dot(normal,normalize(float3(.4,-.6,.9))));return float4(color*light,1);
+})";
+        ComPtr<ID3DBlob> v,p,error;check(D3DCompile(shader,strlen(shader),nullptr,nullptr,nullptr,"vertex","vs_5_0",0,0,&v,&error));check(D3DCompile(shader,strlen(shader),nullptr,nullptr,nullptr,"pixel","ps_5_0",0,0,&p,&error));
+        check(device->CreateVertexShader(v->GetBufferPointer(),v->GetBufferSize(),nullptr,&vs));check(device->CreatePixelShader(p->GetBufferPointer(),p->GetBufferSize(),nullptr,&ps));
+        D3D11_INPUT_ELEMENT_DESC elements[]={{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},{"PART",0,DXGI_FORMAT_R32_UINT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0}};
+        check(device->CreateInputLayout(elements,2,v->GetBufferPointer(),v->GetBufferSize(),&layout));D3D11_BUFFER_DESC cb{};cb.ByteWidth=sizeof(Constants);cb.BindFlags=D3D11_BIND_CONSTANT_BUFFER;check(device->CreateBuffer(&cb,nullptr,&constant));
+        D3D11_RASTERIZER_DESC rd{};rd.FillMode=D3D11_FILL_SOLID;rd.CullMode=D3D11_CULL_NONE;rd.DepthClipEnable=TRUE;check(device->CreateRasterizerState(&rd,&raster));resize();
+    }
+    void resize(){if(!device)return;RECT r;GetClientRect(window,&r);int nextWidth=std::max(1L,r.right),nextHeight=std::max(1L,r.bottom);if(target&&nextWidth==width&&nextHeight==height)return;width=nextWidth;height=nextHeight;context->OMSetRenderTargets(0,nullptr,nullptr);target.Reset();depth.Reset();idTarget.Reset();idTexture.Reset();check(swap->ResizeBuffers(0,width,height,DXGI_FORMAT_UNKNOWN,0));ComPtr<ID3D11Texture2D> back;check(swap->GetBuffer(0,IID_PPV_ARGS(&back)));check(device->CreateRenderTargetView(back.Get(),nullptr,&target));
+        D3D11_TEXTURE2D_DESC d{};d.Width=width;d.Height=height;d.MipLevels=d.ArraySize=1;d.SampleDesc.Count=1;d.Format=DXGI_FORMAT_D24_UNORM_S8_UINT;d.BindFlags=D3D11_BIND_DEPTH_STENCIL;ComPtr<ID3D11Texture2D> z;check(device->CreateTexture2D(&d,nullptr,&z));check(device->CreateDepthStencilView(z.Get(),nullptr,&depth));d.Format=DXGI_FORMAT_R8G8B8A8_UNORM;d.BindFlags=D3D11_BIND_RENDER_TARGET;check(device->CreateTexture2D(&d,nullptr,&idTexture));check(device->CreateRenderTargetView(idTexture.Get(),nullptr,&idTarget));
+    }
+    void upload(const prep::Snapshot& s,const prep::Pieces& pieces){vertexCount=unsigned(s.positions.size());faces=unsigned(s.faces.size());cpu.resize(vertexCount);for(unsigned i=0;i<vertexCount;++i)cpu[i]={s.positions[i][0],s.positions[i][1],s.positions[i][2],pieces.labels[i]};
+        D3D11_BUFFER_DESC b{};b.ByteWidth=UINT(cpu.size()*sizeof(Vertex));b.BindFlags=D3D11_BIND_VERTEX_BUFFER;D3D11_SUBRESOURCE_DATA data{cpu.data(),0,0};check(device->CreateBuffer(&b,&data,&vertices));b.ByteWidth=UINT(s.faces.size()*sizeof(s.faces[0]));b.BindFlags=D3D11_BIND_INDEX_BUFFER;data.pSysMem=s.faces.data();check(device->CreateBuffer(&b,&data,&indices));
+        b.ByteWidth=UINT(std::max<std::size_t>(1,pieces.parts.size())*4);b.BindFlags=D3D11_BIND_SHADER_RESOURCE;b.MiscFlags=D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;b.StructureByteStride=4;check(device->CreateBuffer(&b,nullptr,&attributes));D3D11_SHADER_RESOURCE_VIEW_DESC srv{};srv.ViewDimension=D3D11_SRV_DIMENSION_BUFFER;srv.Format=DXGI_FORMAT_UNKNOWN;srv.Buffer.NumElements=UINT(pieces.parts.size());check(device->CreateShaderResourceView(attributes.Get(),&srv,&attributeView));++uploads;
+    }
+    void positions(const std::vector<std::array<float,3>>& p){if(p.size()!=cpu.size())throw std::runtime_error("Preview/source vertex mismatch");for(unsigned i=0;i<p.size();++i){cpu[i].x=p[i][0];cpu[i].y=p[i][1];cpu[i].z=p[i][2];}context->UpdateSubresource(vertices.Get(),0,nullptr,cpu.data(),0,0);++uploads;}
+    void colors(const std::vector<unsigned>& values){context->UpdateSubresource(attributes.Get(),0,nullptr,values.data(),0,0);}
+    void draw(Constants c,bool picking=false){if(!vertices)return;auto* rt=picking?idTarget.Get():target.Get();context->OMSetRenderTargets(1,&rt,depth.Get());float clear[]={.105f,.115f,.125f,1};if(picking)std::fill(std::begin(clear),std::end(clear),0);context->ClearRenderTargetView(rt,clear);context->ClearDepthStencilView(depth.Get(),D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL,1,0);
+        D3D11_VIEWPORT vp{0,0,float(width),float(height),0,1};context->RSSetViewports(1,&vp);context->RSSetState(raster.Get());UINT stride=sizeof(Vertex),offset=0;auto* buffer=vertices.Get();context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);context->IASetIndexBuffer(indices.Get(),DXGI_FORMAT_R32_UINT,0);context->IASetInputLayout(layout.Get());context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);context->VSSetShader(vs.Get(),nullptr,0);context->PSSetShader(ps.Get(),nullptr,0);auto* attrs=attributeView.Get();context->PSSetShaderResources(0,1,&attrs);auto* cb=constant.Get();context->VSSetConstantBuffers(0,1,&cb);context->PSSetConstantBuffers(0,1,&cb);c.mode=picking?1:0;context->UpdateSubresource(constant.Get(),0,nullptr,&c,0,0);context->DrawIndexed(faces*3,0,0);++draws;
+    }
+    void drawLines(Constants c,const std::vector<Vertex>& points,float r,float g,float b){if(points.empty())return;D3D11_BUFFER_DESC d{};d.ByteWidth=UINT(points.size()*sizeof(Vertex));d.BindFlags=D3D11_BIND_VERTEX_BUFFER;D3D11_SUBRESOURCE_DATA data{points.data(),0,0};lines.Reset();check(device->CreateBuffer(&d,&data,&lines));UINT stride=sizeof(Vertex),offset=0;auto* buffer=lines.Get();context->IASetVertexBuffers(0,1,&buffer,&stride,&offset);context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);c.mode=2;c.tint[0]=r;c.tint[1]=g;c.tint[2]=b;c.tint[3]=1;context->UpdateSubresource(constant.Get(),0,nullptr,&c,0,0);context->Draw(UINT(points.size()),0);}
+    std::set<unsigned> pick(Constants c,RECT region){draw(c,true);region.left=std::clamp<LONG>(region.left,0,width-1);region.top=std::clamp<LONG>(region.top,0,height-1);region.right=std::clamp<LONG>(region.right,region.left+1,width);region.bottom=std::clamp<LONG>(region.bottom,region.top+1,height);UINT w=region.right-region.left,h=region.bottom-region.top;
+        D3D11_TEXTURE2D_DESC d{};d.Width=w;d.Height=h;d.MipLevels=d.ArraySize=1;d.Format=DXGI_FORMAT_R8G8B8A8_UNORM;d.SampleDesc.Count=1;d.Usage=D3D11_USAGE_STAGING;d.CPUAccessFlags=D3D11_CPU_ACCESS_READ;ComPtr<ID3D11Texture2D> staging;check(device->CreateTexture2D(&d,nullptr,&staging));D3D11_BOX box{UINT(region.left),UINT(region.top),0,UINT(region.right),UINT(region.bottom),1};context->CopySubresourceRegion(staging.Get(),0,0,0,0,idTexture.Get(),0,&box);D3D11_MAPPED_SUBRESOURCE map{};check(context->Map(staging.Get(),0,D3D11_MAP_READ,0,&map));std::set<unsigned> out;for(unsigned y=0;y<h;++y){auto* row=static_cast<unsigned char*>(map.pData)+y*map.RowPitch;for(unsigned x=0;x<w;++x){unsigned id=row[x*4]+(unsigned(row[x*4+1])<<8)+(unsigned(row[x*4+2])<<16);if(id)out.insert(id-1);}}context->Unmap(staging.Get(),0);return out;
+    }
+};
+struct History {J intent;std::set<unsigned> selected;};
+struct Job {
+    std::atomic_bool cancel=false,done=false;std::shared_ptr<const prep::Snapshot> mesh;prep::Settings cfg;J intent,saved;std::shared_ptr<const Source> prepared,input;
+    std::vector<std::array<float,3>> posed;std::vector<std::vector<V>> guideNodes;std::string error;std::uint64_t revision=0,poseRevision=0;bool sphere=false;V centre{};double radius=.1,gap=0,ms=0,stiffness=.5;
+};
+std::shared_ptr<const MeshGeometry> sphereGeometry(){
+    constexpr unsigned n=24,rings=11;std::vector<V> p{{0,1,0}};std::vector<Tri> f;
+    for(unsigned r=1;r<=rings;++r){double a=r*3.141592653589793/(rings+1);for(unsigned k=0;k<n;++k){double b=k*6.283185307179586/n;p.push_back({std::sin(a)*std::cos(b),std::cos(a),std::sin(a)*std::sin(b)});}}
+    unsigned bottom=unsigned(p.size());p.push_back({0,-1,0});for(unsigned k=0;k<n;++k){unsigned j=(k+1)%n;f.push_back({0,1+j,1+k});for(unsigned r=0;r+1<rings;++r){unsigned a=1+r*n+k,b=1+r*n+j;f.push_back({a,b,b+n});f.push_back({a,b+n,a+n});}f.push_back({bottom,1+(rings-1)*n+k,1+(rings-1)*n+j});}return std::make_shared<MeshGeometry>(std::move(p),std::move(f));
+}
+struct Session;void layout(Session&);
+struct Session {
+    HWND frame=nullptr,view=nullptr;HFONT font=nullptr;bool registeredDialog=false,blockedAccelerators=false;std::map<int,HWND> controls;Graphics graphics;std::shared_ptr<const prep::Snapshot> mesh;prep::Pieces pieces;prep::Settings cfg;J intent,saved;
+    std::shared_ptr<void> lease;std::function<bool()> valid;std::shared_ptr<const Source> prepared;std::shared_ptr<Job> job;std::thread worker;std::uint64_t revision=1,readyRevision=0,poseRevision=1;bool pending=true,guideTools=false,showGuides=true,testSphere=false,isolate=false,visible=true,drag=false,orbit=false,pan=false;
+    int selectionMode=Pick,tool=0,movingPoint=-1;unsigned movingPart=UINT_MAX;POINT last{},down{};std::set<unsigned> selected,isolated;std::vector<History> undo,redo;double yaw=.35,pitch=.15,span=1,extent=1;V centre{},sphereCentre{};double sphereRadius=.1,gap=0,stiffness=.5;std::string message="Preparing preview...";double due=0,prepareMs=0,pickMs=0;std::size_t analyses=0,selections=0;
+    std::vector<std::vector<V>> posedGuides;
+    ~Session(){if(job)job->cancel=true;if(worker.joinable())worker.join();if(font)DeleteObject(font);}
+    void checkpoint(){undo.push_back({intent,selected});std::size_t bytes=0;for(auto it=undo.rbegin();it!=undo.rend();++it){bytes+=it->intent.dump().size()+it->selected.size()*32;if(bytes>std::size_t(cfg.limits.memoryMiB)*1024*1024/8){undo.erase(undo.begin(),it.base());break;}}if(undo.size()>100)undo.erase(undo.begin());redo.clear();}
+    J row(unsigned part){for(const auto& r:intent["parts"])if(r["part"]==part)return r;return {{"part",part},{"role",0}};}
+    void put(J r){auto& a=intent["parts"];for(auto it=a.begin();it!=a.end();++it)if((*it)["part"]==r["part"]){a.erase(it);break;}if(r.value("role",0)||r.size()>2)a.push_back(std::move(r));}
+    void request(){++revision;pending=true;due=clockMs()+180;if(job)job->cancel=true;message="Updating preview...";refresh();}
+    void assign(int role){if(role<0||role>3)throw std::runtime_error("Invalid preparation behavior");if(selected.empty())throw std::runtime_error("Select pieces in the model first");checkpoint();for(auto id:selected){auto r=row(id);r["role"]=role;if(role==0)r={{"part",id},{"role",0}};if(role==3){r.erase("parent");r.erase("nodes");r.erase("root_vertex");r.erase("flip");}put(r);}if(role==2){tool=Parent;guideTools=true;layout(*this);}request();}
+    void restore(bool back){auto& from=back?undo:redo;auto& to=back?redo:undo;if(from.empty())return;to.push_back({intent,selected});auto h=std::move(from.back());from.pop_back();bool changed=h.intent!=intent;intent=std::move(h.intent);selected=std::move(h.selected);if(changed)request();else refresh();}
+    int guide(unsigned part)const {if(!prepared)return -1;for(unsigned k=0;k<prepared->rig->parts.size();++k)if(k==part&&prepared->rig->parts[k].stem)return int(prepared->rig->parts[k].guide);return -1;}
+    std::vector<V> nodes(unsigned part)const {int g=guide(part);std::vector<V> out;if(g>=0)for(auto p:prepared->rig->guides[g].rest.nodes)out.push_back({p.x,-p.z,p.y});return out;}
+    void fit(){V lo{1e100,1e100,1e100},hi{-1e100,-1e100,-1e100};for(unsigned i=0;i<mesh->positions.size();++i)if(isolated.empty()||isolated.contains(pieces.labels[i])){auto p=mesh->positions[i];lo.x=std::min(lo.x,double(p[0]));lo.y=std::min(lo.y,double(p[1]));lo.z=std::min(lo.z,double(p[2]));hi.x=std::max(hi.x,double(p[0]));hi.y=std::max(hi.y,double(p[1]));hi.z=std::max(hi.z,double(p[2]));}centre=mul(add(lo,hi),.5);extent=std::max({hi.x-lo.x,hi.y-lo.y,hi.z-lo.z,.001});span=extent*1.3;}
+    void axes(V& right,V& up,V& forward)const {right={std::cos(yaw),std::sin(yaw),0};forward={-std::sin(yaw)*std::cos(pitch),std::cos(yaw)*std::cos(pitch),std::sin(pitch)};up=cross(right,forward);}
+    Constants camera()const {V r,u,f;axes(r,u,f);double aspect=double(graphics.width)/graphics.height,sx=2/(span*aspect),sy=2/span,sz=1/(extent*8);Constants c{};c.matrix[0]=float(r.x*sx);c.matrix[4]=float(r.y*sx);c.matrix[8]=float(r.z*sx);c.matrix[12]=float(-dot(centre,r)*sx);c.matrix[1]=float(u.x*sy);c.matrix[5]=float(u.y*sy);c.matrix[9]=float(u.z*sy);c.matrix[13]=float(-dot(centre,u)*sy);c.matrix[2]=float(f.x*sz);c.matrix[6]=float(f.y*sz);c.matrix[10]=float(f.z*sz);c.matrix[14]=float(.5-dot(centre,f)*sz);c.matrix[15]=1;return c;}
+    POINT project(V p)const {V r,u,f;axes(r,u,f);auto d=sub(p,centre);return {LONG(graphics.width*.5+dot(d,r)*graphics.height/span),LONG(graphics.height*.5-dot(d,u)*graphics.height/span)};}
+    V delta(int x,int y)const{V r,u,f;axes(r,u,f);return add(mul(r,x*span/graphics.height),mul(u,-y*span/graphics.height));}
+    std::vector<unsigned> colors()const {std::vector<unsigned> values(pieces.parts.size());for(unsigned i=0;i<values.size();++i){unsigned role=0;if(prepared&&i<prepared->rig->parts.size()){const auto& p=prepared->rig->parts[i];role=p.fixed?3:p.stem?1:2;}values[i]=role|(selected.contains(i)?Selected:0)|(!isolated.empty()&&!isolated.contains(i)?Invisible:0);}for(const auto& r:intent["parts"]){auto id=r["part"].get<unsigned>();values[id]=(values[id]&~3)|r.value("role",0u);}return values;}
+    void refresh(){if(!frame)return;std::wstring count=L"Selected: "+std::to_wstring(selected.size())+L" / "+std::to_wstring(pieces.parts.size())+L" pieces";SetWindowTextW(controls[Selection],count.c_str());
+        std::string text=message+"\r\nLayer minimum: "+std::to_string(cfg.minimumLength*1000)+" mm; branch: "+std::to_string(cfg.connectionReach*100)+" cm; stiffness: "+std::to_string(stiffness);if(readyRevision==revision&&prepared)text="Ready: "+std::to_string(prepared->rig->guides.size())+" guides; "+std::to_string(mesh->faces.size())+" source triangles.\r\n"+std::to_string(prepareMs)+" ms preparation.\r\n"+text;
+        SetWindowTextW(controls[Status],wide(text).c_str());EnableWindow(controls[Use],readyRevision==revision&&bool(prepared)&&!pending);graphics.colors(colors());InvalidateRect(view,nullptr,FALSE);
+    }
+    void render(){if(!graphics.device)return;auto c=camera();graphics.draw(c);std::vector<Vertex> line;auto edge=[&](V a,V b){line.push_back({float(a.x),float(a.y),float(a.z),0});line.push_back({float(b.x),float(b.y),float(b.z),0});};
+        if(showGuides&&prepared){for(unsigned k=0;k<prepared->rig->guides.size();++k){std::vector<V> path;if(testSphere&&k<posedGuides.size()&&!posedGuides[k].empty())for(auto p:posedGuides[k])path.push_back({p.x,-p.z,p.y});else for(auto p:prepared->rig->guides[k].rest.nodes)path.push_back({p.x,-p.z,p.y});for(unsigned i=1;i<path.size();++i)edge(path[i-1],path[i]);if(!path.empty()){double size=extent*.006;edge(add(path[0],{size,0,0}),add(path[0],{-size,0,0}));edge(add(path[0],{0,0,size}),add(path[0],{0,0,-size}));}}graphics.drawLines(c,line,.2f,1,.35f);}
+        if(testSphere){line.clear();for(unsigned axis=0;axis<3;++axis)for(unsigned k=0;k<64;++k){auto p=[&](unsigned i){double a=i*6.283185307179586/64;V v{};if(axis==0)v={0,std::cos(a)*sphereRadius,std::sin(a)*sphereRadius};else if(axis==1)v={std::cos(a)*sphereRadius,0,std::sin(a)*sphereRadius};else v={std::cos(a)*sphereRadius,std::sin(a)*sphereRadius,0};return add(v,sphereCentre);};edge(p(k),p(k+1));}graphics.drawLines(c,line,.2f,.8f,1);}
+        check(graphics.swap->Present(0,0));
+    }
+    std::set<unsigned> hit(RECT region){double start=clockMs();std::set<unsigned> hits;if(visible)hits=graphics.pick(camera(),region);else {
+            // Through selection tests projected triangle bounds and its vertices
+            // and edges against the rectangle, rather than component pivots.
+            auto inside=[&](POINT p){return p.x>=region.left&&p.x<=region.right&&p.y>=region.top&&p.y<=region.bottom;};
+            auto cross2=[](POINT a,POINT b,POINT c){return double(b.x-a.x)*(c.y-a.y)-double(b.y-a.y)*(c.x-a.x);};
+            auto intersects=[&](POINT a,POINT b,POINT c,POINT d){if(std::max(std::min(a.x,b.x),std::min(c.x,d.x))>std::min(std::max(a.x,b.x),std::max(c.x,d.x))||std::max(std::min(a.y,b.y),std::min(c.y,d.y))>std::min(std::max(a.y,b.y),std::max(c.y,d.y)))return false;return cross2(a,b,c)*cross2(a,b,d)<=0&&cross2(c,d,a)*cross2(c,d,b)<=0;};
+            POINT corners[]={{region.left,region.top},{region.right,region.top},{region.right,region.bottom},{region.left,region.bottom}};
+            for(auto face:mesh->faces){unsigned part=pieces.labels[face[0]];if(hits.contains(part)||(!isolated.empty()&&!isolated.contains(part)))continue;POINT p[3];for(unsigned k=0;k<3;++k){auto q=mesh->positions[face[k]];p[k]=project({q[0],q[1],q[2]});}bool yes=inside(p[0])||inside(p[1])||inside(p[2]);if(!yes){double a=cross2(p[0],p[1],corners[0]),b=cross2(p[1],p[2],corners[0]),c=cross2(p[2],p[0],corners[0]);yes=(a>=0&&b>=0&&c>=0)||(a<=0&&b<=0&&c<=0);for(unsigned k=0;k<3&&!yes;++k)for(unsigned j=0;j<4;++j)yes|=intersects(p[k],p[(k+1)%3],corners[j],corners[(j+1)%4]);}if(yes)hits.insert(part);}}
+        pickMs=clockMs()-start;++selections;return hits;
+    }
+    void selectAt(RECT region,bool add,bool remove){auto ids=hit(region);if(!add&&!remove)selected.clear();for(auto i:ids)if(remove)selected.erase(i);else selected.insert(i);refresh();}
+    unsigned nearestVertex(unsigned part,POINT at){double best=1e100;unsigned id=pieces.parts[part].vertices[0];for(auto v:pieces.parts[part].vertices){const auto& p=mesh->positions[v];auto q=project({p[0],p[1],p[2]});double d=double(q.x-at.x)*(q.x-at.x)+double(q.y-at.y)*(q.y-at.y);if(d<best){best=d;id=v;}}return id;}
+    void startJob(){pending=false;auto j=std::make_shared<Job>();j->mesh=mesh;j->cfg=cfg;j->intent=intent;j->saved=saved;j->revision=revision;j->poseRevision=poseRevision;j->sphere=testSphere;j->centre=sphereCentre;j->radius=sphereRadius;j->gap=gap;j->stiffness=stiffness;j->input=readyRevision==revision?prepared:nullptr;job=j;
+        worker=std::thread([j]{double start=clockMs();try{if(j->input)j->prepared=j->input;else if(j->intent["parts"].empty()&&!j->saved.empty()&&j->saved.value("authoring",J::object()).value("parts",J::array()).empty())j->prepared=prepareSource(*j->mesh,j->cfg,&j->saved,nullptr,&j->cancel);else j->prepared=prepareSource(*j->mesh,j->cfg,nullptr,&j->intent,&j->cancel);
+            if(j->cancel.load())throw std::runtime_error("Cancelled");if(j->sphere){auto geometry=sphereGeometry();Shape obstacle{1,geometry,{}};obstacle.transform.rows={V{j->radius,0,0},V{0,j->radius,0},V{0,0,j->radius},V{j->centre.x,j->centre.z,-j->centre.y}};auto pose=fitSource(*j->prepared,{obstacle},j->gap,j->stiffness,false,j->revision);j->posed.resize(j->mesh->positions.size());for(unsigned i=0;i<j->posed.size();++i){if((i&4095)==0&&j->cancel.load())throw std::runtime_error("Cancelled");auto p=posePoint(*j->prepared,pose,i);j->posed[i]={float(p.x),float(-p.z),float(p.y)};}j->guideNodes.resize(pose.guides.size());for(unsigned k=0;k<pose.guides.size();++k)if(pose.guides[k])j->guideNodes[k]=pose.guides[k]->nodes;}
+        }catch(const std::exception& e){j->error=e.what();}j->ms=clockMs()-start;j->done=true;});
+    }
+    void tick(){if(valid&&!valid()){message="Source or owner changed. Close and reopen to edit the current mesh.";pending=false;readyRevision=0;if(job)job->cancel=true;refresh();return;}if(job&&job->done){if(worker.joinable())worker.join();auto finished=std::move(job);if(finished->revision==revision&&!finished->cancel){if(finished->prepared){prepared=finished->prepared;readyRevision=revision;if(!finished->input){prepareMs=finished->ms;++analyses;}}message=finished->error.empty()?"Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.":finished->error;if(finished->error.empty()&&finished->poseRevision==poseRevision){graphics.positions(finished->posed.empty()?mesh->positions:finished->posed);posedGuides=std::move(finished->guideNodes);}refresh();}}
+        if(pending&&!job&&clockMs()>=due)startJob();
+    }
+    J info(){return {{"open",frame!=nullptr},{"revision",revision},{"ready",readyRevision==revision&&bool(prepared)&&!pending&&!job},{"message",message},{"parts",pieces.parts.size()},{"selected",selected},{"authoring",intent},{"analyses",analyses},{"selection_operations",selections},{"pick_ms",pickMs},{"preparation_ms",prepareMs},{"geometry_uploads",graphics.uploads},{"report",prepared?prepared->report:J::object()},{"source_vertices",mesh->positions.size()},{"source_triangles",mesh->faces.size()},{"sphere",testSphere}};}
+    void command(const J& cmd){const std::string op=cmd.at("op");if(op=="select"){checkpoint();selected.clear();for(auto id:cmd.at("parts")){unsigned p=id.get<unsigned>();if(p>=pieces.parts.size())throw std::runtime_error("Unknown piece");selected.insert(p);}refresh();}
+        else if(op=="role")assign(cmd.at("role").get<int>());
+        else if(op=="undo")restore(true);else if(op=="redo")restore(false);
+        else if(op=="parent"){unsigned p=cmd.at("part").get<unsigned>();if(p>=pieces.parts.size()||guide(p)<0)throw std::runtime_error("Pick a bending guide as parent");checkpoint();for(auto id:selected){auto r=row(id);r["parent"]=p;put(r);}request();}
+        else if(op=="root"){if(selected.size()!=1)throw std::runtime_error("Select one bending piece");unsigned id=*selected.begin(),v=cmd.at("vertex").get<unsigned>();if(v>=pieces.labels.size()||pieces.labels[v]!=id)throw std::runtime_error("Root vertex belongs to another piece");checkpoint();auto r=row(id);r["root_vertex"]=v;r["parent"]=-1;r["role"]=1;r.erase("nodes");r.erase("flip");put(r);request();}
+        else if(op=="flip"){if(selected.size()!=1)throw std::runtime_error("Select one bending piece");unsigned id=*selected.begin();if(guide(id)<0)throw std::runtime_error("Selected piece has no guide");checkpoint();auto r=row(id);if(r.contains("nodes")){std::reverse(r["nodes"].begin(),r["nodes"].end());const auto& n=r["nodes"][0];V base{n[0].get<double>(),n[1].get<double>(),n[2].get<double>()};double distance=1e100;unsigned seed=pieces.parts[id].vertices[0];for(auto v:pieces.parts[id].vertices){auto p=mesh->positions[v];double d=length(sub(base,{p[0],p[1],p[2]}));if(d<distance){distance=d;seed=v;}}r["root_vertex"]=seed;r.erase("flip");}else r["flip"]=!r.value("flip",false);r["role"]=1;put(r);request();}
+        else if(op=="nodes"){if(selected.size()!=1)throw std::runtime_error("Select one bending piece");checkpoint();auto r=row(*selected.begin());r["nodes"]=cmd.at("nodes");r["role"]=1;put(r);request();}
+        else if(op=="sphere"){testSphere=cmd.value("enabled",true);if(cmd.contains("centre")){auto p=cmd["centre"];sphereCentre={p[0].get<double>(),p[1].get<double>(),p[2].get<double>()};}sphereRadius=cmd.value("radius",sphereRadius);gap=cmd.value("gap",gap);if((!std::isfinite(sphereCentre.x)||!std::isfinite(sphereCentre.y)||!std::isfinite(sphereCentre.z))||!std::isfinite(sphereRadius)||!std::isfinite(gap)||sphereRadius<.001||sphereRadius>100||gap<0||gap>1)throw std::runtime_error("Invalid test sphere");++poseRevision;pending=true;due=clockMs();if(job)job->cancel=true;else if(!testSphere)graphics.positions(mesh->positions);SetWindowTextW(controls[Radius],std::to_wstring(sphereRadius*100).c_str());SetWindowTextW(controls[Gap],std::to_wstring(gap*1000).c_str());refresh();}
+        else if(op=="frame"){fit();refresh();}else throw std::runtime_error("Unknown editor command");
+    }
+    void button(int id){if(id>=Automatic&&id<=Fixed){assign(id-Automatic);return;}switch(id){case Pick:case Box:case Brush:selectionMode=id;tool=0;break;case Visible:visible=SendMessage(controls[Visible],BM_GETCHECK,0,0)==BST_CHECKED;break;
+        case Isolate:if(isolated.empty()){isolated=selected;if(isolated.empty())return;}else isolated.clear();fit();break;case Frame:fit();break;case Undo:restore(true);break;case Redo:restore(false);break;
+        case All:case Invert:case Clear:checkpoint();for(unsigned k=0;k<pieces.parts.size();++k)if(isolated.empty()||isolated.contains(k)){if(id==All)selected.insert(k);else if(id==Clear||selected.contains(k))selected.erase(k);else selected.insert(k);}break;
+        case GuideTools:guideTools=!guideTools;layout(*this);break;case Reset:assign(0);return;case Flip:command({{"op","flip"}});return;case Root:case MovePoint:case Parent:if(selected.empty())throw std::runtime_error("Select a piece first");tool=id;message=id==Root?"Click the intended base end on this piece":id==Parent?"Click the bending stem to follow/connect":"Drag an interior point on the selected guide";break;
+        case MakeRoot:checkpoint();for(auto k:selected){auto r=row(k);r["parent"]=-1;r["role"]=1;put(r);}request();return;
+        case Material:{unsigned mat=selected.empty()?0:pieces.parts[*selected.begin()].material;checkpoint();selected.clear();for(unsigned k=0;k<pieces.parts.size();++k)if(std::any_of(pieces.parts[k].faces.begin(),pieces.parts[k].faces.end(),[&](unsigned f){return mesh->materials[f]==mat;}))selected.insert(k);message="Selected all pieces using material ID "+std::to_string(mat);break;}
+        case Guides:showGuides=!showGuides;break;
+        case Sphere:testSphere=!testSphere;tool=testSphere?Sphere:0;if(testSphere){sphereCentre=add(centre,{extent*.6,0,0});sphereRadius=extent*.2;}command({{"op","sphere"},{"enabled",testSphere}});break;
+        case Use:if(readyRevision!=revision||!prepared||pending||job)throw std::runtime_error("Wait for the latest complete preparation");ExecuteMAXScriptScript(_T("CyrusPreparationEditorCommit()"),MAXScript::ScriptSource::NonEmbedded,TRUE,nullptr);return;
+        case Cancel:DestroyWindow(frame);return;
+        }refresh();
+    }
+};
+std::unique_ptr<Session> active;
+LRESULT CALLBACK frameProc(HWND,UINT,WPARAM,LPARAM);LRESULT CALLBACK viewProc(HWND,UINT,WPARAM,LPARAM);
+bool draftShortcut(WPARAM key){return key==VK_ESCAPE||((GetKeyState(VK_CONTROL)&0x8000)&&(key=='Z'||key=='Y'||key=='A'));}
+LRESULT CALLBACK controlKeys(HWND hwnd,UINT msg,WPARAM wp,LPARAM lp,UINT_PTR id,DWORD_PTR data){
+    auto* s=reinterpret_cast<Session*>(data);
+    if(msg==WM_GETDLGCODE&&lp){auto* key=reinterpret_cast<MSG*>(lp);if(key->message==WM_KEYDOWN&&draftShortcut(key->wParam))return DefSubclassProc(hwnd,msg,wp,lp)|DLGC_WANTMESSAGE;}
+    if(msg==WM_KEYDOWN&&draftShortcut(wp)){if(s->view)SendMessage(s->view,msg,wp,lp);return 0;}
+    if(msg==WM_CHAR&&(wp==1||wp==25||wp==26))return 0;
+    if(msg==WM_NCDESTROY)RemoveWindowSubclass(hwnd,controlKeys,id);
+    return DefSubclassProc(hwnd,msg,wp,lp);
+}
+void layout(Session& s){RECT r;GetClientRect(s.frame,&r);int w=r.right,h=r.bottom;HDC dc=GetDC(s.frame);float dpi=float(GetDeviceCaps(dc,LOGPIXELSX))/96;ReleaseDC(s.frame,dc);int side=int(236*dpi),margin=int(8*dpi),top=int(42*dpi),bottom=int(44*dpi),vw=std::max(50,w-side-margin*3);MoveWindow(s.view,margin,top,vw,std::max(50,h-top-bottom),TRUE);int x=margin;
+    for(int id:{Pick,Box,Brush,Visible,Isolate,Frame,Undo,Redo}){int bw=int((id==Visible?94:66)*dpi);MoveWindow(s.controls[id],x,margin,bw,int(26*dpi),TRUE);x+=bw+int(4*dpi);}
+    x=w-side-margin;int y=top;auto item=[&](int id,int height=26){MoveWindow(s.controls[id],x,y,side,int(height*dpi),TRUE);y+=int((height+5)*dpi);};item(Selection);for(int id:{Automatic,Bend,Follow,Fixed})item(id);y+=int(6*dpi);for(int id:{All,Invert,Clear,Material,Reset})item(id);y+=int(5*dpi);item(GuideTools);for(int id:{Root,Flip,MovePoint,Parent,MakeRoot}){ShowWindow(s.controls[id],s.guideTools?SW_SHOW:SW_HIDE);if(s.guideTools)item(id);}for(int id:{Guides,Sphere})item(id);for(int id:{Radius,Gap}){MoveWindow(s.controls[id+500],x,y,int(132*dpi),int(26*dpi),TRUE);MoveWindow(s.controls[id],x+int(134*dpi),y,side-int(134*dpi),int(26*dpi),TRUE);y+=int(31*dpi);}item(Status,std::max(40,int((h-bottom-y)/dpi)));
+    MoveWindow(s.controls[Cancel],w-int(230*dpi),h-int(36*dpi),int(100*dpi),int(26*dpi),TRUE);MoveWindow(s.controls[Use],w-int(122*dpi),h-int(36*dpi),int(114*dpi),int(26*dpi),TRUE);if(s.graphics.device)s.graphics.resize();
+}
+LRESULT CALLBACK frameProc(HWND hwnd,UINT msg,WPARAM wp,LPARAM lp){auto* s=reinterpret_cast<Session*>(GetWindowLongPtr(hwnd,GWLP_USERDATA));if(msg==WM_NCCREATE){s=static_cast<Session*>(reinterpret_cast<CREATESTRUCT*>(lp)->lpCreateParams);SetWindowLongPtr(hwnd,GWLP_USERDATA,reinterpret_cast<LONG_PTR>(s));s->frame=hwnd;}if(!s)return DefWindowProc(hwnd,msg,wp,lp);
+    try{switch(msg){case WM_ACTIVATE:
+        // Max accelerators run before child WM_KEYDOWN. Keep draft shortcuts
+        // local only while this registered modeless window owns activation.
+        if(LOWORD(wp)==WA_INACTIVE){if(s->blockedAccelerators){EnableAccelerators();s->blockedAccelerators=false;}}
+        else if(!s->blockedAccelerators&&AcceleratorsEnabled()){DisableAccelerators();s->blockedAccelerators=true;}return 0;
+        case WM_KEYDOWN:if(draftShortcut(wp)&&s->view){SendMessage(s->view,msg,wp,lp);return 0;}break;
+        case WM_CTLCOLORSTATIC:{auto dc=reinterpret_cast<HDC>(wp);SetTextColor(dc,RGB(225,225,225));SetBkColor(dc,RGB(60,60,60));static HBRUSH brush=CreateSolidBrush(RGB(60,60,60));return reinterpret_cast<LRESULT>(brush);}case WM_SIZE:if(s->view)layout(*s);return 0;case WM_DPICHANGED:{auto* r=reinterpret_cast<RECT*>(lp);SetWindowPos(hwnd,nullptr,r->left,r->top,r->right-r->left,r->bottom-r->top,SWP_NOZORDER);return 0;}case WM_TIMER:s->tick();return 0;case WM_COMMAND:if(HIWORD(wp)==BN_CLICKED)s->button(LOWORD(wp));else if(HIWORD(wp)==EN_KILLFOCUS&&(LOWORD(wp)==Radius||LOWORD(wp)==Gap)){wchar_t text[80];GetWindowTextW(s->controls[LOWORD(wp)],text,80);wchar_t* end=nullptr;double number=wcstod(text,&end);if(end==text||*end)throw std::runtime_error("Enter a number for the test sphere");s->command({{"op","sphere"},{"enabled",s->testSphere},{LOWORD(wp)==Radius?"radius":"gap",number/(LOWORD(wp)==Radius?100.:1000.)}});}return 0;case WM_CLOSE:DestroyWindow(hwnd);return 0;case WM_DESTROY:if(s->blockedAccelerators){EnableAccelerators();s->blockedAccelerators=false;}if(s->registeredDialog){GetCOREInterface()->UnRegisterDlgWnd(hwnd);s->registeredDialog=false;}KillTimer(hwnd,Timer);if(s->job)s->job->cancel=true;s->frame=nullptr;return 0;case WM_NCDESTROY:SetWindowLongPtr(hwnd,GWLP_USERDATA,0);if(active.get()==s)active.reset();ExecuteMAXScriptScript(_T("CyrusPreparationContext=undefined"),MAXScript::ScriptSource::NonEmbedded,TRUE,nullptr);return DefWindowProc(hwnd,msg,wp,lp);case WM_GETMINMAXINFO:{auto* p=reinterpret_cast<MINMAXINFO*>(lp);p->ptMinTrackSize={820,760};return 0;}}
+    }catch(const std::exception& e){s->message=e.what();s->refresh();}return DefWindowProc(hwnd,msg,wp,lp);
+}
+LRESULT CALLBACK viewProc(HWND hwnd,UINT msg,WPARAM wp,LPARAM lp){auto* s=reinterpret_cast<Session*>(GetWindowLongPtr(hwnd,GWLP_USERDATA));if(msg==WM_NCCREATE){s=static_cast<Session*>(reinterpret_cast<CREATESTRUCT*>(lp)->lpCreateParams);SetWindowLongPtr(hwnd,GWLP_USERDATA,reinterpret_cast<LONG_PTR>(s));}if(!s)return DefWindowProc(hwnd,msg,wp,lp);POINT at{GET_X_LPARAM(lp),GET_Y_LPARAM(lp)};
+    try{switch(msg){case WM_ERASEBKGND:return 1;case WM_PAINT:{PAINTSTRUCT p;BeginPaint(hwnd,&p);s->render();EndPaint(hwnd,&p);return 0;}case WM_RBUTTONDOWN:case WM_MBUTTONDOWN:s->orbit=msg==WM_RBUTTONDOWN;s->pan=msg==WM_MBUTTONDOWN;s->last=at;SetCapture(hwnd);return 0;
+        case WM_LBUTTONDOWN:{SetFocus(hwnd);s->down=s->last=at;s->drag=true;SetCapture(hwnd);if(s->tool==Parent){auto ids=s->hit({at.x,at.y,at.x+1,at.y+1});if(!ids.empty())s->command({{"op","parent"},{"part",*ids.begin()}});s->tool=0;s->drag=false;ReleaseCapture();}
+            else if(s->tool==Root){if(s->selected.size()!=1)throw std::runtime_error("Select one guide-bearing piece");s->command({{"op","root"},{"vertex",s->nearestVertex(*s->selected.begin(),at)}});s->tool=0;s->drag=false;ReleaseCapture();}
+            else if(s->tool==MovePoint){if(s->selected.size()!=1)throw std::runtime_error("Select one guide");s->movingPart=*s->selected.begin();auto path=s->nodes(s->movingPart);double best=225;s->movingPoint=-1;for(unsigned k=1;k+1<path.size();++k){auto p=s->project(path[k]);double d=double(p.x-at.x)*(p.x-at.x)+double(p.y-at.y)*(p.y-at.y);if(d<best){best=d;s->movingPoint=int(k);}}if(s->movingPoint<0)throw std::runtime_error("Click an interior guide point (zoom closer if needed)");s->checkpoint();}
+            else if(s->tool!=Sphere){s->checkpoint();if(s->selectionMode!=Box)s->selectAt({at.x-((s->selectionMode==Brush)?16:0),at.y-((s->selectionMode==Brush)?16:0),at.x+((s->selectionMode==Brush)?17:1),at.y+((s->selectionMode==Brush)?17:1)},(GetKeyState(VK_CONTROL)&0x8000)!=0,(GetKeyState(VK_MENU)&0x8000)!=0);}return 0;}
+        case WM_MOUSEMOVE:if(s->orbit){s->yaw+=(at.x-s->last.x)*.008;s->pitch=std::clamp(s->pitch+(at.y-s->last.y)*.008,-1.45,1.45);}else if(s->pan)s->centre=sub(s->centre,s->delta(at.x-s->last.x,at.y-s->last.y));
+            else if(s->drag&&s->tool==Sphere){s->sphereCentre=add(s->sphereCentre,s->delta(at.x-s->last.x,at.y-s->last.y));++s->poseRevision;s->pending=true;s->due=clockMs()+25;}
+            else if(s->drag&&s->tool==MovePoint&&s->movingPoint>=0){auto path=s->nodes(s->movingPart);auto r=s->row(s->movingPart);if(r.contains("nodes")){path.clear();for(auto p:r["nodes"])path.push_back({p[0].get<double>(),p[1].get<double>(),p[2].get<double>()});}path[s->movingPoint]=add(path[s->movingPoint],s->delta(at.x-s->last.x,at.y-s->last.y));r["nodes"]=J::array();for(auto p:path)r["nodes"].push_back({p.x,p.y,p.z});r["role"]=1;s->put(r);}
+            else if(s->drag&&s->selectionMode==Brush)s->selectAt({at.x-16,at.y-16,at.x+17,at.y+17},true,(GetKeyState(VK_MENU)&0x8000)!=0);
+            s->last=at;InvalidateRect(hwnd,nullptr,FALSE);return 0;
+        case WM_LBUTTONUP:if(s->drag&&s->tool==0&&s->selectionMode==Box)s->selectAt({std::min(at.x,s->down.x),std::min(at.y,s->down.y),std::max(at.x,s->down.x)+1,std::max(at.y,s->down.y)+1},(GetKeyState(VK_CONTROL)&0x8000)!=0,(GetKeyState(VK_MENU)&0x8000)!=0);if(s->drag&&s->tool==MovePoint&&s->movingPoint>=0){s->request();s->movingPoint=-1;}s->drag=false;ReleaseCapture();return 0;
+        case WM_RBUTTONUP:case WM_MBUTTONUP:s->orbit=s->pan=false;ReleaseCapture();return 0;
+        case WM_MOUSEWHEEL:s->span=std::clamp(s->span*std::pow(.85,GET_WHEEL_DELTA_WPARAM(wp)/120.),s->extent*.02,s->extent*20);InvalidateRect(hwnd,nullptr,FALSE);return 0;
+        case WM_KEYDOWN:if(wp==VK_ESCAPE){if(s->drag&&s->tool==MovePoint&&!s->undo.empty()){auto h=s->undo.back();s->undo.pop_back();s->intent=std::move(h.intent);s->selected=std::move(h.selected);s->request();}s->tool=0;s->drag=false;s->movingPoint=-1;ReleaseCapture();}else if((GetKeyState(VK_CONTROL)&0x8000)&&wp=='Z')s->restore(true);else if((GetKeyState(VK_CONTROL)&0x8000)&&wp=='Y')s->restore(false);else if((GetKeyState(VK_CONTROL)&0x8000)&&wp=='A')s->button(All);return 0;}}
+    catch(const std::exception& e){s->drag=false;ReleaseCapture();s->message=e.what();s->refresh();}return DefWindowProc(hwnd,msg,wp,lp);
+}
+void onReset(void*,NotifyInfo*){preparationEditorClose();}
+}
+
+void preparationEditorOpen(prep::Snapshot mesh,prep::Settings cfg,J saved,std::wstring title,std::shared_ptr<void> lease,std::function<bool()> valid,double stiffness){
+    if(active&&active->frame)throw std::runtime_error("Use or cancel the current preparation editor first");active.reset();auto s=std::make_unique<Session>();s->mesh=std::make_shared<prep::Snapshot>(std::move(mesh));s->cfg=cfg;s->stiffness=stiffness;s->saved=std::move(saved);s->lease=std::move(lease);s->valid=std::move(valid);std::atomic_bool cancel=false;s->pieces=prep::inspectPieces(*s->mesh,cfg,cancel);s->intent=prep::canonicalAuthoring(*s->mesh,s->pieces,s->saved.value("authoring",J::object()));
+    const std::size_t bytes=s->mesh->positions.size()*sizeof(Vertex)+s->mesh->faces.size()*sizeof(Tri)+s->pieces.parts.size()*32;
+    if(bytes>std::size_t(cfg.limits.memoryMiB)*1024*1024/2)throw std::runtime_error("Editor buffers exceed Preparation memory allowance");
+    static bool registered=false;if(!registered){WNDCLASSW c{};c.hInstance=GetModuleHandle(nullptr);c.hCursor=LoadCursor(nullptr,IDC_ARROW);c.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);c.lpfnWndProc=frameProc;c.lpszClassName=L"CyrusPreparationEditor0874";if(!RegisterClassW(&c)&&GetLastError()!=ERROR_CLASS_ALREADY_EXISTS)throw std::runtime_error("Editor registration failed");c.lpfnWndProc=viewProc;c.lpszClassName=L"CyrusPreparationView0874";c.style=CS_OWNDC;if(!RegisterClassW(&c)&&GetLastError()!=ERROR_CLASS_ALREADY_EXISTS)throw std::runtime_error("Viewer registration failed");RegisterNotification(onReset,nullptr,NOTIFY_SYSTEM_PRE_RESET);RegisterNotification(onReset,nullptr,NOTIFY_FILE_PRE_OPEN);RegisterNotification(onReset,nullptr,NOTIFY_SYSTEM_SHUTDOWN);registered=true;}
+    active=std::move(s);auto& p=*active;HWND parent=GetCOREInterface()->GetMAXHWnd();p.frame=CreateWindowExW(WS_EX_APPWINDOW,L"CyrusPreparationEditor0874",(L"Source Preparation 0.87.4 - "+title).c_str(),WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN,CW_USEDEFAULT,CW_USEDEFAULT,1060,860,parent,nullptr,GetModuleHandle(nullptr),&p);if(!p.frame)throw std::runtime_error("Editor window creation failed");
+    try{GetCOREInterface()->RegisterDlgWnd(p.frame);p.registeredDialog=true;p.font=CreateFontW(-14,0,0,0,FW_NORMAL,FALSE,FALSE,FALSE,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH,L"Segoe UI");
+        auto control=[&](int id,const wchar_t* text,const wchar_t* type=L"BUTTON",DWORD style=BS_PUSHBUTTON){auto hwnd=CreateWindowExW(0,type,text,WS_CHILD|WS_VISIBLE|style,0,0,10,10,p.frame,reinterpret_cast<HMENU>(INT_PTR(id)),GetModuleHandle(nullptr),nullptr);p.controls[id]=hwnd;if(wcscmp(type,L"BUTTON")==0)SetWindowSubclass(hwnd,controlKeys,1,reinterpret_cast<DWORD_PTR>(&p));SendMessage(hwnd,WM_SETFONT,reinterpret_cast<WPARAM>(p.font),TRUE);};
+        control(Pick,L"Click");control(Box,L"Box");control(Brush,L"Brush");control(Visible,L"Visible only",L"BUTTON",BS_AUTOCHECKBOX);SendMessage(p.controls[Visible],BM_SETCHECK,BST_CHECKED,0);control(Isolate,L"Isolate");control(Frame,L"Frame");control(Undo,L"Undo");control(Redo,L"Redo");control(Selection,L"",L"STATIC",SS_LEFT);
+        control(Automatic,L"Automatic");control(Bend,L"Bend");control(Follow,L"Follow stem");control(Fixed,L"Keep fixed");control(All,L"Select all");control(Invert,L"Invert selection");control(Clear,L"Clear selection");control(Material,L"Select same material");control(Reset,L"Reset selected");control(GuideTools,L"Edit guide...");control(Root,L"Set root end");control(Flip,L"Flip direction");control(MovePoint,L"Move guide point");control(Parent,L"Pick parent stem");control(MakeRoot,L"Make root");control(Guides,L"Show / hide guides");control(Sphere,L"Test sphere / drag");control(Status,L"",L"EDIT",ES_MULTILINE|ES_READONLY|WS_VSCROLL);control(Radius+500,L"Sphere radius (cm)",L"STATIC",SS_LEFT);control(Radius,L"10",L"EDIT",ES_AUTOHSCROLL|WS_BORDER);control(Gap+500,L"Test gap (mm)",L"STATIC",SS_LEFT);control(Gap,L"0",L"EDIT",ES_AUTOHSCROLL|WS_BORDER);control(Use,L"Use preparation");control(Cancel,L"Cancel");
+        p.view=CreateWindowExW(0,L"CyrusPreparationView0874",L"Plant source",WS_CHILD|WS_VISIBLE|WS_TABSTOP,0,0,500,500,p.frame,nullptr,GetModuleHandle(nullptr),&p);p.graphics.initialize(p.view);p.graphics.upload(*p.mesh,p.pieces);layout(p);p.fit();p.refresh();SetTimer(p.frame,Timer,25,nullptr);ShowWindow(p.frame,SW_SHOW);SetForegroundWindow(p.frame);
+    }catch(...){DestroyWindow(p.frame);active.reset();throw;}
+}
+void preparationEditorClose(){if(active&&active->frame)DestroyWindow(active->frame);active.reset();}
+J preparationEditorInfo(){return active&&active->frame?active->info():J{{"open",false}};}
+J preparationEditorDefinition(){if(!active||!active->frame||active->readyRevision!=active->revision||!active->prepared||active->pending||active->job)throw std::runtime_error("Latest preparation is not ready");auto& s=*active;return {{"format",2},{"accepted",true},{"settings",J::array({s.cfg.minimumLength,s.cfg.foliageFraction})},{"connection_reach_m",s.cfg.connectionReach},{"source",saveSource(*s.prepared)}};}
+void preparationEditorCommand(const J& cmd){if(!active||!active->frame)throw std::runtime_error("Preparation editor is closed");active->command(cmd);}
+void preparationEditorCommitResult(bool ok,const std::string& message){if(ok)preparationEditorClose();else if(active){active->message=message;active->refresh();}}
+}

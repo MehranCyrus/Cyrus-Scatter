@@ -1,6 +1,24 @@
 # Cyrus Scatter
 
-**Current artist-test delivery: Scatter 0.87.3 / schema 61.** A [three-host installer](docs/plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) is prepared for Max 2024, 2026 and 2027. New 2024/2026 payloads have native tests only; scoped runtime qualification remains Max 2027. The [Library startup hotfix](docs/plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md) corrects the default saved-folder lookup and remembering a new library location. Normal settings paths and the actual Layers > Recipes button pass in an owned host, alongside a retained interaction-scene smoke. Use its matched MZP and restart Max. Exposed-root fitting remains on hold; Analyzer 0.14.2 and content 0.86.7 retain their independent versions.
+**Current scoped delivery: [0.87.4 Source Preparation Editor](docs/plans/source-preparation-editor-20261026/DELIVERY_0874.md), Max 2027 only.** Optional source-part selection, Bend / Follow / Fixed behavior, guide repairs, automatic draft preview and private sphere testing. Native Interactions 8 / scene schema 62. [Artist workflow](docs/plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md); the delivery records fern/grass qualification, the matched MZP and remaining contact/scale limits.
+
+**Preceding tested patch: [0.87.3.2 source controls and broad-leaf contact](docs/plans/scatter-interactions-garden-20261025/DELIVERY_08732.md), Max 2027 only.** Adds shared + / remove source rows, primary preparation settings, bounded crown inference and actual-surface contact proof; fixes inline swatch width. Final matched MZP passes 59 native tests and scoped Max preparation, contact, Undo, persistence and physical-button checks. [Artist workflow](docs/plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08732.md).
+
+The following 0.87.3.1 reports retain their historical qualification:
+
+**Preceding tested correction: [0.87.3.1 preparation fix](docs/plans/scatter-interactions-garden-20261025/PREPARATION_FIX_08731.md), Max 2027 only.** Fixes the reproduced ParamBlock2/findItem error with ordinary staged arrays. Prepare, automatic settings, full-mesh contacts, preparation Undo/Redo and save/reopen pass in the owned final host; 59 native tests pass. Use the matched `preparefix` MZP.
+
+**Earlier script-load correction:** use the [revised script-load package](docs/plans/scatter-interactions-garden-20261025/SCRIPT_LOAD_FIX_08731.md). The first 0.87.3.1 package has a user-reported MAXScript catch/throw parser error. Its source is corrected; Max validation remains deferred to the user.
+
+**Original build-only revision: [0.87.3.1 complete stem contact](docs/plans/scatter-interactions-garden-20261025/DELIVERY_08731.md), Max 2027 only.** Replaces footprint-based stem skipping with actual root checks, adds one Prepare model action and automatic preparation-setting updates, and removes Interactions hover tooltips. Native Interactions 6 / schema 61. The user requested build/package only; native and Max testing are deferred. [Artist workflow](docs/plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08731.md).
+
+**Preceding Interactions revision: [0.87.3 source workflow and contact repair](docs/plans/scatter-interactions-garden-20261025/DELIVERY_WORKFLOW_0873.md), Max 2027 only.** One layer role, original-source preparation, review toggles and automatic contact updates replace the previous manual sequence. A bounded visible-geometry fallback repairs the reproduced conservative-envelope failure. Use the matched `workflow-r2` MZP, native Interactions 5 / schema 61, and restart Max. [Artist instructions](docs/plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_0873.md). Exact tests and remaining limits are recorded in the delivery.
+
+**Earlier build-only revision: [0.87.3 blade preview, 1–100%](docs/plans/scatter-interactions-garden-20261025/PREVIEW_100_0873.md).** Its `preview100` package was compiled without tests or Max execution at the user’s request. Its original qualification remains unchanged.
+
+**Earlier tested revision: [0.87.3 expanded plant preparation](docs/plans/scatter-interactions-garden-20261025/DELIVERY_0873_EXPANSION.md), schema 61, native Interactions 3, Max 2027 only.** All ten New Plants sources prepare in its scoped host tests. Advanced adds adjustable geometry/guide/preview/memory/work limits; reviewed-definition and visual/proxy caches are isolated. Its `interactions-r4` MZP and trial retain their original scope. [Preparation and limits](docs/plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0873_EXPANSION.md).
+
+**Earlier Library delivery: Scatter 0.87.3 / schema 61.** A [three-host installer](docs/plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) is prepared for Max 2024, 2026 and 2027. New 2024/2026 payloads have native tests only; scoped runtime qualification remains Max 2027. The [Library startup hotfix](docs/plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md) corrects the default saved-folder lookup and remembering a new library location. Normal settings paths and the actual Layers > Recipes button pass in an owned host, alongside a retained interaction-scene smoke. Use its matched MZP and restart Max. Exposed-root fitting remains on hold; Analyzer 0.14.2 and content 0.86.7 retain their independent versions.
 
 **Preceding Interactions delivery: Scatter 0.87.2 / schema 61, Max 2027 only.** The [Interactions correction](docs/plans/scatter-interactions-garden-20261025/DELIVERY_0872.md) adds explicit SI preparation settings with legacy repair, Arthropodium folded-leaf/branch preparation and separate lightweight trunk/custom colliders while retaining full visual trees. Use its matched MZP and saved small-scene copy. The preceding 0.87.1 shared-library delivery retains its separate three-host qualification; this successor does not extend 0.87.2 to older hosts. Analyzer 0.14.2 and content 0.86.7 remain independent.
 
@@ -27,7 +45,7 @@ The historical [0.86.8.7 review and memory delivery](docs/plans/code-quality/DEL
 | Need | Maintained source |
 | --- | --- |
 | Use the plugin | [Artist guide](docs/ARTIST_GUIDE.md), [Layout and falloff](docs/LAYOUT_AND_FALLOFF.md) |
-| Install or build | [Installation/build](docs/Max_2027_Installation.md); [0.87.3 Library startup correction](docs/plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md) |
+| Install or build | [Installation/build](docs/Max_2027_Installation.md); [current 0.87.4 package](docs/plans/source-preparation-editor-20261026/DELIVERY_0874.md) |
 | Understand implementation | [Architecture](docs/ARCHITECTURE.md), [engineering contracts](docs/ENGINEERING_FOUNDATION.md) |
 | Find remaining work | [Execution ledger](docs/plans/improvement-program/PROGRESS.md), [defects and acceptance](docs/BACKLOG.md) |
 | Work in this repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md), [version policy](docs/Release_Versioning.md) |
@@ -80,6 +98,7 @@ Layers own receivers, models and population rules. Paint Areas retain receiver-b
 | `CyrusMCP/` | Bounded automation, package/plan 0.73.0/0.73 |
 | `CyrusLicensing/` | Independent licensing foundation |
 | `CyrusVegetationLab/` | Shared preparation/fitting core used by Scatter 0.87.0; the [independent Lab 0.3.1](CyrusVegetationLab/experiments/stem-live/GUIDE_031.md) and [historical Lab 0.1.0](CyrusVegetationLab/README.md) retain their own qualification |
+| `CyrusBotanyLab/` | Independent [original plant generator 0.1.0](CyrusBotanyLab/README.md), Max 2027; native tree/grass/flower experiment, separate from Scatter and the existing asset library |
 | `docs/` | Maintained guidance, contracts, evidence and separately labeled research |
 | `tools/rag/` | Local knowledge tooling and [current selection/verification](tools/rag/README.md) |
 

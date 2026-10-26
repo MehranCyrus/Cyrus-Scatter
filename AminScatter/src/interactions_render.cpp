@@ -9,6 +9,7 @@
 #include <atomic>
 #include <map>
 #include <MeshNormalSpec.h>
+#include <hold.h>
 #include <maxscript/macros/define_instantiation_functions.h>
 #undef ScripterExport
 #define ScripterExport __declspec(dllexport)
@@ -145,6 +146,9 @@ extern "C" __declspec(dllexport) ClassDesc* CyrusInteractionsOutputDesc(){static
 
 def_visible_primitive(cyrusInteractionRenderNodes,"cyrusInteractionRenderNodes");
 Value* cyrusInteractionRenderNodes_cf(Value** a,int n){check_arg_count(cyrusInteractionRenderNodes,2,n);auto runtime=cyrus::interactionRuntime(a[0]);type_check(a[1],Array,_T("previous interaction output nodes"));auto* old=static_cast<Array*>(a[1]);
+    // These derived nodes are rebuilt from authored roles and definitions. Their
+    // reference/material changes must not become edits or invalidate Redo.
+    HoldSuspend derivedPublication;
     auto* owner=Animatable::GetAnimByHandle(runtime->controller);if(!owner||owner->SuperClassID()!=BASENODE_CLASS_ID)throw RuntimeError(_T("Interaction owner was removed"));
     one_typed_value_local(Array* result);vl.result=new Array(0);
     struct Entry {INode* node;unsigned layer,slot;std::string key;Mtl* material;std::unique_ptr<cyrus::InteractionRender::OwnerWatch> watch;std::shared_ptr<const cyrus::RenderPacket> packet;};
@@ -164,7 +168,7 @@ Value* cyrusInteractionRenderNodes_cf(Value** a,int n){check_arg_count(cyrusInte
     // nodes are untouched until every binding has a complete successor.
     for(auto& item:stage){auto* object=cyrus::output(item.node);object->owner=runtime->controller;object->layer=item.layer;object->slot=item.slot;object->key=std::move(item.key);object->watch=std::move(item.watch);object->packet.store(std::move(item.packet));object->ivalid.SetEmpty();}
     runtime->renderNodes.swap(handles);
-    for(auto& item:stage){try{item.node->SetMtl(item.material);item.node->SetRenderable(TRUE);cyrus::output(item.node)->NotifyDependents(FOREVER,PART_GEOM,REFMSG_CHANGE);}catch(...){/* An observer cannot roll back complete numeric packets. */}}
+    for(auto& item:stage){try{if(item.node->GetMtl()!=item.material)item.node->SetMtl(item.material);if(!item.node->Renderable())item.node->SetRenderable(TRUE);cyrus::output(item.node)->NotifyDependents(FOREVER,PART_GEOM,REFMSG_CHANGE);}catch(...){/* An observer cannot roll back complete numeric packets. */}}
     return_value(vl.result);
 }
 

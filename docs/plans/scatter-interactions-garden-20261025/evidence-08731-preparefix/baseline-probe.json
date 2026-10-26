@@ -1,0 +1,9 @@
+{
+  "native_capability": 6,
+  "ids_type": "ArrayParameter",
+  "copied_ids_type": "ParamBlock2ParamBlock2",
+  "collected_ids_type": "Array",
+  "ui_text": "-- No \"\"findItem\"\" function for ReferenceTarget:ParamBlock2",
+  "definitions": 0,
+  "status": "reproduced"
+}

@@ -1,0 +1,143 @@
+{
+  "schema": "cyrus.interactions.workflow-qualification/1",
+  "version": "0.87.3",
+  "native_capability": 5,
+  "saved_schema": 61,
+  "host": 2027,
+  "original_scene": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\New Plants test.max",
+    "sha256": "62af55f1b9f8c826aa0b07261e11b706e71aaa6cc2ffa87b5e1a7e9d41c75399",
+    "unchanged": true
+  },
+  "package": {
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3-20261026-workflow-r2\\CyrusScatter-0.87.3-Max2027.mzp",
+    "sha256": "142e4fd53f5efcbaccc2a7194439a84f6dfbfe630a684c71f8bd31c7106f53af",
+    "producer": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0873-workflow-20261026-01\\native-06\\receipt.json",
+    "tests_run": true,
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.",
+    "files": {
+      "AminScatter.dlx": "95f40c80ac6bf364806964db635057a42cc090b497ff34e87db2e5f1ff61882b",
+      "CyrusBrush.dlx": "094dd36a181b1834edcb04b5e77de463160a678e5ce6fa0f2dfc0856b179acdd",
+      "CyrusBrushStorage.dlh": "07d31c8c140a1dc0b8e7ea023dd6165f255c9b141de7b27304a221aff5858301",
+      "CyrusGallery.dll": "31d66a25a9b27c9fcb2af7e808effb563867e288eaab487cfafe0da9c75dc5fa",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.ms": "e0bcc20a5e05b970c3e90bc52592e5adab6d46c75e612784ad8425f77c18e0c7",
+      "CyrusScatterEdit.dlm": "5289bb3630d8d902b4bd40eaa8782ecfa843a1a90f3df622ebf143875feab6bc"
+    }
+  },
+  "trial": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3-20261026-workflow-r2\\Trials\\New_Plants_Interaction_Workflow_0.87.3.max",
+    "sha256": "2cd7a109fe54c161392d3f3ce1366f01568dad7cb3aae51e717f78c85ab364f8"
+  },
+  "checks": {
+    "native_tests": "59/59",
+    "generated": "pass",
+    "control_assertions": 37,
+    "lifecycle_assertions": 9,
+    "numeric_sweep_before": {
+      "cases": 24,
+      "failures": 1
+    },
+    "numeric_sweep_after": {
+      "cases": 24,
+      "failures": 0
+    },
+    "edit_moves": 4,
+    "full_mesh_move_audits": true,
+    "undo_redo": "gap and individual collider pass",
+    "physical_drag_final_position": "[901.079,-1176.49,81.0809]"
+  },
+  "command_seconds": [
+    0.30223659984767437,
+    0.26966640003956854,
+    0.3236163998953998,
+    0.19900459982454777
+  ],
+  "numeric_fit_ms": [
+    44.2643,
+    32.118,
+    57.0007,
+    0.0612
+  ],
+  "scope": "Owned standard-plugin Max 2027 profile. Command timing is not FPS; complete visible mesh audit uses double precision. Original file predates the screenshot configuration; same failure class was reproduced, not its exact guide index.",
+  "remaining": [
+    "Renderer-specific materials and float delivery",
+    "Held-pointer FPS, long sessions and larger/new geometry cases",
+    "Immediate source-node deletion before updating retained placements",
+    "Exposed-root collider generation remains on hold"
+  ],
+  "evidence": {
+    "baseline.json": {
+      "path": "evidence-workflow-0873/baseline.json",
+      "sha256": "fb9b503a0280e579e6875c70abd253dd189427c9c5e3d5af7fb13ad3ee197d88"
+    },
+    "baseline-loaded.json": {
+      "path": "evidence-workflow-0873/baseline-loaded.json",
+      "sha256": "0da556767d2e95ff541ff3a759b434f3d4047bf0f0e6b82299ba0e6ff416a72f"
+    },
+    "sweep-before.json": {
+      "path": "evidence-workflow-0873/sweep-before.json",
+      "sha256": "e15098691320bc6e9772c69c4f382c659100ab02eb57e0f83b89882171569d29"
+    },
+    "guide-probe.json": {
+      "path": "evidence-workflow-0873/guide-probe.json",
+      "sha256": "3fdecfe19180632cce2dadb8907281a657cc5c687feff57fc69b2bfa73624a1d"
+    },
+    "sweep-final.json": {
+      "path": "evidence-workflow-0873/sweep-final.json",
+      "sha256": "3e47465d0a18fc45489af9881e61819bcf33aa121daae4ecbe5f4d2952d7e5a6"
+    },
+    "native-receipt.json": {
+      "path": "evidence-workflow-0873/native-receipt.json",
+      "sha256": "9118a03ea5f7c77acc2c4bfee6f2ad42c7de4058144a4efc16f4346fa0ad6ac8"
+    },
+    "native-tests.log": {
+      "path": "evidence-workflow-0873/native-tests.log",
+      "sha256": "e8d6a9056d4caa177eb6910c44d1fd52aaa2704467e76bb757c89b1dcc1e466e"
+    },
+    "generated-check.json": {
+      "path": "evidence-workflow-0873/generated-check.json",
+      "sha256": "ea4d1ba990ad49fefc8c27daa5d6877b0ee7ff1a73655eb0a04d727e6da81012"
+    },
+    "package-identity.json": {
+      "path": "evidence-workflow-0873/package-identity.json",
+      "sha256": "cbf3a44561f854ba5feac5fb79cb32f560e81e02639e5135b13a5fbd3905786d"
+    },
+    "loaded-identity.json": {
+      "path": "evidence-workflow-0873/loaded-identity.json",
+      "sha256": "f53346d39e97439672699792ecec6017dfeadb3db3f3fc391a719e031be28134"
+    },
+    "controls.json": {
+      "path": "evidence-workflow-0873/controls.json",
+      "sha256": "e6b4be542c4780e9ea86a60eecb5e709c9f0c7f520b9d1f90b380c502934bf3f"
+    },
+    "contacts.json": {
+      "path": "evidence-workflow-0873/contacts.json",
+      "sha256": "817ff6a8e052320d8f5a93b50053da688aac1dd7f8d36332708be74074932b8b"
+    },
+    "lifecycle.json": {
+      "path": "evidence-workflow-0873/lifecycle.json",
+      "sha256": "bf52fcebb78fb23f8cc058a8edbb249cb8df33c573cccea969ec50f7a83bfbf0"
+    },
+    "undo.json": {
+      "path": "evidence-workflow-0873/undo.json",
+      "sha256": "7216a61d2f011d257ea5d52d07f023c822b4f5629022964158d1635fc3939e2f"
+    },
+    "trial.json": {
+      "path": "evidence-workflow-0873/trial.json",
+      "sha256": "3710647cec4e42df347afe0c70e6ae8389f44ff308500cc91e4da0c8327afb4e"
+    },
+    "physical-drag.json": {
+      "path": "evidence-workflow-0873/physical-drag.json",
+      "sha256": "16d599fe52534a3cb1e5e4184fc68fedc25bc130fdd27d1d7b9b4c281d553c48"
+    },
+    "physical-drag-position.txt": {
+      "path": "evidence-workflow-0873/physical-drag-position.txt",
+      "sha256": "acdce29c5c7bbef22f4161c63a1b6b9eb10ef698c4488e77556f9e494a741f87"
+    },
+    "superseded-save-failure.json": {
+      "path": "evidence-workflow-0873/superseded-save-failure.json",
+      "sha256": "38f26360a2933397c5064360f3e57ed0b9597ed983556d6e021bd58efa37ebea"
+    }
+  }
+}

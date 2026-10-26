@@ -1,0 +1,4 @@
+PASS: namespaces, declaration scope, complete field mapping, control property guards and cold event guards
+PASS: retired editor/navigation absence, source conversion controls and Band layout
+PASS: independent Band scale profile controls and captured scale graph channel
+PASS: lazy page factories, first-open ownership and action cleanup

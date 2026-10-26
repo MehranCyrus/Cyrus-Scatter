@@ -1,0 +1,126 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/preparation-editor-0874-20261026-01/native-04
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/preparation-editor-0874-20261026-01/native-04
+      Start  1: scatter_interactions
+ 1/60 Test  #1: scatter_interactions ..............   Passed    0.67 sec
+      Start  2: scatter_preparation_authoring
+ 2/60 Test  #2: scatter_preparation_authoring .....   Passed    0.06 sec
+      Start  3: scatter_edit_binding
+ 3/60 Test  #3: scatter_edit_binding ..............   Passed    0.31 sec
+      Start  4: scatter_source_radius
+ 4/60 Test  #4: scatter_source_radius .............   Passed    0.07 sec
+      Start  5: scatter_edit_state
+ 5/60 Test  #5: scatter_edit_state ................   Passed    0.07 sec
+      Start  6: scatter_source_measurement
+ 6/60 Test  #6: scatter_source_measurement ........   Passed    0.05 sec
+      Start  7: scatter_spline_export
+ 7/60 Test  #7: scatter_spline_export .............   Passed    0.30 sec
+      Start  8: scatter_spline_budget
+ 8/60 Test  #8: scatter_spline_budget .............   Passed    0.12 sec
+      Start  9: scatter_brush_atlas
+ 9/60 Test  #9: scatter_brush_atlas ...............   Passed    2.03 sec
+      Start 10: scatter_placement_store
+10/60 Test #10: scatter_placement_store ...........   Passed    0.15 sec
+      Start 11: scatter_placement_store_failure
+11/60 Test #11: scatter_placement_store_failure ...   Passed    0.14 sec
+      Start 12: scatter_placement_publication
+12/60 Test #12: scatter_placement_publication .....   Passed    0.20 sec
+      Start 13: scatter_script_memory
+13/60 Test #13: scatter_script_memory .............   Passed    0.05 sec
+      Start 14: scatter_edit_blocks
+14/60 Test #14: scatter_edit_blocks ...............   Passed    0.09 sec
+      Start 15: scatter_density_image
+15/60 Test #15: scatter_density_image .............   Passed    0.06 sec
+      Start 16: scatter_grid
+16/60 Test #16: scatter_grid ......................   Passed    0.37 sec
+      Start 17: scatter_native_remediation
+17/60 Test #17: scatter_native_remediation ........   Passed    9.86 sec
+      Start 18: viewport_memory
+18/60 Test #18: viewport_memory ...................   Passed    0.07 sec
+      Start 19: scatter_direction_orientation
+19/60 Test #19: scatter_direction_orientation .....   Passed    0.09 sec
+      Start 20: scatter_recipes
+20/60 Test #20: scatter_recipes ...................   Passed    0.28 sec
+      Start 21: scatter_recipe_library
+21/60 Test #21: scatter_recipe_library ............   Passed    2.71 sec
+      Start 22: scatter_recipe_catalog
+22/60 Test #22: scatter_recipe_catalog ............   Passed    5.04 sec
+      Start 23: scatter_recipe_store
+23/60 Test #23: scatter_recipe_store ..............   Passed    0.52 sec
+      Start 24: scatter_asset_package
+24/60 Test #24: scatter_asset_package .............   Passed    2.44 sec
+      Start 25: scatter_asset_mesh
+25/60 Test #25: scatter_asset_mesh ................   Passed    0.44 sec
+      Start 26: scatter_asset_shader
+26/60 Test #26: scatter_asset_shader ..............   Passed    0.78 sec
+      Start 27: scatter_asset_image
+27/60 Test #27: scatter_asset_image ...............   Passed    0.14 sec
+      Start 28: scatter_mesh_density
+28/60 Test #28: scatter_mesh_density ..............   Passed    0.10 sec
+      Start 29: scatter_surface_filter
+29/60 Test #29: scatter_surface_filter ............   Passed    0.16 sec
+      Start 30: scatter_presets
+30/60 Test #30: scatter_presets ...................   Passed    0.15 sec
+      Start 31: scatter_spline_bands
+31/60 Test #31: scatter_spline_bands ..............   Passed    3.89 sec
+      Start 32: scatter_spline_overlay
+32/60 Test #32: scatter_spline_overlay ............   Passed    0.08 sec
+      Start 33: scatter_publication
+33/60 Test #33: scatter_publication ...............   Passed    0.05 sec
+      Start 34: scatter_receivers
+34/60 Test #34: scatter_receivers .................   Passed    0.33 sec
+      Start 35: scatter_diagnostics
+35/60 Test #35: scatter_diagnostics ...............   Passed    0.05 sec
+      Start 36: scatter_procedural
+36/60 Test #36: scatter_procedural ................   Passed    0.52 sec
+      Start 37: scatter_source_clearance
+37/60 Test #37: scatter_source_clearance ..........   Passed    0.70 sec
+      Start 38: scatter_group_spacing
+38/60 Test #38: scatter_group_spacing .............   Passed    0.16 sec
+      Start 39: scatter_brush
+39/60 Test #39: scatter_brush .....................   Passed    0.51 sec
+      Start 40: scatter_brush_conversion
+40/60 Test #40: scatter_brush_conversion ..........   Passed    0.14 sec
+      Start 41: scatter_brush_feedback
+41/60 Test #41: scatter_brush_feedback ............   Passed    0.07 sec
+      Start 42: scatter_preview_sampling
+42/60 Test #42: scatter_preview_sampling ..........   Passed    0.31 sec
+      Start 43: scatter_viewport_policy
+43/60 Test #43: scatter_viewport_policy ...........   Passed    0.30 sec
+      Start 44: scatter_threading
+44/60 Test #44: scatter_threading .................   Passed    0.17 sec
+      Start 45: scatter_prepared_bands
+45/60 Test #45: scatter_prepared_bands ............   Passed    0.10 sec
+      Start 46: scatter_core
+46/60 Test #46: scatter_core ......................   Passed    0.23 sec
+      Start 47: scatter_spacing
+47/60 Test #47: scatter_spacing ...................   Passed    7.02 sec
+      Start 48: scatter_weights
+48/60 Test #48: scatter_weights ...................   Passed    0.69 sec
+      Start 49: scatter_orientation
+49/60 Test #49: scatter_orientation ...............   Passed    0.08 sec
+      Start 50: scatter_edge_border
+50/60 Test #50: scatter_edge_border ...............   Passed    0.06 sec
+      Start 51: scatter_boundary_falloff
+51/60 Test #51: scatter_boundary_falloff ..........   Passed    0.13 sec
+      Start 52: license_local_clock
+52/60 Test #52: license_local_clock ...............   Passed    0.06 sec
+      Start 53: license_local_key
+53/60 Test #53: license_local_key .................   Passed    0.04 sec
+      Start 54: license_local_store
+54/60 Test #54: license_local_store ...............   Passed    0.05 sec
+      Start 55: license_policy_defaults
+55/60 Test #55: license_policy_defaults ...........   Passed    0.06 sec
+      Start 56: license_policy_lifecycle
+56/60 Test #56: license_policy_lifecycle ..........   Passed    0.02 sec
+      Start 57: license_policy_continuity
+57/60 Test #57: license_policy_continuity .........   Passed    0.02 sec
+      Start 58: license_policy_facts
+58/60 Test #58: license_policy_facts ..............   Passed    0.02 sec
+      Start 59: license_policy_deadlines
+59/60 Test #59: license_policy_deadlines ..........   Passed    0.02 sec
+      Start 60: license_policy_extension
+60/60 Test #60: license_policy_extension ..........   Passed    0.13 sec
+
+100% tests passed, 0 tests failed out of 60
+
+Total Test time (real) =  43.73 sec

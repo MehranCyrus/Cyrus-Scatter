@@ -1,0 +1,14 @@
+{
+  "open": false,
+  "scene_source": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+  "status": "pass",
+  "committed_authoring": {
+    "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+    "version": 1,
+    "parts": 1,
+    "roles": {
+      "3": 1
+    },
+    "sha256": "af66e0dcf5ceb1f6100b5c82b0343daed1a7c4d6e77d757faf8dfd608f72a9a5"
+  }
+}

@@ -696,7 +696,7 @@ fn AminScatterCopyLayer origin destination variation:#same = (
         destination.bandArrangement=origin.bandArrangement
         destination.analyzerNode=origin.analyzerNode
         destination.layerIDColor=origin.layerIDColor
-        for key in #(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumWU,#interactionMinimumM,#interactionUnitsPending,#interactionUnitsNotice,#interactionFoliage,#interactionDefinitionRevision) do setProperty destination key (getProperty origin key)
+        for key in #(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumWU,#interactionMinimumM,#interactionUnitsPending,#interactionUnitsNotice,#interactionFoliage,#interactionDefinitionRevision,#interactionMaxVertices,#interactionMaxTriangles,#interactionMaxParts,#interactionMaxGuides,#interactionMaxPreview,#interactionMemoryMiB,#interactionWorkMillions,#interactionConnectionM) do setProperty destination key (getProperty origin key)
         destination.interactionSourceIDs=origin.interactionSourceIDs as array;destination.interactionDefinitions=origin.interactionDefinitions as array
         destination.interactionProxySourceIDs=origin.interactionProxySourceIDs as array;destination.interactionProxyNodes=origin.interactionProxyNodes as array
         destination.surfaceNodes=origin.validSurfaces();destination.surface=undefined
@@ -747,12 +747,66 @@ fn CyrusFlowLayerSummary root parent = (
 )
 
 global CyrusBrushSessionRoot,CyrusStopBrush
+global CyrusPreparationContext
+fn CyrusOpenPreparationEditor target node = (
+    if not CyrusLicenseCanEdit() do throw "Active Cyrus authoring license required."
+    if not isValidNode node or findItem (target.validSources()) node==0 do throw "Choose an original source model."
+    local root=target.interactionsRoot(),ownerNode=CyrusRecipeOwnerNode (target.interactionsRoot())
+    if not isValidNode ownerNode do throw "The Scatter owner is no longer in this scene."
+    local row=target.sourceRow node,id=target.sourceRowIDs[row],slot=findItem target.interactionSourceIDs target.sourceRowIDs[row]
+    local saved=if slot>0 then target.interactionDefinitions[slot] else undefined
+    local settings=target.interactionsSettings(),captured=cyrusInteractionSource node undefined settings 4
+    cyrusPreparationEditorOpen captured saved ((root.layerCaption target)+" / "+node.name) ownerNode target.interactionStiffness
+    CyrusPreparationContext=#(target,node,id,saved,settings as string,ownerNode,root)
+    true
+)
+fn CyrusPreparationEditorCommit = (
+    try(
+        if not CyrusLicenseCanEdit() do throw "Active Cyrus authoring license required."
+        if CyrusPreparationContext==undefined do throw "The editor owner is no longer available."
+        local ctx=CyrusPreparationContext,target=ctx[1],node=ctx[2],root=ctx[7]
+        if not isValidNode ctx[6] or ctx[6].baseObject!=root or not isValidNode node do throw "The editor source or Scatter controller was removed."
+        if findItem root.layerObjects target==0 and target!=root do throw "The source layer was removed."
+        local row=target.sourceRow node
+        if row<1 or target.sourceRowIDs[row]!=ctx[3] do throw "The original source slot was removed or replaced."
+        local slot=findItem target.interactionSourceIDs ctx[3],current=if slot>0 then target.interactionDefinitions[slot] else undefined
+        if current!=ctx[4] do throw "Preparation changed outside this editor. Close and reopen to edit that revision."
+        if (target.interactionsSettings() as string)!=ctx[5] do throw "Layer preparation settings changed. Close and reopen the editor. Your draft has not replaced them."
+        local definition=cyrusPreparationEditorDefinition()
+        -- Capture verifies current source geometry and the exact saved binding.
+        local verified=cyrusInteractionSource node definition (target.interactionsSettings()) 1
+        local beforeIDs=for value in target.interactionSourceIDs collect value
+        local beforeDefs=for value in target.interactionDefinitions collect value
+        local beforeRevision=target.interactionDefinitionRevision
+        undo "Edit Cyrus preparation" on (
+            try(
+                local ids=for value in beforeIDs collect value,defs=for value in beforeDefs collect value
+                if slot==0 then (append ids ctx[3];append defs definition) else defs[slot]=definition
+                target.interactionSourceIDs=ids;target.interactionDefinitions=defs;target.interactionDefinitionRevision+=1
+                target.interactionSourceCache=#()
+                target.interactionsChanged();root.interactionsEnsure()
+            )catch(
+                target.interactionSourceIDs=beforeIDs;target.interactionDefinitions=beforeDefs;target.interactionDefinitionRevision=beforeRevision
+                target.interactionSourceCache=#();target.interactionsChanged()
+                throw()
+            )
+        )
+        cyrusPreparationEditorCommitResult true ""
+        CyrusPreparationContext=undefined;CyrusViewportRecordsDirty=true
+        if CyrusScheduleUI!=undefined do CyrusScheduleUI()
+        redrawViews();true
+    )catch(
+        local message=getCurrentException()
+        cyrusPreparationEditorCommitResult false message
+        false
+    )
+)
 
 plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:61
+version:62
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -2401,7 +2455,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.87.3"
+    fn uiVersion = "0.87.4"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2655,7 +2709,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.87.3" on (
+        undo "Upgrade Cyrus scene to 0.87.4" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -3837,7 +3891,7 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 61. Create a new Cyrus 0.87.3 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 62. Create a new Cyrus 0.87.4 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
@@ -3845,21 +3899,21 @@ initialRollupState:0x8
     )
     fn procValidateNativeRoute = (
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=2 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.3 requires its matched native interaction modules. Restart Max with the complete package."
-        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.3 requires its matching source-aware Edit modules. Restart Max with the complete package."
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.3 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.3 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.3 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.3 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.3 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.3 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.3 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=8 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.4 requires its revised matched native interaction modules. Restart Max with the complete package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.4 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.4 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.4 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.4 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.4 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.4 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.4 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.4 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.3 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -4401,6 +4455,7 @@ initialRollupState:0x8
             local leaf=root.selectedLayer(),nextOwner=if leaf==undefined then undefined else root.logicalParent leaf
             if nextOwner!=owner do (
                 if CyrusBrushSessionRoot==root do CyrusStopBrush()
+                if owner!=undefined do owner.interactionsClearGuides()
                 max select
                 owner=nextOwner
                 for r in editors do (
@@ -6137,11 +6192,11 @@ initialRollupState:0x8
             for control in #(pathsList,pickPath,cornerMode,arrangementMode) do control.visible=obj.diversityMode==3
             analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
             pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
-            removePath.text="×";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
+            removePath.text="Ã—";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
             pickPath.enabled=not analyzed
             strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
-            addOutside.text="↗";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
-            addInside.text="↙";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
+            addOutside.text="â†—";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
+            addInside.text="â†™";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
             boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
             addInside.pos=[if boundaryOnly then 4 else selected_diversityUI.width/2+2,addOutside.pos.y]
@@ -6606,7 +6661,7 @@ initialRollupState:0x8
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version==58 then clearanceUpgradePending=true else if findItem #(59,60,61) version==0 do procSchemaValid=false
+        if version==58 then clearanceUpgradePending=true else if findItem #(59,60,61,62) version==0 do procSchemaValid=false
         if version==60 do interactionUnitsPending=true
         if not procSchemaValid do throw "Unsupported Cyrus scene schema; the scene is preserved."
         syncColors();markInputDirty()

@@ -1,0 +1,160 @@
+{
+  "schema": "cyrus.interactions-qualification/1",
+  "status": "scoped artist-test revision",
+  "version": "0.87.3",
+  "revision": "interactions-r4",
+  "host": 2027,
+  "scene_schema": 61,
+  "interactions_capability": 3,
+  "native_tests": 59,
+  "focused_python_tests": 34,
+  "ui_controls": 360,
+  "ui_sections": 13,
+  "package": {
+    "path": "dist\\CyrusScatter-0.87.3-20261026-interactions-r4\\CyrusScatter-0.87.3-Max2027.mzp",
+    "sha256": "283f942ad5fda901c64f5971d5cace8621e264253ad0ecbfd63f1ba53f255da6",
+    "payload": {
+      "AminScatter.dlx": "c3f294a945a1d00b6480ee81a13657cd649a2341d89617049155a320fa546b8a",
+      "CyrusBrush.dlx": "520f4e149efefe32410c2702a65649b323496ea5f6d28eba569ad66caa503316",
+      "CyrusBrushStorage.dlh": "2fd84982dc0bc4e818dc6777ee2fc53f6b04c88f45b9202134b8c7da3139ce7b",
+      "CyrusGallery.dll": "31d66a25a9b27c9fcb2af7e808effb563867e288eaab487cfafe0da9c75dc5fa",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.ms": "d5b3cbe510ca57fd3f7c9d581517550ee0690292fd7fcb1c09c88999d0d5cab1",
+      "CyrusScatterEdit.dlm": "07edac246bb5b7e9954992ebe35aaba3256c471d59617fbcf3613a107cb35e80"
+    }
+  },
+  "trial": {
+    "path": "dist\\CyrusScatter-0.87.3-20261026-interactions-r4\\Trials\\New_Plants_Interaction_0.87.3.max",
+    "sha256": "0c6cdef18792966632106c3bc71422839cdc31e6d11c614a1d91a09acdb3ac8c",
+    "reopened": true,
+    "materials": "Opaque diagnostic Standard materials on the trial grass and sphere only; original input preserved. Original Corona material presentation is not qualified."
+  },
+  "baseline_head": "2a68691da59e80d6d24ea248d8e386b836883dae",
+  "branch": "codex/workflow-0.75",
+  "preparation_sources": [
+    {
+      "name": "Outdoor_Plants_01_Rhapis_Excelsa_Small02_001",
+      "guides": 3095,
+      "capture_prepare_seconds": 0.5037731002084911
+    },
+    {
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+      "guides": 513,
+      "capture_prepare_seconds": 0.23877310007810593
+    },
+    {
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush05_001",
+      "guides": 1167,
+      "capture_prepare_seconds": 0.7219116000924259
+    },
+    {
+      "name": "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+      "guides": 65,
+      "capture_prepare_seconds": 0.15441059996373951
+    },
+    {
+      "name": "Outdoor_Plants_01_Brainea_Insignis_Fern_Medium03_001",
+      "guides": 3087,
+      "capture_prepare_seconds": 2.0333273999858648
+    },
+    {
+      "name": "Outdoor_Plants_01_Lemon_Balm_rly_001",
+      "guides": 60,
+      "capture_prepare_seconds": 0.017793300095945597
+    },
+    {
+      "name": "Outdoor_Plants_01_Lemon_Balm_rly3_001",
+      "guides": 26,
+      "capture_prepare_seconds": 0.011732199927791953
+    },
+    {
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+      "guides": 451,
+      "capture_prepare_seconds": 0.057219000067561865
+    },
+    {
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+      "guides": 264,
+      "capture_prepare_seconds": 0.03247469989582896
+    },
+    {
+      "name": "Outdoor_Plants_01_Carex_Elata_Aurea_Grass_001",
+      "guides": 1226,
+      "capture_prepare_seconds": 0.27094789990223944
+    }
+  ],
+  "scope_limits": [
+    "Physical held dragging and physical Undo/Redo remain unqualified; unrelated foreground captures excluded.",
+    "Contact poses were separate programmatic Cyrus Edit commands; each committed edit can re-evaluate procedural spacing/filter placement once.",
+    "Corona material presentation and production renderers remain unqualified; trial uses opaque diagnostic materials.",
+    "Maximum configured allowances are not maximum-scale performance qualification.",
+    "Earlier broad Python suite had an unrelated failure in concurrently edited MCP Undo/service work.",
+    "No Max 2024/2026 build, artist installation/restart, Git commit/push, website publication or knowledge corpus activation."
+  ],
+  "evidence": {
+    "host-preparation.json": {
+      "path": "evidence-0873-expansion/host-preparation.json",
+      "sha256": "f10f1f9905f5b2a415933ac45fac1cf10341881825078a0c06181daff9960653"
+    },
+    "contact-moves.json": {
+      "path": "evidence-0873-expansion/contact-moves.json",
+      "sha256": "b05442cb37627de82f7a17cb569c52191199b2ee6881cd281f2b7e5a2ddee3e4"
+    },
+    "persistence.json": {
+      "path": "evidence-0873-expansion/persistence.json",
+      "sha256": "f281931bc262ad41362713ef3c2486815c5c5ca29db41bb5fbaaaa9908e00c9c"
+    },
+    "finished-trial.json": {
+      "path": "evidence-0873-expansion/finished-trial.json",
+      "sha256": "04864e3cf434123346fc623101d0672ff4d3200dc081242c1bdfdacec98ff7b2"
+    },
+    "final-reopen.json": {
+      "path": "evidence-0873-expansion/final-reopen.json",
+      "sha256": "ab8ea44d517cd903b6aabd1b07256bb065f34dd1254bbd0ec866c8c308040546"
+    },
+    "loaded-identity.json": {
+      "path": "evidence-0873-expansion/loaded-identity.json",
+      "sha256": "82a66991aa0d7a8e16f42ea9ddc064d66bf4985245d6b1d6147632cc1dde7b5e"
+    },
+    "package-runtime-match.json": {
+      "path": "evidence-0873-expansion/package-runtime-match.json",
+      "sha256": "ea925331ddaacc657924f4c99488de49b4e499721dd7bd441143497a1aa1321f"
+    },
+    "baked-mesh-audit.json": {
+      "path": "evidence-0873-expansion/baked-mesh-audit.json",
+      "sha256": "0b973640bd1ac2244b5ac6c6072687a84851bc204b4f8881fbff7277fff861aa"
+    },
+    "preservation.json": {
+      "path": "evidence-0873-expansion/preservation.json",
+      "sha256": "70f461eead68208eb8377ec118ab7a67dc071711d4ea6927f105878dfeb53130"
+    },
+    "generated-check.json": {
+      "path": "evidence-0873-expansion/generated-check.json",
+      "sha256": "ae4cf669f9609af669b22b8af0c5f18c7abb064c9208f175cd3e6296d2b17e8f"
+    },
+    "native-producer.json": {
+      "path": "evidence-0873-expansion/native-producer.json",
+      "sha256": "374e5dfbbce1c755084ad083aafb13cc8a30906e1e0ba6cd8a7d64f174267b4a"
+    },
+    "actual-assets.log": {
+      "path": "evidence-0873-expansion/actual-assets.log",
+      "sha256": "10bfa3ad5de2ccd4cb8c0c17f53358a540e38d70c95fdcad49cd95b8a676bba1"
+    },
+    "asset-contact-4201.json": {
+      "path": "evidence-0873-expansion/asset-contact-4201.json",
+      "sha256": "8cb5091e003e113eb1bd74094f1cb1174e5a1548e279e41f58cfaf638e70415d"
+    },
+    "asset-contact-3967.json": {
+      "path": "evidence-0873-expansion/asset-contact-3967.json",
+      "sha256": "929a006118f2ab831548fe1a4672505de6e1cfb50333f33d225ea73703712b7a"
+    },
+    "asset-contact-4105.json": {
+      "path": "evidence-0873-expansion/asset-contact-4105.json",
+      "sha256": "b0d39ea4371594b008763a4c04b99c93ccc0779b90a8ffcefef66b3823b166b8"
+    },
+    "asset-contact-3823.json": {
+      "path": "evidence-0873-expansion/asset-contact-3823.json",
+      "sha256": "a3b789ff24f9ce7d4201b5e951b615f9de7de716df7a3905275c1c88a27f0a7a"
+    }
+  }
+}

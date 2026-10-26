@@ -1,6 +1,18 @@
 # Scatter interactions — garden investigation and implementation plan
 
-26 October 2026. **Current correction: [0.87.2](DELIVERY_0872.md), Max 2027 only.** [Artist guide](ARTIST_GUIDE_0872.md), [qualification](QUALIFICATION_0872.json) and [ownership/acceptance plan](IMPLEMENTATION_0872.md). Fixes explicit SI preparation handling, reviewed Arthropodium roots/branches/folded leaves and source-bound lightweight tree colliders. The [0.87.1 small-scene investigation](SMALL_SCENE_FINDINGS_20261026.md) is preserved as the before-state.
+**Current editor delivery: [0.87.4 Source Preparation Editor](../source-preparation-editor-20261026/DELIVERY_0874.md), Max 2027 only.** [Artist workflow](../source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md), [decisions and exact scope](../source-preparation-editor-20261026/IMPLEMENTATION_0874.md). The original research and broader matrix retain their planning status; the preceding patch below keeps its original qualification.
+
+**Preceding tested patch: [0.87.3.2 source controls and broad-leaf contact](DELIVERY_08732.md), Max 2027 only.** [Artist workflow](ARTIST_WORKFLOW_08732.md), [ownership/geometry plan](PLAN_08732.md), [exact qualification](QUALIFICATION_08732.json). Source + / remove, primary preparation settings, 22-pixel inline swatches and elevated broad-leaf crown preparation pass scoped checks; actual surface proof closes a reproduced triangle-only crossing. Native Interactions 7 / schema 61.
+
+26 October 2026. **Preceding tested correction: [0.87.3.1 preparation fix](PREPARATION_FIX_08731.md), Max 2027 only.** [Qualification](QUALIFICATION_PREPARATION_FIX_08731.json). Reproduced ParamBlock2 staging failure is corrected; scoped Prepare/settings/contact/Undo/persistence checks pass.
+
+26 October 2026. **Original build-only revision: [0.87.3.1 complete stem contact](DELIVERY_08731.md), Max 2027 only.** [Artist workflow](ARTIST_WORKFLOW_08731.md), [implementation contract](IMPLEMENTATION_08731.md). User-requested code/package delivery; native and host tests are deferred. Native Interactions 6 / schema 61.
+
+26 October 2026. **Preceding revision: [0.87.3 source workflow and contact repair](DELIVERY_WORKFLOW_0873.md), Max 2027 only.** [Artist workflow](ARTIST_WORKFLOW_0873.md), [implementation contract](WORKFLOW_REPAIR_0873.md). One role control, original-source guide review, automatic updates, full preview range and bounded visible-geometry refinement use native Interactions 5 / schema 61. Exact qualification and remaining acceptance are in the delivery.
+
+26 October 2026. **Earlier revision: [0.87.3 plant preparation expansion](DELIVERY_0873_EXPANSION.md), Max 2027 only.** [Preparation/limits](ARTIST_GUIDE_0873_EXPANSION.md), [qualification](QUALIFICATION_0873_EXPANSION.json). Ten supplied plant sources prepare in those scoped tests; later code is qualified separately.
+
+26 October 2026. **Preceding correction: [0.87.2](DELIVERY_0872.md), Max 2027 only.** [Artist guide](ARTIST_GUIDE_0872.md), [qualification](QUALIFICATION_0872.json) and [ownership/acceptance plan](IMPLEMENTATION_0872.md). Fixes explicit SI preparation handling, reviewed Arthropodium roots/branches/folded leaves and source-bound lightweight tree colliders. The [0.87.1 small-scene investigation](SMALL_SCENE_FINDINGS_20261026.md) is preserved as the before-state.
 
 25 October 2026. **0.87.0 is implemented as a scoped Max 2027 artist trial.** Start with the [delivery and remaining limits](DELIVERY_0870.md), [artist workflow](ARTIST_GUIDE_0870.md), [qualification manifest](QUALIFICATION_0870.json) and [execution/issue history](EXECUTION_0870.md). Documents 01–06 and the original investigation retain their pre-integration intake and proposal status; their old gaps are not the current delivery ledger. Broader physics, renderer and natural-bending acceptance remains separate.
 

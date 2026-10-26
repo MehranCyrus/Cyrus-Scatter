@@ -1,0 +1,173 @@
+{
+  "initial": {
+    "analyses": 1,
+    "geometry_uploads": 2,
+    "message": "Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.",
+    "open": true,
+    "parts": 2079,
+    "pick_ms": 0.0,
+    "preparation_ms": 84.70329999923706,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.02322103729471564,
+      "cache_realization_ms": 84.6494,
+      "can_prepare": true,
+      "complex_foliage_parts": 0,
+      "crown_root_guides": 36,
+      "delivered_preview_triangles": 50382,
+      "fixed_parts": 47,
+      "ground_level_m": -0.013978717538217703,
+      "ground_roots": 547,
+      "guide_inference_reused": true,
+      "guides": 547,
+      "max_attachment_distance_m": 0.030179874672971237,
+      "max_parent_distance_m": 0.0,
+      "parts": 2079,
+      "preview_triangles": 50382,
+      "profile": "Connectivity-derived tubes and geodesic ribbons",
+      "review_required": true,
+      "ribbon_guides": 547,
+      "seconds": 0.3099535,
+      "source_payload_bytes": 8162455,
+      "tube_guides": 0,
+      "unattached_parts": 0,
+      "unresolved_guides": 0,
+      "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+      "work_units": 13679874
+    },
+    "revision": 1,
+    "selected": [],
+    "selection_operations": 0,
+    "source_triangles": 50382,
+    "source_vertices": 38818,
+    "sphere": false,
+    "authoring_summary": {
+      "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+      "version": 1,
+      "parts": 0,
+      "roles": {},
+      "sha256": "163c4df02cb340a425f6597b87f27c5ea9ba9e9072a00ec8f443f9a7115946e3"
+    }
+  },
+  "fixed": {
+    "analyses": 2,
+    "geometry_uploads": 3,
+    "message": "Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.",
+    "open": true,
+    "parts": 2079,
+    "pick_ms": 0.0,
+    "preparation_ms": 387.0134000778198,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.02322103729471564,
+      "cache_realization_ms": 386.9648,
+      "can_prepare": true,
+      "complex_foliage_parts": 0,
+      "crown_root_guides": 35,
+      "delivered_preview_triangles": 50382,
+      "fixed_parts": 48,
+      "ground_level_m": -0.0018659217948879814,
+      "ground_roots": 546,
+      "guides": 546,
+      "max_attachment_distance_m": 0.030179874672971237,
+      "max_parent_distance_m": 0.0,
+      "parts": 2079,
+      "preview_triangles": 50382,
+      "profile": "Connectivity-derived tubes and geodesic ribbons",
+      "review_required": true,
+      "ribbon_guides": 546,
+      "seconds": 0.3016087,
+      "source_payload_bytes": 8158791,
+      "tube_guides": 0,
+      "unattached_parts": 0,
+      "unresolved_guides": 0,
+      "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+      "work_units": 13647120
+    },
+    "revision": 2,
+    "selected": [
+      2078
+    ],
+    "selection_operations": 0,
+    "source_triangles": 50382,
+    "source_vertices": 38818,
+    "sphere": false,
+    "authoring_summary": {
+      "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+      "version": 1,
+      "parts": 1,
+      "roles": {
+        "3": 1
+      },
+      "sha256": "bde608134a05b16d28803a77cbc2eb133f7eed98c89a887cd263c48e7d4c969e"
+    }
+  },
+  "manual": {
+    "analyses": 8,
+    "geometry_uploads": 9,
+    "message": "Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.",
+    "open": true,
+    "parts": 2079,
+    "pick_ms": 0.0,
+    "preparation_ms": 383.2511999607086,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.02322103729471564,
+      "cache_realization_ms": 383.2161,
+      "can_prepare": true,
+      "complex_foliage_parts": 0,
+      "crown_root_guides": 36,
+      "delivered_preview_triangles": 50382,
+      "fixed_parts": 47,
+      "ground_level_m": -0.013978717538217703,
+      "ground_roots": 547,
+      "guides": 547,
+      "max_attachment_distance_m": 0.030179874672971237,
+      "max_parent_distance_m": 0.0,
+      "parts": 2079,
+      "preview_triangles": 50382,
+      "profile": "Connectivity-derived tubes and geodesic ribbons",
+      "review_required": true,
+      "ribbon_guides": 547,
+      "seconds": 0.2970264,
+      "source_payload_bytes": 8162326,
+      "tube_guides": 0,
+      "unattached_parts": 0,
+      "unresolved_guides": 0,
+      "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+      "work_units": 13679874
+    },
+    "revision": 8,
+    "selected": [
+      2078
+    ],
+    "selection_operations": 0,
+    "source_triangles": 50382,
+    "source_vertices": 38818,
+    "sphere": false,
+    "authoring_summary": {
+      "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+      "version": 1,
+      "parts": 1,
+      "roles": {
+        "1": 1
+      },
+      "sha256": "49dd7632d6ab04706a02f34af2f49ac349d70ff534cb98897a8a6544387c4beb"
+    }
+  },
+  "status": "pass",
+  "authored_survives_prepare": true,
+  "cancel_preserves_definition": true,
+  "manual_pending_preserved": true,
+  "selected_part": 2078,
+  "trial": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\CyrusScatter_0874_OwnedTests\\Fern_Preparation_0874.max",
+  "committed_authoring": {
+    "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+    "version": 1,
+    "parts": 1,
+    "roles": {
+      "1": 1
+    },
+    "sha256": "8f32c9b41e4eaac0c12341980ec8280f92a09158489f7ad087b7725c0bb41701"
+  }
+}

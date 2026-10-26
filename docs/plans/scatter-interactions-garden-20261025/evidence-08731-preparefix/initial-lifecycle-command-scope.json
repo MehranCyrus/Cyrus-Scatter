@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "Additional source waits for one-step preparation",
+    "Prepare appends an ordinary array without cloning ParamBlock2",
+    "Automatic setting refresh updates every prepared source"
+  ],
+  "rejected_limit": "-- Runtime error: Cached visual source exceeds current Preparation limits.",
+  "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08731\\prepare_lifecycle.py\", line 23, in <module>\n    check('Rejected automatic preparation retains definitions and publication',definitions(grass)==before and root.interactionState==state and bool(report['rejected_limit']))\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08731\\prepare_lifecycle.py\", line 7, in check\n    def check(name,test):assert test,name;report['checks'].append(name);save()\n                                ^^^^\nAssertionError: Rejected automatic preparation retains definitions and publication\n"
+}

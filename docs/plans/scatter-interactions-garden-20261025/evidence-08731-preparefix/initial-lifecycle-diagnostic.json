@@ -1,0 +1,58 @@
+{
+  "keys_present": {
+    "before": true,
+    "state": true,
+    "grass": true,
+    "root": true
+  },
+  "vertices": 3000000,
+  "definitions_now": 1,
+  "source_ids": [
+    "28b0eb49-02d5-443b-af95-e7da9bac3f12"
+  ],
+  "root_error": "-- Runtime error: Attempt to access deleted scene object",
+  "statistics": {
+    "affected": 0,
+    "compute_participants": 1,
+    "coverage_queries": 0,
+    "covered": 0,
+    "error": "",
+    "failures": 0,
+    "fit_ms": 0.0012,
+    "fitted_guides": 0,
+    "generation": 1,
+    "hidden_roots": 0,
+    "hinge_fits": 0,
+    "host_runtime_reservation_bytes": 1075096,
+    "index_ms": 0.0372,
+    "index_payload_bytes": 10336,
+    "iterations": 0,
+    "layout_payload_bytes": 6909,
+    "mesh_refinement_work": 0,
+    "mesh_refinements": 0,
+    "obstacles": 1,
+    "plants": 50,
+    "pose_payload_bytes": 64,
+    "posed": 0,
+    "preview_ms": 2.6433,
+    "queries": 0,
+    "query_ms": 0.003,
+    "restored": 0,
+    "retained_covered_roots": 0,
+    "reused_poses": 0,
+    "reuses": 0,
+    "separation_queries": 0,
+    "thread_launch_fallback": false,
+    "total_ms": 0.0058,
+    "updates": 1
+  },
+  "definitions_unchanged": false,
+  "before_hashes": [
+    "f7cd415da7d3e1a121ab20376054fb5eef950c00e0a386368e1dccd43adfd004",
+    "f7cd415da7d3e1a121ab20376054fb5eef950c00e0a386368e1dccd43adfd004"
+  ],
+  "state_unchanged": true,
+  "current_hashes": [
+    "bee6a46b9e21855e22b1653341e36a4acf414968613f290aa84318460574aa8b"
+  ]
+}

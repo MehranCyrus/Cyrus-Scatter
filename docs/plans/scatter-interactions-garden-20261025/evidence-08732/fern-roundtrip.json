@@ -1,0 +1,87 @@
+{
+  "trial": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\CyrusScatter_08732_OwnedTests\\Neottopteris_Interaction_08732.max",
+  "definition_sha256": "e603af941818642cd15a1e2372c7b0b0774240e326d566783b30959cb2ee2615",
+  "source_id": "b480b759-4862-4692-a798-0fe100337458",
+  "audit_before_save": {
+    "passed": true,
+    "quality_limit_maximum_stem_edge_change": 0.25,
+    "results": [
+      {
+        "audit_ms": 5564.0007,
+        "delivered_float": false,
+        "identity": "c:4294967296",
+        "instance": 0,
+        "layer": 1,
+        "maximum_rigid_part_edge_change": 7.105427357601002e-14,
+        "maximum_stem_edge_change": 0.12363789079433041,
+        "minimum_surface_gap_m": 4.936409103247229e-05,
+        "penetrating_vertex_obstacle_pairs": 0,
+        "root_anchor_error_m": 0.0,
+        "touching_triangle_obstacle_pairs": 0,
+        "triangles": 50382
+      }
+    ],
+    "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+    "triangles": 50382
+  },
+  "file_sha256": "7be17cd6f88bcb7452568f8e0f8dc9f853a758d783dbe161d9dd091ac2c0f5f6",
+  "status": "pass",
+  "audit_after_reopen": {
+    "passed": true,
+    "quality_limit_maximum_stem_edge_change": 0.25,
+    "results": [
+      {
+        "audit_ms": 6061.5286,
+        "delivered_float": false,
+        "identity": "c:4294967296",
+        "instance": 0,
+        "layer": 1,
+        "maximum_rigid_part_edge_change": 7.105427357601002e-14,
+        "maximum_stem_edge_change": 0.12363789079433041,
+        "minimum_surface_gap_m": 4.936409103247229e-05,
+        "penetrating_vertex_obstacle_pairs": 0,
+        "root_anchor_error_m": 0.0,
+        "touching_triangle_obstacle_pairs": 0,
+        "triangles": 50382
+      }
+    ],
+    "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+    "triangles": 50382
+  },
+  "statistics": {
+    "affected": 1,
+    "compute_participants": 1,
+    "coverage_queries": 0,
+    "covered": 0,
+    "error": "",
+    "failures": 0,
+    "fit_ms": 7.4046,
+    "fitted_guides": 6,
+    "generation": 1,
+    "hidden_roots": 0,
+    "hinge_fits": 6,
+    "host_runtime_reservation_bytes": 1049616,
+    "index_ms": 0.0054,
+    "index_payload_bytes": 200,
+    "iterations": 0,
+    "layout_payload_bytes": 318,
+    "mesh_refinement_work": 9599,
+    "mesh_refinements": 1,
+    "obstacles": 1,
+    "plants": 1,
+    "pose_payload_bytes": 15524,
+    "posed": 1,
+    "preview_ms": 10.9835,
+    "queries": 1494,
+    "query_ms": 0.0024,
+    "restored": 0,
+    "retained_covered_roots": 0,
+    "reused_poses": 0,
+    "reuses": 0,
+    "separation_queries": 1,
+    "thread_launch_fallback": false,
+    "total_ms": 7.4091,
+    "updates": 1
+  },
+  "hwnd": 7346954
+}

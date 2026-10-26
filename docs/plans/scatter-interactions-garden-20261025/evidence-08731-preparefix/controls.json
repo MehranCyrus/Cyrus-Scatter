@@ -1,0 +1,44 @@
+{
+  "checks": [
+    "Current script loads with native capability 6",
+    "Actual Prepare button creates a source definition",
+    "Prepared state has no second acceptance step",
+    "Preparation does not rebuild placements",
+    "Reprepare retains one stable source binding",
+    "Optional review appears at original source",
+    "Optional review toggles off",
+    "1.0% updates without inference",
+    "25.0% updates without inference",
+    "100.0% updates without inference",
+    "Full blade preview restores all source triangles",
+    "Minimum stem automatically rebuilds prepared definition",
+    "Branch connection automatically rebuilds prepared definition",
+    "verticesLimitSpin updates prepared realization",
+    "trianglesLimitSpin updates prepared realization",
+    "partsLimitSpin updates prepared realization",
+    "guidesLimitSpin updates prepared realization",
+    "previewLimitSpin updates prepared realization",
+    "memoryLimitSpin updates prepared realization",
+    "workLimitSpin updates prepared realization",
+    "Contact controls update without source analysis",
+    "Automatic preparation preserves Manual pending amount"
+  ],
+  "prepare_seconds": 0.39219460007734597,
+  "definition_keys": [
+    "accepted",
+    "connection_reach_m",
+    "format",
+    "settings",
+    "source"
+  ],
+  "preview_triangles": [
+    230,
+    7082,
+    27501
+  ],
+  "minimum_definition_settings": [
+    0.009999999776482582,
+    1.0
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,12 @@
+{
+  "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions0874\\checks.py\", line 84, in <module>\n    report['moves']=[move(x) for x in offsets];assert any(m['statistics']['fitted_guides']>0 for m in report['moves'][:-1]);assert report['moves'][-1]['statistics']['posed']==0\n                     ~~~~^^^\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions0874\\checks.py\", line 80, in move\n    audit=json.loads(str(r.cyrusInteractionValidate(root.interactionState,2000000)[2]));assert audit['passed'],audit;assert stats['hidden_roots']==0\n                                                                                               ~~~~~^^^^^^^^^^\nAssertionError: {'passed': False, 'quality_limit_maximum_stem_edge_change': 0.25, 'results': [{'audit_ms': 377.638, 'delivered_float': False, 'identity': 'c:4294967296', 'instance': 0, 'layer': 1, 'maximum_rigid_part_edge_change': 1.5831780331154732e-13, 'maximum_stem_edge_change': 0.2854172235544008, 'minimum_surface_gap_m': 1.0196385181035752e-05, 'penetrating_vertex_obstacle_pairs': 0, 'root_anchor_error_m': 0.0, 'touching_triangle_obstacle_pairs': 0, 'triangles': 27501}], 'scope': 'Independent complete visible triangles in double precision; renderer float delivery is a separate check', 'triangles': 27501}\n",
+  "classification": "known solver-quality failure; not passing final contact acceptance",
+  "observed_producer": "native-03 (before keyboard routing correction)",
+  "observed_module_sha256": "0e1a4dc11675259d7c77bfa936889c2d0f1e1420b851671f4747f8bda2ae3693",
+  "sphere_radius_cm": 13,
+  "offset_cm": [
+    5,
+    0,
+    18
+  ]
+}

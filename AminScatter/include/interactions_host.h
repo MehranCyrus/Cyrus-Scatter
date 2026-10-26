@@ -16,15 +16,19 @@ struct InteractionHostSource {
     std::shared_ptr<const std::vector<Point3>> cornerNormals;
     std::shared_ptr<const MeshSnapshot> lightGeometry;
     std::shared_ptr<const interactions::Source> rig;
+    std::shared_ptr<const prep::Analysis> failedAnalysis;
     std::shared_ptr<const interactions::MeshGeometry> collider;
     std::shared_ptr<InteractionSourceWatch> watch;
     std::shared_ptr<InteractionSourceWatch> proxyWatch;
     AnimHandle proxyNodeHandle=0;
     std::shared_ptr<PreviewMemory> memory;
     std::string fingerprint;
+    std::string definitionHash;
     interactions::Bounds bounds;
     prep::Settings settings;
     int proxy=1;
+    // A collider-only mesh is not a reusable capture of its visual prototype.
+    bool visualMesh=true;
     std::size_t analysisCount=0;
 };
 struct InteractionPreviewCache;

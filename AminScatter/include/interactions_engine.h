@@ -29,8 +29,8 @@ struct Layout {
     Transform transform(std::size_t)const;
 };
 struct Statistics {
-    std::size_t plants=0,obstacles=0,affected=0,posed=0,covered=0,hiddenRoots=0,
-        fittedGuides=0,queries=0,coverageQueries=0,separationQueries=0,iterations=0,hinges=0,reusedPoses=0,restored=0,
+    std::size_t plants=0,obstacles=0,affected=0,posed=0,covered=0,hiddenRoots=0,retainedCoveredRoots=0,
+        fittedGuides=0,queries=0,coverageQueries=0,separationQueries=0,iterations=0,hinges=0,reusedPoses=0,restored=0,meshRefinements=0,meshRefinementWork=0,
         layoutPayloadBytes=0,indexPayloadBytes=0,posePayloadBytes=0;
     double indexMs=0,queryMs=0,fitMs=0,totalMs=0;
     unsigned participants=1;bool threadFallback=false;
@@ -41,6 +41,8 @@ struct Snapshot {
     std::map<std::size_t,Transform> overrides;
     std::set<std::size_t> disabled;
     std::unordered_map<std::size_t,std::shared_ptr<const Pose>> poses;
+    // Coverage warnings also apply to unchanged geometry; do not allocate poses for them.
+    std::unordered_map<std::size_t,std::size_t> retainedRootCounts;
     Statistics statistics;
 };
 class Engine {

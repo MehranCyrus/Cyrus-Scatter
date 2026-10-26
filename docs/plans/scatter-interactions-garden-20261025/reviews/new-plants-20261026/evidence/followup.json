@@ -1,0 +1,210 @@
+{
+  "plant_sweep": [
+    {
+      "name": "Outdoor_Plants_01_Rhapis_Excelsa_Small02_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush05_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Brainea_Insignis_Fern_Medium03_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade source exceeds 2,048 rooted groups"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Lemon_Balm_rly_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Lemon_Balm_rly3_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade sections are not connected in authored vertex order"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade sections are not connected in authored vertex order"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade sections are not connected in authored vertex order"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade sections are not connected in authored vertex order"
+        }
+      ]
+    },
+    {
+      "name": "Outdoor_Plants_01_Carex_Elata_Aurea_Grass_001",
+      "runs": [
+        {
+          "minimum_m": 0.001,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        },
+        {
+          "minimum_m": 0.01,
+          "foliage": 0.05,
+          "error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+        }
+      ]
+    }
+  ],
+  "preview_boundary": [
+    {
+      "ui_percent": 1,
+      "stored_fraction": 0.009999999776482582,
+      "settings": [
+        0.004999999888241291,
+        0.009999999776482582,
+        1.0
+      ],
+      "admitted": true
+    },
+    {
+      "ui_percent": 1.00001,
+      "stored_fraction": 0.01000010035932064,
+      "settings": [
+        0.004999999888241291,
+        0.01000010035932064,
+        1.0
+      ],
+      "admitted": true
+    },
+    {
+      "ui_percent": 5,
+      "stored_fraction": 0.05000000074505806,
+      "settings": [
+        0.004999999888241291,
+        0.05000000074505806,
+        1.0
+      ],
+      "admitted": true
+    },
+    {
+      "ui_percent": 25,
+      "stored_fraction": 0.25,
+      "settings": [
+        0.004999999888241291,
+        0.25,
+        1.0
+      ],
+      "admitted": true
+    }
+  ],
+  "sphere_closed_source": {
+    "accepted": false,
+    "analysis_count": 0,
+    "fingerprint": "bb33416ea0f5d5b8842692a38a7b75b2c3eaddeda9e8a75743bd321ec216326c",
+    "has_solid_collider": true,
+    "proxy_mode": 1
+  },
+  "update_result": "returned",
+  "update_layer_errors": [
+    "-- Runtime error: Analyze and accept guides for Outdoor_Plants_01_Grass_Wild_QMH_001 before enabling React to colliders.",
+    "-- Runtime error: Analyze and accept guides for Outdoor_Plants_01_Grass_Wild_QMH_001 before enabling React to colliders."
+  ],
+  "update_status": "No active contact result. Enable Collider on stones, analyze plant models, then enable React to colliders.",
+  "status": "complete"
+}

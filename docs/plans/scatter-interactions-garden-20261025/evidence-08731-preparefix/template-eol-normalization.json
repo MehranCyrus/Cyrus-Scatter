@@ -1,0 +1,6 @@
+{
+  "scope": "Template line endings only; generator strips CR and final generated script/native artifacts remain unchanged",
+  "template_as_built_sha256": "3937d5986484b63c64ee5f1e19515a8002f709708a89b4ac060a4010e6b8f591",
+  "canonical_template_sha256": "1f7b71168df04c40b219b542da544487eb3d142ee913a9647a01f7401ff97674",
+  "generated_script_sha256": "4ad83319536f25ac55895bcbef636824b7a11da7f470de4fa728c57f183f3eeb"
+}

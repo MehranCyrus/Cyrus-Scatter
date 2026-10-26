@@ -1,6 +1,16 @@
 # Current work and acceptance
 
-**Current correction: [0.87.3 Library startup](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md), Max 2027 only.** B39 is fixed within the recorded normal-settings/button/persistence tests. B38 and wider acceptance remain open. B40 exposed-root fitting is on hold.
+**27 October — [0.87.4 Source Preparation Editor](plans/source-preparation-editor-20261026/DELIVERY_0874.md):** Whole-piece authored correction and persistent source-slot intent are implemented. Remaining acceptance includes partial welded regions, wider plant families, DPI/driver coverage, large gardens and process-memory soak. One deeper grass overlap clears collision but produces 28.54% maximum stem-edge strain against the existing 25% quality limit; retain this failure for solver follow-up. B40 exposed-root collider work remains separate.
+
+**26 October — [tested preparation correction, 0.87.3.1](plans/scatter-interactions-garden-20261025/PREPARATION_FIX_08731.md):** ParamBlock2/findItem failure is reproduced and fixed. Scoped Max 2027 first/repeated/multi-source preparation, automatic settings, rejected changes, contact and persistence checks pass. B40 and broader renderer/topology/scale acceptance remain separate.
+
+**26 October — [0.87.3.1 complete stem contact](plans/scatter-interactions-garden-20261025/DELIVERY_08731.md):** Code removes projected-root skipping and makes preparation/settings automatic. Build-only user-testing delivery: native/host/visual/Undo/persistence/performance acceptance remains open. Impossible fixed-root conflicts are explicit; failed guides are not silently removed. B40 remains on hold.
+
+**26 October — [0.87.3 workflow/contact repair](plans/scatter-interactions-garden-20261025/DELIVERY_WORKFLOW_0873.md):** Simplifies layer roles, source preparation and review toggles; guards incomplete custom colliders; repairs the reproduced conservative-envelope iteration failure with bounded actual-geometry checks. Exact Max 2027 tests and remaining source-removal, renderer, topology and performance limitations are retained in the delivery. B40 remains on hold.
+
+**26 October — [0.87.3 New Plants correction](plans/scatter-interactions-garden-20261025/DELIVERY_0873_EXPANSION.md):** The ten-source preparation failures, preview endpoint and cache transitions have scoped corrections, with adjustable preparation allowances. Physical drag feel, arbitrary topology/materials, maximum-scale performance and B40 remain separate acceptance.
+
+**Earlier correction: [0.87.3 Library startup](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md), Max 2027 only.** B39 is fixed within the recorded normal-settings/button/persistence tests. B38 and wider acceptance remain open. B40 exposed-root fitting is on hold.
 
 **Preceding test delivery: [0.87.2 Interactions correction](plans/scatter-interactions-garden-20261025/DELIVERY_0872.md), Max 2027 only.** The exact small-scene unit, flower preparation and high-poly tree collider failures have scoped corrections. Trunk approximation review, other topologies, physical input, stronger bends, production renderer fidelity and soak remain open. Existing B37/B38 and unrelated roadmap work are retained.
 

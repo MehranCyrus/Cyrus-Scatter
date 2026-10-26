@@ -114,7 +114,7 @@ def main():
     assert text.count('rollout mainUI "Cyrus Scatter '+version+'"')==1
     container=text[text.index('plugin helper CyrusSourceContainer'):]
     assert re.findall(r'rollout (\w+) "',container)==['containerUI']
-    assert 'version:61\ninitialRollupState' in text and 'CyrusUnified2' in text
+    assert 'version:62\ninitialRollupState' in text and 'CyrusUnified2' in text
     for obsolete in ('groupPolicy','procUpgrade','paintIdentity','Layer priority','legacyUI','if true then','if false then'):
         assert obsolete not in text,obsolete
     for name in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations',
@@ -122,7 +122,7 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==351  # 0.87.2 adds four source-bound collider/unit actions.
+    assert len(current)==362  # Interactions shares canonical + / remove source actions.
     assert 'general/previewUI/memoryButton' in current
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
     assert len(layout['sections'])==13

@@ -1,4 +1,16 @@
-# Cyrus Scatter 0.87.3 — artist workflow
+# Cyrus Scatter 0.87.4 — artist workflow
+
+Use **Interactions > Edit preparation…** to select original source pieces and choose Bend, Follow stem or Keep fixed. Changes update the popup automatically; Use preparation commits them for the layer’s instances. Start with the [0.87.4 editor guide](plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md) and [matched Max 2027 MZP, trials and limits](plans/source-preparation-editor-20261026/DELIVERY_0874.md). Install through **Scripting > Run Script**, then restart Max.
+
+The [0.87.3.2 Interactions workflow](plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08732.md): + / remove sources in the same layer, Prepare model once, then automatic contact updates. Minimum stem, Refinement stiffness and Branch connection are primary controls; resource budgets are under Preparation limits. [Matched Max 2027 installer, saved fern trial and exact scope](plans/scatter-interactions-garden-20261025/DELIVERY_08732.md).
+
+Earlier versioned guidance below retains its historical scope.
+
+Use the [tested 0.87.3.1 correction](plans/scatter-interactions-garden-20261025/PREPARATION_FIX_08731.md) for its historical installer and exact Max 2027 scope. Prepare and settings updates no longer copy the whole parameter block.
+
+**Current Interactions: [0.87.3.1 workflow](plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08731.md).** One Prepare model action, automatic settings updates, actual-root hiding and all-contacting-guide fitting. Install the matching [Max 2027 MZP](plans/scatter-interactions-garden-20261025/DELIVERY_08731.md) through **Scripting > Run Script**, then restart Max. The tested correction and remaining limits are linked above.
+
+**Preceding 0.87.3 Interactions:** start with the [simplified source workflow](plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_0873.md) and [Max 2027 delivery](plans/scatter-interactions-garden-20261025/DELIVERY_WORKFLOW_0873.md). Choose a layer role, prepare original sources once, and use one review toggle. Contacts update automatically. Install its matched `workflow-r2` MZP through **Scripting > Run Script**, then restart Max. Earlier same-version Library and preparation installers have different native payloads. [Advanced preparation limits](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0873_EXPANSION.md) remain available.
 
 The [0.87.3 startup hotfix](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md) corrects the red undefined-function banner when opening **Layers > Recipes** and the same lookup when remembering a library folder. Use the [three-host EXE](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md), or run its Max 2027 MZP through **Scripting > Run Script**, then restart Max. New 2024/2026 packages have native checks; current runtime evidence remains Max 2027. Existing schema-61 scenes, library formats and content are retained.
 

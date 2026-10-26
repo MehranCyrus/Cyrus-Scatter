@@ -1,0 +1,10 @@
+{
+  "follow_parent": {
+    "piece": 2,
+    "parent_piece": 895
+  },
+  "root_patch": true,
+  "sphere_reuses_preparation": true,
+  "latest_draft_wins": true,
+  "status": "pass"
+}

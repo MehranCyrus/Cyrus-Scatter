@@ -1,0 +1,132 @@
+{
+  "sphere-selected-custom": {
+    "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\sphere-selected-custom.bin",
+    "info": {
+      "accepted": false,
+      "analysis_count": 0,
+      "fingerprint": "bb33416ea0f5d5b8842692a38a7b75b2c3eaddeda9e8a75743bd321ec216326c",
+      "has_solid_collider": true,
+      "proxy_mode": 3
+    }
+  },
+  "sphere-closed-after-custom": {
+    "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\sphere-closed-after-custom.bin",
+    "info": {
+      "accepted": false,
+      "analysis_count": 0,
+      "fingerprint": "bb33416ea0f5d5b8842692a38a7b75b2c3eaddeda9e8a75743bd321ec216326c",
+      "has_solid_collider": true,
+      "proxy_mode": 1
+    }
+  },
+  "control-sphere-fresh-closed": {
+    "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\control-sphere-fresh-closed.bin",
+    "info": {
+      "accepted": false,
+      "analysis_count": 0,
+      "fingerprint": "d15dcba31efcaf2d9df47f3b65a96df06d63c9799384e99929e721a7bead799d",
+      "has_solid_collider": true,
+      "proxy_mode": 1
+    }
+  },
+  "control-sphere-box": {
+    "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\control-sphere-box.bin",
+    "info": {
+      "accepted": false,
+      "analysis_count": 0,
+      "fingerprint": "8c911145a8af5989f0642ec9ed9a1c0dfda5d79def94642d3c64144d208b16e0",
+      "has_solid_collider": true,
+      "proxy_mode": 2
+    }
+  },
+  "control-sphere-closed-after-box": {
+    "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\new-plants-review-20261026-01\\host-01\\control-sphere-closed-after-box.bin",
+    "info": {
+      "accepted": false,
+      "analysis_count": 0,
+      "fingerprint": "8c911145a8af5989f0642ec9ed9a1c0dfda5d79def94642d3c64144d208b16e0",
+      "has_solid_collider": true,
+      "proxy_mode": 1
+    }
+  },
+  "preview_native_control": [
+    {
+      "preview_percent": 5,
+      "info": {
+        "accepted": false,
+        "analysis_count": 1,
+        "basal_band_m": 0.025,
+        "cache_realization_ms": 0.2615,
+        "can_prepare": true,
+        "delivered_preview_triangles": 8,
+        "fingerprint": "a270ae99bb48e58e9856d3803ad50ba153fdafb1bf0e065a53263f35a04e64bb",
+        "ground_roots": 1,
+        "guides": 1,
+        "has_solid_collider": false,
+        "max_root_elevation_m": 0.0,
+        "preview_triangles": 8,
+        "profile": "Ordered three-vertex folded blades",
+        "proxy_mode": 1,
+        "review_required": true,
+        "source_payload_bytes": 3131,
+        "unresolved_guides": 0,
+        "warning": "Review inferred bases. Original blade-root elevations are preserved within a bounded basal tuft."
+      },
+      "admitted": true
+    },
+    {
+      "preview_percent": 1,
+      "error": "MAXScript exception raised.\n-- Runtime error: Preparation minimum must be 1..100 mm and preview foliage 1..25%; received 5.000000 mm / 1.000000%.",
+      "admitted": false
+    },
+    {
+      "preview_percent": 1.00001,
+      "info": {
+        "accepted": false,
+        "analysis_count": 1,
+        "basal_band_m": 0.025,
+        "cache_realization_ms": 0.1189,
+        "can_prepare": true,
+        "delivered_preview_triangles": 8,
+        "fingerprint": "a270ae99bb48e58e9856d3803ad50ba153fdafb1bf0e065a53263f35a04e64bb",
+        "ground_roots": 1,
+        "guides": 1,
+        "has_solid_collider": false,
+        "max_root_elevation_m": 0.0,
+        "preview_triangles": 8,
+        "profile": "Ordered three-vertex folded blades",
+        "proxy_mode": 1,
+        "review_required": true,
+        "source_payload_bytes": 3131,
+        "unresolved_guides": 0,
+        "warning": "Review inferred bases. Original blade-root elevations are preserved within a bounded basal tuft."
+      },
+      "admitted": true
+    },
+    {
+      "preview_percent": 25,
+      "info": {
+        "accepted": false,
+        "analysis_count": 1,
+        "basal_band_m": 0.025,
+        "cache_realization_ms": 0.133,
+        "can_prepare": true,
+        "delivered_preview_triangles": 8,
+        "fingerprint": "a270ae99bb48e58e9856d3803ad50ba153fdafb1bf0e065a53263f35a04e64bb",
+        "ground_roots": 1,
+        "guides": 1,
+        "has_solid_collider": false,
+        "max_root_elevation_m": 0.0,
+        "preview_triangles": 8,
+        "profile": "Ordered three-vertex folded blades",
+        "proxy_mode": 1,
+        "review_required": true,
+        "source_payload_bytes": 3131,
+        "unresolved_guides": 0,
+        "warning": "Review inferred bases. Original blade-root elevations are preserved within a bounded basal tuft."
+      },
+      "admitted": true
+    }
+  ],
+  "status": "complete"
+}

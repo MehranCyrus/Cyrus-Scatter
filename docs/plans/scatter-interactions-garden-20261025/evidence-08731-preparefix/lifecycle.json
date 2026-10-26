@@ -1,0 +1,33 @@
+{
+  "checks": [
+    "Additional source waits for one-step preparation",
+    "Prepare appends an ordinary array without cloning ParamBlock2",
+    "Automatic setting refresh updates every prepared source",
+    "Rejected automatic preparation retains definitions and complete rows",
+    "Raising admission recovers without Prepare or Accept",
+    "Failed new source does not overwrite existing prepared arrays",
+    "Removing unsupported source restores readiness",
+    "Prepared source guides remain available after failures",
+    "Save removes transient source review",
+    "Two saved definitions and their source IDs round-trip",
+    "Reopened prepared scene is complete"
+  ],
+  "first_id": "28b0eb49-02d5-443b-af95-e7da9bac3f12",
+  "rejected_limit": "-- Runtime error: Cached visual source exceeds current Preparation limits.",
+  "before_rejected_source": [
+    "c175cad153756b37c22bf87208da8df5464c5833bf7242e004bf9215a3d7003a",
+    "c175cad153756b37c22bf87208da8df5464c5833bf7242e004bf9215a3d7003a"
+  ],
+  "rejected_source": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+  "saved_definitions": [
+    "c175cad153756b37c22bf87208da8df5464c5833bf7242e004bf9215a3d7003a",
+    "c175cad153756b37c22bf87208da8df5464c5833bf7242e004bf9215a3d7003a"
+  ],
+  "saved_ids": [
+    "28b0eb49-02d5-443b-af95-e7da9bac3f12",
+    "7c0f8911-9b69-4f7b-9f9a-f5f53a9884c0"
+  ],
+  "trial": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08731-preparefix-20261026-01\\final-host-02\\preparation-roundtrip.max",
+  "sha256": "e40361263f7b60768b6fd7cbd26e91327e7d06dbf51b7f65bd76ab90e1478031",
+  "status": "pass"
+}

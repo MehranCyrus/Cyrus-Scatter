@@ -1,0 +1,29 @@
+{
+  "pid": 58404,
+  "host": 2027,
+  "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08732-neottopteris-20261026-01\\final-host-03",
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-silent",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08732-neottopteris-20261026-01\\final-host-03\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08732-neottopteris-20261026-01\\final-host-03\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08732-neottopteris-20261026-01\\final-host-03\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08732-neottopteris-20261026-01\\final-host-03\\listener.log"
+  ],
+  "script": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08732\\test_host.py",
+  "script_sha256": "58f97cf01d0dfb57fa75634f0179d61777361d226a05b88d36cb9ed94e9084bb",
+  "payload_script_sha256": "5abe52eb767971dcff185edf9029a10124196a488d0b70fb6326c7377614d122",
+  "native": {
+    "AminScatter.dlx": "309bc8270fa026e9f308b484486df4e000f059cbdc6014add794a17d7fb0fa54",
+    "CyrusBrush.dlx": "5e80a48b1398a8dc3229ea0c5657265448d4e55353e577ef9cbf984154b36059",
+    "CyrusBrushStorage.dlh": "8a2276eb5640838e21b1e4d9acd9b1ca5fb91e81cf5a56dfac9219cc7de7e102",
+    "CyrusScatterEdit.dlm": "606955bb70266036b4ec9844ef099b02b8dfef05885199d7363cb5866f2e7c5c"
+  },
+  "artist_ini_sha256": "6579ecf2ecd5004b6d4bf955b73fcf91cf5392afda9425da9311d42720d87a2c"
+}

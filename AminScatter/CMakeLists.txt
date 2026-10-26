@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(CyrusScatter VERSION 0.87.3 LANGUAGES CXX)
+project(CyrusScatter VERSION 0.87.4 LANGUAGES CXX)
 enable_language(C)
 include(ExternalProject)
 set(CYRUS_JPEG_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/third_party/libjpeg-turbo-3.2.0")
@@ -35,6 +35,8 @@ set(CYRUS_INTERACTION_CORE "${CMAKE_CURRENT_LIST_DIR}/../CyrusVegetationLab/core
 add_library(cyrus_interaction_rig STATIC
   "${CYRUS_INTERACTION_RIG}/stem_core.cpp"
   "${CYRUS_INTERACTION_RIG}/analysis.cpp"
+  "${CYRUS_INTERACTION_RIG}/topology_analysis.cpp"
+  "${CYRUS_INTERACTION_RIG}/preparation_authoring.cpp"
   "${CYRUS_INTERACTION_RIG}/connectivity.cpp"
   "${CYRUS_INTERACTION_CORE}/fitter/fitter.cpp")
 target_compile_features(cyrus_interaction_rig PUBLIC cxx_std_20)
@@ -48,6 +50,9 @@ target_link_libraries(amin_scatter PUBLIC cyrus_interaction_rig)
 add_executable(interactions_tests tests/interactions_tests.cpp)
 target_link_libraries(interactions_tests PRIVATE amin_scatter)
 add_test(NAME scatter_interactions COMMAND interactions_tests)
+add_executable(preparation_authoring_tests tests/preparation_authoring_tests.cpp)
+target_link_libraries(preparation_authoring_tests PRIVATE amin_scatter)
+add_test(NAME scatter_preparation_authoring COMMAND preparation_authoring_tests)
 target_sources(amin_scatter PRIVATE src/placement_store.cpp src/placement_binding.cpp src/placement_publication.cpp src/placement_materialization.cpp)
 target_sources(amin_scatter PRIVATE src/edit_binding.cpp src/source_radius.cpp)
 foreach(test_name edit_binding source_radius edit_state)
@@ -252,6 +257,8 @@ if(AMIN_BUILD_MAX)
   endif()
   add_library(AminScatter MODULE src/max_bridge.cpp src/script_buffers.cpp src/placement_observation.cpp src/placement_value.cpp src/placement_publication_value.cpp src/placement_api.cpp src/input_validity.cpp src/diagnostics_bridge.cpp src/presets_bridge.cpp src/recipes_bridge.cpp src/preview.cpp src/point_display.cpp src/source_container.cpp src/cyrus_edit.cpp src/rollout_scroll.cpp src/rollout_flow.cpp src/cyrus_edit.rc)
   target_sources(AminScatter PRIVATE src/interactions_host.cpp src/interactions_preview.cpp src/interactions_render.cpp)
+  target_sources(AminScatter PRIVATE src/preparation_editor.cpp)
+  target_link_libraries(AminScatter PRIVATE d3d11 dxgi d3dcompiler)
   target_sources(AminScatter PRIVATE src/edit_binding_value.cpp)
   target_link_libraries(AminScatter PRIVATE amin_scatter core geom mesh gfx maxutil Maxscrpt paramblk2 bmm ole32 comctl32 GraphicsDriver GraphicsUtility DataBridge)
   cyrus_max_target(AminScatter)

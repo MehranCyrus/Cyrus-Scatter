@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "003e021de77d3d141820b608bc650fbd993724615aef2734efead8ab3ca5b062",
-  "control_inventory_sha256": "2f11e3c3c7be7db43e2ad576bf011f8444953acf9d4fe31e190163f6db42dcce",
-  "development_version": "0.87.3",
+  "capability_source_sha256": "9d181581812e00fdd8fd3975da7d3ec6682904c93a74cf5d986b43a2040f8cc6",
+  "control_inventory_sha256": "c86d3c29feaef97f8621c8e4e18bba65aabdf55d889d9532036a066faf39a6f5",
+  "development_version": "0.87.4",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified2",
   "features": [
@@ -4739,78 +4739,13 @@
     {
       "group": "layer",
       "section": "interactionsUI",
-      "kind": "checkbox",
-      "name": "colliderCheck",
-      "capabilities": [
-        "C37"
-      ],
-      "owner_context": "Selected layer recipe",
-      "help": "Use the accepted instances in this layer as obstacles. Move an individual stone with Cyrus Edit to update nearby reacting plants.",
-      "view": "Modify selected layer and selected container",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "interactionsUI",
-      "kind": "checkbox",
-      "name": "reactCheck",
-      "capabilities": [
-        "C37"
-      ],
-      "owner_context": "Selected layer recipe",
-      "help": "Bend prepared plant models near collider layers. Analyze and review each unique source once.",
-      "view": "Modify selected layer and selected container",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "interactionsUI",
-      "kind": "checkbox",
-      "name": "rootsCheck",
-      "capabilities": [
-        "C37"
-      ],
-      "owner_context": "Selected layer recipe",
-      "help": "Hide rooted groups below a collider's footprint within the plant's reach, or inside its solid base. When off, covered groups retain their original shape. Nearby uncovered roots stay planted and react.",
-      "view": "Modify selected layer and selected container",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "interactionsUI",
-      "kind": "spinner",
-      "name": "gapSpin",
-      "capabilities": [
-        "C37"
-      ],
-      "owner_context": "Selected layer recipe",
-      "help": "Additional visible clearance beyond the collider surface, up to 10 cm. Zero uses the prepared stem thickness only.",
-      "view": "Modify selected layer and selected container",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "interactionsUI",
-      "kind": "spinner",
-      "name": "stiffnessSpin",
-      "capabilities": [
-        "C37"
-      ],
-      "owner_context": "Selected layer recipe",
-      "help": "Resistance used when a guide needs iterative refinement. The fast contact fit preserves original guide curves by rotation; this setting does not change those rotations.",
-      "view": "Modify selected layer and selected container",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "interactionsUI",
       "kind": "dropdownlist",
-      "name": "proxyList",
+      "name": "roleList",
       "capabilities": [
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Mesh requires a closed manifold source. Box is an explicit conservative approximation.",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -4830,39 +4765,91 @@
     {
       "group": "layer",
       "section": "interactionsUI",
+      "kind": "pickbutton",
+      "name": "sourcePickButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "sourceRemoveButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "focusSourceButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "dropdownlist",
+      "name": "proxyList",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
       "kind": "button",
       "name": "buildTrunksButton",
       "capabilities": [
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Build missing lightweight closed trunks. Full visual trees stay unchanged; review the result. Pick a closed custom mesh for unusual shapes.",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
       "group": "layer",
       "section": "interactionsUI",
-      "kind": "pickbutton",
+      "kind": "button",
       "name": "pickColliderButton",
       "capabilities": [
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Bind a separate closed mesh to the selected visual source. Its relative transform defines every instance's collision shape.",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
       "group": "layer",
       "section": "interactionsUI",
-      "kind": "button",
+      "kind": "checkbutton",
       "name": "reviewColliderButton",
       "capabilities": [
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Show a frozen collision mesh at a published instance; the overlay is not the authored proxy.",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -4870,20 +4857,7 @@
       "group": "layer",
       "section": "interactionsUI",
       "kind": "button",
-      "name": "repairSettingsButton",
-      "capabilities": [
-        "C37"
-      ],
-      "owner_context": "Selected layer recipe",
-      "help": "Convert legacy distances to metres; repair invalid values to 5 mm / 5%. Scene geometry is not rescaled.",
-      "view": "Modify selected layer and selected container",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "interactionsUI",
-      "kind": "button",
-      "name": "analyzeButton",
+      "name": "prepareButton",
       "capabilities": [
         "C37"
       ],
@@ -4896,20 +4870,59 @@
       "group": "layer",
       "section": "interactionsUI",
       "kind": "button",
-      "name": "acceptButton",
+      "name": "editorButton",
       "capabilities": [
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Accept only after inspecting root positions, branch directions and foliage attachments.",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
       "group": "layer",
       "section": "interactionsUI",
-      "kind": "button",
-      "name": "clearButton",
+      "kind": "checkbutton",
+      "name": "guideReviewButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "checkbox",
+      "name": "rootsCheck",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "gapSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "foliageSpin",
       "capabilities": [
         "C37"
       ],
@@ -4922,12 +4935,12 @@
       "group": "layer",
       "section": "interactionsUI",
       "kind": "button",
-      "name": "applyButton",
+      "name": "retryButton",
       "capabilities": [
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Apply contact settings to the last completed scatter result. Pending Manual amount and seed edits wait for Update scatter.",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -4940,7 +4953,20 @@
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Independently check complete plant triangles near colliders. This slower check also reports root drift and stem/leaf strain.",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "repairSettingsButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -4961,12 +4987,129 @@
       "group": "layer",
       "section": "interactionsUI",
       "kind": "spinner",
-      "name": "foliageSpin",
+      "name": "stiffnessSpin",
       "capabilities": [
         "C37"
       ],
       "owner_context": "Selected layer recipe",
-      "help": "Draw a stable sample of complete leaves or grass blades in Mesh preview. Stem tubes use fewer rings. Full render and Bake retain all visible source faces.",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "connectionSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "verticesLimitSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "trianglesLimitSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "partsLimitSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "guidesLimitSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "previewLimitSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "memoryLimitSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "workLimitSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "button",
+      "name": "cleanColliderLinksButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

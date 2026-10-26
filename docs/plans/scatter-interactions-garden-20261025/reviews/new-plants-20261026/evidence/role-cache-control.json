@@ -1,0 +1,30 @@
+{
+  "fresh_plant": {
+    "accepted": false,
+    "analysis_count": 0,
+    "basal_band_m": 0.025,
+    "cache_realization_ms": 0.2615,
+    "can_prepare": true,
+    "delivered_preview_triangles": 8,
+    "fingerprint": "a270ae99bb48e58e9856d3803ad50ba153fdafb1bf0e065a53263f35a04e64bb",
+    "ground_roots": 1,
+    "guides": 1,
+    "has_solid_collider": false,
+    "max_root_elevation_m": 0.0,
+    "preview_triangles": 8,
+    "profile": "Ordered three-vertex folded blades",
+    "proxy_mode": 1,
+    "review_required": true,
+    "source_payload_bytes": 3131,
+    "unresolved_guides": 0,
+    "warning": "Review inferred bases. Original blade-root elevations are preserved within a bounded basal tuft."
+  },
+  "box": {
+    "accepted": false,
+    "analysis_count": 0,
+    "fingerprint": "c31ea483b1f91ad81b196c103ab66691cc320258bcfb581522ebd0f2f4be212a",
+    "has_solid_collider": true,
+    "proxy_mode": 2
+  },
+  "plant_after_box_error": "MAXScript exception raised.\n-- Runtime error: Blade profile requires connected ordered three-vertex sections with an optional terminal tip"
+}

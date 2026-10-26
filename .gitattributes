@@ -245,6 +245,10 @@
 # Preserve imported manifests and the already built source without editing it.
 /CyrusVegetationLab/** -text whitespace=cr-at-eol
 /docs/plans/scatter-interactions-garden-20261025/** -text whitespace=cr-at-eol
+# Preserve the source-preparation editor's byte-hashed documentation and evidence.
+/docs/plans/source-preparation-editor-20261026/** -text whitespace=cr-at-eol
+# Retain the historical as-built snapshot exactly as captured.
+/docs/plans/scatter-interactions-garden-20261025/evidence-08731-preparefix/template-as-built.ms -text -whitespace
 /docs/research/A/** -text -whitespace
 /docs/research/B/** -text -whitespace
 /docs/research/C/** -text -whitespace
@@ -278,6 +282,7 @@
 /AminScatter/third_party/libjpeg-turbo-3.2.0/CYRUS-INTEGRATION.md -text whitespace=cr-at-eol
 /AminScatter/third_party/libjpeg-turbo-3.2.0/CYRUS-SOURCE-PIN.json -text whitespace=cr-at-eol
 /AminScatter/tools/ui/approved-layout-rows.cjs -text whitespace=cr-at-eol
+/AminScatter/tools/ui/approved-layout.cjs -text whitespace=cr-at-eol
 /AminScatter/tools/ui/approved-layout.test.cjs -text whitespace=cr-at-eol
 /AminScatter/tools/ui/colored-lists.cjs -text whitespace=cr-at-eol
 /AminScatter/tools/ui/container-system.cjs -text whitespace=cr-at-eol

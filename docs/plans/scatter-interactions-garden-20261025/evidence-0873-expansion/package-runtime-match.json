@@ -1,0 +1,14 @@
+{
+  "status": "pass",
+  "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3-20261026-interactions-r4\\CyrusScatter-0.87.3-Max2027.mzp",
+  "package_sha256": "283f942ad5fda901c64f5971d5cace8621e264253ad0ecbfd63f1ba53f255da6",
+  "files": {
+    "AminScatter.dlx": "c3f294a945a1d00b6480ee81a13657cd649a2341d89617049155a320fa546b8a",
+    "CyrusBrush.dlx": "520f4e149efefe32410c2702a65649b323496ea5f6d28eba569ad66caa503316",
+    "CyrusBrushStorage.dlh": "2fd84982dc0bc4e818dc6777ee2fc53f6b04c88f45b9202134b8c7da3139ce7b",
+    "CyrusGallery.dll": "31d66a25a9b27c9fcb2af7e808effb563867e288eaab487cfafe0da9c75dc5fa",
+    "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+    "CyrusScatter.ms": "d5b3cbe510ca57fd3f7c9d581517550ee0690292fd7fcb1c09c88999d0d5cab1",
+    "CyrusScatterEdit.dlm": "07edac246bb5b7e9954992ebe35aaba3256c471d59617fbcf3613a107cb35e80"
+  }
+}

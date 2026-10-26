@@ -1,0 +1,77 @@
+{
+  "stage": "complete",
+  "scene_sha256": "62af55f1b9f8c826aa0b07261e11b706e71aaa6cc2ffa87b5e1a7e9d41c75399",
+  "native_capability": 4,
+  "metres_per_unit": 0.01,
+  "layers": [
+    {
+      "name": "Layer_01",
+      "amount": 1,
+      "collider": false,
+      "react": true,
+      "shape": 3,
+      "sources": [
+        "Outdoor_Plants_01_Grass_Wild_QMH_001"
+      ],
+      "proxies": [
+        "$Editable_Mesh:Outdoor_Plants_01_Dipteris_Conjugata_Small03_001 - Trunk collider001 @ [917.705688,-689.105103,0.000000]"
+      ],
+      "definitions": 0,
+      "minimum_m": 0.004999999888241291
+    },
+    {
+      "name": "Layer_02",
+      "amount": 1,
+      "collider": true,
+      "react": false,
+      "shape": 3,
+      "sources": [
+        "Sphere001"
+      ],
+      "proxies": [
+        "$Editable_Mesh:Sphere001 - Trunk collider001 @ [1017.978882,-776.538818,0.000000]"
+      ],
+      "definitions": 0,
+      "minimum_m": 0.004999999888241291
+    }
+  ],
+  "sphere_radius_wu": 17.9853572845459,
+  "missing_custom_error": "MAXScript exception raised.\n-- Runtime error: Build or pick a separate closed collider for this model",
+  "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0873-workflow-20261026-01\\baseline-02\\fifty-plants\\fixture.json",
+  "fit": {
+    "ok": true,
+    "statistics": {
+      "affected": 4,
+      "compute_participants": 1,
+      "coverage_queries": 8,
+      "covered": 0,
+      "error": "",
+      "failures": 0,
+      "fit_ms": 0.0697,
+      "fitted_guides": 0,
+      "generation": 1,
+      "hidden_roots": 0,
+      "hinge_fits": 0,
+      "host_runtime_reservation_bytes": 1075096,
+      "index_ms": 0.038,
+      "index_payload_bytes": 10336,
+      "iterations": 0,
+      "layout_payload_bytes": 6909,
+      "obstacles": 1,
+      "plants": 50,
+      "pose_payload_bytes": 0,
+      "posed": 0,
+      "preview_ms": 0.0,
+      "queries": 12,
+      "query_ms": 0.0043,
+      "restored": 0,
+      "reused_poses": 0,
+      "reuses": 0,
+      "separation_queries": 4,
+      "thread_launch_fallback": false,
+      "total_ms": 0.0748,
+      "updates": 1
+    },
+    "seconds": 0.018976400140672922
+  }
+}
