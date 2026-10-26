@@ -1,4 +1,5 @@
 #include "asset_package.h"
+#include "shared_package.h"
 #include "asset_mesh.h"
 #include "asset_bitmap.h"
 #include "asset_image.h"
@@ -8,6 +9,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <chrono>
 #include <fstream>
 #include <limits>
 #include <set>
@@ -22,7 +24,7 @@ namespace cyrus::assets {
 namespace {
 void require(bool value,const char* message){if(!value)throw std::invalid_argument(message);}
 static_assert(maxPlantMeshFileBytes==maxPlantMeshBytes);
-bool plantAssets(const Json& graph){return graph.at("version")==3&&graph.at("resourceProfile")=="plant-assets-v1";}
+bool plantAssets(const Json& graph){return graph.at("version")==4||(graph.at("version")==3&&graph.at("resourceProfile")=="plant-assets-v1");}
 bool imageMap(const Json& map){return map.at("kind")=="bitmap"||map.at("kind")=="corona-bitmap-v1";}
 std::uint64_t packageBudget(const Json& graph){return plantAssets(graph)?maxPlantPackageBytes:maxPackageBytes;}
 std::uint64_t fileBudget(const Json& graph,const Json& file){return plantAssets(graph)&&file.at("kind")=="mesh"?maxPlantMeshFileBytes:maxFileBytes;}
@@ -99,8 +101,10 @@ Json readDescriptor(const std::filesystem::path& root,const Json& row,std::size_
 }
 
 void validateGraph(const Json& graph,const Json& recipe){
-    const bool plant=graph.value("version",0)==3,context=graph.value("version",0)==2||plant;
+    const bool sharedMesh=graph.value("version",0)==4;
+    const bool plant=graph.value("version",0)==3,context=graph.value("version",0)==2||plant||sharedMesh;
     if(plant){keys(graph,{"format","version","nodes","meshes","materials","maps","files","externalRoles","splines","rendererProfile","resourceProfile"});require(graph.at("resourceProfile")=="plant-images-v1"||graph.at("resourceProfile")=="plant-assets-v1","Unsupported plant resource profile.");require(recipe.at("hostYear")==2027,"Plant renderer adapters require Max 2027 recipes.");}
+    else if(sharedMesh){keys(graph,{"format","version","nodes","meshes","materials","maps","files","externalRoles","splines","resourceProfile"});require(graph.at("resourceProfile")=="shared-static-v1","Unsupported shared geometry profile.");}
     else if(context)keys(graph,{"format","version","nodes","meshes","materials","maps","files","externalRoles","splines"});
     else keys(graph,{"format","version","nodes","meshes","materials","maps","files","externalRoles"});
     require(graph.at("format")=="cyrus.library-assets"&&(graph.at("version")==1||context),"Unsupported asset graph.");
@@ -124,7 +128,7 @@ void validateGraph(const Json& graph,const Json& recipe){
         vector(map.at("size"),2,1,plant?8192:4096);for(const auto& v:map.at("size"))require(v.is_number_integer(),"Bitmap dimensions must be integers.");
         bitmapPixels+=map.at("size")[0].get<std::uint64_t>()*map.at("size")[1].get<std::uint64_t>();require(bitmapPixels<=(plant?maxPlantBitmapPixels:maxPackageBitmapPixels),plant?"Plant bitmap map instances exceed 512 Mpixels.":"Package bitmap map instances exceed 16 Mpixels.");
         const auto& color=map.at("color");
-        if(plant&&!coronaBitmap){keys(color,{"mode","configSHA256","renderingSpace","dataSpace","inputSpace","inputGamma","effectiveGamma"});const auto& gamma=color.at("inputGamma");if(gamma.is_string())require(gamma=="auto","Unsupported bitmap input gamma symbol.");else number(gamma,0.1,10.);number(color.at("effectiveGamma"),0.1,10.);}
+        if((plant||sharedMesh)&&!coronaBitmap){keys(color,{"mode","configSHA256","renderingSpace","dataSpace","inputSpace","inputGamma","effectiveGamma"});const auto& gamma=color.at("inputGamma");if(gamma.is_string())require(gamma=="auto","Unsupported bitmap input gamma symbol.");else number(gamma,0.1,10.);number(color.at("effectiveGamma"),0.1,10.);}
         else keys(color,{"mode","configSHA256","renderingSpace","dataSpace","inputSpace"});
         require(color.at("mode")=="OCIO_Default","Unsupported bitmap colour pipeline.");hash(color.at("configSHA256"));for(const auto* name:{"renderingSpace","dataSpace","inputSpace"})require(!text(color.at(name)).empty(),"Bitmap colour space is missing.");
         if(coronaBitmap){require(color.at("inputSpace")==map.at("properties").at("colorSpaceStr"),"Corona bitmap input space disagrees with its shader interpretation.");continue;}
@@ -173,7 +177,10 @@ std::filesystem::path writePackage(const std::filesystem::path& rawInput,const s
     try{
         require(std::filesystem::create_directory(stage),"Cannot create package staging folder.");owned=true;notify("started");
         auto copy=[&](const std::filesystem::path& from,const Json& row,std::uint64_t cap){const auto relativePath=text(row.at("file"),240);const auto to=contained(stage,relativePath);const auto bytes=static_cast<std::uint64_t>(number(row.at("bytes"),1,static_cast<double>(cap)));require(row.at("bytes").is_number_integer(),"Payload byte size must be an integer.");const auto sha=hash(row.at("sha256"));
-            if(stored.insert(relativePath).second){copied+=bytes;require(copied<=packageBudget(graph),"Complete package exceeds its resource-profile byte budget.");require(stream(from,to,bytes,point)==sha,"Source dependency changed or has a wrong hash.");require(stream(to,{},bytes,point)==sha,"Staged payload readback failed.");}else require(stream(to,{},bytes,point)==sha,"Package payload identity collision.");};
+            if(stored.insert(relativePath).second){copied+=bytes;require(copied<=packageBudget(graph),"Complete package exceeds its resource-profile byte budget.");
+                if(shared::ownedStage(from,to)){require(stream(from,{},bytes,point)==sha,"Owned source dependency changed.");std::filesystem::create_directories(to.parent_path());std::filesystem::create_hard_link(from,to);}
+                else require(stream(from,to,bytes,point)==sha,"Source dependency changed or has a wrong hash.");
+                require(stream(to,{},bytes,point)==sha,"Staged payload readback failed.");}else require(stream(to,{},bytes,point)==sha,"Package payload identity collision.");};
         paints(recipe,[&](const Json& row){copy(recipes::attachmentPath(source,text(row.at("file"),240)),row,recipes::maxPaintBytes);});notify("paint-staged");
         if(!recipe.at("presentation").is_null()&&!recipe.at("presentation").at("thumbnail").is_null()){const auto& row=recipe.at("presentation").at("thumbnail");copy(recipes::attachmentPath(source,text(row.at("file"),240)),row,recipes::maxThumbnailBytes);}
         for(const auto& file:graph.at("files")){const auto id=identity(file.at("id"));require(inputs.count(id)!=0&&inputs.at(id).is_absolute(),"Package file binding needs an absolute input path.");copy(inputs.at(id),{{"file",relative(file)},{"bytes",file.at("bytes")},{"sha256",file.at("sha256")}},fileBudget(graph,file));notify("asset-staged");}
@@ -186,7 +193,7 @@ std::filesystem::path writePackage(const std::filesystem::path& rawInput,const s
 
 Json readPackage(const std::filesystem::path& rawDirectory,const Checkpoint& point){
     require(rawDirectory.is_absolute(),"Package requires an absolute folder.");
-    const auto directory=recipes::nativePath(rawDirectory);
+    const auto directory=shared::resolve(rawDirectory);
     require(directory.is_absolute()&&std::filesystem::is_directory(directory)&&!std::filesystem::is_symlink(directory),"Package requires an unlinked absolute folder.");
     const auto manifest=recipes::parse(load(directory/"cyrus.package.json",8192));keys(manifest,{"format","version","hostYear","recipe","graph","redistribution"});require(manifest.at("format")=="cyrus.library-package"&&manifest.at("version")==1&&(manifest.at("hostYear")==2024||manifest.at("hostYear")==2026||manifest.at("hostYear")==2027),"Unsupported library package.");require(!text(manifest.at("redistribution"),1024).empty(),"Package redistribution declaration missing.");require(manifest.at("recipe").at("file")=="entry.csrecipe.json"&&manifest.at("graph").at("file")=="assets.json","Unexpected package document paths.");
     const auto recipe=readDescriptor(directory,manifest.at("recipe"),recipes::maxManifestBytes);require(recipe.at("formatVersion")==5||recipe.at("formatVersion")==6||recipe.at("formatVersion")==7||recipe.at("formatVersion")==8,"Unsupported package recipe version.");recipes::validate(recipe,false);
@@ -200,10 +207,11 @@ Json readPackage(const std::filesystem::path& rawDirectory,const Checkpoint& poi
         if(file.at("kind")=="mesh"){
             const auto bytes=load(contained(directory,relative(file)),static_cast<std::size_t>(fileBudget(graph,file)));require(digest(bytes)==file.at("sha256").get<std::string>(),"Mesh changed during verification.");decodeMesh(meshBytes(bytes),meshProfile(graph));
         }else{
-            if(!plant)require(file.at("suffix")=="png","Initial portable bitmap adapter requires PNG.");
+            const bool sharedJPEG=graph.at("version")==4&&(file.at("suffix")=="jpg"||file.at("suffix")=="jpeg");
+            if(!plant&&!sharedJPEG)require(file.at("suffix")=="png","This portable bitmap adapter requires PNG or a supported shared JPEG.");
             const auto bytes=load(contained(directory,relative(file)),static_cast<std::size_t>(maxFileBytes));require(digest(bytes)==file.at("sha256").get<std::string>(),"Bitmap changed during verification.");
             std::array<std::uint32_t,2> dimensions{};
-            if(plant){const auto info=inspectPortableImage({bytes.begin(),bytes.end()},suffix(file));dimensions={info.width,info.height};}
+            if(plant||sharedJPEG){const auto info=inspectPortableImage({bytes.begin(),bytes.end()},suffix(file));dimensions={info.width,info.height};}
             else {const auto info=inspectPNG({bytes.begin(),bytes.end()});dimensions={info.width,info.height};}
             for(const auto& map:graph.at("maps"))if(imageMap(map)&&map.at("file")==file.at("id"))require(map.at("size")[0]==dimensions[0]&&map.at("size")[1]==dimensions[1],"Bitmap dimensions disagree with the declared graph.");
         }
@@ -211,20 +219,73 @@ Json readPackage(const std::filesystem::path& rawDirectory,const Checkpoint& poi
     return {{"manifest",manifest},{"recipe",recipe},{"graph",graph}};
 }
 
-PreparedPackage preparePackage(const std::filesystem::path& rawDirectory,const Checkpoint& point,const std::filesystem::path& bitmapDirectory){
-    require(rawDirectory.is_absolute(),"Package requires an absolute folder.");
-    const auto directory=recipes::nativePath(rawDirectory);
-    PreparedPackage result;result.metadata=readPackage(directory,point);
+Json readModelPackage(const std::filesystem::path& rawDirectory,const Checkpoint& point){
+    require(rawDirectory.is_absolute(),"Model package requires an absolute folder.");const auto directory=recipes::nativePath(rawDirectory);shared::noLinks(directory);
+    const auto manifest=recipes::parse(load(directory/"cyrus.model.json",262144));
+    keys(manifest,{"format","version","definition","graph","definitions","redistribution"});require(manifest.at("format")=="cyrus.model-package"&&manifest.at("version")==1,"Unsupported model package.");text(manifest.at("redistribution"),4096);
+    require(manifest.at("definition").at("file")=="model.json"&&manifest.at("graph").at("file")=="assets.json","Unexpected model documents.");
+    const auto definition=readDescriptor(directory,manifest.at("definition"),16384);keys(definition,{"format","version","mesh","material","rendererProfile","graph"});
+    if(directory.parent_path().filename()=="models")require(directory.filename()==manifest.at("definition").at("sha256").get<std::string>(),"Model directory differs from its revision.");
+    require(definition.at("format")=="cyrus.model-definition"&&definition.at("version")==1,"Unsupported model definition.");hash(definition.at("mesh"));if(!definition.at("material").is_null())hash(definition.at("material"));
+    const auto graph=readDescriptor(directory,manifest.at("graph"),maxGraphBytes);require(hash(definition.at("graph"))==hash(manifest.at("graph").at("sha256")),"Model graph differs from its revision.");
+    require(graph.at("nodes").size()==1&&graph.value("splines",Json::array()).empty()&&graph.at("externalRoles").empty(),"A model package contains exactly one complete source and no context.");
+    const Json recipe={{"hostYear",2027},{"roles",Json::array({{{"id","model-role"},{"kind","node"},{"name","Model"},{"purposes",Json::array({"sources"})},{"requirements",nullptr}}})}};
+    validateGraph(graph,recipe);admitPlantPreparation(graph);
+    const auto& node=graph.at("nodes").at(0);require(node.at("id")=="model-1"&&node.at("roles")==Json::array({"model-role"})&&node.at("transform")==Json::array({1,0,0,0,1,0,0,0,1,0,0,0}),"Model source frame is not normalized.");
+    const auto profile=graph.value("rendererProfile",Json(nullptr));require(profile==definition.at("rendererProfile"),"Model compatibility requirements differ.");
+    std::map<std::string,Json> records;for(const auto* group:{"meshes","materials","maps"})for(const auto& record:graph.at(group)){
+        const auto id=record.at("id").get<std::string>();const char prefix=std::string(group)=="meshes"?'g':std::string(group)=="materials"?'m':'x';require(id.size()>1&&id[0]==prefix&&id[1]=='-',"Model record kind prefix differs.");records.emplace(id,record);
+    }
+    auto dependencies=records;for(const auto& file:graph.at("files"))dependencies.emplace(file.at("id").get<std::string>(),file);std::set<std::string> reachable;
+    std::function<void(const Json&)> visit=[&](const Json& value){
+        if(value.is_string()){const auto id=value.get<std::string>();const auto found=dependencies.find(id);if(found!=dependencies.end()&&reachable.insert(id).second)visit(found->second);}
+        else if(value.is_structured())for(const auto& child:value)visit(child);
+    };visit(node.at("mesh"));visit(node.at("material"));require(reachable.size()==dependencies.size(),"Model package contains unrelated dependencies.");
+    auto occurrenceHash=[&](const std::string& id){require(id.size()>67&&id[1]=='-'&&id[66]=='-'&&id[67]>='1'&&id[67]<='9'&&id.find_first_not_of("0123456789",67)==std::string::npos,"Invalid model definition occurrence.");return hash(id.substr(2,64));};
+    require(occurrenceHash(node.at("mesh").get<std::string>())==definition.at("mesh").get<std::string>(),"Model mesh pin differs.");
+    require(node.at("material").is_null()?definition.at("material").is_null():occurrenceHash(node.at("material").get<std::string>())==definition.at("material").get<std::string>(),"Model material pin differs.");
+    require(manifest.at("definitions").is_array()&&manifest.at("definitions").size()<=512,"Model definition count exceeds bounds.");std::map<std::string,Json> definitions;std::uint64_t metadata=0;
+    for(const auto& row:manifest.at("definitions")){const auto sha=hash(row.at("sha256"));require(row.at("file")=="definitions/"+sha+".json"&&definitions.count(sha)==0,"Invalid or duplicate model definition.");
+        metadata+=row.at("bytes").get<std::uint64_t>();require(metadata<=4ull*1024*1024,"Model definitions exceed 4 MiB.");definitions.emplace(sha,readDescriptor(directory,row,maxGraphBytes));if(point)point("model-definition",metadata);}
+    std::set<std::string> used;
+    std::function<Json(const Json&)> values=[&](const Json& value)->Json{
+        if(value.is_string()&&records.count(value.get<std::string>()))return value.get<std::string>().substr(0,66);
+        if(value.is_array()){auto result=Json::array();for(const auto& item:value)result.push_back(values(item));return result;}
+        if(value.is_object()){auto result=Json::object();for(auto at=value.begin();at!=value.end();++at)result[at.key()]=values(at.value());return result;}return value;
+    };
+    for(const auto& [id,record]:records){const auto sha=occurrenceHash(id);require(definitions.count(sha)!=0,"Model definition is missing.");used.insert(sha);const auto& stored=definitions.at(sha);
+        keys(stored,{"format","version","profile","data"});const std::string type=id[0]=='g'?"mesh":id[0]=='m'?"material":"map";
+        require(stored.at("format")=="cyrus."+type+"-definition"&&stored.at("version")==1,"Model definition kind differs.");
+        require(stored.at("profile").is_null()||stored.at("profile")==profile,"Model definition adapter profile differs.");
+        auto data=record;data.erase("id");data.erase("name");data.erase("roles");require(values(data)==stored.at("data"),"Model occurrence differs from its shared definition.");
+    }
+    require(used.size()==definitions.size(),"Model package contains unrelated definitions.");
+    std::uint64_t total=0;for(const auto& file:graph.at("files")){
+        require(file.at("id")=="f-"+hash(file.at("sha256")),"Model payload identity differs.");total+=file.at("bytes").get<std::uint64_t>();require(total<=packageBudget(graph),"Model payload exceeds its profile bound.");
+        verifyDescriptor(directory,{{"file",relative(file)},{"bytes",file.at("bytes")},{"sha256",file.at("sha256")}},fileBudget(graph,file),point);
+        const auto bytes=load(contained(directory,relative(file)),static_cast<std::size_t>(fileBudget(graph,file)));
+        if(file.at("kind")=="mesh")decodeMesh(meshBytes(bytes),meshProfile(graph));
+        else{std::array<std::uint32_t,2> dimensions{};if(graph.at("version")==3||file.at("suffix")!="png"){const auto info=inspectPortableImage({bytes.begin(),bytes.end()},suffix(file));dimensions={info.width,info.height};}
+            else{const auto info=inspectPNG({bytes.begin(),bytes.end()});dimensions={info.width,info.height};}
+            for(const auto& map:graph.at("maps"))if(imageMap(map)&&map.at("file")==file.at("id"))require(map.at("size")[0]==dimensions[0]&&map.at("size")[1]==dimensions[1],"Model bitmap dimensions differ.");}
+    }
+    return {{"manifest",manifest},{"graph",graph},{"model",definition}};
+}
+
+namespace {
+PreparedPackage prepareVerified(const std::filesystem::path& directory,PreparedPackage result,const Checkpoint& point,const std::filesystem::path& bitmapDirectory){
     const auto& graph=result.metadata.at("graph");const auto budget=packageBudget(graph);
     auto notify=[&](const char* stage){if(point)point(stage,result.payloadBytes);};
     notify("preparing-paint");
     // Count expanded Paint before hydrating. Native payload admission includes
     // these hex strings plus decoded mesh vector capacity, not a claim about
     // total process memory or the later MAXScript/Undo working set.
-    paints(result.metadata.at("recipe"),[&](const Json& row){result.payloadBytes+=row.at("bytes").get<std::uint64_t>()*2;});
-    require(result.payloadBytes<=budget,"Prepared payload exceeds its resource-profile byte budget.");
-    std::string recipeHash;result.document=recipes::read(directory/"entry.csrecipe.json",true,&recipeHash);
-    require(recipeHash==result.metadata.at("manifest").at("recipe").at("sha256").get<std::string>(),"Recipe changed while preparing import.");
+    if(result.metadata.contains("recipe")){
+        paints(result.metadata.at("recipe"),[&](const Json& row){result.payloadBytes+=row.at("bytes").get<std::uint64_t>()*2;});
+        require(result.payloadBytes<=budget,"Prepared payload exceeds its resource-profile byte budget.");
+        std::string recipeHash;result.document=recipes::read(directory/"entry.csrecipe.json",true,&recipeHash);
+        require(recipeHash==result.metadata.at("manifest").at("recipe").at("sha256").get<std::string>(),"Recipe changed while preparing import.");
+    }else result.document=result.metadata.at("model");
     std::map<std::string,std::shared_ptr<const Mesh>> shared;
     for(const auto& file:result.metadata.at("graph").at("files"))if(file.at("kind")=="mesh"){
         notify("preparing-mesh");const auto sha=file.at("sha256").get<std::string>();auto found=shared.find(sha);
@@ -241,15 +302,20 @@ PreparedPackage preparePackage(const std::filesystem::path& rawDirectory,const C
         }
         result.meshes.emplace(file.at("id").get<std::string>(),found->second);
     }else{
-        notify("preparing-bitmap");require(bitmapDirectory.is_absolute(),"Portable bitmaps require the owned imported-asset directory.");
-        std::filesystem::create_directories(bitmapDirectory);require(!std::filesystem::is_symlink(bitmapDirectory),"Imported bitmap directory cannot be a link.");const auto root=std::filesystem::canonical(bitmapDirectory);filesystem(root);
-        const auto extension=result.metadata.at("graph").at("version")==3?suffix(file):"png";
+        const auto store=shared::root(directory);
+        const auto bitmapRoot=store.empty()?bitmapDirectory:store/"resolved";
+        notify("preparing-bitmap");require(bitmapRoot.is_absolute(),"Portable bitmaps require the owned imported-asset directory.");
+        std::filesystem::create_directories(bitmapRoot);require(!std::filesystem::is_symlink(bitmapRoot),"Imported bitmap directory cannot be a link.");const auto root=std::filesystem::canonical(bitmapRoot);filesystem(root);
+        const auto extension=result.metadata.at("graph").at("version").get<int>()>=3?suffix(file):"png";
         const auto sha=file.at("sha256").get<std::string>(),name=sha+"."+extension;const auto target=contained(root,name),source=contained(directory,relative(file));const auto bytes=file.at("bytes").get<std::uint64_t>();
         if(std::filesystem::exists(target))require(stream(target,{},bytes,point)==sha,"Owned bitmap content differs; it was preserved. Repair or select another library location.");
         else{
             const auto stage=root/recipes::pathFromUTF8(".cyrus-bitmap-stage-"+nonce()+"."+extension);bool owned=false;
             try{
-                owned=true;require(stream(source,stage,bytes,point)==sha&&stream(stage,{},bytes,point)==sha,"Bitmap changed while preparing import.");notify("bitmap-staged");
+                owned=true;
+                if(!store.empty())require(CreateHardLinkW(recipes::nativePath(stage).c_str(),recipes::nativePath(source).c_str(),nullptr)!=FALSE,"Cannot recreate the shared bitmap view.");
+                else require(stream(source,stage,bytes,point)==sha,"Bitmap changed while preparing import.");
+                require(stream(stage,{},bytes,point)==sha,"Bitmap changed while preparing import.");notify("bitmap-staged");
                 std::error_code error;std::filesystem::rename(stage,target,error);
                 if(error){require(std::filesystem::exists(target)&&stream(target,{},bytes,point)==sha,"Cannot publish imported bitmap.");std::filesystem::remove(stage);}
                 owned=false;
@@ -257,7 +323,34 @@ PreparedPackage preparePackage(const std::filesystem::path& rawDirectory,const C
         }
         result.bitmapPaths.emplace(file.at("id").get<std::string>(),target);
     }
+    // Max can reuse a filename's retained gamma annotation in OCIO mode. Each
+    // interpretation gets a stable name; aliases share the same byte allocation.
+    const auto store=shared::root(directory);struct ContentLock{HANDLE value=INVALID_HANDLE_VALUE;~ContentLock(){if(value!=INVALID_HANDLE_VALUE)CloseHandle(value);}} contentLock;
+    if(!store.empty()&&!result.bitmapPaths.empty()){
+        const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(120);
+        while(true){contentLock.value=CreateFileW(recipes::nativePath(store/"content.lock").c_str(),GENERIC_READ|GENERIC_WRITE,0,nullptr,OPEN_ALWAYS,FILE_ATTRIBUTE_NORMAL,nullptr);if(contentLock.value!=INVALID_HANDLE_VALUE)break;
+            const auto error=GetLastError();require(error==ERROR_SHARING_VIOLATION||error==ERROR_LOCK_VIOLATION,"Cannot acquire shared bitmap-view publication lock.");require(std::chrono::steady_clock::now()<deadline,"Shared library is busy; retry preparation.");notify("waiting-for-library");Sleep(50);}
+    }
+    std::set<std::filesystem::path> checkedViews;
+    for(const auto& map:graph.at("maps"))if(map.at("kind")=="bitmap"&&graph.at("version").get<int>()>=3){
+        const auto id=map.at("file").get<std::string>();const auto raw=result.bitmapPaths.at(id);const auto colour=digest(map.at("color").dump());
+        const Json* descriptor=nullptr;for(const auto& file:graph.at("files"))if(file.at("id")==id){descriptor=&file;break;}require(descriptor!=nullptr,"Prepared bitmap descriptor is missing.");
+        const auto sha=descriptor->at("sha256").get<std::string>();const auto bytes=descriptor->at("bytes").get<std::uint64_t>();
+        const auto alias=raw.parent_path()/recipes::pathFromUTF8(sha+"-"+colour+"."+suffix(*descriptor));
+        if(checkedViews.insert(alias).second){
+            if(!std::filesystem::exists(alias))require(CreateHardLinkW(recipes::nativePath(alias).c_str(),recipes::nativePath(raw).c_str(),nullptr)!=FALSE,"Cannot create the image interpretation view.");
+            require(stream(alias,{},bytes,point)==sha,"An image interpretation view differs; repair from a verified backup.");notify("bitmap-interpretation");
+        }
+        result.bitmapMapPaths.emplace(map.at("id").get<std::string>(),alias);
+    }
     notify("prepared");return result;
+}
+}
+PreparedPackage preparePackage(const std::filesystem::path& rawDirectory,const Checkpoint& point,const std::filesystem::path& bitmapDirectory){
+    require(rawDirectory.is_absolute(),"Package requires an absolute folder.");const auto directory=shared::resolve(rawDirectory);PreparedPackage result;result.metadata=readPackage(directory,point);return prepareVerified(directory,std::move(result),point,bitmapDirectory);
+}
+PreparedPackage prepareModelPackage(const std::filesystem::path& rawDirectory,const Checkpoint& point,const std::filesystem::path& bitmapDirectory){
+    require(rawDirectory.is_absolute(),"Model package requires an absolute folder.");const auto directory=recipes::nativePath(rawDirectory);PreparedPackage result;result.metadata=readModelPackage(directory,point);return prepareVerified(directory,std::move(result),point,bitmapDirectory);
 }
 Json fileInfo(const std::filesystem::path& path,bool png){
     require(path.is_absolute()&&std::filesystem::is_regular_file(path)&&!std::filesystem::is_symlink(path),"Asset input requires an absolute regular file.");const auto bytes=load(path,static_cast<std::size_t>(maxFileBytes));

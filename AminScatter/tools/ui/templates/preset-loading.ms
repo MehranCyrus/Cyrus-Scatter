@@ -9,6 +9,8 @@ global CyrusPointSuspended
 global CyrusLibraryCheckSurface,CyrusLibraryDestination,CyrusRecipeErrorText
 global CyrusAssetBoundNode
 fn CyrusPresetPackageDirectory path digest = (
+    local parent=getFilenamePath path
+    if filenameFromPath path=="entry.csrecipe.json" and doesFileExist (pathConfig.appendPath parent "cyrus.package.json") do return parent
     -- Keep native file paths short while retaining the full content identity.
     pathConfig.appendPath (getFilenamePath path) ("Presets\\"+digest)
 )

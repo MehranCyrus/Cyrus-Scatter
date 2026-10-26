@@ -121,9 +121,36 @@ Value* createAssetMesh(const cyrus::assets::Mesh& data,double metres,const MCHAR
     }
     auto* ip=GetCOREInterface();MSTR name(sourceName);if(name.Length()<1||name.Length()>160)throw RuntimeError(_T("Portable source name exceeds bounds"));ip->MakeNameUnique(name);auto* node=ip->CreateObjectNode(tri.get());if(!node)throw RuntimeError(_T("Cannot create portable source node"));tri.release();node->SetName(name);node->Hide(TRUE);return MAXNode::intern(node);
 }
-Value* exportAssetMesh(Value** a,bool plant){
+Value* exportAssetMesh(Value** a,bool plant,bool reuse=false){
     auto* node=a[0]->to_node();type_check(a[1],String,_T("mesh staging filename"));const std::filesystem::path path(a[1]->to_string());const double metres=a[2]->to_double();
-    if(!path.is_absolute()||std::filesystem::exists(path))throw RuntimeError(_T("Mesh export needs a new absolute filename"));AssetMeshSource source(node);const auto info=inspectAssetMesh(source,metres,plant?1:0);const auto data=captureAssetMesh(source,info,metres);const auto bytes=cyrus::assets::encodeMesh(data,info.profile);
+    if(!path.is_absolute()||std::filesystem::exists(path))throw RuntimeError(_T("Mesh export needs a new absolute filename"));AssetMeshSource source(node);const auto info=inspectAssetMesh(source,metres,plant?1:0);const auto data=captureAssetMesh(source,info,metres);auto bytes=cyrus::assets::encodeMesh(data,info.profile);
+    if(reuse){
+        type_check(a[3],String,_T("prior shared mesh hint"));const std::filesystem::path prior(a[3]->to_string());
+        if(!prior.empty()){
+            const auto drive=prior.root_name().native();
+            if(!prior.is_absolute()||drive.size()!=2||drive[1]!=L':'||prior.parent_path().filename()!=L"objects"||prior.parent_path().parent_path().native().size()>80)throw RuntimeError(_T("Prior shared mesh hint requires a short local object-store path"));
+            for(auto part=prior;!part.empty();){const auto attributes=GetFileAttributesW(part.c_str());if(attributes!=INVALID_FILE_ATTRIBUTES&&(attributes&FILE_ATTRIBUTE_REPARSE_POINT))throw RuntimeError(_T("Prior shared mesh hint cannot traverse linked paths"));const auto parent=part.parent_path();if(parent==part)break;part=parent;}
+        }
+        if(!prior.empty()&&std::filesystem::exists(prior)){
+            const auto expected=prior.filename().string();
+            if(!prior.is_absolute()||std::filesystem::is_symlink(prior)||expected.size()!=64||expected.find_first_not_of("0123456789abcdef")!=std::string::npos)throw RuntimeError(_T("Invalid prior shared mesh object hint"));
+            std::ifstream input(prior,std::ios::binary|std::ios::ate);if(!input)throw RuntimeError(_T("Cannot inspect prior shared mesh object"));const auto size=input.tellg();
+            if(size<0||static_cast<std::uint64_t>(size)>cyrus::assets::maxPlantMeshBytes)throw RuntimeError(_T("Prior shared mesh exceeds admission"));
+            std::vector<unsigned char> original(static_cast<std::size_t>(size));input.seekg(0);if(size>0)input.read(reinterpret_cast<char*>(original.data()),size);
+            if(!input||r::digest(original)!=expected)throw RuntimeError(_T("Prior shared mesh bytes differ from their identity"));
+            // A provenance hint never establishes equality. Reconstruct exactly
+            // the SDK float representation in the current units, then compare
+            // every topology/mapping/normal/attribute byte with the live source.
+            // This avoids allocating a duplicate after unit-conversion rounding.
+            if(original.size()>=8&&std::string_view(reinterpret_cast<const char*>(original.data()),8)=="CYRUSM02"){
+            auto represented=cyrus::assets::decodeMesh(original,cyrus::assets::MeshProfile::Plant);
+            for(auto& vertex:represented.vertices)for(auto& component:vertex)component=static_cast<double>(static_cast<float>(component*metres))/metres;
+            for(auto& map:represented.maps)for(auto& vertex:map.vertices)for(auto& component:vertex)component=static_cast<double>(static_cast<float>(component));
+            if(represented.normals)for(auto& normal:represented.normals->vectors)normal=assetMeshSDKNormal(normal);
+            if(cyrus::assets::encodeMesh(represented,cyrus::assets::MeshProfile::Plant)==bytes)bytes=std::move(original);
+            }
+        }
+    }
     std::ofstream out(path,std::ios::binary);if(!out)throw RuntimeError(_T("Cannot create owned mesh staging file"));out.write(reinterpret_cast<const char*>(bytes.data()),static_cast<std::streamsize>(bytes.size()));out.flush();if(!out)throw RuntimeError(_T("Mesh staging write failed"));out.close();return recipeValue(r::Json::array({r::digest(bytes),bytes.size(),data.vertices.size(),data.faces.size(),data.maps.size()}));
 }
 }
@@ -131,6 +158,9 @@ def_visible_primitive(cyrusAssetMeshExport,"cyrusAssetMeshExport");
 Value* cyrusAssetMeshExport_cf(Value** a,int n){check_arg_count(cyrusAssetMeshExport,3,n);return recipeAPI([&](){return exportAssetMesh(a,false);});}
 def_visible_primitive(cyrusAssetPlantMeshExport,"cyrusAssetPlantMeshExport");
 Value* cyrusAssetPlantMeshExport_cf(Value** a,int n){check_arg_count(cyrusAssetPlantMeshExport,3,n);return recipeAPI([&](){return exportAssetMesh(a,true);});}
+
+def_visible_primitive(cyrusAssetSharedMeshExport,"cyrusAssetSharedMeshExport");
+Value* cyrusAssetSharedMeshExport_cf(Value** a,int n){check_arg_count(cyrusAssetSharedMeshExport,4,n);return recipeAPI([&](){return exportAssetMesh(a,true,true);});}
 def_visible_primitive(cyrusAssetMeshProfile,"cyrusAssetMeshProfile");
 Value* cyrusAssetMeshProfile_cf(Value** a,int n){check_arg_count(cyrusAssetMeshProfile,1,n);return recipeAPI([&]()->Value*{const double scale=GetSystemUnitScale(UNITS_METERS);if(!std::isfinite(scale)||scale<=0)throw RuntimeError(_T("Invalid source system units"));AssetMeshSource source(a[0]->to_node());const auto x=inspectAssetMesh(source,1./scale,2);return recipeValue(r::Json::array({x.profile==AssetMeshProfile::Plant?"plant":"legacy",x.encodedBytes,x.decodedBytes,x.vertices,x.faces,x.channels.size(),x.normalCount,x.normalFlags,x.channels}));});}
 def_visible_primitive(cyrusAssetMeshCreate,"cyrusAssetMeshCreate");

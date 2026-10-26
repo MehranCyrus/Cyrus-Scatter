@@ -22,14 +22,15 @@ def build(output: Path, year: int = 2027):
     names = ['System.Private.CoreLib', 'System.Runtime', 'System.Collections', 'System.Threading',
              'System.Threading.Tasks', 'System.Security.Cryptography', 'System.Memory', 'System.Drawing.Primitives',
              'System.ComponentModel.Primitives', 'System.ComponentModel', 'System.Runtime.InteropServices',
-             'System.Text.Json', 'System.Text.Encodings.Web','System.Text.RegularExpressions']
+             'System.Text.Json', 'System.Text.Encodings.Web','System.Text.RegularExpressions','System.IO.Compression','System.Linq','System.IO.FileSystem.DriveInfo','System.Diagnostics.Process']
     references = [core / (name + '.dll') for name in names]
     references += [desktop / (name + '.dll') for name in ['System.Windows.Forms', 'System.Windows.Forms.Primitives', 'System.Drawing.Common']]
     if year == 2027: references += [desktop / (name + '.dll') for name in ['System.Private.Windows.Core','System.Private.Windows.GdiPlus']]
     if year == 2024:
         framework=Path('C:/Windows/Microsoft.NET/Framework64/v4.0.30319')
-        references=[framework/(name+'.dll') for name in ['mscorlib','System','System.Core','System.Drawing','System.Windows.Forms']]
+        references=[framework/(name+'.dll') for name in ['mscorlib','System','System.Core','System.Drawing','System.Windows.Forms','System.IO.Compression']]
     source = ROOT / 'AminScatter/ui/LibraryGallery.cs'
+    shared = sorted((ROOT/'AminScatter/shared').glob('*.cs'))
     for path in [compiler, source, *references]:
         if not path.is_file(): raise FileNotFoundError(path)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -39,8 +40,8 @@ def build(output: Path, year: int = 2027):
                         '[assembly:System.Reflection.AssemblyFileVersion("'+version+'")]\n', encoding='utf-8')
     args = [str(compiler), '/nologo', '/noconfig', '/nostdlib+', '/langversion:latest', '/nullable:enable',
             '/warnaserror+', '/target:library', '/optimize+', '/deterministic+', '/platform:x64', '/out:' + str(output),
-            *('/reference:' + str(p) for p in references), str(source), str(ROOT/'AminScatter/shared/LibraryLocation.cs'), str(identity)]
-    inputs = frozen([compiler, source, ROOT/'AminScatter/shared/LibraryLocation.cs', identity,
+            *('/reference:' + str(p) for p in references), str(source), *(str(p) for p in shared), str(identity)]
+    inputs = frozen([compiler, source, *shared, identity,
                      ROOT/'AminScatter/CMakeLists.txt', Path(__file__), ROOT/'tools/build_inputs.py',
                      Path(sys.executable), *references],
                     {'producer':'gallery', 'command':args, 'max_year':year, 'assembly_version':version,

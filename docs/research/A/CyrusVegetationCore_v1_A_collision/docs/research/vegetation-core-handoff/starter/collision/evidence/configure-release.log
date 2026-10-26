@@ -1,0 +1,16 @@
+command_argv: ["/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake", "-S", "owner_a_packet/docs/research/vegetation-core-handoff/starter", "-B", "owner_a_build_release", "-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON", "-DBUILD_TESTING=ON", "-DCYRUS_COLLISION_JOLT_SOURCE_ROOT=/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin"]
+cwd: /workspace/scratch/eb3b91c272e0
+started_utc: 2026-10-24T14:49:34.955481+00:00
+
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Cyrus collision: verified 613 exact Jolt source/build/license files at 1b2e77e3c6c09709e5edc79dc208459b8ff32051
+-- Configuring done (0.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/scratch/eb3b91c272e0/owner_a_build_release
+
+exit_code: 0

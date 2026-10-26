@@ -1,12 +1,12 @@
 # Cyrus Scatter — selected landing and visual guide
 
-The maintained public frontend now follows **Scatter 0.86.9.2 / schema 59**, with **Surface Analyzer 0.14.2 included in the combined EXE** and **MCP package 0.73.0 / plan 0.73** independently versioned. The [current delivery](../docs/plans/edit-instances/DELIVERY_08692.md) records focused Max 2027 UI, Edit and persistence checks plus exact package verification. Only Max 2027 was tested for this patch; included Max 2024/2026 builds are untested. Earlier Corona-material and installer results retain their original scope.
+The maintained public frontend follows **Scatter 0.87.3 / schema 61**, independent **Surface Analyzer 0.14.2** and **MCP 0.73.0 / plan 0.73**. The 26 October update documents reviewed rooted contact, lightweight trunk/custom colliders, physical preparation settings and the shared static model/texture library. Library settings lookup and saving the chosen folder are corrected. Exposed-root automatic fitting remains on hold; contact authoring is retained in Max scenes and is not transferred through recipes.
 
-This edition preserves the cream/forest-green design, twelve-specimen showcase and historical concept imagery. Guides, all 333 control references and release notes include Viewport memory controls, source-aware Edit and its Copy limitation, live handles/gizmos, procedural map previews/drop and native column ownership. Optimized/Exact Paint exports, source access, clearance, Relax and retained leaf appearance remain. The optional library remains 96 individual assets covering 104 original catalog cards.
+The Download page serves the exact **0.87.3 EXE** for Max 2024, 2026 and 2027, with Analyzer 0.14.2 included. Max 2027 retains scoped 0.87.3 runtime evidence; newly built Max 2024/2026 payloads have native test evidence only. Rebuilt Analyzer source is unchanged and retains its historical qualification. Public hashes and size are in `content/release.json`; staging refuses mismatched bytes. Content 0.86.7 is optional and supplied separately.
 
-**The Download page serves the exact 6,440,960-byte 0.86.9.2 EXE directly.** It installs Scatter and Analyzer together. The cPanel upload ZIP contains the website and this one release binary under `downloads/`. No plant content or standalone MZP downloads are included. Both plugins work with your own models and preserve existing shared content; an optional matching content ZIP can be supplied separately beside the EXE. Public metadata and its SHA-256 are in `content/release.json`; staging fails if the local approved artifact differs.
+The cream/forest-green layout, specimen showcase and historical concept imagery are retained. Five curated guides, all **351 semantic controls** and **37 capability records** follow the source catalog. Capability visibility is not a claim of MCP write support. Static recipes cover supported assets/default OCIO; contact simulation and arbitrary scene serialization remain outside that portable route.
 
-The [current update receipt](verification/WEBSITE_08692_20261023.md) records the 0.86.9.2 website package. The [0.86.8.6 receipt](verification/WEBSITE_08686_20261023.md) preserves the previous edition. The [21 October receipt](verification/WEBSITE_08682_20261021.md) preserves the preceding edition. The [20 October receipt](verification/LIBRARY_DOWNLOAD_REFRESH_20261020.md) remains historical; its unavailable downloads and mandatory Content-folder instructions have been superseded. Local source/build updates do not imply a live deployment. Use the [cPanel upload guide](CPANEL_UPLOAD.md) for the prepared upload.
+See [the current website receipt](verification/WEBSITE_0873_20261026.md) and [installer scope](../docs/plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md). A local production build and cPanel upload ZIP do not publish a live website. Use the [cPanel upload guide](CPANEL_UPLOAD.md) for deployment.
 
 ## Run locally
 
@@ -39,7 +39,7 @@ For a cPanel upload package, run `npm run package:cpanel`. The verified ZIP and 
 
 ## What the website contains
 
-The control reference now follows all twelve approved plugin sections, with exact control membership, matching sidebar links and guide destinations. See [reference order and source refresh](verification/CONTROL_REFERENCE_ORDER.md).
+The control reference now follows the approved plugin sections including Interactions, with exact control membership, matching sidebar links and guide destinations. See [reference order and source refresh](verification/CONTROL_REFERENCE_ORDER.md).
 
 The catalog filters and visual lessons share one minimal dropdown component, with keyboard navigation and viewport-aware menus. See [dropdown design and verification](verification/DROPDOWN_REFINEMENT.md).
 
@@ -50,7 +50,7 @@ The catalog filters and visual lessons share one minimal dropdown component, wit
 - Artist features, exact behavior boundaries and two actual Max studies with version/context captions.
 - Five complete maintained source documents, a fixed documentation sidebar, section links, printing and global search (`Ctrl+K` / `Command+K`).
 - The complete current semantic catalog, with exact source keys, readable source-verified labels, explanations, ownership, local/MCP context and implementation-evidence paths. Entries do not each represent a distinct visible button or an individually qualified feature; current counts are in the [static verification receipt](verification/react-static-checks.json).
-- All **36 capability families** are discoverable through the finder, including retired and experimental records. They are not marketed as 34 available product features.
+- All **37 capability families** are discoverable through the finder, including retired and experimental records. They are not marketed as 34 available product features.
 - Explicit **Current**, **Experimental** and **Planned** distinctions, plus the five dependent roadmap stages from the maintained public summary.
 - Native-dialog search with Escape/focus restoration, keyboard result navigation, empty states, mobile navigation, reduced-motion support and meaningful unknown-route/source-loading/error states.
 

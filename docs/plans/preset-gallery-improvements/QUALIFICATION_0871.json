@@ -1,0 +1,434 @@
+{
+  "version": "0.87.1",
+  "created_utc": "2026-10-25T23:29:01.231563+00:00",
+  "scope": "Static shared-library qualification; independent historical qualification retains its original limits.",
+  "packages": {
+    "version": "0.87.1",
+    "exe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.1-20261026\\CyrusScatter-0.87.1-Setup.exe",
+    "exe_sha256": "2640e807e7cb8da60b4940bb3a04943fde7b4624ddb08a5803ce85578990b5f4",
+    "hosts": {
+      "2024": {
+        "native_receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sl871-final03\\max2024\\receipt.json",
+        "receipt_sha256": "85570a9e6c5bd933b228b24fb66225b46877070ea35e61290018ccc86aff72c5",
+        "mzp": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.1-20261026\\CyrusScatter-0.87.1-Max2024.mzp",
+        "mzp_sha256": "d2d65dc4c0efbe7f29c6c19494844e83ec8d4ec8998302e5901a4c7f65c79bde",
+        "manifest": {
+          "product": "Cyrus Scatter",
+          "version": "0.87.1",
+          "max_year": 2024,
+          "toolset": "14.38.33130",
+          "windows_sdk": "10.0.19041.0",
+          "configuration": "Release",
+          "native_id": "2cf1a93e23f3",
+          "files": {
+            "AminScatter.dlx": "3025709e08f0a0e0457e4851edc9db3b895ffaf9a83f9ee34c5d76f395d0a644",
+            "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+            "Clipper2-NOTICE.txt": "c38889c3df3eaa6d40eb90abf6ca3bdc2260395596d5c6895ea974708372df74",
+            "CyrusBrush.dlx": "4c008fb99dfbe7f0d62398cdac4faade065e433115dd86235537b603a3b276dd",
+            "CyrusBrushStorage.dlh": "b74f00c2d176b3c12e33e033fb2b351642cbaeee8728a5d081367a54dab5a9d2",
+            "CyrusGallery.dll": "5322dd6a4be2560aefd93d19c5b0a74dad65103a27a858a1a6089a7e2fb86cc4",
+            "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+            "CyrusScatter.mcr": "4b8d7e773b612a4164b82ca4f1ade9ed883e9c3f2c412546b8680ad466162887",
+            "CyrusScatter.ms": "6d9abceb525e0753e09157d4ab6046a591b129a699829de7c5bd771c9ab25989",
+            "CyrusScatterEdit.dlm": "295a83dba391e7272449c2d442fd9927c973a162ba9c1cfc9b8b60b0b9b6a031",
+            "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+            "ExternalContent.json": "f72affef5fcb35da414ceab45c8837e0a7d63c988ff7f1a9ec41a9c99affc1ab",
+            "INSTALL.txt": "064330aaa95c3da1283d87cbd3bcea00ce54237dc17fbda47709bc591d926681",
+            "InstallInventory.txt": "52ce50aa6ae599e5117c780a14613b5eed7874b52e1d3fd4e1de161524a705e0",
+            "LibraryFiles.ms": "3de699fea1621d245576077c5654f57fb4e1394c23e4a78db6962f0cea88e4a0",
+            "Patterns/README.md": "0a303716847cf3c27a0610e5cc10554a309725f3064943a5f726d447ae690c83",
+            "Patterns/catalog.tsv": "6707561a06ac479ca88c4b2ce6c5ff2c4a2d003d64572247cb83fb76582a4926",
+            "Patterns/index.json": "f6ba0e7ef8925ba581be3951376eeef82df140065949639e415feb72f485fd8f",
+            "Patterns/soft-patches.png": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+            "Patterns/uniform.png": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+            "Patterns/wide-bands.png": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+            "SurfaceGeodesic-LICENSE.txt": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52",
+            "SurfaceGeodesic-NOTICE.txt": "bd0314ed47bcfac23de2c7801a9f7b7ec19374df4f7b035cbd7fd9dee9ce5c54",
+            "Uninstall.ms": "e7db2a4bb76bf64594b780d6d8521b75f0d92eab40a52b4d108a9d1d541fd806",
+            "install.ms": "d7d76eb3b79df0eea367758f500f36f1fcc2ce1a571db5a17099358202053298",
+            "libjpeg-turbo-IJG-README.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+            "libjpeg-turbo-LICENSE.txt": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579",
+            "libjpeg-turbo-NOTICE.txt": "9e1b3353e71b8615311f81a469ee2d0e9be12f52188186dd6fbd4a66fce1a264",
+            "mzp.run": "17c6c5b431d5c6c5733b1f8a88aa86f715edfde9cb9f9d51f77fda9d67304439",
+            "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+          },
+          "build_evidence_schema": "cyrus.package-inputs/2",
+          "producer_receipts": {
+            "native": {
+              "schema": "cyrus.native-build/2",
+              "receipt_sha256": "85570a9e6c5bd933b228b24fb66225b46877070ea35e61290018ccc86aff72c5",
+              "input_manifest_sha256": "6ff4cf284a64ad61c7cbf776caa66f8be9bdb93715c1d613f4ca6facdcecf726"
+            },
+            "installer": {
+              "receipt_sha256": "8ecad4d688238cffa75af2f90a4982dfb305e37433acf05400050faddd258653",
+              "artifact_sha256": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+              "schema": "cyrus.managed-build/2",
+              "producer": "installer-core",
+              "input_manifest_sha256": "9835462ca9c3c4d281218651e0cfb660dfe6ea5bf9b8f41bc4e3c55ee6506b72"
+            },
+            "gallery": {
+              "receipt_sha256": "09bf189bb1079627a5ac637767956d5917af0866985120e7f29c06af71334957",
+              "artifact_sha256": "5322dd6a4be2560aefd93d19c5b0a74dad65103a27a858a1a6089a7e2fb86cc4",
+              "schema": "cyrus.managed-build/2",
+              "producer": "gallery",
+              "input_manifest_sha256": "b2a9cd372d29c9c1442ab92d24b3e97a35fcd7b743c5aa6abf3b7e680a759dfe"
+            }
+          },
+          "package_inputs_sha256": "52fb2ddd45d50bb19b12b9449982016bd016a38ffe46e37265f4457db99ea3f4",
+          "licensing": {
+            "mode": "offline-team",
+            "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+            "term_days": 30
+          }
+        },
+        "payload": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sl871-package03\\payload-2024"
+      },
+      "2026": {
+        "native_receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sl871-final03\\max2026\\receipt.json",
+        "receipt_sha256": "82de506f5953a3fe129131ad1495ad721823fae07831b67b9398ac64653b22d1",
+        "mzp": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.1-20261026\\CyrusScatter-0.87.1-Max2026.mzp",
+        "mzp_sha256": "1d4a96dc900b13f9dff7434c798a624e79c9f01ac3740f14c2afa090b6be3852",
+        "manifest": {
+          "product": "Cyrus Scatter",
+          "version": "0.87.1",
+          "max_year": 2026,
+          "toolset": "14.38.33130",
+          "windows_sdk": "10.0.19041.0",
+          "configuration": "Release",
+          "native_id": "340c77874e74",
+          "files": {
+            "AminScatter.dlx": "6200237ca9c9133a88bba8be2761e05a21e521edfed505dd5dddfd31115b53af",
+            "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+            "Clipper2-NOTICE.txt": "c38889c3df3eaa6d40eb90abf6ca3bdc2260395596d5c6895ea974708372df74",
+            "CyrusBrush.dlx": "d54de0c8427cde51a115af7d3e2e3817ba6248dc948cefa156d831d793d0e33f",
+            "CyrusBrushStorage.dlh": "73503c396c489d0cb3a42e4b41ff55d974f686697998f7691049ccdc118cc594",
+            "CyrusGallery.dll": "ab5064ffba031dfa5d7e9f0e8f68a3da7113552e8d7a42cf4113ee9f01930133",
+            "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+            "CyrusScatter.mcr": "4b8d7e773b612a4164b82ca4f1ade9ed883e9c3f2c412546b8680ad466162887",
+            "CyrusScatter.ms": "6d9abceb525e0753e09157d4ab6046a591b129a699829de7c5bd771c9ab25989",
+            "CyrusScatterEdit.dlm": "46cabd95b305a2f8a3ba212cf24e7cf8abd9ebaf59e1fdb214a1c4c4eca7b56f",
+            "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+            "ExternalContent.json": "f72affef5fcb35da414ceab45c8837e0a7d63c988ff7f1a9ec41a9c99affc1ab",
+            "INSTALL.txt": "3053d5def112ad1e161567a7fc1412dcdefe3987a2c27aef41ed059b25d0b796",
+            "InstallInventory.txt": "cd1f1499f7b55a099ac122f5293197810669d0516158528dfcd360545c30b258",
+            "LibraryFiles.ms": "3de699fea1621d245576077c5654f57fb4e1394c23e4a78db6962f0cea88e4a0",
+            "Patterns/README.md": "0a303716847cf3c27a0610e5cc10554a309725f3064943a5f726d447ae690c83",
+            "Patterns/catalog.tsv": "6707561a06ac479ca88c4b2ce6c5ff2c4a2d003d64572247cb83fb76582a4926",
+            "Patterns/index.json": "f6ba0e7ef8925ba581be3951376eeef82df140065949639e415feb72f485fd8f",
+            "Patterns/soft-patches.png": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+            "Patterns/uniform.png": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+            "Patterns/wide-bands.png": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+            "SurfaceGeodesic-LICENSE.txt": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52",
+            "SurfaceGeodesic-NOTICE.txt": "bd0314ed47bcfac23de2c7801a9f7b7ec19374df4f7b035cbd7fd9dee9ce5c54",
+            "Uninstall.ms": "b4af80530765917c8239d8d55ca580c954b5d549158104f109c9b073fa3bb82e",
+            "install.ms": "08f314c81be2dd8ffd0aac93ca23fdbacf7f5840378ccb5a260e38ad67b2744e",
+            "libjpeg-turbo-IJG-README.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+            "libjpeg-turbo-LICENSE.txt": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579",
+            "libjpeg-turbo-NOTICE.txt": "9e1b3353e71b8615311f81a469ee2d0e9be12f52188186dd6fbd4a66fce1a264",
+            "mzp.run": "c58064a4ca6bb9d704844b8b5a52b2f779a49f59f34532c2629870ba8f83f20d",
+            "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+          },
+          "build_evidence_schema": "cyrus.package-inputs/2",
+          "producer_receipts": {
+            "native": {
+              "schema": "cyrus.native-build/2",
+              "receipt_sha256": "82de506f5953a3fe129131ad1495ad721823fae07831b67b9398ac64653b22d1",
+              "input_manifest_sha256": "8199fb4f25f5f3e34cd50a4d6fb60e55fd4c342f3e63b119595679682e3cad71"
+            },
+            "installer": {
+              "receipt_sha256": "8ecad4d688238cffa75af2f90a4982dfb305e37433acf05400050faddd258653",
+              "artifact_sha256": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+              "schema": "cyrus.managed-build/2",
+              "producer": "installer-core",
+              "input_manifest_sha256": "9835462ca9c3c4d281218651e0cfb660dfe6ea5bf9b8f41bc4e3c55ee6506b72"
+            },
+            "gallery": {
+              "receipt_sha256": "cc02cd566b7011253ae79b0b32947cc3d448c28ea0e68d28d664e25098ae3c94",
+              "artifact_sha256": "ab5064ffba031dfa5d7e9f0e8f68a3da7113552e8d7a42cf4113ee9f01930133",
+              "schema": "cyrus.managed-build/2",
+              "producer": "gallery",
+              "input_manifest_sha256": "1d324e57040bdd8166974daeb24c3b4edf2c863c1988c7814af2d8214171eb4a"
+            }
+          },
+          "package_inputs_sha256": "5cd8d68489be7d11cc731d2498f1cfcaa61a9d19a9a65bceb19ca0a1e577678c",
+          "licensing": {
+            "mode": "offline-team",
+            "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+            "term_days": 30
+          }
+        },
+        "payload": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sl871-package03\\payload-2026"
+      },
+      "2027": {
+        "native_receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sl871-final03\\max2027\\receipt.json",
+        "receipt_sha256": "5b3851232245e484e2f4db78217d53dd153ad8d7079b3d1ecc57b2193d70d8b3",
+        "mzp": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.1-20261026\\CyrusScatter-0.87.1-Max2027.mzp",
+        "mzp_sha256": "c1a2272f2ec0cfb2afa8608336fd1fcb90a3f2e5938f3f80ee567c94e7b76352",
+        "manifest": {
+          "product": "Cyrus Scatter",
+          "version": "0.87.1",
+          "max_year": 2027,
+          "toolset": "14.38.33130",
+          "windows_sdk": "10.0.19041.0",
+          "configuration": "Release",
+          "native_id": "9516650274ba",
+          "files": {
+            "AminScatter.dlx": "0424c43d4e58e9334439f13be07815a54aa7b7136dc5016400b97b641a953fd4",
+            "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+            "Clipper2-NOTICE.txt": "c38889c3df3eaa6d40eb90abf6ca3bdc2260395596d5c6895ea974708372df74",
+            "CyrusBrush.dlx": "a564e01ce188bbfe402749fb5a50faecd3c5cfc9c07a29bdade1c182ffc97ebb",
+            "CyrusBrushStorage.dlh": "dc40c29f807d3f68a58a4330209a9e06148a8a7e6eb878aee5b21f5365ec6d74",
+            "CyrusGallery.dll": "adf7b2cd6f1f2ad895b0c8f4e52c17a91567dd383fa0e4a73f03e847169f2667",
+            "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+            "CyrusScatter.mcr": "4b8d7e773b612a4164b82ca4f1ade9ed883e9c3f2c412546b8680ad466162887",
+            "CyrusScatter.ms": "6d9abceb525e0753e09157d4ab6046a591b129a699829de7c5bd771c9ab25989",
+            "CyrusScatterEdit.dlm": "bb23c8e4850c9d97da38429dabd43a974b93291141ea3da3edc57a9135dd335d",
+            "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+            "ExternalContent.json": "f72affef5fcb35da414ceab45c8837e0a7d63c988ff7f1a9ec41a9c99affc1ab",
+            "INSTALL.txt": "22457a82438c9f566ce385c60fb13fcb4bcb96222cdc7d6845d490190a989edc",
+            "InstallInventory.txt": "a29de226981b3f50738f5506931435a4bfd37137978bdd379cd5b4c31136e4ca",
+            "LibraryFiles.ms": "3de699fea1621d245576077c5654f57fb4e1394c23e4a78db6962f0cea88e4a0",
+            "Patterns/README.md": "0a303716847cf3c27a0610e5cc10554a309725f3064943a5f726d447ae690c83",
+            "Patterns/catalog.tsv": "6707561a06ac479ca88c4b2ce6c5ff2c4a2d003d64572247cb83fb76582a4926",
+            "Patterns/index.json": "f6ba0e7ef8925ba581be3951376eeef82df140065949639e415feb72f485fd8f",
+            "Patterns/soft-patches.png": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+            "Patterns/uniform.png": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+            "Patterns/wide-bands.png": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+            "SurfaceGeodesic-LICENSE.txt": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52",
+            "SurfaceGeodesic-NOTICE.txt": "bd0314ed47bcfac23de2c7801a9f7b7ec19374df4f7b035cbd7fd9dee9ce5c54",
+            "Uninstall.ms": "8cba70077899000c5c2eba6c2e7d965f9d43d33dd588349cd7529f300f1fe72d",
+            "install.ms": "4374905a537fad4010f0da82073e0f855423673e89d1d6dcb01cfd88f9f74231",
+            "libjpeg-turbo-IJG-README.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+            "libjpeg-turbo-LICENSE.txt": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579",
+            "libjpeg-turbo-NOTICE.txt": "9e1b3353e71b8615311f81a469ee2d0e9be12f52188186dd6fbd4a66fce1a264",
+            "mzp.run": "0ac74a5fb6d6a088b9af76abc21409040e54d6cf3cd32241e9f95581411def4d",
+            "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+          },
+          "build_evidence_schema": "cyrus.package-inputs/2",
+          "producer_receipts": {
+            "native": {
+              "schema": "cyrus.native-build/2",
+              "receipt_sha256": "5b3851232245e484e2f4db78217d53dd153ad8d7079b3d1ecc57b2193d70d8b3",
+              "input_manifest_sha256": "68b1f23934e952598fc53b27c51f10a3507663442250639750a8edddd9bb14a7"
+            },
+            "installer": {
+              "receipt_sha256": "8ecad4d688238cffa75af2f90a4982dfb305e37433acf05400050faddd258653",
+              "artifact_sha256": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+              "schema": "cyrus.managed-build/2",
+              "producer": "installer-core",
+              "input_manifest_sha256": "9835462ca9c3c4d281218651e0cfb660dfe6ea5bf9b8f41bc4e3c55ee6506b72"
+            },
+            "gallery": {
+              "receipt_sha256": "52385c2e553d3a84875ef84b53604ac63e3649d648306985bc7753a2c565ab20",
+              "artifact_sha256": "adf7b2cd6f1f2ad895b0c8f4e52c17a91567dd383fa0e4a73f03e847169f2667",
+              "schema": "cyrus.managed-build/2",
+              "producer": "gallery",
+              "input_manifest_sha256": "8d33a022cba28d870c58a1e68cedd2721e4c9d0fb2d729872345b9ab18389bfb"
+            }
+          },
+          "package_inputs_sha256": "4bb53e1eb0bee8b9f90857a0487a64f449a9c805ba9c7982a11622870138d10f",
+          "licensing": {
+            "mode": "offline-team",
+            "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+            "term_days": 30
+          }
+        },
+        "payload": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sl871-package03\\payload-2027"
+      }
+    },
+    "scope": "Source-matched build and archive verification. Runtime and owned-profile installer qualification are recorded separately. Analyzer/content remain independently versioned."
+  },
+  "hosts": {
+    "workflow-2024": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-workflow-2024\\receipt.json",
+      "receipt_sha256": "cdac7208ad09edcc105db46633bf86593967e01161c9814c12547d2d739c89c6",
+      "checks": 126,
+      "loaded": {
+        "host": 2024,
+        "modules": {
+          "AminScatter.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2024\\runtime\\r\\f14d73eabd72\\bin\\AminScatter.dlx",
+            "sha256": "3025709e08f0a0e0457e4851edc9db3b895ffaf9a83f9ee34c5d76f395d0a644"
+          },
+          "CyrusBrush.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2024\\runtime\\r\\f14d73eabd72\\bin\\CyrusBrush.dlx",
+            "sha256": "4c008fb99dfbe7f0d62398cdac4faade065e433115dd86235537b603a3b276dd"
+          },
+          "CyrusBrushStorage.dlh": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2024\\runtime\\r\\f14d73eabd72\\bin\\CyrusBrushStorage.dlh",
+            "sha256": "b74f00c2d176b3c12e33e033fb2b351642cbaeee8728a5d081367a54dab5a9d2"
+          },
+          "CyrusScatterEdit.dlm": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2024\\runtime\\r\\f14d73eabd72\\bin\\CyrusScatterEdit.dlm",
+            "sha256": "295a83dba391e7272449c2d442fd9927c973a162ba9c1cfc9b8b60b0b9b6a031"
+          }
+        },
+        "script_fingerprint": "068a2fa115e32e919b5422005d3cd2df16c583bfbae61133c2acd3974ece79c7"
+      },
+      "test_script_sha256": "fff80c374914fe386291b267bd8e02306e9199f3ce1c09d7e841ad7a9119df23"
+    },
+    "models-2024": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-models-2024\\receipt.json",
+      "receipt_sha256": "52b548a2dbc3def71063409f9e2b65a94307b686c64952544f7cb517a6313e8f",
+      "checks": 67,
+      "loaded": {
+        "host": 2024,
+        "modules": {
+          "AminScatter.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2024\\AminScatter.dlx",
+            "sha256": "3025709e08f0a0e0457e4851edc9db3b895ffaf9a83f9ee34c5d76f395d0a644"
+          },
+          "CyrusBrush.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2024\\CyrusBrush.dlx",
+            "sha256": "4c008fb99dfbe7f0d62398cdac4faade065e433115dd86235537b603a3b276dd"
+          },
+          "CyrusBrushStorage.dlh": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2024\\CyrusBrushStorage.dlh",
+            "sha256": "b74f00c2d176b3c12e33e033fb2b351642cbaeee8728a5d081367a54dab5a9d2"
+          },
+          "CyrusScatterEdit.dlm": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2024\\CyrusScatterEdit.dlm",
+            "sha256": "295a83dba391e7272449c2d442fd9927c973a162ba9c1cfc9b8b60b0b9b6a031"
+          }
+        },
+        "script_fingerprint": "068a2fa115e32e919b5422005d3cd2df16c583bfbae61133c2acd3974ece79c7"
+      },
+      "test_script_sha256": "b9b8e57e2755ded50d364f117d8f51fedfcdc93da5f9eb33e9582ed11224ed66"
+    },
+    "workflow-2026": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-workflow-2026\\receipt.json",
+      "receipt_sha256": "951fbbae09b926577baa956f1bc426ce717c28a892fe9c9ee9b6c7cf35a89e99",
+      "checks": 126,
+      "loaded": {
+        "host": 2026,
+        "modules": {
+          "AminScatter.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2026\\runtime\\r\\643b0ab61079\\bin\\AminScatter.dlx",
+            "sha256": "6200237ca9c9133a88bba8be2761e05a21e521edfed505dd5dddfd31115b53af"
+          },
+          "CyrusBrush.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2026\\runtime\\r\\643b0ab61079\\bin\\CyrusBrush.dlx",
+            "sha256": "d54de0c8427cde51a115af7d3e2e3817ba6248dc948cefa156d831d793d0e33f"
+          },
+          "CyrusBrushStorage.dlh": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2026\\runtime\\r\\643b0ab61079\\bin\\CyrusBrushStorage.dlh",
+            "sha256": "73503c396c489d0cb3a42e4b41ff55d974f686697998f7691049ccdc118cc594"
+          },
+          "CyrusScatterEdit.dlm": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2026\\runtime\\r\\643b0ab61079\\bin\\CyrusScatterEdit.dlm",
+            "sha256": "46cabd95b305a2f8a3ba212cf24e7cf8abd9ebaf59e1fdb214a1c4c4eca7b56f"
+          }
+        },
+        "script_fingerprint": "068a2fa115e32e919b5422005d3cd2df16c583bfbae61133c2acd3974ece79c7"
+      },
+      "test_script_sha256": "fff80c374914fe386291b267bd8e02306e9199f3ce1c09d7e841ad7a9119df23"
+    },
+    "models-2026": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-models-2026\\receipt.json",
+      "receipt_sha256": "6ce64dc662139e337bd262330fb3774af18c0185653c128ce2b2adddc4ccef10",
+      "checks": 67,
+      "loaded": {
+        "host": 2026,
+        "modules": {
+          "AminScatter.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2026\\AminScatter.dlx",
+            "sha256": "6200237ca9c9133a88bba8be2761e05a21e521edfed505dd5dddfd31115b53af"
+          },
+          "CyrusBrush.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2026\\CyrusBrush.dlx",
+            "sha256": "d54de0c8427cde51a115af7d3e2e3817ba6248dc948cefa156d831d793d0e33f"
+          },
+          "CyrusBrushStorage.dlh": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2026\\CyrusBrushStorage.dlh",
+            "sha256": "73503c396c489d0cb3a42e4b41ff55d974f686697998f7691049ccdc118cc594"
+          },
+          "CyrusScatterEdit.dlm": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2026\\CyrusScatterEdit.dlm",
+            "sha256": "46cabd95b305a2f8a3ba212cf24e7cf8abd9ebaf59e1fdb214a1c4c4eca7b56f"
+          }
+        },
+        "script_fingerprint": "068a2fa115e32e919b5422005d3cd2df16c583bfbae61133c2acd3974ece79c7"
+      },
+      "test_script_sha256": "b9b8e57e2755ded50d364f117d8f51fedfcdc93da5f9eb33e9582ed11224ed66"
+    },
+    "workflow-2027": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-workflow-2027\\receipt.json",
+      "receipt_sha256": "3d52db35d9dae620772ad774a6dc057154d8ba9b352e5f4d8b68d073d96ca5c9",
+      "checks": 126,
+      "loaded": {
+        "host": 2027,
+        "modules": {
+          "AminScatter.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2027\\runtime\\r\\8ddc62ee1bbc\\bin\\AminScatter.dlx",
+            "sha256": "0424c43d4e58e9334439f13be07815a54aa7b7136dc5016400b97b641a953fd4"
+          },
+          "CyrusBrush.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2027\\runtime\\r\\8ddc62ee1bbc\\bin\\CyrusBrush.dlx",
+            "sha256": "a564e01ce188bbfe402749fb5a50faecd3c5cfc9c07a29bdade1c182ffc97ebb"
+          },
+          "CyrusBrushStorage.dlh": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2027\\runtime\\r\\8ddc62ee1bbc\\bin\\CyrusBrushStorage.dlh",
+            "sha256": "dc40c29f807d3f68a58a4330209a9e06148a8a7e6eb878aee5b21f5365ec6d74"
+          },
+          "CyrusScatterEdit.dlm": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\si871c\\2027\\runtime\\r\\8ddc62ee1bbc\\bin\\CyrusScatterEdit.dlm",
+            "sha256": "bb23c8e4850c9d97da38429dabd43a974b93291141ea3da3edc57a9135dd335d"
+          }
+        },
+        "script_fingerprint": "068a2fa115e32e919b5422005d3cd2df16c583bfbae61133c2acd3974ece79c7"
+      },
+      "test_script_sha256": "fff80c374914fe386291b267bd8e02306e9199f3ce1c09d7e841ad7a9119df23"
+    },
+    "models-2027": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-models-2027\\receipt.json",
+      "receipt_sha256": "d31236737f41ee2b9152430be98c3dd6d2bea8914d145af084f823b3eadb3b13",
+      "checks": 67,
+      "loaded": {
+        "host": 2027,
+        "modules": {
+          "AminScatter.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2027\\AminScatter.dlx",
+            "sha256": "0424c43d4e58e9334439f13be07815a54aa7b7136dc5016400b97b641a953fd4"
+          },
+          "CyrusBrush.dlx": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2027\\CyrusBrush.dlx",
+            "sha256": "a564e01ce188bbfe402749fb5a50faecd3c5cfc9c07a29bdade1c182ffc97ebb"
+          },
+          "CyrusBrushStorage.dlh": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2027\\CyrusBrushStorage.dlh",
+            "sha256": "dc40c29f807d3f68a58a4330209a9e06148a8a7e6eb878aee5b21f5365ec6d74"
+          },
+          "CyrusScatterEdit.dlm": {
+            "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\shared-library-0871-20261025\\final03-payload2027\\CyrusScatterEdit.dlm",
+            "sha256": "bb23c8e4850c9d97da38429dabd43a974b93291141ea3da3edc57a9135dd335d"
+          }
+        },
+        "script_fingerprint": "068a2fa115e32e919b5422005d3cd2df16c583bfbae61133c2acd3974ece79c7"
+      },
+      "test_script_sha256": "b9b8e57e2755ded50d364f117d8f51fedfcdc93da5f9eb33e9582ed11224ed66"
+    }
+  },
+  "evidence": {
+    "installer-delivery": {
+      "receipt": "build\\shared-library-0871-20261025\\installer-delivery\\receipt.json",
+      "sha256": "79d43347a935e8a5e29f13279f5c0805e13b32c7070542a83da0e953a8fef7d3"
+    },
+    "delivery-renderer-2027": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-renderer-2027\\receipt.json",
+      "sha256": "c7b4b3624bae8ea72b11bc30c8873ac9f6c9ec1b1bfe76f9eea4b3c3616aa308"
+    },
+    "delivery-migration-2027": {
+      "receipt": "build\\shared-library-0871-20261025\\delivery-migration-2027\\receipt.json",
+      "sha256": "9e00ac7afae0d75f67f0f724899852324fd133bbcb69c08b50989d34de84d9fc"
+    }
+  },
+  "managed_checks": 244,
+  "python_checks": 573,
+  "native_tests_per_sdk": 59,
+  "limitations": [
+    "Normal default OCIO with matching saved colour profile; Max 2024 legacy Gamma deliberately rejected.",
+    "Corona profile Max 2027 / 15.0.671720 only.",
+    "No arbitrary scene serializer, automatic purge or unlimited NTFS aliases.",
+    "No physical DPI/power-loss/long-soak/all-renderer certification."
+  ]
+}

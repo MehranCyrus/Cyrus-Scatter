@@ -1,8 +1,67 @@
 # Current codebase architecture
 
-Applies to the Cyrus Scatter 0.86.9.2 source, saved schema 59 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current qualification status](plans/edit-instances/DELIVERY_08692.md). Source implementation and scoped qualification are distinct. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, library capability 4 and asset package capability 2.
+Applies to the Cyrus Scatter 0.87.3 source, saved schema 61 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current Library startup qualification](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md). Source implementation and scoped qualification are distinct. The [current three-host installer](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) does not extend the Max 2027 runtime evidence to 2024/2026. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, native Edit storage 2, library capability 4 and asset package capability 3 and shared-store capability 1.
 
 ## Ownership
+
+### 0.87.3 default library configuration
+
+`shared-library.ms` uses the supported .NET `System.Environment.GetEnvironmentVariable` lookup in both the existing settings read and root-registration write paths. The per-user preference format and atomic managed registration remain unchanged. Tests unset `CyrusSharedLibraryRootOverride` and exercise missing/existing configuration and persistence through a process-local application-data fixture, including an actual Layers > Recipes click. [Scope and exact evidence](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md).
+
+### 0.87.2 SI preparation and independent tree colliders
+
+Layers store preparation minimums in metres, convert only at the world-unit UI boundary and explicitly repair invalid legacy schema-60 settings. Schema 61 saves the new fields and source-row-ID-to-proxy-node bindings. Recipe/Apply Style rejects those references even when roles are disabled. There is no automatic scene rescale.
+
+`interactions_host.cpp` captures a bounded custom/trunk mesh directly in its visual prototype frame, retaining the original visual node handle for placement correspondence. Full visual geometry is not copied merely to admit that collision shape. Both visual and proxy watchers invalidate numeric source generations. The explicit box mode captures an evaluated bound. Automatic trunks scan connected source components within 4M vertices/8M triangles and create a closed 34-vertex/64-triangle lower-trunk approximation; manual closed proxies admit 100k vertices/200k triangles. Source, runtime, query and output reservations remain bounded. Workers never access host nodes.
+
+The preparation core adds rooted ordered folded leaves and attachment from either geometric end of flared flower pedicels. Root/parent distance constraints and unresolved-geometry rejection remain. Native numeric definitions are shared by instances; their local poses and Cyrus Edit identities stay independent. Missing/invalid successors retain the previous complete result. [Exact Max 2027 evidence and limits](plans/scatter-interactions-garden-20261025/DELIVERY_0872.md), [artist workflow](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0872.md). Trunks approximate the lower 35% of source height and require review; canopy/branch dynamics, broader production topology and renderer qualification are separate.
+
+### 0.87.1 shared personal library
+
+One configurable local NTFS store owns immutable SHA-256 objects, independent mesh/material/map definitions, standalone normalized model packages and pinned full-recipe packages. Collections and current model-card pointers are metadata; a recipe keeps its exact saved model revisions. Hard-link views and gamma-interpretation aliases share raw allocations. Imported SDK objects keep the graph's distinct/instanced shader topology. Source provenance is only a hint; native live-mesh comparison proves reuse after unit conversion.
+
+`AminScatter/shared/SharedLibrary.cs`, `.Models.cs` and `.Management.cs` own file transactions, transport and management; `ContentObjects.cs` shares verified byte/link primitives with the installer. Native `asset_package.cpp`, `asset_mesh_host.inc`, `recipes_bridge.cpp` and `recipe_library.cpp` own typed validation, SDK conversion, bounded independent leases and direct committed-catalog reads. The authoritative `shared-library.ms`, `assets.ms`, `recipes.ms` and `preset-loading.ms` templates coordinate the host and Gallery.
+
+File workers never access Max. At most two run, native validation is serialized, and one content lock owns publication. Captured host owners are rechecked before one authored transaction; failures keep the previous catalog/result. Manual pending changes wait for Update. Migration retains originals; relocation retains old scene paths; explicit scene-copy relink preserves interpretation and Undo. Removing cards does not purge published assets. [Delivery and limits](plans/preset-gallery-improvements/DELIVERY_0871.md), [artist commands](plans/preset-gallery-improvements/SHARED_LIBRARY_ARTIST_GUIDE_0871.md).
+
+### 0.87.0 prepared sources and local rooted contact
+
+Each layer owns its Collider or React role, coverage and contact settings. A reviewed
+source definition owns immutable rest geometry, inferred roots/branches, attachments
+and preview sampling. Differently transformed instances share that definition and
+retain independent stable placement identities and compact poses. Supported transforms
+use positive uniform scale; unsupported topology, mirrors, shear and ambiguous Edit
+ownership reject admission. Trees in the terrace fixture remain rigid.
+
+Native preparation reuses the [stem analysis and fitting core](../CyrusVegetationLab/experiments/stem-live/).
+`interactions_source.cpp`, `interactions_geometry.cpp` and `interactions_engine.cpp`
+own prepared definitions, closed-mesh collision queries, nearby-instance indexing and
+bounded contact fitting. Old and new collider neighborhoods include plant reach so
+departing plants restore. Covered rooted groups are reversibly suppressed before
+bending; root coverage, broad-phase bounds and visible contact gap are separate.
+
+`interactions_host.cpp` copies host state and publishes complete successors on the
+host thread. Workers use copied numeric data. `interactions_preview.cpp` retains
+unchanged instance streams and sparse posed previews; `interactions_render.cpp`
+constructs full visible source geometry for render/Bake. Source, query, pose and output
+budgets reject incomplete successors while retaining the previous complete result.
+Preparation and contact costs are distinct from drawing and whole-scene placement.
+
+The authoritative `interactions-authoring.ms` and `interactions-ui.ms` templates
+coordinate Analyze, guide review/acceptance, persistence and Cyrus Edit invalidation.
+Contact updates use the last published population; pending Manual amount/seed edits
+still wait for Update scatter. One unshared Cyrus Edit per controller is admitted;
+new Edit clones need a placement Update. Schema 60 saves prepared definitions and
+settings; schema 59 opens with Interactions off. Recipe export rejects prepared data
+or active roles rather than silently dropping them. This is static rooted contact:
+no Jolt runtime, wind, inertia, self-collision or two-way dynamics is integrated.
+
+The [artist workflow](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0870.md),
+[execution history](plans/scatter-interactions-garden-20261025/EXECUTION_0870.md) and
+[qualification manifest](plans/scatter-interactions-garden-20261025/QUALIFICATION_0870.json)
+own exact evidence. Physical Undo/Redo, strong-bend appearance, broader renderer,
+animation/seek/rescale and soak acceptance remain separate. A geometric mesh audit
+does not guarantee natural bending; conservative source envelopes can leave clearance.
 
 ### 0.86.9.1 density presentation, column fit and gesture feedback
 
@@ -175,6 +234,8 @@ Native publication owns accepted views, radii, source correspondence, receiver r
 ## Evaluation and publication
 
 The generated controller prepares geometry and keyed candidates, applies supported candidate Relax, coverage/area/falloff and transforms, resolves Edit/radius information, evaluates ordered spacing and accepted-union cleanup, and stages the complete result. Candidate budget and accepted target have different bounded retry semantics. Earlier accepted owners and protected edits affect later acceptance.
+
+### Receiver identity and cache reuse
 
 Paint Areas combine coverage by maximum within their layer; a candidate is accepted at most once. Areas do not create additional population quotas. Each receiver now has a persistent UUID-salted candidate stream. Density rounds independently per receiver below its allocated cap; Fixed Total and capped Density use area/weight-based largest-remainder quotas with saved receiver-slot tie breaking. Removed quotas drop local suffixes. Reorder and rename do not reseed unchanged receivers; unlink/relink retains their identities. A same-name replacement node has a different identity.
 

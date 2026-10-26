@@ -1,0 +1,57 @@
+[
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Rock_10.max",
+    "bytes": 286720,
+    "sha256": "3b540ffcaf3b20faebb62dbf46d10f4adc1da9d70bc199596b4882021a77ea85"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stone_10_A.tga",
+    "bytes": 50331692,
+    "sha256": "160febac641745ace9f85c183c431f42fe42f4a58f4c405d2276e3891b3f0706"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stone_10_MSA.tga",
+    "bytes": 50331692,
+    "sha256": "56d1550f8aba4b6a4f8a76460b9dc48c7255ec9f8b67ac6473cf248fe78107f4"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stone_10_N.tga",
+    "bytes": 50331692,
+    "sha256": "de072656164686ebfd34e09932a33f369aebee14091f2f9a316254fc158274ae"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stones 1\\stones.obj",
+    "bytes": 232925,
+    "sha256": "9dfb8065d29af5675a4b94611917a18e1b084287ee61c156fb7a1e5ea4eb9044"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_AO.png",
+    "bytes": 8378861,
+    "sha256": "2879c143e20b30385242b0572d7719630ae052d702f2c47ac961ab77a7889714"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_baseColor.png",
+    "bytes": 25528816,
+    "sha256": "ecf133e04b9d5db19117da5373b2f8833085ee37ca6d0d2183eb14535c6e80ff"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_Metalness.png",
+    "bytes": 16411,
+    "sha256": "f790625c24510389aba626a3b4ea80806ad5012b1f838bfbee3b69dd87e3a70e"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_Normal.png",
+    "bytes": 34770068,
+    "sha256": "abc382633ddf85537ab31114650cb0ed65f5ed6b275dffbcda2bea338febe1f8"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_NormalDX.png",
+    "bytes": 34768912,
+    "sha256": "700c5d29b467966c98d90b9e3ad6f9dd87ec71aa3ef812df891831dea21cc5b1"
+  },
+  {
+    "path": "Test Scene\\Rock_Boulder_10\\Stones 1\\Textures\\stones_Roughness.png",
+    "bytes": 7906477,
+    "sha256": "78d5ee30026df6111a8f1e1acd524f90ff1044713b121dae4a4158df594522b4"
+  }
+]

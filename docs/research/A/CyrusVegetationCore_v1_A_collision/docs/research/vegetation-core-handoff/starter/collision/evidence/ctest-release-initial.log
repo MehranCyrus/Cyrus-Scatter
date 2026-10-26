@@ -1,0 +1,162 @@
+command_argv: ["/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/ctest", "--test-dir", "owner_a_build_release", "--output-on-failure", "-V", "-R", "^collision_"]
+cwd: /workspace/scratch/eb3b91c272e0
+started_utc: 2026-10-24T14:51:29.046997+00:00
+
+UpdateCTestConfiguration  from :/workspace/scratch/eb3b91c272e0/owner_a_build_release/DartConfiguration.tcl
+Parse Config file:/workspace/scratch/eb3b91c272e0/owner_a_build_release/DartConfiguration.tcl
+Test project /workspace/scratch/eb3b91c272e0/owner_a_build_release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: collision_identity_empty
+
+1: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "identity_empty"
+1: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+1: Test timeout computed to be: 30
+1: BACKEND Jolt public primitive queries + qualified double analytic refinement | contract doubles; Jolt double world positions (RVec3); Jolt local shape/query arithmetic and rotations are float; primitive refinement uses double; local right-handed Y-up metres | DOUBLE_PRECISION=ON; USE_ASSERTS=ON; CROSS_PLATFORM_DETERMINISTIC=ON; CPP_EXCEPTIONS_ENABLED=ON; CPP_RTTI_ENABLED=ON; x86_SSE2_baseline=ON; SSE4/AVX/AVX2/AVX512/LZCNT/TZCNT/F16C/FMA=OFF; compute_DX12/Vulkan/Metal/CPU=OFF; OBJECT_LAYER_BITS=16; OBJECT_STREAM=OFF; CUSTOM_ALLOCATOR=ON; FLOATING_POINT_EXCEPTIONS_ENABLED=OFF; debug_renderer/profiler/IPO=OFF; static_Jolt=ON; FP_contraction=OFF; MSVC_fp=precise; MSVC_runtime=inherited; configuration=Release; compiler=GNU 13.3.0; target=Linux/x86_64; inherited_cxx_flags=; native=Double precision x86 64-bit with instructions: SSE2 (Cross Platform Deterministic) (16-bit ObjectLayer) (Assertions) (C++ RTTI) (C++ Exceptions) 
+1: {"case":"identity_empty","status":"passed","checks":15,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+ 1/15 Test  #1: collision_identity_empty .........   Passed    0.00 sec
+test 2
+      Start  2: collision_point_sphere
+
+2: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "point_sphere"
+2: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+2: Test timeout computed to be: 30
+2: {"case":"point_sphere","status":"passed","checks":75,"largest_expected_numeric_error":1.9028849269952033e-16,"evidence":"new public-adapter test; independent analytic controls"}
+ 2/15 Test  #2: collision_point_sphere ...........   Passed    0.00 sec
+test 3
+      Start  3: collision_point_box
+
+3: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "point_box"
+3: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+3: Test timeout computed to be: 30
+3: {"case":"point_box","status":"passed","checks":66,"largest_expected_numeric_error":2.4980018054066022e-16,"evidence":"new public-adapter test; independent analytic controls"}
+ 3/15 Test  #3: collision_point_box ..............   Passed    0.00 sec
+test 4
+      Start  4: collision_capsule_sphere
+
+4: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "capsule_sphere"
+4: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+4: Test timeout computed to be: 30
+4: {"case":"capsule_sphere","status":"passed","checks":200,"largest_expected_numeric_error":4.163336342344337e-17,"evidence":"new public-adapter test; independent analytic controls"}
+ 4/15 Test  #4: collision_capsule_sphere .........   Passed    0.00 sec
+test 5
+      Start  5: collision_capsule_box
+
+5: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "capsule_box"
+5: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+5: Test timeout computed to be: 30
+5: {"control":"independent_analytic_sampled_obb","trials":200,"samples_per_span":501,"sampled_contacts":139,"returned_contacts":139,"max_gap_above_sampled_minimum":4.8572257327350599e-16,"max_witness_sdf_error":9.0205620750793969e-16}
+5: {"case":"capsule_box","status":"passed","checks":5388,"largest_expected_numeric_error":1.8318679906315083e-15,"evidence":"new public-adapter test; independent analytic controls"}
+ 5/15 Test  #5: collision_capsule_box ............   Passed    0.01 sec
+test 6
+      Start  6: collision_capsule_axes
+
+6: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "capsule_axes"
+6: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+6: Test timeout computed to be: 30
+6: {"case":"capsule_axes","status":"passed","checks":262,"largest_expected_numeric_error":9.7144514654701197e-17,"evidence":"new public-adapter test; independent analytic controls"}
+ 6/15 Test  #6: collision_capsule_axes ...........   Passed    0.00 sec
+test 7
+      Start  7: collision_two_obstacles
+
+7: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "two_obstacles"
+7: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+7: Test timeout computed to be: 30
+7: {"case":"two_obstacles","status":"passed","checks":124,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+ 7/15 Test  #7: collision_two_obstacles ..........   Passed    0.00 sec
+test 8
+      Start  8: collision_invalid_inputs
+
+8: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "invalid_inputs"
+8: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+8: Test timeout computed to be: 30
+8: {"case":"invalid_inputs","status":"passed","checks":65,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+ 8/15 Test  #8: collision_invalid_inputs .........   Passed    0.00 sec
+test 9
+      Start  9: collision_limits
+
+9: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "limits"
+9: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+9: Test timeout computed to be: 30
+9: {"case":"limits","status":"passed","checks":77,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+ 9/15 Test  #9: collision_limits .................   Passed    0.00 sec
+test 10
+      Start 10: collision_cancellation
+
+10: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "cancellation"
+10: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+10: Test timeout computed to be: 30
+10: {"case":"cancellation","status":"passed","checks":27,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+10/15 Test #10: collision_cancellation ...........   Passed    0.00 sec
+test 11
+      Start 11: collision_snapshot
+
+11: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "snapshot"
+11: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+11: Test timeout computed to be: 30
+11: {"case":"snapshot","status":"passed","checks":74,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+11/15 Test #11: collision_snapshot ...............   Passed    0.00 sec
+test 12
+      Start 12: collision_lifetime
+
+12: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "lifetime"
+12: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+12: Test timeout computed to be: 30
+12: {"case":"lifetime","status":"passed","checks":79,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+12/15 Test #12: collision_lifetime ...............   Passed    0.00 sec
+test 13
+      Start 13: collision_scale_profile
+
+13: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "scale_profile"
+13: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+13: Test timeout computed to be: 30
+13: {"case":"scale_profile","status":"passed","checks":96,"largest_expected_numeric_error":2.9103802701158088e-12,"evidence":"new public-adapter test; independent analytic controls"}
+13/15 Test #13: collision_scale_profile ..........   Passed    0.00 sec
+test 14
+      Start 14: collision_repeatability
+
+14: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "repeatability"
+14: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+14: Test timeout computed to be: 30
+14: {"case":"repeatability","status":"passed","checks":413,"largest_expected_numeric_error":0,"evidence":"new public-adapter test; independent analytic controls"}
+14/15 Test #14: collision_repeatability ..........   Passed    0.00 sec
+test 15
+      Start 15: collision_native_observations
+
+15: Test command: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision/cyrus_collision_tests "native_observations"
+15: Working Directory: /workspace/scratch/eb3b91c272e0/owner_a_build_release/collision
+15: Test timeout computed to be: 30
+15: {"control":"raw_public_jolt_observation","fixture":"sphere_span_X","native_calls":1,"native_hits":1,"raw_penetration_depth_m":0.070000283420085907,"raw_consistency_error_m":7.4505809161129477e-09,"allowed_float_error_m":0.00029999999999999997,"accounted_owned_bytes":4464,"accounted_scratch_bytes":65656}
+15: {"control":"raw_public_jolt_observation","fixture":"sphere_span_Z","native_calls":1,"native_hits":1,"raw_penetration_depth_m":0.070000283420085907,"raw_consistency_error_m":7.4505809161129477e-09,"allowed_float_error_m":0.00029999999999999997,"accounted_owned_bytes":4464,"accounted_scratch_bytes":65656}
+15: {"control":"raw_public_jolt_observation","fixture":"rotated_box_local_span_Y","native_calls":1,"native_hits":1,"raw_penetration_depth_m":0.070000000298023224,"raw_consistency_error_m":6.5135133897609165e-08,"allowed_float_error_m":0.00029999999999999997,"accounted_owned_bytes":4496,"accounted_scratch_bytes":65656}
+15: {"control":"raw_public_jolt_observation","fixture":"rotated_box_local_span_Z","native_calls":1,"native_hits":1,"raw_penetration_depth_m":0.070000030100345612,"raw_consistency_error_m":3.1578438391965946e-08,"allowed_float_error_m":0.00029999999999999997,"accounted_owned_bytes":4496,"accounted_scratch_bytes":65656}
+15: {"case":"native_observations","status":"passed","checks":192,"largest_expected_numeric_error":2.8342008590032108e-07,"evidence":"new raw public-Jolt observations; explicit float-engine tolerance"}
+15/15 Test #15: collision_native_observations ....   Passed    0.00 sec
+
+The following tests passed:
+	collision_identity_empty
+	collision_point_sphere
+	collision_point_box
+	collision_capsule_sphere
+	collision_capsule_box
+	collision_capsule_axes
+	collision_two_obstacles
+	collision_invalid_inputs
+	collision_limits
+	collision_cancellation
+	collision_snapshot
+	collision_lifetime
+	collision_scale_profile
+	collision_repeatability
+	collision_native_observations
+
+100% tests passed, 0 tests failed out of 15
+
+Total Test time (real) =   0.04 sec
+
+exit_code: 0

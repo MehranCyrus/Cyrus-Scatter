@@ -1,0 +1,86 @@
+#include "stem_core.hpp"
+#include "math.hpp"
+#include "geometry.hpp"
+#include <chrono>
+#include <limits>
+#include <stdexcept>
+namespace stem {
+namespace f=v::fitter_detail;namespace g=v::delivery_detail;
+namespace {
+Vec readVec(const Json& j){if(!j.is_array()||j.size()!=3)throw std::runtime_error("Invalid prepared vector.");Vec p{j[0].get<double>(),j[1].get<double>(),j[2].get<double>()};if(!f::finite(p))throw std::runtime_error("Nonfinite preparation.");return p;}
+std::vector<Quat> frames(const std::vector<Vec>& nodes){std::vector<Quat> out;Vec previous{0,0,1};Quat q;for(std::size_t i=0;i<nodes.size();++i){Vec t;if(!f::tangent(nodes,i,t))throw std::runtime_error("Undefined stem tangent.");Quat turn;if(!f::swing(previous,t,turn))throw std::runtime_error("Ambiguous stem frame.");q=f::qnormal(f::product(turn,q));out.push_back(q);previous=t;}return out;}
+std::pair<Vec,Quat> sample(const std::vector<Vec>& points,const std::vector<Quat>& qs,unsigned span,double u){if(span+1>=points.size())throw std::runtime_error("Prepared span outside guide.");auto q=g::shortest_slerp(qs[span],qs[span+1],u);if(!q)throw std::runtime_error("Invalid sampled stem frame.");return {f::lerp(points[span],points[span+1],u),*q};}
+std::tuple<unsigned,double,double> nearest(const std::vector<Vec>& nodes,Vec p){unsigned best=0;double bu=0,bd=std::numeric_limits<double>::infinity();for(unsigned s=0;s+1<nodes.size();++s){auto ab=f::sub(nodes[s+1],nodes[s]);double u=std::clamp(f::dot(f::sub(p,nodes[s]),ab)/f::dot(ab,ab),0.,1.);double d=f::norm(f::sub(p,f::lerp(nodes[s],nodes[s+1],u)));if(d<bd){bd=d;best=s;bu=u;}}return {best,bu,bd};}
+void fillRigid(const Prepared& p,Pose& pose){pose.rigid.resize(p.parts.size());for(std::size_t i=0;i<p.parts.size();++i){const auto& b=p.parts[i];if(!b.stem&&pose.moved[b.guide]){auto [centre,q]=sample(pose.guides[b.guide].nodes,pose.guides[b.guide].material_frames,b.span,b.u);auto delta=f::qnormal(f::product(q,f::conjugate(b.restFrame)));pose.rigid[i]={delta,f::sub(centre,f::rotate(delta,b.restCentre))};}}}
+bool hit(const v::RestGuide& r,Vec centre,double radius,double clearance){for(unsigned i=0;i+1<r.nodes.size();++i){auto ab=f::sub(r.nodes[i+1],r.nodes[i]);double u=std::clamp(f::dot(f::sub(centre,r.nodes[i]),ab)/f::dot(ab,ab),0.,1.);if(f::norm(f::sub(centre,f::lerp(r.nodes[i],r.nodes[i+1],u)))<radius+r.span_radius_m[i]+clearance)return true;}return false;}
+bool hinge(const v::RestGuide& r,Vec centre,double radius,double clearance,v::GuidePose& pose){
+    Vec tangent,away;if(!f::unit(f::sub(r.nodes.back(),r.nodes.front()),tangent)||!f::unit(f::sub(r.nodes.front(),centre),away))return false;Vec axis;
+    if(!f::unit(f::cross(tangent,away),axis))axis=f::rotate(r.material_frames.front(),{1,0,0});
+    auto candidate=[&](double angle){double s=std::sin(angle*.5);Quat q{axis.x*s,axis.y*s,axis.z*s,std::cos(angle*.5)};auto out=r;for(auto& p:out.nodes)p=f::add(r.nodes.front(),f::rotate(q,f::sub(p,r.nodes.front())));for(auto& frame:out.material_frames)frame=f::qnormal(f::product(q,frame));return out;};
+    double low=0;
+    for(unsigned step=1;step<=60;++step){double high=step*3.141592653589793/60.;auto test=candidate(high);if(!hit(test,centre,radius,clearance)){for(int i=0;i<12;++i){double mid=(low+high)*.5;if(hit(candidate(mid),centre,radius,clearance))low=mid;else high=mid;}test=candidate(high);pose={r.guide_id,std::move(test.nodes),std::move(test.material_frames)};return true;}low=high;}
+    return false;
+}
+}
+Vec apply(Rigid r,Vec p){return f::add(f::rotate(r.q,p),r.shift);}
+Rigid transform(const v::RestGuide& rest,const v::GuidePose& pose,unsigned s,double u){auto [a,q0]=sample(rest.nodes,rest.material_frames,s,u);auto [b,q1]=sample(pose.nodes,pose.material_frames,s,u);auto q=f::qnormal(f::product(q1,f::conjugate(q0)));return {q,f::sub(b,f::rotate(q,a))};}
+std::shared_ptr<const Prepared> prepare(Json j,const std::vector<Vec>& positions,const std::vector<std::array<unsigned,3>>& triangles,const std::vector<unsigned>& labels){
+    if(j.at("schema")!=2||positions.empty()||positions.size()>2000000||triangles.size()>4000000||labels.size()!=positions.size()||j.at("vertices")!=positions.size()||j.at("triangles")!=triangles.size())throw std::runtime_error("Prepared source identity/count mismatch.");
+    if(j.at("guides").empty()||j.at("guides").size()>2048||j.at("parts").size()>40000||j.at("preview_triangles").size()>200000)throw std::runtime_error("Preparation bound exceeded.");
+    auto p=std::make_shared<Prepared>();p->positions=positions;p->triangles=triangles;p->sourceHash=j.at("source_geometry_sha256").get<std::string>();
+    for(const auto& row:j.at("guides")){if(row.value("unresolved",false))throw std::runtime_error("Unresolved guide cannot be prepared.");Guide guide;guide.parent=row.at("parent").get<int>();guide.parentSpan=row.at("parent_span").get<int>();guide.parentU=row.at("parent_u").get<double>();guide.anchors=row.at("root_ring_vertices").get<std::vector<unsigned>>();
+        auto& r=guide.rest;r.guide_id=p->guides.size()+1;r.source_revision=1;
+        for(const auto& n:row.at("nodes"))r.nodes.push_back(readVec(n));if(r.nodes.size()<3||r.nodes.size()>16)throw std::runtime_error("Unsupported stem node count.");r.material_frames=frames(r.nodes);
+        for(unsigned i=0;i<r.nodes.size();++i){r.node_ids.push_back(r.guide_id*32+i+1);if(i+1<r.nodes.size()){r.span_ids.push_back(r.guide_id*32+i+1);r.span_radius_m.push_back(.0003);r.max_bound_offset_m.push_back(0);}}
+        p->guides.push_back(std::move(guide));
+    }
+    p->order=j.at("guide_order").get<std::vector<unsigned>>();if(p->order.size()!=p->guides.size())throw std::runtime_error("Incomplete guide order.");
+    std::vector<unsigned> rank(p->guides.size(),UINT_MAX);for(unsigned k=0;k<p->order.size();++k){unsigned id=p->order[k];if(id>=rank.size()||rank[id]!=UINT_MAX)throw std::runtime_error("Guide order is not a complete permutation.");rank[id]=k;}for(unsigned i=0;i<p->guides.size();++i){const auto& g=p->guides[i];if(g.parent < -1||g.parent>=int(p->guides.size())||!std::isfinite(g.parentU)||g.parentU<0||g.parentU>1)throw std::runtime_error("Invalid parent identity/parameter.");if(g.parent>=0&&(rank[g.parent]>=rank[i]||g.parentSpan<0||unsigned(g.parentSpan)+1>=p->guides[g.parent].rest.nodes.size()))throw std::runtime_error("Cyclic or unordered stem hierarchy.");}
+    for(const auto& row:j.at("parts")){Part b;b.guide=row.at("guide");b.stem=row.at("stem");b.span=row.at("span");b.u=row.at("u");if(b.guide>=p->guides.size()||b.span+1>=p->guides[b.guide].rest.nodes.size()||!std::isfinite(b.u)||b.u<0||b.u>1)throw std::runtime_error("Invalid part attachment.");auto [centre,q]=sample(p->guides[b.guide].rest.nodes,p->guides[b.guide].rest.material_frames,b.span,b.u);b.restCentre=centre;b.restFrame=q;p->parts.push_back(b);}
+    std::vector<bool> anchored(positions.size(),false);for(const auto& guide:p->guides)for(auto i:guide.anchors){if(i>=positions.size())throw std::runtime_error("Invalid root anchor.");anchored[i]=true;}
+    p->bindings.reserve(positions.size());
+    for(unsigned i=0;i<positions.size();++i){Binding b;b.part=labels[i];if(b.part>=p->parts.size())throw std::runtime_error("Part identity out of range.");auto part=p->parts[b.part];auto& r=p->guides[part.guide].rest;
+        if(part.stem){auto [span,u,distance]=nearest(r.nodes,positions[i]);b.span=anchored[i]?0:span;b.u=anchored[i]?0:u;}else{b.span=part.span;b.u=part.u;}
+        auto [centre,q]=sample(r.nodes,r.material_frames,b.span,b.u);b.offset=f::rotate(f::conjugate(q),f::sub(positions[i],centre));double radius=f::norm(b.offset);r.max_bound_offset_m[b.span]=std::max(r.max_bound_offset_m[b.span],radius);r.span_radius_m[b.span]=std::max(r.span_radius_m[b.span],radius+.0003);p->bindings.push_back(b);
+    }
+    // A parent's tube also protects each attached child root envelope. Geometry stays independent.
+    for(auto it=p->order.rbegin();it!=p->order.rend();++it){if(*it>=p->guides.size())throw std::runtime_error("Invalid guide order.");auto& child=p->guides[*it];if(child.parent<0)continue;if(rank[child.parent]>=rank[*it]||child.parentSpan<0)throw std::runtime_error("Cyclic or unordered stem hierarchy.");auto& parent=p->guides[child.parent];if(unsigned(child.parentSpan)+1>=parent.rest.nodes.size())throw std::runtime_error("Parent attachment span.");auto [anchor,q]=sample(parent.rest.nodes,parent.rest.material_frames,child.parentSpan,child.parentU);double radius=f::norm(f::sub(child.rest.nodes.front(),anchor))+child.rest.span_radius_m.front();parent.rest.span_radius_m[child.parentSpan]=std::max(parent.rest.span_radius_m[child.parentSpan],radius);}
+    p->previewTriangles=j.at("preview_triangles").get<std::vector<std::array<unsigned,3>>>();p->previewMaterials=j.at("preview_materials").get<std::vector<unsigned>>();if(p->previewMaterials.size()!=p->previewTriangles.size())throw std::runtime_error("Preview material mismatch.");
+    p->previewRemap.assign(positions.size(),UINT_MAX);for(auto tri:p->previewTriangles)for(auto i:tri){if(i>=positions.size())throw std::runtime_error("Invalid preview vertex.");if(p->previewRemap[i]==UINT_MAX){p->previewRemap[i]=unsigned(p->previewVertices.size());p->previewVertices.push_back(i);}}
+    return p;
+}
+Pose restPose(const Prepared& p){Pose pose;pose.moved.assign(p.guides.size(),false);for(const auto& guide:p.guides)pose.guides.push_back({guide.rest.guide_id,guide.rest.nodes,guide.rest.material_frames});fillRigid(p,pose);return pose;}
+#ifndef CYRUS_STEM_PREPARATION_ONLY
+Solved solve(const Prepared& p,Vec centre,double radius,double clearance,double stiffness,std::uint64_t generation){
+    Solved result;auto started=std::chrono::steady_clock::now();result.pose.generation=generation;result.pose.guides.resize(p.guides.size());result.pose.moved.assign(p.guides.size(),false);
+    try{if(!f::finite(centre)||!std::isfinite(radius)||radius<.001||radius>2||!std::isfinite(clearance)||clearance<0||clearance>.05)throw std::runtime_error("Sphere/clearance admission failed.");
+        v::SolveOptions o;o.limits={1,32,32,8000,240,2000000,4000000,128*1024*1024};o.tolerances={1e-7,1e-5,.002,.002,1e-6};o.clearance_m=clearance+.0005;o.rest_shape_weight=.002+.008*stiffness;o.bend_weight=.2+.8*stiffness;o.root_angle_weight=0;
+        v::SceneSnapshot scene;scene.generation=generation;v::Obstacle obstacle;obstacle.id=1;obstacle.geometry_revision=1;obstacle.pose_revision=generation;obstacle.center=centre;obstacle.sphere_radius=radius;scene.obstacles.push_back(obstacle);
+        v::BackendOptions backend;backend.limits=o.limits;backend.query_tolerance_m=1e-6;backend.min_supported_feature_m=.0001;auto world=v::make_jolt_world(scene,backend,{});if(world.outcome!=v::Outcome::Ok)throw std::runtime_error("Collider snapshot failed.");
+        std::size_t active=0,queries=0,iterations=0,hinges=0;double maxLength=0,rootError=0;
+        for(auto index:p.order){const auto& guide=p.guides[index];auto r=guide.rest;
+            if(guide.parent>=0&&result.pose.moved[guide.parent]){auto delta=transform(p.guides[guide.parent].rest,result.pose.guides[guide.parent],guide.parentSpan,guide.parentU);for(auto& point:r.nodes)point=apply(delta,point);for(auto& q:r.material_frames)q=f::qnormal(f::product(delta.q,q));result.pose.moved[index]=true;}
+            if(hit(r,centre,radius,o.clearance_m)){
+                ++active;if(active>256||queries>100000)throw std::runtime_error("Active stem work budget reached.");o.root_mode=guide.parent<0?v::RootMode::ClampFrame:v::RootMode::PositionOnly;o.max_proposal_step_m=std::max(.002,f::norm(f::sub(r.nodes.back(),r.nodes.front()))/12.);
+                auto fit=v::fit_rooted_guide(r,generation,*world.world,o,{});queries+=fit.metrics.query_calls;iterations+=fit.metrics.iterations;
+                if(fit.status!=v::SolveStatus::ConvergedCandidate){if(guide.parent>=0&&hinge(r,centre,radius,o.clearance_m,fit.pose)){++hinges;}else{std::string message="Stem "+std::to_string(index)+" did not converge ("+std::to_string(int(fit.status))+"). ";for(const auto& issue:fit.issues)message+=issue.code+" ";throw std::runtime_error(message);}}
+                rootError=std::max(rootError,f::norm(f::sub(fit.pose.nodes.front(),r.nodes.front())));for(unsigned s=0;s+1<r.nodes.size();++s)maxLength=std::max(maxLength,std::abs(f::norm(f::sub(fit.pose.nodes[s+1],fit.pose.nodes[s]))/f::norm(f::sub(r.nodes[s+1],r.nodes[s]))-1));result.pose.guides[index]=std::move(fit.pose);result.pose.moved[index]=true;
+            }else result.pose.guides[index]={r.guide_id,std::move(r.nodes),std::move(r.material_frames)};
+        }
+        fillRigid(p,result.pose);result.metrics={{"active_stems",active},{"hinge_fallbacks",hinges},{"queries",queries},{"iterations",iterations},{"root_error_m",rootError},{"relative_span_error",maxLength}};result.ok=true;
+    }catch(const std::exception& e){result.error=e.what();}
+    result.metrics["solve_ms"]=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-started).count();return result;
+}
+#endif
+Vec point(const Prepared& p,const Pose& pose,unsigned i){const auto& b=p.bindings[i];const auto& part=p.parts[b.part];if(!part.stem)return apply(pose.rigid[b.part],p.positions[i]);const auto& guide=pose.guides[part.guide];auto [centre,q]=sample(guide.nodes,guide.material_frames,b.span,b.u);return f::add(centre,f::rotate(q,b.offset));}
+Json audit(const Prepared& p,const Pose& pose,Vec centre,double radius,double deliveryUnit){auto started=std::chrono::steady_clock::now();std::vector<Vec> points;points.reserve(p.positions.size());for(unsigned i=0;i<p.positions.size();++i){auto q=point(p,pose,i);if(deliveryUnit>0)q={double(float(q.x/deliveryUnit))*deliveryUnit,double(float(q.y/deliveryUnit))*deliveryUnit,double(float(q.z/deliveryUnit))*deliveryUnit};points.push_back(q);}double minSq=std::numeric_limits<double>::infinity(),maxRigidStrain=0,maxStemStrain=0;std::size_t rigidEdges=0,stretched=0;
+    for(auto t:p.triangles){auto d=g::point_triangle_distance_sq(centre,points[t[0]],points[t[1]],points[t[2]]);if(!std::isfinite(d))throw std::runtime_error("Unqualified full triangle.");minSq=std::min(minSq,d);for(unsigned s=0;s<3;++s){unsigned a=t[s],b=t[(s+1)%3];double length=f::norm(f::sub(p.positions[a],p.positions[b]));if(length<1e-5)continue;double strain=std::abs(f::norm(f::sub(points[a],points[b]))/length-1);if(p.parts[p.bindings[a].part].stem)maxStemStrain=std::max(maxStemStrain,strain);else{maxRigidStrain=std::max(maxRigidStrain,strain);++rigidEdges;if(strain>.1)++stretched;}}}
+    double roots=0;for(const auto& guide:p.guides)for(auto i:guide.anchors)roots=std::max(roots,f::norm(f::sub(points[i],p.positions[i])));
+    return {{"delivered_float_audit",deliveryUnit>0},{"min_gap_m",std::sqrt(minSq)-radius},{"max_rigid_part_edge_change",maxRigidStrain},{"rigid_part_edges_over_10pct",stretched},{"rigid_part_edges",rigidEdges},{"max_stem_edge_change",maxStemStrain},{"root_ring_error_m",roots},{"audit_ms",std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-started).count()}};
+}
+Json savePose(const Pose& p){Json j={{"generation",p.generation},{"guides",Json::array()}};for(const auto& g:p.guides){Json row={{"id",g.guide_id},{"nodes",Json::array()},{"frames",Json::array()}};for(auto n:g.nodes)row["nodes"].push_back({n.x,n.y,n.z});for(auto q:g.material_frames)row["frames"].push_back({q.x,q.y,q.z,q.w});j["guides"].push_back(std::move(row));}return j;}
+Pose loadPose(const Prepared& p,const Json& j){Pose out;out.generation=j.at("generation").get<std::uint64_t>();if(!out.generation||j.at("guides").size()!=p.guides.size())throw std::runtime_error("Saved pose identity mismatch.");out.moved.assign(p.guides.size(),true);
+    for(std::size_t i=0;i<p.guides.size();++i){const auto& row=j.at("guides")[i];v::GuidePose pose;pose.guide_id=row.at("id");const auto& source=p.guides[i].rest;if(pose.guide_id!=source.guide_id||row.at("nodes").size()!=source.nodes.size()||row.at("frames").size()!=source.nodes.size())throw std::runtime_error("Saved stem count mismatch.");for(const auto& n:row.at("nodes"))pose.nodes.push_back(readVec(n));for(const auto& q:row.at("frames")){if(q.size()!=4)throw std::runtime_error("Saved frame count.");Quat a{q[0],q[1],q[2],q[3]};if(!f::finite(a)||std::abs(f::qnorm(a)-1)>1e-6)throw std::runtime_error("Saved frame invalid.");pose.material_frames.push_back(a);}auto checked=g::check_frames(pose.nodes,pose.material_frames,source.span_ids,.003,false);if(checked.state!=g::FrameCheck::State::Ok)throw std::runtime_error("Saved stem tangent invalid.");out.guides.push_back(std::move(pose));}
+    for(auto index:p.order){auto& guide=p.guides[index];auto expected=guide.rest.nodes.front();if(guide.parent>=0)expected=apply(transform(p.guides[guide.parent].rest,out.guides[guide.parent],guide.parentSpan,guide.parentU),expected);if(f::norm(f::sub(expected,out.guides[index].nodes.front()))>1e-7)throw std::runtime_error("Saved stem attachment invalid.");for(unsigned s=0;s+1<guide.rest.nodes.size();++s){double rest=f::norm(f::sub(guide.rest.nodes[s+1],guide.rest.nodes[s]));if(std::abs(f::norm(f::sub(out.guides[index].nodes[s+1],out.guides[index].nodes[s]))/rest-1)>.003)throw std::runtime_error("Saved stem length invalid.");}}
+    fillRigid(p,out);return out;}
+}

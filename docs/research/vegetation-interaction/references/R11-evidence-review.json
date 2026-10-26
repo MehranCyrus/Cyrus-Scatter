@@ -1,0 +1,362 @@
+{
+  "date": "2026-10-24",
+  "source_id": "R11",
+  "source_sha256": "4b803b0570fc4bfab9468504852a3d63da86317c201c70e4d35b658252c6e5f4",
+  "bundle": {
+    "path": "../sources/evidence/CyrusScatter_Source_Preparation_Evidence.zip",
+    "bytes": 73202,
+    "sha256": "2938528f13c7cba6495ad5b8c95cc0cb59527bf1de5404b80177eeccaffb3de4",
+    "matches_reported_sha256": true,
+    "crc_check": "pass",
+    "entries": [
+      {
+        "file": "source_preparation/audit_assets.py",
+        "bytes": 17714,
+        "sha256": "88821a3725ecee080f28537407a0d309f9c2c8c082c95822147a532dcb7b72c0"
+      },
+      {
+        "file": "source_preparation/make_asset_figures.py",
+        "bytes": 5344,
+        "sha256": "15ba7a6c9ffa20f5e4d7b2c609df5b9f0085dae8a496dcdbad346aab797397fd"
+      },
+      {
+        "file": "source_preparation/asset_notes.md",
+        "bytes": 11521,
+        "sha256": "d4630f2089e8f297350914894ed765cccd8eb160254795e2368cddabe30d9e4f"
+      },
+      {
+        "file": "source_preparation/assets_sources.json",
+        "bytes": 2431,
+        "sha256": "a65d151a72c36c352d4d98ae6ac55f039e0d6834112faaaea572894e7f5ce546"
+      },
+      {
+        "file": "source_preparation/fixture_audit.json",
+        "bytes": 22074,
+        "sha256": "5351ad228ee2940bd0a59962ed39b10964d3bae5bd57cd6a135fe8f754dcf6ec"
+      },
+      {
+        "file": "source_preparation/public_asset_topology.svg",
+        "bytes": 50879,
+        "sha256": "7eb20714e93e9ad77ed69d045259b0b5326aa3d874c906c8a8e76520a00b1f35"
+      },
+      {
+        "file": "source_preparation/synthetic_fixtures.svg",
+        "bytes": 41283,
+        "sha256": "5fde0bd54dc85a3f3360335bc8504bf08f4ba26331923d9e31b6fa533c13bc7b"
+      },
+      {
+        "file": "source_preparation/fixtures/coincident_independent.obj",
+        "bytes": 2166,
+        "sha256": "1df0b52df9691419e6e9cd4ab6e84c13fea0c511b5642f783f5ea59c66d40e43"
+      },
+      {
+        "file": "source_preparation/fixtures/crossed_cards.obj",
+        "bytes": 270,
+        "sha256": "e5631a774ed6bb293a5ec8607b75d3a80989dd70d10f63ccde1ef4b8b8d43ffc"
+      },
+      {
+        "file": "source_preparation/fixtures/disconnected_clump.obj",
+        "bytes": 3329,
+        "sha256": "bb76e805098b2deb2193f986b4c9d516b2421219fd013bcb8aa33b937d698690"
+      },
+      {
+        "file": "source_preparation/fixtures/irregular_sheet.obj",
+        "bytes": 7613,
+        "sha256": "ad86ffa0723185068a3924cbd46c1668fa364fc7e22a7c3c44f522f01a4897f2"
+      },
+      {
+        "file": "source_preparation/fixtures/shared_base.obj",
+        "bytes": 3476,
+        "sha256": "0a44b5c5855ad327ec40d15c6779ea7b3bf75bac2e0f70bea515f941ca333a90"
+      },
+      {
+        "file": "source_preparation/fixtures/single_blade.obj",
+        "bytes": 1092,
+        "sha256": "08cb4cd84f7fab80f86696c7c6268d54b5c45c4d49c644ca5f2b5052ab802bcc"
+      },
+      {
+        "file": "source_preparation/fixtures/uv_seam.obj",
+        "bytes": 1413,
+        "sha256": "132a227461a6928038b06e65b985b925e398b4f99139a72f565f9bb92e44cca5"
+      },
+      {
+        "file": "source_preparation/fixtures/coincident_independent.json",
+        "bytes": 7331,
+        "sha256": "4759b1370193931a61b29aa9d6b7a5a19729849a58abb81246f410ee47931155"
+      },
+      {
+        "file": "source_preparation/fixtures/crossed_cards.json",
+        "bytes": 1228,
+        "sha256": "c31ed10b81d4f901fb49c073ae1138ca77fe969a7a5b4c1022216dbd22bce3f8"
+      },
+      {
+        "file": "source_preparation/fixtures/disconnected_clump.json",
+        "bytes": 11032,
+        "sha256": "17a51ce8185aaaec4a8aca68161bfe46a9adf5399a70b8d29b270e01e40156d6"
+      },
+      {
+        "file": "source_preparation/fixtures/irregular_sheet.json",
+        "bytes": 22626,
+        "sha256": "583c550f4798c0a0022a6219b295a01e74e3946c600c403d563f7ecc93baad94"
+      },
+      {
+        "file": "source_preparation/fixtures/shared_base.json",
+        "bytes": 12180,
+        "sha256": "2e85cd575d600c225d2f802c018580f43d15de6e4ef18b35b3b425c7eac1980a"
+      },
+      {
+        "file": "source_preparation/fixtures/single_blade.json",
+        "bytes": 3520,
+        "sha256": "a73bea9f81ab46eb3680184302760dd0204fce7dde38aab1def76525b89695b9"
+      },
+      {
+        "file": "source_preparation/fixtures/uv_seam.json",
+        "bytes": 4676,
+        "sha256": "69af3bd757e5f9b8a846620becfab3c2fd065a3f31b8a1afb63ad0d3ef772e1c"
+      },
+      {
+        "file": "source_preparation/public_assets/grass.obj",
+        "bytes": 11590,
+        "sha256": "a444b815fa29d2278e3fcac03ef79e52d7232a845f65dce2443075d2b294c74e"
+      },
+      {
+        "file": "source_preparation/public_assets/grass.glb",
+        "bytes": 11496,
+        "sha256": "260e41d3e5f2472492ed7b475c5b92a30b13ce2bad408535b5ff50574d4575e7"
+      },
+      {
+        "file": "source_preparation/public_assets/grass.mtl",
+        "bytes": 88,
+        "sha256": "b186368ad09ddb6673f90f63c45ecac3f793b36fe14f96bd62e6d44922e7e874"
+      },
+      {
+        "file": "source_preparation/public_assets/grass_leafs.obj",
+        "bytes": 4197,
+        "sha256": "43d88cee97274d39d9992d1a1ce5f396150037f91cac19e0bc2eb03831366b8c"
+      },
+      {
+        "file": "source_preparation/public_assets/grass_leafs.glb",
+        "bytes": 4608,
+        "sha256": "8bc4c0b17c2e64c34e1acbf7c4a2fd8c04cfcd7155328e61767887b2ced112c7"
+      },
+      {
+        "file": "source_preparation/public_assets/grass_leafs.mtl",
+        "bytes": 88,
+        "sha256": "b186368ad09ddb6673f90f63c45ecac3f793b36fe14f96bd62e6d44922e7e874"
+      },
+      {
+        "file": "source_preparation/public_assets/License.txt",
+        "bytes": 611,
+        "sha256": "cb96b75e3560ac78d7a53ce6f083f4cdb5c53faea6141b62d63458dcfe1e4b9d"
+      },
+      {
+        "file": "reference_evaluator.py",
+        "bytes": 9540,
+        "sha256": "74e78297adac05a2d1e19eb44b120bdedb77721b2b5044a69e3aaede2c4b52c9"
+      },
+      {
+        "file": "evaluator_checks.json",
+        "bytes": 3253,
+        "sha256": "8873cb150f24a9a0d60e3594b66b844224bade89d2e0c097ffd0d0828b3f3e4b"
+      },
+      {
+        "file": "methods_sources.json",
+        "bytes": 13242,
+        "sha256": "64a0a4c1c9a432981ded65414b0468bd91ddeb0aba2154d18ce3872b47e71a14"
+      },
+      {
+        "file": "delivery_sources.json",
+        "bytes": 18629,
+        "sha256": "87196e9d0a3e8f635fbf6865bc50530e0c5349a24c66e0b9e30a53ee3a436c04"
+      },
+      {
+        "file": "EVALUATOR_README.txt",
+        "bytes": 436,
+        "sha256": "4ef1742d48f79220886849523a0f6809c2d062ae8c3ffa9880144801341c9774"
+      }
+    ]
+  },
+  "review_scope": "HTML read in full; embedded archive and result records inspected as data; independent standard-library OBJ/GLB topology recount",
+  "reported_checks": {
+    "representation_count": 7,
+    "representation_results": [
+      {
+        "name": "UV split reassembly preserves triangle logical IDs, face-corner positions, and UV values exactly",
+        "result": "PASS"
+      },
+      {
+        "name": "UV-split single blade has 16 render-index components but 1 logical component",
+        "result": "PASS"
+      },
+      {
+        "name": "Shared manifold base has 1 component but fixture author defines 3 blade regions",
+        "result": "PASS"
+      },
+      {
+        "name": "Two coincident independent blades have 2 components; exact coordinate merge collapses to 1",
+        "result": "PASS"
+      },
+      {
+        "name": "All seven authored fixtures contain no zero-area triangles",
+        "result": "PASS"
+      },
+      {
+        "name": "grass: OBJ (position, UV, normal) expansion agrees with GLB vertex/triangle/component counts; all OBJ triangles have opposite-winding mates",
+        "result": "PASS"
+      },
+      {
+        "name": "grass_leafs: OBJ (position, UV, normal) expansion agrees with GLB vertex/triangle/component counts; all OBJ triangles have opposite-winding mates",
+        "result": "PASS"
+      }
+    ],
+    "evaluator_count": 10,
+    "evaluator_results": [
+      {
+        "id": "E01",
+        "name": "Rest pose identity with curvature, twist and blended weights",
+        "metric": 1.2432050435751766e-16,
+        "tolerance": 1e-12,
+        "passed": true,
+        "scope": "Arithmetic only; supplied binding"
+      },
+      {
+        "id": "E02",
+        "name": "Hard root patch vertex remains fixed",
+        "metric": 0.0,
+        "tolerance": 0.0,
+        "passed": true,
+        "scope": "Pin mask only; angular stiffness is not simulated"
+      },
+      {
+        "id": "E03",
+        "name": "Single-guide cross-section width preserved",
+        "metric": 6.938893903907228e-17,
+        "tolerance": 1e-12,
+        "passed": true,
+        "scope": "One influence, equal s, pin=0, orthonormal frames"
+      },
+      {
+        "id": "E04",
+        "name": "Two full turns retain the intermediate 90-degree twist",
+        "metric": 2.220446049250313e-16,
+        "tolerance": 1e-12,
+        "passed": true,
+        "scope": "Unwrapped angle interpolation, not quaternion winding inference"
+      },
+      {
+        "id": "E05",
+        "name": "Render-position duplicates move together while UVs stay split",
+        "metric": {
+          "render_vertices": 4,
+          "analysis_vertices": 2
+        },
+        "tolerance": null,
+        "passed": true,
+        "scope": "Explicit correspondence, not an automatic weld"
+      },
+      {
+        "id": "E06",
+        "name": "Nonuniform placement normals use inverse transpose",
+        "metric": 2.7755575615628914e-17,
+        "tolerance": 1e-12,
+        "passed": true,
+        "scope": "Geometric triangle normal; shader and explicit normal export untested"
+      },
+      {
+        "id": "E07",
+        "name": "Baked mirror needs reversed triangle corner order",
+        "metric": 0.0,
+        "tolerance": 1e-12,
+        "passed": true,
+        "scope": "All map/normal corner indices must follow the same permutation"
+      },
+      {
+        "id": "E08",
+        "name": "Published bounds contain all evaluated mesh positions",
+        "metric": {
+          "min": [
+            -0.1,
+            0.0,
+            0.0
+          ],
+          "max": [
+            0.7105653270305274,
+            0.298544972998846,
+            0.6633139836786259
+          ]
+        },
+        "tolerance": null,
+        "passed": true,
+        "scope": "Static mesh only; no renderer displacement expansion"
+      },
+      {
+        "id": "E09",
+        "name": "Expected limitation: opposing blended frames collapse width",
+        "metric": {
+          "remaining_radius": 2.220446049250313e-16,
+          "rest_radius": 1.0
+        },
+        "tolerance": 1e-12,
+        "passed": true,
+        "scope": "Counterexample; no general volume/width preservation for multiple guides"
+      },
+      {
+        "id": "E10",
+        "name": "Fixed guide root position does not determine its orientation",
+        "metric": {
+          "anchor_displacement": 0.0,
+          "tangent_difference": 0.7653668647301797
+        },
+        "tolerance": null,
+        "passed": true,
+        "scope": "Constraint distinction; not a physical root solver"
+      }
+    ]
+  },
+  "independently_recounted_assets": [
+    {
+      "name": "grass",
+      "obj": {
+        "position_vertices": 84,
+        "triangles": 132,
+        "position_components": 9,
+        "expanded_vertices": 264,
+        "expanded_components": 66,
+        "all_triangles_have_opposite_winding_mate": true
+      },
+      "glb": {
+        "position_vertices": 264,
+        "triangles": 132,
+        "components": 66,
+        "alpha_modes": [
+          "OPAQUE"
+        ]
+      }
+    },
+    {
+      "name": "grass_leafs",
+      "obj": {
+        "position_vertices": 30,
+        "triangles": 36,
+        "position_components": 6,
+        "expanded_vertices": 84,
+        "expanded_components": 24,
+        "all_triangles_have_opposite_winding_mate": true
+      },
+      "glb": {
+        "position_vertices": 84,
+        "triangles": 36,
+        "components": 24,
+        "alpha_modes": [
+          "OPAQUE"
+        ]
+      }
+    }
+  ],
+  "bundled_scripts_executed": false,
+  "limits": [
+    "No bundled audit/evaluator script executed",
+    "No automatic root/guide extraction or contact fit",
+    "No Max, renderer, Bake, export, private-library or performance qualification"
+  ]
+}

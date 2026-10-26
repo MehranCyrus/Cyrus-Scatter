@@ -24,6 +24,7 @@ struct FeedbackTarget {
 struct INode { bool hidden=false;std::shared_ptr<FeedbackTarget> feedback=std::make_shared<FeedbackTarget>(); };
 const auto feedbackHostThread=std::this_thread::get_id();
 std::atomic<int> liveFeedback{0},workerFeedbackCalls{0};
+std::atomic<int> readyWakes{0};
 std::uint64_t feedbackIdentity=0;
 bool failFeedbackCapture=false;
 struct CyrusEditFeedback {
@@ -66,9 +67,12 @@ void cyrusReleaseEditFeedback(const std::shared_ptr<const CyrusEditFeedback>& sn
         target->staged=target->visible=0;target->stagedIdentity=target->visibleIdentity=0;
     }
 }
+void cyrusWakeEditFrameReady(const std::shared_ptr<const CyrusEditFeedback>& snapshot,std::uint64_t display)noexcept{
+    if(snapshot&&display)++readyWakes; // Models only the non-host message post.
+}
 struct Box3 { int identity=0; };
 struct PointGroup { std::vector<int> points{1}; };
-struct MeshGroup { std::vector<int> faces{1},instances{1},bandSlots{1}; };
+struct MeshGroup { std::vector<int> faces{1},instances{1},bandSlots{1};const std::vector<int>& faceData()const{return faces;} std::size_t instanceCount()const{return instances.size();} };
 struct Snapshot { std::vector<PointGroup> groups{PointGroup{}};std::vector<Box3> groupBounds{{11}}; };
 struct Mesh {
     std::vector<MeshGroup> groups{MeshGroup{}};std::vector<Box3> groupBounds{{22}};
@@ -98,6 +102,8 @@ struct Generation {
     std::size_t groups=0;int reservation=0;
     std::shared_ptr<cyrus::RenderPublication> presentation;
     std::shared_ptr<const CyrusEditFeedback> editFeedback;
+    std::uint64_t displayOwner=0;
+    std::atomic<bool> editWakePosted{false};
     std::weak_ptr<RenderBundle> realization;
     std::uint64_t ticket=0;
     explicit Generation(std::vector<PointLayer> value):layers(std::move(value)) {
@@ -131,6 +137,7 @@ struct RenderBundle {
     explicit RenderBundle(std::shared_ptr<Generation> value):generation(std::move(value)){}
     void realize(DrawContext& context) {
         cyrus::realizeRenderPublication(*this,context,[](const auto& item,DrawContext& dc){item.GetPointer()->RealizeResources(dc);});
+#include "../src/point_ready_wake.inc"
     }
 };
 struct Item:ICustomRenderItem {
@@ -195,6 +202,7 @@ struct Controller {
 };
 constexpr int FOREVER=0,PART_GEOM=1,PART_DISPLAY=2,REFMSG_CHANGE=0;
 struct Display {
+    std::uint64_t displayHandle(){return 1;}
     Controller controller;
     const std::shared_ptr<cyrus::RenderPublication> presentation=controller.presentation;
     std::shared_ptr<RenderBundle> candidate,retained;
@@ -484,12 +492,22 @@ void hideDeleteResetAndEmpty() {
     require(physicalMeshBudget.used()==20,"SDK pin did not preserve its physical lease");
     sdkPin.reset();oldGeneration.reset();require(physicalMeshBudget.used()==0,"reset/last SDK pin leaked physical resources");
 }
+void readinessWakeIsCoalescedWithoutWorkerCommit(){
+    INode node;Display display;display.publish(&node,{mixed()});auto candidate=display.candidate;
+    const auto before=readyWakes.load();
+    std::thread worker([&]{DrawContext context;candidate->realize(context);candidate->realize(context);});worker.join();
+    require(readyWakes==before+1,"ready generation did not post exactly one host wake");
+    require(!display.visibleBundle(),"worker wake promoted an uncommitted frame");
+    display.requestPresentationUpdate();display.settlePresentation();
+    require(display.visibleBundle()==candidate,"host readiness dispatch did not commit the completed candidate");
+}
 }
 int main() {
     try {
         preparationFailures();admissionAndSharing();identicalGeometrySelectsExactInstanceResource();laterItemFailureAndRetry();rapidReplacementAndCulledSiblings();
         initialFailureNotificationsAndConcurrentRealize();editFeedbackFollowsCompleteDisplay();editFeedbackRefreshWithoutRenderRebuild();
         replacementHelperClearsFeedbackWithoutAnImage();editFeedbackWeakTargetsAndPinnedRetirement();hideDeleteResetAndEmpty();
+        readinessWakeIsCoalescedWithoutWorkerCommit();
         require(liveItems==0&&reserved==0&&physicalMeshBudget.used()==0&&physicalInstanceBudget.used()==0&&
             liveFeedback==0&&workerFeedbackCalls==0,"publication fixture leaked resources or called feedback from a worker");
         std::cout<<"PASS production publication/presentation: admission, exact-instance reuse across same-shape layers, sharing, initial/late failure retention, host-only atomic commit and Edit feedback, retry, rapid replacement, concurrent activation, weak feedback targets, unchanged-stream feedback refresh, culled siblings, hide/delete/reset and SDK pins\n";

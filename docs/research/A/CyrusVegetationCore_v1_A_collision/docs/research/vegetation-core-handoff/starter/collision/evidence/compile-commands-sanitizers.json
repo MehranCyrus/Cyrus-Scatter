@@ -1,0 +1,56 @@
+[
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src -I/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/generated/Debug -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/include -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=gnu++20 -fexceptions -fno-fast-math -ffp-contract=off -Wall -Wextra -Wpedantic -msse2 -mfpmath=sse -pthread -o CMakeFiles/cyrus_vegetation_collision.dir/src/collision_world.cpp.o -c /workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src/collision_world.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src/collision_world.cpp",
+    "output": "collision/CMakeFiles/cyrus_vegetation_collision.dir/src/collision_world.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src -I/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/generated/Debug -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/include -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=gnu++20 -fexceptions -fno-fast-math -ffp-contract=off -Wall -Wextra -Wpedantic -msse2 -mfpmath=sse -pthread -o CMakeFiles/cyrus_vegetation_collision.dir/src/jolt_runtime.cpp.o -c /workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src/jolt_runtime.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src/jolt_runtime.cpp",
+    "output": "collision/CMakeFiles/cyrus_vegetation_collision.dir/src/jolt_runtime.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src -I/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/generated/Debug -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/include -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=gnu++20 -fexceptions -fno-fast-math -ffp-contract=off -Wall -Wextra -Wpedantic -msse2 -mfpmath=sse -pthread -o CMakeFiles/cyrus_vegetation_collision.dir/src/primitive_geometry.cpp.o -c /workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src/primitive_geometry.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src/primitive_geometry.cpp",
+    "output": "collision/CMakeFiles/cyrus_vegetation_collision.dir/src/primitive_geometry.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision",
+    "command": "/usr/bin/c++  -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/src -I/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/include -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=gnu++20 -o CMakeFiles/cyrus_collision_tests.dir/tests/collision_tests.cpp.o -c /workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/tests/collision_tests.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/tests/collision_tests.cpp",
+    "output": "collision/CMakeFiles/cyrus_collision_tests.dir/tests/collision_tests.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=c++17 -frtti -fexceptions -Wno-stringop-overflow -Wno-psabi -ffp-contract=off -msse2 -mfpmath=sse -pthread -fno-fast-math -Winvalid-pch -include /workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt/CMakeFiles/Jolt.dir/cmake_pch.hxx -o CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/BoxShape.cpp.o -c /workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/BoxShape.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/BoxShape.cpp",
+    "output": "collision/jolt/CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/BoxShape.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=c++17 -frtti -fexceptions -Wno-stringop-overflow -Wno-psabi -ffp-contract=off -msse2 -mfpmath=sse -pthread -fno-fast-math -Winvalid-pch -include /workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt/CMakeFiles/Jolt.dir/cmake_pch.hxx -o CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/CapsuleShape.cpp.o -c /workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/CapsuleShape.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/CapsuleShape.cpp",
+    "output": "collision/jolt/CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/CapsuleShape.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=c++17 -frtti -fexceptions -Wno-stringop-overflow -Wno-psabi -ffp-contract=off -msse2 -mfpmath=sse -pthread -fno-fast-math -Winvalid-pch -include /workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt/CMakeFiles/Jolt.dir/cmake_pch.hxx -o CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/ConvexShape.cpp.o -c /workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/ConvexShape.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/ConvexShape.cpp",
+    "output": "collision/jolt/CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/ConvexShape.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=c++17 -frtti -fexceptions -Wno-stringop-overflow -Wno-psabi -ffp-contract=off -msse2 -mfpmath=sse -pthread -fno-fast-math -Winvalid-pch -include /workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt/CMakeFiles/Jolt.dir/cmake_pch.hxx -o CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/SphereShape.cpp.o -c /workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/SphereShape.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/SphereShape.cpp",
+    "output": "collision/jolt/CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/Physics/Collision/Shape/SphereShape.cpp.o"
+  },
+  {
+    "directory": "/workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt",
+    "command": "/usr/bin/c++ -DJPH_CROSS_PLATFORM_DETERMINISTIC -DJPH_DEBUG -DJPH_DOUBLE_PRECISION -DJPH_ENABLE_ASSERTS -DJPH_OBJECT_LAYER_BITS=16 -I/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Build/.. -fsanitize=address,undefined -fno-omit-frame-pointer -g -std=c++17 -frtti -fexceptions -Wno-stringop-overflow -Wno-psabi -ffp-contract=off -msse2 -mfpmath=sse -pthread -fno-fast-math -Winvalid-pch -include /workspace/scratch/eb3b91c272e0/owner_a_build_sanitizers/collision/jolt/CMakeFiles/Jolt.dir/cmake_pch.hxx -o CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/RegisterTypes.cpp.o -c /workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/RegisterTypes.cpp",
+    "file": "/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/RegisterTypes.cpp",
+    "output": "collision/jolt/CMakeFiles/Jolt.dir/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin/Jolt/RegisterTypes.cpp.o"
+  }
+]

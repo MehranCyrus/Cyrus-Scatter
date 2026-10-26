@@ -55,5 +55,16 @@ int main(){std::filesystem::path folder;try{
     Library tiny({10000,100000,10});check(wait(tiny,tiny.start({folder}))[4]);
     rejected([&]{library.start({"relative"});});
     const auto absent=library.start({folder/"missing"});check(wait(library,absent)[5]!="");
+    // Shared stores are read through one immutable catalog snapshot, without
+    // a quadratic fanout of per-generation recipe view directories.
+    const auto shared=folder/"shared";std::filesystem::create_directories(shared/"catalog"/"snapshots");
+    put(shared/"store.json",Json{{"format","cyrus.asset-store"},{"version",1},{"id","owned-fixture"}}.dump());
+    const auto sharedText=serialize(d),sharedHash=digest({sharedText.begin(),sharedText.end()});
+    const auto entry=shared/"entries"/sharedHash/"entry.csrecipe.json";std::filesystem::create_directories(entry.parent_path());put(entry,sharedText);
+    Json catalog={{"format","cyrus.library-catalog"},{"version",1},{"recipes",{{"library-fixture",{{"sha256",sharedHash},{"package",nullptr}}}}},{"models",Json::object()},{"collections",{{"group",{{"name","Favorite looks"},{"recipes",Json::array({"library-fixture"})},{"models",Json::array()}}}}}};
+    auto catalogText=catalog.dump(),catalogHash=digest({catalogText.begin(),catalogText.end()});put(shared/"catalog"/"snapshots"/(catalogHash+".json"),catalogText);put(shared/"catalog"/"current.json",Json{{"sha256",catalogHash}}.dump());
+    auto sharedPage=wait(library,library.start({shared},"Favorite looks"));check(sharedPage[2]==1&&sharedPage[3]==0&&sharedPage[5]=="");
+    put(entry,sharedText+" ");sharedPage=wait(library,library.start({shared}));check(sharedPage[3]==1&&sharedPage[2]==0);put(entry,sharedText);
+    put(shared/"catalog"/"snapshots"/(catalogHash+".json"),catalogText+" ");sharedPage=wait(library,library.start({shared}));check(sharedPage[5]!="");
     std::filesystem::remove_all(folder);folder.clear();std::cout<<"PASS: "<<checks<<" library checks; passive metadata, PNG bounds/hash, search, cancellation, stale generations and refresh replacement\n";return 0;
 }catch(const std::exception& e){if(!folder.empty()){std::error_code ignored;std::filesystem::remove_all(folder,ignored);}std::cerr<<e.what()<<'\n';return 1;}}

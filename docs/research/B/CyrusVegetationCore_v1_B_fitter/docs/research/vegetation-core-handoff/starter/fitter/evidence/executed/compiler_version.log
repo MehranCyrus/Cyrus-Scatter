@@ -1,0 +1,12 @@
+command: /usr/bin/x86_64-linux-gnu-g++-13 --version
+cwd: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter
+environment_overrides: {}
+started_utc: 2026-10-24T14:57:14.883364+00:00
+
+x86_64-linux-gnu-g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+exit_code: 0

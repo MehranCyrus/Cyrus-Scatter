@@ -1,0 +1,16 @@
+command: /workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --build /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/release --parallel 4
+cwd: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter
+environment_overrides: {}
+started_utc: 2026-10-24T14:57:15.094417+00:00
+
+[ 16%] Building CXX object fitter/CMakeFiles/cyrus_vegetation_fitter.dir/fitter.cpp.o
+[ 33%] Building CXX object fitter/tests/CMakeFiles/fitter_analytic_tests.dir/test_analytic_world.cpp.o
+[ 50%] Linking CXX executable fitter_analytic_tests
+[ 50%] Built target fitter_analytic_tests
+[ 66%] Linking CXX static library libcyrus_vegetation_fitter.a
+[ 66%] Built target cyrus_vegetation_fitter
+[ 83%] Building CXX object fitter/tests/CMakeFiles/fitter_tests.dir/test_fitter.cpp.o
+[100%] Linking CXX executable fitter_tests
+[100%] Built target fitter_tests
+
+exit_code: 0

@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "role": "REPLACE_WITH_A_B_OR_C",
+  "owned_directory": "docs/research/vegetation-core-handoff/starter/REPLACE_WITH_MODULE",
+  "base_frozen_files": [],
+  "files": [],
+  "environment": {
+    "os": "RECORD_ACTUAL",
+    "compiler": "RECORD_ACTUAL_OR_UNAVAILABLE",
+    "build_system": "RECORD_ACTUAL",
+    "dependencies": []
+  },
+  "executions": [],
+  "not_executed": [],
+  "implemented_requirements": [],
+  "unsupported_or_partial": [],
+  "known_limitations": [],
+  "contract_change_requested": false,
+  "max_host_validation": "Not executed; reserved for local Max 2027 integration",
+  "template_instructions": {
+    "base_frozen_files": "Copy path/sha256/bytes entries from FROZEN-FILES.json after verifying actual input files",
+    "files": "One {path, bytes, sha256} per return file except this manifest",
+    "executions": "One {command, cwd, exit_code, log_path, observed_summary} per actual execution",
+    "not_executed": "One {requirement_or_test, reason} per missing execution; never imply pass"
+  }
+}

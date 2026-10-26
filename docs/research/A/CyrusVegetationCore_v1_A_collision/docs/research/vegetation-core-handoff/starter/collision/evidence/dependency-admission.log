@@ -1,0 +1,22 @@
+command_argv: ["python3", "owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/verify_dependency.py", "--archive", "collision_study/vendor/jolt_pin.tar.gz", "--source", "collision_study/vendor/jolt_pin", "--cmake", "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake"]
+cwd: /workspace/scratch/eb3b91c272e0
+started_utc: 2026-10-24T14:59:48.721144+00:00
+
+{"archive": "/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin.tar.gz", "bytes": 19399443, "expected_sha256": "6bb6d626b7b70096cd07f1b25c0c223df035ab6386885f07f77baa88ae7d3998", "actual_sha256": "6bb6d626b7b70096cd07f1b25c0c223df035ab6386885f07f77baa88ae7d3998"}
+POSITIVE argv=["/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake", "-DCYRUS_JOLT_VERIFY_ROOT=/workspace/scratch/eb3b91c272e0/collision_study/vendor/jolt_pin", "-P", "/workspace/scratch/eb3b91c272e0/owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/cmake/VerifyJoltSource.cmake"]
+-- Cyrus collision: verified 613 exact Jolt source/build/license files at 1b2e77e3c6c09709e5edc79dc208459b8ff32051
+POSITIVE observed_exit=0
+NEGATIVE argv=["/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake", "-P", "/tmp/cyrus_collision_wrong_hash_32_sh0go/negative.cmake"]
+CMake Error at owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/cmake/VerifyJoltSource.cmake:29 (message):
+  Cyrus collision: pinned Jolt source mismatch in Build/.gitignore; expected
+  0000000000000000000000000000000000000000000000000000000000000000, got
+  d1724eb0e4dd184302f0f3c17e110d6bde09bb77ab607480c6dc0cd5e145e08d.  Use an
+  unchanged exact-archive extraction.
+Call Stack (most recent call first):
+  /tmp/cyrus_collision_wrong_hash_32_sh0go/negative.cmake:2 (cyrus_collision_verify_jolt_source)
+
+
+NEGATIVE observed_exit=1
+{"archive_hash": "passed", "source_admission": "passed", "wrong_hash_rejection": "passed", "engine_source_mutated": false}
+
+exit_code: 0

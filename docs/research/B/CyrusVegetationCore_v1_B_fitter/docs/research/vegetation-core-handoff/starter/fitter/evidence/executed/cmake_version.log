@@ -1,0 +1,10 @@
+command: /workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/cmake --version
+cwd: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter
+environment_overrides: {}
+started_utc: 2026-10-24T14:57:14.885038+00:00
+
+cmake version 3.31.6
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+exit_code: 0

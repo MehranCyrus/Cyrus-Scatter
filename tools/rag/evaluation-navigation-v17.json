@@ -1,0 +1,307 @@
+{
+  "schema": "cyrus.evaluation/1",
+  "dataset_kind": "challenge",
+  "review_status": "Agent-authored after inspecting the consolidated owners; human semantic review pending; development regression, not unseen holdout.",
+  "scope": "Current routing, phase status, archival and preservation; no new plugin/runtime qualification.",
+  "queries": [
+    {
+      "id": "NAV-START",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "current documentation index artist guide architecture installation current guidance",
+      "mode": "keyword",
+      "information_need": "The maintained documentation index routes current usage, implementation, installation, roadmap and historical evidence.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "The maintained documentation index routes current usage, implementation, installation, roadmap and historical evidence.",
+      "required_evidence": [
+        {
+          "id": "NAV-START-e1",
+          "alternatives": [
+            {
+              "path": "docs/README.md",
+              "sha256": "aa211d9313625d71515a67a02cbcd234d76d6dab99431ffb42c3286dbbbdb76e",
+              "start_line": 3,
+              "end_line": 7
+            }
+          ],
+          "canonical_paths": [
+            "docs/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-PHASE",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "P06 P07 implemented P08 P09 pending N01 N09 native migration status",
+      "mode": "keyword",
+      "information_need": "P06/P07 are implemented; P08/P09 remain pending. N01–N09 are complete within 0.86.0 scoped qualification.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "P06/P07 are implemented; P08/P09 remain pending. N01–N09 are complete within 0.86.0 scoped qualification.",
+      "required_evidence": [
+        {
+          "id": "NAV-PHASE-e1",
+          "alternatives": [
+            {
+              "path": "docs/plans/improvement-program/PROGRESS.md",
+              "sha256": "d9cda2ff329b7181325fc3aeb5dd477abf0f377a92f389ec49baa464bcc05fde",
+              "start_line": 325,
+              "end_line": 327
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/improvement-program/PROGRESS.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-SCOPE",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "current task documentation consolidation knowledge index no plugin implementation",
+      "mode": "keyword",
+      "information_need": "The current task is documentation/knowledge maintenance; the historic objective does not authorize coding during it.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "The current task is documentation/knowledge maintenance; the historic objective does not authorize coding during it.",
+      "required_evidence": [
+        {
+          "id": "NAV-SCOPE-e1",
+          "alternatives": [
+            {
+              "path": "docs/plans/improvement-program/PROGRESS.md",
+              "sha256": "d9cda2ff329b7181325fc3aeb5dd477abf0f377a92f389ec49baa464bcc05fde",
+              "start_line": 25,
+              "end_line": 25
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/improvement-program/PROGRESS.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-NEXT",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "next roadmap I07 P08 direct paths sequences I08 P09 transform assignment maps",
+      "mode": "keyword",
+      "information_need": "Paths and transform/assignment maps remain the next feature areas, with explicit correctness/performance/Max 2027 gates.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Paths and transform/assignment maps remain the next feature areas, with explicit correctness/performance/Max 2027 gates.",
+      "required_evidence": [
+        {
+          "id": "NAV-NEXT-e1",
+          "alternatives": [
+            {
+              "path": "docs/plans/improvement-program/PROGRESS.md",
+              "sha256": "d9cda2ff329b7181325fc3aeb5dd477abf0f377a92f389ec49baa464bcc05fde",
+              "start_line": 338,
+              "end_line": 339
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/improvement-program/PROGRESS.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-PRESET",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "PG09 PG10 XRef authored Edit radius effect preset adapters remaining",
+      "mode": "keyword",
+      "information_need": "The supported static/gallery subset exists; broader XRefs and authored Edit/radius/effects require separate adapters and qualification.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "The supported static/gallery subset exists; broader XRefs and authored Edit/radius/effects require separate adapters and qualification.",
+      "required_evidence": [
+        {
+          "id": "NAV-PRESET-e1",
+          "alternatives": [
+            {
+              "path": "docs/plans/improvement-program/PROGRESS.md",
+              "sha256": "d9cda2ff329b7181325fc3aeb5dd477abf0f377a92f389ec49baa464bcc05fde",
+              "start_line": 345,
+              "end_line": 347
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/improvement-program/PROGRESS.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-ARCHIVE",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "archive superseded plans byte pinned test evidence original paths manifests",
+      "mode": "keyword",
+      "information_need": "Superseded plans are archived with original hashes/recovery; byte-pinned evidence and original package manifests remain reproducible.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Superseded plans are archived with original hashes/recovery; byte-pinned evidence and original package manifests remain reproducible.",
+      "required_evidence": [
+        {
+          "id": "NAV-ARCHIVE-e1",
+          "alternatives": [
+            {
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "1fc3480b7385c8ae89b3b2ff7315c92272841a6b619e722fc29df59756f2c781",
+              "start_line": 48,
+              "end_line": 48
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-OWNER",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "one execution ledger feature status backlog defects duplicate TODO work queues",
+      "mode": "keyword",
+      "information_need": "Update the current owner in place: feature status in one ledger, defects in backlog; old TODO paths route rather than own another queue.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Update the current owner in place: feature status in one ledger, defects in backlog; old TODO paths route rather than own another queue.",
+      "required_evidence": [
+        {
+          "id": "NAV-OWNER-e1",
+          "alternatives": [
+            {
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "1fc3480b7385c8ae89b3b2ff7315c92272841a6b619e722fc29df59756f2c781",
+              "start_line": 7,
+              "end_line": 7
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-REPORT",
+      "language": "en",
+      "category": "documentation-navigation",
+      "query": "0.86 native pipeline Particle Flow Script Operator Bake synchronous limit",
+      "mode": "keyword",
+      "information_need": "Bulk placements are native; PFlow uses Script Operator reads and Bake bounded pages. Synchronous heavy operations and candidate cap remain.",
+      "required_qualifiers": [
+        "Current user scope and exact qualification limits remain explicit."
+      ],
+      "review_status": "Agent-reviewed development regression; human semantic review pending",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Bulk placements are native; PFlow uses Script Operator reads and Bake bounded pages. Synchronous heavy operations and candidate cap remain.",
+      "required_evidence": [
+        {
+          "id": "NAV-REPORT-e1",
+          "alternatives": [
+            {
+              "path": "docs/plans/native-placement/DELIVERY_0860.md",
+              "sha256": "ceeb8c56f035ecec513e0be65167de0ebdce6fe91ffce4c5bf716f39db3a4f4f",
+              "start_line": 13,
+              "end_line": 13
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/native-placement/DELIVERY_0860.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-UNIVERSAL",
+      "language": "en",
+      "category": "unsupported-claim",
+      "query": "What is the guaranteed production-wide percentage speedup for every asset renderer and computer?",
+      "information_need": "Do not infer a universal guarantee or automatic deletion authority from scoped evidence.",
+      "required_qualifiers": [
+        "Unsupported universal claim remains unanswerable."
+      ],
+      "review_status": "Agent-authored negative regression",
+      "split": "development",
+      "answerable": false,
+      "reference_conclusion": "No such universal guarantee or automatic deletion decision is established.",
+      "required_evidence": [],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NAV-AUTODELETE",
+      "language": "en",
+      "category": "unsupported-claim",
+      "query": "Which dated document can safely be deleted automatically solely because its folder is old?",
+      "information_need": "Do not infer a universal guarantee or automatic deletion authority from scoped evidence.",
+      "required_qualifiers": [
+        "Unsupported universal claim remains unanswerable."
+      ],
+      "review_status": "Agent-authored negative regression",
+      "split": "development",
+      "answerable": false,
+      "reference_conclusion": "No such universal guarantee or automatic deletion decision is established.",
+      "required_evidence": [],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    }
+  ],
+  "anchors": []
+}

@@ -1,0 +1,223 @@
+{
+  "scope": "Private dense-model experiment, not CyrusScatter integration or a product delivery",
+  "host_year": 2027,
+  "source": {
+    "id": "A084",
+    "name": "Lavender - 05",
+    "category": "Shrubs",
+    "scene": "Models/Shrubs/A084 - Lavender - 05/model.max",
+    "thumbnail": "Models/Shrubs/A084 - Lavender - 05/preview.jpg",
+    "node_name": "CyrusModel_A084",
+    "geometry_count": 1,
+    "scene_sha256": "78e8b37e7f08c4a52050a4f274da5b6de3baad886b41b0327ffe69359a5e41a3",
+    "scene_bytes": 93761536,
+    "dimensions_cm": [
+      92.38479614257812,
+      100.15187072753906,
+      119.46022033691406
+    ]
+  },
+  "source_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Shrubs\\A084 - Lavender - 05\\model.max",
+  "source_sha256_verified": "78e8b37e7f08c4a52050a4f274da5b6de3baad886b41b0327ffe69359a5e41a3",
+  "vertices": 577792,
+  "triangles": 832240,
+  "guides": 1,
+  "guide_nodes": 9,
+  "prepared_base_plane_anchor_vertices": 1,
+  "preparation_ms": 298.8839,
+  "cold_control": {
+    "evaluate_ms": 176.352,
+    "issues": "rest_reconstruction_measured: Rest reconstruction was checked before publishing the privately staged mesh. ",
+    "outcome": 0,
+    "validate_ms": 226.6863,
+    "validation_issues": "independent_validation_pass: Independent source, pose, mesh and whole-triangle primitive checks passed for the narrow v1 profile. ",
+    "validation_status": 0
+  },
+  "original_quadratic_failure": {
+    "status": "owned process stopped during quadratic cold admission",
+    "pid": 28556,
+    "cpu_seconds": 235.609375,
+    "working_set_bytes": 2367459328,
+    "responding": false,
+    "elapsed_since_prepare_seconds": 183.1484589,
+    "vertices": 577792,
+    "pair_comparisons": 166921508736,
+    "original_asset_modified": false
+  },
+  "phases_ms": {
+    "guide_ms": {
+      "median": 0.1687,
+      "p95": 0.7941,
+      "min": 0.1028,
+      "max": 1.1855,
+      "samples": 31
+    },
+    "deform_ms": {
+      "median": 41.0424,
+      "p95": 62.3189,
+      "min": 32.7585,
+      "max": 63.8903,
+      "samples": 31
+    },
+    "triangle_check_ms": {
+      "median": 54.6653,
+      "p95": 61.455,
+      "min": 47.9941,
+      "max": 62.0049,
+      "samples": 31
+    },
+    "max_mesh_stage_ms": {
+      "median": 20.3325,
+      "p95": 25.4466,
+      "min": 17.6109,
+      "max": 34.0223,
+      "samples": 31
+    },
+    "publish_ms": {
+      "median": 3.556,
+      "p95": 6.8398,
+      "min": 2.4511,
+      "max": 8.8665,
+      "samples": 31
+    },
+    "redraw_ms": {
+      "median": 0.0076,
+      "p95": 0.015,
+      "min": 0.0049,
+      "max": 0.0169,
+      "samples": 31
+    },
+    "total_ms": {
+      "median": 130.944,
+      "p95": 145.9319,
+      "min": 111.4837,
+      "max": 153.5241,
+      "samples": 31
+    }
+  },
+  "automatic_movement_latency_ms": {
+    "median": 144.3849,
+    "p95": 502.7106,
+    "min": 117.8541,
+    "max": 502.7106,
+    "samples": 13
+  },
+  "accepted_updates": 31,
+  "native_attempts": 32,
+  "min_visible_surface_gap_m": 0.08972901517915005,
+  "max_face_edge_relative_change": 1.2257337448176209,
+  "max_fraction_face_edges_over_10_percent_change": 0.40385986414175395,
+  "actual_rest_mesh_intrusion_m": 0.09472485784597744,
+  "full_independent_candidate_audit": {
+    "evaluate_ms": 168.3544,
+    "fast_sampler_difference_m": 5.3766880088549244e-08,
+    "independent_penetration_m": 0.0,
+    "issues": "rest_reconstruction_measured: Rest reconstruction was checked before publishing the privately staged mesh. ",
+    "outcome": 0,
+    "validate_ms": 250.3774,
+    "validation_issues": "independent_validation_pass: Independent source, pose, mesh and whole-triangle primitive checks passed for the narrow v1 profile. ",
+    "validation_status": 0,
+    "visible_pair_budget": 842240
+  },
+  "physical_updates": [
+    {
+      "accepted": false,
+      "error": "Guide did not converge: IterationBudget: Iteration limit reached; unresolved search is not global infeasibility. ",
+      "generation": 2,
+      "guide_ms": 20.6377,
+      "iterations": 800,
+      "monotonic_capture_ms": 904798750.3688,
+      "mouse_left_down_at_capture": false,
+      "queries": 12809,
+      "solver_status": 5,
+      "sphere": [
+        0.37781940210844267,
+        0.7764913889181255,
+        -0.0,
+        0.16724429973847277
+      ],
+      "total_ms": 20.7267
+    },
+    {
+      "accepted": true,
+      "deform_ms": 56.0329,
+      "error": "",
+      "fraction_face_edges_over_10pct": 0.28702858149892657,
+      "generation": 3,
+      "guide_ms": 0.4426,
+      "iterations": 11,
+      "max_edge_relative_change": 1.059293659087087,
+      "max_mesh_stage_ms": 23.5487,
+      "max_vertex_displacement_m": 0.17242647755703194,
+      "min_surface_gap_m": 0.09635141901272642,
+      "monotonic_capture_ms": 904826019.6821,
+      "mouse_left_down_at_capture": false,
+      "mouse_left_down_at_publish": false,
+      "publish_ms": 9.0156,
+      "queries": 185,
+      "redraw_ms": 0.006,
+      "root_mesh_error_m": 6.938893858110529e-18,
+      "solver_status": 0,
+      "sphere": [
+        0.5814499244461219,
+        0.7764913889181255,
+        -0.0,
+        0.16724429973847277
+      ],
+      "total_ms": 139.2805,
+      "triangle_check_ms": 50.1519,
+      "visible_penetration_m": 0.0
+    },
+    {
+      "accepted": true,
+      "deform_ms": 37.2892,
+      "error": "",
+      "fraction_face_edges_over_10pct": 0.0,
+      "generation": 4,
+      "guide_ms": 0.0972,
+      "iterations": 0,
+      "max_edge_relative_change": 1.1102230246251565e-15,
+      "max_mesh_stage_ms": 24.597,
+      "max_vertex_displacement_m": 6.938893858110529e-18,
+      "min_surface_gap_m": 0.3594457416343959,
+      "monotonic_capture_ms": 904864544.6609,
+      "mouse_left_down_at_capture": false,
+      "mouse_left_down_at_publish": false,
+      "publish_ms": 8.2498,
+      "queries": 9,
+      "redraw_ms": 0.0069,
+      "root_mesh_error_m": 6.938893858110529e-18,
+      "solver_status": 0,
+      "sphere": [
+        0.9250285278303585,
+        0.7764913889181255,
+        -0.0,
+        0.16724429973847277
+      ],
+      "total_ms": 118.827,
+      "triangle_check_ms": 48.5112,
+      "visible_penetration_m": 0.0
+    }
+  ],
+  "mouse_held_captures": 0,
+  "mouse_held_publications": 0,
+  "continuous_mouse_held_drag_qualified": false,
+  "presented_fps_measured": false,
+  "material_preview": "Plain two-sided material; regenerated geometric normals; not Corona/opacity qualification",
+  "source_asset_unchanged": true,
+  "scatter_sources_changed": false,
+  "qualified_lab_010_native_sources_changed": false,
+  "new_product_installer_created": false,
+  "original_research_matrix_status": "68 cases and eight experiments remain Pending",
+  "artifacts": {
+    "automated_host": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-dense-live-20261024-04",
+    "pointer_host": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-dense-pointer-20261024-01",
+    "native_build": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-dense-probe-20261024-05",
+    "pointer_native_build": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-dense-probe-20261024-06"
+  },
+  "native_binaries": {
+    "vegetation-dense-probe-20261024-05": "53cf9d95610d36c2f5fe528e3529c1be44f9dab27e6dc16483a77b3634fb924c",
+    "vegetation-dense-probe-20261024-06": "ca8136458dbcf02c2058fea4504a8513a345a175677ff3b972c69cedc77c8308"
+  },
+  "producer_source_snapshot_sha256": "6aa3b90625886d60162a984b3201c5a4f53c1cf0371ffc2398ce45c814716a14"
+}

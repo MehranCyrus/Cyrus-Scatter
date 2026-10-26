@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "verified_at_utc": "2026-10-24T10:50:17.369000+00:00",
+  "scope": "Documentation integrity and text coverage; no solver/host qualification",
+  "outcome": "pass",
+  "errors": [],
+  "checks": {
+    "original_files_hashed": 14,
+    "associated_artifacts_hashed": 6,
+    "embedded_declared_member_hashes_checked": 12,
+    "embedded_result_json_agreement": true,
+    "embedded_result_json_agreements": {
+      "R13-E02": true,
+      "R14-E02": true,
+      "R14-E03": true
+    },
+    "canonical_numbered_chapters": 9,
+    "pending_validation_cases": 68,
+    "owned_markdown_files": 17,
+    "pending_solver_decision_experiments": 8,
+    "local_markdown_links_checked": 120,
+    "local_html_links_checked": 145,
+    "pdf_pages": 52,
+    "pdf_headings_present": 98
+  },
+  "presentation_review": "See VERIFICATION.md; page rendering is a separate visual check",
+  "artifacts": {
+    "handbook.html": {
+      "bytes": 205500,
+      "sha256": "622a4a008273ce6b53d32059f97cf1997dbdb0ec39bd6cb61cd41583dad38814"
+    },
+    "handbook.pdf": {
+      "bytes": 270425,
+      "sha256": "a2a2b49c5e02e56a13afadd1ee1fc3c384f2791b034cf9b280be16670a7ff904"
+    }
+  }
+}

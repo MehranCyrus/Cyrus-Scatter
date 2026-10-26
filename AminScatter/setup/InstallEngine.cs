@@ -335,8 +335,7 @@ namespace Cyrus.Setup {
         static void Link(string existing,string destination) {
             InstallPaths.Full(existing);InstallPaths.Full(destination);
             Directory.CreateDirectory(Path.GetDirectoryName(destination));
-            if(!CreateHardLink(destination,existing,IntPtr.Zero))
-                throw new IOException("Could not reuse installed content. Windows error "+Marshal.GetLastWin32Error()+": "+destination);
+            ContentObjects.Link(existing,destination);
         }
         string PreviousContent(InstallPaths paths,string runtime,string root,byte[] receipt) {
             if(receipt==null)return null;

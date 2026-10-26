@@ -1,0 +1,808 @@
+{
+  "schema": 1,
+  "role": "Owner A - collision",
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "result": "PASS",
+  "archive": {
+    "path": "/workspace/scratch/eb3b91c272e0/upload/CyrusScatter_Vegetation_Core_Handoff_v1.zip",
+    "bytes": 2780720,
+    "sha256": "fa6b7ac48f8e62b589c012959a9968759962e8a398fba698487164cee243689c"
+  },
+  "packet_root": "/workspace/scratch/eb3b91c272e0/owner_a_packet",
+  "owned_directory": "docs/research/vegetation-core-handoff/starter/collision/",
+  "header_actual_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+  "counts": {
+    "original_files": 80,
+    "original_files_outside_owned": 79,
+    "original_files_byte_identical": 80,
+    "outside_originals_byte_identical": 79,
+    "frozen_files": 4,
+    "frozen_files_verified": 4,
+    "added_files_outside_owned": 0
+  },
+  "added_files_outside_owned": [],
+  "symlinks": [],
+  "errors": [],
+  "frozen_files": [
+    {
+      "path": "docs/research/vegetation-core-handoff/SHARED-CONTRACT.md",
+      "declared_bytes": 12222,
+      "declared_sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80",
+      "archive_bytes": 12222,
+      "archive_sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80",
+      "actual_bytes": 12222,
+      "actual_sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80",
+      "verified": true
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "declared_bytes": 8709,
+      "declared_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+      "archive_bytes": 8709,
+      "archive_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+      "actual_bytes": 8709,
+      "actual_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+      "verified": true
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/CMakeLists.txt",
+      "declared_bytes": 594,
+      "declared_sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086",
+      "archive_bytes": 594,
+      "archive_sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086",
+      "actual_bytes": 594,
+      "actual_sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086",
+      "verified": true
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/fixtures/catalog.json",
+      "declared_bytes": 20047,
+      "declared_sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f",
+      "archive_bytes": 20047,
+      "archive_sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f",
+      "actual_bytes": 20047,
+      "actual_sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f",
+      "verified": true
+    }
+  ],
+  "original_files": [
+    {
+      "path": "CONTEXT-SNAPSHOT.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 1885,
+      "archive_sha256": "bc0b2254063901c76c03b5633039ea09a18ed4a1ec6d1e7626d4fc46fd4fb11d",
+      "actual_bytes": 1885,
+      "actual_sha256": "bc0b2254063901c76c03b5633039ea09a18ed4a1ec6d1e7626d4fc46fd4fb11d"
+    },
+    {
+      "path": "DOCUMENT-LIST.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 246,
+      "archive_sha256": "ce2570433276d0e966d1f4fb0b0b76e9fe90d64f9242503e0a17c62be9ef30e4",
+      "actual_bytes": 246,
+      "actual_sha256": "ce2570433276d0e966d1f4fb0b0b76e9fe90d64f9242503e0a17c62be9ef30e4"
+    },
+    {
+      "path": "PACKAGE-MANIFEST.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 16688,
+      "archive_sha256": "4f965d234ce0ff53c6df76478db49e02f786dcca8e41e393198b5bd65b7b8595",
+      "actual_bytes": 16688,
+      "actual_sha256": "4f965d234ce0ff53c6df76478db49e02f786dcca8e41e393198b5bd65b7b8595"
+    },
+    {
+      "path": "PACKAGING-VERIFICATION.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 798,
+      "archive_sha256": "0f677544f349e385df90b7752d51c61f666d8c25bad703931108466809e5114f",
+      "actual_bytes": 798,
+      "actual_sha256": "0f677544f349e385df90b7752d51c61f666d8c25bad703931108466809e5114f"
+    },
+    {
+      "path": "START-HERE.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 904,
+      "archive_sha256": "d1a6cc17bb9e00e6dc7f7347c55dffb3a0738ea0720446f1f761eae0ccf740f2",
+      "actual_bytes": 904,
+      "actual_sha256": "d1a6cc17bb9e00e6dc7f7347c55dffb3a0738ea0720446f1f761eae0ccf740f2"
+    },
+    {
+      "path": "AminScatter/include/placement_store.h",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 4593,
+      "archive_sha256": "a11b1663aac89f18a173253b0bc0a7025fcddfd85b3d915e455eba88165ac70c",
+      "actual_bytes": 4593,
+      "actual_sha256": "a11b1663aac89f18a173253b0bc0a7025fcddfd85b3d915e455eba88165ac70c"
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 20626,
+      "archive_sha256": "70326839305ff3573deb282eb02125b8d2dd6d70e56fe108651568243939e764",
+      "actual_bytes": 20626,
+      "actual_sha256": "70326839305ff3573deb282eb02125b8d2dd6d70e56fe108651568243939e764"
+    },
+    {
+      "path": "CyrusPhysicsLab/README.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 32695,
+      "archive_sha256": "7c19888c7033982d23957335623f2319e8f3367a7292e0ec298c0d64dc26f1cf",
+      "actual_bytes": 32695,
+      "actual_sha256": "7c19888c7033982d23957335623f2319e8f3367a7292e0ec298c0d64dc26f1cf"
+    },
+    {
+      "path": "CyrusPhysicsLab/src/jolt_world.cpp",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 28193,
+      "archive_sha256": "c30d487b1c000aa27e67811e182d27ee07b1a9cd543e26b3098009dab07676f1",
+      "actual_bytes": 28193,
+      "actual_sha256": "c30d487b1c000aa27e67811e182d27ee07b1a9cd543e26b3098009dab07676f1"
+    },
+    {
+      "path": "CyrusPhysicsLab/tools/build.py",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 6972,
+      "archive_sha256": "ccc05d6b16ec4544de60e0d84d22811daf4739c82dd1eb8105b721e8f8bb35cf",
+      "actual_bytes": 6972,
+      "actual_sha256": "ccc05d6b16ec4544de60e0d84d22811daf4739c82dd1eb8105b721e8f8bb35cf"
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 13461,
+      "archive_sha256": "c89517757fc65cc4337ab8ad1689e3dd30f9cd115b2004e760dfeca69103f510",
+      "actual_bytes": 13461,
+      "actual_sha256": "c89517757fc65cc4337ab8ad1689e3dd30f9cd115b2004e760dfeca69103f510"
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 12729,
+      "archive_sha256": "ce55b1d053dd07f0518a37d130965f88e2260851cc8043b6064d22aa7e3c69b4",
+      "actual_bytes": 12729,
+      "actual_sha256": "ce55b1d053dd07f0518a37d130965f88e2260851cc8043b6064d22aa7e3c69b4"
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 32317,
+      "archive_sha256": "02520b2b7ebd344a1c85530e127f1f96365900132ba8a1d563aed84f947ad4f5",
+      "actual_bytes": 32317,
+      "actual_sha256": "02520b2b7ebd344a1c85530e127f1f96365900132ba8a1d563aed84f947ad4f5"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/DOCUMENT-LIST.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 5889,
+      "archive_sha256": "9137b559ae1e51d575bce9ae4bd37c7e5e0bd50719cf628dc9f41d0944119c1b",
+      "actual_bytes": 5889,
+      "actual_sha256": "9137b559ae1e51d575bce9ae4bd37c7e5e0bd50719cf628dc9f41d0944119c1b"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/fixtures/catalog.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 20047,
+      "archive_sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f",
+      "actual_bytes": 20047,
+      "actual_sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/FROZEN-FILES.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 881,
+      "archive_sha256": "29f991a4f17c77ceee52492778894a3077f26bbd6de9dc8a91f0fe429a642fe9",
+      "actual_bytes": 881,
+      "actual_sha256": "29f991a4f17c77ceee52492778894a3077f26bbd6de9dc8a91f0fe429a642fe9"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/PROMPT-A-COLLISION.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 4826,
+      "archive_sha256": "3d1ec6faf32bb4b3acbbe1694709b1a696018891b88081788273a5567003f163",
+      "actual_bytes": 4826,
+      "actual_sha256": "3d1ec6faf32bb4b3acbbe1694709b1a696018891b88081788273a5567003f163"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/PROMPT-B-FITTER.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 4595,
+      "archive_sha256": "8ff02ba80b6408899f48c2ba261c142f6b5e26bad7b4e3be37150b8ad26dfccc",
+      "actual_bytes": 4595,
+      "actual_sha256": "8ff02ba80b6408899f48c2ba261c142f6b5e26bad7b4e3be37150b8ad26dfccc"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/PROMPT-C-DELIVERY-VALIDATION.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 4454,
+      "archive_sha256": "a3dc55d8635c7a375b16b792fd7f667d727cd8c82e8d64c8dc73df4afca5c9df",
+      "actual_bytes": 4454,
+      "actual_sha256": "a3dc55d8635c7a375b16b792fd7f667d727cd8c82e8d64c8dc73df4afca5c9df"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/README.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 2666,
+      "archive_sha256": "ab8b80eb7e31eb6a6f48a0bc6ca184fa4d58f6e4aee5988a79b8b7d32b349eb3",
+      "actual_bytes": 2666,
+      "actual_sha256": "ab8b80eb7e31eb6a6f48a0bc6ca184fa4d58f6e4aee5988a79b8b7d32b349eb3"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/RETURN-CHECKLIST.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 2817,
+      "archive_sha256": "b0de39722ebf7af5349b5e1a70c8ef853d750c16371ba9bdfd987485f541d1cc",
+      "actual_bytes": 2817,
+      "actual_sha256": "b0de39722ebf7af5349b5e1a70c8ef853d750c16371ba9bdfd987485f541d1cc"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/return-manifest.template.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 1081,
+      "archive_sha256": "982d1afec0dd49157a662d7b90440b473a3fad1984c31e03d19ea3785192397d",
+      "actual_bytes": 1081,
+      "actual_sha256": "982d1afec0dd49157a662d7b90440b473a3fad1984c31e03d19ea3785192397d"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/SHARED-CONTRACT.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 12222,
+      "archive_sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80",
+      "actual_bytes": 12222,
+      "actual_sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/CMakeLists.txt",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 594,
+      "archive_sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086",
+      "actual_bytes": 594,
+      "actual_sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/collision/ASSIGNMENT.md",
+      "owned": true,
+      "byte_identical": true,
+      "archive_bytes": 186,
+      "archive_sha256": "fcc793b718f57fcb5dc5b853fd4faddae1da93165a4f4c92ffea992f7ecb7476",
+      "actual_bytes": 186,
+      "actual_sha256": "fcc793b718f57fcb5dc5b853fd4faddae1da93165a4f4c92ffea992f7ecb7476"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/delivery/ASSIGNMENT.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 187,
+      "archive_sha256": "5a73d41c225a6ff36000f697f4d31c565d8b1b66a63b7bdae683e9b7266c67ed",
+      "actual_bytes": 187,
+      "actual_sha256": "5a73d41c225a6ff36000f697f4d31c565d8b1b66a63b7bdae683e9b7266c67ed"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/fitter/ASSIGNMENT.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 188,
+      "archive_sha256": "09d90d024342fd5cc6254ab77cc12a90d0de0530e85acb8aa951dbe757282600",
+      "actual_bytes": 188,
+      "actual_sha256": "09d90d024342fd5cc6254ab77cc12a90d0de0530e85acb8aa951dbe757282600"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 8709,
+      "archive_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+      "actual_bytes": 8709,
+      "actual_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/tools/build_handoff.py",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 10403,
+      "archive_sha256": "7441c484005534dac7c9938cb674c5d2a02fec2bdc8883b5ef6614b3e60b22c1",
+      "actual_bytes": 10403,
+      "actual_sha256": "7441c484005534dac7c9938cb674c5d2a02fec2bdc8883b5ef6614b3e60b22c1"
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/WORKFLOW.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 5909,
+      "archive_sha256": "f6b1d89ccab5285abc320ed07011c040cac5b960fc020e4a5020ee196e9687ad",
+      "actual_bytes": 5909,
+      "actual_sha256": "f6b1d89ccab5285abc320ed07011c040cac5b960fc020e4a5020ee196e9687ad"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/01-FINDINGS-AND-RECOMMENDATION.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 8582,
+      "archive_sha256": "0886c0a3e4f9a3007ffdf052ddde82fed32680f53bb9acfc136b1a5e69ffcd01",
+      "actual_bytes": 8582,
+      "actual_sha256": "0886c0a3e4f9a3007ffdf052ddde82fed32680f53bb9acfc136b1a5e69ffcd01"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/02-ARTIST-WORKFLOW.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 7022,
+      "archive_sha256": "1d6140ac7225ce53e5575dc9f785523a0fcd1cc433f11abc2223db4641a4f4fd",
+      "actual_bytes": 7022,
+      "actual_sha256": "1d6140ac7225ce53e5575dc9f785523a0fcd1cc433f11abc2223db4641a4f4fd"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/03-SOURCE-PREPARATION.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 11568,
+      "archive_sha256": "ee7a202a295f86d6de987058f8fe2e0b24ce412d2d1514c2c8bbd3c374649a8c",
+      "actual_bytes": 11568,
+      "actual_sha256": "ee7a202a295f86d6de987058f8fe2e0b24ce412d2d1514c2c8bbd3c374649a8c"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/04-COLLISION-AND-SOLVERS.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 22811,
+      "archive_sha256": "3788a1f978d7965cd03dcf466d906c8d4dcd3866913695ef5c79afb0572d32e4",
+      "actual_bytes": 22811,
+      "actual_sha256": "3788a1f978d7965cd03dcf466d906c8d4dcd3866913695ef5c79afb0572d32e4"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/05-ARCHITECTURE-AND-OUTPUT.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 15518,
+      "archive_sha256": "bf002c3008fb4e071e88e1795eef49e88567b6251b9a88194c492dc5cfce162c",
+      "actual_bytes": 15518,
+      "actual_sha256": "bf002c3008fb4e071e88e1795eef49e88567b6251b9a88194c492dc5cfce162c"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/06-HOUDINI-AND-TYFLOW.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 7960,
+      "archive_sha256": "03c705cb8657d14b20e3dd07ff1e7cc52417705828ffa9052a699f4cbfab4687",
+      "actual_bytes": 7960,
+      "actual_sha256": "03c705cb8657d14b20e3dd07ff1e7cc52417705828ffa9052a699f4cbfab4687"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/07-VALIDATION-PLAN.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 10482,
+      "archive_sha256": "ad3aa7e6e25da17e94359fc2eb2961ac1ae7a4104af7ae02cdea49ecc7c71822",
+      "actual_bytes": 10482,
+      "actual_sha256": "ad3aa7e6e25da17e94359fc2eb2961ac1ae7a4104af7ae02cdea49ecc7c71822"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/08-ENGINEERING-GUIDELINES.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 7153,
+      "archive_sha256": "d5a8c5d42a96038f414c23e84bc0e2eaab948ecf61b530dae8a8e4bd2dcccf64",
+      "actual_bytes": 7153,
+      "actual_sha256": "d5a8c5d42a96038f414c23e84bc0e2eaab948ecf61b530dae8a8e4bd2dcccf64"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/09-EVIDENCE-AND-OPEN-QUESTIONS.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 21621,
+      "archive_sha256": "98d5cb6dc96e67e054a582fcd6b4495c2624a0eafd58dc956faa2c7774f0acbc",
+      "actual_bytes": 21621,
+      "actual_sha256": "98d5cb6dc96e67e054a582fcd6b4495c2624a0eafd58dc956faa2c7774f0acbc"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/checklists/ASSET-AUDIT.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 2669,
+      "archive_sha256": "3a6c956bd250a11cbbf46c2c7dcfd195cc6f5449c64c5028e822c0fd008401e3",
+      "actual_bytes": 2669,
+      "actual_sha256": "3a6c956bd250a11cbbf46c2c7dcfd195cc6f5449c64c5028e822c0fd008401e3"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/checklists/experiment-record.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 4606,
+      "archive_sha256": "27883b6624ac6f2736d51826207857783ce15917ff736329d2ef8c15393f7eef",
+      "actual_bytes": 4606,
+      "actual_sha256": "27883b6624ac6f2736d51826207857783ce15917ff736329d2ef8c15393f7eef"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/checklists/RECIPE-COMPARISON.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 2949,
+      "archive_sha256": "6d1729b5af77451cfe8a10e9ea263d776847c1e0bcc9e46f7245967a769e67b8",
+      "actual_bytes": 2949,
+      "actual_sha256": "6d1729b5af77451cfe8a10e9ea263d776847c1e0bcc9e46f7245967a769e67b8"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/checklists/SOLVER-DECISION-EXPERIMENTS.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 10123,
+      "archive_sha256": "b01e8a12a335e8febfbf7f03334c2c501965c7057ea4da11d0a154ceefb2d0d5",
+      "actual_bytes": 10123,
+      "actual_sha256": "b01e8a12a335e8febfbf7f03334c2c501965c7057ea4da11d0a154ceefb2d0d5"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/checklists/VALIDATION-MATRIX.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 10157,
+      "archive_sha256": "5577cc5b611f0ee139a1f14704b8b1501617623b140d1467133484732738ad92",
+      "actual_bytes": 10157,
+      "actual_sha256": "5577cc5b611f0ee139a1f14704b8b1501617623b140d1467133484732738ad92"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/handbook.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 205500,
+      "archive_sha256": "622a4a008273ce6b53d32059f97cf1997dbdb0ec39bd6cb61cd41583dad38814",
+      "actual_bytes": 205500,
+      "actual_sha256": "622a4a008273ce6b53d32059f97cf1997dbdb0ec39bd6cb61cd41583dad38814"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/handbook.pdf",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 270425,
+      "archive_sha256": "a2a2b49c5e02e56a13afadd1ee1fc3c384f2791b034cf9b280be16670a7ff904",
+      "actual_bytes": 270425,
+      "actual_sha256": "a2a2b49c5e02e56a13afadd1ee1fc3c384f2791b034cf9b280be16670a7ff904"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/README.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 8107,
+      "archive_sha256": "34493e7e7040fdf2fd192518a550fc4079a29c0d8552cfe30c5a5d4cfba2fbd8",
+      "actual_bytes": 8107,
+      "actual_sha256": "34493e7e7040fdf2fd192518a550fc4079a29c0d8552cfe30c5a5d4cfba2fbd8"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/package-verification.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 1201,
+      "archive_sha256": "b2114ef0299d6a69bbc7914bef3385d4616b3cb39ab4c129bc7337ec80a2f7d5",
+      "actual_bytes": 1201,
+      "actual_sha256": "b2114ef0299d6a69bbc7914bef3385d4616b3cb39ab4c129bc7337ec80a2f7d5"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/PRIMARY-SOURCES.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 15685,
+      "archive_sha256": "b5350564c6a6c683ad9b4e100c2be53b161e60b7e8f32db288b8029866584ac5",
+      "actual_bytes": 15685,
+      "actual_sha256": "b5350564c6a6c683ad9b4e100c2be53b161e60b7e8f32db288b8029866584ac5"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/R11-evidence-review.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 12649,
+      "archive_sha256": "95e8f29fd4d33813e8cf1b5aaf94cc3dc880ed3b6492cc97f0791e389e03c826",
+      "actual_bytes": 12649,
+      "actual_sha256": "95e8f29fd4d33813e8cf1b5aaf94cc3dc880ed3b6492cc97f0791e389e03c826"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/R12-source-review.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 9196,
+      "archive_sha256": "5de6799b0eeb26506e1b5f1b5b0cb140710f809280dd365f94bb4aec18f24de2",
+      "actual_bytes": 9196,
+      "actual_sha256": "5de6799b0eeb26506e1b5f1b5b0cb140710f809280dd365f94bb4aec18f24de2"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/R13-evidence-review.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 33729,
+      "archive_sha256": "710beee3225b0e20b892e017c409b18375c6b38bfeb37908691c1daaf55a145b",
+      "actual_bytes": 33729,
+      "actual_sha256": "710beee3225b0e20b892e017c409b18375c6b38bfeb37908691c1daaf55a145b"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/R14-evidence-review.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 76130,
+      "archive_sha256": "3a588fc7f68d4f05f28cc2f19fb444ae37c23bf9b09d546abeb106c4ac36c01d",
+      "actual_bytes": 76130,
+      "actual_sha256": "3a588fc7f68d4f05f28cc2f19fb444ae37c23bf9b09d546abeb106c4ac36c01d"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/repository-snapshot.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 3168,
+      "archive_sha256": "ecc1660e2e74300265515c021f4adf76d6968d59833b70a4f34db8575cea03ca",
+      "actual_bytes": 3168,
+      "actual_sha256": "ecc1660e2e74300265515c021f4adf76d6968d59833b70a4f34db8575cea03ca"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/references/visual-review.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 4055,
+      "archive_sha256": "f701477022a03a3f4d083085e3fe4ddecb17edd7c69027ed78797d04fd5b8730",
+      "actual_bytes": 4055,
+      "actual_sha256": "f701477022a03a3f4d083085e3fe4ddecb17edd7c69027ed78797d04fd5b8730"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/evidence/CyrusScatter_Source_Preparation_Evidence.zip",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 73202,
+      "archive_sha256": "2938528f13c7cba6495ad5b8c95cc0cb59527bf1de5404b80177eeccaffb3de4",
+      "actual_bytes": 73202,
+      "actual_sha256": "2938528f13c7cba6495ad5b8c95cc0cb59527bf1de5404b80177eeccaffb3de4"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/evidence/cyrus_jolt_probe_results.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 2307,
+      "archive_sha256": "cf4bee9a4175c79308b86e060afb2531b712964a259ec923849bb640c655e36e",
+      "actual_bytes": 2307,
+      "actual_sha256": "cf4bee9a4175c79308b86e060afb2531b712964a259ec923849bb640c655e36e"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/evidence/cyrus_jolt_reuse_reproduction.zip",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 92941,
+      "archive_sha256": "573ba08bde571ae350626eea18a35a8b556726fd952fb6c838f6ec1fa1e11360",
+      "actual_bytes": 92941,
+      "actual_sha256": "573ba08bde571ae350626eea18a35a8b556726fd952fb6c838f6ec1fa1e11360"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/evidence/R14/analytic_results.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 5871,
+      "archive_sha256": "f5950559f3636329c4bef1b8e8625c7be3679eac5b74e819d8d5d4bcf41c917f",
+      "actual_bytes": 5871,
+      "actual_sha256": "f5950559f3636329c4bef1b8e8625c7be3679eac5b74e819d8d5d4bcf41c917f"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/evidence/R14/Cyrus_Collision_Research_Evidence.zip",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 362872,
+      "archive_sha256": "30ea86996567c50e07e45b5b6f58e27424547fecce971a4565e3929686148ca8",
+      "actual_bytes": 362872,
+      "actual_sha256": "30ea86996567c50e07e45b5b6f58e27424547fecce971a4565e3929686148ca8"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/evidence/R14/harness_results.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 3191,
+      "archive_sha256": "61e1d8deb524e5da556a94df15a016dabccbeb3960be89ff55c6cf3345b73766",
+      "actual_bytes": 3191,
+      "actual_sha256": "61e1d8deb524e5da556a94df15a016dabccbeb3960be89ff55c6cf3345b73766"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/manifest.json",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 11906,
+      "archive_sha256": "58da154c152acc4ac6b4a439beaa7cf83ed6ad3b33f8b207fd4d5f9a366861c9",
+      "actual_bytes": 11906,
+      "actual_sha256": "58da154c152acc4ac6b4a439beaa7cf83ed6ad3b33f8b207fd4d5f9a366861c9"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Collision_and_Solver_Reuse.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 724160,
+      "archive_sha256": "6548aefec771986929f32c01fb5eb6bbb4aedc2ad13e4b77c381c095884be3fb",
+      "actual_bytes": 724160,
+      "actual_sha256": "6548aefec771986929f32c01fb5eb6bbb4aedc2ad13e4b77c381c095884be3fb"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Collision_Solver_Reuse_Implementation_Study_2026-10-24.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 102065,
+      "archive_sha256": "45c52aeee47ec327816b3a13899a33f5e1506f7eea21a28f819c81fab8b3ff49",
+      "actual_bytes": 102065,
+      "actual_sha256": "45c52aeee47ec327816b3a13899a33f5e1506f7eea21a28f819c81fab8b3ff49"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Houdini_tyFlow_Recipe_Matrix_2026-10-24.csv",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 18110,
+      "archive_sha256": "ffa81a99b6bf3c37222d7e04165286457388bc357890fbd1fdc846683a95fd1a",
+      "actual_bytes": 18110,
+      "actual_sha256": "ffa81a99b6bf3c37222d7e04165286457388bc357890fbd1fdc846683a95fd1a"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Houdini_tyFlow_Workflow_Study.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 471956,
+      "archive_sha256": "249d104fd1e233a52e8e3287780cf601c23705927f0d8647cdf58d0a5dd99c67",
+      "actual_bytes": 471956,
+      "actual_sha256": "249d104fd1e233a52e8e3287780cf601c23705927f0d8647cdf58d0a5dd99c67"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Houdini_tyFlow_Workflow_Study.pdf",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 538826,
+      "archive_sha256": "5f0e0c61d09d8c8ad0e99fdccd408769b6f34bbee006f699fd5c68453a1da521",
+      "actual_bytes": 538826,
+      "actual_sha256": "5f0e0c61d09d8c8ad0e99fdccd408769b6f34bbee006f699fd5c68453a1da521"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Houdini_tyFlow_Workflow_Study_2026-10-24.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 139768,
+      "archive_sha256": "e05b4e858671584708343ff9a036af6c33bc3c23a9724a688677948d88db5a41",
+      "actual_bytes": 139768,
+      "actual_sha256": "e05b4e858671584708343ff9a036af6c33bc3c23a9724a688677948d88db5a41"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Houdini_tyFlow_Workflow_Study_2026-10-24.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 80985,
+      "archive_sha256": "5c8519ea86639be31781cbdd93c5d158b53d2fce540a6c3d9228ad8812613106",
+      "actual_bytes": 80985,
+      "actual_sha256": "5c8519ea86639be31781cbdd93c5d158b53d2fce540a6c3d9228ad8812613106"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Jolt_Collision_and_Solver_Reuse_2026-10-24.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 580451,
+      "archive_sha256": "3480b32493425c4c5b2811d32aff065d94b986e9465e1e2c41f55c3f1348c4db",
+      "actual_bytes": 580451,
+      "actual_sha256": "3480b32493425c4c5b2811d32aff065d94b986e9465e1e2c41f55c3f1348c4db"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Rooted_Vegetation_Research.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 196040,
+      "archive_sha256": "1e1767ee026aaf9dccdfb18db93d0d0a6d86129fbbfd6a5dc2f54850d4e70824",
+      "actual_bytes": 196040,
+      "actual_sha256": "1e1767ee026aaf9dccdfb18db93d0d0a6d86129fbbfd6a5dc2f54850d4e70824"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Source_Preparation_and_Geometry_Delivery.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 372480,
+      "archive_sha256": "4b803b0570fc4bfab9468504852a3d63da86317c201c70e4d35b658252c6e5f4",
+      "actual_bytes": 372480,
+      "actual_sha256": "4b803b0570fc4bfab9468504852a3d63da86317c201c70e4d35b658252c6e5f4"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Source_Preparation_Geometry_Delivery_Study_2026-10-24.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 116404,
+      "archive_sha256": "ac061b3e9799deb1efd34d074c888eb5b41d52eddf3a591711f15ebc63e8528e",
+      "actual_bytes": 116404,
+      "actual_sha256": "ac061b3e9799deb1efd34d074c888eb5b41d52eddf3a591711f15ebc63e8528e"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Vegetation_Contact_Research_2026-10-24 (1).html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 319787,
+      "archive_sha256": "cfa74ec7c166246a343549649d8755a7af7b87d068c474630803dddc7181ffbc",
+      "actual_bytes": 319787,
+      "actual_sha256": "cfa74ec7c166246a343549649d8755a7af7b87d068c474630803dddc7181ffbc"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Vegetation_Contact_Research_2026-10-24.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 193516,
+      "archive_sha256": "231e189771376623235004ad6e892a4539f275b9c4d70b448760dcf01e470268",
+      "actual_bytes": 193516,
+      "actual_sha256": "231e189771376623235004ad6e892a4539f275b9c4d70b448760dcf01e470268"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/originals/CyrusScatter_Vegetation_Interaction_Engineering_Research_2026-10-24.html",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 179177,
+      "archive_sha256": "99944441fbfcb3327b2821b8772db881bb01e5554d4c61b105fac997de0b3696",
+      "actual_bytes": 179177,
+      "actual_sha256": "99944441fbfcb3327b2821b8772db881bb01e5554d4c61b105fac997de0b3696"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/sources/README.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 7176,
+      "archive_sha256": "baa1dffee64782a431415b7abf201c16bda862a23194d59d7ce002ef0cef0ebb",
+      "actual_bytes": 7176,
+      "actual_sha256": "baa1dffee64782a431415b7abf201c16bda862a23194d59d7ce002ef0cef0ebb"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/tools/build_handbook.py",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 21773,
+      "archive_sha256": "d147ecc520f68242f4869be273ac1af1117037427f1b645c8cbf862d110d3539",
+      "actual_bytes": 21773,
+      "actual_sha256": "d147ecc520f68242f4869be273ac1af1117037427f1b645c8cbf862d110d3539"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/tools/verify_library.py",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 9756,
+      "archive_sha256": "5d850e65d33ea92afb22b3e17e44b37b9d18b4690c2bed163368286ecab9997e",
+      "actual_bytes": 9756,
+      "actual_sha256": "5d850e65d33ea92afb22b3e17e44b37b9d18b4690c2bed163368286ecab9997e"
+    },
+    {
+      "path": "docs/research/vegetation-interaction/VERIFICATION.md",
+      "owned": false,
+      "byte_identical": true,
+      "archive_bytes": 7615,
+      "archive_sha256": "562107cbe639e20009836e7f72b4a46aaf50f63218697af1942355b249b9dae8",
+      "actual_bytes": 7615,
+      "actual_sha256": "562107cbe639e20009836e7f72b4a46aaf50f63218697af1942355b249b9dae8"
+    }
+  ],
+  "receipt": {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/verify_base.py",
+      "--original-zip",
+      "upload/CyrusScatter_Vegetation_Core_Handoff_v1.zip",
+      "--packet-root",
+      "owner_a_packet",
+      "--output",
+      "owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/base-integrity.json"
+    ],
+    "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/verify_base.py --original-zip upload/CyrusScatter_Vegetation_Core_Handoff_v1.zip --packet-root owner_a_packet --output owner_a_packet/docs/research/vegetation-core-handoff/starter/collision/evidence/base-integrity.json",
+    "working_directory": "/workspace/scratch/eb3b91c272e0",
+    "completed_at_utc": "2026-10-24T14:56:44.204554+00:00",
+    "exit_code": 0,
+    "script_sha256": "02705e61e21d88b10db89f16093267193aa5b0287f1c4e93b51cbcfdcacf7137"
+  },
+  "scope": "Byte comparison and SHA-256 checks only. Module additions are permitted and are not frozen by this receipt. No historical tests or host validation executed."
+}

@@ -25,9 +25,8 @@ bool previewContentEqual(const AminPointCache& a,const AminPointCache& b){
     if(a.meshSnapshot){const auto& x=*a.meshSnapshot;const auto& y=*b.meshSnapshot;
         if(x.faces!=y.faces||x.instances!=y.instances||x.groups.size()!=y.groups.size()||!previewBoxEqual(x.bounds,y.bounds)||!previewBoxesEqual(x.groupBounds,y.groupBounds)||!previewBoxesEqual(x.localBounds,y.localBounds))return false;
         for(std::size_t s=0;s<x.groups.size();++s){const auto& left=x.groups[s];const auto& right=y.groups[s];
-            if(!previewPointEqual(left.color,right.color)||left.placeholder!=right.placeholder||left.reducedBox!=right.reducedBox||left.bandSlots!=right.bandSlots||left.faces.size()!=right.faces.size()||left.instances.size()!=right.instances.size())return false;
-            for(std::size_t i=0;i<left.faces.size();++i)for(int corner=0;corner<3;++corner)if(!previewPointEqual(left.faces[i][corner],right.faces[i][corner]))return false;
-            for(std::size_t i=0;i<left.instances.size();++i)if(!previewMatrixEqual(left.instances[i],right.instances[i]))return false;
+            if(!previewPointEqual(left.color,right.color)||left.placeholder!=right.placeholder||left.reducedBox!=right.reducedBox||left.faceData().size()!=right.faceData().size()||!left.sameInstances(right))return false;
+            for(std::size_t i=0;i<left.faceData().size();++i)for(int corner=0;corner<3;++corner)if(!previewPointEqual(left.faceData()[i][corner],right.faceData()[i][corner]))return false;
         }
     }
     return true;

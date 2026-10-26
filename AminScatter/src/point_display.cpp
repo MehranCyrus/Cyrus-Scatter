@@ -97,7 +97,7 @@ std::shared_ptr<PreviewMemory> reservePreviewMemory(PreviewBudget& budget,std::s
 }
 MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value,std::shared_ptr<PreviewMemory> storage):groups(std::move(value)) {
     cpuBytes=viewport_memory::add(sizeof(*this),viewport_memory::add(viewport_memory::multiply(groups.capacity(),sizeof(PreviewGeometry)),
-        viewport_memory::multiply(groups.size(),2*sizeof(Box3))));
+        viewport_memory::multiply(groups.size(),2*sizeof(Box3)+2*sizeof(std::uint64_t))));
     for(const auto& group:groups)cpuBytes=viewport_memory::add(cpuBytes,viewport_memory::add(
         viewport_memory::multiply(group.faces.capacity(),sizeof(group.faces[0])),viewport_memory::add(
         viewport_memory::multiply(group.instances.capacity(),sizeof(Matrix3)),group.bandSlots.capacity())));
@@ -107,7 +107,7 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value,std::shared_ptr<Pr
     if(!memory)memory=reserveMeshMemory({cpuBytes,0});
     else if(memory->cost().cpu<cpuBytes)growMeshMemory(memory,cpuBytes-memory->cost().cpu);
     else memory->trimCPU(cpuBytes);
-    groupBounds.reserve(groups.size());localBounds.reserve(groups.size());memory->commit();
+    groupBounds.reserve(groups.size());localBounds.reserve(groups.size());faceFingerprints.reserve(groups.size());instanceFingerprints.reserve(groups.size());memory->commit();
     bounds.Init();
     auto hash=[this](const Point3& p) {
         for(int axis=0;axis<3;++axis) if(!std::isfinite(p[axis])) throw RuntimeError(_T("Non-finite mesh preview data"));
@@ -115,21 +115,31 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value,std::shared_ptr<Pr
         for(std::size_t i=0;i<sizeof(Point3);++i) { fingerprint^=bytes[i];fingerprint*=1099511628211ULL; }
     };
     for(const auto& group:groups) {
-        if(group.bandSlots.size()!=group.instances.size())throw RuntimeError(_T("Mesh Band provenance count mismatch"));
-        for(auto slot:group.bandSlots){if(slot>64)throw RuntimeError(_T("Invalid mesh Band palette slot"));fingerprint^=slot;fingerprint*=1099511628211ULL;}
+        if(group.bandData().size()!=group.instanceData().size())throw RuntimeError(_T("Mesh Band provenance count mismatch"));
         Box3 local,world;local.Init();world.Init();hash(group.color);
-        for(const auto& face:group.faces) for(const auto& p:face) { local+=p;hash(p); }
-        if(!group.faces.empty() && !group.instances.empty()) {
-            for(const auto& tm:group.instances) {
-                for(int row=0;row<4;++row) hash(tm.GetRow(row));
-                world+=local*tm;
-            }
-            viewport_memory::validateDrawCounts(group.faces.size(),group.instances.size());
-            bounds+=world;faces=viewport_memory::add(faces,viewport_memory::multiply(group.faces.size(),group.instances.size()));instances=viewport_memory::add(instances,group.instances.size());
-            bufferBytes=viewport_memory::add(bufferBytes,viewport_memory::add(viewport_memory::multiply(group.faces.size(),9*sizeof(Point3)),
-                viewport_memory::multiply(group.instances.size(),4*sizeof(Point3)+sizeof(float))));
-            scratchBytes=viewport_memory::add(scratchBytes,viewport_memory::add(viewport_memory::multiply(group.faces.size(),3*sizeof(Point3)),
-                viewport_memory::multiply(group.instances.size(),4*sizeof(Point3)+sizeof(float))));
+        std::uint64_t faceFingerprint=1469598103934665603ULL;
+        if(group.sharedFaces){local=group.sharedBounds;faceFingerprint=group.sharedFingerprint;}
+        else for(const auto& face:group.faces) for(const auto& p:face) {for(int axis=0;axis<3;++axis)if(!std::isfinite(p[axis]))throw RuntimeError(_T("Non-finite mesh preview data"));local+=p;const auto* bytes=reinterpret_cast<const unsigned char*>(&p);for(std::size_t i=0;i<sizeof(Point3);++i){faceFingerprint^=bytes[i];faceFingerprint*=1099511628211ULL;} }
+        fingerprint^=faceFingerprint;fingerprint*=1099511628211ULL;
+        faceFingerprints.push_back(faceFingerprint);
+        std::uint64_t instanceFingerprint=group.sharedInstances?group.sharedInstanceFingerprint:1469598103934665603ULL;
+        auto instanceHash=[&](const void* p,std::size_t n){auto bytes=static_cast<const unsigned char*>(p);for(std::size_t i=0;i<n;++i){instanceFingerprint^=bytes[i];instanceFingerprint*=1099511628211ULL;}};
+        auto matrixHash=[&](const Matrix3& tm){for(int row=0;row<4;++row){const auto p=tm.GetRow(row);for(int k=0;k<3;++k)if(!std::isfinite(p[k]))throw RuntimeError(_T("Non-finite mesh instance"));instanceHash(&p,sizeof(p));}};
+        if(group.sharedInstances){
+            world=group.sharedWorldBounds;
+            if(group.edits){for(auto i:group.edits->hidden)instanceHash(&i,sizeof(i));for(const auto& [i,tm]:group.edits->transforms){instanceHash(&i,sizeof(i));matrixHash(tm);world+=local*tm;}}
+        }else{
+            for(auto slot:group.bandSlots){if(slot>64)throw RuntimeError(_T("Invalid mesh Band palette slot"));instanceHash(&slot,sizeof(slot));}
+            for(const auto& tm:group.instances){matrixHash(tm);world+=local*tm;}
+        }
+        instanceFingerprints.push_back(instanceFingerprint);fingerprint^=instanceFingerprint;fingerprint*=1099511628211ULL;
+        if(!group.faceData().empty() && group.instanceCount()) {
+            viewport_memory::validateDrawCounts(group.faceData().size(),group.instanceCount());
+            bounds+=world;faces=viewport_memory::add(faces,viewport_memory::multiply(group.faceData().size(),group.instanceCount()));instances=viewport_memory::add(instances,group.instanceCount());
+            bufferBytes=viewport_memory::add(bufferBytes,viewport_memory::add(viewport_memory::multiply(group.faceData().size(),9*sizeof(Point3)),
+                viewport_memory::multiply(group.instanceCount(),4*sizeof(Point3)+sizeof(float))));
+            scratchBytes=viewport_memory::add(scratchBytes,viewport_memory::add(viewport_memory::multiply(group.faceData().size(),3*sizeof(Point3)),
+                viewport_memory::multiply(group.instanceCount(),4*sizeof(Point3)+sizeof(float))));
         }
         groupBounds.push_back(world);localBounds.push_back(local);
     }
@@ -200,6 +210,8 @@ struct Generation {
     // Host-thread feedback follows the exact bundle selected for display.
     // Workers never inspect this opaque authored/presentation reference.
     std::shared_ptr<const CyrusEditFeedback> editFeedback;
+    std::uint64_t displayOwner=0;
+    std::atomic<bool> editWakePosted{false};
     std::atomic<bool> enabled{true},failed{false},submitted{false};
     std::atomic<std::size_t> ready{0};
     std::size_t count=0,groups=0,reservation=0,meshReservation=0;
@@ -247,7 +259,7 @@ struct Generation {
                 if(layer.mesh && ((mode==2 && layer.geometryMode==4)||(mode==1 && layer.geometryMode!=4)))
                     for(std::size_t g=0;g<layer.mesh->groups.size();++g) {
                         const auto& group=layer.mesh->groups[g];
-                        input.push_back({group.faces.empty()?0:group.instances.size(),mode==2?group.faces.size():1});owners.emplace_back(l,g);
+                        input.push_back({group.faceData().empty()?0:group.instanceCount(),mode==2?group.faceData().size():1});owners.emplace_back(l,g);
                     }
             }
             auto idle=viewportQuotas(input,limits.values[mode*2],mode==2,boxes);
@@ -279,7 +291,7 @@ struct Generation {
                 accountMeshResource(layer.mesh->memory);
                 if(layer.appearance)for(const auto& source:layer.appearance->sources)if(source)accountMeshResource(source->memory);
                 if(layer.mesh->faces) bounds+=layer.mesh->bounds;
-                for(const auto& group:layer.mesh->groups) if(!group.faces.empty() && !group.instances.empty()) {++groups;++meshGroups;}
+                for(const auto& group:layer.mesh->groups) if(!group.faceData().empty() && group.instanceCount()) {++groups;++meshGroups;}
             }
         }
         // Hardware + SDK system copies + simultaneous upload temporaries. Item
@@ -316,6 +328,7 @@ struct RenderBundle {
         realizeRenderPublication(*this,dc,[](const auto& item,DrawContext& context){
             static_cast<PreparedRenderItem*>(item.GetPointer())->RealizeResources(context);
         });
+#include "point_ready_wake.inc"
     }
 };
 void realizeGeneration(const std::shared_ptr<Generation>& generation,DrawContext& dc) {
@@ -496,6 +509,7 @@ public:
 
 class PointDisplay final : public HelperObject {
 public:
+    std::uint64_t displayHandle(){return Animatable::GetHandleByAnim(this);}
     ControllerWatch controller;
     const std::shared_ptr<RenderPublication> presentation=controller.presentation;
     std::shared_ptr<RenderBundle> candidate,retained;
@@ -597,6 +611,16 @@ bool pointsMatch(INode* helper,const std::vector<PointLayer>& layers) {
 }
 }
 
+bool cyrusRequestReadyPointDisplay(std::uint64_t displayHandle,std::uint64_t controllerHandle)noexcept{
+    try{
+        auto* object=Animatable::GetAnimByHandle(displayHandle);
+        if(!object||object->ClassID()!=cyrus::displayID||!controllerHandle)return false;
+        auto* display=static_cast<cyrus::PointDisplay*>(object);auto* controller=display->controller.GetRef();
+        if(!controller||Animatable::GetHandleByAnim(controller)!=controllerHandle)return false;
+        display->requestPresentationUpdate();return display->presentationRefreshRequested;
+    }catch(...){return false;}
+}
+
 extern "C" __declspec(dllexport) ClassDesc* CyrusPointDisplayDesc() { static cyrus::DisplayDesc desc;return &desc; }
 
 def_visible_primitive(cyrusRetainedCreate,"cyrusRetainedCreate");
@@ -674,7 +698,7 @@ Value* cyrusRetainedMeshStats_cf(Value** args,int count) {
     std::size_t faces=0,instances=0,sourceFaces=0;
     if(gen) for(const auto& layer:gen->layers) if(layer.mesh) {
         faces+=layer.mesh->faces;instances+=layer.mesh->instances;
-        for(const auto& group:layer.mesh->groups) if(!group.instances.empty()) sourceFaces+=group.faces.size();
+        for(const auto& group:layer.mesh->groups) if(group.instanceCount()) sourceFaces+=group.faceData().size();
     }
     one_typed_value_local(Array* result);vl.result=new Array(7);
     const auto policy=cyrus::viewportMemoryPolicy();

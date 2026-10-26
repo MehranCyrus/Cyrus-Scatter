@@ -1,0 +1,34 @@
+#pragma once
+// Generated for one build configuration. This is private implementation data,
+// not a change to prototype_v1.hpp or a promise of a host DLL ABI.
+#include <Jolt/Jolt.h>
+#if !defined(JPH_DOUBLE_PRECISION) || !defined(JPH_ENABLE_ASSERTS)
+#error "The collision adapter requires its double-world/assertions Jolt profile."
+#endif
+#if !defined(JPH_CROSS_PLATFORM_DETERMINISTIC) || JPH_OBJECT_LAYER_BITS != 16
+#error "Unexpected deterministic/object-layer profile; configure the isolated pinned target."
+#endif
+#if defined(JPH_OBJECT_STREAM) || defined(JPH_PROFILE_ENABLED) || defined(JPH_EXTERNAL_PROFILE) || defined(JPH_DEBUG_RENDERER) || defined(JPH_FLOATING_POINT_EXCEPTIONS_ENABLED) || defined(JPH_DISABLE_CUSTOM_ALLOCATOR) || defined(JPH_SHARED_LIBRARY)
+#error "Unexpected ancillary Jolt build feature in the fixed standalone collision profile."
+#endif
+#if !defined(__cpp_exceptions) && !defined(_CPPUNWIND)
+#error "The collision adapter requires C++ exceptions for bounded-allocation error handling."
+#endif
+#if !defined(__cpp_rtti) && !defined(_CPPRTTI)
+#error "Unexpected RTTI compiler flag in the standalone collision profile."
+#endif
+#if defined(JPH_USE_AVX) || defined(JPH_USE_AVX2) || defined(JPH_USE_AVX512) || defined(JPH_USE_SSE4_1) || defined(JPH_USE_SSE4_2) || defined(JPH_USE_FMADD) || defined(JPH_USE_F16C) || defined(JPH_USE_LZCNT) || defined(JPH_USE_TZCNT)
+#error "Unexpected higher-ISA Jolt profile; this module admits the portable CPU profile only."
+#endif
+#if defined(__AVX__) || defined(__AVX2__) || defined(__AVX512F__) || defined(__SSE4_1__) || defined(__SSE4_2__) || defined(__FMA__) || defined(__F16C__)
+#error "Inherited compiler flags exceed the portable x86 SSE2 profile. Remove native/AVX/SSE4 flags."
+#endif
+#if defined(__FAST_MATH__)
+#error "Fast-math is incompatible with finite-input validation and this profile."
+#endif
+#if defined(JPH_USE_DX12) || defined(JPH_USE_VK) || defined(JPH_USE_MTL) || defined(JPH_USE_CPU_COMPUTE)
+#error "Compute hair backends are outside this collision adapter profile."
+#endif
+#define CYRUS_COLLISION_JOLT_COMMIT "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+#define CYRUS_COLLISION_BUILD_FLAGS R"CYRUS(@CYRUS_COLLISION_PROFILE_TEXT@; configuration=$<CONFIG>; compiler=@CMAKE_CXX_COMPILER_ID@ @CMAKE_CXX_COMPILER_VERSION@; target=@CMAKE_SYSTEM_NAME@/@CMAKE_SYSTEM_PROCESSOR@; inherited_cxx_flags=@CMAKE_CXX_FLAGS@)CYRUS"
+#define CYRUS_COLLISION_PRECISION_PROFILE "contract doubles; Jolt double world positions (RVec3); Jolt local shape/query arithmetic and rotations are float; primitive refinement uses double; local right-handed Y-up metres"

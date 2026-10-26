@@ -1,12 +1,23 @@
 # Preset and gallery contracts
 
-**Current delivery: 0.86.7.1.** See the [shared content, panel changes and matched 2024/2026/2027 installers](DELIVERY_08671.md). The [0.86.7 material/library delivery](DELIVERY_0867.md), [0.86.6 surface brush](DELIVERY_0866.md) and [format 7](FORMAT_7.md) retain their behavior and original evidence.
+**Current Library correction: [0.87.3 startup hotfix](LIBRARY_STARTUP_0873.md), Max 2027 only.** Default settings lookup, folder persistence and actual Recipes opening are qualified separately from the preceding 0.87.1 shared-library campaign.
+
+**Current delivery: [0.87.1 shared personal library](DELIVERY_0871.md).** [Artist guide](SHARED_LIBRARY_ARTIST_GUIDE_0871.md), [qualification manifest](QUALIFICATION_0871.json), [original implementation plan](SHARED_LIBRARY_IMPLEMENTATION_PLAN.md) and [execution history](EXECUTION_0871.md).
+
+**Historical delivery: 0.86.7.1.** See the [shared content, panel changes and matched 2024/2026/2027 installers](DELIVERY_08671.md). The [0.86.7 material/library delivery](DELIVERY_0867.md), [0.86.6 surface brush](DELIVERY_0866.md) and [format 7](FORMAT_7.md) retain their behavior and original evidence.
 
 **Implementation roadmap:** [shared content and panel plan](UI_AND_CONTENT_IMPLEMENTATION_PLAN.md),
 with [source, disk-space and official vendor research](SHARED_CONTENT_RESEARCH_20261020.md).
 The patch implements B35's independent updates/shared location and a bounded
 B21 panel improvement. Residual cold latency, fully lazy Advanced controls and
 safe retirement of old scene paths remain separate.
+
+**Original shared personal-library plan — 23 October 2026:** the
+[full implementation plan](SHARED_LIBRARY_IMPLEMENTATION_PLAN.md) extends the
+existing content foundation to models/textures stored once, pinned recipe
+revisions, collections, portable sharing, migration and ten-look acceptance.
+It follows the [asset research](ASSET_FOUNDATION_RESEARCH_20261023.md).
+That dated plan was subsequently authorized and implemented for static planting in 0.87.1; its wider acceptance matrix remains separate from the exact delivered tests.
 
 **Historical individual-model candidate: 0.86.6.2.** The user superseded mixed
 default planting presets with 96 individual assets covering the original 104

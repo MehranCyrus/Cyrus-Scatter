@@ -19,4 +19,9 @@ bool curve(const std::string& category);
 void validate(const Document& document);
 Document parse(const std::string& text);
 std::string serialize(const Document& document);
+// Finalize a bounded native CurveControl evaluation, using the same sampled
+// agreement tolerance as the artist editor. No owner or publication is touched.
+Document preparedCurve(const Document& source, bool targetMultiplier,
+    const std::vector<double>& evaluated,
+    const std::vector<std::array<double,8>>& graph);
 }

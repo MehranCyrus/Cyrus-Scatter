@@ -1,0 +1,107 @@
+{
+  "version": "0.87.3",
+  "status": "scoped Max 2027 artist-test delivery",
+  "scene_schema": 61,
+  "package": {
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3-20261026\\CyrusScatter-0.87.3-Max2027.mzp",
+    "sha256": "9a292a12fb95446e9f1f31eb85bd5485174af4156dbb4cb8b4598efed1621f4e",
+    "files": {
+      "AminScatter.dlx": "616693be6623a8d7bf6db71335a670198b8aeca15886d30b541ae9bb760faca0",
+      "CyrusBrush.dlx": "bedab716797866d2e00af0f26ffefad88c8930014c4d88fb72d7a2910854d6e3",
+      "CyrusBrushStorage.dlh": "85771e21ddd4e6c7a3e846d1412a2ab242b9d46f5b366667caec11b4b41fc5a5",
+      "CyrusGallery.dll": "31d66a25a9b27c9fcb2af7e808effb563867e288eaab487cfafe0da9c75dc5fa",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.ms": "4c192c5f9b61c964cdaa93229f0c5f9135437ffe3a47170049bab23f64ffb05a",
+      "CyrusScatterEdit.dlm": "73f6e60cffa8f821101dae70c7ba3ce5def0595084a6fa6a7ae797004ce97a23"
+    }
+  },
+  "producer": {
+    "path": "build\\library0873-release-20261026-01\\AminScatter\\receipt.json",
+    "sha256": "90dc3c91ab4bb6f9056438e1a9cf0dd79e4a6bf73a3219e251775e62e08d67e0",
+    "input_manifest_sha256": "891f75184e58110e25b97dfffb00566537280a968403787ab985ba394b0b039c"
+  },
+  "loaded": {
+    "status": "pass",
+    "host": 2027,
+    "modules": {
+      "AminScatter.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\library0873-runtime-20261026-01\\AminScatter.dlx",
+        "sha256": "616693be6623a8d7bf6db71335a670198b8aeca15886d30b541ae9bb760faca0"
+      },
+      "CyrusBrush.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\library0873-runtime-20261026-01\\CyrusBrush.dlx",
+        "sha256": "bedab716797866d2e00af0f26ffefad88c8930014c4d88fb72d7a2910854d6e3"
+      },
+      "CyrusBrushStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\library0873-runtime-20261026-01\\CyrusBrushStorage.dlh",
+        "sha256": "85771e21ddd4e6c7a3e846d1412a2ab242b9d46f5b366667caec11b4b41fc5a5"
+      },
+      "CyrusScatterEdit.dlm": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\library0873-runtime-20261026-01\\CyrusScatterEdit.dlm",
+        "sha256": "73f6e60cffa8f821101dae70c7ba3ce5def0595084a6fa6a7ae797004ce97a23"
+      }
+    },
+    "script_fingerprint": "e59632c4888424a5a4f696d97fd29d48935771a7e57114fa6d60540940d4df18"
+  },
+  "checks": {
+    "version": "0.87.3",
+    "root_override_used": false,
+    "missing_config_fallback_open": true,
+    "normal_config_open_and_persistence": true,
+    "invalid_root_preserves_preference": true,
+    "input_scene_sha256": "5ceb835c0f0537bb651ee7a1f3a78be322beb930a46bce94d382e4fbc81b0c63",
+    "interaction_scene": {
+      "affected": 279,
+      "compute_participants": 4,
+      "coverage_queries": 35928,
+      "covered": 0,
+      "error": "",
+      "failures": 0,
+      "fit_ms": 117.1611,
+      "fitted_guides": 2188,
+      "generation": 1,
+      "hidden_roots": 5370,
+      "hinge_fits": 2188,
+      "host_runtime_reservation_bytes": 2972112,
+      "index_ms": 1.8958,
+      "index_payload_bytes": 798536,
+      "iterations": 0,
+      "layout_payload_bytes": 572796,
+      "obstacles": 2,
+      "plants": 3650,
+      "pose_payload_bytes": 1690072,
+      "posed": 99,
+      "preview_ms": 0.0023,
+      "queries": 143324,
+      "query_ms": 0.0412,
+      "restored": 0,
+      "reused_poses": 0,
+      "reuses": 0,
+      "separation_queries": 279,
+      "thread_launch_fallback": false,
+      "total_ms": 117.2127,
+      "updates": 1
+    },
+    "artist_config_unchanged": true,
+    "status": "pass",
+    "physical_button_receipt": "physical-button.json"
+  },
+  "physical_button": {
+    "status": "pass",
+    "physical_recipes_button": true,
+    "notice": "",
+    "cards": 96,
+    "root_override_used": false,
+    "epoch": 1,
+    "builds": 1,
+    "pending_amount": 209,
+    "published_flowers": 71
+  },
+  "native_tests": 59,
+  "python_tests": 573,
+  "artist_ini_unchanged": true,
+  "trial_scene_unchanged": true,
+  "scope": "B39 only; root fitting B40 on hold. Process-local LOCALAPPDATA and installed-binding managed fallback redirected to owned fixtures, never CyrusSharedLibraryRootOverride. No artist installation/restart or older-host execution.",
+  "host_receipt": "build\\library0873-20261026-01\\host-01\\receipt.json",
+  "owned_host_closed": true
+}

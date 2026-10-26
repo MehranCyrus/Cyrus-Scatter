@@ -1,0 +1,408 @@
+{
+  "schema": "cyrus.evaluation/1",
+  "dataset_kind": "challenge",
+  "review_status": "Agent-authored after source inspection; development regression, not holdout.",
+  "scope": "Current Scatter installation/licensing/library and standalone Physics Brush; keep old suites unchanged.",
+  "queries": [
+    {
+      "id": "WF-INSTALL",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Which Max versions does the current 0.86.2 installer support?",
+      "mode": "keyword",
+      "information_need": "Which Max versions does the current 0.86.2 installer support?",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Which Max versions does the current 0.86.2 installer support?",
+      "required_evidence": [
+        {
+          "id": "WF-INSTALL-e1",
+          "alternatives": [
+            {
+              "path": "docs/Max_2027_Installation.md",
+              "sha256": "5fc70adfd0ecb4143d806c23f68408d6d1fda120b905809b18502e660e489fc1",
+              "start_line": 109,
+              "end_line": 109
+            }
+          ],
+          "canonical_paths": [
+            "docs/Max_2027_Installation.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-PATHS",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Where does the compact installer keep its immutable runtime and personal recipes?",
+      "mode": "keyword",
+      "information_need": "Where does the compact installer keep its immutable runtime and personal recipes?",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Where does the compact installer keep its immutable runtime and personal recipes?",
+      "required_evidence": [
+        {
+          "id": "WF-PATHS-e1",
+          "alternatives": [
+            {
+              "path": "docs/Max_2027_Installation.md",
+              "sha256": "5fc70adfd0ecb4143d806c23f68408d6d1fda120b905809b18502e660e489fc1",
+              "start_line": 113,
+              "end_line": 113
+            }
+          ],
+          "canonical_paths": [
+            "docs/Max_2027_Installation.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-OWNER",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "How do I open the owner license generator and generate a license from a teammate JSON request?",
+      "mode": "keyword",
+      "information_need": "How do I open the owner license generator and generate a license from a teammate JSON request?",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "How do I open the owner license generator and generate a license from a teammate JSON request?",
+      "required_evidence": [
+        {
+          "id": "WF-OWNER-e1",
+          "alternatives": [
+            {
+              "path": "tools/licensing/README.md",
+              "sha256": "d88a43f047397f5a07cfc03499cb93fcbbee3dcdedfd844b710e11cd7406a3c0",
+              "start_line": 9,
+              "end_line": 12
+            }
+          ],
+          "canonical_paths": [
+            "tools/licensing/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-LICENSE",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Does importing a license later move the thirty day deadline?",
+      "mode": "keyword",
+      "information_need": "Does importing a license later move the thirty day deadline?",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Does importing a license later move the thirty day deadline?",
+      "required_evidence": [
+        {
+          "id": "WF-LICENSE-e1",
+          "alternatives": [
+            {
+              "path": "tools/licensing/README.md",
+              "sha256": "d88a43f047397f5a07cfc03499cb93fcbbee3dcdedfd844b710e11cd7406a3c0",
+              "start_line": 3,
+              "end_line": 3
+            }
+          ],
+          "canonical_paths": [
+            "tools/licensing/README.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-LOAD",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Select terrain load library preset additive layers Undo required channels",
+      "mode": "keyword",
+      "information_need": "Select terrain load library preset additive layers Undo required channels",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Select terrain load library preset additive layers Undo required channels",
+      "required_evidence": [
+        {
+          "id": "WF-LOAD-e1",
+          "alternatives": [
+            {
+              "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+              "sha256": "2a6204ec9d4cfffd89bf675edbe38850451dd7c285d90679ec6751bbe6c2234a",
+              "start_line": 27,
+              "end_line": 27
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-PAINT",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Does saving a complete recipe reconstruct Data Channel and transfer Paint to arbitrary terrain?",
+      "mode": "keyword",
+      "information_need": "Does saving a complete recipe reconstruct Data Channel and transfer Paint to arbitrary terrain?",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Does saving a complete recipe reconstruct Data Channel and transfer Paint to arbitrary terrain?",
+      "required_evidence": [
+        {
+          "id": "WF-PAINT-e1",
+          "alternatives": [
+            {
+              "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+              "sha256": "2a6204ec9d4cfffd89bf675edbe38850451dd7c285d90679ec6751bbe6c2234a",
+              "start_line": 29,
+              "end_line": 29
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-PATTERN",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Choose pattern image map bundled Uniform Soft patches Wide bands",
+      "mode": "keyword",
+      "information_need": "Choose pattern image map bundled Uniform Soft patches Wide bands",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Choose pattern image map bundled Uniform Soft patches Wide bands",
+      "required_evidence": [
+        {
+          "id": "WF-PATTERN-e1",
+          "alternatives": [
+            {
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "f77b842b636862bd024f72f11d8f769698924061f70591916b428a22331cb9a7",
+              "start_line": 239,
+              "end_line": 241
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-BRUSH",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Physics Brush standalone current workflow Finish Freeze baked Editable Poly colliders Undo",
+      "mode": "keyword",
+      "information_need": "Physics Brush standalone current workflow Finish Freeze baked Editable Poly colliders Undo",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Physics Brush standalone current workflow Finish Freeze baked Editable Poly colliders Undo",
+      "required_evidence": [
+        {
+          "id": "WF-BRUSH-e1",
+          "alternatives": [
+            {
+              "path": "docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md",
+              "sha256": "cd7fb8a9911a9e28f6f7047f2f4121bcc69ba134f68f6765804102efe8656f2b",
+              "start_line": 26,
+              "end_line": 32
+            }
+          ],
+          "canonical_paths": [
+            "docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-COOK",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Physics Lab small baked triangles Jolt collider cook failure millimetre teapot 0.2.1",
+      "mode": "keyword",
+      "information_need": "Physics Lab small baked triangles Jolt collider cook failure millimetre teapot 0.2.1",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Physics Lab small baked triangles Jolt collider cook failure millimetre teapot 0.2.1",
+      "required_evidence": [
+        {
+          "id": "WF-COOK-e1",
+          "alternatives": [
+            {
+              "path": "docs/Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md",
+              "sha256": "75e9e92bd3d20b03241e4cd269f11855ef010a97f6f068741eae1a99e8f4ede8",
+              "start_line": 20,
+              "end_line": 25
+            }
+          ],
+          "canonical_paths": [
+            "docs/Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-BRUSH-SCOPE",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Is Physics Brush integrated into Cyrus Scatter?",
+      "mode": "keyword",
+      "information_need": "Is Physics Brush integrated into Cyrus Scatter?",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Is Physics Brush integrated into Cyrus Scatter?",
+      "required_evidence": [
+        {
+          "id": "WF-BRUSH-SCOPE-e1",
+          "alternatives": [
+            {
+              "path": "docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md",
+              "sha256": "b2c5ca6bd682192dc01bf0ab9e5c337e48aa457cd7cce08b6e7b5bde4d08d9a9",
+              "start_line": 3,
+              "end_line": 3
+            }
+          ],
+          "canonical_paths": [
+            "docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-BRUSH-BOUND",
+      "language": "en",
+      "category": "current-workflow",
+      "query": "Physics Brush finite Finish budget Freeze keeps current poses existing batches",
+      "mode": "keyword",
+      "information_need": "Physics Brush finite Finish budget Freeze keeps current poses existing batches",
+      "required_qualifiers": [
+        "Retain exact version, host and applicability limits; this maintenance adds no product qualification."
+      ],
+      "review_status": "Agent-authored development regression, not unseen holdout or human semantic acceptance",
+      "split": "development",
+      "answerable": true,
+      "reference_conclusion": "Physics Brush finite Finish budget Freeze keeps current poses existing batches",
+      "required_evidence": [
+        {
+          "id": "WF-BRUSH-BOUND-e1",
+          "alternatives": [
+            {
+              "path": "docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md",
+              "sha256": "cd7fb8a9911a9e28f6f7047f2f4121bcc69ba134f68f6765804102efe8656f2b",
+              "start_line": 46,
+              "end_line": 50
+            }
+          ],
+          "canonical_paths": [
+            "docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-ARRANGE",
+      "language": "en",
+      "category": "scope-limit",
+      "query": "CyrusArrange/",
+      "mode": "path",
+      "information_need": "No authority to infer excluded or unimplemented support.",
+      "required_qualifiers": [
+        "Related evidence is not proof of the requested support."
+      ],
+      "review_status": "Agent-authored development regression",
+      "split": "development",
+      "answerable": false,
+      "reference_conclusion": "Excluded or unsupported; no qualifying evidence in this corpus.",
+      "required_evidence": [],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "WF-UNSUPPORTED",
+      "language": "en",
+      "category": "scope-limit",
+      "query": "CyrusPhysicsLab GPU solver Max 2025 renderer certification",
+      "mode": "keyword",
+      "information_need": "No authority to infer excluded or unimplemented support.",
+      "required_qualifiers": [
+        "Related evidence is not proof of the requested support."
+      ],
+      "review_status": "Agent-authored development regression",
+      "split": "development",
+      "answerable": false,
+      "reference_conclusion": "Excluded or unsupported; no qualifying evidence in this corpus.",
+      "required_evidence": [],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    }
+  ],
+  "anchors": []
+}

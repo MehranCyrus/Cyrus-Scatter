@@ -1,10 +1,38 @@
 # Install and build Cyrus Scatter
 
+Current [0.87.3 three-host EXE](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) packages Max 2024, 2026 and 2027 separately; native checks do not establish older-host runtime acceptance. Save work, close selected Max versions, run the EXE and reopen.
+
+## Current 0.87.3 Library startup correction — Max 2027
+
+Run [CyrusScatter-0.87.3-Max2027.mzp](../dist/CyrusScatter-0.87.3-20261026/CyrusScatter-0.87.3-Max2027.mzp) through **Scripting > Run Script**, follow the result and restart Max. Existing schema-61 scenes and plant content are retained. [Cause, tests and limits](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md). This package updates Scatter for Max 2027 only; no artist installation or restart was performed.
+
+## Preceding 0.87.2 Interactions correction — Max 2027
+
+Run [CyrusScatter-0.87.2-Max2027.mzp](../dist/CyrusScatter-0.87.2-20261026-r2/CyrusScatter-0.87.2-Max2027.mzp) using **Scripting > Run Script**, follow the installer result, then restart Max before opening [the prepared trial copy](../dist/CyrusScatter-0.87.2-20261026-r2/Trials/Small_Test_Interaction_0.87.2.max). Save other work first. If an older installer helper is already loaded, restart before retrying. The package is Scatter-only; the existing library store, content and Analyzer remain independent. No artist installation or restart was performed. [Exact payload tests, units and limits](plans/scatter-interactions-garden-20261025/DELIVERY_0872.md). This successor uses schema 61; preserve original scenes. The first internal 0.87.2 package was withdrawn after a lazy-panel spinner error; only the **r2** path is delivered.
+
+## 0.87.1 shared-library delivery — Max 2024, 2026 and 2027
+
+Use the [three-host EXE](../dist/CyrusScatter-0.87.1-20261026/CyrusScatter-0.87.1-Setup.exe), or the matching [2024](../dist/CyrusScatter-0.87.1-20261026/CyrusScatter-0.87.1-Max2024.mzp), [2026](../dist/CyrusScatter-0.87.1-20261026/CyrusScatter-0.87.1-Max2026.mzp) or [2027 MZP](../dist/CyrusScatter-0.87.1-20261026/CyrusScatter-0.87.1-Max2027.mzp) through **Scripting > Run Script**. Save work and close target hosts for the EXE; restart the selected host after installation. A stale loaded installer helper may require restarting before retrying an MZP. The installer defaults to retaining the independent plant content; personal libraries and Analyzer remain independent. No artist profile was installed or restarted during qualification.
+
+The [delivery report](plans/preset-gallery-improvements/DELIVERY_0871.md) and [qualification manifest](plans/preset-gallery-improvements/QUALIFICATION_0871.json) bind the exact SDK, scripts, archive hashes, owned installer transactions and automatic-startup tests. The shared-library workflows are tested on each host, with default OCIO selected explicitly in owned Max 2024 scenes. This does not extend unrelated Interactions, Paint or independent-product historical qualifications.
+
+## Build-only 0.87.0 EXE — Max 2024, 2026 and 2027
+
+[Download the installer](../dist/CyrusScatter-0.87.0-20261025-Compatibility/CyrusScatter-0.87.0-Setup.exe). Save work, close the target Max versions, run the EXE, select versions and choose **Install / Update**, then reopen Max. [Build scope and hashes](plans/scatter-interactions-garden-20261025/INSTALLER_0870_COMPATIBILITY.md): 2024/2026 are newly compiled and untested; the 2027 archive is unchanged from r4. No new tests, host launches or installation were performed, as requested. Existing library content and the independent Analyzer installation are retained. This build-only delivery does not expand the prior Max 2027 runtime qualification.
+
+## Original Max 2027 r4 Interactions trial — 0.87.0
+
+Use [CyrusScatter-0.87.0-Max2027.mzp](../dist/CyrusScatter-0.87.0-20261025-r4/CyrusScatter-0.87.0-Max2027.mzp) through **Scripting > Run Script**, follow the installer result and restart Max. The [delivery report](plans/scatter-interactions-garden-20261025/DELIVERY_0870.md) pins the matched payload, archive checks, extracted-payload host tests and remaining qualification. Save work first. A different already loaded installer helper may require a restart before retrying.
+
+This is a Max 2027 Scatter-only trial with saved schema 60. It reuses your existing library and leaves the independent Analyzer installation in place. No new older-host package or combined EXE is included. No artist installation or restart was performed. Preserve original scenes and use the supplied trial copies. The compatibility routes below retain their historical versions and scope.
+
+## Historical 0.86.9.2 compatibility delivery
+
 The **0.86.9.2 / schema 59 delivery** contains distinct matched **Max 2024, 2026 and 2027** Scatter payloads and **Surface Analyzer 0.14.2** in one EXE. **This patch is runtime-tested only in Max 2027. Max 2024/2026 were built without running native tests or launching those hosts, as requested.** The [delivery report](plans/edit-instances/DELIVERY_08692.md) records density UI, native column lifecycle, physical Edit movement, persistence and exact payload checks. The [0.86.9 report](plans/edit-instances/DELIVERY_0869.md) retains its original three-host installer/startup qualification; it does not qualify new bytes. Original Paint and content revision 0.86.7 are preserved. Keep original scenes and save upgraded copies: source-aware Edit storage requires 0.86.9 or later.
 
 The historical [0.86.8.6 combined delivery](plans/combined-installer/DELIVERY_08686.md) retains its matched Max 2024, 2026 and 2027 packages and Analyzer 0.14.1 qualification. Its files remain in `dist/CyrusScatter-0.86.8.6-20261023/`; earlier packages keep their original host scope.
 
-## Install
+## Historical combined installation route
 
 The installer is [CyrusScatter-0.86.9.2-Setup.exe](../dist/CyrusScatter-0.86.9.2-20261023/CyrusScatter-0.86.9.2-Setup.exe).
 Save work and close the target Max versions, select their cards, then click

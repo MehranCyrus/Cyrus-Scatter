@@ -31,15 +31,20 @@ std::filesystem::path writePackage(const std::filesystem::path& output,
 // Reads and verifies every declared byte/hash at an explicit import boundary.
 // Passive gallery listing uses the contained recipe metadata alone.
 Json readPackage(const std::filesystem::path& directory,const Checkpoint& checkpoint={});
+// One normalized source and its exact dependencies. No scene recipe, receiver,
+// unrelated source, authored placement settings or executable content.
+Json readModelPackage(const std::filesystem::path& directory,const Checkpoint& checkpoint={});
 // Detached import snapshot. No SDK pointers, file handles or MAXScript values.
 // Native payload storage is bounded separately from host/Undo allocations.
 struct PreparedPackage {
     Json metadata,document;
     std::map<std::string,std::shared_ptr<const Mesh>> meshes;
     std::map<std::string,std::filesystem::path> bitmapPaths;
+    std::map<std::string,std::filesystem::path> bitmapMapPaths;
     std::uint64_t payloadBytes=0;
 };
 PreparedPackage preparePackage(const std::filesystem::path& directory,const Checkpoint& checkpoint={},const std::filesystem::path& bitmapDirectory={});
+PreparedPackage prepareModelPackage(const std::filesystem::path& directory,const Checkpoint& checkpoint={},const std::filesystem::path& bitmapDirectory={});
 Json fileInfo(const std::filesystem::path& path,bool png);
 Json imageFileInfo(const std::filesystem::path& path);
 }

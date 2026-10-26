@@ -1,3 +1,4 @@
+#include "interactions_host.h" // JSON must precede MAXScript's is_string macro.
 #include <max.h>
 #include "native_fault_qualification.h"
 #include <maxscript/maxscript.h>
@@ -62,6 +63,7 @@ public:
     std::size_t faceCount=0;
     int size=0;
     int geometryMode=0;
+    std::uint32_t pointsPerInstance=0;
     bool radiusDetails=false;
     AminPointCache() { cyrus::owned::fault(8);tag=class_tag(AminPointCache); }
     classof_methods(AminPointCache,Value);
@@ -135,7 +137,7 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
         ++size;
     }
     auto snapshot=std::make_shared<cyrus::PointSnapshot>(std::move(groups));
-    auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->palette=palette;result->size=size;
+    auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->palette=palette;result->size=size;result->pointsPerInstance=pointsPerPlant;
     return result;
 }
 
@@ -183,6 +185,7 @@ Value* cyrusRecolorPreview_cf(Value** args,int count) {
     auto result=std::make_unique<AminPointCache>();
     result->pointSnapshot=cache->pointSnapshot;result->meshSnapshot=cache->meshSnapshot;result->palette=std::move(palette);
     result->appearance=cache->appearance;
+    result->pointsPerInstance=cache->pointsPerInstance;
     result->size=cache->size;result->faceCount=cache->faceCount;result->geometryMode=cache->geometryMode;
     return result.release();
 }
@@ -265,13 +268,13 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
     std::size_t remaining=2048,submitted=0;
     for(std::size_t source=0;source<cache->geometryGroups().size() && remaining;++source) {
         const auto& group=cache->geometryGroups()[source];
-        const auto shown=std::min(remaining,group.instances.size());
-        const auto stride=cyrus::viewportStride(group.instances.size());
+        const auto shown=std::min(remaining,group.instanceCount());
+        const auto stride=cyrus::viewportStride(group.instanceCount());
         gw->startMarkers();
         for(std::size_t k=0;k<shown;++k) {
-            const auto i=k*stride%group.instances.size();
-            gw->setColor(LINE_COLOR,solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color));
-            auto marker=group.instances[i].GetTrans();gw->marker(&marker,PLUS_SIGN_MRKR);
+            const auto i=k*stride%group.instanceCount();
+            gw->setColor(LINE_COLOR,solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandAt(i),group.color));
+            auto marker=group.instanceAt(i).GetTrans();gw->marker(&marker,PLUS_SIGN_MRKR);
         }
         gw->endMarkers();remaining-=shown;submitted+=shown;
     }
@@ -347,6 +350,7 @@ std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesVa
         layers.push_back({cache->pointSnapshot,style->data[0]->to_bool()!=FALSE,style->data[1]->to_point3()/255.f,cache->meshSnapshot,cache->palette});
         layers.back().appearance=cache->appearance;
         layers.back().geometryMode=cache->geometryMode;
+        layers.back().pointsPerInstance=cache->pointsPerInstance;
         if(style->size==8)for(int setting=0;setting<6;++setting) {
             const auto limit=style->data[setting+2]->to_int64();
             if(limit<0 || limit>2147483647)throw RuntimeError(_T("Viewport limits must be nonnegative integers"));
@@ -362,6 +366,30 @@ Value* cyrusRetainedPublish_cf(Value** args,int count) {
     check_arg_count(cyrusRetainedPublish,4,count);
     auto layers=retainedLayers(args[2],args[3]);
     return cyrus::publishPoints(args[0]->to_node(),args[1]->to_node(),std::move(layers)) ? &true_value : &false_value;
+}
+def_visible_primitive(cyrusInteractionRetainedPublish,"cyrusInteractionRetainedPublish");
+Value* cyrusInteractionRetainedPublish_cf(Value** a,int count){
+    check_arg_count(cyrusInteractionRetainedPublish,6,count);
+    auto runtime=cyrus::interactionRuntime(a[2]);auto* helper=a[0]->to_node();auto* controller=a[1]->to_node();
+    if(!controller||runtime->controller!=Animatable::GetHandleByAnim(controller))throw RuntimeError(_T("Interaction preview belongs to another Scatter owner"));
+    type_check(a[5],Array,_T("interaction preview mapping"));auto* mapping=static_cast<Array*>(a[5]);auto layers=retainedLayers(a[3],a[4]);if(layers.size()!=std::size_t(mapping->size))throw RuntimeError(_T("Interaction preview mapping differs"));
+    std::vector<int> indices;for(int i=0;i<mapping->size;++i)indices.push_back(mapping->data[i]->to_int()-1);
+    auto previousRuntime=cyrus::interactionRuntime(runtime->controller);bool registered=false;
+    try{
+        auto modified=cyrus::interactionPreview(*runtime,*runtime->current,layers,indices);
+        const auto helperHandle=Animatable::GetHandleByAnim(helper);const auto ownerHandle=runtime->controller;
+        decltype(runtime->publish) nextPublish=[weak=std::weak_ptr<cyrus::InteractionRuntime>(runtime),helperHandle,ownerHandle](const auto& snapshot){
+            auto data=weak.lock();auto* h=Animatable::GetAnimByHandle(helperHandle);auto* n=Animatable::GetAnimByHandle(ownerHandle);
+            if(!data||!h||!n||h->SuperClassID()!=BASENODE_CLASS_ID||n->SuperClassID()!=BASENODE_CLASS_ID)throw std::runtime_error("Interaction preview owner was removed");
+            auto prepared=cyrus::interactionPreview(*data,*snapshot,data->baseLayers,data->previewLayers);
+            if(!cyrus::publishPoints(static_cast<INode*>(h),static_cast<INode*>(n),std::move(prepared)))throw std::runtime_error("Interaction viewport successor was not admitted");
+        };
+        // Feedback capture must see this same prospective generation. All
+        // allocations, including callback/registry storage, precede publication.
+        cyrus::interactionRegister(runtime);registered=true;
+        cyrus::interactionRenderCommit(runtime,runtime->current,[&]{if(!cyrus::publishPoints(helper,controller,std::move(modified)))throw std::runtime_error("Interaction viewport successor was not admitted");});
+        runtime->baseLayers.swap(layers);runtime->previewLayers.swap(indices);runtime->publish.swap(nextPublish);return &true_value;
+    }catch(const std::exception& e){if(registered){if(previousRuntime)cyrus::interactionRegister(previousRuntime);else cyrus::interactionForget(runtime->controller,runtime);}const std::string s=e.what();throw RuntimeError(std::wstring(s.begin(),s.end()).c_str());}
 }
 def_visible_primitive(cyrusRetainedMatches,"cyrusRetainedMatches");
 Value* cyrusRetainedMatches_cf(Value** args,int count) {
@@ -387,12 +415,12 @@ Value* cyrusPreviewTriangles_cf(Value** args,int count) {
     };
     for(std::size_t source=0;source<cache->geometryGroups().size();++source) {
         const auto& group=cache->geometryGroups()[source];
-        for(std::size_t i=0;i<group.instances.size();++i)for(const auto& face:group.faces) {
+        for(std::size_t i=0;i<group.instanceCount();++i)for(const auto& face:group.faceData()) {
             if(vl.result->size>=limit) goto complete;
-            const auto& tm=group.instances[i];
+            const auto& tm=group.instanceAt(i);
             auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);
             const auto shade=.35f+.65f*std::abs(DotProd(Normalize(CrossProd(a,b)),Normalize(Point3(.3f,-.5f,.8f))));
-            append({face[0]*tm,face[1]*tm,face[2]*tm},shade,cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color));
+            append({face[0]*tm,face[1]*tm,face[2]*tm},shade,cyrus::previewColor(cache->palette.get(),source,group.bandAt(i),group.color));
         }
     }
 complete:

@@ -2,8 +2,8 @@
 // modes, but CoronaNormal also uses the retained legacy gamma annotation.
 // Supply both the explicit colour-space request and input annotation BEFORE
 // loading. Never patch an existing shared BitmapStorage or change scene CM.
-def_visible_primitive(cyrusAssetOpenImage,"cyrusAssetOpenImage");
-Value* cyrusAssetOpenImage_cf(Value** a,int n){check_arg_count(cyrusAssetOpenImage,3,n);return recipeAPI([&]()->Value*{
+namespace {
+Value* openAssetImage(Value** a,bool sharedStatic){
     type_check(a[0],String,_T("asset image filename"));
     const auto spaceUTF8=recipeUTF8(a[1],160);
     if(spaceUTF8.empty())throw RuntimeError(_T("Portable image needs an explicit colour space"));
@@ -25,7 +25,9 @@ Value* cyrusAssetOpenImage_cf(Value** a,int n){check_arg_count(cyrusAssetOpenIma
     // Full bounded codec verification precedes the SDK decoder. Aggregate
     // map-instance/physical/commit admission belongs to the caller's complete
     // capture/staging plan, not a claim based on this one bitmap allocation.
-    const auto file=cyrus::assets::imageFileInfo(path);
+    auto extension=path.extension().wstring();std::transform(extension.begin(),extension.end(),extension.begin(),[](wchar_t c){return c>=L'A'&&c<=L'Z'?c+(L'a'-L'A'):c;});
+    const auto file=sharedStatic&&extension==L".png"?cyrus::assets::fileInfo(path,true):cyrus::assets::imageFileInfo(path);
+    if(sharedStatic&&(file.at(2).get<int>()>4096||file.at(3).get<int>()>4096))throw RuntimeError(_T("Shared static bitmaps exceed the 4096 pixel edge limit"));
     const int width=file.at(2).get<int>(),height=file.at(3).get<int>();
     BitmapInfo info;info.SetName(path.c_str());info.SetCurrentFrame(0);
     if(TheManager->GetImageInfo(&info)!=BMMRES_SUCCESS||info.Width()!=width||info.Height()!=height||info.NumberFrames()!=1)
@@ -54,6 +56,17 @@ Value* cyrusAssetOpenImage_cf(Value** a,int n){check_arg_count(cyrusAssetOpenIma
     auto* result=new MAXBitMap(info,bitmap);owned.release();
     result->flags|=BM_READONLY|BM_FILEBACKED;
     return result;
+}
+}
+def_visible_primitive(cyrusAssetOpenImage,"cyrusAssetOpenImage");
+Value* cyrusAssetOpenImage_cf(Value** a,int n){check_arg_count(cyrusAssetOpenImage,3,n);return recipeAPI([&]()->Value*{return openAssetImage(a,false);});}
+def_visible_primitive(cyrusAssetOpenStaticImage,"cyrusAssetOpenStaticImage");
+Value* cyrusAssetOpenStaticImage_cf(Value** a,int n){check_arg_count(cyrusAssetOpenStaticImage,3,n);return recipeAPI([&]()->Value*{return openAssetImage(a,true);});}
+def_visible_primitive(cyrusAssetStaticImageInfo,"cyrusAssetStaticImageInfo");
+Value* cyrusAssetStaticImageInfo_cf(Value** a,int n){check_arg_count(cyrusAssetStaticImageInfo,1,n);return recipeAPI([&]()->Value*{
+    type_check(a[0],String,_T("static image filename"));std::filesystem::path path(a[0]->to_string());auto extension=path.extension().wstring();std::transform(extension.begin(),extension.end(),extension.begin(),[](wchar_t c){return c>=L'A'&&c<=L'Z'?c+(L'a'-L'A'):c;});
+    if(extension!=L".png"&&extension!=L".jpg"&&extension!=L".jpeg")throw RuntimeError(_T("Shared static images require PNG or JPEG"));
+    auto info=extension==L".png"?cyrus::assets::fileInfo(path,true):cyrus::assets::imageFileInfo(path);if(info.at(2).get<int>()>4096||info.at(3).get<int>()>4096)throw RuntimeError(_T("Shared static bitmap edge exceeds 4096"));return recipeValue(info);
 });}
 
 // Fixed class cache evaluation only. The bounded graph adapter performs image

@@ -1,7 +1,7 @@
 {
-  "version": "0.86.9.2",
-  "date": "23 October 2026",
-  "isoDate": "2026-10-23",
+  "version": "0.87.3",
+  "date": "26 October 2026",
+  "isoDate": "2026-10-26",
   "channel": "User-test build",
   "platform": "Windows",
   "maxYears": [
@@ -16,10 +16,10 @@
   },
   "installer": {
     "label": "Download Windows EXE",
-    "filename": "CyrusScatter-0.86.9.2-Setup.exe",
-    "path": "downloads/CyrusScatter-0.86.9.2-Setup.exe",
-    "bytes": 6440960,
-    "sha256": "d93c1dcd1353d0c1794aa2d5fae6706066c88b1df8a6a48b0a20fc22a3c9b50c"
+    "filename": "CyrusScatter-0.87.3-Setup.exe",
+    "path": "downloads/CyrusScatter-0.87.3-Setup.exe",
+    "bytes": 7636480,
+    "sha256": "df9328324815afd7bfe00ef24f5905e5d072d822efdcad4f5f5a7ff445ac3ddf"
   },
   "content": {
     "version": "0.86.7",

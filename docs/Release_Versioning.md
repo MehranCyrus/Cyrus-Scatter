@@ -1,14 +1,20 @@
 # Release and saved-data versioning
 
+**Current 26 October correction: 0.87.3, Max 2027 only.** A patch fixes B39 default Library settings read/write without changing schema 61, Interactions 2, recipe/numeric/Edit or independent product versions. [Exact delivery and remaining scope](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md).
+
+**26 October user-selected successor: 0.87.2, Max 2027 only.** The user explicitly chose this patch label for the SI preparation repair, rooted flower extension and separate tree collider feature. Saved schema advances to 61; native Interactions capability is 2. Recipe 8, numeric 3, placement/Brush 2/2, Edit 2 and independent product versions are retained. The preceding 0.87.1 three-host qualification remains historical and does not qualify new 0.87.2 bytes. [Exact delivery](plans/scatter-interactions-garden-20261025/DELIVERY_0872.md).
+
+**Preceding 26 October user-selected delivery: 0.87.1.** The shared personal library is a substantial feature that would ordinarily justify a minor step; the requested label takes precedence. Preserve schema 60, recipe 8, numeric 3, placement/Brush 2/2 and Edit 2. Shared-store/catalog/bundle/model-package schemas are 1; shared static graph is 4. Analyzer 0.14.2 and installed content 0.86.7 remain independent. [Exact delivery and qualification](plans/preset-gallery-improvements/DELIVERY_0871.md).
+
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.86.9.2 | Procedural map previews/drop targets, restored native columns and live Edit gizmo feedback |
-| Scatter native/package | 0.86.9.2 / Max 2024, 2026, 2027 | [Delivery and scoped qualification](plans/edit-instances/DELIVERY_08692.md); Max 2027 tested, older hosts built and untested; historical receipts retain their identities |
+| Scatter UI | 0.87.3 | Default Library startup/settings correction; Interactions and shared library retained |
+| Scatter native/package | 0.87.3 / Max 2027 | [Delivery and scoped qualification](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md); historical 0.87.1/0.87.2 receipts retain their scope |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
 | Native Edit capability / storage | 2 / 2 | Source lineage and inactive history; supported legacy reader and explicit old-reader rejection of upgraded scenes |
 | Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
-| Library / portable-package capability | 4 / 3 candidate | Graph 3 adds closed renderer/image profiles; graph 1/2 remain strict; qualification pending. Package manifest remains 1 |
-| Saved MAXScript schema | 59 | Appended source-clearance block; explicit Undoable schema-58 upgrade; earlier schemas remain unsupported |
+| Library / portable-package capability | 4 / 3; shared-store 1 | Closed renderer graph 3 and shared static graph 4; standalone model-package 1; lower type/profile bounds remain |
+| Saved MAXScript schema | 61 | SI minimums and source-bound collider references; explicit schema-60 preparation repair, schema-59 defaults and Undoable schema-58 upgrade |
 | Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
 | Surface Analyzer | 0.14.2 | Independent installer safety correction; current matched builds tested in Max 2027 only. Three-host 0.86.9 receipts retain their original scope |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |
@@ -24,6 +30,27 @@ the [correction report](plans/source-clearance/DELIVERY_08682.md) records the
 matched build and host evidence separately from prior material-performance work.
 
 ## Choosing the next version
+
+**26 October 2026 Library startup correction: 0.87.3.** The user authorizes
+repairing the normal Library startup failure and leaves exposed-root collider
+work on hold. Replace the two undefined environment lookups in the existing
+settings read/write paths; preserve source/proxy data, scene schema 61,
+Interactions capability 2, shared-store 1, recipe 8 and all independent product
+versions. This is a patch to a delivered build. Qualify the default-settings
+Recipes button, folder persistence and a retained interaction-scene smoke in
+Max 2027, then provide a source-matched MZP. B39 owns the defect and acceptance;
+B40 remains an unimplemented investigation.
+
+**26 October 2026 user-selected successor: 0.87.2.** The user explicitly selects
+this label for physical-unit preparation repair, the supplied flower's rooted
+preparation, independent lightweight trunk/custom colliders retaining full visual
+trees, Max 2027 testing and a saved trial scene. Saved schema 61 adds explicit SI
+minimums and source-to-proxy node references; preserve originals and review legacy
+preparation settings. The [implementation scope](plans/scatter-interactions-garden-20261025/IMPLEMENTATION_0872.md)
+separates the extension from qualification. This is a substantive contact extension
+under the user's chosen patch label. Shared-library, recipe 8, Edit 2, independent
+Analyzer/content and older-host historical scope remain separate.
+
 
 **23 October 2026 correction: 0.86.9.2.** The user requests continued testing and
 repair of the 0.86.9.1 Modify-panel crash, with the additional six-column object

@@ -139,7 +139,25 @@ fn CyrusAssetShaderDecode value type = (
 -- SI is serialized as double; host parameter blocks store float32. Compare
 -- decoded host values exactly, without a second SI rounding or a new epsilon.
 fn CyrusAssetShaderReadbackEqual actual encoded type = (
+    if findString type "-array"!=undefined and type!="empty-array" and type!="null-array" do (
+        local values=actual as array,element=substring type 1 (type.count-6)
+        if values.count!=encoded.count do return false
+        for i=1 to values.count where not (CyrusAssetShaderReadbackEqual values[i] encoded[i] element) do return false
+        return true
+    )
     case type of (
+        -- Canonical JSON may spell a typed numeric field as 1 rather than 1.0.
+        -- Compare its exact decoded SDK representation, preserving native type
+        -- validation and avoiding an integer-vs-double serialization accident.
+        "number": ((actual as float)==(encoded as float))
+        "color": (
+            local expected=CyrusAssetShaderDecode encoded type
+            actual.r==expected.r and actual.g==expected.g and actual.b==expected.b
+        )
+        "point3": (
+            local expected=CyrusAssetShaderDecode encoded type
+            actual.x==expected.x and actual.y==expected.y and actual.z==expected.z
+        )
         "distance": ((actual as float)==((CyrusAssetShaderDecode encoded type) as float))
         "point3-distance": (
             local expected=CyrusAssetShaderDecode encoded type

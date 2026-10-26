@@ -1,0 +1,1579 @@
+{
+  "schema": 1,
+  "reviewed_at_utc": "2026-10-24T15:21:48.028377+00:00",
+  "owner": "B",
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "verdict": "APPROVE for bounded static-guide prototype integration; visible-mesh, resource and host acceptance remain pending",
+  "confidence": "Medium: source review, unchanged Windows unit build, and real A+B guide-level integration; no C/host or hard aggregate-memory acceptance",
+  "input_archive": {
+    "path": "docs/research/B/CyrusVegetationCore_v1_B_fitter.zip",
+    "bytes": 100854,
+    "sha256": "469ca0437df1ef5075bbd3ab3da2e7c4dce0c129bd393efe48a21c450cde7c39"
+  },
+  "intake": {
+    "outcome": "pass",
+    "archive_files": 35,
+    "manifest_files_hashed": 34,
+    "frozen_files_verified": 4,
+    "external_manifest_identical": true,
+    "archive_sha256": "469ca0437df1ef5075bbd3ab3da2e7c4dce0c129bd393efe48a21c450cde7c39",
+    "isolated_starter": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-B-review-20261024-01\\starter",
+    "source_edits": "None; immutable intake copy",
+    "branch": "codex/workflow-0.75",
+    "head": "588abff0ce211d7dc63798b8c5310631895465c7"
+  },
+  "frozen_files": [
+    {
+      "path": "SHARED-CONTRACT.md",
+      "bytes": 12222,
+      "sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80"
+    },
+    {
+      "path": "starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "bytes": 8709,
+      "sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+    },
+    {
+      "path": "starter/CMakeLists.txt",
+      "bytes": 594,
+      "sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086"
+    },
+    {
+      "path": "fixtures/catalog.json",
+      "bytes": 20047,
+      "sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f"
+    }
+  ],
+  "source_edits": "None to A, B, shared starter or frozen files. Coordinator-only wrapper and integration fixtures live under ignored build/.",
+  "toolchain": {
+    "os": "Windows",
+    "compiler": "MSVC 19.38.33145.0 / installed tools 14.38.33130",
+    "sdk": "Windows SDK 10.0.19041.0",
+    "configuration": "Release",
+    "generator": "Ninja",
+    "max_sdk_or_host_used": false
+  },
+  "standalone": {
+    "ctests_passed": 19,
+    "records": [
+      {
+        "ctest_id": 1,
+        "record": {
+          "fixture": "F01_empty",
+          "status": 0,
+          "iterations": 0,
+          "queries": 9,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 43880,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 1,
+        "record": {
+          "fixture": "clear_nonempty",
+          "status": 0,
+          "iterations": 0,
+          "queries": 9,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 43904,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 1,
+        "record": {
+          "fixture": "clear_curved_rest",
+          "status": 0,
+          "iterations": 0,
+          "queries": 9,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 43880,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 2,
+        "record": {
+          "fixture": "F02_one_sphere",
+          "status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "root_error": 0,
+          "relative_length_error": 1.2749532114497697e-06,
+          "penetration": 0,
+          "root_angle": 0.5187866125334111,
+          "rest_objective": 0.0007753369856767347,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 3,
+        "record": {
+          "fixture": "catalog_authored_positive_control",
+          "root_clearance": 0.0128427,
+          "fitter_executed": false
+        }
+      },
+      {
+        "ctest_id": 4,
+        "record": {
+          "fixture": "F03_root_inside",
+          "status": 2,
+          "iterations": 0,
+          "queries": 1,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43904,
+          "issues": [
+            "RootEnvelopeInside",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 5,
+        "record": {
+          "fixture": "F04_single_segment_fit",
+          "status": 0,
+          "iterations": 12,
+          "queries": 26,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 5.301425792109127e-08,
+          "root_angle": 0.529381934610799,
+          "rest_objective": 0.021900902662731696,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 13648,
+          "analytic_span_penetration": 5.301425787251901e-08,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 6,
+        "record": {
+          "fixture": "F05_invalid_width",
+          "status": 3,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": [
+            "Envelope",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 6,
+        "record": {
+          "fixture": "admitted_full_width",
+          "status": 0,
+          "iterations": 4,
+          "queries": 10,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 5.0630447737398665e-06,
+          "root_angle": 0.16145170673333337,
+          "rest_objective": 8.323225679047573e-05,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 13648,
+          "analytic_span_penetration": 5.0630447736566e-06,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 7,
+        "record": {
+          "fixture": "generation_changed_during_query",
+          "status": 3,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43880,
+          "issues": [
+            "GenerationMismatch",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 8,
+        "record": {
+          "fixture": "F06_two_spheres",
+          "status": 0,
+          "iterations": 9,
+          "queries": 172,
+          "root_error": 0,
+          "relative_length_error": 6.296574456998716e-05,
+          "penetration": 0,
+          "root_angle": 0.08356410539086982,
+          "rest_objective": 0.00040682765304589206,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 48456,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 8,
+        "record": {
+          "fixture": "F06_two_rotated_boxes",
+          "status": 0,
+          "iterations": 16,
+          "queries": 298,
+          "root_error": 0,
+          "relative_length_error": 8.092814255555858e-05,
+          "penetration": 4.48700847818697e-06,
+          "root_angle": 0.33675569074608697,
+          "rest_objective": 0.0005350185230598728,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 48456,
+          "analytic_span_penetration": 4.4870084781670205e-06,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 8,
+        "record": {
+          "fixture": "F06_fixed_span_gap_conflict",
+          "status": 2,
+          "iterations": 1,
+          "queries": 5,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0.005000000000000011,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 2,
+          "memory_accounting_bytes": 18104,
+          "issues": [
+            "LocalImmovableContact"
+          ]
+        }
+      },
+      {
+        "ctest_id": 9,
+        "record": {
+          "fixture": "cancel_during_queries",
+          "status": 6,
+          "iterations": 0,
+          "queries": 5,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "Cancelled",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "fixture": "query_budget",
+          "status": 5,
+          "iterations": 0,
+          "queries": 1,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43904,
+          "issues": [
+            "QueryBudget",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "fixture": "iteration_budget",
+          "status": 5,
+          "iterations": 1,
+          "queries": 25,
+          "root_error": 0,
+          "relative_length_error": 4.780873916532258e-06,
+          "penetration": 0.06999005743596697,
+          "root_angle": 0.00011306819064508634,
+          "rest_objective": 7.581716862576027e-11,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 6,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "IterationBudget"
+          ]
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "fixture": "memory_budget",
+          "status": 5,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "fixture": "contact_budget",
+          "status": 5,
+          "iterations": 0,
+          "queries": 3,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 12376,
+          "issues": [
+            "ContactBudget",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "fixture": "obstacle_budget",
+          "status": 5,
+          "iterations": 0,
+          "queries": 1,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43680,
+          "issues": [
+            "ObstacleBudget",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "fixture": "returned_capacity_budget",
+          "status": 5,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 1026920,
+          "issues": [
+            "MemoryBudget",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_0",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "IncompleteQuery",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_1",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "BackendAmbiguous",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_2",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "UnqualifiedWitness",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_3",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "UnqualifiedWitness",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_4",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "UnqualifiedWitness",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_5",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "WitnessConsistency",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_6",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "UnqualifiedWitness",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_7",
+          "status": 1,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 44000,
+          "issues": [
+            "UnqualifiedWitness",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_9",
+          "status": 1,
+          "iterations": 0,
+          "queries": 1,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43904,
+          "issues": [
+            "BackendAmbiguous",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_10",
+          "status": 1,
+          "iterations": 0,
+          "queries": 1,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43904,
+          "issues": [
+            "IncompleteQuery",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_11",
+          "status": 7,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43904,
+          "issues": [
+            "AllocationFailure",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "fault_12",
+          "status": 8,
+          "iterations": 0,
+          "queries": 2,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": null,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 43904,
+          "issues": [
+            "Exception",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 12,
+        "record": {
+          "fixture": "fixed_first_span_zero_denominator",
+          "status": 2,
+          "iterations": 1,
+          "queries": 11,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0.025000000000000015,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 1,
+          "memory_accounting_bytes": 30992,
+          "issues": [
+            "LocalImmovableContact"
+          ]
+        }
+      },
+      {
+        "ctest_id": 12,
+        "record": {
+          "fixture": "synthetic_tiny_positive_mobility",
+          "status": 5,
+          "iterations": 2,
+          "queries": 6,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0.02,
+          "root_angle": 0.38389383419446066,
+          "rest_objective": 7.2786703753023544e-06,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 1,
+          "memory_accounting_bytes": 13648,
+          "issues": [
+            "IterationBudget"
+          ]
+        }
+      },
+      {
+        "ctest_id": 13,
+        "record": {
+          "fixture": "frame_reference",
+          "status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "root_error": 0,
+          "relative_length_error": 1.2749532114497697e-06,
+          "penetration": 0,
+          "root_angle": 0.5187866125334111,
+          "rest_objective": 0.0007753369856767347,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 13,
+        "record": {
+          "fixture": "quaternion_signs",
+          "status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "root_error": 0,
+          "relative_length_error": 1.2749532114497697e-06,
+          "penetration": 0,
+          "root_angle": 0.5187866125334111,
+          "rest_objective": 0.0007753369856767347,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 13,
+        "record": {
+          "fixture": "frame_incremental_rest_twist",
+          "status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "root_error": 0,
+          "relative_length_error": 1.2749532114497697e-06,
+          "penetration": 0,
+          "root_angle": 0.5187866125334111,
+          "rest_objective": 0.0007753369856767347,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 14,
+        "record": {
+          "fixture": "repeat_first",
+          "status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "root_error": 0,
+          "relative_length_error": 1.2749532114497697e-06,
+          "penetration": 0,
+          "root_angle": 0.5187866125334111,
+          "rest_objective": 0.0007753369856767347,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 14,
+        "record": {
+          "fixture": "repeat_second",
+          "status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "root_error": 0,
+          "relative_length_error": 1.2749532114497697e-06,
+          "penetration": 0,
+          "root_angle": 0.5187866125334111,
+          "rest_objective": 0.0007753369856767347,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 14,
+        "record": {
+          "fixture": "stone_removed_rest_start",
+          "status": 0,
+          "iterations": 0,
+          "queries": 9,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 43904,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 15,
+        "record": {
+          "fixture": "rotated_translated_scaled",
+          "status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "root_error": 0,
+          "relative_length_error": 1.2749532114497697e-06,
+          "penetration": 0,
+          "root_angle": 0.5187866125334083,
+          "rest_objective": 0.0022407238886057524,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 15,
+        "record": {
+          "fixture": "different_discretization_geometry",
+          "status": 0,
+          "iterations": 7,
+          "queries": 91,
+          "root_error": 0,
+          "relative_length_error": 2.0834684762882638e-05,
+          "penetration": 0,
+          "root_angle": 0.24674717717585343,
+          "rest_objective": 0.0005867090577960376,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 35328,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 16,
+        "record": {
+          "fixture": "clamp_clear",
+          "status": 0,
+          "iterations": 0,
+          "queries": 9,
+          "root_error": 0,
+          "relative_length_error": 0,
+          "penetration": 0,
+          "root_angle": 0,
+          "rest_objective": 0,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 43880,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 16,
+        "record": {
+          "fixture": "clamp_clear_initial_span_fit",
+          "status": 0,
+          "iterations": 9,
+          "queries": 153,
+          "root_error": 0,
+          "relative_length_error": 1.5347330952764082e-06,
+          "penetration": 0,
+          "root_angle": 0,
+          "rest_objective": 0.0007845525066448103,
+          "collision_metrics_complete": true,
+          "unresolved_contacts": 0,
+          "memory_accounting_bytes": 44000,
+          "analytic_span_penetration": 0,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 16,
+        "record": {
+          "fixture": "soft_frame_unsupported",
+          "status": 4,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": [
+            "SoftFrameUnsupported",
+            "CollisionMetricsUnknown"
+          ]
+        }
+      },
+      {
+        "ctest_id": 17,
+        "record": {
+          "fixture": "invalid_input_matrix",
+          "result": "all explicitly rejected before queries"
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_nonfinite",
+          "status": 3,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_finite_difference_overflow",
+          "status": 3,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_negative_radius",
+          "status": 3,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_infinite_radius",
+          "status": 3,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_nonunit_frame",
+          "status": 3,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_wrong_tangent",
+          "status": 3,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_pi_chart",
+          "status": 4,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      },
+      {
+        "ctest_id": 18,
+        "record": {
+          "fixture": "tight_memory_full_turn",
+          "status": 4,
+          "iterations": 0,
+          "queries": 0,
+          "root_error": null,
+          "relative_length_error": null,
+          "penetration": null,
+          "root_angle": null,
+          "rest_objective": null,
+          "collision_metrics_complete": false,
+          "unresolved_contacts": null,
+          "memory_accounting_bytes": 504,
+          "issues": []
+        }
+      }
+    ]
+  },
+  "combined": {
+    "ctests_passed": 47,
+    "a_cases": 15,
+    "b_cases": 19,
+    "coordinator_integration_cases": 13,
+    "integration_results": [
+      {
+        "fixture": "catalog_A_plus_B",
+        "status": 0,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 14,
+        "queries": 233,
+        "root_error_m": 0,
+        "relative_length_error": 1.2749532114497697e-06,
+        "capsule_penetration_m": 0,
+        "root_angle_radians": 0.5187866125334111,
+        "test_oracle_capsule_penetration_m": 0,
+        "visible_mesh_validated": false,
+        "issues": []
+      },
+      {
+        "fixture": "clear_A_plus_B",
+        "status": 0,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 0,
+        "queries": 9,
+        "root_error_m": 0,
+        "relative_length_error": 0,
+        "capsule_penetration_m": 0,
+        "root_angle_radians": 0,
+        "test_oracle_capsule_penetration_m": 0,
+        "visible_mesh_validated": false,
+        "issues": []
+      },
+      {
+        "fixture": "root_conflict_A_plus_B",
+        "status": 2,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 0,
+        "queries": 1,
+        "root_error_m": 0,
+        "relative_length_error": 0,
+        "capsule_penetration_m": null,
+        "root_angle_radians": 0,
+        "visible_mesh_validated": false,
+        "issues": [
+          "RootEnvelopeInside",
+          "CollisionMetricsUnknown"
+        ]
+      },
+      {
+        "fixture": "two_spheres_A_plus_B",
+        "status": 0,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 9,
+        "queries": 172,
+        "root_error_m": 0,
+        "relative_length_error": 6.296574456998716e-05,
+        "capsule_penetration_m": 0,
+        "root_angle_radians": 0.08356410539087127,
+        "test_oracle_capsule_penetration_m": 0,
+        "visible_mesh_validated": false,
+        "issues": []
+      },
+      {
+        "fixture": "rotated_boxes_A_plus_B",
+        "status": 0,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 16,
+        "queries": 298,
+        "root_error_m": 0,
+        "relative_length_error": 8.092814255511449e-05,
+        "capsule_penetration_m": 4.487008478131459e-06,
+        "root_angle_radians": 0.33675569074608697,
+        "test_oracle_capsule_penetration_m": 4.487008478180898e-06,
+        "visible_mesh_validated": false,
+        "issues": []
+      },
+      {
+        "fixture": "clamp_A_plus_B",
+        "status": 0,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 9,
+        "queries": 153,
+        "root_error_m": 0,
+        "relative_length_error": 1.5347330952764082e-06,
+        "capsule_penetration_m": 0,
+        "root_angle_radians": 0,
+        "test_oracle_capsule_penetration_m": 0,
+        "visible_mesh_validated": false,
+        "issues": []
+      },
+      {
+        "fixture": "crossing_A_plus_B",
+        "status": 0,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 12,
+        "queries": 26,
+        "root_error_m": 0,
+        "relative_length_error": 0,
+        "capsule_penetration_m": 5.301425792109127e-08,
+        "root_angle_radians": 0.5293819346107987,
+        "test_oracle_capsule_penetration_m": 5.301425787251901e-08,
+        "visible_mesh_validated": false,
+        "issues": []
+      },
+      {
+        "fixture": "bad_envelope_A_plus_B",
+        "status": 3,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 0,
+        "queries": 0,
+        "root_error_m": null,
+        "relative_length_error": null,
+        "capsule_penetration_m": null,
+        "root_angle_radians": null,
+        "visible_mesh_validated": false,
+        "issues": [
+          "Envelope",
+          "CollisionMetricsUnknown"
+        ]
+      },
+      {
+        "fixture": "width_A_plus_B",
+        "status": 0,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 4,
+        "queries": 10,
+        "root_error_m": 0,
+        "relative_length_error": 0,
+        "capsule_penetration_m": 5.063044773712111e-06,
+        "root_angle_radians": 0.16145170673333337,
+        "test_oracle_capsule_penetration_m": 5.0630447736566e-06,
+        "visible_mesh_validated": false,
+        "issues": []
+      },
+      {
+        "fixture": "cancelled_A_plus_B",
+        "status": 6,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 0,
+        "queries": 0,
+        "root_error_m": null,
+        "relative_length_error": null,
+        "capsule_penetration_m": null,
+        "root_angle_radians": null,
+        "visible_mesh_validated": false,
+        "issues": [
+          "Cancelled",
+          "CollisionMetricsUnknown"
+        ]
+      },
+      {
+        "fixture": "query_limit_A_plus_B",
+        "status": 5,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 0,
+        "queries": 1,
+        "root_error_m": 0,
+        "relative_length_error": 0,
+        "capsule_penetration_m": null,
+        "root_angle_radians": 0,
+        "visible_mesh_validated": false,
+        "issues": [
+          "QueryBudget",
+          "CollisionMetricsUnknown"
+        ]
+      },
+      {
+        "fixture": "stale_generation_A_plus_B",
+        "status": 3,
+        "generation": 2,
+        "source_revision": 1,
+        "iterations": 0,
+        "queries": 0,
+        "root_error_m": null,
+        "relative_length_error": null,
+        "capsule_penetration_m": null,
+        "root_angle_radians": null,
+        "visible_mesh_validated": false,
+        "issues": [
+          "GenerationMismatch",
+          "CollisionMetricsUnknown"
+        ]
+      },
+      {
+        "fixture": "soft_frame_A_plus_B",
+        "status": 4,
+        "generation": 1,
+        "source_revision": 1,
+        "iterations": 0,
+        "queries": 0,
+        "root_error_m": null,
+        "relative_length_error": null,
+        "capsule_penetration_m": null,
+        "root_angle_radians": null,
+        "visible_mesh_validated": false,
+        "issues": [
+          "SoftFrameUnsupported",
+          "CollisionMetricsUnknown"
+        ]
+      }
+    ],
+    "catalog_candidate_path": "build/vegetation-B-review-20261024-01/catalog-ab-candidate.json",
+    "geometric_verification_scope": "Analytic guide capsule oracle from B test-only helpers; A supplies actual public Jolt queries. Neither is C or visible-mesh validation."
+  },
+  "stages": {
+    "b-configure": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "-S",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-B-review-20261024-01\\starter",
+        "-B",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-B-review-20261024-01\\release",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DCMAKE_CXX_COMPILER=cl",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 3.781000000075437,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "b-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-B-review-20261024-01\\release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 7.125,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "b-ctest": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-B-review-20261024-01\\release",
+        "-C",
+        "Release",
+        "-R",
+        "^fitter_",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 1.7179999999934807,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "ab-configure": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "-S",
+        "build\\vegetation-B-review-20261024-01\\ab-source",
+        "-B",
+        "build\\vegetation-B-review-20261024-01\\ab-release",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DCMAKE_CXX_COMPILER=cl",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-DCYRUS_COLLISION_JOLT_SOURCE_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-dependencies\\jolt-1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 4.515999999945052,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "ab-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "build\\vegetation-B-review-20261024-01\\ab-release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 31.67200000002049,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "ab-ctest": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "build\\vegetation-B-review-20261024-01\\ab-release",
+        "-C",
+        "Release",
+        "-R",
+        "^(collision_|fitter_|integration_)",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 2.4219999999040738,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    }
+  },
+  "findings": [],
+  "contract_change_request": {
+    "path": "docs/research/B/CyrusVegetationCore_v1_B_fitter/docs/research/vegetation-core-handoff/starter/fitter/CONTRACT_CHANGE_REQUEST.md",
+    "disposition": "Memory gap is valid and retained for a coordinated later interface revision. Owning backend result vectors/scratch cannot be strictly capped by B before return. No frozen API changed. ConvergedCandidate remains provisional until C and coordinator identity acceptance."
+  },
+  "remaining_acceptance": [
+    "C independent visible-triangle reconstruction/clearance, UV/material/bounds and source identity validation.",
+    "SoftFrame is Unsupported; tested policies are PositionOnly and ClampFrame.",
+    "Strict aggregate allocation admission including persistent/native/backend scratch and outputs; current high-water metrics are scoped payload accounting.",
+    "Leak qualification, fault allocation in native runtime, asynchronous/concurrency stress and performance were not executed locally.",
+    "Max 2027 adapter, DLL/runtime ownership, host-thread publication/failure retention, Undo, viewport/render/Bake and real library assets."
+  ],
+  "external_results": "Linux Release and ASan/UBSan are preserved reported runs, not new local executions. LeakSanitizer failure remains unqualified. B reports a differently hashed uploaded input ZIP; local acceptance verifies all four frozen bytes, not the unprovided full uploaded input archive history.",
+  "production_integration": "Not performed; no Max launch/install/restart, product version or delivery installer.",
+  "repository": {
+    "branch": "codex/workflow-0.75",
+    "head": "588abff0ce211d7dc63798b8c5310631895465c7",
+    "knowledge_scope": "Same stale selected generation as A review; direct current contract/source inspected. No refresh or roadmap resumption."
+  },
+  "local_artifacts": [
+    {
+      "path": "build/vegetation-B-review-20261024-01/intake.json",
+      "bytes": 497,
+      "sha256": "77294830d8d93c18a74ceb6a435aef0f97d414a4ffad8b6737662ae61d7a48a1"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/run_local.py",
+      "bytes": 2941,
+      "sha256": "604a6301076747b6c00b0211c6fdb91301a4aea3149896b8b24d71b00c4ab6f8"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/b-configure.json",
+      "bytes": 673,
+      "sha256": "80ccdd9110a5c028419e926321472fcc181fbd6dff359d52feb4178ccbf8d252"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/b-configure.log",
+      "bytes": 530,
+      "sha256": "f948064c863f6e0e03b125a9823576f6c9b6501d40d37d8899d60ddff62f0aa6"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/b-build.json",
+      "bytes": 427,
+      "sha256": "8879af81ff4337b805906cfb51d4915ce116aafac85311ab870f6563d1081ac6"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/b-build.log",
+      "bytes": 479,
+      "sha256": "562ba0a2bfba4f2b425fdec538bc0614d48f438bccaa8d9380ab85b1cfccc804"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/b-ctest.json",
+      "bytes": 537,
+      "sha256": "5bd67d0414020e73cbc0149a87ce59c517eb5079e3b8d835c625f6491e06cf82"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/b-ctest.log",
+      "bytes": 26852,
+      "sha256": "8e825ff1dffc455df6e978387fdc986120c2e1e1a76e4b1845ff35f6bdfec48c"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-configure.json",
+      "bytes": 761,
+      "sha256": "f00be5129cf9e6803e3a75c2cd1653012c466c50b6cc04876273335c45497a28"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-configure.log",
+      "bytes": 648,
+      "sha256": "e9a54d348f31449df346ff0467a99fdb114d7192fdf34e0e6e8c4a1e26213004"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-build.json",
+      "bytes": 403,
+      "sha256": "682427df244fe10237d8d4e87a74aafec1000554b66d54ee3a49aa81ba49b416"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-build.log",
+      "bytes": 23387,
+      "sha256": "e5af0007658a4df95c8dde30256177d8f590ac61e772722b22edaa7b491adba6"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-ctest.json",
+      "bytes": 527,
+      "sha256": "4b73badedaf51e8c3ab2f771c46079a32df0e9fae24bf244d74f6aa4fa0f8815"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-ctest.log",
+      "bytes": 50464,
+      "sha256": "1ca882672bfccff66ede23c7b75fe4c7d22a78bc836c59de1229abfba48b23de"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/catalog-ab-candidate.json",
+      "bytes": 2391,
+      "sha256": "6f7f55d3bb33a8edd7d7fdea480966c7d8543002d61cee3d2fa66d5cfc3867d7"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-source/CMakeLists.txt",
+      "bytes": 815,
+      "sha256": "b32ffa46b8d6295dc424494b82aace20e996f708f2871d72be2a40c0315ffd55"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-source/integration.cpp",
+      "bytes": 10526,
+      "sha256": "8747b6aa6ee9db7bd4f30f251411d461548ba12ca2bfbfae923ca42031464f55"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-source/catalog_fixture.hpp",
+      "bytes": 2004,
+      "sha256": "9f52f9ce1758a8b3572b9e0b4951dd0ca5d1c2070942c16cd2009c857e8ab1be"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/release/compile_commands.json",
+      "bytes": 2616,
+      "sha256": "3ef10aa574729dbfc62561c7c715bf122f77afcaa1ca8e060f1c4e18f457040e"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/release/fitter/cyrus_vegetation_fitter.lib",
+      "bytes": 1289052,
+      "sha256": "9ab79ab86205272b3a600f434ae7042c70a7666a3df1bdc64f06137c9788bf17"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/release/fitter/tests/fitter_tests.exe",
+      "bytes": 286720,
+      "sha256": "da5984fc04e69deffd92e64db6ee7e12b1fb55d50ff8e8dcb9cc7479948ab0f2"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-release/compile_commands.json",
+      "bytes": 241206,
+      "sha256": "90959ce6525a7f0e72017826674980e23e71f16e6fb746eff7c60e5f990e45a3"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-release/cyrus_ab_review.exe",
+      "bytes": 1132032,
+      "sha256": "f65c990a0c81c518c7a8b99101ab7e4f8bf4f4b54b2311da95706c9e01deb300"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-release/core/collision/collision-build-options-Release.txt",
+      "bytes": 1038,
+      "sha256": "00baafb9466d4e52acaa127b2cee602fdfb034b0fdcec2f584f1e50823dba95e"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-release/core/collision/cyrus_vegetation_collision.lib",
+      "bytes": 774384,
+      "sha256": "2a22abce892af9b2fd239f6effef91b0632fec63c405e5caeeece4416fee7e82"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-release/core/fitter/cyrus_vegetation_fitter.lib",
+      "bytes": 1289064,
+      "sha256": "8b6da6763988bde4937139a7ccd9a150fa933f1ecfa653e182a4db5a9135f8da"
+    },
+    {
+      "path": "build/vegetation-B-review-20261024-01/ab-release/core/collision/jolt/Jolt.lib",
+      "bytes": 10898458,
+      "sha256": "1050bb158b2180f286b6ba6c4ddc2f8ced9fbdb877e051c37975f1a20660ceeb"
+    }
+  ]
+}

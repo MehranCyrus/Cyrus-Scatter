@@ -19,6 +19,9 @@ def fixture_tree(root):
         'CyrusLicensing/tests/test.cpp', 'CyrusLicensing/team/team_public_key.h',
         'CyrusLicensing/third_party/nlohmann/json.hpp', 'CyrusLicensing/third_party/nlohmann/LICENSE.MIT',
         'AminScatter/ui/LibraryGallery.cs', 'AminScatter/tools/build_gallery.py', 'AminScatter/tools/build_installer.py',
+        *['CyrusVegetationLab/experiments/stem-live/'+name for name in ('stem_core.cpp','stem_core.hpp','analysis.cpp','analysis.hpp','connectivity.cpp','connectivity.hpp')],
+        'CyrusVegetationLab/core/include/cyrus_vegetation/prototype_v1.hpp','CyrusVegetationLab/core/fitter/fitter.cpp',
+        'CyrusVegetationLab/core/fitter/private/math.hpp','CyrusVegetationLab/core/delivery/src/geometry.hpp','CyrusVegetationLab/core/PROVENANCE.json',
         *build_inputs.CORE_SOURCES]
     for name in names:
         path=root/name
@@ -31,7 +34,10 @@ def fixture_tree(root):
     'CyrusLicensing/include/license/policy.h','CyrusLicensing/team/team_public_key.h',
     'AminScatter/shared/LibraryLocation.cs','AminScatter/tools/build_gallery.py',
     'AminScatter/setup/AnalyzerInstallEngine.cs','AminScatter/setup/LibraryOptions.cs',
-    'AminScatter/setup/VerifiedBackup.cs','AminScatter/src/scatter.cpp','cmake/CyrusMaxSDK.cmake'])
+    'AminScatter/setup/VerifiedBackup.cs','AminScatter/src/scatter.cpp','cmake/CyrusMaxSDK.cmake',
+    'CyrusVegetationLab/experiments/stem-live/stem_core.cpp','CyrusVegetationLab/experiments/stem-live/analysis.cpp',
+    'CyrusVegetationLab/experiments/stem-live/connectivity.cpp','CyrusVegetationLab/core/include/cyrus_vegetation/prototype_v1.hpp',
+    'CyrusVegetationLab/core/fitter/private/math.hpp','CyrusVegetationLab/core/delivery/src/geometry.hpp'])
 def test_selected_dependency_mutation_changes_manifest(tmp_path,name):
     root=fixture_tree(tmp_path)
     before=build_inputs.source_manifest(root,'AminScatter')

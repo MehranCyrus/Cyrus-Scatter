@@ -17,6 +17,7 @@ text=fs.readFileSync('tools/ui/templates/recipes.ms','utf8').replace(/\r/g,'')+'
 text=fs.readFileSync('tools/ui/templates/density-patterns.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=require('./asset-adapters.cjs')({check})+'\n'+fs.readFileSync('tools/ui/templates/asset-shaders.ms','utf8').replace(/\r/g,'')+'\n'+fs.readFileSync('tools/ui/templates/assets.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/preset-loading.ms','utf8').replace(/\r/g,'')+'\n'+text;
+text=fs.readFileSync('tools/ui/templates/shared-library.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/licensing.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
 const hash=crypto.createHash('sha256').update(text,'utf8').digest('hex');

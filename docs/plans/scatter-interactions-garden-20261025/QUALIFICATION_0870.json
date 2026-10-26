@@ -1,0 +1,195 @@
+{
+  "status": "scoped_artist_trial",
+  "version": "0.87.0",
+  "saved_schema": 60,
+  "host": 2027,
+  "archive": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.0-20261025-r4\\CyrusScatter-0.87.0-Max2027.mzp",
+    "sha256": "195e1ea9d0802ed8aff8289a42a5a17ef8393aa309ea03c45d1f73750132615a"
+  },
+  "payload": {
+    "AminScatter.dlx": "f006993378fc4a18f8a66fd16798c30afdc056d5439d7da5c80c79d15c4fc010",
+    "CyrusBrush.dlx": "7b4d64e181b11633d43570bb8fb9e767357cbc248ccadf82e84c35bee8cae343",
+    "CyrusBrushStorage.dlh": "f4857617365892712baa352182d83c864f9da2b393b9912c3cc9e3d77151f419",
+    "CyrusGallery.dll": "66c7b84fbb9f2b51f351b54555d7ee85fad9aa4b3f34faeab15ec40a9367029f",
+    "CyrusInstaller.dll": "6c25fbbd1166255a8fcc3b4108379d9c91f216c72a4cd0268273d4231fce5a0a",
+    "CyrusScatter.ms": "f6599582d94c7b7997aadca9098a2e496526451b1dc067934221904a89eb0cc0",
+    "CyrusScatterEdit.dlm": "f55b7eb5a838bd1281612b0e778e2b83d17c071f70077aedeefe05ad15735498"
+  },
+  "producer_input_manifest_sha256": "4b420f9096d8bf5856749662004f46cf86571cc236a15426a5c38527a2df8e18",
+  "native_tests": 59,
+  "python_tests": 573,
+  "terraces": {
+    "status": "pass",
+    "scope": "Exact packaged payload, 32 native command moves. CPU timings and synchronous redraw; not presented FPS. The terrace campaign ran separately from our native builds, audits and other Max qualification hosts. Local densities differ between tiers; these are not an equal-density scaling benchmark.",
+    "tiers": [
+      {
+        "tier": 0,
+        "plants": 1116,
+        "update_seconds": 8.820218999986537,
+        "initial_fit_ms": 104.2128,
+        "command_median_ms": 147.645,
+        "command_worst_ms": 151.341,
+        "redraw_median_ms": 39.529849999999996,
+        "fit_median_ms": 106.73645,
+        "preview_median_ms": 35.3441,
+        "affected_min_max": [
+          432,
+          437
+        ],
+        "initial_private_bytes": 8474288128,
+        "initial_peak_working_set_bytes": 5262921728
+      },
+      {
+        "tier": 10000,
+        "plants": 11300,
+        "update_seconds": 1.3427490000613034,
+        "initial_fit_ms": 0.1234,
+        "command_median_ms": 0.52295,
+        "command_worst_ms": 0.6424,
+        "redraw_median_ms": 10.497,
+        "fit_median_ms": 0.0975,
+        "preview_median_ms": 0.0524,
+        "affected_min_max": [
+          3,
+          4
+        ],
+        "initial_private_bytes": 9088204800,
+        "initial_peak_working_set_bytes": 5423001600
+      },
+      {
+        "tier": 50000,
+        "plants": 56500,
+        "update_seconds": 1.6419434999115765,
+        "initial_fit_ms": 37.4346,
+        "command_median_ms": 37.937349999999995,
+        "command_worst_ms": 39.1839,
+        "redraw_median_ms": 15.874849999999999,
+        "fit_median_ms": 30.810450000000003,
+        "preview_median_ms": 6.0745000000000005,
+        "affected_min_max": [
+          18,
+          18
+        ],
+        "initial_private_bytes": 9126932480,
+        "initial_peak_working_set_bytes": 5434408960
+      },
+      {
+        "tier": 250000,
+        "plants": 282500,
+        "update_seconds": 3.6060802000574768,
+        "initial_fit_ms": 38.9354,
+        "command_median_ms": 61.8093,
+        "command_worst_ms": 63.0634,
+        "redraw_median_ms": 23.47185,
+        "fit_median_ms": 42.5788,
+        "preview_median_ms": 17.032899999999998,
+        "affected_min_max": [
+          69,
+          71
+        ],
+        "initial_private_bytes": 9288495104,
+        "initial_peak_working_set_bytes": 5622919168
+      }
+    ],
+    "delivery_audit": {
+      "minimum_surface_gap_m": 0.00034374948643838335,
+      "penetrating_vertex_obstacle_pairs": 0,
+      "scope": "Actual native Bake mesh exported in world SI float coordinates by the private Max inspector",
+      "touching_triangle_obstacle_pairs": 0,
+      "triangles": 17440
+    },
+    "original_scene_sha256": "69ff41356a5312dba7841bc47bbe49b6ce77a8ca79168fd045c8c17c618a8378",
+    "artist_ini_unchanged": true
+  },
+  "full_scene_audit": {
+    "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+    "actors": 491,
+    "triangles": 7812598,
+    "penetrating_vertex_obstacle_pairs": 0,
+    "touching_triangle_obstacle_pairs": 0,
+    "root_anchor_error_m": 0.0,
+    "maximum_stem_edge_change": 0.2364814052794758,
+    "maximum_rigid_part_edge_change": 3.781419621873283e-13,
+    "audit_seconds": 264.0585681999999,
+    "worst_stem_actor": {
+      "audit_ms": 370.2524,
+      "delivered_float": false,
+      "identity": "c:4294967313",
+      "instance": 12412,
+      "layer": 10,
+      "maximum_rigid_part_edge_change": 2.6978419498391304e-13,
+      "maximum_stem_edge_change": 0.2364814052794758,
+      "minimum_surface_gap_m": 0.011360482335710603,
+      "penetrating_vertex_obstacle_pairs": 0,
+      "root_anchor_error_m": 0.0,
+      "touching_triangle_obstacle_pairs": 0,
+      "triangles": 10004
+    },
+    "trial_limits": {
+      "root_anchor_error_m": 1e-07,
+      "maximum_stem_edge_change": 0.25,
+      "maximum_rigid_part_edge_change": 1e-06
+    },
+    "limitation": "The 25% stem-edge ceiling is a coarse artist-trial quality gate, not a biomechanical or natural-bending guarantee. No claim for untested poses, self-collision or renderer float rounding.",
+    "status": "pass"
+  },
+  "held_pointer": {
+    "status": "pass",
+    "frames": 14,
+    "held_generation": 2,
+    "final_generation": 4,
+    "placement_epoch_unchanged": true,
+    "authored_population_inputs_unchanged": true,
+    "scope": "Actual Sky mouse drag, contact successor, renderer-committed stone feedback and Max gizmo updated before release; no presented FPS claim"
+  },
+  "physical_undo_redo": "Inconclusive in final pointer run 09: Redo assertion failed and Computer Use subsequently reported manual input. Preserve the failed attempt; do not claim it was a proven plugin defect or that it was fixed. The separate final command Undo/Redo passes.",
+  "scenes": {
+    "Terraces_087_Detailed.max": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.0-20261025-r4\\Trials\\Terraces_087_Detailed.max",
+      "bytes": 462133028,
+      "sha256": "cdd377a28c16219b43a9cef619a123c0e2457d506cf3feda2af541e1906a4693"
+    },
+    "Terraces_087_Responsive.max": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.0-20261025-r4\\Trials\\Terraces_087_Responsive.max",
+      "bytes": 462133028,
+      "sha256": "f6cf2c84f88dc9468946b5bf76e43cf7b76d3080c3a214c3690427fe7b2a1971"
+    }
+  },
+  "trial_helper": {
+    "sha256": "a440ffa524a357920a51a9f4ff7a3de17f0728da60765fa6453c6f914e2cafad",
+    "request": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\interactions087-final-artist-20261025-12\\probe-5281ea2bc63a455da3df13e29d7552fa.ms",
+    "result": "pass",
+    "scope": "Actual Max 2027 supplied-scene stone selection helper; source guard and selected stone scope."
+  },
+  "original_scene_sha256": "69ff41356a5312dba7841bc47bbe49b6ce77a8ca79168fd045c8c17c618a8378",
+  "artist_ini_sha256": "6579ecf2ecd5004b6d4bf955b73fcf91cf5392afda9425da9311d42720d87a2c",
+  "artist_installed_or_restarted": false,
+  "installer_scope": "Archive integrity/guards/hashes and exact extracted-payload host qualification. Installer handlers were not executed in an artist or disposable installation profile for this version.",
+  "evidence": {
+    "build\\interactions087-release-20261025-06\\AminScatter\\receipt.json": "d5bc29c316c33f148d8acef40976d2bb58697e8e2d05e7d39ee007c140cf8a11",
+    "build\\interactions087-release-20261025-06\\AminScatter\\tests.log": "45eedfa33c367dcf06ef7d65e6f69078d4e2e7b13d50130276e882a6c4858799",
+    "build\\interactions087-final-terraces-20261025-04\\receipt.json": "6e83b238bad1895f03b00b4cce5f2c49836a55a748b2b8e9db7aa7db9a72c327",
+    "build\\interactions087-final-terraces-20261025-04\\statistics-summary.json": "6d2e08879c5bc7227c70f06a4ce616e8226798eafff17d481903266e674a0794",
+    "build\\interactions087-final-terraces-20261025-04\\moves.tsv": "7851702ef641a7b70944f0e64b84c5b5f6b869cde90b5ca8f966318d9b39bcdb",
+    "build\\interactions087-final-render-20261025-04\\receipt.json": "528b9ce9b1089fe4c2d4384033bebc251cf0ba69641b81a5727b1b9bcd9c228e",
+    "build\\interactions087-final-render-20261025-04\\delivery-audit.json": "43f32378852b21b75fcaab4f7ce0d0313c59f6cb06035c57cbca71c67b715ab1",
+    "build\\interactions087-final-render-20261025-04\\material-bake.json": "e6434b3c66f3f1a8fa5858402e32955147fe10861635d8a662d0f23bd3b04ef3",
+    "build\\interactions087-final-render-20261025-04\\render-bridge.json": "8ae6578e1d27337dfc4f62c84522d9c601bea8c93a9e7d98c8c318f15977841f",
+    "build\\mcp-qualification\\interactions087-pointer-20261025-09\\pointer-first-result.json": "54bb33989f3d11a00c275f328864e61733fba9c0aad4386f142bc2ad53e46446",
+    "build\\mcp-qualification\\interactions087-pointer-20261025-09\\pointer-first-frames.tsv": "b67b46e979c28eb90a5aec055bbec8b667a9c9a9060328119abd6511acc95611",
+    "build\\mcp-qualification\\interactions087-final-artist-20261025-12\\loaded-identity.json": "2838f64c5a20dab0dc0c78d7fcb4528c907c7660a3c7a3213671d3b08f7ea657",
+    "build\\mcp-qualification\\interactions087-final-artist-20261025-12\\final-command-undo-redo.json": "ee0f966f62a29dda45195604af9372516899e37b2f90f1bc92e7ea12d377129c",
+    "build\\mcp-qualification\\interactions087-final-artist-20261025-12\\other-stones.json": "ee27b1ef99547c4e2bae08665673d594fd866bf322da57c24434859f4b474432",
+    "build\\mcp-qualification\\interactions087-final-artist-20261025-12\\saved-trials.json": "b375d87deffbd90b365b56faf1c7b3f5f2d83bdd772eae52d9ca478a639566aa",
+    "build\\mcp-qualification\\interactions087-final-artist-20261025-12\\full-scene-reopen.json": "46d23ae39a54297cfabfb92bcd5deef149aac00c9c03a298394ca6a81a0478c6",
+    "build\\mcp-qualification\\interactions087-final-artist-20261025-12\\full-scene-audit-summary.json": "f51340587e8171927d31cec12fd6f2bc31f9974df9b6f6f4c18d4e1ae808a9c1",
+    "build\\mcp-qualification\\interactions087-final-artist-20261025-12\\full-scene-audit.json": "0a9d26fb35ddd1e751233f0340500b817d964d943d10683798703c0bd0a6ba0a"
+  },
+  "remaining_artist_checks": [
+    "Physical Undo/Redo without concurrent input",
+    "Bending feel and gap at stronger contact",
+    "Other plant topologies and production materials/renderers",
+    "Long-session, animation seek/rescale and broader fault/soak coverage"
+  ]
+}

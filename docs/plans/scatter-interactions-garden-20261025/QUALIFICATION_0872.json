@@ -1,0 +1,252 @@
+{
+  "schema": "cyrus.interactions-qualification/1",
+  "status": "scoped artist-test delivery",
+  "version": "0.87.2",
+  "host": 2027,
+  "scene_schema": 61,
+  "interactions_capability": 2,
+  "native_tests": 59,
+  "python_tests": 573,
+  "controls": 351,
+  "package": {
+    "path": "dist\\CyrusScatter-0.87.2-20261026-r2\\CyrusScatter-0.87.2-Max2027.mzp",
+    "sha256": "ac65f26a07763b5a88ae8aed619a1b4faba154292506401c8d6dc72a72e36407",
+    "payload": {
+      "AminScatter.dlx": "2479d4187331ec4a415a339f2970942476d74e6f18ea9a2c2bcbe1764afebec1",
+      "CyrusBrush.dlx": "fa3c0912c23813283f43529e34a35f4489a765c0b1b9eb0142cf7f4a3a0bbca5",
+      "CyrusBrushStorage.dlh": "91c24bc53ddf58e5e73655f1045cd40aae12ed5b3f81086c0f8adc2fb2bf798e",
+      "CyrusGallery.dll": "3c0368eae148fd0aa9fe9373406fed9ceca06b81d53ad11016fee84ba02d3757",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.ms": "1188d543e7183af4d9da62fcc922da12fc65d7dce6e4e96fb9c29afd95c750c3",
+      "CyrusScatterEdit.dlm": "2e42a4f99cb222d5a2a64511d65dfb61bcc4dc8380f7ccc48e3523013932d871"
+    }
+  },
+  "producer": {
+    "receipt": "build\\interactions0872-release-20261026-03\\AminScatter\\receipt.json",
+    "sha256": "02e6b33ef70f09f110e8f477e8275605ad2f8f05d973d43bff66ee2629ab4138",
+    "input_manifest_sha256": "f2497f097cbf6da216f6256a845d00041cefd0d6eeff1225ca35f6ebe9072fc8"
+  },
+  "scene": {
+    "path": "dist\\CyrusScatter-0.87.2-20261026-r2\\Trials\\Small_Test_Interaction_0.87.2.max",
+    "sha256": "5ceb835c0f0537bb651ee7a1f3a78be322beb930a46bce94d382e4fbc81b0c63",
+    "original_sha256": "fd56a2468d1e54f1219e974e7238f35c34b21e111efe874ce73082e931747075",
+    "original_unchanged": true,
+    "artist_ini_unchanged": true,
+    "saved_verification": {
+      "status": "pass",
+      "automatic_contacts": true,
+      "schema": 61,
+      "units": "millimeters",
+      "metres_per_unit": 0.001,
+      "counts": [
+        71,
+        3579,
+        536,
+        2526,
+        2
+      ],
+      "minimum_m": [
+        0.004999999888241291,
+        0.004999999888241291,
+        0.004999999888241291,
+        0.004999999888241291,
+        0.004999999888241291
+      ],
+      "viewport_faces": 80000000,
+      "navigation_faces": 40000000,
+      "statistics": {
+        "affected": 279,
+        "compute_participants": 4,
+        "coverage_queries": 35928,
+        "covered": 0,
+        "error": "",
+        "failures": 0,
+        "fit_ms": 92.9305,
+        "fitted_guides": 2188,
+        "generation": 1,
+        "hidden_roots": 5370,
+        "hinge_fits": 2188,
+        "host_runtime_reservation_bytes": 2972112,
+        "index_ms": 1.7005,
+        "index_payload_bytes": 798536,
+        "iterations": 0,
+        "layout_payload_bytes": 572796,
+        "obstacles": 2,
+        "plants": 3650,
+        "pose_payload_bytes": 1690072,
+        "posed": 99,
+        "preview_ms": 0.0019,
+        "queries": 143324,
+        "query_ms": 0.0339,
+        "restored": 0,
+        "reused_poses": 0,
+        "reuses": 0,
+        "separation_queries": 279,
+        "thread_launch_fallback": false,
+        "total_ms": 92.9734,
+        "updates": 1
+      }
+    }
+  },
+  "full_mesh_audit": {
+    "triangles": 1524858,
+    "actors": 279,
+    "penetrating_vertex_obstacle_pairs": 0,
+    "touching_triangle_obstacle_pairs": 0,
+    "maximum_stem_edge_change": 0.14027303295431193,
+    "maximum_rigid_part_edge_change": 1.3851142455223453e-12,
+    "root_anchor_error_m": 0.0
+  },
+  "actual_float_bake": [
+    {
+      "minimum_surface_gap_m": 6.746014754741468e-05,
+      "penetrating_vertex_obstacle_pairs": 0,
+      "scope": "Actual native Bake mesh exported in world SI float coordinates by the private Max inspector",
+      "touching_triangle_obstacle_pairs": 0,
+      "triangles": 166146
+    },
+    {
+      "minimum_surface_gap_m": 1.195608775790898e-05,
+      "penetrating_vertex_obstacle_pairs": 0,
+      "scope": "Actual native Bake mesh exported in world SI float coordinates by the private Max inspector",
+      "touching_triangle_obstacle_pairs": 0,
+      "triangles": 368344
+    }
+  ],
+  "individual_tree_commands": {
+    "status": "pass",
+    "independent_moves": 4,
+    "undo_redo_commands": 12,
+    "missing_proxy_retained": true,
+    "invalid_proxy_rejected": true,
+    "proxy_undo_restored": true,
+    "pending_manual_retained": true,
+    "static_placements_unchanged": true
+  },
+  "physical_drag": {
+    "passed": true,
+    "frames": 15,
+    "held_generation": 2,
+    "final_generation": 4,
+    "static_placements_unchanged": true,
+    "scope": "Actual Sky drag: held contact successor, committed tree feedback and Max gizmo match; separate physical Undo/Redo passed. Not presented FPS.",
+    "format_note": "MXS Integer64 as-string suffix L removed from numeric receipt fields; raw receipt retained."
+  },
+  "physical_history": {
+    "status": "pass",
+    "undo_redo_undo": true,
+    "original_position_restored": true
+  },
+  "ui": {
+    "tree": {
+      "status": "pass",
+      "physical_panel_open": true,
+      "existing_trunks_retained": true,
+      "review_overlay_triangles": 64,
+      "proxy_nodes": 2
+    },
+    "flower": {
+      "status": "pass",
+      "physical_analyze_accept": true,
+      "info": {
+        "accepted": true,
+        "analysis_count": 0,
+        "basal_band_m": 0.03,
+        "cache_realization_ms": 36.127,
+        "can_prepare": true,
+        "connection_candidates": 1382,
+        "delivered_preview_triangles": 23014,
+        "fingerprint": "fa42c033d1b94756038ac052783fa1dead86ff5b9a3def6d08208d0703747efd",
+        "folded_leaf_guides": 10,
+        "ground_level_m": 0.00023618429258931428,
+        "ground_roots": 11,
+        "guides": 248,
+        "has_solid_collider": false,
+        "large_unresolved_parts": 0,
+        "max_attachment_distance_m": 0.043248020066938474,
+        "max_parent_distance_m": 0.0076092567525474115,
+        "mixed_material_parts": 0,
+        "parts": 2486,
+        "preview_triangles": 23014,
+        "profile": "Round stems and ordered basal folded leaves",
+        "proxy_mode": 1,
+        "review_required": true,
+        "root_components": [
+          1,
+          268,
+          269,
+          270,
+          271,
+          272,
+          273,
+          274,
+          275,
+          276,
+          277
+        ],
+        "seconds": 0.0372169,
+        "source_payload_bytes": 5900907,
+        "unresolved_components": [],
+        "unresolved_guides": 0,
+        "unsupported_tube_candidates": 30,
+        "warning": "Inspect roots, branch direction and foliage attachments. This is geometric inference; botanical correctness is not guaranteed."
+      },
+      "minimum_display": "5.0mm",
+      "definitions": 1
+    }
+  },
+  "preparation": {
+    "guides": 248,
+    "folded_leaf_guides": 10,
+    "ground_roots": 11,
+    "unresolved_guides": 0,
+    "analysis_seconds": 0.0372169
+  },
+  "command_fit_ms": {
+    "minimum": 120.9838,
+    "median": 122.458,
+    "maximum": 126.2787,
+    "affected": [
+      283,
+      282,
+      281
+    ]
+  },
+  "scope_limits": [
+    "Static rooted contact; automatic lower-trunk approximation requires review.",
+    "Original miniature dimensions preserved, no geometry rescale.",
+    "No new 2024/2026 build or qualification.",
+    "No new production-renderer, material fidelity, wind/inertia, broad rescale/animation or soak qualification.",
+    "Archive/payload identity checked; no artist installation or restart, and no new installer transaction/startup campaign.",
+    "Earlier candidates and test-instrumentation failures retained; only r2 is delivered."
+  ],
+  "host_receipt": "build/interactions0872-20261026-01/host-final-06/receipt.json",
+  "selector_helper_test": "passed in the owned Max 2027 host",
+  "retired_build_relocation": [
+    {
+      "from": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0872-dev-20261026-01",
+      "to": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\interactions0872-20261026\\retired-builds\\interactions0872-dev-20261026-01",
+      "purpose": "Preserve older disposable build while freeing F drive"
+    },
+    {
+      "from": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0872-release-20261026-01",
+      "to": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\interactions0872-20261026\\retired-builds\\interactions0872-release-20261026-01",
+      "purpose": "Preserve older disposable build while freeing F drive"
+    },
+    {
+      "from": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0872-release-20261026-02",
+      "to": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\interactions0872-20261026\\retired-builds\\interactions0872-release-20261026-02",
+      "purpose": "Preserve older disposable build while freeing F drive"
+    },
+    {
+      "from": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0872-20261026-01\\host-final-05\\project\\autoback\\MaxBack.bak",
+      "to": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\interactions0872-20261026\\retired-builds\\host-final-05-MaxBack.bak",
+      "purpose": "Preserve owned automatic backup; final saved .max remains in place"
+    },
+    {
+      "from": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0872-20261026-01\\host-final-06\\project\\autoback\\MaxBack.bak",
+      "to": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\interactions0872-20261026\\retired-builds\\host-final-06-MaxBack.bak",
+      "purpose": "Preserve owned automatic backup; final saved .max remains in place"
+    }
+  ]
+}

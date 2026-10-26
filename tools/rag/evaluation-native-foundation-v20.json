@@ -1,0 +1,314 @@
+{
+  "schema": "cyrus.evaluation/1",
+  "dataset_kind": "challenge",
+  "review_status": "New separate foundation-direction questions frozen before first run; no tuning ranking/labels after scores",
+  "scope": "Ten English probes supplement the preserved 19-question set; no claim of legacy corpus or multilingual equivalence",
+  "queries": [
+    {
+      "id": "NF-NATIVE",
+      "language": "en",
+      "category": "foundation",
+      "query": "Should every part of Cyrus Scatter be rewritten in C++ including the UI?",
+      "information_need": "Prefer native bulk work; scripts/managed UI and current authored settings can remain; not an all-native implementation claim.",
+      "required_qualifiers": [
+        "Prefer native bulk work; scripts/managed UI and current authored settings can remain; not an all-native implementation claim."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Prefer native bulk work; scripts/managed UI and current authored settings can remain; not an all-native implementation claim.",
+      "required_evidence": [
+        {
+          "id": "NF-NATIVE",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 15,
+              "end_line": 32
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-TEST",
+      "language": "en",
+      "category": "foundation",
+      "query": "Can MAXScript test drivers validate a C++ scatter implementation?",
+      "information_need": "Yes; test driver language does not determine production storage/computation language.",
+      "required_qualifiers": [
+        "Yes; test driver language does not determine production storage/computation language."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Yes; test driver language does not determine production storage/computation language.",
+      "required_evidence": [
+        {
+          "id": "NF-TEST",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 15,
+              "end_line": 32
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-UNDO",
+      "language": "en",
+      "category": "foundation",
+      "query": "Does moving plant data into C++ automatically make Undo memory cheap?",
+      "information_need": "No; trace copies, sharing, history ownership and release.",
+      "required_qualifiers": [
+        "No; trace copies, sharing, history ownership and release."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "No; trace copies, sharing, history ownership and release.",
+      "required_evidence": [
+        {
+          "id": "NF-UNDO",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 15,
+              "end_line": 32
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-IDLE",
+      "language": "en",
+      "category": "foundation",
+      "query": "Should opening panels or unrelated animation rebuild static placements?",
+      "information_need": "No unnecessary warm solves/uploads; cold realization/resource recovery are explicit exceptions.",
+      "required_qualifiers": [
+        "No unnecessary warm solves/uploads; cold realization/resource recovery are explicit exceptions."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "No unnecessary warm solves/uploads; cold realization/resource recovery are explicit exceptions.",
+      "required_evidence": [
+        {
+          "id": "NF-IDLE",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 33,
+              "end_line": 42
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-MEMORY",
+      "language": "en",
+      "category": "foundation",
+      "query": "What allocations must be counted when estimating peak memory during a scatter update?",
+      "information_need": "Unique shared buffers, scratch, old/new coexistence, history, render/GPU; limits not exact budgets.",
+      "required_qualifiers": [
+        "Unique shared buffers, scratch, old/new coexistence, history, render/GPU; limits not exact budgets."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Unique shared buffers, scratch, old/new coexistence, history, render/GPU; limits not exact budgets.",
+      "required_evidence": [
+        {
+          "id": "NF-MEMORY",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 33,
+              "end_line": 42
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-TIME",
+      "language": "en",
+      "category": "foundation",
+      "query": "How should future animation and physics handle timeline changes and cached results?",
+      "information_need": "Separate static/time-dependent/stateful work; define step, seek, checkpoints and subframe render semantics; future contract, not implemented Scatter capability.",
+      "required_qualifiers": [
+        "Separate static/time-dependent/stateful work; define step, seek, checkpoints and subframe render semantics; future contract, not implemented Scatter capability."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Separate static/time-dependent/stateful work; define step, seek, checkpoints and subframe render semantics; future contract, not implemented Scatter capability.",
+      "required_evidence": [
+        {
+          "id": "NF-TIME",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 43,
+              "end_line": 55
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-ASYNC",
+      "language": "en",
+      "category": "foundation",
+      "query": "Can the current joined executor already guarantee asynchronous simulation cancellation?",
+      "information_need": "No; future scheduler needs session identity, copied input, bounded cancellation and teardown before release.",
+      "required_qualifiers": [
+        "No; future scheduler needs session identity, copied input, bounded cancellation and teardown before release."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "No; future scheduler needs session identity, copied input, bounded cancellation and teardown before release.",
+      "required_evidence": [
+        {
+          "id": "NF-ASYNC",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 43,
+              "end_line": 55
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-LAB",
+      "language": "en",
+      "category": "foundation",
+      "query": "Is the independent Physics Lab already integrated into Cyrus Scatter?",
+      "information_need": "No; standalone experimental evidence does not qualify integration.",
+      "required_qualifiers": [
+        "No; standalone experimental evidence does not qualify integration."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "No; standalone experimental evidence does not qualify integration.",
+      "required_evidence": [
+        {
+          "id": "NF-LAB",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 43,
+              "end_line": 55
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-EVOLVE",
+      "language": "en",
+      "category": "foundation",
+      "query": "How should we choose and validate a better architecture using Houdini or Forest research?",
+      "information_need": "Use source and primary references; distinguish observation, inference, proposal and executed evidence; measure costs/recovery.",
+      "required_qualifiers": [
+        "Use source and primary references; distinguish observation, inference, proposal and executed evidence; measure costs/recovery."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": true,
+      "reference_conclusion": "Use source and primary references; distinguish observation, inference, proposal and executed evidence; measure costs/recovery.",
+      "required_evidence": [
+        {
+          "id": "NF-EVOLVE",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 56,
+              "end_line": 65
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    },
+    {
+      "id": "NF-SPEED",
+      "language": "en",
+      "category": "foundation",
+      "query": "What exact speedup percentage has the completed N01 N09 native migration achieved in production?",
+      "information_need": "Unanswerable: the migration is proposed and no production speedup has been established.",
+      "required_qualifiers": [
+        "Unanswerable: the migration is proposed and no production speedup has been established."
+      ],
+      "review_status": "Agent-authored challenge before evaluation; not human-reviewed or representative usage",
+      "split": "holdout",
+      "answerable": false,
+      "reference_conclusion": "Unanswerable as a universal production percentage: 0.86.0 has scoped exact-scene Max 2027 benchmarks, not a general production speed guarantee.",
+      "required_evidence": [],
+      "optional_evidence": [],
+      "misleading_substitutions": []
+    }
+  ],
+  "anchors": []
+}

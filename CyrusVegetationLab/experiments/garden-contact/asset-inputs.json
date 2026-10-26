@@ -1,0 +1,42 @@
+[
+  {
+    "id": "rock_main",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Rock_10.max",
+    "sha256": "3b540ffcaf3b20faebb62dbf46d10f4adc1da9d70bc199596b4882021a77ea85"
+  },
+  {
+    "id": "rock_small",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Rock_Boulder_10\\Stones 1\\stones.obj",
+    "sha256": "9dfb8065d29af5675a4b94611917a18e1b084287ee61c156fb7a1e5ea4eb9044"
+  },
+  {
+    "id": "grass_small",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Grasses\\A069 - Grass - Small Clump\\model.max",
+    "sha256": "1dfd5c19cc56eb490b06a3881bdbec3a8e2932088e89c7fb37de8264d62f4e23"
+  },
+  {
+    "id": "grass_bushy",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Grasses\\A068 - Grass - Bushy Clump\\model.max",
+    "sha256": "4088897cce7a7ef8bd777d9e7cf6b4e0fde16cca3c158442d680df269dd0c0cd"
+  },
+  {
+    "id": "lavender",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Shrubs\\A083 - Lavender - 01\\model.max",
+    "sha256": "ecfc86908a46a60bd9fa9028197074e099264f4d40679c8c1ec5e2fee60ee080"
+  },
+  {
+    "id": "phlox",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A064 - Creeping Phlox - 01\\model.max",
+    "sha256": "85f207484af39580baaa3972c86bc131468b19e292843e193782482d12282eef"
+  },
+  {
+    "id": "geranium",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Flowers\\A066 - Herb Robert Geranium - 04\\model.max",
+    "sha256": "3706166ce67a2f068c5e19a5d8b7df8006cbce38b7fe540210824ef3cdc76078"
+  },
+  {
+    "id": "tree",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.86.7-20261020\\Content\\Library\\Models\\Trees\\A072 - Broadleaf Tree 01\\model.max",
+    "sha256": "25dcf25664a865e6dc49c1a77be3f694b25d3a0e2dd0b75386541c1b6646b7e7"
+  }
+]

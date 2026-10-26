@@ -1,6 +1,12 @@
 # Current work and acceptance
 
-**Current test delivery: [Scatter 0.86.9.2 with Analyzer 0.14.2](plans/edit-instances/DELIVERY_08692.md).** Procedural map thumbnails, empty map drop targets, safe native column ownership and native Edit movement lifecycle have focused Max 2027 checks; included 2024/2026 payloads are built and untested. The [0.86.9 report](plans/edit-instances/DELIVERY_0869.md) retains its source-aware history and earlier three-host evidence. Whole-object Copy of clone-dependent Edit stacks remains open as B37 below. The real Orange Tree offset is measured asset-pivot behaviour; no automatic recentering was added.
+**Current correction: [0.87.3 Library startup](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md), Max 2027 only.** B39 is fixed within the recorded normal-settings/button/persistence tests. B38 and wider acceptance remain open. B40 exposed-root fitting is on hold.
+
+**Preceding test delivery: [0.87.2 Interactions correction](plans/scatter-interactions-garden-20261025/DELIVERY_0872.md), Max 2027 only.** The exact small-scene unit, flower preparation and high-poly tree collider failures have scoped corrections. Trunk approximation review, other topologies, physical input, stronger bends, production renderer fidelity and soak remain open. Existing B37/B38 and unrelated roadmap work are retained.
+
+**Preceding test delivery: [Scatter 0.87.1 shared library](plans/preset-gallery-improvements/DELIVERY_0871.md).** Scoped Max 2024/2026/2027 ten-look, personal-model and installed-startup checks are recorded separately from historical Interactions/Edit qualification. B38 remains for the installed `.max` merge route; the new native personal-model importer preserves meaningful Undo/Redo and captured-owner safety. B37 and wider renderer/physical-input/soak acceptance remain open.
+
+**Historical test delivery: [Scatter 0.86.9.2 with Analyzer 0.14.2](plans/edit-instances/DELIVERY_08692.md).** Procedural map thumbnails, empty map drop targets, safe native column ownership and native Edit movement lifecycle have focused Max 2027 checks; included 2024/2026 payloads are built and untested. The [0.86.9 report](plans/edit-instances/DELIVERY_0869.md) retains its source-aware history and earlier three-host evidence. Whole-object Copy of clone-dependent Edit stacks remains open as B37 below. The real Orange Tree offset is measured asset-pivot behaviour; no automatic recentering was added.
 
 The preceding [0.86.8.7 delivery](plans/code-quality/DELIVERY_08687.md) repairs the seven confirmed [R01–R07 findings](plans/code-quality/REVIEW_REMEDIATION_PLAN_20261023.md) within its evidence limits. The [high-poly Mesh work](plans/viewport-memory/HIGH_POLY_MESH_PLAN_20261023.md) adds coordinated memory admission and the Viewport memory preference. Its original Max 2027 checks cover full meshes, Manual/Live, Undo/save/reopen, late failure retention, library browsing and installer recovery. The 0.86.9 compatibility report adds bounded older-host memory/recovery witnesses. Broad physical-input/DPI, renderer, device-loss and long-soak acceptance remain separate; malformed SDK-object injection was not executed.
 
@@ -140,6 +146,69 @@ Slope/altitude are unchanged; no later roadmap feature is included here.
 Layer-panel Copy and portable recipes currently reject unsupported authored
 Edit/radius transfer. The repair above is a proposed implementation direction;
 this documentation update adds no Copy implementation or qualification.
+
+## B38 — Individual model merge loses prior Undo history
+
+Open, reproduced in owned Max 2027 profiles on 24 October 2026.
+`CyrusModelMerge` calls `getMAXFileObjectNames` and `mergeMAXFile`; direct
+MAXScript probes show the header read clears earlier Undo history, and merge
+without that header does so independently. The library's accepted hold label
+does not make Undo remove the imported model. Earlier unrelated edits consequently
+cannot be undone. Failure cleanup of captured nodes does not restore that history.
+Standard A027 and real A069 grass / A062 flower cases are recorded in
+[the MCP source/asset report](../CyrusMCP/M03_SOURCE_METADATA.md#import-history-finding-and-implementation-decision).
+
+Do not expose this path as transactional MCP asset use or use header loading as
+a harmless artist-scene preflight. Qualify the existing portable native
+mesh/material staging path, including retained prior history, Undo/Redo, a failure
+after staging, dependency denial and stale input admission. Native GUI import
+still needs its own correction and acceptance; no production fix is claimed.
+
+## B39 — Library startup calls an undefined environment helper
+
+Fixed within [0.87.3 tests](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md). The original failure was reproduced in the exact 0.87.2 Max 2027 payload on 26 October 2026.
+Opening Recipes from the Layers panel with normal library settings displays
+`Call needs function or class, got: undefined`. The stack identifies
+`CyrusSharedStore`: the 0.87.2 `shared-library.ms` called the unavailable bare
+`getEnvVariable` while locating `personal-library.txt`. The same call occurs
+when persisting a library location. Both calls are also present in 0.87.1.
+The plant catalog still displays 96 cards; an explicit short root override
+bypasses the failing branch and opens without the error.
+
+The existing shared-library tests use an explicit root override and missed this
+production startup path. 0.87.3 replaces both calls with the verified .NET environment lookup and passes
+normal Recipes opening, absent/existing location settings, folder persistence,
+invalid-root retention and the physical Layers button without a root override.
+A matched Max 2027 MZP is supplied; no artist installation was performed. The
+original investigation made no implementation claim. Evidence and exact identities:
+`build/library0872-investigation-20261026-01/finding.json`, with the reproduced
+stack in `host-04/default-path-error.txt` and control in `host-02/report.json`.
+The separate host-01 long-path warning came from the investigator's temporary
+folder exceeding 80 characters; host-02 corrects that setup.
+
+## B40 — Exposed tree roots exceed the simple trunk proxy profile
+
+Reproduced in the exact 0.87.2 Max 2027 payload on 26 October 2026 for installed
+Tea Tree 03 (A058: 382,228 vertices / 568,304 triangles) and Tea Tree 06
+(A061: 3,392,483 vertices / 4,808,292 triangles). Both current automatic builds
+reject with `No reliable connected trunk base`; both are within the distinct
+4M-vertex/8M-triangle trunk scan admission. The simple taper approximation is
+documented; increasing its sides or radius cannot preserve exposed-root gaps.
+
+Investigate a closed lower-trunk/root proxy through the existing source-bound
+custom mesh path before adding an automatic fitted-root profile. Tea Tree 03's
+diagnostic lower-20% cut contains 4,958 triangles, but has 282 open edges and
+12 components after position welding. Cropping/decimation alone does not
+qualify a solid. Preserve voids, cap/union joints correctly and test ground
+coverage versus bending, elevated/buried roots, uniform instance transforms,
+individual Edit movement, source reuse and full visible mesh output. Existing
+ray-parity classification is not a union operator for overlapping mesh shells.
+
+Raw source identities, owned host receipt and numeric findings are in
+`build/root-collider-study-20261026-01/findings.json` and `host-01/`.
+This records the investigation; no fitted root generator or proxy delivery is
+implemented or qualified. The user put B40 on hold while the independent Library
+startup defect B39 was corrected in 0.87.3.
 
 ## Adaptive viewport follow-up
 

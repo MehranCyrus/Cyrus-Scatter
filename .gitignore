@@ -92,6 +92,11 @@ out/
 # Licensing secrets
 secrets/
 private/
+# Reviewed fitter implementation headers, not licensing/private key material.
+!/CyrusVegetationLab/core/fitter/private/
+!/CyrusVegetationLab/core/fitter/private/math.hpp
+!/docs/research/B/CyrusVegetationCore_v1_B_fitter/docs/research/vegetation-core-handoff/starter/fitter/private/
+!/docs/research/B/CyrusVegetationCore_v1_B_fitter/docs/research/vegetation-core-handoff/starter/fitter/private/math.hpp
 *.pem
 *.pfx
 *.p12

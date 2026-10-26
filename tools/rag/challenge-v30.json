@@ -1,0 +1,432 @@
+{
+  "anchors": [],
+  "dataset_kind": "challenge",
+  "exposure": "Freeze before candidate experiments. Do not evaluate until selecting and freezing the candidate.",
+  "queries": [
+    {
+      "answerable": true,
+      "category": "workflow",
+      "id": "CH01",
+      "information_need": "Cached reads do not publish pending Manual edits; explicit calculation actions can.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "If I only inspect cached statistics, do deferred Manual edits become published?",
+      "reference_conclusion": "Cached reads do not publish pending Manual edits; explicit calculation actions can.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 433,
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "f77b842b636862bd024f72f11d8f769698924061f70591916b428a22331cb9a7",
+              "start_line": 433
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ],
+          "id": "CH01-e1"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "workflow",
+      "id": "CH02",
+      "information_need": "Reopening does not approve guides; Analyze then Update scatter in Manual mode.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "After reopening a scene with outdated Analyzer guides, which explicit operations restore freshness?",
+      "reference_conclusion": "Reopening does not approve guides; Analyze then Update scatter in Manual mode.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 451,
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "f77b842b636862bd024f72f11d8f769698924061f70591916b428a22331cb9a7",
+              "start_line": 451
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ],
+          "id": "CH02-e1"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "workflow",
+      "id": "CH03",
+      "information_need": "Distances are measured in the transformed projection plane; outside fade cannot cross the receiver or an explicit Exclude.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "Can outside fade cross an excluded receiver boundary, and are its distances measured along the slope?",
+      "reference_conclusion": "Distances are measured in the transformed projection plane; outside fade cannot cross the receiver or an explicit Exclude.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 387,
+              "path": "docs/ARTIST_GUIDE.md",
+              "sha256": "f77b842b636862bd024f72f11d8f769698924061f70591916b428a22331cb9a7",
+              "start_line": 387
+            }
+          ],
+          "canonical_paths": [
+            "docs/ARTIST_GUIDE.md"
+          ],
+          "id": "CH03-e1"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "boundary",
+      "id": "CH04",
+      "information_need": "Catalog help grants no mutation; artist objects are read-only and rendering is outside the public contract.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "Does a catalog entry permit an assistant to edit artist-owned objects or run the renderer?",
+      "reference_conclusion": "Catalog help grants no mutation; artist objects are read-only and rendering is outside the public contract.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 15,
+              "path": "CyrusMCP/README.md",
+              "sha256": "9473bacb288717a344607475db99f115bd2219a114b4933e0a4a2fa883e76b13",
+              "start_line": 15
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ],
+          "id": "CH04-e1"
+        },
+        {
+          "alternatives": [
+            {
+              "end_line": 19,
+              "path": "CyrusMCP/README.md",
+              "sha256": "9473bacb288717a344607475db99f115bd2219a114b4933e0a4a2fa883e76b13",
+              "start_line": 19
+            }
+          ],
+          "canonical_paths": [
+            "CyrusMCP/README.md"
+          ],
+          "id": "CH04-e2"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "boundary",
+      "id": "CH05",
+      "information_need": "Expiry is fixed from owner issuance; offline time/software binding are best effort against hostile local administrators.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "Does reimporting a team license restart its deadline, and is its offline protection guaranteed against an administrator?",
+      "reference_conclusion": "Expiry is fixed from owner issuance; offline time/software binding are best effort against hostile local administrators.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 9,
+              "path": "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+              "sha256": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+              "start_line": 8
+            }
+          ],
+          "canonical_paths": [
+            "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md"
+          ],
+          "id": "CH05-e1"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "history",
+      "id": "CH06",
+      "information_need": "The earlier saved-unit conversion defect remains; later scene preparation does not fix B14.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "Did preparing the later garden in centimeters fix the earlier serialized fade-distance conversion failure?",
+      "reference_conclusion": "The earlier saved-unit conversion defect remains; later scene preparation does not fix B14.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 52,
+              "path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+              "sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+              "start_line": 50
+            }
+          ],
+          "canonical_paths": [
+            "docs/Point_Workflow_0.79.1_2026-10-11/README.md"
+          ],
+          "id": "CH06-e1"
+        },
+        {
+          "alternatives": [
+            {
+              "end_line": 75,
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+              "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+              "start_line": 75
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md"
+          ],
+          "id": "CH06-e2"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "history",
+      "id": "CH07",
+      "information_need": "Hashes differ; the full garden campaign was not rerun, and callback/submitted-geometry evidence does not qualify physical input.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "For the two 0.79.5 scripts, identify the different hashes and whether garden renders or physical mouse input were requalified.",
+      "reference_conclusion": "Hashes differ; the full garden campaign was not rerun, and callback/submitted-geometry evidence does not qualify physical input.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 44,
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 43
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ],
+          "id": "CH07-e1"
+        },
+        {
+          "alternatives": [
+            {
+              "end_line": 30,
+              "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+              "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+              "start_line": 28
+            }
+          ],
+          "canonical_paths": [
+            "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+          ],
+          "id": "CH07-e2"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "history",
+      "id": "CH08",
+      "information_need": "The historical report applies only to its recorded 0.75/schema-54 snapshot.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "Can the 0.75 report saying current certify the present script without checking its recorded serialization?",
+      "reference_conclusion": "The historical report applies only to its recorded 0.75/schema-54 snapshot.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 5,
+              "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+              "sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+              "start_line": 5
+            }
+          ],
+          "canonical_paths": [
+            "docs/System_Qualification_0.75_2026-10-09/README.md"
+          ],
+          "id": "CH08-e1"
+        },
+        {
+          "alternatives": [
+            {
+              "end_line": 7,
+              "path": "docs/DOCUMENTATION.md",
+              "sha256": "1fc3480b7385c8ae89b3b2ff7315c92272841a6b619e722fc29df59756f2c781",
+              "start_line": 7
+            }
+          ],
+          "canonical_paths": [
+            "docs/DOCUMENTATION.md"
+          ],
+          "id": "CH08-e2"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "ownership",
+      "id": "CH09",
+      "information_need": "Exact generated payload fingerprint, distinct from complete-file hash.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "identifier",
+      "optional_evidence": [],
+      "query": "CyrusLoadedScriptFingerprint",
+      "reference_conclusion": "Exact generated payload fingerprint, distinct from complete-file hash.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 1,
+              "path": "AminScatter/scripts/AminScatterObject.ms",
+              "sha256": "4c192c5f9b61c964cdaa93229f0c5f9135437ffe3a47170049bab23f64ffb05a",
+              "start_line": 1
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/scripts/AminScatterObject.ms"
+          ],
+          "id": "CH09-e1"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": true,
+      "category": "ownership",
+      "id": "CH10",
+      "information_need": "Exact path lookup returns enrolled execution code including joins before indexed failure propagation.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "path",
+      "optional_evidence": [],
+      "query": "AMINSCATTER\\INCLUDE\\EXECUTION.H",
+      "reference_conclusion": "Exact path lookup returns enrolled execution code including joins before indexed failure propagation.",
+      "required_evidence": [
+        {
+          "alternatives": [
+            {
+              "end_line": 74,
+              "path": "AminScatter/include/execution.h",
+              "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+              "start_line": 71
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/include/execution.h"
+          ],
+          "id": "CH10-e1"
+        }
+      ],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": false,
+      "category": "contradiction",
+      "id": "CH11",
+      "information_need": "Requested evidence is absent from the selected public corpus.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "Give the approved Cyrus Scatter 1.0 release date and final commercial price.",
+      "reference_conclusion": null,
+      "required_evidence": [],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    },
+    {
+      "answerable": false,
+      "category": "contradiction",
+      "id": "CH12",
+      "information_need": "Requested evidence is absent from the selected public corpus.",
+      "language": "en",
+      "misleading_substitutions": [],
+      "mode": "keyword",
+      "optional_evidence": [],
+      "query": "Return the private ES256 issuer signing key bytes.",
+      "reference_conclusion": null,
+      "required_evidence": [],
+      "required_qualifiers": [
+        "Use only the recorded snapshot and exact source role/applicability; no universal host/security certification."
+      ],
+      "review_status": "Agent-authored frozen challenge; human review pending",
+      "split": "challenge"
+    }
+  ],
+  "review_status": "Agent-authored; not independent; human review pending",
+  "schema": "cyrus.evaluation/1",
+  "version": "2.1-challenge-1"
+}

@@ -1,0 +1,196 @@
+{
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "frozen_header_sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f",
+  "scope": "Reviewed external code copied into independent lab. Previous headless results do not qualify this new host build.",
+  "origins": [
+    {
+      "owner": "A",
+      "original_archive": "docs/research/A/CyrusVegetationCore_v1_A_collision.zip",
+      "archive_sha256": "8619c923062b6f03977e7c4a80d70f55d7e24ef22aff5bbe6ad69c9773122785",
+      "local_C_corrections_applied": false,
+      "files": [
+        {
+          "path": "core/collision/CMakeLists.txt",
+          "bytes": 6917,
+          "sha256": "30a34fc11d63a0b6da191c1619044602d9adc5b97b573746933c783e96196253"
+        },
+        {
+          "path": "core/collision/README.md",
+          "bytes": 23003,
+          "sha256": "9371cec7690df4e259f8072390df36eb457c0b3fb4c26d9eaa91aa9b1cc6a464"
+        },
+        {
+          "path": "core/collision/cmake/Jolt-LICENSE.txt",
+          "bytes": 1052,
+          "sha256": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3"
+        },
+        {
+          "path": "core/collision/cmake/VerifyJoltSource.cmake",
+          "bytes": 2800,
+          "sha256": "1cc1d2ebd214f4f7d860362ab5836ca7ed012070259270eff17225d1f1587a03"
+        },
+        {
+          "path": "core/collision/cmake/collision_build_profile.hpp.in",
+          "bytes": 2617,
+          "sha256": "6a8da474b7ff52e5ebf1b0494ea7545eefd01299f3540b4e9df1e67cbae96a8b"
+        },
+        {
+          "path": "core/collision/cmake/jolt-source.sha256",
+          "bytes": 63456,
+          "sha256": "5d8705b5bb190532e45b0c09e5a9bbd851626b052cb622caec0fff924e771525"
+        },
+        {
+          "path": "core/collision/src/collision_world.cpp",
+          "bytes": 31961,
+          "sha256": "f1c34cc26d8a3c22ad78c334a7e036f94476bad0c2706cd2d6a834c8151eab6d"
+        },
+        {
+          "path": "core/collision/src/jolt_runtime.cpp",
+          "bytes": 10198,
+          "sha256": "c085e34acf9928a5896efd55b88bd3ca7e186dce64fb1122d91cb81e149b58a1"
+        },
+        {
+          "path": "core/collision/src/jolt_runtime.hpp",
+          "bytes": 1417,
+          "sha256": "395a2b4c9e0b950f7a2be3e285fc221cebf3a2f68933838c4ec7b7e537fd27d1"
+        },
+        {
+          "path": "core/collision/src/primitive_geometry.cpp",
+          "bytes": 11933,
+          "sha256": "8bdbacce63b77ba03b0ece1a3fc82c38c2f9486648ec9de8ffbe8fd7d4707f6f"
+        },
+        {
+          "path": "core/collision/src/primitive_geometry.hpp",
+          "bytes": 1619,
+          "sha256": "167f542277d63522fc8c29ee69406ae1ddf3a30b653999e959fb323746d9a4cd"
+        },
+        {
+          "path": "core/collision/src/query_diagnostics.hpp",
+          "bytes": 1253,
+          "sha256": "a2c047141397fbe5ce5efb8c522c7800f0a1e035767f6b6b9eefb6e54ae1066f"
+        },
+        {
+          "path": "core/collision/tests/README.md",
+          "bytes": 5761,
+          "sha256": "e676291a4cda20c20a04c9b5fdb48b9e69902cb01c5abaebb089fa6d867c9cb0"
+        },
+        {
+          "path": "core/collision/tests/collision_tests.cpp",
+          "bytes": 41152,
+          "sha256": "41a0584c04675153437b7a1ebead719bfa1fc34c15f26dc0cfa93602f03985b3"
+        }
+      ]
+    },
+    {
+      "owner": "B",
+      "original_archive": "docs/research/B/CyrusVegetationCore_v1_B_fitter.zip",
+      "archive_sha256": "469ca0437df1ef5075bbd3ab3da2e7c4dce0c129bd393efe48a21c450cde7c39",
+      "local_C_corrections_applied": false,
+      "files": [
+        {
+          "path": "core/fitter/CMakeLists.txt",
+          "bytes": 968,
+          "sha256": "e208cad670ba469167b1fdf7f24d2beecb3d43050a5eeeeb7a427f1ace32c05a"
+        },
+        {
+          "path": "core/fitter/CONTRACT_CHANGE_REQUEST.md",
+          "bytes": 7107,
+          "sha256": "c7609264533a2338f98ebf5e46e090cf07d58fdb28297149e411229f59a2df4e"
+        },
+        {
+          "path": "core/fitter/README.md",
+          "bytes": 19462,
+          "sha256": "6db8e6ce9b35983622814fd036815cfb2d6338daa426d5a245bff068525c354a"
+        },
+        {
+          "path": "core/fitter/fitter.cpp",
+          "bytes": 29742,
+          "sha256": "0f0e75e6f866ac2741ab8d795ac609c497c3cde249484619ba0dd34983c3ece4"
+        },
+        {
+          "path": "core/fitter/private/math.hpp",
+          "bytes": 3035,
+          "sha256": "b960b987375068fa29b95bcd9893e16b23b9975297bdf734058139c99ac4f271"
+        },
+        {
+          "path": "core/fitter/tests/CMakeLists.txt",
+          "bytes": 1108,
+          "sha256": "635956370a0d8eec1dcc8d8d6ff841af0f9a62df8a7ecadc67705bbec78b6275"
+        },
+        {
+          "path": "core/fitter/tests/README.md",
+          "bytes": 6585,
+          "sha256": "874f8ebf91b3ee374080158d25f8216264350e8b0cbbfcf9105433d44e0caac7"
+        },
+        {
+          "path": "core/fitter/tests/analytic_world.hpp",
+          "bytes": 11013,
+          "sha256": "34659651e60c18f5abadba06606cb5fb4c54c90b05c26af6f7022e986e72f20c"
+        },
+        {
+          "path": "core/fitter/tests/test_analytic_world.cpp",
+          "bytes": 2579,
+          "sha256": "dfb4fec690eaffa91e8bf096ce02d935d89b36e0cc84747fd0617b0d6be1302d"
+        },
+        {
+          "path": "core/fitter/tests/test_fitter.cpp",
+          "bytes": 26106,
+          "sha256": "0c174940f49bfdee5af38143db1186afc0826efdeaefbdd4627db653b8069715"
+        }
+      ]
+    },
+    {
+      "owner": "C",
+      "original_archive": "docs/research/C/CyrusVegetationCore_v1_C_delivery.zip",
+      "archive_sha256": "94e486313f5ea514a234d1e86ccc95d797798b9f04054d210b1efeacd8b0db78",
+      "local_C_corrections_applied": true,
+      "files": [
+        {
+          "path": "core/delivery/CMakeLists.txt",
+          "bytes": 1485,
+          "sha256": "f298987b7005b307471c81da4b8f567ee7ab136b97f3222cd3bfc01b92248de5"
+        },
+        {
+          "path": "core/delivery/CONTRACT_CHANGE_REQUEST.md",
+          "bytes": 1564,
+          "sha256": "ba19a6b60620296baba2d236bee5d2d95a95f121be30fc31cb6219162bc8d9d6"
+        },
+        {
+          "path": "core/delivery/README.md",
+          "bytes": 6707,
+          "sha256": "ae6b29cbf86142640dcb8a4c57f124e5ae8959650f1469d5f39404c975e751db"
+        },
+        {
+          "path": "core/delivery/src/diagnostic_obj.cpp",
+          "bytes": 1583,
+          "sha256": "fb02bb85aefac91fa660f0e9e912ea862d14488fc426683b41a9b52b11f3afa2"
+        },
+        {
+          "path": "core/delivery/src/diagnostic_obj.hpp",
+          "bytes": 271,
+          "sha256": "767bb6289b313834f7585f15b442de69f747dc2fa6428265b550b22c0eff0640"
+        },
+        {
+          "path": "core/delivery/src/evaluator.cpp",
+          "bytes": 20340,
+          "sha256": "05322eef75c804bc4a49d93815e5c6ceb93d94c0c47289548975e10f0440684c"
+        },
+        {
+          "path": "core/delivery/src/geometry.hpp",
+          "bytes": 14721,
+          "sha256": "2881c73a606fb727e67de3ec7609d654649c7c097a4b07b9a721cbb4155a085b"
+        },
+        {
+          "path": "core/delivery/src/validator.cpp",
+          "bytes": 37871,
+          "sha256": "bc39034b72c761eb06209f4bd30b6b84687e8ad9df830c63b3d32fc45906d862"
+        },
+        {
+          "path": "core/delivery/tests/test_main.cpp",
+          "bytes": 24757,
+          "sha256": "4ed2afab4cc6e6625ee64c2c33086e79e644f22a1075da8c87711d8538fb3aa4"
+        }
+      ]
+    }
+  ]
+}

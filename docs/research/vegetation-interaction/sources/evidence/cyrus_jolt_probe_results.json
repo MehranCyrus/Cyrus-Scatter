@@ -1,0 +1,17 @@
+{
+"pin":"1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+"version":"5.6.1",
+"double_precision_world":true,
+"gpu_compute_enabled":false,
+"timing_measured":false,
+"endpoint_crossing":{"endpoint_a_inside":false,"endpoint_b_inside":false,"vertex_plane_violations_radius_0_05":0,"whole_capsule_hits":1,"whole_capsule_depth":1.04777109623},
+"mesh_containment":{"closed_cube_center_inside":false,"closed_cube_off_axis_inside":true,"entirely_inside_capsule_surface_hits":0,"deep_inside_vertex_plane_assigned":false,"shallow_inside_vertex_plane_assigned":true,"shallow_depth":0.0500000119209,"open_cube_point_query_untrusted":false},
+"root_inside":{"occupancy":true,"fixed_vertex_plane_assigned":false,"movable_vertex_plane_assigned":true,"movable_depth":0.800000011921},
+"visible_width":{"guide_capsule_hits":0,"offset_edge_capsule_hits":1,"half_width":0.16},
+"narrow_gaps":[{"gap":0.0799999982119,"diameter":0.1,"left_hits":1,"right_hits":1},{"gap":0.119999997318,"diameter":0.1,"left_hits":0,"right_hits":0}],
+"scaled_crossing_queries":[{"scale":1,"hits":1,"depth":1.04777109623,"scaled_collision_tolerance_hits":1,"scaled_collision_tolerance_depth":1.04777109623},{"scale":0.0010000000475,"hits":0,"depth":0,"scaled_collision_tolerance_hits":0,"scaled_collision_tolerance_depth":0},{"scale":9.99999974738e-06,"hits":0,"depth":0,"scaled_collision_tolerance_hits":0,"scaled_collision_tolerance_depth":0}],
+"stock_rod_crossing_update":{"steps":10,"dt":0.0166666666667,"soft_substeps":5,"first_rod_derived_inverse_mass":0,"max_endpoint_displacement":6.74349564633e-07,"update_error_bits":0,"final_a":[-2,0,0],"final_b":[2.00000047684,0,4.76837158203e-07]},
+"large_coordinate_query":[{"origin":0,"base_offset_matches_origin":true,"hits":1},{"origin":1000000,"base_offset_matches_origin":true,"hits":1}],
+"coordinate_conversion_arithmetic":{"float_world_delta":0,"double_before_local_delta":0.0010000000475},
+"rigid_hull_on_irregular_mesh":{"terrain_triangles":32,"hull_input_points":8,"start_y":1.5,"gravity_y":-9.81,"dt":0.0166666666667,"steps":66,"sleeping":true,"update_error_bits":0,"final_com":[0.0166357848793,0.151811406016,-0.00940956640989],"final_speed":0,"query_max_penetration":0.00428940262645,"query_active_edges_only_max_penetration":0.00428940262645,"penetration_slop":0.001,"speculative_distance":0.01}
+}

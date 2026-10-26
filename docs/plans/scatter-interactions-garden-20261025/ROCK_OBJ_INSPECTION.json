@@ -1,0 +1,24 @@
+{
+  "vertices": 1399,
+  "polygon_faces": 2774,
+  "triangulated_faces": 2774,
+  "groups": {
+    "stone1": 290,
+    "stone2": 884,
+    "stone3": 396,
+    "stone4": 380,
+    "stone5": 408,
+    "stone6": 416
+  },
+  "bounds_min": [
+    -867.357239,
+    -129.812042,
+    -255.474274
+  ],
+  "bounds_max": [
+    1076.110718,
+    130.233475,
+    256.966125
+  ],
+  "unit": "OBJ has no authoritative system unit; calibrate in Max"
+}

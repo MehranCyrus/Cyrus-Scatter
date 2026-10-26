@@ -1,0 +1,1131 @@
+{
+  "schema": 1,
+  "reviewed_at_utc": "2026-10-24T15:45:51.315484+00:00",
+  "owner": "C",
+  "edition": "CyrusScatter_Vegetation_Core_Handoff_v1",
+  "original_verdict": "REQUEST CHANGES: four coordinator regressions reproduced against original returned C source despite its 4/4 supplied groups passing",
+  "corrected_verdict": "APPROVE corrected local C variant for bounded primitive core experiments, with conservative-box/resource/host limits retained",
+  "confidence": "Medium: source inspection, original-source Windows tests, reproduced failures and corrected real A+B+C fixtures; no host/renderer or universal numerical proof",
+  "input_archive": {
+    "path": "docs/research/C/CyrusVegetationCore_v1_C_delivery.zip",
+    "bytes": 49254,
+    "sha256": "94e486313f5ea514a234d1e86ccc95d797798b9f04054d210b1efeacd8b0db78"
+  },
+  "intake": {
+    "outcome": "pass",
+    "archive_files": 26,
+    "manifest_files_hashed": 25,
+    "frozen_files_verified": 4,
+    "archive_sha256": "94e486313f5ea514a234d1e86ccc95d797798b9f04054d210b1efeacd8b0db78",
+    "isolated_starter": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-C-review-20261024-01\\starter",
+    "source_edits": "None; original archive preserved; extracted original-return and starter are isolated copies",
+    "branch": "codex/workflow-0.75",
+    "head": "588abff0ce211d7dc63798b8c5310631895465c7"
+  },
+  "frozen_files": [
+    {
+      "path": "SHARED-CONTRACT.md",
+      "bytes": 12222,
+      "sha256": "61463bdf7e354b31191b6d9030686eb1ab0d8c1b83d6a7e4167713e92bdf2d80"
+    },
+    {
+      "path": "starter/include/cyrus_vegetation/prototype_v1.hpp",
+      "bytes": 8709,
+      "sha256": "f5c9b72e513a1c6ceea74f79bc0005175381691b65c99af47dc2debaebc7e42f"
+    },
+    {
+      "path": "starter/CMakeLists.txt",
+      "bytes": 594,
+      "sha256": "61df6a0f24d23c3183168577eaf3e36a21b0210fac79d0148e49c94c8b1bb086"
+    },
+    {
+      "path": "fixtures/catalog.json",
+      "bytes": 20047,
+      "sha256": "0cbbaf16cbe619ba638048f58b35e534720b44b7a7a60a26ca5e05b0b9b04c7f"
+    }
+  ],
+  "original_tests": {
+    "ctest_groups_passed": 4,
+    "individual_tests_passed": 23
+  },
+  "reproduced_findings": [
+    {
+      "id": "C01",
+      "priority": "P1",
+      "original_location": "src/validator.cpp:105",
+      "trigger": "RootMode enum value 99",
+      "observed": "Pass instead of invalid/unsupported; treated as if no angular policy applied",
+      "fix": "Explicit root-mode enum admission",
+      "status": "Fixed in isolated variant; regression passed"
+    },
+    {
+      "id": "C02",
+      "priority": "P2",
+      "original_location": "src/validator.cpp:158",
+      "trigger": "Inactive sphere/box dimension NaN",
+      "observed": "Pass for both malformed snapshots, inconsistent with frozen finite-input contract and A admission",
+      "fix": "Validate all dimension fields before primitive branching",
+      "status": "Fixed in isolated variant; regression passed"
+    },
+    {
+      "id": "C03",
+      "priority": "P2",
+      "original_location": "src/geometry.hpp:94 and src/validator.cpp:76",
+      "trigger": "0.0016 rad pure roll; interior u; 1e-13 m rest-reconstruction tolerance",
+      "observed": "Valid exact-slerp source rejected because evaluator substituted finite-angle nlerp",
+      "fix": "True shortest slerp except coincident limit; independent reference uses same mathematical limit",
+      "status": "Fixed in isolated variant; regression passed; independent rest error approximately 2.17e-19 m"
+    },
+    {
+      "id": "C04",
+      "priority": "P1",
+      "original_location": "src/geometry.hpp:188, called before render-payload admission",
+      "trigger": "64 guide nodes, 3 render vertices, 1000-byte budget",
+      "observed": "Evaluator Ok and validator Pass after each requested 1512 bytes of frame-vector storage",
+      "fix": "Admit frame tangent-vector payload before reserve in both entry points",
+      "status": "Fixed in isolated variant; both now ResourceLimit; largest observed ordinary-new request 80 bytes"
+    }
+  ],
+  "changes": [
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/delivery/src/evaluator.cpp",
+      "before": {
+        "bytes": 19809,
+        "sha256": "a744ed58ff39bbc8dc7bee0941628a5181fa33b0fe530d53029fe6d8f3c927c1"
+      },
+      "after": {
+        "bytes": 20340,
+        "sha256": "05322eef75c804bc4a49d93815e5c6ceb93d94c0c47289548975e10f0440684c"
+      }
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/delivery/src/geometry.hpp",
+      "before": {
+        "bytes": 14575,
+        "sha256": "841a598740f18843c52a29830f067bc7dc11fac6e8c55dd33579919309d22a7e"
+      },
+      "after": {
+        "bytes": 14721,
+        "sha256": "2881c73a606fb727e67de3ec7609d654649c7c097a4b07b9a721cbb4155a085b"
+      }
+    },
+    {
+      "path": "docs/research/vegetation-core-handoff/starter/delivery/src/validator.cpp",
+      "before": {
+        "bytes": 36772,
+        "sha256": "1db35a494aa144cca5fec87d7e70a0a3a7e12dd118fcce2ba35278c273e554e3"
+      },
+      "after": {
+        "bytes": 37871,
+        "sha256": "bc39034b72c761eb06209f4bd30b6b84687e8ad9df830c63b3d32fc45906d862"
+      }
+    }
+  ],
+  "patch_verification": {
+    "outcome": "pass",
+    "patch": "docs/research/vegetation-core-reviews/fixes/C-20261024/OWNER-C-FIXES.patch",
+    "patch_sha256": "e5ca83736a9ee1646d605faf9469b951d97c177dad2cac3181541ce1aaf63d1a",
+    "checked_and_applied_to_fresh_original_copy": true,
+    "corrected_files_hashed": 3,
+    "original_archive_unchanged": true
+  },
+  "final_combined": {
+    "ctests_passed": 52,
+    "a_tests": 15,
+    "b_tests": 19,
+    "c_ctest_groups": 4,
+    "c_individual_tests": 23,
+    "coordinator_pipeline_cases": 10,
+    "coordinator_regression_cases": 4,
+    "coordinator_case_names": [
+      "catalog",
+      "stored_candidate",
+      "clear_rest",
+      "unfit_rest",
+      "corrupt_mesh",
+      "root_conflict",
+      "two_spheres",
+      "rotated_boxes_conservative_rejection",
+      "rotated_boxes_guard_band",
+      "clamp_frame",
+      "invalid_root_mode",
+      "nonfinite_inactive",
+      "small_angle",
+      "frame_budget"
+    ],
+    "records": [
+      {
+        "ctest_id": 1,
+        "record": {
+          "solve_status": 0,
+          "iterations": 14,
+          "queries": 233,
+          "capsule_penetration_m": 0
+        }
+      },
+      {
+        "ctest_id": 1,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 1,
+        "record": {
+          "fixture": "fresh_A_B_C_catalog",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 1.2749532113387474e-06,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 2,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 2,
+        "record": {
+          "fixture": "stored_AB_candidate_C",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 1.2749532113387474e-06,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 3,
+        "record": {
+          "solve_status": 0,
+          "iterations": 0,
+          "queries": 9,
+          "capsule_penetration_m": 0
+        }
+      },
+      {
+        "ctest_id": 3,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 3,
+        "record": {
+          "fixture": "clear_A_B_C",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 0,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 4,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 4,
+        "record": {
+          "fixture": "unfit_ribbon_must_fail",
+          "validation_status": 1,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 0,
+          "visible_penetration_m": 0.07,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration",
+            "visible_sphere_penetration"
+          ]
+        }
+      },
+      {
+        "ctest_id": 5,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 5,
+        "record": {
+          "fixture": "corrupt_visible_mesh",
+          "validation_status": 1,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 1.2749532113387474e-06,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "mesh_pose_correspondence"
+          ]
+        }
+      },
+      {
+        "ctest_id": 6,
+        "record": {
+          "solve_status": 2,
+          "iterations": 0,
+          "queries": 1,
+          "capsule_penetration_m": null
+        }
+      },
+      {
+        "ctest_id": 7,
+        "record": {
+          "solve_status": 0,
+          "iterations": 9,
+          "queries": 172,
+          "capsule_penetration_m": 0
+        }
+      },
+      {
+        "ctest_id": 7,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 20,
+          "triangles": 18
+        }
+      },
+      {
+        "ctest_id": 7,
+        "record": {
+          "fixture": "two_spheres_A_B_C",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 6.29657445701722e-05,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 8,
+        "record": {
+          "solve_status": 0,
+          "iterations": 16,
+          "queries": 298,
+          "capsule_penetration_m": 4.487008478131459e-06
+        }
+      },
+      {
+        "ctest_id": 8,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 20,
+          "triangles": 18
+        }
+      },
+      {
+        "ctest_id": 8,
+        "record": {
+          "fixture": "two_rotated_boxes_A_B_C",
+          "validation_status": 1,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 8.092814255492946e-05,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "box_overlap_metric_conservative",
+            "visible_box_overlap",
+            "visible_box_overlap",
+            "visible_box_overlap"
+          ]
+        }
+      },
+      {
+        "ctest_id": 8,
+        "record": {
+          "fixture": "rotated_boxes_physical_surface_only",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 8.092814255492946e-05,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 9,
+        "record": {
+          "solve_status": 0,
+          "iterations": 19,
+          "queries": 352,
+          "capsule_penetration_m": 5.42154867394333e-06
+        }
+      },
+      {
+        "ctest_id": 9,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 20,
+          "triangles": 18
+        }
+      },
+      {
+        "ctest_id": 9,
+        "record": {
+          "fixture": "rotated_box_10mm_solve_5mm_validation",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 2.8534397095159036e-05,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 9,
+        "record": {
+          "experiment": "box_guard_band",
+          "solve_clearance_m": 0.01,
+          "target_clearance_m": 0.005,
+          "production_policy": false
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "solve_status": 0,
+          "iterations": 9,
+          "queries": 153,
+          "capsule_penetration_m": 0
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 10,
+        "record": {
+          "fixture": "clamp_A_B_C",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 1.5347330954244382e-06,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 11,
+        "record": {
+          "fixture": "unknown_root_enum",
+          "validation_status": 2,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 0,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "invalid_root_mode"
+          ]
+        }
+      },
+      {
+        "ctest_id": 12,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 18,
+          "triangles": 16
+        }
+      },
+      {
+        "ctest_id": 12,
+        "record": {
+          "fixture": "sphere_inactive_nan",
+          "validation_status": 2,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 0,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "nonfinite_obstacle_dimensions"
+          ]
+        }
+      },
+      {
+        "ctest_id": 12,
+        "record": {
+          "fixture": "box_inactive_nan",
+          "validation_status": 2,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 0,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 0,
+          "issues": [
+            "nonfinite_obstacle_dimensions"
+          ]
+        }
+      },
+      {
+        "ctest_id": 13,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 6,
+          "triangles": 4
+        }
+      },
+      {
+        "ctest_id": 13,
+        "record": {
+          "fixture": "small_angle_true_slerp",
+          "validation_status": 0,
+          "generation": 1,
+          "root_error_m": 0,
+          "relative_length_error": 0,
+          "visible_penetration_m": 0,
+          "rest_reconstruction_error_m": 2.168404344971009e-19,
+          "issues": [
+            "independent_validation_pass"
+          ]
+        }
+      },
+      {
+        "ctest_id": 14,
+        "record": {
+          "evaluation_outcome": 0,
+          "vertices": 3,
+          "triangles": 1
+        }
+      },
+      {
+        "ctest_id": 14,
+        "record": {
+          "fixture": "frame_scratch_budget",
+          "budget": 1000,
+          "evaluation_outcome": 4,
+          "validation_status": 5,
+          "evaluator_largest_new_request": 80,
+          "validator_largest_new_request": 80
+        }
+      }
+    ],
+    "scope": "Actual A public Jolt queries -> B guide fitting -> corrected C mesh and independent triangle validation, plus rejection controls. Counts do not imply all fixtures accept geometry."
+  },
+  "box_profile": {
+    "initial_positive_assumption": "Coordinator initially assumed Euclidean and axis-expanded clearance were equivalent; initial integration run was 50/51, with the box positive failing. Preserved, not relabelled.",
+    "diagnostic": {
+      "obstacle_id": 921,
+      "triangle": 5,
+      "minimum_feature_distance_m": 0.005154977520228497
+    },
+    "decision": "Original box candidate remains rejected under C conservative 5mm profile; final test requires that rejection. Separate 10mm solve / 5mm C-validation experiment passes. No production guard policy adopted.",
+    "metric_limit": "Planar-triangle SAT overlap proxy can be zero despite conservative overlap; never infer Pass from the metric instead of status."
+  },
+  "toolchain": {
+    "os": "Windows",
+    "compiler": "MSVC 19.38.33145.0 / installed tools 14.38.33130",
+    "sdk": "Windows SDK 10.0.19041.0",
+    "generator": "Ninja",
+    "configuration": "Release",
+    "max_sdk_or_host_used": false,
+    "jolt_commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+    "jolt_source_files_hashed": 613
+  },
+  "source_preservation": "Original A/B/C handbacks, C standalone copy and all four frozen inputs unchanged. Only 3 C files changed in isolated abc-starter; correction patch and coordinator sources preserved under review fixes/.",
+  "contract_change_request": "Semantic render/logical ID arrays are valid future host-transport concern. V1 retains PreparedRibbon binding-order association; no shared declaration or product schema changed.",
+  "remaining_acceptance": [
+    "Align solver/validator OBB clearance profiles; preserve conservative rejection until a common accepted profile is specified.",
+    "Exact aggregate allocation and failure-diagnostic accounting across A/B/C remains open; fixing C frame scratch does not close the owning-query interface gap.",
+    "B SoftFrame remains Unsupported; no hidden full-turn, automatic source extraction, multi-guide or arbitrary mesh-solid qualification.",
+    "Fault/leak/race/cancellation-latency/performance and representative real assets/scales not qualified by these Windows fixture tests.",
+    "Max 2027 adapter, DLL/runtime ownership, host-thread capture/publication, previous-output retention, Undo, viewport, actual renderer, Bake and save/reopen remain pending."
+  ],
+  "external_results": "C GCC14.2 and ASan/UBSan records preserved as supplied, not rerun locally. No new sanitizer/leak certification.",
+  "stages": {
+    "c-configure": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "-S",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-C-review-20261024-01\\starter",
+        "-B",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-C-review-20261024-01\\release",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DCMAKE_CXX_COMPILER=cl",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 3.344000000040978,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "c-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-C-review-20261024-01\\release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 6.89000000001397,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "c-ctest": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vegetation-C-review-20261024-01\\release",
+        "-C",
+        "Release",
+        "-R",
+        "^delivery_",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 0.8599999999860302,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-baseline-configure": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "-S",
+        "build\\vegetation-C-review-20261024-01\\abc-source",
+        "-B",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "-G",
+        "Ninja",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TESTING=ON",
+        "-DCMAKE_CXX_COMPILER=cl",
+        "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+        "-DCYRUS_COLLISION_JOLT_SOURCE_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\physics-lab-dependencies\\jolt-1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 5.155999999959022,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-baseline-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 34.89099999994505,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-baseline-probes": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "-C",
+        "Release",
+        "-R",
+        "^(review_|pipeline_stored_candidate)$|^review_",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 8,
+      "wall_seconds": 1.0929999999934807,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-budget-probe-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 6.811999999918044,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-baseline-budget": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "-C",
+        "Release",
+        "-R",
+        "^review_frame_budget$",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 8,
+      "wall_seconds": 0.7809999999590218,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-original-repro": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "-C",
+        "Release",
+        "-R",
+        "^review_|^pipeline_stored_candidate$",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 8,
+      "wall_seconds": 0.875,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-fixed-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 5.827999999979511,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-fixed-ctest": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "-C",
+        "Release",
+        "-R",
+        "^(collision_|fitter_|delivery_|pipeline_|review_)",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 8,
+      "wall_seconds": 2.702999999979511,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-box-probe-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 5.39000000001397,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-box-probe-ctest": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "-C",
+        "Release",
+        "-R",
+        "^pipeline_rotated_boxes$",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 8,
+      "wall_seconds": 0.6720000000204891,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-final-build": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe",
+        "--build",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "--parallel",
+        "6"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 5.625,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    },
+    "abc-final-ctest": {
+      "command": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+        "--test-dir",
+        "build\\vegetation-C-review-20261024-01\\abc-release",
+        "-C",
+        "Release",
+        "-R",
+        "^(collision_|fitter_|delivery_|pipeline_|review_)",
+        "--timeout",
+        "30",
+        "--output-on-failure",
+        "-V"
+      ],
+      "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+      "exit_code": 0,
+      "wall_seconds": 2.577999999979511,
+      "scope": "Windows headless native prototype; no Max SDK or host used"
+    }
+  },
+  "production_integration": "Not performed; no Max launch/install/restart, product version, MZP or release change.",
+  "repository": {
+    "branch": "codex/workflow-0.75",
+    "head": "588abff0ce211d7dc63798b8c5310631895465c7",
+    "knowledge_scope": "Stale selected generation as A/B reviews; direct current source/contract inspected; no refresh."
+  },
+  "local_artifacts": [
+    {
+      "path": "build/vegetation-C-review-20261024-01/intake.json",
+      "bytes": 521,
+      "sha256": "46f8a8fc389a634b3e7ac984e939d5b41dd25b1f1ef7b78bb288cdafff88819f"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-sources.json",
+      "bytes": 18873,
+      "sha256": "c868ab260aceff2caef1dcd38b9ed60739ff29b81df30bedcf853dd45c5e5e63"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-final-inputs.json",
+      "bytes": 20649,
+      "sha256": "03dd1007bf30d83994850901da897123056ccc991b877ba5ed8e7130c41c4f04"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/patch-verification.json",
+      "bytes": 330,
+      "sha256": "5ddb8c989211a2c6046fc990a5cc9b37cd9f2d115baef1bcdd81583ada6ec39f"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-original-probes.exe",
+      "bytes": 1232384,
+      "sha256": "ff2fb4af88f25301f39deea8ed4b237e7198140fab82faa29aeadf5f8ea3480e"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-original-delivery.lib",
+      "bytes": 1183784,
+      "sha256": "875285ca3cd57a9f2c4fabae7460b316813511ac2e53fd3d6aaa13a55f938fbe"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/box_distance_check.py",
+      "bytes": 3569,
+      "sha256": "bcfb8388b4a93b5853a0ce5b268adf38dbd4d5100a704411e8ccd7dd6a2b8b3e"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/box-distance-diagnostic.json",
+      "bytes": 4839,
+      "sha256": "1eb97a05c94afdf28de1ec6c0b5b4b0a3cfd570aad33a9feadee6043869ea67b"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-first-integration-pipeline.cpp",
+      "bytes": 13778,
+      "sha256": "725b4512864c67c9a30b44e26ab79bb81c18279d7c3125d10d99cb8adc1e8b9c"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-release/cyrus_abc_review.exe",
+      "bytes": 1238528,
+      "sha256": "f374bcb7d184b1aae03c08ffc1225a145679c836f245530d6179a75b3a96ab8a"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-release/core/delivery/cyrus_vegetation_delivery.lib",
+      "bytes": 1187526,
+      "sha256": "0929f733a348eded7b966a02161bb99b322001fef54e24e977f3e8ac32b5b91e"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-release/compile_commands.json",
+      "bytes": 245823,
+      "sha256": "5d07cda6bb89115cc20b0b2bd8b9476f3660a6f1f08eb3e2d0a6c8b92ace03a2"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-release/core/collision/collision-build-options-Release.txt",
+      "bytes": 1038,
+      "sha256": "00baafb9466d4e52acaa127b2cee602fdfb034b0fdcec2f584f1e50823dba95e"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-release/rotated-box-evidence.json",
+      "bytes": 1855,
+      "sha256": "1c6bd5b022f095ef4fabb62be8b6e38ea9b18d60de292465d18a44e587e6f94f"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/c-configure.json",
+      "bytes": 673,
+      "sha256": "19c319ce31b2537d81bdb63e103bd532823be500495d734ab096714fe2abfc7f"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/c-configure.log",
+      "bytes": 530,
+      "sha256": "55244b2f5e98268670d601e1974978078c149bab3ee22db2a964e0331088ab6b"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/c-build.json",
+      "bytes": 438,
+      "sha256": "f2f1fc9b57988f7b356195817049c08ae10105ea6a009f40e82e6afcca6e2649"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/c-build.log",
+      "bytes": 557,
+      "sha256": "44006db49c35e50db33acf2fe31a3593b274a6ad86ab312074ba0375673dde4b"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/c-ctest.json",
+      "bytes": 539,
+      "sha256": "02e561d2990e8942f20d72ad3985f7442fb2a33d34e1740d459d76594d97186a"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/c-ctest.log",
+      "bytes": 3759,
+      "sha256": "79421f8ad0ceb5aa1a4cf93e6a9a2b4b94726fd8c7696c61936de1322a99c655"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-configure.json",
+      "bytes": 763,
+      "sha256": "8939c99d140a9352f4d041ebd02d07de071bb4cb62b35a84647f199ff3ae12d3"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-configure.log",
+      "bytes": 649,
+      "sha256": "fa694bba3278dd0d7c02b36ad73791bbe036f84290fcca35faf83ba86821b95a"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-build.json",
+      "bytes": 404,
+      "sha256": "6320c5aeb05110c125ad9ba619fd953bcd0396bfde7904f86302b8bf4bd360e1"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-build.log",
+      "bytes": 23905,
+      "sha256": "ec95e8ca4a4dbf264931ccccc33a255c1120e85f527f7cb49ab345e4a9749959"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-probes.json",
+      "bytes": 540,
+      "sha256": "5fdee0f7a831c35ab8663090b9314dca249a8f655ba37ffb66dfb13d0747478a"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-probes.log",
+      "bytes": 5460,
+      "sha256": "7fa9fb7a6c6bd5b7de8195dfb123acb2cd6a208a9ced5b8a30a856379cb09ebd"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-budget-probe-build.json",
+      "bytes": 404,
+      "sha256": "0039eabc6a699c9c696ce74b2be5ad6b70ee42c8d150528ff6fee7b0620e6931"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-budget-probe-build.log",
+      "bytes": 444,
+      "sha256": "3358a8a1c99fde66a96ced7d02ce180e65dee159e6ea56932b3d0267336c4455"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-budget.json",
+      "bytes": 515,
+      "sha256": "a90021ba1b8930198d570356daa64483b9e70a8cb7198d52299e16140ca98dc0"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-baseline-budget.log",
+      "bytes": 2134,
+      "sha256": "eb41c9530a0f3ec3d16a29e0fb1acd6e7a6030ffbbb4621dd399b2fd1db52f91"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-original-repro.json",
+      "bytes": 517,
+      "sha256": "335153c3598fe9e54591903c509154d358e74ba673d8e01c0baa7a0dd56bd406"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-original-repro.log",
+      "bytes": 6501,
+      "sha256": "71564c75a072b08e589fbb9396bdcc30befefd49b3b9942bc60c00a54143bd6e"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-fixed-build.json",
+      "bytes": 404,
+      "sha256": "087d57ff57027e9293bea1b6c6c7b2344d1dade0572b25aa92deb9e253d152cc"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-fixed-build.log",
+      "bytes": 529,
+      "sha256": "f0288654a5103541b394be9171fd2b225ebbf0abaf0a90770bd4fa92325f3400"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-fixed-ctest.json",
+      "bytes": 542,
+      "sha256": "c3d75e07de2b77c36f4ab0978247edc935e7f6676dddb81f3566365e1160069a"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-fixed-ctest.log",
+      "bytes": 53144,
+      "sha256": "9c8bd951c3467a21aaf516c2a084ad1b4bea6b910bc4e9ccd223f3c39a096c93"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-box-probe-build.json",
+      "bytes": 403,
+      "sha256": "27aa23c25082713dfb17c8b6e0c630d0ac89ac311437a1628eb1a9a3107d014c"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-box-probe-build.log",
+      "bytes": 127,
+      "sha256": "58f191e129e46a37ddfa77a8c330a0c52271b1e8c4e8909c4c929080b54f8c2e"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-box-probe-ctest.json",
+      "bytes": 518,
+      "sha256": "6070ef17748387323b0c1fd8267a687e1fe868d75950b7a8fb3bcbed4f0a189d"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-box-probe-ctest.log",
+      "bytes": 3114,
+      "sha256": "0bd8560308e5c0c4d02b1ce0461dc47a0672d5ad06c08a0f3eb757d982a838db"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-final-build.json",
+      "bytes": 392,
+      "sha256": "047e95f58f7c77ebdedf4ec748abaa8c0596b9e8dc23c3d9e464998c395eb18e"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-final-build.log",
+      "bytes": 444,
+      "sha256": "d8fe5614bc2165ed20d6fa77504592643572e1c0c1a3979e80e8e540f654c4ed"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-final-ctest.json",
+      "bytes": 542,
+      "sha256": "395729f3430d598e17edf8a93d98a3b5750eab11a41654a27d9d0c23221c5053"
+    },
+    {
+      "path": "build/vegetation-C-review-20261024-01/abc-final-ctest.log",
+      "bytes": 54648,
+      "sha256": "7d5474ea2abc2f00c2b7890483b2ff5cb3796c04b319d4e1e1cd0e776bde9914"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/CHANGES.json",
+      "bytes": 2380,
+      "sha256": "f5c749ec5398658ce0a29f47af2b0dd7a93634cf6b839fe569fbc1a264aa3657"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/coordinator/box_distance_check.py",
+      "bytes": 3569,
+      "sha256": "bcfb8388b4a93b5853a0ce5b268adf38dbd4d5100a704411e8ccd7dd6a2b8b3e"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/coordinator/catalog_fixture.hpp",
+      "bytes": 5423,
+      "sha256": "0a56181c4ca7704d68efc2850e11e179acfd391766886404e1e51b71deac6969"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/coordinator/CMakeLists.txt",
+      "bytes": 970,
+      "sha256": "5d8cbccbb0ce82bc92119789a9d33d0ecc7f7deb7f09b479cc05b0a87bee7cab"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/coordinator/pipeline.cpp",
+      "bytes": 16635,
+      "sha256": "82a10952473d8159e36ba82cc821f057733cdb7620c61b855b38278e0db2c30a"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/coordinator/run_local.py",
+      "bytes": 3133,
+      "sha256": "3acae571bf38a7595cb208f0c30ec7d246253ece29a7b405e7963f3f6e1c59a0"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/OWNER-C-FIXES.patch",
+      "bytes": 4685,
+      "sha256": "e5ca83736a9ee1646d605faf9469b951d97c177dad2cac3181541ce1aaf63d1a"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/fixes/C-20261024/README.md",
+      "bytes": 4347,
+      "sha256": "0ce82b85dad4ed2b9a77d3fcc33f73362bc2addd4012d20b3d2a2853655dceec"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/artifacts/ABC-Catalog-20261024.obj",
+      "bytes": 2236,
+      "sha256": "81a38ea16e5c677057b619e33715e2a0e3a51ccf498a8c9c99260a1264856e5b"
+    },
+    {
+      "path": "docs/research/vegetation-core-reviews/artifacts/ABC-Catalog-20261024.json",
+      "bytes": 1270,
+      "sha256": "8c4b54e915f7129f6e93e1490f21b4061c50b126cf4200f4b7a8aeec0ed2e1e1"
+    }
+  ]
+}

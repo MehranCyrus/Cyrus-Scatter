@@ -1,68 +1,42 @@
 # Local catalog and lexical search
 
-**23 October 2026 documentation status:** the current source and guidance follow
-**Scatter 0.86.9.2 / schema 59**, native Edit storage/capability **2**, recipe **8**
-and the independently versioned **Surface Analyzer 0.14.2**. The
-[current execution report](../../docs/plans/edit-instances/DELIVERY_08692.md) and
-[qualification manifest](../../docs/plans/edit-instances/QUALIFICATION_08692.json)
-record map thumbnails/drop, native column lifecycle, live Edit feedback and focused Max 2027
-preservation checks. The combined EXE contains distinct 2024/2026/2027 builds;
-2024/2026 are build-only and untested for this patch. Content retains revision
-0.86.7. Earlier reports and frozen
-corpus/evaluation definitions keep their original versions and qualifications.
+**26 October 2026 — current 0.87.3 publication:** generation
+`637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a` is activated and actual project-following tools verify **64/64 full parents**, zero issues, compatible and not stale. Corpus v43/review v54 retains 1,091 explicitly selected fragments; this is not whole-repository coverage. [Exact publication, review, failures and scope](CURRENT_REFRESH_0873_20261026.md).
 
-**Selected retrieval is not current:**
-The selected index remains generation
-`8a58031bf6efb27cf7c8e30a81d6059206b292269b5e5e24bf1045b704989059`.
-The recorded full-parent check before the 0.86.9.1 documentation edits verified 26/48
-parents and reported 22 changed parents. Further edits require another current
-status check; this count is a dated observation, not a live freshness claim.
-The index is stale, and the watcher is stopped. No successor index or watcher
-was activated by the 0.86.9.2 implementation or this documentation pass. Updating
-these documents and pushing source does not refresh retrieval. A source-only
-Git clone does not contain ignored index, build, scene or installer artifacts.
+Current guidance covers schema-61 physical preparation, separate tree colliders, the Library settings correction, three-host installer build scope and updated website. All seven retrieval suites pass paired consistency/protected evidence checks; 52 disclosed ranking/precision findings have separate agent review. All **248 knowledge regressions** pass. No human semantic acceptance, answer accuracy or new Max runtime certification is implied. Historical per-source applicability labels retain their original qualification limits; current hashes/review status and maintained delivery guidance identify the successor.
 
-### Route current Edit questions to their owners
+Only the project index selection changed. Previous generations and the stopped watcher are preserved; no artist installation or consumer restart occurred. Independent uncommitted MCP/Physics workspace evidence is not automatically part of this release Git checkpoint. The [0.87.1 publication](CURRENT_REFRESH_0871_20261026.md) and [earlier 0.87.0 deferral](CURRENT_REFRESH_0870_20261025.md) retain their historical receipts.
 
-- Artist operation, example and upgrade precautions:
-  [Edit instances](../../docs/ARTIST_GUIDE.md#edit-instances-in-0869) and
-  [Copy/recipe variation](../../docs/ARTIST_GUIDE.md#copy-and-recipe-variation-0840).
-- Implemented ownership, source lineage and final displayed feedback:
-  [architecture](../../docs/ARCHITECTURE.md#0869-source-aware-edit-and-displayed-feedback).
-- Transient Move feedback, coalesced post-commit axes refresh, map preview lifetime
-  and restored native column ownership:
-  [density/Edit architecture with the column correction](../../docs/ARCHITECTURE.md#08691-density-presentation-column-fit-and-gesture-feedback)
-  and [source campaign](../edit_08691/CAMPAIGN.md). Generic texture thumbnails do
-  not establish receiver-aware map output or physical FPS.
-- Required persistence rather than a promise that every Copy case is implemented:
-  [F11](../../docs/ENGINEERING_FOUNDATION.md#f11-saved-state-and-schema-boundaries).
-- Remaining whole-object Copy defect and required repair:
-  [B37](../../docs/BACKLOG.md#edit-instance-findings--0869). An upper Edit's old
-  clone inputs and clone-targeted layer radius history need one shared Copy ID
-  translation. This is open work; normal original-stack save/load and the tested
-  single-Edit Copy do not close it.
-- Exact executed scope, source/payload identities, earlier failures and limits:
-  [delivery](../../docs/plans/edit-instances/DELIVERY_08692.md) and
-  [manifest](../../docs/plans/edit-instances/QUALIFICATION_08692.json). The Orange
-  Tree witness is an asset-pivot offset, not a delivered trunk-recentering fix.
+### Route current questions to their owners
 
-The current 0.86.9.2 delivery and native helper files were not enrolled in the
-selected v31 corpus. Stale or missing retrieval must fall back to direct source
-inspection; do not use old snippets as current qualification. A later refresh
-needs reviewed enrollment/ranges and unchanged historical obligations, paired
-candidate verification/retrieval checks, complete-contract consumer checks and
-an explicitly authorized activation. Preserve sealed v31 hashes and the failed
-historical candidates instead of rewriting them to pass.
+- Layer roles, Analyze/review/accept, shared source preparation, contact gap,
+  covered roots, preview/full output and supported profiles: [current Interactions artist
+  workflow](../../docs/plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0872.md).
+- Implemented ownership, spatial invalidation, native/source boundaries and
+  failure retention: [architecture](../../docs/ARCHITECTURE.md#0870-prepared-sources-and-local-rooted-contact)
+  and the original `AminScatter/src/interactions_*` source files. Required
+  contracts remain in [F01–F12](../../docs/ENGINEERING_FOUNDATION.md).
+- Exact terrace performance and contact audits, physical-drag evidence and open
+  artist acceptance: [0.87.0 delivery](../../docs/plans/scatter-interactions-garden-20261025/DELIVERY_0870.md).
+  CPU command/redraw times are not presented FPS. Static rooted contact does not
+  establish wind, inertia, plant self-collision or two-way dynamics.
+- Installer host support versus executed qualification: [three-host build-only
+  report](../../docs/plans/scatter-interactions-garden-20261025/INSTALLER_0870_COMPATIBILITY.md)
+  and [installation guide](../../docs/Max_2027_Installation.md).
+- Native Edit lineage and gesture feedback: [Edit architecture](../../docs/ARCHITECTURE.md#0869-source-aware-edit-and-displayed-feedback),
+  [0.86.9.2 corrective evidence](../../docs/plans/edit-instances/DELIVERY_08692.md)
+  and the preceding Interactions evidence above. The [B37 Copy limitation](../../docs/BACKLOG.md#edit-instance-findings--0869)
+  remains open. The Orange Tree witness is a source-pivot offset, not a delivered
+  trunk-recentering fix.
+- Future work and original roadmap progress: [execution ledger](../../docs/plans/improvement-program/PROGRESS.md).
+  Research, standalone labs, implemented source and host qualification retain
+  separate labels; fresh hashes alone do not establish correctness.
 
-**Crash investigation lesson:** 0.86.9.1 is withdrawn. The artist and owned
-reproduction fail at the same Qt box-layout instruction. The corrected 0.86.9.2
-restores previous native sizing ownership; no unique source line is proven by the
-dump alone. A test that passes inside a script callback can still crash later in
-queued Qt work. Require separate driver requests and native idle/process-survival
-checks after first-open and owner changes. Cold missing-publication reconstruction
-may increment epoch/build once; freeze a warm baseline only after it settles.
-See [correction contract](../../docs/plans/edit-instances/IMPLEMENTATION_08692.md).
-No successor retrieval index was built or activated by this repair.
+Knowledge tools are read-only. Deliberate enrollment, paired candidate checks,
+semantic review and consumer activation are separate stages of this authorized
+one-time update. No automatic watcher is started or broadened. A source-only Git
+clone lacks ignored indexes, scenes, builds and installers. Use the original
+source when retrieval is stale, incomplete or outside the explicit enrolled scope.
 
 **Historical maintenance — 22 October 2026:** product guidance followed
 **Scatter 0.86.8.4 / schema 59**, with scoped **Max 2027** qualification and

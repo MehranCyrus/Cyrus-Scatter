@@ -1,0 +1,92 @@
+{
+  "captured_date": "2026-10-24",
+  "root": "F:/Cursor/_Cyrus_Apps/CyrusScatter",
+  "branch": "codex/workflow-0.75",
+  "head": "588abff0ce211d7dc63798b8c5310631895465c7",
+  "dirty": true,
+  "status_entry_counts": {
+    "tracked": 110,
+    "untracked_entries_normal_mode": 143
+  },
+  "scope": "Direct inspected file identity; no plugin build, host execution or release certification",
+  "baseline": {
+    "scatter": "0.86.9.2",
+    "schema": 59,
+    "physics_lab_working_tree": "0.3.0",
+    "jolt_commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051"
+  },
+  "knowledge": {
+    "verification_requested": true,
+    "result": "stale_evidence",
+    "generation": "8a58031bf6efb27cf7c8e30a81d6059206b292269b5e5e24bf1045b704989059",
+    "review_action": "Used direct source inspection; no corpus refresh or activation"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "325007717b9bf5bec6e6fd51377d81c19e214523db37e7a997b2f72ab46c7bb0",
+      "bytes": 8150,
+      "tracked_changes_vs_HEAD": false
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "sha256": "c89517757fc65cc4337ab8ad1689e3dd30f9cd115b2004e760dfeca69103f510",
+      "bytes": 13461,
+      "tracked_changes_vs_HEAD": false
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "sha256": "02520b2b7ebd344a1c85530e127f1f96365900132ba8a1d563aed84f947ad4f5",
+      "bytes": 32317,
+      "tracked_changes_vs_HEAD": false
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "sha256": "ce55b1d053dd07f0518a37d130965f88e2260851cc8043b6064d22aa7e3c69b4",
+      "bytes": 12729,
+      "tracked_changes_vs_HEAD": false
+    },
+    {
+      "path": "AminScatter/include/placement_store.h",
+      "sha256": "a11b1663aac89f18a173253b0bc0a7025fcddfd85b3d915e455eba88165ac70c",
+      "bytes": 4593,
+      "tracked_changes_vs_HEAD": false
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "sha256": "70326839305ff3573deb282eb02125b8d2dd6d70e56fe108651568243939e764",
+      "bytes": 20626,
+      "tracked_changes_vs_HEAD": false
+    },
+    {
+      "path": "AminScatter/src/placement_materialization.cpp",
+      "sha256": "917868e70cced1ae5b4213ff90f4f5f00f8af7dacbb0fb5ff48884a83ec62218",
+      "bytes": 1356,
+      "tracked_changes_vs_HEAD": false
+    },
+    {
+      "path": "CyrusPhysicsLab/README.md",
+      "sha256": "7c19888c7033982d23957335623f2319e8f3367a7292e0ec298c0d64dc26f1cf",
+      "bytes": 32695,
+      "tracked_changes_vs_HEAD": true
+    },
+    {
+      "path": "CyrusPhysicsLab/include/core.h",
+      "sha256": "71e0385ba7cd0ffe6a589012d313c6a0275c618dbab2c1532452396aa06b5d01",
+      "bytes": 5904,
+      "tracked_changes_vs_HEAD": true
+    },
+    {
+      "path": "CyrusPhysicsLab/src/jolt_world.cpp",
+      "sha256": "c30d487b1c000aa27e67811e182d27ee07b1a9cd543e26b3098009dab07676f1",
+      "bytes": 28193,
+      "tracked_changes_vs_HEAD": true
+    },
+    {
+      "path": "CyrusPhysicsLab/tools/build.py",
+      "sha256": "ccc05d6b16ec4544de60e0d84d22811daf4739c82dd1eb8105b721e8f8bb35cf",
+      "bytes": 6972,
+      "tracked_changes_vs_HEAD": true
+    }
+  ]
+}

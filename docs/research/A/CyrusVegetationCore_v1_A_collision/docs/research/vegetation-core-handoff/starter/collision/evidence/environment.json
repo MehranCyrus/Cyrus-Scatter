@@ -1,0 +1,17 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "machine": "x86_64",
+  "python": "3.12.14",
+  "compiler_command": [
+    "/usr/bin/c++",
+    "--version"
+  ],
+  "compiler_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "cmake_command": [
+    "/workspace/scratch/eb3b91c272e0/collision_study/build_tools/cmake/data/bin/cmake",
+    "--version"
+  ],
+  "cmake_version": "cmake version 4.1.0\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n",
+  "profile": "new Owner-A Release + separate Debug ASan/UBSan; double-world, assertions, SSE2 on observed x86_64",
+  "host_validation": "Not executed; no Max or renderer launch"
+}

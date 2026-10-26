@@ -8,7 +8,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.86.9.2"
+fn CyrusLibraryVersion = "0.87.3"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -223,7 +223,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.86.9.2 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.87.3 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -231,6 +231,7 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     if owners.count==0 or owners.count!=selected.count do throw "Select one or more current layers to save."
     for edit in root.procModifiers() where cyrusEditRecipeHasData edit do throw "Save Everything cannot yet export authored Scatter Edit changes. The modifier and scene are preserved."
     for owner in owners where owner.procRadiusIDs.count>0 do throw ("Save Everything cannot yet export per-instance radius overrides: "+root.layerCaption owner)
+    for owner in owners where owner.interactionCollider or owner.interactionReact or owner.interactionSourceIDs.count>0 or owner.interactionProxySourceIDs.count>0 do throw "Save this interaction setup as a Max scene. Recipe packages do not yet carry reviewed contact definitions or collider links."
     local context=CyrusRecipeCaptureContext root:root node:node owners:owners metres:((units.decodeValue "1m") as double)
     local rootSettings=CyrusRecipeCaptureSettings context root,layers=#(),rules=#()
     for owner in owners do (
@@ -375,6 +376,10 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
             )
             if newSetup do (
                 createdNode=AminScatterObject name:(CyrusRecipeGet document "name")
+                if prepareAssets!=undefined do (
+                    local provenance=CyrusSharedProvenance prepareAssets[2][2]
+                    if provenance.count>=3 do (setUserProp createdNode "CyrusLibraryStoreID" provenance[1];setUserProp createdNode "CyrusLibraryRoot" provenance[2];setUserProp createdNode "CyrusLibraryRecipeRevision" provenance[3])
+                )
                 root=createdNode.baseObject;node=createdNode;root.setLayerTransfer true
                 cyrusRecipeTrackCreated root
                 CyrusRecipeApplySettings root (CyrusRecipeGet document "rootSettings") bindings variation:variation projectionRoot:node
@@ -456,8 +461,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
 )
 
 fn CyrusRecipeDirectory = (
-    local folder=(dotNetClass "System.Environment").GetFolderPath ((dotNetClass "System.Environment+SpecialFolder").MyDocuments)
-    pathConfig.appendPath folder "CyrusScatter\\Library"
+    (CyrusSharedStore()).RecipeDirectory
 )
 fn CyrusRecipeViewPreferences = (pathConfig.appendPath (getDir #plugcfg) "CyrusScatter-Gallery.ini")
 fn CyrusRecipeBundledDirectory version = (
@@ -516,13 +520,14 @@ fn CyrusRecipeEditDetails path expected version = (
             for value in filterString savedTags.text "," do (local tag=trimRight (trimLeft value);if tag!="" do appendIfUnique tags tag)
             local metadata=CyrusRecipeObject #(#("category",trimRight (trimLeft savedCategory.text)),#("tags",tags),#("description",savedDescription.text))
             local previous=expected
-            expected=cyrusRecipeEntryWrite path (CyrusRecipeObject #(#("name",trimRight (trimLeft savedName.text)))) metadata imagePath capture expected true
-            CyrusPresetReviseReady path previous expected
-            -- The previous image path remains immutable and readable across revisions.
-            local summary=cyrusRecipeInfo path
-            identity.text=filenameFromPath path+" | revision "+((summary[15] as integer) as string)
-            detailStatus.text="Saved details. Previous revision retained; Paint was not hydrated."
-            if CyrusRecipeBrowser!=undefined do try(CyrusRecipeBrowser.refreshEntry path)catch(detailStatus.text+=" Refresh the browser to see the change.")
+            local store=CyrusSharedStore(),ticket=store.BeginSave path expected (filenameFromPath path)
+            try (
+                cyrusRecipeEntryWrite ticket.RecipePath (CyrusRecipeObject #(#("name",trimRight (trimLeft savedName.text)))) metadata imagePath capture expected true
+                local job=CyrusSharedSaveJob store:store ticket:ticket managed:(store.PublishMetadata ticket previous)
+                CyrusSharedQueue job;CyrusSharedWatchSave job
+                commitDetails.enabled=false
+                detailStatus.text="Saving details; model and texture files are reused. Refresh after completion."
+            )catch(store.Discard ticket;throw())
         )catch(detailStatus.text=getCurrentException())
         on closeDetails pressed do destroyDialog editor
         on editor close do CyrusRecipeDetailEditor=undefined
@@ -614,16 +619,11 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
         fn saveEntry updating = (
             validRoot()
             if updating and (reviewPath=="" or reviewHash=="") do throw "Choose a saved recipe to update."
-            local data=captureSelection(),path=if updating then reviewPath else pathConfig.appendPath directory ((CyrusRecipeGet data "id")+".csrecipe.json")
-            local digest=cyrusRecipeEntryWrite path data (metadataValues()) thumbnailFile thumbnailCapture (if updating then reviewHash else "") false
-            if updating do reviewHash=digest
-            status.text=if updating then "Updated recipe and Paint. Previous revision retained." else "Saved new recipe and Paint. Models and terrain require binding on load."
-            if readyPreset.checked do (
-                status.text="Settings and Paint saved. Packaging the preset assets..."
-                CyrusPresetSaveReady root path digest captureBindings
-            )
-            if CyrusRecipeBrowser!=undefined do try(CyrusRecipeBrowser.refreshEntry path)catch(status.text+=" Refresh the library to see it.")
-            path
+            local data=captureSelection()
+            local job=CyrusSharedBeginSave root data (metadataValues()) thumbnailFile thumbnailCapture (if updating then reviewPath else "") (if updating then reviewHash else "") readyPreset.checked captureBindings
+            status.text="Saving to the shared library. Unchanged models and textures will be reused."
+            CyrusSharedWatchSave job
+            job.path
         )
         on editor open do (
             root=CyrusRecipeSaveOpenData[1];node=CyrusRecipeSaveOpenData[2];directory=CyrusRecipeSaveOpenData[3]
@@ -815,7 +815,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.86.9.2 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.87.3 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -823,6 +823,7 @@ fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:
     cyrusRecipeCheckStatic owner
     for edit in root.procModifiers() where cyrusEditRecipeHasData edit do throw "Apply Style currently requires a setup without authored Scatter Edit records. The existing edits are preserved."
     for member in (join #(owner) (owner.paintAreas as array)) where member.procRadiusIDs.count>0 do throw "Apply Style currently requires a destination without per-instance radius overrides. Existing overrides are preserved."
+    if owner.interactionCollider or owner.interactionReact or owner.interactionSourceIDs.count>0 or owner.interactionProxySourceIDs.count>0 do throw "Apply Style requires a layer without contact roles, collider links or reviewed contact definitions. The existing setup is preserved."
     if (cyrusRecipeInfo path)[11]!=digest do throw "The recipe changed. Refresh and review it again."
     local document=cyrusRecipeReadMetadata path,record=undefined
     for layer in (CyrusRecipeGet document "layers") where (CyrusRecipeGet layer "id")==recordID do record=layer
@@ -991,11 +992,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.86.9.2 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.87.3 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.86.9.2" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.86.9.2 gallery package."
+    if assemblyName.Version.ToString()!="0.87.3.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.87.3 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -1006,7 +1007,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         try(destroyDialog window)catch()
     )
     rollout browser "Cyrus Library" width:1000 height:680 (
-        local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false,modelCatalog=undefined,modelEntries=#()
+        local root,node,surface,sessionID="",directory="",customDirectory="",entries=#(),collections=#(),categories=#(),page=1,scan=0L,scanState="complete",bindingControls=false,modelCatalog=undefined,modelEntries=#(),modelScan=undefined
         dotNetControl panel "CyrusScatter.UI.LibraryPanel" pos:[0,0] width:1000 height:680
         timer scanTimer interval:250 active:false
         fn validRoot = (CyrusRecipeCheckRoot root node)
@@ -1019,12 +1020,14 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         )
         fn selectedEntry = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>entries.count then undefined else entries[i])
         fn selectedModel = (local i=panel.Gallery.SelectedIndex+1;if i<1 or i>modelEntries.count then undefined else modelEntries[i])
-        fn modelsActive = (panel.LibraryIndex==2)
+        fn modelsActive = (panel.LibraryIndex==2 or panel.LibraryIndex==4)
+        fn sharedCollection = (if panel.LibraryIndex==1 and matchPattern panel.Category pattern:"@:*" then substring panel.Category 3 -1 else if panel.LibraryIndex==4 then panel.Category else "")
+        fn queryCategory = (if panel.LibraryIndex==1 and matchPattern panel.Category pattern:"@:*" then "" else panel.Category)
         fn showSelected = (
             panel.HasSetup=root!=undefined and isValidNode node and node.baseObject==root
             if modelsActive() do (
                 local entry=selectedModel()
-                panel.DetailText=if entry==undefined then "Choose an individual model." else entry.Name+" | "+entry.Category+"\nMerge this model into the scene, or add it as a source to the selected Scatter layer."
+                panel.DetailText=if entry==undefined then "Choose an individual model." else entry.Name+" | "+(if panel.LibraryIndex==4 then "Shared model" else entry.Category)+"\nMerge this model into the scene, or add it as a source to the selected Scatter layer."
                 panel.SetSelectionActions (entry!=undefined) false false
                 return true
             )
@@ -1038,6 +1041,24 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
         )
         fn showPage = (
+            if panel.LibraryIndex==4 do (
+                if modelScan!=undefined do (
+                    if not modelScan.Terminal do (panel.SetPage 1 1 0 true;panel.StatusText="Reading the personal model catalog...";return false)
+                    scanTimer.active=false
+                    if modelScan.State!="complete" do (local error=if modelScan.State=="cancelled" then "Model catalog scan cancelled." else modelScan.Error;modelScan=undefined;throw error)
+                    modelScan=undefined
+                    panel.BeginCollections();for name in ((CyrusSharedStore()).ModelCollections()) do panel.AddCollection name;panel.EndCollections()
+                )
+                local store=CyrusSharedStore(),group=sharedCollection(),total=store.ModelCount panel.SearchText group,pages=amax 1 ((ceil (total/128.0)) as integer)
+                page=amax 1 (amin page pages);modelEntries=#();bindingControls=true;panel.IndividualModels=true;panel.Gallery.BeginPage()
+                for entry in (store.ModelPage panel.SearchText group page) do (
+                    append modelEntries entry;panel.Gallery.AddItem entry.Id entry.Name "Shared model" entry.Thumbnail entry.ThumbnailHash entry.ThumbnailBytes
+                )
+                panel.Gallery.EndPage (if modelEntries.count>0 then 0 else -1);bindingControls=false
+                panel.SetPage page pages total false;panel.LocationText="My models / "+(if group=="" then "All models" else group)
+                panel.StatusText="Models saved with your complete recipes appear here. Their geometry and textures are reused."
+                showSelected();return true
+            )
             if modelsActive() do (
                 if modelCatalog==undefined do throw "The installed individual model library is unavailable. Reinstall its matching Content folder."
                 scanTimer.active=false;modelEntries=#();bindingControls=true
@@ -1058,13 +1079,14 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
             panel.IndividualModels=false
             if scan==0 do return false
-            local result=cyrusRecipeLibraryPage scan panel.SearchText panel.Category page
+            local result=cyrusRecipeLibraryPage scan panel.SearchText (queryCategory()) page
             local pages=if panel.CollectionsView then result[12] else result[8]
-            if page>pages do (page=pages as integer;result=cyrusRecipeLibraryPage scan panel.SearchText panel.Category page)
+            if page>pages do (page=pages as integer;result=cyrusRecipeLibraryPage scan panel.SearchText (queryCategory()) page)
             scanState=result[1];scanTimer.active=scanState=="scanning"
             if not (CyrusPresetSameValues categories result[9]) do (
                 categories=result[9];panel.BeginCollections()
                 for i=1 to amin 128 categories.count do panel.AddCollection categories[i]
+                if panel.LibraryIndex==1 do for name in ((CyrusSharedStore()).Collections()) do panel.AddNamedCollection name ("@:"+name)
                 panel.EndCollections()
             )
             local previous=if panel.CollectionsView then collections else entries,newRows=if panel.CollectionsView then result[11] else result[10]
@@ -1088,8 +1110,17 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             showSelected();true
         )
         fn refresh = (
+            if modelScan!=undefined do (modelScan.Cancel();modelScan=undefined)
             page=1;entries=#();collections=#();categories=#()
+            if panel.LibraryIndex==1 do directory=CyrusRecipeDirectory()
             if panel.LibraryIndex==2 do directory=CyrusRecipeBundledDirectory (CyrusLibraryVersion())
+            if panel.LibraryIndex==4 do (
+                scanTimer.active=false;if scan!=0 do (try(cyrusRecipeLibraryCancel scan)catch();scan=0L)
+                modelEntries=#();bindingControls=true;panel.IndividualModels=true;panel.Gallery.BeginPage();panel.Gallery.EndPage -1;bindingControls=false
+                panel.SetSelectionActions false false true
+                modelScan=(CyrusSharedStore()).PrepareModels();scanTimer.active=true
+                return showPage()
+            )
             if modelsActive() do (
                 scanTimer.active=false
                 if scan!=0 do (try(cyrusRecipeLibraryCancel scan)catch();scan=0L)
@@ -1109,13 +1140,18 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             )
             panel.IndividualModels=false;modelEntries=#()
             panel.BeginCollections();panel.EndCollections()
-            scan=cyrusRecipeLibraryStart #(directory);scanTimer.active=true;showPage()
+            scan=if panel.LibraryIndex==1 then cyrusSharedLibraryStart directory (sharedCollection()) else cyrusRecipeLibraryStart #(directory)
+            if panel.LibraryIndex==1 do (
+                panel.BeginCollections();for name in ((CyrusSharedStore()).Collections()) do panel.AddNamedCollection name ("@:"+name);panel.EndCollections()
+            )
+            scanTimer.active=true;showPage()
         )
         fn navigate category overview = (
             bindingControls=true;panel.SetNavigation panel.LibraryIndex category overview
             entries=#();collections=#();page=1;bindingControls=false;showPage()
         )
         fn refreshEntry path = (
+            if panel.LibraryIndex==1 do return refresh()
             if scanTimer.active do (panel.StatusText="Saved. Refresh after the active scan completes.";return false)
             local io=dotNetClass "System.IO.Path"
             if toLower (io.GetFullPath (getFilenamePath path))==toLower (io.GetFullPath (directory+"\\")) then (cyrusRecipeLibraryUpdate scan path;showPage())
@@ -1131,7 +1167,8 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
                 local owner=root.selectedLayer()
                 if owner==undefined do throw "Select the destination Scatter layer first."
                 panel.ShowProgress ("Adding "+entry.Name+"...")
-                CyrusModelMerge modelCatalog entry owner:owner
+                if panel.LibraryIndex==4 then CyrusSharedImportModel entry owner:owner root:root else CyrusModelMerge modelCatalog entry owner:owner
+                if panel.LibraryIndex==4 do (panel.ShowProgress ("Preparing "+entry.Name+" for the captured layer. See the import progress window.");return true)
                 root.bindNativeUI()
                 panel.ShowNotice ("Added "+entry.Name+" to "+(root.layerCaption owner)+". "+(if root.updateMode==1 then "Press Update scatter when ready." else "The layer will update in Live mode.")) true
                 return true
@@ -1163,26 +1200,67 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
                     local entry=selectedModel()
                     if entry==undefined do throw "Select an individual model."
                     panel.ShowProgress ("Merging "+entry.Name+"...")
-                    CyrusModelMerge modelCatalog entry
-                    panel.ShowNotice ("Merged "+entry.Name+" into the scene.") true
+                    if panel.LibraryIndex==4 then CyrusSharedImportModel entry else CyrusModelMerge modelCatalog entry
+                    if panel.LibraryIndex==4 then panel.ShowProgress ("Preparing "+entry.Name+". See the import progress window.") else panel.ShowNotice ("Merged "+entry.Name+" into the scene.") true
                 )
                 "home":(bindingControls=true;panel.SearchText="";bindingControls=false;navigate "" true)
                 "search":(if panel.SearchText!="" and panel.CollectionsView do panel.SetNavigation panel.LibraryIndex "" false;entries=#();collections=#();page=1;showPage())
-                "collection":(entries=#();collections=#();page=1;showPage())
+                "collection":(entries=#();collections=#();page=1;if panel.LibraryIndex==1 then refresh() else showPage())
                 "library":(
                     if panel.LibraryIndex==3 and customDirectory=="" then (directory=CyrusRecipeDirectory();panel.SetNavigation 1 "" true;refresh();panel.StatusText="Choose a custom library folder.")
                     else (directory=if panel.LibraryIndex==1 then CyrusRecipeDirectory() else if panel.LibraryIndex==2 then CyrusRecipeBundledDirectory (CyrusLibraryVersion()) else customDirectory;refresh())
                 )
                 "folder":(local chosen=getSavePath caption:"Choose Cyrus recipe library" initialDir:directory;if chosen!=undefined do (customDirectory=chosen;directory=chosen;panel.SetNavigation 3 "" true;refresh()))
+                "library-import":(
+                    local archive=getOpenFileName caption:"Import shared library" types:"Cyrus shared library (*.cyruslib)|*.cyruslib|"
+                    if archive!=undefined do CyrusSharedWatchOperation ((CyrusSharedStore()).Import archive)
+                )
+                "library-import-copy":(
+                    local archive=getOpenFileName caption:"Import conflicting recipes as copies" types:"Cyrus shared library (*.cyruslib)|*.cyruslib|"
+                    if archive!=undefined do CyrusSharedWatchOperation ((CyrusSharedStore()).Import archive true)
+                )
+                "library-remove":(
+                    local store=CyrusSharedStore()
+                    if panel.LibraryIndex==4 then (
+                        local entry=selectedModel();if entry==undefined do throw "Select one of My models."
+                        if queryBox "Remove this model card? Shared data and saved scenes will be retained." title:"Shared library" do (store.RemoveModel entry.Id;refresh())
+                    ) else (
+                        if panel.LibraryIndex!=1 or panel.CollectionsView do throw "Select one of My recipes or My models."
+                        local entry=selectedEntry();if entry==undefined do throw "Select a recipe."
+                        if queryBox "Remove this recipe card? Shared data and saved scenes will be retained." title:"Shared library" do (store.RemoveRecipe (store.RecipeId entry[1]);refresh())
+                    )
+                )
+                "library-export":(
+                    local archive=getSaveFileName caption:"Export shared library" filename:"My library.cyruslib" types:"Cyrus shared library (*.cyruslib)|*.cyruslib|"
+                    if archive!=undefined do CyrusSharedWatchOperation ((CyrusSharedStore()).Export (sharedCollection()) archive)
+                )
+                "library-collect":(
+                    local store=CyrusSharedStore(),recipes="[]",models="[]"
+                    if panel.LibraryIndex==4 then (local entry=selectedModel();if entry==undefined do throw "Select one of My models first.";models="[\""+entry.Id+"\"]") else (
+                        if panel.LibraryIndex!=1 or panel.CollectionsView do throw "Select one of My recipes or My models first."
+                        local entry=selectedEntry();if entry==undefined do throw "Select a recipe first.";recipes="[\""+(store.RecipeId entry[1])+"\"]"
+                    )
+                    local name=CyrusSharedAskName()
+                    if name!=undefined and name!="" do CyrusSharedWatchOperation (store.AddToCollectionFromJson name recipes models)
+                )
+                "library-storage":CyrusSharedOpenStorage()
+                "library-location":CyrusSharedConfigureRoot()
+                "library-model-name":(
+                    if panel.LibraryIndex!=4 do throw "Select one of My models first."
+                    local entry=selectedModel();if entry==undefined do throw "Select a saved model."
+                    local name=CyrusSharedAskName initial:entry.Name caption:"Model name:"
+                    if name!=undefined and name!="" do CyrusSharedWatchOperation ((CyrusSharedStore()).RenameModel entry.Id name)
+                )
+                "library-model-save":CyrusSharedSaveModels()
                 "refresh":refresh()
-                "cancel":(cyrusRecipeLibraryCancel scan;panel.StatusText="Stopping library scan...")
+                "cancel":(if modelScan!=undefined then modelScan.Cancel() else cyrusRecipeLibraryCancel scan;panel.StatusText="Stopping library scan...")
                 "previous":(page-=1;showPage())
                 "next":(page+=1;showPage())
                 "view":(
                     setINISetting (CyrusRecipeViewPreferences()) "View" "Mode" (if panel.ViewIndex==1 then "list" else "tiles")
                     setINISetting (CyrusRecipeViewPreferences()) "View" "Size" ((#("small","medium","large"))[panel.ZoomIndex+1])
                 )
-                "save":CyrusOpenRecipeSave root (if panel.LibraryIndex==2 then CyrusRecipeDirectory() else directory)
+                "save":CyrusOpenRecipeSave root (CyrusRecipeDirectory())
                 "update":(
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
                     CyrusOpenRecipeSave root directory path:entry[1] expected:entry[2][11]
@@ -1217,6 +1295,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         on scanTimer tick do try(showPage())catch(scanTimer.active=false;try(cyrusRecipeLibraryCancel scan)catch();panel.StatusText=getCurrentException())
         on browser resized size do (panel.width=amax 1 size.x;panel.height=amax 1 size.y)
         on browser close do (
+            if modelScan!=undefined do modelScan.Cancel()
             scanTimer.active=false;if scan!=0 do try(cyrusRecipeLibraryCancel scan)catch()
             panel.Dispose()
             CyrusRecipeBrowser=undefined

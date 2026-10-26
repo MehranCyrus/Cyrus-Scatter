@@ -1,6 +1,7 @@
 #include "presets.h"
 #include <nlohmann/json.hpp>
 #include <cmath>
+#include <algorithm>
 #include <set>
 #include <stdexcept>
 
@@ -138,5 +139,29 @@ std::string serialize(const Document& d){
     }}
     const auto text=Json{{"format","cyrus.settings-preset"},{"version",3},{"category",d.category},{"name",d.name},{"values",values}}.dump(2)+"\n";
     require(text.size()<=maxBytes,"Preset exceeds 64 KiB");return text;
+}
+Document preparedCurve(const Document& source,bool targetMultiplier,
+    const std::vector<double>& evaluated,const std::vector<std::array<double,8>>& graph){
+    validate(source);
+    require(curve(source.category),"Curve preparation requires a curve preset");
+    require(source.category=="scale_curve"||!targetMultiplier,"Density target cannot use multiplier units");
+    require(!source.multiplier||targetMultiplier,"This target requires a unit-range curve");
+    require(evaluated.size()==257,"Native curve evaluation requires exactly 257 samples");
+    require(graph.size()>=2&&graph.size()<=257,"Native curve graph exceeds its point bound");
+    Document result=source;result.multiplier=targetMultiplier;result.graph=graph;result.samples.clear();
+    result.samples.reserve(257);
+    for(std::size_t i=0;i<evaluated.size();++i){
+        require(std::isfinite(evaluated[i]),"Native curve evaluation is non-finite");
+        const double actual=targetMultiplier?std::max(0.,evaluated[i]):std::clamp(evaluated[i],0.,1.);
+        require(actual<=100.,"Native scale curve exceeds its supported multiplier domain");
+        const double position=static_cast<double>(i)*(source.samples.size()-1)/256.;
+        const auto lo=static_cast<std::size_t>(std::floor(position));
+        const auto hi=std::min(source.samples.size()-1,lo+1);
+        const double expected=source.samples[lo]+(source.samples[hi]-source.samples[lo])*(position-lo);
+        require(std::abs(actual-expected)<=0.0001*std::max(1.,std::abs(expected)),
+            "Preset handles do not match its sampled curve");
+        result.samples.push_back(actual);
+    }
+    validate(result);return result;
 }
 }

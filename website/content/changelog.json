@@ -1,14 +1,82 @@
 {
-  "reviewed": "2026-10-23",
+  "reviewed": "2026-10-26",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. Historical work-state notes retain their original review date. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.87.3",
+      "date": "2026-10-26",
+      "title": "Library startup corrected",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-test delivery; runtime evidence retains the exact host/build scope in its report.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Corrects default Library settings lookup and saving the selected folder. Layers > Recipes opens all 96 installed model cards in the scoped Max 2027 check."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md"
+      ]
+    },
+    {
+      "version": "0.87.2",
+      "date": "2026-10-26",
+      "title": "Tree colliders and physical preparation settings",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-test delivery; runtime evidence retains the exact host/build scope in its report.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Separate lightweight trunk/custom colliders keep detailed visual trees. Unit handling and folded flower/leaf preparation improve; unusual exposed roots still require a custom closed mesh."
+        }
+      ],
+      "evidence": [
+        "docs/plans/scatter-interactions-garden-20261025/DELIVERY_0872.md"
+      ]
+    },
+    {
+      "version": "0.87.1",
+      "date": "2026-10-26",
+      "title": "One shared model and texture library",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-test delivery; runtime evidence retains the exact host/build scope in its report.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Save complete static recipes, reuse standalone models, organize collections and share verified bundles with stored mesh/image bytes reused. Contact roles and prepared guides remain scene-owned."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/DELIVERY_0871.md"
+      ]
+    },
+    {
+      "version": "0.87.0",
+      "date": "2026-10-25",
+      "title": "Reviewed rooted plant contact",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-test delivery; runtime evidence retains the exact host/build scope in its report.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Collider and React layer roles fit prepared plants locally around nearby objects, with reversible covered roots and individual Cyrus Edit movement. Static contact does not provide wind or dynamic physics."
+        }
+      ],
+      "evidence": [
+        "docs/plans/scatter-interactions-garden-20261025/DELIVERY_0870.md"
+      ]
+    },
     {
       "version": "0.86.9.2",
       "date": "2026-10-23",
       "title": "Native Modify layout restored",
       "era": "recent",
       "legacy": false,
-      "note": "Current user-test build. Max 2027 tested; Max 2024/2026 built and untested. Schema 59, recipe 8, Edit storage 2 and optional content 0.86.7 are retained.",
+      "note": "Historical 0.86.9.2 delivery; retains its original Max 2027 qualification and older-host build-only scope.",
       "changes": [
         {
           "kind": "Fixed",

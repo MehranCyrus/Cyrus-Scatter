@@ -1,4 +1,14 @@
-# Cyrus Scatter 0.86.9.2 — artist workflow
+# Cyrus Scatter 0.87.3 — artist workflow
+
+The [0.87.3 startup hotfix](plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md) corrects the red undefined-function banner when opening **Layers > Recipes** and the same lookup when remembering a library folder. Use the [three-host EXE](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md), or run its Max 2027 MZP through **Scripting > Run Script**, then restart Max. New 2024/2026 packages have native checks; current runtime evidence remains Max 2027. Existing schema-61 scenes, library formats and content are retained.
+
+The [0.87.2 Interactions guide](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0872.md) covers repaired physical preparation distances, reviewed Arthropodium/grass guides and **Build trunk colliders** / **Pick closed collider mesh**. Full visual trees stay separate from collision geometry. Run the matching Max 2027 MZP through **Scripting > Run Script**, restart, then open the supplied small-scene copy. Save schema-61 scenes as copies; the original miniature scene scale is retained. [Tests and limits](plans/scatter-interactions-garden-20261025/DELIVERY_0872.md).
+
+The [0.87.1 shared-library guide](plans/preset-gallery-improvements/SHARED_LIBRARY_ARTIST_GUIDE_0871.md) covers Save Recipe, My models, collections, `.cyruslib` sharing and storage management. The [delivery](plans/preset-gallery-improvements/DELIVERY_0871.md) has separate matched Max 2024/2026/2027 installers and scoped qualification. Supported complete saves own their static model/image dependencies and load them automatically in a fresh scene. Portable textures require normal default OCIO with matching saved colour settings.
+
+The preceding **Max 2027 Interactions trial** adds Collider/React layer roles, reviewed shared plant guides, local bending and reversible covered roots. Follow the [Interactions artist guide](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0870.md) and [delivery report](plans/scatter-interactions-garden-20261025/DELIVERY_0870.md) for the installer, saved terrace scenes, measured costs and supported profiles. Run its matching MZP through **Scripting > Run Script**, then restart Max. This package updates Scatter for Max 2027 only; Analyzer and library content retain their independent versions. Save schema 60 scenes as copies. Physical Undo/Redo, bend feel and wider production sources remain artist checks.
+
+The following 0.86.9.2 compatibility installation details are historical; its EXE does not install 0.87.0.
 
 The 0.86.9.2 EXE includes distinct **Max 2024, 2026 and 2027** builds and **Surface Analyzer 0.14.2**. **This patch was tested only in Max 2027; the 2024/2026 builds are untested.** The [delivery report](plans/edit-instances/DELIVERY_08692.md) records the density controls, native column lifecycle, live Edit movement and preservation checks. Existing supported edits are preserved; save upgraded scenes as new copies because plugins older than 0.86.9 cannot read source-aware Edit data.
 
@@ -75,7 +85,7 @@ channels retain the previous complete display until repaired. Source render
 materials remain intact. The supplied library requires compatible Corona and,
 where used, Forest map plug-ins in each Max version.
 
-The retained 0.86.5 library/Amount baseline fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. Its [historical delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) retains the original 0.87.0 labels, tests and limits. The [current delivery](plans/source-clearance/DELIVERY_08682.md) records current packages and focused qualification. The [0.86.7.2 report](plans/preset-gallery-improvements/DELIVERY_08672.md) preserves its original package and host evidence; [0.86.7](plans/preset-gallery-improvements/DELIVERY_0867.md) retains the textured-preview delivery details.
+The retained 0.86.5 library/Amount baseline fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. Its [historical delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) retains the original 0.87.0 labels, tests and limits. The [historical source-clearance delivery](plans/source-clearance/DELIVERY_08682.md) records its original packages and focused qualification. The [0.86.7.2 report](plans/preset-gallery-improvements/DELIVERY_08672.md) preserves its original package and host evidence; [0.86.7](plans/preset-gallery-improvements/DELIVERY_0867.md) retains the textured-preview delivery details.
 
 Placement computation and storage remain native C++. The one-million controller work limit still applies, and failed updates retain the previous complete result and Undo. Existing grids, Bands, orientation, Paint and slope/altitude controls remain available. The [library workflow](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md) explains selected-terrain loading and complete Save. Further roadmap work remains paused.
 
@@ -103,13 +113,19 @@ Use the compact Add, Copy, Remove, Up and Down actions. Copy includes surfaces a
 
 ## Surfaces, models and optional containers
 
+### Receiver lists and conditional stability
+
 The Surfaces list belongs to the selected layer. Use + to pick a receiver, the list action to choose by name, and remove to unlink selected receivers. A plane and sphere can belong to one layer. Another layer can have different receivers or reuse the same ones.
 
 **Adding a receiver preserves the base placement on unchanged receivers.** In Density mode, below the population cap, the new surface gets its own candidates. In Fixed Total mode, the same total is shared across the surfaces: existing surfaces may lose plants, while surviving base candidates retain their positions, models, rotation and scale. Reordering or renaming a receiver does not reseed it. Unlinking and restoring the same node restores its stream; a replacement with the same name is a new receiver.
 
 This does not freeze all accepted output. A cap can redistribute quotas; changed masks, spacing, cleanup or protected edits can affect acceptance. Relax can move plants when their own receiver's count or neighborhood changes. Editing the receiver's geometry/topology is outside the unchanged-surface guarantee.
 
-**New setups use schema 59.** Schema-58 scenes have an explicit Undoable clearance upgrade; save an upgraded copy and preserve the original. Earlier development formats remain unsupported. Current settings use unit-aware distances; use saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported binding conversion is rejected rather than clearing authored edits.
+### Saved scene compatibility
+
+**New setups use schema 61.** Schema-60 preparation distances need explicit review/repair; SI minimums and source-bound proxy links persist in the new scene format. Schema-59 scenes open with Interactions off. Schema-58 scenes retain the explicit Undoable clearance upgrade; save an upgraded copy and preserve the original. Earlier development formats, including schema-54 model-set/stroke setups, remain unsupported. This saved-scene boundary is separate from importing supported recipe-file versions into the shared library. Current settings use unit-aware distances; use saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported binding conversion is rejected rather than clearing authored edits.
+
+### Models and Point placeholders
 
 Removing the last model produces a valid empty layer after Update in Manual, or automatically in Live. Amount changes remain valid while empty, and adding a replacement resumes normal validation. A failed update retains the last complete result; intentionally empty output clears it.
 
@@ -122,6 +138,8 @@ Visible Source settings expose weight, scale, radius mode, vertical offset, Foll
 **Models & Points** uses the **+** below the source list to add a model. **Add Point** sits beside **Make point**. The former Add currently selected scene objects action is removed. Names, identification colors, weight, scale, collision radius, Follow Scale and orientation are visible in this section. **Pick object** is enabled for one selected Point or model and replaces that row with the picked object; **Make point** is enabled for one selected model. Both keep the source row identity, labels, colors, weights, transforms and Band assignments. Make point retains the registered scene object reference to prevent automatic containers from registering a duplicate; the Point uses no model geometry, and the scene object is not deleted. Stored Auto settings are inactive for Points; Manual radius remains editable. Pick object can restore the same registered model or choose another unused model. Assignment groups has its own disclosure. Point and Empty rows are distinct placeholder source kinds. A Point row creates accepted placement markers without final rendered geometry; replacing it with a model turns that row into an ordinary model source. An Empty row is an intentional weighted gap in Candidate budget mode. Accepted target rejects positive-weight Empty rows rather than endlessly refilling gaps: use Candidate budget, Point placeholders, or zero/remove the Empty weight. Points are permitted in Accepted target, so accepted counts are not necessarily visible-model counts. These source rows are different from Analyzer sample points.
 
 For point-only Spline bands, add and name Point rows in Models & Points, then select them under Layout > Spline bands > Assign by **Models / Points**. Assignment groups remain available for choosing several source types together. Use **Placement points** display for one marker per accepted point. No model or Paint Area is required; a receiver and closed spline still define the placement domain. Point placeholders do not produce final rendered geometry. Point names, identification colors and explicit band choices use saved row identities. Replacing a Point preserves its row; removing another row cannot redirect the choice. Copying a layer includes its band settings and explicit choices.
+
+### Source containers and shared palettes
 
 **Source containers** is a separate collapsible section. Choose Manual models, Layer containers or Shared containers. Containers are optional palettes. Point and Empty rows stay active independently of rectangles; actual models are activated by their pivots. Collection is distinct from layout assignment groups. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Source containers or in the rectangle’s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The selected-container Modify view edits collection properties; select the Scatter controller for full layer and planting settings. The floating layer editor and source-to-Band navigation button have been removed. Band membership labels and tooltips remain informational.
 
@@ -170,9 +188,11 @@ conflicts. Geometry can still overlap because those checks are not exact mesh
 collision. **Advanced**
 keeps selected-instance radius overrides and accepted-placement cleanup.
 
-Scenes saved with schema 58 show **Upgrade scene** with the installed version before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Scenes already upgraded to schema 59 in 0.86.8 need no additional upgrade. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. The content library retains its own revision; it does not need rebuilding for this change.
+Scenes saved with schema 58 show **Upgrade scene** with the installed version before calculation. The upgrade is Undoable and preserves authored identities and settings. Save an upgraded copy; schema-58 runtimes reject the new schema. Schema-59 scenes open in 0.87.0 with Interactions off; schema 60 stores prepared contact definitions when saved. New complete recipes use format 8, with inherited policies added when supported earlier recipes are imported. Recipe export rejects prepared definitions or active contact roles instead of omitting them. The content library retains its own revision; it does not need rebuilding for this change.
 
 ## Layout and Amount
+
+### Planting generators
 
 Layout is directly after Models. **Planting positions** chooses the generator; **Source assignment** below it chooses models independently.
 
@@ -186,6 +206,8 @@ Layout is directly after Models. **Planting positions** chooses the generator; *
 For grids, set **Origin X/Y**, **Heading** and optional **Jitter %**. The frame is world XY and projects down onto the highest hit of each receiver. It stays fixed when terrain bounds or masks change. Zero jitter keeps exact lattice positions. Completely vertical receivers have no usable projected surface.
 
 Grid pitch determines population. Count/Density and target/refill controls are inactive; masks and collision rules remove cells without adding replacements. Paint, Bands and normal controls keep their existing roles. Analyzer Single/EdgeRow provides its own positions and cannot be combined with grids. Grid cells over holes still count toward the shared one-million work limit; excessive bounds retain the preceding result and request larger spacing or a smaller domain. Authored CS Edit/radius bindings still require explicit reset/restore when generation geometry changes.
+
+### Source assignment and Bands
 
 Source assignment offers:
 
@@ -204,9 +226,13 @@ For Bands, add a closed Path, add an inside/outside Band, and explicitly choose 
 
 Distances remain world-space widths when the Path is scaled. **Rounded** uses distance to the original border segments. **Sharp** uses bounded miter offsets; acute corners have a miter limit, and overly narrow or complex requests may require simplification. The preview shows the admitted contours rather than promising unlimited corner precision.
 
+### Count, density and work limits
+
 With Surface random, Amount offers fixed Count or area Density. The seed makes a given recipe reproducible. Sampling can use a texture mask. Candidate budget makes a bounded candidate request; restrictions can leave fewer accepted plants. Accepted target makes additional bounded attempts. A shortfall can be correct when spacing, boundaries or masks leave insufficient room. Increasing retry work cannot make an impossible arrangement fit.
 
 Count accepts up to **1,000,000** per population. All populations on one controller share a **1,000,000-candidate work limit**, including retry and protected-edit requirements. Exceeding the shared limit reports an error and keeps the preceding complete result. This limit is separate from the viewport display budget.
+
+### Image masks and projected mapping
 
 **Image / pattern density** and **Surface density** are independent. White permits plants, black excludes them and gray thins them. Enabled masks multiply with Paint and terrain eligibility before spacing/collision limits.
 
@@ -221,6 +247,8 @@ A selected bitmap shows the complete tile. Procedural maps now show a small cach
 **Show mask** displays Image, Mesh or Combined density as a bounded surface overlay. It stays enabled during relevant edits, including Data Channel changes. **Hide mask** stops it. Buttons share a row when space permits; narrow panels stack controls to keep captions readable. Opacity and optional tiny/small/large markers affect visualization only. Combined is eligibility before spacing, collision and count limits. A failed same-layer refresh marks the retained mask stale; a failed owner switch never displays another layer's cached mask. Manual placements remain at their last Update.
 
 Image masks run before authored Edit. Removing eligibility keeps an edit dormant; restoring eligibility restores it. Resolution changes alone preserve Edit bindings. Live procedural maps remain editable in the scene. Arbitrary procedural graphs are retained in Max scenes but are not serialized by the portable package adapter. Receiver-aware graphs cannot be baked into a context-free tile. For projected image workflows, portable Save accepts a supported static RGB/RGBA PNG or explicit **Bake portable snapshot**: a linear 16-bit density tile with time/resolution provenance. This snapshot preserves scalar density, not the editable procedural producer; Undo restores the live map. Other live image formats can also be explicitly baked for portable Save. External bitmap edits follow Max's reload/notification behavior; there is no idle directory polling.
+
+### Surface fields and channel masks
 
 **Surface density > Mesh channel** reads numeric values directly from each receiving
 surface's evaluated modifier stack. It works with Random, Clusters, Spline Bands,
@@ -388,6 +416,8 @@ Candidate Relax moves candidates within its bounded settings. Cleanup removes un
 
 ## Preview, updates, output and diagnostics
 
+### Display and viewport limits
+
 Point Cloud, Proxy and Mesh serve different preview costs. Layer/model/Band identification colors help identify planting in simplified previews. **Color by Bands** uses the accepted Band owner, including when one source belongs to several Bands. These identification colors do not replace source render materials. Display limits can show fewer instances or faces than the accepted population. A displayed count is not the full output count. Box, Sphere and Pyramid proxies use retained instanced geometry. In **Viewport & render**, **Navigating** applies while moving the view or holding an interaction; **Idle** returns after a short pause. Point Cloud and Centres limits count points, Proxy limits count instances, and Mesh limits count triangles across this controller's visible layers. Both fields accept **0 = unlimited**. These caps affect the preview only; Update and final render retain the full accepted population.
 
 The cache prepares for both settings within its resource allowance, so navigation can be lower or higher than idle. An oversized Point Cloud request uses a bounded sample and reports the memory reduction; switching from Proxy or Mesh returns to points even with both point limits at zero. Current-publication representations are reused across mode changes. Mesh switches to cached boxes for sources that cannot fit their artist-selected triangle share. Zero does not disable memory/input safeguards. Cached geometry counts can exceed the drawn amount. Changing a display limit or moving the camera does not publish pending Manual edits.
@@ -398,11 +428,15 @@ Within Spline Bands, **Preview Falloff** shows bounded density samples on the re
 
 In Manual mode, field feedback can follow edited or animated Paths/receivers while plants and collision radii stay at the last Update. The label then reads **Pending field; plants from last Update**. Toggling feedback or selecting another Band does not publish placements. An uncached Mesh/Point Cloud mode cannot consume changed source geometry alongside the old publication; it retains the previous display and requests Update.
 
+### Manual and Live publication
+
 Manual stores edits until an explicit calculation action. **Update scatter**, **Refresh preview** and **Refresh areas / preview** update the whole Scatter setup and can publish pending Manual edits. **Read cached statistics**, **Read recording status** and **Refresh fields** only read the existing state. Passive browsing, area/layer selection and unrelated animation must not publish pending placements. Live responds to relevant input changes. Display-only settings can refresh presentation without changing placement generation. A failed successor retains the previous complete result and exposes an error.
 
 **Radii / layer**, **Show All Radii**, per-source **Show Radius** and the XY/3D display choice refresh only the preview. Their Undo/Redo leaves pending Manual population/radius edits unapplied. XY draws a circle; 3D draws three perpendicular circles using the published spatial radius. Radius and field lines share a bounded cached display bundle. The display metric does not change the independently chosen metric of a spacing rule.
 
 Automatic final render uses the render bridge; exact output and baking use source mappings and placement transforms. A successful preview does not certify every renderer/material/export path. Remove baked output removes owned baked nodes, not original sources.
+
+### Statistics and diagnostics
 
 Statistics identifies the selected layer by its name and describes its last completed calculation: requested count, candidates considered for spacing, accepted placements, rejections, protected conflicts and target shortfall. Prepared cloud points, centres, proxy instances or mesh instances describe the cached representation. They are not current-frame draw counts; viewport limits can display less detail without changing the accepted planting.
 
@@ -410,7 +444,9 @@ Statistics identifies the selected layer by its name and describes its last comp
 
 Diagnostic recording is local, bounded and off by default. Start, Stop and Save report are separate from sending a report anywhere.
 
-Surface Analyzer is independently versioned at 0.14.1 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; general curved-surface scattering remains separate; the surface brush is a separate system and supports the curved receivers described above. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
+### Analyzer freshness
+
+Surface Analyzer is independently versioned at 0.14.2 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; general curved-surface scattering remains separate; the surface brush is a separate system and supports the curved receivers described above. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
 
 If linked analysis is out of date, Scatter keeps its previous complete result and names the Analyzer that needs updating. Run **Update Analyzer / Analyze**, then **Update scatter** when Scatter is Manual. This applies to Layout, Analyzer Area and Analyzer falloff dependencies. Freshness is saved with the guides, so reopening does not make pending analysis current. Older Analyzer publications need one explicit Analyze with the matching updated Analyzer script; the new Scatter script must be distributed with that script.
 

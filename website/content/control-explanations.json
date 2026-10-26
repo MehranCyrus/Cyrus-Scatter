@@ -2715,5 +2715,131 @@
       "AminScatter/tools/ui/templates/unified-core.ms:4547",
       "AminScatter/tools/ui/templates/viewport-memory.ms:1"
     ]
+  },
+  "layer.interactionsUI.colliderCheck": {
+    "label": "Collider",
+    "help": "Use the accepted instances in this layer as obstacles. Move an individual stone with Cyrus Edit to update nearby reacting plants.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:3"
+    ]
+  },
+  "layer.interactionsUI.reactCheck": {
+    "label": "React to colliders",
+    "help": "Bend prepared plant models near collider layers. Analyze and review each unique source once.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:4"
+    ]
+  },
+  "layer.interactionsUI.rootsCheck": {
+    "label": "Hide roots under colliders",
+    "help": "Hide rooted groups below a collider's footprint within the plant's reach, or inside its solid base. When off, covered groups retain their original shape. Nearby uncovered roots stay planted and react.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:5"
+    ]
+  },
+  "layer.interactionsUI.gapSpin": {
+    "label": "Contact gap",
+    "help": "Additional visible clearance beyond the collider surface, up to 10 cm. Zero uses the prepared stem thickness only.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:6"
+    ]
+  },
+  "layer.interactionsUI.stiffnessSpin": {
+    "label": "Stem stiffness",
+    "help": "Resistance used when a guide needs iterative refinement. The fast contact fit preserves original guide curves by rotation; this setting does not change those rotations.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:7"
+    ]
+  },
+  "layer.interactionsUI.proxyList": {
+    "label": "Collider shape",
+    "help": "Mesh requires a closed manifold source. Box is an explicit conservative approximation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:8"
+    ]
+  },
+  "layer.interactionsUI.modelList": {
+    "label": "Plant source to prepare",
+    "help": "Select a source for guide preparation or a separate collision mesh. Instances reuse the same source definition.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:9"
+    ]
+  },
+  "layer.interactionsUI.buildTrunksButton": {
+    "label": "Build trunk colliders",
+    "help": "Build missing lightweight closed trunks. Full visual trees stay unchanged; review the result. Pick a closed custom mesh for unusual shapes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:10"
+    ]
+  },
+  "layer.interactionsUI.pickColliderButton": {
+    "label": "Pick closed collider mesh",
+    "help": "Bind a separate closed mesh to the selected visual source. Its relative transform defines every instance's collision shape.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:11"
+    ]
+  },
+  "layer.interactionsUI.reviewColliderButton": {
+    "label": "Review collider",
+    "help": "Show a frozen collision mesh at a published instance; the overlay is not the authored proxy.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:12"
+    ]
+  },
+  "layer.interactionsUI.repairSettingsButton": {
+    "label": "Repair preparation settings",
+    "help": "Convert legacy distances to metres; repair invalid values to 5 mm / 5%. Scene geometry is not rescaled.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:13"
+    ]
+  },
+  "layer.interactionsUI.analyzeButton": {
+    "label": "Analyze model",
+    "help": "Infer stem guides and attachments for this source. Inspect the review before accepting; unresolved geometry requires authored guides.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:14"
+    ]
+  },
+  "layer.interactionsUI.acceptButton": {
+    "label": "Accept reviewed guides",
+    "help": "Accept only after inspecting root positions, branch directions and foliage attachments.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:15"
+    ]
+  },
+  "layer.interactionsUI.clearButton": {
+    "label": "Hide guide review",
+    "help": "Remove temporary review overlays without deleting authored models or colliders.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:16"
+    ]
+  },
+  "layer.interactionsUI.applyButton": {
+    "label": "Apply interactions",
+    "help": "Apply contact settings to the last completed scatter result. Pending Manual amount and seed edits wait for Update scatter.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:17"
+    ]
+  },
+  "layer.interactionsUI.validateButton": {
+    "label": "Validate full visible mesh",
+    "help": "Independently check complete plant triangles near colliders. This slower check also reports root drift and stem/leaf strain.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:18"
+    ]
+  },
+  "layer.interactionsUI.minimumSpin": {
+    "label": "Minimum stem length",
+    "help": "Minimum stem length in the source model before instance scaling. Stored in metres, displayed in scene units; supports 1–100 mm.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:19"
+    ]
+  },
+  "layer.interactionsUI.foliageSpin": {
+    "label": "Preview leaves / blades",
+    "help": "Draw a stable sample of complete leaves or grass blades in Mesh preview. Stem tubes use fewer rings. Full render and Bake retain all visible source faces.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/interactions-ui.ms:20"
+    ]
   }
 }

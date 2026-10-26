@@ -67,6 +67,25 @@ Value* cyrusReceiverPlan_cf(Value** a,int n){
     vl.result->append(Integer::intern(int(plan.budget)));vl.result->append(Integer::intern(int(plan.attempts)));vl.result->append(plan.capped?&true_value:&false_value);
     return_value(vl.result);
 }
+
+def_visible_primitive(cyrusReceiverPlanSummaryVersion,"cyrusReceiverPlanSummaryVersion");
+Value* cyrusReceiverPlanSummaryVersion_cf(Value**,int n){check_arg_count(cyrusReceiverPlanSummaryVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusReceiverPlanSummary,"cyrusReceiverPlanSummary");
+Value* cyrusReceiverPlanSummary_cf(Value** a,int n){
+    check_arg_count(cyrusReceiverPlanSummary,5,n);auto* input=groupArray(a[0]);
+    if(input->size>128)throw RuntimeError(_T("Receiver allocation summary exceeds its input bound"));
+    std::vector<cyrus::receivers::Input> entries;entries.reserve(input->size);
+    for(int i=0;i<input->size;++i){auto* r=groupArray(input->data[i]);if(r->size!=4)throw RuntimeError(_T("Invalid receiver allocation input"));
+        const int slot=r->data[0]->to_int(),required=r->data[3]->to_int();if(slot<1||required<0)throw RuntimeError(_T("Invalid receiver slot/requirement"));
+        entries.push_back({unsigned(slot-1),proceduralID(r->data[1]),r->data[2]->to_double(),unsigned(required)});}
+    cyrus::receivers::Plan summary;
+    try{summary=cyrus::receivers::allocation(std::move(entries),unsigned(a[1]->to_int()),a[2]->to_double(),unsigned(a[3]->to_int()),unsigned(a[4]->to_int()));}
+    catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+    unsigned pool=0;for(const auto& r:summary.receivers)pool+=r.pool;
+    one_typed_value_local(Array* result);vl.result=new Array(4);
+    for(auto value:{summary.budget,summary.attempts,pool})vl.result->append(Integer::intern(int(value)));
+    vl.result->append(summary.capped?&true_value:&false_value);return_value(vl.result);
+}
 def_visible_primitive(cyrusReceiverOffsetRows,"cyrusReceiverOffsetRows");
 Value* cyrusReceiverOffsetRows_cf(Value** a,int n){
     check_arg_count(cyrusReceiverOffsetRows,2,n);const int offset=a[1]->to_int();if(offset<0)throw RuntimeError(_T("Invalid receiver face offset"));

@@ -1,4 +1,5 @@
 #include "asset_package.h"
+#include "prepared_package_leases.h"
 #include "asset_mesh.h"
 #include "asset_bitmap.h"
 #include "recipe_store.h"
@@ -49,6 +50,24 @@ Json shader(const char* kind,const char* id){
 }
 }
 int main(){std::filesystem::path folder;try{
+    {
+        assets::PreparedPackageLeases leases;
+        auto make=[](std::uint64_t bytes=1){auto p=std::make_shared<assets::PreparedPackage>();p->payloadBytes=bytes;
+            p->metadata={{"graph",{{"nodes",Json::array({Json::object()})},{"maps",Json::array()},{"materials",Json::array()},{"splines",Json::array()}}}};return p;};
+        auto worker=make();std::weak_ptr<const assets::PreparedPackage> lifetime=worker;
+        const auto first=leases.retain(worker);worker.reset();check(!lifetime.expired());
+        const auto second=leases.retain(make()),third=leases.retain(make());
+        check(first!=second&&second!=third&&assets::PreparedPackageLeases::isLease(first)&&leases.size()==3);
+        rejects([&]{leases.retain(make());});check(leases.size()==3&&leases.get(first)->payloadBytes==1);
+        leases.release(second);leases.release(second);check(leases.size()==2&&leases.get(first));rejects([&]{leases.get(second);});
+        auto inFlight=leases.get(first);leases.release(first);check(!lifetime.expired());inFlight.reset();check(lifetime.expired());
+        leases.release(third);check(leases.size()==0);
+        const auto large=leases.retain(make(50ull*1024*1024));rejects([&]{leases.retain(make(20ull*1024*1024));});
+        check(leases.size()==1&&leases.get(large)->payloadBytes==50ull*1024*1024);leases.release(large);
+        auto image=make();image->metadata["graph"]["maps"]=Json::array({{{"kind","bitmap"},{"size",{8000,8000}}}});
+        const auto imageLease=leases.retain(image);rejects([&]{leases.retain(image);});check(leases.size()==1);leases.release(imageLease);
+        auto invalid=make();invalid->metadata["graph"]["nodes"]=Json::array();rejects([&]{leases.retain(invalid);});check(leases.size()==0);
+    }
     const auto settings=recipes::parse(load(CYRUS_RECIPE_DEFAULTS));
     brush::Document brush;brush.surface=42;brush.contours={{{0,0},{4,0},{4,4},{0,4}},{{1,1},{1,2},{2,2},{2,1}}};
     Json paint={{"payload",recipes::hex(brush::encode(brush))},{"receiverRole",nullptr},{"radius",1.},{"erase",false},{"frame",nullptr}};
@@ -89,6 +108,47 @@ int main(){std::filesystem::path folder;try{
     const auto result=assets::writePackage(out,path,recipeSHA,graph,files,"Owned test assets",[](const char* at,std::uint64_t){if(std::string(at)=="complete")throw std::runtime_error("After commit");});
     check(result==out/"cyrus.package.json");check(load(out/"entry.csrecipe.json")==load(path));
     const auto loaded=assets::readPackage(out);check(loaded["graph"]==graph);check(recipes::read(out/"entry.csrecipe.json")["layers"][0]["paint"]==paint);
+    // A model package contains one normalized source, independent shared shader
+    // definitions and no scene recipe, receiver, Paint or unrelated geometry.
+    {
+        const auto modelDirectory=folder/"one-model";const auto meshSHA=graph["files"][0]["sha256"].get<std::string>();
+        auto definition=[&](const std::string& type,const Json& data){return Json{{"format","cyrus."+type+"-definition"},{"version",1},{"profile",nullptr},{"data",data}};};
+        const auto meshDefinition=definition("mesh",{{"file","f-"+meshSHA}});const auto meshText=meshDefinition.dump(),meshDefSHA=sha(meshText);
+        auto modelGraph=graph;modelGraph["version"]=4;modelGraph["resourceProfile"]="shared-static-v1";modelGraph["splines"]=Json::array();modelGraph["externalRoles"]=Json::array();
+        auto file=graph["files"][0];file["id"]="f-"+meshSHA;modelGraph["files"]=Json::array({file});
+        modelGraph["meshes"]=Json::array({{{"id","g-"+meshDefSHA+"-1"},{"file","f-"+meshSHA}}});
+        modelGraph["materials"]=Json::array();
+        auto node=graph["nodes"][0];node["id"]="model-1";node["name"]="Model";node["mesh"]="g-"+meshDefSHA+"-1";node["material"]=nullptr;node["roles"]=Json::array({"model-role"});node["transform"]=Json::array({1,0,0,0,1,0,0,0,1,0,0,0});modelGraph["nodes"]=Json::array({node});
+        const auto graphText=modelGraph.dump();const Json modelDefinition={{"format","cyrus.model-definition"},{"version",1},{"mesh",meshDefSHA},{"material",nullptr},{"rendererProfile",nullptr},{"graph",sha(graphText)}};const auto modelText=modelDefinition.dump();
+        auto descriptor=[&](const std::string& name,const std::string& text){return Json{{"file",name},{"sha256",sha(text)},{"bytes",text.size()}};};
+        const Json manifest={{"format","cyrus.model-package"},{"version",1},{"definition",descriptor("model.json",modelText)},{"graph",descriptor("assets.json",graphText)},
+            {"definitions",Json::array({descriptor("definitions/"+meshDefSHA+".json",meshText)})},{"redistribution","Owned one-model fixture"}};
+        put(modelDirectory/"model.json",modelText);put(modelDirectory/"assets.json",graphText);put(modelDirectory/"definitions"/(meshDefSHA+".json"),meshText);put(modelDirectory/"assets"/(meshSHA+".cmesh"),load(mesh));put(modelDirectory/"cyrus.model.json",manifest.dump());
+        check(assets::readModelPackage(modelDirectory)["graph"]==modelGraph);const auto prepared=assets::prepareModelPackage(modelDirectory);check(prepared.meshes.size()==1&&prepared.document==modelDefinition);
+        rejects([&]{assets::readPackage(modelDirectory);});
+        auto corrupt=manifest;corrupt["definition"]["sha256"]=std::string(64,'0');put(modelDirectory/"cyrus.model.json",corrupt.dump());rejects([&]{assets::readModelPackage(modelDirectory);});put(modelDirectory/"cyrus.model.json",manifest.dump());
+        put(modelDirectory/"definitions"/(meshDefSHA+".json"),meshText+" ");rejects([&]{assets::readModelPackage(modelDirectory);});put(modelDirectory/"definitions"/(meshDefSHA+".json"),meshText);
+    }
+    // The shared static profile admits the same deterministic M02 geometry
+    // independently of a renderer and resolves only inside its owning store.
+    {
+        auto standard=graph;standard["version"]=4;standard["resourceProfile"]="shared-static-v1";standard["splines"]=Json::array();
+        const auto store=folder/"managed";put(store/"store.json",Json{{"format","cyrus.asset-store"},{"version",1},{"id","owned-fixture"}}.dump());
+        std::map<std::string,std::filesystem::path> inputs;
+        for(auto& file:standard["files"]){const auto id=file["id"].get<std::string>();const auto raw=load(files.at(id));const std::vector<unsigned char> sourceBytes(raw.begin(),raw.end());const auto decoded=assets::decodeMesh(sourceBytes);const auto encoded=assets::encodeMesh(decoded,assets::MeshProfile::Plant);
+            const auto target=store/"staging"/(id+".cmesh");const std::string bytes(encoded.begin(),encoded.end());put(target,bytes);file["sha256"]=sha(bytes);file["bytes"]=bytes.size();inputs[id]=target;}
+        assets::validateGraph(standard,data);
+        auto wrong=standard;wrong["resourceProfile"]="unbounded";rejects([&]{assets::validateGraph(wrong,data);});
+        const auto complete=store/"packs"/"user"/recipeSHA;std::filesystem::create_directories(complete.parent_path());
+        assets::writePackage(complete,path,recipeSHA,standard,inputs,"Owned shared static fixture");
+        const auto view=store/"catalog"/"views"/"fixture"/"Presets"/recipeSHA;
+        put(view/"cyrus.shared.json",Json{{"format","cyrus.shared-reference"},{"version",1},{"store","owned-fixture"},{"recipe",recipeSHA}}.dump());
+        check(assets::readPackage(view)["graph"]==standard);
+        auto prepared=assets::preparePackage(view,{},folder/"unused-profile-cache");check(prepared.meshes.size()==2);
+        check(prepared.meshes.at("file-1")->profile==assets::MeshProfile::Plant);
+        put(view/"cyrus.shared.json",Json{{"format","cyrus.shared-reference"},{"version",1},{"store","wrong-store"},{"recipe",recipeSHA}}.dump());
+        rejects([&]{assets::readPackage(view);});
+    }
     // A recipient can identify and repair the exact missing dependency. Existing
     // complete package/output bytes are not rewritten by the rejected read.
     const auto missingRelative="assets/"+sha(load(mesh))+".cmesh";
@@ -122,6 +182,11 @@ int main(){std::filesystem::path folder;try{
     put(ownedImage,"user edited cached image");rejects([&]{assets::preparePackage(bitmapPackage,{},cache);});check(load(ownedImage)=="user edited cached image");
     bad=textured;bad["maps"][0]["size"]={4096,4096};auto duplicateMap=bad["maps"][0];duplicateMap["id"]="another-map";bad["maps"].push_back(duplicateMap);rejects([&]{assets::validateGraph(bad,data);});
     bad=textured;bad["maps"][0]["color"]["mode"]="OCIO_Custom";rejects([&]{assets::validateGraph(bad,data);});
+    auto sharedTextured=textured;sharedTextured["version"]=4;sharedTextured["resourceProfile"]="shared-static-v1";sharedTextured["splines"]=Json::array();
+    rejects([&]{assets::validateGraph(sharedTextured,data);}); // Explicit interpretation is mandatory in the shared schema.
+    sharedTextured["maps"][0]["color"]["inputGamma"]="auto";sharedTextured["maps"][0]["color"]["effectiveGamma"]=2.2;assets::validateGraph(sharedTextured,data);
+    auto sharedGamma=sharedTextured;sharedGamma["maps"][0]["color"]["inputGamma"]=1.;sharedGamma["maps"][0]["color"]["effectiveGamma"]=1.;assets::validateGraph(sharedGamma,data);
+    sharedGamma["maps"][0]["color"]["inputGamma"]=0;rejects([&]{assets::validateGraph(sharedGamma,data);});
     bad=textured;bad["maps"][0]["output"]["code"]="arbitrary";rejects([&]{assets::validateGraph(bad,data);});
     // Graph 3 adds a closed, version-pinned renderer/image profile. Its mixed
     // graph retains the old Standard/Bitmap shape, global IDs and role rules.

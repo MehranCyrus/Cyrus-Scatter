@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <limits>
 #include <stdexcept>
+#include <type_traits>
+#include <utility>
 
 namespace cyrus::viewport_memory {
 inline constexpr std::size_t MiB=1024ull*1024;
@@ -23,9 +25,12 @@ struct Cost {
 // slot per placement, in a deterministic permutation determined by the count.
 // A different snapshot wrapper may share that payload only when its complete
 // ordered values match. Matrix equality must be exact, never epsilon-based.
+template<class Group,class=void>struct HasSparseInstances:std::false_type{};
+template<class Group>struct HasSparseInstances<Group,std::void_t<decltype(std::declval<const Group&>().sameInstances(std::declval<const Group&>()))>>:std::true_type{};
 template<class Group>
 bool sameInstancePayload(const Group& a,const Group& b) {
-    return a.instances.size()==a.bandSlots.size()&&b.instances.size()==b.bandSlots.size()&&
+    if constexpr(HasSparseInstances<Group>::value)return a.sameInstances(b);
+    else return a.instances.size()==a.bandSlots.size()&&b.instances.size()==b.bandSlots.size()&&
         a.instances==b.instances&&a.bandSlots==b.bandSlots;
 }
 struct SystemMemory {

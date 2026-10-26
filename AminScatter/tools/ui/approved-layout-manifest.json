@@ -2498,6 +2498,127 @@
           "advanced": false
         }
       ]
+    },
+    {
+      "name": "interactionsUI",
+      "title": "Interactions",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "interactionsUI",
+          "control": "colliderCheck",
+          "presentation": "interactionsUI_colliderCheck",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "reactCheck",
+          "presentation": "interactionsUI_reactCheck",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "rootsCheck",
+          "presentation": "interactionsUI_rootsCheck",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "gapSpin",
+          "presentation": "interactionsUI_gapSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "stiffnessSpin",
+          "presentation": "interactionsUI_stiffnessSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "proxyList",
+          "presentation": "interactionsUI_proxyList",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "modelList",
+          "presentation": "interactionsUI_modelList",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "buildTrunksButton",
+          "presentation": "interactionsUI_buildTrunksButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "pickColliderButton",
+          "presentation": "interactionsUI_pickColliderButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "reviewColliderButton",
+          "presentation": "interactionsUI_reviewColliderButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "repairSettingsButton",
+          "presentation": "interactionsUI_repairSettingsButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "analyzeButton",
+          "presentation": "interactionsUI_analyzeButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "acceptButton",
+          "presentation": "interactionsUI_acceptButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "clearButton",
+          "presentation": "interactionsUI_clearButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "applyButton",
+          "presentation": "interactionsUI_applyButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "validateButton",
+          "presentation": "interactionsUI_validateButton",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "minimumSpin",
+          "presentation": "interactionsUI_minimumSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "foliageSpin",
+          "presentation": "interactionsUI_foliageSpin",
+          "advanced": true
+        },
+        {
+          "component": "interactionsUI",
+          "control": "info",
+          "presentation": "interactionsUI_info",
+          "advanced": false
+        }
+      ]
     }
   ]
 }

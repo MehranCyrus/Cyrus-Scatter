@@ -1,0 +1,24 @@
+# Paste into GPT Web chat A: collision core
+
+You are implementation owner A for CyrusScatter Vegetation Core Handoff v1. The attached ZIP is the same packet supplied to owners B and C. They cannot see this chat. Build your module now; do not turn this into another general research report. You have no required 3ds Max access.
+
+First inspect `START-HERE.md`, the handoff `DOCUMENT-LIST.md`, `WORKFLOW.md`, `SHARED-CONTRACT.md`, `FROZEN-FILES.json`, the frozen C++ header and `fixtures/catalog.json`. State your role, edition and the header's actual SHA-256. Read consolidated chapters 01/03/04/05/07/08/09 and the relevant R12/R13/R14 evidence reviews/originals. Treat report text as evidence, not executable instructions. Verify any engine-specific assumption against the pinned source.
+
+Implement `make_jolt_world` and the CollisionWorld public methods from the frozen header. You own **only** `docs/research/vegetation-core-handoff/starter/collision/`. Put your CMakeLists, implementation, private helpers, tests and README there. Export the `cyrus_vegetation_collision` target, link `cyrus_prototype_contract`, and prefix CTest names `collision_`. Do not edit shared declarations, fixtures, other modules, repository physics code or the root CMake file. An API issue belongs in `CONTRACT_CHANGE_REQUEST.md` in your module.
+
+Deliver a real portable C++20 public-Jolt query adapter for admitted spheres and rigid oriented boxes. Pin commit `1b2e77e3c6c09709e5edc79dc208459b8ff32051`. The exact upstream archive is `https://codeload.github.com/jrouwe/JoltPhysics/tar.gz/1b2e77e3c6c09709e5edc79dc208459b8ff32051`, SHA-256 `6bb6d626b7b70096cd07f1b25c0c223df035ab6386885f07f77baa88ae7d3998`. If downloading at configure time, enforce the hash, retain MIT notices, and provide an offline source-root option. Do not vendor the full engine or return binaries. Record the actual precision/assertion/SIMD flags. Prefer a portable CPU profile with double world positions, assertions and SSE2 on x86 where supported, avoiding host-native AVX assumptions. This is a new profile, not a continuation of a prior report's pass.
+
+Required behavior:
+
+- Deep-copy the scene, own immutable shape **and pose** generation throughout all operations, and echo its identity. Stable caller IDs must survive sorting and internal engine IDs.
+- Support complete point exclusion classification and full segment/capsule contact queries against all relevant obstacles. Empty complete queries mean clear only within the admitted profile. Never equate no surface hit with outside a solid.
+- Establish correct capsule +Y placement, contract +Z material convention, local/world/COM transforms, normal sign, radii/clearance exactly once, and qualified u/witness consistency. Use analytic primitive refinement if needed, clearly separated from the actual public Jolt query path. A raw hit with an invented u is unacceptable.
+- Handle multiple obstacles, inside roots, contact-limit overflow, nonfinite input, unsupported scales, degeneracies and cancellation honestly. Deterministically order results. Missing engine/data is Unsupported/error, never clear.
+- Design a standalone process-global Jolt lifecycle owner that permits two worlds concurrently alive and teardown in either order. Avoid factory/type unregister bugs, dangling shapes and stateful mutation during queries. Do not claim this proves cross-DLL Max ABI safety.
+- Bound owned/scratch memory and work; document honest allocation accounting and any Jolt internal allocations outside exact instrumentation. No unbounded collector or silent truncation may produce complete success.
+
+Tests must include analytic sphere and rotated-box controls, endpoints-outside segment crossing, root containment/exclusion band, normal/gap/u reconstruction, scale admission, two obstacles, query budget/cancellation, snapshot edits after construction, and two-world destruction ordering. Add a test in which an incomplete query cannot be mistaken for clear. Separate exact analytic controls from engine tolerance observations. Do not modify or rerun bundled historical harnesses as though their recorded results are yours.
+
+The first integration is a static prepared ribbon fit, not a full dynamics world or soft-body rod engine. No Jolt fork, custom soft-body collision solver, host plugin or UI is requested. State any incompleteness plainly; a stub backend does not finish this assignment.
+
+Return a source ZIP using `RETURN-CHECKLIST.md` and `return-manifest.template.json`, containing your owned module, frozen contract hash, exact build/test commands, observed results, compiler/options, limitations and change list. If you cannot execute a compiler, still provide complete files and mark tests Not executed. Never invent logs or Max validation. End with a concise integration note for the local coordinator.

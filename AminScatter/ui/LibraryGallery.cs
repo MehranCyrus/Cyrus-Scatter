@@ -255,6 +255,7 @@ namespace CyrusScatter.UI
         private readonly ToolStripDropDownButton actions=new("Recipe actions...");
         private readonly ToolStripMenuItem edit=new("Edit details..."),update=new("Update selected..."),style=new("Apply Style..."),export=new("Export portable package...");
         private readonly ToolStripButton save=new("Save Recipe...");
+        private readonly ToolStripDropDownButton storage=new("Library...");
         public bool HasSetup {get;set;}
         public bool IndividualModels {get;set;}
         private readonly ToolStripLabel page=new();
@@ -288,6 +289,10 @@ namespace CyrusScatter.UI
             // Max's default 0 means no custom scaling (1), not half size.
             userScale=NormalizeUserScale(value);Gallery.UserScale=userScale;
             // Own a point-size font. Never dispose a Max/shared HFONT or a borrowed system font.
+            // WinForms suppresses FontChanged when two Font objects compare
+            // equal. Replacing an equal font would leave children borrowing the
+            // old object and then dispose it, permanently poisoning label paint.
+            if(ownedFont!=null&&Math.Abs(ownedFont.SizeInPoints-9*userScale)<.001){Arrange();return;}
             var previousFont=ownedFont;ownedFont=new Font("Segoe UI",(float)(9*userScale),FontStyle.Regular,GraphicsUnit.Point);
             Font=ownedFont;previousFont?.Dispose();Arrange();
         }}
@@ -302,7 +307,8 @@ namespace CyrusScatter.UI
             var renderer=new LibraryRenderer();
             foreach(var bar in new[]{toolbar,footer}){bar.BackColor=Color.FromArgb(59,59,59);bar.ForeColor=ForeColor;bar.Renderer=renderer;}
             foreach(var menu in new[]{view,zoom,actions}){menu.DropDown.Renderer=renderer;menu.DropDown.BackColor=Color.FromArgb(59,59,59);}
-            toolbar.Items.Add(Button("Collections","home"));toolbar.Items.Add(refresh);toolbar.Items.Add(cancel);toolbar.Items.Add(Button("Choose folder...","folder"));toolbar.Items.Add(new ToolStripSeparator());
+            toolbar.Items.Add(storage);toolbar.Items.Add(refresh);toolbar.Items.Add(cancel);toolbar.Items.Add(Button("Choose folder...","folder"));toolbar.Items.Add(new ToolStripSeparator());
+            foreach(var item in new[]{new[]{"Save selected scene models...","library-model-save"},new[]{"Import shared library...","library-import"},new[]{"Import conflicting recipes as copies...","library-import-copy"},new[]{"Export library / collection...","library-export"},new[]{"Add selected to collection...","library-collect"},new[]{"Rename saved model...","library-model-name"},new[]{"Remove selected card...","library-remove"},new[]{"Manage storage...","library-storage"},new[]{"Open / create shared library folder...","library-location"}}){var action=item[1];var menu=new ToolStripMenuItem(item[0]);menu.Click+=(_,_)=>Request(action);storage.DropDownItems.Add(menu);}
             toolbar.Items.Add(new ToolStripLabel("Search"));toolbar.Items.Add(search);toolbar.Items.Add(view);toolbar.Items.Add(zoom);
             for(int i=0;i<2;i++){int index=i;var item=new ToolStripMenuItem(new[]{"Thumbnails","Compact list"}[i]);item.Click+=(_,_)=>ViewIndex=index;view.DropDownItems.Add(item);}
             for(int i=0;i<3;i++){int index=i;var item=new ToolStripMenuItem(new[]{"Small tiles","Medium tiles","Large tiles"}[i]);item.Click+=(_,_)=>ZoomIndex=index;zoom.DropDownItems.Add(item);}
@@ -314,11 +320,11 @@ namespace CyrusScatter.UI
             load.Alignment=ToolStripItemAlignment.Right;merge.Alignment=ToolStripItemAlignment.Right;merge.Visible=false;footer.Items.Add(load);footer.Items.Add(merge);
             merge.Click+=(_,_)=>Request("merge");
             previous.Click+=(_,_)=>Request("previous");next.Click+=(_,_)=>Request("next");load.Click+=(_,_)=>Request("load");edit.Click+=(_,_)=>Request("edit");update.Click+=(_,_)=>Request("update");style.Click+=(_,_)=>Request("style");export.Click+=(_,_)=>Request("export");
-            for(int i=1;i<=3;i++){var node=new TreeNode(new[]{"My recipes","Plant models","Custom library"}[i-1]){Tag=i};node.Nodes.Add(new TreeNode(i==2?"All models":"All recipes"){Tag=""});tree.Nodes.Add(node);}
+            for(int i=1;i<=4;i++){var node=new TreeNode(new[]{"My recipes","Plant models","Custom library","My models"}[i-1]){Tag=i};node.Nodes.Add(new TreeNode(i==2||i==4?"All models":"All recipes"){Tag=""});tree.Nodes.Add(node);}
             tree.AfterSelect+=(_,e)=>{
                 if(binding||e.Node==null)return;
                 var owner=e.Node.Parent??e.Node;int index=(int)owner.Tag!;bool changed=index!=LibraryIndex;
-                LibraryIndex=index;CollectionsView=index!=2&&e.Node.Parent==null;Category=e.Node.Parent==null?"":(string)e.Node.Tag!;
+                LibraryIndex=index;CollectionsView=index!=2&&index!=4&&e.Node.Parent==null;Category=e.Node.Parent==null?"":(string)e.Node.Tag!;
                 Request(changed?"library":"collection");
             };
             Gallery.SelectionChanged+=(_,_)=>Request("selection");Gallery.ItemActivated+=(_,_)=>Request("load");
@@ -327,13 +333,14 @@ namespace CyrusScatter.UI
         }
         public void SetNavigation(int index,string category,bool overview)
         {
-            binding=true;LibraryIndex=GalleryLimits.Clamp(index,1,3);Category=category;CollectionsView=overview&&LibraryIndex!=2;
+            binding=true;LibraryIndex=GalleryLimits.Clamp(index,1,4);Category=category;CollectionsView=overview&&LibraryIndex!=2&&LibraryIndex!=4;
             var owner=tree.Nodes[LibraryIndex-1];TreeNode choice=owner;
             if(!CollectionsView){choice=owner.Nodes[0];foreach(TreeNode n in owner.Nodes)if((string)n.Tag! == category){choice=n;break;}}
             tree.SelectedNode=choice;owner.Expand();binding=false;
         }
         public void BeginCollections(){binding=true;var nodes=tree.Nodes[LibraryIndex-1].Nodes;while(nodes.Count>1)nodes.RemoveAt(nodes.Count-1);}
         public void AddCollection(string name){var nodes=tree.Nodes[LibraryIndex-1].Nodes;if(nodes.Count<129)nodes.Add(new TreeNode(name){Tag=name});}
+        public void AddNamedCollection(string name,string tag){var nodes=tree.Nodes[LibraryIndex-1].Nodes;if(nodes.Count<129)nodes.Add(new TreeNode(name){Tag=tag});}
         public void EndCollections(){binding=false;SetNavigation(LibraryIndex,Category,CollectionsView);}
         public void SetPage(int number,int pages,int matches,bool scanning)
         {

@@ -1,12 +1,16 @@
 # Documentation maintenance
 
+The 26 October [0.87.1 shared-library delivery](plans/preset-gallery-improvements/DELIVERY_0871.md) updates maintained library ownership, artist commands, installation and current status. Exact three-host qualification is separate from older Interactions/independent-product evidence. [Knowledge freshness and activation](../tools/rag/CURRENT_REFRESH_0871_20261026.md) are recorded separately; new source hashes alone do not prove product behavior.
+
 ## Authority
 
 [The index](README.md) links the maintained artist guide, architecture, feature details, backlog, build and versioning instructions. Update these in place. The [execution ledger](plans/improvement-program/PROGRESS.md) is the single current roadmap; the backlog owns defects and acceptance rather than a second feature queue. Source and reproducible tests resolve conflicts; a historical report's use of “current” applies only to its recorded snapshot.
 
 The capability matrix and MCP agent workflow remain at their existing `Current_System_2026-10-05` paths because code/catalog generation and external references use them. Their directory date does not make their maintained content obsolete. The semantic inventory, catalog hashes and current control register are functional inputs, not disposable prose.
 
-The 23 October 2026 patch maintenance reconciles current guidance with [Scatter 0.86.9.2](plans/edit-instances/DELIVERY_08692.md): procedural map thumbnails and empty map drop targets, safe native Modify column ownership, live Edit movement and native Edit storage/capability 2. One EXE contains matched Max 2024/2026/2027 payloads with Surface Analyzer 0.14.2; only Max 2027 was tested for this patch, while older hosts are build-only and untested. Schema 59, recipe 8, original Paint and content revision 0.86.7 are preserved. The [qualification manifest](plans/edit-instances/QUALIFICATION_08692.json) retains exact producer/package/host evidence. The remaining full-object Copy limitation is tracked as [B37](BACKLOG.md#edit-instance-findings--0869); it is not a completed fix. Earlier performance, rendering and host evidence retain their original limits. Knowledge selection, actual freshness and direct-source routing are recorded in the [knowledge entrypoint](../tools/rag/README.md). No knowledge index activation, website build/publication or Git push is implied by this maintenance.
+The 25 October maintenance reconciles current guidance with [Scatter 0.87.0 / schema 60](plans/scatter-interactions-garden-20261025/DELIVERY_0870.md): shared reviewed plant preparation, Collider/React roles, localized Cyrus Edit contact, reversible covered roots and full-quality render/Bake output. [Architecture](ARCHITECTURE.md#0870-prepared-sources-and-local-rooted-contact) owns the implementation map, the [artist workflow](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0870.md) owns usage, and the [backlog](BACKLOG.md) retains physical Undo/Redo, bend appearance and broader production acceptance. The [three-host EXE](plans/scatter-interactions-garden-20261025/INSTALLER_0870_COMPATIBILITY.md) is a later packaging delivery: 2024/2026 are separately built and untested, while 2027 preserves the r4 archive. Analyzer/content versions remain independent. The [knowledge refresh report](../tools/rag/CURRENT_REFRESH_0870_20261025.md) records actual selection and verification separately from documentation edits. No Max test, installer execution or artist-session restart is part of this maintenance.
+
+Historical 23 October maintenance: The 23 October 2026 patch maintenance reconciles current guidance with [Scatter 0.86.9.2](plans/edit-instances/DELIVERY_08692.md): procedural map thumbnails and empty map drop targets, safe native Modify column ownership, live Edit movement and native Edit storage/capability 2. One EXE contains matched Max 2024/2026/2027 payloads with Surface Analyzer 0.14.2; only Max 2027 was tested for this patch, while older hosts are build-only and untested. Schema 59, recipe 8, original Paint and content revision 0.86.7 are preserved. The [qualification manifest](plans/edit-instances/QUALIFICATION_08692.json) retains exact producer/package/host evidence. The remaining full-object Copy limitation is tracked as [B37](BACKLOG.md#edit-instance-findings--0869); it is not a completed fix. Earlier performance, rendering and host evidence retain their original limits. Knowledge selection, actual freshness and direct-source routing are recorded in the [knowledge entrypoint](../tools/rag/README.md). No knowledge index activation, website build/publication or Git push is implied by this maintenance.
 
 The preceding 0.86.9 documentation pass checked 20 maintained/campaign Markdown files: 662 local links and
 16 current anchor links resolve. Generated integration checks pass for 333
@@ -18,14 +22,14 @@ qualification is implied by these documentation checks.
 
 The corrected delivery adds independent native-event-loop survival checks after UI mutations, including wide-panel owner switches. The [documentation receipt](../build/crash-08691-20261023-01/documentation-check.json) records current links and focused doc/catalog tests. Historical 0.86.9.1 receipts remain intact with acceptance withdrawn. Documentation checks do not extend runtime qualification to older hosts.
 
-## What to keep
+### What to keep
 
 - Current usage, engineering contracts, build/testing instructions and one active work list.
 - Exact dated qualification, failures, benchmarks, reproduction fixtures and package/source identities. Retain their paths when tools, manifests or other documents depend on them.
 - Unique design rationale and unresolved findings. Carry still-open acceptance into the backlog before retiring a task plan.
 - Separate component contracts such as licensing and MCP; do not flatten distinct ownership into one document.
 
-## Foundation and knowledge upkeep
+### Foundation and knowledge upkeep
 
 The [engineering foundation](ENGINEERING_FOUNDATION.md) owns durable behavior and architecture direction; [architecture](ARCHITECTURE.md) describes implemented source, task plans describe proposals, and dated receipts preserve what actually ran. Agent skills route to these documents instead of copying version policies or roadmap commands. Current user scope overrides a historical objective.
 
@@ -33,7 +37,7 @@ A documentation inventory or topic scan is not a semantic review of every file. 
 
 Knowledge indexing has separate enrollment, freshness, retrieval and activation gates. Removed source paths require explicit scope/evaluation review; do not restore retired fixtures, overwrite sealed hashes or switch registration just to make status green. Fresh source hashes do not establish implementation correctness. [Knowledge maintenance](../tools/rag/README.md) records the current selection and actual consumer verification; dated audits retain their original scope. Index current navigation and the execution ledger deliberately, keep required historical evidence labeled, and verify complete contracts as well as ranking. An archive location alone is not evidence that a contract is obsolete.
 
-## What to remove or consolidate
+### What to remove or consolidate
 
 Remove duplicate explanations, obsolete installation instructions and copy-paste task prompts after moving still-useful guidance into the maintained documents. Git preserves their original text. A short compatibility link is justified only for an externally used old document path; do not keep two full versions of the same current guide.
 
@@ -43,7 +47,7 @@ Before adding a document, identify its owner: artist behavior in the artist guid
 
 [The archive](archive/README.md) distinguishes physically moved plans from historical evidence kept at original byte-pinned paths. Preserve research packages and their manifests together. Rewriting links in an archived plan changes that file's bytes; record the original path/hash and recovery commit rather than presenting it as an unchanged sealed artifact.
 
-## Website and public roadmap
+### Website and public roadmap
 
 Use `website/` as the single maintained frontend. The user-selected presentation sources are `Landing Page Design/cyrus-scatter-site/` for the landing page and `Landing Page Design/Design 1/` for the documentation. Preserve these supplied packages as design references, not additional current guides. Website content comes from an explicit manifest of maintained documents and the current generated feature catalog. Historical 0.73 reference snapshots, artwork and validation receipts retain their provenance but must not republish retired paint-set ownership into the current site.
 

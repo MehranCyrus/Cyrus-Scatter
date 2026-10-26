@@ -1,0 +1,158 @@
+{
+  "date": "2026-10-24",
+  "source_id": "R12",
+  "source_sha256": "45c52aeee47ec327816b3a13899a33f5e1506f7eea21a28f819c81fab8b3ff49",
+  "report_scope": "Exact-pin source inspection and proposed experiments; no Jolt/Max runtime tests",
+  "review_scope": "HTML read in full; decision-critical local dependency paths inspected; eleven local files compared with public files at the pinned commit after newline normalization",
+  "jolt_commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+  "header_version": "5.6.1",
+  "dependency_files": [
+    {
+      "path": "Jolt/Core/Core.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Core/Core.h",
+      "local_sha256": "8dd35545f20ec75b4dd7730502a8dd646c1292f50d0ce8ad410ee56655058a5a",
+      "remote_sha256": "8dd35545f20ec75b4dd7730502a8dd646c1292f50d0ce8ad410ee56655058a5a",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 26755
+    },
+    {
+      "path": "Jolt/Physics/Collision/CollideSoftBodyVertexIterator.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/CollideSoftBodyVertexIterator.h",
+      "local_sha256": "de216aa9e24d82e98f2c35980aeb315385e6970f352aa9af479e47848846cd4f",
+      "remote_sha256": "de216aa9e24d82e98f2c35980aeb315385e6970f352aa9af479e47848846cd4f",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 3601
+    },
+    {
+      "path": "Jolt/Physics/SoftBody/SoftBodySharedSettings.cpp",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodySharedSettings.cpp",
+      "local_sha256": "720afd1a6915883e9a5cc4b2748f2dbd00dbc75c894ea1e34e7ff8dbb7c41cb9",
+      "remote_sha256": "720afd1a6915883e9a5cc4b2748f2dbd00dbc75c894ea1e34e7ff8dbb7c41cb9",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 54860
+    },
+    {
+      "path": "Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodyMotionProperties.cpp",
+      "local_sha256": "75e579649b8087ca4c06925869f3281d82cff3a384bfc8a79649d52885ea4697",
+      "remote_sha256": "75e579649b8087ca4c06925869f3281d82cff3a384bfc8a79649d52885ea4697",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 58218
+    },
+    {
+      "path": "Jolt/Physics/Collision/CollideSoftBodyVerticesVsTriangles.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/CollideSoftBodyVerticesVsTriangles.h",
+      "local_sha256": "15838aef09889e494a837a299569e16370995b9c63ff37d7e448a433a84f29bb",
+      "remote_sha256": "15838aef09889e494a837a299569e16370995b9c63ff37d7e448a433a84f29bb",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 3634
+    },
+    {
+      "path": "Jolt/Physics/Collision/NarrowPhaseQuery.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Collision/NarrowPhaseQuery.h",
+      "local_sha256": "548e528119a50e5723291274f1735bb57065464d455cf4a4d7df30f4e96d6dfc",
+      "remote_sha256": "548e528119a50e5723291274f1735bb57065464d455cf4a4d7df30f4e96d6dfc",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 6685
+    },
+    {
+      "path": "Jolt/Physics/EPhysicsUpdateError.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/EPhysicsUpdateError.h",
+      "local_sha256": "d18eb5b2e3b931418347437192447e5c892b529dab12e9342462cb7c9b9094d8",
+      "remote_sha256": "d18eb5b2e3b931418347437192447e5c892b529dab12e9342462cb7c9b9094d8",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 1636
+    },
+    {
+      "path": "Jolt/Physics/Hair/Hair.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Hair/Hair.h",
+      "local_sha256": "f159a3a1f68d6b130da2bb1b96fef8f44904d6bfeb51a3f5844354c62ccb2cfb",
+      "remote_sha256": "f159a3a1f68d6b130da2bb1b96fef8f44904d6bfeb51a3f5844354c62ccb2cfb",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 13636
+    },
+    {
+      "path": "Jolt/Physics/Hair/Hair.cpp",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/Hair/Hair.cpp",
+      "local_sha256": "feff13fa73c64db5fedb80fe69aa838b527cb74b011b7ec015e72dbee4748639",
+      "remote_sha256": "feff13fa73c64db5fedb80fe69aa838b527cb74b011b7ec015e72dbee4748639",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 46028
+    },
+    {
+      "path": "Jolt/Physics/PhysicsSettings.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/PhysicsSettings.h",
+      "local_sha256": "4126ea1380dc6c54c720eb08d3c78331323cfda615a0e2f2ececdc5bb8ebb08f",
+      "remote_sha256": "4126ea1380dc6c54c720eb08d3c78331323cfda615a0e2f2ececdc5bb8ebb08f",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 6579
+    },
+    {
+      "path": "Jolt/Physics/SoftBody/SoftBodyCreationSettings.h",
+      "url": "https://raw.githubusercontent.com/jrouwe/JoltPhysics/1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/SoftBody/SoftBodyCreationSettings.h",
+      "local_sha256": "87a128c71016deefb053d52c77950bc3d3cb655ce17b8c11f932f5f17dd6af6d",
+      "remote_sha256": "87a128c71016deefb053d52c77950bc3d3cb655ce17b8c11f932f5f17dd6af6d",
+      "equal_after_line_ending_normalization": true,
+      "bytes": 5057
+    }
+  ],
+  "source_observations": [
+    "Bare CPU rod environmental contact uses vertex positions and one selected plane per vertex; no rod-segment input in that iterator",
+    "Rod properties use endpoint-minimum inverse mass; rotation corrections use rod inverse mass",
+    "Collision projection skips fixed vertices; root-conflict preflight remains a Cyrus requirement",
+    "Triangle contact helper uses finite backward thickness; it is not a general inside-solid classifier",
+    "Update error bits identify ignored contacts under capacity exhaustion"
+  ],
+  "scope_qualifiers": [
+    "The bare-rod path does not describe every Jolt soft-body/CCD/GPU subsystem",
+    "Source matching applies to the eleven checked files, not the entire dependency or loaded binaries",
+    "The report did not independently inspect the local Physics Lab wrapper",
+    "Existing Lab default maxBodies is 5000; the proposed 10000-body fixture exceeds that admitted profile",
+    "Gap-width failure is local to a declared route/envelope, not proof against every 3D route",
+    "R12 native falsification and existing early Max output-parity gates should both precede a large solver implementation"
+  ],
+  "verification_limits": [
+    "No build or loaded-module identity qualification",
+    "No E1-E8 experiment executed",
+    "No speed, memory, collision-quality, cancellation-latency or renderer result measured"
+  ],
+  "additional_local_source_checks": [
+    {
+      "path": "build/physics-lab-dependencies/jolt-1b2e77e3c6c09709e5edc79dc208459b8ff32051/Jolt/Physics/PhysicsSystem.cpp",
+      "sha256": "381de3fa5a83354f2cc725e76a288bac896d9bcdbd6f1f49fde32beb3538ad34",
+      "scope": "Relevant rigid CCD contact handling for soft-body faces; local source inspected, not included in the eleven remote comparisons"
+    },
+    {
+      "path": "CyrusPhysicsLab/tools/build.py",
+      "sha256": "ccc05d6b16ec4544de60e0d84d22811daf4739c82dd1eb8105b721e8f8bb35cf",
+      "scope": "Configured dependency commit; no build executed"
+    },
+    {
+      "path": "CyrusPhysicsLab/include/core.h",
+      "sha256": "71e0385ba7cd0ffe6a589012d313c6a0275c618dbab2c1532452396aa06b5d01",
+      "scope": "Declared Settings defaults and World interface; no runtime qualification"
+    },
+    {
+      "path": "CyrusPhysicsLab/README.md",
+      "sha256": "7c19888c7033982d23957335623f2319e8f3367a7292e0ec298c0d64dc26f1cf",
+      "scope": "Current working-tree 5000-body admission scope and documented limits; documentation is not execution evidence"
+    },
+    {
+      "path": "CyrusPhysicsLab/src/jolt_world.cpp",
+      "sha256": "c30d487b1c000aa27e67811e182d27ee07b1a9cd543e26b3098009dab07676f1",
+      "scope": "Scoped rigid-body/shape construction and admission source inspection; not a complete wrapper lifecycle audit"
+    }
+  ],
+  "repository_state": {
+    "branch": "codex/workflow-0.75",
+    "head": "588abff0ce211d7dc63798b8c5310631895465c7",
+    "dirty": true,
+    "limits": "Hashes identify only the listed files; HEAD does not identify dirty working content"
+  },
+  "report_read": {
+    "scope": "Full report body, including all eight proposed experiments, recommendations and linked-source register",
+    "extracted_text_characters": 50206,
+    "extracted_text_words": 7086,
+    "original_bytes": 102065
+  }
+}

@@ -1,0 +1,3028 @@
+{
+  "schema": "cyrus.corpus/1",
+  "version": "41-scatter-0871-complete-policy-boundaries",
+  "initial_audit": "_local/rag/out/20261017-knowledge-repair-authoring-01",
+  "initial_manifest_sha256": "eb5b7ff0287485e0719edd897a281e3247265e3f56659615e85bab53196c508d",
+  "review_status": "Agent-reviewed source, complete selected contexts, enrollment and historical limits; human semantic review not performed.",
+  "selection_limits": "Explicit product contracts, source and qualified evidence. Large MAXScript parents use reviewed spans. No retrieval tooling, evaluation labels, assets or private data are searchable.",
+  "authority_decisions": [
+    {
+      "path": "AGENTS.md",
+      "original_inventory_decision": "retained-history",
+      "original_inventory_reason": "Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified",
+      "phase1_status": "current",
+      "phase1_status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "proposed_interpretation": "Maintained engineering instructions for this snapshot; old inventory retained-history is preserved as a prior cleanup decision",
+      "evidence": [
+        {
+          "path": "docs/DOCUMENTATION.md",
+          "sha256": "ed37a2c4ad2c72c9df017eea84a671cbb77541d9aef61e3e38bbf6266553b95d",
+          "start_line": 7,
+          "end_line": 7
+        },
+        {
+          "path": "AGENTS.md",
+          "sha256": "dba7011b92175409e35a7b894af2dc16b32c1c751bca45723fec30b90534de9c",
+          "start_line": 1,
+          "end_line": 9
+        }
+      ],
+      "review_status": "agent-reviewed proposal; human confirmation pending"
+    },
+    {
+      "path": "CyrusLicensing/README.md",
+      "original_inventory_decision": "preserved-excluded",
+      "original_inventory_reason": "Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup",
+      "phase1_status": "current",
+      "phase1_status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "proposed_interpretation": "Maintained component foundation contract; preserved-excluded meant cleanup scope, not obsolete content or commercial certification",
+      "evidence": [
+        {
+          "path": "CyrusLicensing/README.md",
+          "sha256": "8d877d5fc922cc5651f8126e997620b057e3fc490e1d3a7b860bf226e72187d9",
+          "start_line": 3,
+          "end_line": 7
+        },
+        {
+          "path": "CyrusLicensing/README.md",
+          "sha256": "8d877d5fc922cc5651f8126e997620b057e3fc490e1d3a7b860bf226e72187d9",
+          "start_line": 33,
+          "end_line": 35
+        }
+      ],
+      "review_status": "agent-reviewed proposal; human confirmation pending"
+    },
+    {
+      "path": "website/README.md",
+      "original_inventory_decision": "preserved-excluded",
+      "original_inventory_reason": "Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup",
+      "phase1_status": "current",
+      "phase1_status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "proposed_interpretation": "Maintained public frontend/editorial source, not product/runtime qualification; preserved-excluded inventory remains visible",
+      "evidence": [
+        {
+          "path": "website/README.md",
+          "sha256": "d64e1ed53e3e19fd757bbed041528fe33829f5091294471f87ed84481e12faaa",
+          "start_line": 3,
+          "end_line": 3
+        },
+        {
+          "path": "website/README.md",
+          "sha256": "d64e1ed53e3e19fd757bbed041528fe33829f5091294471f87ed84481e12faaa",
+          "start_line": 124,
+          "end_line": 124
+        }
+      ],
+      "review_status": "agent-reviewed proposal; human confirmation pending"
+    }
+  ],
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "dba7011b92175409e35a7b894af2dc16b32c1c751bca45723fec30b90534de9c",
+      "selection_reason": "Maintained repository engineering contracts despite old inventory history",
+      "role": "maintained_guide",
+      "review_status": "Agent reviewed 19 October 2026 changed selected spans and complete maintained contracts against current source and preserved delivery evidence; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Unknown; source snapshot only, no new host qualification",
+        "limits": "Agent source review; pending human corpus review"
+      },
+      "canonical": {
+        "preferred_path": "AGENTS.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained repository engineering contracts despite old inventory history"
+      },
+      "ranges": [
+        [
+          1,
+          87
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "root",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          87
+        ]
+      ]
+    },
+    {
+      "path": "README.md",
+      "sha256": "9dcde6a77cbad2b9228a8634566cdd44347b0bf006b686808884ce0aef05d5d9",
+      "selection_reason": "Current navigation and development version context",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Current Max 2027 scoped correction and prior refinements. Older-host receipts, native column packing, finite geometry limits and open physical/lifecycle qualification remain separately labeled. No whole-repository or human semantic acceptance claim.",
+        "previous_snapshot": "Scatter 0.86.8.4 / schema 59; independent Analyzer 0.14.1; 22 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "README.md",
+        "relationship": "selected-original",
+        "evidence": "Current navigation and development version context"
+      },
+      "ranges": [
+        [
+          1,
+          84
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "root",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          84
+        ]
+      ]
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "sha256": "101f131207e50ac74af9e3b7c3ba2265223fb25b7055e4e4ff396f0709754501",
+      "selection_reason": "Current artist workflow and limits",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed complete current topic contexts; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Current Max 2027 scoped correction and prior refinements. Older-host receipts, native column packing, finite geometry limits and open physical/lifecycle qualification remain separately labeled. No whole-repository or human semantic acceptance claim.",
+        "previous_snapshot": "Scatter 0.86.8.4 / schema 59; independent Analyzer 0.14.1; 22 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "docs/ARTIST_GUIDE.md",
+        "relationship": "selected-original",
+        "evidence": "Current artist workflow and limits"
+      },
+      "ranges": [
+        [
+          1,
+          546
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          96,
+          109
+        ],
+        [
+          112,
+          119
+        ],
+        [
+          120,
+          123
+        ],
+        [
+          124,
+          137
+        ],
+        [
+          138,
+          145
+        ],
+        [
+          146,
+          188
+        ],
+        [
+          191,
+          205
+        ],
+        [
+          206,
+          224
+        ],
+        [
+          225,
+          230
+        ],
+        [
+          231,
+          246
+        ],
+        [
+          247,
+          299
+        ],
+        [
+          300,
+          313
+        ],
+        [
+          314,
+          333
+        ],
+        [
+          334,
+          345
+        ],
+        [
+          346,
+          394
+        ],
+        [
+          395,
+          412
+        ],
+        [
+          415,
+          426
+        ],
+        [
+          427,
+          434
+        ],
+        [
+          435,
+          442
+        ],
+        [
+          443,
+          448
+        ],
+        [
+          454,
+          482
+        ],
+        [
+          483,
+          486
+        ],
+        [
+          487,
+          524
+        ],
+        [
+          525,
+          546
+        ]
+      ]
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "6ac06aba2b9c107291bf6b7ea8107e132242fbf5cb5b4b572e6dc0ff3809a149",
+      "selection_reason": "Current ownership and authoritative source map",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "docs/ARCHITECTURE.md",
+        "relationship": "selected-original",
+        "evidence": "Current ownership and authoritative source map"
+      },
+      "ranges": [
+        [
+          1,
+          465
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          7,
+          14
+        ],
+        [
+          15,
+          53
+        ],
+        [
+          54,
+          90
+        ],
+        [
+          91,
+          125
+        ],
+        [
+          126,
+          190
+        ],
+        [
+          191,
+          221
+        ],
+        [
+          226,
+          235
+        ],
+        [
+          236,
+          243
+        ],
+        [
+          244,
+          287
+        ],
+        [
+          288,
+          307
+        ],
+        [
+          308,
+          331
+        ],
+        [
+          332,
+          364
+        ],
+        [
+          365,
+          370
+        ],
+        [
+          375,
+          387
+        ],
+        [
+          388,
+          393
+        ],
+        [
+          394,
+          397
+        ],
+        [
+          398,
+          401
+        ],
+        [
+          402,
+          407
+        ],
+        [
+          408,
+          422
+        ],
+        [
+          423,
+          440
+        ],
+        [
+          441,
+          456
+        ],
+        [
+          457,
+          465
+        ]
+      ]
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "sha256": "1fc3480b7385c8ae89b3b2ff7315c92272841a6b619e722fc29df59756f2c781",
+      "selection_reason": "Maintained authority and historical applicability rules",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "docs/DOCUMENTATION.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained authority and historical applicability rules"
+      },
+      "ranges": [
+        [
+          1,
+          82
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          5,
+          63
+        ],
+        [
+          64,
+          71
+        ],
+        [
+          72,
+          82
+        ]
+      ]
+    },
+    {
+      "path": "docs/LAYOUT_AND_FALLOFF.md",
+      "sha256": "ac9ce8ca247c4e309e923a14d6d0112cd15b32c8376c418b9d1f5dd5a15af105",
+      "selection_reason": "Detailed geometry, falloff and source identity semantics",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "docs/LAYOUT_AND_FALLOFF.md",
+        "relationship": "selected-original",
+        "evidence": "Detailed geometry, falloff and source identity semantics"
+      },
+      "ranges": [
+        [
+          1,
+          107
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Consolidated current authority or history/retention index",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          28,
+          56
+        ],
+        [
+          57,
+          74
+        ],
+        [
+          75,
+          86
+        ],
+        [
+          87,
+          107
+        ]
+      ]
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "sha256": "9cc0a136b7afafe4331be2a5c52ea3810f0e86c26ab82c70d06cdd531c773800",
+      "selection_reason": "Host identity, publication, profiling and consent boundaries",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "docs/AGENT_WORKFLOW.md",
+        "relationship": "selected-original",
+        "evidence": "Host identity, publication, profiling and consent boundaries"
+      },
+      "ranges": [
+        [
+          1,
+          105
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          7,
+          15
+        ],
+        [
+          16,
+          27
+        ],
+        [
+          28,
+          65
+        ],
+        [
+          66,
+          77
+        ],
+        [
+          78,
+          85
+        ],
+        [
+          86,
+          105
+        ]
+      ]
+    },
+    {
+      "path": "CyrusMCP/README.md",
+      "sha256": "9473bacb288717a344607475db99f115bd2219a114b4933e0a4a2fa883e76b13",
+      "selection_reason": "Public closed authoring contract and cached-read limits",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed complete current topic contexts; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "CyrusMCP/README.md",
+        "relationship": "selected-original",
+        "evidence": "Public closed authoring contract and cached-read limits"
+      },
+      "ranges": [
+        [
+          1,
+          158
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current component/navigation/build/engineering authority; stale claims reconciled with source",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "MCP",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          13,
+          20
+        ],
+        [
+          21,
+          30
+        ],
+        [
+          31,
+          49
+        ],
+        [
+          50,
+          76
+        ],
+        [
+          77,
+          94
+        ],
+        [
+          95,
+          129
+        ],
+        [
+          130,
+          139
+        ],
+        [
+          140,
+          158
+        ]
+      ]
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/README.md",
+      "sha256": "f3806c689e6a97408fde02ddd3a1f88a0309eace1f18942ba47f92d7c43ddb5e",
+      "selection_reason": "Independent Analyzer constraints and freshness",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "CyrusSurfaceAnalyzer/README.md",
+        "relationship": "selected-original",
+        "evidence": "Independent Analyzer constraints and freshness"
+      },
+      "ranges": [
+        [
+          1,
+          50
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current component/navigation/build/engineering authority; stale claims reconciled with source",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "Analyzer",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          18,
+          27
+        ],
+        [
+          28,
+          37
+        ],
+        [
+          38,
+          45
+        ],
+        [
+          46,
+          50
+        ]
+      ]
+    },
+    {
+      "path": "CyrusLicensing/README.md",
+      "sha256": "8d877d5fc922cc5651f8126e997620b057e3fc490e1d3a7b860bf226e72187d9",
+      "selection_reason": "Pure policy and native foundation trust boundary",
+      "role": "maintained_guide",
+      "review_status": "agent-reviewed-candidate; human review pending",
+      "applicability": {
+        "snapshot": "Unknown; source snapshot only, no new host qualification",
+        "limits": "Agent source review; pending human corpus review"
+      },
+      "canonical": {
+        "preferred_path": "CyrusLicensing/README.md",
+        "relationship": "selected-original",
+        "evidence": "Pure policy and native foundation trust boundary"
+      },
+      "ranges": [
+        [
+          1,
+          35
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "preserved-excluded",
+      "inventory_reason": "Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Licensing",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          35
+        ]
+      ]
+    },
+    {
+      "path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+      "sha256": "eb6938ea64c876acfcd47d30a00d1dd9f135615faa7fa382517c41cb1f877d9a",
+      "selection_reason": "Maintained contract retained at dated path",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained contract retained at dated path"
+      },
+      "ranges": [
+        [
+          1,
+          105
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-interface | docs/DOCUMENTATION.md#authority",
+      "inventory_decision": "maintained-interface",
+      "inventory_reason": "Active capability/help input or contract at dependency-pinned path",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          15,
+          30
+        ],
+        [
+          31,
+          49
+        ],
+        [
+          50,
+          67
+        ],
+        [
+          68,
+          77
+        ],
+        [
+          78,
+          96
+        ],
+        [
+          97,
+          105
+        ]
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+      "sha256": "d6869992c9ee86a01ebb713c889fe12a3d0041f48ea34147a436abeccd1a7038",
+      "selection_reason": "Clearly separates implemented, experimental and planned product work",
+      "role": "proposal",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_index_snapshot": "Reviewed 11 October 2026 against 0.79.5; future stages are proposals",
+        "previous_snapshot": "Public roadmap text reviewed 16 October 2026 against Scatter 0.85.2; future stages remain proposals. This public-document review does not supersede the current 0.85.4 product handoff."
+      },
+      "canonical": {
+        "preferred_path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+        "relationship": "selected-original",
+        "evidence": "Clearly separates implemented, experimental and planned product work"
+      },
+      "ranges": [
+        [
+          1,
+          84
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current maintained owner/navigation; superseded narrative archived separately. Original historical qualification remains distinct.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "website/README.md",
+      "sha256": "d64e1ed53e3e19fd757bbed041528fe33829f5091294471f87ed84481e12faaa",
+      "selection_reason": "Maintained public frontend ownership; no plugin execution authority",
+      "role": "editorial",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source-only website evidence with preserved uncommitted work; indexing does not build or publish a site or qualify Max. Product contracts and exact runtime limits remain in maintained product guides.",
+        "previous_snapshot": "Separate local website source edition for Scatter 0.86.8.2 / schema 59, reviewed 21 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "website/README.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained public frontend ownership; no plugin execution authority"
+      },
+      "ranges": [
+        [
+          1,
+          132
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "preserved-excluded",
+      "inventory_reason": "Research/website, independent licensing, imported chapter or byte-preserved evidence; outside content cleanup",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "website",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "website/content/README.md",
+      "sha256": "dd84df49ab232ce36d70b169c4311f0793a6217210f61bff018fb2e90c60b86f",
+      "selection_reason": "Canonical curated versus generated website content contract",
+      "role": "editorial",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source-only website evidence with preserved uncommitted work; indexing does not build or publish a site or qualify Max. Product contracts and exact runtime limits remain in maintained product guides.",
+        "previous_snapshot": "Separate local website source edition for Scatter 0.86.8.2 / schema 59, reviewed 21 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "website/content/README.md",
+        "relationship": "selected-original",
+        "evidence": "Canonical curated versus generated website content contract"
+      },
+      "ranges": [
+        [
+          1,
+          13
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-website-content | website/content/README.md",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "website",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "website/content/source-manifest.json",
+      "sha256": "116f087bb24f2ae149d27fdf2e57d15ecf32623ce3557c6568ddfb87c4f0880c",
+      "selection_reason": "Exact curated enrollment and supporting fingerprint distinction; line-based JSON evidence",
+      "role": "editorial",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source-only website evidence with preserved uncommitted work; indexing does not build or publish a site or qualify Max. Product contracts and exact runtime limits remain in maintained product guides.",
+        "previous_snapshot": "Separate local website source edition for Scatter 0.86.8.2 / schema 59, reviewed 21 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "website/content/source-manifest.json",
+        "relationship": "selected-original",
+        "evidence": "Exact curated enrollment and supporting fingerprint distinction; line-based JSON evidence"
+      },
+      "ranges": [
+        [
+          1,
+          140
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-website-content | website/content/README.md",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "website",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+      "sha256": "faa30dec0d52efaa31dea248c7a854e190a1395bdcc5bb2118846493017e4b36",
+      "selection_reason": "Claim-specific build evidence; retain Phase 1 status independently",
+      "role": "historical_evidence",
+      "review_status": "agent-reviewed-candidate; human review pending",
+      "applicability": {
+        "snapshot": "0.75.0, schema 54, Max 2027",
+        "limits": "Historical campaign; old current wording applies only to this snapshot"
+      },
+      "canonical": {
+        "preferred_path": "docs/System_Qualification_0.75_2026-10-09/README.md",
+        "relationship": "selected-original",
+        "evidence": "Claim-specific build evidence; retain Phase 1 status independently"
+      },
+      "ranges": [
+        [
+          1,
+          78
+        ]
+      ],
+      "knowledge_status": "historical",
+      "status_source": "inventory:retained-history | docs/documentation-inventory.csv",
+      "inventory_decision": "retained-history",
+      "inventory_reason": "Version/provenance/dependency review: unique implementation, requirements or evidence; not current authority or newly requalified",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+      "sha256": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+      "selection_reason": "Claim-specific build evidence; retain Phase 1 status independently",
+      "role": "historical_evidence",
+      "review_status": "agent-reviewed-candidate; human review pending",
+      "applicability": {
+        "snapshot": "0.79.1, schema 55, Max 2026/2027; script ff2bee7e0baa1399d94c0d74b9dc8cad0335e45ef311e982e97225256344de08",
+        "limits": "B14 unit conversion and physical picker/Live qualifications remain open"
+      },
+      "canonical": {
+        "preferred_path": "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+        "relationship": "selected-original",
+        "evidence": "Claim-specific build evidence; retain Phase 1 status independently"
+      },
+      "ranges": [
+        [
+          1,
+          92
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "inventory:preserved-data | docs/documentation-inventory.csv",
+      "inventory_decision": "preserved-data",
+      "inventory_reason": "Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Layer_Navigation_0.79.2_2026-10-11/README.md",
+      "sha256": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
+      "selection_reason": "Claim-specific build evidence; retain Phase 1 status independently",
+      "role": "historical_evidence",
+      "review_status": "agent-reviewed-candidate; human review pending",
+      "applicability": {
+        "snapshot": "0.79.2, schema 55, Max 2026/2027; script cb3d5e5dca1c3d6799dc626dc9a49397a92abc21baf6e4935b8cfdd4ff09447b",
+        "limits": "Synchronous redraw is not FPS; B14/B16 and physical input remain open"
+      },
+      "canonical": {
+        "preferred_path": "docs/Layer_Navigation_0.79.2_2026-10-11/README.md",
+        "relationship": "selected-original",
+        "evidence": "Claim-specific build evidence; retain Phase 1 status independently"
+      },
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "inventory:preserved-data | docs/documentation-inventory.csv",
+      "inventory_decision": "preserved-data",
+      "inventory_reason": "Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+      "sha256": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+      "selection_reason": "Claim-specific build evidence; retain Phase 1 status independently",
+      "role": "historical_evidence",
+      "review_status": "agent-reviewed-candidate; human review pending",
+      "applicability": {
+        "snapshot": "Original 0.79.5, schema 55; script 47ed50ed18aab79da76f511cc74b95a81f1d518fa9fd02b2fa647ec5eba3a100",
+        "limits": "Original garden/render receipts do not requalify later creation correction"
+      },
+      "canonical": {
+        "preferred_path": "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+        "relationship": "selected-original",
+        "evidence": "Claim-specific build evidence; retain Phase 1 status independently"
+      },
+      "ranges": [
+        [
+          1,
+          83
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "inventory:preserved-data | docs/documentation-inventory.csv",
+      "inventory_decision": "preserved-data",
+      "inventory_reason": "Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+      "sha256": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+      "selection_reason": "Claim-specific build evidence; retain Phase 1 status independently",
+      "role": "historical_evidence",
+      "review_status": "agent-reviewed-candidate; human review pending",
+      "applicability": {
+        "snapshot": "Corrected 0.79.5, schema 55; script cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+        "limits": "120 focused host assertions; submitted geometry not presented pixels/physical input; B21 remains"
+      },
+      "canonical": {
+        "preferred_path": "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+        "relationship": "selected-original",
+        "evidence": "Claim-specific build evidence; retain Phase 1 status independently"
+      },
+      "ranges": [
+        [
+          1,
+          54
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "inventory:preserved-data | docs/documentation-inventory.csv",
+      "inventory_decision": "preserved-data",
+      "inventory_reason": "Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          15,
+          35
+        ]
+      ]
+    },
+    {
+      "path": "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+      "sha256": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+      "selection_reason": "Claim-specific build evidence; retain Phase 1 status independently",
+      "role": "historical_evidence",
+      "review_status": "Agent-reviewed complete current topic contexts; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "0.79 team pilot; tested script 7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+        "limits": "Best-effort offline protection, not commercial security or full native ownership"
+      },
+      "canonical": {
+        "preferred_path": "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+        "relationship": "selected-original",
+        "evidence": "Claim-specific build evidence; retain Phase 1 status independently"
+      },
+      "ranges": [
+        [
+          1,
+          51
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "inventory:preserved-data | docs/documentation-inventory.csv",
+      "inventory_decision": "preserved-data",
+      "inventory_reason": "Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          5,
+          15
+        ],
+        [
+          16,
+          32
+        ],
+        [
+          33,
+          40
+        ],
+        [
+          41,
+          51
+        ]
+      ]
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "sha256": "9e9200b93ee2a71fcecbd113dc93a04456de4df103288c7d24ed71a9ad1a928f",
+      "selection_reason": "Inspected template/module generation and fingerprint pipeline",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/generate.cjs",
+        "relationship": "selected-original",
+        "evidence": "Inspected template/module generation and fingerprint pipeline"
+      },
+      "ranges": [
+        [
+          1,
+          28
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "selection_reason": "Bounded numeric worker execution and joining",
+      "role": "implementation",
+      "review_status": "agent-reviewed-candidate; human review pending",
+      "applicability": {
+        "snapshot": "Unknown; source snapshot only, no new host qualification",
+        "limits": "Agent source review; pending human corpus review"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/include/execution.h",
+        "relationship": "selected-original",
+        "evidence": "Bounded numeric worker execution and joining"
+      },
+      "ranges": [
+        [
+          1,
+          77
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/include/receiver_plan.h",
+      "sha256": "a2a63872832e79538c52fc3165773205fdbc42dd07432658511931d5707321d6",
+      "selection_reason": "Receiver stable-ID and bounded-plan public declarations",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/include/receiver_plan.h",
+        "relationship": "selected-original",
+        "evidence": "Receiver stable-ID and bounded-plan public declarations"
+      },
+      "ranges": [
+        [
+          1,
+          32
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "646d7639d8b3211ff4652109f3b6138abeded1fc2306c0293166f936de7b9337",
+      "selection_reason": "Reviewed radius/binding, publication/rollback, schema migration and original icon/draw spans; not the entire controller.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/unified-core.ms",
+        "relationship": "selected-original",
+        "evidence": "Inspected icon construction, creation and registered-node draw code only"
+      },
+      "ranges": [
+        [
+          3369,
+          3484
+        ],
+        [
+          3979,
+          4166
+        ],
+        [
+          6611,
+          6696
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "sha256": "6d9abceb525e0753e09157d4ab6046a591b129a699829de7c5bd771c9ab25989",
+      "selection_reason": "Exact generated fingerprint and matching draw body; preserve delivered-source questions",
+      "role": "delivered_artifact",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/unified-core.ms",
+        "relationship": "generated-from",
+        "evidence": "AGENTS.md; docs/ARCHITECTURE.md source map; inspected generator and source"
+      },
+      "ranges": [
+        [
+          1,
+          3
+        ],
+        [
+          20440,
+          20487
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": true,
+      "generated_source": "AminScatter/tools/ui/generate.cjs; AminScatter/tools/ui/templates/unified-core.ms"
+    },
+    {
+      "path": "AminScatter/tests/receiver_tests.cpp",
+      "sha256": "a3f3ff00a2cf679a7636b3cdd3342ec2f55c37fb8f38d41d770716311ec33037",
+      "selection_reason": "Receiver stability subject: assertion/mesh helpers followed by the complete identity-keyed generator, equality helper and insertion/reorder/Fixed Total/removal assertions. Other test subjects require direct inspection of the fully verified parent.",
+      "role": "test",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tests/receiver_tests.cpp",
+        "relationship": "selected-original",
+        "evidence": "Receiver stability, quota and rejection assertions"
+      },
+      "ranges": [
+        [
+          1,
+          13
+        ],
+        [
+          14,
+          34
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "CyrusMCP/tests/test_publication.py",
+      "sha256": "2b0cfdab08df99ae2e75e66b5b1ab5078c6d60db15bc18e400977665d348c207",
+      "selection_reason": "Cached publication identity, paging and no-evaluation assertions",
+      "role": "test",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "CyrusMCP/tests/test_publication.py",
+        "relationship": "selected-original",
+        "evidence": "Cached publication identity, paging and no-evaluation assertions"
+      },
+      "ranges": [
+        [
+          1,
+          87
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "MCP",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "sha256": "cd19716930ad3d48855a4f760707967c822689bcc85c2f1e6b2edad2df5ac966",
+      "selection_reason": "Semantic catalog coverage assertions, not host behavioral certification",
+      "role": "test",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Agent source review; pending human corpus review",
+        "previous_snapshot": "Unknown; source snapshot only, no new host qualification"
+      },
+      "canonical": {
+        "preferred_path": "CyrusMCP/tests/test_feature_catalog.py",
+        "relationship": "selected-original",
+        "evidence": "Semantic catalog coverage assertions, not host behavioral certification"
+      },
+      "ranges": [
+        [
+          1,
+          18
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "MCP",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "selection_reason": "Complete document, partitioned at explicit contract boundaries so every guarantee, limit and evidence cell stays together; no omitted lines.",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed complete current topic contexts; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass",
+        "previous_index_snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities",
+        "previous_snapshot": "Maintained engineering direction reviewed 18 October 2026 against Scatter 0.86.0/schema 58; individual historical witnesses retain their original builds and limits. Exact native delivery qualification is separate from required behavior."
+      },
+      "canonical": {
+        "preferred_path": "docs/ENGINEERING_FOUNDATION.md",
+        "relationship": "selected-original",
+        "evidence": "Required F01-F12 behavior, conditional guarantees, evidence and limits"
+      },
+      "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          1,
+          239
+        ]
+      ],
+      "contract_sections": [
+        [
+          9,
+          14
+        ],
+        [
+          15,
+          32
+        ],
+        [
+          33,
+          42
+        ],
+        [
+          43,
+          55
+        ],
+        [
+          56,
+          65
+        ],
+        [
+          70,
+          81
+        ],
+        [
+          82,
+          93
+        ],
+        [
+          94,
+          105
+        ],
+        [
+          106,
+          117
+        ],
+        [
+          118,
+          129
+        ],
+        [
+          130,
+          141
+        ],
+        [
+          142,
+          153
+        ],
+        [
+          154,
+          171
+        ],
+        [
+          172,
+          183
+        ],
+        [
+          184,
+          195
+        ],
+        [
+          196,
+          209
+        ],
+        [
+          210,
+          222
+        ],
+        [
+          223,
+          232
+        ],
+        [
+          233,
+          239
+        ]
+      ]
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "selection_reason": "Current unresolved acceptance boundaries and bounded corrections",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass",
+        "previous_index_snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities",
+        "prior_08684_index_snapshot": "Maintained unresolved-work list for current Scatter 0.85.4/schema 58; historical issue evidence is not a current acceptance result.",
+        "previous_snapshot": "Maintained unresolved-work list for Scatter 0.86.8.4/schema 59; historical issue evidence is not current acceptance."
+      },
+      "canonical": {
+        "preferred_path": "docs/BACKLOG.md",
+        "relationship": "selected-original",
+        "evidence": "Current unresolved acceptance boundaries and bounded corrections"
+      },
+      "sha256": "7a4917fcbcf5ab53550960ab1d3ba85b9f57409755042c851befac4c9f41a225",
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          1,
+          227
+        ]
+      ],
+      "contract_sections": [
+        [
+          45,
+          50
+        ],
+        [
+          51,
+          60
+        ],
+        [
+          61,
+          120
+        ],
+        [
+          121,
+          135
+        ],
+        [
+          136,
+          145
+        ],
+        [
+          146,
+          162
+        ],
+        [
+          163,
+          180
+        ],
+        [
+          181,
+          197
+        ],
+        [
+          198,
+          220
+        ],
+        [
+          225,
+          227
+        ]
+      ]
+    },
+    {
+      "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+      "selection_reason": "Dated Max 2026/2027 publication and typed-unit correction witness, identities and exclusions",
+      "role": "historical_evidence",
+      "review_status": "Agent-reviewed source and recorded bounded evidence; human artist/release acceptance pending",
+      "applicability": {
+        "snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities",
+        "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass"
+      },
+      "canonical": {
+        "preferred_path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+        "relationship": "selected-original",
+        "evidence": "Dated Max 2026/2027 publication and typed-unit correction witness, identities and exclusions"
+      },
+      "sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+      "knowledge_status": "unknown",
+      "status_source": "inventory:preserved-data | docs/documentation-inventory.csv",
+      "inventory_decision": "preserved-data",
+      "inventory_reason": "Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          1,
+          51
+        ]
+      ]
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "selection_reason": "Actual native successor preparation and publication body",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass",
+        "previous_index_snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities",
+        "previous_snapshot": "Implementation/test source in the enrolled 17 October 2026 working tree. The former index snapshot was 0.79.6/schema 56; it does not qualify changed current bytes or a loaded plugin."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/point_publication.inc",
+        "relationship": "selected-original",
+        "evidence": "Actual native successor preparation and publication body"
+      },
+      "sha256": "8d4dae9d2d072c1266dcba319c38fb443ec7eadec2907d0886e0516feda5f841",
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          1,
+          72
+        ]
+      ]
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "selection_reason": "Native Edit commit/rollback ownership and map restoration",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass",
+        "previous_index_snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities",
+        "previous_snapshot": "Implementation/test source in the enrolled 17 October 2026 working tree. The former index snapshot was 0.79.6/schema 56; it does not qualify changed current bytes or a loaded plugin."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/cyrus_edit_stack.inc",
+        "relationship": "selected-original",
+        "evidence": "Native Edit commit/rollback ownership and map restoration"
+      },
+      "sha256": "7bd6b95e7ee27ba445aa6cfd71aa8b0f69d75da6222c12f0a18683a9a93ca7f1",
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          125,
+          146
+        ]
+      ]
+    },
+    {
+      "path": "AminScatter/tests/publication_tests.cpp",
+      "selection_reason": "SDK-free tests including the actual production body, fault boundaries and collaborator limits",
+      "role": "test",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass",
+        "previous_index_snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities",
+        "previous_snapshot": "Implementation/test source in the enrolled 17 October 2026 working tree. The former index snapshot was 0.79.6/schema 56; it does not qualify changed current bytes or a loaded plugin."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tests/publication_tests.cpp",
+        "relationship": "selected-original",
+        "evidence": "SDK-free tests including the actual production body, fault boundaries and collaborator limits"
+      },
+      "sha256": "1cd97e863791a9561eba85b9223f44f734dbffa6b28590c8f4f48751382eb2dd",
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          1,
+          515
+        ]
+      ]
+    },
+    {
+      "path": "tools/foundation_validation/publication.py",
+      "selection_reason": "Actual host method fault injection fixture and Manual/recovery assertions",
+      "role": "test",
+      "review_status": "Applicability metadata reviewed 17 October 2026 against current source and exact historical context; no new product/host qualification.",
+      "applicability": {
+        "snapshot": "Implementation/test source in the enrolled 17 October 2026 working tree. The former index snapshot was 0.79.6/schema 56; it does not qualify changed current bytes or a loaded plugin.",
+        "limits": "Required behavior, implementation and executed proof are distinct; source tests alone do not establish a pass",
+        "previous_index_snapshot": "Scatter 0.79.6/schema 56; see dated handoff for exact script/native identities"
+      },
+      "canonical": {
+        "preferred_path": "tools/foundation_validation/publication.py",
+        "relationship": "selected-original",
+        "evidence": "Actual host method fault injection fixture and Manual/recovery assertions"
+      },
+      "sha256": "cf32a07e724b9841bac927fff74aef0d95bfde4fecc3f6b84f17d6b6a8482181",
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "tools",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          1,
+          196
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/native-placement/DELIVERY_0860.md",
+      "selection_reason": "Exact 0.86.0 Max 2027 native delivery scope, measurements, package identities and explicit limits",
+      "role": "historical_evidence",
+      "review_status": "Agent reviewed exact qualification records; human artist acceptance not performed",
+      "applicability": {
+        "snapshot": "Scatter 0.86.0 schema 58; candidate-11 exact script/native identity in this report",
+        "limits": "Scoped private Max 2027 tests; no artist installation, general production speed guarantee, all-renderer or physical mixed-monitor qualification"
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/native-placement/DELIVERY_0860.md",
+        "relationship": "selected-original",
+        "evidence": "Dated final native migration report; earlier evidence retains earlier scope"
+      },
+      "sha256": "ceeb8c56f035ecec513e0be65167de0ebdce6fe91ffce4c5bf716f39db3a4f4f",
+      "knowledge_status": "unknown",
+      "status_source": "inventory:preserved-data | docs/documentation-inventory.csv",
+      "inventory_decision": "preserved-data",
+      "inventory_reason": "Frozen dated test/delivery evidence retained with original role and snapshot qualifiers. Knowledge authority remains unknown; no status promotion or source-byte rewrite during consolidation.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "contract_sections": [
+        [
+          1,
+          80
+        ]
+      ]
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "cf788b656ee0aec0d30c933c4a9370310e32df8cbf2d2ad84f62c520b79eda5f",
+      "selection_reason": "Current guidance routing with historical reports/research clearly separated; unrelated Physics Lab/presentation rows preserved.",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Current Max 2027 scoped correction and prior refinements. Older-host receipts, native column packing, finite geometry limits and open physical/lifecycle qualification remain separately labeled. No whole-repository or human semantic acceptance claim.",
+        "previous_snapshot": "Scatter 0.86.8.4 / schema 59; independent Analyzer 0.14.1; 22 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "docs/README.md",
+        "relationship": "selected-original",
+        "evidence": "Current guidance routing with historical reports/research clearly separated; unrelated Physics Lab/presentation rows preserved."
+      },
+      "ranges": [
+        [
+          1,
+          36
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          36
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/improvement-program/PROGRESS.md",
+      "sha256": "39aa47c24b7e92ff34b8dfa3d947392230882362f1abd667bb6bd40fed1409cc",
+      "selection_reason": "Single maintained P/I/PG/N status ledger: completed N01–N09/P01–P07, supported P10, pending P08/P09 and remaining acceptance; maintenance task does not resume code.",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Current Max 2027 scoped correction and prior refinements. Older-host receipts, native column packing, finite geometry limits and open physical/lifecycle qualification remain separately labeled. No whole-repository or human semantic acceptance claim.",
+        "previous_snapshot": "Scatter 0.86.8.4 / schema 59; independent Analyzer 0.14.1; 22 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/improvement-program/PROGRESS.md",
+        "relationship": "selected-original",
+        "evidence": "Single maintained P/I/PG/N status ledger: completed N01–N09/P01–P07, supported P10, pending P08/P09 and remaining acceptance; maintenance task does not resume code."
+      },
+      "ranges": [
+        [
+          1,
+          360
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current maintained owner/navigation; superseded narrative archived separately. Original historical qualification remains distinct.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          23,
+          36
+        ],
+        [
+          37,
+          42
+        ],
+        [
+          43,
+          54
+        ],
+        [
+          55,
+          70
+        ],
+        [
+          71,
+          101
+        ],
+        [
+          102,
+          119
+        ],
+        [
+          120,
+          139
+        ],
+        [
+          140,
+          159
+        ],
+        [
+          160,
+          169
+        ],
+        [
+          170,
+          195
+        ],
+        [
+          196,
+          208
+        ],
+        [
+          209,
+          228
+        ],
+        [
+          229,
+          262
+        ],
+        [
+          263,
+          271
+        ],
+        [
+          272,
+          279
+        ],
+        [
+          280,
+          283
+        ],
+        [
+          288,
+          297
+        ],
+        [
+          298,
+          315
+        ],
+        [
+          316,
+          327
+        ],
+        [
+          328,
+          349
+        ],
+        [
+          350,
+          357
+        ],
+        [
+          358,
+          360
+        ]
+      ]
+    },
+    {
+      "path": "docs/Max_2027_Installation.md",
+      "sha256": "5b1d78fc626684cecf32edc65078de5550425066c94adcc81361e1933ab669b2",
+      "selection_reason": "Current 0.86.2 installation, library portability, or owner/team activation guidance; complete source and qualification limits.",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Current Max 2027 scoped correction and prior refinements. Older-host receipts, native column packing, finite geometry limits and open physical/lifecycle qualification remain separately labeled. No whole-repository or human semantic acceptance claim.",
+        "previous_snapshot": "Scatter 0.86.8.4 / schema 59; independent Analyzer 0.14.1; 22 October 2026."
+      },
+      "canonical": {
+        "preferred_path": "docs/Max_2027_Installation.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          136
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          3,
+          8
+        ],
+        [
+          9,
+          12
+        ],
+        [
+          13,
+          18
+        ],
+        [
+          19,
+          24
+        ],
+        [
+          25,
+          58
+        ],
+        [
+          59,
+          96
+        ],
+        [
+          97,
+          100
+        ],
+        [
+          101,
+          108
+        ],
+        [
+          109,
+          136
+        ]
+      ]
+    },
+    {
+      "path": "tools/licensing/README.md",
+      "sha256": "d88a43f047397f5a07cfc03499cb93fcbbee3dcdedfd844b710e11cd7406a3c0",
+      "selection_reason": "Current 0.86.2 installation, library portability, or owner/team activation guidance; complete source and qualification limits.",
+      "role": "maintained_guide",
+      "review_status": "Agent reviewed 18 October 2026 documentation consolidation: current routing/status clarified, exact historical evidence and qualification limits preserved; human semantic review pending.",
+      "applicability": {
+        "snapshot": "19 October 2026 corrected 0.86.2 handoff; preceding sections retain their own dated scope.",
+        "limits": "Documentation/source and preserved-receipt review. No new host tests, renderer acceptance, all-version support or general portability claim."
+      },
+      "canonical": {
+        "preferred_path": "tools/licensing/README.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          54
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "tools",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          54
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/INSTALLER_CONTRACT.md",
+      "sha256": "b512c7fae4002d2cef41abbfb67f1db3ef7bc9ffc86625ea88e72b912155583e",
+      "selection_reason": "Versioned installation contract, exact ownership/migration rules and explicitly scoped current versus historical qualification.",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed current 0.86.8.4 source; original authority, historical qualification and selected scope preserved.",
+      "applicability": {
+        "snapshot": "Versioned installer contract: 22 October 2026 Max 2027 correction 0.86.8.4, alongside separately labeled historical 0.86.2 evidence.",
+        "limits": "Documentation/source and preserved-receipt review. No new host tests, renderer acceptance, all-version support or general portability claim.",
+        "prior_08684_index_snapshot": "19 October 2026 corrected 0.86.2 handoff; preceding sections retain their own dated scope.",
+        "prior_selection_reason": "Current 0.86.2 installation, library portability, or owner/team activation guidance; complete source and qualification limits."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/preset-gallery-improvements/INSTALLER_CONTRACT.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          76
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          76
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+      "sha256": "2a6204ec9d4cfffd89bf675edbe38850451dd7c285d90679ec6751bbe6c2234a",
+      "selection_reason": "Current 0.86.2 installation, library portability, or owner/team activation guidance; complete source and qualification limits.",
+      "role": "maintained_guide",
+      "review_status": "Agent source/range review for 21 October 2026 documentation maintenance; no independent human semantic review or new runtime qualification.",
+      "applicability": {
+        "snapshot": "19 October 2026 corrected 0.86.2 handoff; preceding sections retain their own dated scope.",
+        "limits": "Documentation/source and preserved-receipt review. No new host tests, renderer acceptance, all-version support or general portability claim."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          52
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          52
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/DELIVERY_0862.md",
+      "sha256": "2d887d9847d47c544d441d2b3bf647664122303ed46473bc59071990cd8d5d6e",
+      "selection_reason": "Current 0.86.2 installation, library portability, or owner/team activation guidance; complete source and qualification limits.",
+      "role": "maintained_guide",
+      "review_status": "Agent reviewed 18 October 2026 documentation consolidation: current routing/status clarified, exact historical evidence and qualification limits preserved; human semantic review pending.",
+      "applicability": {
+        "snapshot": "19 October 2026 corrected 0.86.2 handoff; preceding sections retain their own dated scope.",
+        "limits": "Documentation/source and preserved-receipt review. No new host tests, renderer acceptance, all-version support or general portability claim."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/preset-gallery-improvements/DELIVERY_0862.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          208
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Current same-version handoff at the top; earlier dated installer/UI receipts remain labeled historical with exact identities and limits.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          3,
+          39
+        ],
+        [
+          40,
+          66
+        ],
+        [
+          67,
+          98
+        ],
+        [
+          99,
+          128
+        ],
+        [
+          129,
+          136
+        ],
+        [
+          137,
+          148
+        ],
+        [
+          149,
+          168
+        ],
+        [
+          169,
+          178
+        ],
+        [
+          179,
+          200
+        ],
+        [
+          201,
+          208
+        ]
+      ]
+    },
+    {
+      "path": "CyrusPhysicsLab/README.md",
+      "sha256": "7c19888c7033982d23957335623f2319e8f3367a7292e0ec298c0d64dc26f1cf",
+      "selection_reason": "User explicitly requested Physics Brush knowledge: standalone 0.2.1 repair, retained 0.2 workflow and separately qualified historical foundation.",
+      "role": "maintained_guide",
+      "review_status": "Agent reviewed 18 October 2026 documentation consolidation: current routing/status clarified, exact historical evidence and qualification limits preserved; human semantic review pending.",
+      "applicability": {
+        "snapshot": "Standalone Physics Lab 0.3.0 source and historical versioned evidence, 21 October 2026.",
+        "limits": "Independent of Scatter; current instance/proxy workflow and older polygon-bake receipts retain their explicitly labeled scopes. No new build or host validation by knowledge maintenance."
+      },
+      "canonical": {
+        "preferred_path": "CyrusPhysicsLab/README.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          484
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "User requested Physics Brush knowledge on 19 October 2026. Current standalone 0.2.1/retained 0.2 workflow; earlier versioned foundation remains qualified only by its original receipts. Not Scatter integration.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "PhysicsLab",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          103,
+          126
+        ],
+        [
+          127,
+          207
+        ],
+        [
+          208,
+          245
+        ],
+        [
+          246,
+          321
+        ],
+        [
+          322,
+          355
+        ],
+        [
+          356,
+          400
+        ],
+        [
+          401,
+          431
+        ],
+        [
+          432,
+          484
+        ]
+      ]
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md",
+      "sha256": "b2c5ca6bd682192dc01bf0ab9e5c337e48aa457cd7cce08b6e7b5bde4d08d9a9",
+      "selection_reason": "User explicitly requested Physics Brush knowledge: standalone 0.2.1 repair, retained 0.2 workflow and separately qualified historical foundation.",
+      "role": "maintained_guide",
+      "review_status": "Agent reviewed 18 October 2026 documentation consolidation: current routing/status clarified, exact historical evidence and qualification limits preserved; human semantic review pending.",
+      "applicability": {
+        "snapshot": "Standalone Physics documentation index, routing to 0.3.0 and explicitly historical earlier deliveries.",
+        "limits": "Independent product and versioned qualification; no integration into Scatter or new runtime acceptance implied."
+      },
+      "canonical": {
+        "preferred_path": "docs/Scatter_Physics_Research_2026-10-16/DOCUMENTATION.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          104
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "User requested Physics Brush knowledge on 19 October 2026. Current standalone 0.2.1/retained 0.2 workflow; earlier versioned foundation remains qualified only by its original receipts. Not Scatter integration.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "PhysicsLab",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          104
+        ]
+      ]
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md",
+      "sha256": "cd7fb8a9911a9e28f6f7047f2f4121bcc69ba134f68f6765804102efe8656f2b",
+      "selection_reason": "User explicitly requested Physics Brush knowledge: standalone 0.2.1 repair, retained 0.2 workflow and separately qualified historical foundation.",
+      "role": "maintained_guide",
+      "review_status": "Agent reviewed 18 October 2026 documentation consolidation: current routing/status clarified, exact historical evidence and qualification limits preserved; human semantic review pending.",
+      "applicability": {
+        "snapshot": "Historical Physics Lab 0.2 artist workflow; explicitly superseded by standalone 0.3.0.",
+        "limits": "Historical Finish-to-poly behavior and 0.2.1 repair are not current 0.3.0 instance output and do not qualify Scatter integration."
+      },
+      "canonical": {
+        "preferred_path": "docs/Scatter_Physics_Research_2026-10-16/ARTIST_GUIDE_020.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          67
+        ]
+      ],
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "User requested Physics Brush knowledge on 19 October 2026. Current standalone 0.2.1/retained 0.2 workflow; earlier versioned foundation remains qualified only by its original receipts. Not Scatter integration.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "PhysicsLab",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          1,
+          67
+        ]
+      ]
+    },
+    {
+      "path": "docs/Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md",
+      "sha256": "75e9e92bd3d20b03241e4cd269f11855ef010a97f6f068741eae1a99e8f4ede8",
+      "selection_reason": "User explicitly requested Physics Brush knowledge: standalone 0.2.1 repair, retained 0.2 workflow and separately qualified historical foundation.",
+      "role": "historical_evidence",
+      "review_status": "Agent reviewed 18 October 2026 documentation consolidation: current routing/status clarified, exact historical evidence and qualification limits preserved; human semantic review pending.",
+      "applicability": {
+        "snapshot": "Standalone Physics Lab 0.2.1 with 0.2.0 baking workflow; earlier sections retain their explicitly named versions.",
+        "limits": "Max 2027 only, separate from Scatter. Retained source/test evidence review only; no new runtime or physical-input qualification."
+      },
+      "canonical": {
+        "preferred_path": "docs/Scatter_Physics_Research_2026-10-16/COLLIDER_COOK_021.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained original contract or current delivery owner."
+      },
+      "ranges": [
+        [
+          1,
+          163
+        ]
+      ],
+      "knowledge_status": "historical",
+      "status_source": "inventory:retained-history | docs/documentation-inventory.csv",
+      "inventory_decision": "retained-history",
+      "inventory_reason": "Exact dated standalone Physics Lab 0.2.1 repair/test/package evidence; current guides link here without generalizing its host, input or renderer qualification.",
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "PhysicsLab",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          6,
+          31
+        ],
+        [
+          32,
+          69
+        ],
+        [
+          70,
+          141
+        ],
+        [
+          142,
+          163
+        ]
+      ]
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.cs",
+      "sha256": "e78f4a0cb17fa49f3b6b664dff4179e2d6a10ab9eaee1b24e018918611c044c3",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/shared/SharedLibrary.cs",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          442
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.Models.cs",
+      "sha256": "61dd9cd063f5bebebf874adcd39c58a32aa7456e8cee43b2638455d386a9cf9f",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/shared/SharedLibrary.Models.cs",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          142
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.Management.cs",
+      "sha256": "31a864c3c03584c1e0f875376ac7be9ac359aa496df3561cbeab03fd32fcca6a",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/shared/SharedLibrary.Management.cs",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          207
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/shared/ContentObjects.cs",
+      "sha256": "b71700035fa5289242fb3915042fe1be68db169af48cb84b625d7fdbdf2f0c3f",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/shared/ContentObjects.cs",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          92
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/assets.ms",
+      "sha256": "1b4ba17e376a392ff49b96c8eb1cfbcb423bd3bc64f1df94dc9eded08e1dee45",
+      "selection_reason": "Reviewed complete library/Interactions functions; other file regions need direct source inspection.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/assets.ms",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          19
+        ],
+        [
+          239,
+          344
+        ],
+        [
+          463,
+          671
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/shared-library.ms",
+      "sha256": "071948aedb665874712058e9c73b18c441986bd8899407b7989d443840797da0",
+      "selection_reason": "Reviewed complete library/Interactions functions; other file regions need direct source inspection.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/shared-library.ms",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          140
+        ],
+        [
+          210,
+          374
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/src/asset_package.cpp",
+      "sha256": "615f8c5f9dc0c20dac36ce79daa50140fc6cd7d32e0bab129d0ce37c9d30b8f7",
+      "selection_reason": "Model-package validation/preparation; inspect supporting codecs directly.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/asset_package.cpp",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          222,
+          354
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/src/asset_mesh_host.inc",
+      "sha256": "669a42d972cadd2f6375c83491b13019b4cc79a0aa6a2934cdd77055060b66e0",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/asset_mesh_host.inc",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          172
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/recipes.ms",
+      "sha256": "da044b3819104a1a6aba8065e31525756b0d07e16d5e0ebcecfc4a570f263877",
+      "selection_reason": "Reviewed complete library/Interactions functions; other file regions need direct source inspection.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/recipes.ms",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          41
+        ],
+        [
+          463,
+          658
+        ],
+        [
+          980,
+          1307
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/SHARED_LIBRARY_ARTIST_GUIDE_0871.md",
+      "sha256": "68ad1308209c84974de2d0cc4d69fba7ad15661d95c0ed10b3c5177991e72dd4",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/preset-gallery-improvements/SHARED_LIBRARY_ARTIST_GUIDE_0871.md",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          130
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          5,
+          39
+        ],
+        [
+          40,
+          60
+        ],
+        [
+          61,
+          97
+        ],
+        [
+          98,
+          130
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/DELIVERY_0871.md",
+      "sha256": "da7a72649dc87e0d9acd665ffca5cc1831dd684b03362d7cc63d5275879bc3b2",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "historical_evidence",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/preset-gallery-improvements/DELIVERY_0871.md",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          156
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          5,
+          18
+        ],
+        [
+          19,
+          58
+        ],
+        [
+          59,
+          89
+        ],
+        [
+          90,
+          112
+        ],
+        [
+          113,
+          156
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0870.md",
+      "sha256": "a94ba00c6bddea223682f31f5ad57e2105e1348563673b1d8e2aa050d01fde17",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "maintained_guide",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0870.md",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          47
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          5,
+          14
+        ],
+        [
+          15,
+          24
+        ],
+        [
+          25,
+          30
+        ],
+        [
+          31,
+          36
+        ],
+        [
+          37,
+          47
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/scatter-interactions-garden-20261025/DELIVERY_0870.md",
+      "sha256": "a0ed69000a20d8bdf4e331ce81f6a8dad26132501b0acb5bb54d98357f970678",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "historical_evidence",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "docs/plans/scatter-interactions-garden-20261025/DELIVERY_0870.md",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          56
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "contract_sections": [
+        [
+          7,
+          16
+        ],
+        [
+          17,
+          24
+        ],
+        [
+          25,
+          37
+        ],
+        [
+          38,
+          45
+        ],
+        [
+          46,
+          49
+        ],
+        [
+          50,
+          56
+        ]
+      ]
+    },
+    {
+      "path": "AminScatter/src/interactions_source.cpp",
+      "sha256": "56fa07b0aae522463a0f24e92e48dd03b253f830bded3e411d5096d8a272ca99",
+      "selection_reason": "Reviewed complete library/Interactions functions; other file regions need direct source inspection.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/interactions_source.cpp",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          88,
+          245
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/src/interactions_engine.cpp",
+      "sha256": "66d778ec575717ec414334b78e2fea8b8344fece42d6f675b3449f2218e522d3",
+      "selection_reason": "Reviewed complete library/Interactions functions; other file regions need direct source inspection.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/src/interactions_engine.cpp",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          47,
+          124
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-authoring.ms",
+      "sha256": "94fa14b46bb0adf84b693fc9b78312c6056bc98102ed82eb09eee33e060e798c",
+      "selection_reason": "User-authorized shared-library and Interactions evidence.",
+      "role": "implementation",
+      "review_status": "Agent-reviewed 2026-10-26; human semantic review not performed.",
+      "applicability": {
+        "snapshot": "Current 0.87.1 source; dated reports retain their own scope.",
+        "limits": "Source inspection is not execution proof. Exact library receipts and original Max 2027 Interactions limits remain separate."
+      },
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/interactions-authoring.ms",
+        "relationship": "selected-original",
+        "evidence": "Original owner; verify its cited source and qualification."
+      },
+      "ranges": [
+        [
+          1,
+          155
+        ]
+      ],
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null
+    }
+  ]
+}

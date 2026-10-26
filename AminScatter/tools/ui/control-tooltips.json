@@ -274,6 +274,22 @@
   "separationUI": {
     "cleanCheck": "Remove isolated plants after spacing. Protected instance edits remain."
   },
+  "interactionsUI": {
+    "colliderCheck": "Use the accepted instances in this layer as obstacles. Move an individual stone with Cyrus Edit to update nearby reacting plants.",
+    "reactCheck": "Bend prepared plant models near collider layers. Analyze and review each unique source once.",
+    "rootsCheck": "Hide rooted groups below a collider's footprint within the plant's reach, or inside its solid base. When off, covered groups retain their original shape. Nearby uncovered roots stay planted and react.",
+    "gapSpin": "Additional visible clearance beyond the collider surface, up to 10 cm. Zero uses the prepared stem thickness only.",
+    "stiffnessSpin": "Resistance used when a guide needs iterative refinement. The fast contact fit preserves original guide curves by rotation; this setting does not change those rotations.",
+    "proxyList": "Mesh requires a closed manifold source. Box is an explicit conservative approximation.",
+    "buildTrunksButton": "Build missing lightweight closed trunks. Full visual trees stay unchanged; review the result. Pick a closed custom mesh for unusual shapes.",
+    "pickColliderButton": "Bind a separate closed mesh to the selected visual source. Its relative transform defines every instance's collision shape.",
+    "reviewColliderButton": "Show a frozen collision mesh at a published instance; the overlay is not the authored proxy.",
+    "repairSettingsButton": "Convert legacy distances to metres; repair invalid values to 5 mm / 5%. Scene geometry is not rescaled.",
+    "acceptButton": "Accept only after inspecting root positions, branch directions and foliage attachments.",
+    "applyButton": "Apply contact settings to the last completed scatter result. Pending Manual amount and seed edits wait for Update scatter.",
+    "validateButton": "Independently check complete plant triangles near colliders. This slower check also reports root drift and stem/leaf strain.",
+    "foliageSpin": "Draw a stable sample of complete leaves or grass blades in Mesh preview. Stem tubes use fewer rings. Full render and Bake retain all visible source faces."
+  },
   "detailsUI": {
     "refreshButton": "Read the existing calculation statistics without regenerating placements.",
     "helpButton": "Explain settings ownership, display budgets, evaluation order and policy limits."

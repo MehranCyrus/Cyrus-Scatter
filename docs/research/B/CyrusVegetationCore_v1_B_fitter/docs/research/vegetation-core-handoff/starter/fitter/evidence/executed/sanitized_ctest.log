@@ -1,0 +1,339 @@
+command: /workspace/scratch/984d8f4fd6c1/jolt_reuse/build_tools/cmake/data/bin/ctest --test-dir /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized -R '^fitter_' -V --output-on-failure -j1
+cwd: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter
+environment_overrides: {"ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1", "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"}
+started_utc: 2026-10-24T14:57:29.175966+00:00
+
+Internal ctest changing into directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized
+UpdateCTestConfiguration  from :/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/DartConfiguration.tcl
+Parse Config file:/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/DartConfiguration.tcl
+Parse Config file:/workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/DartConfiguration.tcl
+Test project /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: fitter_clear_rest
+
+1: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "clear_rest"
+1: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+1: Test timeout computed to be: 1500
+1: ==214==Can't open /proc/213/task for reading.
+1: ==213==LeakSanitizer has encountered a fatal error.
+1: ==213==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+1: ==213==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 1/19 Test  #1: fitter_clear_rest ................***Failed    0.01 sec
+==214==Can't open /proc/213/task for reading.
+==213==LeakSanitizer has encountered a fatal error.
+==213==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==213==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 2
+      Start  2: fitter_one_sphere
+
+2: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "one_sphere"
+2: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+2: Test timeout computed to be: 1500
+2: ==216==Can't open /proc/215/task for reading.
+2: ==215==LeakSanitizer has encountered a fatal error.
+2: ==215==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+2: ==215==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 2/19 Test  #2: fitter_one_sphere ................***Failed    0.01 sec
+==216==Can't open /proc/215/task for reading.
+==215==LeakSanitizer has encountered a fatal error.
+==215==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==215==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 3
+      Start  3: fitter_positive_control
+
+3: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "positive_control"
+3: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+3: Test timeout computed to be: 1500
+3: ==218==Can't open /proc/217/task for reading.
+3: ==217==LeakSanitizer has encountered a fatal error.
+3: ==217==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+3: ==217==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 3/19 Test  #3: fitter_positive_control ..........***Failed    0.01 sec
+==218==Can't open /proc/217/task for reading.
+==217==LeakSanitizer has encountered a fatal error.
+==217==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==217==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 4
+      Start  4: fitter_root_inside
+
+4: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "root_inside"
+4: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+4: Test timeout computed to be: 1500
+4: ==220==Can't open /proc/219/task for reading.
+4: ==219==LeakSanitizer has encountered a fatal error.
+4: ==219==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+4: ==219==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 4/19 Test  #4: fitter_root_inside ...............***Failed    0.01 sec
+==220==Can't open /proc/219/task for reading.
+==219==LeakSanitizer has encountered a fatal error.
+==219==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==219==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 5
+      Start  5: fitter_segment_interior
+
+5: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "segment_interior"
+5: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+5: Test timeout computed to be: 1500
+5: ==222==Can't open /proc/221/task for reading.
+5: ==221==LeakSanitizer has encountered a fatal error.
+5: ==221==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+5: ==221==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 5/19 Test  #5: fitter_segment_interior ..........***Failed    0.01 sec
+==222==Can't open /proc/221/task for reading.
+==221==LeakSanitizer has encountered a fatal error.
+==221==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==221==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 6
+      Start  6: fitter_width_envelope
+
+6: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "width_envelope"
+6: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+6: Test timeout computed to be: 1500
+6: ==223==LeakSanitizer has encountered a fatal error.
+6: ==223==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+6: ==223==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 6/19 Test  #6: fitter_width_envelope ............***Failed    0.01 sec
+==223==LeakSanitizer has encountered a fatal error.
+==223==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==223==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 7
+      Start  7: fitter_generation
+
+7: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "generation"
+7: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+7: Test timeout computed to be: 1500
+7: ==226==Can't open /proc/225/task for reading.
+7: ==225==LeakSanitizer has encountered a fatal error.
+7: ==225==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+7: ==225==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 7/19 Test  #7: fitter_generation ................***Failed    0.01 sec
+==226==Can't open /proc/225/task for reading.
+==225==LeakSanitizer has encountered a fatal error.
+==225==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==225==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 8
+      Start  8: fitter_multi_obstacle
+
+8: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "multi_obstacle"
+8: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+8: Test timeout computed to be: 1500
+8: ==228==Can't open /proc/227/task for reading.
+8: ==227==LeakSanitizer has encountered a fatal error.
+8: ==227==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+8: ==227==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 8/19 Test  #8: fitter_multi_obstacle ............***Failed    0.02 sec
+==228==Can't open /proc/227/task for reading.
+==227==LeakSanitizer has encountered a fatal error.
+==227==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==227==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 9
+      Start  9: fitter_cancellation
+
+9: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "cancellation"
+9: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+9: Test timeout computed to be: 1500
+9: ==229==LeakSanitizer has encountered a fatal error.
+9: ==229==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+9: ==229==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+ 9/19 Test  #9: fitter_cancellation ..............***Failed    0.01 sec
+==229==LeakSanitizer has encountered a fatal error.
+==229==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==229==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 10
+      Start 10: fitter_work_limits
+
+10: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "work_limits"
+10: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+10: Test timeout computed to be: 1500
+10: ==231==LeakSanitizer has encountered a fatal error.
+10: ==231==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+10: ==231==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+10/19 Test #10: fitter_work_limits ...............***Failed    0.01 sec
+==231==LeakSanitizer has encountered a fatal error.
+==231==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==231==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 11
+      Start 11: fitter_malformed_contacts
+
+11: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "malformed_contacts"
+11: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+11: Test timeout computed to be: 1500
+11: ==233==LeakSanitizer has encountered a fatal error.
+11: ==233==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+11: ==233==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+11/19 Test #11: fitter_malformed_contacts ........***Failed    0.01 sec
+==233==LeakSanitizer has encountered a fatal error.
+==233==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==233==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 12
+      Start 12: fitter_local_conflict
+
+12: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "local_conflict"
+12: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+12: Test timeout computed to be: 1500
+12: ==235==LeakSanitizer has encountered a fatal error.
+12: ==235==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+12: ==235==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+12/19 Test #12: fitter_local_conflict ............***Failed    0.01 sec
+==235==LeakSanitizer has encountered a fatal error.
+==235==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==235==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 13
+      Start 13: fitter_frames
+
+13: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "frames"
+13: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+13: Test timeout computed to be: 1500
+13: ==238==Can't open /proc/237/task for reading.
+13: ==237==LeakSanitizer has encountered a fatal error.
+13: ==237==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+13: ==237==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+13/19 Test #13: fitter_frames ....................***Failed    0.02 sec
+==238==Can't open /proc/237/task for reading.
+==237==LeakSanitizer has encountered a fatal error.
+==237==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==237==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 14
+      Start 14: fitter_repeat_immutable
+
+14: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "repeat_immutable"
+14: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+14: Test timeout computed to be: 1500
+14: ==240==Can't open /proc/239/task for reading.
+14: ==239==LeakSanitizer has encountered a fatal error.
+14: ==239==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+14: ==239==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+14/19 Test #14: fitter_repeat_immutable ..........***Failed    0.02 sec
+==240==Can't open /proc/239/task for reading.
+==239==LeakSanitizer has encountered a fatal error.
+==239==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==239==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 15
+      Start 15: fitter_away_geometry
+
+15: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "away_geometry"
+15: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+15: Test timeout computed to be: 1500
+15: ==242==Can't open /proc/241/task for reading.
+15: ==241==LeakSanitizer has encountered a fatal error.
+15: ==241==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+15: ==241==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+15/19 Test #15: fitter_away_geometry .............***Failed    0.02 sec
+==242==Can't open /proc/241/task for reading.
+==241==LeakSanitizer has encountered a fatal error.
+==241==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==241==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 16
+      Start 16: fitter_root_modes
+
+16: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "root_modes"
+16: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+16: Test timeout computed to be: 1500
+16: ==244==Can't open /proc/243/task for reading.
+16: ==243==LeakSanitizer has encountered a fatal error.
+16: ==243==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+16: ==243==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+16/19 Test #16: fitter_root_modes ................***Failed    0.01 sec
+==244==Can't open /proc/243/task for reading.
+==243==LeakSanitizer has encountered a fatal error.
+==243==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==243==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 17
+      Start 17: fitter_numeric_admission
+
+17: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "numeric_admission"
+17: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+17: Test timeout computed to be: 1500
+17: ==246==Can't open /proc/245/task for reading.
+17: ==245==LeakSanitizer has encountered a fatal error.
+17: ==245==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+17: ==245==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+17/19 Test #17: fitter_numeric_admission .........***Failed    0.01 sec
+==246==Can't open /proc/245/task for reading.
+==245==LeakSanitizer has encountered a fatal error.
+==245==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==245==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 18
+      Start 18: fitter_admission_order
+
+18: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_tests "admission_order"
+18: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+18: Test timeout computed to be: 1500
+18: ==248==Can't open /proc/247/task for reading.
+18: ==247==LeakSanitizer has encountered a fatal error.
+18: ==247==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+18: ==247==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+18/19 Test #18: fitter_admission_order ...........***Failed    0.01 sec
+==248==Can't open /proc/247/task for reading.
+==247==LeakSanitizer has encountered a fatal error.
+==247==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==247==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+test 19
+      Start 19: fitter_analytic_oracle
+
+19: Test command: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests/fitter_analytic_tests
+19: Working Directory: /workspace/scratch/984d8f4fd6c1/owner_b_handoff/docs/research/vegetation-core-handoff/starter/fitter/build-checks/sanitized/fitter/tests
+19: Test timeout computed to be: 1500
+19: ==250==Can't open /proc/249/task for reading.
+19: ==249==LeakSanitizer has encountered a fatal error.
+19: ==249==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+19: ==249==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+19/19 Test #19: fitter_analytic_oracle ...........***Failed    0.01 sec
+==250==Can't open /proc/249/task for reading.
+==249==LeakSanitizer has encountered a fatal error.
+==249==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==249==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+
+0% tests passed, 19 tests failed out of 19
+
+Total Test time (real) =   0.21 sec
+
+The following tests FAILED:
+	  1 - fitter_clear_rest (Failed)
+	  2 - fitter_one_sphere (Failed)
+	  3 - fitter_positive_control (Failed)
+	  4 - fitter_root_inside (Failed)
+	  5 - fitter_segment_interior (Failed)
+	  6 - fitter_width_envelope (Failed)
+	  7 - fitter_generation (Failed)
+	  8 - fitter_multi_obstacle (Failed)
+	  9 - fitter_cancellation (Failed)
+	 10 - fitter_work_limits (Failed)
+	 11 - fitter_malformed_contacts (Failed)
+	 12 - fitter_local_conflict (Failed)
+	 13 - fitter_frames (Failed)
+	 14 - fitter_repeat_immutable (Failed)
+	 15 - fitter_away_geometry (Failed)
+	 16 - fitter_root_modes (Failed)
+	 17 - fitter_numeric_admission (Failed)
+	 18 - fitter_admission_order (Failed)
+	 19 - fitter_analytic_oracle (Failed)
+Errors while running CTest
+
+exit_code: 8

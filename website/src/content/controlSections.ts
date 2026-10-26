@@ -16,8 +16,9 @@ const descriptions: Record<string, { summary: string; links: [string, string][] 
   spacingUI: { summary: 'Configure independent within-layer and between-layer clearance, instance radii, candidate Relax and accepted-result cleanup.', links: [['Spacing & cleanup', guide+'area-limits-transforms-and-spacing'], ['CS Edit distinctions', '#/guide/layout-falloff/edit-and-preview-distinctions']] },
   displayUI: { summary: 'Choose the preview representation, display budgets and output actions. Display limits do not change the accepted population.', links: [['Preview & output', guide+'preview-updates-output-and-diagnostics']] },
   statisticsUI: { summary: 'Read the last completed result and diagnostic recording. Cached reads do not calculate pending Manual edits.', links: [['Statistics & diagnostics', guide+'preview-updates-output-and-diagnostics']] },
+  interactionsUI: { summary: 'Prepare each unique plant source, review its guides and fit nearby instances around collider layers. Keep detailed trees visible with separate closed trunk or custom colliders.', links: [['Plant contact', guide+'plants-that-respond-to-nearby-objects'], ['Tree colliders', guide+'lightweight-tree-colliders'], ['Shared assets', guide+'shared-models-recipes-and-textures']] },
 }
-const ids: Record<string,string> = {managerUI:'layers',surfacesUI:'surfaces',modelsUI:'models',containersUI:'containers',layoutUI:'layout',populationUI:'amount',coverageUI:'painting',areasUI:'areas',transformsUI:'transforms',spacingUI:'spacing',displayUI:'viewport',statisticsUI:'statistics'}
+const ids: Record<string,string> = {managerUI:'layers',surfacesUI:'surfaces',modelsUI:'models',containersUI:'containers',layoutUI:'layout',populationUI:'amount',coverageUI:'painting',areasUI:'areas',transformsUI:'transforms',spacingUI:'spacing',displayUI:'viewport',statisticsUI:'statistics',interactionsUI:'interactions'}
 const componentPrefix: Record<string, string> = {
   flow_layersUI: 'general.manager', flow_surfaceUI: 'general.surface',
   flow_previewUI: 'general.previewUI', diagnosticsUI: 'general.diagnostics',

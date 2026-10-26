@@ -1,0 +1,44 @@
+{
+  "version": "0.87.3",
+  "exe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.3-20261026\\CyrusScatter-0.87.3-Setup.exe",
+  "exe_sha256": "df9328324815afd7bfe00ef24f5905e5d072d822efdcad4f5f5a7ff445ac3ddf",
+  "exe_bytes": 7636480,
+  "hosts": {
+    "2024": {
+      "receipt": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\release0873\\max2024\\receipt.json",
+      "receipt_sha256": "cdae8facc863d1169f10b7e2d6aad4b3db36397236b1c28ed6389419d1b095a3",
+      "mzp_sha256": "0866774fd862f79e5ebcb82aaa56ea3d967a4fa7b85672fe17b36b31ea97a00b",
+      "native_tests": true,
+      "host_scope": "Native tests passed; 0.87.3 not executed inside this Max host",
+      "analyzer_native_receipt": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\release0873\\analyzer\\max2024\\receipt.json",
+      "analyzer_scope": "Unchanged 0.14.2 source rebuilt and native-tested; no new host qualification"
+    },
+    "2026": {
+      "receipt": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\release0873\\max2026\\receipt.json",
+      "receipt_sha256": "6f82e3a31ee41ccf4bb0fe609880f06587605808cba0d07e7f23273e09e3d34a",
+      "mzp_sha256": "235d9cd92307b3f9704894801e1b7f044b1d92cf697071698819c75db32fb005",
+      "native_tests": true,
+      "host_scope": "Native tests passed; 0.87.3 not executed inside this Max host",
+      "analyzer_native_receipt": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\release0873\\analyzer\\max2026\\receipt.json",
+      "analyzer_scope": "Unchanged 0.14.2 source rebuilt and native-tested; no new host qualification"
+    },
+    "2027": {
+      "receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\library0873-release-20261026-01\\AminScatter\\receipt.json",
+      "receipt_sha256": "90dc3c91ab4bb6f9056438e1a9cf0dd79e4a6bf73a3219e251775e62e08d67e0",
+      "mzp_sha256": "9a292a12fb95446e9f1f31eb85bd5485174af4156dbb4cb8b4598efed1621f4e",
+      "native_tests": true,
+      "host_scope": "Prior exact 0.87.3 Max 2027 Library qualification",
+      "analyzer_native_receipt": "C:\\Users\\Mehran\\.codex\\artifacts\\CyrusScatter\\release0873\\analyzer\\max2027\\receipt.json",
+      "analyzer_scope": "Unchanged 0.14.2 source rebuilt and native-tested; no new host qualification"
+    }
+  },
+  "analyzer_version": "0.14.2",
+  "content_version": "0.86.7",
+  "scope": "Matched Max 2024/2026/2027 SDK packages and owned-profile installer checks. Existing exact 0.87.3 Max 2027 MZP preserved. No new Max host launches, artist installation, renderer acceptance or live website deployment.",
+  "installer_checks": {
+    "count": 58,
+    "status": "pass",
+    "receipt": "build/release0873-20261026-01/installer-tests/receipt.json",
+    "sha256": "ca1c70f0330401223e56fc9ff75e918d1a540e49707865e7bb17a7eea1cc2d55"
+  }
+}

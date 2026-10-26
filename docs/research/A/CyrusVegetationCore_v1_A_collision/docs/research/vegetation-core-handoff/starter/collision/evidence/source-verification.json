@@ -1,0 +1,25 @@
+{
+  "scope": "Source-only verification for the new owner A profile; no build or historical test execution implied",
+  "source_commit": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+  "archive_url": "https://codeload.github.com/jrouwe/JoltPhysics/tar.gz/1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+  "archive_sha256": "6bb6d626b7b70096cd07f1b25c0c223df035ab6386885f07f77baa88ae7d3998",
+  "archive_bytes": 19399443,
+  "source_files_checked": 613,
+  "source_files_scope": "All regular files under Jolt/ and Build/, plus LICENSE; exact byte match, no newline normalization",
+  "manifest_sha256": "5d8705b5bb190532e45b0c09e5a9bbd851626b052cb622caec0fff924e771525",
+  "mismatches": [],
+  "verification_command": "cmake -DCYRUS_JOLT_VERIFY_ROOT=<exact-source-root> -P docs/research/vegetation-core-handoff/starter/collision/cmake/VerifyJoltSource.cmake",
+  "verification_observed_result": "Exit 0: verified 613 exact Jolt source/build/license files at 1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+  "negative_check": {
+    "method": "A temporary deliberately wrong hash manifest was passed to the real verifier; source files remained unchanged.",
+    "observed_exit_code": 1,
+    "observed_reason": "pinned Jolt source mismatch",
+    "result": "Expected rejection observed"
+  },
+  "runtime_initialization_failure_containment": {
+    "source": "Jolt/Core/HashTable.h::GrowTable, lines 181-220 at the pinned source",
+    "finding": "GrowTable moves old allocation pointers into locals and clears members before allocating replacement storage. If that allocation throws, old storage can become unreachable from the table.",
+    "behavior": "The standalone owner releases reachable Factory maps, default material and Factory storage with the checked allocator hooks still installed, restores the initially-null hooks, and poisons the lifecycle owner. Initial ordinary null allocation reports AllocationFailure; subsequent acquisitions report InternalError and require process restart.",
+    "limitation": "This does not establish strong exception safety or complete reclamation for all Jolt internal OOM paths. Registry/internal allocation sizes are not exactly instrumented by the per-world byte budget."
+  }
+}

@@ -66,7 +66,7 @@ def verify_gallery(path, version, year):
         or receipt.get('shared_source_sha256') != sha((ROOT/'AminScatter/shared/LibraryLocation.cs').read_bytes())):
         raise ValueError('Gallery release/host/source/artifact differs from its verified build receipt. Rebuild the gallery.')
     build_inputs.verify_managed(path, 'gallery', ROOT, (
-        'AminScatter/ui/LibraryGallery.cs', 'AminScatter/shared/LibraryLocation.cs',
+        'AminScatter/ui/LibraryGallery.cs', *(p.relative_to(ROOT).as_posix() for p in sorted((ROOT/'AminScatter/shared').glob('*.cs'))),
         'AminScatter/CMakeLists.txt', 'AminScatter/tools/build_gallery.py', 'tools/build_inputs.py'))
     return receipt
 
@@ -335,6 +335,12 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Without a valid license, existing scenes remain loadable/renderable; creation/editing are locked.\n'
            'Workflow: Layers > Surfaces > Models > Layout > Amount > Update scatter; Painting is optional.\n'
            'Then Include / exclude areas > Transforms > Spacing & cleanup > Viewport & render > Statistics & diagnostics.\n'
+           'Interactions: enable Collider on a stone layer. Analyze each plant source, inspect its green root/branch guides, accept them, then enable React to colliders on the plant layer.\n'
+           'Use Contact gap and Hide roots under colliders to tune the result. Covered groups return when the collider moves away. With hiding off, covered groups retain their rest shape.\n'
+           'Cyrus Edit moves individual stone instances and updates nearby plants without rebuilding the static placement layout. Pending Manual amount/seed changes still require Update scatter.\n'
+           'Mesh preview uses prepared light stems and a stable sample of complete leaves/blades. Full render and Bake retain every visible source face, UV channel and material ID.\n'
+           'Interactions currently admit prepared ordered tube stems or folded blades, closed mesh colliders or explicit box proxies, and positive uniform instance scales. Snapshot renderer proxies before preparing them.\n'
+           'Refinement stiffness affects the iterative fallback; the fast fit preserves original guide curves by rotation. This version provides static rooted contact poses. Wind and inertial dynamics are future work.\n'
            'Completed phases: cached/pending feedback; named settings and curve presets; slope/altitude eligibility; UV-channel/map-resolution controls; Paint/spline snapshots.\n'
            'Presets... is available in Amount, Transforms, Spacing and the curve editor; Apply respects Manual/Live and supports Undo.\n'
            'Include / exclude areas > Surface eligibility offers slope/altitude ranges with inward soft transitions.\n'
@@ -401,7 +407,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Point Cloud, Proxy and Mesh reuse GPU buffers during navigation.\n'
            'Viewport & render has independent Navigating / Idle caps shared across visible layers; 0 means unlimited.\n'
            'Caps count points, proxy instances or Mesh triangles. Memory/input safeguards still apply at zero.\n'
-           'Mesh uses cached boxes when triangle or memory allowances cannot admit full geometry.\n'
+           'Mesh may use cached boxes for triangle limits. Memory failures retain the previous complete result.\n'
            'Emergency graphics fallback uses bounded centre markers instead of CPU source triangles.\n'
            'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
            'Automatic clustered calculations use at most 4 total CPU participants. GPU compute is not enabled.\n'

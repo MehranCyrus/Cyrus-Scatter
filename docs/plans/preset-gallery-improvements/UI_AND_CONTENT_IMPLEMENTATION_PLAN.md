@@ -1,5 +1,18 @@
 # Panel responsiveness and shared content — implementation plan
 
+**26 October successor:** independent installed-content work below retains its original evidence. The personal model/recipe store is implemented separately in [0.87.1](DELIVERY_0871.md), following the [shared-library plan](SHARED_LIBRARY_IMPLEMENTATION_PLAN.md). Its exact static scope and remaining acceptance are recorded in that delivery.
+
+## Shared personal library extension — planned, 23 October 2026
+
+The user requested a full plan and explicitly deferred coding. The
+[shared library implementation plan](SHARED_LIBRARY_IMPLEMENTATION_PLAN.md)
+extends this document's existing byte-store/installer foundation to personal
+models, shared textures, immutable recipe references, collections, portable
+export/import and explicit migration. It includes the ten-look acceptance case
+and retains old scene-path protections. SL01–SL09 are pending; this planning work
+does not alter the delivered scope or qualification recorded below. Status stays
+in the [execution ledger](../improvement-program/PROGRESS.md).
+
 ## Authorized 0.86.7.2 follow-up — 20 October 2026
 
 The user authorizes an explicit optional content ZIP beside the EXE, concise

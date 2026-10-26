@@ -2,6 +2,8 @@
 #include <nlohmann/json.hpp>
 #include <iostream>
 #include <stdexcept>
+#include <limits>
+#include <cmath>
 using namespace cyrus::presets;
 void check(bool ok){if(!ok)throw std::runtime_error("Preset test failed");}
 template<class F>void rejected(F f){bool failed=false;try{f();}catch(const std::exception&){failed=true;}check(failed);}
@@ -38,5 +40,24 @@ int main(){try{
     transforms.values[3]=10;transforms.values[4]=5;rejected([&]{serialize(transforms);});
     a.name=std::string(81,'a');rejected([&]{serialize(a);});
     a.name="Trees";a.values[0]=1000001;rejected([&]{serialize(a);});
+    Document linear;linear.category="density_curve";linear.name="Native reconstruction";linear.samples={0,1};
+    std::vector<std::array<double,8>> graph={{{0,0,0,0,0,0,0,1}},{{1,100,0,0,0,0,0,1}}};
+    std::vector<double> evaluated;for(int i=0;i<=256;++i)evaluated.push_back(i/256.);
+    auto prepared=preparedCurve(linear,false,evaluated,graph);
+    check(prepared.samples==evaluated&&prepared.graph==graph&&!prepared.multiplier);
+    auto mismatch=evaluated;mismatch[128]=.75;rejected([&]{preparedCurve(linear,false,mismatch,graph);});
+    mismatch=evaluated;mismatch[0]=std::numeric_limits<double>::quiet_NaN();rejected([&]{preparedCurve(linear,false,mismatch,graph);});
+    mismatch=evaluated;mismatch.pop_back();rejected([&]{preparedCurve(linear,false,mismatch,graph);});
+    rejected([&]{preparedCurve(linear,true,evaluated,graph);});
+    rejected([&]{preparedCurve(linear,false,evaluated,{});});
+    linear.category="scale_curve";check(preparedCurve(linear,true,evaluated,graph).multiplier);
+    linear.multiplier=true;rejected([&]{preparedCurve(linear,false,evaluated,graph);});
+    linear.samples={0,2};graph[1][1]=200;for(double& v:evaluated)v*=2;
+    check(preparedCurve(linear,true,evaluated,graph).samples.back()==2);
+    // Clamp the same overshoot as the native editor before comparing traces.
+    linear.category="density_curve";linear.multiplier=false;linear.samples={0,1};graph[1][1]=100;
+    evaluated.clear();for(int i=0;i<=256;++i)evaluated.push_back(i/256.);
+    evaluated[0]=-.2;evaluated[256]=1.2;
+    check(preparedCurve(linear,false,evaluated,graph).samples.front()==0);
     std::cout<<"PASS: bounded typed presets, round trips, strict parsing and curve domains\n";return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

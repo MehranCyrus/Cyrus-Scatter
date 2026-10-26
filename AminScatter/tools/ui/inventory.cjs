@@ -15,7 +15,7 @@ module.exports=function(s,{check=false}={}){
  };
  const general={host:'mainUI',updateUI:'flow_updateUI',previewUI:'flow_previewUI',surface:'flow_surfaceUI',manager:'flow_layersUI',diagnostics:'diagnosticsUI'};
  for(const [key,name] of Object.entries(general))inventory.general[key]=section(key,block(new RegExp('^    rollout '+name+' "[^"\\n]+"[^\\n]*\\(','m')));
- for(const name of ['setsUI','sourceUI','sourceContainersUI','placementUI','distributionUI','populationPolicyUI','areaUI','brushUI','randomUI','diversityUI','proceduralUI','instanceRadiusUI','spacingUI','separationUI','detailsUI','workflowUI'])inventory.layer[name]=section(name,block(new RegExp('^    rollout selected_'+name+' "[^"\\n]+"[^\\n]*\\(','m')));
+ for(const name of ['setsUI','sourceUI','sourceContainersUI','placementUI','distributionUI','populationPolicyUI','areaUI','brushUI','randomUI','diversityUI','proceduralUI','instanceRadiusUI','spacingUI','separationUI','interactionsUI','detailsUI','workflowUI'])inventory.layer[name]=section(name,block(new RegExp('^    rollout selected_'+name+' "[^"\\n]+"[^\\n]*\\(','m')));
  inventory.container.properties=section('properties',block(/^    rollout containerUI "[^"\n]+"[^\n]*\(/m));
  for(const [path,value] of [['tools/ui/layers-control-inventory.json',inventory],['tools/ui/control-tooltips.json',tooltips]]){
   const output=JSON.stringify(value,null,2)+'\n';

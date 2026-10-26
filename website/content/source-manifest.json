@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.public-sources/3.0",
-  "reviewed": "2026-10-23",
+  "reviewed": "2026-10-26",
   "documents": [
     {
       "id": "artist-guide",
@@ -36,9 +36,9 @@
   "catalog": "CyrusMCP/cyrus_mcp/feature-catalog.json",
   "artistWorkflowVersion": "0.78.3",
   "reviewedSourceHashes": {
-    "CyrusMCP/README.md": "d3d5c299a7d3a260d3baf15322973c8aefe686ddad9d32dfb92c0288cfa81693",
+    "CyrusMCP/README.md": "9473bacb288717a344607475db99f115bd2219a114b4933e0a4a2fa883e76b13",
     "CyrusSurfaceAnalyzer/README.md": "f3806c689e6a97408fde02ddd3a1f88a0309eace1f18942ba47f92d7c43ddb5e",
-    "docs/ARTIST_GUIDE.md": "f39ea80050e159e01ff69c8228ff410bd00cc5f2a7cafb09a4eb7499cb33e5de",
+    "docs/ARTIST_GUIDE.md": "f77b842b636862bd024f72f11d8f769698924061f70591916b428a22331cb9a7",
     "docs/Brush_Relax_Reset_2026-10-03/REPORT.md": "3f4c658fa35733f9a9c08503639454338e2dd87c322058661263d028942e8867",
     "docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md": "7faa2a41f400952244834bf59034471fe7b0ae3487347edaca1c6598cb872928",
     "docs/Brush_Scaling_0.76_2026-10-10/README.md": "db05af1cf6230e88075be2d235adf916196a5e203f6c1b07d6a070e977306379",
@@ -54,14 +54,14 @@
     "docs/Cyrus_Scatter_V1_2026-10-03/README.md": "78c446d399fccee7b08da451eefde4320c659fbf689ceb4c8a4ffb6f926f43a6",
     "docs/Full_Qualification_0.73_2026-10-07/README.md": "1aee182588d4811501eae0c7583af847f06eff0913b2195deeea69fbab84492e",
     "docs/Integrated_UI_0.72_2026-10-06/README.md": "d980880fd1d28647bce2f954b8a03d3abf59ed363d598d8d508bbb54b6d8218e",
-    "docs/LAYOUT_AND_FALLOFF.md": "bdf193a5f27c52458a4c974f98846ed9e22980ebaee2e32f287d62e1b1da227c",
+    "docs/LAYOUT_AND_FALLOFF.md": "ac9ce8ca247c4e309e923a14d6d0112cd15b32c8376c418b9d1f5dd5a15af105",
     "docs/Layer_Actions_Fix_0.73_2026-10-07/README.md": "a91dc06ebc5cabd61ea20774241a29b2f9237e594e2470391c5326b68b6fcbe4",
     "docs/Layer_Navigation_0.79.2_2026-10-11/README.md": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
     "docs/Layer_Paint_Areas_0.74_2026-10-09/README.md": "a477bd87b25433584f4733c07fe5de7bf0af70b227cbc9649899e7eb42f32096",
     "docs/Layer_Width_2026-10-04/README.md": "9d00dcff612b7ab2220654dd1e450b80e3f90f9b4026c73398b0503122953107",
     "docs/Layers_First_2026-10-03/REPORT.md": "d5250597285c6fc2ca50fbf55531635e55cdc4546d7a3be2421f9d533ed052c8",
     "docs/Live_Runtime_2026-10-06/README.md": "46dff3cb1e995b062a1f93fc40eacab208fb03db6f3ab969de5ad7b6145c75dc",
-    "docs/PRODUCT_AND_AI_ROADMAP.md": "0c29c2f67967f32935edb1c10de4e72519970762524a3cc8439cda66a057c998",
+    "docs/PRODUCT_AND_AI_ROADMAP.md": "d6869992c9ee86a01ebb713c889fe12a3d0041f48ea34147a436abeccd1a7038",
     "docs/Paint_Feedback_0.77_2026-10-10/README.md": "7a007653a3534745b90571d52874cddc6fe89621dbf428232adce67148b578e8",
     "docs/Performance_Implementation_2026-10-01.md": "29035504928485d6c8018b20969c06ce87b4c6d3bbf87d3199c2a5781df15059",
     "docs/Planting_Groups_2026-10-03/REPORT.md": "518e7f9f9c747adca158919db40796f2c4af0d993733a291c8c9506c28ceac74",
@@ -70,7 +70,7 @@
     "docs/Procedural_Implementation_0.7_2026-10-04/README.md": "4285f5e0e2015068d491a6061ac09d4c6a9b9140ab7a9950296869cc10057fd0",
     "docs/Real_Scene_0.7.1_2026-10-05/README.md": "ec6af73ecce9bc1eaed82b41bbf7b0c3c5464ab376c72f82a715c661a17fab1d",
     "docs/Receiver_Stability_0.76_2026-10-10/README.md": "857f754b7e4b8ccdbd1ad7889fdaf56b41c7ec47f7d1e769b922380b9fef2594",
-    "docs/Release_Versioning.md": "6efff8b76b173119bcbd4bec770a18e67bd55ee84a792c492bece43368549186",
+    "docs/Release_Versioning.md": "5bde4080bf99846f38b562b851418a290a4454d5ad73d5d219640463b338964a",
     "docs/Retained_Mesh_Preview_2026-10-02/README.md": "2bb5dee3a692a63bbd7aa2c59795e5b9f9fc9cf158a164c25b6da68f7a11c1df",
     "docs/Retained_Point_Preview_2026-10-02/README.md": "87044c6a35764de85806a4f8b158c036ca1c1374cf46e13a199c1a502989dc9b",
     "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
@@ -90,7 +90,7 @@
     "docs/plans/terrace-0815/PROGRESS.md": "5b95e8a46c731176fd79b140cfa9ff38c4d30a9e2b02a91438325d1c8fb5a061",
     "docs/plans/terrace-0815/REPORT.md": "437d99aa51ff7e7c66d914c805f9dac3a6548b192e82228ccc61258130d94a60",
     "docs/Source_Containers_Performance_2026-10-13.md": "d051239e20545f4fe5f7ab3a0a9b87d63ebb1cb88ce461d7f908371da44c22ad",
-    "docs/ARCHITECTURE.md": "b3102baff158018c364ddbe000b8f6692ca710b3b95dd8d680c87befb24e8d8a",
+    "docs/ARCHITECTURE.md": "7e1ca538d514ed4f37aacf33e1e8c68e517ad8b0ac29a5eb94a8c3fc3a024e28",
     "docs/plans/terrace-0815/VIEWPORT_0816.md": "d1e2997b1ebe688768b6ef4c0c35748b19b1a87f148e212e7cb644eef63fe18e",
     "docs/plans/terrace-0815/VIEWPORT_0817.md": "8877e014e4edb0ce88fd8375528e2b0921f4bb521f7672d709d6282274057c6a",
     "docs/plans/eleven-phase-roadmap/P01.md": "76bc7d66a54e8a0c346a3a7bc4c33337526944ddd2f16d7e223226b276636e13",
@@ -101,7 +101,7 @@
     "docs/plans/eleven-phase-roadmap/INSTALLATION_0822.md": "a29c5d67f0f39c4f243972a99c7cc5b6be89ee36ca3c0882060ca3628e231233",
     "docs/plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md": "68ca477fc367c7e0bf16acb6ec44d1b7614d90bdb40628037e5e321cddb93b57",
     "docs/plans/eleven-phase-roadmap/PERFORMANCE_0823.md": "dbc5d96925bd49fff201ba678718aab3b024ed0cd8703987c63ccb772632307d",
-    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md": "82fe26dffc31794ac9520b8d50c49212abed050ffa86be1d26a67dbd6f29c92e",
+    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md": "003e021de77d3d141820b608bc650fbd993724615aef2734efead8ab3ca5b062",
     "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md": "3c9f4db776c6274b757f7f697fb29433a01b8fce946e32dcd522559e8de4c257",
     "docs/plans/recipes-0825/PROGRESS.md": "06cd287272091985d30c50073d371bb79deffb50e56198a9d35ceaaedfa6731a",
     "docs/plans/panel-performance-0826/PROGRESS.md": "96d3fd262375d4043f1cddc7b69cefd98e4bc06a8e03e88f4caa623dee41d4da",
@@ -135,6 +135,11 @@
     "docs/plans/code-quality/DELIVERY_08687.md": "3aa41179bcb9de0c9d2fdd0184dfa4d0391cc14380580e5f87ee74161d14cae2",
     "docs/plans/edit-instances/DELIVERY_0869.md": "3850d5e07f069869ae1f4875e51a19430324a559499557e2bddb36c36c318275",
     "docs/plans/edit-instances/DELIVERY_08691.md": "08edbfab9d2a9be4c4003f2daf215c4e4c94b96d44f4fd79a9f7619ed0c5cce2",
-    "docs/plans/edit-instances/DELIVERY_08692.md": "19f8565026dd5cf44bdc4f7bfc6a1e2bfc403f8515ddb9540edac67f4e093df2"
+    "docs/plans/edit-instances/DELIVERY_08692.md": "19f8565026dd5cf44bdc4f7bfc6a1e2bfc403f8515ddb9540edac67f4e093df2",
+    "docs/plans/preset-gallery-improvements/LIBRARY_STARTUP_0873.md": "691b63b0b73bca862f0e905cb29d91352c65067884d7dacafffb473400268265",
+    "docs/plans/scatter-interactions-garden-20261025/DELIVERY_0872.md": "7500a41a1b63c12accc504f50c8b30df6d535bb104d293f274e6c6f48d238451",
+    "docs/plans/preset-gallery-improvements/DELIVERY_0871.md": "da7a72649dc87e0d9acd665ffca5cc1831dd684b03362d7cc63d5275879bc3b2",
+    "docs/plans/scatter-interactions-garden-20261025/DELIVERY_0870.md": "a0ed69000a20d8bdf4e331ce81f6a8dad26132501b0acb5bb54d98357f970678",
+    "docs/plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md": "6db3ad0dab5c49b21a4c36cb5c8a47cc0260106b6243494cfddde7e648da2d29"
   }
 }

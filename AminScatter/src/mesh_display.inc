@@ -101,12 +101,14 @@ class MeshItem final : public PreparedRenderItem {
     bool sharedGeometry=false,sharedAppearance=false;
     bool sharedMaterial=false,sharedTextureMaterial=false;
     bool fullGeometry=false;
+    std::size_t residentInstances=0;
     std::atomic<bool> ready{false};
     std::mutex realizeMutex;
 public:
     MeshItem(std::shared_ptr<Generation> value,std::size_t layer,std::size_t group,const MeshItem* previous=nullptr)
         :generation(std::move(value)),layerIndex(layer),groupIndex(group) {
         fullGeometry=generation->meshPlan[layer][group].full;
+        const auto& quota=generation->meshPlan[layer][group];residentInstances=std::max(quota.idle.count,quota.navigation.count);
         if(previous && previous->fullGeometry==fullGeometry) {
             const auto& before=previous->generation->layers[previous->layerIndex];
             const auto& after=generation->layers[layerIndex];
@@ -114,7 +116,8 @@ public:
             // wrapper (for example a material refresh) need not allocate an
             // identical instance/Band stream again. Its copied handle keeps
             // the same physical instanceMemory lease below.
-            sharedBuffers=previous->sameInstances(after,group);
+            sharedBuffers=previous->residentInstances>=residentInstances&&previous->sameInstances(after,group);
+            if(sharedBuffers)residentInstances=previous->residentInstances;
             sharedGeometry=true;format=previous->format;++bufferReuses;
             if(sharedBuffers){buffers=previous->buffers;boxBuffers=previous->boxBuffers;}
             else for(int i=0;i<3;++i){if(fullGeometry)buffers.append(previous->buffers[i]);boxBuffers.append(previous->boxBuffers[i]);}
@@ -137,8 +140,8 @@ public:
         std::size_t appearanceBytes=0;
         if(fullGeometry&&layerData.appearance&&groupIndex<layerData.appearance->sources.size())
             if(const auto& data=layerData.appearance->sources[groupIndex])appearanceBytes=viewport_memory::add(
-                viewport_memory::multiply(data->uv.size(),sizeof(MaterialUV)),viewport_memory::multiply(data->pixels.size(),4));
-        const auto resources=viewport_memory::meshPlan(sourceData.faces.size(),sourceData.instances.size(),fullGeometry,
+                viewport_memory::multiply(data->uv.size(),sizeof(MaterialUV)),viewport_memory::multiply(data->texturePixels().size(),4));
+        const auto resources=viewport_memory::meshPlan(sourceData.faceData().size(),std::max<std::size_t>(1,residentInstances),fullGeometry,
             appearanceBytes,sizeof(Point3),4*sizeof(Point3)+sizeof(float));
         geometryMemory=sharedGeometry?previous->geometryMemory:reserveMeshMemory(resources.geometry);
         instanceMemory=sharedBuffers?previous->instanceMemory:reserveMeshMemory(resources.instances);
@@ -162,7 +165,7 @@ public:
         const auto& previous=generation->layers[layerIndex];
         return ready.load(std::memory_order_acquire) && !generation->failed.load() && groupIndex==group &&
             (previous.mesh==next.mesh||(previous.geometryMode==next.geometryMode&&
-             previous.mesh->groups[group].faces==next.mesh->groups[group].faces&&
+             (&previous.mesh->groups[group].faceData()==&next.mesh->groups[group].faceData()||previous.mesh->groups[group].faceData()==next.mesh->groups[group].faceData())&&
              previous.mesh->localBounds[group].Min()==next.mesh->localBounds[group].Min()&&
              previous.mesh->localBounds[group].Max()==next.mesh->localBounds[group].Max()));
     }
@@ -205,7 +208,7 @@ public:
                 }
             };
             if(!sharedGeometry){
-            if(fullGeometry)geometry(group.faces,buffers);
+            if(fullGeometry)geometry(group.faceData(),buffers);
             const auto& box=layer.mesh->localBounds[groupIndex];const auto lo=box.Min(),hi=box.Max();
             Point3 corners[8];for(int i=0;i<8;++i)corners[i]=Point3(i&1?hi.x:lo.x,i&2?hi.y:lo.y,i&4?hi.z:lo.z);
             const int quads[6][4]={{0,2,3,1},{4,5,7,6},{0,1,5,4},{2,6,7,3},{0,4,6,2},{1,3,7,5}};
@@ -221,14 +224,17 @@ public:
             // Ownership is a separate logical field in that immutable payload.
             struct InstanceData { std::array<Point3,4> rows;float owner; };
             static_assert(sizeof(InstanceData)==4*sizeof(Point3)+sizeof(float));
-            std::vector<InstanceData> instances;instances.reserve(group.instances.size());
-            const auto stride=viewportStride(group.instances.size());
-            for(std::size_t k=0;k<group.instances.size();++k) {
-                const auto i=k*stride%group.instances.size();
-                const auto& tm=group.instances[i];
-                instances.push_back({{tm.GetRow(0),tm.GetRow(1),tm.GetRow(2),tm.GetRow(3)},float(group.bandSlots[i])});
+            std::vector<InstanceData> instances;instances.reserve(residentInstances);
+            const auto stride=viewportStride(group.instanceCount());
+            for(std::size_t k=0;k<residentInstances;++k) {
+                const auto i=k*stride%group.instanceCount();
+                const auto& tm=group.instanceAt(i);
+                instances.push_back({{tm.GetRow(0),tm.GetRow(1),tm.GetRow(2),tm.GetRow(3)},float(group.bandAt(i))});
             }
             previewFault(4);
+            // Zero-draw sources still need a legal SDK stream. Its one dummy
+            // value is admitted and never drawn; it avoids a zero-byte buffer.
+            if(instances.empty())instances.push_back({{},0});
             upload(boxBuffers,sizeof(instances[0]),instances.size(),instances.data());
             instanceMemory->commit();
             if(fullGeometry)buffers.append(boxBuffers[3]);
@@ -243,7 +249,7 @@ public:
             if(fullGeometry&&layer.appearance&&
                groupIndex<layer.appearance->sources.size()&&layer.appearance->sources[groupIndex]) {
                 const auto& data=*layer.appearance->sources[groupIndex];
-                if(data.uv.size()!=group.faces.size()*3)throw std::runtime_error("Material UV correspondence differs");
+                if(data.uv.size()!=group.faceData().size()*3)throw std::runtime_error("Material UV correspondence differs");
                 if(!sharedTextureMaterial&&!textureMaterial.InitializeWithString(CStr(texturedMeshShader)))
                     throw std::runtime_error("Material shader allocation failed");
                 if(!sharedAppearance){
@@ -255,12 +261,12 @@ public:
                 if(!rect.pBits||rect.pitch<=0||std::size_t(rect.pitch)<std::size_t(data.width)*4){
                     texture.WriteOnlyUnlockRectangle();throw std::runtime_error("Material texture lock returned an incomplete buffer");
                 }
-                for(int y=0;y<data.width;++y)std::memcpy(rect.pBits+std::size_t(y)*rect.pitch,data.pixels.data()+std::size_t(y)*data.width,std::size_t(data.width)*4);
+                for(int y=0;y<data.width;++y)std::memcpy(rect.pBits+std::size_t(y)*rect.pitch,data.texturePixels().data()+std::size_t(y)*data.width,std::size_t(data.width)*4);
                 if(!texture.WriteOnlyUnlockRectangle())throw std::runtime_error("Material texture upload failed");
                 previewFault(6);
                 if(!retainedUV.Initialize(sizeof(MaterialUV),data.uv.size(),const_cast<MaterialUV*>(data.uv.data()))||!retainedUV.RealizeToHWMemory(true))
                     throw std::runtime_error("Material UV allocation failed");
-                uploadBytes+=data.uv.size()*sizeof(MaterialUV)+data.pixels.size()*4;uploads+=2;
+                uploadBytes+=data.uv.size()*sizeof(MaterialUV)+data.texturePixels().size()*4;uploads+=2;
                 appearanceMemory->commit();
                 }
                 if(!sharedTextureMaterial){
@@ -308,14 +314,14 @@ public:
             activeMaterial.ActivatePass(dc,pass);
             device.SetDepthStencilState(meshDepth);device.SetRasterizerState(meshRaster);device.SetBlendState(meshBlend);
             device.SetStreamFormat(!box&&textured?textureFormat:format);device.SetVertexStreams(box?boxBuffers:textured?textureBuffers:buffers);device.SetIndexBuffer(noIndices);
-            if(quota.count){device.DrawInstanced(PrimitiveTriangleList,int(quota.count),0,box?12:int(group.faces.size()));++draws;}
+            if(quota.count){device.DrawInstanced(PrimitiveTriangleList,int(quota.count),0,box?12:int(group.faceData().size()));++draws;}
         }
         activeMaterial.PassesFinished(dc);activeMaterial.Terminate();
         device.SetDepthStencilState(depth);device.SetRasterizerState(raster);device.SetBlendState(blend);dc.SetWorldMatrix(world);
     }
     std::size_t GetPrimitiveCount() const override {
         const auto& p=generation->meshPlan[layerIndex][groupIndex];
-        const auto faces=generation->layers[layerIndex].mesh->groups[groupIndex].faces.size();
+        const auto faces=generation->layers[layerIndex].mesh->groups[groupIndex].faceData().size();
         return std::max(p.idle.count*(p.idle.box?12:faces),p.navigation.count*(p.navigation.box?12:faces));
     }
     void HitTest(HitTestContext&,DrawContext&) override {}
