@@ -54,7 +54,7 @@ namespace Cyrus.Content {
                     var c=Catalog();var adopted=new List<object>();int ready=0,settings=0;
                     foreach(var path in candidates){check();var text=Read(path,8388608);var sha=HashText(text);var recipe=D(LibraryJson.Parse(text));
                         ValidateRecipe(path);
-                        if(S(recipe["format"])!="cyrus.planting-recipe"||N(recipe["formatVersion"])<1||N(recipe["formatVersion"])>8)throw new IOException("Resave unsupported recipes with the current plugin before migration. Original files were retained.");
+                        if(S(recipe["format"])!="cyrus.planting-recipe"||N(recipe["formatVersion"])<1||N(recipe["formatVersion"])>9)throw new IOException("Resave unsupported recipes with the current plugin before migration. Original files were retained.");
                         var id=S(recipe["id"]);if(!System.Text.RegularExpressions.Regex.IsMatch(id,"^[A-Za-z0-9_-]{1,80}$"))throw new IOException("Invalid migrated recipe identity.");
                         object previous;if(D(c["recipes"]).TryGetValue(id,out previous)&&S(D(previous)["sha256"])!=sha)throw new IOException("A recipe with this identity has a different local revision. Resolve the conflict before migration.");
                         var package=Child(directory,"Presets/"+sha);var complete=File.Exists(Child(package,"cyrus.package.json"));

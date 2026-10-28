@@ -1,0 +1,101 @@
+{
+  "version": "0.87.5.5",
+  "date": "2026-10-28",
+  "runtime_qualified_hosts": [
+    2027
+  ],
+  "older_host_scope": "Distinct SDK/native/managed payloads compiled without native tests or host launches at user request.",
+  "packages": {
+    "2024": {
+      "path": "dist/CyrusScatter-0.87.5.5-20261028/CyrusScatter-0.87.5.5-Max2024.mzp",
+      "sha256": "9b823eb0f7b6a9788ff1da5c3e76c0becc4dd4329428509934a8d31757b9394d",
+      "producer": {
+        "path": "build/callback08755-20261028-01/native-2024-01/receipt.json",
+        "sha256": "0ae62d4238fe030ebef544a33859daeb5049224f0e89a7472cb063955aa6ee70"
+      },
+      "native_tests": 0,
+      "host_tests": false
+    },
+    "2026": {
+      "path": "dist/CyrusScatter-0.87.5.5-20261028/CyrusScatter-0.87.5.5-Max2026.mzp",
+      "sha256": "473b32f331ab179fa168ab70899439e9eb5c94b728a93da23f83f0b9a54f287d",
+      "producer": {
+        "path": "build/callback08755-20261028-01/native-2026-01/receipt.json",
+        "sha256": "a4d2a9a3fc177eaa73cfd802afe985b91a5d3fd61d8f76d7184bbf8c123ca897"
+      },
+      "native_tests": 0,
+      "host_tests": false
+    },
+    "2027": {
+      "path": "dist/CyrusScatter-0.87.5.5-20261028/CyrusScatter-0.87.5.5-Max2027.mzp",
+      "sha256": "aaa0ffd88f3198595916ed368cf48698f2c6ae72661e02eebb3c05ffc1355471",
+      "producer": {
+        "path": "build/callback08755-20261028-01/native-2027-01/receipt.json",
+        "sha256": "37e47738d5779948ea8e5a471dd8bc4f57be5fa64997ff804b95b451d98cc783"
+      },
+      "native_tests": 62,
+      "host_tests": true
+    }
+  },
+  "exe": {
+    "path": "dist/CyrusScatter-0.87.5.5-20261028/CyrusScatter-0.87.5.5-Setup.exe",
+    "sha256": "329dacb0d5fe3d6647c3e6d3abf6b79ed8e0571223194094b56866c58e1d46ac",
+    "bytes": 8344576,
+    "signed": false
+  },
+  "domains": {
+    "scene": 64,
+    "interactions": 14,
+    "source_transform": 2,
+    "source_undo": 2,
+    "edit_capability": 4,
+    "edit_storage": 3,
+    "recipe": 9,
+    "scene_preset_metadata": 1
+  },
+  "checks": {
+    "native_2027": 62,
+    "python": 577,
+    "unfixed_error_reproduced": true,
+    "new_empty_disabled_manual_live_callbacks": true,
+    "time_and_scene_reference_invalidation": true,
+    "loaded_1000_plant_application_callbacks": true,
+    "manual_pending_placements_retained": true,
+    "automatic_installed_startup": true,
+    "artist_ini_unchanged": true
+  },
+  "evidence": [
+    {
+      "path": "build/callback08755-20261028-01/callback-baseline.json",
+      "sha256": "ea2373c53ca25f3333eb199d401e018196ae28888a06c5d49f785b77555bb929"
+    },
+    {
+      "path": "build/callback08755-20261028-01/host-01/callback-fixed.json",
+      "sha256": "b1d5ecf2d672fdf526551d4673e28f412bc2b83b83fb47bea12ede3576548047"
+    },
+    {
+      "path": "build/callback08755-20261028-01/host-01/populated-regression.txt",
+      "sha256": "9896f18a672c115217b8a5dee9eb84b39d63b7c6c5244fc88b95748726f494dd"
+    },
+    {
+      "path": "build/callback08755-20261028-01/host-01/loaded-identity.json",
+      "sha256": "8b6bd2de5c010b4b0348d253941c10d64b6864baae20c06204e42025e92f874e"
+    },
+    {
+      "path": "build/callback08755-20261028-01/installer-01/receipt.json",
+      "sha256": "09937702686e95a64ce84c59513c3eec13b78133306f688eb43b9cb9cfa9a13c"
+    },
+    {
+      "path": "build/callback08755-20261028-01/pytest.xml",
+      "sha256": "d4d75be62550775c5a31bca6bb6ac47fff8f3dabc3387d8a5c6cc8cc2b650bf3"
+    },
+    {
+      "path": "build/callback08755-20261028-01/generated/generated-check.json",
+      "sha256": "a74a33fcc1069bea48efcc92454b4c6a860072a147b9e31cb360ca4705a79730"
+    }
+  ],
+  "scope": "Callback member scoping plus release metadata. No new placement/contact mathematics. 0.87.5.4 numerical performance evidence retains that version; this successor adds focused application callback regressions.",
+  "artist_installation": false,
+  "git_push": false,
+  "website_published": false
+}

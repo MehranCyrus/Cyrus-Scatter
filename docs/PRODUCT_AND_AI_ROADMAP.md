@@ -1,12 +1,34 @@
 # Cyrus Scatter: product and AI direction
 
-Maintained public-facing summary, reviewed 16 October 2026 against Scatter development/package 0.85.2, Analyzer 0.14 and MCP package/plan 0.73.0/0.73. This is the source for the website's product status and roadmap. Update it alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). It does not replace engineering acceptance criteria or announce a release date.
+Maintained public-facing summary, reconciled 28 October 2026 against Scatter 0.87.5.6 and its preceding adaptation foundation, independent Analyzer 0.14.2 and MCP package/plan 0.73.0/0.73. The website curates this source alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). Interaction qualification is the scoped Max 2027 delivery; the [performance baseline](PERFORMANCE_BASELINE.md) records the user-endorsed artistic workflow. This does not announce a production release date.
 
 ## The product today
 
 Cyrus Scatter is an artist-controlled scattering plugin for 3ds Max. Build a landscape from your own models, arrange planting in layers and refine it with ordinary controls. AI is optional; everyday use does not depend on an assistant, account connection or trained model.
 
-The current artist-test delivery is **0.87.0 / schema 60**. The [Interactions trial](plans/scatter-interactions-garden-20261025/DELIVERY_0870.md) implements reviewed shared plant preparation, Collider/React layer roles, nearby rooted bending, reversible covered roots and Cyrus Edit stone updates. Native Edit storage 2, recipe 8, original Paint, independent Analyzer 0.14.2 and content 0.86.7 remain in place. The [three-host EXE](plans/scatter-interactions-garden-20261025/INSTALLER_0870_COMPATIBILITY.md) contains separate Max 2024/2026 builds that are untested; the Max 2027 r4 package retains its own scoped evidence. Wind, inertia, tree dynamics, general low-poly remeshing and two-way contact remain future work. The [execution ledger](plans/improvement-program/PROGRESS.md) distinguishes completed P/I/PG/N work from remaining work; old roadmaps do not reopen completed features. Physical Undo/Redo, natural bending, wider sources/renderers and long/heavy sessions retain explicit acceptance limits. Version 1.0 remains reserved for publication readiness.
+The current interaction build is **0.87.5.6 / scene 65 / Interactions 15**, with a
+matched **Max 2027 MZP**, now also included unchanged in the [combined EXE](plans/drag-response-08756-20261028/INSTALLER_COMPATIBILITY_08756.md).
+Separate Max 2024/2026 payloads are compilation/package only; the original
+scripted viewport qualification remains Max 2027. The separately qualified
+0.87.5.1 Library foundation and native Scene presets remain. Earlier EXEs retain
+their original versions and evidence scope. Analyzer 0.14.2 and content 0.86.7 remain
+independent. Native Scene presets require supported units and dependencies;
+portable recipe 9 retains its narrower supported response subset.
+
+Ordinary scene walls/stones or scattered colliders can drive **Bend / Trim /
+Bend and trim**. Trunk bend, Fixed base and Bend fade control the flexible region.
+Prepared geometry is reused; bounded CPU guide response and GPU drawing support
+responsive art direction. Optional neighbor adaptation uses stable rest-branch
+priorities. These are static artistic responses; wind, inertia and symmetric
+plant dynamics remain separate future work. Approximate contact does not guarantee
+leaf-level clearance. Arbitrary commercial tree topology, all external renderers
+and million-instance realtime remain unqualified.
+
+The [current performance delivery](plans/drag-response-08756-20261028/DELIVERY_08756.md)
+and [endorsed baseline](PERFORMANCE_BASELINE.md) record exact scope and what to
+preserve. The preceding callback/adaptation reports retain their own evidence.
+The [execution ledger](plans/improvement-program/PROGRESS.md) records remaining
+acceptance; 1.0 is reserved for publication readiness.
 
 | Feature | What the artist can do | Boundary to explain |
 | --- | --- | --- |
@@ -16,13 +38,17 @@ The current artist-test delivery is **0.87.0 / schema 60**. The [Interactions tr
 | Density and target controls | Modulate density with supported texture/UV maps; choose candidate budgets or bounded accepted targets | Targets can underfill when masks, spacing and bounded retries reject candidates; Point/Empty restrictions apply |
 | Planting positions | Choose Surface random, Rectangular, Staggered or Hexagonal grids | Grids use world XY/highest-hit projection; pitch sets population and masks/spacing thin it |
 | Source assignment | Choose Random mix, Clusters, Spline bands or compatible Analyzer guides | Model assignment is independent of grid positions; Analyzer Single/EdgeRow cannot supply positions to a grid |
-| Vector painting | Paint and erase named receiver-bound areas; shape density and scale feathering with curves | Supports single-valued terrain in receiver-local XY; closed spheres, folds and vertical receivers are outside vector painting support |
+| Vector painting | Paint and erase named receiver-bound areas; shape density and scale feathering with curves | Terrain and manifold curved receivers are supported; disconnected/nonmanifold geometry and recipe Paint transfer keep their own topology/frame restrictions |
 | Include/Exclude and falloff | Combine closed masks, holes, delete strips, density ramps and scale ramps | Uses world XY; Includes union and Exclude wins |
 | Variation and spacing | Adjust transforms, model radii, within-layer and between-layer clearance | Collision radii are simplified footprints, not exact mesh intersection |
 | Relax and cleanup | Adjust candidate spacing near boundaries and remove isolated or crowded results | Relax changes candidate positions; finite work limits and cleanup can leave a shortfall |
 | Individual refinement | Use supported CS Edit and stable instance-radius overrides | Generation changes can invalidate a binding; identity is not a row index |
-| Viewport and updates | Choose Plant centres, Point Cloud, Proxy or Mesh; work in Manual or Live | Display budgets can show fewer plants than the accepted result; cached reads do not generate pending work |
-| Analyzer | Use separate planar boundaries, paths and points | Analyzer 0.14 has its own update mode and freshness; analyze it before updating dependent Scatter results |
+| Viewport and updates | Choose Placement points, Point Cloud, Proxy, Mesh or Textured mesh; work in Manual or Live | Display budgets can show fewer plants than the accepted result; cached reads do not generate pending work |
+| Analyzer | Use separate planar boundaries, paths and points | Analyzer 0.14.2 has its own update mode and freshness; analyze it before updating dependent Scatter results |
+| Plant preparation | Prepare an original source, select bending leaves or fixed bases and repair supported guides | Whole connected pieces; unresolved topology and fixed-root conflicts need review |
+| Scene colliders and branch response | Enroll ordinary walls/stones, bend/prune prepared subtrees and opt into neighboring trees | Broad guide envelopes are approximate; Detailed contact retains separate root hiding; no symmetric dynamics |
+| Scene and portable presets | Save a complete Max setup or adapt supported static planting to another terrain | Native Scene merge requires matching units and plug-ins and clears Undo history with notice |
+| Shared Library | Reuse stored models/images, collections, revisions and verified archive transport | Asset adapters and material/colour profiles retain their stated limits |
 | Diagnostics and output | Inspect completed counts, record a bounded local trace, remove old owned baked output and use supported final-output paths | A preview or successful smoke render does not qualify every renderer/material combination |
 
 Current behavior is documented in [the artist guide](ARTIST_GUIDE.md) and [Layout/Analyzer/falloff details](LAYOUT_AND_FALLOFF.md). [Qualification reports](README.md) record which combinations were actually tested. Concept artwork on the website illustrates intent; it is not evidence of plugin output or benchmark performance.

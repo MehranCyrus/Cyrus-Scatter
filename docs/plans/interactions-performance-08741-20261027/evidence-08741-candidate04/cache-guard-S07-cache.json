@@ -1,0 +1,19 @@
+{
+  "case": "S07-cache",
+  "checks": [
+    "Unchanged saved definition and watched source are reusable",
+    "Changed definition cannot clear acceptance",
+    "Changed definition cannot spoof the source fingerprint",
+    "Changed preparation settings reject a stale definition",
+    "Geometry change invalidates a previously cached source",
+    "Rejected source requests retain the prior complete interaction publication"
+  ],
+  "errors": {
+    "Changed definition cannot clear acceptance": "MAXScript exception raised.\n-- Runtime error: Preparation settings changed; prepare the source again",
+    "Changed definition cannot spoof the source fingerprint": "MAXScript exception raised.\n-- Runtime error: Prepared source changed; authored edits retained but incompatible with this geometry",
+    "Changed preparation settings reject a stale definition": "MAXScript exception raised.\n-- Runtime error: Preparation settings changed; prepare the source again",
+    "Geometry change invalidates a previously cached source": "MAXScript exception raised.\n-- Runtime error: Prepared source changed; authored edits retained but incompatible with this geometry"
+  },
+  "status": "pass",
+  "scope": "Owned Max host; valid cache hits, modified saved definitions and source-geometry invalidation."
+}

@@ -1,0 +1,15 @@
+Claim ID,Question,Local Codex conclusion,Local evidence,External A,External B,External C,Deciding test,Review status
+C01,First acceleration target,Profile then CPU fit plus public shader deformation,Report 01/06/07; E surrogate and L SDK,Pending,Pending,Pending,Full pipeline trace plus Max pose-buffer prototype,Local recommendation only
+C02,CUDA versus OpenCL speed,No universal winner; larger matched surrogate kernels close,E deformation_results.json,Pending,Pending,Pending,Matched actual solver and end-to-end quality comparison,Actual fitter untested
+C03,Platform D3D11 sharing,Both CUDA and NV OpenCL owned-buffer checks passed,E interop_results.json,Pending,Pending,Pending,Same probe on other qualified hardware,Local platform pass only
+C04,Public Max device interface,GetDevice declared; runtime path unqualified,L installed SDK and Autodesk 2027 reference,Pending,Pending,Pending,Owned Max read-only adapter query,Runtime open
+C05,Retained buffer consumption,Public shader buffer binding exists; raw import not found in reviewed class,L HLSLMaterialHandle and VertexBufferHandle,Pending,Pending,Pending,Max public buffer read/update/lifetime sample,Runtime open
+C06,Million-object scale,Separate resident N and active K plus actual guides/vertices/triangles,A memory arithmetic and L locality,Pending,Pending,Pending,Peak memory and presented-latency fixture,Capacity unqualified
+C07,All stems and rooted infeasibility,No silent dropped guides; fixed-root conflicts can be impossible,P contract and geometric reasoning,Pending,Pending,Pending,Independent root/span/leaf validator,Required behavior
+C08,Guide versus leaf clearance,Clear centerline does not prove clear leaf surface,L current refinement and geometry controls,Pending,Pending,Pending,Triangle crossing with clear guide fixture,Required behavior
+C09,SDF fidelity,Error and band validity must be explicit; exact refinement candidate,P geometry design,Pending,Pending,Pending,Thin-feature and signed-distance control suite,Unimplemented
+C10,Static versus dynamic solver,Keep current rest-based fitting; wind is separate,L current behavior and D papers,Pending,Pending,Pending,Path-independent final-state test,Semantic boundary
+C11,Async lifetimes,New bounded subsystem needed; coalesce and publish coherent generations,L synchronous executor and P queue design,Pending,Pending,Pending,Undo/delete/reset/continuous-input campaign,Unimplemented
+C12,Memory sparsity,Active pose pages; account dense lookups and retained generations,A memory table and L source poses,Pending,Pending,Pending,Measured peak by allocation owner,Proposed design
+C13,Renderer and Bake,GPU preview does not automatically deliver CPU geometry,L current boundaries and P final materialization,Pending,Pending,Pending,Matching final-revision geometry/material audit,Unqualified
+C14,Hardware recommendation,Do not require NVIDIA for whole feature yet,E one RTX3090 and U other hardware,Pending,Pending,Pending,Measured supported GPU/driver/adapter tiers,Open product decision

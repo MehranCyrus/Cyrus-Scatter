@@ -1,0 +1,105 @@
+{
+  "status": "complete",
+  "settings": {
+    "viewportMode": "3",
+    "viewportInstances": "2000",
+    "viewportFaces": "20000000",
+    "viewportNavigationInstances": "500",
+    "viewportNavigationFaces": "5000000",
+    "viewportNavigationPoints": "10000",
+    "pointsPerPlant": "80",
+    "showPoints": "True",
+    "autoRender": "True"
+  },
+  "viewport_plan": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    12450300,
+    4993914,
+    0,
+    10,
+    0,
+    94494,
+    3647
+  ],
+  "viewport_plan_fields": [
+    "version",
+    "idle_points",
+    "navigation_points",
+    "idle_proxies",
+    "navigation_proxies",
+    "idle_mesh_triangles",
+    "navigation_mesh_triangles",
+    "idle_box_instances",
+    "navigation_box_instances",
+    "memory_reduced",
+    "cumulative_idle_draw_calls",
+    "cumulative_navigation_draw_calls"
+  ],
+  "layers": [
+    {
+      "name": "Grass - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 10000,
+      "placements": 10000
+    },
+    {
+      "name": "Bushy grass - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 1000,
+      "placements": 1000
+    },
+    {
+      "name": "Lavender - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 100,
+      "placements": 100
+    },
+    {
+      "name": "Geranium - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 200,
+      "placements": 200
+    },
+    {
+      "name": "Trees - static",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 10,
+      "placements": 10
+    },
+    {
+      "name": "Stones - Collider",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 3,
+      "placements": 3
+    },
+    {
+      "name": "Contact study - Grass - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 1000,
+      "placements": 1000
+    },
+    {
+      "name": "Contact study - Bushy grass - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 80,
+      "placements": 80
+    },
+    {
+      "name": "Contact study - Lavender - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 12,
+      "placements": 12
+    },
+    {
+      "name": "Contact study - Geranium - React",
+      "foliage_fraction": 0.05000000074505806,
+      "cached_points": 24,
+      "placements": 24
+    }
+  ],
+  "scope": "Read-only snapshot of the current private host fixture; limits and actual displayed counts differ."
+}

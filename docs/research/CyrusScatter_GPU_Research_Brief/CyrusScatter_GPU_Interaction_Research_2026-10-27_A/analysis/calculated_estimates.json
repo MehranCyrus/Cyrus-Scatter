@@ -1,0 +1,125 @@
+{
+  "status": "ANALYTICAL ESTIMATES; formula evaluation executed; no hardware benchmark",
+  "assumptions": {
+    "guides_per_clump": 451,
+    "logical_vertices_assumed_equal_render_vertices_for_lower_bound": 22032,
+    "triangles": 27501,
+    "pose_nodes_per_guide_proposed": 8,
+    "instance_record_bytes": 96,
+    "pose_node_bytes": 32,
+    "active_guide_directory_bytes": 16,
+    "position_normal_output_bytes_per_vertex": 32,
+    "additional_tangent_bytes_if_stored": 16,
+    "units": "bytes; decimal MB=10^6; decimal GB=10^9"
+  },
+  "shared_source_parts": {
+    "draw_vertices_48B": 1057536,
+    "triangle_indices_12B": 330012,
+    "triangle_material_4B": 110004,
+    "bindings_32B": 705024,
+    "guide_descriptors_32B": 14432,
+    "rest_nodes_32B": 115456,
+    "rest_spans_16B": 50512
+  },
+  "shared_source_total_bytes": 2382976,
+  "resident_1M_instance_record_bytes": 96000000,
+  "resident_1M_pose_directory_handles_4B": 4000000,
+  "dense_1M_by451_4B_lookup_bytes": 1804000000,
+  "root_masks_1M_assuming451_groups_bytes": 60000000,
+  "scenarios": [
+    {
+      "affected_instances": 1,
+      "changed_guides_all": 451,
+      "pose_nodes": 3608,
+      "guide_pose_and_directory_bytes": 122672,
+      "position_normal_output_bytes": 705024,
+      "triple_pose_plus_output_bytes": 2483088,
+      "pose_one_way_ms_at_12_decimal_GBps": 0.010222666666666666,
+      "mesh_one_way_ms_at_12_decimal_GBps": 0.058752000000000006,
+      "pose_one_way_ms_at_24_decimal_GBps": 0.005111333333333333,
+      "mesh_one_way_ms_at_24_decimal_GBps": 0.029376000000000003
+    },
+    {
+      "affected_instances": 10,
+      "changed_guides_all": 4510,
+      "pose_nodes": 36080,
+      "guide_pose_and_directory_bytes": 1226720,
+      "position_normal_output_bytes": 7050240,
+      "triple_pose_plus_output_bytes": 24830880,
+      "pose_one_way_ms_at_12_decimal_GBps": 0.10222666666666666,
+      "mesh_one_way_ms_at_12_decimal_GBps": 0.58752,
+      "pose_one_way_ms_at_24_decimal_GBps": 0.05111333333333333,
+      "mesh_one_way_ms_at_24_decimal_GBps": 0.29376
+    },
+    {
+      "affected_instances": 100,
+      "changed_guides_all": 45100,
+      "pose_nodes": 360800,
+      "guide_pose_and_directory_bytes": 12267200,
+      "position_normal_output_bytes": 70502400,
+      "triple_pose_plus_output_bytes": 248308800,
+      "pose_one_way_ms_at_12_decimal_GBps": 1.0222666666666667,
+      "mesh_one_way_ms_at_12_decimal_GBps": 5.8751999999999995,
+      "pose_one_way_ms_at_24_decimal_GBps": 0.5111333333333333,
+      "mesh_one_way_ms_at_24_decimal_GBps": 2.9375999999999998
+    },
+    {
+      "affected_instances": 1000,
+      "changed_guides_all": 451000,
+      "pose_nodes": 3608000,
+      "guide_pose_and_directory_bytes": 122672000,
+      "position_normal_output_bytes": 705024000,
+      "triple_pose_plus_output_bytes": 2483088000,
+      "pose_one_way_ms_at_12_decimal_GBps": 10.222666666666667,
+      "mesh_one_way_ms_at_12_decimal_GBps": 58.751999999999995,
+      "pose_one_way_ms_at_24_decimal_GBps": 5.1113333333333335,
+      "mesh_one_way_ms_at_24_decimal_GBps": 29.375999999999998
+    },
+    {
+      "affected_instances": 10000,
+      "changed_guides_all": 4510000,
+      "pose_nodes": 36080000,
+      "guide_pose_and_directory_bytes": 1226720000,
+      "position_normal_output_bytes": 7050240000,
+      "triple_pose_plus_output_bytes": 24830880000,
+      "pose_one_way_ms_at_12_decimal_GBps": 102.22666666666666,
+      "mesh_one_way_ms_at_12_decimal_GBps": 587.5200000000001,
+      "pose_one_way_ms_at_24_decimal_GBps": 51.11333333333333,
+      "mesh_one_way_ms_at_24_decimal_GBps": 293.76000000000005
+    },
+    {
+      "affected_instances": 1000000,
+      "changed_guides_all": 451000000,
+      "pose_nodes": 3608000000,
+      "guide_pose_and_directory_bytes": 122672000000,
+      "position_normal_output_bytes": 705024000000,
+      "triple_pose_plus_output_bytes": 2483088000000,
+      "pose_one_way_ms_at_12_decimal_GBps": 10222.666666666668,
+      "mesh_one_way_ms_at_12_decimal_GBps": 58752.0,
+      "pose_one_way_ms_at_24_decimal_GBps": 5111.333333333334,
+      "mesh_one_way_ms_at_24_decimal_GBps": 29376.0
+    }
+  ],
+  "simple_1M_blades_assuming1guide4nodes4vertices": {
+    "pose_bytes": 144000000,
+    "position_normal_output_bytes": 128000000
+  },
+  "plant_collider_pair_bytes_K10k_c64_stride16": 10240000,
+  "sdf_2m_cube_float32": {
+    "h_1cm_cells_200cubed_bytes": 32000000,
+    "h_1mm_cells_2000cubed_bytes": 32000000000,
+    "h_1cm_nodes_201cubed_bytes": 32482404,
+    "h_1mm_nodes_2001cubed_bytes": 32048024004
+  },
+  "f32_spacing_metres": {
+    "1.0": 1.1920928955078125e-07,
+    "1000.0": 6.103515625e-05,
+    "10000.0": 0.0009765625,
+    "1000000.0": 0.0625
+  },
+  "frame_period_ms": {
+    "30": 33.333333333333336,
+    "60": 16.666666666666668,
+    "120": 8.333333333333334
+  }
+}

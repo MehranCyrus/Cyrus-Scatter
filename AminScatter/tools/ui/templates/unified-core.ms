@@ -250,7 +250,7 @@ global CyrusPointSceneOwners=#()
 global CyrusNativeRetirementTickets=#()
 try(CyrusPointClear())catch()
 CyrusPointOwners=#()
-global cyrusFilterSourceRows,cyrusApplySourceTransforms
+global cyrusFilterSourceRows,cyrusApplySourceTransforms,cyrusSourceTransformVersion
 global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
  global CyrusPreviewActivity,CyrusPreviewIdleTimer,CyrusPreviewView=undefined,CyrusPreviewProjection=undefined,CyrusPreviewViewID=undefined
 fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))
@@ -696,7 +696,7 @@ fn AminScatterCopyLayer origin destination variation:#same = (
         destination.bandArrangement=origin.bandArrangement
         destination.analyzerNode=origin.analyzerNode
         destination.layerIDColor=origin.layerIDColor
-        for key in #(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumWU,#interactionMinimumM,#interactionUnitsPending,#interactionUnitsNotice,#interactionFoliage,#interactionDefinitionRevision,#interactionMaxVertices,#interactionMaxTriangles,#interactionMaxParts,#interactionMaxGuides,#interactionMaxPreview,#interactionMemoryMiB,#interactionWorkMillions,#interactionConnectionM) do setProperty destination key (getProperty origin key)
+        for key in #(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumWU,#interactionMinimumM,#interactionUnitsPending,#interactionUnitsNotice,#interactionFoliage,#interactionDefinitionRevision,#interactionMaxVertices,#interactionMaxTriangles,#interactionMaxParts,#interactionMaxGuides,#interactionMaxPreview,#interactionMemoryMiB,#interactionWorkMillions,#interactionConnectionM,#interactionHideMarginWU,#interactionHideArea,#interactionResponse,#interactionBendStrength,#interactionPruneAmount,#interactionPruneThresholdWU,#interactionNeighbors,#interactionTrunkBend,#interactionFixedBase,#interactionBendTransition) do setProperty destination key (getProperty origin key)
         destination.interactionSourceIDs=origin.interactionSourceIDs as array;destination.interactionDefinitions=origin.interactionDefinitions as array
         destination.interactionProxySourceIDs=origin.interactionProxySourceIDs as array;destination.interactionProxyNodes=origin.interactionProxyNodes as array
         destination.surfaceNodes=origin.validSurfaces();destination.surface=undefined
@@ -806,7 +806,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:62
+version:65
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -877,6 +877,10 @@ initialRollupState:0x8
         this.markInputDirty();true
     )
     fn liveTimeChanged = (
+        -- These members are declared by the later interaction parameter block.
+        -- Qualify them so MAXScript cannot bind an undefined forward global.
+        local sceneColliders=this.interactionSceneColliders
+        if sceneColliders!=undefined and sceneColliders.count>0 do this.interactionSceneDirty=true
         if not this.cyrusEnabled do return false
         if this.updateMode!=2 do (
             -- Manual placements remain frozen, but an explicitly enabled field
@@ -1079,7 +1083,7 @@ initialRollupState:0x8
         pointsPerPlant type:#integer default:80
         iconSize type:#worldUnits default:10
         on surface set v do markInputDirty()
-        on sources set v i do markInputDirty()
+        on sources set v i do this.sourceMembershipChanged()
         on amount set v do markInputDirty()
         on randomSeed set v do markInputDirty()
         on scaleMinimum set v do markInputDirty()
@@ -1191,9 +1195,9 @@ initialRollupState:0x8
     parameters emptySettings (
         sourceRowIDs type:#stringTab tabSize:0 tabSizeVariable:true
         sourcePoint type:#boolTab tabSize:0 tabSizeVariable:true
-        on sourcePoint set v i do markInputDirty()
+        on sourcePoint set v i do this.sourceMembershipChanged()
         sourceEmpty type:#boolTab tabSize:0 tabSizeVariable:true
-        on sourceEmpty set v i do markInputDirty()
+        on sourceEmpty set v i do this.sourceMembershipChanged()
     )
     local cachedFallRun=-1
     parameters falloffSettings (
@@ -1389,7 +1393,11 @@ initialRollupState:0x8
     fn sourceZOffset i = (if i>0 and i<=sourceZOffsetsWU.count then sourceZOffsetsWU[i] else 0.0)
     fn sourceScale i = (if i>0 and i<=sourceScales.count then sourceScales[i] else 1.0)
     fn assignSourceTransform rows value scaling:false = (
-        undo "Cyrus Scatter source transform" on (
+        local changed=false
+        for i in rows where i>0 and i<=sources.count do if (if scaling then this.sourceScale i else this.sourceZOffset i)!=(if scaling then amax 0.0 value else value) do changed=true
+        if not changed do return false
+        local command=this.sourceCommandBegin "Cyrus Scatter source transform" 2
+        try (
             if scaling then (
                 while sourceScales.count<sources.count do append sourceScales 1.0
                 for i in rows where i>0 and i<=sources.count do sourceScales[i]=amax 0.0 value
@@ -1397,7 +1405,8 @@ initialRollupState:0x8
                 while sourceZOffsetsWU.count<sources.count do append sourceZOffsetsWU 0.0
                 for i in rows where i>0 and i<=sources.count do sourceZOffsetsWU[i]=value
             )
-        )
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
         markInputDirty()
     )
     parameters weightSettings (
@@ -1604,6 +1613,39 @@ initialRollupState:0x8
     fn usableSource n = (
         isValidNode n and findItem (validSurfaces()) n==0 and classof n.baseObject!=AminScatterObject
     )
+    fn sourceCommandBegin label kind = (
+        if cyrusSourceCommandUndoVersion==undefined or cyrusSourceCommandUndoVersion()!=2 do throw "Install the complete Cyrus 0.87.6 source Undo module and restart Max."
+        local ownHold=not theHold.Holding(),suspended=CyrusPointSuspended,ticket=undefined
+        if ownHold do theHold.Begin()
+        CyrusPointSuspended=true
+        try(ticket=cyrusSourceCommandBegin this kind)
+        catch(if ownHold do theHold.Cancel();CyrusPointSuspended=suspended;throw())
+        #(ownHold,suspended,ticket,label,false)
+    )
+    fn sourceCommandCommit command = (
+        if command[5] do throw "This source command already finished."
+        cyrusSourceCommandSeal command[3]
+        if command[1] do theHold.Accept command[4]
+        command[5]=true;CyrusPointSuspended=command[2];true
+    )
+    fn sourceCommandCancel command = (
+        if command==undefined or command[5] do return false
+        local failure=""
+        try(cyrusSourceCommandCancel command[3])catch(failure=getCurrentException())
+        if command[1] do theHold.Cancel()
+        command[5]=true;CyrusPointSuspended=command[2]
+        if failure!="" do throw failure
+        true
+    )
+    fn sourceMembershipChanged = (
+        -- Source membership is shared authored data; defer cross-panel binding
+        -- until this command has finished compacting all parallel row arrays.
+        -- This never consumes a pending Manual placement edit or clears its
+        -- published interaction generation.
+        containerUIChanged=true;this.markInputDirty()
+        if CyrusScheduleUI!=undefined do CyrusScheduleUI()
+        true
+    )
     -- Shared explicit source enrollment for model picking and the installed model
     -- library. It adds no layers, receivers, distribution settings or publication.
     fn addModelSource node tint:undefined = (
@@ -1611,14 +1653,18 @@ initialRollupState:0x8
         if sources.count>=1024 do throw "Source registration is full (1,024 rows). Remove unused rows explicitly."
         this.ensureSourceRows();this.syncColors()
         local count=sources.count,value=if tint==undefined then this.sourceColor (count+1) else tint
-        for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceAutoRadius,false),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
-            local values=getProperty this spec[1]
-            while values.count<count do append values spec[2]
-            append values spec[2]
-            setProperty this spec[1] values
-        )
-        append sources node;append sourceRowIDs (CyrusNewLayerID());append sourceColors value
-        this.markInputDirty();true
+        local command=this.sourceCommandBegin "Cyrus Scatter add source" 1
+        try (
+            for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceAutoRadius,false),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
+                local values=getProperty this spec[1]
+                while values.count<count do append values spec[2]
+                append values spec[2]
+                setProperty this spec[1] values
+            )
+            append sources node;append sourceRowIDs (CyrusNewLayerID());append sourceColors value
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
+        this.sourceMembershipChanged();true
     )
     fn isPointSource i = (i>0 and i<=sourcePoint.count and sourcePoint[i])
     fn isEmptySource i = (i>0 and i<=sourceEmpty.count and sourceEmpty[i])
@@ -1630,7 +1676,7 @@ initialRollupState:0x8
         true
     )
     fn removeModelSources selectedRows = (
-        local chosen=#{},owner=this,suspended=CyrusPointSuspended
+        local chosen=#{},owner=this
         for row in selectedRows do (
             if row<1 or row>sources.count do throw "The selected source list changed. Select the models again."
             chosen[row]=true
@@ -1638,8 +1684,19 @@ initialRollupState:0x8
         local rows=chosen as array
         if rows.count==0 do return false
         this.syncColors();this.syncStrokes()
-        theHold.Begin();CyrusPointSuspended=true
+        local command=this.sourceCommandBegin "Cyrus Scatter remove sources" 1
         try (
+            -- A deleted row's prepared definition and collider link are no
+            -- longer addressable. Remove them in the same undo transaction so
+            -- large serialized rigs do not accumulate in saved scenes. Do not
+            -- change the interaction revision: a Manual publication still owns
+            -- its prior complete source until the artist explicitly updates.
+            local definitionIDs=for v in owner.interactionSourceIDs collect v
+            local definitions=for v in owner.interactionDefinitions collect v
+            local proxyIDs=for v in owner.interactionProxySourceIDs collect v
+            local proxyNodes=for v in owner.interactionProxyNodes collect v
+            local definitionsComplete=definitionIDs.count==definitions.count,proxiesComplete=proxyIDs.count==proxyNodes.count
+            local removedDefinition=false,removedProxy=false
             local descriptor=procBindingKey
             if matchPattern descriptor pattern:"CyrusBinding2:*" do (
                 local plants=this.validSources()
@@ -1652,6 +1709,9 @@ initialRollupState:0x8
             if procRadiusIDs.count>0 do procRadiusBinding=cyrusSourceRadiusBind procPreparedRows procBindingKey procRadiusBinding (procRadiusIDs as array)
             for k=rows.count to 1 by -1 do (
                 local row=rows[k]
+                local sourceID=owner.sourceRowIDs[row],slot=findItem definitionIDs sourceID,proxySlot=findItem proxyIDs sourceID
+                if definitionsComplete and slot>0 do (deleteItem definitionIDs slot;deleteItem definitions slot;removedDefinition=true)
+                if proxiesComplete and proxySlot>0 do (deleteItem proxyIDs proxySlot;deleteItem proxyNodes proxySlot;removedProxy=true)
                 owner.removeSourceClearance owner.sourceRowIDs[row]
                 deleteItem owner.sourceRowIDs row
                 if row<=owner.procSourceSlots.count do deleteItem owner.procSourceSlots row
@@ -1661,16 +1721,19 @@ initialRollupState:0x8
                 )
                 deleteItem owner.sources row;deleteItem owner.sourceColors row
             )
-            theHold.Accept "Cyrus Scatter remove sources"
-        )catch(theHold.Cancel();CyrusPointSuspended=suspended;throw())
-        CyrusPointSuspended=suspended;owner.markInputDirty();true
+            if removedDefinition do (owner.interactionSourceIDs=definitionIDs;owner.interactionDefinitions=definitions;owner.interactionSourceCache=#())
+            if removedProxy do (owner.interactionProxySourceIDs=proxyIDs;owner.interactionProxyNodes=proxyNodes)
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
+        owner.sourceMembershipChanged();true
     )
-    fn addEmptySource = (
+    fn addEmptySource asPoint:false = (
         this.ensureSourceRows()
-        undo "Cyrus Scatter add empty source" on (
+        local command=this.sourceCommandBegin (if asPoint then "Cyrus Scatter add Point" else "Cyrus Scatter add empty source") 1
+        try (
             syncColors()
             while sourcePoint.count<sources.count do append sourcePoint false
-            append sourcePoint false
+            append sourcePoint asPoint
             while sourceEmpty.count<sources.count do append sourceEmpty false
             while sourceWeights.count<sources.count do append sourceWeights 1.0
             sources.count=sources.count+1;append sourceEmpty true;append sourceWeights 1.0
@@ -1678,39 +1741,41 @@ initialRollupState:0x8
             append sourceColors (color 100 100 100)
             if sourceZOffsetsWU.count>0 do append sourceZOffsetsWU 0.0
             if sourceScales.count>0 do append sourceScales 1.0
-        )
-        markInputDirty();sources.count
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
+        this.sourceMembershipChanged();sources.count
     )
-    fn addPointSource = (
-        local i
-        undo "Cyrus Scatter add Point" on (i=addEmptySource();sourcePoint[i]=true)
-        markInputDirty();i
-    )
+    fn addPointSource = (this.addEmptySource asPoint:true)
     fn replacePointSource row node = (
         if row<1 or row>sources.count or (this.isEmptySource row and not this.isPointSource row) or not (usableSource node) or (findItem sources node>0 and findItem sources node!=row) do return false
         if sources[row]==node and not this.isPointSource row do return true
         this.ensureSourceRows()
-        undo "Cyrus Scatter replace source" on (
+        local command=this.sourceCommandBegin "Cyrus Scatter replace source" 1
+        try (
+            this.interactionsForgetSource sourceRowIDs[row]
             while sourcePoint.count<sources.count do append sourcePoint false
             while sourceEmpty.count<sources.count do append sourceEmpty false
             sources[row]=node;sourcePoint[row]=false;sourceEmpty[row]=false
-        )
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
         containerConfigKey="";containerUIChanged=true
-        markInputDirty();previewBuildCount=0;true
+        this.sourceMembershipChanged();previewBuildCount=0;true
     )
     fn makePointSource row = (
         if row<1 or row>sources.count or this.isEmptySource row or not this.usableSource sources[row] do return false
         this.ensureSourceRows()
-        undo "Cyrus Scatter make Point" on (
+        local command=this.sourceCommandBegin "Cyrus Scatter make Point" 1
+        try (
             while sourcePoint.count<sources.count do append sourcePoint false
             while sourceEmpty.count<sources.count do append sourceEmpty false
             sourcePoint[row]=true;sourceEmpty[row]=true
-        )
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
         -- Retain the registered node so an automatic container scan cannot
         -- add it again. validSources resolves this row to a Point token; the
         -- scene object, row identity and stored Manual/Auto settings survive.
         containerConfigKey="";containerUIChanged=true
-        markInputDirty();previewBuildCount=0;true
+        this.sourceMembershipChanged();previewBuildCount=0;true
     )
     fn placementRadii rows plants = (this.procRadii rows plants)
     fn cacheRadii rows plants values:undefined = (
@@ -2439,7 +2504,7 @@ initialRollupState:0x8
         CyrusNativeWorkingSetCheckpoint()
         result=this.applyOrientation result plants
         if plants.count>0 and sourceEmpty.count>0 do result=this.filterSourceRowsByPolicy result (for n in plants collect not (isEmptySource (sourceRow n)) or isPointSource (sourceRow n))
-        if plants.count>0 and (sourceZOffsetsWU.count>0 or sourceScales.count>0) do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n))
+        if plants.count>0 do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n)) plants
         result
     )
 
@@ -2455,7 +2520,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.87.4"
+    fn uiVersion = "0.87.6"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2709,7 +2774,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.87.4" on (
+        undo "Upgrade Cyrus scene to 0.87.6" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -2803,7 +2868,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -2859,8 +2924,8 @@ initialRollupState:0x8
     )
     fn refreshIdentification = (
         local controller=if this.overlapOwner==undefined then this else this.overlapOwner
-        if controller.groupSnapshotKey!="" do controller.procEnsureDisplay pending:(controller.groupSnapshotKey!=controller.procInputKey())
-        CyrusViewportRedraw();true
+        if controller.groupSnapshotKey!="" do controller.procEnsureDisplay pending:(controller.groupSnapshotKey!=controller.procInputKey()) preserveAppearance:true
+        CyrusViewportRecordsDirty=true;CyrusScheduleUI();CyrusPointSync retainedOwner:controller;redrawViews();true
     )
     fn getLayerTransfer = layerTransfer
     fn setLayerTransfer state = (layerTransfer=state)
@@ -3515,7 +3580,7 @@ initialRollupState:0x8
                     format "Bands:%|" assigned to:stream
                 )
             )
-            #(procSourceSlots[row],stream as string)
+            #(procSourceSlots[row],stream as string,this.sourceScale row)
         )
         cyrusSourceEditBinding legacy basis specs
     )
@@ -3891,29 +3956,30 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 62. Create a new Cyrus 0.87.4 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 65. Create a new Cyrus 0.87.6 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
+        if cyrusSourceTransformVersion==undefined or cyrusSourceTransformVersion()!=2 do throw "Install the complete Cyrus 0.87.6 source-scale modules and restart Max."
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=8 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.4 requires its revised matched native interaction modules. Restart Max with the complete package."
-        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.4 requires its matching source-aware Edit modules. Restart Max with the complete package."
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.4 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.4 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.4 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.4 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.4 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.4 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.4 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=15 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.6 requires its revised matched native interaction modules. Restart Max with the complete package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=4 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.6 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.6 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.6 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.6 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.6 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.6 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.6 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.6 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.6 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3956,13 +4022,17 @@ initialRollupState:0x8
         )
         stream as string
     )
-    fn procDisplayLayerKey leaf epoch:undefined = (
+    fn procDisplayLayerKey leaf epoch:undefined sourceModels:undefined = (
         local stream=stringStream ""
         with printAllElements on (
             format "Display:%:%|" (if epoch==undefined then procEpoch else epoch) identificationMode to:stream
             if leaf.viewportMode==3 do (
-                local slot=findItem procPublishedOwners leaf
-                if slot>0 do format "Materials:%|" (cyrusMaterialPreviewKey procPublishedSources[slot]) to:stream
+                local models=sourceModels
+                if models==undefined do (local slot=findItem procPublishedOwners leaf;if slot>0 do models=procPublishedSources[slot])
+                -- A successor must read its staged source generation. Reading
+                -- the previous one can dereference a deleted model and prevent
+                -- the explicit Update that replaces that generation.
+                if models!=undefined do format "Materials:%|" (cyrusMaterialPreviewKey models) to:stream
             )
             format "%:%:%|" leaf.layerID (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
             format "%:%|" leaf.strokeIDs leaf.strokeDisplayColors to:stream
@@ -3971,9 +4041,10 @@ initialRollupState:0x8
         )
         stream as string
     )
-    fn procDisplayInputKey epoch:undefined = (
+    fn procDisplayInputKey epoch:undefined sourceSets:undefined = (
         local stream=stringStream ""
-        for leaf in layerObjects do format "%|" (this.procDisplayLayerKey leaf epoch:epoch) to:stream
+        if sourceSets!=undefined and sourceSets.count!=layerObjects.count do throw "Staged display source owners are incomplete. The previous result is retained."
+        for i=1 to layerObjects.count do format "%|" (this.procDisplayLayerKey layerObjects[i] epoch:epoch sourceModels:(if sourceSets==undefined then undefined else sourceSets[i])) to:stream
         stream as string
     )
     fn procPreviewMetadata plants geometry:undefined = (
@@ -4018,6 +4089,7 @@ initialRollupState:0x8
         -- Geometry uses source correspondence and the sorted Band dictionary;
         -- colors/names remain independently replaceable palette metadata.
         for i=1 to plants.count do (
+            if previous[4][i][1]!=0 and not isValidNode oldPlants[i] do return false
             if plants[i]!=oldPlants[i] or metadata[1][i][1]!=previous[1][i][1] do return false
             for field=1 to 3 where metadata[4][i][field]!=previous[4][i][field] do return false
         )
@@ -4031,7 +4103,7 @@ initialRollupState:0x8
         with printAllElements on format "%:%:%:%:%:%:%|%" epoch sourceShowRadius radiusDisplayLimit radiusDisplayAll radiusDisplayMetric (for i=1 to sources.count collect this.sourceColor i) plants fieldKey to:stream
         stream as string
     )
-    fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined metadata:undefined = (
+    fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined metadata:undefined appearanceRefresh:true = (
         local start=timeStamp(),previousRadius=radiusPreview,radii
         if plants==undefined do plants=this.validSources()
         if metadata==undefined do metadata=this.procPreviewMetadata plants
@@ -4062,7 +4134,7 @@ initialRollupState:0x8
             local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i] sampleSeed:metadata[6]))
             cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette previewBudget else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) (if viewportMode==2 then viewportPreparationLimit viewportInstances viewportNavigationInstances else 0) 0
         )
-        if viewportMode==3 and data.count>0 do cache=cyrusTexturePreview cache plants
+        if viewportMode==3 and data.count>0 and (appearanceRefresh or not reuseGeometry) do cache=cyrusTexturePreview cache plants
         local field=this.procStageField metadata[5],inspection=inspectionCache
         local inspectionKey=this.procInspectionKey plants field[2] (if displayEpoch==undefined then controller.procEpoch else displayEpoch)
         local reuseInspection=procPreviewInspectionKey==inspectionKey
@@ -4075,7 +4147,7 @@ initialRollupState:0x8
             try(cacheRadii data plants values:placementRadiusValues;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
             inspection=if radii.count==0 and field[1]==undefined then undefined else cyrusBuildInspectionPreview radii field[1]
         )
-        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3],geometryEpoch,modeSlot,orientationTimeStamp)
+        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch sourceModels:plants),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3],geometryEpoch,modeSlot,orientationTimeStamp)
     )
     -- Publication snapshots retain references to immutable staged rows/caches.
     -- No host queries or copies of large point arrays run in the install tail.
@@ -4125,7 +4197,8 @@ initialRollupState:0x8
         procPreviewModes=modes;procPreviewModesEpoch=state[19]
         previewBuildCount+=1;previewError="";dirty=pending
     )
-    fn procEnsureDisplay pending:false = (
+    fn procEnsureDisplay pending:false preserveAppearance:false = (
+        local retainedErrors=if preserveAppearance then (for leaf in layerObjects collect leaf.previewError) else #()
         local key=this.procDisplayInputKey()
         if key!=procPublishedDisplayKey do (
             local before=for leaf in layerObjects collect leaf.procPreviewState(),previousKey=procPublishedDisplayKey,previousDirty=CyrusViewportRecordsDirty,previousMetadata=procPublishedMetadata
@@ -4141,7 +4214,7 @@ initialRollupState:0x8
                     -- Pending authoring/copy callbacks may change its Bands
                     -- while this empty cache remains at the same epoch.
                     if slot==0 then leaf.procStagePreview #() plants:#() placementRadiusValues:#() metadata:#(#(),#(),false,#(),"",leaf.randomSeed)
-                    else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot] metadata:procPublishedMetadata[slot]
+                    else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot] metadata:procPublishedMetadata[slot] appearanceRefresh:(not preserveAppearance)
                 )
             )
             for i=1 to layerObjects.count where stage[i]!=undefined do (
@@ -4161,6 +4234,7 @@ initialRollupState:0x8
                 procPublishedMetadata=nextMetadata
                 for i=1 to procPublishedOwners.count do cyrusEditRecolor editModifiers procPublishedOwners[i].editLayerKey (procPublishedOwners[i].procPreviewPalette nextMetadata[i])
                 cyrusEditTransaction editModifiers 1;editTransaction=false
+                if preserveAppearance do for i=1 to layerObjects.count do layerObjects[i].previewError=retainedErrors[i]
             ) catch (
                 local failure=getCurrentException()
                 for i=1 to layerObjects.count do layerObjects[i].procRestorePreview before[i]
@@ -4265,9 +4339,9 @@ initialRollupState:0x8
                 accepted[i]=resolved[1][l][s];stats[i]=resolved[2][l][s];rounds[i]=resolved[3][l]
                 radii[i]=resolved[4][l][s]
             )
-            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1) metadata:publishedMetadata[i]
-            local displayKey=this.procDisplayInputKey epoch:(procEpoch+1)
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
+            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] plants:publishedSources[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1) metadata:publishedMetadata[i]
+            local displayKey=this.procDisplayInputKey epoch:(procEpoch+1) sourceSets:publishedSources
             local nextInteractions=this.interactionsStage accepted publishedOwners publishedSources
             local nextInteractionKey=this.interactionsKey publishedOwners (procEpoch+1)
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
@@ -4659,6 +4733,7 @@ initialRollupState:0x8
         spinner navigationInstancesSpin "Navigating instances:" range:[0,2147483647,500] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,302]
         spinner navigationFacesSpin "Navigating triangles:" range:[0,2147483647,500000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,304]
         label limitsHint "Controller totals; 0 = unlimited" pos:[6,306] width:(flow_previewUI.width-12)
+        button fastNavigationButton "Fast navigation" pos:[6,308] width:(flow_previewUI.width-12)
         button memoryButton "Viewport memory..." pos:[6,308] width:(flow_previewUI.width-12) tooltip:"Choose Automatic or a custom memory allowance for this Max installation. Changing it does not calculate scatter."
         spinner pointsSpin "Points/plant: " range:[10,10000,80] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,318]
         spinner radiusLimitSpin "Radii / layer:" range:[0,1000000,2000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,344]
@@ -4698,6 +4773,20 @@ initialRollupState:0x8
         on navigationPointsSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationPoints=v;obj.refreshDisplay();CyrusViewportRedraw())
         on navigationInstancesSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationInstances=v;obj.refreshDisplay();CyrusViewportRedraw())
         on navigationFacesSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationFaces=v;obj.refreshDisplay();CyrusViewportRedraw())
+        on fastNavigationButton pressed do if controlsReady and not binding and obj!=undefined do (
+            local controller=obj,changed=controller.viewportNavigationFaces!=500000
+            if changed do (
+                local command=controller.sourceCommandBegin "Cyrus fast navigation" 3
+                try(controller.viewportNavigationFaces=500000;controller.sourceCommandCommit command)catch(controller.sourceCommandCancel command;throw())
+            )
+            if controlsReady and obj==controller do (
+                syncControls()
+                status.text="Moving: 500k triangles.\nSubset preview only.\nIdle detail unchanged."
+            )
+            -- Refresh can rebind a page. Do not use rollout locals afterward.
+            if changed do controller.refreshDisplay()
+            CyrusViewportRedraw()
+        )
         on instancesLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportInstances=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on faceLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportFaces=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on previewCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.showPoints=v;CyrusViewportRedraw())
@@ -4989,6 +5078,13 @@ initialRollupState:0x8
         fn addSource n = (
             obj.addModelSource n tint:groupColor.color
         )
+        fn sourceViewsChanged controller = (
+            -- The generated main view defers this bind until the authored
+            -- command/event ends. Both Models and Interactions then observe
+            -- the same completed rows; no second + action is required.
+            if controller!=undefined and controller.mainUI!=undefined do controller.mainUI.bind()
+            true
+        )
 
         fn syncSourceAccess = (
             showSources.enabled=false;hideSources.enabled=false;editMaterial.enabled=false
@@ -5033,7 +5129,7 @@ initialRollupState:0x8
         )
 
         fn addSources nodes = (
-            local before=obj.sources.count
+            local controller=root,before=obj.sources.count
             if nodes!=undefined do for n in nodes do addSource n
             updateList()
             if obj.sources.count>before do (
@@ -5041,25 +5137,25 @@ initialRollupState:0x8
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();CyrusViewportRedraw()
+            showSelectedColor();CyrusViewportRedraw();sourceViewsChanged controller
         )
         on sourceName entered value do if not loadingColor and focusedRow>0 do (obj.setSourceLabel focusedRow value;updateList())
         on idColor changed value do if not loadingColor do (obj.setSourceIDColor plantList.selection value;updateList())
         on addPoint pressed do if controlsReady and not binding and obj!=undefined do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
+            local controller=root,i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw();sourceViewsChanged controller
         )
         on replacePoint picked n do if controlsReady and not binding and obj!=undefined do (
-            local rows=plantList.selection as array
+            local controller=root,rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point or model row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point or model row and an object that is not already in another source row." title:"Cyrus Scatter"
-            replacePoint.text="Pick object";updateList();showSelectedColor();CyrusViewportRedraw()
+            replacePoint.text="Pick object";updateList();showSelectedColor();CyrusViewportRedraw();sourceViewsChanged controller
         )
         on makePoint pressed do if controlsReady and not binding and obj!=undefined do (
-            local rows=plantList.selection as array
-            if rows.count==1 and obj.makePointSource rows[1] do (updateList();showSelectedColor();CyrusViewportRedraw())
+            local controller=root,rows=plantList.selection as array
+            if rows.count==1 and obj.makePointSource rows[1] do (updateList();showSelectedColor();CyrusViewportRedraw();sourceViewsChanged controller)
         )
         on addEmpty pressed do if controlsReady and not binding and obj!=undefined do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
+            local controller=root,i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw();sourceViewsChanged controller
         )
         on radiusSourceSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
         on radiusModeDrop selected v do if controlsReady and not binding and obj!=undefined and not loadingColor do (
@@ -5105,7 +5201,7 @@ initialRollupState:0x8
             local owner=obj,controller=root,rows=plantList.selection as array
             owner.removeModelSources rows
             if controlsReady and obj==owner and root==controller do (plantList.selection=#{};updateList())
-            CyrusViewportRedraw()
+            CyrusViewportRedraw();sourceViewsChanged controller
         )
         on selectPlant pressed do if controlsReady and not binding and obj!=undefined do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -5337,6 +5433,7 @@ initialRollupState:0x8
             -- Repeated binding of an unchanged map does not render it again.
             syncThumbnail()
             maskViewList.selection=CyrusMaskView;maskDetailList.selection=CyrusMaskDetail;opacitySpin.value=CyrusMaskOpacity;markersCheck.checked=CyrusMaskMarkers;markerSizeList.selection=CyrusMaskMarkerSize
+            meshPreviewButton.text=if CyrusMeshMaskPreviewTarget==obj then "Hide density preview" else "Show density preview"
             tileXSpin.value=obj.densityTileXWU
             tileYSpin.value=obj.densityTileYWU
             repeatXSpin.value=obj.densityRepeatX
@@ -5392,7 +5489,13 @@ initialRollupState:0x8
         on meshMaxSpin changed value do setMeshMask #meshMaskMaximum value
         on meshInvertCheck changed value do setMeshMask #meshMaskInvert value
         on meshCurveButton pressed do if controlsReady and not binding and obj!=undefined do CyrusOpenFalloffGraph obj undefined true meshMask:true
-        on meshPreviewButton pressed do if controlsReady and not binding and obj!=undefined do try(CyrusShowMeshMaskPreview obj)catch(messageBox (getCurrentException()) title:"Mesh density preview")
+        on meshPreviewButton pressed do if controlsReady and not binding and obj!=undefined do (
+            local target=obj
+            try (
+                if CyrusMeshMaskPreviewTarget==target then (CyrusClearMeshMaskPreview target;redrawViews()) else CyrusShowMeshMaskPreview target
+            )catch(messageBox (getCurrentException()) title:"Density preview")
+            if controlsReady do meshPreviewButton.text=if CyrusMeshMaskPreviewTarget==target then "Hide density preview" else "Show density preview"
+        )
         on meshHideButton pressed do (CyrusClearMeshMaskPreview undefined;redrawViews())
         on modeRadio changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.distributionMode=if v==2 then 3 else 1;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on countSpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.amount=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
@@ -5721,6 +5824,12 @@ initialRollupState:0x8
                 local state=if obj.paintDocument==undefined then undefined else cyrusBrushStats obj.paintDocument
                 text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
                 if owner!=undefined and not owner.paintEnabled do text+="\nWhole surfaces; areas retained."
+                local editable=state!=undefined and state[5]!=1
+                for control in #(fillButton,emptyButton,insideSpin,outsideSpin,densityFade,scaleFade,exportSpline,importSpline,importMode,splineTolerance) where control.enabled!=editable do control.enabled=editable
+                if densityCurve.enabled!=(editable and densityFade.checked) do densityCurve.enabled=editable and densityFade.checked
+                for control in #(scaleMin,scaleMax,scaleCurve) where control.enabled!=(editable and scaleFade.checked) do control.enabled=editable and scaleFade.checked
+                if state!=undefined and state[5]==1 then text+="\nStop the brush to edit edge fades."
+                else if root!=undefined and root.updateMode==1 and owner!=undefined and owner.dirty do text+="\nClick Update scatter to see changes."
             )
             if brushState.text==text then false else (brushState.text=text;true)
         )
@@ -5760,10 +5869,10 @@ initialRollupState:0x8
         on radiusSpin changed value do saveOptions()
         on insideSpin changed value do saveFalloff()
         on outsideSpin changed value do saveFalloff()
-        on densityFade changed value do saveFalloff()
-        on scaleFade changed value do saveFalloff()
-        on scaleMin changed value do saveFalloff()
-        on scaleMax changed value do saveFalloff()
+        on densityFade changed value do (saveFalloff();status())
+        on scaleFade changed value do (saveFalloff();status())
+        on scaleMin changed value do (if not binding and scaleMax.value<value do scaleMax.value=value;saveFalloff())
+        on scaleMax changed value do (if not binding and scaleMin.value>value do scaleMin.value=value;saveFalloff())
         on densityCurve pressed do if obj!=undefined do CyrusOpenFalloffGraph obj undefined true
         on scaleCurve pressed do if obj!=undefined do CyrusOpenFalloffGraph obj undefined false
         on densitySpin changed value do if not binding and obj!=undefined do (undo "Cyrus area density" on obj.paintDensity=value/100.0;owner.markInputDirty();obj.publishPaint())
@@ -6192,11 +6301,11 @@ initialRollupState:0x8
             for control in #(pathsList,pickPath,cornerMode,arrangementMode) do control.visible=obj.diversityMode==3
             analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
             pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
-            removePath.text="Ã—";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
+            removePath.text="x";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
             pickPath.enabled=not analyzed
             strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
-            addOutside.text="â†—";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
-            addInside.text="â†™";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
+            addOutside.text=if not analyzed then "Out +" else if analyzerChannel.selection==2 then "Line +" else "Radius +";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
+            addInside.text=if analyzed and analyzerChannel.selection==3 then "Point +" else "In +";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
             boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
             addInside.pos=[if boundaryOnly then 4 else selected_diversityUI.width/2+2,addOutside.pos.y]
@@ -6661,8 +6770,10 @@ initialRollupState:0x8
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version==58 then clearanceUpgradePending=true else if findItem #(59,60,61,62) version==0 do procSchemaValid=false
+        if version==58 then clearanceUpgradePending=true else if findItem #(59,60,61,62,63,64,65) version==0 do procSchemaValid=false
+        if version<=64 and interactionResponse==0 do interactionResponse=1
         if version==60 do interactionUnitsPending=true
+        if version<=62 do (interactionHideMarginWU=interactionGapWU;interactionHideArea=1)
         if not procSchemaValid do throw "Unsupported Cyrus scene schema; the scene is preserved."
         syncColors();markInputDirty()
     )
@@ -6703,7 +6814,45 @@ initialRollupState:0x8
         )
     )
 )
+global CyrusSceneColliderHandlers=#(),CyrusSceneColliderWatchKey="",CyrusSceneColliderWatch,CyrusSceneColliderChanged,CyrusSceneColliderTick
+fn CyrusSceneColliderChanged node = (
+    for owner in CyrusTimeOwners where isValidNode owner do (
+        local root=owner.baseObject
+        if findItem (root.interactionSceneColliders as array) node>0 do root.interactionSceneDirty=true
+    )
+    -- Pose-only movement does not invalidate placements or source buffers.
+)
+fn CyrusSceneColliderWatch = (
+    local nodes=#(),key=""
+    for owner in CyrusTimeOwners where isValidNode owner do (
+        for node in owner.baseObject.interactionSceneColliders where isValidNode node do appendIfUnique nodes node
+    )
+    for node in nodes do key+=(getHandleByAnim node as string)+"|"
+    if key==CyrusSceneColliderWatchKey do return true
+    for handler in CyrusSceneColliderHandlers do try(deleteChangeHandler handler)catch()
+    CyrusSceneColliderHandlers=#();CyrusSceneColliderWatchKey=key
+    if nodes.count>0 do (
+        append CyrusSceneColliderHandlers (when transform nodes changes id:#CyrusSceneColliderTransform node do CyrusSceneColliderChanged node)
+        append CyrusSceneColliderHandlers (when geometry nodes changes id:#CyrusSceneColliderGeometry node do CyrusSceneColliderChanged node)
+    )
+    true
+)
+fn CyrusSceneColliderTick = (
+    if CyrusPointBusy or CyrusPointSuspended do return false
+    for owner in CyrusTimeOwners where isValidNode owner and not owner.isHidden do (
+        local root=owner.baseObject
+        if root.interactionSceneDirty and root.interactionState!=undefined and root.cyrusEnabled do (
+            try(
+                if cyrusInteractionSceneUpdate root.interactionState then (root.interactionSceneDirty=false;root.interactionError="")
+                else if not CyrusInteractionHeld() do (root.interactionStateKey="";CyrusViewportRecordsDirty=true)
+            )catch(root.interactionError=getCurrentException())
+        )
+    )
+    true
+)
 fn AminScatterObjectDraw = (
+    CyrusSceneColliderTick()
+
     local held=CyrusInteractionHeld()
     if CyrusPreviewActivity!=undefined do CyrusPreviewActivity held
     if not held do for watch in CyrusViewportAnalyzers do (
@@ -6728,8 +6877,18 @@ fn AminScatterObjectDraw = (
             ready=cyrusRetainedMatches owner caches styles
             local presentation=cyrusRetainedPresentationStats owner
             if presentation.count!=14 or presentation[1]!=1 do throw "Unsupported retained display status. Install the matching package."
+            -- Incremental contact updates keep the existing viewport record.
+            -- Give every new GPU ticket its own bounded presentation retries;
+            -- otherwise the first update exhausts the record's original quota.
+            if record.count<7 do append record 0
+            if record[7]!=presentation[2] do (record[7]=presentation[2];record[6]=8)
             retained=not ready and presentation[5] and presentation[10]
             failed=presentation[4]==3
+            -- Ready GPU work must not wait for the mouse-up placement timer.
+            -- This only requests the SDK display boundary; it never restages.
+            if presentation[9] and cyrusRetainedRequestReady owner do (
+                CyrusPointPresentationPending=true;CyrusReleaseTimer.Interval=16;CyrusScheduleRelease()
+            )
         )catch(CyrusPointLastError=getCurrentException())
         -- A successor is not visible until every native item is ready. Do not
         -- mix its centre markers with a previous complete retained display.
@@ -6739,11 +6898,11 @@ fn AminScatterObjectDraw = (
             if caches.count>0 and CyrusPointAvailable and not CyrusPointSuspended do (
                 if failed do CyrusPointLastError=if retained then "Viewport update failed; the previous complete display is retained. Refresh display to retry." else "GPU preview unavailable; showing bounded centre markers. Refresh display to retry."
                 -- Submission can be delayed indefinitely for a hidden native
-                -- helper. Give a new publication two presentation-only redraws,
+                -- helper. Give each new ticket bounded presentation-only redraws,
                 -- then retain its fallback until a real event/explicit refresh.
                 -- Never turn missing GPU readiness into another scene sync.
                 if not failed and record[6]>0 do (
-                    record[6]-=1;CyrusPointPresentationPending=true;CyrusScheduleRelease()
+                    record[6]-=1;CyrusPointPresentationPending=true;CyrusReleaseTimer.Interval=16;CyrusScheduleRelease()
                 )
             )
         )
@@ -7041,6 +7200,8 @@ callbacks.addScript #filePostOpen "CyrusScatterRedIcons()" id:#CyrusScatterIconC
 CyrusScatterRedIcons()
 
 try(CyrusPreviewIdleTimer.Stop();CyrusPreviewIdleTimer.Dispose())catch()
+-- A replaced timer cannot complete the previous script's navigation gesture.
+if cyrusRetainedInteraction!=undefined do cyrusRetainedInteraction false
 fn CyrusPreviewActivity held = (
     if CyrusViewportRecords.count==0 do return false
     local tm=viewport.getTM(),fov=viewport.getFOV(),viewID=viewport.activeViewport
@@ -7053,6 +7214,8 @@ fn CyrusPreviewIdleTick sender args = (
     if not (CyrusInteractionHeld()) do (
         CyrusPreviewIdleTimer.Stop();cyrusRetainedInteraction false
         -- Draw the already prepared idle buffers; never schedule a solve/sync.
+        -- Nitrous may ignore redrawViews when no screen rectangle is dirty.
+        for pair in CyrusPointOwners where isValidNode pair[1] and isValidNode pair[2] and not pair[2].isHidden do cyrusRetainedInvalidate pair[2]
         redrawViews()
     )
 )
@@ -7063,10 +7226,15 @@ dotNet.addEventHandler CyrusPreviewIdleTimer "Tick" CyrusPreviewIdleTick
 try(CyrusReleaseTimer.Stop();CyrusReleaseTimer.Dispose())catch()
 fn CyrusReleaseTick sender args = (
  CyrusReleaseTimer.Stop()
+ if CyrusPointPresentationPending do (
+     CyrusPointPresentationPending=false
+     redrawViews()
+ )
+ CyrusReleaseTimer.Interval=200
  if CyrusInteractionHeld() then (CyrusWasDragging=true;CyrusScheduleRelease())
  else if CyrusWasDragging or CyrusPointPending then (
      CyrusWasDragging=false;CyrusPointPending=false;CyrusPointPresentationPending=false;CyrusViewportRedraw()
- ) else if CyrusPointPresentationPending do (CyrusPointPresentationPending=false;redrawViews())
+ )
 )
 CyrusReleaseTimer=dotNetObject "System.Windows.Forms.Timer"
 CyrusReleaseTimer.Interval=200
@@ -7091,8 +7259,8 @@ fn CyrusPointClear = (
     local old=CyrusPointOwners;CyrusPointOwners=#()
     if old!=undefined do CyrusPointDelete (for pair in old collect pair[2])
 )
-fn CyrusPointSync = (
-    if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or CyrusInteractionHeld() do return false
+fn CyrusPointSync retainedOwner:undefined = (
+    if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or (retainedOwner==undefined and CyrusInteractionHeld()) do return false
     CyrusPointBusy=true
     try (
         local publishError="",detailStatus="",records=#(),analyzers=#()
@@ -7111,12 +7279,12 @@ fn CyrusPointSync = (
             -- separately on each leaf repeats whole-controller validation.
             for entry in entries do (
                 local obj=entry[2]
-                obj.previewCache interactionHeld:false allowRefresh:false
-                if obj.dirty and not obj.cachedDisabledInput do refreshLeaf=obj
+                if n.baseObject!=retainedOwner do obj.previewCache interactionHeld:false allowRefresh:false
+                if n.baseObject!=retainedOwner and obj.dirty and not obj.cachedDisabledInput do refreshLeaf=obj
             )
             if refreshLeaf!=undefined do refreshLeaf.refreshPreview()
             local interactionState=undefined
-            try(interactionState=n.baseObject.interactionsEnsure())catch(n.baseObject.interactionError=getCurrentException();throw())
+            try(interactionState=if n.baseObject==retainedOwner then n.baseObject.interactionState else n.baseObject.interactionsEnsure())catch(n.baseObject.interactionError=getCurrentException();throw())
             for entry in entries do (
                 local obj=entry[2],cache=if obj.cachedDisabledInput then obj.cachedDisabledPreview else obj.cachedPoints
                 for analyzer in #(obj.analyzerNode,obj.areaAnalyzer,obj.fallAnalyzer) where isValidNode analyzer do appendIfUnique analyzers analyzer
@@ -7168,9 +7336,14 @@ fn CyrusViewportRedraw = (
     if not CyrusPointBusy do CyrusPointSync()
     redrawViews()
 )
-fn CyrusPointBeforeSave = (CyrusPointSuspended=true;for node in objects where classof node.baseObject==AminScatterObject do node.baseObject.interactionsBeforeSave();CyrusPointClear())
-fn CyrusPointAfterSave = (CyrusPointSuspended=false;(CyrusPointPending=true;CyrusScheduleRelease()))
+-- Saving a scene-preset subset serializes persistent parameters and native Edit
+-- storage, without retiring the artist's live contact/handle/display generations.
+fn CyrusPointBeforeSave = (if CyrusScenePresetCapturing do return false;CyrusPointSuspended=true;for node in objects where classof node.baseObject==AminScatterObject do node.baseObject.interactionsBeforeSave();CyrusPointClear())
+fn CyrusPointAfterSave = (if CyrusScenePresetCapturing do return false;CyrusPointSuspended=false;(CyrusPointPending=true;CyrusScheduleRelease()))
 fn CyrusPointBeforeScene = (
+    for handler in CyrusSceneColliderHandlers do try(deleteChangeHandler handler)catch()
+    CyrusSceneColliderHandlers=#();CyrusSceneColliderWatchKey=""
+
     -- Capture owners before Max detaches the departed scene's reference graph.
     -- Its root.layerObjects can already be empty in the post-open callback.
     for ticket in CyrusNativeRetirementTickets do (
@@ -7190,6 +7363,7 @@ fn CyrusPointBeforeScene = (
     CyrusPointSuspended=true;CyrusPointClear()
 )
 fn CyrusPointAfterScene = (
+    CyrusSceneColliderWatch()
     local retired=CyrusPointSceneOwners;CyrusPointSceneOwners=#()
     for owner in retired do (
         local live=for node in refs.dependentNodes owner where isValidNode node collect node
@@ -7210,6 +7384,9 @@ fn CyrusRetainedMeshDrawing enabled = (
     CyrusViewportRedraw()
     CyrusMeshEnabled
 )
+callbacks.removeScripts id:#CyrusSceneColliders
+callbacks.addScript #sceneUndo "CyrusSceneColliderWatch();for owner in CyrusTimeOwners where isValidNode owner do owner.baseObject.interactionSceneDirty=true;CyrusViewportRecordsDirty=true;CyrusScheduleRelease()" id:#CyrusSceneColliders
+callbacks.addScript #sceneRedo "CyrusSceneColliderWatch();for owner in CyrusTimeOwners where isValidNode owner do owner.baseObject.interactionSceneDirty=true;CyrusViewportRecordsDirty=true;CyrusScheduleRelease()" id:#CyrusSceneColliders
 callbacks.removeScripts id:#CyrusRetainedPoints
 callbacks.addScript #filePreSaveProcess "CyrusPointBeforeSave()" id:#CyrusRetainedPoints
 callbacks.addScript #filePostSaveProcess "CyrusPointAfterSave()" id:#CyrusRetainedPoints

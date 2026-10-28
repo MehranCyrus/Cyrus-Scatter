@@ -1,0 +1,1456 @@
+{
+  "schema": "cyrus.harness-source-review/1",
+  "agent_reviewed": true,
+  "human_reviewed": false,
+  "scope": [
+    "Core contracts and native Scene/Library source owners; current interaction baseline, controls and explicitly selected implementation.",
+    "Runtime qualification remains the exact dated delivery scope; source review and fresh hashes do not extend it.",
+    "Independent product implementation, instruction/evaluation files and unexecuted future optimizations are excluded. The broader 64-parent project selection is maintained separately."
+  ],
+  "current_delivery": "docs/plans/drag-response-08756-20261028/QUALIFICATION_08756.json",
+  "current_delivery_sha256": "d7e3646e6c6fbf55695c5f4e0278d2ac94bde866d555541bcccd8af9d0c0f00c",
+  "sources": [
+    {
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "sha256": "85b7f996f92ba95545e4f972ecefa0078113efe8a9eba8960cf302c4b71c211b",
+      "ranges": [
+        [
+          1,
+          243
+        ]
+      ],
+      "role": "maintained_guide",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/ENGINEERING_FOUNDATION.md",
+        "relationship": "selected-original",
+        "evidence": "Complete F01-F12 requirements and evidence limits; no host qualification inferred."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Complete F01-F12 requirements and evidence limits; no host qualification inferred.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          8
+        ],
+        [
+          9,
+          14
+        ],
+        [
+          15,
+          32
+        ],
+        [
+          33,
+          44
+        ],
+        [
+          45,
+          57
+        ],
+        [
+          58,
+          67
+        ],
+        [
+          68,
+          71
+        ],
+        [
+          72,
+          83
+        ],
+        [
+          84,
+          95
+        ],
+        [
+          96,
+          107
+        ],
+        [
+          108,
+          119
+        ],
+        [
+          120,
+          131
+        ],
+        [
+          132,
+          143
+        ],
+        [
+          144,
+          155
+        ],
+        [
+          156,
+          175
+        ],
+        [
+          176,
+          187
+        ],
+        [
+          188,
+          199
+        ],
+        [
+          200,
+          213
+        ],
+        [
+          214,
+          226
+        ],
+        [
+          227,
+          236
+        ],
+        [
+          237,
+          243
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/KNOWLEDGE_BASELINE.json",
+      "sha256": "a89e71f95c2e5c2635af7a9e24c0a6777266ed0b72170f3465156c89920d615d",
+      "ranges": [
+        [
+          1,
+          35
+        ]
+      ],
+      "role": "editorial",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/KNOWLEDGE_BASELINE.json",
+        "relationship": "selected-original",
+        "evidence": "Explicit delivered Library facts cross-checked by the front door against the scoped 0.87.5.1 qualification receipt; newer working labels are not deliveries."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Explicit delivered Library facts cross-checked by the front door against the scoped 0.87.5.1 qualification receipt; newer working labels are not deliveries.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      }
+    },
+    {
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+      "sha256": "9cc8c5232381e951d7ac9f37ef74a937ba0477a01a8ed693a680b264692a625b",
+      "ranges": [
+        [
+          1,
+          57
+        ]
+      ],
+      "role": "maintained_guide",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained delivered 0.87.5.1 Library workflow, Max 2027 only; ongoing interactions excluded."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Maintained delivered 0.87.5.1 Library workflow, Max 2027 only; ongoing interactions excluded.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          6
+        ],
+        [
+          7,
+          10
+        ],
+        [
+          11,
+          16
+        ],
+        [
+          17,
+          30
+        ],
+        [
+          31,
+          36
+        ],
+        [
+          37,
+          46
+        ],
+        [
+          47,
+          52
+        ],
+        [
+          53,
+          57
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/scene-presets-08751/PLAN.md",
+      "sha256": "ab8194b08e8a032eda7bde2266a4a0db56c24963441463b3dca7a45e3187f9cf",
+      "ranges": [
+        [
+          1,
+          65
+        ]
+      ],
+      "role": "proposal",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/scene-presets-08751/PLAN.md",
+        "relationship": "selected-original",
+        "evidence": "Feature contract and recorded acceptance checklist for Scene presets; use the separate delivery and qualification receipt for executed proof."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Feature contract and recorded acceptance checklist for Scene presets; use the separate delivery and qualification receipt for executed proof.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          8
+        ],
+        [
+          9,
+          34
+        ],
+        [
+          35,
+          41
+        ],
+        [
+          42,
+          65
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+      "sha256": "3d1b621217dceb6c4aa942e45a8e69c103ecc6b40e7709deaef7340d3167bb02",
+      "ranges": [
+        [
+          1,
+          31
+        ]
+      ],
+      "role": "maintained_guide",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+        "relationship": "selected-original",
+        "evidence": "Delivered native Scene/Portable/Settings choices and artist limitations; not arbitrary graph or host qualification."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Delivered native Scene/Portable/Settings choices and artist limitations; not arbitrary graph or host qualification.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/scene-presets-08751/DELIVERY_08751.md",
+      "sha256": "f47bb87f0ed3f6039d7a313e1d4ee34b5734bcc6872e2e595ea2082d8bbba6e6",
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/scene-presets-08751/DELIVERY_08751.md",
+        "relationship": "selected-original",
+        "evidence": "Exact dated 0.87.5.1 scoped Max 2027 delivery and remaining limits, not proof for the 0.87.5.2 working tree."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Exact dated 0.87.5.1 scoped Max 2027 delivery and remaining limits, not proof for the 0.87.5.2 working tree.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          8
+        ],
+        [
+          9,
+          20
+        ],
+        [
+          21,
+          49
+        ],
+        [
+          50,
+          80
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/tools/ui/templates/scene-presets.ms",
+      "sha256": "9613a448209282a06b49a4dd706edc1332ae5b9c699d51995c6816c24f67bb36",
+      "ranges": [
+        [
+          1,
+          225
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/scene-presets.ms",
+        "relationship": "selected-original",
+        "evidence": "Working Scene orchestration owner. Only the package version guard differs from its exact 0.87.5.1 producer bytes; no 0.87.5.2 host acceptance inferred."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Working Scene orchestration owner. Only the package version guard differs from its exact 0.87.5.1 producer bytes; no 0.87.5.2 host acceptance inferred.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+      "sha256": "dbf8eba3bbb700e5d0dcc5d218b49babbb8865846198600259f046bda4738a34",
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+        "relationship": "selected-original",
+        "evidence": "Working managed native-Scene store owner. Only the saved version label differs from its exact 0.87.5.1 producer bytes; no whole-working-tree acceptance inferred."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Working managed native-Scene store owner. Only the saved version label differs from its exact 0.87.5.1 producer bytes; no whole-working-tree acceptance inferred.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/include/scene_preset.h",
+      "sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+      "ranges": [
+        [
+          1,
+          40
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "AminScatter/include/scene_preset.h",
+        "relationship": "selected-original",
+        "evidence": "Native Scene metadata/admission owner; exact bytes match the scoped 0.87.5.1 native producer receipt."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Native Scene metadata/admission owner; exact bytes match the scoped 0.87.5.1 native producer receipt.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/src/cyrus_edit_recipe.inc",
+      "sha256": "bc5b5fe578e475d0332eedf3b2412f5a7cf513bdef5552a609a3bc65bfee0540",
+      "ranges": [
+        [
+          1,
+          56
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/cyrus_edit_recipe.inc",
+        "relationship": "selected-original",
+        "evidence": "Coordinated Scene Edit identity remapping owner; exact bytes match the scoped 0.87.5.1 native producer. Ordinary Max Copy remains distinct."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Coordinated Scene Edit identity remapping owner; exact bytes match the scoped 0.87.5.1 native producer. Ordinary Max Copy remains distinct.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md",
+      "sha256": "6d7f2917a4f37a275ed51396a71ab3ee52c63cd48911b53485dc8f177a0a5516",
+      "ranges": [
+        [
+          1,
+          61
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.4 preparation-editor workflow. Its Keep and share recipe exclusion is superseded by 0.87.4.4 authored format 9 and 0.87.5.1 native Scene presets. Do not follow its older installer or saving boundary as current guidance."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4 preparation-editor workflow. Its Keep and share recipe exclusion is superseded by 0.87.4.4 authored format 9 and 0.87.5.1 native Scene presets. Do not follow its older installer or saving boundary as current guidance.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          4
+        ],
+        [
+          5,
+          15
+        ],
+        [
+          16,
+          26
+        ],
+        [
+          27,
+          36
+        ],
+        [
+          37,
+          48
+        ],
+        [
+          49,
+          56
+        ],
+        [
+          57,
+          61
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/preparation-editor-repair-20261027/ARTIST_GUIDE_08742.md",
+      "sha256": "fa866a054b5e43b9c4455a6256b88b0b3720a3d0521238f167a88fe0e91f16b4",
+      "ranges": [
+        [
+          1,
+          26
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/preparation-editor-repair-20261027/ARTIST_GUIDE_08742.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.4.2 selected/isolated-piece and navigation workflow; model-specific counts/settings are examples. Not acceptance of ongoing contact work."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4.2 selected/isolated-piece and navigation workflow; model-specific counts/settings are examples. Not acceptance of ongoing contact work.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          16
+        ],
+        [
+          17,
+          26
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/interaction-hide-wireframe-20261027/ARTIST_GUIDE_08743.md",
+      "sha256": "68db50a686de13eb94231f58f09027fa45fe83a713a2fbfe20ee4bbf26fd8cb7",
+      "ranges": [
+        [
+          1,
+          22
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/interaction-hide-wireframe-20261027/ARTIST_GUIDE_08743.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.4.3 hiding and Wireframe semantics; its Interactions 11 package identity is historical. Use the current matched delivery, not its older installer."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4.3 hiding and Wireframe semantics; its Interactions 11 package identity is historical. Use the current matched delivery, not its older installer.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          22
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/shared-pose-viewport-0875-20261027/ARTIST_GUIDE_0875.md",
+      "sha256": "eaff8ccdd7742e8b5765e975263d2be5c35f4ed97f1f29ba827c1b7fbf39f135",
+      "ranges": [
+        [
+          1,
+          52
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Preserved Core/Library companion parent with complete current subject; historical guides keep their versioned limits.",
+      "review_status": "Agent reviewed current original and qualification context on 28 October 2026; no new Max/Library test or human semantic review.",
+      "canonical": {
+        "preferred_path": "docs/plans/shared-pose-viewport-0875-20261027/ARTIST_GUIDE_0875.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.5 shared-pose display and setting limits. Example fern bounds are not universal settings or proof of ongoing 0.87.5.2 contact changes."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.5 shared-pose display and setting limits. Example fern bounds are not universal settings or proof of ongoing 0.87.5.2 contact changes.",
+        "current_source_review": "28 October 2026; exact Library qualification remains 0.87.5.1, current interaction qualification 0.87.5.6 scoped Max 2027 viewport only."
+      },
+      "contract_sections": [
+        [
+          1,
+          22
+        ],
+        [
+          23,
+          52
+        ]
+      ]
+    },
+    {
+      "path": "docs/PERFORMANCE_BASELINE.md",
+      "sha256": "816627f4c2623ab50255738e486f4d45ef2cf7eb0ef79012364889fb03e7f334",
+      "ranges": [
+        [
+          1,
+          99
+        ]
+      ],
+      "component": "docs",
+      "role": "maintained_guide",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "docs/PERFORMANCE_BASELINE.md",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      },
+      "contract_sections": [
+        [
+          1,
+          11
+        ],
+        [
+          12,
+          21
+        ],
+        [
+          22,
+          39
+        ],
+        [
+          40,
+          66
+        ],
+        [
+          67,
+          86
+        ],
+        [
+          87,
+          99
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/drag-response-08756-20261028/KNOWLEDGE_FACTS_08756.json",
+      "sha256": "ab41480fab32748d2aaed06daf6e32e0e82e744af723777e4e4da13c93e46c83",
+      "ranges": [
+        [
+          1,
+          18
+        ]
+      ],
+      "component": "docs",
+      "role": "delivered_artifact",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "docs/plans/drag-response-08756-20261028/KNOWLEDGE_FACTS_08756.json",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "docs/plans/drag-response-08756-20261028/DELIVERY_08756.md",
+      "sha256": "ea54646a21706fa1633576667e72c8ba22d1356e420af5302e62e7d49a9a671d",
+      "ranges": [
+        [
+          1,
+          73
+        ]
+      ],
+      "component": "docs",
+      "role": "delivered_artifact",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "docs/plans/drag-response-08756-20261028/DELIVERY_08756.md",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      },
+      "contract_sections": [
+        [
+          1,
+          8
+        ],
+        [
+          9,
+          16
+        ],
+        [
+          17,
+          37
+        ],
+        [
+          38,
+          52
+        ],
+        [
+          53,
+          60
+        ],
+        [
+          61,
+          73
+        ]
+      ]
+    },
+    {
+      "path": "docs/plans/drag-response-08756-20261028/ARTIST_GUIDE.md",
+      "sha256": "8ff0bad0d7afaacde330c1b47e9a072292b6235a9735762a049dbf3ad91baf17",
+      "ranges": [
+        [
+          1,
+          52
+        ]
+      ],
+      "component": "docs",
+      "role": "maintained_guide",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "docs/plans/drag-response-08756-20261028/ARTIST_GUIDE.md",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      },
+      "contract_sections": [
+        [
+          1,
+          52
+        ]
+      ]
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "sha256": "f735bf8c1fefdd0a808674f4736625e08b2998395caa99928a0615d663dc1019",
+      "ranges": [
+        [
+          227,
+          241
+        ]
+      ],
+      "component": "docs",
+      "role": "maintained_guide",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "docs/BACKLOG.md",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      },
+      "contract_sections": [
+        [
+          227,
+          241
+        ]
+      ]
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "6216440a38a82d6395f516c28b51beb1e7c588788f3fec095a34e17ee1a93f1b",
+      "ranges": [
+        [
+          1,
+          17
+        ]
+      ],
+      "component": "docs",
+      "role": "maintained_guide",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "docs/ARCHITECTURE.md",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      },
+      "contract_sections": [
+        [
+          1,
+          16
+        ]
+      ]
+    },
+    {
+      "path": "AminScatter/src/interactions_fast_bend.inc",
+      "sha256": "4cf138404dfa0a6859dde09ebbb375cc1dbb4b19ec6e599986fba0187a94e29d",
+      "ranges": [
+        [
+          1,
+          91
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/interactions_fast_bend.inc",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/src/interactions_source.cpp",
+      "sha256": "9e7b82f54f804ed7dafb43d271db251df2d6bdeb739c1f44a7a4eab434ffe1ef",
+      "ranges": [
+        [
+          1,
+          524
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/interactions_source.cpp",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/include/interactions_source.h",
+      "sha256": "a98d128adadef3efa90bffcee3238146e5551891f9e0c84d0b4378c5a679cefc",
+      "ranges": [
+        [
+          1,
+          75
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/include/interactions_source.h",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/src/interactions_engine.cpp",
+      "sha256": "8f50224b5b2a48f758b45f99660e7bf54a4542a481e89326612bb2e8d69db6e0",
+      "ranges": [
+        [
+          1,
+          286
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/interactions_engine.cpp",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/include/interactions_engine.h",
+      "sha256": "fe0c63219704ce25f7edffdf1906a658bf9786204d4f12f96491a0ef1f0c0ce9",
+      "ranges": [
+        [
+          1,
+          76
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/include/interactions_engine.h",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/src/interactions_host.cpp",
+      "sha256": "662c3d4d8264f8015383aa559382e93c946c6be636a6251d1128f5501b95849a",
+      "ranges": [
+        [
+          1,
+          510
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/interactions_host.cpp",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "sha256": "5d63a4f422961ce4b78011e2b30adbe27950897796e251c1bd5ed12c11256ceb",
+      "ranges": [
+        [
+          1,
+          309
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/cyrus_edit.cpp",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "sha256": "d97ec462a9128546b343b0ce42f3906993c465ec3a25b0fbb06c0e3e4219a3b1",
+      "ranges": [
+        [
+          590,
+          620
+        ],
+        [
+          726,
+          763
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/point_display.cpp",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-authoring.ms",
+      "sha256": "0083dcb1b6785fac995d59746422ed2136fdaa0fa521911e4c89d136477e5c0e",
+      "ranges": [
+        [
+          1,
+          416
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/interactions-authoring.ms",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-ui.ms",
+      "sha256": "2b1b3737b46238b7a1536ea8ed461bfa52d2996a30bc1a51c2a3f5fbcc79e685",
+      "ranges": [
+        [
+          1,
+          224
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/interactions-ui.ms",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "dead21e62628afaec930f400a3f1f0cacedecc1458badd666b40f3cd416dfcaa",
+      "ranges": [
+        [
+          6804,
+          6899
+        ],
+        [
+          7214,
+          7226
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/unified-core.ms",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    },
+    {
+      "path": "AminScatter/src/source_authoring_undo.cpp",
+      "sha256": "074f3420d7c1d4c465e6b239796c7ee32313fd6762b66cb4575f5af7bc86397a",
+      "ranges": [
+        [
+          1,
+          260
+        ]
+      ],
+      "component": "Scatter",
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "status_source": "explicit-reviewed-source-scope; runtime acceptance from dated receipt only",
+      "generated": false,
+      "generated_source": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "docs/PERFORMANCE_BASELINE.md"
+      ],
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "selection_reason": "Explicit user-authorized performance preservation evidence and current implementation; no independent-product or future implementation added.",
+      "review_status": "Agent-reviewed original/current context and exact qualification scope on 28 October 2026; human semantic corpus review not performed.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/source_authoring_undo.cpp",
+        "relationship": "selected-original",
+        "evidence": "Current maintained decision, scoped delivery or direct implementation owner. Preserve runtime limits and historical evidence."
+      },
+      "applicability": {
+        "snapshot": "0.87.5.6 source / 28 October 2026 preservation refresh",
+        "limits": "Scripted Max 2027 viewport/stone and trunk-response qualification only; user endorsement does not certify arbitrary models, physical latency, renderers or production FPS."
+      }
+    }
+  ],
+  "qualified_source_comparisons": [
+    {
+      "path": "AminScatter/tools/ui/templates/scene-presets.ms",
+      "sha256": "9613a448209282a06b49a4dd706edc1332ae5b9c699d51995c6816c24f67bb36",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+      "sha256": "dbf8eba3bbb700e5d0dcc5d218b49babbb8865846198600259f046bda4738a34",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/include/scene_preset.h",
+      "sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_recipe.inc",
+      "sha256": "bc5b5fe578e475d0332eedf3b2412f5a7cf513bdef5552a609a3bc65bfee0540",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/interactions_fast_bend.inc",
+      "sha256": "4cf138404dfa0a6859dde09ebbb375cc1dbb4b19ec6e599986fba0187a94e29d",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/interactions_source.cpp",
+      "sha256": "9e7b82f54f804ed7dafb43d271db251df2d6bdeb739c1f44a7a4eab434ffe1ef",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/include/interactions_source.h",
+      "sha256": "a98d128adadef3efa90bffcee3238146e5551891f9e0c84d0b4378c5a679cefc",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/interactions_engine.cpp",
+      "sha256": "8f50224b5b2a48f758b45f99660e7bf54a4542a481e89326612bb2e8d69db6e0",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/include/interactions_engine.h",
+      "sha256": "fe0c63219704ce25f7edffdf1906a658bf9786204d4f12f96491a0ef1f0c0ce9",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/interactions_host.cpp",
+      "sha256": "662c3d4d8264f8015383aa559382e93c946c6be636a6251d1128f5501b95849a",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "sha256": "5d63a4f422961ce4b78011e2b30adbe27950897796e251c1bd5ed12c11256ceb",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "sha256": "d97ec462a9128546b343b0ce42f3906993c465ec3a25b0fbb06c0e3e4219a3b1",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-authoring.ms",
+      "sha256": "0083dcb1b6785fac995d59746422ed2136fdaa0fa521911e4c89d136477e5c0e",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-ui.ms",
+      "sha256": "2b1b3737b46238b7a1536ea8ed461bfa52d2996a30bc1a51c2a3f5fbcc79e685",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "dead21e62628afaec930f400a3f1f0cacedecc1458badd666b40f3cd416dfcaa",
+      "matches_qualified_producer": true
+    },
+    {
+      "path": "AminScatter/src/source_authoring_undo.cpp",
+      "sha256": "074f3420d7c1d4c465e6b239796c7ee32313fd6762b66cb4575f5af7bc86397a",
+      "matches_qualified_producer": true
+    }
+  ],
+  "limits": [
+    "Current source identity does not rerun the full native/host/Library suites.",
+    "New targeted evaluation questions are development cases, not unseen answer-accuracy evaluation."
+  ]
+}

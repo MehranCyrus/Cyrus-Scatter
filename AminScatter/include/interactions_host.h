@@ -29,6 +29,8 @@ struct InteractionHostSource {
     int proxy=1;
     // A collider-only mesh is not a reusable capture of its visual prototype.
     bool visualMesh=true;
+    bool sceneGeometry=false;
+    std::array<float,14> offsetSignature{};
     std::size_t analysisCount=0;
 };
 struct InteractionPreviewCache;
@@ -45,6 +47,7 @@ struct InteractionRuntime {
     std::vector<int> editKeys;
     std::vector<bool> renderEnabled;
     std::vector<std::vector<std::shared_ptr<const InteractionHostSource>>> sources;
+    std::vector<std::shared_ptr<const InteractionHostSource>> sceneSources;
     std::vector<std::vector<std::uint32_t>> byLayerRow;
     std::vector<std::pair<std::weak_ptr<const interactions::Snapshot>,std::optional<placements::View>>> feedbackViews;
     std::map<std::pair<int,std::string>,std::uint32_t> byIdentity;
@@ -53,7 +56,8 @@ struct InteractionRuntime {
     std::vector<int> previewLayers;
     std::string error;
     std::uint64_t updates=0,reuses=0,failures=0;
-    double previewMs=0;
+    std::uint64_t previewBuilds=0,previewReuses=0;
+    double previewMs=0,previewReuseMs=0;
     bool live=true,busy=false;
 };
 std::shared_ptr<InteractionRuntime> interactionRuntime(Value*);

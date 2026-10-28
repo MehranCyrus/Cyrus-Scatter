@@ -1,6 +1,7 @@
 #include "edit_binding.h"
 #include "receiver_plan.h"
 #include <iostream>
+#include <limits>
 #include <stdexcept>
 
 namespace eb=cyrus::editbinding;
@@ -61,5 +62,29 @@ void malformed(){
     std::vector<eb::SourceSpec> tooMany(eb::maxActiveSources+1);rejects([&]{descriptor(tooMany);},"Active source inventory bounded before iteration");
     rejects([&]{eb::parse(std::string(eb::maxDescriptorBytes+1,'x'));},"Aggregate descriptor bounded before parsing");
 }
+std::string scaleRevision(const std::string& scale,const std::string& weight="1.0",const std::string& z="0.0",const std::string& forward="1"){
+    return weight+"|(color 100 200 100)|false|false|"+scale+"|"+z+"|"+forward+"|";
 }
-int main(){try{membership();geometry();malformed();std::cout<<checks<<" source binding assertions passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<"\n";return 1;}}
+void editableScales(){
+    const auto a=scaleRevision("1.0"),b=scaleRevision("2.0");
+    const auto old=descriptor({{"A",a},{"B",a}});
+    const auto revised=descriptor({{"A",eb::editableScaleSettings(b,2.)},{"B",eb::editableScaleSettings(a,1.)}});
+    const auto updated=eb::merge(old,revised);
+    check(*eb::sourceRevision(updated.descriptor,"A")==eb::editableScaleSettings(b,2.),"A typed scale edit updates the source revision without losing lineage");
+    check(updated.descriptor.legacy==eb::parse(old).legacy,"Scale edit preserves the original legacy proof");
+    check(*eb::sourceRevision(updated.descriptor,"B")==eb::editableScaleSettings(a,1.),"Unchanged second source only acquires the exact typed producer");
+    const auto saved=eb::encode(updated.descriptor);check(eb::encode(eb::parse(saved))==saved,"Editable source scale revision survives descriptor save/reload");
+    const auto empty=eb::merge(saved,descriptor({},""));
+    const auto restored=eb::merge(eb::encode(empty.descriptor),descriptor({{"A",eb::editableScaleSettings(scaleRevision("0.25"),.25)}},"A"));
+    check(restored.descriptor.sources.size()==2,"Resized source can return after removal while another source's history remains dormant");
+    rejects([&]{eb::merge(saved,descriptor({{"A",eb::editableScaleSettings(scaleRevision("2.0","0.5"),2.)}},"A"));},"Mutable scale cannot hide a source-weight choice change");
+    rejects([&]{eb::merge(saved,descriptor({{"A",eb::editableScaleSettings(scaleRevision("2.0","1.0","2.0"),2.)}},"A"));},"Mutable scale does not silently rebase Z offsets");
+    rejects([&]{eb::merge(saved,descriptor({{"A",eb::editableScaleSettings(scaleRevision("2.0","1.0","0.0","2"),2.)}},"A"));},"Forward-axis changes retain their separate generation guard");
+    rejects([&]{eb::merge(saved,descriptor({{"A",eb::editableScaleSettings(b+"Bands:#(band-a)|",2.)}},"A"));},"Band source-choice changes remain guarded");
+    rejects([&]{eb::editableScaleSettings("kind:model;scale:1",2.);},"Unknown opaque source revisions cannot acquire a guessed mutable-scale contract");
+    rejects([&]{eb::editableScaleSettings(a,-1.);},"Negative editable model scale rejected");
+    rejects([&]{eb::editableScaleSettings(a,std::numeric_limits<double>::infinity());},"Nonfinite editable model scale rejected");
+    check(eb::editableScaleSettings(scaleRevision("0.0"),0.).starts_with("CyrusSourceScaleSettings1\n"),"Visual zero scale remains an explicit supported value");
+}
+}
+int main(){try{membership();geometry();editableScales();malformed();std::cout<<checks<<" source binding assertions passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<"\n";return 1;}}

@@ -1,0 +1,19 @@
+{
+  "schema": "cyrus.gpu-research-brief/1",
+  "prepared_date": "2026-10-27",
+  "purpose": "Research assignment and supplied baseline for independent AI researchers",
+  "baseline_version": "0.87.4.3",
+  "native_interaction_capability": 11,
+  "scene_schema": 63,
+  "development_host": "3ds Max 2027 / Windows x64",
+  "gpu_backend_status": "Research proposal; no GPU interaction backend delivered",
+  "research_execution_status": "No completed GPU research or benchmark is claimed by this brief",
+  "files": [
+    "README.md",
+    "RESEARCH_PROMPT.md",
+    "CURRENT_SYSTEM_CONTEXT.md",
+    "BRIEF_METADATA.json",
+    "MANIFEST.sha256"
+  ],
+  "requested_return": "A separate research ZIP with the Markdown documents specified in RESEARCH_PROMPT.md"
+}

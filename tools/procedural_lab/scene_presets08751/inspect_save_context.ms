@@ -1,0 +1,1 @@
+(dotNetClass "System.IO.File").WriteAllText (GardenRun+"save-context.txt") ("holding="+((theHold.Holding()) as string)+" super="+((theHold.SuperLevel()) as string)+" brush="+(CyrusBrushSessionLayer as string)+" brushClass="+((classof CyrusBrushSessionLayer) as string))

@@ -1,0 +1,49 @@
+{
+  "cases": [
+    {
+      "endpoint_signed_distances": [
+        1.0,
+        1.0
+      ],
+      "id": "span_crosses_sphere",
+      "result": "point-only test misses contact",
+      "segment_min_signed_distance": -1.0,
+      "segment_parameter": 0.5
+    },
+    {
+      "capsule_clearance": -0.09999999999999992,
+      "centerline_clearance": 0.10000000000000009,
+      "id": "width_envelope",
+      "result": "guide clear; admitted envelope intersects",
+      "width_envelope_radius": 0.2
+    },
+    {
+      "id": "root_at_sphere_center",
+      "radial_gradient_denominator": 0,
+      "result": "fixed root conflicts; radial normal undefined; do not fabricate feasible result",
+      "root_inverse_mass": 0,
+      "signed_distance": -1.0
+    },
+    {
+      "endpoint_signed_distances": [
+        -0.8,
+        -0.8
+      ],
+      "id": "span_entirely_inside",
+      "result": "surface-crossing-only test needs occupancy to distinguish contained span"
+    },
+    {
+      "capsule_diameter_m": 0.04,
+      "gap_m": 0.03,
+      "id": "narrow_parallel_gap",
+      "result": "this capsule cannot fit between these planes; says nothing about alternative routes"
+    },
+    {
+      "dot": -1.0,
+      "id": "quaternion_antipodes",
+      "result": "same rotation; zero linear midpoint before sign handling is invalid"
+    }
+  ],
+  "execution_scope": "Six independent analytic counterexample oracles; no solver, Max or GPU execution",
+  "passed_assertions": true
+}

@@ -1,0 +1,144 @@
+{
+  "schema": "cyrus.ui-qualification/1",
+  "status": "scoped_pass",
+  "version": "0.87.6",
+  "max_year": 2027,
+  "scene_schema": 65,
+  "interactions": 15,
+  "recipe_format": 9,
+  "edit_storage": 3,
+  "host_evidence": {
+    "points": {
+      "path": "evidence/points.json",
+      "sha256": "20f83bcb82c54ebf51fe2e4f6e665c53dc14a9e4069305b59abb782a5530b0bf",
+      "checked": 7,
+      "inactive_not_exercised": 0
+    },
+    "paint_edges": {
+      "path": "evidence/paint_edges.json",
+      "sha256": "082719efd5dcf6c1e1ef9ffaf2ef2d55f4d51a2eac60de13515c8f1d4de9bfb8",
+      "checked": 10,
+      "inactive_not_exercised": 0
+    },
+    "paint_tools": {
+      "path": "evidence/paint_tools.json",
+      "sha256": "ed3e50ab87cba1942a870efcaf57645161b487bef75bce9ce92cbdb043109f50",
+      "checked": 10,
+      "inactive_not_exercised": 0
+    },
+    "panels": {
+      "path": "evidence/panels.json",
+      "sha256": "747539035aef9682989de3ad41427a78df1cfcbe9dfe986504b4bb441420b046",
+      "checked": 31,
+      "inactive_not_exercised": 0
+    },
+    "settings": {
+      "path": "evidence/settings.json",
+      "sha256": "c533e20b36edc8e2984fea40cf5543bfa9cb85cd50ff440211c273ce44cc0ece",
+      "checked": 46,
+      "inactive_not_exercised": 151
+    },
+    "settings_expanded": {
+      "path": "evidence/settings_expanded.json",
+      "sha256": "87c8ecd927d4166db346b8ba35b86376417119e5d3f9c64872f2b1c8d24da089",
+      "checked": 77,
+      "inactive_not_exercised": 120
+    },
+    "negative": {
+      "path": "evidence/negative.json",
+      "sha256": "8e06b4a8e36fd54eddc6408ec8333216478bce265b284f2f406b03264119980c",
+      "checked": 2,
+      "inactive_not_exercised": 0
+    },
+    "layout": {
+      "path": "evidence/layout.json",
+      "sha256": "ed32ef52c59708687a4a5bb87955b1074680dc58d3f4f8601cec48e46cd70921",
+      "checked": 2,
+      "inactive_not_exercised": 0
+    },
+    "swatches": {
+      "path": "evidence/swatches.json",
+      "sha256": "39d464ffa3d59b2b3db635f270acfbd2711b2e0961b6bdef2c5803a87d5ee23c",
+      "checked": 2,
+      "inactive_not_exercised": 0
+    },
+    "interactions": {
+      "path": "evidence/interactions.json",
+      "sha256": "75d4d513a3a7b91321d6a8eb24a9c953ab511ca430a7f2b54ae27e0a63cfa1d9",
+      "checked": 13,
+      "inactive_not_exercised": 0
+    },
+    "library": {
+      "path": "evidence/library.json",
+      "sha256": "58a6f0911ea60decdfcfb6c1e3c2a4959e8de75effcba36fb8b06374074b7a8d",
+      "checked": 4,
+      "inactive_not_exercised": 0
+    },
+    "point-action": {
+      "path": "evidence/point-action.json",
+      "sha256": "08dc9d619c625abad0506e1004b0c50bc29e870192ff16bfb1e9e7e2aa9822a4",
+      "checked": 0,
+      "inactive_not_exercised": 0
+    },
+    "point-record": {
+      "path": "evidence/point-record.json",
+      "sha256": "eaac7fb0361b94ecd30c180032235a52e5eb5d7cf703d5b04f3299c0c60e757c",
+      "checked": 0,
+      "inactive_not_exercised": 0
+    },
+    "point-undo-check": {
+      "path": "evidence/point-undo-check.json",
+      "sha256": "564c7b65026b021b019025467a7b436472a993a127adcaad2a295ae395f6423d",
+      "checked": 0,
+      "inactive_not_exercised": 0
+    },
+    "point-redo-check": {
+      "path": "evidence/point-redo-check.json",
+      "sha256": "fa8544669d6fef39220a5bcc708239a03fe3f25ec84e95f0b799fd8ee3aff8ba",
+      "checked": 0,
+      "inactive_not_exercised": 0
+    }
+  },
+  "loaded_identity": "evidence/loaded-identity.json",
+  "script_sha256": "f27a821435d4d2adbca9ef9c3f49e15b57b4a887ef5c666836c993f7c9a37c1f",
+  "native_suites": {
+    "passed": 23,
+    "failed": 0,
+    "path": "evidence/native-tests.log",
+    "sha256": "cebb817c1114cec1e30a5e013012ffb71e1cfb2a3e630943200bf779daa65087"
+  },
+  "generated_check": {
+    "path": "evidence/generated-check.json",
+    "sha256": "f433d616034b1320d2ac44d3cd37e19c5053cf21cd98abdd30425ef6f63f35a8"
+  },
+  "layout": {
+    "measured_visible_control_samples": 1167,
+    "bounds_issues": 0,
+    "observed_logical_widths": [
+      154
+    ],
+    "limit": "Command-panel shell clamped all requested widths to 154. Repeated samples are not unique controls. Spinner anchors/controls lacking width were skipped; native swatches are checked separately. No screenshot or DPI matrix."
+  },
+  "performance_preservation": {
+    "reference": "0.87.5.6",
+    "unchanged_native_sources": 67,
+    "hashes": "evidence/protected-sources.json",
+    "scope": "Core interaction/preparation/display source bytes match the pre-task snapshot. Panel browsing retained publication counters. No new drag/orbit performance campaign or renderer qualification."
+  },
+  "installer": {
+    "receipt": "evidence/installer-receipt.json",
+    "exe_sha256": "6c05af719cf70e7bbd519418fd10c89c8c346eb489fc57981cbbc7fa3d90bdd4",
+    "packages": {
+      "CyrusScatter-0.87.6-Max2024.mzp": "17a89cc27acdd40c1637329360567cd2a8db683b29bcf3d4712de7de4a5d386a",
+      "CyrusScatter-0.87.6-Max2026.mzp": "aee328bb5be7dc372cceb4770dcbcc6b56597ecdab9d14fb3e08e51c1554ca7a",
+      "CyrusScatter-0.87.6-Max2027.mzp": "0dd193dc54accf658fad54ce339a1e00a7b401e2621f4f3c51c602bac2547a89"
+    },
+    "scope": "Distinct SDK builds. 2027 runtime UI tests; 2024/2026 compile/package only. Embedded resource and archive/hash/guard checks; installer UI was not executed."
+  },
+  "limits": [
+    "Control inventory is not universal behavioral acceptance. Inactive controls, external Analyzer dependencies, renderer paths, remote Library transactions, physical curve dragging and arbitrary imported assets were not exhaustively tested. Paint curve opening and programmatic endpoint publication passed separately.",
+    "Native notifications and MAXScript handlers were used in disposable profiles. No Computer Use, physical mouse measurement or artist-session installation.",
+    "The Library baseline remains its separately scoped 0.87.5.1 qualification; native Scene presets retain Max 2027-only support.",
+    "The website and knowledge indexes were not rebuilt by this delivery. Original maintained sources and delivered facts are authoritative pending a separate corpus refresh."
+  ]
+}

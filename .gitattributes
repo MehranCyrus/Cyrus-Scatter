@@ -311,3 +311,53 @@
 /CyrusVegetationLab/core/fitter/CONTRACT_CHANGE_REQUEST.md -whitespace
 /CyrusVegetationLab/core/fitter/README.md -whitespace
 /CyrusVegetationLab/experiments/garden-reference/garden-contact-reference-v1.prompt.txt -whitespace
+
+# Preserve the remaining exact inputs used by the 0.87.6 producer receipts.
+/AminScatter/include/interactions_engine.h -text whitespace=cr-at-eol
+/AminScatter/include/interactions_source.h -text whitespace=cr-at-eol
+/AminScatter/include/recipe_authored.h -text whitespace=cr-at-eol
+/AminScatter/src/cyrus_edit_recipe.inc -text whitespace=cr-at-eol
+/AminScatter/src/cyrus_edit_storage.inc -text whitespace=cr-at-eol
+/AminScatter/src/interactions_engine.cpp -text whitespace=cr-at-eol
+/AminScatter/src/mesh_display.inc -text whitespace=cr-at-eol
+/AminScatter/src/preparation_editor.cpp -text whitespace=cr-at-eol
+/AminScatter/src/source_authoring_undo.cpp -text whitespace=cr-at-eol
+/AminScatter/tests/edit_state_tests.cpp -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/assets.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/recipes-authored.ms -text whitespace=cr-at-eol
+/AminScatter/tools/ui/templates/scene-presets.ms -text whitespace=cr-at-eol
+
+# Dated Scatter campaigns and research carry byte-level evidence and source pins.
+/docs/plans/contact-audit-08752-20261027/** -text whitespace=cr-at-eol
+/docs/plans/drag-response-08756-20261028/** -text whitespace=cr-at-eol
+/docs/plans/interaction-hide-wireframe-20261027/** -text whitespace=cr-at-eol
+/docs/plans/interactions-performance-08741-20261027/** -text whitespace=cr-at-eol
+/docs/plans/preparation-editor-repair-20261027/** -text whitespace=cr-at-eol
+/docs/plans/recipe-authored-08744-20261027/** -text whitespace=cr-at-eol
+/docs/plans/scene-adaptation-08754-20261028/** -text whitespace=cr-at-eol
+/docs/plans/scene-presets-08751/** -text whitespace=cr-at-eol
+/docs/plans/scene-repair-08753-20261028/** -text whitespace=cr-at-eol
+/docs/plans/shared-pose-viewport-0875-20261027/** -text whitespace=cr-at-eol
+/docs/plans/ui-settings-0876-20261028/** -text whitespace=cr-at-eol
+/docs/research/CyrusScatter_GPU_Research_Brief/** -text whitespace=cr-at-eol
+/docs/research/gpu-interactions-research-20261027/** -text whitespace=cr-at-eol
+/tools/procedural_lab/adaptation08754/** -text whitespace=cr-at-eol
+/tools/procedural_lab/callback08755/** -text whitespace=cr-at-eol
+/tools/procedural_lab/drag08756/** -text whitespace=cr-at-eol
+/tools/procedural_lab/interactions08741/** -text whitespace=cr-at-eol
+/tools/procedural_lab/interactions08743/** -text whitespace=cr-at-eol
+/tools/procedural_lab/interactions0875/** -text whitespace=cr-at-eol
+/tools/procedural_lab/interactions08752/** -text whitespace=cr-at-eol
+/tools/procedural_lab/interactions08753/** -text whitespace=cr-at-eol
+/tools/procedural_lab/recipes08744/** -text whitespace=cr-at-eol
+/tools/procedural_lab/scene_presets08751/** -text whitespace=cr-at-eol
+/tools/procedural_lab/ui0876/** -text whitespace=cr-at-eol
+/tools/rag/corpus-v4[4-7].json -text whitespace=cr-at-eol
+/tools/rag/corpus-harness-core-v[1-3].json -text whitespace=cr-at-eol
+/tools/rag/evaluation-harness-core-v[1-3].json -text whitespace=cr-at-eol
+/tools/rag/evaluation-foundation-v26.json -text whitespace=cr-at-eol
+/tools/rag/evaluation-native-foundation-v21.json -text whitespace=cr-at-eol
+/tools/rag/evaluation-performance-08756-v1.json -text whitespace=cr-at-eol
+/tools/rag/review-harness-core-v[1-3].json -text whitespace=cr-at-eol
+/tools/rag/review-v5[5-9].json -text whitespace=cr-at-eol
+/tools/rag/review-v60.json -text whitespace=cr-at-eol

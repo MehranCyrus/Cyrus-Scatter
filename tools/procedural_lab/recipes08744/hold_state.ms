@@ -1,0 +1,1 @@
+(dotNetClass "System.IO.File").WriteAllText (GardenRun+"hold-state.txt") (theHold.Holding() as string)

@@ -2360,6 +2360,12 @@
         },
         {
           "component": "flow_previewUI",
+          "control": "fastNavigationButton",
+          "presentation": "flow_previewUI_fastNavigationButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
           "control": "memoryButton",
           "presentation": "flow_previewUI_memoryButton",
           "advanced": false
@@ -2590,6 +2596,66 @@
         },
         {
           "component": "interactionsUI",
+          "control": "responseList",
+          "presentation": "interactionsUI_responseList",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "strengthSpin",
+          "presentation": "interactionsUI_strengthSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "trunkSpin",
+          "presentation": "interactionsUI_trunkSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "fixedBaseSpin",
+          "presentation": "interactionsUI_fixedBaseSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "transitionSpin",
+          "presentation": "interactionsUI_transitionSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "pruneThresholdSpin",
+          "presentation": "interactionsUI_pruneThresholdSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "pruneAmountSpin",
+          "presentation": "interactionsUI_pruneAmountSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "neighborsCheck",
+          "presentation": "interactionsUI_neighborsCheck",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "hideAreaList",
+          "presentation": "interactionsUI_hideAreaList",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
+          "control": "hideMarginSpin",
+          "presentation": "interactionsUI_hideMarginSpin",
+          "advanced": false
+        },
+        {
+          "component": "interactionsUI",
           "control": "gapSpin",
           "presentation": "interactionsUI_gapSpin",
           "advanced": false
@@ -2628,19 +2694,19 @@
           "component": "interactionsUI",
           "control": "minimumSpin",
           "presentation": "interactionsUI_minimumSpin",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "interactionsUI",
           "control": "stiffnessSpin",
           "presentation": "interactionsUI_stiffnessSpin",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "interactionsUI",
           "control": "connectionSpin",
           "presentation": "interactionsUI_connectionSpin",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "interactionsUI",
@@ -2689,6 +2755,55 @@
           "control": "cleanColliderLinksButton",
           "presentation": "interactionsUI_cleanColliderLinksButton",
           "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "collidersUI",
+      "title": "Scene colliders",
+      "scope": "Setup",
+      "controls": [
+        {
+          "component": "collidersUI",
+          "control": "hint",
+          "presentation": "collidersUI_hint",
+          "advanced": false
+        },
+        {
+          "component": "collidersUI",
+          "control": "colliderList",
+          "presentation": "collidersUI_colliderList",
+          "advanced": false
+        },
+        {
+          "component": "collidersUI",
+          "control": "addButton",
+          "presentation": "collidersUI_addButton",
+          "advanced": false
+        },
+        {
+          "component": "collidersUI",
+          "control": "selectedButton",
+          "presentation": "collidersUI_selectedButton",
+          "advanced": false
+        },
+        {
+          "component": "collidersUI",
+          "control": "removeButton",
+          "presentation": "collidersUI_removeButton",
+          "advanced": false
+        },
+        {
+          "component": "collidersUI",
+          "control": "selectButton",
+          "presentation": "collidersUI_selectButton",
+          "advanced": false
+        },
+        {
+          "component": "collidersUI",
+          "control": "info",
+          "presentation": "collidersUI_info",
+          "advanced": false
         }
       ]
     }

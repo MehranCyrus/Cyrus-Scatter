@@ -434,7 +434,7 @@ Value* cyrusAssetReceiverBounds_cf(Value** a,int n){check_arg_count(cyrusAssetRe
 });}
 
 def_visible_primitive(cyrusRecipeVersion,"cyrusRecipeVersion");
-Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(8);}
+Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(9);}
 def_visible_primitive(cyrusRecipeTrackCreated,"cyrusRecipeTrackCreated");
 def_visible_primitive(cyrusPresetTrackPublication,"cyrusPresetTrackPublication");
 Value* cyrusPresetTrackPublication_cf(Value** a,int n){check_arg_count(cyrusPresetTrackPublication,1,n);type_check(a[0],Array,_T("Preset publication owners"));
@@ -492,7 +492,11 @@ Value* cyrusRecipeWrite_cf(Value** a,int n){check_arg_count(cyrusRecipeWrite,2,n
 def_visible_primitive(cyrusRecipeRead,"cyrusRecipeRead");
 Value* cyrusRecipeRead_cf(Value** a,int n){check_arg_count(cyrusRecipeRead,1,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("recipe filename"));return recipeValue(r::read(std::filesystem::path(a[0]->to_string())));});}
 def_visible_primitive(cyrusRecipeReadMetadata,"cyrusRecipeReadMetadata");
-Value* cyrusRecipeReadMetadata_cf(Value** a,int n){check_arg_count(cyrusRecipeReadMetadata,1,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("recipe filename"));return recipeValue(r::read(std::filesystem::path(a[0]->to_string()),false));});}
+Value* cyrusRecipeReadMetadata_cf(Value** a,int n){check_arg_count(cyrusRecipeReadMetadata,1,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("recipe filename"));return recipeValue(r::readLibraryMetadata(std::filesystem::path(a[0]->to_string())));});}
+def_visible_primitive(cyrusScenePresetVersion,"cyrusScenePresetVersion");
+Value* cyrusScenePresetVersion_cf(Value**,int n){check_arg_count(cyrusScenePresetVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusScenePresetEncode,"cyrusScenePresetEncode");
+Value* cyrusScenePresetEncode_cf(Value** a,int n){check_arg_count(cyrusScenePresetEncode,1,n);return recipeAPI([&]()->Value*{const auto text=recipeTree(a[0]).dump();if(text.size()>r::maxManifestBytes)throw std::length_error("Scene metadata exceeds 8 MiB");return recipeString(text);});}
 def_visible_primitive(cyrusRecipeContentFingerprint,"cyrusRecipeContentFingerprint");
 Value* cyrusRecipeContentFingerprint_cf(Value** a,int n){check_arg_count(cyrusRecipeContentFingerprint,1,n);return recipeAPI([&]()->Value*{return recipeString(r::contentFingerprint(recipeTree(a[0])));});}
 def_visible_primitive(cyrusRecipePublicationFingerprint,"cyrusRecipePublicationFingerprint");
@@ -686,7 +690,7 @@ extern "C" __declspec(dllexport) int CyrusLibraryVerifyPackageV1(const wchar_t* 
 }
 extern "C" __declspec(dllexport) int CyrusLibraryVerifyRecipeV1(const wchar_t* path,wchar_t* error,int capacity,CyrusLibraryCancel cancel){
     try{LibraryVerification operation;if(!path)throw std::runtime_error("Missing recipe path");if(libraryVerifyClosing||(cancel&&cancel()))throw std::runtime_error("Library operation cancelled");
-        r::read(std::filesystem::path(path),false);if(libraryVerifyClosing||(cancel&&cancel()))throw std::runtime_error("Library operation cancelled");return 1;}
+        const auto d=r::readLibraryMetadata(std::filesystem::path(path));if(d.value("format","")=="cyrus.scene-preset")r::thumbnail(std::filesystem::path(path));if(libraryVerifyClosing||(cancel&&cancel()))throw std::runtime_error("Library operation cancelled");return 1;}
     catch(const std::exception& e){if(error&&capacity>0){if(!MultiByteToWideChar(CP_UTF8,0,e.what(),-1,error,capacity))error[0]=0;error[capacity-1]=0;}return 0;}
     catch(...){if(error&&capacity>0)error[0]=0;return 0;}
 }

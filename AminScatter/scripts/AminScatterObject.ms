@@ -1,4 +1,4 @@
-﻿global CyrusLoadedScriptFingerprint="a5ef790742ebfc980d556b7dc3681441e92c5c9b4dd761e84080784c7e23ce86"
+﻿global CyrusLoadedScriptFingerprint="8181e46461662016ac7d33b6e0996402c55dc120268c4970c705d32244bf37e6"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -74,12 +74,12 @@ fn CyrusSharedProvenance directory = (
 if CyrusSharedSaveJobs==undefined do CyrusSharedSaveJobs=#()
 
 fn CyrusSharedStore = (
-    if cyrusSharedLibraryVersion==undefined or cyrusSharedLibraryVersion()!=1 or cyrusAssetModelPrepare==undefined or cyrusAssetOpenStaticImage==undefined do throw "Install the complete CyrusScatter 0.87.4 package and restart Max."
+    if cyrusSharedLibraryVersion==undefined or cyrusSharedLibraryVersion()!=1 or cyrusAssetModelPrepare==undefined or cyrusAssetOpenStaticImage==undefined do throw "Install the complete CyrusScatter 0.87.6 package and restart Max."
     if CyrusSharedLibraryInstance!=undefined do return CyrusSharedLibraryInstance
     local assembly=dotNet.loadAssembly (pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll")
     if assembly==undefined do throw "The Cyrus shared library assembly could not load."
     local identity=assembly.GetName()
-    if identity.Version.ToString()!="0.87.4" do throw "Load the matching CyrusScatter 0.87.4 gallery."
+    if identity.Version.ToString()!="0.87.6.0" do throw "Load the matching CyrusScatter 0.87.6 gallery."
     local io=dotNetClass "System.IO.File",root=CyrusSharedLibraryRootOverride
     if root==undefined or root=="" do (
         local config=pathConfig.appendPath ((dotNetClass "System.Environment").GetEnvironmentVariable "LOCALAPPDATA") "CyrusScatter\\personal-library.txt"
@@ -1356,7 +1356,7 @@ fn CyrusAssetCheckDefaults value baseline supported = (
 fn CyrusAssetCheckController control depth:0 = (
     if control==undefined do return true
     if depth>8 do throw "Portable source controller depth exceeds its bound."
-    if findItem #(PRS,Position_XYZ,Euler_XYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 do throw ("Portable assets require supported static parameter and transform controllers. Unsupported class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
+    if findItem #(PRS,Position_XYZ,Euler_XYZ,ScaleXYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 do throw ("Portable assets require supported static parameter and transform controllers. Unsupported class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
     if (numKeys control)>0 do throw ("Portable assets require supported static parameter and transform controllers. Keyed class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
     for i=1 to control.numSubs do (
         local child=(getSubAnim control i).controller
@@ -1490,7 +1490,7 @@ fn CyrusAssetRoleIsSource role = (
     if (CyrusRecipeGet role "kind")!="node" or (CyrusRecipeGet role "requirements")!=undefined do return false
     local purposes=CyrusRecipeGet role "purposes"
     if purposes.count==0 do return false
-    for purpose in purposes where findItem #("sources","procSourceNodes") purpose==0 do return false
+    for purpose in purposes where findItem #("sources","procSourceNodes","interactionCollider") purpose==0 do return false
     true
 )
 fn CyrusAssetRoleIsReceiver role = (
@@ -2162,7 +2162,7 @@ fn CyrusRecipeErrorText value = (
     message
 )
 global AminScatterObject,CyrusRecipeCheckRoot,CyrusRecipeOwnerNode
-fn CyrusLibraryVersion = "0.87.4"
+fn CyrusLibraryVersion = "0.87.6"
 fn CyrusLibraryCheckSurface node = (
     if not isValidNode node or superclassof node!=GeometryClass or classof node.baseObject==AminScatterObject do throw "Select one terrain mesh, then open Cyrus Library."
     true
@@ -2192,6 +2192,7 @@ global CyrusRecipeResolve,CyrusRecipeValidateBindings,CyrusRecipeApplyValue,Cyru
 global CyrusRecipeRestorePaint,CyrusRecipeDirectory,CyrusRecipeBundledDirectory,CyrusRecipeSuggestBindings,CyrusOpenPresets,CyrusPresetSameValues,CyrusRecipeViewPreferences,CyrusRecipeIsBundled,CyrusRecipeEditDetails,CyrusRecipeDetailEditor,CyrusRecipeDetailOpenData
 global CyrusOpenAssetExport,CyrusOpenAssetImport,CyrusOpenReadyPreset,CyrusPresetPackageDirectory,CyrusPresetSaveReady,CyrusPresetReviseReady
 global CyrusRecipeFields,CyrusRecipeSchemaCache=undefined
+global CyrusScenePresetSave,CyrusOpenScenePreset
 global CyrusModelMerge
 fn CyrusModelMerge catalog entry owner:undefined = (
     CyrusRequireAuthor()
@@ -2285,6 +2286,314 @@ fn CyrusRecipePut object key value = (
     for pair in object[2] where pair[1]==key do (pair[2]=value;return value)
     append object[2] #(key,value);value
 )
+global CyrusRecipeRemapPreparedID,CyrusRecipeInteractionFields,CyrusRecipeCaptureAuthored,CyrusRecipeRestoreAuthored,CyrusRecipeRestoreEdits
+CyrusRecipeInteractionFields=#(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumM,#interactionFoliage,#interactionConnectionM,#interactionMaxVertices,#interactionMaxTriangles,#interactionMaxParts,#interactionMaxGuides,#interactionMaxPreview,#interactionMemoryMiB,#interactionWorkMillions,#interactionHideMarginWU,#interactionHideArea)
+fn CyrusRecipeCaptureAuthored context = (
+    if context.root.interactionSceneColliders.count>0 do throw "Scene collider references require a Scene preset. Portable recipes do not store scene colliders yet."
+    for owner in context.owners where owner.interactionReact and (owner.interactionResponse!=0 or owner.interactionNeighbors) do throw "Branch adaptation requires a Scene preset. Portable recipes currently store Detailed contact only."
+    local definitions=#(),interactions=#(),edits=#(),bindings=#(),unitsNow=(units.decodeValue "1m") as double
+    for owner in context.owners do (
+        append bindings #(owner.editLayerKey,owner.layerID,(owner.procSourceEditBinding (owner.validSources()) owner.procPreparedRows))
+        if owner.interactionUnitsPending do throw "Repair the layer's preparation units before saving its recipe. The source scene is preserved."
+        local settings=for key in CyrusRecipeInteractionFields collect (local value=getProperty owner key;if findItem #(#interactionGapWU,#interactionHideMarginWU) key>0 then value/unitsNow else value)
+        local prepared=#(),proxies=#()
+        for i=1 to owner.interactionSourceIDs.count do (
+            if i>owner.interactionDefinitions.count do throw "Incomplete prepared source history. Prepare the affected source again."
+            local saved=owner.interactionDefinitions[i],index=findItem definitions saved
+            if index==0 do (append definitions saved;index=definitions.count)
+            append prepared #(owner.interactionSourceIDs[i],index)
+        )
+        for i=1 to owner.interactionProxySourceIDs.count do (
+            if i>owner.interactionProxyNodes.count or not isValidNode owner.interactionProxyNodes[i] do throw "A custom collider link is missing. Repair that link before saving."
+            append proxies #(owner.interactionProxySourceIDs[i],(CyrusRecipeRole context owner.interactionProxyNodes[i] "node" "interactionCollider"))
+        )
+        if owner.interactionCollider or owner.interactionReact or prepared.count>0 or proxies.count>0 do append interactions (CyrusRecipeObject #(#("owner",owner.layerID),#("settings",settings),#("definitions",prepared),#("proxies",proxies)))
+    )
+    for editMod in context.root.procModifiers() do (
+        local payload=cyrusEditRecipeExport editMod bindings
+        if payload!="" do append edits (CyrusRecipeObject #(#("enabled",editMod.enabled),#("data",payload)))
+    )
+    CyrusRecipeObject #(#("version",1),#("definitions",definitions),#("interactions",interactions),#("edits",edits))
+)
+fn CyrusRecipeRemapPreparedID owner oldRows extraOld extraNew id = (
+    local index=findItem oldRows id
+    if index>0 do return owner.sourceRowIDs[index]
+    index=findItem extraOld id
+    if index==0 do (append extraOld id;append extraNew (CyrusNewLayerID());index=extraOld.count)
+    extraNew[index]
+)
+fn CyrusRecipeRestoreAuthored owner record authored bindings = (
+    owner.interactionResponse=0;owner.interactionNeighbors=false
+    local oldRows=CyrusRecipeGet (CyrusRecipeGet record "settings") "sourceRowIDs",extraOld=#(),extraNew=#(),metres=(units.decodeValue "1m") as double
+    for state in (CyrusRecipeGet authored "interactions") where (CyrusRecipeGet state "owner")==(CyrusRecipeGet record "id") do (
+        local settings=CyrusRecipeGet state "settings"
+        for i=1 to CyrusRecipeInteractionFields.count do (
+            local key=CyrusRecipeInteractionFields[i],value=settings[i]
+            if findItem #(#interactionGapWU,#interactionHideMarginWU) key>0 do value*=metres
+            setProperty owner key value
+        )
+        owner.interactionMinimumWU=owner.interactionMinimumM*metres;owner.interactionUnitsPending=false
+        owner.interactionSourceIDs=#();owner.interactionDefinitions=#();owner.interactionProxySourceIDs=#();owner.interactionProxyNodes=#()
+        local definitions=CyrusRecipeGet authored "definitions"
+        for pair in (CyrusRecipeGet state "definitions") do (append owner.interactionSourceIDs (CyrusRecipeRemapPreparedID owner oldRows extraOld extraNew pair[1]);append owner.interactionDefinitions definitions[pair[2]])
+        for pair in (CyrusRecipeGet state "proxies") do (append owner.interactionProxySourceIDs (CyrusRecipeRemapPreparedID owner oldRows extraOld extraNew pair[1]);append owner.interactionProxyNodes (CyrusRecipeResolve bindings pair[2]))
+        owner.interactionDefinitionRevision+=1
+    )
+    true
+)
+fn CyrusRecipeRestoreEdits root document identityMap = (
+    local authored=CyrusRecipeGet document "authored",stacks=CyrusRecipeGet authored "edits"
+    if stacks.count==0 do return true
+    if cyrusEditVersion()!=4 do throw "Edited recipes require the matched Cyrus Scatter 0.87.6 Edit module. Restart Max after installing."
+    local editMods=root.procModifiers(),hasContacts=false
+    for leaf in root.layerObjects where leaf.interactionCollider or leaf.interactionReact do hasContacts=true
+    if hasContacts and (stacks.count>1 or editMods.count>1) do throw "Interactions support one Cyrus Edit modifier per setup. Save/load this edited interaction recipe with one modifier."
+    if editMods.count>0 and stacks.count>1 do throw "Load this multi-modifier edited recipe into a new setup. Existing modifier order is preserved."
+    local cloneMap=cyrusEditRecipeCloneMap (for stack in stacks collect (CyrusRecipeGet stack "data")),mapping=#(),records=CyrusRecipeGet document "layers"
+    for record in records do (
+        local owner=CyrusRecipeResolve identityMap (CyrusRecipeGet record "id"),old=CyrusRecipeGet (CyrusRecipeGet record "settings") "procSourceIDs",sources=#()
+        if old.count!=owner.procSourceIDs.count do throw "Imported Edit source history is incomplete."
+        for i=1 to old.count do append sources #(old[i],owner.procSourceIDs[i])
+        append mapping #((CyrusRecipeGet record "id"),owner.editLayerKey,sources)
+    )
+    if editMods.count>0 then (
+        if editMods[1].enabled!=(CyrusRecipeGet stacks[1] "enabled") do throw "The destination Edit modifier has a different enabled state. Load this recipe into a new setup to preserve both states."
+        cyrusEditRecipeImport editMods[1] (CyrusRecipeGet stacks[1] "data") mapping cloneMap
+    ) else (
+        local node=CyrusRecipeOwnerNode root
+        for i=stacks.count to 1 by -1 do (
+            local editMod=CyrusScatterEdit();editMod.enabled=CyrusRecipeGet stacks[i] "enabled"
+            addModifier node editMod
+            cyrusEditRecipeImport editMod (CyrusRecipeGet stacks[i] "data") mapping cloneMap
+        )
+    )
+    true
+)
+-- Native .max scene presets. Host graph/file-stream access stays on the Max
+-- thread; the managed store only sees bounded copied metadata and bytes.
+global CyrusScenePresetSave,CyrusScenePresetMerge,CyrusOpenScenePreset,CyrusScenePresetLoadEditor,CyrusScenePresetLoadData
+global CyrusScenePresetNodes,CyrusScenePresetRemap,CyrusSceneMap,CyrusSceneRemapBinding
+global CyrusScenePresetCheckNodes
+global CyrusPointSuspended,CyrusBrushSessionLayer,cyrusScenePresetVersion,cyrusScenePresetEncode,cyrusEditSceneRemap
+global CyrusScenePresetCapturing=false
+
+fn CyrusSceneMap value pairs = (
+    for pair in pairs where pair[1]==value do return pair[2]
+    value
+)
+fn CyrusSceneRemapBinding value pairs = (
+    if value!="" do for pair in pairs do value=substituteString value pair[1] pair[2]
+    value
+)
+fn CyrusScenePresetCheckNodes nodes = (
+    local shaders=#(),cursor=1
+    for node in nodes do (
+        if matchPattern ((classof node.baseObject) as string) pattern:"Missing_*" do throw ("An object plug-in is unavailable: "+node.name)
+        for modifier in node.modifiers do if matchPattern ((classof modifier) as string) pattern:"Missing_*" do throw ("A modifier plug-in is unavailable: "+node.name)
+        for key in #(#position,#rotation,#scale) do (
+            local controller=try(getPropertyController node key)catch(undefined)
+            if controller!=undefined and matchPattern ((classof controller) as string) pattern:"Missing_*" do throw ("A controller plug-in is unavailable: "+node.name)
+        )
+        if node.material!=undefined do appendIfUnique shaders node.material
+    )
+    while cursor<=shaders.count do (
+        local shader=shaders[cursor];cursor+=1
+        if matchPattern ((classof shader) as string) pattern:"Missing_*" do throw "A material or texture plug-in used by this setup is unavailable."
+        if superclassof shader==material do for i=1 to getNumSubMtls shader do (local child=getSubMtl shader i;if child!=undefined do appendIfUnique shaders child)
+        for i=1 to getNumSubTexmaps shader do (local child=getSubTexmap shader i;if child!=undefined do appendIfUnique shaders child)
+        if shaders.count>100000 do throw "The setup exceeds the material graph limit."
+    )
+    true
+)
+fn CyrusScenePresetNodes root = (
+    local node=CyrusRecipeOwnerNode root
+    CyrusRecipeCheckRoot root node
+    local graph=#(node),nodes=#(),cursor=1
+    for collider in root.interactionSceneColliders where isValidNode collider do appendIfUnique graph collider
+    while cursor<=graph.count do (
+        local item=graph[cursor];cursor+=1
+        if isValidNode item and item!=rootNode do (
+            if classof item.baseObject==AminScatterObject and item.baseObject!=root do throw "This setup depends on another Scatter setup. Save each setup separately."
+            appendIfUnique nodes item
+            if isValidNode item.parent and item.parent!=rootNode do appendIfUnique graph item.parent
+            for child in item.children do appendIfUnique graph child
+            if nodes.count>10000 do throw "Scene presets support at most 10,000 objects."
+        )
+        for dependency in (refs.dependsOn item) where dependency!=undefined and dependency!=rootNode do appendIfUnique graph dependency
+        if graph.count>100000 do throw "This setup exceeds the scene dependency limit."
+    )
+    nodes
+)
+fn CyrusScenePresetSave root name metadata image original:"" expected:"" = (
+    CyrusRequireAuthor()
+    if cyrusScenePresetVersion==undefined or cyrusScenePresetVersion()!=1 or cyrusEditSceneRemap==undefined do throw "Install the complete CyrusScatter 0.87.6 package and restart Max."
+    if (maxVersion())[1]/1000+1998!=2027 do throw "Scene presets currently require Max 2027."
+    if theHold.Holding() or CyrusBrushSessionLayer!=undefined do throw "Finish the current operation before saving a scene preset."
+    name=trimRight (trimLeft name)
+    if name=="" do throw "Name this scene preset."
+    local nodes=CyrusScenePresetNodes root,store=CyrusSharedStore(),ticket=undefined
+    CyrusScenePresetCheckNodes nodes
+    try (
+        ticket=store.BeginSceneSave original expected
+        local file=pathConfig.appendPath ticket.Directory "scene.max"
+        local previousCapture=CyrusScenePresetCapturing,saved=false
+        CyrusScenePresetCapturing=true
+        try(saved=saveNodes nodes file quiet:true)catch(CyrusScenePresetCapturing=previousCapture;throw())
+        CyrusScenePresetCapturing=previousCapture
+        if not saved do throw "Max could not save this setup."
+        local assets=getMAXFileAssetMetadata file,descriptors=#()
+        if assets.count>1024 do throw "Scene presets support at most 1,024 collected assets."
+        for asset in assets do (
+            local path=asset.resolvedFilename
+            if path=="" do (
+                local live=AssetManager.GetAssetById asset.assetId
+                if live!=undefined do (path=live.GetFullFilePath();live.Reset())
+            )
+            if path=="" and doesFileExist (pathConfig.appendPath maxFilePath asset.filename) do path=pathConfig.appendPath maxFilePath asset.filename
+            if path=="" do path=mapPaths.getFullFilePath asset.filename
+            if path==undefined or path=="" or not doesFileExist path do throw ("Missing asset: "+asset.filename)
+            -- Nested scenes and pattern resources need recursive collection;
+            -- refuse rather than publish a misleading complete preset.
+            if findString (toLower (asset.type as string)) "xref"!=undefined or findString path "*"!=undefined or findString path "?"!=undefined do throw ("Collect this external scene or sequence before saving: "+asset.filename)
+            append descriptors (CyrusRecipeObject #(#("id",asset.assetId),#("type",asset.type as string),#("path",path)))
+        )
+        local savedImage=""
+        if image!="" do (savedImage=pathConfig.appendPath ticket.Directory "capture.png";(dotNetClass "System.IO.File").Copy image savedImage false)
+        local operation=store.PublishScene ticket name (cyrusScenePresetEncode metadata) (cyrusScenePresetEncode (for owner in root.logicalLayers() collect root.layerCaption owner)) (1.0/((units.decodeValue "1m") as double)) nodes.count (cyrusScenePresetEncode descriptors) savedImage
+        CyrusSharedQueue (CyrusSharedSaveJob store:store ticket:ticket managed:operation path:ticket.RecipePath)
+    )catch(if ticket!=undefined do try(store.Discard ticket)catch();throw())
+)
+fn CyrusScenePresetRemap root = (
+    local owners=#(root),pairs=#()
+    for owner in root.layerObjects do appendIfUnique owners owner
+    for owner in (owners as array) do for area in owner.paintAreas do appendIfUnique owners area
+    fn enroll value pairs = (
+        if value!="" and not matchPattern value pattern:"placeholder:*" and (CyrusSceneMap value pairs)==value do append pairs #(value,CyrusNewLayerID())
+    )
+    for owner in owners do (
+        enroll owner.layerID pairs
+        for key in #(#sourceRowIDs,#clearanceSourceIDs,#interactionSourceIDs,#interactionProxySourceIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots) do for value in getProperty owner key do enroll value pairs
+    )
+    for owner in owners do (
+        local domains=if owner.procReceiverNodes.count>0 then CyrusReceiverVariationDomains owner else #()
+        owner.layerID=CyrusSceneMap owner.layerID pairs
+        owner.logicalParentID=CyrusSceneMap owner.logicalParentID pairs
+        for key in #(#sourceRowIDs,#clearanceSourceIDs,#interactionSourceIDs,#interactionProxySourceIDs,#visualSourceKeys,#strokeSourceIDs,#procSourceIDs,#procSourceSlots,#clearanceTargets,#procRuleA,#procRuleB) do setProperty owner key (for value in getProperty owner key collect CyrusSceneMap value pairs)
+        -- Receiver slots are local to their new owner. Keep their saved domain
+        -- and proof intact; changing the slot adds a Variation term and would
+        -- invalidate saved radius geometry even though the .max mesh is exact.
+        owner.procReceiverVariationIDs=domains
+        owner.procReceiverID="";for value in owner.procReceiverIDs do owner.procReceiverID+=value+"|"
+        owner.procRadiusBinding=CyrusSceneRemapBinding owner.procRadiusBinding pairs
+        owner.uiAreaID=CyrusSceneMap owner.uiAreaID pairs
+    )
+    local clones=cyrusEditSceneRemap (root.procModifiers()) pairs
+    for owner in owners do (
+        owner.procRadiusIDs=for value in owner.procRadiusIDs collect CyrusSceneMap value clones
+        owner.procRadiusBinding=CyrusSceneRemapBinding owner.procRadiusBinding clones
+    )
+    root.invalidateGroups()
+    true
+)
+fn CyrusScenePresetMerge path expected staged = (
+    CyrusRequireAuthor()
+    if theHold.Holding() or CyrusBrushSessionLayer!=undefined do throw "Finish the current operation before merging a scene preset."
+    local info=cyrusRecipeInfo path,document=cyrusRecipeReadMetadata path,store=CyrusSharedStore()
+    local io=dotNetClass "System.IO.Path",full=io.GetFullPath staged,stageDirectory=io.GetDirectoryName full
+    if io.GetFileName full!="scene.max" or (io.GetDirectoryName stageDirectory)!=(pathConfig.appendPath store.Root "staging") or not matchPattern (io.GetFileName stageDirectory) pattern:"scene-load-????????????????????????????????" do throw "Prepare this scene preset again before merging."
+    if info[11]!=expected or info[17]!="Scene preset" do throw "This preset changed. Refresh the Library."
+    if (CyrusRecipeGet document "maxYear")!=((maxVersion())[1]/1000+1998) do throw "Use the Max version shown on this scene preset."
+    local meters=1.0/((units.decodeValue "1m") as double),saved=CyrusRecipeGet document "metersPerUnit"
+    if abs(meters-saved)>1e-9*(amax meters saved) do throw ("Set system units to 1 unit = "+((saved*100.0) as string)+" cm before merging. Portable presets adapt to other units.")
+    local assets=getMAXFileAssetMetadata staged,declared=CyrusRecipeGet document "assets"
+    if assets.count!=declared.count do throw "Scene asset metadata differs from its saved descriptor."
+    for asset in assets do (
+        local found=false
+        for item in declared where (CyrusRecipeGet item "id")==asset.assetId do (
+            if (CyrusRecipeGet item "type")!=(asset.type as string) do throw "Scene asset type changed."
+            asset.filename=pathConfig.appendPath (getFilenamePath path) (CyrusRecipeGet (CyrusRecipeGet item "payload") "file");found=true
+        )
+        if not found do throw "An undeclared scene asset was found."
+    )
+    setMAXFileAssetMetadata staged assets
+    local missing=#(),names=getMAXFileObjectNames staged quiet:true missingDLLsAction:#logmsg missingDLLsList:&missing
+    -- Max headers can retain unused studio/legacy custom-attribute classes.
+    -- Validate actual merged geometry, stacks and shader graphs below.
+    if names.count!=(CyrusRecipeGet document "nodeCount") do throw "Scene object count differs from the saved preset."
+    local before=objects as array,merged=#(),oldSuspended=CyrusPointSuspended,previousSelection=selection as array,result=undefined,failure=undefined
+    CyrusPointSuspended=true
+    try (
+        -- This is deliberately standard Max merge, with its explicit UI notice.
+        -- It is not a portable recipe transaction and clears Max Undo history.
+        with undo off (
+            if not (mergeMAXFile staged #autoRenameDups #renameMtlDups #neverReparent quiet:true missingDLLsAction:#logmsg missingExtFilesAction:#abort missingXRefsAction:#abort mergedNodes:&merged includeFullGroup:true) do throw "Max could not merge this scene preset."
+            local setups=for node in merged where isValidNode node and classof node.baseObject==AminScatterObject collect node
+            if setups.count!=1 do throw "The scene preset must contain one complete Scatter setup."
+            CyrusScenePresetCheckNodes merged
+            result=setups[1]
+            CyrusScenePresetRemap result.baseObject
+            result.baseObject.refreshAll()
+            if result.baseObject.groupSnapshotKey=="" or result.baseObject.interactionError!="" do (
+                local message=result.baseObject.interactionError
+                if message=="" do for leaf in result.baseObject.layerObjects where leaf.previewError!="" and message=="" do message=leaf.previewError
+                if message=="" do message="The restored setup could not calculate."
+                throw message
+            )
+        )
+        select result
+    )catch(
+        failure=getCurrentException()
+        -- Capture all nodes even if Max aborts before returning mergedNodes.
+        local created=for node in objects where findItem before node==0 collect node
+        with undo off (if created.count>0 do delete created)
+        try(select (for node in previousSelection where isValidNode node collect node))catch()
+        CyrusPointSuspended=oldSuspended
+    )
+    CyrusPointSuspended=oldSuspended
+    if failure!=undefined do throw failure
+    CyrusViewportRedraw()
+    result
+)
+fn CyrusOpenScenePreset path expected = (
+    if CyrusScenePresetLoadEditor!=undefined do try(destroyDialog CyrusScenePresetLoadEditor)catch()
+    rollout editor "Load scene preset" width:420 height:152 (
+        local path="",expected="",operation=undefined,store=undefined,sceneOwner=undefined
+        label nameText "" pos:[12,12] width:396 height:22
+        label notice "Adds a new setup. Clears Max Undo history." pos:[12,40] width:396 height:24
+        button mergeButton "Merge" pos:[12,76] width:190
+        button closeButton "Close" pos:[218,76] width:190
+        label status "" pos:[12,111] width:396 height:32
+        timer poll interval:150 active:false
+        on editor open do (
+            path=CyrusScenePresetLoadData[1];expected=CyrusScenePresetLoadData[2];nameText.text=(cyrusRecipeInfo path)[1]
+            store=CyrusSharedStore();sceneOwner=rootNode
+        )
+        on mergeButton pressed do try(
+            if rootNode!=sceneOwner do throw "The scene changed. Open the preset again."
+            operation=store.PrepareScene path expected;mergeButton.enabled=false;status.text="Checking scene and collected files...";poll.active=true
+        )catch(status.text=CyrusRecipeErrorText (getCurrentException()))
+        on poll tick do if operation!=undefined and operation.Terminal do (
+            poll.active=false
+            try (
+                if operation.State!="complete" do throw (if operation.State=="cancelled" then "Cancelled." else operation.Error)
+                if rootNode!=sceneOwner do throw "The scene changed. Open the preset again."
+                status.text="Merging setup..."
+                CyrusScenePresetMerge path expected operation.Result
+                store.DiscardSceneLoad operation.Result
+                status.text="Setup restored.";operation=undefined
+            )catch(
+                local failure=getCurrentException()
+                if operation!=undefined and operation.State=="complete" do try(store.DiscardSceneLoad operation.Result)catch()
+                operation=undefined;status.text=CyrusRecipeErrorText failure
+            )
+            mergeButton.enabled=true
+        )
+        on closeButton pressed do destroyDialog editor
+        on editor close do (if operation!=undefined do store.CancelSceneLoad operation;CyrusScenePresetLoadEditor=undefined)
+    )
+    CyrusScenePresetLoadData=#(path,expected);CyrusScenePresetLoadEditor=editor
+    createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
+)
 fn CyrusRecipeOwnerNode root = (
     local nodes=for node in refs.dependentNodes root where isValidNode node and node.baseObject==root collect node
     if nodes.count!=1 do throw "Recipes require one unambiguous Scatter controller."
@@ -2340,6 +2649,12 @@ fn CyrusRecipeCaptureSettings context owner = (
     )
     for field in (CyrusRecipeFields()) do (
         local key=field[1],kind=field[2],value=if key=="procReceiverVariationIDs" then CyrusReceiverVariationDomains owner else getProperty owner (key as name)
+        -- Preserve historical identities without packaging obsolete model nodes.
+        -- Sparse inactive Edit records retain their own source revision evidence.
+        if key=="procSourceNodes" do (
+            local activeSources=owner.validSources()
+            value=for node in value collect (if findItem activeSources node>0 then node else undefined)
+        )
         if key=="clearanceTargets" do (
             local packed=#()
             for targets in value do (
@@ -2377,15 +2692,13 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name bindingResult:undefined = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.87.4 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.87.6 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
     local owners=for owner in root.logicalLayers() where findItem selected owner>0 collect owner
     if owners.count==0 or owners.count!=selected.count do throw "Select one or more current layers to save."
-    for edit in root.procModifiers() where cyrusEditRecipeHasData edit do throw "Save Everything cannot yet export authored Scatter Edit changes. The modifier and scene are preserved."
     for owner in owners where owner.procRadiusIDs.count>0 do throw ("Save Everything cannot yet export per-instance radius overrides: "+root.layerCaption owner)
-    for owner in owners where owner.interactionCollider or owner.interactionReact or owner.interactionSourceIDs.count>0 or owner.interactionProxySourceIDs.count>0 do throw "Save this interaction setup as a Max scene. Recipe packages do not yet carry reviewed contact definitions or collider links."
     local context=CyrusRecipeCaptureContext root:root node:node owners:owners metres:((units.decodeValue "1m") as double)
     local rootSettings=CyrusRecipeCaptureSettings context root,layers=#(),rules=#()
     for owner in owners do (
@@ -2409,7 +2722,8 @@ fn CyrusRecipeCapture root selected name bindingResult:undefined = (
             append rules (CyrusRecipeObject #(#("scope",root.procRuleScope[i]),#("a",aid),#("b",bid),#("enabled",root.procRuleEnabled[i]),#("multiplier",root.procRuleMultiplier[i] as double),#("gap",(root.procRuleGapWU[i] as double)/context.metres),#("planar",root.procRulePlanar[i])))
         )
     )
-    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",8),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified2"),#("sceneSchema",59),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules))
+    local authored=CyrusRecipeCaptureAuthored context
+    local document=CyrusRecipeObject #(#("format","cyrus.planting-recipe"),#("formatVersion",9),#("revision",1),#("presentation",undefined),#("evaluationContract","CyrusUnified2"),#("sceneSchema",59),#("hostYear",((maxVersion())[1]/1000+1998)),#("id",CyrusNewLayerID()),#("name",name),#("unitsPerMetre",context.metres),#("exportScope","complete-setup"),#("rootSettings",rootSettings),#("roles",context.roles),#("layers",layers),#("spacingRelationships",rules),#("authored",authored))
     CyrusRecipeCheckRoot root node
     for owner in owners where findItem root.layerObjects owner==0 do throw "A selected layer was removed during capture."
     cyrusRecipeValidate document
@@ -2433,7 +2747,7 @@ fn CyrusRecipeValidateBindings root document bindings = (
             "node":(
                 if not isValidNode value or classof value.baseObject==AminScatterObject do throw "Bind a valid scene object to this role."
                 for purpose in purposes do (
-                    if findItem #("surface","surfaceNodes","procReceiverNodes","paintReceiver") purpose>0 and superclassof value!=GeometryClass do throw "Receiver roles need mesh geometry."
+                    if findItem #("surface","surfaceNodes","procReceiverNodes","paintReceiver","interactionCollider") purpose>0 and superclassof value!=GeometryClass do throw "Receiver roles need mesh geometry."
                     if findItem #("areaNodes","patternPaths") purpose>0 and superclassof value!=Shape do throw "Path/Area roles need spline shapes."
                     if findItem #("areaAnalyzer","fallAnalyzer","analyzerNode") purpose>0 and not (CyrusAnalyzerFilter value) do throw "This role requires a Surface Analyzer."
                 )
@@ -2508,7 +2822,8 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
     local node=if destination==undefined then undefined else CyrusRecipeOwnerNode destination
     if not newSetup do CyrusRecipeCheckRoot destination node
     if prepareAssets==undefined do CyrusRecipeValidateBindings (if newSetup then undefined else destination) document bindings
-    local layers=CyrusRecipeGet document "layers"
+    local layers=CyrusRecipeGet document "layers",authored=CyrusRecipeGet document "authored"
+    if (CyrusRecipeGet authored "edits").count>0 do (variation=#same;calculate=true)
     if (if newSetup then 0 else destination.layerObjects.count)+layers.count>10 do throw "Import exceeds the ten-population capacity."
     if cyrusRecipeImportWorkingBytes==undefined do throw "Recipe import needs the matching native memory-admission build. Restart Max with the complete package."
     if newSetup and cyrusRecipeTrackCreated==undefined do throw "New setup import needs the matching native cache-lifetime build. Restart Max with the complete package."
@@ -2562,6 +2877,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
                     area.setLayerTransfer false;append owner.paintAreas area
                     append identityMap #((CyrusRecipeGet areaRecord "id"),area)
                 )
+                CyrusRecipeRestoreAuthored owner record authored bindings
                 owner.syncStrokes();owner.requireCurrentAnalyzers()
                 if owner.meshMaskEnabled do for receiver in owner.validSurfaces() do cyrusMeshDensityKey receiver (owner.meshMaskPayload())
                 owner.setOverlapOwner root;owner.setLayerTransfer false
@@ -2589,6 +2905,7 @@ fn CyrusRecipeImport destination document bindings newSetup:false variation:#new
             for rule in (CyrusRecipeGet document "spacingRelationships") do root.procSetPair (CyrusRecipeGet rule "scope") (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "a")) (CyrusRecipeResolve endpoints (CyrusRecipeGet rule "b")) (CyrusRecipeGet rule "enabled") (CyrusRecipeGet rule "multiplier") ((CyrusRecipeGet rule "gap")*metres) (CyrusRecipeGet rule "planar")
             root.activeLayer=findItem root.layerObjects imported[1]
             root.setLayerTransfer false;root.procValidate()
+            CyrusRecipeRestoreEdits root document identityMap
             if calculate do (
                 -- Ready Load succeeds only after its first complete calculation.
                 -- Keep that work inside this hold so a late failure rolls back
@@ -2676,8 +2993,13 @@ fn CyrusRecipeEditDetails path expected version = (
             local previous=expected
             local store=CyrusSharedStore(),ticket=store.BeginSave path expected (filenameFromPath path)
             try (
-                cyrusRecipeEntryWrite ticket.RecipePath (CyrusRecipeObject #(#("name",trimRight (trimLeft savedName.text)))) metadata imagePath capture expected true
-                local job=CyrusSharedSaveJob store:store ticket:ticket managed:(store.PublishMetadata ticket previous)
+                local operation=undefined
+                if (cyrusRecipeInfo path)[17]=="Scene preset" then operation=store.ReviseSceneDetails ticket (trimRight (trimLeft savedName.text)) (cyrusScenePresetEncode metadata)
+                else (
+                    cyrusRecipeEntryWrite ticket.RecipePath (CyrusRecipeObject #(#("name",trimRight (trimLeft savedName.text)))) metadata imagePath capture expected true
+                    operation=store.PublishMetadata ticket previous
+                )
+                local job=CyrusSharedSaveJob store:store ticket:ticket managed:operation
                 CyrusSharedQueue job;CyrusSharedWatchSave job
                 commitDetails.enabled=false
                 detailStatus.text="Saving details; model and texture files are reused. Refresh after completion."
@@ -2712,8 +3034,8 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
         button captureThumbnail "Capture viewport" pos:[12,348] width:202 tooltip:"Capture published plants without recalculating. Update pending settings first."
         button updateCapture "Update + capture" pos:[226,348] width:202 tooltip:"Explicitly update the Scatter setup, then capture the active viewport."
         label thumbnailInfo "Optional PNG, up to 1024 px and 2 MiB" pos:[12,384] width:416 height:40
-        label saveNote "Complete settings and Paint are saved. Include assets for a preset that loads without model picking." pos:[12,429] width:416 height:28
-        checkbox readyPreset "Include models, materials, terrain and paths" pos:[12,461] width:416 checked:true tooltip:"Save a ready-to-use preset. Static supported assets are packaged with complete Paint. Uncheck for a settings-only recipe with external bindings."
+        dropdownlist saveKind "Save as:" items:#("Scene preset","Portable preset","Settings only") selection:1 pos:[12,425] width:416
+        label saveNote "Complete setup and collected assets." pos:[12,466] width:416 height:16
         button saveRecipe "Save new copy" pos:[12,482] width:132
         button updateRecipe "Update selected" pos:[154,482] width:132 enabled:false
         button closeButton "Close" pos:[296,482] width:132
@@ -2746,7 +3068,8 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
                 append published root.groupSnapshotRows[index]
             )
             if (for rows in published where rows.count>0 collect rows).count==0 do throw "The selected layers contain no published plants."
-            local data=captureSelection(),authored=cyrusRecipeContentFingerprint data,publishedHash=cyrusRecipePublicationFingerprint published
+            local scenePreset=saveKind.selection==1
+            local data=if scenePreset then undefined else captureSelection(),authored=if scenePreset then root.procInputKey() else cyrusRecipeContentFingerprint data,publishedHash=cyrusRecipePublicationFingerprint published
             local viewportImage=undefined,small=undefined,newPath=pathConfig.appendPath (getDir #temp) ("CyrusCapture-"+CyrusNewLayerID()+".png")
             try (
                 completeRedraw()
@@ -2756,10 +3079,10 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
                 copy viewportImage small
                 if not (save small) do throw "Could not save the captured thumbnail."
                 close small;small=undefined;close viewportImage;viewportImage=undefined
-                if cyrusRecipeContentFingerprint (captureSelection())!=authored do throw "Settings changed while capturing. Capture again."
+                if (if scenePreset then root.procInputKey() else cyrusRecipeContentFingerprint (captureSelection()))!=authored do throw "Settings changed while capturing. Capture again."
                 if ownedCapture!="" do deleteFile ownedCapture
                 ownedCapture=newPath;thumbnailFile=newPath
-                thumbnailCapture=CyrusRecipeObject #(#("method","viewport-published"),#("authoredSHA256",authored),#("publicationSHA256",publishedHash),#("view",((viewport.getType()) as string)+" | "+((viewport.getTM()) as string)),#("capturedUTC",((dotNetClass "System.DateTime").UtcNow.ToString "o")))
+                thumbnailCapture=if scenePreset then undefined else CyrusRecipeObject #(#("method","viewport-published"),#("authoredSHA256",authored),#("publicationSHA256",publishedHash),#("view",((viewport.getType()) as string)+" | "+((viewport.getTM()) as string)),#("capturedUTC",((dotNetClass "System.DateTime").UtcNow.ToString "o")))
                 thumbnailInfo.text="Captured current viewport; Save to attach it."
                 status.text="Captured published plants. Camera, selection and rendering settings were retained."
             )catch(
@@ -2773,9 +3096,13 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
         fn saveEntry updating = (
             validRoot()
             if updating and (reviewPath=="" or reviewHash=="") do throw "Choose a saved recipe to update."
-            local data=captureSelection()
-            local job=CyrusSharedBeginSave root data (metadataValues()) thumbnailFile thumbnailCapture (if updating then reviewPath else "") (if updating then reviewHash else "") readyPreset.checked captureBindings
-            status.text="Saving to the shared library. Unchanged models and textures will be reused."
+            local job=undefined
+            if saveKind.selection==1 then job=CyrusScenePresetSave root recipeName.text (metadataValues()) thumbnailFile original:(if updating then reviewPath else "") expected:(if updating then reviewHash else "")
+            else (
+                local data=captureSelection()
+                job=CyrusSharedBeginSave root data (metadataValues()) thumbnailFile thumbnailCapture (if updating then reviewPath else "") (if updating then reviewHash else "") (saveKind.selection==2) captureBindings
+            )
+            status.text="Saving to the Library..."
             CyrusSharedWatchSave job
             job.path
         )
@@ -2784,15 +3111,25 @@ fn CyrusOpenRecipeSave root directory path:"" expected:"" = (
             reviewPath=CyrusRecipeSaveOpenData[4];reviewHash=CyrusRecipeSaveOpenData[5]
             owners=root.logicalLayers();saveLayers.items=for owner in owners collect root.layerCaption owner
             saveLayers.selection=if owners.count>0 then #{1..owners.count} else #{};recipeName.text="Planting setup"
-            updateRecipe.enabled=reviewPath!=""
+            updateRecipe.enabled=reviewPath!="";saveLayers.enabled=false;title.text="Save the complete Scatter setup"
             if reviewPath!="" do (
                 local info=cyrusRecipeInfo reviewPath,document=cyrusRecipeReadMetadata reviewPath,presentation=CyrusRecipeGet document "presentation"
                 recipeName.text=info[1];recipeCategory.text=info[5];recipeDescription.text=info[7]
+                saveKind.selection=if info[17]=="Scene preset" then 1 else if doesFileExist (pathConfig.appendPath (getFilenamePath reviewPath) "cyrus.package.json") then 2 else 3
+                saveKind.enabled=false;saveLayers.enabled=saveKind.selection!=1
+                title.text=if saveKind.selection==1 then "Save the complete Scatter setup" else "Save selected layers, their settings and Paint"
+                saveNote.text=if saveKind.selection==1 then "Complete setup and collected assets." else if saveKind.selection==2 then "Supported models and textures; adapts to terrain." else "Settings and Paint; models are picked on load."
                 local tags="";for value in info[6] do tags+=(if tags=="" then value else ", "+value)
                 recipeTags.text=tags
                 if info[12] do (thumbnailFile=cyrusRecipeThumbnail reviewPath;thumbnailInfo.text="Existing preview. Capture again if the scene settings changed.")
                 if presentation!=undefined do thumbnailCapture=CyrusRecipeGet presentation "capture"
             )
+        )
+        on saveKind selected value do (
+            saveLayers.enabled=value!=1
+            if value==1 do saveLayers.selection=if owners.count>0 then #{1..owners.count} else #{}
+            title.text=if value==1 then "Save the complete Scatter setup" else "Save selected layers, their settings and Paint"
+            saveNote.text=case value of (1:"Complete setup and collected assets.";2:"Supported models and textures; adapts to terrain.";3:"Settings and Paint; models are picked on load.")
         )
         on saveRecipe pressed do try(saveEntry false)catch(status.text=getCurrentException())
         on updateRecipe pressed do try(saveEntry true)catch(status.text=getCurrentException())
@@ -2969,7 +3306,7 @@ fn CyrusStyleSettings root owner values = (
 fn CyrusStylePrepare root owner path digest recordID groups bindings seedPolicy:#current = (
     CyrusRequireAuthor();local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.87.4 package."
+    if cyrusRecipeStyleValidate==undefined do throw "Apply Style requires the matching complete Cyrus 0.87.6 package."
     if owner==undefined or owner.isPaintArea or findItem root.layerObjects owner==0 do throw "Choose a current logical destination layer."
     if groups.count==0 do throw "Select at least one setting group."
     if findItem #(#current,#saved,#new) seedPolicy==0 do throw "Choose Keep, Saved or New seeds."
@@ -3146,11 +3483,11 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
         root=CyrusLibraryDestination surface root
     )
     local node=if root==undefined then undefined else CyrusRecipeOwnerNode root
-    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.87.4 package."
+    if cyrusRecipeLibraryVersion==undefined or cyrusRecipeLibraryVersion()!=4 do throw "Restart Max with the complete Cyrus 0.87.6 package."
     local galleryPath=pathConfig.appendPath CyrusRecipeScriptDirectory "CyrusGallery.dll",galleryAssembly=dotNet.loadAssembly galleryPath
     if galleryAssembly==undefined do throw "The Cyrus gallery assembly could not load."
     local assemblyName=galleryAssembly.GetName()
-    if assemblyName.Version.ToString()!="0.87.4.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.87.4 gallery package."
+    if assemblyName.Version.ToString()!="0.87.6.0" or toLower galleryAssembly.Location!=toLower galleryPath do throw "Restart Max with the complete Cyrus 0.87.6 gallery package."
     if CyrusRecipeBrowser!=undefined do (
         local window=CyrusRecipeBrowser,handle=try(window.hwnd as integer64)catch(0L)
         if (dotNetClass "CyrusScatter.UI.LibraryWindow").RestoreAndActivate handle do (
@@ -3190,7 +3527,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
                 panel.DetailText=if i>0 and i<=collections.count then collections[i][1]+" | "+((collections[i][2] as integer) as string)+" recipes" else "Choose a collection, or All recipes in the library tree."
                 panel.SetSelectionActions (i>0 and i<=collections.count) false scanTimer.active
             ) else (
-                panel.DetailText=if entry==undefined then "No matching recipes." else entry[2][1]+" | "+((entry[2][2] as integer) as string)+" layers; "+((entry[2][3] as integer) as string)+" Paint documents. "+entry[2][17]+"\n"+entry[2][16]+"\n"+entry[2][7]
+                panel.DetailText=if entry==undefined then "No matching recipes." else if entry[2][17]=="Scene preset" then entry[2][1]+" | Scene preset | "+((entry[2][2] as integer) as string)+" layers\nMax 2027; complete saved arrangement.\n"+entry[2][7] else entry[2][1]+" | "+((entry[2][2] as integer) as string)+" layers; "+((entry[2][3] as integer) as string)+" Paint documents. "+entry[2][17]+"\n"+entry[2][16]+"\n"+entry[2][7]
                 panel.SetSelectionActions (entry!=undefined) (panel.LibraryIndex!=2) scanTimer.active
             )
         )
@@ -3334,6 +3671,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
             ) else (
                 local entry=selectedEntry()
                 if entry==undefined do throw "Select a recipe."
+                if entry[2][17]=="Scene preset" do return CyrusOpenScenePreset entry[1] entry[2][11]
                 local packageDirectory=getFilenamePath entry[1]
                 local readyDirectory=CyrusPresetPackageDirectory entry[1] entry[2][11]
                 CyrusLibraryCheckSurface surface
@@ -3421,6 +3759,7 @@ fn CyrusOpenRecipeLibrary root surface:undefined = (
                 )
                 "style":(
                     local entry=selectedEntry();if entry==undefined or panel.CollectionsView do throw "Select a recipe."
+                    if entry[2][17]=="Scene preset" do throw "Load this scene preset to restore its complete setup."
                     CyrusOpenRecipeStyle root entry[1] entry[2][11]
                 )
                 "export":(
@@ -3470,7 +3809,7 @@ fn CyrusViewportMemoryPreferences = pathConfig.appendPath (getDir #plugcfg) "Cyr
 fn CyrusInitializeViewportMemory = (
     if CyrusViewportMemoryInitialized==true do return true
     if cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined do
-        throw "Install the complete Cyrus 0.87.4 package and restart Max."
+        throw "Install the complete Cyrus 0.87.6 package and restart Max."
     local value=0,stored=getINISetting (CyrusViewportMemoryPreferences()) "Memory" "LimitMiB"
     if stored!="" do try(value=stored as integer)catch(value=0)
     if value!=0 and (value<256 or value>65536) do value=0
@@ -4177,7 +4516,7 @@ global CyrusPointSceneOwners=#()
 global CyrusNativeRetirementTickets=#()
 try(CyrusPointClear())catch()
 CyrusPointOwners=#()
-global cyrusFilterSourceRows,cyrusApplySourceTransforms
+global cyrusFilterSourceRows,cyrusApplySourceTransforms,cyrusSourceTransformVersion
 global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
  global CyrusPreviewActivity,CyrusPreviewIdleTimer,CyrusPreviewView=undefined,CyrusPreviewProjection=undefined,CyrusPreviewViewID=undefined
 fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))
@@ -4623,7 +4962,7 @@ fn AminScatterCopyLayer origin destination variation:#same = (
         destination.bandArrangement=origin.bandArrangement
         destination.analyzerNode=origin.analyzerNode
         destination.layerIDColor=origin.layerIDColor
-        for key in #(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumWU,#interactionMinimumM,#interactionUnitsPending,#interactionUnitsNotice,#interactionFoliage,#interactionDefinitionRevision,#interactionMaxVertices,#interactionMaxTriangles,#interactionMaxParts,#interactionMaxGuides,#interactionMaxPreview,#interactionMemoryMiB,#interactionWorkMillions,#interactionConnectionM) do setProperty destination key (getProperty origin key)
+        for key in #(#interactionCollider,#interactionReact,#interactionCoverRoots,#interactionGapWU,#interactionStiffness,#interactionColliderMode,#interactionMinimumWU,#interactionMinimumM,#interactionUnitsPending,#interactionUnitsNotice,#interactionFoliage,#interactionDefinitionRevision,#interactionMaxVertices,#interactionMaxTriangles,#interactionMaxParts,#interactionMaxGuides,#interactionMaxPreview,#interactionMemoryMiB,#interactionWorkMillions,#interactionConnectionM,#interactionHideMarginWU,#interactionHideArea,#interactionResponse,#interactionBendStrength,#interactionPruneAmount,#interactionPruneThresholdWU,#interactionNeighbors,#interactionTrunkBend,#interactionFixedBase,#interactionBendTransition) do setProperty destination key (getProperty origin key)
         destination.interactionSourceIDs=origin.interactionSourceIDs as array;destination.interactionDefinitions=origin.interactionDefinitions as array
         destination.interactionProxySourceIDs=origin.interactionProxySourceIDs as array;destination.interactionProxyNodes=origin.interactionProxyNodes as array
         destination.surfaceNodes=origin.validSurfaces();destination.surface=undefined
@@ -4733,7 +5072,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:62
+version:65
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -4804,6 +5143,10 @@ initialRollupState:0x8
         this.markInputDirty();true
     )
     fn liveTimeChanged = (
+        -- These members are declared by the later interaction parameter block.
+        -- Qualify them so MAXScript cannot bind an undefined forward global.
+        local sceneColliders=this.interactionSceneColliders
+        if sceneColliders!=undefined and sceneColliders.count>0 do this.interactionSceneDirty=true
         if not this.cyrusEnabled do return false
         if this.updateMode!=2 do (
             -- Manual placements remain frozen, but an explicitly enabled field
@@ -5032,7 +5375,7 @@ initialRollupState:0x8
         pointsPerPlant type:#integer default:80
         iconSize type:#worldUnits default:10
         on surface postSet v do markInputDirty()
-        on sources set v i do markInputDirty()
+        on sources set v i do this.sourceMembershipChanged()
         on amount postSet v do markInputDirty()
         on randomSeed postSet v do markInputDirty()
         on scaleMinimum postSet v do markInputDirty()
@@ -5179,9 +5522,9 @@ initialRollupState:0x8
     parameters emptySettings (
         sourceRowIDs type:#stringTab tabSize:0 tabSizeVariable:true
         sourcePoint type:#boolTab tabSize:0 tabSizeVariable:true
-        on sourcePoint set v i do markInputDirty()
+        on sourcePoint set v i do this.sourceMembershipChanged()
         sourceEmpty type:#boolTab tabSize:0 tabSizeVariable:true
-        on sourceEmpty set v i do markInputDirty()
+        on sourceEmpty set v i do this.sourceMembershipChanged()
 
 
     )
@@ -5413,7 +5756,11 @@ initialRollupState:0x8
     fn sourceZOffset i = (if i>0 and i<=sourceZOffsetsWU.count then sourceZOffsetsWU[i] else 0.0)
     fn sourceScale i = (if i>0 and i<=sourceScales.count then sourceScales[i] else 1.0)
     fn assignSourceTransform rows value scaling:false = (CyrusRequireAuthor();
-        undo "Cyrus Scatter source transform" on (
+        local changed=false
+        for i in rows where i>0 and i<=sources.count do if (if scaling then this.sourceScale i else this.sourceZOffset i)!=(if scaling then amax 0.0 value else value) do changed=true
+        if not changed do return false
+        local command=this.sourceCommandBegin "Cyrus Scatter source transform" 2
+        try (
             if scaling then (
                 while sourceScales.count<sources.count do append sourceScales 1.0
                 for i in rows where i>0 and i<=sources.count do sourceScales[i]=amax 0.0 value
@@ -5421,7 +5768,8 @@ initialRollupState:0x8
                 while sourceZOffsetsWU.count<sources.count do append sourceZOffsetsWU 0.0
                 for i in rows where i>0 and i<=sources.count do sourceZOffsetsWU[i]=value
             )
-        )
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
         markInputDirty()
     )
     parameters weightSettings (
@@ -5688,6 +6036,39 @@ initialRollupState:0x8
     fn usableSource n = (
         isValidNode n and findItem (validSurfaces()) n==0 and classof n.baseObject!=AminScatterObject
     )
+    fn sourceCommandBegin label kind = (
+        if cyrusSourceCommandUndoVersion==undefined or cyrusSourceCommandUndoVersion()!=2 do throw "Install the complete Cyrus 0.87.6 source Undo module and restart Max."
+        local ownHold=not theHold.Holding(),suspended=CyrusPointSuspended,ticket=undefined
+        if ownHold do theHold.Begin()
+        CyrusPointSuspended=true
+        try(ticket=cyrusSourceCommandBegin this kind)
+        catch(if ownHold do theHold.Cancel();CyrusPointSuspended=suspended;throw())
+        #(ownHold,suspended,ticket,label,false)
+    )
+    fn sourceCommandCommit command = (
+        if command[5] do throw "This source command already finished."
+        cyrusSourceCommandSeal command[3]
+        if command[1] do theHold.Accept command[4]
+        command[5]=true;CyrusPointSuspended=command[2];true
+    )
+    fn sourceCommandCancel command = (
+        if command==undefined or command[5] do return false
+        local failure=""
+        try(cyrusSourceCommandCancel command[3])catch(failure=getCurrentException())
+        if command[1] do theHold.Cancel()
+        command[5]=true;CyrusPointSuspended=command[2]
+        if failure!="" do throw failure
+        true
+    )
+    fn sourceMembershipChanged = (
+        -- Source membership is shared authored data; defer cross-panel binding
+        -- until this command has finished compacting all parallel row arrays.
+        -- This never consumes a pending Manual placement edit or clears its
+        -- published interaction generation.
+        containerUIChanged=true;this.markInputDirty()
+        if CyrusScheduleUI!=undefined do CyrusScheduleUI()
+        true
+    )
     -- Shared explicit source enrollment for model picking and the installed model
     -- library. It adds no layers, receivers, distribution settings or publication.
     fn addModelSource node tint:undefined = (
@@ -5695,14 +6076,18 @@ initialRollupState:0x8
         if sources.count>=1024 do throw "Source registration is full (1,024 rows). Remove unused rows explicitly."
         this.ensureSourceRows();this.syncColors()
         local count=sources.count,value=if tint==undefined then this.sourceColor (count+1) else tint
-        for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceAutoRadius,false),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
-            local values=getProperty this spec[1]
-            while values.count<count do append values spec[2]
-            append values spec[2]
-            setProperty this spec[1] values
-        )
-        append sources node;append sourceRowIDs (CyrusNewLayerID());append sourceColors value
-        this.markInputDirty();true
+        local command=this.sourceCommandBegin "Cyrus Scatter add source" 1
+        try (
+            for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceAutoRadius,false),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
+                local values=getProperty this spec[1]
+                while values.count<count do append values spec[2]
+                append values spec[2]
+                setProperty this spec[1] values
+            )
+            append sources node;append sourceRowIDs (CyrusNewLayerID());append sourceColors value
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
+        this.sourceMembershipChanged();true
     )
     fn isPointSource i = (i>0 and i<=sourcePoint.count and sourcePoint[i])
     fn isEmptySource i = (i>0 and i<=sourceEmpty.count and sourceEmpty[i])
@@ -5714,7 +6099,7 @@ initialRollupState:0x8
         true
     )
     fn removeModelSources selectedRows = (
-        local chosen=#{},owner=this,suspended=CyrusPointSuspended
+        local chosen=#{},owner=this
         for row in selectedRows do (
             if row<1 or row>sources.count do throw "The selected source list changed. Select the models again."
             chosen[row]=true
@@ -5722,8 +6107,19 @@ initialRollupState:0x8
         local rows=chosen as array
         if rows.count==0 do return false
         this.syncColors();this.syncStrokes()
-        theHold.Begin();CyrusPointSuspended=true
+        local command=this.sourceCommandBegin "Cyrus Scatter remove sources" 1
         try (
+            -- A deleted row's prepared definition and collider link are no
+            -- longer addressable. Remove them in the same undo transaction so
+            -- large serialized rigs do not accumulate in saved scenes. Do not
+            -- change the interaction revision: a Manual publication still owns
+            -- its prior complete source until the artist explicitly updates.
+            local definitionIDs=for v in owner.interactionSourceIDs collect v
+            local definitions=for v in owner.interactionDefinitions collect v
+            local proxyIDs=for v in owner.interactionProxySourceIDs collect v
+            local proxyNodes=for v in owner.interactionProxyNodes collect v
+            local definitionsComplete=definitionIDs.count==definitions.count,proxiesComplete=proxyIDs.count==proxyNodes.count
+            local removedDefinition=false,removedProxy=false
             local descriptor=procBindingKey
             if matchPattern descriptor pattern:"CyrusBinding2:*" do (
                 local plants=this.validSources()
@@ -5736,6 +6132,9 @@ initialRollupState:0x8
             if procRadiusIDs.count>0 do procRadiusBinding=cyrusSourceRadiusBind procPreparedRows procBindingKey procRadiusBinding (procRadiusIDs as array)
             for k=rows.count to 1 by -1 do (
                 local row=rows[k]
+                local sourceID=owner.sourceRowIDs[row],slot=findItem definitionIDs sourceID,proxySlot=findItem proxyIDs sourceID
+                if definitionsComplete and slot>0 do (deleteItem definitionIDs slot;deleteItem definitions slot;removedDefinition=true)
+                if proxiesComplete and proxySlot>0 do (deleteItem proxyIDs proxySlot;deleteItem proxyNodes proxySlot;removedProxy=true)
                 owner.removeSourceClearance owner.sourceRowIDs[row]
                 deleteItem owner.sourceRowIDs row
                 if row<=owner.procSourceSlots.count do deleteItem owner.procSourceSlots row
@@ -5745,16 +6144,19 @@ initialRollupState:0x8
                 )
                 deleteItem owner.sources row;deleteItem owner.sourceColors row
             )
-            theHold.Accept "Cyrus Scatter remove sources"
-        )catch(theHold.Cancel();CyrusPointSuspended=suspended;throw())
-        CyrusPointSuspended=suspended;owner.markInputDirty();true
+            if removedDefinition do (owner.interactionSourceIDs=definitionIDs;owner.interactionDefinitions=definitions;owner.interactionSourceCache=#())
+            if removedProxy do (owner.interactionProxySourceIDs=proxyIDs;owner.interactionProxyNodes=proxyNodes)
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
+        owner.sourceMembershipChanged();true
     )
-    fn addEmptySource = (CyrusRequireAuthor();
+    fn addEmptySource asPoint:false = (CyrusRequireAuthor();
         this.ensureSourceRows()
-        undo "Cyrus Scatter add empty source" on (
+        local command=this.sourceCommandBegin (if asPoint then "Cyrus Scatter add Point" else "Cyrus Scatter add empty source") 1
+        try (
             syncColors()
             while sourcePoint.count<sources.count do append sourcePoint false
-            append sourcePoint false
+            append sourcePoint asPoint
             while sourceEmpty.count<sources.count do append sourceEmpty false
             while sourceWeights.count<sources.count do append sourceWeights 1.0
             sources.count=sources.count+1;append sourceEmpty true;append sourceWeights 1.0
@@ -5762,39 +6164,41 @@ initialRollupState:0x8
             append sourceColors (color 100 100 100)
             if sourceZOffsetsWU.count>0 do append sourceZOffsetsWU 0.0
             if sourceScales.count>0 do append sourceScales 1.0
-        )
-        markInputDirty();sources.count
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
+        this.sourceMembershipChanged();sources.count
     )
-    fn addPointSource = (CyrusRequireAuthor();
-        local i
-        undo "Cyrus Scatter add Point" on (i=addEmptySource();sourcePoint[i]=true)
-        markInputDirty();i
-    )
+    fn addPointSource = (CyrusRequireAuthor();this.addEmptySource asPoint:true)
     fn replacePointSource row node = (CyrusRequireAuthor();
         if row<1 or row>sources.count or (this.isEmptySource row and not this.isPointSource row) or not (usableSource node) or (findItem sources node>0 and findItem sources node!=row) do return false
         if sources[row]==node and not this.isPointSource row do return true
         this.ensureSourceRows()
-        undo "Cyrus Scatter replace source" on (
+        local command=this.sourceCommandBegin "Cyrus Scatter replace source" 1
+        try (
+            this.interactionsForgetSource sourceRowIDs[row]
             while sourcePoint.count<sources.count do append sourcePoint false
             while sourceEmpty.count<sources.count do append sourceEmpty false
             sources[row]=node;sourcePoint[row]=false;sourceEmpty[row]=false
-        )
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
         containerConfigKey="";containerUIChanged=true
-        markInputDirty();previewBuildCount=0;true
+        this.sourceMembershipChanged();previewBuildCount=0;true
     )
     fn makePointSource row = (CyrusRequireAuthor();
         if row<1 or row>sources.count or this.isEmptySource row or not this.usableSource sources[row] do return false
         this.ensureSourceRows()
-        undo "Cyrus Scatter make Point" on (
+        local command=this.sourceCommandBegin "Cyrus Scatter make Point" 1
+        try (
             while sourcePoint.count<sources.count do append sourcePoint false
             while sourceEmpty.count<sources.count do append sourceEmpty false
             sourcePoint[row]=true;sourceEmpty[row]=true
-        )
+            this.sourceCommandCommit command
+        )catch(this.sourceCommandCancel command;throw())
         -- Retain the registered node so an automatic container scan cannot
         -- add it again. validSources resolves this row to a Point token; the
         -- scene object, row identity and stored Manual/Auto settings survive.
         containerConfigKey="";containerUIChanged=true
-        markInputDirty();previewBuildCount=0;true
+        this.sourceMembershipChanged();previewBuildCount=0;true
     )
     fn placementRadii rows plants = (this.procRadii rows plants)
     fn cacheRadii rows plants values:undefined = (
@@ -6544,7 +6948,7 @@ initialRollupState:0x8
         CyrusNativeWorkingSetCheckpoint()
         result=this.applyOrientation result plants
         if plants.count>0 and sourceEmpty.count>0 do result=this.filterSourceRowsByPolicy result (for n in plants collect not (isEmptySource (sourceRow n)) or isPointSource (sourceRow n))
-        if plants.count>0 and (sourceZOffsetsWU.count>0 or sourceScales.count>0) do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n))
+        if plants.count>0 do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n)) plants
         result
     )
 
@@ -6560,7 +6964,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput()) noSurface:((this.validSurfaces()).count==0)
     )
-    fn uiVersion = "0.87.4"
+    fn uiVersion = "0.87.6"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified2")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -6915,6 +7319,30 @@ initialRollupState:0x8
         interactionMemoryMiB type:#integer default:2048
         interactionWorkMillions type:#integer default:256
         interactionConnectionM type:#float default:0.15
+        interactionHideMarginWU type:#worldUnits default:0.0
+        interactionHideArea type:#integer default:2
+        -- Schema 64: controller-owned scene references; layer-owned response.
+        interactionSceneColliders type:#nodeTab tabSize:0 tabSizeVariable:true
+        interactionResponse type:#integer default:1
+        interactionBendStrength type:#float default:0.5
+        interactionPruneAmount type:#float default:1.0
+        interactionPruneThresholdWU type:#worldUnits default:0.0
+        interactionNeighbors type:#boolean default:false
+        -- Schema 65: per-layer artistic bend profile; no source re-analysis.
+        interactionTrunkBend type:#float default:0.0
+        interactionFixedBase type:#float default:0.0
+        interactionBendTransition type:#float default:0.25
+        on interactionTrunkBend postSet v do this.interactionsChanged()
+        on interactionFixedBase postSet v do this.interactionsChanged()
+        on interactionBendTransition postSet v do this.interactionsChanged()
+        on interactionSceneColliders set v do this.interactionsChanged()
+        on interactionResponse postSet v do this.interactionsChanged()
+        on interactionBendStrength postSet v do this.interactionsChanged()
+        on interactionPruneAmount postSet v do this.interactionsChanged()
+        on interactionPruneThresholdWU postSet v do this.interactionsChanged()
+        on interactionNeighbors postSet v do this.interactionsChanged()
+        on interactionHideMarginWU postSet v do this.interactionsChanged()
+        on interactionHideArea postSet v do this.interactionsChanged()
         on interactionCollider postSet v do this.interactionsChanged()
         on interactionReact postSet v do this.interactionsChanged()
         on interactionCoverRoots postSet v do this.interactionsChanged()
@@ -6942,9 +7370,41 @@ initialRollupState:0x8
         on interactionMemoryMiB preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionMemoryMiB and not (cyrusLicenseAllows()) then interactionMemoryMiB else value)
         on interactionWorkMillions preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionWorkMillions and not (cyrusLicenseAllows()) then interactionWorkMillions else value)
         on interactionConnectionM preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionConnectionM and not (cyrusLicenseAllows()) then interactionConnectionM else value)
+        on interactionHideMarginWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionHideMarginWU and not (cyrusLicenseAllows()) then interactionHideMarginWU else value)
+        on interactionHideArea preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionHideArea and not (cyrusLicenseAllows()) then interactionHideArea else value)
+        on interactionResponse preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionResponse and not (cyrusLicenseAllows()) then interactionResponse else value)
+        on interactionBendStrength preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionBendStrength and not (cyrusLicenseAllows()) then interactionBendStrength else value)
+        on interactionPruneAmount preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionPruneAmount and not (cyrusLicenseAllows()) then interactionPruneAmount else value)
+        on interactionPruneThresholdWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionPruneThresholdWU and not (cyrusLicenseAllows()) then interactionPruneThresholdWU else value)
+        on interactionNeighbors preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionNeighbors and not (cyrusLicenseAllows()) then interactionNeighbors else value)
+        on interactionTrunkBend preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionTrunkBend and not (cyrusLicenseAllows()) then interactionTrunkBend else value)
+        on interactionFixedBase preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionFixedBase and not (cyrusLicenseAllows()) then interactionFixedBase else value)
+        on interactionBendTransition preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=interactionBendTransition and not (cyrusLicenseAllows()) then interactionBendTransition else value)
     )
     local interactionState=undefined,interactionStateKey="",interactionError="",interactionOutputNodes=#(),interactionOutputKey=""
     local interactionSourceCache=#(),interactionReview=undefined,interactionReviewNode=undefined,interactionGuides=#(),interactionReviewKind=undefined,interactionReviewApproved=false
+    local interactionSceneDirty=true
+    fn interactionsSceneNodes = (for node in interactionSceneColliders where isValidNode node collect node)
+    fn interactionsSceneCommand nodes removeIndex:0 = (
+        if overlapOwner!=undefined do return (this.interactionsRoot()).interactionsSceneCommand nodes removeIndex:removeIndex
+        local next=interactionSceneColliders as array
+        if removeIndex>0 then (if removeIndex<=next.count do deleteItem next removeIndex)
+        else for node in nodes where isValidNode node do (
+            if node==(CyrusRecipeOwnerNode this) or classof node.baseObject==AminScatterObject do throw "Choose an ordinary scene mesh, not a Scatter setup."
+            appendIfUnique next node
+        )
+        if next.count>256 do throw "A setup supports at most 256 scene colliders."
+        local command=this.sourceCommandBegin "Cyrus scene colliders" 4
+        try(interactionSceneColliders=next;this.sourceCommandCommit command)catch(this.sourceCommandCancel command;throw())
+        interactionSceneDirty=true
+        if CyrusSceneColliderWatch!=undefined do CyrusSceneColliderWatch()
+        true
+    )
+    fn interactionsResponseSetting key value = (
+        local command=this.sourceCommandBegin "Cyrus branch response" 5
+        try(setProperty this key value;if interactionResponse==0 do interactionNeighbors=false;this.sourceCommandCommit command)catch(this.sourceCommandCancel command;throw())
+        this.interactionsChanged();true
+    )
     fn interactionsRoot = (if overlapOwner==undefined then this else overlapOwner)
     fn interactionsChanged = (
         if this.getLayerTransfer() do return true
@@ -6956,6 +7416,22 @@ initialRollupState:0x8
     fn interactionsClearGuides = (
         undo off for node in interactionGuides where isValidNode node do delete node
         interactionGuides=#();interactionReviewKind=undefined;true
+    )
+    fn interactionsForgetSource id = (
+        -- Replacing an authored model preserves its placement identity, not a
+        -- preparation or custom proxy inferred from a different mesh. Capture
+        -- these changes in the replacement's Undo transaction. Do not advance
+        -- the interaction revision: Manual still owns its frozen publication.
+        if interactionSourceIDs.count!=interactionDefinitions.count or interactionProxySourceIDs.count!=interactionProxyNodes.count do throw "Source preparation bindings are incomplete. Restore the saved setup before replacing this model."
+        local ids=for v in interactionSourceIDs collect v
+        local definitions=for v in interactionDefinitions collect v
+        local proxyIDs=for v in interactionProxySourceIDs collect v
+        local proxies=for v in interactionProxyNodes collect v
+        local slot=findItem ids id,proxySlot=findItem proxyIDs id
+        if slot>0 do (deleteItem ids slot;deleteItem definitions slot;interactionSourceIDs=ids;interactionDefinitions=definitions)
+        if proxySlot>0 do (deleteItem proxyIDs proxySlot;deleteItem proxies proxySlot;interactionProxySourceIDs=proxyIDs;interactionProxyNodes=proxies)
+        interactionSourceCache=#();interactionReview=undefined;interactionReviewNode=undefined;interactionReviewApproved=false
+        this.interactionsClearGuides();true
     )
     fn interactionsReviewVisible kind node = (interactionReviewKind==kind and interactionReviewNode==node and (for n in interactionGuides where isValidNode n collect n).count>0)
     fn interactionsReady plants = (
@@ -7103,7 +7579,7 @@ initialRollupState:0x8
     )
     fn interactionsAnalyze node = (
         if not CyrusLicenseCanEdit() do throw "Active Cyrus authoring license required to prepare a model."
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=8 do throw "Load the revised matched CyrusScatter 0.87.4 native modules and restart Max."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=15 do throw "Load the revised matched CyrusScatter 0.87.6 native modules and restart Max."
         if not isValidNode node or findItem (this.validSources()) node==0 do throw "Choose a current mesh model in this layer."
         if interactionUnitsPending do this.interactionsRepairSettings()
         this.interactionsClearGuides()
@@ -7176,9 +7652,12 @@ initialRollupState:0x8
     fn interactionsKey owners epoch = (
         local stream=stringStream ""
         format "%|%|" epoch cyrusEnabled to:stream
+        format "%|" (for node in interactionSceneColliders collect (if isValidNode node then getHandleByAnim node else 0)) to:stream
         for leaf in owners do (
             local parent=this.logicalParent leaf
             format "%:%:%:%:%:%:%:%:%:%:%:%:%|" leaf.layerID parent.interactionCollider parent.interactionReact parent.interactionCoverRoots parent.interactionGapWU parent.interactionStiffness parent.interactionColliderMode parent.interactionMinimumM parent.interactionFoliage parent.interactionDefinitionRevision leaf.autoRender (parent.interactionsLimits()) parent.interactionConnectionM to:stream
+            format "%:%|" parent.interactionHideMarginWU parent.interactionHideArea to:stream
+            format "%:%:%:%:%:%:%:%|" parent.interactionResponse parent.interactionBendStrength parent.interactionPruneAmount parent.interactionPruneThresholdWU parent.interactionNeighbors parent.interactionTrunkBend parent.interactionFixedBase parent.interactionBendTransition to:stream
         )
         stream as string
     )
@@ -7187,7 +7666,7 @@ initialRollupState:0x8
         for leaf in owners do (local parent=this.logicalParent leaf;if parent.interactionCollider or parent.interactionReact do active=true)
         if not active and previous!=undefined and cyrusInteractionHasEdits!=undefined do active=cyrusInteractionHasEdits previous
         if not active or not cyrusEnabled do return undefined
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=8 do throw "CyrusScatter 0.87.4 requires its revised matched native interaction modules. Restart after installing."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=15 do throw "CyrusScatter 0.87.6 requires its revised matched native interaction modules. Restart after installing."
         local payload=for i=1 to owners.count collect (
             local leaf=owners[i],parent=this.logicalParent leaf
             local role=(if parent.interactionCollider then 1 else 0)+(if parent.interactionReact then 2 else 0)
@@ -7195,13 +7674,31 @@ initialRollupState:0x8
             -- visibly pending; it cannot fail an unrelated layer publication.
             if role==2 and not (parent.interactionsReady plants[i]) do role=0
             if not this.enabledLayer (findItem layerObjects leaf) do role=0
-            #(leaf.layerID,leaf.editLayerKey,rows[i],(parent.interactionsSources plants[i] role),role,parent.interactionCoverRoots,parent.interactionGapWU/(units.decodeValue "1m"),parent.interactionStiffness,leaf.autoRender)
+            #(leaf.layerID,leaf.editLayerKey,rows[i],(parent.interactionsSources plants[i] role),role,parent.interactionCoverRoots,parent.interactionGapWU/(units.decodeValue "1m"),parent.interactionStiffness,leaf.autoRender,parent.interactionHideMarginWU/(units.decodeValue "1m"),parent.interactionHideArea,parent.interactionResponse,parent.interactionBendStrength,parent.interactionPruneAmount,parent.interactionPruneThresholdWU/(units.decodeValue "1m"),parent.interactionNeighbors,parent.interactionTrunkBend,parent.interactionFixedBase,parent.interactionBendTransition)
         )
-        if retargetEdits then cyrusInteractionRestage (CyrusRecipeOwnerNode this) payload previous else cyrusInteractionStageFrom (CyrusRecipeOwnerNode this) payload previous
+        if CyrusSceneColliderWatch!=undefined do CyrusSceneColliderWatch()
+        if retargetEdits then cyrusInteractionRestage (CyrusRecipeOwnerNode this) payload previous (this.interactionsSceneNodes()) else cyrusInteractionStageFrom (CyrusRecipeOwnerNode this) payload previous (this.interactionsSceneNodes())
+    )
+    fn interactionsMembershipPending = (
+        if procPublishedOwners.count==0 do return false
+        if procPublishedOwners.count!=layerObjects.count or procPublishedSources.count!=procPublishedOwners.count do return true
+        for i=1 to procPublishedOwners.count do (
+            local leaf=procPublishedOwners[i]
+            if leaf!=layerObjects[i] do return true
+            local authored=leaf.validSources(),published=procPublishedSources[i]
+            if authored.count!=published.count do return true
+            for k=1 to authored.count where authored[k]!=published[k] do return true
+        )
+        false
     )
     fn interactionsEnsure = (
         if procPublishedOwners.count==0 do return undefined
         if interactionState!=undefined and not (cyrusInteractionOwner interactionState (CyrusRecipeOwnerNode this)) do (interactionState=undefined;interactionStateKey="";interactionOutputNodes=#();interactionOutputKey="")
+        -- A Manual source replacement is not an instruction to recapture old
+        -- published rows through the new authored source definitions. Preserve
+        -- the exact prior contacts until the explicit placement update stages
+        -- sources, rows and roles together. Live uses the ordinary successor.
+        if updateMode==1 and not groupSolving and this.interactionsMembershipPending() do return interactionState
         if interactionState!=undefined and not (cyrusInteractionSourcesFresh interactionState) do interactionStateKey=""
         local key=this.interactionsKey procPublishedOwners procEpoch,owner=CyrusRecipeOwnerNode this
         local outputKey=key+"|hidden:"+(if isValidNode owner then owner.isHidden as string else "true")
@@ -7223,6 +7720,7 @@ initialRollupState:0x8
         if state==undefined or slot==0 then original else leaf.filterSourceRowsByPolicy (cyrusInteractionRows state slot) procPublishedFinalKeep[slot]
     )
     fn interactionsStatus = (
+        if updateMode==1 and this.interactionsMembershipPending() do return "Source changes are pending. Click Update scatter to use the current models; the previous complete contact result is retained."
         if interactionError!="" do return ("Previous contact result retained: "+interactionError)
         if interactionState==undefined then "Choose a layer role. Prepare reacting source models once; contact updates are automatic."
         else cyrusInteractionSummary interactionState
@@ -7249,7 +7747,7 @@ initialRollupState:0x8
     fn upgradeClearanceScene = (
         if not procSchemaValid do throw "Only the preceding schema 58 scene can be upgraded."
         for leaf in layerObjects do (if not leaf.procSchemaValid do throw "A layer uses an unsupported scene schema.";leaf.validateClearance())
-        undo "Upgrade Cyrus scene to 0.87.4" on (
+        undo "Upgrade Cyrus scene to 0.87.6" on (
             clearanceUpgradePending=false
             for leaf in layerObjects do (leaf.clearanceUpgradePending=false;for area in leaf.paintAreas do area.clearanceUpgradePending=false)
         )
@@ -7343,7 +7841,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -7399,8 +7897,8 @@ initialRollupState:0x8
     )
     fn refreshIdentification = (
         local controller=if this.overlapOwner==undefined then this else this.overlapOwner
-        if controller.groupSnapshotKey!="" do controller.procEnsureDisplay pending:(controller.groupSnapshotKey!=controller.procInputKey())
-        CyrusViewportRedraw();true
+        if controller.groupSnapshotKey!="" do controller.procEnsureDisplay pending:(controller.groupSnapshotKey!=controller.procInputKey()) preserveAppearance:true
+        CyrusViewportRecordsDirty=true;CyrusScheduleUI();CyrusPointSync retainedOwner:controller;redrawViews();true
     )
     fn getLayerTransfer = layerTransfer
     fn setLayerTransfer state = (layerTransfer=state)
@@ -8055,7 +8553,7 @@ initialRollupState:0x8
                     format "Bands:%|" assigned to:stream
                 )
             )
-            #(procSourceSlots[row],stream as string)
+            #(procSourceSlots[row],stream as string,this.sourceScale row)
         )
         cyrusSourceEditBinding legacy basis specs
     )
@@ -8431,29 +8929,30 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 62. Create a new Cyrus 0.87.4 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 65. Create a new Cyrus 0.87.6 setup; earlier schemas are unsupported."
         if this.needsClearanceUpgrade() do throw "This scene needs the clearance upgrade. Use Upgrade scene in the Cyrus panel; Undo restores the previous state."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidateNativeRoute = (
+        if cyrusSourceTransformVersion==undefined or cyrusSourceTransformVersion()!=2 do throw "Install the complete Cyrus 0.87.6 source-scale modules and restart Max."
         -- Capability validation precedes any scene or publication mutation.
-        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=8 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.4 requires its revised matched native interaction modules. Restart Max with the complete package."
-        if cyrusEditVersion==undefined or cyrusEditVersion()!=2 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.4 requires its matching source-aware Edit modules. Restart Max with the complete package."
-        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.4 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
-        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.4 requires its matching surface visibility module. Restart Max."
-        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.4 requires its matching textured viewport module. Restart Max with the complete package."
-        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.4 requires its matching surface-brush module. Restart Max with the complete package."
-        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.4 requires its matching native density-image module. Restart Max with the complete package."
-        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.4 requires the matching native Edit ownership module."
-        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.4 requires its complete matching native modules. Restart Max after installing the package."
+        if cyrusInteractionVersion==undefined or cyrusInteractionVersion()!=15 or cyrusInteractionStageFrom==undefined or cyrusInteractionRestage==undefined or cyrusInteractionReviewModel==undefined or cyrusInteractionSourcesFresh==undefined or cyrusInteractionBake==undefined do throw "Cyrus 0.87.6 requires its revised matched native interaction modules. Restart Max with the complete package."
+        if cyrusEditVersion==undefined or cyrusEditVersion()!=4 or cyrusSourceEditBinding==undefined or cyrusSourceRadiusBind==undefined or cyrusSourceRadiusEdit==undefined or cyrusEditPublishPresentation==undefined or cyrusEditRecolor==undefined or cyrusEditHydrateSources==undefined do throw "Cyrus 0.87.6 requires its matching source-aware Edit modules. Restart Max with the complete package."
+        if cyrusProjectionBudget==undefined or cyrusProjectionBudgetStats==undefined or cyrusSetViewportMemoryLimit==undefined or cyrusViewportMemoryStats==undefined or cyrusRetainedPresentationStats==undefined do throw "Cyrus 0.87.6 requires its matching memory, presentation and projection modules. Restart Max with the complete package."
+        if cyrusSurfaceHidden==undefined or cyrusSetSurfaceHidden==undefined do throw "Cyrus 0.87.6 requires its matching surface visibility module. Restart Max."
+        if cyrusTexturePreview==undefined or cyrusMaterialPreviewKey==undefined or cyrusMaterialPreviewStatus==undefined or cyrusMaterialPreviewStats==undefined do throw "Cyrus 0.87.6 requires its matching textured viewport module. Restart Max with the complete package."
+        if cyrusBrushSurfaceVersion==undefined or cyrusBrushSurfaceVersion()!=1 do throw "Cyrus 0.87.6 requires its matching surface-brush module. Restart Max with the complete package."
+        if cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 do throw "Cyrus 0.87.6 requires its matching native density-image module. Restart Max with the complete package."
+        if cyrusEditOwnerLayers==undefined do throw "Cyrus 0.87.6 requires the matching native Edit ownership module."
+        if cyrusPlacementNativeVersion==undefined or cyrusPlacementNativeVersion()!=2 or cyrusPlacementPublicationVersion==undefined or cyrusPlacementPublicationVersion()!=1 or cyrusScatterCanonicalBound==undefined or cyrusNativeMemoryAdmit==undefined or cyrusEditMemoryStats==undefined do throw "Cyrus 0.87.6 requires its complete matching native modules. Restart Max after installing the package."
         true
     )
     fn procValidate = (
         this.procAssertSchema()
         this.procValidateNativeRoute()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=8 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=9 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=2 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=2 or cyrusDensityImageVersion==undefined or cyrusDensityImageVersion()!=2 or cyrusPrepareDensityOverlay==undefined or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=11 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=4 or cyrusScriptMemoryVersion==undefined or cyrusScriptMemoryVersion()!=1 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.87.6 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -8496,13 +8995,17 @@ initialRollupState:0x8
         )
         stream as string
     )
-    fn procDisplayLayerKey leaf epoch:undefined = (
+    fn procDisplayLayerKey leaf epoch:undefined sourceModels:undefined = (
         local stream=stringStream ""
         with printAllElements on (
             format "Display:%:%|" (if epoch==undefined then procEpoch else epoch) identificationMode to:stream
             if leaf.viewportMode==3 do (
-                local slot=findItem procPublishedOwners leaf
-                if slot>0 do format "Materials:%|" (cyrusMaterialPreviewKey procPublishedSources[slot]) to:stream
+                local models=sourceModels
+                if models==undefined do (local slot=findItem procPublishedOwners leaf;if slot>0 do models=procPublishedSources[slot])
+                -- A successor must read its staged source generation. Reading
+                -- the previous one can dereference a deleted model and prevent
+                -- the explicit Update that replaces that generation.
+                if models!=undefined do format "Materials:%|" (cyrusMaterialPreviewKey models) to:stream
             )
             format "%:%:%|" leaf.layerID (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
             format "%:%|" leaf.strokeIDs leaf.strokeDisplayColors to:stream
@@ -8511,9 +9014,10 @@ initialRollupState:0x8
         )
         stream as string
     )
-    fn procDisplayInputKey epoch:undefined = (
+    fn procDisplayInputKey epoch:undefined sourceSets:undefined = (
         local stream=stringStream ""
-        for leaf in layerObjects do format "%|" (this.procDisplayLayerKey leaf epoch:epoch) to:stream
+        if sourceSets!=undefined and sourceSets.count!=layerObjects.count do throw "Staged display source owners are incomplete. The previous result is retained."
+        for i=1 to layerObjects.count do format "%|" (this.procDisplayLayerKey layerObjects[i] epoch:epoch sourceModels:(if sourceSets==undefined then undefined else sourceSets[i])) to:stream
         stream as string
     )
     fn procPreviewMetadata plants geometry:undefined = (
@@ -8558,6 +9062,7 @@ initialRollupState:0x8
         -- Geometry uses source correspondence and the sorted Band dictionary;
         -- colors/names remain independently replaceable palette metadata.
         for i=1 to plants.count do (
+            if previous[4][i][1]!=0 and not isValidNode oldPlants[i] do return false
             if plants[i]!=oldPlants[i] or metadata[1][i][1]!=previous[1][i][1] do return false
             for field=1 to 3 where metadata[4][i][field]!=previous[4][i][field] do return false
         )
@@ -8571,7 +9076,7 @@ initialRollupState:0x8
         with printAllElements on format "%:%:%:%:%:%:%|%" epoch sourceShowRadius radiusDisplayLimit radiusDisplayAll radiusDisplayMetric (for i=1 to sources.count collect this.sourceColor i) plants fieldKey to:stream
         stream as string
     )
-    fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined metadata:undefined = (
+    fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined metadata:undefined appearanceRefresh:true = (
         local start=timeStamp(),previousRadius=radiusPreview,radii
         if plants==undefined do plants=this.validSources()
         if metadata==undefined do metadata=this.procPreviewMetadata plants
@@ -8602,7 +9107,7 @@ initialRollupState:0x8
             local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i] sampleSeed:metadata[6]))
             cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette previewBudget else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) (if viewportMode==2 then viewportPreparationLimit viewportInstances viewportNavigationInstances else 0) 0
         )
-        if viewportMode==3 and data.count>0 do cache=cyrusTexturePreview cache plants
+        if viewportMode==3 and data.count>0 and (appearanceRefresh or not reuseGeometry) do cache=cyrusTexturePreview cache plants
         local field=this.procStageField metadata[5],inspection=inspectionCache
         local inspectionKey=this.procInspectionKey plants field[2] (if displayEpoch==undefined then controller.procEpoch else displayEpoch)
         local reuseInspection=procPreviewInspectionKey==inspectionKey
@@ -8615,7 +9120,7 @@ initialRollupState:0x8
             try(cacheRadii data plants values:placementRadiusValues;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
             inspection=if radii.count==0 and field[1]==undefined then undefined else cyrusBuildInspectionPreview radii field[1]
         )
-        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3],geometryEpoch,modeSlot,orientationTimeStamp)
+        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch sourceModels:plants),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3],geometryEpoch,modeSlot,orientationTimeStamp)
     )
     -- Publication snapshots retain references to immutable staged rows/caches.
     -- No host queries or copies of large point arrays run in the install tail.
@@ -8665,7 +9170,8 @@ initialRollupState:0x8
         procPreviewModes=modes;procPreviewModesEpoch=state[19]
         previewBuildCount+=1;previewError="";dirty=pending
     )
-    fn procEnsureDisplay pending:false = (
+    fn procEnsureDisplay pending:false preserveAppearance:false = (
+        local retainedErrors=if preserveAppearance then (for leaf in layerObjects collect leaf.previewError) else #()
         local key=this.procDisplayInputKey()
         if key!=procPublishedDisplayKey do (
             local before=for leaf in layerObjects collect leaf.procPreviewState(),previousKey=procPublishedDisplayKey,previousDirty=CyrusViewportRecordsDirty,previousMetadata=procPublishedMetadata
@@ -8681,7 +9187,7 @@ initialRollupState:0x8
                     -- Pending authoring/copy callbacks may change its Bands
                     -- while this empty cache remains at the same epoch.
                     if slot==0 then leaf.procStagePreview #() plants:#() placementRadiusValues:#() metadata:#(#(),#(),false,#(),"",leaf.randomSeed)
-                    else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot] metadata:procPublishedMetadata[slot]
+                    else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot] metadata:procPublishedMetadata[slot] appearanceRefresh:(not preserveAppearance)
                 )
             )
             for i=1 to layerObjects.count where stage[i]!=undefined do (
@@ -8701,6 +9207,7 @@ initialRollupState:0x8
                 procPublishedMetadata=nextMetadata
                 for i=1 to procPublishedOwners.count do cyrusEditRecolor editModifiers procPublishedOwners[i].editLayerKey (procPublishedOwners[i].procPreviewPalette nextMetadata[i])
                 cyrusEditTransaction editModifiers 1;editTransaction=false
+                if preserveAppearance do for i=1 to layerObjects.count do layerObjects[i].previewError=retainedErrors[i]
             ) catch (
                 local failure=getCurrentException()
                 for i=1 to layerObjects.count do layerObjects[i].procRestorePreview before[i]
@@ -8805,9 +9312,9 @@ initialRollupState:0x8
                 accepted[i]=resolved[1][l][s];stats[i]=resolved[2][l][s];rounds[i]=resolved[3][l]
                 radii[i]=resolved[4][l][s]
             )
-            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1) metadata:publishedMetadata[i]
-            local displayKey=this.procDisplayInputKey epoch:(procEpoch+1)
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
+            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] plants:publishedSources[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1) metadata:publishedMetadata[i]
+            local displayKey=this.procDisplayInputKey epoch:(procEpoch+1) sourceSets:publishedSources
             local nextInteractions=this.interactionsStage accepted publishedOwners publishedSources
             local nextInteractionKey=this.interactionsKey publishedOwners (procEpoch+1)
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
@@ -8977,6 +9484,7 @@ initialRollupState:0x8
     local displayUI=undefined
     local statisticsUI=undefined
     local interactionsUI=undefined
+    local collidersUI=undefined
     fn createmanagerUI = (
     rollout managerUI "" width:#cmdPanel category:10 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
@@ -9560,7 +10068,7 @@ initialRollupState:0x8
         label flow_surfaceUI_containerInfo "Choose Global containers under Assets in each layer's editor." pos:[8,8] width:((surfacesUI.width-16-((amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((surfacesUI.width-8)/58))))) height:48
         dotNetControl flow_surfaceUI_receiversList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         dotNetControl flow_surfaceUI_globalContainers_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        checkbutton advancedToggle "Advanced" pos:[6,6] width:(surfacesUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        checkbutton advancedToggle "Surface tools" pos:[6,6] width:(surfacesUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local flow_surfaceUI_bodyHeight=0
         local flow_surfaceUI_panel=undefined,flow_surfaceUI_controlsReady=false
         local flow_surfaceUI_root=undefined,flow_surfaceUI_owner=undefined,flow_surfaceUI_controlsReady=false,flow_surfaceUI_binding=false,flow_surfaceUI_receiverRows=#()
@@ -9893,7 +10401,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Surface tools";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(flow_surfaceUI_globalContainers);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if flow_surfaceUI_globalContainers_caption.visible!=show do flow_surfaceUI_globalContainers_caption.visible=show
@@ -10011,10 +10519,10 @@ initialRollupState:0x8
         button sourceUI_hideSources "Hide sources" width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/80.4))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/80.4))))) tooltip:"Hide the selected scene source nodes in one Undo. Keep materials, registration, renderable flags and completed placements." height:22
         button sourceUI_editMaterial "Edit material" width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))) tooltip:"Open the selected model's assigned scene material in Slate. Shared material instances change together. Library asset files are kept." height:22
         label sourceUI_sourceAccessInfo "Select a model source." width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:36
-        button sourceUI_addPoint "Add Point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model." height:22
+        button sourceUI_addPoint "Add point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model." height:22
         button sourceUI_addEmpty "Add Empty (gap)" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/96))))) tooltip:"Add a weighted empty source for intentional gaps in candidate-budget mode." height:22
-        pickbutton sourceUI_replacePoint "Pick object" filter:AminScatterSourceFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments." height:22
-        button sourceUI_makePoint "Make point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/70))))) tooltip:"Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object." height:22
+        pickbutton sourceUI_replacePoint "Replace selected..." filter:AminScatterSourceFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/116.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/116.8))))) tooltip:"Replace the selected Point or model with a scene object. Keep its identity, settings and Band assignments." height:22
+        button sourceUI_makePoint "Use point" pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/64.80000000000001))))) tooltip:"Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object." height:22
         label sourceUI_groupHeading "Assignment group" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         dropdownlist sourceUI_existingGroups "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"Assign highlighted sources to an existing color group for clustering."
         label sourceUI_existingGroups_caption "Use group" pos:[6,6] width:(modelsUI.width-12) height:18
@@ -10060,6 +10568,7 @@ initialRollupState:0x8
         label heading_0 "Source settings" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_1 "Radius and clearance" pos:[6,6] width:(modelsUI.width-12) height:18
         checkbutton accessToggle "Source access" pos:[6,6] width:(modelsUI.width-12) height:22
+        checkbutton spacingOptionsToggle "Spacing overrides" pos:[6,6] width:(modelsUI.width-12) height:22
         checkbutton clearanceToggle "Clearance distance" pos:[6,6] width:(modelsUI.width-12) height:22
         checkbutton groupsToggle "Assignment groups" pos:[6,6] width:(modelsUI.width-12) height:22
         dotNetControl sourceUI_plantList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
@@ -10218,6 +10727,13 @@ initialRollupState:0x8
         fn sourceUI_addSource n = (
             sourceUI_obj.addModelSource n tint:sourceUI_groupColor.color
         )
+        fn sourceUI_sourceViewsChanged controller = (
+            -- The generated main view defers this bind until the authored
+            -- command/event ends. Both Models and Interactions then observe
+            -- the same completed rows; no second + action is required.
+            if controller!=undefined and controller.mainUI!=undefined do controller.mainUI.bind()
+            true
+        )
         fn sourceUI_syncSourceAccess = (
             sourceUI_showSources.enabled=false;sourceUI_hideSources.enabled=false;sourceUI_editMaterial.enabled=false
             sourceUI_sourceAccessInfo.text="Select a model source."
@@ -10259,7 +10775,7 @@ initialRollupState:0x8
             sourceUI_makePoint.enabled=rows.numberSet==1 and sourceUI_focusedRow>0 and not sourceUI_obj.isEmptySource sourceUI_focusedRow and sourceUI_obj.usableSource sourceUI_obj.sources[sourceUI_focusedRow]
         )
         fn sourceUI_addSources nodes = (
-            local before=sourceUI_obj.sources.count
+            local controller=sourceUI_root,before=sourceUI_obj.sources.count
             if nodes!=undefined do for n in nodes do sourceUI_addSource n
             sourceUI_updateList()
             if sourceUI_obj.sources.count>before do (
@@ -10267,7 +10783,7 @@ initialRollupState:0x8
                 for i=before+1 to sourceUI_obj.sources.count do rows[i]=true
                 sourceUI_plantList.selection=rows;sourceUI_focusedRow=before+1
             )
-            sourceUI_showSelectedColor();CyrusViewportRedraw()
+            sourceUI_showSelectedColor();CyrusViewportRedraw();sourceUI_sourceViewsChanged controller
         )
         on sourceUI_sourceName entered value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "sourceUI_sourceName"
@@ -10291,7 +10807,7 @@ initialRollupState:0x8
             local eventPanel=panel,action=CyrusBeginAction root "sourceUI_addPoint"
             if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
-            local i=sourceUI_obj.addPointSource();sourceUI_updateList();sourceUI_plantList.selection=#{i};sourceUI_focusedRow=i;sourceUI_showSelectedColor();CyrusViewportRedraw()
+            local controller=sourceUI_root,i=sourceUI_obj.addPointSource();sourceUI_updateList();sourceUI_plantList.selection=#{i};sourceUI_focusedRow=i;sourceUI_showSelectedColor();CyrusViewportRedraw();sourceUI_sourceViewsChanged controller
         )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
@@ -10302,10 +10818,10 @@ initialRollupState:0x8
             local eventPanel=panel,action=CyrusBeginAction root "sourceUI_replacePoint"
             if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
-            local rows=sourceUI_plantList.selection as array
+            local controller=sourceUI_root,rows=sourceUI_plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point or model row to replace." title:"Cyrus Scatter"
             else if not (sourceUI_obj.replacePointSource rows[1] n) do messageBox "Select a Point or model row and an object that is not already in another source row." title:"Cyrus Scatter"
-            sourceUI_replacePoint.text="Pick object";sourceUI_updateList();sourceUI_showSelectedColor();CyrusViewportRedraw()
+            sourceUI_replacePoint.text="Pick object";sourceUI_updateList();sourceUI_showSelectedColor();CyrusViewportRedraw();sourceUI_sourceViewsChanged controller
         )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
@@ -10316,8 +10832,8 @@ initialRollupState:0x8
             local eventPanel=panel,action=CyrusBeginAction root "sourceUI_makePoint"
             if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
-            local rows=sourceUI_plantList.selection as array
-            if rows.count==1 and sourceUI_obj.makePointSource rows[1] do (sourceUI_updateList();sourceUI_showSelectedColor();CyrusViewportRedraw())
+            local controller=sourceUI_root,rows=sourceUI_plantList.selection as array
+            if rows.count==1 and sourceUI_obj.makePointSource rows[1] do (sourceUI_updateList();sourceUI_showSelectedColor();CyrusViewportRedraw();sourceUI_sourceViewsChanged controller)
         )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
@@ -10328,7 +10844,7 @@ initialRollupState:0x8
             local eventPanel=panel,action=CyrusBeginAction root "sourceUI_addEmpty"
             if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do (
-            local i=sourceUI_obj.addEmptySource();sourceUI_updateList();sourceUI_plantList.selection=#{i};sourceUI_focusedRow=i;sourceUI_showSelectedColor();CyrusViewportRedraw()
+            local controller=sourceUI_root,i=sourceUI_obj.addEmptySource();sourceUI_updateList();sourceUI_plantList.selection=#{i};sourceUI_focusedRow=i;sourceUI_showSelectedColor();CyrusViewportRedraw();sourceUI_sourceViewsChanged controller
         )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
@@ -10502,7 +11018,7 @@ initialRollupState:0x8
             local sourceUI_owner=sourceUI_obj,controller=sourceUI_root,rows=sourceUI_plantList.selection as array
             sourceUI_owner.removeModelSources rows
             if sourceUI_controlsReady and sourceUI_obj==sourceUI_owner and sourceUI_root==controller do (sourceUI_plantList.selection=#{};sourceUI_updateList())
-            CyrusViewportRedraw()
+            CyrusViewportRedraw();sourceUI_sourceViewsChanged controller
         )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
@@ -10688,10 +11204,10 @@ initialRollupState:0x8
             )catch(syncingColorLists=false;CyrusMeasureEnd measurement measuredOwner measuredEpoch "color_lists" failed:true;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
-        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,accessToggle.checked,clearanceToggle.checked,groupsToggle.checked),#(sourceUI_plantList.height,sourceUI_clearanceLayerList.height))
+        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,accessToggle.checked,spacingOptionsToggle.checked,clearanceToggle.checked,groupsToggle.checked),#(sourceUI_plantList.height,sourceUI_clearanceLayerList.height))
         fn restoreView state = (
             if state[2]==undefined do return true
-            advancedToggle.checked=state[2][1];accessToggle.checked=state[2][2];clearanceToggle.checked=state[2][3];groupsToggle.checked=state[2][4]
+            advancedToggle.checked=state[2][1];accessToggle.checked=state[2][2];spacingOptionsToggle.checked=state[2][3];clearanceToggle.checked=state[2][4];groupsToggle.checked=state[2][5]
             sourceUI_plantList.height=state[3][1];sourceUI_clearanceLayerList.height=state[3][2]
             true
         )
@@ -10787,7 +11303,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,accessToggle.checked,clearanceToggle.checked,groupsToggle.checked,(accessToggle.checked),(sourceUI_clearanceExternalList.selection==3),(clearanceToggle.checked),(groupsToggle.checked),sourceUI_sourceNameLabel.text,sourceUI_selectFromScene.text,sourceUI_addPlant.text,sourceUI_removePlant.text,sourceUI_selectPlant.text,sourceUI_showSources.text,sourceUI_hideSources.text,sourceUI_editMaterial.text,sourceUI_sourceAccessInfo.text,sourceUI_addPoint.text,sourceUI_addEmpty.text,sourceUI_replacePoint.text,sourceUI_makePoint.text,sourceUI_groupHeading.text,sourceUI_applyColor.text,sourceUI_colorHelp.text,sourceUI_weightHelp.text,sourceUI_sourceTransformHelp.text,sourceUI_radiusModeHelp.text,sourceUI_followRadiusCheck.text,sourceUI_showRadiusCheck.text,sourceUI_clearanceSummary.text,sourceUI_detailsToggle.text,sourceUI_plantList_caption.text,sourceUI_existingGroups_caption.text,sourceUI_groupColor_caption.text,sourceUI_weightSpin_caption.text,sourceUI_sourceZSpin_caption.text,sourceUI_sourceScaleSpin_caption.text,sourceUI_radiusSourceSpin_caption.text,sourceUI_radiusModeDrop_caption.text,sourceUI_forwardAxis_caption.text,sourceUI_clearanceCopiesList_caption.text,sourceUI_clearanceOthersList_caption.text,sourceUI_clearanceExternalList_caption.text,sourceUI_clearanceLayerList_caption.text,sourceUI_clearancePriorityList_caption.text,sourceUI_clearanceFactorSpin_caption.text,sourceUI_clearanceGapSpin_caption.text,sourceUI_clearanceMetricList_caption.text,sourceUI_plantList.height,sourceUI_clearanceLayerList.height,sourceUI_sourceNameLabel.visible,sourceUI_sourceName.visible,sourceUI_idColor.visible,sourceUI_selectFromScene.visible,sourceUI_addPlant.visible,sourceUI_removePlant.visible,sourceUI_selectPlant.visible,sourceUI_showSources.visible,sourceUI_hideSources.visible,sourceUI_editMaterial.visible,sourceUI_sourceAccessInfo.visible,sourceUI_addPoint.visible,sourceUI_addEmpty.visible,sourceUI_replacePoint.visible,sourceUI_makePoint.visible,sourceUI_groupHeading.visible,sourceUI_existingGroups.visible,sourceUI_groupColor.visible,sourceUI_applyColor.visible,sourceUI_colorHelp.visible,sourceUI_weightSpin.visible,sourceUI_weightHelp.visible,sourceUI_sourceZSpin.visible,sourceUI_sourceScaleSpin.visible,sourceUI_sourceTransformHelp.visible,sourceUI_radiusSourceSpin.visible,sourceUI_radiusModeDrop.visible,sourceUI_radiusModeHelp.visible,sourceUI_followRadiusCheck.visible,sourceUI_showRadiusCheck.visible,sourceUI_forwardAxis.visible,sourceUI_clearanceCopiesList.visible,sourceUI_clearanceOthersList.visible,sourceUI_clearanceExternalList.visible,sourceUI_clearancePriorityList.visible,sourceUI_clearanceSummary.visible,sourceUI_clearanceFactorSpin.visible,sourceUI_clearanceGapSpin.visible,sourceUI_clearanceMetricList.visible,sourceUI_detailsToggle.visible,sourceUI_sourceNameLabel.height,sourceUI_sourceAccessInfo.height,sourceUI_groupHeading.height,sourceUI_colorHelp.height,sourceUI_weightHelp.height,sourceUI_sourceTransformHelp.height,sourceUI_radiusModeHelp.height,sourceUI_clearanceSummary.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,accessToggle.checked,spacingOptionsToggle.checked,clearanceToggle.checked,groupsToggle.checked,(accessToggle.checked),(spacingOptionsToggle.checked),(spacingOptionsToggle.checked and (sourceUI_clearanceExternalList.selection==3)),(spacingOptionsToggle.checked and (clearanceToggle.checked)),(groupsToggle.checked),sourceUI_sourceNameLabel.text,sourceUI_selectFromScene.text,sourceUI_addPlant.text,sourceUI_removePlant.text,sourceUI_selectPlant.text,sourceUI_showSources.text,sourceUI_hideSources.text,sourceUI_editMaterial.text,sourceUI_sourceAccessInfo.text,sourceUI_addPoint.text,sourceUI_addEmpty.text,sourceUI_replacePoint.text,sourceUI_makePoint.text,sourceUI_groupHeading.text,sourceUI_applyColor.text,sourceUI_colorHelp.text,sourceUI_weightHelp.text,sourceUI_sourceTransformHelp.text,sourceUI_radiusModeHelp.text,sourceUI_followRadiusCheck.text,sourceUI_showRadiusCheck.text,sourceUI_clearanceSummary.text,sourceUI_detailsToggle.text,sourceUI_plantList_caption.text,sourceUI_existingGroups_caption.text,sourceUI_groupColor_caption.text,sourceUI_weightSpin_caption.text,sourceUI_sourceZSpin_caption.text,sourceUI_sourceScaleSpin_caption.text,sourceUI_radiusSourceSpin_caption.text,sourceUI_radiusModeDrop_caption.text,sourceUI_forwardAxis_caption.text,sourceUI_clearanceCopiesList_caption.text,sourceUI_clearanceOthersList_caption.text,sourceUI_clearanceExternalList_caption.text,sourceUI_clearanceLayerList_caption.text,sourceUI_clearancePriorityList_caption.text,sourceUI_clearanceFactorSpin_caption.text,sourceUI_clearanceGapSpin_caption.text,sourceUI_clearanceMetricList_caption.text,sourceUI_plantList.height,sourceUI_clearanceLayerList.height,sourceUI_sourceNameLabel.visible,sourceUI_sourceName.visible,sourceUI_idColor.visible,sourceUI_selectFromScene.visible,sourceUI_addPlant.visible,sourceUI_removePlant.visible,sourceUI_selectPlant.visible,sourceUI_showSources.visible,sourceUI_hideSources.visible,sourceUI_editMaterial.visible,sourceUI_sourceAccessInfo.visible,sourceUI_addPoint.visible,sourceUI_addEmpty.visible,sourceUI_replacePoint.visible,sourceUI_makePoint.visible,sourceUI_groupHeading.visible,sourceUI_existingGroups.visible,sourceUI_groupColor.visible,sourceUI_applyColor.visible,sourceUI_colorHelp.visible,sourceUI_weightSpin.visible,sourceUI_weightHelp.visible,sourceUI_sourceZSpin.visible,sourceUI_sourceScaleSpin.visible,sourceUI_sourceTransformHelp.visible,sourceUI_radiusSourceSpin.visible,sourceUI_radiusModeDrop.visible,sourceUI_radiusModeHelp.visible,sourceUI_followRadiusCheck.visible,sourceUI_showRadiusCheck.visible,sourceUI_forwardAxis.visible,sourceUI_clearanceCopiesList.visible,sourceUI_clearanceOthersList.visible,sourceUI_clearanceExternalList.visible,sourceUI_clearancePriorityList.visible,sourceUI_clearanceSummary.visible,sourceUI_clearanceFactorSpin.visible,sourceUI_clearanceGapSpin.visible,sourceUI_clearanceMetricList.visible,sourceUI_detailsToggle.visible,sourceUI_sourceNameLabel.height,sourceUI_sourceAccessInfo.height,sourceUI_groupHeading.height,sourceUI_colorHelp.height,sourceUI_weightHelp.height,sourceUI_sourceTransformHelp.height,sourceUI_radiusModeHelp.height,sourceUI_clearanceSummary.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -10850,7 +11366,7 @@ initialRollupState:0x8
             rowControls=#(sourceUI_replacePoint);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/116.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -10859,7 +11375,7 @@ initialRollupState:0x8
             rowControls=#(sourceUI_addPoint,sourceUI_makePoint);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/64.80000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -10949,7 +11465,16 @@ initialRollupState:0x8
                 sourceUI_forwardAxis_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_forwardAxis_caption.width=cellWidth;sourceUI_forwardAxis_caption.enabled=sourceUI_forwardAxis.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(heading_1);show=(true and (true))
+            rowControls=#(spacingOptionsToggle);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(heading_1);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 if y>6 do y+=4
@@ -10960,7 +11485,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_radiusModeDrop);show=(true and (true))
+            rowControls=#(sourceUI_radiusModeDrop);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_radiusModeDrop_caption.visible!=show do sourceUI_radiusModeDrop_caption.visible=show
             if show do (
@@ -10972,7 +11497,7 @@ initialRollupState:0x8
                 sourceUI_radiusModeDrop_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_radiusModeDrop_caption.width=cellWidth;sourceUI_radiusModeDrop_caption.enabled=sourceUI_radiusModeDrop.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_radiusSourceSpin);show=(true and (true))
+            rowControls=#(sourceUI_radiusSourceSpin);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_radiusSourceSpin_caption.visible!=show do sourceUI_radiusSourceSpin_caption.visible=show
             if show do (
@@ -10984,7 +11509,7 @@ initialRollupState:0x8
                 if not stackedCaption then (sourceUI_radiusSourceSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_radiusSourceSpin_caption.width=cellWidth-78) else (sourceUI_radiusSourceSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_radiusSourceSpin_caption.width=cellWidth);sourceUI_radiusSourceSpin_caption.enabled=sourceUI_radiusSourceSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_followRadiusCheck,sourceUI_showRadiusCheck);show=(true and (true))
+            rowControls=#(sourceUI_followRadiusCheck,sourceUI_showRadiusCheck);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -10993,7 +11518,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceSummary);show=(true and (true))
+            rowControls=#(sourceUI_clearanceSummary);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -11003,7 +11528,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceCopiesList);show=(true and (true))
+            rowControls=#(sourceUI_clearanceCopiesList);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearanceCopiesList_caption.visible!=show do sourceUI_clearanceCopiesList_caption.visible=show
             if show do (
@@ -11015,7 +11540,7 @@ initialRollupState:0x8
                 sourceUI_clearanceCopiesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceCopiesList_caption.width=cellWidth;sourceUI_clearanceCopiesList_caption.enabled=sourceUI_clearanceCopiesList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceOthersList);show=(true and (true))
+            rowControls=#(sourceUI_clearanceOthersList);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearanceOthersList_caption.visible!=show do sourceUI_clearanceOthersList_caption.visible=show
             if show do (
@@ -11027,7 +11552,7 @@ initialRollupState:0x8
                 sourceUI_clearanceOthersList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceOthersList_caption.width=cellWidth;sourceUI_clearanceOthersList_caption.enabled=sourceUI_clearanceOthersList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceExternalList);show=(true and (true))
+            rowControls=#(sourceUI_clearanceExternalList);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearanceExternalList_caption.visible!=show do sourceUI_clearanceExternalList_caption.visible=show
             if show do (
@@ -11039,7 +11564,7 @@ initialRollupState:0x8
                 sourceUI_clearanceExternalList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceExternalList_caption.width=cellWidth;sourceUI_clearanceExternalList_caption.enabled=sourceUI_clearanceExternalList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceLayerList);show=(true and (sourceUI_clearanceExternalList.selection==3))
+            rowControls=#(sourceUI_clearanceLayerList);show=(true and (spacingOptionsToggle.checked and (sourceUI_clearanceExternalList.selection==3)))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearanceLayerList_caption.visible!=show do sourceUI_clearanceLayerList_caption.visible=show
             if show do (
@@ -11051,7 +11576,7 @@ initialRollupState:0x8
                 sourceUI_clearanceLayerList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceLayerList_caption.width=cellWidth;sourceUI_clearanceLayerList_caption.enabled=sourceUI_clearanceLayerList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceLayerList_grip);show=(true and (sourceUI_clearanceExternalList.selection==3))
+            rowControls=#(sourceUI_clearanceLayerList_grip);show=(true and (spacingOptionsToggle.checked and (sourceUI_clearanceExternalList.selection==3)))
             for c in rowControls where c.visible!=show do c.visible=show
             setHostedVisible sourceUI_clearanceLayerList_grip show
             if show do (
@@ -11061,7 +11586,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearancePriorityList);show=(true and (true))
+            rowControls=#(sourceUI_clearancePriorityList);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearancePriorityList_caption.visible!=show do sourceUI_clearancePriorityList_caption.visible=show
             if show do (
@@ -11073,7 +11598,7 @@ initialRollupState:0x8
                 sourceUI_clearancePriorityList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearancePriorityList_caption.width=cellWidth;sourceUI_clearancePriorityList_caption.enabled=sourceUI_clearancePriorityList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(clearanceToggle);show=(true and (true))
+            rowControls=#(clearanceToggle);show=(true and (spacingOptionsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -11082,7 +11607,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceFactorSpin);show=(true and (clearanceToggle.checked))
+            rowControls=#(sourceUI_clearanceFactorSpin);show=(true and (spacingOptionsToggle.checked and (clearanceToggle.checked)))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearanceFactorSpin_caption.visible!=show do sourceUI_clearanceFactorSpin_caption.visible=show
             if show do (
@@ -11094,7 +11619,7 @@ initialRollupState:0x8
                 if not stackedCaption then (sourceUI_clearanceFactorSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_clearanceFactorSpin_caption.width=cellWidth-78) else (sourceUI_clearanceFactorSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceFactorSpin_caption.width=cellWidth);sourceUI_clearanceFactorSpin_caption.enabled=sourceUI_clearanceFactorSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceGapSpin);show=(true and (clearanceToggle.checked))
+            rowControls=#(sourceUI_clearanceGapSpin);show=(true and (spacingOptionsToggle.checked and (clearanceToggle.checked)))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearanceGapSpin_caption.visible!=show do sourceUI_clearanceGapSpin_caption.visible=show
             if show do (
@@ -11106,7 +11631,7 @@ initialRollupState:0x8
                 if not stackedCaption then (sourceUI_clearanceGapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];sourceUI_clearanceGapSpin_caption.width=cellWidth-78) else (sourceUI_clearanceGapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceGapSpin_caption.width=cellWidth);sourceUI_clearanceGapSpin_caption.enabled=sourceUI_clearanceGapSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_clearanceMetricList);show=(true and (clearanceToggle.checked))
+            rowControls=#(sourceUI_clearanceMetricList);show=(true and (spacingOptionsToggle.checked and (clearanceToggle.checked)))
             for c in rowControls where c.visible!=show do c.visible=show
             if sourceUI_clearanceMetricList_caption.visible!=show do sourceUI_clearanceMetricList_caption.visible=show
             if show do (
@@ -11118,19 +11643,19 @@ initialRollupState:0x8
                 sourceUI_clearanceMetricList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_clearanceMetricList_caption.width=cellWidth;sourceUI_clearanceMetricList_caption.enabled=sourceUI_clearanceMetricList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(sourceUI_addEmpty);show=(true and (true))
+            rowControls=#(groupsToggle);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(groupsToggle);show=(true and (true))
+            rowControls=#(sourceUI_addEmpty);show=(true and (groupsToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -11211,6 +11736,15 @@ initialRollupState:0x8
 
         on accessToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "accessToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on spacingOptionsToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "spacingOptionsToggle"
             if eventPanel!=undefined do eventPanel.beginPageEdit modelsUI refresh:true
             try ((layout();if panel!=undefined do panel.rememberViews();true)
                 if controlsReady and root!=undefined do layout()
@@ -11655,12 +12189,12 @@ initialRollupState:0x8
         label diversityUI_analyzerChannel_caption "Analyzer data" pos:[6,6] width:(layoutUI.width-12) height:18
         pickbutton diversityUI_pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors." height:22
         pickbutton diversityUI_pickPath "+" filter:AminScatterAreaFilter pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Pick a spline for Line Pattern assignment." height:22
-        button diversityUI_removePath "×" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
+        button diversityUI_removePath "x" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
         listbox diversityUI_strokesList "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:4
         label diversityUI_strokesList_caption "Bands" pos:[6,6] width:(layoutUI.width-12) height:18
-        button diversityUI_addOutside "↗" pos:[8,8] width:((layoutUI.width-16-((amin 3 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 3 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Add a source-assignment band outside the selected path." height:22
-        button diversityUI_addInside "↙" pos:[8,8] width:((layoutUI.width-16-((amin 3 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 3 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Add a source-assignment band inside the selected path." height:22
-        button diversityUI_removeStrokeButton "×" pos:[8,8] width:((layoutUI.width-16-((amin 3 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 3 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Remove the selected band and its settings." height:22
+        button diversityUI_addOutside "Out +" pos:[8,8] width:((layoutUI.width-16-((amin 3 (amax 1 (floor ((layoutUI.width-8)/44))))-1)*4)/(amin 3 (amax 1 (floor ((layoutUI.width-8)/44))))) tooltip:"Add a source-assignment band outside the selected path." height:22
+        button diversityUI_addInside "In +" pos:[8,8] width:((layoutUI.width-16-((amin 3 (amax 1 (floor ((layoutUI.width-8)/44))))-1)*4)/(amin 3 (amax 1 (floor ((layoutUI.width-8)/44))))) tooltip:"Add a source-assignment band inside the selected path." height:22
+        button diversityUI_removeStrokeButton "x" pos:[8,8] width:((layoutUI.width-16-((amin 3 (amax 1 (floor ((layoutUI.width-8)/44))))-1)*4)/(amin 3 (amax 1 (floor ((layoutUI.width-8)/44))))) tooltip:"Remove the selected band and its settings." height:22
         spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) fieldWidth:58
         label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_bandStart "" range:[0,100000,0] type:#worldUnits pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/113.2))))) fieldWidth:58 tooltip:"Independent range starts at this physical distance from its Path."
@@ -11676,16 +12210,16 @@ initialRollupState:0x8
         button diversityUI_bandCurveEdit "Edit curve" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/93.60000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/93.60000000000001))))) tooltip:"Edit this Band by its captured identity. Changes apply on drag release, Apply or Close." height:22
         colorpicker diversityUI_bandColor "" color:white pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) tooltip:"Identification color belongs to this Band. It never changes placements or source materials."
         label diversityUI_bandColor_caption "Band color:" pos:[6,6] width:(layoutUI.width-12) height:18
-        checkbox diversityUI_fieldFalloffCheck "Preview Falloff" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/104))))) tooltip:"Sample Band density on receiver surfaces before other masks, spacing and cleanup. This never changes plant counts."
-        checkbox diversityUI_fieldBoundaryCheck "Show Boundaries" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/104))))) tooltip:"Show admitted start/end contours clipped to every receiver surface, including stacked and vertical receivers."
+        checkbox diversityUI_fieldFalloffCheck "Show band density" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))) tooltip:"Sample Band density on receiver surfaces before other masks, spacing and cleanup. This never changes plant counts."
+        checkbox diversityUI_fieldBoundaryCheck "Show band borders" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/114.4))))) tooltip:"Show admitted start/end contours clipped to every receiver surface, including stacked and vertical receivers."
         dropdownlist diversityUI_fieldView "" items:#("Selected Band","Combined density") pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) tooltip:"Selected Band shows its contribution. Combined shows capped total occupancy."
         label diversityUI_fieldView_caption "Field view" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_fieldSampleSpin "" range:[1,20000,4000] type:#integer pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58 tooltip:"Bounded visualization samples; sparse coverage can miss narrow intervals. Show Boundaries preserves admitted outlines."
         label diversityUI_fieldSampleSpin_caption "Field samples:" pos:[6,6] width:(layoutUI.width-12) height:18
         label diversityUI_fieldLegend "Band density before masks/spacing/cleanup\n0% blue | 100% red | boundaries white" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:40
         label diversityUI_fieldInfo "Preview hidden." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:88
-        button diversityUI_bandUp "▲" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Move the selected Band up on its Path. Consecutive priority and ranges follow authored order." height:22
-        button diversityUI_bandDown "▼" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/23.2))))) tooltip:"Move the selected Band down on its Path. Independent decisions keep stable Band identities." height:22
+        button diversityUI_bandUp "Up" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/38.8))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/38.8))))) tooltip:"Move the selected Band up on its Path. Consecutive priority and ranges follow authored order." height:22
+        button diversityUI_bandDown "Down" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/38.8))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/38.8))))) tooltip:"Move the selected Band down on its Path. Independent decisions keep stable Band identities." height:22
         label diversityUI_bandAssignmentHelp "Models used by this Band" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:18
         radiobuttons diversityUI_strokeMode "" labels:#("Assignment groups","Models / Points") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
         label diversityUI_strokeMode_caption "Select from" pos:[6,6] width:(layoutUI.width-12) height:18
@@ -11731,7 +12265,7 @@ initialRollupState:0x8
         dotNetControl diversityUI_pathsList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         dotNetControl diversityUI_strokesList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         dotNetControl diversityUI_strokeChoices_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        checkbutton advancedToggle "Advanced" pos:[6,6] width:(layoutUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        checkbutton advancedToggle "Band order & details" pos:[6,6] width:(layoutUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local placementUI_bodyHeight=0
         local placementUI_controlsReady=false
         local placementUI_root=undefined,placementUI_owner=undefined,placementUI_panel=undefined,placementUI_obj=undefined,placementUI_controlsReady=false,placementUI_binding=false,placementUI_setSpecific=false
@@ -12064,11 +12598,11 @@ initialRollupState:0x8
             for control in #(diversityUI_pathsList,diversityUI_pickPath,diversityUI_cornerMode,diversityUI_arrangementMode) do control.visible=diversityUI_obj.diversityMode==3
             diversityUI_analyzerChannel.visible=analyzed;diversityUI_pickAnalyzer.visible=analyzed
             diversityUI_pickAnalyzer.text=if isValidNode diversityUI_obj.analyzerNode then diversityUI_obj.analyzerNode.name else "Pick Surface Analyzer"
-            diversityUI_removePath.text="Ã—";diversityUI_removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
+            diversityUI_removePath.text="x";diversityUI_removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
             diversityUI_pickPath.enabled=not analyzed
             diversityUI_strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
-            diversityUI_addOutside.text="â†—";diversityUI_addOutside.tooltip=if not analyzed then "Add Outside Band." else if diversityUI_analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
-            diversityUI_addInside.text="â†™";diversityUI_addInside.tooltip=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
+            diversityUI_addOutside.text=if not analyzed then "Out +" else if diversityUI_analyzerChannel.selection==2 then "Line +" else "Radius +";diversityUI_addOutside.tooltip=if not analyzed then "Add Outside Band." else if diversityUI_analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
+            diversityUI_addInside.text=if analyzed and diversityUI_analyzerChannel.selection==3 then "Point +" else "In +";diversityUI_addInside.tooltip=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
             diversityUI_boundaryOnly=analyzed and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
             diversityUI_addOutside.visible=(diversityUI_obj.diversityMode==3 or analyzed) and not diversityUI_boundaryOnly
             diversityUI_addInside.pos=[if diversityUI_boundaryOnly then 4 else layoutUI.width/2+2,diversityUI_addOutside.pos.y]
@@ -13106,7 +13640,7 @@ initialRollupState:0x8
             rowControls=#(diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton);show=(true and (diversityUI_diversityRadio.state>=3))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/23.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/44))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22,22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -13271,7 +13805,7 @@ initialRollupState:0x8
             rowControls=#(diversityUI_fieldFalloffCheck,diversityUI_fieldBoundaryCheck);show=(true and (diversityUI_diversityRadio.state==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/114.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(fitCheck diversityUI_fieldFalloffCheck cellWidth,fitCheck diversityUI_fieldBoundaryCheck cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -13311,11 +13845,11 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Band order & details";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(diversityUI_bandUp,diversityUI_bandDown);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/23.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/38.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -13654,8 +14188,8 @@ initialRollupState:0x8
         label distributionUI_meshMaxSpin_caption "Input max:" pos:[6,6] width:(populationUI.width-12) height:18
         checkbox distributionUI_meshInvertCheck "Invert field" tooltip:"Reverse the normalized field values before applying the Density curve."
         button distributionUI_meshCurveButton "Density curve..." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/101.2))))) tooltip:"Remap normalized mesh values into planting eligibility. Left is 0; right is 1." height:22
-        button distributionUI_meshPreviewButton "Show mask" width:((populationUI.width-16-((amin 2 (amax 1 (floor ((populationUI.width-8)/64.80000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((populationUI.width-8)/64.80000000000001))))) tooltip:"Show the density mask. Relevant edits refresh it while enabled; Manual plants wait for Update." height:22
-        button distributionUI_meshHideButton "Hide mask" width:((populationUI.width-16-((amin 2 (amax 1 (floor ((populationUI.width-8)/64.80000000000001))))-1)*4)/(amin 2 (amax 1 (floor ((populationUI.width-8)/64.80000000000001))))) tooltip:"Hide the density mask without recalculating plants." height:22
+        button distributionUI_meshPreviewButton "Show density preview" width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/122))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/122))))) tooltip:"Show the density mask. Relevant edits refresh it while enabled; Manual plants wait for Update." height:22
+        button distributionUI_meshHideButton "Hide mask" width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/64.80000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/64.80000000000001))))) tooltip:"Hide the density mask without recalculating plants." height:22
         label distributionUI_meshHint "Data Channel / VertexPaint. White: permitted; black: excluded. Preview shows current inputs; Manual plants wait for Update." width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) height:48
         dropdownlist populationPolicyUI_populationList "" items:#("Candidate budget","Accepted target") pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Budget evaluates the generated candidates; target makes bounded replacement attempts."
         label populationPolicyUI_populationList_caption "Layer population" pos:[6,6] width:(populationUI.width-12) height:18
@@ -13671,7 +14205,7 @@ initialRollupState:0x8
         label heading_3 "Image sampling & portability" pos:[6,6] width:(populationUI.width-12) height:18
         label heading_4 "Mask display" pos:[6,6] width:(populationUI.width-12) height:18
         label heading_5 "Population & retries" pos:[6,6] width:(populationUI.width-12) height:18
-        checkbutton advancedToggle "More settings" pos:[6,6] width:(populationUI.width-12) height:22 tooltip:"Show image sampling and baking, mask display options, and population retry controls below."
+        checkbutton advancedToggle "Sampling & display options" pos:[6,6] width:(populationUI.width-12) height:22 tooltip:"Image snapshot resolution, density preview appearance and population retry settings."
         local distributionUI_bodyHeight=0
         local distributionUI_controlsReady=false
         local distributionUI_root=undefined,distributionUI_owner=undefined,distributionUI_panel=undefined
@@ -13722,6 +14256,7 @@ initialRollupState:0x8
             -- Repeated binding of an unchanged map does not render it again.
             distributionUI_syncThumbnail()
             distributionUI_maskViewList.selection=CyrusMaskView;distributionUI_maskDetailList.selection=CyrusMaskDetail;distributionUI_opacitySpin.value=CyrusMaskOpacity;distributionUI_markersCheck.checked=CyrusMaskMarkers;distributionUI_markerSizeList.selection=CyrusMaskMarkerSize
+            distributionUI_meshPreviewButton.text=if CyrusMeshMaskPreviewTarget==distributionUI_obj then "Hide density preview" else "Show density preview"
             distributionUI_tileXSpin.value=distributionUI_obj.densityTileXWU
             distributionUI_tileYSpin.value=distributionUI_obj.densityTileYWU
             distributionUI_repeatXSpin.value=distributionUI_obj.densityRepeatX
@@ -14020,7 +14555,13 @@ initialRollupState:0x8
         on distributionUI_meshPreviewButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "distributionUI_meshPreviewButton"
             if eventPanel!=undefined do eventPanel.beginPageEdit populationUI refresh:true
-            try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do try(CyrusShowMeshMaskPreview distributionUI_obj)catch(messageBox (getCurrentException()) title:"Mesh density preview")
+            try (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
+            local target=distributionUI_obj
+            try (
+                if CyrusMeshMaskPreviewTarget==target then (CyrusClearMeshMaskPreview target;redrawViews()) else CyrusShowMeshMaskPreview target
+            )catch(messageBox (getCurrentException()) title:"Density preview")
+            if distributionUI_controlsReady do distributionUI_meshPreviewButton.text=if CyrusMeshMaskPreviewTarget==target then "Hide density preview" else "Show density preview"
+        )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -14342,7 +14883,7 @@ initialRollupState:0x8
             local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos populationUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             local nextLayoutStamp=geometryStamp widthValue
             if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
-            distributionUI_modeRadio.visible=false;distributionUI_modeRadio_caption.visible=false;distributionUI_densityHeading.visible=false;distributionUI_uvHint.visible=false;distributionUI_mapHint.visible=false;distributionUI_imageState.visible=false;distributionUI_meshHint.visible=false;populationPolicyUI_info.visible=false
+            distributionUI_modeRadio.visible=false;distributionUI_modeRadio_caption.visible=false;distributionUI_densityHeading.visible=false;distributionUI_uvHint.visible=false;distributionUI_mapHint.visible=false;distributionUI_imageState.visible=false;distributionUI_meshHideButton.visible=false;distributionUI_meshHint.visible=false;populationPolicyUI_info.visible=false
             rowControls=#(distributionUI_presetsButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -14749,16 +15290,16 @@ initialRollupState:0x8
                 distributionUI_maskViewList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_maskViewList_caption.width=cellWidth;distributionUI_maskViewList_caption.enabled=distributionUI_maskViewList.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(distributionUI_meshPreviewButton,distributionUI_meshHideButton);show=(true and (true))
+            rowControls=#(distributionUI_meshPreviewButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/64.80000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/122))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "More settings";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Sampling & display options";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_3);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -14979,27 +15520,31 @@ initialRollupState:0x8
         spinner brushUI_densitySpin "" range:[0,100,100] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))) fieldWidth:58 tooltip:"Control this area's planting density. 100% keeps its full density before other masks and filters."
         label brushUI_densitySpin_caption "Area density %:" pos:[6,6] width:(coverageUI.width-12) height:18
         dropdownlist brushUI_overlayMode "" items:#("Vector borders","Coverage samples","Off") pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) tooltip:"Show painted borders, bounded coverage samples, or hide the Paint overlay."
-        label brushUI_overlayMode_caption "Paint feedback" pos:[6,6] width:(coverageUI.width-12) height:18
+        label brushUI_overlayMode_caption "Paint preview" pos:[6,6] width:(coverageUI.width-12) height:18
         colorpicker brushUI_overlayColor "" color:(color 100 220 120) pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) tooltip:"Set this Paint Area's viewport overlay color."
         label brushUI_brushHelp "Paint merges borders; Erase cuts holes. Zero fade = hard edge. Local XY terrain/planes only. Manual mode needs Update." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:78
         spinner brushUI_insideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58 tooltip:"Distance inside the painted border for the density and size transition. Both fade distances at zero create a hard edge."
-        label brushUI_insideSpin_caption "Inside fade:" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_outsideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/149.60000000000002))))) fieldWidth:58 tooltip:"Extend the transition beyond the painted border, within the receiving surface. Both fade distances at zero create a hard edge."
-        label brushUI_outsideSpin_caption "Outside fade:" pos:[6,6] width:(coverageUI.width-12) height:18
-        checkbox brushUI_densityFade "Fade density" checked:true pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))) tooltip:"Gradually thin plants across the fade region using the Density curve."
-        button brushUI_densityCurve "Density curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))) tooltip:"Shape the density transition. Left is the outer end; right is the fully interior end." height:22
-        checkbox brushUI_scaleFade "Fade scale" checked:false pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Vary plant size across the fade region using Edge scale, Inner scale and the Scale curve."
-        spinner brushUI_scaleMin "" range:[0,1000,0] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58 tooltip:"Outer-end size multiplier with the default curve. 0.5 means half size; 1 means unchanged. Must not exceed Inner scale."
-        label brushUI_scaleMin_caption "Edge scale:" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_scaleMax "" range:[0,1000,1] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58 tooltip:"Interior size multiplier with the default curve. 1 means unchanged; 2 means double size. Must be at least Edge scale."
-        label brushUI_scaleMax_caption "Inner scale:" pos:[6,6] width:(coverageUI.width-12) height:18
-        button brushUI_scaleCurve "Scale curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Shape the size transition. Left is the outer end; right is the fully interior end." height:22
+        label brushUI_insideSpin_caption "Fade inward:" pos:[6,6] width:(coverageUI.width-12) height:18
+        spinner brushUI_outsideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))) fieldWidth:58 tooltip:"Extend the transition beyond the painted border, within the receiving surface. Both fade distances at zero create a hard edge."
+        label brushUI_outsideSpin_caption "Extend outward:" pos:[6,6] width:(coverageUI.width-12) height:18
+        checkbox brushUI_densityFade "Fade density" checked:true pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/88.4))))) tooltip:"Gradually thin plants across the fade region using the Density curve."
+        button brushUI_densityCurve "Density curve..." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/101.2))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/101.2))))) tooltip:"Shape the density transition. Left is the outer end; right is the fully interior end." height:22
+        checkbox brushUI_scaleFade "Fade plant size" checked:false pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))) tooltip:"Vary plant size across the fade region using Edge scale, Inner scale and the Scale curve."
+        spinner brushUI_scaleMin "" range:[0,1000,0] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Outer-end size multiplier with the default curve. 0.5 means half size; 1 means unchanged. Must not exceed Inner scale."
+        label brushUI_scaleMin_caption "Edge size:" pos:[6,6] width:(coverageUI.width-12) height:18
+        spinner brushUI_scaleMax "" range:[0,1000,1] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Interior size multiplier with the default curve. 1 means unchanged; 2 means double size. Must be at least Edge scale."
+        label brushUI_scaleMax_caption "Inner size:" pos:[6,6] width:(coverageUI.width-12) height:18
+        button brushUI_scaleCurve "Scale curve..." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Shape the size transition. Left is the outer end; right is the fully interior end." height:22
         button brushUI_exportSpline "Export spline" width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))) tooltip:"Export an independent editable border spline. Terrain uses local XY; curved receivers keep their 3D surface border. An unchanged surface snapshot restores exact coverage. Keeps the Paint Area. Stop the brush first." height:22
         radiobuttons brushUI_importMode "" labels:#("Replace","Add") columns:2 width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) tooltip:"Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved."
         label brushUI_importMode_caption "Spline import" pos:[6,6] width:(coverageUI.width-12) height:18
         spinner brushUI_splineTolerance "" type:#worldunits range:[1e-9,1e9,0.1] fieldWidth:58 width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/165.2))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/165.2))))) tooltip:"Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum."
         label brushUI_splineTolerance_caption "Curve tolerance:" pos:[6,6] width:(coverageUI.width-12) height:18
         button brushUI_importSpline "Pick spline..." width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Apply closed spline coverage using Replace or Add. Curved borders must lie on the receiver within Curve tolerance; edited closed-surface borders select the smaller enclosed region. One Undo; Manual waits for Update. Stop the brush first." height:22
+        label heading_0 "Edge fade" pos:[6,6] width:(coverageUI.width-12) height:18
+        checkbutton fadeCurvesToggle "Fade curves" pos:[6,6] width:(coverageUI.width-12) height:22
+        checkbutton paintPreviewToggle "Paint preview" pos:[6,6] width:(coverageUI.width-12) height:22
+        checkbutton splineToolsToggle "Spline tools" pos:[6,6] width:(coverageUI.width-12) height:22
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(coverageUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local setsUI_bodyHeight=0
         local setsUI_controlsReady=false
@@ -15110,6 +15655,12 @@ initialRollupState:0x8
                 local state=if brushUI_obj.paintDocument==undefined then undefined else cyrusBrushStats brushUI_obj.paintDocument
                 text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
                 if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do text+="\nWhole surfaces; areas retained."
+                local editable=state!=undefined and state[5]!=1
+                for control in #(brushUI_fillButton,brushUI_emptyButton,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_scaleFade,brushUI_exportSpline,brushUI_importSpline,brushUI_importMode,brushUI_splineTolerance) where control.enabled!=editable do control.enabled=editable
+                if brushUI_densityCurve.enabled!=(editable and brushUI_densityFade.checked) do brushUI_densityCurve.enabled=editable and brushUI_densityFade.checked
+                for control in #(brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) where control.enabled!=(editable and brushUI_scaleFade.checked) do control.enabled=editable and brushUI_scaleFade.checked
+                if state!=undefined and state[5]==1 then text+="\nStop the brush to edit edge fades."
+                else if brushUI_root!=undefined and brushUI_root.updateMode==1 and brushUI_owner!=undefined and brushUI_owner.dirty do text+="\nClick Update scatter to see changes."
             )
             if brushUI_brushState.text==text then false else (brushUI_brushState.text=text;true)
         )
@@ -15200,7 +15751,7 @@ initialRollupState:0x8
         on brushUI_densityFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "brushUI_densityFade"
             if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
-            try (brushUI_saveFalloff()
+            try ((brushUI_saveFalloff();brushUI_status())
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -15209,7 +15760,7 @@ initialRollupState:0x8
         on brushUI_scaleFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "brushUI_scaleFade"
             if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
-            try (brushUI_saveFalloff()
+            try ((brushUI_saveFalloff();brushUI_status())
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -15218,7 +15769,7 @@ initialRollupState:0x8
         on brushUI_scaleMin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "brushUI_scaleMin"
             if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
-            try (brushUI_saveFalloff()
+            try ((if not brushUI_binding and brushUI_scaleMax.value<value do brushUI_scaleMax.value=value;brushUI_saveFalloff())
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -15227,7 +15778,7 @@ initialRollupState:0x8
         on brushUI_scaleMax changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "brushUI_scaleMax"
             if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
-            try (brushUI_saveFalloff()
+            try ((if not brushUI_binding and brushUI_scaleMin.value>value do brushUI_scaleMin.value=value;brushUI_saveFalloff())
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -15354,10 +15905,10 @@ initialRollupState:0x8
             height
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
-        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked),#())
+        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,fadeCurvesToggle.checked,paintPreviewToggle.checked,splineToolsToggle.checked),#())
         fn restoreView state = (
             if state[2]==undefined do return true
-            advancedToggle.checked=state[2][1]
+            advancedToggle.checked=state[2][1];fadeCurvesToggle.checked=state[2][2];paintPreviewToggle.checked=state[2][3];splineToolsToggle.checked=state[2][4]
 
             true
         )
@@ -15444,7 +15995,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(setsUI_paintedCheck.checked),setsUI_paintedCheck.text,setsUI_addButton.text,setsUI_removeButton.text,setsUI_enabledCheck.text,setsUI_info.text,brushUI_targetInfo.text,brushUI_modeRadio.text,brushUI_beginButton.text,brushUI_stopButton.text,brushUI_fillButton.text,brushUI_emptyButton.text,brushUI_brushState.text,brushUI_brushHelp.text,brushUI_densityFade.text,brushUI_densityCurve.text,brushUI_scaleFade.text,brushUI_scaleCurve.text,brushUI_exportSpline.text,brushUI_importMode.text,brushUI_importSpline.text,setsUI_nameEdit_caption.text,setsUI_targetList_caption.text,brushUI_modeRadio_caption.text,brushUI_radiusSpin_caption.text,brushUI_densitySpin_caption.text,brushUI_overlayMode_caption.text,brushUI_insideSpin_caption.text,brushUI_outsideSpin_caption.text,brushUI_scaleMin_caption.text,brushUI_scaleMax_caption.text,brushUI_importMode_caption.text,brushUI_splineTolerance_caption.text,setsUI_paintedCheck.visible,setsUI_setList.visible,setsUI_addButton.visible,setsUI_removeButton.visible,setsUI_nameEdit.visible,setsUI_targetList.visible,setsUI_enabledCheck.visible,setsUI_info.visible,brushUI_targetInfo.visible,brushUI_modeRadio.visible,brushUI_radiusSpin.visible,brushUI_beginButton.visible,brushUI_stopButton.visible,brushUI_fillButton.visible,brushUI_emptyButton.visible,brushUI_brushState.visible,brushUI_densitySpin.visible,brushUI_overlayMode.visible,brushUI_overlayColor.visible,brushUI_brushHelp.visible,brushUI_insideSpin.visible,brushUI_outsideSpin.visible,brushUI_densityFade.visible,brushUI_densityCurve.visible,brushUI_scaleFade.visible,brushUI_scaleMin.visible,brushUI_scaleMax.visible,brushUI_scaleCurve.visible,brushUI_exportSpline.visible,brushUI_importMode.visible,brushUI_splineTolerance.visible,brushUI_importSpline.visible,setsUI_info.height,brushUI_targetInfo.height,brushUI_brushState.height,brushUI_brushHelp.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,fadeCurvesToggle.checked,paintPreviewToggle.checked,splineToolsToggle.checked,(setsUI_paintedCheck.checked),(setsUI_paintedCheck.checked and brushUI_scaleFade.checked),(setsUI_paintedCheck.checked and fadeCurvesToggle.checked and brushUI_densityFade.checked),(setsUI_paintedCheck.checked and fadeCurvesToggle.checked and brushUI_scaleFade.checked),(setsUI_paintedCheck.checked and paintPreviewToggle.checked),(setsUI_paintedCheck.checked and splineToolsToggle.checked),setsUI_paintedCheck.text,setsUI_addButton.text,setsUI_removeButton.text,setsUI_enabledCheck.text,setsUI_info.text,brushUI_targetInfo.text,brushUI_modeRadio.text,brushUI_beginButton.text,brushUI_stopButton.text,brushUI_fillButton.text,brushUI_emptyButton.text,brushUI_brushState.text,brushUI_brushHelp.text,brushUI_densityFade.text,brushUI_densityCurve.text,brushUI_scaleFade.text,brushUI_scaleCurve.text,brushUI_exportSpline.text,brushUI_importMode.text,brushUI_importSpline.text,setsUI_nameEdit_caption.text,setsUI_targetList_caption.text,brushUI_modeRadio_caption.text,brushUI_radiusSpin_caption.text,brushUI_densitySpin_caption.text,brushUI_overlayMode_caption.text,brushUI_insideSpin_caption.text,brushUI_outsideSpin_caption.text,brushUI_scaleMin_caption.text,brushUI_scaleMax_caption.text,brushUI_importMode_caption.text,brushUI_splineTolerance_caption.text,setsUI_paintedCheck.visible,setsUI_setList.visible,setsUI_addButton.visible,setsUI_removeButton.visible,setsUI_nameEdit.visible,setsUI_targetList.visible,setsUI_enabledCheck.visible,setsUI_info.visible,brushUI_targetInfo.visible,brushUI_modeRadio.visible,brushUI_radiusSpin.visible,brushUI_beginButton.visible,brushUI_stopButton.visible,brushUI_fillButton.visible,brushUI_emptyButton.visible,brushUI_brushState.visible,brushUI_densitySpin.visible,brushUI_overlayMode.visible,brushUI_overlayColor.visible,brushUI_brushHelp.visible,brushUI_insideSpin.visible,brushUI_outsideSpin.visible,brushUI_densityFade.visible,brushUI_densityCurve.visible,brushUI_scaleFade.visible,brushUI_scaleMin.visible,brushUI_scaleMax.visible,brushUI_scaleCurve.visible,brushUI_exportSpline.visible,brushUI_importMode.visible,brushUI_splineTolerance.visible,brushUI_importSpline.visible,setsUI_info.height,brushUI_targetInfo.height,brushUI_brushState.height,brushUI_brushHelp.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -15579,49 +16130,6 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_exportSpline);show=(true and (setsUI_paintedCheck.checked))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(brushUI_importMode);show=(true and (setsUI_paintedCheck.checked))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if brushUI_importMode_caption.visible!=show do brushUI_importMode_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_importMode_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(brushUI_importMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(fitRadio brushUI_importMode cellWidth 2 place:false))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                fitRadio brushUI_importMode cellWidth 2 place:true
-                brushUI_importMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_importMode_caption.width=cellWidth;brushUI_importMode_caption.enabled=brushUI_importMode.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(brushUI_splineTolerance);show=(true and (setsUI_paintedCheck.checked))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if brushUI_splineTolerance_caption.visible!=show do brushUI_splineTolerance_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/165.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_splineTolerance_caption 18 cellWidth
-                stackedCaption=cellWidth<161.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_splineTolerance_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (brushUI_splineTolerance_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_splineTolerance_caption.width=cellWidth-78) else (brushUI_splineTolerance_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_splineTolerance_caption.width=cellWidth);brushUI_splineTolerance_caption.enabled=brushUI_splineTolerance.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(brushUI_importSpline);show=(true and (setsUI_paintedCheck.checked))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(brushUI_brushState);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -15629,6 +16137,17 @@ initialRollupState:0x8
                 fitLabel brushUI_brushState 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(brushUI_brushState.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(heading_0);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_0 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_0.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -15648,45 +16167,81 @@ initialRollupState:0x8
             for c in rowControls where c.visible!=show do c.visible=show
             if brushUI_outsideSpin_caption.visible!=show do brushUI_outsideSpin_caption.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/149.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/160))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel brushUI_outsideSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<145.60000000000002;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_outsideSpin_caption.height)) else 0)
+                stackedCaption=cellWidth<156;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_outsideSpin_caption.height)) else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 if not stackedCaption then (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_outsideSpin_caption.width=cellWidth-78) else (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_outsideSpin_caption.width=cellWidth);brushUI_outsideSpin_caption.enabled=brushUI_outsideSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_densityFade,brushUI_densityCurve);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(brushUI_densityFade);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(fitCheck brushUI_densityFade cellWidth,22))+2+captionHeight
+                rowHeight=(amax #(fitCheck brushUI_densityFade cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_scaleFade,brushUI_scaleCurve);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(brushUI_scaleFade);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(fitCheck brushUI_scaleFade cellWidth,22))+2+captionHeight
+                rowHeight=(amax #(fitCheck brushUI_scaleFade cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_scaleMin,brushUI_scaleMax);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(brushUI_scaleMin,brushUI_scaleMax);show=(true and (setsUI_paintedCheck.checked and brushUI_scaleFade.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if brushUI_scaleMin_caption.visible!=show do brushUI_scaleMin_caption.visible=show;if brushUI_scaleMax_caption.visible!=show do brushUI_scaleMax_caption.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel brushUI_scaleMin_caption 18 cellWidth;fitLabel brushUI_scaleMax_caption 18 cellWidth
-                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_scaleMin_caption.height,brushUI_scaleMax_caption.height)) else 0)
+                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_scaleMin_caption.height,brushUI_scaleMax_caption.height)) else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 if not stackedCaption then (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_scaleMin_caption.width=cellWidth-78) else (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_scaleMin_caption.width=cellWidth);brushUI_scaleMin_caption.enabled=brushUI_scaleMin.enabled;if not stackedCaption then (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];brushUI_scaleMax_caption.width=cellWidth-78) else (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];brushUI_scaleMax_caption.width=cellWidth);brushUI_scaleMax_caption.enabled=brushUI_scaleMax.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_overlayMode);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(fadeCurvesToggle);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_densityCurve);show=(true and (setsUI_paintedCheck.checked and fadeCurvesToggle.checked and brushUI_densityFade.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_scaleCurve);show=(true and (setsUI_paintedCheck.checked and fadeCurvesToggle.checked and brushUI_scaleFade.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(paintPreviewToggle);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_overlayMode);show=(true and (setsUI_paintedCheck.checked and paintPreviewToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if brushUI_overlayMode_caption.visible!=show do brushUI_overlayMode_caption.visible=show
             if show do (
@@ -15698,10 +16253,62 @@ initialRollupState:0x8
                 brushUI_overlayMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_overlayMode_caption.width=cellWidth;brushUI_overlayMode_caption.enabled=brushUI_overlayMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_overlayColor);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(brushUI_overlayColor);show=(true and (setsUI_paintedCheck.checked and paintPreviewToggle.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(splineToolsToggle);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_exportSpline);show=(true and (setsUI_paintedCheck.checked and splineToolsToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_importMode);show=(true and (setsUI_paintedCheck.checked and splineToolsToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if brushUI_importMode_caption.visible!=show do brushUI_importMode_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_importMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(brushUI_importMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitRadio brushUI_importMode cellWidth 2 place:false))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio brushUI_importMode cellWidth 2 place:true
+                brushUI_importMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_importMode_caption.width=cellWidth;brushUI_importMode_caption.enabled=brushUI_importMode.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_splineTolerance);show=(true and (setsUI_paintedCheck.checked and splineToolsToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if brushUI_splineTolerance_caption.visible!=show do brushUI_splineTolerance_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/165.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_splineTolerance_caption 18 cellWidth
+                stackedCaption=cellWidth<161.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_splineTolerance_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_splineTolerance_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_splineTolerance_caption.width=cellWidth-78) else (brushUI_splineTolerance_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_splineTolerance_caption.width=cellWidth);brushUI_splineTolerance_caption.enabled=brushUI_splineTolerance.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_importSpline);show=(true and (setsUI_paintedCheck.checked and splineToolsToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -15740,7 +16347,33 @@ initialRollupState:0x8
         )
         fn refreshBrushStatus = (local changed=false;if brushUI_controlsReady do (if brushUI_refreshBrushStatus() do changed=true);if changed and controlsReady do layout();true)
         fn status = (if brushUI_controlsReady do brushUI_status();true)
-
+        on fadeCurvesToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "fadeCurvesToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on paintPreviewToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "paintPreviewToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on splineToolsToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "splineToolsToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:true
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
             local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
             if eventPanel!=undefined do eventPanel.beginPageEdit coverageUI refresh:false
@@ -15811,15 +16444,15 @@ initialRollupState:0x8
         pickbutton areaUI_fallPick "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Choose the Analyzer whose boundary drives this falloff." height:22
         button areaUI_fallRemove "Remove Analyzer" pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Unlink the falloff Analyzer and disable its falloff effects." height:22
         label areaUI_fallTargetName "" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:40
-        checkbox areaUI_fallDeleteCheck "Delete edge band" pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/149.60000000000002))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/149.60000000000002))))) tooltip:"Exclude an edge band before scale and density ramps begin."
-        spinner areaUI_fallDeleteSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/149.60000000000002))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/149.60000000000002))))) fieldWidth:58 tooltip:"Width of the excluded edge band in scene units."
+        checkbox areaUI_fallDeleteCheck "Delete edge band" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/109.2))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/109.2))))) tooltip:"Exclude an edge band before scale and density ramps begin."
+        spinner areaUI_fallDeleteSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/149.60000000000002))))) fieldWidth:58 tooltip:"Width of the excluded edge band in scene units."
         label areaUI_fallDeleteSpin_caption "Delete width:" pos:[6,6] width:(areasUI.width-12) height:18
-        checkbox areaUI_fallScaleCheck "Scale ramp" pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/144.4))))) tooltip:"Vary instance scale with distance from this boundary."
-        spinner areaUI_fallScaleSpin "" range:[0,1e9,100] type:#worldunits pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/144.4))))) fieldWidth:58 tooltip:"Distance over which the scale curve is evaluated."
+        checkbox areaUI_fallScaleCheck "Scale ramp" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/78))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/78))))) tooltip:"Vary instance scale with distance from this boundary."
+        spinner areaUI_fallScaleSpin "" range:[0,1e9,100] type:#worldunits pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/144.4))))) fieldWidth:58 tooltip:"Distance over which the scale curve is evaluated."
         label areaUI_fallScaleSpin_caption "Scale width:" pos:[6,6] width:(areasUI.width-12) height:18
         button areaUI_fallScaleEdit "Edit Scale Graph..." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/116.8))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/116.8))))) tooltip:"Edit this boundary's scale curve." height:22
-        checkbox areaUI_fallDensityCheck "Density ramp" pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/154.8))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/154.8))))) tooltip:"Vary candidate eligibility with distance from this boundary."
-        spinner areaUI_fallDensitySpin "" range:[0,1e9,100] type:#worldunits pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/154.8))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/154.8))))) fieldWidth:58 tooltip:"Distance over which the density curve is evaluated."
+        checkbox areaUI_fallDensityCheck "Density ramp" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/88.4))))) tooltip:"Vary candidate eligibility with distance from this boundary."
+        spinner areaUI_fallDensitySpin "" range:[0,1e9,100] type:#worldunits pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/154.8))))) fieldWidth:58 tooltip:"Distance over which the density curve is evaluated."
         label areaUI_fallDensitySpin_caption "Density width:" pos:[6,6] width:(areasUI.width-12) height:18
         button areaUI_fallDensityEdit "Edit Density Graph..." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Edit this boundary's density curve." height:22
         label areaUI_fallHelp "Ramps start after delete band. Each Area line has its own settings." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:56
@@ -15828,7 +16461,7 @@ initialRollupState:0x8
         label heading_1 "Surface eligibility" pos:[6,6] width:(areasUI.width-12) height:18
         label heading_2 "Boundary falloff" pos:[6,6] width:(areasUI.width-12) height:18
         dotNetControl areaUI_areaList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        checkbutton advancedToggle "Advanced" pos:[6,6] width:(areasUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        checkbutton advancedToggle "Analyzer tools" pos:[6,6] width:(areasUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local areaUI_bodyHeight=0
         local areaUI_controlsReady=false
         local areaUI_root=undefined,areaUI_owner=undefined,areaUI_panel=undefined
@@ -16395,7 +17028,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,areaUI_addAreaScene.text,areaUI_pickArea.text,areaUI_removeArea.text,areaUI_areaMode.text,areaUI_areaHint.text,areaUI_projectionHint.text,areaUI_refreshAreas.text,areaUI_aaTitle.text,areaUI_aaPick.text,areaUI_aaRemove.text,areaUI_aaLine.text,areaUI_aaPoints.text,areaUI_aaHelp.text,areaUI_slopeCheck.text,areaUI_altitudeCheck.text,areaUI_filterInfo.text,areaUI_fallPick.text,areaUI_fallRemove.text,areaUI_fallTargetName.text,areaUI_fallDeleteCheck.text,areaUI_fallScaleCheck.text,areaUI_fallScaleEdit.text,areaUI_fallDensityCheck.text,areaUI_fallDensityEdit.text,areaUI_fallHelp.text,areaUI_detailsToggle.text,areaUI_areaList_caption.text,areaUI_areaMode_caption.text,areaUI_aaWidth_caption.text,areaUI_aaCaps_caption.text,areaUI_aaStreetOffset_caption.text,areaUI_aaRadius_caption.text,areaUI_slopeMinSpin_caption.text,areaUI_slopeMaxSpin_caption.text,areaUI_slopeLowerSpin_caption.text,areaUI_slopeUpperSpin_caption.text,areaUI_altitudeMinSpin_caption.text,areaUI_altitudeMaxSpin_caption.text,areaUI_altitudeLowerSpin_caption.text,areaUI_altitudeUpperSpin_caption.text,areaUI_fallTarget_caption.text,areaUI_fallDeleteSpin_caption.text,areaUI_fallScaleSpin_caption.text,areaUI_fallDensitySpin_caption.text,areaUI_areaList.height,areaUI_addAreaScene.visible,areaUI_pickArea.visible,areaUI_removeArea.visible,areaUI_areaMode.visible,areaUI_areaHint.visible,areaUI_projectionHint.visible,areaUI_refreshAreas.visible,areaUI_aaTitle.visible,areaUI_aaPick.visible,areaUI_aaRemove.visible,areaUI_aaLine.visible,areaUI_aaWidth.visible,areaUI_aaCaps.visible,areaUI_aaStreetOffset.visible,areaUI_aaPoints.visible,areaUI_aaRadius.visible,areaUI_aaHelp.visible,areaUI_slopeCheck.visible,areaUI_slopeMinSpin.visible,areaUI_slopeMaxSpin.visible,areaUI_slopeLowerSpin.visible,areaUI_slopeUpperSpin.visible,areaUI_altitudeMinSpin.visible,areaUI_altitudeMaxSpin.visible,areaUI_altitudeLowerSpin.visible,areaUI_altitudeUpperSpin.visible,areaUI_altitudeCheck.visible,areaUI_filterInfo.visible,areaUI_fallTarget.visible,areaUI_fallPick.visible,areaUI_fallRemove.visible,areaUI_fallTargetName.visible,areaUI_fallDeleteCheck.visible,areaUI_fallDeleteSpin.visible,areaUI_fallScaleCheck.visible,areaUI_fallScaleSpin.visible,areaUI_fallScaleEdit.visible,areaUI_fallDensityCheck.visible,areaUI_fallDensitySpin.visible,areaUI_fallDensityEdit.visible,areaUI_fallHelp.visible,areaUI_detailsToggle.visible,areaUI_areaHint.height,areaUI_projectionHint.height,areaUI_aaTitle.height,areaUI_aaHelp.height,areaUI_filterInfo.height,areaUI_fallTargetName.height,areaUI_fallHelp.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(areaUI_slopeCheck.checked),(areaUI_altitudeCheck.checked),(areaUI_fallDeleteCheck.checked),(areaUI_fallScaleCheck.checked),(areaUI_fallDensityCheck.checked),areaUI_addAreaScene.text,areaUI_pickArea.text,areaUI_removeArea.text,areaUI_areaMode.text,areaUI_areaHint.text,areaUI_projectionHint.text,areaUI_refreshAreas.text,areaUI_aaTitle.text,areaUI_aaPick.text,areaUI_aaRemove.text,areaUI_aaLine.text,areaUI_aaPoints.text,areaUI_aaHelp.text,areaUI_slopeCheck.text,areaUI_altitudeCheck.text,areaUI_filterInfo.text,areaUI_fallPick.text,areaUI_fallRemove.text,areaUI_fallTargetName.text,areaUI_fallDeleteCheck.text,areaUI_fallScaleCheck.text,areaUI_fallScaleEdit.text,areaUI_fallDensityCheck.text,areaUI_fallDensityEdit.text,areaUI_fallHelp.text,areaUI_detailsToggle.text,areaUI_areaList_caption.text,areaUI_areaMode_caption.text,areaUI_aaWidth_caption.text,areaUI_aaCaps_caption.text,areaUI_aaStreetOffset_caption.text,areaUI_aaRadius_caption.text,areaUI_slopeMinSpin_caption.text,areaUI_slopeMaxSpin_caption.text,areaUI_slopeLowerSpin_caption.text,areaUI_slopeUpperSpin_caption.text,areaUI_altitudeMinSpin_caption.text,areaUI_altitudeMaxSpin_caption.text,areaUI_altitudeLowerSpin_caption.text,areaUI_altitudeUpperSpin_caption.text,areaUI_fallTarget_caption.text,areaUI_fallDeleteSpin_caption.text,areaUI_fallScaleSpin_caption.text,areaUI_fallDensitySpin_caption.text,areaUI_areaList.height,areaUI_addAreaScene.visible,areaUI_pickArea.visible,areaUI_removeArea.visible,areaUI_areaMode.visible,areaUI_areaHint.visible,areaUI_projectionHint.visible,areaUI_refreshAreas.visible,areaUI_aaTitle.visible,areaUI_aaPick.visible,areaUI_aaRemove.visible,areaUI_aaLine.visible,areaUI_aaWidth.visible,areaUI_aaCaps.visible,areaUI_aaStreetOffset.visible,areaUI_aaPoints.visible,areaUI_aaRadius.visible,areaUI_aaHelp.visible,areaUI_slopeCheck.visible,areaUI_slopeMinSpin.visible,areaUI_slopeMaxSpin.visible,areaUI_slopeLowerSpin.visible,areaUI_slopeUpperSpin.visible,areaUI_altitudeMinSpin.visible,areaUI_altitudeMaxSpin.visible,areaUI_altitudeLowerSpin.visible,areaUI_altitudeUpperSpin.visible,areaUI_altitudeCheck.visible,areaUI_filterInfo.visible,areaUI_fallTarget.visible,areaUI_fallPick.visible,areaUI_fallRemove.visible,areaUI_fallTargetName.visible,areaUI_fallDeleteCheck.visible,areaUI_fallDeleteSpin.visible,areaUI_fallScaleCheck.visible,areaUI_fallScaleSpin.visible,areaUI_fallScaleEdit.visible,areaUI_fallDensityCheck.visible,areaUI_fallDensitySpin.visible,areaUI_fallDensityEdit.visible,areaUI_fallHelp.visible,areaUI_detailsToggle.visible,areaUI_areaHint.height,areaUI_projectionHint.height,areaUI_aaTitle.height,areaUI_aaHelp.height,areaUI_filterInfo.height,areaUI_fallTargetName.height,areaUI_fallHelp.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -16489,7 +17122,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_slopeMinSpin,areaUI_slopeMaxSpin);show=(true and (true))
+            rowControls=#(areaUI_slopeMinSpin,areaUI_slopeMaxSpin);show=(true and (areaUI_slopeCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_slopeMinSpin_caption.visible!=show do areaUI_slopeMinSpin_caption.visible=show;if areaUI_slopeMaxSpin_caption.visible!=show do areaUI_slopeMaxSpin_caption.visible=show
             if show do (
@@ -16501,7 +17134,7 @@ initialRollupState:0x8
                 if not stackedCaption then (areaUI_slopeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_slopeMinSpin_caption.width=cellWidth-78) else (areaUI_slopeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_slopeMinSpin_caption.width=cellWidth);areaUI_slopeMinSpin_caption.enabled=areaUI_slopeMinSpin.enabled;if not stackedCaption then (areaUI_slopeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_slopeMaxSpin_caption.width=cellWidth-78) else (areaUI_slopeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_slopeMaxSpin_caption.width=cellWidth);areaUI_slopeMaxSpin_caption.enabled=areaUI_slopeMaxSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_slopeLowerSpin,areaUI_slopeUpperSpin);show=(true and (true))
+            rowControls=#(areaUI_slopeLowerSpin,areaUI_slopeUpperSpin);show=(true and (areaUI_slopeCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_slopeLowerSpin_caption.visible!=show do areaUI_slopeLowerSpin_caption.visible=show;if areaUI_slopeUpperSpin_caption.visible!=show do areaUI_slopeUpperSpin_caption.visible=show
             if show do (
@@ -16522,7 +17155,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_altitudeMinSpin,areaUI_altitudeMaxSpin);show=(true and (true))
+            rowControls=#(areaUI_altitudeMinSpin,areaUI_altitudeMaxSpin);show=(true and (areaUI_altitudeCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_altitudeMinSpin_caption.visible!=show do areaUI_altitudeMinSpin_caption.visible=show;if areaUI_altitudeMaxSpin_caption.visible!=show do areaUI_altitudeMaxSpin_caption.visible=show
             if show do (
@@ -16534,7 +17167,7 @@ initialRollupState:0x8
                 if not stackedCaption then (areaUI_altitudeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_altitudeMinSpin_caption.width=cellWidth-78) else (areaUI_altitudeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_altitudeMinSpin_caption.width=cellWidth);areaUI_altitudeMinSpin_caption.enabled=areaUI_altitudeMinSpin.enabled;if not stackedCaption then (areaUI_altitudeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_altitudeMaxSpin_caption.width=cellWidth-78) else (areaUI_altitudeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_altitudeMaxSpin_caption.width=cellWidth);areaUI_altitudeMaxSpin_caption.enabled=areaUI_altitudeMaxSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_altitudeLowerSpin,areaUI_altitudeUpperSpin);show=(true and (true))
+            rowControls=#(areaUI_altitudeLowerSpin,areaUI_altitudeUpperSpin);show=(true and (areaUI_altitudeCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_altitudeLowerSpin_caption.visible!=show do areaUI_altitudeLowerSpin_caption.visible=show;if areaUI_altitudeUpperSpin_caption.visible!=show do areaUI_altitudeUpperSpin_caption.visible=show
             if show do (
@@ -16598,31 +17231,49 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_fallDeleteCheck,areaUI_fallDeleteSpin);show=(true and (true))
+            rowControls=#(areaUI_fallDeleteCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/109.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck areaUI_fallDeleteCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_fallDeleteSpin);show=(true and (areaUI_fallDeleteCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_fallDeleteSpin_caption.visible!=show do areaUI_fallDeleteSpin_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/149.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel areaUI_fallDeleteSpin_caption 18 cellWidth
                 stackedCaption=cellWidth<145.60000000000002;captionHeight=amax 0 (if stackedCaption then (amax #(areaUI_fallDeleteSpin_caption.height)) else 0)
-                rowHeight=(amax #(fitCheck areaUI_fallDeleteCheck cellWidth,22))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (areaUI_fallDeleteSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_fallDeleteSpin_caption.width=cellWidth-78) else (areaUI_fallDeleteSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_fallDeleteSpin_caption.width=cellWidth);areaUI_fallDeleteSpin_caption.enabled=areaUI_fallDeleteSpin.enabled
+                if not stackedCaption then (areaUI_fallDeleteSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_fallDeleteSpin_caption.width=cellWidth-78) else (areaUI_fallDeleteSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_fallDeleteSpin_caption.width=cellWidth);areaUI_fallDeleteSpin_caption.enabled=areaUI_fallDeleteSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_fallScaleCheck,areaUI_fallScaleSpin);show=(true and (true))
+            rowControls=#(areaUI_fallScaleCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/78))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck areaUI_fallScaleCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_fallScaleSpin);show=(true and (areaUI_fallScaleCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_fallScaleSpin_caption.visible!=show do areaUI_fallScaleSpin_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel areaUI_fallScaleSpin_caption 18 cellWidth
                 stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(areaUI_fallScaleSpin_caption.height)) else 0)
-                rowHeight=(amax #(fitCheck areaUI_fallScaleCheck cellWidth,22))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (areaUI_fallScaleSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_fallScaleSpin_caption.width=cellWidth-78) else (areaUI_fallScaleSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_fallScaleSpin_caption.width=cellWidth);areaUI_fallScaleSpin_caption.enabled=areaUI_fallScaleSpin.enabled
+                if not stackedCaption then (areaUI_fallScaleSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_fallScaleSpin_caption.width=cellWidth-78) else (areaUI_fallScaleSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_fallScaleSpin_caption.width=cellWidth);areaUI_fallScaleSpin_caption.enabled=areaUI_fallScaleSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_fallScaleEdit);show=(true and (true))
+            rowControls=#(areaUI_fallScaleEdit);show=(true and (areaUI_fallScaleCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/116.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -16631,19 +17282,28 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_fallDensityCheck,areaUI_fallDensitySpin);show=(true and (true))
+            rowControls=#(areaUI_fallDensityCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck areaUI_fallDensityCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_fallDensitySpin);show=(true and (areaUI_fallDensityCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_fallDensitySpin_caption.visible!=show do areaUI_fallDensitySpin_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/154.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel areaUI_fallDensitySpin_caption 18 cellWidth
                 stackedCaption=cellWidth<150.8;captionHeight=amax 0 (if stackedCaption then (amax #(areaUI_fallDensitySpin_caption.height)) else 0)
-                rowHeight=(amax #(fitCheck areaUI_fallDensityCheck cellWidth,22))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (areaUI_fallDensitySpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_fallDensitySpin_caption.width=cellWidth-78) else (areaUI_fallDensitySpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_fallDensitySpin_caption.width=cellWidth);areaUI_fallDensitySpin_caption.enabled=areaUI_fallDensitySpin.enabled
+                if not stackedCaption then (areaUI_fallDensitySpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_fallDensitySpin_caption.width=cellWidth-78) else (areaUI_fallDensitySpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_fallDensitySpin_caption.width=cellWidth);areaUI_fallDensitySpin_caption.enabled=areaUI_fallDensitySpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(areaUI_fallDensityEdit);show=(true and (true))
+            rowControls=#(areaUI_fallDensityEdit);show=(true and (areaUI_fallDensityCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -16661,7 +17321,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Analyzer tools";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(areaUI_aaTitle);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -16890,6 +17550,7 @@ initialRollupState:0x8
         button randomUI_resetWholeScale "Reset whole scale" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/106.4))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/106.4))))) height:22 tooltip:"Reset only this layer's uniform scale multiplier."
         button randomUI_resetMovement "Reset movement" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))) height:22 tooltip:"Reset only this layer's random translation limits."
         label heading_0 "Orientation" pos:[6,6] width:(transformsUI.width-12) height:18
+        checkbutton axisScaleToggle "Non-uniform scale" pos:[6,6] width:(transformsUI.width-12) height:22
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(transformsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local randomUI_bodyHeight=0
         local randomUI_controlsReady=false
@@ -17272,10 +17933,10 @@ initialRollupState:0x8
             height
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
-        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked),#())
+        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked,axisScaleToggle.checked),#())
         fn restoreView state = (
             if state[2]==undefined do return true
-            advancedToggle.checked=state[2][1]
+            advancedToggle.checked=state[2][1];axisScaleToggle.checked=state[2][2]
 
             true
         )
@@ -17362,7 +18023,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,randomUI_presetsButton.text,randomUI_rotTitle.text,randomUI_rotMinTitle.text,randomUI_rotMaxTitle.text,randomUI_rotXLabel.text,randomUI_rotYLabel.text,randomUI_rotZLabel.text,randomUI_sclTitle.text,randomUI_sclMinTitle.text,randomUI_sclMaxTitle.text,randomUI_sclXLabel.text,randomUI_sclYLabel.text,randomUI_sclZLabel.text,randomUI_wholeTitle.text,randomUI_wholeMinTitle.text,randomUI_wholeMaxTitle.text,randomUI_movTitle.text,randomUI_movMinTitle.text,randomUI_movMaxTitle.text,randomUI_movXLabel.text,randomUI_movYLabel.text,randomUI_movZLabel.text,randomUI_projectCheck.text,randomUI_alignCheck.text,randomUI_targetPickButton.text,randomUI_targetClearButton.text,randomUI_targetInfo.text,randomUI_orientationHelp.text,randomUI_resetRotation.text,randomUI_resetScale.text,randomUI_resetWholeScale.text,randomUI_resetMovement.text,randomUI_rotXMinSpin_caption.text,randomUI_rotXMaxSpin_caption.text,randomUI_rotYMinSpin_caption.text,randomUI_rotYMaxSpin_caption.text,randomUI_rotZMinSpin_caption.text,randomUI_rotZMaxSpin_caption.text,randomUI_sclXMinSpin_caption.text,randomUI_sclXMaxSpin_caption.text,randomUI_sclYMinSpin_caption.text,randomUI_sclYMaxSpin_caption.text,randomUI_sclZMinSpin_caption.text,randomUI_sclZMaxSpin_caption.text,randomUI_wholeMinSpin_caption.text,randomUI_wholeMaxSpin_caption.text,randomUI_movXMinSpin_caption.text,randomUI_movXMaxSpin_caption.text,randomUI_movYMinSpin_caption.text,randomUI_movYMaxSpin_caption.text,randomUI_movZMinSpin_caption.text,randomUI_movZMaxSpin_caption.text,randomUI_orientationList_caption.text,randomUI_normalBlendSpin_caption.text,randomUI_directionXSpin_caption.text,randomUI_directionYSpin_caption.text,randomUI_directionZSpin_caption.text,randomUI_presetsButton.visible,randomUI_rotTitle.visible,randomUI_rotMinTitle.visible,randomUI_rotMaxTitle.visible,randomUI_rotXLabel.visible,randomUI_rotXMinSpin.visible,randomUI_rotXMaxSpin.visible,randomUI_rotYLabel.visible,randomUI_rotYMinSpin.visible,randomUI_rotYMaxSpin.visible,randomUI_rotZLabel.visible,randomUI_rotZMinSpin.visible,randomUI_rotZMaxSpin.visible,randomUI_sclTitle.visible,randomUI_sclMinTitle.visible,randomUI_sclMaxTitle.visible,randomUI_sclXLabel.visible,randomUI_sclXMinSpin.visible,randomUI_sclXMaxSpin.visible,randomUI_sclYLabel.visible,randomUI_sclYMinSpin.visible,randomUI_sclYMaxSpin.visible,randomUI_sclZLabel.visible,randomUI_sclZMinSpin.visible,randomUI_sclZMaxSpin.visible,randomUI_wholeTitle.visible,randomUI_wholeMinTitle.visible,randomUI_wholeMaxTitle.visible,randomUI_wholeMinSpin.visible,randomUI_wholeMaxSpin.visible,randomUI_movTitle.visible,randomUI_movMinTitle.visible,randomUI_movMaxTitle.visible,randomUI_movXLabel.visible,randomUI_movXMinSpin.visible,randomUI_movXMaxSpin.visible,randomUI_movYLabel.visible,randomUI_movYMinSpin.visible,randomUI_movYMaxSpin.visible,randomUI_movZLabel.visible,randomUI_movZMinSpin.visible,randomUI_movZMaxSpin.visible,randomUI_projectCheck.visible,randomUI_alignCheck.visible,randomUI_orientationList.visible,randomUI_normalBlendSpin.visible,randomUI_directionXSpin.visible,randomUI_directionYSpin.visible,randomUI_directionZSpin.visible,randomUI_targetPickButton.visible,randomUI_targetClearButton.visible,randomUI_targetInfo.visible,randomUI_orientationHelp.visible,randomUI_resetRotation.visible,randomUI_resetScale.visible,randomUI_resetWholeScale.visible,randomUI_resetMovement.visible,randomUI_rotTitle.height,randomUI_rotMinTitle.height,randomUI_rotMaxTitle.height,randomUI_rotXLabel.height,randomUI_rotYLabel.height,randomUI_rotZLabel.height,randomUI_sclTitle.height,randomUI_sclMinTitle.height,randomUI_sclMaxTitle.height,randomUI_sclXLabel.height,randomUI_sclYLabel.height,randomUI_sclZLabel.height,randomUI_wholeTitle.height,randomUI_wholeMinTitle.height,randomUI_wholeMaxTitle.height,randomUI_movTitle.height,randomUI_movMinTitle.height,randomUI_movMaxTitle.height,randomUI_movXLabel.height,randomUI_movYLabel.height,randomUI_movZLabel.height,randomUI_targetInfo.height,randomUI_orientationHelp.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,axisScaleToggle.checked,(axisScaleToggle.checked),randomUI_presetsButton.text,randomUI_rotTitle.text,randomUI_rotMinTitle.text,randomUI_rotMaxTitle.text,randomUI_rotXLabel.text,randomUI_rotYLabel.text,randomUI_rotZLabel.text,randomUI_sclTitle.text,randomUI_sclMinTitle.text,randomUI_sclMaxTitle.text,randomUI_sclXLabel.text,randomUI_sclYLabel.text,randomUI_sclZLabel.text,randomUI_wholeTitle.text,randomUI_wholeMinTitle.text,randomUI_wholeMaxTitle.text,randomUI_movTitle.text,randomUI_movMinTitle.text,randomUI_movMaxTitle.text,randomUI_movXLabel.text,randomUI_movYLabel.text,randomUI_movZLabel.text,randomUI_projectCheck.text,randomUI_alignCheck.text,randomUI_targetPickButton.text,randomUI_targetClearButton.text,randomUI_targetInfo.text,randomUI_orientationHelp.text,randomUI_resetRotation.text,randomUI_resetScale.text,randomUI_resetWholeScale.text,randomUI_resetMovement.text,randomUI_rotXMinSpin_caption.text,randomUI_rotXMaxSpin_caption.text,randomUI_rotYMinSpin_caption.text,randomUI_rotYMaxSpin_caption.text,randomUI_rotZMinSpin_caption.text,randomUI_rotZMaxSpin_caption.text,randomUI_sclXMinSpin_caption.text,randomUI_sclXMaxSpin_caption.text,randomUI_sclYMinSpin_caption.text,randomUI_sclYMaxSpin_caption.text,randomUI_sclZMinSpin_caption.text,randomUI_sclZMaxSpin_caption.text,randomUI_wholeMinSpin_caption.text,randomUI_wholeMaxSpin_caption.text,randomUI_movXMinSpin_caption.text,randomUI_movXMaxSpin_caption.text,randomUI_movYMinSpin_caption.text,randomUI_movYMaxSpin_caption.text,randomUI_movZMinSpin_caption.text,randomUI_movZMaxSpin_caption.text,randomUI_orientationList_caption.text,randomUI_normalBlendSpin_caption.text,randomUI_directionXSpin_caption.text,randomUI_directionYSpin_caption.text,randomUI_directionZSpin_caption.text,randomUI_presetsButton.visible,randomUI_rotTitle.visible,randomUI_rotMinTitle.visible,randomUI_rotMaxTitle.visible,randomUI_rotXLabel.visible,randomUI_rotXMinSpin.visible,randomUI_rotXMaxSpin.visible,randomUI_rotYLabel.visible,randomUI_rotYMinSpin.visible,randomUI_rotYMaxSpin.visible,randomUI_rotZLabel.visible,randomUI_rotZMinSpin.visible,randomUI_rotZMaxSpin.visible,randomUI_sclTitle.visible,randomUI_sclMinTitle.visible,randomUI_sclMaxTitle.visible,randomUI_sclXLabel.visible,randomUI_sclXMinSpin.visible,randomUI_sclXMaxSpin.visible,randomUI_sclYLabel.visible,randomUI_sclYMinSpin.visible,randomUI_sclYMaxSpin.visible,randomUI_sclZLabel.visible,randomUI_sclZMinSpin.visible,randomUI_sclZMaxSpin.visible,randomUI_wholeTitle.visible,randomUI_wholeMinTitle.visible,randomUI_wholeMaxTitle.visible,randomUI_wholeMinSpin.visible,randomUI_wholeMaxSpin.visible,randomUI_movTitle.visible,randomUI_movMinTitle.visible,randomUI_movMaxTitle.visible,randomUI_movXLabel.visible,randomUI_movXMinSpin.visible,randomUI_movXMaxSpin.visible,randomUI_movYLabel.visible,randomUI_movYMinSpin.visible,randomUI_movYMaxSpin.visible,randomUI_movZLabel.visible,randomUI_movZMinSpin.visible,randomUI_movZMaxSpin.visible,randomUI_projectCheck.visible,randomUI_alignCheck.visible,randomUI_orientationList.visible,randomUI_normalBlendSpin.visible,randomUI_directionXSpin.visible,randomUI_directionYSpin.visible,randomUI_directionZSpin.visible,randomUI_targetPickButton.visible,randomUI_targetClearButton.visible,randomUI_targetInfo.visible,randomUI_orientationHelp.visible,randomUI_resetRotation.visible,randomUI_resetScale.visible,randomUI_resetWholeScale.visible,randomUI_resetMovement.visible,randomUI_rotTitle.height,randomUI_rotMinTitle.height,randomUI_rotMaxTitle.height,randomUI_rotXLabel.height,randomUI_rotYLabel.height,randomUI_rotZLabel.height,randomUI_sclTitle.height,randomUI_sclMinTitle.height,randomUI_sclMaxTitle.height,randomUI_sclXLabel.height,randomUI_sclYLabel.height,randomUI_sclZLabel.height,randomUI_wholeTitle.height,randomUI_wholeMinTitle.height,randomUI_wholeMaxTitle.height,randomUI_movTitle.height,randomUI_movMinTitle.height,randomUI_movMaxTitle.height,randomUI_movXLabel.height,randomUI_movYLabel.height,randomUI_movZLabel.height,randomUI_targetInfo.height,randomUI_orientationHelp.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -17439,64 +18100,6 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_sclTitle);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXMinSpin,randomUI_sclXMaxSpin);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if randomUI_sclXMinSpin_caption.visible!=show do randomUI_sclXMinSpin_caption.visible=show;if randomUI_sclXMaxSpin_caption.visible!=show do randomUI_sclXMaxSpin_caption.visible=show
-            if show do (
-                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclXMinSpin_caption 18 cellWidth;fitLabel randomUI_sclXMaxSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<70;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclXMinSpin_caption.height,randomUI_sclXMaxSpin_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption
-                if not stackedCaption then (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclXMinSpin_caption.width=32) else (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclXMinSpin_caption.width=cellWidth);randomUI_sclXMinSpin_caption.enabled=randomUI_sclXMinSpin.enabled;if not stackedCaption then (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclXMaxSpin_caption.width=32) else (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclXMaxSpin_caption.width=cellWidth);randomUI_sclXMaxSpin_caption.enabled=randomUI_sclXMaxSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYMinSpin,randomUI_sclYMaxSpin);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if randomUI_sclYMinSpin_caption.visible!=show do randomUI_sclYMinSpin_caption.visible=show;if randomUI_sclYMaxSpin_caption.visible!=show do randomUI_sclYMaxSpin_caption.visible=show
-            if show do (
-                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclYMinSpin_caption 18 cellWidth;fitLabel randomUI_sclYMaxSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<70;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclYMinSpin_caption.height,randomUI_sclYMaxSpin_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption
-                if not stackedCaption then (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclYMinSpin_caption.width=32) else (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclYMinSpin_caption.width=cellWidth);randomUI_sclYMinSpin_caption.enabled=randomUI_sclYMinSpin.enabled;if not stackedCaption then (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclYMaxSpin_caption.width=32) else (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclYMaxSpin_caption.width=cellWidth);randomUI_sclYMaxSpin_caption.enabled=randomUI_sclYMaxSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZMinSpin,randomUI_sclZMaxSpin);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if randomUI_sclZMinSpin_caption.visible!=show do randomUI_sclZMinSpin_caption.visible=show;if randomUI_sclZMaxSpin_caption.visible!=show do randomUI_sclZMaxSpin_caption.visible=show
-            if show do (
-                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclZMinSpin_caption 18 cellWidth;fitLabel randomUI_sclZMaxSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<70;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclZMinSpin_caption.height,randomUI_sclZMaxSpin_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption
-                if not stackedCaption then (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclZMinSpin_caption.width=32) else (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclZMinSpin_caption.width=cellWidth);randomUI_sclZMinSpin_caption.enabled=randomUI_sclZMinSpin.enabled;if not stackedCaption then (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclZMaxSpin_caption.width=32) else (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclZMaxSpin_caption.width=cellWidth);randomUI_sclZMaxSpin_caption.enabled=randomUI_sclZMaxSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetScale);show=(true and (true))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(randomUI_wholeTitle);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -17524,6 +18127,73 @@ initialRollupState:0x8
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(axisScaleToggle);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclTitle);show=(true and (axisScaleToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclTitle 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclXMinSpin,randomUI_sclXMaxSpin);show=(true and (axisScaleToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if randomUI_sclXMinSpin_caption.visible!=show do randomUI_sclXMinSpin_caption.visible=show;if randomUI_sclXMaxSpin_caption.visible!=show do randomUI_sclXMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclXMinSpin_caption 18 cellWidth;fitLabel randomUI_sclXMaxSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<70;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclXMinSpin_caption.height,randomUI_sclXMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption
+                if not stackedCaption then (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclXMinSpin_caption.width=32) else (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclXMinSpin_caption.width=cellWidth);randomUI_sclXMinSpin_caption.enabled=randomUI_sclXMinSpin.enabled;if not stackedCaption then (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclXMaxSpin_caption.width=32) else (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclXMaxSpin_caption.width=cellWidth);randomUI_sclXMaxSpin_caption.enabled=randomUI_sclXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclYMinSpin,randomUI_sclYMaxSpin);show=(true and (axisScaleToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if randomUI_sclYMinSpin_caption.visible!=show do randomUI_sclYMinSpin_caption.visible=show;if randomUI_sclYMaxSpin_caption.visible!=show do randomUI_sclYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclYMinSpin_caption 18 cellWidth;fitLabel randomUI_sclYMaxSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<70;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclYMinSpin_caption.height,randomUI_sclYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption
+                if not stackedCaption then (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclYMinSpin_caption.width=32) else (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclYMinSpin_caption.width=cellWidth);randomUI_sclYMinSpin_caption.enabled=randomUI_sclYMinSpin.enabled;if not stackedCaption then (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclYMaxSpin_caption.width=32) else (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclYMaxSpin_caption.width=cellWidth);randomUI_sclYMaxSpin_caption.enabled=randomUI_sclYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclZMinSpin,randomUI_sclZMaxSpin);show=(true and (axisScaleToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if randomUI_sclZMinSpin_caption.visible!=show do randomUI_sclZMinSpin_caption.visible=show;if randomUI_sclZMaxSpin_caption.visible!=show do randomUI_sclZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclZMinSpin_caption 18 cellWidth;fitLabel randomUI_sclZMaxSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<70;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclZMinSpin_caption.height,randomUI_sclZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption
+                if not stackedCaption then (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclZMinSpin_caption.width=32) else (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclZMinSpin_caption.width=cellWidth);randomUI_sclZMinSpin_caption.enabled=randomUI_sclZMinSpin.enabled;if not stackedCaption then (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclZMaxSpin_caption.width=32) else (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclZMaxSpin_caption.width=cellWidth);randomUI_sclZMaxSpin_caption.enabled=randomUI_sclZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetScale);show=(true and (axisScaleToggle.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
@@ -17735,7 +18405,15 @@ initialRollupState:0x8
             )catch(CyrusMeasureEnd measurement measuredOwner measuredEpoch "transformsUI.bind" failed:true;throw())
         )
 
-
+        on axisScaleToggle changed value do if controlsReady and not binding and root!=undefined and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "axisScaleToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:true
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
             local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
             if eventPanel!=undefined do eventPanel.beginPageEdit transformsUI refresh:false
@@ -17807,7 +18485,7 @@ initialRollupState:0x8
         label heading_1 "Relax - move candidates" pos:[6,6] width:(spacingUI.width-12) height:18
         label heading_2 "Point Relax settings" pos:[6,6] width:(spacingUI.width-12) height:18
         label heading_3 "Boundary Relax settings" pos:[6,6] width:(spacingUI.width-12) height:18
-        checkbutton advancedToggle "Advanced" pos:[6,6] width:(spacingUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        checkbutton advancedToggle "Cleanup & instance overrides" pos:[6,6] width:(spacingUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local proceduralUI_bodyHeight=0
         local proceduralUI_controlsReady=false
         local proceduralUI_root=undefined,proceduralUI_owner=undefined,proceduralUI_panel=undefined,proceduralUI_controlsReady=false,proceduralUI_binding=false,proceduralUI_setSpecific=true,proceduralUI_peers=#(),proceduralUI_scopeRows=#(1,4)
@@ -18457,7 +19135,7 @@ initialRollupState:0x8
                 if not stackedCaption then (spacingUI_finalMoveSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];spacingUI_finalMoveSpin_caption.width=cellWidth-78) else (spacingUI_finalMoveSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];spacingUI_finalMoveSpin_caption.width=cellWidth);spacingUI_finalMoveSpin_caption.enabled=spacingUI_finalMoveSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Cleanup & instance overrides";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(proceduralUI_resetRule);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -18653,6 +19331,7 @@ initialRollupState:0x8
         spinner flow_previewUI_navigationFacesSpin "" range:[0,2147483647,500000] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/191.2))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/191.2))))) pos:[8,8]
         label flow_previewUI_navigationFacesSpin_caption "Navigating triangles:" pos:[6,6] width:(displayUI.width-12) height:18
         label flow_previewUI_limitsHint "Controller totals; 0 = unlimited" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        button flow_previewUI_fastNavigationButton "Fast navigation" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/96))))) height:22
         button flow_previewUI_memoryButton "Viewport memory..." pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/111.60000000000001))))) tooltip:"Choose Automatic or a custom memory allowance for this Max installation. Changing it does not calculate scatter." height:22
         spinner flow_previewUI_pointsSpin "" range:[10,10000,80] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))) pos:[8,8]
         label flow_previewUI_pointsSpin_caption "Points/plant: " pos:[6,6] width:(displayUI.width-12) height:18
@@ -18668,7 +19347,7 @@ initialRollupState:0x8
         checkbox flow_previewUI_autoRenderCheck "Automatic final render" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/140.4))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/140.4)))))
         button flow_previewUI_clearBakedButton "Remove old baked output" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/137.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/137.60000000000002))))) height:22
         label flow_previewUI_status "Ready" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58))))) height:60
-        checkbutton advancedToggle "Advanced" pos:[6,6] width:(displayUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        checkbutton advancedToggle "Display options" pos:[6,6] width:(displayUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local flow_previewUI_bodyHeight=0
         local flow_previewUI_owner=undefined,flow_previewUI_panel=undefined,flow_previewUI_controlsReady=false
         local flow_previewUI_root=undefined
@@ -18761,6 +19440,28 @@ initialRollupState:0x8
             local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_navigationFacesSpin"
             if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
             try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.viewportNavigationFaces=v;flow_previewUI_obj.refreshDisplay();CyrusViewportRedraw())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on flow_previewUI_fastNavigationButton pressed do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (
+            local eventPanel=panel,action=CyrusBeginAction root "flow_previewUI_fastNavigationButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit displayUI refresh:false
+            try (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (
+            local controller=flow_previewUI_obj,changed=controller.viewportNavigationFaces!=500000
+            if changed do (
+                local command=controller.sourceCommandBegin "Cyrus fast navigation" 3
+                try(controller.viewportNavigationFaces=500000;controller.sourceCommandCommit command)catch(controller.sourceCommandCancel command;throw())
+            )
+            if flow_previewUI_controlsReady and flow_previewUI_obj==controller do (
+                flow_previewUI_syncControls()
+                flow_previewUI_status.text="Moving: 500k triangles.\nSubset preview only.\nIdle detail unchanged."
+            )
+            -- Refresh can rebind a page. Do not use rollout locals afterward.
+            if changed do controller.refreshDisplay()
+            CyrusViewportRedraw()
+        )
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -18889,7 +19590,7 @@ initialRollupState:0x8
             flow_previewUI_binding=true;flow_previewUI_controlsReady=false
             if flow_previewUI_obj!=next do ()
             flow_previewUI_obj=next;flow_previewUI_parentView=(CyrusContainerPanel flow_previewUI_root)
-            for c in #(flow_previewUI_previewCheck,flow_previewUI_displayModeDrop,flow_previewUI_proxyShapeDrop,flow_previewUI_instancesLimitSpin,flow_previewUI_faceLimitSpin,flow_previewUI_identificationDrop,flow_previewUI_pointColorRadio,flow_previewUI_solidColorPicker,flow_previewUI_budgetSpin,flow_previewUI_navigationPointsSpin,flow_previewUI_navigationInstancesSpin,flow_previewUI_navigationFacesSpin,flow_previewUI_limitsHint,flow_previewUI_memoryButton,flow_previewUI_pointsSpin,flow_previewUI_radiusLimitSpin,flow_previewUI_radiusMetricDrop,flow_previewUI_radiusAllCheck,flow_previewUI_radiusHint,flow_previewUI_iconSpin,flow_previewUI_refreshButton,flow_previewUI_autoRenderCheck,flow_previewUI_clearBakedButton,flow_previewUI_status) do c.enabled=true
+            for c in #(flow_previewUI_previewCheck,flow_previewUI_displayModeDrop,flow_previewUI_proxyShapeDrop,flow_previewUI_instancesLimitSpin,flow_previewUI_faceLimitSpin,flow_previewUI_identificationDrop,flow_previewUI_pointColorRadio,flow_previewUI_solidColorPicker,flow_previewUI_budgetSpin,flow_previewUI_navigationPointsSpin,flow_previewUI_navigationInstancesSpin,flow_previewUI_navigationFacesSpin,flow_previewUI_limitsHint,flow_previewUI_fastNavigationButton,flow_previewUI_memoryButton,flow_previewUI_pointsSpin,flow_previewUI_radiusLimitSpin,flow_previewUI_radiusMetricDrop,flow_previewUI_radiusAllCheck,flow_previewUI_radiusHint,flow_previewUI_iconSpin,flow_previewUI_refreshButton,flow_previewUI_autoRenderCheck,flow_previewUI_clearBakedButton,flow_previewUI_status) do c.enabled=true
             try (undo off ((flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=if flow_previewUI_obj.identificationMode==4 then 1 else flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;flow_previewUI_controlsReady=true;(flow_previewUI_previewCheck.checked=flow_previewUI_obj.showPoints;flow_previewUI_pointsSpin.value=flow_previewUI_obj.pointsPerPlant;flow_previewUI_iconSpin.value=flow_previewUI_obj.iconSize)))) catch(flow_previewUI_binding=false;flow_previewUI_controlsReady=true;throw())
             flow_previewUI_controlsReady=true;flow_previewUI_binding=false
         )
@@ -19013,7 +19714,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(flow_previewUI_displayModeDrop.selection==1 or flow_previewUI_displayModeDrop.selection==4),(flow_previewUI_displayModeDrop.selection==2),(flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5),(flow_previewUI_displayModeDrop.selection!=5),(flow_previewUI_pointColorRadio.state==1),flow_previewUI_previewCheck.text,flow_previewUI_pointColorRadio.text,flow_previewUI_limitsHint.text,flow_previewUI_memoryButton.text,flow_previewUI_radiusAllCheck.text,flow_previewUI_radiusHint.text,flow_previewUI_refreshButton.text,flow_previewUI_autoRenderCheck.text,flow_previewUI_clearBakedButton.text,flow_previewUI_status.text,flow_previewUI_displayModeDrop_caption.text,flow_previewUI_proxyShapeDrop_caption.text,flow_previewUI_instancesLimitSpin_caption.text,flow_previewUI_faceLimitSpin_caption.text,flow_previewUI_identificationDrop_caption.text,flow_previewUI_pointColorRadio_caption.text,flow_previewUI_solidColorPicker_caption.text,flow_previewUI_budgetSpin_caption.text,flow_previewUI_navigationPointsSpin_caption.text,flow_previewUI_navigationInstancesSpin_caption.text,flow_previewUI_navigationFacesSpin_caption.text,flow_previewUI_pointsSpin_caption.text,flow_previewUI_radiusLimitSpin_caption.text,flow_previewUI_radiusMetricDrop_caption.text,flow_previewUI_iconSpin_caption.text,flow_previewUI_previewCheck.visible,flow_previewUI_displayModeDrop.visible,flow_previewUI_proxyShapeDrop.visible,flow_previewUI_instancesLimitSpin.visible,flow_previewUI_faceLimitSpin.visible,flow_previewUI_identificationDrop.visible,flow_previewUI_pointColorRadio.visible,flow_previewUI_solidColorPicker.visible,flow_previewUI_budgetSpin.visible,flow_previewUI_navigationPointsSpin.visible,flow_previewUI_navigationInstancesSpin.visible,flow_previewUI_navigationFacesSpin.visible,flow_previewUI_limitsHint.visible,flow_previewUI_memoryButton.visible,flow_previewUI_pointsSpin.visible,flow_previewUI_radiusLimitSpin.visible,flow_previewUI_radiusMetricDrop.visible,flow_previewUI_radiusAllCheck.visible,flow_previewUI_radiusHint.visible,flow_previewUI_iconSpin.visible,flow_previewUI_refreshButton.visible,flow_previewUI_autoRenderCheck.visible,flow_previewUI_clearBakedButton.visible,flow_previewUI_status.visible,flow_previewUI_limitsHint.height,flow_previewUI_radiusHint.height,flow_previewUI_status.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(flow_previewUI_displayModeDrop.selection==1 or flow_previewUI_displayModeDrop.selection==4),(flow_previewUI_displayModeDrop.selection==2),(flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5),(flow_previewUI_displayModeDrop.selection!=5),(flow_previewUI_pointColorRadio.state==1),flow_previewUI_previewCheck.text,flow_previewUI_pointColorRadio.text,flow_previewUI_limitsHint.text,flow_previewUI_fastNavigationButton.text,flow_previewUI_memoryButton.text,flow_previewUI_radiusAllCheck.text,flow_previewUI_radiusHint.text,flow_previewUI_refreshButton.text,flow_previewUI_autoRenderCheck.text,flow_previewUI_clearBakedButton.text,flow_previewUI_status.text,flow_previewUI_displayModeDrop_caption.text,flow_previewUI_proxyShapeDrop_caption.text,flow_previewUI_instancesLimitSpin_caption.text,flow_previewUI_faceLimitSpin_caption.text,flow_previewUI_identificationDrop_caption.text,flow_previewUI_pointColorRadio_caption.text,flow_previewUI_solidColorPicker_caption.text,flow_previewUI_budgetSpin_caption.text,flow_previewUI_navigationPointsSpin_caption.text,flow_previewUI_navigationInstancesSpin_caption.text,flow_previewUI_navigationFacesSpin_caption.text,flow_previewUI_pointsSpin_caption.text,flow_previewUI_radiusLimitSpin_caption.text,flow_previewUI_radiusMetricDrop_caption.text,flow_previewUI_iconSpin_caption.text,flow_previewUI_previewCheck.visible,flow_previewUI_displayModeDrop.visible,flow_previewUI_proxyShapeDrop.visible,flow_previewUI_instancesLimitSpin.visible,flow_previewUI_faceLimitSpin.visible,flow_previewUI_identificationDrop.visible,flow_previewUI_pointColorRadio.visible,flow_previewUI_solidColorPicker.visible,flow_previewUI_budgetSpin.visible,flow_previewUI_navigationPointsSpin.visible,flow_previewUI_navigationInstancesSpin.visible,flow_previewUI_navigationFacesSpin.visible,flow_previewUI_limitsHint.visible,flow_previewUI_fastNavigationButton.visible,flow_previewUI_memoryButton.visible,flow_previewUI_pointsSpin.visible,flow_previewUI_radiusLimitSpin.visible,flow_previewUI_radiusMetricDrop.visible,flow_previewUI_radiusAllCheck.visible,flow_previewUI_radiusHint.visible,flow_previewUI_iconSpin.visible,flow_previewUI_refreshButton.visible,flow_previewUI_autoRenderCheck.visible,flow_previewUI_clearBakedButton.visible,flow_previewUI_status.visible,flow_previewUI_limitsHint.height,flow_previewUI_radiusHint.height,flow_previewUI_status.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -19117,6 +19818,15 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(flow_previewUI_fastNavigationButton);show=(true and (flow_previewUI_displayModeDrop.selection==3 or flow_previewUI_displayModeDrop.selection==5))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(flow_previewUI_memoryButton);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -19166,7 +19876,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Display options";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(flow_previewUI_proxyShapeDrop);show=(advancedToggle.checked and (flow_previewUI_displayModeDrop.selection==2))
             for c in rowControls where c.visible!=show do c.visible=show
             if flow_previewUI_proxyShapeDrop_caption.visible!=show do flow_previewUI_proxyShapeDrop_caption.visible=show
@@ -19342,7 +20052,7 @@ initialRollupState:0x8
         label diagnosticsUI_statusInfo "Recording is off." pos:[8,8] width:((statisticsUI.width-16-((amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))) height:74
         label diagnosticsUI_scopeInfo "Records all Scatter setups in this Max process. Engineering events are not training data. Save reports explicitly; closing this panel keeps the session." pos:[8,8] width:((statisticsUI.width-16-((amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))) height:84
         label heading_0 "Local diagnostic recording - setup" pos:[6,6] width:(statisticsUI.width-12) height:18
-        checkbutton advancedToggle "Advanced" pos:[6,6] width:(statisticsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        checkbutton advancedToggle "Diagnostic recording" pos:[6,6] width:(statisticsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local detailsUI_bodyHeight=0
         local detailsUI_controlsReady=false,detailsUI_binding=false
         local detailsUI_root=undefined,detailsUI_owner=undefined,detailsUI_panel=undefined,detailsUI_controlsReady=false
@@ -19643,7 +20353,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Diagnostic recording";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -19738,7 +20448,7 @@ initialRollupState:0x8
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local hostPage=undefined
         local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
-        dropdownlist interactionsUI_roleList "" items:#("Off","Collider","React to colliders") selection:1 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58)))))
+        dropdownlist interactionsUI_roleList "" items:#("Off","Scattered colliders","React to colliders") selection:1 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58)))))
         label interactionsUI_roleList_caption "Layer role" pos:[6,6] width:(interactionsUI.width-12) height:18
         label interactionsUI_workflowInfo "" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))) height:60
         listbox interactionsUI_modelList "" items:#() height:4 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58)))))
@@ -19754,9 +20464,28 @@ initialRollupState:0x8
         button interactionsUI_prepareButton "Prepare model" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/85.60000000000001))))) height:22
         button interactionsUI_editorButton "Edit preparation..." pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/116.8))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/116.8))))) height:22
         checkbutton interactionsUI_guideReviewButton "Show source guides" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/111.60000000000001))))) height:22
-        checkbox interactionsUI_rootsCheck "Hide roots inside colliders" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/166.4)))))
-        spinner interactionsUI_gapSpin "" type:#worldUnits range:[0,(units.decodeValue "10cm"),0] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/144.4))))) fieldWidth:58
-        label interactionsUI_gapSpin_caption "Contact gap:" pos:[6,6] width:(interactionsUI.width-12) height:18
+        checkbox interactionsUI_rootsCheck "Hide covered roots" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/119.60000000000001)))))
+        dropdownlist interactionsUI_responseList "" items:#("Bend","Trim","Bend and trim","Detailed contact (slow)") selection:1 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58)))))
+        label interactionsUI_responseList_caption "Response" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_strengthSpin "" type:#float range:[0,100,50] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/175.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/175.60000000000002))))) fieldWidth:58
+        label interactionsUI_strengthSpin_caption "Bend strength (%):" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_trunkSpin "" type:#float range:[0,100,0] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/160))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/160))))) fieldWidth:58
+        label interactionsUI_trunkSpin_caption "Trunk bend (%):" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_fixedBaseSpin "" type:#float range:[0,100,0] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/196.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/196.4))))) fieldWidth:58
+        label interactionsUI_fixedBaseSpin_caption "Fixed base (% height):" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_transitionSpin "" type:#float range:[0,100,25] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/191.2))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/191.2))))) fieldWidth:58
+        label interactionsUI_transitionSpin_caption "Bend fade (% height):" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_pruneThresholdSpin "" type:#worldUnits range:[0,(units.decodeValue "10m"),0] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/180.8))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/180.8))))) fieldWidth:58
+        label interactionsUI_pruneThresholdSpin_caption "Trim after overlap:" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_pruneAmountSpin "" type:#float range:[0,100,100] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/165.2))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/165.2))))) fieldWidth:58
+        label interactionsUI_pruneAmountSpin_caption "Trim amount (%):" pos:[6,6] width:(interactionsUI.width-12) height:18
+        checkbox interactionsUI_neighborsCheck "React to neighboring trees" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/161.20000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/161.20000000000002)))))
+        dropdownlist interactionsUI_hideAreaList "" items:#("Inside solid","Under collider") selection:2 pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58)))))
+        label interactionsUI_hideAreaList_caption "Hide area" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_hideMarginSpin "" type:#worldUnits range:[0,(units.decodeValue "10m"),0] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/144.4))))) fieldWidth:58
+        label interactionsUI_hideMarginSpin_caption "Hide margin:" pos:[6,6] width:(interactionsUI.width-12) height:18
+        spinner interactionsUI_gapSpin "" type:#worldUnits range:[0,(units.decodeValue "10m"),0] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/134))))) fieldWidth:58
+        label interactionsUI_gapSpin_caption "Clearance:" pos:[6,6] width:(interactionsUI.width-12) height:18
         spinner interactionsUI_foliageSpin "" type:#float range:[1,100,5] pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/227.6))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/227.6))))) fieldWidth:58
         label interactionsUI_foliageSpin_caption "Preview leaves / blades (%):" pos:[6,6] width:(interactionsUI.width-12) height:18
         label interactionsUI_info "" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/58))))) height:100
@@ -19785,31 +20514,49 @@ initialRollupState:0x8
         label interactionsUI_workLimitSpin_caption "Preparation work (millions):" pos:[6,6] width:(interactionsUI.width-12) height:18
         button interactionsUI_cleanColliderLinksButton "Clean unused collider links" pos:[8,8] width:((interactionsUI.width-16-((amin 1 (amax 1 (floor ((interactionsUI.width-8)/158.4))))-1)*4)/(amin 1 (amax 1 (floor ((interactionsUI.width-8)/158.4))))) height:22
         dotNetControl interactionsUI_modelList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        checkbutton advancedToggle "Preparation limits" pos:[6,6] width:(interactionsUI.width-12) height:22 tooltip:""
+        checkbutton advancedToggle "More settings" pos:[6,6] width:(interactionsUI.width-12) height:22 tooltip:""
         local interactionsUI_bodyHeight=0
         local interactionsUI_controlsReady=false
-        local interactionsUI_root=undefined,interactionsUI_owner=undefined,interactionsUI_panel=undefined,interactionsUI_obj=undefined,interactionsUI_controlsReady=false,interactionsUI_binding=false,interactionsUI_models=#(),interactionsUI_selectedSource=undefined
-        fn interactionsUI_currentSource = (local row=interactionsUI_modelList.selection;if row>0 and row<=interactionsUI_models.count and isValidNode interactionsUI_models[row] then interactionsUI_models[row] else undefined)
+        local interactionsUI_root=undefined,interactionsUI_owner=undefined,interactionsUI_panel=undefined,interactionsUI_obj=undefined,interactionsUI_controlsReady=false,interactionsUI_binding=false,interactionsUI_models=#(),interactionsUI_modelIDs=#(),interactionsUI_selectedSource=undefined,interactionsUI_selectedSourceID=""
+        fn interactionsUI_currentRow = (
+            local chosen=interactionsUI_modelList.selection
+            if interactionsUI_obj==undefined or chosen<1 or chosen>interactionsUI_modelIDs.count then 0 else findItem (interactionsUI_obj.sourceRowIDs as array) interactionsUI_modelIDs[chosen]
+        )
+        fn interactionsUI_currentSource = (
+            local row=interactionsUI_currentRow()
+            if row>0 and row<=interactionsUI_obj.sources.count and not interactionsUI_obj.isEmptySource row and not interactionsUI_obj.isPointSource row and interactionsUI_obj.usableSource interactionsUI_obj.sources[row] then interactionsUI_obj.sources[row] else undefined
+        )
         fn interactionsUI_sourceState = (
-            local node=interactionsUI_currentSource();interactionsUI_selectedSource=node
+            local row=interactionsUI_currentRow(),node=interactionsUI_currentSource();interactionsUI_selectedSource=node
+            interactionsUI_selectedSourceID=if row>0 then interactionsUI_obj.sourceRowIDs[row] else ""
             interactionsUI_prepareButton.enabled=node!=undefined and not interactionsUI_obj.interactionCollider
             interactionsUI_editorButton.enabled=node!=undefined and not interactionsUI_obj.interactionCollider
             interactionsUI_guideReviewButton.checked=interactionsUI_obj.interactionsReviewVisible #guides node
             interactionsUI_guideReviewButton.enabled=node!=undefined and (interactionsUI_obj.interactionReviewNode==node or interactionsUI_obj.interactionsReady #(node))
             interactionsUI_reviewColliderButton.checked=interactionsUI_obj.interactionsReviewVisible #collider node
             interactionsUI_reviewColliderButton.enabled=node!=undefined and interactionsUI_obj.interactionCollider
-            interactionsUI_focusSourceButton.enabled=node!=undefined;interactionsUI_sourceRemoveButton.enabled=node!=undefined;interactionsUI_pickColliderButton.enabled=node!=undefined and interactionsUI_obj.interactionCollider
-            interactionsUI_workflowInfo.text=if interactionsUI_obj.interactionCollider then "Uses the models already in this layer. Spheres and closed stones need no separate collider. Move scattered colliders with Cyrus Edit."
-                else if interactionsUI_obj.interactionReact then interactionsUI_obj.interactionsPreparationStatus() else "Choose Collider for stones/trees, or React to colliders for plants. Prepare each original source once."
+            interactionsUI_focusSourceButton.enabled=node!=undefined;interactionsUI_sourceRemoveButton.enabled=row>0;interactionsUI_pickColliderButton.enabled=node!=undefined and interactionsUI_obj.interactionCollider
+            interactionsUI_workflowInfo.text=if interactionsUI_obj.interactionCollider then "Uses scattered copies in this layer. For ordinary walls and stones, use Scene colliders."
+                else if interactionsUI_obj.interactionReact then interactionsUI_obj.interactionsPreparationStatus() else "Choose React to colliders for plants. Add ordinary walls or stones in Scene colliders."
             true
         )
         fn interactionsUI_bind leaf = (
             interactionsUI_binding=true
-            if interactionsUI_obj!=undefined and interactionsUI_obj!=leaf do (interactionsUI_obj.interactionsClearGuides();interactionsUI_selectedSource=undefined)
-            interactionsUI_obj=leaf;interactionsUI_models=interactionsUI_obj.validSources();interactionsUI_roleList.selection=if interactionsUI_obj.interactionCollider then 2 else if interactionsUI_obj.interactionReact then 3 else 1
-            interactionsUI_rootsCheck.checked=interactionsUI_obj.interactionCoverRoots;interactionsUI_gapSpin.value=interactionsUI_obj.interactionGapWU;interactionsUI_stiffnessSpin.value=interactionsUI_obj.interactionStiffness;interactionsUI_proxyList.selection=interactionsUI_obj.interactionColliderMode
-            interactionsUI_modelList.items=for node in interactionsUI_models collect (if isValidNode node then interactionsUI_obj.interactionsSourceCaption node else "Unsupported source")
-            local row=findItem interactionsUI_models interactionsUI_selectedSource;interactionsUI_modelList.selection=if row>0 then row else if interactionsUI_models.count>0 then 1 else 0
+            if interactionsUI_obj!=undefined and interactionsUI_obj!=leaf do (interactionsUI_obj.interactionsClearGuides();interactionsUI_selectedSource=undefined;interactionsUI_selectedSourceID="")
+            interactionsUI_obj=leaf;interactionsUI_obj.ensureSourceRows();interactionsUI_models=interactionsUI_obj.sources as array;interactionsUI_modelIDs=for id in interactionsUI_obj.sourceRowIDs collect id
+            interactionsUI_roleList.selection=if interactionsUI_obj.interactionCollider then 2 else if interactionsUI_obj.interactionReact then 3 else 1
+            interactionsUI_rootsCheck.checked=interactionsUI_obj.interactionCoverRoots;interactionsUI_hideMarginSpin.value=interactionsUI_obj.interactionHideMarginWU;interactionsUI_hideAreaList.selection=interactionsUI_obj.interactionHideArea;interactionsUI_hideMarginSpin.enabled=interactionsUI_obj.interactionCoverRoots;interactionsUI_hideAreaList.enabled=interactionsUI_obj.interactionCoverRoots;interactionsUI_gapSpin.value=interactionsUI_obj.interactionGapWU;interactionsUI_stiffnessSpin.value=interactionsUI_obj.interactionStiffness;interactionsUI_proxyList.selection=interactionsUI_obj.interactionColliderMode
+            interactionsUI_responseList.selection=if interactionsUI_obj.interactionResponse==0 then 4 else interactionsUI_obj.interactionResponse;interactionsUI_strengthSpin.value=interactionsUI_obj.interactionBendStrength*100;interactionsUI_pruneThresholdSpin.value=interactionsUI_obj.interactionPruneThresholdWU;interactionsUI_pruneAmountSpin.value=interactionsUI_obj.interactionPruneAmount*100;interactionsUI_neighborsCheck.checked=interactionsUI_obj.interactionNeighbors
+            interactionsUI_trunkSpin.value=interactionsUI_obj.interactionTrunkBend*100;interactionsUI_fixedBaseSpin.value=interactionsUI_obj.interactionFixedBase*100;interactionsUI_transitionSpin.value=interactionsUI_obj.interactionBendTransition*100
+            interactionsUI_modelList.items=for row=1 to interactionsUI_models.count collect (
+                if interactionsUI_obj.isPointSource row then ((interactionsUI_obj.sourceLabel row)+" | Point (no interaction mesh)")
+                else if interactionsUI_obj.isEmptySource row then ((interactionsUI_obj.sourceLabel row)+" | Empty")
+                else if not interactionsUI_obj.usableSource interactionsUI_models[row] then ((interactionsUI_obj.sourceLabel row)+" | Missing model - remove or replace")
+                else interactionsUI_obj.interactionsSourceCaption interactionsUI_models[row]
+            )
+            local row=findItem interactionsUI_modelIDs interactionsUI_selectedSourceID
+            if row==0 and interactionsUI_selectedSource!=undefined do row=findItem interactionsUI_models interactionsUI_selectedSource
+            interactionsUI_modelList.selection=if row>0 then row else if interactionsUI_models.count>0 then 1 else 0
             interactionsUI_minimumSpin.range=point3 (units.decodeValue "1mm") (units.decodeValue "100mm") (units.decodeValue "5mm")
             interactionsUI_minimumSpin.value=if interactionsUI_obj.interactionUnitsPending then interactionsUI_obj.interactionMinimumWU else interactionsUI_obj.interactionMinimumM*(units.decodeValue "1m");interactionsUI_foliageSpin.value=interactionsUI_obj.interactionFoliage*100
             interactionsUI_verticesLimitSpin.value=interactionsUI_obj.interactionMaxVertices;interactionsUI_trianglesLimitSpin.value=interactionsUI_obj.interactionMaxTriangles;interactionsUI_partsLimitSpin.value=interactionsUI_obj.interactionMaxParts;interactionsUI_guidesLimitSpin.value=interactionsUI_obj.interactionMaxGuides;interactionsUI_previewLimitSpin.value=interactionsUI_obj.interactionMaxPreview;interactionsUI_memoryLimitSpin.value=interactionsUI_obj.interactionMemoryMiB;interactionsUI_workLimitSpin.value=interactionsUI_obj.interactionWorkMillions
@@ -19850,6 +20597,79 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
+        fn interactionsUI_responseSetting key value = if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do try(local target=interactionsUI_obj;target.interactionsResponseSetting key value;interactionsUI_bind target;interactionsUI_apply())catch(interactionsUI_info.text=getCurrentException())
+        on interactionsUI_responseList selected v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_responseList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionResponse (if v==4 then 0 else v)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_strengthSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_strengthSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionBendStrength (v/100.0)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_trunkSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_trunkSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionTrunkBend (v/100.0)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_fixedBaseSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_fixedBaseSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionFixedBase (v/100.0)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_transitionSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_transitionSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionBendTransition (v/100.0)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_pruneThresholdSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_pruneThresholdSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionPruneThresholdWU v
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_pruneAmountSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_pruneAmountSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionPruneAmount (v/100.0)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_neighborsCheck changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_neighborsCheck"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (interactionsUI_responseSetting #interactionNeighbors v
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         on interactionsUI_modelList selected row do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and true do (
             local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_modelList"
             if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:false
@@ -19867,7 +20687,7 @@ initialRollupState:0x8
             if not (target.usableSource node) do throw "Pick an original scene model. Receivers and Scatter objects cannot be source models."
             target.interactionsClearGuides()
             undo "Cyrus add interaction source" on target.addModelSource node
-            if interactionsUI_controlsReady and interactionsUI_obj==target do interactionsUI_selectedSource=node
+            if interactionsUI_controlsReady and interactionsUI_obj==target do (interactionsUI_selectedSource=node;local row=target.sourceRow node;interactionsUI_selectedSourceID=if row>0 then target.sourceRowIDs[row] else "")
             if controller.mainUI!=undefined do controller.mainUI.bind()
             if interactionsUI_controlsReady and interactionsUI_obj==target do (interactionsUI_bind target;interactionsUI_apply())
         )catch(interactionsUI_info.text=getCurrentException())
@@ -19880,12 +20700,11 @@ initialRollupState:0x8
             local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_sourceRemoveButton"
             if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
             try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do try(
-            local target=interactionsUI_obj,controller=interactionsUI_root,node=interactionsUI_currentSource()
-            if node==undefined do throw "Choose a source model to remove."
-            local row=target.sourceRow node
-            if row<1 do throw "The source list changed. Select the model again."
-            target.interactionsClearGuides();target.removeModelSources #(row)
-            if interactionsUI_controlsReady and interactionsUI_obj==target do interactionsUI_selectedSource=undefined
+            local target=interactionsUI_obj,controller=interactionsUI_root,row=interactionsUI_currentRow()
+            -- If another view already removed the selected ID, refresh this
+            -- view; do not delete whichever new source now occupies its index.
+            if row>0 do (target.interactionsClearGuides();target.removeModelSources #(row))
+            if interactionsUI_controlsReady and interactionsUI_obj==target do (interactionsUI_selectedSource=undefined;interactionsUI_selectedSourceID="")
             if controller.mainUI!=undefined do controller.mainUI.bind()
             if interactionsUI_controlsReady and interactionsUI_obj==target do (interactionsUI_bind target;interactionsUI_apply())
         )catch(interactionsUI_info.text=getCurrentException())
@@ -19917,10 +20736,28 @@ initialRollupState:0x8
                 CyrusEndAction action
             )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
         )
+        on interactionsUI_hideMarginSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_hideMarginSpin"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (undo "Cyrus hide margin" on interactionsUI_obj.interactionHideMarginWU=v;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on interactionsUI_hideAreaList selected v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_hideAreaList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
+            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (undo "Cyrus hide area" on interactionsUI_obj.interactionHideArea=v;interactionsUI_apply())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
         on interactionsUI_gapSpin changed v do if controlsReady and not binding and root!=undefined and interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (
             local eventPanel=panel,action=CyrusBeginAction root "interactionsUI_gapSpin"
             if eventPanel!=undefined do eventPanel.beginPageEdit interactionsUI refresh:true
-            try (if interactionsUI_controlsReady and not interactionsUI_binding and CyrusLicenseCanEdit() do (undo "Cyrus contact gap" on interactionsUI_obj.interactionGapWU=v;interactionsUI_apply())
+            try (interactionsUI_responseSetting #interactionGapWU v
                 if controlsReady and root!=undefined do layout()
                 if eventPanel!=undefined do eventPanel.endPageEdit()
                 CyrusEndAction action
@@ -20266,7 +21103,7 @@ initialRollupState:0x8
             )
             true
         )
-        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(interactionsUI_roleList.selection!=1),(interactionsUI_roleList.selection==2),(interactionsUI_roleList.selection==3),interactionsUI_workflowInfo.text,interactionsUI_sourcePickButton.text,interactionsUI_sourceRemoveButton.text,interactionsUI_focusSourceButton.text,interactionsUI_buildTrunksButton.text,interactionsUI_pickColliderButton.text,interactionsUI_reviewColliderButton.text,interactionsUI_prepareButton.text,interactionsUI_editorButton.text,interactionsUI_guideReviewButton.text,interactionsUI_rootsCheck.text,interactionsUI_info.text,interactionsUI_retryButton.text,interactionsUI_validateButton.text,interactionsUI_repairSettingsButton.text,interactionsUI_cleanColliderLinksButton.text,interactionsUI_roleList_caption.text,interactionsUI_modelList_caption.text,interactionsUI_proxyList_caption.text,interactionsUI_gapSpin_caption.text,interactionsUI_foliageSpin_caption.text,interactionsUI_minimumSpin_caption.text,interactionsUI_stiffnessSpin_caption.text,interactionsUI_connectionSpin_caption.text,interactionsUI_verticesLimitSpin_caption.text,interactionsUI_trianglesLimitSpin_caption.text,interactionsUI_partsLimitSpin_caption.text,interactionsUI_guidesLimitSpin_caption.text,interactionsUI_previewLimitSpin_caption.text,interactionsUI_memoryLimitSpin_caption.text,interactionsUI_workLimitSpin_caption.text,interactionsUI_modelList.height,interactionsUI_roleList.visible,interactionsUI_workflowInfo.visible,interactionsUI_sourcePickButton.visible,interactionsUI_sourceRemoveButton.visible,interactionsUI_focusSourceButton.visible,interactionsUI_proxyList.visible,interactionsUI_buildTrunksButton.visible,interactionsUI_pickColliderButton.visible,interactionsUI_reviewColliderButton.visible,interactionsUI_prepareButton.visible,interactionsUI_editorButton.visible,interactionsUI_guideReviewButton.visible,interactionsUI_rootsCheck.visible,interactionsUI_gapSpin.visible,interactionsUI_foliageSpin.visible,interactionsUI_info.visible,interactionsUI_retryButton.visible,interactionsUI_validateButton.visible,interactionsUI_repairSettingsButton.visible,interactionsUI_minimumSpin.visible,interactionsUI_stiffnessSpin.visible,interactionsUI_connectionSpin.visible,interactionsUI_verticesLimitSpin.visible,interactionsUI_trianglesLimitSpin.visible,interactionsUI_partsLimitSpin.visible,interactionsUI_guidesLimitSpin.visible,interactionsUI_previewLimitSpin.visible,interactionsUI_memoryLimitSpin.visible,interactionsUI_workLimitSpin.visible,interactionsUI_cleanColliderLinksButton.visible,interactionsUI_workflowInfo.height,interactionsUI_info.height)
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,(interactionsUI_roleList.selection!=1),(interactionsUI_roleList.selection==2),(interactionsUI_roleList.selection==3),(interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection!=4),(interactionsUI_roleList.selection==3 and (interactionsUI_responseList.selection==2 or interactionsUI_responseList.selection==3)),(interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection==4),interactionsUI_workflowInfo.text,interactionsUI_sourcePickButton.text,interactionsUI_sourceRemoveButton.text,interactionsUI_focusSourceButton.text,interactionsUI_buildTrunksButton.text,interactionsUI_pickColliderButton.text,interactionsUI_reviewColliderButton.text,interactionsUI_prepareButton.text,interactionsUI_editorButton.text,interactionsUI_guideReviewButton.text,interactionsUI_rootsCheck.text,interactionsUI_neighborsCheck.text,interactionsUI_info.text,interactionsUI_retryButton.text,interactionsUI_validateButton.text,interactionsUI_repairSettingsButton.text,interactionsUI_cleanColliderLinksButton.text,interactionsUI_roleList_caption.text,interactionsUI_modelList_caption.text,interactionsUI_proxyList_caption.text,interactionsUI_responseList_caption.text,interactionsUI_strengthSpin_caption.text,interactionsUI_trunkSpin_caption.text,interactionsUI_fixedBaseSpin_caption.text,interactionsUI_transitionSpin_caption.text,interactionsUI_pruneThresholdSpin_caption.text,interactionsUI_pruneAmountSpin_caption.text,interactionsUI_hideAreaList_caption.text,interactionsUI_hideMarginSpin_caption.text,interactionsUI_gapSpin_caption.text,interactionsUI_foliageSpin_caption.text,interactionsUI_minimumSpin_caption.text,interactionsUI_stiffnessSpin_caption.text,interactionsUI_connectionSpin_caption.text,interactionsUI_verticesLimitSpin_caption.text,interactionsUI_trianglesLimitSpin_caption.text,interactionsUI_partsLimitSpin_caption.text,interactionsUI_guidesLimitSpin_caption.text,interactionsUI_previewLimitSpin_caption.text,interactionsUI_memoryLimitSpin_caption.text,interactionsUI_workLimitSpin_caption.text,interactionsUI_modelList.height,interactionsUI_roleList.visible,interactionsUI_workflowInfo.visible,interactionsUI_sourcePickButton.visible,interactionsUI_sourceRemoveButton.visible,interactionsUI_focusSourceButton.visible,interactionsUI_proxyList.visible,interactionsUI_buildTrunksButton.visible,interactionsUI_pickColliderButton.visible,interactionsUI_reviewColliderButton.visible,interactionsUI_prepareButton.visible,interactionsUI_editorButton.visible,interactionsUI_guideReviewButton.visible,interactionsUI_rootsCheck.visible,interactionsUI_responseList.visible,interactionsUI_strengthSpin.visible,interactionsUI_trunkSpin.visible,interactionsUI_fixedBaseSpin.visible,interactionsUI_transitionSpin.visible,interactionsUI_pruneThresholdSpin.visible,interactionsUI_pruneAmountSpin.visible,interactionsUI_neighborsCheck.visible,interactionsUI_hideAreaList.visible,interactionsUI_hideMarginSpin.visible,interactionsUI_gapSpin.visible,interactionsUI_foliageSpin.visible,interactionsUI_info.visible,interactionsUI_retryButton.visible,interactionsUI_validateButton.visible,interactionsUI_repairSettingsButton.visible,interactionsUI_minimumSpin.visible,interactionsUI_stiffnessSpin.visible,interactionsUI_connectionSpin.visible,interactionsUI_verticesLimitSpin.visible,interactionsUI_trianglesLimitSpin.visible,interactionsUI_partsLimitSpin.visible,interactionsUI_guidesLimitSpin.visible,interactionsUI_previewLimitSpin.visible,interactionsUI_memoryLimitSpin.visible,interactionsUI_workLimitSpin.visible,interactionsUI_cleanColliderLinksButton.visible,interactionsUI_workflowInfo.height,interactionsUI_info.height)
         fn layout = (
             local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             try (
@@ -20403,22 +21240,139 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(interactionsUI_responseList);show=(true and (interactionsUI_roleList.selection==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_responseList_caption.visible!=show do interactionsUI_responseList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_responseList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(interactionsUI_responseList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                interactionsUI_responseList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_responseList_caption.width=cellWidth;interactionsUI_responseList_caption.enabled=interactionsUI_responseList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_strengthSpin);show=(true and (interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection!=4))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_strengthSpin_caption.visible!=show do interactionsUI_strengthSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/175.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_strengthSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<171.60000000000002;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_strengthSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_strengthSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_strengthSpin_caption.width=cellWidth-78) else (interactionsUI_strengthSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_strengthSpin_caption.width=cellWidth);interactionsUI_strengthSpin_caption.enabled=interactionsUI_strengthSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_trunkSpin);show=(true and (interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection!=4))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_trunkSpin_caption.visible!=show do interactionsUI_trunkSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/160))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_trunkSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<156;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_trunkSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_trunkSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_trunkSpin_caption.width=cellWidth-78) else (interactionsUI_trunkSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_trunkSpin_caption.width=cellWidth);interactionsUI_trunkSpin_caption.enabled=interactionsUI_trunkSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_fixedBaseSpin);show=(true and (interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection!=4))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_fixedBaseSpin_caption.visible!=show do interactionsUI_fixedBaseSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/196.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_fixedBaseSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<192.4;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_fixedBaseSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_fixedBaseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_fixedBaseSpin_caption.width=cellWidth-78) else (interactionsUI_fixedBaseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_fixedBaseSpin_caption.width=cellWidth);interactionsUI_fixedBaseSpin_caption.enabled=interactionsUI_fixedBaseSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_transitionSpin);show=(true and (interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection!=4))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_transitionSpin_caption.visible!=show do interactionsUI_transitionSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/191.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_transitionSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<187.2;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_transitionSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_transitionSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_transitionSpin_caption.width=cellWidth-78) else (interactionsUI_transitionSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_transitionSpin_caption.width=cellWidth);interactionsUI_transitionSpin_caption.enabled=interactionsUI_transitionSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_pruneThresholdSpin);show=(true and (interactionsUI_roleList.selection==3 and (interactionsUI_responseList.selection==2 or interactionsUI_responseList.selection==3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_pruneThresholdSpin_caption.visible!=show do interactionsUI_pruneThresholdSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/180.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_pruneThresholdSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<176.8;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_pruneThresholdSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_pruneThresholdSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_pruneThresholdSpin_caption.width=cellWidth-78) else (interactionsUI_pruneThresholdSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_pruneThresholdSpin_caption.width=cellWidth);interactionsUI_pruneThresholdSpin_caption.enabled=interactionsUI_pruneThresholdSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_pruneAmountSpin);show=(true and (interactionsUI_roleList.selection==3 and (interactionsUI_responseList.selection==2 or interactionsUI_responseList.selection==3)))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_pruneAmountSpin_caption.visible!=show do interactionsUI_pruneAmountSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/165.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_pruneAmountSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<161.2;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_pruneAmountSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_pruneAmountSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_pruneAmountSpin_caption.width=cellWidth-78) else (interactionsUI_pruneAmountSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_pruneAmountSpin_caption.width=cellWidth);interactionsUI_pruneAmountSpin_caption.enabled=interactionsUI_pruneAmountSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_neighborsCheck);show=(true and (interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection!=4))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/161.20000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitCheck interactionsUI_neighborsCheck cellWidth))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(interactionsUI_rootsCheck);show=(true and (interactionsUI_roleList.selection==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/166.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/119.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(fitCheck interactionsUI_rootsCheck cellWidth))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_hideAreaList);show=(true and (interactionsUI_roleList.selection==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_hideAreaList_caption.visible!=show do interactionsUI_hideAreaList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_hideAreaList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(interactionsUI_hideAreaList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                interactionsUI_hideAreaList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_hideAreaList_caption.width=cellWidth;interactionsUI_hideAreaList_caption.enabled=interactionsUI_hideAreaList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(interactionsUI_hideMarginSpin);show=(true and (interactionsUI_roleList.selection==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if interactionsUI_hideMarginSpin_caption.visible!=show do interactionsUI_hideMarginSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_hideMarginSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_hideMarginSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (interactionsUI_hideMarginSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_hideMarginSpin_caption.width=cellWidth-78) else (interactionsUI_hideMarginSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_hideMarginSpin_caption.width=cellWidth);interactionsUI_hideMarginSpin_caption.enabled=interactionsUI_hideMarginSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(interactionsUI_gapSpin);show=(true and (interactionsUI_roleList.selection==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if interactionsUI_gapSpin_caption.visible!=show do interactionsUI_gapSpin_caption.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel interactionsUI_gapSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_gapSpin_caption.height)) else 0)
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(interactionsUI_gapSpin_caption.height)) else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 if not stackedCaption then (interactionsUI_gapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_gapSpin_caption.width=cellWidth-78) else (interactionsUI_gapSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_gapSpin_caption.width=cellWidth);interactionsUI_gapSpin_caption.enabled=interactionsUI_gapSpin.enabled
@@ -20436,7 +21390,18 @@ initialRollupState:0x8
                 if not stackedCaption then (interactionsUI_foliageSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_foliageSpin_caption.width=cellWidth-78) else (interactionsUI_foliageSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_foliageSpin_caption.width=cellWidth);interactionsUI_foliageSpin_caption.enabled=interactionsUI_foliageSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(interactionsUI_minimumSpin);show=(true and (interactionsUI_roleList.selection==3))
+            rowControls=#(interactionsUI_info);show=(true and (interactionsUI_roleList.selection!=1))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel interactionsUI_info 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(interactionsUI_info.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "More settings";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            rowControls=#(interactionsUI_minimumSpin);show=(advancedToggle.checked and (interactionsUI_roleList.selection==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if interactionsUI_minimumSpin_caption.visible!=show do interactionsUI_minimumSpin_caption.visible=show
             if show do (
@@ -20448,7 +21413,7 @@ initialRollupState:0x8
                 if not stackedCaption then (interactionsUI_minimumSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_minimumSpin_caption.width=cellWidth-78) else (interactionsUI_minimumSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_minimumSpin_caption.width=cellWidth);interactionsUI_minimumSpin_caption.enabled=interactionsUI_minimumSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(interactionsUI_stiffnessSpin);show=(true and (interactionsUI_roleList.selection==3))
+            rowControls=#(interactionsUI_stiffnessSpin);show=(advancedToggle.checked and (interactionsUI_roleList.selection==3 and interactionsUI_responseList.selection==4))
             for c in rowControls where c.visible!=show do c.visible=show
             if interactionsUI_stiffnessSpin_caption.visible!=show do interactionsUI_stiffnessSpin_caption.visible=show
             if show do (
@@ -20460,7 +21425,7 @@ initialRollupState:0x8
                 if not stackedCaption then (interactionsUI_stiffnessSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_stiffnessSpin_caption.width=cellWidth-78) else (interactionsUI_stiffnessSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_stiffnessSpin_caption.width=cellWidth);interactionsUI_stiffnessSpin_caption.enabled=interactionsUI_stiffnessSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(interactionsUI_connectionSpin);show=(true and (interactionsUI_roleList.selection==3))
+            rowControls=#(interactionsUI_connectionSpin);show=(advancedToggle.checked and (interactionsUI_roleList.selection==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if interactionsUI_connectionSpin_caption.visible!=show do interactionsUI_connectionSpin_caption.visible=show
             if show do (
@@ -20472,17 +21437,6 @@ initialRollupState:0x8
                 if not stackedCaption then (interactionsUI_connectionSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];interactionsUI_connectionSpin_caption.width=cellWidth-78) else (interactionsUI_connectionSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];interactionsUI_connectionSpin_caption.width=cellWidth);interactionsUI_connectionSpin_caption.enabled=interactionsUI_connectionSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(interactionsUI_info);show=(true and (interactionsUI_roleList.selection!=1))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel interactionsUI_info 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(interactionsUI_info.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            advancedToggle.text=if advancedToggle.checked then "Fewer settings" else "Preparation limits";advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(interactionsUI_retryButton);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -20621,7 +21575,7 @@ initialRollupState:0x8
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
                 interactionsUI_root=root;interactionsUI_owner=owner;interactionsUI_panel=panel;interactionsUI_controlsReady=controlsReady;interactionsUI_binding=binding
-            if owner!=undefined then (interactionsUI_bind owner;) else (for c in #(interactionsUI_roleList,interactionsUI_workflowInfo,interactionsUI_modelList,interactionsUI_sourcePickButton,interactionsUI_sourceRemoveButton,interactionsUI_focusSourceButton,interactionsUI_proxyList,interactionsUI_buildTrunksButton,interactionsUI_pickColliderButton,interactionsUI_reviewColliderButton,interactionsUI_prepareButton,interactionsUI_editorButton,interactionsUI_guideReviewButton,interactionsUI_rootsCheck,interactionsUI_gapSpin,interactionsUI_foliageSpin,interactionsUI_info,interactionsUI_retryButton,interactionsUI_validateButton,interactionsUI_repairSettingsButton,interactionsUI_minimumSpin,interactionsUI_stiffnessSpin,interactionsUI_connectionSpin,interactionsUI_verticesLimitSpin,interactionsUI_trianglesLimitSpin,interactionsUI_partsLimitSpin,interactionsUI_guidesLimitSpin,interactionsUI_previewLimitSpin,interactionsUI_memoryLimitSpin,interactionsUI_workLimitSpin,interactionsUI_cleanColliderLinksButton) do c.enabled=false;interactionsUI_controlsReady=false)
+            if owner!=undefined then (interactionsUI_bind owner;) else (for c in #(interactionsUI_roleList,interactionsUI_workflowInfo,interactionsUI_modelList,interactionsUI_sourcePickButton,interactionsUI_sourceRemoveButton,interactionsUI_focusSourceButton,interactionsUI_proxyList,interactionsUI_buildTrunksButton,interactionsUI_pickColliderButton,interactionsUI_reviewColliderButton,interactionsUI_prepareButton,interactionsUI_editorButton,interactionsUI_guideReviewButton,interactionsUI_rootsCheck,interactionsUI_responseList,interactionsUI_strengthSpin,interactionsUI_trunkSpin,interactionsUI_fixedBaseSpin,interactionsUI_transitionSpin,interactionsUI_pruneThresholdSpin,interactionsUI_pruneAmountSpin,interactionsUI_neighborsCheck,interactionsUI_hideAreaList,interactionsUI_hideMarginSpin,interactionsUI_gapSpin,interactionsUI_foliageSpin,interactionsUI_info,interactionsUI_retryButton,interactionsUI_validateButton,interactionsUI_repairSettingsButton,interactionsUI_minimumSpin,interactionsUI_stiffnessSpin,interactionsUI_connectionSpin,interactionsUI_verticesLimitSpin,interactionsUI_trianglesLimitSpin,interactionsUI_partsLimitSpin,interactionsUI_guidesLimitSpin,interactionsUI_previewLimitSpin,interactionsUI_memoryLimitSpin,interactionsUI_workLimitSpin,interactionsUI_cleanColliderLinksButton) do c.enabled=false;interactionsUI_controlsReady=false)
                 interactionsUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
 
@@ -20648,14 +21602,331 @@ initialRollupState:0x8
     )
         interactionsUI
     )
-    rollout mainUI "Cyrus Scatter 0.87.4" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
+
+    fn createcollidersUI = (
+    rollout collidersUI "" width:#cmdPanel category:140 autoLayoutOnResize:false (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
+        local hostPage=undefined
+        local layout,lastLayoutStamp=undefined,lastLayoutWidth=0
+        label collidersUI_hint "Add walls or stones from the scene. Move and scale them normally in Max." pos:[8,8] width:((collidersUI.width-16-((amin 1 (amax 1 (floor ((collidersUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((collidersUI.width-8)/58))))) height:42
+        listbox collidersUI_colliderList "" items:#() height:5 pos:[8,8] width:((collidersUI.width-16-((amin 1 (amax 1 (floor ((collidersUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((collidersUI.width-8)/58)))))
+        label collidersUI_colliderList_caption "Scene objects" pos:[6,6] width:(collidersUI.width-12) height:18
+        pickbutton collidersUI_addButton "+" pos:[8,8] width:((collidersUI.width-16-((amin 3 (amax 1 (floor ((collidersUI.width-8)/80.4))))-1)*4)/(amin 3 (amax 1 (floor ((collidersUI.width-8)/80.4))))) height:22
+        button collidersUI_selectedButton "Add selected" pos:[8,8] width:((collidersUI.width-16-((amin 3 (amax 1 (floor ((collidersUI.width-8)/80.4))))-1)*4)/(amin 3 (amax 1 (floor ((collidersUI.width-8)/80.4))))) height:22
+        button collidersUI_removeButton "x" pos:[8,8] width:((collidersUI.width-16-((amin 3 (amax 1 (floor ((collidersUI.width-8)/80.4))))-1)*4)/(amin 3 (amax 1 (floor ((collidersUI.width-8)/80.4))))) height:22
+        button collidersUI_selectButton "Select collider" pos:[8,8] width:((collidersUI.width-16-((amin 1 (amax 1 (floor ((collidersUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((collidersUI.width-8)/96))))) height:22
+        label collidersUI_info "" pos:[8,8] width:((collidersUI.width-16-((amin 1 (amax 1 (floor ((collidersUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((collidersUI.width-8)/58))))) height:64
+        dotNetControl collidersUI_colliderList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        checkbutton advancedToggle "Advanced" pos:[6,6] width:(collidersUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        local collidersUI_bodyHeight=0
+        local collidersUI_controlsReady=false
+        local collidersUI_root=undefined,collidersUI_owner=undefined,collidersUI_panel=undefined,collidersUI_obj=undefined,collidersUI_controlsReady=false,collidersUI_binding=false
+        fn collidersUI_bind leaf = (
+            collidersUI_binding=true;collidersUI_obj=leaf
+            local selected=collidersUI_colliderList.selection
+            collidersUI_colliderList.items=for node in collidersUI_root.interactionSceneColliders collect (if isValidNode node then node.name else "Missing collider - remove this row")
+            collidersUI_colliderList.selection=if collidersUI_colliderList.items.count>0 then amax 1 (amin selected collidersUI_colliderList.items.count) else 0
+            collidersUI_removeButton.enabled=collidersUI_colliderList.selection>0;collidersUI_selectButton.enabled=collidersUI_colliderList.selection>0
+            collidersUI_info.text=collidersUI_root.interactionsStatus();collidersUI_binding=false;collidersUI_controlsReady=true;true
+        )
+        fn collidersUI_apply = (
+            local controller=collidersUI_root,target=collidersUI_obj
+            try(controller.interactionsEnsure();CyrusViewportRecordsDirty=true;CyrusViewportRedraw();if collidersUI_controlsReady and collidersUI_root==controller do collidersUI_bind target;true)
+            catch(controller.interactionError=getCurrentException();if collidersUI_controlsReady and collidersUI_root==controller do collidersUI_info.text=controller.interactionsStatus();false)
+        )
+        on collidersUI_addButton picked node do if controlsReady and not binding and root!=undefined and collidersUI_controlsReady and not collidersUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "collidersUI_addButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit collidersUI refresh:true
+            try (if collidersUI_controlsReady and not collidersUI_binding and CyrusLicenseCanEdit() do try(local controller=collidersUI_root;controller.interactionsSceneCommand #(node);collidersUI_apply())catch(collidersUI_info.text=getCurrentException())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on collidersUI_selectedButton pressed do if controlsReady and not binding and root!=undefined and collidersUI_controlsReady and not collidersUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "collidersUI_selectedButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit collidersUI refresh:true
+            try (if collidersUI_controlsReady and not collidersUI_binding and CyrusLicenseCanEdit() do try(local controller=collidersUI_root;controller.interactionsSceneCommand (selection as array);collidersUI_apply())catch(collidersUI_info.text=getCurrentException())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on collidersUI_removeButton pressed do if controlsReady and not binding and root!=undefined and collidersUI_controlsReady and not collidersUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "collidersUI_removeButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit collidersUI refresh:true
+            try (if collidersUI_controlsReady and not collidersUI_binding and CyrusLicenseCanEdit() do try(local controller=collidersUI_root,index=collidersUI_colliderList.selection;controller.interactionsSceneCommand #() removeIndex:index;collidersUI_apply())catch(collidersUI_info.text=getCurrentException())
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on collidersUI_colliderList selected row do if controlsReady and not binding and root!=undefined and collidersUI_controlsReady and not collidersUI_binding and true do (
+            local eventPanel=panel,action=CyrusBeginAction root "collidersUI_colliderList"
+            if eventPanel!=undefined do eventPanel.beginPageEdit collidersUI refresh:false
+            try (if collidersUI_controlsReady and not collidersUI_binding do (collidersUI_removeButton.enabled=row>0;collidersUI_selectButton.enabled=row>0)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on collidersUI_selectButton pressed do if controlsReady and not binding and root!=undefined and collidersUI_controlsReady and not collidersUI_binding and CyrusLicenseCanEdit() do (
+            local eventPanel=panel,action=CyrusBeginAction root "collidersUI_selectButton"
+            if eventPanel!=undefined do eventPanel.beginPageEdit collidersUI refresh:true
+            try (if collidersUI_controlsReady and not collidersUI_binding do (local row=collidersUI_colliderList.selection;if row>0 and row<=collidersUI_root.interactionSceneColliders.count and isValidNode collidersUI_root.interactionSceneColliders[row] do select collidersUI_root.interactionSceneColliders[row])
+        -- A dotNetControl has both a managed child and a native rollout host.
+        -- Hiding only the child leaves its host over other controls on first open.
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        fn setHostedVisible control visibleState = (
+            if control.visible!=visibleState do control.visible=visibleState
+            for handle in control.hwnd where handle!=0 do (if (bit.get (windows.getWindowLong handle #style) 29)!=visibleState do windows.showWindow handle (if visibleState then #showNoActivate else #hide))
+            true
+        )
+        local textMetrics=#()
+        fn textHeight control available = (
+            local key=findItem (for row in textMetrics collect row[1]) control
+            local text=control.text,scale=GetUIScaleFactor(),pixels=amax 1 (floor (available*scale))
+            if key>0 and textMetrics[key][2]==text and textMetrics[key][3]==pixels do return textMetrics[key][4]
+            local measured=ceil ((cyrusMeasureWrappedText control.hwnd[1] text pixels)/scale)+2
+            local entry=#(control,text,pixels,measured)
+            if key>0 then textMetrics[key]=entry else append textMetrics entry
+            measured
+        )
+        fn fitLabel control minimum available = (control.height=amax minimum (textHeight control (available-2));true)
+        fn fitCheck control available = (
+            local height=amax 20 (textHeight control (available-26))
+            for handle in control.hwnd do (
+                local style=windows.getWindowLong handle #style
+                if not bit.get style 14 do windows.setWindowLong handle #style (bit.set style 14 true)
+                local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle
+                local position=windows.screenToClient data[2] rectangle.x rectangle.y
+                if rectangle.h!=height do windows.setWindowPos handle position.x position.y available height true
+            )
+            height
+        )
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
+        fn captureView = #((if hostPage==undefined then false else hostPage.open),#(advancedToggle.checked),#(collidersUI_colliderList.height))
+        fn restoreView state = (
+            if state[2]==undefined do return true
+            advancedToggle.checked=state[2][1]
+            collidersUI_colliderList.height=state[3][1]
+            true
+        )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
+        fn setupGrips = (
+            if gripsReady do return true
+            for grip in #(collidersUI_colliderList_grip) do (
+                grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
+            )
+            gripsReady=true;true
+        )
+        on collidersUI_colliderList_grip MouseDown sender args do beginListDrag sender args collidersUI_colliderList
+        on collidersUI_colliderList_grip MouseMove sender args do moveListDrag sender args
+        on collidersUI_colliderList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on collidersUI_colliderList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on collidersUI_colliderList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                local current=windows.screenToClient data[2] boxes[i].x boxes[i].y
+                if current.x!=position.x or current.y!=position.y do windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
+        fn fitPairField control available stacked:false = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-(if stacked then 12 else 46))
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
+        fn fitWidth control available = (
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    local target=amax 1 (available as integer)
+                    if rectangle.w!=target do windows.setWindowPos handle position.x position.y target rectangle.h true
+                )
+            ) else if isProperty control #width then (if control.width!=(available as integer) do control.width=available)
+            else if classof control==CheckBoxControl or classof control==PickerControl or classof control==MapButtonControl do for handle in control.hwnd do (
+                local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
+                if rectangle.w!=target do (
+                    local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y target rectangle.h true
+                )
+            )
+            true
+        )
+        fn geometryStamp widthValue = #(widthValue,GetUIScaleFactor(),advancedToggle.checked,collidersUI_hint.text,collidersUI_addButton.text,collidersUI_selectedButton.text,collidersUI_removeButton.text,collidersUI_selectButton.text,collidersUI_info.text,collidersUI_colliderList_caption.text,collidersUI_colliderList.height,collidersUI_hint.visible,collidersUI_addButton.visible,collidersUI_selectedButton.visible,collidersUI_removeButton.visible,collidersUI_selectButton.visible,collidersUI_info.visible,collidersUI_hint.height,collidersUI_info.height)
+        fn layout = (
+            local measurement=CyrusMeasureBegin 14,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
+            try (
+                local measuredResult=(
+
+            local widthValue=amax 64 (amin (hostPage.width-8) (windows.getWindowPos collidersUI.hwnd removeUIScaling:true).w),y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            local nextLayoutStamp=geometryStamp widthValue
+            if lastLayoutStamp!=undefined and CyrusPresetSameValues lastLayoutStamp nextLayoutStamp do (return true)
+            rowControls=#(collidersUI_hint);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel collidersUI_hint 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(collidersUI_hint.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(collidersUI_colliderList);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if collidersUI_colliderList_caption.visible!=show do collidersUI_colliderList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel collidersUI_colliderList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(collidersUI_colliderList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(collidersUI_colliderList.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                collidersUI_colliderList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];collidersUI_colliderList_caption.width=cellWidth;collidersUI_colliderList_caption.enabled=collidersUI_colliderList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(collidersUI_colliderList_grip);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            setHostedVisible collidersUI_colliderList_grip show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(collidersUI_addButton,collidersUI_selectedButton,collidersUI_removeButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/80.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(collidersUI_selectButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(collidersUI_info);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel collidersUI_info 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(collidersUI_info.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            advancedToggle.visible=false
+
+            lastLayoutStamp=geometryStamp widthValue;lastLayoutWidth=widthValue;collidersUI.height=ceil ((y+4)*GetUIScaleFactor());if hostPage!=undefined do (hostPage.body.height=y+4+hostPage.headerInset;hostPage.height=ceil ((y+6)*GetUIScaleFactor()));true
+
+                )
+                CyrusMeasureEnd measurement measuredOwner measuredEpoch "collidersUI.layout"
+                measuredResult
+            )catch(CyrusMeasureEnd measurement measuredOwner measuredEpoch "collidersUI.layout" failed:true;throw())
+        )
+        fn bind layer = (
+            local measurement=CyrusMeasureBegin 13,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
+            try (
+                local measuredResult=(
+
+            if root==undefined do return false
+            stopListDrag();binding=true;controlsReady=false
+            try (
+                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
+                obj=owner
+                collidersUI_root=root;collidersUI_owner=owner;collidersUI_panel=panel;collidersUI_controlsReady=controlsReady;collidersUI_binding=binding
+            if owner!=undefined then (collidersUI_bind owner;) else (for c in #(collidersUI_hint,collidersUI_colliderList,collidersUI_addButton,collidersUI_selectedButton,collidersUI_removeButton,collidersUI_selectButton,collidersUI_info) do c.enabled=false;collidersUI_controlsReady=false)
+                collidersUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
+            )catch(binding=false;controlsReady=false;throw())
+
+                )
+                CyrusMeasureEnd measurement measuredOwner measuredEpoch "collidersUI.bind"
+                measuredResult
+            )catch(CyrusMeasureEnd measurement measuredOwner measuredEpoch "collidersUI.bind" failed:true;throw())
+        )
+
+
+        on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do (
+            local eventPanel=panel,action=CyrusBeginAction root "advancedToggle"
+            if eventPanel!=undefined do eventPanel.beginPageEdit collidersUI refresh:false
+            try ((layout();if panel!=undefined do panel.rememberViews();true)
+                if controlsReady and root!=undefined do layout()
+                if eventPanel!=undefined do eventPanel.endPageEdit()
+                CyrusEndAction action
+            )catch(if eventPanel!=undefined do eventPanel.endPageEdit();CyrusEndAction action;throw())
+        )
+        on collidersUI resized size do if controlsReady and not binding and (amax 64 (amin (hostPage.width-8) (windows.getWindowPos collidersUI.hwnd removeUIScaling:true).w))!=lastLayoutWidth do layout()
+        on collidersUI open do (controlsReady=false)
+        on collidersUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;collidersUI_controlsReady=false;collidersUI_root=undefined;collidersUI_owner=undefined;collidersUI_obj=undefined)
+
+    )
+        collidersUI
+    )
+    rollout mainUI "Cyrus Scatter 0.87.6" width:#cmdPanel height:140 category:0 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
-        button upgradeButton "Upgrade scene to 0.87.4" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
+        button upgradeButton "Upgrade scene to 0.87.6" pos:[8,138] width:(mainUI.width-16) height:22 visible:false tooltip:"Enable the new clearance contract for a scene saved with 0.86.7.2. Existing rules and model identities are preserved. Undo restores the upgrade state."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         timer bindTimer interval:1 active:false
@@ -20802,13 +22073,13 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.87.4 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.87.6 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
-            view.transformsUI=createtransformsUI();view.spacingUI=createspacingUI();view.displayUI=createdisplayUI();view.statisticsUI=createstatisticsUI();view.interactionsUI=createinteractionsUI()
-            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI,view.interactionsUI)
-            slots=#(view.managerUISlot,view.surfacesUISlot,view.modelsUISlot,view.containersUISlot,view.layoutUISlot,view.populationUISlot,view.coverageUISlot,view.areasUISlot,view.transformsUISlot,view.spacingUISlot,view.displayUISlot,view.statisticsUISlot,view.interactionsUISlot)
+            view.transformsUI=createtransformsUI();view.spacingUI=createspacingUI();view.displayUI=createdisplayUI();view.statisticsUI=createstatisticsUI();view.interactionsUI=createinteractionsUI();view.collidersUI=createcollidersUI()
+            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI,view.interactionsUI,view.collidersUI)
+            slots=#(view.managerUISlot,view.surfacesUISlot,view.modelsUISlot,view.containersUISlot,view.layoutUISlot,view.populationUISlot,view.coverageUISlot,view.areasUISlot,view.transformsUISlot,view.spacingUISlot,view.displayUISlot,view.statisticsUISlot,view.interactionsUISlot,view.collidersUISlot)
             if root==undefined do (
                 for r in slots do cyrusSetRolloutVisible r.hwnd false 0
                 return false
@@ -21037,12 +22308,26 @@ initialRollupState:0x8
         on interactionsUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 13
     )
 
+    rollout collidersUISlot "Scene colliders" width:#cmdPanel height:4 category:140 autoLayoutOnResize:false (
+        local view=undefined,headerInset=0
+        subRollout body "" pos:[0,0] width:200 height:2 autoLayoutOnResize:false scrollBar:#off
+        on collidersUISlot open do view=this
+        on collidersUISlot close do view=undefined
+        on collidersUISlot rolledUp state do if view!=undefined and view.mainUI.controlsReady and not view.mainUI.binding and not view.mainUI.layerBinding do (
+            view.mainUI.bindSection view.mainUI.editors[14]
+            view.mainUI.rememberViews()
+        )
+        on collidersUISlot resized size do if view!=undefined and view.mainUI.controlsReady do view.mainUI.resizeSection 14
+    )
+
 
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version==58 then clearanceUpgradePending=true else if findItem #(59,60,61,62) version==0 do procSchemaValid=false
+        if version==58 then clearanceUpgradePending=true else if findItem #(59,60,61,62,63,64,65) version==0 do procSchemaValid=false
+        if version<=64 and interactionResponse==0 do interactionResponse=1
         if version==60 do interactionUnitsPending=true
+        if version<=62 do (interactionHideMarginWU=interactionGapWU;interactionHideArea=1)
         if not procSchemaValid do throw "Unsupported Cyrus scene schema; the scene is preserved."
         syncColors();markInputDirty()
     )
@@ -21083,7 +22368,45 @@ initialRollupState:0x8
         )
     )
 )
+global CyrusSceneColliderHandlers=#(),CyrusSceneColliderWatchKey="",CyrusSceneColliderWatch,CyrusSceneColliderChanged,CyrusSceneColliderTick
+fn CyrusSceneColliderChanged node = (
+    for owner in CyrusTimeOwners where isValidNode owner do (
+        local root=owner.baseObject
+        if findItem (root.interactionSceneColliders as array) node>0 do root.interactionSceneDirty=true
+    )
+    -- Pose-only movement does not invalidate placements or source buffers.
+)
+fn CyrusSceneColliderWatch = (
+    local nodes=#(),key=""
+    for owner in CyrusTimeOwners where isValidNode owner do (
+        for node in owner.baseObject.interactionSceneColliders where isValidNode node do appendIfUnique nodes node
+    )
+    for node in nodes do key+=(getHandleByAnim node as string)+"|"
+    if key==CyrusSceneColliderWatchKey do return true
+    for handler in CyrusSceneColliderHandlers do try(deleteChangeHandler handler)catch()
+    CyrusSceneColliderHandlers=#();CyrusSceneColliderWatchKey=key
+    if nodes.count>0 do (
+        append CyrusSceneColliderHandlers (when transform nodes changes id:#CyrusSceneColliderTransform node do CyrusSceneColliderChanged node)
+        append CyrusSceneColliderHandlers (when geometry nodes changes id:#CyrusSceneColliderGeometry node do CyrusSceneColliderChanged node)
+    )
+    true
+)
+fn CyrusSceneColliderTick = (
+    if CyrusPointBusy or CyrusPointSuspended do return false
+    for owner in CyrusTimeOwners where isValidNode owner and not owner.isHidden do (
+        local root=owner.baseObject
+        if root.interactionSceneDirty and root.interactionState!=undefined and root.cyrusEnabled do (
+            try(
+                if cyrusInteractionSceneUpdate root.interactionState then (root.interactionSceneDirty=false;root.interactionError="")
+                else if not CyrusInteractionHeld() do (root.interactionStateKey="";CyrusViewportRecordsDirty=true)
+            )catch(root.interactionError=getCurrentException())
+        )
+    )
+    true
+)
 fn AminScatterObjectDraw = (
+    CyrusSceneColliderTick()
+
     local held=CyrusInteractionHeld()
     if CyrusPreviewActivity!=undefined do CyrusPreviewActivity held
     if not held do for watch in CyrusViewportAnalyzers do (
@@ -21108,8 +22431,18 @@ fn AminScatterObjectDraw = (
             ready=cyrusRetainedMatches owner caches styles
             local presentation=cyrusRetainedPresentationStats owner
             if presentation.count!=14 or presentation[1]!=1 do throw "Unsupported retained display status. Install the matching package."
+            -- Incremental contact updates keep the existing viewport record.
+            -- Give every new GPU ticket its own bounded presentation retries;
+            -- otherwise the first update exhausts the record's original quota.
+            if record.count<7 do append record 0
+            if record[7]!=presentation[2] do (record[7]=presentation[2];record[6]=8)
             retained=not ready and presentation[5] and presentation[10]
             failed=presentation[4]==3
+            -- Ready GPU work must not wait for the mouse-up placement timer.
+            -- This only requests the SDK display boundary; it never restages.
+            if presentation[9] and cyrusRetainedRequestReady owner do (
+                CyrusPointPresentationPending=true;CyrusReleaseTimer.Interval=16;CyrusScheduleRelease()
+            )
         )catch(CyrusPointLastError=getCurrentException())
         -- A successor is not visible until every native item is ready. Do not
         -- mix its centre markers with a previous complete retained display.
@@ -21119,11 +22452,11 @@ fn AminScatterObjectDraw = (
             if caches.count>0 and CyrusPointAvailable and not CyrusPointSuspended do (
                 if failed do CyrusPointLastError=if retained then "Viewport update failed; the previous complete display is retained. Refresh display to retry." else "GPU preview unavailable; showing bounded centre markers. Refresh display to retry."
                 -- Submission can be delayed indefinitely for a hidden native
-                -- helper. Give a new publication two presentation-only redraws,
+                -- helper. Give each new ticket bounded presentation-only redraws,
                 -- then retain its fallback until a real event/explicit refresh.
                 -- Never turn missing GPU readiness into another scene sync.
                 if not failed and record[6]>0 do (
-                    record[6]-=1;CyrusPointPresentationPending=true;CyrusScheduleRelease()
+                    record[6]-=1;CyrusPointPresentationPending=true;CyrusReleaseTimer.Interval=16;CyrusScheduleRelease()
                 )
             )
         )
@@ -21421,6 +22754,8 @@ callbacks.addScript #filePostOpen "CyrusScatterRedIcons()" id:#CyrusScatterIconC
 CyrusScatterRedIcons()
 
 try(CyrusPreviewIdleTimer.Stop();CyrusPreviewIdleTimer.Dispose())catch()
+-- A replaced timer cannot complete the previous script's navigation gesture.
+if cyrusRetainedInteraction!=undefined do cyrusRetainedInteraction false
 fn CyrusPreviewActivity held = (
     if CyrusViewportRecords.count==0 do return false
     local tm=viewport.getTM(),fov=viewport.getFOV(),viewID=viewport.activeViewport
@@ -21433,6 +22768,8 @@ fn CyrusPreviewIdleTick sender args = (
     if not (CyrusInteractionHeld()) do (
         CyrusPreviewIdleTimer.Stop();cyrusRetainedInteraction false
         -- Draw the already prepared idle buffers; never schedule a solve/sync.
+        -- Nitrous may ignore redrawViews when no screen rectangle is dirty.
+        for pair in CyrusPointOwners where isValidNode pair[1] and isValidNode pair[2] and not pair[2].isHidden do cyrusRetainedInvalidate pair[2]
         redrawViews()
     )
 )
@@ -21443,10 +22780,15 @@ dotNet.addEventHandler CyrusPreviewIdleTimer "Tick" CyrusPreviewIdleTick
 try(CyrusReleaseTimer.Stop();CyrusReleaseTimer.Dispose())catch()
 fn CyrusReleaseTick sender args = (
  CyrusReleaseTimer.Stop()
+ if CyrusPointPresentationPending do (
+     CyrusPointPresentationPending=false
+     redrawViews()
+ )
+ CyrusReleaseTimer.Interval=200
  if CyrusInteractionHeld() then (CyrusWasDragging=true;CyrusScheduleRelease())
  else if CyrusWasDragging or CyrusPointPending then (
      CyrusWasDragging=false;CyrusPointPending=false;CyrusPointPresentationPending=false;CyrusViewportRedraw()
- ) else if CyrusPointPresentationPending do (CyrusPointPresentationPending=false;redrawViews())
+ )
 )
 CyrusReleaseTimer=dotNetObject "System.Windows.Forms.Timer"
 CyrusReleaseTimer.Interval=200
@@ -21471,8 +22813,8 @@ fn CyrusPointClear = (
     local old=CyrusPointOwners;CyrusPointOwners=#()
     if old!=undefined do CyrusPointDelete (for pair in old collect pair[2])
 )
-fn CyrusPointSync = (
-    if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or CyrusInteractionHeld() do return false
+fn CyrusPointSync retainedOwner:undefined = (
+    if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or (retainedOwner==undefined and CyrusInteractionHeld()) do return false
     CyrusPointBusy=true
     try (
         local publishError="",detailStatus="",records=#(),analyzers=#()
@@ -21491,12 +22833,12 @@ fn CyrusPointSync = (
             -- separately on each leaf repeats whole-controller validation.
             for entry in entries do (
                 local obj=entry[2]
-                obj.previewCache interactionHeld:false allowRefresh:false
-                if obj.dirty and not obj.cachedDisabledInput do refreshLeaf=obj
+                if n.baseObject!=retainedOwner do obj.previewCache interactionHeld:false allowRefresh:false
+                if n.baseObject!=retainedOwner and obj.dirty and not obj.cachedDisabledInput do refreshLeaf=obj
             )
             if refreshLeaf!=undefined do refreshLeaf.refreshPreview()
             local interactionState=undefined
-            try(interactionState=n.baseObject.interactionsEnsure())catch(n.baseObject.interactionError=getCurrentException();throw())
+            try(interactionState=if n.baseObject==retainedOwner then n.baseObject.interactionState else n.baseObject.interactionsEnsure())catch(n.baseObject.interactionError=getCurrentException();throw())
             for entry in entries do (
                 local obj=entry[2],cache=if obj.cachedDisabledInput then obj.cachedDisabledPreview else obj.cachedPoints
                 for analyzer in #(obj.analyzerNode,obj.areaAnalyzer,obj.fallAnalyzer) where isValidNode analyzer do appendIfUnique analyzers analyzer
@@ -21548,9 +22890,14 @@ fn CyrusViewportRedraw = (
     if not CyrusPointBusy do CyrusPointSync()
     redrawViews()
 )
-fn CyrusPointBeforeSave = (CyrusPointSuspended=true;for node in objects where classof node.baseObject==AminScatterObject do node.baseObject.interactionsBeforeSave();CyrusPointClear())
-fn CyrusPointAfterSave = (CyrusPointSuspended=false;(CyrusPointPending=true;CyrusScheduleRelease()))
+-- Saving a scene-preset subset serializes persistent parameters and native Edit
+-- storage, without retiring the artist's live contact/handle/display generations.
+fn CyrusPointBeforeSave = (if CyrusScenePresetCapturing do return false;CyrusPointSuspended=true;for node in objects where classof node.baseObject==AminScatterObject do node.baseObject.interactionsBeforeSave();CyrusPointClear())
+fn CyrusPointAfterSave = (if CyrusScenePresetCapturing do return false;CyrusPointSuspended=false;(CyrusPointPending=true;CyrusScheduleRelease()))
 fn CyrusPointBeforeScene = (
+    for handler in CyrusSceneColliderHandlers do try(deleteChangeHandler handler)catch()
+    CyrusSceneColliderHandlers=#();CyrusSceneColliderWatchKey=""
+
     -- Capture owners before Max detaches the departed scene's reference graph.
     -- Its root.layerObjects can already be empty in the post-open callback.
     for ticket in CyrusNativeRetirementTickets do (
@@ -21570,6 +22917,7 @@ fn CyrusPointBeforeScene = (
     CyrusPointSuspended=true;CyrusPointClear()
 )
 fn CyrusPointAfterScene = (
+    CyrusSceneColliderWatch()
     local retired=CyrusPointSceneOwners;CyrusPointSceneOwners=#()
     for owner in retired do (
         local live=for node in refs.dependentNodes owner where isValidNode node collect node
@@ -21590,6 +22938,9 @@ fn CyrusRetainedMeshDrawing enabled = (
     CyrusViewportRedraw()
     CyrusMeshEnabled
 )
+callbacks.removeScripts id:#CyrusSceneColliders
+callbacks.addScript #sceneUndo "CyrusSceneColliderWatch();for owner in CyrusTimeOwners where isValidNode owner do owner.baseObject.interactionSceneDirty=true;CyrusViewportRecordsDirty=true;CyrusScheduleRelease()" id:#CyrusSceneColliders
+callbacks.addScript #sceneRedo "CyrusSceneColliderWatch();for owner in CyrusTimeOwners where isValidNode owner do owner.baseObject.interactionSceneDirty=true;CyrusViewportRecordsDirty=true;CyrusScheduleRelease()" id:#CyrusSceneColliders
 callbacks.removeScripts id:#CyrusRetainedPoints
 callbacks.addScript #filePreSaveProcess "CyrusPointBeforeSave()" id:#CyrusRetainedPoints
 callbacks.addScript #filePostSaveProcess "CyrusPointAfterSave()" id:#CyrusRetainedPoints

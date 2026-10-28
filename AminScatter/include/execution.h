@@ -33,9 +33,9 @@ struct RangeExecution { unsigned participants{1}; bool threadLaunchFallback{fals
 // is joined before returning or propagating the earliest indexed failure. No
 // pool, detached work, loader initialization or third-party runtime is involved.
 template<class F>
-RangeExecution forRanges(std::size_t count, std::size_t minimumParallelItems, F fn) {
+RangeExecution forRanges(std::size_t count, std::size_t minimumParallelItems, F fn, unsigned participantLimit=0) {
     const auto participants = count < minimumParallelItems ? 1u :
-        static_cast<unsigned>(std::min<std::size_t>(computeParticipants(), count));
+        static_cast<unsigned>(std::min<std::size_t>(participantLimit?participantLimit:computeParticipants(), count));
     if (participants <= 1) { fn(0, 0, count); return {}; }
     std::fenv_t environment;
     if (std::fegetenv(&environment) != 0) { fn(0, 0, count); return {1, true}; }

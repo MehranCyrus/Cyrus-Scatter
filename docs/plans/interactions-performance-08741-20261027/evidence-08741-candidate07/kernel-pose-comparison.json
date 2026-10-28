@@ -1,0 +1,101 @@
+[
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\A062-regression-direction1\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "3393994843211568760",
+      "3393994843211568760"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\S02-regression-direction1\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "7467819638553274395",
+      "7467819638553274395"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\S06-regression-direction2\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "7633144294775385257",
+      "7633144294775385257"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction1\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "5922256474048119754",
+      "5922256474048119754"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction2\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "5225991226750020379",
+      "5225991226750020379"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction3\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "14603276304990753195",
+      "14603276304990753195"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\S01-pivot-replay-direction1\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "15762130496260711966",
+      "15762130496260711966"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-03\\root-conflict-replay-S07-quality\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "12094963809045981970",
+      "12094963809045981970"
+    ]
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-06\\tree-quality-replay\\fixture.json",
+    "codes": [
+      0,
+      0
+    ],
+    "digests": [
+      "12867186862080137978",
+      "12867186862080137978"
+    ]
+  }
+]

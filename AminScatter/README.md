@@ -1,13 +1,17 @@
 # Cyrus Scatter native engine and UI
 
-Current development/package version **0.86.9.2**, saved schema **59**, model **CyrusUnified2**. The [current delivery](../docs/plans/edit-instances/DELIVERY_08692.md) adds procedural-map previews/drop targets, restored native column ownership and live Edit movement. One EXE contains matched Max 2024/2026/2027 packages with Analyzer 0.14.2; **only Max 2027 was tested for this patch, while older hosts are built and untested**. Native Edit capability/storage remains 2; preserve original scenes and save upgraded copies from older readers. Schema 58 has an explicit Undoable upgrade; earlier development schemas remain unsupported. Ordinary development remains Max 2027 unless another host is explicitly requested. Licensing and internal registration identities are unchanged.
+For interaction changes, preserve the [artist-endorsed performance baseline](../docs/PERFORMANCE_BASELINE.md). Artistic guide response, shared preparation, workload-aware CPU execution and held-input presentation are separate boundaries; compare visible results and work counters before retaining an optimization.
+
+Current package **0.87.6**, saved schema **65**, model **CyrusUnified2**. [Delivery and scoped evidence](../docs/plans/ui-settings-0876-20261028/DELIVERY.md) cover Point source repair, clearer painting/preview controls and contextual panel layout. Max 2027 has runtime UI checks and 23 focused native suites; Max 2024/2026 have separate compiled packages without runtime tests. Interactions **15**, source transform/Undo **2/2**, Edit capability/storage **4/3**, recipe **9** and Scene preset metadata **1** remain. The 0.87.5.6 interaction algorithms and 0.87.5.1 Library implementation remain their respective baselines. Independent products, licensing and registration identities are unchanged.
+
+Historical **0.86.9.2** / scene **59** evidence remains in [its delivery](../docs/plans/edit-instances/DELIVERY_08692.md). Its three-host installer and native Edit 2 scope do not qualify the current Max 2027-only package.
 
 - [Current artist workflow](../docs/ARTIST_GUIDE.md)
 - [Architecture and source ownership](../docs/ARCHITECTURE.md)
 - [Layout, Analyzer and falloff details](../docs/LAYOUT_AND_FALLOFF.md)
 - [Build/install instructions](../docs/Max_2027_Installation.md)
 - [Current limits and work](../docs/BACKLOG.md)
-- [Latest qualification](../docs/plans/edit-instances/DELIVERY_08692.md)
+- [Latest qualification](../docs/plans/ui-settings-0876-20261028/QUALIFICATION.json)
 
 ## Development
 

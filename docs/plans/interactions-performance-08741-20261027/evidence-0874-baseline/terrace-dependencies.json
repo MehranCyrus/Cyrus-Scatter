@@ -1,0 +1,218 @@
+{
+  "status": "complete",
+  "update_mode": 2,
+  "pair_rules": [],
+  "layers": [
+    {
+      "index": 1,
+      "name": "Grass - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 2,
+      "name": "Bushy grass - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 3,
+      "name": "Lavender - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 4,
+      "name": "Geranium - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 5,
+      "name": "Trees - static",
+      "enabled": true,
+      "collider": false,
+      "react": false,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 6,
+      "name": "Stones - Collider",
+      "enabled": true,
+      "collider": true,
+      "react": false,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 7,
+      "name": "Contact study - Grass - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 8,
+      "name": "Contact study - Bushy grass - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 9,
+      "name": "Contact study - Lavender - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    },
+    {
+      "index": 10,
+      "name": "Contact study - Geranium - React",
+      "enabled": true,
+      "collider": false,
+      "react": true,
+      "self_rule": [
+        "False",
+        "1.0",
+        "0.0",
+        "False"
+      ],
+      "sibling_enabled": false,
+      "cleanup": false,
+      "relax": false,
+      "accepted_target": false,
+      "source_policy_overrides": 0,
+      "source_copies": [],
+      "source_others": [],
+      "source_external": []
+    }
+  ],
+  "scope": "Authored procedural controls; does not prove a transform is safe to omit from placement invalidation"
+}

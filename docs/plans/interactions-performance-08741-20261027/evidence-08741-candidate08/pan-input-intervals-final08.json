@@ -1,0 +1,17 @@
+{
+  "scope": "Three actual 150\u2013162 ms pointer drags; 20 ms lead and 50 ms tail around each action, calibrated from wall clock to Max QPC.",
+  "intervals": [
+    {
+      "begin_qpc_ms": 1106959538.2324219,
+      "end_qpc_ms": 1106959770.2324219
+    },
+    {
+      "begin_qpc_ms": 1106966046.2324219,
+      "end_qpc_ms": 1106966268.2324219
+    },
+    {
+      "begin_qpc_ms": 1106972376.2324219,
+      "end_qpc_ms": 1106972598.2324219
+    }
+  ]
+}

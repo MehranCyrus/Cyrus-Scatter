@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "case": "S07-stress1",
+      "status": "pass"
+    },
+    {
+      "case": "S07-stress1",
+      "phase": 1,
+      "status": "box_selected"
+    },
+    {
+      "case": "S07-stress1",
+      "phase": 2,
+      "status": "expected_preparation_failure"
+    },
+    {
+      "case": "S07-stress2",
+      "status": "pass"
+    },
+    {
+      "case": "S07-stress2",
+      "phase": 1,
+      "status": "box_selected"
+    },
+    {
+      "case": "S07-stress2",
+      "phase": 2,
+      "status": "expected_preparation_failure"
+    },
+    {
+      "case": "S07-stress3",
+      "status": "pass"
+    },
+    {
+      "case": "S07-stress3",
+      "phase": 1,
+      "status": "box_selected"
+    },
+    {
+      "case": "S07-stress3",
+      "phase": 2,
+      "status": "expected_preparation_failure"
+    },
+    {
+      "case": "S07-stress4",
+      "status": "pass"
+    },
+    {
+      "case": "S07-stress4",
+      "phase": 1,
+      "status": "box_selected"
+    },
+    {
+      "case": "S07-stress4",
+      "phase": 2,
+      "status": "expected_preparation_failure"
+    },
+    {
+      "case": "S07-stress5",
+      "status": "pass"
+    },
+    {
+      "case": "S07-stress5",
+      "phase": 1,
+      "status": "box_selected"
+    },
+    {
+      "case": "S07-stress5",
+      "phase": 2,
+      "status": "expected_preparation_failure"
+    }
+  ],
+  "access_violation_captures": []
+}

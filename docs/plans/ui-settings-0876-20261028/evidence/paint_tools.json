@@ -1,0 +1,56 @@
+{
+  "case": "paint_tools",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "Paint tools enabled",
+      "status": "pass",
+      "value": "None"
+    },
+    {
+      "name": "Paint tools area added",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "Paint tools fixture",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "density curve opens without changing samples",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "density programmed curve endpoint applies",
+      "status": "pass",
+      "value": "0.25"
+    },
+    {
+      "name": "scale curve opens without changing samples",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "scale programmed curve endpoint applies",
+      "status": "pass",
+      "value": "0.25"
+    },
+    {
+      "name": "Paint preview mode 1",
+      "status": "pass",
+      "value": "2"
+    },
+    {
+      "name": "Paint preview mode 2",
+      "status": "pass",
+      "value": "1"
+    },
+    {
+      "name": "Paint preview mode 3",
+      "status": "pass",
+      "value": "0"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "cyrus.gpu-research-comparison/1",
+  "date": "2026-10-27",
+  "brief_edition": "gpu-interactions-research-20261027",
+  "comparison_status": "Awaiting external reports; no cross-report conclusion",
+  "reports": [
+    {"id": "LocalCodex", "status": "Research completed", "entry": "../reports/local-codex/00_README.md", "execution": "Standalone RTX 3090 deformation and owned D3D11 sharing only; no new Max GPU test", "identity": "../reports/local-codex/MANIFEST.sha256"},
+    {"id": "ExternalA", "status": "Awaiting original delivery", "folder": "../external/A", "original_sha256": null},
+    {"id": "ExternalB", "status": "Awaiting original delivery", "folder": "../external/B", "original_sha256": null},
+    {"id": "ExternalC", "status": "Awaiting original delivery", "folder": "../external/C", "original_sha256": null}
+  ]
+}

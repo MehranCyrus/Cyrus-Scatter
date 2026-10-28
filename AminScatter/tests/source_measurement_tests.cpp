@@ -1,4 +1,5 @@
 #include "source_measurement.h"
+#include "source_scale.h"
 #include <iostream>
 #include <string>
 using namespace cyrus::source_measurement;
@@ -22,5 +23,19 @@ int main(){try{
     rejected([]{Bounds b;b.add({0,std::numeric_limits<double>::infinity(),0});});
     rejected([]{Bounds b;b.add({0,0,1000001});});
     Bounds maximum;maximum.add({-1000000,1000000,1000000});check(std::isfinite(maximum.radiusXYZ));
+    using cyrus::source_scale::Axes;using cyrus::source_scale::factors;using cyrus::source_scale::compose;
+    const Axes identity{{{{1,0,0}},{{0,1,0}},{{0,0,1}}}};
+    check(factors(identity)==std::array<double,3>{1,1,1});
+    const Axes rotated{{{{0,.01,0}},{{-.01,0,0}},{{0,0,.01}}}};
+    check(factors(rotated)==std::array<double,3>{.01,.01,.01});
+    const auto small=compose(factors(rotated),3);for(float x:small)check(std::abs(x-.03f)<1e-8f);
+    const Axes nonuniform{{{{0,2,0}},{{-3,0,0}},{{0,0,4}}}};
+    check(compose(factors(nonuniform),.5)==std::array<float,3>{1,1.5,2});
+    auto invalid=identity;invalid[0][0]=-1;rejected([&]{factors(invalid);});
+    invalid=identity;invalid[0][0]=0;rejected([&]{factors(invalid);});
+    invalid=identity;invalid[0][1]=.01;rejected([&]{factors(invalid);});
+    invalid=identity;invalid[2][2]=std::numeric_limits<double>::quiet_NaN();rejected([&]{factors(invalid);});
+    rejected([&]{compose({1,1,1},-1);});rejected([&]{compose({1e30,1e30,1e30},1e30);});
+    check(compose({.01,.01,.01},0)==std::array<float,3>{0,0,0});
     std::cout<<"PASS: "<<checks<<" source measurement checks; finite physical bounds, pivot radii, indices and independent admission\n";return 0;
 }catch(const std::exception& error){std::cerr<<error.what()<<'\n';return 1;}}

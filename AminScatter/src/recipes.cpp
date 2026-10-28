@@ -1,4 +1,5 @@
 #include "recipes.h"
+#include "recipe_authored.h"
 #include "recipe_store.h"
 #include "brush.h"
 #include "presets.h"
@@ -95,7 +96,7 @@ const std::vector<Field>& fields(){static const std::vector<Field> result={
 };return result;}
 
 void validateSettings(const Json& s){
-    require(s.is_object()&&s.size()==fields().size(),"complete settings field count differs from recipe v8");
+    require(s.is_object()&&s.size()==fields().size(),"complete recipe settings field count differs");
     for(const auto& f:fields()){
         require(s.contains(f.name),std::string("missing authored field ")+f.name);const auto& v=s.at(f.name);std::string kind=f.type;
         if(kind.size()>3&&kind.substr(kind.size()-3)=="tab"){
@@ -108,7 +109,7 @@ void validateSettings(const Json& s){
         cyrus::presets::validate(d);
     }
     for(const auto& e:std::vector<std::tuple<const char*,int,int>>{
-        {"updateMode",1,2},{"viewportMode",1,3},{"proxyShape",1,3},{"containerMode",1,4},{"diversityMode",1,4},{"meshMaskChannel",0,99},{"meshMaskComponent",1,3},{"areaLineCaps",1,2},{"pointColorMode",1,2},{"identificationMode",1,3},{"radiusDisplayMetric",1,2},{"paintView",0,2},{"bandArrangement",1,2}})range(s,std::get<0>(e),std::get<1>(e),std::get<2>(e));
+        {"updateMode",1,2},{"viewportMode",1,3},{"proxyShape",1,3},{"containerMode",1,4},{"diversityMode",1,4},{"meshMaskChannel",0,99},{"meshMaskComponent",1,3},{"areaLineCaps",1,2},{"pointColorMode",1,2},{"identificationMode",1,4},{"radiusDisplayMetric",1,2},{"paintView",0,2},{"bandArrangement",1,2}})range(s,std::get<0>(e),std::get<1>(e),std::get<2>(e));
     require(s["distributionMode"]==1||s["distributionMode"]==3,"unsupported distributionMode");
     require(s["densityUVChannel"].get<int>()>=1&&s["densityUVChannel"].get<int>()<=99,"UV channel outside 1..99");
     require(s["densityResolution"]==64||s["densityResolution"]==128||s["densityResolution"]==256||s["densityResolution"]==512,"unsupported texture resolution");
@@ -188,6 +189,7 @@ void validateSettings(const Json& s){
 
 Json currentDocument(const Json& document){
     auto result=document;
+    if(result.is_object()&&result.value("formatVersion",0)==8){require(!result.contains("authored"),"format 8 cannot carry authored recipe data");result["formatVersion"]=9;result["authored"]={{"version",1},{"definitions",Json::array()},{"interactions",Json::array()},{"edits",Json::array()}};return result;}
     if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3&&result["formatVersion"]!=4&&result["formatVersion"]!=5&&result["formatVersion"]!=6&&result["formatVersion"]!=7))return result;
     require(result["formatVersion"].is_number_integer(),"recipe version must be an integer");
     const int version=result["formatVersion"].get<int>();
@@ -206,7 +208,7 @@ Json currentDocument(const Json& document){
             extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
             for(auto& area:layer.at("areas"))extend(area.at("settings"));
         }
-        result["formatVersion"]=8;result["evaluationContract"]="CyrusUnified2";result["sceneSchema"]=59;return result;
+        result["formatVersion"]=8;result["evaluationContract"]="CyrusUnified2";result["sceneSchema"]=59;return currentDocument(result);
     }
     if(version==6){
         // Existing recipes explicitly retain their artist-authored channel dependency.
@@ -269,9 +271,9 @@ Json currentDocument(const Json& document){
 }
 
 void validate(const Json& d,bool hydrated){
-    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3||d["formatVersion"]==4||d["formatVersion"]==5||d["formatVersion"]==6||d["formatVersion"]==7)){validate(currentDocument(d),hydrated);return;}
-    keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships","revision","presentation"});
-    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==8&&d["evaluationContract"]=="CyrusUnified2"&&d["sceneSchema"]==59&&d["hostYear"].is_number_integer()&&(d["hostYear"]==2024||d["hostYear"]==2026||d["hostYear"]==2027),"unsupported recipe version/engine/host");
+    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3||d["formatVersion"]==4||d["formatVersion"]==5||d["formatVersion"]==6||d["formatVersion"]==7||d["formatVersion"]==8)){validate(currentDocument(d),hydrated);return;}
+    keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships","revision","presentation","authored"});
+    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==9&&d["evaluationContract"]=="CyrusUnified2"&&d["sceneSchema"]==59&&d["hostYear"].is_number_integer()&&(d["hostYear"]==2024||d["hostYear"]==2026||d["hostYear"]==2027),"unsupported recipe version/engine/host");
     require(d["revision"].is_number_integer()&&number(d["revision"])>=1&&number(d["revision"])<=2147483647,"invalid recipe revision");validateEntryPresentation(d["presentation"]);
     id(d["id"]);const auto name=text(d["name"],320);require(!name.empty(),"empty name");require(number(d["unitsPerMetre"])>0,"invalid saved unit scale");require(d["exportScope"]=="complete-setup","only complete authored recipes are supported");validateSettings(d["rootSettings"]);
     require(d["roles"].is_array()&&d["roles"].size()<=4096,"too many roles");std::map<std::string,std::string> roles;
@@ -311,6 +313,17 @@ void validate(const Json& d,bool hydrated){
         clearanceReferences(layer["settings"],layer["id"].get<std::string>());
         for(const auto& area:layer["areas"])clearanceReferences(area["settings"],layer["id"].get<std::string>());
     }
+    recipeauthored::keys(d["authored"],{"version","definitions","interactions","edits"});const auto& authored=d["authored"];
+    require(authored["version"]==1&&authored["definitions"].is_array()&&authored["definitions"].size()<=1024&&authored["interactions"].is_array()&&authored["interactions"].size()<=1000&&authored["edits"].is_array()&&authored["edits"].size()<=32,"invalid authored recipe extent");
+    for(const auto& definition:authored["definitions"]){auto encoded=recipeauthored::text(definition,maxManifestBytes);auto data=recipeauthored::parseData(encoded,64);require(data.is_object()&&data.value("accepted",false)&&(data.value("format",0)==1||data.value("format",0)==2)&&data.contains("source"),"invalid prepared recipe definition");}
+    std::set<std::string> interactionOwners;
+    for(const auto& interaction:authored["interactions"]){recipeauthored::keys(interaction,{"owner","settings","definitions","proxies"});auto owner=id(interaction["owner"]);require(owners.count(owner)&&interactionOwners.insert(owner).second,"missing or duplicate interaction recipe owner");const auto& values=interaction["settings"];require(values.is_array()&&values.size()==18,"invalid interaction recipe settings");
+        for(int i=0;i<18;++i)if(i<3)require(values[i].is_boolean(),"invalid interaction boolean");else require(values[i].is_number()&&std::isfinite(values[i].get<double>()),"invalid interaction number");
+        require(number(values[3])>=0&&number(values[3])<=.100001&&number(values[4])>=0&&number(values[4])<=1&&values[5].is_number_integer()&&number(values[5])>=1&&number(values[5])<=3,"invalid interaction contact settings");require(number(values[6])>=.001&&number(values[6])<=.100001&&number(values[7])>=.01&&number(values[7])<=1&&number(values[8])>=.001&&number(values[8])<=.500001,"invalid interaction preparation settings");
+        const int limits[7]{8000000,16000000,500000,32768,2000000,16384,2048};for(int i=9;i<16;++i)require(values[i].is_number_integer()&&number(values[i])>=1&&number(values[i])<=limits[i-9],"invalid interaction recipe limit");require(number(values[16])>=0&&number(values[16])<=10.00001&&values[17].is_number_integer()&&(values[17]==1||values[17]==2),"invalid hiding settings");
+        for(auto kind:{"definitions","proxies"}){require(interaction[kind].is_array()&&interaction[kind].size()<=1024,"too many interaction source records");std::set<std::string> sources;for(const auto& pair:interaction[kind]){require(pair.is_array()&&pair.size()==2&&sources.insert(id(pair[0])).second,"invalid interaction source mapping");if(std::string(kind)=="definitions")require(pair[1].is_number_integer()&&number(pair[1])>=1&&number(pair[1])<=authored["definitions"].size(),"missing prepared definition");else require(roles.count(id(pair[1]))&&roles.at(id(pair[1]))=="node","missing collider role");}}
+    }
+    std::size_t editBytes=0;for(const auto& stack:authored["edits"]){recipeauthored::keys(stack,{"enabled","data"});require(stack["enabled"].is_boolean(),"invalid Edit state");auto data=recipeauthored::text(stack["data"],maxManifestBytes);editBytes+=data.size();require(editBytes<=maxManifestBytes,"aggregate Edit recipe exceeds 8 MiB");auto edit=recipeauthored::parseEdits(data);for(const auto& layer:edit["layers"]){auto owner=id(layer["owner"]);require(owners.count(owner),"Edit references an unsaved layer");const Json* sources=nullptr;for(const auto& saved:d["layers"])if(saved["id"]==owner)sources=&saved["settings"]["procSourceIDs"];require(sources!=nullptr,"Edit references a non-layer owner");for(const auto& row:layer["rows"])require(std::find(sources->begin(),sources->end(),row["source"])!=sources->end(),"Edit references an unsaved source history");}}
     require(d["spacingRelationships"].is_array()&&d["spacingRelationships"].size()<=256,"spacing relation limit");std::set<std::string> rules;
     for(const auto& r:d["spacingRelationships"]){keys(r,{"scope","a","b","enabled","multiplier","gap","planar"});require(r["scope"]==1||r["scope"]==2,"invalid spacing scope");auto a=id(r["a"]),b=id(r["b"]);require(a!=b,"self pair");for(const auto& endpoint:{a,b})require(layerOwners.count(endpoint)||(roles.count(endpoint)&&roles.at(endpoint)=="layer"),"missing spacing layer endpoint");if(a>b)std::swap(a,b);require(rules.insert(r["scope"].dump()+":"+a+":"+b).second,"duplicate spacing relation");require(r["enabled"].is_boolean()&&r["planar"].is_boolean()&&number(r["multiplier"])>=0&&number(r["gap"])>=0,"invalid spacing settings");}
 }

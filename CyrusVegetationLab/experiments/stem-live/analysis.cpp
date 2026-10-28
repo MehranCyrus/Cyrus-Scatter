@@ -61,15 +61,30 @@ Analysis analyze(const Snapshot& s,Settings settings,const std::atomic_bool& can
     if(components.size()>settings.limits.parts)throw std::runtime_error("Connected part limit exceeded; increase Parts in Preparation limits.");
     for(unsigned i=0;i<s.faces.size();++i){auto& c=components[result.labels[s.faces[i][0]]];if(c.faces.empty())c.material=s.materials[i];else if(c.material!=s.materials[i])c.mixed=true;c.faces.push_back(i);}
     progress=15;std::vector<Guide> guides;std::vector<int> componentGuide(components.size(),-1);unsigned unsupported=0,mixed=0;double maxRadius=0;
-    for(unsigned ci=0;ci<components.size();++ci){if(!(ci%128))check(cancel);auto& c=components[ci];mixed+=c.mixed;const auto nv=c.vertices.size(),nf=c.faces.size();if(nv*2<nf)continue;auto side2=nv*2-nf;if(side2%2)continue;unsigned sides=unsigned(side2/2);if(sides<3||sides>16||nv%sides||nv/sides<3||c.mixed)continue;
-        Guide g{ci,sides,0,{},{}};std::vector<V> centres;std::vector<double> ringRadii;bool round=true;double radius=0;
-        for(unsigned r=0;r<nv/sides;++r){V centre{};std::vector<unsigned> ring;for(unsigned j=0;j<sides;++j){unsigned i=c.vertices[r*sides+j];ring.push_back(i);centre=add(centre,pos(s,i));}centre=mul(centre,1./sides);centres.push_back(centre);g.rings.push_back(std::move(ring));double lo=1e10,hi=0;for(auto i:g.rings.back()){double d=norm(sub(pos(s,i),centre));lo=std::min(lo,d);hi=std::max(hi,d);}ringRadii.push_back((lo+hi)*.5);radius=std::max(radius,hi);if(lo<1e-7||hi>1.35*lo)round=false;}
-        for(unsigned j=1;j<centres.size();++j)g.length+=norm(sub(centres[j],centres[j-1]));
-        // Consecutive authored vertex rings must actually be joined by source faces.
-        std::unordered_map<unsigned,unsigned> rank;for(unsigned i=0;i<c.vertices.size();++i)rank.emplace(c.vertices[i],i/sides);
-        for(auto fi:c.faces){auto f=s.faces[fi];unsigned lo=UINT_MAX,hi=0;for(auto v:f){lo=std::min(lo,rank[v]);hi=std::max(hi,rank[v]);}if(hi!=lo+1)round=false;}
-        if(!round||g.length<settings.minimumLength||radius>.03||g.length<4*radius){++unsupported;continue;}
-        maxRadius=std::max(maxRadius,radius);g.nodes=resample(centres,g.length>.3?9:g.length>.15?7:g.length>.08?5:3);std::vector<double> arc(centres.size());for(unsigned k=1;k<centres.size();++k)arc[k]=arc[k-1]+norm(sub(centres[k],centres[k-1]));for(unsigned k=0;k<g.nodes.size();++k){double target=g.length*k/(g.nodes.size()-1);auto hi=std::min<std::size_t>(centres.size()-1,std::max<std::size_t>(1,std::upper_bound(arc.begin(),arc.end(),target)-arc.begin()));double u=(target-arc[hi-1])/(arc[hi]-arc[hi-1]);g.radii.push_back(ringRadii[hi-1]*(1-u)+ringRadii[hi]*u);}componentGuide[ci]=int(guides.size());guides.push_back(std::move(g));if(guides.size()>settings.limits.guides)throw std::runtime_error("Guide limit exceeded; increase Guides in Preparation limits.");
+    for(unsigned ci=0;ci<components.size();++ci){
+        if(!(ci%128))check(cancel);auto& c=components[ci];mixed+=c.mixed;
+        const auto nv=c.vertices.size(),nf=c.faces.size();if(nv*2<nf||c.mixed)continue;
+        const auto side2=nv*2-nf;const bool capped=side2==4;
+        std::vector<unsigned> candidates;
+        if(capped){for(unsigned sides=3;sides<=16;++sides)if(nv%sides==0&&nv/sides>=3)candidates.push_back(sides);}
+        else if(side2%2==0&&side2/2>=3&&side2/2<=16&&nv%(side2/2)==0&&nv/(side2/2)>=3)candidates.push_back(unsigned(side2/2));
+        bool admitted=false;
+        for(auto sides:candidates){
+            Guide g{ci,sides,0,{},{}};std::vector<V> centres;std::vector<double> ringRadii;bool round=true;double radius=0;
+            for(unsigned r=0;r<nv/sides;++r){V centre{};std::vector<unsigned> ring;for(unsigned j=0;j<sides;++j){unsigned i=c.vertices[r*sides+j];ring.push_back(i);centre=add(centre,pos(s,i));}centre=mul(centre,1./sides);centres.push_back(centre);g.rings.push_back(std::move(ring));double lo=1e10,hi=0;for(auto i:g.rings.back()){double d=norm(sub(pos(s,i),centre));lo=std::min(lo,d);hi=std::max(hi,d);}ringRadii.push_back((lo+hi)*.5);radius=std::max(radius,hi);if(lo<1e-7||hi>1.35*lo)round=false;}
+            for(unsigned j=1;j<centres.size();++j)g.length+=norm(sub(centres[j],centres[j-1]));
+            // A ring must lie approximately perpendicular to the centerline.
+            // This rejects grouping two successive rings into one wider ring.
+            for(unsigned j=0;j<centres.size()&&round;++j){const auto tangent=sub(centres[std::min<std::size_t>(j+1,centres.size()-1)],centres[j?j-1:0]);const auto len=norm(tangent);if(len<1e-10){round=false;break;}for(auto vertex:g.rings[j])if(std::abs(dot(sub(pos(s,vertex),centres[j]),tangent))/len>ringRadii[j]*.35+1e-7)round=false;}
+            std::unordered_map<unsigned,unsigned> rank;for(unsigned i=0;i<c.vertices.size();++i)rank.emplace(c.vertices[i],i/sides);
+            for(auto fi:c.faces){auto face=s.faces[fi];unsigned lo=UINT_MAX,hi=0;for(auto vertex:face){lo=std::min(lo,rank[vertex]);hi=std::max(hi,rank[vertex]);}if(hi==lo){if(!capped||(lo!=0&&lo+1!=g.rings.size()))round=false;}else if(hi!=lo+1)round=false;}
+            // Absolute centimetre caps excluded ordinary tree trunks. Slenderness,
+            // circular/planar rings and connected face ordering define the shape.
+            if(!round||g.length<settings.minimumLength||g.length<4*radius)continue;
+            maxRadius=std::max(maxRadius,radius);g.nodes=resample(centres,g.length>.3?9:g.length>.15?7:g.length>.08?5:3);std::vector<double> arc(centres.size());for(unsigned k=1;k<centres.size();++k)arc[k]=arc[k-1]+norm(sub(centres[k],centres[k-1]));for(unsigned k=0;k<g.nodes.size();++k){double target=g.length*k/(g.nodes.size()-1);auto hi=std::min<std::size_t>(centres.size()-1,std::max<std::size_t>(1,std::upper_bound(arc.begin(),arc.end(),target)-arc.begin()));double u=(target-arc[hi-1])/(arc[hi]-arc[hi-1]);g.radii.push_back(ringRadii[hi-1]*(1-u)+ringRadii[hi]*u);}
+            componentGuide[ci]=int(guides.size());guides.push_back(std::move(g));if(guides.size()>settings.limits.guides)throw std::runtime_error("Guide limit exceeded; increase Guides in Preparation limits.");admitted=true;break;
+        }
+        if(!admitted&&!candidates.empty())++unsupported;
     }
     // Dense authored folded leaves retain ordered cross-sections, just like
     // three-column grass, but must bend as independent basal guides rather than

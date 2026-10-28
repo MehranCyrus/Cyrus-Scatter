@@ -1,0 +1,129 @@
+{
+  "captured_utc": "2026-10-27T09:43:08.550409+00:00",
+  "scope": "Hashes of directly inspected sources and SDK declarations, not whole-repository qualification",
+  "branch": "codex/workflow-0.75",
+  "head": "d24b880816ab367874f417f79d1253aafa9a60f5",
+  "dirty_entry_count": 307,
+  "baseline": {
+    "scatter": "0.87.4.3",
+    "native_interactions": 11,
+    "scene_schema": 63
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 16861,
+      "sha256": "8656734e0eb0f208bc027cfc1b10225a4fa632df1f7c3ed3afc8791c5721d86f"
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "bytes": 14279,
+      "sha256": "fc73d9bd4bdad91cd46502da44aabea8f0a33ece5f6cd1a686c0647024917a2d"
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "bytes": 33319,
+      "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 62051,
+      "sha256": "819b8fe8ce759f90ac0fb0fa8e0fc1aa3146c148b1a07f843a619e960db412e1"
+    },
+    {
+      "path": "docs/plans/interaction-hide-wireframe-20261027/DELIVERY_08743.md",
+      "bytes": 8346,
+      "sha256": "04852930c881adb3c3079567285f9a7379c226303a4e3f7824700dcfc99e3720"
+    },
+    {
+      "path": "AminScatter/include/interactions_source.h",
+      "bytes": 3148,
+      "sha256": "58e40be73821e5b637abd6957dce784eeb67460d7757a33e9cb57e76610b3d97"
+    },
+    {
+      "path": "AminScatter/include/interactions_engine.h",
+      "bytes": 2854,
+      "sha256": "0bfc0e7cf0d963cc55c876c843717d23f037d456ee400a9452b7bfbef34ce10a"
+    },
+    {
+      "path": "AminScatter/src/interactions_source.cpp",
+      "bytes": 54800,
+      "sha256": "6304e3389f7731de7560b952c9e0034f82994f2c34e56db1a872385ee3232dfb"
+    },
+    {
+      "path": "AminScatter/src/interactions_engine.cpp",
+      "bytes": 24248,
+      "sha256": "85f56751bf5bf3eb239266a0e8ebc39fd59bc3df69eb24d002207d8afff112e4"
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "bytes": 51002,
+      "sha256": "3877fabdf37a2d81a271309b3b8bcbe11847c5580ebde00e986f73dbf2c618d7"
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "bytes": 22107,
+      "sha256": "143a6586f5283767c7c2a83bf3391a7328de5961e6a827c83a12ef02c168c5ec"
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "bytes": 4738,
+      "sha256": "8d4dae9d2d072c1266dcba319c38fb443ec7eadec2907d0886e0516feda5f841"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "bytes": 561865,
+      "sha256": "4cba0429c7af0519f412fbd7ec6b4f8d7f6d6a0f60dfaaf971a6394f2e9b7cfa"
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "bytes": 3038,
+      "sha256": "7689aa6019ef7e7fee5ea005b297c610beb2023f14039bc0338c691c3541adc8"
+    },
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "bytes": 24224,
+      "sha256": "fdfaf728d9a695d3566c220d618c263b1b10647a6575a1f6822bf559ef9114d7"
+    },
+    {
+      "path": "docs/research/gpu-interactions-research-20261027/RESEARCH_PROMPT.md",
+      "bytes": 28077,
+      "sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650"
+    },
+    {
+      "path": "docs/research/gpu-interactions-research-20261027/CURRENT_SYSTEM_CONTEXT.md",
+      "bytes": 12170,
+      "sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861"
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/id3d11graphicswindow.h",
+      "bytes": 3712,
+      "sha256": "8440a0398246c6e6aa58d8080ef0602045e405655e2684707861d1b80a26e141"
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/VertexBufferHandle.h",
+      "bytes": 5584,
+      "sha256": "bc9230bb69f6e3cfa518ddf2d610406f7c624ac133d5a96876cd398fd9c20c26"
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/HLSLMaterialHandle.h",
+      "bytes": 13480,
+      "sha256": "ce26fdfc3c15021737c4b7b1c16d08d0d28f8acb702c659a0191662668fc434f"
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/SmartHandle.h",
+      "bytes": 2993,
+      "sha256": "d8c1a6255e7de5b30dd90661d2626ad42441a2f94f198e55938b9746f58e1830"
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/IVirtualDevice.h",
+      "bytes": 13581,
+      "sha256": "e0705b90260c843df20b61f108dd0d3a7096997ec39de7d5dc5b18974147983c"
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/GeometryEnums.h",
+      "bytes": 7368,
+      "sha256": "d5a62cf1cb1b81c80309d000bef7cf961e7e20b0b2477f68181176d120affc39"
+    }
+  ]
+}

@@ -1,13 +1,73 @@
 # Local catalog and lexical search
 
-**26 October 2026 — current 0.87.3 publication:** generation
-`637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a` is activated and actual project-following tools verify **64/64 full parents**, zero issues, compatible and not stale. Corpus v43/review v54 retains 1,091 explicitly selected fragments; this is not whole-repository coverage. [Exact publication, review, failures and scope](CURRENT_REFRESH_0873_20261026.md).
+**28 October 2026 — 0.87.5.6 preservation refresh.** The current interaction facts
+and [artist-endorsed performance baseline](../../docs/PERFORMANCE_BASELINE.md)
+record why responsive Bend/Trim works and how to compare a successor. The
+[refresh record](CURRENT_REFRESH_08756_20261028.md) owns exact corpus selections,
+source review, tests, activation and consumer verification. Its scope does not
+promote older Library/renderer/host evidence to the new interaction build.
 
-Current guidance covers schema-61 physical preparation, separate tree colliders, the Library settings correction, three-host installer build scope and updated website. All seven retrieval suites pass paired consistency/protected evidence checks; 52 disclosed ranking/precision findings have separate agent review. All **248 knowledge regressions** pass. No human semantic acceptance, answer accuracy or new Max runtime certification is implied. Historical per-source applicability labels retain their original qualification limits; current hashes/review status and maintained delivery guidance identify the successor.
+Use `python -B tools/rag/context.py facts`, scoped `status --verify-sources`, and
+narrow search. Read the returned selection; `--legacy` follows the separately
+reviewed broader project binding. The two selections have distinct enrollment.
+Current artifact integrity, source freshness, semantic review and actual consumer
+adoption are separate checks. The watcher remains a separately controlled system.
+
+The following entries retain their historical selection and verification status.
+
+**Historical 27 October 2026 — compact Core/Library companion.** Start with
+`python -B tools/rag/context.py facts`, then `status --verify-sources` and a
+narrow `search`. The front door pins a separately reviewed 14-parent snapshot;
+the original project MCP enrollment and runtime remain unchanged. This scope
+does not cover the other AI's interaction implementation. See the
+[knowledge workflow](../../docs/KNOWLEDGE_WORKFLOW.md) and
+[stage-one results and limits](HARNESS_STAGE1.md).
+
+**Historical 27 October 2026 — maintained Markdown updated; search generation was stale.**
+This paragraph records the original broader MCP enrollment, not the companion.
+The delivered Library baseline is **0.87.5.1**, Max 2027 only. The current
+Markdown audit inventories all **39 enrolled Markdown parents** and reconciles
+the relevant maintained guides with native Scene presets, portable recipe 9,
+Edit/storage 3, curved Paint and the completed website coverage update.
+[Audit, source routing and remaining publication work](MD_RECONCILIATION_08751_20261027.md).
+
+The bound generation remains
+`637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a`.
+Full-source status reports changed parents and rejects stale retrieval. Markdown
+updates do not rebuild that generation. Ongoing interaction development changes
+some enrolled source files; this task preserves its files, active selection,
+watcher policy, sealed historical receipts and independent products. Use current
+original sources until a reviewed successor is prepared and verified.
+
+### Current source routing
+
+- Save/load choices, native setup merge, collected files and required units/plugins:
+  [maintained Library workflow](../../docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md),
+  [Scene artist guide](../../docs/plans/scene-presets-08751/ARTIST_GUIDE.md) and
+  [exact 0.87.5.1 delivery](../../docs/plans/scene-presets-08751/DELIVERY_08751.md).
+- Portable authored edits versus native Scene serialization:
+  [architecture](../../docs/ARCHITECTURE.md#native-scene-presets-08751) and
+  [recipe 9 scope](../../docs/plans/recipe-authored-08744-20261027/PLAN.md).
+  Ordinary Max Copy limitations remain separate from coordinated Scene imports.
+- Completed editor/hiding/display work: follow the dated 0.87.4–0.87.5 deliveries
+  linked by [the documentation index](../../docs/README.md). Ongoing 0.87.5.2
+  contact work is a separate workstream, not qualified by this Markdown update.
+- Current package: [Max 2027 installation](../../docs/Max_2027_Installation.md).
+  Earlier three-host EXEs keep their original versions and scope.
+- Public facts and current website artifact: [product summary](../../docs/PRODUCT_AND_AI_ROADMAP.md)
+  and [artist website coverage](../../website/verification/ARTIST_COVERAGE_08751.md).
+
+### Preserved publication history
+
+
+**Historical 26 October 2026 — 0.87.3 publication:** generation
+`637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a` was activated; at publication the project-following tools verified **64/64 full parents**, zero issues, compatible and not stale. Corpus v43/review v54 retains 1,091 explicitly selected fragments; this is not whole-repository coverage. [Exact publication, review, failures and scope](CURRENT_REFRESH_0873_20261026.md).
+
+That publication covered schema-61 physical preparation, separate tree colliders, the Library settings correction, three-host installer build scope and updated website. All seven retrieval suites pass paired consistency/protected evidence checks; 52 disclosed ranking/precision findings have separate agent review. All **248 knowledge regressions** pass. No human semantic acceptance, answer accuracy or new Max runtime certification is implied. Historical per-source applicability labels retain their original qualification limits; current hashes/review status and maintained delivery guidance identify the successor.
 
 Only the project index selection changed. Previous generations and the stopped watcher are preserved; no artist installation or consumer restart occurred. Independent uncommitted MCP/Physics workspace evidence is not automatically part of this release Git checkpoint. The [0.87.1 publication](CURRENT_REFRESH_0871_20261026.md) and [earlier 0.87.0 deferral](CURRENT_REFRESH_0870_20261025.md) retain their historical receipts.
 
-### Route current questions to their owners
+### Historical 0.87.3 routing
 
 - Layer roles, Analyze/review/accept, shared source preparation, contact gap,
   covered roots, preview/full output and supported profiles: [current Interactions artist

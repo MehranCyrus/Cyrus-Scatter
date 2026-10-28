@@ -1,0 +1,12 @@
+{
+  "status": "pass",
+  "scope": "Owned host and private shared-library root; no artist preferences changed.",
+  "store_root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\l8741\\candidate-host-01",
+  "override": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\l8741\\candidate-host-01",
+  "gallery_version": "0.87.4.1",
+  "gallery_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\payload-01\\CyrusGallery.dll",
+  "scatter_version": "0.87.4.1",
+  "panel_slot_count": 13,
+  "notice": "",
+  "gallery_item_count": 0
+}

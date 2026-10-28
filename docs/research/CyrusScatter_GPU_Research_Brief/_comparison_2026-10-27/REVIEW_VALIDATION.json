@@ -1,0 +1,274 @@
+{
+  "schema": "cyrus.gpu-research-comparison-validation/1",
+  "utc": "2026-10-27T10:49:07.450773+00:00",
+  "scope": "Research/documentation only; no Max, new GPU execution, production code edits, install, release or git push",
+  "head_at_intake": "d24b880816ab367874f417f79d1253aafa9a60f5",
+  "head_at_validation": "d24b880816ab367874f417f79d1253aafa9a60f5",
+  "input_reports": [
+    {
+      "folder": "A",
+      "files": 24,
+      "core_markdown_documents": 19
+    },
+    {
+      "folder": "B",
+      "files": 37,
+      "core_markdown_documents": 19
+    },
+    {
+      "folder": "C",
+      "files": 28,
+      "core_markdown_documents": 19
+    },
+    {
+      "folder": "D",
+      "files": 28,
+      "core_markdown_documents": 19
+    },
+    {
+      "folder": "LocalCodex",
+      "files": 54,
+      "core_markdown_documents": 19
+    }
+  ],
+  "input_files_rehashed": 171,
+  "provided_manifest_entries_checked_at_intake": 212,
+  "original_inputs_unchanged": true,
+  "original_issues": [],
+  "comparison_claim_rows": 22,
+  "analytic_reruns": 5,
+  "analytic_scope": "Arithmetic and independent analytic controls only; not full solver tests",
+  "D_printed_score_match": false,
+  "existing_local_probe_identity_checks": [
+    {
+      "probe": "deformation",
+      "source_matches_execution_receipt": true,
+      "recorded_compiler_exit_code": 0,
+      "recorded_execution_exit_code": 0,
+      "rerun_this_review": false
+    },
+    {
+      "probe": "interop",
+      "source_matches_execution_receipt": true,
+      "recorded_compiler_exit_code": 0,
+      "recorded_execution_exit_code": 0,
+      "rerun_this_review": false
+    }
+  ],
+  "recorded_source_identity_successor_check": [
+    {
+      "path": "README.md",
+      "recorded_sha256": "8656734e0eb0f208bc027cfc1b10225a4fa632df1f7c3ed3afc8791c5721d86f",
+      "current_sha256": "8656734e0eb0f208bc027cfc1b10225a4fa632df1f7c3ed3afc8791c5721d86f",
+      "matches": true
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "recorded_sha256": "fc73d9bd4bdad91cd46502da44aabea8f0a33ece5f6cd1a686c0647024917a2d",
+      "current_sha256": "1b3dd94f400bd5bbda6e127b4deef461c5b0fd2825c915f026b62a0d38e83622",
+      "matches": false
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "recorded_sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+      "current_sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+      "matches": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "recorded_sha256": "819b8fe8ce759f90ac0fb0fa8e0fc1aa3146c148b1a07f843a619e960db412e1",
+      "current_sha256": "8032eed31776a3bf4039b442b6f1d9699d4fdbff74b47198d3ff6c544f9a5c2d",
+      "matches": false
+    },
+    {
+      "path": "docs/plans/interaction-hide-wireframe-20261027/DELIVERY_08743.md",
+      "recorded_sha256": "04852930c881adb3c3079567285f9a7379c226303a4e3f7824700dcfc99e3720",
+      "current_sha256": "04852930c881adb3c3079567285f9a7379c226303a4e3f7824700dcfc99e3720",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/include/interactions_source.h",
+      "recorded_sha256": "58e40be73821e5b637abd6957dce784eeb67460d7757a33e9cb57e76610b3d97",
+      "current_sha256": "58e40be73821e5b637abd6957dce784eeb67460d7757a33e9cb57e76610b3d97",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/include/interactions_engine.h",
+      "recorded_sha256": "0bfc0e7cf0d963cc55c876c843717d23f037d456ee400a9452b7bfbef34ce10a",
+      "current_sha256": "0bfc0e7cf0d963cc55c876c843717d23f037d456ee400a9452b7bfbef34ce10a",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/src/interactions_source.cpp",
+      "recorded_sha256": "6304e3389f7731de7560b952c9e0034f82994f2c34e56db1a872385ee3232dfb",
+      "current_sha256": "6304e3389f7731de7560b952c9e0034f82994f2c34e56db1a872385ee3232dfb",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/src/interactions_engine.cpp",
+      "recorded_sha256": "85f56751bf5bf3eb239266a0e8ebc39fd59bc3df69eb24d002207d8afff112e4",
+      "current_sha256": "85f56751bf5bf3eb239266a0e8ebc39fd59bc3df69eb24d002207d8afff112e4",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "recorded_sha256": "3877fabdf37a2d81a271309b3b8bcbe11847c5580ebde00e986f73dbf2c618d7",
+      "current_sha256": "3877fabdf37a2d81a271309b3b8bcbe11847c5580ebde00e986f73dbf2c618d7",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "recorded_sha256": "143a6586f5283767c7c2a83bf3391a7328de5961e6a827c83a12ef02c168c5ec",
+      "current_sha256": "143a6586f5283767c7c2a83bf3391a7328de5961e6a827c83a12ef02c168c5ec",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "recorded_sha256": "8d4dae9d2d072c1266dcba319c38fb443ec7eadec2907d0886e0516feda5f841",
+      "current_sha256": "8d4dae9d2d072c1266dcba319c38fb443ec7eadec2907d0886e0516feda5f841",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "recorded_sha256": "4cba0429c7af0519f412fbd7ec6b4f8d7f6d6a0f60dfaaf971a6394f2e9b7cfa",
+      "current_sha256": "4cba0429c7af0519f412fbd7ec6b4f8d7f6d6a0f60dfaaf971a6394f2e9b7cfa",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "recorded_sha256": "7689aa6019ef7e7fee5ea005b297c610beb2023f14039bc0338c691c3541adc8",
+      "current_sha256": "7689aa6019ef7e7fee5ea005b297c610beb2023f14039bc0338c691c3541adc8",
+      "matches": true
+    },
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "recorded_sha256": "fdfaf728d9a695d3566c220d618c263b1b10647a6575a1f6822bf559ef9114d7",
+      "current_sha256": "fdfaf728d9a695d3566c220d618c263b1b10647a6575a1f6822bf559ef9114d7",
+      "matches": true
+    },
+    {
+      "path": "docs/research/gpu-interactions-research-20261027/RESEARCH_PROMPT.md",
+      "recorded_sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+      "current_sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+      "matches": true
+    },
+    {
+      "path": "docs/research/gpu-interactions-research-20261027/CURRENT_SYSTEM_CONTEXT.md",
+      "recorded_sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+      "current_sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+      "matches": true
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/id3d11graphicswindow.h",
+      "recorded_sha256": "8440a0398246c6e6aa58d8080ef0602045e405655e2684707861d1b80a26e141",
+      "current_sha256": "8440a0398246c6e6aa58d8080ef0602045e405655e2684707861d1b80a26e141",
+      "matches": true
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/VertexBufferHandle.h",
+      "recorded_sha256": "bc9230bb69f6e3cfa518ddf2d610406f7c624ac133d5a96876cd398fd9c20c26",
+      "current_sha256": "bc9230bb69f6e3cfa518ddf2d610406f7c624ac133d5a96876cd398fd9c20c26",
+      "matches": true
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/HLSLMaterialHandle.h",
+      "recorded_sha256": "ce26fdfc3c15021737c4b7b1c16d08d0d28f8acb702c659a0191662668fc434f",
+      "current_sha256": "ce26fdfc3c15021737c4b7b1c16d08d0d28f8acb702c659a0191662668fc434f",
+      "matches": true
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/SmartHandle.h",
+      "recorded_sha256": "d8c1a6255e7de5b30dd90661d2626ad42441a2f94f198e55938b9746f58e1830",
+      "current_sha256": "d8c1a6255e7de5b30dd90661d2626ad42441a2f94f198e55938b9746f58e1830",
+      "matches": true
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/IVirtualDevice.h",
+      "recorded_sha256": "e0705b90260c843df20b61f108dd0d3a7096997ec39de7d5dc5b18974147983c",
+      "current_sha256": "e0705b90260c843df20b61f108dd0d3a7096997ec39de7d5dc5b18974147983c",
+      "matches": true
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/Graphics/GeometryEnums.h",
+      "recorded_sha256": "d5a62cf1cb1b81c80309d000bef7cf961e7e20b0b2477f68181176d120affc39",
+      "current_sha256": "d5a62cf1cb1b81c80309d000bef7cf961e7e20b0b2477f68181176d120affc39",
+      "matches": true
+    }
+  ],
+  "current_source_identity_scope": "Only the23 recorded files; concurrent working tree is not certified",
+  "knowledge_scope": "Stale42/64 source parents; direct source fallback; no corpus refresh",
+  "reviewer_authored_paths": [
+    "docs/research/CyrusScatter_GPU_Research_Brief/_comparison_2026-10-27",
+    "build/gpu-research-comparison-20261027-01"
+  ],
+  "external_report_order": [
+    "C",
+    "A",
+    "B",
+    "D"
+  ],
+  "order_basis": "Engineering judgment for this project; top three close; not a controlled model benchmark",
+  "verification_limits": [
+    "No independent line-by-line audit of every cited upstream implementation or reproduction of every paper",
+    "No new GPU performance test or Max test performed during this review",
+    "Existing local20sample component probes do not qualify the production fitter/evaluator or Max interoperability",
+    "Extensive concurrent/preexisting repository changes preserved; no whole-tree qualification"
+  ],
+  "local_markdown_links_checked": 43,
+  "local_markdown_link_issues": [],
+  "comparison_payload_hashes": [
+    {
+      "path": "ANALYTIC_VERIFICATION.json",
+      "sha256": "aeabb2bffb50b704b759a73541dfee2f99a85e2aaef8227cf30da0c53736e85c"
+    },
+    {
+      "path": "checks/A_estimate_memory_rerun.json",
+      "sha256": "73694f5636a3f967a697bb30de7d11fb68a372b23389d672361b14d4fd1a48d6"
+    },
+    {
+      "path": "checks/B_calculate_budgets_rerun.json",
+      "sha256": "d5773be5c75300037497be2d17192b2051e34f06cbe93f3ecff3954d338f99bf"
+    },
+    {
+      "path": "checks/B_check_adversarial_geometry_rerun.json",
+      "sha256": "2426aadf4a960029d2a594066330057f3ec3d0921d233ea3f31959c13d9804e8"
+    },
+    {
+      "path": "checks/B_check_decision_scores_rerun.json",
+      "sha256": "30e37dca3b0a55cb602b3ee96c6807202a26adbbdf95aef408dc0b358d6a4cc7"
+    },
+    {
+      "path": "checks/C_research_checks_rerun.json",
+      "sha256": "40fc54a0e875a997d81e5c570a9858ecf9b6de89798a83253df51b904d548db1"
+    },
+    {
+      "path": "checks/README.md",
+      "sha256": "bcc0b120fa5952b8286b4556f4dda3f96833723ae99e29be103cf14ac0177fd7"
+    },
+    {
+      "path": "CLAIM_MATRIX.csv",
+      "sha256": "06edf6361a53b01bf1b30301a831626ffa016c2db39c2dde950f5304e74c0c1c"
+    },
+    {
+      "path": "COMPARISON_AND_RANKING.md",
+      "sha256": "32cc23d300d65009209b809c3a28efd3db090f255b90679f08eec32698ef9667"
+    },
+    {
+      "path": "CONSOLIDATED_FINDINGS.md",
+      "sha256": "9240d81f86c4a6af7f7171ba9f96ddbddb551219ca74076ae390a2f13876721c"
+    },
+    {
+      "path": "INTAKE.json",
+      "sha256": "5a46811c1ee356ef6c6a02215e3e55e55c6fc225ae7c63800b3868ee4cb81dab"
+    },
+    {
+      "path": "README.md",
+      "sha256": "e19f8595d7bd4cff4e6547f279694a5f97da1bbf74cb05d9ed2199ff71a9d499"
+    },
+    {
+      "path": "SOURCE_CHECKS.md",
+      "sha256": "973ef1fec82e78cfaeed339834f80df5abbfa1f06a667a049c90917e8ec45016"
+    }
+  ],
+  "passed": true
+}

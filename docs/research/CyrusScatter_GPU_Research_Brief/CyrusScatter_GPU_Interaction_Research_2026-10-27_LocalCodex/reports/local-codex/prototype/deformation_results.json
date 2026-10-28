@@ -1,0 +1,322 @@
+{
+  "scope": "Synthetic guide-pose deformation only; not Max or collision fitting",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "cuda_runtime": 12010,
+  "cuda_driver_api": 13040,
+  "opencl_version": "OpenCL 3.0 CUDA",
+  "opencl_driver": "617.42",
+  "opencl_build_ms": 7.9091,
+  "cuda_nvrtc_build_ms": 128.5789,
+  "opencl_khr_d3d11_sharing": false,
+  "opencl_fp64": true,
+  "opencl_extensions": "cl_khr_global_int32_base_atomics cl_khr_global_int32_extended_atomics cl_khr_local_int32_base_atomics cl_khr_local_int32_extended_atomics cl_khr_fp64 cl_khr_3d_image_writes cl_khr_byte_addressable_store cl_khr_icd cl_khr_gl_sharing cl_nv_compiler_options cl_nv_device_attribute_query cl_nv_pragma_unroll cl_nv_d3d10_sharing cl_khr_d3d10_sharing cl_nv_d3d11_sharing cl_nv_copy_opts cl_nv_create_buffer cl_khr_int64_base_atomics cl_khr_int64_extended_atomics cl_khr_device_uuid cl_khr_pci_bus_info cl_khr_external_semaphore cl_khr_external_memory cl_khr_external_semaphore_win32 cl_khr_external_memory_win32 cl_khr_semaphore",
+  "math_policy": "CUDA precise sqrt/div, fmad=false; OpenCL correctly-rounded div/sqrt, FP_CONTRACT OFF",
+  "source_vertices": 4096,
+  "nodes_per_instance": 512,
+  "results": [
+    {
+      "instances": 1,
+      "vertices": 4096,
+      "cpu_workers": 1,
+      "pose_upload_bytes": 16384,
+      "output_bytes": 65536,
+      "cpu_1": {
+        "samples": 20,
+        "p50_ms": 0.0909,
+        "p95_ms": 0.0965,
+        "p99_ms": 0.0967,
+        "min_ms": 0.0682,
+        "max_ms": 0.0967
+      },
+      "cpu_parallel": {
+        "samples": 20,
+        "p50_ms": 0.0909,
+        "p95_ms": 0.0965,
+        "p99_ms": 0.0967,
+        "min_ms": 0.0682,
+        "max_ms": 0.0967
+      },
+      "cuda_device": {
+        "samples": 20,
+        "p50_ms": 0.00512,
+        "p95_ms": 0.006144,
+        "p99_ms": 0.006144,
+        "min_ms": 0.00512,
+        "max_ms": 0.006144
+      },
+      "cuda_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.042,
+        "p95_ms": 0.0433,
+        "p99_ms": 0.0472,
+        "min_ms": 0.0415,
+        "max_ms": 0.0472
+      },
+      "cuda_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 0.127,
+        "p95_ms": 0.1334,
+        "p99_ms": 0.1457,
+        "min_ms": 0.1252,
+        "max_ms": 0.1457
+      },
+      "opencl_device": {
+        "samples": 20,
+        "p50_ms": 0.00512,
+        "p95_ms": 0.006144,
+        "p99_ms": 0.006144,
+        "min_ms": 0.00512,
+        "max_ms": 0.006144
+      },
+      "opencl_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.0252,
+        "p95_ms": 0.0262,
+        "p99_ms": 0.0263,
+        "min_ms": 0.0248,
+        "max_ms": 0.0263
+      },
+      "opencl_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 0.2344,
+        "p95_ms": 0.6425,
+        "p99_ms": 0.9644,
+        "min_ms": 0.1924,
+        "max_ms": 0.9644
+      },
+      "max_abs_error_vs_double": {
+        "cpu": 8.6463136928e-09,
+        "cuda": 8.6463136928e-09,
+        "opencl": 8.6463136928e-09
+      }
+    },
+    {
+      "instances": 16,
+      "vertices": 65536,
+      "cpu_workers": 6,
+      "pose_upload_bytes": 262144,
+      "output_bytes": 1048576,
+      "cpu_1": {
+        "samples": 20,
+        "p50_ms": 1.5256,
+        "p95_ms": 1.5763,
+        "p99_ms": 1.7621,
+        "min_ms": 1.0944,
+        "max_ms": 1.7621
+      },
+      "cpu_parallel": {
+        "samples": 20,
+        "p50_ms": 0.7644,
+        "p95_ms": 0.9551,
+        "p99_ms": 2.5245,
+        "min_ms": 0.6632,
+        "max_ms": 2.5245
+      },
+      "cuda_device": {
+        "samples": 20,
+        "p50_ms": 0.01536,
+        "p95_ms": 0.016384,
+        "p99_ms": 0.039936,
+        "min_ms": 0.008064,
+        "max_ms": 0.039936
+      },
+      "cuda_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.0246,
+        "p95_ms": 0.0385,
+        "p99_ms": 0.0486,
+        "min_ms": 0.0239,
+        "max_ms": 0.0486
+      },
+      "cuda_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 0.2831,
+        "p95_ms": 0.4054,
+        "p99_ms": 0.822,
+        "min_ms": 0.2297,
+        "max_ms": 0.822
+      },
+      "opencl_device": {
+        "samples": 20,
+        "p50_ms": 0.008064,
+        "p95_ms": 0.008192,
+        "p99_ms": 0.008192,
+        "min_ms": 0.007168,
+        "max_ms": 0.008192
+      },
+      "opencl_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.0273,
+        "p95_ms": 0.0315,
+        "p99_ms": 0.0715,
+        "min_ms": 0.0269,
+        "max_ms": 0.0715
+      },
+      "opencl_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 0.2503,
+        "p95_ms": 0.2934,
+        "p99_ms": 0.3195,
+        "min_ms": 0.2353,
+        "max_ms": 0.3195
+      },
+      "max_abs_error_vs_double": {
+        "cpu": 1.28416531298e-08,
+        "cuda": 1.28416531298e-08,
+        "opencl": 1.28416531298e-08
+      }
+    },
+    {
+      "instances": 256,
+      "vertices": 1048576,
+      "cpu_workers": 6,
+      "pose_upload_bytes": 4194304,
+      "output_bytes": 16777216,
+      "cpu_1": {
+        "samples": 20,
+        "p50_ms": 20.3405,
+        "p95_ms": 25.0058,
+        "p99_ms": 27.4819,
+        "min_ms": 19.0445,
+        "max_ms": 27.4819
+      },
+      "cpu_parallel": {
+        "samples": 20,
+        "p50_ms": 5.6409,
+        "p95_ms": 7.0476,
+        "p99_ms": 7.3435,
+        "min_ms": 4.7485,
+        "max_ms": 7.3435
+      },
+      "cuda_device": {
+        "samples": 20,
+        "p50_ms": 0.045056,
+        "p95_ms": 0.04608,
+        "p99_ms": 0.070656,
+        "min_ms": 0.037888,
+        "max_ms": 0.070656
+      },
+      "cuda_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.0646,
+        "p95_ms": 0.0711,
+        "p99_ms": 0.0918,
+        "min_ms": 0.0555,
+        "max_ms": 0.0918
+      },
+      "cuda_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 2.9257,
+        "p95_ms": 4.0997,
+        "p99_ms": 4.1768,
+        "min_ms": 2.6922,
+        "max_ms": 4.1768
+      },
+      "opencl_device": {
+        "samples": 20,
+        "p50_ms": 0.04096,
+        "p95_ms": 0.048128,
+        "p99_ms": 0.049152,
+        "min_ms": 0.039936,
+        "max_ms": 0.049152
+      },
+      "opencl_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.0635,
+        "p95_ms": 0.0722,
+        "p99_ms": 0.0959,
+        "min_ms": 0.0627,
+        "max_ms": 0.0959
+      },
+      "opencl_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 3.1801,
+        "p95_ms": 4.0435,
+        "p99_ms": 4.3546,
+        "min_ms": 2.7814,
+        "max_ms": 4.3546
+      },
+      "max_abs_error_vs_double": {
+        "cpu": 1.32195111385e-08,
+        "cuda": 1.32195111385e-08,
+        "opencl": 1.33435708871e-08
+      }
+    },
+    {
+      "instances": 1024,
+      "vertices": 4194304,
+      "cpu_workers": 6,
+      "pose_upload_bytes": 16777216,
+      "output_bytes": 67108864,
+      "cpu_1": {
+        "samples": 20,
+        "p50_ms": 81.6139,
+        "p95_ms": 102.8662,
+        "p99_ms": 108.3187,
+        "min_ms": 74.6399,
+        "max_ms": 108.3187
+      },
+      "cpu_parallel": {
+        "samples": 20,
+        "p50_ms": 23.1896,
+        "p95_ms": 28.9676,
+        "p99_ms": 29.1562,
+        "min_ms": 19.7637,
+        "max_ms": 29.1562
+      },
+      "cuda_device": {
+        "samples": 20,
+        "p50_ms": 0.13414399,
+        "p95_ms": 0.141312,
+        "p99_ms": 0.14214399,
+        "min_ms": 0.13312,
+        "max_ms": 0.14214399
+      },
+      "cuda_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.1517,
+        "p95_ms": 0.1609,
+        "p99_ms": 0.3763,
+        "min_ms": 0.1503,
+        "max_ms": 0.3763
+      },
+      "cuda_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 12.8788,
+        "p95_ms": 18.1266,
+        "p99_ms": 20.1285,
+        "min_ms": 11.298,
+        "max_ms": 20.1285
+      },
+      "opencl_device": {
+        "samples": 20,
+        "p50_ms": 0.13824,
+        "p95_ms": 0.140128,
+        "p99_ms": 0.140128,
+        "min_ms": 0.130912,
+        "max_ms": 0.140128
+      },
+      "opencl_completed_wall": {
+        "samples": 20,
+        "p50_ms": 0.1652,
+        "p95_ms": 0.1748,
+        "p99_ms": 0.1752,
+        "min_ms": 0.1503,
+        "max_ms": 0.1752
+      },
+      "opencl_pageable_roundtrip": {
+        "samples": 20,
+        "p50_ms": 12.8412,
+        "p95_ms": 14.501,
+        "p99_ms": 14.5158,
+        "min_ms": 10.9416,
+        "max_ms": 14.5158
+      },
+      "max_abs_error_vs_double": {
+        "cpu": 1.39180030695e-08,
+        "cuda": 1.39180030695e-08,
+        "opencl": 1.34608953428e-08
+      }
+    }
+  ]
+}

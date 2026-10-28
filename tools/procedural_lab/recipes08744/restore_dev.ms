@@ -1,0 +1,1 @@
+try(CVImported=CyrusRecipeImport undefined CVDocument CVBindings newSetup:true calculate:true variation:#new;(dotNetClass "System.IO.File").WriteAllText (GardenRun+"restore-dev.txt") (CVImported as string))catch((dotNetClass "System.IO.File").WriteAllText (GardenRun+"restore-dev-error.txt") (getCurrentException()+"\n"+getCurrentExceptionStackTrace()))

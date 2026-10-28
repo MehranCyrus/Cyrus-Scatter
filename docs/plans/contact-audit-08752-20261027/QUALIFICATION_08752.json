@@ -1,0 +1,270 @@
+{
+  "schema": "cyrus.interaction-audit-delivery/1",
+  "version": "0.87.5.2",
+  "date": "2026-10-27",
+  "max_year": 2027,
+  "status": "qualified_with_recorded_limits",
+  "baseline": {
+    "version": "0.87.5.1",
+    "branch": "codex/workflow-0.75",
+    "head": "d24b880816ab367874f417f79d1253aafa9a60f5",
+    "snapshot_sha256": "2ddf3fd9661e2d7ffdcc7fe1a2e0cdad45f4feb7a8a9d2e8d0bdbe15daf516dd"
+  },
+  "scope": "CPU contact work optimization, diagnostics and retained Max 2027 delivery; no claim of universal physical correctness or presented FPS",
+  "native": {
+    "receipt": "build\\interactions08752-20261027-01\\native-final\\receipt.json",
+    "receipt_sha256": "75169f569a5a7a3fc6b45c2443c1f9b376c06ce763b6cee64415d0fbe9b53476",
+    "sources_verified": 625,
+    "tests_passed": 61
+  },
+  "package": {
+    "path": "dist\\CyrusScatter-0.87.5.2-20261027\\CyrusScatter-0.87.5.2-Max2027.mzp",
+    "bytes": 2632920,
+    "sha256": "4130029213d015297a4df6fcd15b3662b0152925e77a0ce4a118e4a0450d4f2d",
+    "files": {
+      "AminScatter.dlx": "c2b8a71735b92afe2d85c1f58051c9f4ad94782e5ae093042dc317d8f2ff52b6",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "Clipper2-NOTICE.txt": "c38889c3df3eaa6d40eb90abf6ca3bdc2260395596d5c6895ea974708372df74",
+      "CyrusBrush.dlx": "db0a296bec9c5f4acda438683848f2542fae6c11493d888203c9605709771a34",
+      "CyrusBrushStorage.dlh": "5c4dad8a0e49c26c47069da3453b76a9979cc6446dabeadc62ea3f1415b33a7b",
+      "CyrusGallery.dll": "901a223c9ede1c1cb30c40c2aeceb78b0f5537377acc1957467c7fbeb8005785",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.mcr": "53c2f986b176a3f1e5e655b153191b946af7a6bdb39703eab77222c64dcc2e4f",
+      "CyrusScatter.ms": "3ffd2262ad3b29becbb8b2f2117590fb19e30b122ecafaccb515bb262e92cbf8",
+      "CyrusScatterEdit.dlm": "315e7f03701718772896a7396a9b851674ea925df0e6dfa0d780e374067068ab",
+      "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+      "ExternalContent.json": "f72affef5fcb35da414ceab45c8837e0a7d63c988ff7f1a9ec41a9c99affc1ab",
+      "INSTALL.txt": "29a414520ee9904ad3c0da808cc006d6d20b6a0a6b71906f9d208226da36b827",
+      "InstallInventory.txt": "d15c0ec1db79bf6f91834669907d49c608c0b8c0c6d939069d06748d04674e7b",
+      "LibraryFiles.ms": "3de699fea1621d245576077c5654f57fb4e1394c23e4a78db6962f0cea88e4a0",
+      "Patterns/README.md": "0a303716847cf3c27a0610e5cc10554a309725f3064943a5f726d447ae690c83",
+      "Patterns/catalog.tsv": "6707561a06ac479ca88c4b2ce6c5ff2c4a2d003d64572247cb83fb76582a4926",
+      "Patterns/index.json": "f6ba0e7ef8925ba581be3951376eeef82df140065949639e415feb72f485fd8f",
+      "Patterns/soft-patches.png": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+      "Patterns/uniform.png": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+      "Patterns/wide-bands.png": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+      "SurfaceGeodesic-LICENSE.txt": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52",
+      "SurfaceGeodesic-NOTICE.txt": "bd0314ed47bcfac23de2c7801a9f7b7ec19374df4f7b035cbd7fd9dee9ce5c54",
+      "Uninstall.ms": "8cba70077899000c5c2eba6c2e7d965f9d43d33dd588349cd7529f300f1fe72d",
+      "install.ms": "5b553dfc3c619ba05ad8c58b2282a70f4dd0b9801e3801e782f714ccc2d389bb",
+      "libjpeg-turbo-IJG-README.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "libjpeg-turbo-LICENSE.txt": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579",
+      "libjpeg-turbo-NOTICE.txt": "9e1b3353e71b8615311f81a469ee2d0e9be12f52188186dd6fbd4a66fce1a264",
+      "mzp.run": "481b3e12dd01c4c0958c70da2d27d634595c7a8f4c9910055ce0dd7a3d54953d",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "embedded_script_fingerprint": "02388b3dd3fd105228b826cfe2919a32fd3a49ad84c99f0f3715ac847419e5b9"
+  },
+  "loaded_identity": {
+    "host": 2027,
+    "modules": {
+      "AminScatter.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\installer-final\\runtime\\r\\93bd8e8adaed\\bin\\AminScatter.dlx",
+        "sha256": "c2b8a71735b92afe2d85c1f58051c9f4ad94782e5ae093042dc317d8f2ff52b6"
+      },
+      "CyrusBrush.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\installer-final\\runtime\\r\\93bd8e8adaed\\bin\\CyrusBrush.dlx",
+        "sha256": "db0a296bec9c5f4acda438683848f2542fae6c11493d888203c9605709771a34"
+      },
+      "CyrusBrushStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\installer-final\\runtime\\r\\93bd8e8adaed\\bin\\CyrusBrushStorage.dlh",
+        "sha256": "5c4dad8a0e49c26c47069da3453b76a9979cc6446dabeadc62ea3f1415b33a7b"
+      },
+      "CyrusScatterEdit.dlm": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\installer-final\\runtime\\r\\93bd8e8adaed\\bin\\CyrusScatterEdit.dlm",
+        "sha256": "315e7f03701718772896a7396a9b851674ea925df0e6dfa0d780e374067068ab"
+      }
+    },
+    "script_fingerprint": "02388b3dd3fd105228b826cfe2919a32fd3a49ad84c99f0f3715ac847419e5b9"
+  },
+  "host_checks": [
+    {
+      "name": "audit-setup",
+      "path": "build\\interactions08752-20261027-01\\host-final\\audit-setup.json",
+      "sha256": "cfaa328015edaece256b8490d0e6cded91f4c12e9c730aff926673e5cdf0d2b3"
+    },
+    {
+      "name": "audit-passive",
+      "path": "build\\interactions08752-20261027-01\\host-final\\audit-passive.json",
+      "sha256": "465f8a71d436b44916deac0f818a8c433aca9abcabd3ca2b29aee0f7f0fd8950"
+    },
+    {
+      "name": "audit-bench-200",
+      "path": "build\\interactions08752-20261027-01\\host-final\\audit-bench-200.json",
+      "sha256": "14ca44d55ada2416ed11fcd4ba83dfa86ae70f78cdbdef03cb22e928463cec99"
+    },
+    {
+      "name": "audit-bench-1000",
+      "path": "build\\interactions08752-20261027-01\\host-final\\audit-bench-1000.json",
+      "sha256": "f0fd1a0e1fa65480baad66fc690e981279c4c3e7975456ca3af66b97b7f884e0"
+    },
+    {
+      "name": "audit-pending",
+      "path": "build\\interactions08752-20261027-01\\host-final\\audit-pending.json",
+      "sha256": "4eaa625a9566408a795126af16c4c88cce7e13835a55dca4156a57d079110ba9"
+    },
+    {
+      "name": "audit-save-reload",
+      "path": "build\\interactions08752-20261027-01\\host-final\\audit-save-reload.json",
+      "sha256": "47f1f7be06a2b296669a65855b508aea4c9df7278db36c4765f77172115ca947"
+    },
+    {
+      "name": "runtime-grass",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-grass.json",
+      "sha256": "b960e7e25c254992521e627ed9f125400a621f6ae0044547fb5dccc0a5ee8e50"
+    },
+    {
+      "name": "runtime-fern",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-fern.json",
+      "sha256": "3471e376b25e8fe4766dfee1129a3579320d6a5da187e588426266cd46bb7427"
+    },
+    {
+      "name": "runtime-authored-fern",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-authored-fern.json",
+      "sha256": "3d88ab3478fb8e67e91396bd92583615c7fd48e10c27fac2477f28e4bfb394a3"
+    },
+    {
+      "name": "runtime-bake",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-bake.json",
+      "sha256": "545759bae704982c353aef2f57550610afcfde7dc5ac6280fba757fb6bee1827"
+    },
+    {
+      "name": "runtime-all-hidden",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-all-hidden.json",
+      "sha256": "e3d5ca34e92fc0648924eb93399cc7cd952745561f29f1635d37ef312a77fdbc"
+    },
+    {
+      "name": "runtime-drag-before",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-drag-before.json",
+      "sha256": "6f6deb50dfda48c4f54e4edf6e010afba461a50b732ecd29a3a9c7bdffec7f17"
+    },
+    {
+      "name": "runtime-drag-after",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-drag-after.json",
+      "sha256": "a5eafdca70903b3f07c06ccb5ce1c94de6471ff6b454412a069203711b280b40"
+    },
+    {
+      "name": "runtime-record-undo",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-record-undo.json",
+      "sha256": "bb4ba75c062365db024a44b31b5f2eef024bc8626509bd1eca065289cade1b11"
+    },
+    {
+      "name": "runtime-undo-read",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-undo-read.json",
+      "sha256": "126687808ac20592fa6572805179c46da4c9efc90b6fac84b8caa5df0a300953"
+    },
+    {
+      "name": "runtime-redo-read",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-redo-read.json",
+      "sha256": "75b0b95515607f635061aa365742a964545085d82145cf58a9886a10727bbc72"
+    },
+    {
+      "name": "runtime-failure",
+      "path": "build\\interactions08752-20261027-01\\host-final\\runtime-failure.json",
+      "sha256": "1a8dfe87c4946f3e481815161eb694f3b8c924d120a709008621378286eeec18"
+    },
+    {
+      "name": "library-save",
+      "path": "build\\interactions08752-20261027-01\\host-final\\library-save.json",
+      "sha256": "8e75d36b52f1987cad03252259b50b2e2ef3974f74c5164dc4577bd5f24d939e"
+    },
+    {
+      "name": "library-poll",
+      "path": "build\\interactions08752-20261027-01\\host-final\\library-poll.json",
+      "sha256": "51d0a36a7c41077059aee0ea7f4275b4c2cf5305396461eb9e151dbc3dd464a4"
+    },
+    {
+      "name": "library-merge",
+      "path": "build\\interactions08752-20261027-01\\host-final\\library-merge.json",
+      "sha256": "7437e3858d0211be11695950a55ceaf3ab0d8a67f7b20680cc290415a06e6400"
+    }
+  ],
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.87.5.2",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 364,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "3ffd2262ad3b29becbb8b2f2117590fb19e30b122ecafaccb515bb262e92cbf8",
+    "preserved_files": [],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "paired_numeric": {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\fixtures\\dense-1000.json",
+    "fixture_sha256": "eb93153af443850e3ec9bc8c845d3bc232c2a21d73452a4edf6248469fe32b6c",
+    "poses_and_warnings_identical": true,
+    "old_median_ms": 100.30619999999999,
+    "new_median_ms": 78.7602,
+    "improvement_percent": 21.48022754326252
+  },
+  "natural_replay": [
+    {
+      "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\fixtures\\natural-0.json",
+      "poses_identical": true,
+      "before_median_ms": 0.1441,
+      "after_median_ms": 0.1478,
+      "improvement_percent": -2.5676613462872977
+    },
+    {
+      "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\fixtures\\natural-1.json",
+      "poses_identical": true,
+      "before_median_ms": 24.5777,
+      "after_median_ms": 13.3574,
+      "improvement_percent": 45.65235965936601
+    },
+    {
+      "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08752-20261027-01\\fixtures\\natural-2.json",
+      "poses_identical": true,
+      "before_median_ms": 0.1541,
+      "after_median_ms": 0.1458,
+      "improvement_percent": 5.386112913692386
+    }
+  ],
+  "hardware_math": {
+    "corners": 2412954,
+    "visibility_mismatches": 0,
+    "maximum_error_m": 1.3328e-07,
+    "receipt_sha256": "5bda92f52ca3c1669fbbebe62fd292d9cabc074cab51cf7ca64d12dc857a285c"
+  },
+  "stress_geometry": {
+    "triangles": 588355,
+    "penetrating_vertex_obstacle_pairs": 0,
+    "touching_triangle_obstacle_pairs": 0,
+    "root_anchor_error_m": 0.0,
+    "maximum_stem_edge_change": 4.659988222831814,
+    "quality_passed": false
+  },
+  "saved_test_copy": {
+    "path": "build\\interactions08752-20261027-01\\host-final\\Grass_Interaction_0.87.5.2.max",
+    "bytes": 273289050,
+    "sha256": "a8b9b165f0a35986cf1268397c43d9008cd4baa69500100d87f3af2cbf04298e"
+  },
+  "preservation": {
+    "artist_ini_unchanged": true,
+    "library_implementation_unchanged": [
+      "AminScatter/shared/SharedLibrary.cs",
+      "AminScatter/shared/SharedLibrary.Management.cs",
+      "AminScatter/src/cyrus_edit.cpp",
+      "AminScatter/src/recipe_library.cpp",
+      "AminScatter/src/recipes.cpp",
+      "AminScatter/src/recipes_bridge.cpp"
+    ],
+    "scene_preset_changes": "version strings only",
+    "artist_installed_or_restarted": false
+  },
+  "knowledge": {
+    "generation": "637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a",
+    "verified_at_start": 40,
+    "enrolled": 64,
+    "status": "stale; direct source inspected",
+    "refreshed": false
+  },
+  "limits": [
+    "Dense/deep overlap retains the preceding basal skin strain failure; observed roughly 3.915 mm absolute edge change.",
+    "Real Max command durations are not GPU time or presented FPS; source-edit/material/renderer/soak cases are not universally qualified.",
+    "No older Max host, CUDA solver, proxy-feature implementation, EXE, website publication or git push in this scope."
+  ]
+}

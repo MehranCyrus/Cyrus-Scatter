@@ -1,0 +1,112 @@
+{
+  "schema": "cyrus.gpu-interaction-research/1",
+  "researcher_id": "LocalCodex",
+  "research_date": "2026-10-27",
+  "assembled_utc": "2026-10-27T09:58:41.272012+00:00",
+  "agent": "Codex; underlying model identity not independently queried",
+  "status": "Research completed; production implementation and Max GPU interoperability unqualified",
+  "brief_edition": "gpu-interactions-research-20261027",
+  "brief_prompt_sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+  "baseline": {
+    "scatter": "0.87.4.3",
+    "native_interactions": 11,
+    "scene_schema": 63
+  },
+  "repository_identity": {
+    "branch": "codex/workflow-0.75",
+    "head": "d24b880816ab367874f417f79d1253aafa9a60f5",
+    "dirty_entry_count_at_scoped_capture": 307,
+    "scoped_hash_record": "evidence/local_source_identity.json",
+    "scoped_sources_unchanged_at_packaging": true
+  },
+  "hardware": {
+    "os": "Windows 11 Pro x64 build 26300",
+    "cpu": "AMD Ryzen 5 5600X, 6 cores/12 logical processors",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "reported_gpu_memory_mib": 24576,
+    "compute_capability": "8.6",
+    "driver": "617.42"
+  },
+  "probe_toolchain": {
+    "host": "MSVC 19.38.33145, toolset 14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "cuda_toolkit": "12.1",
+    "cuda_runtime": 12010,
+    "cuda_driver_api": 13040,
+    "opencl_device_api": "OpenCL 3.0 CUDA",
+    "opencl_kernel_language": "OpenCL C 1.2",
+    "cuda_kernel_compiler": "NVRTC 12.1",
+    "architecture": "compute_86"
+  },
+  "executed": [
+    {
+      "id": "RP-A",
+      "scope": "Synthetic guide-pose deformation; not actual collision fitting or Max",
+      "cases": 4,
+      "samples_per_timed_case": 20,
+      "warmups_per_case": 3,
+      "results": "prototype/deformation_results.json"
+    },
+    {
+      "id": "RP-B",
+      "scope": "Standalone owned D3D11 resources; not Nitrous or Max",
+      "cuda": "passed",
+      "opencl": "passed via cl_nv_d3d11_sharing",
+      "results": "prototype/interop_results.json"
+    }
+  ],
+  "not_executed": [
+    "Max GPU shader/runtime integration",
+    "actual GPU contact fitter",
+    "direct compute-to-retained Max buffer sharing",
+    "renderer/Bake/export GPU qualification",
+    "multi-vendor or multi-GPU qualification",
+    "device-loss and asynchronous lifecycle campaign",
+    "new whole-plugin edit-to-present benchmark"
+  ],
+  "production_changes": false,
+  "max_processes_launched_or_modified": false,
+  "production_tests_rerun": false,
+  "release_version_changed": false,
+  "knowledge_freshness": "Whole corpus not certified fresh; directly inspected originals and scoped hashes used",
+  "recommendation": "Profile whole pipeline; public Max shader deformation with existing CPU fitting first; optional CUDA fitting only if measured bottleneck justifies it",
+  "external_comparison": "Awaiting A/B/C originals; no comparison verdict claimed",
+  "required_research_documents": [
+    "00_README.md",
+    "01_EXECUTIVE_DECISION.md",
+    "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+    "03_PARALLELISM_AND_DATA_LAYOUT.md",
+    "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+    "05_COLLISION_AND_GUIDE_SOLVING.md",
+    "06_GPU_DEFORMATION_AND_INSTANCING.md",
+    "07_MAX_2027_INTEROP_FEASIBILITY.md",
+    "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+    "09_MEMORY_PRECISION_AND_HARDWARE.md",
+    "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+    "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+    "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+    "13_PHASED_IMPLEMENTATION_PLAN.md",
+    "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+    "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+    "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+    "17_SOURCE_LEDGER.md",
+    "18_ACCEPTANCE_CHECKLIST.md"
+  ],
+  "edge_matrix_cases": 70,
+  "pinned_upstream_repositories": 5,
+  "evidence_legend": {
+    "E": "executed local scoped result",
+    "L": "inspected local source/declaration",
+    "D": "verified primary documentation/source/paper",
+    "A": "analytical estimate",
+    "P": "proposal",
+    "U": "unresolved"
+  },
+  "excluded_payloads": [
+    "compiled binaries",
+    "vendor SDK headers/libraries",
+    "runtime DLLs",
+    "commercial models/scenes",
+    "downloaded engine trees"
+  ]
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\A062-regression-direction1\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "3393994843211568760",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 5,
+      "quality_warning_guides": 0
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\S02-regression-direction1\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "7467819638553274395",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 5,
+      "quality_warning_guides": 0
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\S06-regression-direction2\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "7633144294775385257",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 3,
+      "quality_warning_guides": 0
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction1\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "5922256474048119754",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 4,
+      "quality_warning_guides": 1
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction2\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "5225991226750020379",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 4,
+      "quality_warning_guides": 0
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction3\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "14603276304990753195",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 4,
+      "quality_warning_guides": 0
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\S01-pivot-replay-direction1\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "15762130496260711966",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 1,
+      "quality_warning_guides": 0
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-03\\root-conflict-replay-S07-quality\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "12094963809045981970",
+      "affected": 1,
+      "hidden_roots": 18,
+      "fitted_guides": 28,
+      "quality_warning_guides": 0
+    }
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-06\\tree-quality-replay\\fixture.json",
+    "result": {
+      "pose_digest_fnv64": "12867186862080137978",
+      "affected": 1,
+      "hidden_roots": 0,
+      "fitted_guides": 4,
+      "quality_warning_guides": 1
+    }
+  }
+]

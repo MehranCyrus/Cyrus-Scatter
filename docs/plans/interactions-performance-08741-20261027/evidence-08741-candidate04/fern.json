@@ -1,0 +1,339 @@
+{
+  "initial": {
+    "analyses": 1,
+    "authoring": {
+      "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+      "parts": [],
+      "version": 1
+    },
+    "geometry_uploads": 2,
+    "message": "Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.",
+    "open": true,
+    "parts": 2079,
+    "pick_ms": 0.0,
+    "preparation_ms": 66.20250010490417,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.02322103729471564,
+      "cache_realization_ms": 66.1316,
+      "can_prepare": true,
+      "complex_foliage_parts": 0,
+      "crown_root_guides": 36,
+      "delivered_preview_triangles": 50382,
+      "fixed_parts": 47,
+      "ground_level_m": -0.013978717538217703,
+      "ground_roots": 547,
+      "guide_inference_reused": true,
+      "guides": 547,
+      "max_attachment_distance_m": 0.030179874672971237,
+      "max_parent_distance_m": 0.0,
+      "parts": 2079,
+      "preview_triangles": 50382,
+      "profile": "Connectivity-derived tubes and geodesic ribbons",
+      "review_required": true,
+      "ribbon_guides": 547,
+      "seconds": 0.2222822,
+      "source_payload_bytes": 8164667,
+      "tube_guides": 0,
+      "unattached_parts": 0,
+      "unresolved_guides": 0,
+      "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+      "work_units": 13679874
+    },
+    "revision": 1,
+    "selected": [],
+    "selection_operations": 0,
+    "source_triangles": 50382,
+    "source_vertices": 38818,
+    "sphere": false
+  },
+  "fixed": {
+    "analyses": 2,
+    "authoring": {
+      "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+      "parts": [
+        {
+          "part": 2078,
+          "role": 3
+        }
+      ],
+      "version": 1
+    },
+    "geometry_uploads": 3,
+    "message": "Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.",
+    "open": true,
+    "parts": 2079,
+    "pick_ms": 0.0,
+    "preparation_ms": 260.3243000507355,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.02322103729471564,
+      "cache_realization_ms": 260.1072,
+      "can_prepare": true,
+      "complex_foliage_parts": 0,
+      "crown_root_guides": 35,
+      "delivered_preview_triangles": 50382,
+      "fixed_parts": 48,
+      "ground_level_m": -0.0018659217948879814,
+      "ground_roots": 546,
+      "guides": 546,
+      "max_attachment_distance_m": 0.030179874672971237,
+      "max_parent_distance_m": 0.0,
+      "parts": 2079,
+      "preview_triangles": 50382,
+      "profile": "Connectivity-derived tubes and geodesic ribbons",
+      "review_required": true,
+      "ribbon_guides": 546,
+      "seconds": 0.2119322,
+      "source_payload_bytes": 8160999,
+      "tube_guides": 0,
+      "unattached_parts": 0,
+      "unresolved_guides": 0,
+      "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+      "work_units": 13647120
+    },
+    "revision": 2,
+    "selected": [
+      2078
+    ],
+    "selection_operations": 0,
+    "source_triangles": 50382,
+    "source_vertices": 38818,
+    "sphere": false
+  },
+  "manual": {
+    "analyses": 8,
+    "authoring": {
+      "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+      "parts": [
+        {
+          "flip": false,
+          "nodes": [
+            [
+              0.035377667751163244,
+              0.05826188717037439,
+              0.12143038213253021
+            ],
+            [
+              0.07516949969983668,
+              0.07968156655622764,
+              0.12698171552678403
+            ],
+            [
+              0.10092512095419981,
+              0.1237043911437974,
+              0.1277406516169186
+            ],
+            [
+              0.12729109349135978,
+              0.16728915541005726,
+              0.1276545455953396
+            ],
+            [
+              0.1598850174197715,
+              0.2061479132836105,
+              0.12487641862190978
+            ],
+            [
+              0.20352304041331204,
+              0.22886439860927899,
+              0.11691239855681106
+            ],
+            [
+              0.21961992848238554,
+              0.27148792615986517,
+              0.1099371791258302
+            ],
+            [
+              0.2305659083540841,
+              0.31964828197517536,
+              0.099568615957576
+            ],
+            [
+              0.258644295254471,
+              0.3453348767902961,
+              0.08812558696626012
+            ],
+            [
+              0.2942125434184836,
+              0.3521249713116736,
+              0.08401979881916798
+            ],
+            [
+              0.3035979658817786,
+              0.4004632553840459,
+              0.07055939255493925
+            ],
+            [
+              0.3242634883765568,
+              0.4423374141305609,
+              0.05146612410999789
+            ],
+            [
+              0.3681944935820813,
+              0.44647311605063833,
+              0.04112881225102614
+            ],
+            [
+              0.3741109020200543,
+              0.4901374089746701,
+              0.024090889571193912
+            ],
+            [
+              0.3933696829192089,
+              0.5238769727979529,
+              0.0062999226015331075
+            ],
+            [
+              0.4341715077559153,
+              0.5443542798360188,
+              -0.013978717538217703
+            ]
+          ],
+          "part": 2078,
+          "role": 1
+        }
+      ],
+      "version": 1
+    },
+    "geometry_uploads": 9,
+    "message": "Whole pieces; Ctrl adds, Alt subtracts. Right drag orbits; middle drag pans.",
+    "open": true,
+    "parts": 2079,
+    "pick_ms": 0.0,
+    "preparation_ms": 254.5162000656128,
+    "ready": true,
+    "report": {
+      "basal_band_m": 0.02322103729471564,
+      "cache_realization_ms": 254.3114,
+      "can_prepare": true,
+      "complex_foliage_parts": 0,
+      "crown_root_guides": 36,
+      "delivered_preview_triangles": 50382,
+      "fixed_parts": 47,
+      "ground_level_m": -0.013978717538217703,
+      "ground_roots": 547,
+      "guides": 547,
+      "max_attachment_distance_m": 0.030179874672971237,
+      "max_parent_distance_m": 0.0,
+      "parts": 2079,
+      "preview_triangles": 50382,
+      "profile": "Connectivity-derived tubes and geodesic ribbons",
+      "review_required": true,
+      "ribbon_guides": 547,
+      "seconds": 0.209097,
+      "source_payload_bytes": 8164537,
+      "tube_guides": 0,
+      "unattached_parts": 0,
+      "unresolved_guides": 0,
+      "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+      "work_units": 13679874
+    },
+    "revision": 8,
+    "selected": [
+      2078
+    ],
+    "selection_operations": 0,
+    "source_triangles": 50382,
+    "source_vertices": 38818,
+    "sphere": false
+  },
+  "manual_pending_preserved": true,
+  "authored_survives_prepare": true,
+  "cancel_preserves_definition": true,
+  "selected_part": 2078,
+  "trial": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-05\\editor-trials\\Fern_Preparation_08741.max",
+  "authoring": {
+    "fingerprint": "c60bd52bc9667a98a5e49fe80579a77c2a0e44d9b87d9151dc99fa957263688d",
+    "parts": [
+      {
+        "nodes": [
+          [
+            0.035377667751163244,
+            0.05826188717037439,
+            0.12143038213253021
+          ],
+          [
+            0.07516949969983668,
+            0.07968156655622764,
+            0.12698171552678403
+          ],
+          [
+            0.10092512095419981,
+            0.1237043911437974,
+            0.1277406516169186
+          ],
+          [
+            0.12729109349135978,
+            0.16728915541005726,
+            0.1276545455953396
+          ],
+          [
+            0.1598850174197715,
+            0.2061479132836105,
+            0.12487641862190978
+          ],
+          [
+            0.20352304041331204,
+            0.22886439860927899,
+            0.11691239855681106
+          ],
+          [
+            0.21961992848238554,
+            0.27148792615986517,
+            0.1099371791258302
+          ],
+          [
+            0.2305659083540841,
+            0.31964828197517536,
+            0.099568615957576
+          ],
+          [
+            0.258644295254471,
+            0.3453348767902961,
+            0.08812558696626012
+          ],
+          [
+            0.2942125434184836,
+            0.3521249713116736,
+            0.08401979881916798
+          ],
+          [
+            0.3035979658817786,
+            0.4004632553840459,
+            0.07055939255493925
+          ],
+          [
+            0.3242634883765568,
+            0.4423374141305609,
+            0.05146612410999789
+          ],
+          [
+            0.3681944935820813,
+            0.44647311605063833,
+            0.04112881225102614
+          ],
+          [
+            0.3741109020200543,
+            0.4901374089746701,
+            0.024090889571193912
+          ],
+          [
+            0.3933696829192089,
+            0.5238769727979529,
+            0.0062999226015331075
+          ],
+          [
+            0.4341715077559153,
+            0.5443542798360188,
+            -0.013978717538217703
+          ]
+        ],
+        "part": 2078,
+        "role": 1
+      }
+    ],
+    "version": 1
+  },
+  "status": "pass"
+}

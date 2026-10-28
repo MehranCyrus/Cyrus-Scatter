@@ -1,0 +1,3 @@
+if CyrusRecipeSaveEditor!=undefined do destroyDialog CyrusRecipeSaveEditor
+if CyrusScenePresetLoadEditor!=undefined do destroyDialog CyrusScenePresetLoadEditor
+if CyrusSharedProgressEditor!=undefined do try(destroyDialog CyrusSharedProgressEditor)catch()

@@ -1,0 +1,596 @@
+{
+  "schema": "cyrus.corpus/1",
+  "version": "harness-core-v1",
+  "initial_audit": "_local/rag/out/20261027-harness-stage1-02",
+  "initial_manifest_sha256": "0f65b2d750d5c384fb8c7152884b5225e52c7d7b25439230fe43029ef287c63c",
+  "review_status": "Agent-reviewed explicitly scoped companion; no human semantic acceptance or whole-repository qualification.",
+  "selection_limits": [
+    "Core requirements and delivered Library owners plus versioned preparation guides only.",
+    "Working interaction implementation, independent products, release histories and instruction/evaluation files are excluded.",
+    "This is a companion; the legacy 64-source project MCP enrollment is retained and remains independently stale."
+  ],
+  "authority_decisions": [
+    "Preserve audit inventory status even when unknown; role and applicability are separate reviewed facts.",
+    "Requirements, implementation, dated execution and delivered acceptance remain distinct."
+  ],
+  "sources": [
+    {
+      "knowledge_status": "current",
+      "status_source": "rule:maintained-entrypoints | docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 18 October 2026 documentation consolidation: current owner/navigation; exact delivery evidence and current user scope remain separate.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+      "ranges": [
+        [
+          1,
+          239
+        ]
+      ],
+      "role": "maintained_guide",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/ENGINEERING_FOUNDATION.md",
+        "relationship": "selected-original",
+        "evidence": "Complete F01-F12 requirements and evidence limits; no host qualification inferred."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Complete F01-F12 requirements and evidence limits; no host qualification inferred."
+      },
+      "contract_sections": [
+        [
+          9,
+          14
+        ],
+        [
+          15,
+          32
+        ],
+        [
+          33,
+          42
+        ],
+        [
+          43,
+          55
+        ],
+        [
+          56,
+          65
+        ],
+        [
+          70,
+          81
+        ],
+        [
+          82,
+          93
+        ],
+        [
+          94,
+          105
+        ],
+        [
+          106,
+          117
+        ],
+        [
+          118,
+          129
+        ],
+        [
+          130,
+          141
+        ],
+        [
+          142,
+          153
+        ],
+        [
+          154,
+          171
+        ],
+        [
+          172,
+          183
+        ],
+        [
+          184,
+          195
+        ],
+        [
+          196,
+          209
+        ],
+        [
+          210,
+          222
+        ],
+        [
+          223,
+          232
+        ],
+        [
+          233,
+          239
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/KNOWLEDGE_BASELINE.json",
+      "sha256": "3cda152cfd2dbb7fa4b267ab7008e7c703af8b9c729ac2a5568af1bcc31fab04",
+      "ranges": [
+        [
+          1,
+          26
+        ]
+      ],
+      "role": "editorial",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/KNOWLEDGE_BASELINE.json",
+        "relationship": "selected-original",
+        "evidence": "Explicit delivered Library facts cross-checked by the front door against the scoped 0.87.5.1 qualification receipt; newer working labels are not deliveries."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Explicit delivered Library facts cross-checked by the front door against the scoped 0.87.5.1 qualification receipt; newer working labels are not deliveries."
+      }
+    },
+    {
+      "knowledge_status": "current",
+      "status_source": "inventory:maintained | docs/documentation-inventory.csv",
+      "inventory_decision": "maintained",
+      "inventory_reason": "Reviewed 19 October 2026 current installation/licensing/library contract against the 0.86.2 corrected delivery and source; historical limits remain explicit.",
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+      "sha256": "c2bfcd5a6d5c2db3bd72a7e66168b6b20c66afd08fcaeb72c697d619c75a064c",
+      "ranges": [
+        [
+          1,
+          55
+        ]
+      ],
+      "role": "maintained_guide",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+        "relationship": "selected-original",
+        "evidence": "Maintained delivered 0.87.5.1 Library workflow, Max 2027 only; ongoing interactions excluded."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Maintained delivered 0.87.5.1 Library workflow, Max 2027 only; ongoing interactions excluded."
+      },
+      "contract_sections": [
+        [
+          1,
+          55
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/scene-presets-08751/PLAN.md",
+      "sha256": "ab8194b08e8a032eda7bde2266a4a0db56c24963441463b3dca7a45e3187f9cf",
+      "ranges": [
+        [
+          1,
+          65
+        ]
+      ],
+      "role": "proposal",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/scene-presets-08751/PLAN.md",
+        "relationship": "selected-original",
+        "evidence": "Feature contract and recorded acceptance checklist for Scene presets; use the separate delivery and qualification receipt for executed proof."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Feature contract and recorded acceptance checklist for Scene presets; use the separate delivery and qualification receipt for executed proof."
+      },
+      "contract_sections": [
+        [
+          1,
+          65
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+      "sha256": "3d1b621217dceb6c4aa942e45a8e69c103ecc6b40e7709deaef7340d3167bb02",
+      "ranges": [
+        [
+          1,
+          31
+        ]
+      ],
+      "role": "maintained_guide",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+        "relationship": "selected-original",
+        "evidence": "Delivered native Scene/Portable/Settings choices and artist limitations; not arbitrary graph or host qualification."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Delivered native Scene/Portable/Settings choices and artist limitations; not arbitrary graph or host qualification."
+      },
+      "contract_sections": [
+        [
+          1,
+          31
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md",
+        "website/content/source-manifest.json"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/scene-presets-08751/DELIVERY_08751.md",
+      "sha256": "f47bb87f0ed3f6039d7a313e1d4ee34b5734bcc6872e2e595ea2082d8bbba6e6",
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/scene-presets-08751/DELIVERY_08751.md",
+        "relationship": "selected-original",
+        "evidence": "Exact dated 0.87.5.1 scoped Max 2027 delivery and remaining limits, not proof for the 0.87.5.2 working tree."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Exact dated 0.87.5.1 scoped Max 2027 delivery and remaining limits, not proof for the 0.87.5.2 working tree."
+      },
+      "contract_sections": [
+        [
+          1,
+          80
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/tools/ui/templates/scene-presets.ms",
+      "sha256": "21f1505ae40f82c5e9ff6f8d7684cf8dfb00afd3343e6dd3c5d15cded3fe9bbe",
+      "ranges": [
+        [
+          1,
+          224
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "AminScatter/tools/ui/templates/scene-presets.ms",
+        "relationship": "selected-original",
+        "evidence": "Working Scene orchestration owner. Only the package version guard differs from its exact 0.87.5.1 producer bytes; no 0.87.5.2 host acceptance inferred."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Working Scene orchestration owner. Only the package version guard differs from its exact 0.87.5.1 producer bytes; no 0.87.5.2 host acceptance inferred."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+      "sha256": "86571966a7d0db755603bb86716ae4e738a50040d511090468005a022bbf394b",
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+        "relationship": "selected-original",
+        "evidence": "Working managed native-Scene store owner. Only the saved version label differs from its exact 0.87.5.1 producer bytes; no whole-working-tree acceptance inferred."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Working managed native-Scene store owner. Only the saved version label differs from its exact 0.87.5.1 producer bytes; no whole-working-tree acceptance inferred."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/include/scene_preset.h",
+      "sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+      "ranges": [
+        [
+          1,
+          40
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "AminScatter/include/scene_preset.h",
+        "relationship": "selected-original",
+        "evidence": "Native Scene metadata/admission owner; exact bytes match the scoped 0.87.5.1 native producer receipt."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Native Scene metadata/admission owner; exact bytes match the scoped 0.87.5.1 native producer receipt."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": false,
+      "current_reference_sources": [],
+      "component": "Scatter",
+      "generated": false,
+      "generated_source": null,
+      "path": "AminScatter/src/cyrus_edit_recipe.inc",
+      "sha256": "bc5b5fe578e475d0332eedf3b2412f5a7cf513bdef5552a609a3bc65bfee0540",
+      "ranges": [
+        [
+          1,
+          56
+        ]
+      ],
+      "role": "implementation",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "AminScatter/src/cyrus_edit_recipe.inc",
+        "relationship": "selected-original",
+        "evidence": "Coordinated Scene Edit identity remapping owner; exact bytes match the scoped 0.87.5.1 native producer. Ordinary Max Copy remains distinct."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Coordinated Scene Edit identity remapping owner; exact bytes match the scoped 0.87.5.1 native producer. Ordinary Max Copy remains distinct."
+      }
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md",
+      "sha256": "6d7f2917a4f37a275ed51396a71ab3ee52c63cd48911b53485dc8f177a0a5516",
+      "ranges": [
+        [
+          1,
+          61
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.4 preparation-editor workflow. Its Keep and share recipe exclusion is superseded by 0.87.4.4 authored format 9 and 0.87.5.1 native Scene presets. Do not follow its older installer or saving boundary as current guidance."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4 preparation-editor workflow. Its Keep and share recipe exclusion is superseded by 0.87.4.4 authored format 9 and 0.87.5.1 native Scene presets. Do not follow its older installer or saving boundary as current guidance."
+      },
+      "contract_sections": [
+        [
+          1,
+          61
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/preparation-editor-repair-20261027/ARTIST_GUIDE_08742.md",
+      "sha256": "fa866a054b5e43b9c4455a6256b88b0b3720a3d0521238f167a88fe0e91f16b4",
+      "ranges": [
+        [
+          1,
+          26
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/preparation-editor-repair-20261027/ARTIST_GUIDE_08742.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.4.2 selected/isolated-piece and navigation workflow; model-specific counts/settings are examples. Not acceptance of ongoing contact work."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4.2 selected/isolated-piece and navigation workflow; model-specific counts/settings are examples. Not acceptance of ongoing contact work."
+      },
+      "contract_sections": [
+        [
+          1,
+          26
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/interaction-hide-wireframe-20261027/ARTIST_GUIDE_08743.md",
+      "sha256": "68db50a686de13eb94231f58f09027fa45fe83a713a2fbfe20ee4bbf26fd8cb7",
+      "ranges": [
+        [
+          1,
+          22
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/interaction-hide-wireframe-20261027/ARTIST_GUIDE_08743.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.4.3 hiding and Wireframe semantics; its Interactions 11 package identity is historical. Use the current matched delivery, not its older installer."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4.3 hiding and Wireframe semantics; its Interactions 11 package identity is historical. Use the current matched delivery, not its older installer."
+      },
+      "contract_sections": [
+        [
+          1,
+          22
+        ]
+      ]
+    },
+    {
+      "knowledge_status": "unknown",
+      "status_source": "rule:no-current-evidence",
+      "inventory_decision": null,
+      "inventory_reason": null,
+      "referenced_by_current_docs": true,
+      "current_reference_sources": [
+        "README.md"
+      ],
+      "component": "docs",
+      "generated": false,
+      "generated_source": null,
+      "path": "docs/plans/shared-pose-viewport-0875-20261027/ARTIST_GUIDE_0875.md",
+      "sha256": "eaff8ccdd7742e8b5765e975263d2be5c35f4ed97f1f29ba827c1b7fbf39f135",
+      "ranges": [
+        [
+          1,
+          52
+        ]
+      ],
+      "role": "historical_evidence",
+      "selection_reason": "Complete explicitly selected parent for the Core/Library companion; no interaction implementation or independent product added.",
+      "review_status": "Agent-reviewed scope, originals and qualifications on 27 October 2026; human semantic review not performed. Audit inventory status is preserved without promotion.",
+      "canonical": {
+        "preferred_path": "docs/plans/shared-pose-viewport-0875-20261027/ARTIST_GUIDE_0875.md",
+        "relationship": "selected-original",
+        "evidence": "Versioned 0.87.5 shared-pose display and setting limits. Example fern bounds are not universal settings or proof of ongoing 0.87.5.2 contact changes."
+      },
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.5 shared-pose display and setting limits. Example fern bounds are not universal settings or proof of ongoing 0.87.5.2 contact changes."
+      },
+      "contract_sections": [
+        [
+          1,
+          52
+        ]
+      ]
+    }
+  ]
+}

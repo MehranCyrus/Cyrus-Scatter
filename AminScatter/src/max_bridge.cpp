@@ -33,6 +33,7 @@
 #include "placement_materialization.h"
 #include "orientation.h"
 #include "grid.h"
+#include "source_scale.h"
 #include "source_measurement.h"
 #include <sstream>
 #include <locale>
@@ -134,14 +135,24 @@ Value* cyrusFilterSourceRows_cf(Value** args,int count) {
 }
 
 def_visible_primitive(cyrusApplySourceTransforms, "cyrusApplySourceTransforms");
+def_visible_primitive(cyrusSourceTransformVersion,"cyrusSourceTransformVersion");
+Value* cyrusSourceTransformVersion_cf(Value**,int count){check_arg_count(cyrusSourceTransformVersion,0,count);return Integer::intern(2);}
 Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
     amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Attributes);
-    check_arg_count(cyrusApplySourceTransforms,3,count);
+    if(count!=3&&count!=4)throw RuntimeError(_T("Source transforms require rows, offsets, scales and optional source nodes"));
     for(int i=1;i<3;++i) type_check(args[i],Array,_T("source transform inputs"));
     auto* offsets=static_cast<Array*>(args[1]);auto* scales=static_cast<Array*>(args[2]);
     if(offsets->size!=scales->size) throw RuntimeError(_T("Source transform count mismatch"));
-    std::vector<float> z,factors;z.reserve(scales->size);factors.reserve(scales->size);
-    for(int i=0;i<scales->size;++i) {z.push_back(offsets->data[i]->to_float());factors.push_back(scales->data[i]->to_float());}
+    Array* nodes=nullptr;if(count==4){type_check(args[3],Array,_T("source transform nodes"));nodes=static_cast<Array*>(args[3]);if(nodes->size!=scales->size)throw RuntimeError(_T("Source node scale correspondence differs"));}
+    std::vector<float> z;std::vector<std::array<float,3>> factors;z.reserve(scales->size);factors.reserve(scales->size);
+    try{for(int i=0;i<scales->size;++i){const auto offset=offsets->data[i]->to_float();if(!std::isfinite(offset))throw std::invalid_argument("Source Z offset must be finite.");z.push_back(offset);
+        // Point/Empty sources use integer row tokens and have no scene-node
+        // transform. Preserve their authored multiplier and Z offset without
+        // trying to convert the token into an INode.
+        std::array<double,3> nodeScale{1,1,1};if(nodes&&!cyrus::rows::integer(nodes->data[i])){auto* node=nodes->data[i]->to_node();if(!node)throw std::invalid_argument("Source node for scale was removed.");const auto tm=node->GetNodeTM(GetCOREInterface()->GetTime());cyrus::source_scale::Axes rows;
+            for(unsigned r=0;r<3;++r)for(unsigned c=0;c<3;++c)rows[r][c]=tm.GetRow(r)[c];nodeScale=cyrus::source_scale::factors(rows);}
+        factors.push_back(cyrus::source_scale::compose(nodeScale,scales->data[i]->to_float()));}}
+    catch(const std::exception& error){throw RuntimeError(MSTR::FromACP(error.what()));}
     if(cyrusIsPlacementValue(args[0]))try{
         const auto& view=cyrusPlacementView(args[0]);
         if(view.stage()!=cyrus::placements::Stage::Candidates)throw RuntimeError(_T("Source transforms require raw native candidates"));
@@ -149,7 +160,7 @@ Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
         for(std::size_t i=0;i<view.size();++i){auto record=view.at(i);const auto source=record.source-1;
             if(source>=factors.size())throw RuntimeError(_T("Invalid source index"));
             Matrix3 tm(1);for(int j=0;j<4;++j)tm.SetRow(j,Point3(record.transform[std::size_t(j*3)],record.transform[std::size_t(j*3+1)],record.transform[std::size_t(j*3+2)]));
-            for(int axis=0;axis<3;++axis)tm.SetRow(axis,tm.GetRow(axis)*factors[source]);
+            for(int axis=0;axis<3;++axis)tm.SetRow(axis,tm.GetRow(axis)*factors[source][axis]);
             tm.SetRow(3,tm.GetRow(3)+Point3(0.0f,0.0f,z[source]));
             for(int j=0;j<4;++j)for(int k=0;k<3;++k)record.transform[std::size_t(j*3+k)]=tm.GetRow(j)[k];
             builder.appendGenerated(record);
@@ -169,7 +180,7 @@ Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
     for(int i=0;i<rows->size;++i) {
         auto* row=static_cast<Array*>(rows->data[i]);const int source=row->data[1]->to_int()-1;
         Matrix3& tm=row->data[0]->to_matrix3();
-        for(int axis=0;axis<3;++axis) tm.SetRow(axis,tm.GetRow(axis)*factors[source]);
+        for(int axis=0;axis<3;++axis) tm.SetRow(axis,tm.GetRow(axis)*factors[source][axis]);
         // Do not skip identity values: +0 can change a signed zero just as the
         // original script does, and full byte parity is part of the gate.
         tm.SetRow(3,tm.GetRow(3)+Point3(0.0f,0.0f,z[source]));

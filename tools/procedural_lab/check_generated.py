@@ -111,10 +111,11 @@ def main():
     assert re.findall(r'fn CyrusLibraryVersion = "([^"]+)"',text)==[version]
     assembly_version='.'.join((version.split('.')+['0']*4)[:4])
     assert re.findall(r'assemblyName.Version.ToString\(\)!="([^"]+)"',text)==[assembly_version]
+    assert re.findall(r'identity.Version.ToString\(\)!="([^"]+)"',text)==[assembly_version]
     assert text.count('rollout mainUI "Cyrus Scatter '+version+'"')==1
     container=text[text.index('plugin helper CyrusSourceContainer'):]
     assert re.findall(r'rollout (\w+) "',container)==['containerUI']
-    assert 'version:62\ninitialRollupState' in text and 'CyrusUnified2' in text
+    assert 'version:65\ninitialRollupState' in text and 'CyrusUnified2' in text
     for obsolete in ('groupPolicy','procUpgrade','paintIdentity','Layer priority','legacyUI','if true then','if false then'):
         assert obsolete not in text,obsolete
     for name in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations',
@@ -122,10 +123,10 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==362  # Interactions shares canonical + / remove source actions.
+    assert len(current)==378  # Includes the three 0.87.5.6 trunk/base/fade controls.
     assert 'general/previewUI/memoryButton' in current
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
-    assert len(layout['sections'])==13
+    assert len(layout['sections'])==14
     for section in layout['sections']:
         assert len(re.findall(r'rollout '+section['name']+r'\b',text))==1,section['name']
         for control in section['controls']:

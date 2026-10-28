@@ -1,0 +1,27 @@
+{
+  "scope": "Exact clean native builds, captured numeric fixture; not a frame rate measurement.",
+  "matched": true,
+  "states": [
+    {
+      "pose_digest_fnv64": "8996537090028299336",
+      "affected": 466,
+      "fitted_guides": 3600,
+      "hidden_roots": 183,
+      "quality_warning_guides": 5
+    },
+    {
+      "pose_digest_fnv64": "72420721213607003",
+      "affected": 376,
+      "fitted_guides": 1895,
+      "hidden_roots": 231,
+      "quality_warning_guides": 3
+    },
+    {
+      "pose_digest_fnv64": "15730528335635250183",
+      "affected": 377,
+      "fitted_guides": 1939,
+      "hidden_roots": 199,
+      "quality_warning_guides": 4
+    }
+  ]
+}

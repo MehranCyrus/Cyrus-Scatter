@@ -1,0 +1,5 @@
+{
+  "phase": "contacts",
+  "status": "failed",
+  "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08742\\editor_controls_host.py\", line 105, in <module>\n    far=plant.row4+r.Point3(10000,10000,10000);move(far,False);collider.interactionColliderMode=1;collider.interactionCollider=True;root.refreshAll();root.interactionsEnsure();r.CyrusPointSync();r.completeRedraw()\n                                               ~~~~^^^^^^^^^^^\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08742\\editor_controls_host.py\", line 101, in move\n    root.interactionsEnsure();r.CyrusPointSync();r.completeRedraw();value=json.loads(str(root.interactionsStatistics()));error=str(root.interactionError)\n                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\nRuntimeError: MAXScript exception raised.\n-- Runtime error: No active interaction publication\n"
+}

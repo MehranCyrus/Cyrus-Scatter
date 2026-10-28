@@ -91,7 +91,7 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
     for(unsigned k=0;k<ribbons.size();++k)if(arcLength(ribbons[k].nodes)>=std::max((top-ground)*.20,longest*.5))
         for(unsigned end=0;end<2;++end){auto p=end?ribbons[k].nodes.back():ribbons[k].nodes.front();endpoints.push_back({p,p,k,end});}
     Index crowns(std::move(endpoints),work);unsigned crownRoots=0;
-    for(unsigned k=0;k<ribbons.size();++k){auto& g=ribbons[k];const double arc=arcLength(g.nodes);if(tubes||arc<std::max((top-ground)*.20,longest*.5))continue;
+    for(unsigned k=0;k<ribbons.size();++k){auto& g=ribbons[k];const double arc=arcLength(g.nodes);if(tubes||(role(g.component)!=1&&arc<std::max((top-ground)*.20,longest*.5)))continue;
         unsigned votes[2]{};
         for(unsigned end=0;end<2;++end){const auto p=end?g.nodes.back():g.nodes.front();double radius=std::clamp(arc*.20,.003,.15);
             crowns.query(p,radius,[&](const Segment& s,double,double){if(s.guide!=k)++votes[end];});}
@@ -122,7 +122,7 @@ Analysis analyzeTopology(const Snapshot& s,Settings settings,const std::atomic_b
         if(g.base.empty())throw std::runtime_error("Selected guide has no stable root patch");
         g.crown=true;
     }
-    for(const auto& [id,edit]:edits)if(role(id)==1&&partGuide[id]<0)throw std::runtime_error("Piece "+std::to_string(id+1)+" cannot be reconstructed as one tube/ribbon. Welded branching pieces require separate guides.");
+    for(const auto& [id,edit]:edits)if(role(id)==1&&partGuide[id]<0)throw std::runtime_error("Piece "+std::to_string(id+1)+" cannot form a single guide with Minimum stem "+std::to_string(settings.minimumLength*1000)+" mm. Use Automatic or Keep fixed for small/detail pieces; complex connected pieces need separate guides.");
     double guideGround=1e100;for(const auto& g:guides)if(arcLength(g.nodes)>=(top-ground)*.20)guideGround=std::min({guideGround,g.nodes.front()[2],g.nodes.back()[2]});if(guideGround==1e100)guideGround=ground;
     std::vector<Tube> raw;for(const auto& g:guides){bool parent=g.tube||parts[g.component].vertices.size()>32;auto radii=std::vector<double>(g.nodes.size(),g.radius);if(!g.tube){radii.front()=std::min(.001,g.radius);radii.back()=std::min(.001,g.radius);}raw.push_back({g.nodes,std::move(radii),tubes==0,parent,g.crown});}
     forest=connect(raw,cancel,settings.limits,settings.connectionReach,.03,guideGround,basalBand);

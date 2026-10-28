@@ -1,0 +1,26 @@
+{
+  "scope": "Captured local one-machine numeric scheduling experiment. The scratch binary predates an explanatory comment-only source edit; product qualification uses a separate clean build.",
+  "hardware_logical_processors": 12,
+  "files": {
+    "static_kernel": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\native-07\\interactions_tests.exe",
+      "sha256": "fa0aa95b5cb9cbcde4de0ae194e70c6b7536db1af43dae19a53f83d0b1e50f24"
+    },
+    "dynamic_kernel": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\kernel-dynamic-01\\interactions_tests.exe",
+      "sha256": "10c92e7c0e658af41a53a328a8d1c615e13931018b83ff97042d4cdc2c6723c9"
+    },
+    "static_engine_source": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\live-edit-experiment\\engine-before-dynamic.cpp",
+      "sha256": "af8bb98c01ce1f14c2f0541ac0870e7c8b79560049b0f4ef493016964187095b"
+    },
+    "dynamic_engine_source": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\src\\interactions_engine.cpp",
+      "sha256": "5947d35d386d5d15b9db860c2d11b5c64d93b4668963a688f80c45f0d926f9c0"
+    },
+    "fixture": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\terrace-replay-corrected\\fixture.json",
+      "sha256": "ab9cced3c215328b8d135cefa6e9db847c15ebba611945e0d7fa7798ecb0ffd0"
+    }
+  }
+}

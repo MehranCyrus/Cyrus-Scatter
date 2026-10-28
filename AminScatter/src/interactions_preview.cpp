@@ -1,4 +1,5 @@
 #include "interactions_host.h"
+#include "deformation_preview.h"
 #include "preview_sampling.h"
 #include <chrono>
 #include <map>
@@ -32,7 +33,7 @@ struct InteractionPreviewCache {
     std::vector<int> indices;
     struct Part {std::size_t instance=0;std::shared_ptr<const ci::Pose> pose;ci::Transform transform;};
     struct Batch {std::vector<Part> parts;std::shared_ptr<const MeshSnapshot> mesh;std::shared_ptr<const SourceAppearance> appearance;};
-    struct Layer {std::shared_ptr<const MeshSnapshot> base;std::shared_ptr<const PreviewPalette> palette;std::shared_ptr<const MeshAppearance> appearance;std::vector<std::shared_ptr<const SourceAppearance>> lightAppearance;std::shared_ptr<const std::vector<unsigned>> sourceSlots;std::shared_ptr<PreviewMemory> slotMemory;std::map<BatchKey,unsigned> slots;std::vector<Batch> batches;};
+    struct Layer {std::shared_ptr<const MeshSnapshot> base;std::shared_ptr<const PreviewPalette> palette;std::shared_ptr<const MeshAppearance> appearance;std::vector<std::shared_ptr<const SourceAppearance>> lightAppearance;std::vector<std::shared_ptr<const DeformationPreviewSource>> deformationSources;std::vector<std::shared_ptr<const DeformationPreview>> deformationStates;std::shared_ptr<const std::vector<unsigned>> sourceSlots;std::shared_ptr<PreviewMemory> slotMemory;std::map<BatchKey,unsigned> slots;std::vector<Batch> batches;};
     std::vector<Layer> layers;
 };
 std::vector<PointLayer> interactionPreview(InteractionRuntime& runtime,const ci::Snapshot& snapshot,const std::vector<PointLayer>& base,const std::vector<int>& layerIndices){
@@ -40,7 +41,8 @@ std::vector<PointLayer> interactionPreview(InteractionRuntime& runtime,const ci:
     if(runtime.previewCache&&runtime.previewCache->snapshot.lock().get()==&snapshot&&runtime.previewCache->indices==layerIndices&&runtime.previewCache->inputs.size()==base.size()){
         const auto& cache=*runtime.previewCache;bool same=true;for(std::size_t i=0;i<base.size()&&same;++i){const auto& a=base[i];const auto& b=cache.inputs[i];same=a.snapshot==b.snapshot&&a.mesh==b.mesh&&a.palette==b.palette&&a.appearance==b.appearance&&a.geometryMode==b.geometryMode&&a.pointsPerInstance==b.pointsPerInstance;}
         if(same){auto output=base;for(std::size_t i=0;i<output.size();++i){output[i].snapshot=cache.outputs[i].snapshot;output[i].mesh=cache.outputs[i].mesh;output[i].palette=cache.outputs[i].palette;output[i].appearance=cache.outputs[i].appearance;}
-            runtime.previewMs=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-started).count();return output;}}
+            ++runtime.previewReuses;runtime.previewReuseMs=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-started).count();return output;}}
+    ++runtime.previewBuilds;
     auto cache=runtime.previewCache?std::make_shared<InteractionPreviewCache>(*runtime.previewCache):std::make_shared<InteractionPreviewCache>();cache->layers.resize(runtime.rows.size());
     std::vector<PointLayer> output=base;
     for(std::size_t slot=0;slot<base.size();++slot){int li=layerIndices[slot];if(li<0)continue;if(li>=int(runtime.rows.size()))throw std::runtime_error("Invalid interaction preview layer");
@@ -50,8 +52,10 @@ std::vector<PointLayer> interactionPreview(InteractionRuntime& runtime,const ci:
         for(const auto& [i,tm]:snapshot.overrides){(void)tm;if(snapshot.layout->instances[i].layer==unsigned(li)){modified=true;break;}}
         if(!modified)for(auto i:snapshot.disabled)if(snapshot.layout->instances[i].layer==unsigned(li)){modified=true;break;}
         if(!modified)continue;
-        auto& result=output[slot];std::vector<PointGroup> points(input.snapshot->groups.size());for(std::size_t i=0;i<points.size();++i)points[i].color=input.snapshot->groups[i].color;
+        auto& result=output[slot];std::vector<PointGroup> points(input.snapshot?input.snapshot->groups.size():(input.mesh?input.mesh->groups.size():0));
+        for(std::size_t i=0;i<points.size();++i)points[i].color=input.snapshot?input.snapshot->groups[i].color:input.mesh->groups[i].color;
         if(input.geometryMode==0){
+            if(!input.snapshot)throw std::runtime_error("Interaction point preview has no point snapshot");
             const std::size_t per=input.pointsPerInstance;if(!per||input.snapshot->lines)throw std::runtime_error("Interaction point preview lacks sampler provenance");
             std::vector<std::size_t> cursors(points.size());const std::uint64_t total=rows.size()*per,shown=input.snapshot->count;
             for(std::uint64_t sample=0;sample<shown;++sample){const auto flat=amin::previewPointIndex(sample,total,shown);unsigned row=unsigned(flat/per),source=rows.at(row).source-1;
@@ -61,7 +65,7 @@ std::vector<PointLayer> interactionPreview(InteractionRuntime& runtime,const ci:
                 Point3 p=old.points[cursor];if(index==UINT_MAX){points[source].points.push_back(p);points[source].bandSlots.push_back(old.bandSlots[cursor]);continue;}auto target=transform(snapshot,index);
                 if(pose!=snapshot.poses.end()){
                     const auto& rig=*runtime.sources[li][source]->rig;auto original=snapshot.layout->transform(index);auto local=original.inversePoint({double(p.x)*snapshot.layout->metresPerUnit,double(p.z)*snapshot.layout->metresPerUnit,-double(p.y)*snapshot.layout->metresPerUnit});
-                    auto vertex=ci::nearestSourceVertex(rig,local);if(pose->second->hiddenRoots[rig.partRoot[rig.labels[vertex]]])continue;p=host(target.point(ci::posePoint(rig,*pose->second,vertex)),snapshot.layout->metresPerUnit);
+                    auto vertex=ci::nearestSourceVertex(rig,local);const auto& part=rig.rig->parts[rig.labels[vertex]];if(pose->second->hiddenRoots[rig.partRoot[rig.labels[vertex]]]||(!part.fixed&&!pose->second->hiddenGuides.empty()&&pose->second->hiddenGuides[part.guide]))continue;p=host(target.point(ci::posePoint(rig,*pose->second,vertex)),snapshot.layout->metresPerUnit);
                 }else if(snapshot.overrides.contains(index)){
                     auto original=snapshot.layout->transform(index);auto local=original.inversePoint({double(p.x)*snapshot.layout->metresPerUnit,double(p.z)*snapshot.layout->metresPerUnit,-double(p.y)*snapshot.layout->metresPerUnit});p=host(target.point(local),snapshot.layout->metresPerUnit);
                 }
@@ -83,6 +87,62 @@ std::vector<PointLayer> interactionPreview(InteractionRuntime& runtime,const ci:
             layerCache.slotMemory=reserveMeshMemory({wanted*sizeof(unsigned),0});auto slots=std::make_shared<std::vector<unsigned>>(wanted);std::vector<unsigned> cursors(groups.size());
             for(std::size_t k=0;k<wanted;++k){unsigned row=unsigned(k*rows.size()/wanted),source=rows.at(row).source-1;if(source>=groups.size())throw std::runtime_error("Interaction mesh source correspondence differs");(*slots)[k]=cursors[source]++;}
             for(std::size_t source=0;source<cursors.size();++source)if(cursors[source]!=groups[source].instanceCount())throw std::runtime_error("Interaction mesh row selection differs from retained source stream");layerCache.sourceSlots=std::move(slots);layerCache.slotMemory->commit();
+        }
+        // The production mesh path retains one geometry/instance stream per
+        // source. Only affected poses and a sparse override table change during
+        // dragging. The explicit environment switch is an owned-test control
+        // for paired CPU-delivery measurements, never an automatic fallback.
+        if(lightPreview&&GetEnvironmentVariableW(L"CYRUS_INTERACTION_CPU_PREVIEW",nullptr,0)==0){
+            layerCache.deformationSources.resize(groups.size());
+            layerCache.deformationStates.resize(groups.size());
+            const auto previous=cache->snapshot.lock();
+            std::vector<std::vector<std::size_t>> changed(groups.size());
+            auto add=[&](std::size_t index){const auto& instance=snapshot.layout->instances[index];if(instance.layer==unsigned(li))changed.at(instance.source).push_back(index);};
+            for(const auto& [index,pose]:snapshot.poses){(void)pose;add(index);}for(auto index:snapshot.disabled)add(index);for(const auto& [index,tm]:snapshot.overrides){(void)tm;add(index);}
+            std::vector<std::vector<std::size_t>> before(groups.size());
+            if(previous&&previous->layout==snapshot.layout){auto addBefore=[&](std::size_t index){const auto& actor=previous->layout->instances[index];if(actor.layer==unsigned(li))before.at(actor.source).push_back(index);};
+                for(const auto& [index,pose]:previous->poses){(void)pose;addBefore(index);}for(auto index:previous->disabled)addBefore(index);for(const auto& [index,tm]:previous->overrides){(void)tm;addBefore(index);}}
+            for(unsigned source=0;source<groups.size();++source){
+                auto& retained=layerCache.deformationSources[source];const auto rig=runtime.sources[li][source]->rig;
+                if(!retained||retained->data->source!=rig){auto value=std::make_shared<DeformationPreviewSource>();
+                    std::size_t nodes=2;for(const auto& guide:rig->rig->guides)nodes+=guide.rest.nodes.size()*2;
+                    const auto estimate=rig->previewFaces.size()*(10*sizeof(ci::DeformationWord)+sizeof(unsigned))+nodes*sizeof(ci::DeformationWord)+rig->rig->guides.size()*(sizeof(unsigned)+sizeof(double))+sizeof(ci::DeformationSource);
+                    value->sourceMemory=runtime.sources[li][source]->memory;value->memory=reserveMeshMemory({estimate,0});value->data=ci::deformationSource(rig);
+                    if(value->data->bytes>estimate)growMeshMemory(value->memory,value->data->bytes-estimate);value->memory->commit();retained=std::move(value);}
+                auto indices=std::move(changed[source]);std::sort(indices.begin(),indices.end());indices.erase(std::unique(indices.begin(),indices.end()),indices.end());
+                auto& oldIndices=before[source];std::sort(oldIndices.begin(),oldIndices.end());oldIndices.erase(std::unique(oldIndices.begin(),oldIndices.end()),oldIndices.end());
+                const auto& oldState=layerCache.deformationStates[source];
+                bool same=oldState&&oldState->source==retained&&previous&&previous->layout==snapshot.layout&&indices==oldIndices;
+                for(auto index:indices){if(!same)break;auto a=snapshot.poses.find(index),b=previous->poses.find(index);
+                    same=(a==snapshot.poses.end())==(b==previous->poses.end())&&snapshot.disabled.contains(index)==previous->disabled.contains(index);
+                    if(same&&a!=snapshot.poses.end())same=a->second==b->second;
+                    if(same){auto aTM=transform(snapshot,index),bTM=transform(*previous,index);for(unsigned r=0;r<4&&same;++r)same=aTM.rows[r].x==bTM.rows[r].x&&aTM.rows[r].y==bTM.rows[r].y&&aTM.rows[r].z==bTM.rows[r].z;}}
+                // A stationary source type needs no new pose, lookup table or
+                // graphics upload when a different type is being contacted.
+                if(same){groups[source].deformation=oldState;continue;}
+                auto value=std::make_shared<DeformationPreview>();value->source=retained;value->metresPerUnit=snapshot.layout->metresPerUnit;value->worldBounds.Init();
+                const auto& data=*retained->data;std::size_t poseCount=0;for(auto index:indices)poseCount+=snapshot.poses.contains(index)&&!snapshot.disabled.contains(index)&&!snapshot.poses.at(index)->allHidden;
+                const auto words=(poseCount+1)*data.rest.size();if(words>=(1u<<24))throw std::runtime_error("Compact visible pose buffer exceeds exact index allowance; reduce viewport draw limits");
+                unsigned capacity=1;while(capacity<std::max<std::size_t>(1,indices.size()*2))capacity*=2;
+                value->memory=reserveMeshMemory({sizeof(*value)+words*sizeof(ci::DeformationWord)+capacity*5*sizeof(ci::DeformationWord)+indices.size()*(sizeof(ci::DeformationChange)+sizeof(std::size_t))+data.rest.size()*sizeof(ci::DeformationWord),0});
+                value->nodes.reserve(words);value->nodes=data.rest;std::vector<ci::DeformationChange> changes;changes.reserve(indices.size());
+                for(auto index:indices){const auto& instance=snapshot.layout->instances[index];if(!wanted||!rows.size())continue;
+                    const auto k=(std::uint64_t(instance.row)*wanted+rows.size()-1)/rows.size();if(k>=wanted||k*rows.size()/wanted!=instance.row)continue;
+                    ci::DeformationChange change;change.slot=(*layerCache.sourceSlots)[k];change.enabled=!snapshot.disabled.contains(index);
+                    const auto tm=matrix(transform(snapshot,index),value->metresPerUnit);for(unsigned r=0;r<4;++r)for(unsigned c=0;c<3;++c)change.transform[r*3+c]=tm.GetRow(r)[c];
+                    auto posed=snapshot.poses.find(index);ci::Bounds bounds=rig->bounds;if(posed!=snapshot.poses.end()&&posed->second->allHidden)change.enabled=false;
+                    if(change.enabled&&posed!=snapshot.poses.end()){
+                        change.pose=unsigned(value->nodes.size());auto packed=ci::deformationPose(data,*posed->second);bounds=ci::deformationBounds(data,packed);
+                        value->nodes.insert(value->nodes.end(),packed.begin(),packed.end());++value->posed;}
+                    if(change.enabled){Box3 local;local.Init();for(unsigned corner=0;corner<8;++corner)local+=host({corner&1?bounds.hi.x:bounds.lo.x,corner&2?bounds.hi.y:bounds.lo.y,corner&4?bounds.hi.z:bounds.lo.z},value->metresPerUnit);value->worldBounds+=local*tm;}
+                    changes.push_back(change);
+                }
+                value->changes=ci::deformationChanges(changes);
+                auto hash=[&](const auto& words){for(const auto& word:words){auto bytes=reinterpret_cast<const unsigned char*>(word.data());for(unsigned i=0;i<sizeof(word);++i){value->fingerprint^=bytes[i];value->fingerprint*=1099511628211ULL;}}};hash(value->nodes);hash(value->changes.words);
+                value->memory->trimCPU(sizeof(*value)+(value->nodes.capacity()+value->changes.words.capacity())*sizeof(ci::DeformationWord));value->memory->commit();layerCache.deformationStates[source]=value;groups[source].deformation=std::move(value);
+            }
+            auto appearance=input.appearance?std::make_shared<MeshAppearance>(*input.appearance):nullptr;if(appearance)appearance->sources=layerCache.lightAppearance;
+            result.mesh=std::make_shared<MeshSnapshot>(std::move(groups));result.snapshot=std::make_shared<PointSnapshot>(std::move(points));result.appearance=std::move(appearance);continue;
         }
         std::vector<std::shared_ptr<SparseInstances<Matrix3>>> edits(groups.size());
         auto patch=[&](std::size_t index,bool hide){const auto& instance=snapshot.layout->instances[index];if(instance.layer!=unsigned(li)||!wanted||!rows.size())return;

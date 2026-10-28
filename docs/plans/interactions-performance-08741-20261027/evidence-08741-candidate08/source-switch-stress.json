@@ -1,0 +1,213 @@
+{
+  "status": "pass",
+  "models": [
+    "S07",
+    "S08",
+    "S01",
+    "S03",
+    "S07",
+    "S08",
+    "S01",
+    "S03",
+    "S07",
+    "S08",
+    "S01",
+    "S03"
+  ],
+  "cycles": [
+    {
+      "case": "S07-switch01",
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S08-switch02",
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S01-switch03",
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S03-switch04",
+      "name": "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S07-switch05",
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S08-switch06",
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S01-switch07",
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S03-switch08",
+      "name": "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S07-switch09",
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S08-switch10",
+      "name": "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S01-switch11",
+      "name": "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    },
+    {
+      "case": "S03-switch12",
+      "name": "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+      "case_status": "pass",
+      "contacts": 3,
+      "audits": 3,
+      "away_restored": true,
+      "wrong_source_phase_1": {
+        "status": "box_selected"
+      },
+      "wrong_source_phase_2": {
+        "status": "expected_preparation_failure",
+        "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+        "collider_reacts": false
+      }
+    }
+  ],
+  "access_violation_captures": [],
+  "scope": "Owned Max 2027 process, matched package; first-chance recorder does not handle exceptions. No reproduction is not a diagnosis or proof of absence."
+}

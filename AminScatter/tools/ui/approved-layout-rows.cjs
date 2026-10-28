@@ -32,15 +32,19 @@ module.exports={
    {...heading('Boundary Relax settings'),when:'spacingUI_boundaryRelaxCheck.checked'},
    ...rows('spacingUI',['finalStrengthSpin','finalIterSpin','finalMoveSpin']).map(r=>({...r,when:'spacingUI_boundaryRelaxCheck.checked'}))
   ]},
-  {name:'displayUI',title:'Viewport & render',parts:['flow_previewUI'],layerPage:false,rows:[...rows('flow_previewUI',['displayModeDrop','navigationPointsSpin','budgetSpin','navigationInstancesSpin','instancesLimitSpin','navigationFacesSpin','faceLimitSpin','limitsHint','memoryButton','identificationDrop','previewCheck','autoRenderCheck','status'])]},
+  {name:'displayUI',title:'Viewport & render',parts:['flow_previewUI'],layerPage:false,rows:[...rows('flow_previewUI',['displayModeDrop','navigationPointsSpin','budgetSpin','navigationInstancesSpin','instancesLimitSpin','navigationFacesSpin','faceLimitSpin','limitsHint','fastNavigationButton','memoryButton','identificationDrop','previewCheck','autoRenderCheck','status'])]},
   {name:'statisticsUI',title:'Stats & diagnostics',parts:['detailsUI','workflowUI','diagnosticsUI'],layerPage:false,rows:[...rows('detailsUI',['info',['refreshButton','helpButton']]),heading('Local diagnostic recording - setup',true),...rows('diagnosticsUI',[['startButton','stopButton'],['saveButton','refreshButton'],'statusInfo','scopeInfo'],true),{toggle:'workflowToggle',caption:'Workflow & ownership',advanced:true},...rows('workflowUI',['steps','help'],true).map(r=>({...r,when:'workflowToggle.checked'}))]},
-  {name:'interactionsUI',title:'Interactions',parts:['interactionsUI'],layerPage:true,advancedLabel:'Preparation limits',rows:[...rows('interactionsUI',['roleList','workflowInfo','modelList',['sourcePickButton','sourceRemoveButton'],'focusSourceButton','proxyList','buildTrunksButton','pickColliderButton','reviewColliderButton','prepareButton','editorButton','guideReviewButton','rootsCheck','gapSpin','foliageSpin','minimumSpin','stiffnessSpin','connectionSpin','info']),...rows('interactionsUI',['retryButton','validateButton','repairSettingsButton','verticesLimitSpin','trianglesLimitSpin','partsLimitSpin','guidesLimitSpin','previewLimitSpin','memoryLimitSpin','workLimitSpin','cleanColliderLinksButton'],true)]}
+  {name:'interactionsUI',title:'Interactions',parts:['interactionsUI'],layerPage:true,advancedLabel:'More settings',rows:[...rows('interactionsUI',['roleList','workflowInfo','modelList',['sourcePickButton','sourceRemoveButton'],'focusSourceButton','proxyList','buildTrunksButton','pickColliderButton','reviewColliderButton','prepareButton','editorButton','guideReviewButton','responseList','strengthSpin','trunkSpin','fixedBaseSpin','transitionSpin','pruneThresholdSpin','pruneAmountSpin','neighborsCheck','rootsCheck','hideAreaList','hideMarginSpin','gapSpin','foliageSpin','info']),...rows('interactionsUI',['minimumSpin','stiffnessSpin','connectionSpin','retryButton','validateButton','repairSettingsButton','verticesLimitSpin','trianglesLimitSpin','partsLimitSpin','guidesLimitSpin','previewLimitSpin','memoryLimitSpin','workLimitSpin','cleanColliderLinksButton'],true)]},
+  {name:'collidersUI',title:'Scene colliders',parts:['collidersUI'],layerPage:false,rows:[...rows('collidersUI',['hint','colliderList',['addButton','selectedButton','removeButton'],'selectButton','info'])]}
  ],
  captions:{flow_surfaceUI:'Global model palettes - setup',flow_layersUI:'Layer management',setsUI:'Paint Areas',sourceUI:'Source details - layer',sourceContainersUI:'Source pool help',distributionUI:'Sampling - layer',populationPolicyUI:'Target and bounded retry - layer',brushUI:'Paint feedback',backgroundUI:'Background coverage help',areaUI:'Analyzer and area falloff',randomUI:'Per-axis scale and movement',diversityUI:'Source assignment - layer',proceduralUI:'Rule management',instanceRadiusUI:'Instance radii - layer',spacingUI:'Candidate Relax - layer',separationUI:'Cleanup settings - layer',flow_previewUI:'Display budgets and feedback - setup',detailsUI:'Statistics help',workflowUI:'Workflow and ownership',diagnosticsUI:'Local diagnostic recording - setup'},
  conditions:{
    ...Object.fromEntries(['proxyList','buildTrunksButton','pickColliderButton','reviewColliderButton','cleanColliderLinksButton'].map(n=>['interactionsUI.'+n,'interactionsUI.roleList.selection==2'])),
-   ...Object.fromEntries(['prepareButton','editorButton','guideReviewButton','rootsCheck','gapSpin','foliageSpin','repairSettingsButton','minimumSpin','stiffnessSpin','connectionSpin','verticesLimitSpin','trianglesLimitSpin','partsLimitSpin','guidesLimitSpin','previewLimitSpin','memoryLimitSpin','workLimitSpin'].map(n=>['interactionsUI.'+n,'interactionsUI.roleList.selection==3'])),
+   ...Object.fromEntries(['prepareButton','editorButton','guideReviewButton','responseList','strengthSpin','trunkSpin','fixedBaseSpin','transitionSpin','pruneThresholdSpin','pruneAmountSpin','neighborsCheck','rootsCheck','hideAreaList','hideMarginSpin','gapSpin','foliageSpin','repairSettingsButton','minimumSpin','stiffnessSpin','connectionSpin','verticesLimitSpin','trianglesLimitSpin','partsLimitSpin','guidesLimitSpin','previewLimitSpin','memoryLimitSpin','workLimitSpin'].map(n=>['interactionsUI.'+n,'interactionsUI.roleList.selection==3'])),
    ...Object.fromEntries(['modelList','sourcePickButton','sourceRemoveButton','focusSourceButton','info'].map(n=>['interactionsUI.'+n,'interactionsUI.roleList.selection!=1'])),
+  'interactionsUI.stiffnessSpin':'interactionsUI.roleList.selection==3 and interactionsUI.responseList.selection==4',
+  ...Object.fromEntries(['strengthSpin','trunkSpin','fixedBaseSpin','transitionSpin','neighborsCheck'].map(n=>['interactionsUI.'+n,'interactionsUI.roleList.selection==3 and interactionsUI.responseList.selection!=4'])),
+  ...Object.fromEntries(['pruneThresholdSpin','pruneAmountSpin'].map(n=>['interactionsUI.'+n,'interactionsUI.roleList.selection==3 and (interactionsUI.responseList.selection==2 or interactionsUI.responseList.selection==3)'])),
   'flow_previewUI.identificationDrop':'flow_previewUI.displayModeDrop.selection!=5',
   ...Object.fromEntries(['columnSpin','originXSpin','originYSpin','headingSpin','jitterSpin','gridInfo'].map(n=>['placementUI.'+n,'placementUI.generatorList.selection>1'])),
   'placementUI.rowSpin':'placementUI.generatorList.selection==2 or placementUI.generatorList.selection==3',
@@ -50,6 +54,7 @@ module.exports={
   'flow_previewUI.proxyShapeDrop':'flow_previewUI.displayModeDrop.selection==2',
   'flow_previewUI.instancesLimitSpin':'flow_previewUI.displayModeDrop.selection==2','flow_previewUI.faceLimitSpin':'flow_previewUI.displayModeDrop.selection==3 or flow_previewUI.displayModeDrop.selection==5',
   'flow_previewUI.navigationInstancesSpin':'flow_previewUI.displayModeDrop.selection==2','flow_previewUI.navigationFacesSpin':'flow_previewUI.displayModeDrop.selection==3 or flow_previewUI.displayModeDrop.selection==5',
+  'flow_previewUI.fastNavigationButton':'flow_previewUI.displayModeDrop.selection==3 or flow_previewUI.displayModeDrop.selection==5',
   'flow_previewUI.navigationPointsSpin':'flow_previewUI.displayModeDrop.selection==1 or flow_previewUI.displayModeDrop.selection==4','flow_previewUI.budgetSpin':'flow_previewUI.displayModeDrop.selection==1 or flow_previewUI.displayModeDrop.selection==4',
   ...Object.fromEntries(['densityHeading','densityButton','invertCheck','uvChannelSpin','resolutionList','uvHint','mapHint'].map(n=>['distributionUI.'+n,'distributionUI.modeRadio.state==2'])),
   'flow_previewUI.solidColorPicker':'flow_previewUI.pointColorRadio.state==1',
@@ -135,3 +140,81 @@ for(const name of ['coordinatesList','uvChannelSpin','tileXSpin','tileYSpin','ti
  module.exports.conditions[key]='distributionUI_imageCheck.checked and ('+condition+')';
 }
 module.exports.conditions['distributionUI.resolutionList']='true';
+
+// 0.87.6: keep the common authoring path short. Disclosures are view state;
+// hiding a control never clears an authored value or disables its effect.
+const pageByName=name=>module.exports.pages.find(p=>p.name===name);
+Object.assign(module.exports.labels,{
+ 'diversityUI.removePath':'x','diversityUI.addOutside':'Out +','diversityUI.addInside':'In +',
+ 'diversityUI.removeStrokeButton':'x','diversityUI.bandUp':'Up','diversityUI.bandDown':'Down',
+ 'brushUI.insideSpin':'Fade inward:','brushUI.outsideSpin':'Extend outward:',
+ 'brushUI.scaleFade':'Fade plant size','brushUI.scaleMin':'Edge size:','brushUI.scaleMax':'Inner size:',
+ 'brushUI.overlayMode':'Paint preview','sourceUI.addPoint':'Add point','sourceUI.makePoint':'Use point',
+ 'sourceUI.replacePoint':'Replace selected...','distributionUI.meshPreviewButton':'Show density preview',
+ 'diversityUI.fieldFalloffCheck':'Show band density','diversityUI.fieldBoundaryCheck':'Show band borders'
+});
+
+const models=pageByName('modelsUI');
+const radiusStart=models.rows.findIndex(r=>r.heading==='Radius and clearance');
+const radiusEnd=models.rows.findIndex(r=>r.controls?.includes('sourceUI.addEmpty'));
+models.rows.splice(radiusStart,0,{toggle:'spacingOptionsToggle',caption:'Spacing overrides'});
+for(let i=radiusStart+1;i<=radiusEnd;i++){
+ const row=models.rows[i],specific=row.when||(row.controls?.length===1?module.exports.conditions[row.controls[0]]:undefined);
+ row.when='spacingOptionsToggle.checked'+(specific?' and ('+specific+')':'');
+}
+models.rows.find(r=>r.controls?.includes('sourceUI.addEmpty')).when='groupsToggle.checked';
+const emptyRow=models.rows.splice(models.rows.findIndex(r=>r.controls?.includes('sourceUI.addEmpty')),1)[0];
+models.rows.splice(models.rows.findIndex(r=>r.toggle==='groupsToggle')+1,0,emptyRow);
+
+const paint=pageByName('coverageUI');
+paint.rows=[
+ ...rows('setsUI',['paintedCheck','setList',['addButton','removeButton'],'nameEdit','targetList','enabledCheck']),
+ ...rows('brushUI',['targetInfo','densitySpin','modeRadio','radiusSpin',['beginButton','stopButton'],['fillButton','emptyButton'],'brushState']),
+ heading('Edge fade'),...rows('brushUI',['insideSpin','outsideSpin','densityFade','scaleFade',['scaleMin','scaleMax']]),
+ {toggle:'fadeCurvesToggle',caption:'Fade curves'},...rows('brushUI',['densityCurve','scaleCurve']),
+ {toggle:'paintPreviewToggle',caption:'Paint preview'},...rows('brushUI',['overlayMode','overlayColor']),
+ {toggle:'splineToolsToggle',caption:'Spline tools'},...rows('brushUI',['exportSpline','importMode','splineTolerance','importSpline'])
+];
+for(const row of paint.rows){
+ const first=row.controls?.[0];
+ if(first==='setsUI.paintedCheck')continue;
+ let condition='setsUI.paintedCheck.checked';
+ if(first==='brushUI.scaleMin')condition+=' and brushUI.scaleFade.checked';
+ if(first==='brushUI.densityCurve')condition+=' and fadeCurvesToggle.checked and brushUI.densityFade.checked';
+ if(first==='brushUI.scaleCurve')condition+=' and fadeCurvesToggle.checked and brushUI.scaleFade.checked';
+ if(['brushUI.overlayMode','brushUI.overlayColor'].includes(first))condition+=' and paintPreviewToggle.checked';
+ if(['brushUI.exportSpline','brushUI.importMode','brushUI.splineTolerance','brushUI.importSpline'].includes(first))condition+=' and splineToolsToggle.checked';
+ row.when=condition;
+}
+
+const amount=pageByName('populationUI');
+amount.hidden.push('distributionUI.meshHideButton');
+for(const row of amount.rows)if(row.controls)row.controls=row.controls.filter(c=>c!=='distributionUI.meshHideButton');
+amount.advancedLabel='Sampling & display options';
+amount.advancedTooltip='Image snapshot resolution, density preview appearance and population retry settings.';
+const areas=pageByName('areasUI');
+areas.advancedLabel='Analyzer tools';
+for(const row of areas.rows){
+ const first=row.controls?.[0];
+ const condition=first?.startsWith('areaUI.slope')&&first!=='areaUI.slopeCheck'?'areaUI.slopeCheck.checked':
+  first?.startsWith('areaUI.altitude')&&first!=='areaUI.altitudeCheck'?'areaUI.altitudeCheck.checked':
+  ['areaUI.fallScaleSpin','areaUI.fallScaleEdit'].includes(first)?'areaUI.fallScaleCheck.checked':
+  ['areaUI.fallDensitySpin','areaUI.fallDensityEdit'].includes(first)?'areaUI.fallDensityCheck.checked':undefined;
+ if(condition)row.when=condition;
+ // Enable switches stay visible; distances get their own conditional row.
+ if(['areaUI.fallDeleteCheck','areaUI.fallScaleCheck','areaUI.fallDensityCheck'].includes(first)&&row.controls.length===2){
+  const distance=row.controls.pop();
+  module.exports.conditions[distance]=first+'.checked';
+  areas.rows.splice(areas.rows.indexOf(row)+1,0,{controls:[distance],when:first+'.checked'});
+ }
+}
+
+const transforms=pageByName('transformsUI');
+const perAxis=transforms.rows.splice(transforms.rows.findIndex(r=>r.controls?.includes('randomUI.sclTitle')),5);
+const afterScale=transforms.rows.findIndex(r=>r.controls?.includes('randomUI.resetWholeScale'))+1;
+transforms.rows.splice(afterScale,0,{toggle:'axisScaleToggle',caption:'Non-uniform scale'},...perAxis.map(r=>({...r,when:'axisScaleToggle.checked'})));
+pageByName('spacingUI').advancedLabel='Cleanup & instance overrides';
+pageByName('surfacesUI').advancedLabel='Surface tools';
+pageByName('layoutUI').advancedLabel='Band order & details';
+pageByName('displayUI').advancedLabel='Display options';
+pageByName('statisticsUI').advancedLabel='Diagnostic recording';

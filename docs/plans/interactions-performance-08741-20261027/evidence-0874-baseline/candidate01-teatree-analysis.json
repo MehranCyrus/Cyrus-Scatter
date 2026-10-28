@@ -1,0 +1,63 @@
+{
+  "case": "A058-work2048-guides32768",
+  "status": "complete",
+  "node": "CyrusModel_A058",
+  "settings": {
+    "minimum_m": 0.005,
+    "branch_connection_m": 0.15,
+    "stiffness": 0.5,
+    "preview_fraction": 1.0,
+    "hide_roots": false,
+    "contact_gap": 0.0,
+    "limits": [
+      2000000,
+      4000000,
+      100000,
+      32768,
+      2000000,
+      2048,
+      2048
+    ]
+  },
+  "analysis": {
+    "accepted": false,
+    "analysis_count": 1,
+    "basal_band_m": 0.03,
+    "can_prepare": false,
+    "complex_foliage_parts": 0,
+    "crown_root_guides": 0,
+    "fingerprint": "65398f9f7c62ebf72433d4397af2fda415c05449afdc0a34ec415d3ec2044f45",
+    "fixed_parts": 0,
+    "ground_level_m": 0.02619110511732288,
+    "ground_roots": 6,
+    "guides": 33,
+    "has_solid_collider": false,
+    "limits": [
+      2000000,
+      4000000,
+      100000,
+      32768,
+      2000000,
+      2048,
+      2048
+    ],
+    "max_attachment_distance_m": 1.1365120507982913,
+    "max_parent_distance_m": 0.08665331855567669,
+    "parts": 12857,
+    "preview_triangles": 568304,
+    "profile": "Connectivity-derived tubes and geodesic ribbons",
+    "proxy_mode": 1,
+    "review_guides_shown": 33,
+    "review_required": true,
+    "ribbon_guides": 10,
+    "seconds": 2.5307909,
+    "source_triangles": 568304,
+    "source_vertices": 382228,
+    "tube_guides": 23,
+    "unattached_parts": 10238,
+    "unresolved_guides": 23,
+    "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+    "work_units": 169834668
+  },
+  "summary": "Needs guide repair: 23 unresolved guides / 10238 unattached parts.\nReview inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.\nDetailed analysis is retained in the Listener."
+}

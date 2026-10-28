@@ -1,0 +1,26 @@
+{
+  "case": "library",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "matching shared store assembly",
+      "status": "pass",
+      "value": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\ui0876-20261028-01\\store-03\\author"
+    },
+    {
+      "name": "Recipes button opens Library",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "Library has no error banner",
+      "status": "pass",
+      "value": "#(\"\", \"No plant library is configured. Keep the supplied Content folder beside the installer, then run Install or Update.\")"
+    },
+    {
+      "name": "close owned Library",
+      "status": "pass",
+      "value": "True"
+    }
+  ]
+}

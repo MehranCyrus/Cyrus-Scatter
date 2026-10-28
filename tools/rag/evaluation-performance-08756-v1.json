@@ -1,0 +1,372 @@
+{
+  "schema": "cyrus.evaluation/1",
+  "version": "performance-08756-v1",
+  "dataset_kind": "challenge",
+  "review_status": "Agent-authored preservation cases frozen before first score; no human semantic acceptance or generated-answer accuracy.",
+  "queries": [
+    {
+      "id": "P01",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "docs/PERFORMANCE_BASELINE.md",
+      "mode": "path",
+      "information_need": "What interaction behavior did the user endorse and what should a successor preserve?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P01-owner",
+          "alternatives": [
+            {
+              "path": "docs/PERFORMANCE_BASELINE.md",
+              "sha256": "816627f4c2623ab50255738e486f4d45ef2cf7eb0ef79012364889fb03e7f334",
+              "start_line": 12,
+              "end_line": 12
+            }
+          ],
+          "canonical_paths": [
+            "docs/PERFORMANCE_BASELINE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Responsive artistic Bend/Trim",
+        "Exact-clearance quality has a different cost"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P02",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "adaptSource",
+      "mode": "identifier",
+      "information_need": "How does artistic bending avoid repeated detailed fitting?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P02-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/src/interactions_fast_bend.inc",
+              "sha256": "4cf138404dfa0a6859dde09ebbb375cc1dbb4b19ec6e599986fba0187a94e29d",
+              "start_line": 4,
+              "end_line": 4
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/src/interactions_fast_bend.inc"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Bounded coarse guide spans",
+        "One response; approximate overlap remains possible"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P03",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "minimumJobs",
+      "mode": "identifier",
+      "information_need": "Why can a small number of complex trees use parallel CPU execution?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P03-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/src/interactions_engine.cpp",
+              "sha256": "8f50224b5b2a48f758b45f99660e7bf54a4542a481e89326612bb2e8d69db6e0",
+              "start_line": 190,
+              "end_line": 190
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/src/interactions_engine.cpp"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Guide workload matters",
+        "Four participants is an observed case, not a universal requirement"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P04",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "CyrusSceneColliderChanged",
+      "mode": "identifier",
+      "information_need": "What is dirtied when an ordinary collider moves?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P04-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/templates/unified-core.ms",
+              "sha256": "dead21e62628afaec930f400a3f1f0cacedecc1458badd666b40f3cd416dfcaa",
+              "start_line": 6805,
+              "end_line": 6805
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/templates/unified-core.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Contact pose, not all placements or source preparation"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P05",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "cyrusRetainedRequestReady",
+      "mode": "identifier",
+      "information_need": "How does ready GPU work request host presentation during interaction?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P05-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/src/point_display.cpp",
+              "sha256": "d97ec462a9128546b343b0ce42f3906993c465ec3a25b0fbb06c0e3e4219a3b1",
+              "start_line": 727,
+              "end_line": 727
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/src/point_display.cpp"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Request SDK presentation boundary",
+        "Host access remains on host thread"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P06",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "AminScatterObjectDraw",
+      "mode": "identifier",
+      "information_need": "Why must every new pose ticket get fresh bounded redraw retries?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P06-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/templates/unified-core.ms",
+              "sha256": "dead21e62628afaec930f400a3f1f0cacedecc1458badd666b40f3cd416dfcaa",
+              "start_line": 6871,
+              "end_line": 6871
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/templates/unified-core.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Incremental contacts reuse viewport records",
+        "A previous frame must not exhaust later retries"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P07",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "interactionAuthoredEdits",
+      "mode": "identifier",
+      "information_need": "Why must inactive source history be filtered when bend settings change after an Edit move?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P07-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/src/cyrus_edit.cpp",
+              "sha256": "5d63a4f422961ce4b78011e2b30adbe27950897796e251c1bd5ed12c11256ceb",
+              "start_line": 227,
+              "end_line": 227
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/src/cyrus_edit.cpp"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Same candidate text can have different source lineage",
+        "Keep history for Undo; require a live input matrix"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P08",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "Fixed base",
+      "mode": "keyword",
+      "information_need": "How does the user keep the bottom still and allow upper branches to bend?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P08-owner",
+          "alternatives": [
+            {
+              "path": "docs/plans/drag-response-08756-20261028/ARTIST_GUIDE.md",
+              "sha256": "8ff0bad0d7afaacde330c1b47e9a072292b6235a9735762a049dbf3ad91baf17",
+              "start_line": 15,
+              "end_line": 15
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/drag-response-08756-20261028/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Percentage of source height",
+        "Structural guides follow prepared hierarchy"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P09",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "B41",
+      "mode": "identifier",
+      "information_need": "Is the fully fixed query skip already implemented?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P09-owner",
+          "alternatives": [
+            {
+              "path": "docs/BACKLOG.md",
+              "sha256": "f735bf8c1fefdd0a808674f4736625e08b2998395caa99928a0615d663dc1019",
+              "start_line": 227,
+              "end_line": 227
+            }
+          ],
+          "canonical_paths": [
+            "docs/BACKLOG.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Observed 1786 queries and zero poses",
+        "Open optimization; preserve Trim/hiding semantics"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P10",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "docs/plans/drag-response-08756-20261028/DELIVERY_08756.md",
+      "mode": "path",
+      "information_need": "What does the 115.57 to 29.51 ms comparison establish?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P10-owner",
+          "alternatives": [
+            {
+              "path": "docs/plans/drag-response-08756-20261028/DELIVERY_08756.md",
+              "sha256": "ea54646a21706fa1633576667e72c8ba22d1356e420af5302e62e7d49a9a671d",
+              "start_line": 32,
+              "end_line": 32
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/drag-response-08756-20261028/DELIVERY_08756.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Detailed versus artistic mode quality tradeoff",
+        "CPU contact fit, not presented FPS",
+        "31 reacting trees; grass/fern layer was nonreacting"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "P11",
+      "language": "en",
+      "category": "performance-preservation",
+      "query": "CUDA",
+      "mode": "keyword",
+      "information_need": "Does the present performance patch run contact computation on CUDA?",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "P11-owner",
+          "alternatives": [
+            {
+              "path": "docs/PERFORMANCE_BASELINE.md",
+              "sha256": "816627f4c2623ab50255738e486f4d45ef2cf7eb0ef79012364889fb03e7f334",
+              "start_line": 37,
+              "end_line": 37
+            }
+          ],
+          "canonical_paths": [
+            "docs/PERFORMANCE_BASELINE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "CPU numerical contact with GPU drawing/deformation",
+        "No CUDA/OpenCL contact solver"
+      ],
+      "review_status": "Agent-authored development question frozen before candidate evaluation; not unseen holdout or human semantic evaluation.",
+      "split": "development"
+    }
+  ],
+  "anchors": []
+}

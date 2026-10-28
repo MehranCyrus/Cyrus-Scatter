@@ -1,0 +1,35 @@
+flowchart TB
+    subgraph CPU_Authoritative[CPU authoritative / portable]
+      SRC[Immutable source snapshots\ngeometry guides bindings fingerprints]
+      COL[Collider asset snapshots\nmesh/proxy + revision]
+      POP[Published placements\nstable IDs + transforms]
+      SET[Authored settings]
+      PUB[Published compact pose generation]
+    end
+    subgraph GPU_Transient[GPU transient / rebuildable]
+      GSRC[Source buffers]
+      GCOL[Collider BVH/SDF/proxy]
+      ACT[Active lists + contact pairs]
+      SCR[Solver scratch]
+      GPOSE[Pose output]
+      DISP[Viewport buffers]
+    end
+    subgraph Output[Explicit output requests]
+      MAT[CPU canonical evaluated mesh]
+      REN[Renderer]
+      BAKE[Bake/export]
+    end
+    SRC --> GSRC
+    COL --> GCOL
+    POP --> ACT
+    SET --> ACT
+    GSRC --> SCR
+    GCOL --> SCR
+    ACT --> SCR
+    SCR --> GPOSE
+    GPOSE --> PUB
+    PUB --> DISP
+    PUB --> MAT
+    SRC --> MAT
+    MAT --> REN
+    MAT --> BAKE

@@ -1,4 +1,5 @@
 #include "point_preview.h"
+#include "deformation_preview.h"
 #include "diagnostics.h"
 #include "render_publication.h"
 #include "edit_feedback.h"
@@ -12,6 +13,7 @@
 #include <Graphics/VertexBufferHandle.h>
 #include <Graphics/IndexBufferHandle.h>
 #include <Graphics/HLSLMaterialHandle.h>
+#include <Graphics/IViewportViewSetting.h>
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>
 #include <maxscript/foundation/numbers.h>
@@ -132,14 +134,17 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value,std::shared_ptr<Pr
             for(auto slot:group.bandSlots){if(slot>64)throw RuntimeError(_T("Invalid mesh Band palette slot"));instanceHash(&slot,sizeof(slot));}
             for(const auto& tm:group.instances){matrixHash(tm);world+=local*tm;}
         }
+        if(group.deformation){world+=group.deformation->worldBounds;fingerprint^=group.deformation->fingerprint;fingerprint*=1099511628211ULL;}
         instanceFingerprints.push_back(instanceFingerprint);fingerprint^=instanceFingerprint;fingerprint*=1099511628211ULL;
         if(!group.faceData().empty() && group.instanceCount()) {
             viewport_memory::validateDrawCounts(group.faceData().size(),group.instanceCount());
             bounds+=world;faces=viewport_memory::add(faces,viewport_memory::multiply(group.faceData().size(),group.instanceCount()));instances=viewport_memory::add(instances,group.instanceCount());
             bufferBytes=viewport_memory::add(bufferBytes,viewport_memory::add(viewport_memory::multiply(group.faceData().size(),9*sizeof(Point3)),
-                viewport_memory::multiply(group.instanceCount(),4*sizeof(Point3)+sizeof(float))));
+                viewport_memory::multiply(group.instanceCount(),4*sizeof(Point3)+2*sizeof(float))));
             scratchBytes=viewport_memory::add(scratchBytes,viewport_memory::add(viewport_memory::multiply(group.faceData().size(),3*sizeof(Point3)),
-                viewport_memory::multiply(group.instanceCount(),4*sizeof(Point3)+sizeof(float))));
+                viewport_memory::multiply(group.instanceCount(),4*sizeof(Point3)+2*sizeof(float))));
+            if(group.deformation)bufferBytes=viewport_memory::add(bufferBytes,
+                viewport_memory::multiply(group.deformation->source->data->corners.size()+group.deformation->nodes.size()+group.deformation->changes.words.size(),sizeof(interactions::DeformationWord)));
         }
         groupBounds.push_back(world);localBounds.push_back(local);
     }
@@ -172,28 +177,18 @@ const Class_ID displayID(0x471d60ab,0x67ca238e);
 constexpr std::size_t ownerByteLimit=pointPreviewOwnerLimit,processByteLimit=pointPreviewProcessLimit;
 std::atomic<std::size_t> reservedBytes{0},liveItems{0};
 std::atomic<std::uint64_t> uploads{0},uploadBytes{0},draws{0},failures{0};
+std::atomic<std::uint64_t> wireMeshDraws{0},solidMeshDraws{0};
 // Vertex upload payloads and SDK material parameter payloads are distinct.
 // These are submitted bytes, not a measurement of driver/VRAM traffic.
 std::atomic<std::uint64_t> geometryUploadBytes{0},transformUploadBytes{0},ownerUploadBytes{0},styleParameterBytes{0},bufferReuses{0};
+std::atomic<std::uint64_t> poseUploadBytes{0},bindingUploadBytes{0},poseBufferReuses{0};
 std::atomic<bool> interactionHeld{false};
 std::atomic<std::uint64_t> navigationDraws{0},idleDraws{0};
-// Drawing observes only graphics-context matrices. No scene traversal/evaluation.
-bool navigating(DrawContext& dc) {
-    struct ViewState { const void* key=nullptr;Matrix44 view,projection;ULONGLONG changed=0; };
-    static std::array<ViewState,32> views;
-    static std::size_t next=0;
-    static std::mutex mutex;
-    std::lock_guard<std::mutex> lock(mutex);
-    const void* key=dc.GetViewExp();const auto now=GetTickCount64();
-    auto it=std::find_if(views.begin(),views.end(),[key](const auto& v){return v.key==key;});
-    if(it==views.end()) {
-        it=views.begin()+next;next=(next+1)%views.size();
-        *it={key,dc.GetViewMatrix(),dc.GetProjectionMatrix(),0};
-    } else if(it->view!=dc.GetViewMatrix() || it->projection!=dc.GetProjectionMatrix()) {
-        it->view=dc.GetViewMatrix();it->projection=dc.GetProjectionMatrix();it->changed=now;
-    }
-    return interactionHeld.load() || (it->changed && now-it->changed<350);
-}
+// Host camera/mouse activity pairs reduced drawing with its idle repaint timer.
+// Graphics-context matrices can change between passes without camera activity.
+// Missing an activity callback safely draws full detail instead of latching a
+// reduced quota that has no matching request to restore the idle display.
+bool navigating(DrawContext&) { return interactionHeld.load(); }
 #ifdef CYRUS_PREVIEW_TEST_FAULTS
 std::atomic<int> previewFaultStage{0},previewFaultOccurrence{0},previewFaultHits{0};
 void previewFault(int stage) {
@@ -653,6 +648,16 @@ def_visible_primitive(cyrusRetainedInteraction,"cyrusRetainedInteraction");
 Value* cyrusRetainedInteraction_cf(Value** args,int count) {
     check_arg_count(cyrusRetainedInteraction,1,count);cyrus::interactionHeld=args[0]->to_bool()!=FALSE;return &ok;
 }
+
+def_visible_primitive(cyrusRetainedInvalidate,"cyrusRetainedInvalidate");
+Value* cyrusRetainedInvalidate_cf(Value** args,int count) {
+    check_arg_count(cyrusRetainedInvalidate,1,count);
+    auto* node=args[0]->to_node();(void)cyrus::owner(node);
+    // Only its existing screen rectangle changed. Marking geometry dirty would
+    // evaluate more of the scene; a plain RedrawViews may do nothing at all.
+    node->InvalidateRect(GetCOREInterface()->GetTime(),true);
+    return &ok;
+}
 // Version, idle/nav points, idle/nav proxies, idle/nav mesh triangles,
 // idle/nav box instances, memory-reduced, idle/nav draw calls.
 def_visible_primitive(cyrusRetainedViewportStats,"cyrusRetainedViewportStats");
@@ -700,10 +705,13 @@ Value* cyrusRetainedMeshStats_cf(Value** args,int count) {
         faces+=layer.mesh->faces;instances+=layer.mesh->instances;
         for(const auto& group:layer.mesh->groups) if(group.instanceCount()) sourceFaces+=group.faceData().size();
     }
-    one_typed_value_local(Array* result);vl.result=new Array(7);
+    one_typed_value_local(Array* result);vl.result=new Array(9);
     const auto policy=cyrus::viewportMemoryPolicy();
     for(auto value:{faces,instances,sourceFaces,gen?gen->meshReservation:0,cyrus::meshPreviewBudget.used(),policy.total,policy.total})
         vl.result->append(Integer64::intern(value));
+    // Append-only process draw counters; existing telemetry indices are stable.
+    vl.result->append(Integer64::intern(cyrus::wireMeshDraws.load()));
+    vl.result->append(Integer64::intern(cyrus::solidMeshDraws.load()));
     return_value(vl.result);
 }
 
@@ -713,6 +721,14 @@ Value* cyrusRetainedMeshStats_cf(Value** args,int count) {
 // geometry fingerprint, visible geometry fingerprint, requested failure text.
 // Read-only: CPU preparation, realization and actual presentation are distinct.
 def_visible_primitive(cyrusRetainedPresentationStats,"cyrusRetainedPresentationStats");
+// Host-thread notification only. The SDK container boundary still performs
+// the atomic swap; no pending placements are evaluated by this request.
+def_visible_primitive(cyrusRetainedRequestReady,"cyrusRetainedRequestReady");
+Value* cyrusRetainedRequestReady_cf(Value** args,int count){
+    check_arg_count(cyrusRetainedRequestReady,1,count);
+    auto* display=cyrus::owner(args[0]->to_node());
+    display->requestPresentationUpdate();return bool_result(display->presentationRefreshRequested);
+}
 Value* cyrusRetainedPresentationStats_cf(Value** args,int count) {
     check_arg_count(cyrusRetainedPresentationStats,1,count);
     const auto* display=cyrus::owner(args[0]->to_node());
@@ -743,14 +759,15 @@ Value* cyrusRetainedPresentationStats_cf(Value** args,int count) {
 }
 
 // Version 1: position/source-geometry, transforms, owners, material parameters,
-// reused item buffers. Parameter bytes are not claimed as physical GPU uploads.
+// reused item buffers; append-only pose/binding upload bytes and pose reuse.
+// Parameter bytes are not claimed as physical GPU uploads.
 def_visible_primitive(cyrusRetainedStreamStats,"cyrusRetainedStreamStats");
 Value* cyrusRetainedStreamStats_cf(Value**,int count) {
     check_arg_count(cyrusRetainedStreamStats,0,count);
-    one_typed_value_local(Array* result);vl.result=new Array(6);
+    one_typed_value_local(Array* result);vl.result=new Array(9);
     vl.result->append(Integer::intern(1));
     for(auto value:{cyrus::geometryUploadBytes.load(),cyrus::transformUploadBytes.load(),cyrus::ownerUploadBytes.load(),
-                    cyrus::styleParameterBytes.load(),cyrus::bufferReuses.load()})vl.result->append(Integer64::intern(value));
+                    cyrus::styleParameterBytes.load(),cyrus::bufferReuses.load(),cyrus::poseUploadBytes.load(),cyrus::bindingUploadBytes.load(),cyrus::poseBufferReuses.load()})vl.result->append(Integer64::intern(value));
     return_value(vl.result);
 }
 

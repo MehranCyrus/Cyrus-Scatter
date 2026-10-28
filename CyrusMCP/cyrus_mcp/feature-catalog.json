@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "9d181581812e00fdd8fd3975da7d3ec6682904c93a74cf5d986b43a2040f8cc6",
-  "control_inventory_sha256": "c86d3c29feaef97f8621c8e4e18bba65aabdf55d889d9532036a066faf39a6f5",
-  "development_version": "0.87.4",
+  "capability_source_sha256": "b272a911788d29621815b9939cff676961fda38c68a488892709234b7872fde8",
+  "control_inventory_sha256": "5e2ab5924386c660da652abc4a72b4114d6354d5e3d230b98936868a14e388dc",
+  "development_version": "0.87.6",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified2",
   "features": [
@@ -248,9 +248,9 @@
     {
       "feature_id": "C35",
       "title": "Settings presets and shared static recipes/models",
-      "native": "Recipe 8 preserves supported planting settings and bindings. 0.87.1 adds one local shared store, independent model packages, pinned recipes, collections, `.cyruslib` transport, verified migration and retained relocation/relink; raw geometry/images are reused",
+      "native": "Recipe 9 preserves supported planting settings, native Cyrus Edit overrides, prepared interactions and collider bindings. 0.87.1 adds one local shared store, independent model packages, pinned recipes, collections, `.cyruslib` transport, verified migration and retained relocation/relink; raw geometry/images are reused",
       "mcp": "Catalog help only; no preset/recipe filesystem or application tool",
-      "qualification_or_extension": "Settings 3, library 4, asset capability 3, shared store/model package 1 and static graph 4; renderer graph 3 retains its exact profile. Portable textures require matching default OCIO. Static ten-look/model workflows have scoped Max 2024/2026/2027 checks. Complete Interactions/Edit/effects/animation/XRef or arbitrary-shader serialization is unsupported. Terrain/curved Paint transfer retains its original footprint/topology and saved-unit guards. [0.87.1 delivery and limits](../plans/preset-gallery-improvements/DELIVERY_0871.md); [historical format-7 reliability](../plans/preset-gallery-improvements/RELIABILITY_0870.md) retains its original scope"
+      "qualification_or_extension": "Settings 3, library 4, asset capability 3, shared store/model package 1 and static graph 4; renderer graph 3 retains its exact profile. Portable textures require matching default OCIO. Static ten-look/model workflows have scoped Max 2024/2026/2027 checks. 0.87.4.4 supports sparse native Edit and accepted interaction preparation; runtime acceptance is scoped to its delivery. Effects/animation/XRef or arbitrary-shader serialization remains unsupported. Terrain/curved Paint transfer retains its original footprint/topology and saved-unit guards. [0.87.1 delivery and limits](../plans/preset-gallery-improvements/DELIVERY_0871.md); [historical format-7 reliability](../plans/preset-gallery-improvements/RELIABILITY_0870.md) retains its original scope"
     },
     {
       "feature_id": "C36",
@@ -261,10 +261,10 @@
     },
     {
       "feature_id": "C37",
-      "title": "Layer interactions and prepared plant contact",
-      "native": "0.87.2 Max 2027: SI preparation minimums with explicit legacy repair, reviewed tube/folded-leaf rigs, separate source-bound trunk/custom colliders retaining full visual trees, local poses and reversible covered roots",
+      "title": "Scene colliders and prepared branch/plant response",
+      "native": "0.87.5.4: scene collider references, nonuniform/mirrored obstacle copies, broad Bend / Prune, reversible subtree masks, stable opt-in neighbor priority; Detailed contact and preparation editor retained",
       "mcp": "Help only; no plan-schema authoring or simulation tool",
-      "qualification_or_extension": "[0.87.2 r2 tests](../plans/scatter-interactions-garden-20261025/DELIVERY_0872.md) pass the supplied small-scene preparation, both tree edits, physical held drag/Undo/Redo, failure retention, save/reopen and independent full/float mesh checks. Other topology, renderer, natural-bending and soak acceptance remains separate. Preserve [0.87.0 evidence](../plans/scatter-interactions-garden-20261025/DELIVERY_0870.md); [0.87.2 scope](../plans/scatter-interactions-garden-20261025/IMPLEMENTATION_0872.md) and [small-scene findings](../plans/scatter-interactions-garden-20261025/SMALL_SCENE_FINDINGS_20261026.md) separate implementation, proxy approximation and open artist/renderer/dynamics acceptance."
+      "qualification_or_extension": "[0.87.5.4 exact Max 2027 scope](../plans/scene-adaptation-08754-20261028/DELIVERY_08754.md) covers grass/fern, generated branch trees, movement, Undo, save/load, independent Scene preset references and unchanged navigation buffers. Guide envelopes do not certify leaf-level clearance; arbitrary welded topology, external renderers and million-instance realtime remain unqualified. Historical [0.87.2 evidence](../plans/scatter-interactions-garden-20261025/DELIVERY_0872.md) retains its original scope."
     }
   ],
   "controls": [
@@ -490,6 +490,21 @@
       "section": "previewUI",
       "kind": "spinner",
       "name": "navigationFacesSpin",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Controller / local view",
+      "help": null,
+      "view": "Local setup controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "kind": "button",
+      "name": "fastNavigationButton",
       "capabilities": [
         "C25",
         "C28",
@@ -4908,6 +4923,136 @@
     {
       "group": "layer",
       "section": "interactionsUI",
+      "kind": "dropdownlist",
+      "name": "responseList",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "strengthSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "trunkSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "fixedBaseSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "transitionSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "pruneThresholdSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "pruneAmountSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "checkbox",
+      "name": "neighborsCheck",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "dropdownlist",
+      "name": "hideAreaList",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
+      "kind": "spinner",
+      "name": "hideMarginSpin",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "interactionsUI",
       "kind": "spinner",
       "name": "gapSpin",
       "capabilities": [
@@ -5109,6 +5254,71 @@
         "C37"
       ],
       "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "collidersUI",
+      "kind": "listbox",
+      "name": "colliderList",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Root controller ordinary scene collider references",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "collidersUI",
+      "kind": "pickbutton",
+      "name": "addButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Root controller ordinary scene collider references",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "collidersUI",
+      "kind": "button",
+      "name": "selectedButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Root controller ordinary scene collider references",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "collidersUI",
+      "kind": "button",
+      "name": "removeButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Root controller ordinary scene collider references",
+      "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "collidersUI",
+      "kind": "button",
+      "name": "selectButton",
+      "capabilities": [
+        "C37"
+      ],
+      "owner_context": "Root controller ordinary scene collider references",
       "help": null,
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."

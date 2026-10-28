@@ -50,6 +50,13 @@ and future integration separate. Record the recommendation and acceptance in the
 existing plan; do not make the artist choose a programming language or infer a
 roadmap resumption from an old objective.
 
+For interaction or viewport optimization, read the maintained
+[performance baseline](../../../docs/PERFORMANCE_BASELINE.md). Preserve the user's
+responsive artistic Bend/Trim intent. Trace calculation through GPU readiness to
+actual presentation while input is held; a faster solve that waits for release is
+not a responsiveness improvement. Compare relevant work counters and visual results
+against the qualified baseline, retaining its exact scope and open findings.
+
 Validate the intended change, an important unaffected case and relevant failure or
 lifecycle boundary. Compare stable identities and full transforms for stability;
 compare solve/preparation/upload counters separately for reuse. Account for quotas,

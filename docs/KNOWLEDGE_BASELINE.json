@@ -1,0 +1,42 @@
+{
+  "schema": "cyrus.knowledge-baseline/1",
+  "delivery_receipt": "docs/plans/ui-settings-0876-20261028/KNOWLEDGE_FACTS_0876.json",
+  "delivered": {
+    "version": "0.87.6",
+    "max_year": 2027,
+    "scene_schema": 65,
+    "recipe_format": 9,
+    "edit_storage": 3,
+    "interactions": 15
+  },
+  "limits": [
+    "0.87.6 qualifies the recorded Max 2027 UI/settings smoke and 23 focused native suites; Max 2024/2026 are compile/package only.",
+    "User endorsement concerns Bend/Trim, movement and preview; physical input timing, renderers, arbitrary models and million-instance realtime remain unqualified.",
+    "The 0.87.5.1 Library baseline retains its own exact qualification; a newer interaction version does not rerun Library tests.",
+    "Native Scene presets require supported units/dependencies; portable recipes keep their narrower response subset.",
+    "The fixed-base query optimization B41 is observed open work, not implemented.",
+    "The 0.87.6 UI delivery does not refresh or activate indexed knowledge. Current source hashes must be reverified before relying on the previous corpus freshness reports."
+  ],
+  "component_baselines": {
+    "library": {
+      "version": "0.87.5.1",
+      "qualification": "docs/plans/scene-presets-08751/QUALIFICATION_08751.json",
+      "scope": "Library/native Scene delivery; independent from 0.87.5.6 viewport qualification."
+    },
+    "performance": {
+      "version": "0.87.5.6",
+      "qualification": "docs/plans/drag-response-08756-20261028/QUALIFICATION_08756.json",
+      "scope": "Artist-endorsed Bend/Trim, held movement and preview; 0.87.6 preserves the core source and does not extend these performance measurements."
+    }
+  },
+  "owners": {
+    "performance": "docs/PERFORMANCE_BASELINE.md",
+    "usage": "docs/ARTIST_GUIDE.md",
+    "interaction_controls": "docs/plans/drag-response-08756-20261028/ARTIST_GUIDE.md",
+    "qualification": "docs/plans/ui-settings-0876-20261028/DELIVERY.md",
+    "scene_presets": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+    "contracts": "docs/ENGINEERING_FOUNDATION.md",
+    "remaining_work": "docs/BACKLOG.md",
+    "ui_controls": "docs/plans/ui-settings-0876-20261028/CONTROL_LEDGER.md"
+  }
+}

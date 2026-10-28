@@ -1,0 +1,301 @@
+{
+  "status": "scoped_pass",
+  "version": "0.87.5.1",
+  "max_year": 2027,
+  "scene_schema": 63,
+  "interactions": 12,
+  "recipe_format": 9,
+  "edit_storage": 3,
+  "scene_preset_format": 1,
+  "managed_version": "0.87.5.1",
+  "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.5.1-20261027\\CyrusScatter-0.87.5.1-Max2027.mzp",
+  "archive_sha256": "d220e943c7bac04cc8f7dd98bd8e8e32dca1ca8486085c441b34b2f38d8fbbb6",
+  "bytes": 2627863,
+  "producer": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-presets-08751-20261027-01\\native-final\\receipt.json",
+  "native_tests": 61,
+  "source_files": 625,
+  "current_source_hashes_verified": true,
+  "package_files": {
+    "AminScatter.dlx": "29c0358096b4ff772a3aa2abe57e4125ba3582af8bd4d2001e1c6bfd39b61c04",
+    "CyrusBrush.dlx": "17fe28189696653693931c7a048794a0288054b1d319249e54ecf1e03baefe71",
+    "CyrusBrushStorage.dlh": "a362d821a2e31e2057d89a4bb5ebf7c9f3b3c1c95274ec88fe0641fa1f7a2cae",
+    "CyrusGallery.dll": "1d47daf27f8645ae2afbe723a67159e1cbf7034345842e18f612dc9d6b04559d",
+    "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+    "CyrusScatter.ms": "fab1e19e80459537710c6ad8f033c0f33cc6a024865db495d3768a0ef0ad780a",
+    "CyrusScatterEdit.dlm": "c4debbfd2eabad705261af3794715b4a3afc33ed4fe78c1981f106bfff224007"
+  },
+  "installer": {
+    "status": "pass",
+    "scope": "Exact MZP installer engine in a disposable profile; Max UI and installed startup are separate checks",
+    "archive_sha256": "d220e943c7bac04cc8f7dd98bd8e8e32dca1ca8486085c441b34b2f38d8fbbb6",
+    "release": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-presets-08751-20261027-01\\installer-final\\runtime\\r\\2ab1a51e7438",
+    "script_sha256": "fab1e19e80459537710c6ad8f033c0f33cc6a024865db495d3768a0ef0ad780a",
+    "native_sha256": "29c0358096b4ff772a3aa2abe57e4125ba3582af8bd4d2001e1c6bfd39b61c04"
+  },
+  "loaded_identity": {
+    "host": 2027,
+    "modules": {
+      "AminScatter.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-presets-08751-20261027-01\\installer-final\\runtime\\r\\2ab1a51e7438\\bin\\AminScatter.dlx",
+        "sha256": "29c0358096b4ff772a3aa2abe57e4125ba3582af8bd4d2001e1c6bfd39b61c04"
+      },
+      "CyrusBrush.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-presets-08751-20261027-01\\installer-final\\runtime\\r\\2ab1a51e7438\\bin\\CyrusBrush.dlx",
+        "sha256": "17fe28189696653693931c7a048794a0288054b1d319249e54ecf1e03baefe71"
+      },
+      "CyrusBrushStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-presets-08751-20261027-01\\installer-final\\runtime\\r\\2ab1a51e7438\\bin\\CyrusBrushStorage.dlh",
+        "sha256": "a362d821a2e31e2057d89a4bb5ebf7c9f3b3c1c95274ec88fe0641fa1f7a2cae"
+      },
+      "CyrusScatterEdit.dlm": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-presets-08751-20261027-01\\installer-final\\runtime\\r\\2ab1a51e7438\\bin\\CyrusScatterEdit.dlm",
+        "sha256": "c4debbfd2eabad705261af3794715b4a3afc33ed4fe78c1981f106bfff224007"
+      }
+    },
+    "script_fingerprint": "780dc07d889487a89d79fd8e61bcb1fa1f4446e681ab3adbae7b0729095ae7ef"
+  },
+  "final_pair_checks": {
+    "final-inspect": {
+      "phase": "final-inspect",
+      "status": "passed",
+      "scope": "Fresh final installed Max 2027 pair",
+      "matrix_error_WU": 0.0,
+      "edit_modifiers": 2,
+      "clones": [
+        "{AA40244A-E470-4761-9DC8-9969A1E2E473}",
+        "{DA0077E0-8423-47C6-9F71-4C44F82AC9BE}",
+        "{11B497CB-2C0F-4905-BA31-2937F2AC03BC}"
+      ],
+      "roots": 2
+    },
+    "final-repeat": {
+      "phase": "final-repeat",
+      "status": "passed",
+      "scope": "Fresh final installed Max 2027 pair",
+      "matrix_error_WU": 0.0,
+      "edit_modifiers": 2,
+      "clones": [
+        "{E5FCB493-3A3E-47FA-A032-8CFFE1026B86}",
+        "{705B7E71-C3FD-45EE-8A2C-F189B2A9D82B}",
+        "{5707C51D-A6FA-43E2-8E30-589D1B50B913}"
+      ],
+      "roots": 3
+    },
+    "final-unit-guard": {
+      "phase": "final-unit-guard",
+      "status": "passed",
+      "scope": "Fresh final installed Max 2027 pair",
+      "error": "MAXScript exception raised.\n-- Runtime error: Set system units to 1 unit = 1.0d0 cm before merging. Portable presets adapt to other units.",
+      "scene_retained": true
+    },
+    "final-ui": {
+      "phase": "final-ui",
+      "status": "passed",
+      "scope": "Fresh final installed Max 2027 pair",
+      "save_choices": [
+        "Scene preset",
+        "Portable preset",
+        "Settings only"
+      ],
+      "merge_notice": "Adds a new setup. Clears Max Undo history."
+    },
+    "final-save-ui": {
+      "phase": "final-save-ui",
+      "status": "passed",
+      "scope": "Fresh final installed Max 2027 pair",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sp51lib02\\staging\\save-ece7a80232d240f0bb79a79316fe785d\\entry.csrecipe.json"
+    },
+    "final-poll-ui": {
+      "phase": "final-poll-ui",
+      "status": "passed",
+      "scope": "Fresh final installed Max 2027 pair",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sp51lib02\\entries\\2af706407119fdcbda52181f7738da2b4a59045476e75732e8328d95196c4203\\entry.csrecipe.json"
+    },
+    "setup-fern": {
+      "phase": "setup-fern",
+      "status": "passed",
+      "scope": "Owned Max 2027; standard merge, no Undo claim",
+      "model": "Fern",
+      "roots": 1,
+      "layers": [
+        "Plant",
+        "Collider - sphere"
+      ],
+      "edits": 1,
+      "version": "0.87.5.1",
+      "owned_texture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-presets-08751-20261027-01\\host-final\\owned-texture.png"
+    },
+    "poll-save": {
+      "phase": "poll-save",
+      "status": "passed",
+      "scope": "Owned Max 2027; standard merge, no Undo claim",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sp51lib01\\entries\\33a1a1580009d7b7a4f489d1dacde013bd4178becf7505495fb508643d79733d\\entry.csrecipe.json",
+      "sha256": "33a1a1580009d7b7a4f489d1dacde013bd4178becf7505495fb508643d79733d",
+      "nodes": 13,
+      "assets": 71,
+      "max_bytes": 253066566
+    },
+    "merge-first": {
+      "phase": "merge-first",
+      "status": "passed",
+      "scope": "Owned Max 2027; standard merge, no Undo claim",
+      "matrix_error_WU": 0.0,
+      "edit_modifiers": 1,
+      "clones": [],
+      "collected_texture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sp51lib01\\entries\\33a1a1580009d7b7a4f489d1dacde013bd4178becf7505495fb508643d79733d\\assets\\431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460.png",
+      "roots": 2,
+      "contact": {
+        "affected": 3,
+        "compute_participants": 1,
+        "coverage_queries": 0,
+        "covered": 0,
+        "error": "",
+        "exact_mesh_scratch_bound_bytes": 2400000,
+        "failures": 0,
+        "fit_ms": 23.3497,
+        "fitted_guides": 26,
+        "generation": 1,
+        "hidden_roots": 0,
+        "hinge_fits": 26,
+        "host_runtime_reservation_bytes": 1050656,
+        "index_ms": 0.0074,
+        "index_payload_bytes": 776,
+        "iterations": 0,
+        "layout_payload_bytes": 540,
+        "maximum_checked_stem_edge_change": 0.0,
+        "mesh_refinement_work": 95183,
+        "mesh_refinements": 0,
+        "obstacle_index_payload_bytes": 192,
+        "obstacle_query_scratch_bound_bytes": 40984,
+        "obstacles": 1,
+        "plants": 3,
+        "pose_payload_bytes": 156232,
+        "posed": 1,
+        "preview_ms": 0.0015,
+        "quality_checked_guides": 0,
+        "quality_warning_guides": 0,
+        "queries": 4682,
+        "query_ms": 0.0031,
+        "restored": 0,
+        "retained_covered_roots": 0,
+        "reused_poses": 0,
+        "reuses": 0,
+        "separation_queries": 3,
+        "thread_launch_fallback": false,
+        "total_ms": 23.3545,
+        "transient_obstacle_index_payload_bytes": 0,
+        "updates": 1,
+        "worker_coverage_ms": 0.063,
+        "worker_edge_quality_ms": 0.0,
+        "worker_mesh_check_ms": 14.3071,
+        "worker_mesh_face_ms": 3.0547999999999984,
+        "worker_mesh_point_ms": 0.6928999999999998,
+        "worker_mesh_transform_ms": 10.163100000000009
+      }
+    },
+    "paint-pending-setup": {
+      "phase": "paint-pending-setup",
+      "status": "passed",
+      "published": 3,
+      "pending": 4,
+      "paint_bytes": 1640
+    },
+    "paint-pending-check": {
+      "phase": "paint-pending-check",
+      "status": "passed",
+      "manual_retained": true
+    },
+    "paint-pending-merge": {
+      "phase": "paint-pending-merge",
+      "status": "passed",
+      "paint_restored": true,
+      "independent_receiver": true,
+      "amount": 4
+    },
+    "save-reopen": {
+      "phase": "save-reopen",
+      "status": "passed",
+      "scope": "Owned Max 2027; standard merge, no Undo claim",
+      "roots": 3
+    },
+    "missing-poll": {
+      "phase": "missing-poll",
+      "status": "passed",
+      "error": "Could not find file 'F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sp51lib01\\entries\\75f101d2a466611f9ea39037254a80d9aaea0ab6d572e5915ce0b63f274e20c5\\assets\\431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460.png'.",
+      "original_scene_retained": true
+    },
+    "cancel-poll": {
+      "phase": "cancel-poll",
+      "status": "passed",
+      "state": "cancelled"
+    },
+    "portable": {
+      "phase": "portable",
+      "status": "passed",
+      "recipe_version": 9,
+      "layers": 1
+    },
+    "gallery-poll": {
+      "phase": "gallery-poll",
+      "scene_cards": 5,
+      "names": [
+        "Owned native preset",
+        "Owned native preset",
+        "Owned native preset",
+        "Paint and pending Manual setup",
+        "Renamed native setup"
+      ],
+      "native_version": 1,
+      "status": "passed"
+    }
+  },
+  "development_store_checks": {
+    "scope": "Earlier owned development host; unchanged managed implementation. Full final-pair transfer restore is separate above.",
+    "checks": {
+      "metadata-poll": {
+        "phase": "metadata-poll",
+        "status": "passed",
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sp51lib01\\entries\\67e1902c9101608f8733c876d315621fb7dfb4863f61c600977b923311f4dff2\\entry.csrecipe.json",
+        "revision": 2,
+        "same_scene_hash": true
+      },
+      "export-poll": {
+        "phase": "export-poll",
+        "status": "passed",
+        "archive_bytes": 111379345
+      },
+      "import-poll": {
+        "phase": "import-poll",
+        "status": "passed",
+        "entries": 3,
+        "scene_assets": 71
+      },
+      "merge-repeat": {
+        "phase": "merge-repeat",
+        "status": "passed",
+        "scope": "Owned Max 2027; standard merge, no Undo claim",
+        "matrix_error_WU": 0.0,
+        "edit_modifiers": 2,
+        "clones": [
+          "{9062E009-6790-4881-9319-A3A7C4E9FD5D}",
+          "{77D61925-E0D9-4F73-A043-E8131F331AA3}",
+          "{7416C5B1-EE07-4F21-8117-F13D5F3D1C2A}"
+        ],
+        "collected_texture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\sp51lib01\\entries\\65b811bebba5b48ce2056910297e63169302bc94ae0c9ae2f346eb4c3d83143b\\assets\\431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460.png",
+        "roots": 7,
+        "contact": "off"
+      }
+    }
+  },
+  "limits": [
+    "Max 2027 only; matching system units and required object/material plug-ins.",
+    "Standard Max merge clears Undo history; explicitly selected by the user and disclosed in the load dialog.",
+    "Interactions retain their existing one-Edit-per-controller limit; authored two-Edit/radius case uses interactions off.",
+    "Destination render/environment/colour configuration follows Max merge. Arbitrary third-party graphs and production renderer frames are unqualified.",
+    "Original-file unavailability exercised on an owned collected PNG, not by removing the vendor asset tree.",
+    "Physical UI capture/input was stopped after Computer Use reported manual input/capture issues; real rollout construction, controls and save action were exercised through Max.",
+    "Large preparation envelopes can exceed the existing portable authored-text bounds; scene presets handle the tested fern."
+  ],
+  "branch": "codex/workflow-0.75",
+  "head": "d24b880816ab367874f417f79d1253aafa9a60f5"
+}

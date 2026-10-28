@@ -1,0 +1,299 @@
+{
+  "schema": "cyrus.scene-adaptation-qualification/1",
+  "version": "0.87.5.4",
+  "date": "2026-10-28",
+  "status": "scoped-delivery",
+  "runtime_qualified_hosts": [
+    2027
+  ],
+  "older_host_tests_waived_by_user": true,
+  "domains": {
+    "scene": 64,
+    "interactions": 14,
+    "source_transform": 2,
+    "source_command_undo": 2,
+    "edit_capability": 4,
+    "edit_storage": 3,
+    "portable_recipe": 9,
+    "scene_preset_metadata": 1
+  },
+  "packages": {
+    "2027": {
+      "path": "dist/CyrusScatter-0.87.5.4-20261028/CyrusScatter-0.87.5.4-Max2027.mzp",
+      "sha256": "e25565ae6ae62d5f9050e41a084a28e2117b39ab9b9d1c9a1fe3c9976f433284",
+      "native_producer": {
+        "path": "build/adaptation08754-20261028-01/native-07/receipt.json",
+        "sha256": "c30d1c9a6cad3cb1edc19845f5f1188ba30c3e59acadf93e8ccb7c70f64d5fbe"
+      },
+      "tests_run": true,
+      "native_test_count": 62,
+      "host_tested": true,
+      "scope": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.",
+      "payload_hashes": {
+        "AminScatter.dlx": "f4bc4e39bc6ca6c2f807d4a850ea5bceefb3f17891633cb555529598401c178b",
+        "CyrusScatterEdit.dlm": "0a6c8456fb0e286560107a04c6b2797046882ce71a4f08732d0857689bc9c406",
+        "CyrusBrush.dlx": "51f1aefa572f5fc71b0a96ab9fc7b5ed0dfa5053ca0175380c88b8ffe8bf4eb7",
+        "CyrusBrushStorage.dlh": "4fee969edfacccb5be12ddc3cc4022c6f0ab81178e4b5940cfd09dfe88691024",
+        "CyrusScatter.ms": "2c68b224adcca565c5dfc50ac3164c71c5fc1c85aeb9f4cf78b7802393f9449b",
+        "CyrusGallery.dll": "62324041386f25832fa959d1162e5d5d2c17f3d6c368212f664879e9eb96fbe1",
+        "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482"
+      }
+    },
+    "2024": {
+      "path": "dist/CyrusScatter-0.87.5.4-20261028/CyrusScatter-0.87.5.4-Max2024.mzp",
+      "sha256": "ccddfb21467071f6061a8f32a530afd289824b60df0bfa06e73138425f247a5e",
+      "native_producer": {
+        "path": "build/adaptation08754-20261028-01/native-2024-01/receipt.json",
+        "sha256": "36abf1c7c3000c14d656a6d8a23aa6e563cd40e058b7a9ad5a501caf9ef398eb"
+      },
+      "tests_run": true,
+      "native_test_count": 62,
+      "host_tested": false,
+      "scope": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.",
+      "payload_hashes": {
+        "AminScatter.dlx": "57103af67ae201ec39beb1069a697cbac87b01d287667821f4265354cf7e7931",
+        "CyrusScatterEdit.dlm": "9ea115ab37d5dd4b954a520c7766a96bebf4cb8bf6c3c274308342f57fa9db5a",
+        "CyrusBrush.dlx": "46ff74b50ee01d759ebdff105a790df6778ad35406ebcd5f330ecf88bf41536c",
+        "CyrusBrushStorage.dlh": "878521ddf4bda10bc647c29de4a24e535ba94cc18c7b629866b75b9feaa61e55",
+        "CyrusScatter.ms": "2c68b224adcca565c5dfc50ac3164c71c5fc1c85aeb9f4cf78b7802393f9449b",
+        "CyrusGallery.dll": "271ab0edc08245da4caae1d5506094466711610fee9710ad98618925f9716f8d",
+        "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482"
+      }
+    },
+    "2026": {
+      "path": "dist/CyrusScatter-0.87.5.4-20261028/CyrusScatter-0.87.5.4-Max2026.mzp",
+      "sha256": "f30407b08b63b202a54dbe435797fde02fd02a190deb5c30c3ca973e5ff08187",
+      "native_producer": {
+        "path": "build/adaptation08754-20261028-01/native-2026-01/receipt.json",
+        "sha256": "877d870e498e314a4a046166ac56a8c5a106d19fd2c54cfb5202329d73baeacd"
+      },
+      "tests_run": false,
+      "native_test_count": 0,
+      "host_tested": false,
+      "scope": "SDK compilation only; native tests and Max host tests NOT RUN.",
+      "payload_hashes": {
+        "AminScatter.dlx": "b6f736f0d2c1bef28fe91be7dff3faf58e3a41fda1a873349599372bca0e273a",
+        "CyrusScatterEdit.dlm": "8290183370029c33436d49837cbd69df285177b08a064d157641e84386708a77",
+        "CyrusBrush.dlx": "945b84d1a615d5c2f67b8e519b66f4900d5fe107ab65fe533ec508de4760f4ba",
+        "CyrusBrushStorage.dlh": "3fa39927882b8b62e7d0095954111ff1811e030133349c75c5c33ad33b4ec68d",
+        "CyrusScatter.ms": "2c68b224adcca565c5dfc50ac3164c71c5fc1c85aeb9f4cf78b7802393f9449b",
+        "CyrusGallery.dll": "855d47ec06a12a1d2b4c9aa909df15f68f8f67c2c9a9151154fb5cba054686a8",
+        "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482"
+      }
+    }
+  },
+  "exe": {
+    "path": "dist/CyrusScatter-0.87.5.4-20261028/CyrusScatter-0.87.5.4-Setup.exe",
+    "sha256": "f43fce3afadf3059495cdedf5d33fd4a1dc04b7fdae029800a3709c1b9b4dcea",
+    "producer": {
+      "path": "dist/CyrusScatter-0.87.5.4-20261028/CyrusScatter-0.87.5.4-Setup.build.json",
+      "sha256": "aaaa73796502eec6704f4f605b160f24d9587db05f04f15d5be360e6f7a692a6"
+    },
+    "signed": false,
+    "embedded_payloads_verified": true,
+    "artist_installation_run": false
+  },
+  "checks": {
+    "native_2027": 62,
+    "python": 577,
+    "generator_controls": 375,
+    "ordinary_scaled_and_mirrored_boxes": true,
+    "equivalent_parameter_box": true,
+    "scene_reference_undo_redo": true,
+    "deleted_reference_undo": true,
+    "held_actual_mouse_drag": true,
+    "navigation_no_new_solve_or_upload": true,
+    "retained_color_after_failure": true,
+    "native_scene_save_load": true,
+    "trial_scenes_reopened": 3,
+    "scene_preset_independent_collider_nodes": true,
+    "portable_capture_rejects_new_unsupported_fields": true,
+    "public_render_and_bake_faces": 18291,
+    "catalog_after_documentation_update": true
+  },
+  "performance": {
+    "scope": "CPU observations in owned Max 2027; not presented FPS, external renderer or million-instance proof",
+    "grass_1000": {
+      "movement_steps": 10,
+      "step_ms_min": 34,
+      "step_ms_median": 61.0,
+      "step_ms_max": 82,
+      "affected": 227,
+      "posed": 121,
+      "pruned_guides": 6013,
+      "limited_guides": 0,
+      "mesh_refinement_work": 0,
+      "pose_payload_bytes": 1031362,
+      "preview_ms": 6.7494
+    },
+    "generated_trees_60": {
+      "posed": 37,
+      "pruned_guides": 8,
+      "blocked_guides": 34,
+      "limited_guides": 0,
+      "total_ms": 12.1511
+    },
+    "fern_12": {
+      "affected": 6,
+      "posed": 3,
+      "hinge_fits": 49,
+      "pruned_guides": 641,
+      "limited_guides": 0,
+      "total_ms": 24.0859
+    }
+  },
+  "preservation": {
+    "artist_ini_unchanged_from_owned_launches": {
+      "host-06": true,
+      "host-07": true
+    },
+    "artist_scene_observed_at_delivery": {
+      "path": "Test Scene/New Plants test 22.max",
+      "sha256": "4d208ffda610e8b6637f40af3540201f58615d64250709a66afde5c0e9d7bfb4"
+    },
+    "tested_owned_scene_snapshot": {
+      "path": "build/interactions08753-20261028-01/fixtures/New-Plants-22-input.max",
+      "sha256": "579d63bec07fb14fce17c1461baf8e2cc2bfa3a53516402367f7f4f16c96acfd"
+    },
+    "artist_file_matches_test_snapshot": false,
+    "artist_scene_note": "The artist file was saved separately at 09:48 during the wider task; it differs from the 00:09 test snapshot. This delivery operates on the owned snapshot and separate trial copies, not by saving over the artist path.",
+    "artist_profile_installations": false,
+    "git_commit_or_push": false
+  },
+  "trials": [
+    {
+      "path": "Test Scene/Interaction 0.87.5.4/Scene_Collider_Grass_0.87.5.4.max",
+      "sha256": "f7d1ab22acf5f60cf36b35b855f3429510de7b1c84d0df5b403bcdb85755cda7"
+    },
+    {
+      "path": "Test Scene/Interaction 0.87.5.4/Scene_Collider_Fern_0.87.5.4.max",
+      "sha256": "fc5411a03f4b705ed8312be475518a3203bca23fc9ce79f32ebebb2b86a8ab22"
+    },
+    {
+      "path": "Test Scene/Interaction 0.87.5.4/Branch_Tree_Neighbors_0.87.5.4.max",
+      "sha256": "17aa758ecde578879ebb671301d4d90454e2458e0bfb87942a50643d95eb6504"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "build/adaptation08754-20261028-01/generated-final-03/generated-check.json",
+      "sha256": "08cb7d1c0f5de261e5bc1e6f69f035cce2e4f9d9caca81c0d3c77b853eb33a6b"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/pytest-final.xml",
+      "sha256": "7484ab260a572f872eb5b640e70ff65822f7a8b444d68191fc05ce4ded7e2fdd"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/installer-01/receipt.json",
+      "sha256": "c981d806e53bda45f9900d38cf787210502cd84d5089ceb655dfd43530eb1f15"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/exe-integrity.json",
+      "sha256": "1effd5ddb1c17e56f72bac492a0d7284751fae064ed885e550c48fb6d942fdb8"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-05/loaded-identity.json",
+      "sha256": "d67345565dc002163b731342a83c9195ac87f462fe387acf7e0a47fb6d526e11"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-05/scaled-boxes-native.json",
+      "sha256": "d34b10d9c13deb2e72bf69c4ad828d3821af208dedddcad54c2d1602ade9b47a"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-05/equivalent-boxes.json",
+      "sha256": "42d00a0777cabbf4b9a9a3ed41221bf1d99efdda56d1a977cc9483abb9b1fd21"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-05/geometry-edit.json",
+      "sha256": "0aa60916a05f67bbb0ecc0ff949d7f144d76559e541d4955b914639814f651ad"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-05/dense.json",
+      "sha256": "6ede91ae4959eba57e69d4bd8a9b28759facffef6f1cf57ec924c9c840a8e53d"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-05/render-bake-native.json",
+      "sha256": "9a555be2da35200d16288c66de7d27bac9cc5a7eef6f8dee744ecfc947eb2bf5"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/loaded-identity.json",
+      "sha256": "d67345565dc002163b731342a83c9195ac87f462fe387acf7e0a47fb6d526e11"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/actual-drag-redraw.json",
+      "sha256": "8811898da8a287a5ab4ed47d340af1e05b74f613078030d7a6890bf6863e858d"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/actual-navigation.json",
+      "sha256": "a3b7b9cb49cb2056c53bac5e2f9cc514743a092c224d7f28b6efafec996bad93"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/prepare-branch-tree.json",
+      "sha256": "ec1a1396ba9851d3b05b7bd8a8dd1b6dd02f0bc8b09ed3116293fb49e9ce1801"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/neighbor-grove.json",
+      "sha256": "0556a2897a80b5df022f46aeb12f03f249b5f325c06f3c0bd6f504ef35c87c1b"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/neighbor-restore.json",
+      "sha256": "ecb7898320ff6dfe184a36459c02fc0dd869adf8b18c98e9655a21f9329ae664"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/prepare-fern.json",
+      "sha256": "36c4e957537239ee8430faabaa0c7c579c402fd33d7560b92d1335c5e6521174"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/save-load.json",
+      "sha256": "50eda9e099d727beec5d273d4b4955213216576474b123d11383aa55fb34eb95"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/verify-delete-undo.json",
+      "sha256": "d34c888c217d0dbb9059ab7eaa2bd61fb48def95ea76584f3582efc0141a32dc"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/color-after-failure.json",
+      "sha256": "91716cccd0a98279bc349b309229f1e75f8fffc46906271440934e560f6ddb4b"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-07/loaded-identity.json",
+      "sha256": "d67345565dc002163b731342a83c9195ac87f462fe387acf7e0a47fb6d526e11"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-07/scene-native-merge.json",
+      "sha256": "49372dd47c4bb227439f38479c71b51dabbb49dd90dfb9bdd2f48c7f910cd9c9"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-07/recipe-guard.json",
+      "sha256": "9f6523a280e45bfba96443893d41443fcb57a3211fb733389dc944fc3819d4a6"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-07/reopen-trials.json",
+      "sha256": "60fa73e066126909d9b77509c40224910337e4c03ca9ae6267a8e855b1955f49"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/pytest-catalog-final.xml",
+      "sha256": "d29c28a881e4dd0afd214ad6247f1c9046d3f2462c0b92cb29e2cd8c0773c164"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-06/completed.json",
+      "sha256": "e333ea23c4f23c0eb66a93a4e239f0c724866c48062ce7e90c4565dabcc50bab"
+    },
+    {
+      "path": "build/adaptation08754-20261028-01/host-07/completed.json",
+      "sha256": "e333ea23c4f23c0eb66a93a4e239f0c724866c48062ce7e90c4565dabcc50bab"
+    }
+  ],
+  "limits": [
+    "Max 2024/2026 runtime not tested; 2024 native tests completed before waiver; 2026 compile only.",
+    "Broad guide envelopes do not guarantee leaf-level clearance. Structural trunks and unresolved blocked guides can remain visible.",
+    "Neighbor response uses stable one-way rest-proxy priority, not symmetric dynamics.",
+    "Automatic preparation is not universal for welded commercial tree topology.",
+    "The original renderer-dependent Scene preset was rejected for unavailable shader dependencies. Round-trip proof uses a fresh material-free four-node fixture.",
+    "Source-geometry failure and retained recoloring are tested; arbitrary changed-source preparation recovery is not qualified.",
+    "True singular rejection is numeric-suite evidence. Max clamped typed zero to a small nonzero evaluated axis.",
+    "No new analytic sphere recognition or convex-hull simplifier is delivered; closed collider meshes use existing geometry queries.",
+    "Full external renderer images, animation/soak and million-instance realtime are not qualified.",
+    "Knowledge index activation and website deployment were not performed."
+  ]
+}

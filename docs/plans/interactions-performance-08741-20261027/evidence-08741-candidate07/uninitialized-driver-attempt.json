@@ -1,0 +1,14 @@
+{
+  "key": "S00",
+  "model_key": "S00",
+  "status": "failed",
+  "phase": "start",
+  "attempts": [],
+  "host_memory_before": {
+    "private_bytes": 2882424832,
+    "working_set_bytes": 2136039424,
+    "process_lifetime_peak_working_set_bytes": 2140307456,
+    "scope": "Whole owned Max process; includes scene, plugins and prior test cases, not isolated Cyrus or GPU memory."
+  },
+  "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08741\\measure_case.py\", line 93, in <module>\n    root, leaf, collider = r.WFRoot, r.WFGrass, r.WFCollider\n                           ^^^^^^^^\nAttributeError: 'pymxs.runtime' object has no attribute 'WFRoot'\n"
+}

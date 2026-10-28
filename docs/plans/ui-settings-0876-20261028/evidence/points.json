@@ -1,0 +1,41 @@
+{
+  "case": "points",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "Add Point actual button",
+      "status": "pass",
+      "value": "40"
+    },
+    {
+      "name": "Point authored scale and Z",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "all Point publication",
+      "status": "pass",
+      "value": "40"
+    },
+    {
+      "name": "replace Point keeps row identity",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "remove source and shared lists",
+      "status": "pass",
+      "value": "#(#(\"UI replacement | 1.00\"), #(\"UI replacement | Needs preparation\"))"
+    },
+    {
+      "name": "Point save",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "Point reopen",
+      "status": "pass",
+      "value": "True"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "case": "swatches",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "layer swatch native bounds",
+      "status": "pass",
+      "value": "#(#(126.0, 22, 154))"
+    },
+    {
+      "name": "source swatch native bounds",
+      "status": "pass",
+      "value": "#(#(126.0, 22, 154))"
+    }
+  ]
+}

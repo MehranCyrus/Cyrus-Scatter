@@ -1,0 +1,219 @@
+{
+  "schema": "cyrus.gpu.research.metadata/1",
+  "title": "Cyrus Scatter GPU Interaction Research",
+  "researcher_id": "A",
+  "research_date": "2026-10-27",
+  "recorded_at_utc": "2026-10-27T09:16:56+00:00",
+  "report_time_zone": "Asia/Tehran",
+  "recorded_at_report_zone": "2026-10-27T12:46:56+03:30",
+  "environment_time_zone": "Etc/UTC",
+  "researcher_model": {
+    "declared_assistant_name": "ChatGPT",
+    "declared_model": "GPT-6 Astra Pro",
+    "identity_basis": "Developer-provided session identity",
+    "exact_model_checkpoint": null,
+    "review_method": "Primary agent plus three scoped parallel research/review agents; no separate B/C researcher results used"
+  },
+  "assignment": {
+    "kind": "Research and design; no production modification authorization",
+    "prompt": "RESEARCH_PROMPT.md",
+    "project_context": "CURRENT_SYSTEM_CONTEXT.md",
+    "inputs": [
+      {
+        "canonical_name": "README.md",
+        "uploaded_name": "README(4).md",
+        "sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75",
+        "matches_supplied_manifest": true
+      },
+      {
+        "canonical_name": "RESEARCH_PROMPT.md",
+        "uploaded_name": "RESEARCH_PROMPT(2).md",
+        "sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+        "matches_supplied_manifest": true
+      },
+      {
+        "canonical_name": "CURRENT_SYSTEM_CONTEXT.md",
+        "uploaded_name": "CURRENT_SYSTEM_CONTEXT(2).md",
+        "sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+        "matches_supplied_manifest": true
+      },
+      {
+        "canonical_name": "BRIEF_METADATA.json",
+        "uploaded_name": "BRIEF_METADATA(2).json",
+        "sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8",
+        "matches_supplied_manifest": true
+      }
+    ],
+    "unrelated_older_tree_report_not_used_as_current_gpu_evidence": true
+  },
+  "baseline": {
+    "source": "Supplied, not independently reproduced",
+    "version": "0.87.4.3",
+    "native_interaction_capability": 11,
+    "scene_schema": 63,
+    "host": "3ds Max 2027",
+    "platform": "Windows x64",
+    "provided_single_run_native_contact_ms": 4.05,
+    "provided_measurement_limit": "One sparse fixture; not input-to-present or a GPU benchmark"
+  },
+  "source_cutoff": {
+    "date": "2026-10-27",
+    "primary_source_records": 116,
+    "versions": {
+      "Max SDK": "2027 public documentation; no installed SDK",
+      "CUDA archive": "13.4.3, October 2026; not installed",
+      "CUDA live release notes": "13.4 Update 2; NVCC/runtime13.4.92; CCCL3.4.3",
+      "OpenCL unified specification": "3.1.2, 2026-09-17; installed driver support unknown",
+      "Nsight Systems live standalone docs": "2026.5.1; not installed",
+      "CUDA-bundled Nsight Systems": "2026.3.2.476 per release notes; not installed",
+      "PresentMon": "2.6.0, 2026-09-21; not executed",
+      "Warp": "v1.18.0, 2026-10-05",
+      "TressFX public snapshot": "4.1 DX12/Vulkan historical source, distinct from gated5.0UE patch",
+      "PhysX source pin": "5.12.0; source/LICENSE inspection only",
+      "Jolt comparator pin": "5.6.1; no assertion it is current Cyrus backend"
+    },
+    "repository_pins": {
+      "CUDA Samples": "5443602d89ed99aede2e4b7bf329daddeadb320e",
+      "CCCL": "5fb1013e3c6f72877a2ebd30f54fe5158d64eec4",
+      "OpenCL SDK": "6090378a113db8dab20ae278c8fa57ab10b92300",
+      "OpenCL ICD Loader": "5192c84f8059e5f703e5452929b613f9487f6e4c",
+      "OpenCL unified specification": "219be24fc8947c68ee45b4d25b55a92b8f799f29",
+      "Warp": "f2eaed82d8d03b37bf1014cc975954067fefcf16",
+      "TressFX": "ba0bdacdfb964e38522fda812bf23169bc5fa603",
+      "PositionBasedDynamics": "10a70bc146a97873dc3c8fef372f5217e010542e",
+      "OpenVDB": "2ad72431a9f96084910ea5d9a6bb6f46d9073e62",
+      "PhysX": "b97365c6ddb32fda8469bc788ec18024862b0368",
+      "Jolt historical comparator": "1b2e77e3c6c09709e5edc79dc208459b8ff32051",
+      "PresentMon": "e13fce6acdb55a808fd8318175a56863e532d95f"
+    },
+    "limitations": "Live URLs can change. Archive/release-note disagreements are retained, not harmonized into an asserted installed version."
+  },
+  "available_environment": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "python": "3.12.14",
+    "logical_cpu_count_reported": 9,
+    "cpu_model": null,
+    "cpu_model_status": "Not identified; no performance claims depend on it",
+    "tool_paths": {
+      "python": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "c++": "/usr/bin/c++",
+      "clang++": null,
+      "cmake": null,
+      "nvcc": null,
+      "nvidia-smi": null,
+      "clinfo": null,
+      "vulkaninfo": null,
+      "dxc": null,
+      "wine": null
+    },
+    "cxx_version_observed": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+    "gpu_device_paths": {
+      "/dev/nvidia0": false,
+      "/dev/dri": false
+    },
+    "GPU_access": "No exposed GPU device or CUDA/OpenCL inspection tools",
+    "Max_access": false,
+    "Windows_access": false,
+    "production_repository_access": false,
+    "production_renderer_name_version": null
+  },
+  "executed_experiments": [
+    {
+      "id": "X01-X10",
+      "kind": "Original Python arithmetic and analytic controls",
+      "recorded_rerun_at_utc": "2026-10-27T09:16:56+00:00",
+      "cwd": "Extracted packet root",
+      "reproducible_command": "python optional/research_checks.py --output ../rerun_checks.json",
+      "actual_output_record": "optional/executed_checks.json",
+      "checks_passed": 10,
+      "checks_failed": 0,
+      "rerun_byte_identical_to_recorded_output": true,
+      "output_sha256": "ac507bf0327680f17f2a72287b66c25580f50f51607217a593298a2fb289c4e6",
+      "console_summary": {
+        "status": "PASS",
+        "checks": 10,
+        "output": "../rerun_checks.json (rerun kept outside packet)",
+        "fixture_sha256": "3887a1805688aef23d9fa7a38233e76c8904d6468e8d7d32b7f85383bf4a843a"
+      }
+    },
+    {
+      "id": "INPUT_HASHES",
+      "kind": "SHA-256 verification",
+      "matched_files": 4
+    },
+    {
+      "id": "PACKET_CHECKS",
+      "kind": "Local structural/hash/link/ZIP verification",
+      "command": "python optional/verify_package.py . --zip ../CyrusScatter_GPU_Interaction_Research_2026-10-27_A.zip",
+      "record": "ARTIFACT_VERIFICATION.json"
+    }
+  ],
+  "not_executed": [
+    "P0 production CPU profiling",
+    "P1 HLSL/Max deformation",
+    "P2 standalone/in-Max interop proofs",
+    "P3 CUDA/OpenCL/CPU fitter comparison",
+    "P4 asynchronous host/GPU race suite",
+    "P5 renderer/Bake/export/distribution validation",
+    "B01-B18 performance cases",
+    "Any C++/CUDA/OpenCL/Max compilation",
+    "Historical harnesses or supplied scoped test campaigns",
+    "Face-interior F06 solver test and prescribed P1 imposed pose evaluation"
+  ],
+  "estimates": {
+    "nodes_per_guide": 8,
+    "pose_node_bytes": 32,
+    "changed_guide_header_bytes": 16,
+    "mutable_vertex_bytes": 40,
+    "hypothetical_transfer_bytes_per_second": 16000000000,
+    "scope": "Analytical hypotheses only; actual G451 node counts and device bandwidth not known"
+  },
+  "limitations": [
+    "No measured speedup, GPU allocation, input-to-present latency or product hardware qualification.",
+    "Max retained compute-resource bridge, ownership and retirement remain unresolved local gates.",
+    "Private G451 geometry, prepared bindings, source tree and production renderer are unavailable.",
+    "Repository review is scoped to named files, not whole-project certification.",
+    "Python controls do not implement or validate a complete vegetation fitter.",
+    "CPU-contact and GPU-deformation errors must share one final-surface clearance budget.",
+    "No production code or host scene was modified."
+  ],
+  "artifact_inventory": [
+    "00_README.md",
+    "01_EXECUTIVE_DECISION.md",
+    "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+    "03_PARALLELISM_AND_DATA_LAYOUT.md",
+    "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+    "05_COLLISION_AND_GUIDE_SOLVING.md",
+    "06_GPU_DEFORMATION_AND_INSTANCING.md",
+    "07_MAX_2027_INTEROP_FEASIBILITY.md",
+    "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+    "09_MEMORY_PRECISION_AND_HARDWARE.md",
+    "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+    "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+    "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+    "13_PHASED_IMPLEMENTATION_PLAN.md",
+    "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+    "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+    "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+    "17_SOURCE_LEDGER.md",
+    "18_ACCEPTANCE_CHECKLIST.md",
+    "ARTIFACT_VERIFICATION.json",
+    "MANIFEST.sha256",
+    "RESEARCH_METADATA.json",
+    "SOURCE_LEDGER.json",
+    "optional/README.md",
+    "optional/benchmark_cases.json",
+    "optional/executed_checks.json",
+    "optional/research_checks.py",
+    "optional/verify_package.py"
+  ],
+  "integrity": {
+    "manifest": "MANIFEST.sha256",
+    "manifest_excludes_itself": true,
+    "archive_root": "CyrusScatter_GPU_Interaction_Research_2026-10-27_A",
+    "zip_file": "CyrusScatter_GPU_Interaction_Research_2026-10-27_A.zip",
+    "archive_digest_inside_archive": null,
+    "reason": "Avoid self-referential archive hash; manifest covers included files."
+  }
+}

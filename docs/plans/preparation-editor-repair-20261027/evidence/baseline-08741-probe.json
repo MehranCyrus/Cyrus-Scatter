@@ -1,0 +1,72 @@
+{
+  "status": "captured",
+  "node": "Outdoor_Plants_01_Neottopteris_Nidus_Bush05_001",
+  "settings": [
+    0.05000000074505806,
+    0.05000000074505806,
+    1
+  ],
+  "analysis": {
+    "accepted": false,
+    "analysis_count": 1,
+    "basal_band_m": 0.03,
+    "can_prepare": false,
+    "complex_foliage_parts": 0,
+    "crown_root_guides": 0,
+    "fingerprint": "21c8d2f4a90e63776c27029c17c8fa551204b07ca31a598469cee950ddad5096",
+    "fixed_parts": 0,
+    "ground_level_m": 0.0,
+    "ground_roots": 109,
+    "guides": 155,
+    "has_solid_collider": false,
+    "limits": [
+      2000000,
+      4000000,
+      100000,
+      8192,
+      500000,
+      2048,
+      256
+    ],
+    "max_attachment_distance_m": 0.12944562276305693,
+    "max_parent_distance_m": 0.0,
+    "parts": 4756,
+    "preview_triangles": 11256,
+    "profile": "Connectivity-derived tubes and geodesic ribbons",
+    "proxy_mode": 1,
+    "review_guides_shown": 155,
+    "review_required": true,
+    "ribbon_guides": 154,
+    "seconds": 0.3533374,
+    "source_triangles": 183030,
+    "source_vertices": 125845,
+    "tube_guides": 1,
+    "unattached_parts": 0,
+    "unresolved_guides": 46,
+    "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+    "work_units": 23451116
+  },
+  "snapshot": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-18\\reported-plant.bin",
+  "editor": {
+    "analyses": 0,
+    "authoring": {
+      "fingerprint": "21c8d2f4a90e63776c27029c17c8fa551204b07ca31a598469cee950ddad5096",
+      "parts": [],
+      "version": 1
+    },
+    "geometry_uploads": 1,
+    "message": "Source needs guide/attachment review; inspect the retained analysis report.",
+    "open": true,
+    "parts": 4756,
+    "pick_ms": 0.0,
+    "preparation_ms": 0.0,
+    "ready": false,
+    "report": {},
+    "revision": 1,
+    "selected": [],
+    "selection_operations": 0,
+    "source_triangles": 183030,
+    "source_vertices": 125845,
+    "sphere": false
+  }
+}

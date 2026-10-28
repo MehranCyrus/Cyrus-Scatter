@@ -1,0 +1,820 @@
+{
+  "corpus": {
+    "old_sha256": "4902a7e6cf9b333f4e106188f5dc38ca95c749e10d592f3e2e6b6dae957c3bf1",
+    "new_sha256": "89ea0da455dd8004a060ed54b96533e05ed58f37a7652f1c5c96a5163a90f0a9",
+    "reason": "Preserve all 64 broader project parents and authority roles; refresh current docs/implementation after the user-endorsed 0.87.5.6 performance delivery. No source retirement or resource/ranking policy change."
+  },
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "old_sha256": "dba7011b92175409e35a7b894af2dc16b32c1c751bca45723fec30b90534de9c",
+      "new_sha256": "18d38ccfd456a7334c75d71eee95ef12cb432c307436017629f646a1467f5bef",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "README.md",
+      "old_sha256": "2f7a2d5163f92f4cd14580c01bb64154fa10cabf4f52f38405ba1c0295b2bc96",
+      "new_sha256": "2b6a780123923ba5465715e83d34fc37035fa923197b8e002062274d7bfd8e9a",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "f77b842b636862bd024f72f11d8f769698924061f70591916b428a22331cb9a7",
+      "new_sha256": "ac7334251fb6637f4c7e66d9a8a6a5b3912d6b82919c6db7f13f5f2905dda8c9",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "old_sha256": "7e1ca538d514ed4f37aacf33e1e8c68e517ad8b0ac29a5eb94a8c3fc3a024e28",
+      "new_sha256": "6216440a38a82d6395f516c28b51beb1e7c588788f3fec095a34e17ee1a93f1b",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/DOCUMENTATION.md",
+      "old_sha256": "1fc3480b7385c8ae89b3b2ff7315c92272841a6b619e722fc29df59756f2c781",
+      "new_sha256": "f158d2390e1fb168e1c6075db0aabb19cb0156009662736fa698a605c887e6fe",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "old_sha256": "fc73d9bd4bdad91cd46502da44aabea8f0a33ece5f6cd1a686c0647024917a2d",
+      "new_sha256": "447cf2c5689655b524301fcbca4069a3de402be932ae7fd516942fc3f9e03b03",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed current-version wording and accurate Max 2027 MZP / scene 65 scope; earlier shared-pose and three-host EXE evidence explicitly remains historical."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+      "old_sha256": "003e021de77d3d141820b608bc650fbd993724615aef2734efead8ab3ca5b062",
+      "new_sha256": "4eef541a927a912d0bbbe6afcabbc15669f8dfdd3b21d82ec8411958183670ec",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+      "old_sha256": "d6869992c9ee86a01ebb713c889fe12a3d0041f48ea34147a436abeccd1a7038",
+      "new_sha256": "fb65ebd65a33368c383e65c1de98f786fbd507e796c4c4e9549a56a0861949fc",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed current-version wording and accurate Max 2027 MZP / scene 65 scope; earlier shared-pose and three-host EXE evidence explicitly remains historical."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "website/README.md",
+      "old_sha256": "810c802c25340f9542c57f98aabec7698fa84b378222a64b0f181946edf6c8c8",
+      "new_sha256": "68d56316396a0b67af09ff57561dd4374cf2396f0ae7164226c8399e6f792d8f",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "website/content/README.md",
+      "old_sha256": "7585a8a2d5dc63bdae411c1110a390af5460383080881fa44fcd768c5312cf70",
+      "new_sha256": "1ac77f22b444bf5fdee6772665bebb458a516c8258ad90d0e0c4946315445894",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "website/content/source-manifest.json",
+      "old_sha256": "2ffd960f2eef2118bf7100e5a178d1d2191c51ca1e20ba88c89c151b98e13ed1",
+      "new_sha256": "5a1e1e50822164eba2f65528aff7aacd46a360933b5921c715a5494c7c16e775",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "old_sha256": "9e9200b93ee2a71fcecbd113dc93a04456de4df103288c7d24ed71a9ad1a928f",
+      "new_sha256": "5fb2ec0967bc178d0acac4644dbae8be24f227dbb27f852fe5cb1196e6b0eb0d",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "old_sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "new_sha256": "7689aa6019ef7e7fee5ea005b297c610beb2023f14039bc0338c691c3541adc8",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "old_sha256": "a5cd272d010133e7807679e122e7d904dca659b5d665a039405f216dea56f23d",
+      "new_sha256": "dead21e62628afaec930f400a3f1f0cacedecc1458badd666b40f3cd416dfcaa",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "canonical": "Reviewed current template ownership for selected method/draw subjects; schema facts are not falsely attributed to this partial source selection."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "old_sha256": "4c192c5f9b61c964cdaa93229f0c5f9135437ffe3a47170049bab23f64ffb05a",
+      "new_sha256": "54af240bb3d64f8478121ef9b3239c1626ba144d444904159283b932d817f14c",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "old_sha256": "b341b6277162c8085ede59431867001e90fcb96dc00726dfc6997879c029bde7",
+      "new_sha256": "2921f63820cab5649237996fa5b1cfdcf321323d44eb57e97089e873d39729b7",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+      "new_sha256": "85b7f996f92ba95545e4f972ecefa0078113efe8a9eba8960cf302c4b71c211b",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": "a0fabf10e11ce52c483e98d7e42080c755a6fc8e60b95e2a5e8a9205e4805a72",
+      "new_sha256": "f735bf8c1fefdd0a808674f4736625e08b2998395caa99928a0615d663dc1019",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "old_sha256": "7bd6b95e7ee27ba445aa6cfd71aa8b0f69d75da6222c12f0a18683a9a93ca7f1",
+      "new_sha256": "6145a2a15fb620e0964b1202cd87b98fa3198373cbec3a634a39f9763ed401f8",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/README.md",
+      "old_sha256": "aa211d9313625d71515a67a02cbcd234d76d6dab99431ffb42c3286dbbbdb76e",
+      "new_sha256": "e2fa7e4e8b49497fc9805862b896b66dd593bde9cc0119fadc995fb5dadfbd06",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/plans/improvement-program/PROGRESS.md",
+      "old_sha256": "d9cda2ff329b7181325fc3aeb5dd477abf0f377a92f389ec49baa464bcc05fde",
+      "new_sha256": "bd1f41205bdfd6f99cd31ab5d284de8f8d9151a53287d44b9563ed76ea5fa32a",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/Max_2027_Installation.md",
+      "old_sha256": "5fc70adfd0ecb4143d806c23f68408d6d1fda120b905809b18502e660e489fc1",
+      "new_sha256": "466870a5b21eb62fa0347583c7ff44fce9c15f30ec28d7567bd689a3385dc693",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+      "old_sha256": "2a6204ec9d4cfffd89bf675edbe38850451dd7c285d90679ec6751bbe6c2234a",
+      "new_sha256": "9cc8c5232381e951d7ac9f37ef74a937ba0477a01a8ed693a680b264692a625b",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.cs",
+      "old_sha256": "e78f4a0cb17fa49f3b6b664dff4179e2d6a10ab9eaee1b24e018918611c044c3",
+      "new_sha256": "85317742940e1285690d5b857f5f00b331779f4345dac6f9d31fa92752004820",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.Management.cs",
+      "old_sha256": "31a864c3c03584c1e0f875376ac7be9ac359aa496df3561cbeab03fd32fcca6a",
+      "new_sha256": "b5a502c96c3437fa093879efad5344ea8a2910f9f98a0791ffbc773658e5712f",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/assets.ms",
+      "old_sha256": "1b4ba17e376a392ff49b96c8eb1cfbcb423bd3bc64f1df94dc9eded08e1dee45",
+      "new_sha256": "d668dd83c48ddde6381cc627ef1b8eeff5624c063cdd31345c8a6e9871f7c4f3",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/shared-library.ms",
+      "old_sha256": "25ab139a92237439cf5d6d2f6ae54feb61063176d76ae227c247b0f6687b53fc",
+      "new_sha256": "2a83254dfe3070486fc573a182aa4ec6e8f3c39aa642f81fbdd1e533d6339057",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/src/asset_package.cpp",
+      "old_sha256": "615f8c5f9dc0c20dac36ce79daa50140fc6cd7d32e0bab129d0ce37c9d30b8f7",
+      "new_sha256": "1c55511b3677850c32b86258b7e8a8c35df5310dc95085c2664b1e35c4aee5ea",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/recipes.ms",
+      "old_sha256": "8f00249e1b453aa60b4c746591c3747758dd4e28ac3597ea8dfa4fa5b3481dc9",
+      "new_sha256": "d012c430b641f02b49f058a92205d2c814714645beb39c05a6a8fd290686dc2e",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/SHARED_LIBRARY_ARTIST_GUIDE_0871.md",
+      "old_sha256": "68ad1308209c84974de2d0cc4d69fba7ad15661d95c0ed10b3c5177991e72dd4",
+      "new_sha256": "4762a4d01b5f9f39e4759ec9cb688e2361226cdee8e4b9a2b7029836db60b77c",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "contract_sections": "Reviewed complete leaf sections through the next peer heading; parent introductions remain ordinary exact-source chunks. F01–F12 guarantees, limits and falsifiers stay together. Bounded section limits unchanged.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/src/interactions_source.cpp",
+      "old_sha256": "56fa07b0aae522463a0f24e92e48dd03b253f830bded3e411d5096d8a272ca99",
+      "new_sha256": "9e7b82f54f804ed7dafb43d271db251df2d6bdeb739c1f44a7a4eab434ffe1ef",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/src/interactions_engine.cpp",
+      "old_sha256": "66d778ec575717ec414334b78e2fea8b8344fece42d6f675b3449f2218e522d3",
+      "new_sha256": "8f50224b5b2a48f758b45f99660e7bf54a4542a481e89326612bb2e8d69db6e0",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/interactions-authoring.ms",
+      "old_sha256": "f72b412bd9b6e20844ca935bbf74fea4455cafe8503956eef40ae19091eba049",
+      "new_sha256": "0083dcb1b6785fac995d59746422ed2136fdaa0fa521911e4c89d136477e5c0e",
+      "field_reasons": {
+        "applicability": "Reviewed successor applicability: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "ranges": "Reviewed successor ranges: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "review_status": "Reviewed successor review_status: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "selection_reason": "Reviewed successor selection_reason: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance.",
+        "sha256": "Reviewed successor sha256: preserves original owner/authority and qualification limits while using the current complete parent or equivalent source subject boundaries. This is source/corpus review, not new Max acceptance."
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "a3499c0633a420dfbf5a1407c33ede4a68e81c87103904c753b6bde1cf3959ee",
+      "new_sha256": "a0c4905695146594697805b694d3573d356c4910b98b7d647b6d715fa7d5e3f6",
+      "reason": "Equivalent evidence locators retargeted to reviewed current parents/sections. Frozen question text, information needs, splits, answerability, canonical owners and required qualifiers are unchanged."
+    },
+    {
+      "old_sha256": "559a54187e6885ac751086dc70cc9c9e8f0f7e6efdf9f14ef93ae34996052b9f",
+      "new_sha256": "91b544032fb9d34cebf5f9c29e1f9bec03626b323e8178eedc045ac6249428f7",
+      "reason": "Equivalent evidence locators retargeted to reviewed current parents/sections. Frozen question text, information needs, splits, answerability, canonical owners and required qualifiers are unchanged."
+    }
+  ],
+  "retrieval_tradeoffs": [
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "a3499c0633a420dfbf5a1407c33ede4a68e81c87103904c753b6bde1cf3959ee",
+      "new_evaluation_sha256": "a0c4905695146594697805b694d3573d356c4910b98b7d647b6d715fa7d5e3f6",
+      "profile": "plain",
+      "comparison_sha256": "6b61a4840f40c07d370815e72845416ce0ddc8ce67695433c3e2823fd0333443",
+      "agent_reviewed": true,
+      "reason": "Reviewed the final current-version source contexts and exact question results after the wording sweep. Preserve all 64 parents, every previously found required top-ten unit and canonical owner, with no new misleading or negative-query results. Accept only the individually disclosed ranking/precision findings. No runtime, ranking, question, split, qualifier or resource-policy change; no human semantic review or answer-accuracy claim.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "FD-F01",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed FD-F01 in the full current owner and returned source contexts: canonical rank 5 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "FD-F01",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed FD-F01 in the full current owner and returned source contexts: canonical rank 5 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "a3499c0633a420dfbf5a1407c33ede4a68e81c87103904c753b6bde1cf3959ee",
+      "new_evaluation_sha256": "a0c4905695146594697805b694d3573d356c4910b98b7d647b6d715fa7d5e3f6",
+      "profile": "terminology",
+      "comparison_sha256": "6b61a4840f40c07d370815e72845416ce0ddc8ce67695433c3e2823fd0333443",
+      "agent_reviewed": true,
+      "reason": "Reviewed the final current-version source contexts and exact question results after the wording sweep. Preserve all 64 parents, every previously found required top-ten unit and canonical owner, with no new misleading or negative-query results. Accept only the individually disclosed ranking/precision findings. No runtime, ranking, question, split, qualifier or resource-policy change; no human semantic review or answer-accuracy claim.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "FD-F01",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed FD-F01 in the full current owner and returned source contexts: canonical rank 5 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "FD-F01",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed FD-F01 in the full current owner and returned source contexts: canonical rank 5 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "559a54187e6885ac751086dc70cc9c9e8f0f7e6efdf9f14ef93ae34996052b9f",
+      "new_evaluation_sha256": "91b544032fb9d34cebf5f9c29e1f9bec03626b323e8178eedc045ac6249428f7",
+      "profile": "plain",
+      "comparison_sha256": "be2a448e7ad57c82b3fdea01251d19614dc8dd2fca02560dca0fc7a85e8ab01d",
+      "agent_reviewed": true,
+      "reason": "Reviewed the final current-version source contexts and exact question results after the wording sweep. Preserve all 64 parents, every previously found required top-ten unit and canonical owner, with no new misleading or negative-query results. Accept only the individually disclosed ranking/precision findings. No runtime, ranking, question, split, qualifier or resource-policy change; no human semantic review or answer-accuracy claim.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-NATIVE",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-NATIVE in the full current owner and returned source contexts: canonical rank 3 to 4; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-MEMORY",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-MEMORY in the full current owner and returned source contexts: canonical rank 1 to 2; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-TIME",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-TIME in the full current owner and returned source contexts: canonical rank 2 to 4; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-LAB",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed NF-LAB in the full current owner and returned source contexts: canonical rank 4 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-LAB",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-LAB in the full current owner and returned source contexts: canonical rank 4 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        }
+      ]
+    },
+    {
+      "schema": "cyrus.retrieval-tradeoff-review/1",
+      "old_evaluation_sha256": "559a54187e6885ac751086dc70cc9c9e8f0f7e6efdf9f14ef93ae34996052b9f",
+      "new_evaluation_sha256": "91b544032fb9d34cebf5f9c29e1f9bec03626b323e8178eedc045ac6249428f7",
+      "profile": "terminology",
+      "comparison_sha256": "be2a448e7ad57c82b3fdea01251d19614dc8dd2fca02560dca0fc7a85e8ab01d",
+      "agent_reviewed": true,
+      "reason": "Reviewed the final current-version source contexts and exact question results after the wording sweep. Preserve all 64 parents, every previously found required top-ten unit and canonical owner, with no new misleading or negative-query results. Accept only the individually disclosed ranking/precision findings. No runtime, ranking, question, split, qualifier or resource-policy change; no human semantic review or answer-accuracy claim.",
+      "regressions": [
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-NATIVE",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-NATIVE in the full current owner and returned source contexts: canonical rank 3 to 4; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-MEMORY",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-MEMORY in the full current owner and returned source contexts: canonical rank 1 to 2; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-TIME",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-TIME in the full current owner and returned source contexts: canonical rank 2 to 4; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-LAB",
+            "at_k": "5",
+            "reason": "coverage/precision/misleading evidence regression"
+          },
+          "reason": "Reviewed NF-LAB in the full current owner and returned source contexts: canonical rank 4 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        },
+        {
+          "finding": {
+            "group": "base",
+            "id": "NF-LAB",
+            "reason": "canonical source ranking regression"
+          },
+          "reason": "Reviewed NF-LAB in the full current owner and returned source contexts: canonical rank 4 to 6; required units at ten 1 to 1. Current expanded guide/source contexts alter ordering while the complete contract remains retrievable. Preserve this as a ranking limitation and use an exact contract identifier/path or sufficient result window; this does not claim an improved ranking."
+        }
+      ]
+    }
+  ]
+}

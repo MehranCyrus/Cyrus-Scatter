@@ -1,0 +1,325 @@
+{
+  "status": "scoped_pass",
+  "version": "0.87.5",
+  "max_year": 2027,
+  "native_capability": 12,
+  "scene_schema": 63,
+  "recipe_version": 9,
+  "edit_storage_version": 3,
+  "managed_version": "0.87.5.0",
+  "branch": "codex/workflow-0.75",
+  "head": "d24b880816ab367874f417f79d1253aafa9a60f5",
+  "source_receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\native-final-pair\\receipt.json",
+  "source_files_verified": 622,
+  "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.5-20261027\\CyrusScatter-0.87.5-Max2027.mzp",
+  "archive_sha256": "97dcb3cb43dd40a6a7d1827087273e29eac23e554f36386c8f096bcc5f066dd8",
+  "bytes": 2610277,
+  "installer": {
+    "status": "pass",
+    "scope": "Exact MZP installer engine in a disposable profile; Max UI and installed startup are separate checks",
+    "archive_sha256": "97dcb3cb43dd40a6a7d1827087273e29eac23e554f36386c8f096bcc5f066dd8",
+    "release": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\installer-final-pair\\runtime\\r\\2ce76cbf8631",
+    "script_sha256": "de9afee2bcd85246f621d010506d53b8f1add928df32dbaab332b48e40dc84b8",
+    "native_sha256": "25160b74b5bed24798cb792a549413960cfb4229b4f631a31be3efc3f44c3d70"
+  },
+  "loaded_identity": {
+    "host": 2027,
+    "modules": {
+      "AminScatter.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\installer-final-pair\\runtime\\r\\2ce76cbf8631\\bin\\AminScatter.dlx",
+        "sha256": "25160b74b5bed24798cb792a549413960cfb4229b4f631a31be3efc3f44c3d70"
+      },
+      "CyrusBrush.dlx": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\installer-final-pair\\runtime\\r\\2ce76cbf8631\\bin\\CyrusBrush.dlx",
+        "sha256": "548e32ac148c85cfc255f1d9abac56ecae1681c52b72e695f76a7b02995f3136"
+      },
+      "CyrusBrushStorage.dlh": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\installer-final-pair\\runtime\\r\\2ce76cbf8631\\bin\\CyrusBrushStorage.dlh",
+        "sha256": "83d6deb2819994950fefe6231002403317c79e275002b5c4ff56528b249dd25b"
+      },
+      "CyrusScatterEdit.dlm": {
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\installer-final-pair\\runtime\\r\\2ce76cbf8631\\bin\\CyrusScatterEdit.dlm",
+        "sha256": "ecf3b5d0eefa30ae749678804ba8952880dbc944b90d6de29cb3101f38a18f73"
+      }
+    },
+    "script_fingerprint": "ba976869a4ba6778f9060996e526d6582eb11cf9c35d9730109f8919827e4024"
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.87.5",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 364,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "de9afee2bcd85246f621d010506d53b8f1add928df32dbaab332b48e40dc84b8",
+    "preserved_files": [],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "artist_ini_observed_unchanged": true,
+  "original_scene_preserved": true,
+  "checks": {
+    "grass": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-grass.json",
+      "sha256": "ad56f1cab31586ab38cd957b4331d7a086570e1ca097fbc0244770bba61f7c13"
+    },
+    "fern": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-fern.json",
+      "sha256": "4c31494880fe72e1d9361477e7edd205524e367a83737410e5513b96797a426b"
+    },
+    "two-sources": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-two-sources.json",
+      "sha256": "b1f410b49850635b0d1101f3543a48bcf239e85039f5f7d34d3ce805fcdb9220"
+    },
+    "authored-fern": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-authored-fern.json",
+      "sha256": "784e27aa150674149162e86aa2aa64664cdab8bfbe6e07c1d9cb67442beabe69"
+    },
+    "bake": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-bake.json",
+      "sha256": "b300047262a7d8f25c2bd343dab453d5217093ab23e212067292d13f3df6129f"
+    },
+    "all-hidden": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-all-hidden.json",
+      "sha256": "328b3003e3f0a78421b5546b17981381df6250726e488191ee64135685c5d3eb"
+    },
+    "failure": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-failure.json",
+      "sha256": "ca03c86d2a7aefc30de4eb9bd97e8a618847cfa94dde1bb2819e96ef1b7146f9"
+    },
+    "record-undo": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-record-undo.json",
+      "sha256": "020d4425ce2687cad4119bb6081f2b7aca93e37f90fd1e28e2e859ba6ea9c94a"
+    },
+    "undo-read": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-undo-read.json",
+      "sha256": "0af6eee1398cc961b118a1f18ebb8ef2fa6cd4714f9903fe0b3b3c4609516eec"
+    },
+    "redo-read": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-redo-read.json",
+      "sha256": "8124632bf079d648f2c68370ba7d7fb5d18ee5aaf114482b4a091105ec58e3c0"
+    },
+    "save-Grass": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-save-Grass.json",
+      "sha256": "5aa50b9f27c68466f8e3bca175224f6a7b3984ac5115cc78211a58c1346a50d6"
+    },
+    "save-Fern": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-save-Fern.json",
+      "sha256": "a312b7be44d41eb99149275e3a022ada6450b61bf313153bbc3befc6263e0182"
+    },
+    "save-Authored": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-save-Authored.json",
+      "sha256": "8b17a6bf26a0ebef624993d5758812dc046382b49f9a8d57c23eba44fac23acb"
+    },
+    "reload-saved": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-reload-saved.json",
+      "sha256": "001dbbf713b666a12fd56903dfbefed3f57fac638837efb3b62ab41410f3d585"
+    },
+    "warm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-warm.json",
+      "sha256": "8bbc14e515b161d1e5f548ae35607dd065bc540ded325942719c23dd4230bcf8"
+    },
+    "library-configured": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-library-configured.json",
+      "sha256": "abbf6df77427b8717e15f5ad09634410852ea9d2ed3e485da62e81ce57b0ab14"
+    },
+    "bench-gpu-200": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-bench-gpu-200.json",
+      "sha256": "0a214ddf8b45534f4acb11006ed0df235c89251793c5c612eab1dda34b8fb1fb"
+    },
+    "bench-cpu-200": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-bench-cpu-200.json",
+      "sha256": "26c604956dbb031112c3a868494942d92c8f657ac56c3492d8d9351b8f70c219"
+    },
+    "bench-gpu-1000": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-bench-gpu-1000.json",
+      "sha256": "082725bf6ceb3341ced885a1919f10a91d2e29fdc47eca6174000eec27ae4ddf"
+    },
+    "bench-cpu-1000": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-bench-cpu-1000.json",
+      "sha256": "e09b054b43f4dfe5ee0f86b2df3dfed528ad9e7610c9ca86d40de01d59641116"
+    },
+    "drag-before": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-drag-before.json",
+      "sha256": "1db8cc25a9d44594f216e49f11db003855b86577503c114a4cf18f5397a4f565"
+    },
+    "drag-after": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\runtime-drag-after.json",
+      "sha256": "67ed1fd83083e73b957da88e2d3899077784be1309e2928daea72357fc0a88bd"
+    },
+    "setup": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\check-setup.json",
+      "sha256": "ec2c1bb8647cb76f66cf6511eaff2a3f296b354c99f8ec12980f290add6ad578"
+    },
+    "view-mesh-wire": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\check-view-mesh-wire.json",
+      "sha256": "0e8569f7fca9c86c923c06b905893c55998db2d5b497588c7841993c903aa236"
+    },
+    "view-texture-wire": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\check-view-texture-wire.json",
+      "sha256": "6448319eb27e7a245a30178b5dc4ccf3cf85348696076854330f144e65c44ce2"
+    },
+    "view-split": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\check-view-split.json",
+      "sha256": "6d60f2297ed2b2de28bf89e664f773b3685ff24e36317459b64d6c2850244623"
+    },
+    "pending": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-final-pair\\check-pending.json",
+      "sha256": "c5b490f2740759ce8c3a16316cc0b9f8367d7ecb769840b73acb0853025ade73"
+    }
+  },
+  "physical_pointer": {
+    "updates": 3,
+    "last_fit_ms": 3.6491,
+    "geometry_bytes": 0,
+    "pose_bytes": 238784
+  },
+  "gpu_math": {
+    "status": "pass",
+    "scope": "Copied numeric model data and production HLSL deformation math on an independent hardware D3D11 device; Max presentation and FPS are separate checks",
+    "native_source_receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\native-final-pair\\receipt.json",
+    "source_files_verified": 622,
+    "shader_sha256": "250da91bd361a84da43687c282287ec360a4342f96b19cbd9f84f9a8266276d3",
+    "probe_source_sha256": "3c4fb7e13b93bb4e6664a872ce3283dc2554bb951194d18ec1a80a12e034a1c0",
+    "probe_executable_sha256": "bd8d231dc4bcbc11903dc721b94dd12190706974ebbe72c71758e0475d352578",
+    "results": [
+      {
+        "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-02\\numeric\\grass2\\fixture.json",
+        "fixture_sha256": "3ec5d05b62b7487892397ea2d0100d16d6463518179f2f43ea2efad00b653a26",
+        "packet_sha256": "8c2fd9891c564c2ee0aea3326a54320d6150c097955188096321cfd0dcf7f6c1",
+        "cpu": {
+          "corners": 82503,
+          "exported": true,
+          "maximum_source_error_m": 3.5848286105621897e-09,
+          "triangles": 27501
+        },
+        "gpu": {
+          "corners": 82503,
+          "maximum_error_m": 1.23992e-08,
+          "visibility_mismatches": 0,
+          "hardware_feature_level": 45056,
+          "status": "pass"
+        }
+      },
+      {
+        "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-02\\numeric\\fern2\\fixture.json",
+        "fixture_sha256": "28dc92b2729dac2244e8ef893708e1adf9eeeeb2cd1ee3e3f3b9baffa3d4f53b",
+        "packet_sha256": "6e5f81a3f261cdac138908bcefc609313abb725a4fd09c3abcf391a657844e31",
+        "cpu": {
+          "corners": 1781361,
+          "exported": true,
+          "maximum_source_error_m": 5.875055154399245e-08,
+          "triangles": 593787
+        },
+        "gpu": {
+          "corners": 1781361,
+          "maximum_error_m": 1.23778e-07,
+          "visibility_mismatches": 0,
+          "hardware_feature_level": 45056,
+          "status": "pass"
+        }
+      },
+      {
+        "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions0875-20261027-01\\host-release\\numeric\\authored-gpu-full\\fixture.json",
+        "fixture_sha256": "98d77c45934bd470255d84122f0feb08958db5e349838906c4776c87da475baf",
+        "packet_sha256": "12add34b16e78cc9d8b49fd4f4afed9dcdb062a8d23ad3102db8db4072acf741",
+        "cpu": {
+          "corners": 549090,
+          "exported": true,
+          "maximum_source_error_m": 5.456480257435572e-08,
+          "triangles": 183030
+        },
+        "gpu": {
+          "corners": 549090,
+          "maximum_error_m": 1.3328e-07,
+          "visibility_mismatches": 0,
+          "hardware_feature_level": 45056,
+          "status": "pass"
+        }
+      }
+    ]
+  },
+  "measurements": [
+    {
+      "plants": 200,
+      "mode": "gpu",
+      "steps": 14,
+      "native_edit_median_ms": 55.9233499225229,
+      "first_redraw_command_median_ms": 19.081200007349253,
+      "kernel_total_median_ms": 54.8952,
+      "wall_with_event_waits_median_ms": 179.07455004751682,
+      "geometry_bytes": 0,
+      "pose_bytes": 3407072,
+      "source_binding_bytes": 0,
+      "max_warned_guides": 8,
+      "max_reported_stem_edge_change": 4.710371745688702
+    },
+    {
+      "plants": 200,
+      "mode": "cpu",
+      "steps": 14,
+      "native_edit_median_ms": 69.80775005649775,
+      "first_redraw_command_median_ms": 29.742399929091334,
+      "kernel_total_median_ms": 56.9126,
+      "wall_with_event_waits_median_ms": 217.03495003748685,
+      "geometry_bytes": 104509980,
+      "pose_bytes": 0,
+      "source_binding_bytes": 0,
+      "max_warned_guides": 8,
+      "max_reported_stem_edge_change": 4.710371112430724
+    },
+    {
+      "plants": 1000,
+      "mode": "gpu",
+      "steps": 14,
+      "native_edit_median_ms": 160.278300056234,
+      "first_redraw_command_median_ms": 17.237149877473712,
+      "kernel_total_median_ms": 157.31214999999997,
+      "wall_with_event_waits_median_ms": 335.20479989238083,
+      "geometry_bytes": 0,
+      "pose_bytes": 11243648,
+      "source_binding_bytes": 0,
+      "max_warned_guides": 48,
+      "max_reported_stem_edge_change": 4.659988222831814
+    },
+    {
+      "plants": 1000,
+      "mode": "cpu",
+      "steps": 14,
+      "native_edit_median_ms": 188.1091499235481,
+      "first_redraw_command_median_ms": 47.0577001105994,
+      "kernel_total_median_ms": 147.228,
+      "wall_with_event_waits_median_ms": 389.59690008778125,
+      "geometry_bytes": 376307748,
+      "pose_bytes": 0,
+      "source_binding_bytes": 0,
+      "max_warned_guides": 48,
+      "max_reported_stem_edge_change": 4.659988222831814
+    }
+  ],
+  "test_scenes": {
+    "Grass": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.5-20261027\\TestScenes\\Grass_Interaction_0.87.5.max",
+      "sha256": "b5da680cacbf49a80ca0c5984f30dd2f6dc431de6800327b280576a46e0e795d",
+      "bytes": 273313792
+    },
+    "Fern": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.5-20261027\\TestScenes\\Fern_Interaction_0.87.5.max",
+      "sha256": "e0ea5e17c42f32cb27fa9ae4c744bd4078bd13a3e6966b50fe2dfad2d0f33782",
+      "bytes": 308903936
+    },
+    "Authored": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.5-20261027\\TestScenes\\Authored_Interaction_0.87.5.max",
+      "sha256": "0afbfe4ee662c2e0974bc32b70f440491a50ecd88c3eb0b0d817a946288235d6",
+      "bytes": 282017792
+    }
+  },
+  "limitations": [
+    "Dense/deep stress quality warnings remain, identically in both producers; not whole-scene visual quality acceptance.",
+    "Kernel timings, redraw commands, SDK logical bytes and event waits are separate from presented FPS or measured PCIe traffic.",
+    "Max 2027 on the tested hardware only; production-renderer frames and other hosts/GPUs are unqualified.",
+    "One early development source-switch exception remains an undiagnosed historical observation; later final-profile checks passed.",
+    "Knowledge retrieval was stale; original sources were inspected. No corpus refresh, artist installation or Git push was performed."
+  ]
+}

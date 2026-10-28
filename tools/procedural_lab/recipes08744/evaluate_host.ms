@@ -1,0 +1,1 @@
+try(WFRoot.evaluateProcedural();CyrusPointSync();completeRedraw();(dotNetClass "System.IO.File").WriteAllText (GardenRun+"evaluate.txt") "success")catch((dotNetClass "System.IO.File").WriteAllText (GardenRun+"evaluate.txt") (getCurrentException()+"\n"+getCurrentExceptionStackTrace()))

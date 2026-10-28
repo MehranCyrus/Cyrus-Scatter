@@ -1,6 +1,30 @@
-# Cyrus Scatter 0.87.4 — artist workflow
+# Cyrus Scatter 0.87.6 - artist workflow
 
-Use **Interactions > Edit preparation…** to select original source pieces and choose Bend, Follow stem or Keep fixed. Changes update the popup automatically; Use preparation commits them for the layer’s instances. Start with the [0.87.4 editor guide](plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md) and [matched Max 2027 MZP, trials and limits](plans/source-preparation-editor-20261026/DELIVERY_0874.md). Install through **Scripting > Run Script**, then restart Max.
+**Current delivery: [0.87.6 UI and settings](plans/ui-settings-0876-20261028/DELIVERY.md).** Point sources, clearer painting fades, one density-preview toggle and grouped secondary settings. [Find the controls](plans/ui-settings-0876-20261028/ARTIST_GUIDE.md) and [complete control ledger](plans/ui-settings-0876-20261028/CONTROL_LEDGER.md). The EXE contains distinct Max 2024/2026/2027 payloads; runtime checks are Max 2027 only. Close selected hosts for the EXE, or use **Scripting > Run Script** for a matching MZP and restart Max.
+
+**Performance reference:** the [0.87.5.6 Bend/Trim and trunk controls](plans/drag-response-08756-20261028/ARTIST_GUIDE.md) remain. This UI round does not change the interaction algorithms or rebuild the public website. Detailed contact remains an explicit slower choice.
+
+**Earlier 0.87.5.5 package.** The [combined EXE and matched MZPs](plans/scene-adaptation-08754-20261028/CALLBACK_HOTFIX_08755.md) fix the 0.87.5.4 application callback error. Close selected hosts for the EXE, or use **Scripting > Run Script** for a matching MZP, then restart Max. Max 2027 is runtime tested; Max 2024/2026 are compiled and packaged without host testing. Existing Library content and Surface Analyzer remain independent.
+
+**0.87.5.4 scene colliders and branch adaptation:** use the [combined EXE or matching MZP](plans/scene-adaptation-08754-20261028/DELIVERY_08754.md). Add ordinary walls/stones in **Scene colliders**, prepare the plant layer, then choose **Bend then prune**. Move the wall normally in Max; no scatter layer or Cyrus Edit is needed for it. [Controls and limits](plans/scene-adaptation-08754-20261028/ARTIST_GUIDE_08754.md). Max 2027 is runtime tested; Max 2024/2026 are packaged without host testing.
+
+**Preceding 0.87.5.3 source and dense-scene fixes:** install the matched [Max 2027 MZP](plans/scene-repair-08753-20261028/DELIVERY_08753.md) through **Scripting > Run Script**, then restart Max. [The guide](plans/scene-repair-08753-20261028/ARTIST_GUIDE.md) explains shared source lists, missing-row X, source-node scale, Models Scale after Cyrus Edit, Under collider and Fast navigation. Two saved trial copies and exact scope are linked from the delivery. Deep overlap and full external-renderer qualification remain limited.
+
+**Preceding 0.87.5.2 interaction performance:** install the complete Max 2027 MZP through **Scripting > Run Script**, then restart Max. [Patch instructions](plans/contact-audit-08752-20261027/ARTIST_GUIDE.md) retain the current controls and Library workflow; derived caches rebuild without a new artist preparation step. [Measurements and remaining deep-overlap quality limit](plans/contact-audit-08752-20261027/AUDIT.md).
+
+For complete setup reuse, see the [Scene preset workflow](plans/scene-presets-08751/ARTIST_GUIDE.md). **Save Recipe** offers Scene preset, Portable preset and Settings only. [Current Max 2027 MZP and tested scope](plans/scene-presets-08751/DELIVERY_08751.md). Scene presets merge an independent setup; the load dialog gives the standard Max history notice.
+
+The [0.87.5 interaction guide](plans/shared-pose-viewport-0875-20261027/ARTIST_GUIDE_0875.md) explains automatic shared geometry/GPU pose display using the existing Prepare and Cyrus Edit workflow. [Exact Max 2027 MZP and qualification](plans/shared-pose-viewport-0875-20261027/DELIVERY_0875.md). Native Interactions 12 / schema 63. Install with **Scripting > Run Script**, then restart Max. Contact fitting and final mesh output remain on the CPU.
+
+For edited Library recipes, use the [0.87.4.4 guide](plans/recipe-authored-08744-20261027/ARTIST_GUIDE_08744.md). Moves, rotations, scales, copied/deleted instances and prepared interactions travel with supported static assets. Its [documented scope](plans/recipe-authored-08744-20261027/PLAN.md) distinguishes the Max 2027 workflow from older-host build/package scope; it is not a replacement for a missing exact delivery receipt.
+
+Use the [0.87.4.3 hiding and Wireframe guide](plans/interaction-hide-wireframe-20261027/ARTIST_GUIDE_08743.md) for independent Hide margin, Under collider clearing and Mesh/Textured mesh Wireframe. [Matched Max 2027 MZP and exact checks](plans/interaction-hide-wireframe-20261027/DELIVERY_08743.md). Native Interactions 11 / schema 63. Install with **Scripting > Run Script**, then restart Max.
+
+For leaves around a fixed trunk, use the [0.87.4.2 preparation and navigation guide](plans/preparation-editor-repair-20261027/ARTIST_GUIDE_08742.md) and its [matched Max 2027 package and qualification](plans/preparation-editor-repair-20261027/DELIVERY_08742.md). **Select problem guides > Prepare selected only** handles the recorded Neottopteris source. Use **Scripting > Run Script** to install the MZP, then restart Max.
+
+The [0.87.4.1 Interactions guide](plans/interactions-performance-08741-20261027/ARTIST_GUIDE_08741.md) explains layer roles, colliders, preview controls and the earlier performance campaign's limits.
+
+Use **Interactions > Edit preparation…** to select original source pieces and choose Bend, Follow stem or Keep fixed. Changes update the popup automatically; Use preparation commits them for the layer’s instances. The [0.87.4 editor guide](plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md) explains the workflow and its original trials.
 
 The [0.87.3.2 Interactions workflow](plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08732.md): + / remove sources in the same layer, Prepare model once, then automatic contact updates. Minimum stem, Refinement stiffness and Branch connection are primary controls; resource budgets are under Preparation limits. [Matched Max 2027 installer, saved fern trial and exact scope](plans/scatter-interactions-garden-20261025/DELIVERY_08732.md).
 
@@ -8,7 +32,7 @@ Earlier versioned guidance below retains its historical scope.
 
 Use the [tested 0.87.3.1 correction](plans/scatter-interactions-garden-20261025/PREPARATION_FIX_08731.md) for its historical installer and exact Max 2027 scope. Prepare and settings updates no longer copy the whole parameter block.
 
-**Current Interactions: [0.87.3.1 workflow](plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08731.md).** One Prepare model action, automatic settings updates, actual-root hiding and all-contacting-guide fitting. Install the matching [Max 2027 MZP](plans/scatter-interactions-garden-20261025/DELIVERY_08731.md) through **Scripting > Run Script**, then restart Max. The tested correction and remaining limits are linked above.
+**Historical Interactions: [0.87.3.1 workflow](plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_08731.md).** One Prepare model action, automatic settings updates, actual-root hiding and all-contacting-guide fitting. Its historical [Max 2027 MZP](plans/scatter-interactions-garden-20261025/DELIVERY_08731.md) and limits are preserved for that version.
 
 **Preceding 0.87.3 Interactions:** start with the [simplified source workflow](plans/scatter-interactions-garden-20261025/ARTIST_WORKFLOW_0873.md) and [Max 2027 delivery](plans/scatter-interactions-garden-20261025/DELIVERY_WORKFLOW_0873.md). Choose a layer role, prepare original sources once, and use one review toggle. Contacts update automatically. Install its matched `workflow-r2` MZP through **Scripting > Run Script**, then restart Max. Earlier same-version Library and preparation installers have different native payloads. [Advanced preparation limits](plans/scatter-interactions-garden-20261025/ARTIST_GUIDE_0873_EXPANSION.md) remain available.
 
@@ -99,15 +123,72 @@ where used, Forest map plug-ins in each Max version.
 
 The retained 0.86.5 library/Amount baseline fixes library portability, map/channel switching, Clear, empty-source output and Library restoration. Complete presets transfer supported Paint/path layouts across units and local-XY footprints. Map coordinates evaluates supported procedural graphs on the receiving surface. Its [historical delivery report](plans/preset-gallery-improvements/DELIVERY_0870.md) retains the original 0.87.0 labels, tests and limits. The [historical source-clearance delivery](plans/source-clearance/DELIVERY_08682.md) records its original packages and focused qualification. The [0.86.7.2 report](plans/preset-gallery-improvements/DELIVERY_08672.md) preserves its original package and host evidence; [0.86.7](plans/preset-gallery-improvements/DELIVERY_0867.md) retains the textured-preview delivery details.
 
-Placement computation and storage remain native C++. The one-million controller work limit still applies, and failed updates retain the previous complete result and Undo. Existing grids, Bands, orientation, Paint and slope/altitude controls remain available. The [library workflow](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md) explains selected-terrain loading and complete Save. Further roadmap work remains paused.
+Placement computation and storage remain native C++. The one-million controller work limit still applies, and failed updates retain the previous complete result and Undo. Existing grids, Bands, orientation, Paint and slope/altitude controls remain available. The [library workflow](plans/preset-gallery-improvements/ARTIST_WORKFLOW.md) explains selected-terrain loading and complete Save. The execution ledger records remaining work; the current user request governs which scope is active.
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) remains independent. Open **License / activation**, save a request and import the returned license. Existing scenes remain loadable/renderable after expiry; creation/editing locks. See [activation instructions](../tools/licensing/README.md).
 
 Scroll over empty panel background with the wheel, or click-hold and drag that background vertically. Buttons, numeric controls and list resize grips keep their own actions. In the library, Max’s default UI scale is treated as normal size; the toolbar offers Small, Medium and Large tiles. Resize the library as needed. Configured 150% scaling is tested separately from physical 4K/mixed-monitor acceptance.
 
-Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
+Panels show controls, counts and actionable status. Detailed explanations live in this guide and the website; some older controls also retain tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
 Layers and Models show **Name** and the identification color above a full-width name field. Long list names end in an ellipsis so layer counts/status and model weight/Band information remain visible. Selecting a row reveals its complete name in the edit field; hovering the row also shows the full name. This display shortening never changes the saved name.
+
+## Scene colliders and branch response
+
+Add ordinary walls, stones or closed building meshes in **Scene colliders**.
+Use **+** to pick one or **Add selected** for several; **x** removes a reference
+and keeps the scene object. This list belongs to the Scatter setup. Its objects
+can stay where they were placed and use normal Max move/rotate/scale tools.
+They do not need a scatter layer or Cyrus Edit.
+
+For each plant layer, choose **React to colliders**, select the original source
+and click **Prepare model**. Preparation is shared by the source's instances;
+the editor can repair guide direction, attachment and fixed/bending ownership.
+The source list and Models & Points show the same authored rows. Missing rows
+remain removable. A source's evaluated supported scale is applied once, alongside
+its model Scale; spacing radii remain a separate control.
+
+Choose **Bend** for quick artistic movement. It checks a small number of guide
+spans and bends once, without iterative mesh-contact refinement. **Trim** hides
+eligible branches; **Bend and trim** uses an estimated remaining overlap to decide
+what to hide. **Trim amount (%)** is a stable fraction of eligible branch groups,
+not a percentage of all polygons. Moving the collider away restores them.
+
+**Bend strength** controls the overall response. **Trunk bend (%)** controls main
+root stems that carry branches: 0 keeps these guides rigid; 100 allows the full
+bend strength. **Fixed base (% height)** holds the lower guide region still;
+**Bend fade (% height)** sets the smooth transition into flexible growth. These
+controls reuse prepared guides and update the contact pose without reanalysis.
+Trunk identity is inferred from guide hierarchy, not a guaranteed botanical label.
+
+**React to neighboring trees** remains opt-in, using stable one-way priorities
+against rest-branch proxies. Use ordinary spacing for trunk placement. It is not
+symmetric tree physics or a guarantee of leaf-level clearance.
+
+**Hide covered roots**, **Hide area** and **Hide margin** are separate from bending
+Clearance, including in Bend mode. Preview leaves/blades accepts 1–100% and samples
+whole parts. Preparation sizes and resource limits live under **More settings**.
+Older saved Detailed-contact scenes migrate to Bend on load. Choose **Detailed
+contact (slow)** explicitly when needed; the new trunk/falloff controls belong to
+the faster artistic modes. Final render/Bake still use full visible source geometry,
+but this patch's qualification covers only the scripted Max 2027 viewport.
+
+Contact updates use the completed placement population. Manual amount, seed and
+other placement edits still wait for **Update scatter**. Camera navigation and
+identification-color changes reuse completed data. A failure retains the prior
+complete publication; a retained result can still be recolored.
+
+Closed scene colliders support nonuniform/mirrored nonsingular transforms through
+a private collision copy. Reacting plants retain the positive-uniform restriction.
+Automatic trunks approximate the lower trunk; exposed roots and unusual shapes
+need a reviewed custom collider. Automatic analytic spheres, convex-hull
+simplification, wind and time-dependent dynamics are not delivered features.
+
+Use a **Scene preset** in Max 2027 to preserve ordinary collider references and
+branch settings. Portable recipe 9 currently rejects those new references or
+broad responses instead of silently losing them. See the
+[detailed control guide](plans/scene-adaptation-08754-20261028/ARTIST_GUIDE_08754.md)
+for work bounds and supported preparation topology.
 
 ## Start with a layer
 
@@ -329,23 +410,25 @@ The filter status reports **prepared rows**, filtered rows and protected rows fr
 
 ## Complete planting recipes
 
-Select one terrain mesh and open **Cyrus Library** (Customize > Cyrus category), or **Layers > Recipes...** from an existing setup. The browser captures that terrain. Changing selection afterward does not redirect the load. The tree separates My recipes, Bundled examples and Custom library; open a collection or All recipes. Search, thumbnail/list views and three tile sizes are available. Refresh explicitly rereads disk; passive browsing does not calculate plants.
+Open **Cyrus Library** (Customize > Cyrus category), or **Layers > Recipes...** from an existing setup. For portable planting, select the destination terrain first; the browser captures it and later selection changes do not redirect the load. Scene presets restore their saved arrangement without a destination terrain. The tree separates My recipes, Bundled examples and Custom library; open a collection or All recipes. Search, thumbnail/list views and three tile sizes are available. Refresh explicitly rereads disk; passive browsing does not calculate plants.
 
-Choose **Save Recipe**, select layers in evaluation order, and enter a name, collection, tags and description. It saves supported static settings, model/Point/Empty roles and weights, seeds, transforms, spacing relationships, masks, Paths/Bands, editable curves and all native Paint coverage, including disabled, empty and orphan areas, holes and fades. Pending Manual edits save without calculating plants. My recipes defaults to **Documents/CyrusScatter/Library**. New format-5 recipes reference immutable `recipe-data-*` payload directories; keep the manifest and its referenced files together. Earlier formats and optional presentation sidecars remain readable.
+Choose **Save Recipe** and select **Scene preset**, **Portable preset** or **Settings only**. Enter a name and optional collection, tags and description. Scene presets save the complete Max setup, including editable geometry, preparation, controllers, instance edits and collected files. Portable/settings recipes save the selected layers in evaluation order, supported static settings, model/Point/Empty roles, weights, seeds, transforms, spacing relationships, masks, Paths/Bands, curves and native Paint coverage. Pending Manual settings save without updating the original placements. Personal recipes use the selected shared Library store; use its export/import commands for transfer. See the short [Scene preset workflow](plans/scene-presets-08751/ARTIST_GUIDE.md).
+
+**Scene preset > Load > Merge** adds an independent setup with its saved receivers and arrangement. Max's standard merge clears Undo history, as the load dialog states. This option currently requires Max 2027, matching system units and the saved objects' required plug-ins. Destination renderer, environment and colour settings follow ordinary Max merge behavior.
 
 Optional PNGs are limited to 1024 pixels per axis and 2 MiB. Choose an existing image or explicitly capture the published viewport. Pending Manual changes require explicit Update-and-capture or saving without a current thumbnail; browsing never renders previews. **Update selected** creates a new revision, **Save Copy** creates another identity, and **Edit details** changes presentation without touching the scene. A changed file after review requires a fresh review. Bundled examples remain read-only; save a personal copy.
 
-**Load onto surface**, double-click or Enter imports supported models/materials, creates a setup when needed and adds new layers to the captured terrain. Existing layers, order and Manual/Live mode remain intact. The explicit Update also applies pending setup edits. Multiple owners require opening Recipes from the intended setup. Explicit missing mesh-channel requirements are explained before adding anything; no saved terrain is substituted. Complete presets transfer Paint contours and path positions from the saved local-XY footprint into the destination footprint. Plant sizes, spacing, brush radius, falloff and path widths convert system units and retain physical dimensions. Terrain Paint presets transfer between single-valued local-XY footprints. Surface-attached Paint presets require matching mesh topology; arbitrary remeshing is not an automatic transfer. Original Paint is preserved. Settings-only exact Paint restoration still requires its compatible receiver.
+For a **Portable preset**, **Load onto surface**, double-click or Enter imports supported models/materials, creates a setup when needed and adds new layers to the captured terrain. Existing layers, order and Manual/Live mode remain intact. The explicit Update also applies pending setup edits. Multiple owners require opening Recipes from the intended setup. Explicit missing mesh-channel requirements are explained before adding anything; no saved terrain is substituted. Portable presets transfer Paint contours and path positions from the saved local-XY footprint into the destination footprint. Plant sizes, spacing, brush radius, falloff and path widths convert system units and retain physical dimensions. Terrain Paint presets transfer between single-valued local-XY footprints. Surface-attached Paint presets require matching mesh topology; arbitrary remeshing is not an automatic transfer. Original Paint is preserved. Settings-only exact Paint restoration still requires its compatible receiver.
 
-One Undo removes the added preset and restores the preceding complete publication. Redo restores the same layers, sources, Paint and placement rows without needing the library files. A setup supports ten populations. The controller's shared viewport budget stays unchanged; its per-layer share adjusts as layers are added.
+For a portable import, one Undo removes the added preset and restores the preceding complete publication. Redo restores the same layers, sources, Paint and placement rows without needing the library files. A setup supports ten populations. The controller's shared viewport budget stays unchanged; its per-layer share adjusts as layers are added.
 
-Save has **Include models, materials, terrain and paths** enabled by default. Supported standalone models use static mesh/Standard-Blinn/PNG adapters. Included terrain captures the evaluated geometry and mesh channels at Save time, including modifier output; it does not store an editable modifier stack. Static spline paths retain their knots, handles and transforms. Complete Paint stays included with its compatible receiver. Package creation runs once on Save, and its progress window reports completion. Unsupported dependencies leave a clearly reported settings recipe rather than claiming a complete ready preset.
+**Portable preset** includes supported static mesh/Standard-Blinn/PNG assets. Included terrain captures evaluated geometry and mesh channels at Save time, including modifier output. Static spline paths retain their knots, handles and transforms. Complete Paint stays included with its compatible receiver. Package creation runs once on Save, and its progress window reports completion. Unsupported dependencies are reported. Use **Scene preset** when the editable Max stack, broader material graph or controllers must travel with the setup; its required plug-ins must also be installed at the destination.
 
 A settings-only recipe must be saved again with its supported assets before direct loading. The old advanced binding dialog is retired from the normal browser. Paint still requires compatible evaluated geometry, frame and saved units; footprints are not automatically reprojected to arbitrary terrain. Field overlays remain off until explicitly enabled.
 
-Complete save rejects authored Scatter Edit deltas, per-instance radius overrides and unsupported parameter controllers rather than omitting them. Stop the brush before saving/importing. The catalog indexes up to 10,000 recipes, with 128 tiles per page, two image jobs and a bounded image cache. Missing previews show placeholders. The [eight bundled examples](../AminScatter/library/README.md) include editable scenes and actual-result thumbnails: meadow, woodland, mountain, painted borders, orchard, hexagonal hillside, four garden rooms and valley moss/rocky crests. Use Load onto surface, or open a copy of the matching scene to inspect the original example.
+Portable format 9 carries supported sparse Scatter Edit records and prepared interactions within its bounds. Use Scene presets for per-instance radius history, complete Edit stacks and animated controllers. Plant interactions still require one Edit modifier per controller; stacked edits can travel with interactions off. Stop the brush before saving/importing. The catalog indexes up to 10,000 recipes, with 128 tiles per page, two image jobs and a bounded image cache. Missing previews show placeholders. The [eight bundled examples](../AminScatter/library/README.md) include editable scenes and actual-result thumbnails: meadow, woodland, mountain, painted borders, orchard, hexagonal hillside, four garden rooms and valley moss/rocky crests. Use Load onto surface, or open a copy of the matching scene to inspect the original example.
 
-**Apply Style** copies selected supported setting groups to the captured layer, keeping receivers, sources and Paint by default. It offers Keep/Saved/New variation and explicit map/target bindings. Identical effective settings create no extra Undo or calculation. **Export portable package** additionally collects supported static standalone meshes, Standard/Blinn materials and PNG maps. Terrain/paths and other external roles still need binding. Direct loading uses independent packaged assets. Typed scene-reuse adapters remain internal and retain their ownership restrictions. Imported bitmap files persist for saved scenes and Redo. XRefs, nested populations, renderer-specific proxies/shaders, material-variant browsing, arbitrary-terrain Paint transfer and general recipe blending remain unsupported. See the [package contract and limits](plans/preset-gallery-improvements/PACKAGE_CONTRACT.md).
+For portable/settings recipes, **Apply Style** copies selected supported setting groups to the captured layer, keeping receivers, sources and Paint by default. It offers Keep/Saved/New variation and explicit map/target bindings. Identical effective settings create no extra Undo or calculation. **Export portable package** additionally collects supported static standalone meshes, Standard/Blinn materials and PNG maps. Terrain/paths and other external roles still need binding. Direct loading uses independent packaged assets. Imported bitmap files persist for saved scenes and Redo. Portable adapters do not support XRefs, nested populations or renderer-specific proxies/shaders. Material-variant browsing, arbitrary-terrain Paint transfer and general recipe blending remain unsupported. See the [portable package contract](plans/preset-gallery-improvements/PACKAGE_CONTRACT.md) and [Scene preset limits](plans/scene-presets-08751/DELIVERY_08751.md).
 
 ## Named settings and curve presets
 

@@ -71,6 +71,10 @@
       },
       {
         "kind": "button",
+        "name": "fastNavigationButton"
+      },
+      {
+        "kind": "button",
         "name": "memoryButton"
       },
       {
@@ -1392,6 +1396,46 @@
         "name": "rootsCheck"
       },
       {
+        "kind": "dropdownlist",
+        "name": "responseList"
+      },
+      {
+        "kind": "spinner",
+        "name": "strengthSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "trunkSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "fixedBaseSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "transitionSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "pruneThresholdSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "pruneAmountSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "neighborsCheck"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "hideAreaList"
+      },
+      {
+        "kind": "spinner",
+        "name": "hideMarginSpin"
+      },
+      {
         "kind": "spinner",
         "name": "gapSpin"
       },
@@ -1454,6 +1498,28 @@
       {
         "kind": "button",
         "name": "cleanColliderLinksButton"
+      }
+    ],
+    "collidersUI": [
+      {
+        "kind": "listbox",
+        "name": "colliderList"
+      },
+      {
+        "kind": "pickbutton",
+        "name": "addButton"
+      },
+      {
+        "kind": "button",
+        "name": "selectedButton"
+      },
+      {
+        "kind": "button",
+        "name": "removeButton"
+      },
+      {
+        "kind": "button",
+        "name": "selectButton"
       }
     ],
     "detailsUI": [

@@ -1,0 +1,14 @@
+{
+  "status": "pass",
+  "before": {
+    "enabled": true,
+    "epoch": 3,
+    "builds": 3
+  },
+  "after": {
+    "enabled": false,
+    "epoch": 3,
+    "builds": 3
+  },
+  "scope": "Disposable fixture only; controller disabled to observe the remaining Max scene. This changes displayed content and is not an identical-work speed comparison."
+}

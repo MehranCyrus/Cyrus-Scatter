@@ -1,0 +1,1 @@
+fileIn @"F:/Cursor/_Cyrus_Apps/CyrusScatter/AminScatter/tools/ui/templates/assets.ms";fileIn @"F:/Cursor/_Cyrus_Apps/CyrusScatter/AminScatter/tools/ui/templates/recipes.ms";CyrusOpenRecipeSave WFRoot (GardenRun+"unused/");CyrusRecipeSaveEditor.recipeName.text="Edited grass 08744"

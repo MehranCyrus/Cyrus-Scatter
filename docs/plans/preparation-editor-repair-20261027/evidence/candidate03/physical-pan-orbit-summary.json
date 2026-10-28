@@ -1,0 +1,72 @@
+{
+  "status": "pass",
+  "scope": "Actual separate Pan and Orbit toolbar choices and mouse drags in the packaged private editor; unchanged source preparation and geometry upload counts.",
+  "states": {
+    "before": {
+      "analyses": 4,
+      "geometry_uploads": 3,
+      "view": {
+        "height": 735,
+        "orbit": false,
+        "pan": [
+          0.0,
+          0.0
+        ],
+        "pan_active": false,
+        "pitch": -0.2,
+        "pivot": [
+          0.07780289649963379,
+          0.024925172328948975,
+          0.8088019448067927
+        ],
+        "span": 2.282857021104031,
+        "width": 784,
+        "yaw": 0.35
+      }
+    },
+    "pan": {
+      "analyses": 4,
+      "geometry_uploads": 3,
+      "view": {
+        "height": 735,
+        "orbit": false,
+        "pan": [
+          -0.310592791986943,
+          0.0931778375960829
+        ],
+        "pan_active": false,
+        "pitch": -0.2,
+        "pivot": [
+          0.07780289649963379,
+          0.024925172328948975,
+          0.8088019448067927
+        ],
+        "span": 2.282857021104031,
+        "width": 784,
+        "yaw": 0.35
+      }
+    },
+    "orbit": {
+      "analyses": 4,
+      "geometry_uploads": 3,
+      "view": {
+        "height": 735,
+        "orbit": false,
+        "pan": [
+          -0.310592791986943,
+          0.0931778375960829
+        ],
+        "pan_active": false,
+        "pitch": -0.07177172842490642,
+        "pivot": [
+          0.07780289649963379,
+          0.024925172328948975,
+          0.8088019448067927
+        ],
+        "span": 2.282857021104031,
+        "width": 784,
+        "yaw": 0.7774275719169785
+      }
+    }
+  }
+}

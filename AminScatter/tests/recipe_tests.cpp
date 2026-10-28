@@ -1,4 +1,5 @@
 #include "recipes.h"
+#include "recipe_authored.h"
 #include "brush.h"
 #include <chrono>
 #include <fstream>
@@ -43,7 +44,17 @@ int main(){std::filesystem::path temporary;try{
     layer["areas"].push_back({{"id","bed"},{"settings",defaults},{"receiverRole",nullptr},{"paint",paint}});
     Json d={{"format","cyrus.planting-recipe"},{"formatVersion",8},{"revision",1},{"presentation",nullptr},{"evaluationContract","CyrusUnified2"},{"sceneSchema",59},{"hostYear",2027},{"id","fixture"},{"name","Complete hillside"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
     validate(d);
-    auto legacyV7=d;legacyV7["formatVersion"]=7;legacyV7["evaluationContract"]="CyrusUnified1";legacyV7["sceneSchema"]=58;
+    d=currentDocument(d);auto old8=d;old8["formatVersion"]=8;old8.erase("authored");check(currentDocument(old8)==d);
+    auto textured=defaults;textured["identificationMode"]=4;validateSettings(textured);textured["identificationMode"]=5;rejected([&]{validateSettings(textured);});
+    auto authored=d;authored["layers"][0]["settings"]["procSourceIDs"]={"source-a"};authored["layers"][0]["settings"]["procSourceNodes"]={nullptr};
+    Json row={{"input","c:1"},{"output","c:1"},{"source","source-a"},{"revision","scale:1"},{"order",0},{"delta",{1,0,0,0,1,0,0,0,1,.25,0,0}},{"deleted",false},{"local",true}};
+    Json edits={{"version",1},{"layers",Json::array({{{"owner","canopy"},{"rows",Json::array({row})}}})}};
+    authored["authored"]["edits"]=Json::array({{{"enabled",true},{"data",edits.dump()}}});validate(authored);check(cyrus::recipeauthored::parseEdits(edits.dump())==edits);
+    auto missingOwner=authored;edits["layers"][0]["owner"]="missing";missingOwner["authored"]["edits"][0]["data"]=edits.dump();rejected([&]{validate(missingOwner);});
+    auto extra=row;extra["execute"]="bad";rejected([&]{auto data=cyrus::recipeauthored::parseEdits(Json{{"version",1},{"layers",Json::array({{{"owner","canopy"},{"rows",Json::array({extra})}}})}}.dump());});
+    rejected([&]{cyrus::recipeauthored::parseEdits("{\"version\":1,\"version\":1,\"layers\":[]}");});
+    auto futureAuth=authored;futureAuth["authored"]["unknown"]=true;rejected([&]{validate(futureAuth);});
+    auto legacyV7=d;legacyV7.erase("authored");legacyV7["formatVersion"]=7;legacyV7["evaluationContract"]="CyrusUnified1";legacyV7["sceneSchema"]=58;
     const auto stripClearance=[](Json& settings){for(const auto* name:{"clearanceSourceIDs","clearanceCopies","clearanceOthers","clearanceExternal","clearanceTargets","clearancePreferred","clearanceFactors","clearanceGapsWU","clearancePlanar"})settings.erase(name);};
     stripClearance(legacyV7["rootSettings"]);stripClearance(legacyV7["layers"][0]["settings"]);stripClearance(legacyV7["layers"][0]["areas"][0]["settings"]);
     validate(legacyV7);check(currentDocument(legacyV7)==d);
@@ -69,7 +80,7 @@ int main(){std::filesystem::path temporary;try{
     auto v5=legacyV7;v5["formatVersion"]=5;
     auto stripImage=[](Json& settings){settings.erase("meshMaskSource");for(const auto* key:{"densityCoordinateMode","densityWrapMode","densityTileXWU","densityTileYWU","densityTileLock","densityRepeatX","densityRepeatY","densityHeading","densityOffsetXWU","densityOffsetYWU","densityUOffset","densityVOffset","densityPatternID","densityPatternRevision","densityResponseSamples","densityResponseGraph","densityMapProvenance","densityFrameBasis","densityFrameOriginWU"})settings.erase(key);};
     stripImage(v5["rootSettings"]);stripImage(v5["layers"][0]["settings"]);stripImage(v5["layers"][0]["areas"][0]["settings"]);
-    validate(v5);check(currentDocument(v5)==d);auto v4=v5;v4["formatVersion"]=4;v4.erase("revision");v4.erase("presentation");
+    validate(v5);check(currentDocument(v5)==currentDocument(d));auto v4=v5;v4["formatVersion"]=4;v4.erase("revision");v4.erase("presentation");
     auto v3=v4;v3["formatVersion"]=3;stripGrid(v3["rootSettings"]);stripGrid(v3["layers"][0]["settings"]);stripGrid(v3["layers"][0]["areas"][0]["settings"]);
     validate(v3);check(currentDocument(v3)==currentDocument(d));check(v3["formatVersion"]==3);
     auto badGrid=v3;badGrid["rootSettings"]["placementMode"]=1;rejected([&]{validate(badGrid);});
@@ -121,7 +132,7 @@ int main(){std::filesystem::path temporary;try{
     const auto old=file(path);rejected([&]{writeNew(path,d);});check(file(path)==old);
     const auto manifest=read(path,false);check(manifest["layers"][0]["areas"][0]["paint"]["payload"].is_object());
     const auto relative=manifest["layers"][0]["areas"][0]["paint"]["payload"]["file"].get<std::string>();check(file(path.parent_path()/pathFromUTF8(relative))==std::string(bytes.begin(),bytes.end()));
-    auto malformed=manifest;malformed["formatVersion"]=9;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
+    auto malformed=manifest;malformed["formatVersion"]=10;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     malformed=manifest;malformed["layers"][0]["areas"][0]["paint"]["payload"]["file"]="../outside.cspaint";put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     put(path.parent_path()/pathFromUTF8(relative),"corrupt");rejected([&]{read(path);});
     // Metadata browsing never reads/hydrates Paint attachments.

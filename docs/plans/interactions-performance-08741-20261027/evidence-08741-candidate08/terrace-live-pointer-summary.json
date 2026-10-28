@@ -1,0 +1,33 @@
+{
+  "scope": "Actual Sky pointer drag in private Max 2027; other host tests were running. Not FPS or controlled before/after timing.",
+  "frames": 99,
+  "held_frames": 4,
+  "held_states": [
+    {
+      "key": [
+        "1L",
+        "[-8000,-3100,-988.841]"
+      ],
+      "qpc_ms": 1105684188.048,
+      "fit_ms": 1048.5225,
+      "affected": 491,
+      "fitted_guides": 3354,
+      "quality_warning_guides": 6
+    },
+    {
+      "key": [
+        "2L",
+        "[-7925.79,-3100,-988.841]"
+      ],
+      "qpc_ms": 1105685438.515,
+      "fit_ms": 1133.6347,
+      "affected": 618,
+      "fitted_guides": 3611,
+      "quality_warning_guides": 4
+    }
+  ],
+  "initial_epoch": "3",
+  "final_epoch": "4",
+  "initial_builds": "3",
+  "final_builds": "4"
+}

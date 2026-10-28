@@ -1,0 +1,22 @@
+{
+  "host": 2027,
+  "modules": {
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\l8741\\install08\\runtime\\r\\0335918b3425\\bin\\AminScatter.dlx",
+      "sha256": "38cf144f560c562cb62d2db5ae32d9a365faedeff6abad22a3dda4c15164917b"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\l8741\\install08\\runtime\\r\\0335918b3425\\bin\\CyrusBrush.dlx",
+      "sha256": "7357d79089f200caca41e7bdaf1e6d3ee935d7b7b7e30b9b50cb6539898e2679"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\l8741\\install08\\runtime\\r\\0335918b3425\\bin\\CyrusBrushStorage.dlh",
+      "sha256": "6c2ddf11ecf0fc9e000e0a313b19f5e168ced6ec3d470982fe5449b6c1e9e747"
+    },
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\l8741\\install08\\runtime\\r\\0335918b3425\\bin\\CyrusScatterEdit.dlm",
+      "sha256": "e8fee5c3fe5dd97be090f1f571e81ef38acbc8ab2f7f6d8db1f1e0dff5a04b3b"
+    }
+  },
+  "script_fingerprint": "aad60292cdd74bb4e72021e58eb95652dc4ebf8aca8210f893434710ac7faf56"
+}

@@ -13,6 +13,14 @@ Pieces inspectPieces(const Snapshot& s,Settings cfg,const std::atomic_bool& canc
     for(unsigned i=0;i<s.faces.size();++i){auto& p=out.parts[out.labels[s.faces[i][0]]];if(p.faces.empty())p.material=s.materials[i];else p.mixed|=p.material!=s.materials[i];p.faces.push_back(i);}return out;
 }
 std::map<unsigned,stem::Json> authoringRows(const stem::Json& data){std::map<unsigned,stem::Json> out;if(data.is_object()&&data.contains("parts"))for(const auto& row:data.at("parts"))out.emplace(row.at("part").get<unsigned>(),row);return out;}
+stem::Json selectedOnlyAuthoring(const Snapshot& source,const Pieces& pieces,const std::vector<unsigned>& selected){
+    if(selected.empty())throw std::runtime_error("Select the leaves or stems to prepare first");
+    std::vector<bool> included(pieces.parts.size());
+    for(auto id:selected){if(id>=included.size()||included[id])throw std::runtime_error("Invalid or duplicate preparation scope piece");included[id]=true;}
+    stem::Json out={{"version",1},{"fingerprint",fingerprint(source)},{"parts",stem::Json::array()}};
+    for(unsigned id=0;id<included.size();++id)out["parts"].push_back({{"part",id},{"role",included[id]?1:3}});
+    return out;
+}
 stem::Json canonicalAuthoring(const Snapshot& s,const Pieces& pieces,const stem::Json& input){
     using J=stem::Json;const auto hash=fingerprint(s);J result={{"version",1},{"fingerprint",hash},{"parts",J::array()}};
     if(input.is_null()||input.empty())return result;

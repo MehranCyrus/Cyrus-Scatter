@@ -5,7 +5,29 @@ static std::shared_ptr<EditDerived> nativeEditInput(const ep::View& input){
     if(input.sourceCohort())for(const auto& source:input.sourceCohort()->sources()){const auto id=receiverWide(source.id);result->sourceIDs.emplace_back(id.begin(),id.end());}
     return result;
 }
+static Matrix3 recipeEditInverse(const Matrix3& a){
+    const auto x=a.GetRow(0),y=a.GetRow(1),z=a.GetRow(2);const double d=double(x.x)*(double(y.y)*z.z-double(y.z)*z.y)-double(x.y)*(double(y.x)*z.z-double(y.z)*z.x)+double(x.z)*(double(y.x)*z.y-double(y.y)*z.x);
+    if(!std::isfinite(d)||std::abs(d)<1e-30)throw std::invalid_argument("Recipe instance frame is singular");Matrix3 m(1);
+    m.SetRow(0,Point3(float((double(y.y)*z.z-double(y.z)*z.y)/d),float((double(x.z)*z.y-double(x.y)*z.z)/d),float((double(x.y)*y.z-double(x.z)*y.y)/d)));
+    m.SetRow(1,Point3(float((double(y.z)*z.x-double(y.x)*z.z)/d),float((double(x.x)*z.z-double(x.z)*z.x)/d),float((double(x.z)*y.x-double(x.x)*y.z)/d)));
+    m.SetRow(2,Point3(float((double(y.x)*z.y-double(y.y)*z.x)/d),float((double(x.y)*z.x-double(x.x)*z.y)/d),float((double(x.x)*y.y-double(x.y)*y.x)/d)));
+    Point3 t;for(int k=0;k<3;++k)t[k]=float(-double(a.GetRow(3).x)*m.GetRow(0)[k]-double(a.GetRow(3).y)*m.GetRow(1)[k]-double(a.GetRow(3).z)*m.GetRow(2)[k]);m.SetRow(3,t);return m;
+}
+static void bindStable(EditLayer&,const std::wstring&,std::shared_ptr<EditDerived>);
+static void bindRecipeLayer(EditLayer& layer,const std::wstring& signature,std::shared_ptr<EditDerived> input){
+    EditLayer next;bindStable(next,signature,input);const auto old=cyrus::editbinding::parse(receiverUTF8(layer.signature));auto descriptor=cyrus::editbinding::parse(receiverUTF8(next.signature));auto ids=ce::make<EditLineages>(*next.lineages);
+    for(const auto& [id,revision]:old.sources)if(!descriptor.sources.count(id))descriptor.sources.emplace(id,revision);
+    std::unordered_map<EditVariant,std::size_t,EditVariantHash,std::equal_to<EditVariant>,ce::Allocator<std::pair<const EditVariant,std::size_t>>> originals;
+    for(std::size_t i=0;i<next.rows.size();++i)originals.emplace(EditVariant{next.rows.get(i).outputId,next.rows.get(i).lineage},i);
+    std::map<std::uint64_t,EditKey> reserved;std::uint64_t last=next.nextOrder;
+    for(std::size_t i=0;i<layer.rows.size();++i){const auto& r=layer.rows.get(i);auto p=reserved.emplace(r.order,r.outputId);if(!p.second&&p.first->second!=r.outputId)throw std::invalid_argument("Conflicting recipe Edit order");last=std::max(last,r.order+1);}
+    for(std::size_t i=0;i<next.rows.size();++i){auto row=next.rows.get(i);auto used=reserved.find(row.order);if(used!=reserved.end()&&used->second!=row.outputId){row.order=last++;next.rows.write(i)=row;}}
+    for(std::size_t i=0;i<layer.rows.size();++i){auto row=layer.rows.get(i);const auto& source=layer.lineages->ids.at(row.lineage-1);std::wstring id(source.begin(),source.end());auto lineage=ids->find(id);if(!lineage){if(ids->ids.size()>=cyrus::editbinding::maxSources)throw std::length_error("Recipe source history is full");ids->ids.emplace_back(id.begin(),id.end());lineage=unsigned(ids->ids.size());}row.lineage=lineage;
+        auto found=originals.find({row.outputId,lineage});if(found==originals.end())next.append(row);else{next.textBytes-=EditLayer::keyBytes(next.rows.get(found->second));next.textBytes+=EditLayer::keyBytes(row);next.rows.write(found->second)=row;}}
+    next.lineages=std::move(ids);next.nextOrder=last;next.signature=receiverWide(cyrus::editbinding::encode(descriptor));next.originals.reset();next.recipeUnbound=false;bindStable(next,signature,std::move(input));layer=std::move(next);
+}
 static void bindStable(EditLayer& layer,const std::wstring& signature,std::shared_ptr<EditDerived> input){
+    if(layer.recipeUnbound){bindRecipeLayer(layer,signature,std::move(input));return;}
     // Reconciliation is a complete successor. The outer publication transaction
     // additionally retains all modifiers if another owner later fails.
     auto l=layer;l.active=true;const auto text=receiverUTF8(signature);
@@ -67,6 +89,7 @@ static void bindStable(EditLayer& layer,const std::wstring& signature,std::share
         else if(l.signature!=signature)l.signature=receiverWide(cyrus::receivers::mergeBinding(receiverUTF8(l.signature),text));
     }
     l.invalid=false;l.input=std::move(input);
+    for(std::size_t i=0;i<l.rows.size();++i)if(l.rows.get(i).recipeLocal){auto row=l.rows.get(i);const auto source=l.source(row);if(source==UINT_MAX)continue;const auto base=l.input->matrix(source);row.delta=recipeEditInverse(base)*row.delta*base;row.recipeLocal=false;if(!finiteEditMatrix(row.delta))throw std::invalid_argument("Invalid rebound recipe transform");l.rows.write(i)=row;}
     auto originals=l.originals;std::shared_ptr<EditOriginals> writable;
     if(!originals){writable=ce::make<EditOriginals>();originals=writable;}
     if(!l.originals)for(std::size_t i=0;i<l.rows.size();++i){const auto& r=l.rows.get(i);l.observeOrder(r.order);if(r.inputId==r.outputId){

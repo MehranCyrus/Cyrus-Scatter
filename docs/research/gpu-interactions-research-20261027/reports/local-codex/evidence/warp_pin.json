@@ -1,0 +1,120 @@
+{
+  "repository": "NVIDIA/warp",
+  "retrieved_utc": "2026-10-27T09:31:10.621500+00:00",
+  "branch": "main",
+  "commit": "03f22841e92364a0632fe1be519db28f40e1de20",
+  "commit_date": "2026-10-27T07:27:01Z",
+  "declared_license_spdx": "Apache-2.0",
+  "tree_truncated": false,
+  "inspected_files": [
+    {
+      "path": "LICENSE.md",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/LICENSE.md",
+      "bytes": 11431,
+      "sha256": "47107323a174bfffeaffdc5b778152c3f9bdf66b2ecec4229542480d5937bcf9"
+    },
+    {
+      "path": "licenses/Gaia-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/Gaia-LICENSE.txt",
+      "bytes": 550,
+      "sha256": "a821d6a983f0d79ffaa5c37500b4a71b116ae27c0ab805d4fdaa48c93e8b2849"
+    },
+    {
+      "path": "licenses/appdirs-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/appdirs-LICENSE.txt",
+      "bytes": 1096,
+      "sha256": "d65ee5b2a36a391e8d6aefceb80ae50063049a5db14bc824ee0f1ebac9970e50"
+    },
+    {
+      "path": "licenses/asset_pixel_jpg-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/asset_pixel_jpg-LICENSE.txt",
+      "bytes": 192,
+      "sha256": "468168681e37c3f26eb6c1733ebd56b690d43311b6b9bd920e4af7eba06135c5"
+    },
+    {
+      "path": "licenses/cubql-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/cubql-LICENSE.txt",
+      "bytes": 11472,
+      "sha256": "73f9a72b376af37a63d1ce98cc5f49a4bc20d3b25f63e73fde36c1b9b745cf8f"
+    },
+    {
+      "path": "licenses/cuda-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/cuda-LICENSE.txt",
+      "bytes": 59852,
+      "sha256": "13706475591754a762162b3a27b17cb543515eeb1b5d0aa7df69b587339b19b8"
+    },
+    {
+      "path": "licenses/dlpack-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/dlpack-LICENSE.txt",
+      "bytes": 11345,
+      "sha256": "3e8f6bc39276a586d60c8c5aaece2ff989262181cf2b3d2a128db58f97a9300c"
+    },
+    {
+      "path": "licenses/fp16-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/fp16-LICENSE.txt",
+      "bytes": 6469,
+      "sha256": "08433296e5f168a86018d2239ac20897f37e1679a931d90fab15d69b856953eb"
+    },
+    {
+      "path": "licenses/libmathdx-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/libmathdx-LICENSE.txt",
+      "bytes": 21043,
+      "sha256": "9d3181174f93b2298bca794725cdb8dc577948ed4da882e4fcd1efd229e70137"
+    },
+    {
+      "path": "licenses/llvm-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/llvm-LICENSE.txt",
+      "bytes": 15141,
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee"
+    },
+    {
+      "path": "licenses/moller-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/moller-LICENSE.txt",
+      "bytes": 1080,
+      "sha256": "9be68f089845408f55ddad3f08868636540678e6a41f6dac41763408452f4a6a"
+    },
+    {
+      "path": "licenses/nanovdb-LICENSE.txt",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/licenses/nanovdb-LICENSE.txt",
+      "bytes": 10448,
+      "sha256": "3125a7bb8bf87acc36169e10579a4fa3d16a12bebc75b8cae3440119df0845b3"
+    },
+    {
+      "path": "warp/native/bvh.cu",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/warp/native/bvh.cu",
+      "bytes": 34379,
+      "sha256": "15fad0fdf07b69f756ff6bacf87281f44273028e54e144bb0def2c7b707c85ed"
+    },
+    {
+      "path": "warp/native/bvh.h",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/warp/native/bvh.h",
+      "bytes": 26010,
+      "sha256": "fc211845311174785f622cd36e15e9218d0aaae92c6976cbd0993dc965501341"
+    },
+    {
+      "path": "warp/native/mesh.h",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/warp/native/mesh.h",
+      "bytes": 86892,
+      "sha256": "d401dfcd849cc530c515601cdc7f10dc468ce53e749305619e0b008b732bbb59"
+    },
+    {
+      "path": "README.md",
+      "url": "https://github.com/NVIDIA/warp/blob/03f22841e92364a0632fe1be519db28f40e1de20/README.md",
+      "bytes": 22199,
+      "sha256": "4eb359740da3af56ba8ddb9e60e431ef255aa82edd8b48b63cbc1c99247ebed8"
+    }
+  ],
+  "candidate_paths": [
+    "asv/benchmarks/bvh_build.py",
+    "warp/examples/benchmarks/benchmark_bvh.py",
+    "warp/native/bvh.cpp",
+    "warp/native/bvh.cu",
+    "warp/native/bvh.h",
+    "warp/native/bvh_cubql.cpp",
+    "warp/native/bvh_cubql.cu",
+    "warp/native/cuBQL/bvh.h",
+    "warp/native/tile_bvh.h",
+    "warp/tests/geometry/test_bvh.py",
+    "warp/tests/geometry/test_grouped_bvh.py"
+  ]
+}

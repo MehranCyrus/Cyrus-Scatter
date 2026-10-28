@@ -1,10 +1,10 @@
 # Cyrus Scatter engineering foundation
 
-The [0.87.1 shared-library delivery](plans/preset-gallery-improvements/DELIVERY_0871.md) records scoped three-host library qualification. F01/F04–F11 apply to captured owners, bounded data-only workers, one host-thread transaction, Manual pending work, unit-safe reuse and atomic catalog publication. The preceding Interactions and build-only installer evidence below retain their original scope; no broader contract acceptance is inferred.
+The [0.87.5.6 responsive-bending delivery](plans/drag-response-08756-20261028/DELIVERY_08756.md) and [performance baseline](PERFORMANCE_BASELINE.md) record the current artist-endorsed interaction direction and scoped Max 2027 evidence. The [0.87.5.1 Library delivery](plans/scene-presets-08751/DELIVERY_08751.md) retains separate qualification. Required contracts, implementation and executed acceptance remain distinct.
 
-Maintained contracts, established 12 October 2026; current navigation reconciled with Scatter 0.87.1/schema 60 on 26 October. **Required behavior is not implementation compliance or release acceptance.** Use the [current Interactions trial](plans/scatter-interactions-garden-20261025/DELIVERY_0870.md) for Max 2027 qualification and remaining limits; the [three-host installer](plans/scatter-interactions-garden-20261025/INSTALLER_0870_COMPATIBILITY.md) adds build-only, untested 2024/2026 payloads. The [0.86.8.7 review/memory delivery](plans/code-quality/DELIVERY_08687.md) and [0.86.0 native delivery](plans/native-placement/DELIVERY_0860.md) retain their original evidence. The [native plan](plans/native-placement/README.md) preserves the migration rationale. Earlier [0.85.4 memory](plans/memory-0854/README.md), [terrace](plans/terrace-0815/PROGRESS.md), [Bands](plans/spline-bands/PROGRESS.md) and [0.79.6 correction](Foundation_0.79.6_2026-10-12/README.md) receipts retain their original builds, hosts and limits. Schema 60 stores prepared contact definitions; schema 59 opens with Interactions off and schema 58 retains its explicit Undoable clearance upgrade. Earlier development-schema migration remains retired. Internal registration identities remain intact.
+Maintained contracts established 12 October 2026; current interaction routing reconciled on 28 October with Scatter 0.87.5.6 / scene 65 / Interactions 15. **Required behavior is not implementation compliance or release acceptance.** Earlier native, memory, Library, Interactions and compatibility receipts retain their exact builds, hosts and limits. Current Max 2027 viewport checks do not extend an older renderer, physical-input or compatibility pass to this build. Preserve original scenes across schema migration and keep internal registration identities intact.
 
-The [architecture](ARCHITECTURE.md) owns implementation detail, the [backlog](BACKLOG.md) owns unresolved work, and the [workflow](AGENT_WORKFLOW.md) owns execution and host isolation. After required startup, read relevant sections without recursively loading history. F01–F09 retain their original meanings; F10–F12 make units, persistence and Analyzer boundaries explicit.
+The [architecture](ARCHITECTURE.md) owns implementation detail, the [backlog](BACKLOG.md) owns unresolved work, and the [workflow](AGENT_WORKFLOW.md) owns execution and host isolation. Read relevant sections without recursively loading history. F01–F12 retain their defined boundaries; historical qualifiers belong with their evidence.
 
 ## Decision and evidence vocabulary
 
@@ -39,6 +39,8 @@ These requirements apply through F02–F08 and F11; they are not claims of unive
 - **Account for real peak memory.** Distinguish authored records, reusable snapshots, candidate/prepared/published buffers, old/new generations during commit, scratch, Undo/Redo retention, render copies and GPU resources. Count shared allocations once; account for retention of a large base buffer by a small view. A count cap, free script heap or process RAM alone is not an exact memory budget.
 - **Preserve artist recovery.** Ordinary parameter Undo, explicit Edit commands and transactional preset loading have different history requirements. Do not clear Undo, silently lower the requested Count or drop authored data to hide a resource problem. Stage a complete successor, publish atomically and retain the previous complete result on failure, with a useful diagnosis.
 - **Keep interaction bounded.** Coalesce relevant changes during expensive interaction where appropriate, while keeping final settings exact. Measure actual wheel/drag/spinner/brush input, panel mount, DPI and callback lifetimes separately from direct function timing. A C++ call or time slice can still block Max.
+
+The [interactive performance baseline](PERFORMANCE_BASELINE.md) applies these requirements to artistic Bend/Trim. Keep detailed validation optional, scope pose updates to relevant dependencies and compare actual presented results while input is held. Future improvements may replace the current algorithm after measurement; a smaller calculation timer alone cannot establish better artist response.
 
 ## Physics and animation extension contract
 
@@ -162,6 +164,8 @@ authored delta and proven committed input while full geometry remains published
 on release. Feedback must not consume pending Manual changes or let an older
 retained presentation clear a newer gesture. The [0.86.9.1 evidence](plans/edit-instances/DELIVERY_08691.md)
 qualifies this path in Max 2027 only; it does not establish production FPS.
+
+The 0.87.5.6 contact path separately presents ready poses during held input. Its bounded per-ticket redraw requests do not consume pending placements or restage geometry. [Scoped held-input ticket measurements](plans/drag-response-08756-20261028/QUALIFICATION_08756.json) establish that path; they do not establish physical gesture latency or general FPS.
 
 **Limits:** 0.79.6 actual native admission/recovery and two-group upload/sibling reuse passed in both hosts. Cold realization, failed resources and changed geometry need work; F05 applies. No presented-FPS measurement. Increased solve/preparation/upload counters on unchanged warm browsing falsify reuse even if pixels match. Physical callbacks/owner switching remain acceptance gates.
 

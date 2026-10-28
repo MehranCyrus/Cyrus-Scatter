@@ -1,0 +1,9 @@
+CyrusScatter GPU research package pre-manifest validation
+========================================================
+required files: PASS (20/20)
+JSON parse: PASS
+relative links: PASS (48 checked)
+source IDs: PASS (32 referenced / 41 in ledger)
+placeholder scan: PASS
+input hashes: PASS
+markdown: 19 files, 3867 lines, about 27070 words

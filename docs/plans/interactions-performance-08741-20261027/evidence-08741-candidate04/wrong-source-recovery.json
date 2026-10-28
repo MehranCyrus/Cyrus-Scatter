@@ -1,0 +1,5 @@
+{
+  "status": "expected_preparation_failure",
+  "message": "-- Runtime error: No reliable tube or ribbon guides were found. Use authored guides, or repair disconnected/nonmanifold source geometry.",
+  "collider_reacts": false
+}

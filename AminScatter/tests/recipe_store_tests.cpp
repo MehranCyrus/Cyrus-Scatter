@@ -21,9 +21,9 @@ int main(){std::filesystem::path folder;try{
     Json paint={{"payload",hex(paintBytes)},{"receiverRole",nullptr},{"radius",1.},{"erase",false},{"frame",nullptr}};
     Json layer={{"id","trees"},{"name","Trees"},{"enabled",true},{"visible",true},{"settings",settings},{"paint",paint},{"areas",Json::array()}};
     Json data={{"format","cyrus.planting-recipe"},{"formatVersion",4},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","entry:fixture"},{"name","First entry"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",settings},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
-    auto current=currentDocument(data);check(current["formatVersion"]==8&&current["revision"]==1&&current["presentation"].is_null());validate(current);
+    auto current=currentDocument(data);check(current["formatVersion"]==9&&current["revision"]==1&&current["presentation"].is_null());validate(current);
     auto bad=data;bad["revision"]=3;rejects([&]{validate(bad);});
-    bad=current;bad["revision"]=0;rejects([&]{validate(bad);});bad=current;bad["formatVersion"]=9;rejects([&]{validate(bad);});
+    bad=current;bad["revision"]=0;rejects([&]{validate(bad);});bad=current;bad["formatVersion"]=10;rejects([&]{validate(bad);});
     Json info={{"category","Garden"},{"tags",Json::array({"trees","paint"})},{"description","Complete authored entry"}};
     folder=std::filesystem::temp_directory_path()/("cyrus-entry-test-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));std::filesystem::create_directory(folder);
     const auto path=folder/"entry.csrecipe.json",image=folder/"input.png";

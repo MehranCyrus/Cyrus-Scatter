@@ -105,6 +105,7 @@ struct PreviewGeometry {
     bool placeholder=false;
     bool reducedBox=false;
     std::vector<std::uint8_t> bandSlots;
+    std::shared_ptr<const struct DeformationPreview> deformation;
     const std::vector<std::array<Point3,3>>& faceData()const{return sharedFaces?*sharedFaces:faces;}
     const std::vector<Matrix3>& instanceData()const{return sharedInstances?*sharedInstances:instances;}
     const std::vector<std::uint8_t>& bandData()const{return sharedBands?*sharedBands:bandSlots;}

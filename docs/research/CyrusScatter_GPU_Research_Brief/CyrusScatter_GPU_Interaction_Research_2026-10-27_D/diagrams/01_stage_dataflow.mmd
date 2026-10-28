@@ -1,0 +1,17 @@
+flowchart LR
+    H[Max host thread\nscene capture + revisions] --> S[Owned immutable snapshots]
+    S --> Q[CPU old/new neighborhood query]
+    Q --> C[Stable-ID compact active lists]
+    C --> B{Measured route}
+    B -->|small/unsupported| CPU[CPU fit + visible validation]
+    B -->|large qualified work| GPU[GPU contact + guide fit]
+    GPU --> R[Compact pose readback or supported shared buffer]
+    CPU --> V[Independent final validation]
+    R --> V
+    V --> P[Private complete successor]
+    P --> K{Revision + device generation still current?}
+    K -->|no| D[Discard + retire after fences]
+    K -->|yes| U[Host-thread atomic publication]
+    U --> VP[Retained viewport\nshared source + pose]
+    U --> RM[CPU canonical materialization\nrenderer / Bake / export]
+    U --> LAST[Last complete result retained]

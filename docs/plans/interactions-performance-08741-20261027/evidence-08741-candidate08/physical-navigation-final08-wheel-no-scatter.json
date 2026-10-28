@@ -1,0 +1,132 @@
+{
+  "status": "pass",
+  "before": {
+    "epoch": 3,
+    "group_builds": 3,
+    "layers": [
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "retained": [
+      "0",
+      "0",
+      "4",
+      "6",
+      "9",
+      "1794",
+      "2049860756",
+      "0",
+      "0",
+      "0",
+      "1",
+      ""
+    ]
+  },
+  "view_before": "(matrix3 [1,0,0] [0,1,0] [0,0,1] [7983.4,3090.46,0])",
+  "begin_qpc_ms": 1106812112.1743,
+  "qpc_minus_wall_ms": -1791957873203.7673,
+  "scope": "Actual wheel input on one Max viewport, with process-wide presentation capture; no input-to-photon claim.",
+  "end_qpc_ms": 1106819301.9482,
+  "end_qpc_minus_wall_ms": -1791957873203.767,
+  "after": {
+    "epoch": 3,
+    "group_builds": 3,
+    "layers": [
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "retained": [
+      "0",
+      "0",
+      "4",
+      "6",
+      "9",
+      "1794",
+      "2049860756",
+      "0",
+      "0",
+      "0",
+      "1",
+      ""
+    ]
+  },
+  "view_after": "(matrix3 [1,0,0] [0,1,0] [0,0,1] [7800.78,3170.48,0])",
+  "view_changed": true,
+  "restore_status": "setTM is unsupported for this orthographic view; reframe the fixture before another comparison"
+}

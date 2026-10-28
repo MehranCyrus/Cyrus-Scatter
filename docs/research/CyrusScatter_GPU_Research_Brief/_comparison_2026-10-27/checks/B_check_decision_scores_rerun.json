@@ -1,0 +1,25 @@
+{
+  "D3D11_interop_sensitivity": {
+    "CUDA": "3.4",
+    "D3D11": "3.7",
+    "OpenCL": "3.3"
+  },
+  "api": {
+    "CUDA": "3.6",
+    "D3D11": "3.1",
+    "OpenCL": "3.5"
+  },
+  "architecture": {
+    "A1_CPU": "4.35",
+    "A2_CPU_shader": "4.45",
+    "A3_local_GPU": "2.9",
+    "A4_full_GPU": "2.65",
+    "A5_proxy_refine": "3.05"
+  },
+  "portability_sensitivity": {
+    "CUDA": "3",
+    "D3D11": "3.4",
+    "OpenCL": "3.8"
+  },
+  "status": "Executed arithmetic of proposed judgment scores; no performance measurement"
+}

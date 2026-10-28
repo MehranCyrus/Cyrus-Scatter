@@ -1,0 +1,281 @@
+{
+  "scope": "Three alternating pairs of one captured terrace numeric fixture on one machine; not Max frame rate. The experiment lazily caches per-guide local triangle vertex indices and increases its per-worker scratch admission bound.",
+  "samples": [
+    {
+      "kind": "shipped",
+      "repeat": 1,
+      "samples": [
+        {
+          "fit_ms": 1121.518,
+          "pose_digest_fnv64": "8996537090028299336",
+          "affected": 466,
+          "hidden_roots": 183,
+          "fitted_guides": 3600,
+          "quality_warning_guides": 5,
+          "mesh_refinement_work": 7323264,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1659.7686,
+          "worker_mesh_point_ms": 1801.809
+        },
+        {
+          "fit_ms": 926.2209,
+          "pose_digest_fnv64": "72420721213607003",
+          "affected": 376,
+          "hidden_roots": 231,
+          "fitted_guides": 1895,
+          "quality_warning_guides": 3,
+          "mesh_refinement_work": 6058788,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1388.0560999999998,
+          "worker_mesh_point_ms": 1378.0328
+        },
+        {
+          "fit_ms": 1004.1496,
+          "pose_digest_fnv64": "15730528335635250183",
+          "affected": 377,
+          "hidden_roots": 199,
+          "fitted_guides": 1939,
+          "quality_warning_guides": 4,
+          "mesh_refinement_work": 6231487,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1464.6300000000003,
+          "worker_mesh_point_ms": 1509.5353999999998
+        }
+      ]
+    },
+    {
+      "kind": "experiment",
+      "repeat": 1,
+      "samples": [
+        {
+          "fit_ms": 1217.6194,
+          "pose_digest_fnv64": "8996537090028299336",
+          "affected": 466,
+          "hidden_roots": 183,
+          "fitted_guides": 3600,
+          "quality_warning_guides": 5,
+          "mesh_refinement_work": 7323264,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1818.2818000000004,
+          "worker_mesh_point_ms": 1932.2888
+        },
+        {
+          "fit_ms": 960.1546,
+          "pose_digest_fnv64": "72420721213607003",
+          "affected": 376,
+          "hidden_roots": 231,
+          "fitted_guides": 1895,
+          "quality_warning_guides": 3,
+          "mesh_refinement_work": 6058788,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1418.2552000000007,
+          "worker_mesh_point_ms": 1391.3797999999997
+        },
+        {
+          "fit_ms": 1005.0326,
+          "pose_digest_fnv64": "15730528335635250183",
+          "affected": 377,
+          "hidden_roots": 199,
+          "fitted_guides": 1939,
+          "quality_warning_guides": 4,
+          "mesh_refinement_work": 6231487,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1462.8086999999998,
+          "worker_mesh_point_ms": 1477.3531999999996
+        }
+      ]
+    },
+    {
+      "kind": "experiment",
+      "repeat": 2,
+      "samples": [
+        {
+          "fit_ms": 1131.4962,
+          "pose_digest_fnv64": "8996537090028299336",
+          "affected": 466,
+          "hidden_roots": 183,
+          "fitted_guides": 3600,
+          "quality_warning_guides": 5,
+          "mesh_refinement_work": 7323264,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1669.0922000000005,
+          "worker_mesh_point_ms": 1777.7023
+        },
+        {
+          "fit_ms": 959.5169,
+          "pose_digest_fnv64": "72420721213607003",
+          "affected": 376,
+          "hidden_roots": 231,
+          "fitted_guides": 1895,
+          "quality_warning_guides": 3,
+          "mesh_refinement_work": 6058788,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1449.6242000000002,
+          "worker_mesh_point_ms": 1412.7435
+        },
+        {
+          "fit_ms": 1004.7022,
+          "pose_digest_fnv64": "15730528335635250183",
+          "affected": 377,
+          "hidden_roots": 199,
+          "fitted_guides": 1939,
+          "quality_warning_guides": 4,
+          "mesh_refinement_work": 6231487,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1469.7018000000003,
+          "worker_mesh_point_ms": 1486.8128000000002
+        }
+      ]
+    },
+    {
+      "kind": "shipped",
+      "repeat": 2,
+      "samples": [
+        {
+          "fit_ms": 1075.5883,
+          "pose_digest_fnv64": "8996537090028299336",
+          "affected": 466,
+          "hidden_roots": 183,
+          "fitted_guides": 3600,
+          "quality_warning_guides": 5,
+          "mesh_refinement_work": 7323264,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1597.0496,
+          "worker_mesh_point_ms": 1726.8776999999995
+        },
+        {
+          "fit_ms": 900.2909,
+          "pose_digest_fnv64": "72420721213607003",
+          "affected": 376,
+          "hidden_roots": 231,
+          "fitted_guides": 1895,
+          "quality_warning_guides": 3,
+          "mesh_refinement_work": 6058788,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1339.7768999999996,
+          "worker_mesh_point_ms": 1328.5580999999997
+        },
+        {
+          "fit_ms": 1030.7988,
+          "pose_digest_fnv64": "15730528335635250183",
+          "affected": 377,
+          "hidden_roots": 199,
+          "fitted_guides": 1939,
+          "quality_warning_guides": 4,
+          "mesh_refinement_work": 6231487,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1500.8074000000001,
+          "worker_mesh_point_ms": 1567.8655999999999
+        }
+      ]
+    },
+    {
+      "kind": "shipped",
+      "repeat": 3,
+      "samples": [
+        {
+          "fit_ms": 1083.812,
+          "pose_digest_fnv64": "8996537090028299336",
+          "affected": 466,
+          "hidden_roots": 183,
+          "fitted_guides": 3600,
+          "quality_warning_guides": 5,
+          "mesh_refinement_work": 7323264,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1603.4648,
+          "worker_mesh_point_ms": 1734.9308999999998
+        },
+        {
+          "fit_ms": 876.5191,
+          "pose_digest_fnv64": "72420721213607003",
+          "affected": 376,
+          "hidden_roots": 231,
+          "fitted_guides": 1895,
+          "quality_warning_guides": 3,
+          "mesh_refinement_work": 6058788,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 1319.9066999999998,
+          "worker_mesh_point_ms": 1298.8040999999998
+        },
+        {
+          "fit_ms": 1285.9204,
+          "pose_digest_fnv64": "15730528335635250183",
+          "affected": 377,
+          "hidden_roots": 199,
+          "fitted_guides": 1939,
+          "quality_warning_guides": 4,
+          "mesh_refinement_work": 6231487,
+          "exact_mesh_scratch_bound_bytes": 19200000,
+          "worker_mesh_face_ms": 2007.7018999999996,
+          "worker_mesh_point_ms": 2013.5987999999993
+        }
+      ]
+    },
+    {
+      "kind": "experiment",
+      "repeat": 3,
+      "samples": [
+        {
+          "fit_ms": 1117.7245,
+          "pose_digest_fnv64": "8996537090028299336",
+          "affected": 466,
+          "hidden_roots": 183,
+          "fitted_guides": 3600,
+          "quality_warning_guides": 5,
+          "mesh_refinement_work": 7323264,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1693.7695999999999,
+          "worker_mesh_point_ms": 1785.4279000000001
+        },
+        {
+          "fit_ms": 945.3796,
+          "pose_digest_fnv64": "72420721213607003",
+          "affected": 376,
+          "hidden_roots": 231,
+          "fitted_guides": 1895,
+          "quality_warning_guides": 3,
+          "mesh_refinement_work": 6058788,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1413.1048000000003,
+          "worker_mesh_point_ms": 1365.6338
+        },
+        {
+          "fit_ms": 999.8231,
+          "pose_digest_fnv64": "15730528335635250183",
+          "affected": 377,
+          "hidden_roots": 199,
+          "fitted_guides": 1939,
+          "quality_warning_guides": 4,
+          "mesh_refinement_work": 6231487,
+          "exact_mesh_scratch_bound_bytes": 28800000,
+          "worker_mesh_face_ms": 1495.4234000000004,
+          "worker_mesh_point_ms": 1496.3626
+        }
+      ]
+    }
+  ],
+  "median_fit_ms": {
+    "shipped": [
+      1083.812,
+      900.2909,
+      1030.7988
+    ],
+    "experiment": [
+      1131.4962,
+      959.5169,
+      1004.7022
+    ]
+  },
+  "median_worker_mesh_face_ms": {
+    "shipped": [
+      1603.4648,
+      1339.7768999999996,
+      1500.8074000000001
+    ],
+    "experiment": [
+      1693.7695999999999,
+      1418.2552000000007,
+      1469.7018000000003
+    ]
+  }
+}

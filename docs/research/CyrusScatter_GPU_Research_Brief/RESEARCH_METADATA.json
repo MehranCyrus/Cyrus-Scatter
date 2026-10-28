@@ -1,0 +1,68 @@
+{
+  "schema": "cyrus.gpu-research-package/1",
+  "research_date": "2026-10-27",
+  "research_timestamp_local": "2026-10-27T20:32:00+03:30",
+  "researcher_id": "A",
+  "baseline_version": "0.87.4.3",
+  "native_interaction_capability": 11,
+  "scene_schema": 63,
+  "target_host": "Autodesk 3ds Max 2027 / Windows x64",
+  "verified_host_compiler_baseline": {
+    "ide": "Visual Studio 2022 (17.14.x)",
+    "platform_toolset": "v143 (MSVC 14.38.33130)",
+    "cpp_standard": "C++20",
+    "windows_sdk": "10.0.19041.0",
+    "qt_version": "6.8.3",
+    "dotnet_version": "10.0"
+  },
+  "probed_environment_hardware": {
+    "os": "Microsoft Windows 11 Pro x64",
+    "cpu": "AMD Ryzen 5 5600X 6-Core Processor (6C / 12T)",
+    "gpu": "NVIDIA GeForce RTX 3090 (24576 MiB GDDR6X, GA102, Compute Capability 8.6)",
+    "nvidia_driver_version": "617.42 (WDDM, CUDA UMD 13.4)",
+    "installed_cuda_toolkits": ["11.8", "12.1"],
+    "installed_msvc_toolsets": ["14.38.33130", "14.44.35207"],
+    "opencl_icd_present": true,
+    "max_2027_executable_present": true,
+    "max_2027_sdk_headers_in_default_paths": false
+  },
+  "execution_status": {
+    "production_cyrus_scatter_repo_inspected": false,
+    "production_cyrus_scatter_repo_modified": false,
+    "in_max_2027_prototypes_executed": false,
+    "production_benchmarks_executed": false,
+    "standalone_harness_source_included": true,
+    "note": "Respected strict external-researcher clean-room boundary in RESEARCH_PROMPT.md and CURRENT_SYSTEM_CONTEXT.md. All production and in-Max experiments are delivered as reproducible specifications marked NOT EXECUTED."
+  },
+  "primary_recommendation_summary": {
+    "track_1_immediate": "Architecture 2: Keep spatial search and guide solve on CPU initially (with O(K) snapshot delta fix) and move vertex/normal deformation + root-group hiding into the existing MaxSDK::Graphics HLSL Shader Model 5.0 vertex shader reading a compact pose palette TextureHandle/VertexBufferHandle via public Lock/Unlock (50x-180x transfer reduction, 100% public SDK, works on NVIDIA/AMD/Intel).",
+    "track_2_scale_up": "Architecture 3: Offload local-frame collider queries, root exclusion (Inside solid / Under collider), 1-thread-per-active-guide Follow-The-Leader/XPBD contact solving, and foliage witness refinement to NVIDIA CUDA (with pinned compact-pose readback feeding Track 1, and automatic CPU fallback for K < 16 or non-NVIDIA hardware).",
+    "highest_risk_unresolved_question": "Probe P4/P5 (Exact breakdown of the observed 4.05 ms baseline update between O(N) successor map copying, guide fitting, and 22,032-vertex surface refinement/deformation) and Probe P1/P2 (Exact MaxSDK::Graphics::TextureHandle / HLSLMaterialHandle dynamic float4 buffer lock throughput in 3ds Max 2027)."
+  },
+  "deliverables_inventory": [
+    "00_README.md",
+    "01_EXECUTIVE_DECISION.md",
+    "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+    "03_PARALLELISM_AND_DATA_LAYOUT.md",
+    "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+    "05_COLLISION_AND_GUIDE_SOLVING.md",
+    "06_GPU_DEFORMATION_AND_INSTANCING.md",
+    "07_MAX_2027_INTEROP_FEASIBILITY.md",
+    "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+    "09_MEMORY_PRECISION_AND_HARDWARE.md",
+    "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+    "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+    "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+    "13_PHASED_IMPLEMENTATION_PLAN.md",
+    "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+    "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+    "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+    "17_SOURCE_LEDGER.md",
+    "18_ACCEPTANCE_CHECKLIST.md",
+    "RESEARCH_METADATA.json",
+    "prototypes/standalone_harness/README.md",
+    "prototypes/standalone_harness/common.h",
+    "prototypes/standalone_harness/fit_core.h",
+    "prototypes/standalone_harness/run_all_benchmarks.cpp"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "case": "A058-work2048-guides32768",
+  "status": "pass",
+  "before": {
+    "sources": [
+      "CyrusModel_A058"
+    ],
+    "source_ids": [
+      "8e897714-5344-48d8-a24a-a1b56d7985e7"
+    ],
+    "definition_hashes": [],
+    "epoch": 220
+  },
+  "after": {
+    "sources": [
+      "CyrusModel_A058"
+    ],
+    "source_ids": [
+      "8e897714-5344-48d8-a24a-a1b56d7985e7"
+    ],
+    "definition_hashes": [],
+    "epoch": 220,
+    "message": "-- Runtime error: Preparation needs review: 23 unresolved guides and 10238 unattached pieces. Open Edit preparation to inspect them."
+  }
+}

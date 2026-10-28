@@ -1,0 +1,14 @@
+{
+  "schema": "cyrus.delivery-facts/1",
+  "status": "scoped_pass",
+  "version": "0.87.6",
+  "max_year": 2027,
+  "scene_schema": 65,
+  "recipe_format": 9,
+  "edit_storage": 3,
+  "interactions": 15,
+  "qualification": "Max 2027 UI/settings smoke and 23 focused native suites; Max 2024/2026 compiled and package checked only.",
+  "qualification_receipt": "docs/plans/ui-settings-0876-20261028/QUALIFICATION.json",
+  "qualification_sha256": "0bdecf2d46cc8cc7c85c8fdd2934d5280fed9562f961b33cfd81e47c80428a5a",
+  "package_sha256": "0dd193dc54accf658fad54ce339a1e00a7b401e2621f4f3c51c602bac2547a89"
+}

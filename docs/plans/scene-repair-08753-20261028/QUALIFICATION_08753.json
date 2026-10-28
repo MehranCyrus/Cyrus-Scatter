@@ -1,0 +1,658 @@
+{
+  "schema": "cyrus.scene-repair-delivery/1",
+  "version": "0.87.5.3",
+  "date": "2026-10-28",
+  "max_year": 2027,
+  "status": "qualified_with_recorded_limits",
+  "baseline": {
+    "version": "0.87.5.2",
+    "branch": "codex/workflow-0.75",
+    "head": "d24b880816ab367874f417f79d1253aafa9a60f5",
+    "path": "build/interactions08753-20261028-01/starting-state.json",
+    "sha256": "d4d0a021f11ca44bf685dced488f93179105396bcd70a245c3599998106b5e33"
+  },
+  "scope": "Test22 source workflow, evaluated source scale, Edit binding, bounded exact render construction, CPU work reuse and explicit retained viewport navigation",
+  "capabilities": {
+    "interactions": 13,
+    "source_transform": 2,
+    "source_command_undo": 1,
+    "edit": 4,
+    "edit_storage": 3,
+    "scene_schema": 63,
+    "portable_recipe": 9,
+    "scene_preset_metadata": 1
+  },
+  "native": {
+    "sources_verified": 630,
+    "tests_passed": 62,
+    "path": "build/interactions08753-20261028-01/native-09/receipt.json",
+    "sha256": "65c7c10eadde2e346da4a9857dac73420960aa58d9fb6c944b5aa2e08ad48058"
+  },
+  "package": {
+    "path": "dist/CyrusScatter-0.87.5.3-20261028/CyrusScatter-0.87.5.3-Max2027.mzp",
+    "sha256": "a19e3fb15838fe6106531a0f1220272f64e7bebf90978ea57dd4058baa6a39af",
+    "bytes": 2718773,
+    "files": {
+      "AminScatter.dlx": "5446e7f7418e6b10bcd7bfe67fae584a8e0dd4b0f690d7cf8351fcc776fca13a",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "Clipper2-NOTICE.txt": "c38889c3df3eaa6d40eb90abf6ca3bdc2260395596d5c6895ea974708372df74",
+      "CyrusBrush.dlx": "65b2479bdf06e05a7286362b854420796475583479b206914978058f36eb5a3a",
+      "CyrusBrushStorage.dlh": "bbbf4063bc7852220e05a4b81e623bcbe62b0cd426e86de90c410b2c273c1dbf",
+      "CyrusGallery.dll": "7d713748f33aa04c01a67fd05a2f9f11b86474224e3f6429d65d47b5d33769db",
+      "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+      "CyrusScatter.mcr": "87407c223ccbf4525f945cced08443ded2ecf8f14a058ec94e09a10bb036fe60",
+      "CyrusScatter.ms": "aa18771452d9a07ba13d0d202d0152b48047665db455e07755055f4bb246ad15",
+      "CyrusScatterEdit.dlm": "1f634480d81ce44b6f7fa313589613b0b051b151ad593b96ca56ad79e495f8ba",
+      "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+      "ExternalContent.json": "f72affef5fcb35da414ceab45c8837e0a7d63c988ff7f1a9ec41a9c99affc1ab",
+      "INSTALL.txt": "4d60b83a988a3f7c67b666e4bce33abf63c2d90846cc254bd619e8d61766a71d",
+      "InstallInventory.txt": "863d4f297d169e9ff22922b777adde8eb1d31c4a12a5ad23360ef25baa62327e",
+      "LibraryFiles.ms": "3de699fea1621d245576077c5654f57fb4e1394c23e4a78db6962f0cea88e4a0",
+      "Patterns/README.md": "0a303716847cf3c27a0610e5cc10554a309725f3064943a5f726d447ae690c83",
+      "Patterns/catalog.tsv": "6707561a06ac479ca88c4b2ce6c5ff2c4a2d003d64572247cb83fb76582a4926",
+      "Patterns/index.json": "f6ba0e7ef8925ba581be3951376eeef82df140065949639e415feb72f485fd8f",
+      "Patterns/soft-patches.png": "22af224c4e2a1637081a084de6ea23fba33c4fdeb799964cb91c9fb6f3b15eee",
+      "Patterns/uniform.png": "e7c28b295e96bfa795c6b3d89eb85aadb01c35801bee946ef8cbd6dc1122c2fc",
+      "Patterns/wide-bands.png": "8c83f7377e1a4004e258f1525a16fa9e6733b3ec0876a1332bd82b56d8238d2d",
+      "SurfaceGeodesic-LICENSE.txt": "462dd519f4de04640a71a7472989802e01cf160657648d25d659665be6384e52",
+      "SurfaceGeodesic-NOTICE.txt": "bd0314ed47bcfac23de2c7801a9f7b7ec19374df4f7b035cbd7fd9dee9ce5c54",
+      "Uninstall.ms": "8cba70077899000c5c2eba6c2e7d965f9d43d33dd588349cd7529f300f1fe72d",
+      "install.ms": "8f04fa96256b6f17da59761f4501a1a8f3c764c25db4c6fcfbfbb59ab00d5043",
+      "libjpeg-turbo-IJG-README.txt": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "libjpeg-turbo-LICENSE.txt": "ba6bceebcba0fdd35488477c2cca8c4632ce82c74dbfbc87d886ce6fc4433579",
+      "libjpeg-turbo-NOTICE.txt": "9e1b3353e71b8615311f81a469ee2d0e9be12f52188186dd6fbd4a66fce1a264",
+      "mzp.run": "c26ace4b8d6be2335e659bf0f10e3b9ff46c37eaa6d65ffd68c86cb226506f47",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "embedded_script_fingerprint": "0b14f7ceb3d40a58df24534a3decef8caf4de173911a9f1d75a3d900860808c3"
+  },
+  "installer": {
+    "status": "pass",
+    "scope": "Exact MZP installer engine in a disposable profile; Max UI and installed startup are separate checks",
+    "archive_sha256": "a19e3fb15838fe6106531a0f1220272f64e7bebf90978ea57dd4058baa6a39af",
+    "release": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e",
+    "script_sha256": "aa18771452d9a07ba13d0d202d0152b48047665db455e07755055f4bb246ad15",
+    "native_sha256": "5446e7f7418e6b10bcd7bfe67fae584a8e0dd4b0f690d7cf8351fcc776fca13a"
+  },
+  "loaded_identities": [
+    {
+      "host": 2027,
+      "modules": {
+        "AminScatter.dlx": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\AminScatter.dlx",
+          "sha256": "5446e7f7418e6b10bcd7bfe67fae584a8e0dd4b0f690d7cf8351fcc776fca13a"
+        },
+        "CyrusBrush.dlx": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\CyrusBrush.dlx",
+          "sha256": "65b2479bdf06e05a7286362b854420796475583479b206914978058f36eb5a3a"
+        },
+        "CyrusBrushStorage.dlh": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\CyrusBrushStorage.dlh",
+          "sha256": "bbbf4063bc7852220e05a4b81e623bcbe62b0cd426e86de90c410b2c273c1dbf"
+        },
+        "CyrusScatterEdit.dlm": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\CyrusScatterEdit.dlm",
+          "sha256": "1f634480d81ce44b6f7fa313589613b0b051b151ad593b96ca56ad79e495f8ba"
+        }
+      },
+      "script_fingerprint": "0b14f7ceb3d40a58df24534a3decef8caf4de173911a9f1d75a3d900860808c3"
+    },
+    {
+      "host": 2027,
+      "modules": {
+        "AminScatter.dlx": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\AminScatter.dlx",
+          "sha256": "5446e7f7418e6b10bcd7bfe67fae584a8e0dd4b0f690d7cf8351fcc776fca13a"
+        },
+        "CyrusBrush.dlx": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\CyrusBrush.dlx",
+          "sha256": "65b2479bdf06e05a7286362b854420796475583479b206914978058f36eb5a3a"
+        },
+        "CyrusBrushStorage.dlh": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\CyrusBrushStorage.dlh",
+          "sha256": "bbbf4063bc7852220e05a4b81e623bcbe62b0cd426e86de90c410b2c273c1dbf"
+        },
+        "CyrusScatterEdit.dlm": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08753-20261028-01\\installer-09\\runtime\\r\\4fb2c5495b7e\\bin\\CyrusScatterEdit.dlm",
+          "sha256": "1f634480d81ce44b6f7fa313589613b0b051b151ad593b96ca56ad79e495f8ba"
+        }
+      },
+      "script_fingerprint": "0b14f7ceb3d40a58df24534a3decef8caf4de173911a9f1d75a3d900860808c3"
+    }
+  ],
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.87.5.3",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 365,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "aa18771452d9a07ba13d0d202d0152b48047665db455e07755055f4bb246ad15",
+    "preserved_files": [],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "host_checks": [
+    {
+      "name": "sources-setup",
+      "path": "build/interactions08753-20261028-01/host-11/sources-setup.json",
+      "sha256": "14671cbf07cd056c5f12f7bbe00192fe887c743ab18a5c791699dd7ee60970da"
+    },
+    {
+      "name": "sources-remove-models",
+      "path": "build/interactions08753-20261028-01/host-11/sources-remove-models.json",
+      "sha256": "a5e0046ae79ccbf70e9929ea2f7a31a10a94573d268e2662bb11c50703956f42"
+    },
+    {
+      "name": "sources-add-models",
+      "path": "build/interactions08753-20261028-01/host-11/sources-add-models.json",
+      "sha256": "861ef787a89a77a1206fa71a1bf9bf9b05804b73bfffb4e38664200714a1eae3"
+    },
+    {
+      "name": "sources-missing-row",
+      "path": "build/interactions08753-20261028-01/host-11/sources-missing-row.json",
+      "sha256": "47f7c5fb88b83009c0ff656a35756b35c321e2349472b070a8563d5b5fe407ab"
+    },
+    {
+      "name": "sources-stale-selection",
+      "path": "build/interactions08753-20261028-01/host-11/sources-stale-selection.json",
+      "sha256": "79c4d85a475fc2d79b4f894c332857fa5c05c5c989630606fe44478296d39795"
+    },
+    {
+      "name": "sources-manual",
+      "path": "build/interactions08753-20261028-01/host-11/sources-manual.json",
+      "sha256": "e64341e5c79b86fd13c92939b9e799d7be379de551c58aba5fda0b9bd9a0fc56"
+    },
+    {
+      "name": "sources-placeholder-empty",
+      "path": "build/interactions08753-20261028-01/host-11/sources-placeholder-empty.json",
+      "sha256": "aada223e5a6f4e2018df06685caf4cbaa93114f9550fd013bb22b41dfffdb027"
+    },
+    {
+      "name": "sources-placeholder-point",
+      "path": "build/interactions08753-20261028-01/host-11/sources-placeholder-point.json",
+      "sha256": "3738f45bf93dbe000e38c4f7fb24adb563e462372ec9adc36f99113719fa8ada"
+    },
+    {
+      "name": "library-native-add",
+      "path": "build/interactions08753-20261028-01/host-11/library-native-add.json",
+      "sha256": "3dfd1881d4bc8539cac1adf93aba599d1cd7ae7a4704feac4096648f42cb37c2"
+    },
+    {
+      "name": "library-native-observe",
+      "path": "build/interactions08753-20261028-01/host-11/library-native-observe.json",
+      "sha256": "00bbdc13447d1ed9c292337f4c8b25b7b788193d67006d63c1e10cf3d0e9eb69"
+    },
+    {
+      "name": "scene-native-save",
+      "path": "build/interactions08753-20261028-01/host-11/scene-native-save.json",
+      "sha256": "5688a47a67e467a487a6ea771fe1a8b632ea810478c88015120128ef0bd84e63"
+    },
+    {
+      "name": "scene-native-ready",
+      "path": "build/interactions08753-20261028-01/host-11/scene-native-ready.json",
+      "sha256": "eeb6f83e23d88d1c9317da11adb63f6971f7f7eb7d3a54a44b4b2ac64c5d7b2a"
+    },
+    {
+      "name": "scene-native-merge",
+      "path": "build/interactions08753-20261028-01/host-11/scene-native-merge.json",
+      "sha256": "b37e9fb5ba175cb46acc4331ee6effc35f531383b704b99f8d114be252525c6b"
+    },
+    {
+      "name": "scale-setup",
+      "path": "build/interactions08753-20261028-01/host-11/scale-setup.json",
+      "sha256": "7bcd0035f2c7847464138213b298fe1f282a06599a263b0fc235d3c19e9d313b"
+    },
+    {
+      "name": "scale-model",
+      "path": "build/interactions08753-20261028-01/host-11/scale-model.json",
+      "sha256": "f6c5e66d2546b6760368016f6d662bdbf238b54e7a0a6e697e1d668f142f5253"
+    },
+    {
+      "name": "scale-source-node",
+      "path": "build/interactions08753-20261028-01/host-11/scale-source-node.json",
+      "sha256": "26825eecca44054e5b2d4268663c7b39095c82037ed364d50bcad53e9d8d0f84"
+    },
+    {
+      "name": "scale-save-reload",
+      "path": "build/interactions08753-20261028-01/host-11/scale-save-reload.json",
+      "sha256": "70353e18c209fc9149a81b7d4fabfa6d48caa5a5ee0fd68a39a176a7c33a31f7"
+    },
+    {
+      "name": "render-small",
+      "path": "build/interactions08753-20261028-01/host-11/render-small.json",
+      "sha256": "f8360208e15383f49d450c74f3554951003b235fd954ad67855dd8cd1f4acced"
+    },
+    {
+      "name": "render-dense",
+      "path": "build/interactions08753-20261028-01/host-11/render-dense.json",
+      "sha256": "35b97aece679f3dd433a743a7729a85a0f008f80113544f0d93b6fa49978d230"
+    },
+    {
+      "name": "dense-move",
+      "path": "build/interactions08753-20261028-01/host-11/dense-move.json",
+      "sha256": "5faa45b13250f29e5b2c723251cd60f74dc596126c219626d54b7f95f1aa96f7"
+    },
+    {
+      "name": "dense-under",
+      "path": "build/interactions08753-20261028-01/host-11/dense-under.json",
+      "sha256": "9a31b53f95e78d4f828372760dc27f88ae94f4dd2a3276230fc13dca44a0b131"
+    },
+    {
+      "name": "drag-check-final",
+      "path": "build/interactions08753-20261028-01/host-11/drag-check-final.json",
+      "sha256": "da6e298b5ff7600c54e1cfcefa6c94bd94156f3fd308ff7f81d646c23fab4f8f"
+    },
+    {
+      "name": "reprepare-bindings",
+      "path": "build/interactions08753-20261028-01/host-11/reprepare-bindings.json",
+      "sha256": "05054675b4638de5c9b380510c87a7407174f010f53f066a901eb6cd8c632afd"
+    },
+    {
+      "name": "nav-arm-final",
+      "path": "build/interactions08753-20261028-01/host-11/nav-arm-final.json",
+      "sha256": "8a4c956e7da3ad88f4597ce179a0a1aa63abaf5fc28bd41e22129fe95cbc955a"
+    },
+    {
+      "name": "journal-native-action-empty",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-action-empty-4dc0e10a73f4440b9fa26eef42f715c7.json",
+      "sha256": "3d104c493d35e156d6ace7f7f8e4190e4ab047d9ac0ec1253c293d94fbf38583"
+    },
+    {
+      "name": "journal-native-action-fast",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-action-fast-cb08620f9a1f499b8334e65a89f6e2c6.json",
+      "sha256": "20b5fc55377c7cb7cce99ce5cdfd585c0e9ec578263b11e4e3ad4c2f1d4e0aca"
+    },
+    {
+      "name": "journal-native-action-model",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-action-model-ae53b4eae961401580271b53ace22b0b.json",
+      "sha256": "1518c8fdc07df1fc3a1beca5b2d4ab1250625d0fa8f51bf85c23671e2dd87715"
+    },
+    {
+      "name": "journal-native-action-offset",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-action-offset-b1c27cd4d7014eef96a165845dc74824.json",
+      "sha256": "1a82378544b6ac0f4026754756b70bfeae4d73c9a07863bddf1a53612d67339a"
+    },
+    {
+      "name": "journal-native-action-point",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-action-point-74a94833fb204591b55a14c6d4a4bceb.json",
+      "sha256": "422fb7711eb6949b29742db0facbe0a76acd6a684c21663e8432b19928264d69"
+    },
+    {
+      "name": "journal-native-action-remove",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-action-remove-088a3a241f04480db9134c85982a0370.json",
+      "sha256": "e375aae8eebe0586cda404b7ce8a9ff622a7af2f89b5b33f0fd666fb1a81dc9c"
+    },
+    {
+      "name": "journal-native-action-scale",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-action-scale-35541e281c74438cb38881c4b95a9df7.json",
+      "sha256": "54e6f1b24cde6d81d924c7cd1875d3b1999ce27c73c96cebbe7d1d2b037cef00"
+    },
+    {
+      "name": "journal-native-cancel",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-cancel-1b92857b28ea48f4bdaea71baea4ab39.json",
+      "sha256": "27771b8dbd7bf3d4ddfcf44e2d994b9dc5b0435e151c34b94cd168a03ed3a708"
+    },
+    {
+      "name": "journal-native-nested-cancel",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-nested-cancel-6559366f357345a3b3ccd590a50f2aa9.json",
+      "sha256": "4b0e831a00e4427b3792023074cd8b478acb50ebc961b08fcc026b98eac9a6b2"
+    },
+    {
+      "name": "journal-native-observe",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-observe-4bf71b251e6043fbbe44e249cb07fe2a.json",
+      "sha256": "d98e1316ac60e5430437578efe816608bff1e03d0859bb41713e6054057a7f0c"
+    },
+    {
+      "name": "journal-native-picker-baseline",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-picker-baseline-7efec89263e94c7c98d2fdb95421248e.json",
+      "sha256": "760376b6fc284c4664c23b7fc5777982cf02a86f8dfff0eac16bf969c21692e9"
+    },
+    {
+      "name": "journal-native-picker-ready",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-picker-ready-6aae4a6d8b68475db6e43eca9841a792.json",
+      "sha256": "4938045f0c0d9688d1b939c0f49823c68d5cac8e0f1eb1a209eb5b65eadc8e5f"
+    },
+    {
+      "name": "journal-native-picker-ready",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-picker-ready-e9dcaeebd70b482aa807e205f8ca0772.json",
+      "sha256": "865dcad7fc244ba9499a9d6747fe003a8134e63c012fcac306cd33788b2619a2"
+    },
+    {
+      "name": "journal-native-prepare",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-prepare-182b1520fd834ce9b831e64927508387.json",
+      "sha256": "e5be40c91dc83026b54ba0d24c4d4a42eee7ec1d83040197a2249870228e0e76"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-30a34d73c32443d0a7c1390c6e4372eb.json",
+      "sha256": "932c50f4e3ea28a5715ae24ea3f773f026babba357dd89f7df7393d3b160cfb1"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-44edeafc11ef48ab9e1ef3048437e679.json",
+      "sha256": "c28837656fd298759f11a980130c186e8918ece62125f880e74014b2c823079d"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-81c0a39f40e34983a7d110cf462b4b3d.json",
+      "sha256": "db05f8cd2522912b77615194a9394b9412d97997278b4ca9507f2a6c361634ce"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-c8a9b1a8f859460b853ed01f2688394b.json",
+      "sha256": "38ef413af741c5a8c9f3f171199d0ebb13cf524ca5ca4952f12486275c5859f5"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-cce05697d4a7475a8567151f0c53ce10.json",
+      "sha256": "0113204949700ae7b64057a2440260c44f3e338f3f7be118a95f4ebe2c95b8ec"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-ce080750d44748feb4bcf868c961b5da.json",
+      "sha256": "d92d821241693c4612b1fc722f38bdc9a6f7c0ccfcbbc588592792ca3382fb69"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-cefe84a42d57410c8b9b341b54c47c9d.json",
+      "sha256": "21b38c1a31b4563035acef2cfdd054b54d8b9565405bf044176cdf64ed62e876"
+    },
+    {
+      "name": "journal-native-record",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-record-f3a91ef64813414092ef5ea1f496fb5e.json",
+      "sha256": "dd3b4324c476aa9c3553af477b9b9b1f91684ab7cf70115258e28a98c2d360ef"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-33de8c79703a4bf9b0da0eef6d7a6957.json",
+      "sha256": "f07568d6ccc42d8e6e46d089b9c51054c711082b4ef72b22a00dbd2a9639508a"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-40294fb1135b4561ab8699edee54b1d4.json",
+      "sha256": "3648cd9f9bbbad96f3e1bb1e784fa0004dfccad228734fa4ff5b583814576f76"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-6392d99cd35a42369f1732a9d39ce9af.json",
+      "sha256": "2b11db87e048a449fc885712cf7a806e2413160a383474f8f58bbba291849934"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-69cc571ce5394037a39b01876af912de.json",
+      "sha256": "44f9258edf17c991b86a772971d9ba2c005d3ce5a31c007f0e1f481f8969986d"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-7fa24d64d3334d88abf21a28e1cf10d9.json",
+      "sha256": "12d68d85934a420368839c46e6d062b403ca116a43827ba4762a06beaf8b26a5"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-c29d5e635ff54130ba327c6654c7ee7e.json",
+      "sha256": "419b073a0027478362fc1f54701a0a3d7a30c02347700a371e9b82b747dc2329"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-d2a9ade7c83d401c8589ec53feb2c618.json",
+      "sha256": "0ad7565a61684638eaa88be7d4488e05abffdc7f7323ac949a492584981f515a"
+    },
+    {
+      "name": "journal-native-redo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-redo-check-e740bdaef788482483a5306db44d1661.json",
+      "sha256": "2df8d33056396b49a2332a9e5487ccbe1eadbf94880b852f1fc46548bafa4505"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-0f968200f91a4294b4132a80c20eaecd.json",
+      "sha256": "2563ef248e9395caf3ef0d7bc11a343d236d29fe1ce568a5c99afc357d33e2c5"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-13d60de794d64944bd946994b53b55dc.json",
+      "sha256": "bf1f453bfcf399b512be3d1fdcfa25fb95df9ab3cf06bd2a3a52061967bc8cfa"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-16499f0263fc4af8a7620350d572d485.json",
+      "sha256": "7e0b4006d68cc69e1a3bfaa74cb729d103aace212f63333360f186c5f5c18b18"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-194e762527cc473997c5427a9e3559c3.json",
+      "sha256": "a5bd6b86bf1da0ed84a6cbd3816cf3b3fbcb3bd920de5e448d7d601b4edf07b0"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-2df5e053474f4024a625e7cf9f6c4fe9.json",
+      "sha256": "f4b96487f7a12b70c768cebc1e4738393c697bd4a1f6d67d26ed353d1456439e"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-504437ba0651493b9348c40eefdf6d37.json",
+      "sha256": "ba957088715c70f61cce82a32ccc5e4bfc0c294c79daa1d82ab49d54d85ae9e7"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-d3a33917fb7a4a2e809fa1edd41dacba.json",
+      "sha256": "305740d612259c02652683a1dbeb6533c823c00cccfeb484f2181697731989f8"
+    },
+    {
+      "name": "journal-native-undo-check",
+      "path": "build/interactions08753-20261028-01/host-11/journal-native-history/journal-native-undo-check-fec7be9e31fd4e0bb405eb937f3dace7.json",
+      "sha256": "15a615b6821a5c76061c53b52078e1c7bbb248b12d7f7157f4299ce07d4a52a6"
+    },
+    {
+      "name": "native-journal-campaign",
+      "path": "build/interactions08753-20261028-01/host-11/journal-campaign-1793153095342257400.json",
+      "sha256": "237878fcca6d339f8535b681906fddc4e4396cb08dd1c4f6745949dfca0874a7"
+    },
+    {
+      "name": "scene-preset-campaign",
+      "path": "build/interactions08753-20261028-01/host-11/scene-native-campaign-1793153173980706500.json",
+      "sha256": "a31a3db30caf6c3a3e8536b1749b50e1e170f6d15a5d4e4b60722562c848e1e4"
+    },
+    {
+      "name": "native-trial-save-broad",
+      "path": "build/interactions08753-20261028-01/host-12/trial-native-save-broad.json",
+      "sha256": "8ab08547a574b920a3579cd0f06d0e6f419948fcfd8a5e9553350d68688a6432"
+    },
+    {
+      "name": "native-trial-reload-broad",
+      "path": "build/interactions08753-20261028-01/host-12/trial-native-load-broad.json",
+      "sha256": "2b4f5704979fcace009fceae20f83d3d6eb6dba87384ce6d1d6520e26d7a6014"
+    },
+    {
+      "name": "native-trial-save-original",
+      "path": "build/interactions08753-20261028-01/host-12/trial-native-save-original.json",
+      "sha256": "321de35398c8b5fdad41fc2cd22bb45aae1912d2ac9bf35312457a078a39d747"
+    },
+    {
+      "name": "native-trial-reload-original",
+      "path": "build/interactions08753-20261028-01/host-12/trial-native-load-original.json",
+      "sha256": "2d4e4c7fa974af74fc0fad0c1ad7fa189596d5819a7df0228f72c322a697121a"
+    }
+  ],
+  "measurements": {
+    "scope": "CPU wall/contact costs and observed graphics work; no presented FPS or GPU timing claim",
+    "broad_inside_solid_median_fit_ms": 1735.5489,
+    "broad_inside_solid_median_edit_command_ms": 1753.5772500559688,
+    "under_collider_fit_ms": 157.4269,
+    "under_collider_hidden_roots": 24659,
+    "under_collider_fitted_guides": 820,
+    "paired_numeric": {
+      "scope": "Paired captured numeric replay, not Max FPS; full independent audit is separate",
+      "same_pose_digests_and_logical_budget": true,
+      "before_median_ms": 2201.8186,
+      "after_median_ms": 2111.4466,
+      "before_initial_checks": 159701,
+      "after_initial_checks": 156504,
+      "before_worker_face_ms": 3836.620299999999,
+      "after_worker_face_ms": 2971.500499999997,
+      "before_worker_transform_ms": 1876.6639000000034,
+      "after_worker_transform_ms": 1843.4710000000007,
+      "receipt": {
+        "path": "build/source-scale-edit-08753-20261028-01/exact-cache/comparison.json",
+        "sha256": "f0e6d9dd21e07b28bcf8af9edad5edd89729c4837a2684d15ecd137296b9fc77"
+      }
+    },
+    "viewport_idle_planned_triangles": 27501084,
+    "viewport_moving_planned_triangles": 495102,
+    "orbit_draw_callbacks_idle_moving": [
+      1500,
+      16
+    ],
+    "orbit_upload_bytes": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "6": 0,
+      "7": 0
+    },
+    "physical_drag_upload_bytes": {
+      "1": 0,
+      "2": 96,
+      "3": 8,
+      "6": 12750720,
+      "7": 0
+    },
+    "physical_drag_work_delta": {
+      "collider_cooks": 0,
+      "evaluations": 4,
+      "layouts": 1,
+      "plant_fits": 3174,
+      "source_captures": 0,
+      "source_preparations": 0
+    },
+    "new_preparation_binding_upload_bytes": 4400160,
+    "dense_render_combined_construction_bytes": 1886342964,
+    "dense_render_batches": 15,
+    "small_render_bake_faces": 550020
+  },
+  "trial_scenes": [
+    {
+      "label": "broad",
+      "path": "Test Scene/Interaction 0.87.5.3/Broad_Stone_Stress_0.87.5.3.max",
+      "sha256": "075c79bc821f07745e05b419b3c65f80936a90dfbd7615e2494ca520e1a3f790",
+      "bytes": 60729532,
+      "configuration": {
+        "amounts": [
+          1000,
+          1
+        ],
+        "source_ids": [
+          [
+            "bab734be-f91d-4ea8-a5bd-f6e8e0281e49"
+          ],
+          [
+            "09e7f0a5-a88f-4351-a754-e288f2e0d6e6"
+          ]
+        ],
+        "node_scale": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "model_scale": 0.65,
+        "axis": 0.65,
+        "position": [
+          826.532,
+          -1125.86,
+          51.9792
+        ],
+        "navigation": 500000,
+        "idle": 0,
+        "hide_area": 2,
+        "error": "",
+        "layer_errors": [
+          "",
+          ""
+        ]
+      }
+    },
+    {
+      "label": "original",
+      "path": "Test Scene/Interaction 0.87.5.3/New_Plants_22_0.87.5.3.max",
+      "sha256": "13a0501b81374ff3d755d4a1dfcac72637259551c0b7c3ee27122fc5769143f9",
+      "bytes": 60729532,
+      "configuration": {
+        "amounts": [
+          1000,
+          1
+        ],
+        "source_ids": [
+          [
+            "bab734be-f91d-4ea8-a5bd-f6e8e0281e49"
+          ],
+          [
+            "09e7f0a5-a88f-4351-a754-e288f2e0d6e6"
+          ]
+        ],
+        "node_scale": [
+          0.158294,
+          0.158294,
+          0.158294
+        ],
+        "model_scale": 0.5,
+        "axis": 0.0791468,
+        "position": [
+          763.839,
+          -1125.86,
+          51.9792
+        ],
+        "navigation": 500000,
+        "idle": 0,
+        "hide_area": 2,
+        "error": "",
+        "layer_errors": [
+          "",
+          ""
+        ]
+      }
+    }
+  ],
+  "preservation": {
+    "original_scene": {
+      "path": "Test Scene/New Plants test 22.max",
+      "sha256": "579d63bec07fb14fce17c1461baf8e2cc2bfa3a53516402367f7f4f16c96acfd"
+    },
+    "artist_ini_unchanged": true,
+    "library_implementation_unchanged": [
+      "AminScatter/shared/SharedLibrary.cs",
+      "AminScatter/shared/SharedLibrary.Management.cs",
+      "AminScatter/src/recipe_library.cpp",
+      "AminScatter/src/recipes.cpp",
+      "AminScatter/src/recipes_bridge.cpp"
+    ],
+    "version_strings_only": [
+      "AminScatter/shared/SharedLibrary.Scenes.cs",
+      "AminScatter/tools/ui/templates/scene-presets.ms",
+      "AminScatter/tools/ui/templates/recipes.ms"
+    ],
+    "production_hlsl_unchanged": true,
+    "artist_profile_installed_or_restarted": false,
+    "git_committed_or_pushed": false,
+    "older_hosts_built_or_tested": false
+  },
+  "knowledge": {
+    "generation": "637cdc784e7dba8eab31f2703578abc9011bd792d70fa553095aa37fd1b4613a",
+    "fresh_at_start": 32,
+    "enrolled": 64,
+    "status": "stale; current source inspected directly",
+    "refreshed": false
+  },
+  "harness_limits": [
+    "Earlier Python-bridge Undo/hold observations are diagnostics, not source-command Undo qualification. Final journal uses pure MAXScript events and actual GUI picker/Ctrl-Z/Ctrl-Y.",
+    "A reprepare test syntax error was repaired in the harness; its failed receipt remains. Final new-source binding invalidation passed.",
+    "Whole-scene texture relinking/save was repeated in a fresh pure-MAXScript host after the Python test bridge reported an active hold; final trial load/save/reload gates are clean."
+  ],
+  "limits": [
+    "Deep broad overlaps still report stem-edge strain warnings; exact geometric checks do not establish botanical plausibility.",
+    "Contacts require positive uniform similarity; arbitrary shear, mirror and singular scales remain guarded.",
+    "Source-command journal supports static authored settings. The keyed-controller guard is inspected but not independently qualified in Max by this campaign.",
+    "Batch construction bounds exclude renderer-held meshes and total RSS. Only public callback construction and Bake counts are checked; broad external-renderer output is not qualified.",
+    "Fast navigation is an explicit complete-instance subset. Zero remains unlimited; no per-plant decimation, CUDA solver, new hull feature, universal million-object FPS or soak qualification."
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "repository": "NVIDIA/cuda-samples",
+  "retrieved_utc": "2026-10-27T09:31:05.837303+00:00",
+  "branch": "master",
+  "commit": "5443602d89ed99aede2e4b7bf329daddeadb320e",
+  "commit_date": "2026-09-09T22:07:08Z",
+  "declared_license_spdx": "NOASSERTION",
+  "tree_truncated": false,
+  "inspected_files": [
+    {
+      "path": "LICENSE",
+      "url": "https://github.com/NVIDIA/cuda-samples/blob/5443602d89ed99aede2e4b7bf329daddeadb320e/LICENSE",
+      "bytes": 1601,
+      "sha256": "b3e40c5bfed1fca5c62d2c1f2208bf51f8d2c910219f94c443f657ace9001be3"
+    },
+    {
+      "path": "cpp/5_Domain_Specific/simpleD3D11/simpleD3D11.cpp",
+      "url": "https://github.com/NVIDIA/cuda-samples/blob/5443602d89ed99aede2e4b7bf329daddeadb320e/cpp/5_Domain_Specific/simpleD3D11/simpleD3D11.cpp",
+      "bytes": 22910,
+      "sha256": "0fd103297cd5c73f781ba5b0d903182a9c3582d84328b547002b73269dc181ba"
+    },
+    {
+      "path": "cpp/5_Domain_Specific/simpleD3D11/sinewave_cuda.cu",
+      "url": "https://github.com/NVIDIA/cuda-samples/blob/5443602d89ed99aede2e4b7bf329daddeadb320e/cpp/5_Domain_Specific/simpleD3D11/sinewave_cuda.cu",
+      "bytes": 6221,
+      "sha256": "b2db594a7d939b1ce0ca6ee6996312597a4d4fa6c0c59d41091a9f303ece4531"
+    },
+    {
+      "path": "cpp/5_Domain_Specific/simpleD3D11Texture/simpleD3D11Texture.cpp",
+      "url": "https://github.com/NVIDIA/cuda-samples/blob/5443602d89ed99aede2e4b7bf329daddeadb320e/cpp/5_Domain_Specific/simpleD3D11Texture/simpleD3D11Texture.cpp",
+      "bytes": 51048,
+      "sha256": "66641ae927f0a9c4bb03508d6a02a9a75bdf9f378bcf4a4ba4fa4e0113c3ee3b"
+    },
+    {
+      "path": "cpp/5_Domain_Specific/simpleD3D11Texture/texture_2d.cu",
+      "url": "https://github.com/NVIDIA/cuda-samples/blob/5443602d89ed99aede2e4b7bf329daddeadb320e/cpp/5_Domain_Specific/simpleD3D11Texture/texture_2d.cu",
+      "bytes": 3419,
+      "sha256": "1a66d1cc61bb563216cecd6c8443e13f01968726146081a7747fd6c3450f163c"
+    },
+    {
+      "path": "cpp/5_Domain_Specific/simpleD3D11Texture/texture_3d.cu",
+      "url": "https://github.com/NVIDIA/cuda-samples/blob/5443602d89ed99aede2e4b7bf329daddeadb320e/cpp/5_Domain_Specific/simpleD3D11Texture/texture_3d.cu",
+      "bytes": 3835,
+      "sha256": "a23ad979b3157eb09e0aec85f60c39d8bf6385a4bef34cf516c89e7501de57cf"
+    },
+    {
+      "path": "cpp/5_Domain_Specific/simpleD3D11Texture/texture_cube.cu",
+      "url": "https://github.com/NVIDIA/cuda-samples/blob/5443602d89ed99aede2e4b7bf329daddeadb320e/cpp/5_Domain_Specific/simpleD3D11Texture/texture_cube.cu",
+      "bytes": 3628,
+      "sha256": "b4528d7a0a4d508d1e300f07eab473d7eafcb5d37451258b03768b712e733382"
+    }
+  ],
+  "candidate_paths": [
+    "Common/dynlink_d3d11.h",
+    "Common/rendercheck_d3d11.cpp",
+    "Common/rendercheck_d3d11.h",
+    "cpp/5_Domain_Specific/simpleD3D11/CMakeLists.txt",
+    "cpp/5_Domain_Specific/simpleD3D11/README.md",
+    "cpp/5_Domain_Specific/simpleD3D11/ShaderStructs.h",
+    "cpp/5_Domain_Specific/simpleD3D11/data/ref_simpleD3D11.ppm",
+    "cpp/5_Domain_Specific/simpleD3D11/simpleD3D11.cpp",
+    "cpp/5_Domain_Specific/simpleD3D11/sinewave_cuda.cu",
+    "cpp/5_Domain_Specific/simpleD3D11/sinewave_cuda.h",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/CMakeLists.txt",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/README.md",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/d3dx11effect/d3dx11effect.h",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/data/ref_simpleD3D11Texture.ppm",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/simpleD3D11Texture.cpp",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/texture_2d.cu",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/texture_3d.cu",
+    "cpp/5_Domain_Specific/simpleD3D11Texture/texture_cube.cu",
+    "cpp/5_Domain_Specific/simpleVulkan/SineWaveSimulation.cu",
+    "cpp/5_Domain_Specific/simpleVulkan/SineWaveSimulation.h"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "scope": "Standalone owned D3D11 buffers only; not Nitrous or Max",
+  "device": "NVIDIA GeForce RTX 3090",
+  "feature_level": 45056,
+  "cuda": {
+    "passed": true,
+    "message": "CUDA wrote 1024 float4 values; D3D11 staging readback matched exactly"
+  },
+  "opencl": {
+    "passed": true,
+    "extension": "cl_nv_d3d11_sharing",
+    "message": "OpenCL wrote 1024 float4 values; D3D11 staging readback matched exactly"
+  }
+}

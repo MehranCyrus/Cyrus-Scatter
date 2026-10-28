@@ -1,11 +1,16 @@
 #include "edit_binding.h"
 #include "receiver_plan.h"
+#include <array>
 #include <charconv>
+#include <cmath>
+#include <limits>
+#include <optional>
 #include <stdexcept>
 
 namespace cyrus::editbinding {
 namespace {
 constexpr std::string_view prefix="CyrusSourceBinding1\n",receiverSeparator="\nCyrusReceivers2\n";
+constexpr std::string_view scalePrefix="CyrusSourceScaleSettings1\n";
 void require(bool value,const char* message){if(!value)throw std::invalid_argument(message);}
 void text(const std::string& value,std::size_t maximum,bool empty=false){
     require((empty||!value.empty())&&value.size()<=maximum&&value.find('\0')==std::string::npos,"Invalid or oversized source binding text");
@@ -35,10 +40,38 @@ struct Reader {
         std::string result(remaining.substr(0,length));remaining.remove_prefix(length+1);text(result,maximum,true);return result;
     }
 };
+double real(std::string_view text){
+    double value=0;const auto result=std::from_chars(text.data(),text.data()+text.size(),value);
+    require(!text.empty()&&result.ec==std::errc{}&&result.ptr==text.data()+text.size()&&std::isfinite(value),"Invalid source transform revision number");return value;
+}
+std::string scaleInvariant(const std::string& raw){
+    // Exact known producer only: weight|color|empty|point|scale|z|forward|[Bands:...]
+    // Do not infer mutability from arbitrary opaque strings such as a recipe's
+    // custom labels. Preserve every byte outside the one scale field.
+    std::array<std::string_view,7> values;std::size_t at=0,scaleBegin=0,scaleEnd=0;
+    for(unsigned i=0;i<values.size();++i){const auto end=raw.find('|',at);require(end!=std::string::npos&&end>at,"Unknown source settings producer; restore its matching setup");
+        values[i]=std::string_view(raw).substr(at,end-at);if(i==4){scaleBegin=at;scaleEnd=end;}at=end+1;}
+    require(real(values[0])>=0&&!values[1].empty()&&(values[2]=="true"||values[2]=="false")&&(values[3]=="true"||values[3]=="false"),"Invalid source settings producer");
+    require(real(values[4])>=0,"Invalid source scale revision");(void)real(values[5]);const auto forward=real(values[6]);require(forward>=1&&forward<=4&&forward==std::floor(forward),"Invalid source forward-axis revision");
+    require(at==raw.size()||std::string_view(raw).substr(at).starts_with("Bands:"),"Unknown source settings suffix");
+    return raw.substr(0,scaleBegin)+raw.substr(scaleEnd);
+}
+struct ScaleSettings {std::string raw;double modelScale;};
+std::optional<ScaleSettings> scaleSettings(const std::string& value){
+    if(!value.starts_with("CyrusSourceScaleSettings"))return {};
+    require(value.starts_with(scalePrefix),"Unknown source scale settings version");Reader reader{std::string_view(value).substr(scalePrefix.size())};
+    auto raw=reader.field(maxSettingsBytes);const auto scale=real(reader.field(64));require(reader.remaining.empty()&&scale>=0&&scale<=std::numeric_limits<float>::max(),"Invalid source scale settings");
+    (void)scaleInvariant(raw);return ScaleSettings{std::move(raw),scale};
+}
+bool sameSourceSemantics(const std::string& previous,const std::string& current){
+    if(previous==current)return true;const auto next=scaleSettings(current);if(!next)return false;
+    const auto old=scaleSettings(previous);
+    try{return scaleInvariant(old?old->raw:previous)==scaleInvariant(next->raw);}catch(const std::invalid_argument&){return false;}
+}
 void validate(const Descriptor& value){
     receiverCanonical(value.legacy);receiverCanonical(value.basis);
     require(value.sources.size()<=maxSources,"Source binding historical inventory exceeds 4096 roles");
-    for(const auto& [id,settings]:value.sources){text(id,maxIdentityBytes);text(settings,maxSettingsBytes);}
+    for(const auto& [id,settings]:value.sources){text(id,maxIdentityBytes);text(settings,maxSettingsBytes);(void)scaleSettings(settings);}
 }
 }
 bool isSourceAware(std::string_view value) noexcept{return value.starts_with("CyrusSourceBinding");}
@@ -67,6 +100,13 @@ std::string make(const std::string& legacy,const std::string& basis,const std::v
         require(result.sources.emplace(source.id,source.settings).second,"Duplicate source role in binding");}
     return encode(result);
 }
+std::string editableScaleSettings(const std::string& legacySettings,double modelScale){
+    text(legacySettings,maxSettingsBytes);(void)scaleInvariant(legacySettings);
+    require(std::isfinite(modelScale)&&modelScale>=0&&modelScale<=std::numeric_limits<float>::max(),"Invalid editable model scale");
+    char digits[64];const auto converted=std::to_chars(digits,digits+sizeof(digits),modelScale,std::chars_format::general,std::numeric_limits<double>::max_digits10);
+    require(converted.ec==std::errc{},"Cannot encode editable model scale");std::string result(scalePrefix);field(result,legacySettings);field(result,std::string(digits,converted.ptr));
+    text(result,maxSettingsBytes);return result;
+}
 Merge merge(const std::string& previous,const std::string& current){
     auto next=parse(current);if(previous.empty())return {std::move(next),false};
     if(!isSourceAware(previous)){
@@ -79,8 +119,8 @@ Merge merge(const std::string& previous,const std::string& current){
     }
     auto result=parse(previous);result.basis=receivers::mergeBinding(result.basis,next.basis);
     for(const auto& [id,settings]:next.sources){const auto old=result.sources.find(id);
-        require(old==result.sources.end()||old->second==settings,"A retained source's generation settings changed; restore that source's matching setup");
-        result.sources.emplace(id,settings);
+        require(old==result.sources.end()||sameSourceSemantics(old->second,settings),"A retained source's generation settings changed; restore that source's matching setup");
+        if(old==result.sources.end())result.sources.emplace(id,settings);else old->second=settings;
     }
     // Keep the original proof for unresolved legacy records. Once source-aware,
     // only the basis/receiver/history maps decide compatibility, never legacy

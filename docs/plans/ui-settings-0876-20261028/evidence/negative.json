@@ -1,0 +1,16 @@
+{
+  "case": "negative",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "missing Analyzer retains complete result",
+      "status": "pass",
+      "value": "-- Runtime error: Area: pick a Surface Analyzer."
+    },
+    {
+      "name": "source duplicate is rejected without changing rows",
+      "status": "pass",
+      "value": "True"
+    }
+  ]
+}

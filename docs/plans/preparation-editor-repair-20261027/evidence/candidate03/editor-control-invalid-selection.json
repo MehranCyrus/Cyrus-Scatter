@@ -1,0 +1,7 @@
+{
+  "phase": "invalid-selection",
+  "status": "pass",
+  "invalid_piece_message": "MAXScript exception raised.\n-- Runtime error: Unknown piece",
+  "empty_scope_message": "MAXScript exception raised.\n-- Runtime error: Select the leaves or stems to prepare first",
+  "previous_complete_draft_preserved": true
+}

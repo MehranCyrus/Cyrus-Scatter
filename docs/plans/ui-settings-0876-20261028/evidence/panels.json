@@ -1,0 +1,161 @@
+{
+  "case": "panels",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "layer copy button",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "layer rename",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "layer remove button",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "receiver pick handler",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "restore receiver",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "create inactive source rectangle",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "unlink source rectangle",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "grid mode 2",
+      "status": "pass",
+      "value": "25"
+    },
+    {
+      "name": "grid mode 3",
+      "status": "pass",
+      "value": "27"
+    },
+    {
+      "name": "grid mode 4",
+      "status": "pass",
+      "value": "27"
+    },
+    {
+      "name": "grid mode 1",
+      "status": "pass",
+      "value": "40"
+    },
+    {
+      "name": "cluster assignment",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "spline mode",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "Band path and outward Band",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "Band width and source assignment",
+      "status": "pass",
+      "value": "16"
+    },
+    {
+      "name": "Band preview is inspection only",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "remove Band then path",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "include Area",
+      "status": "pass",
+      "value": "7"
+    },
+    {
+      "name": "exclude Area",
+      "status": "pass",
+      "value": "33"
+    },
+    {
+      "name": "remove Area",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "transform scale roundtrip",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "surface mask fixture",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "density preview toggle",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "restore mask",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "display representation 1",
+      "status": "pass",
+      "value": "#(1, 1)"
+    },
+    {
+      "name": "display representation 2",
+      "status": "pass",
+      "value": "#(2, 1)"
+    },
+    {
+      "name": "display representation 3",
+      "status": "pass",
+      "value": "#(3, 1)"
+    },
+    {
+      "name": "display representation 4",
+      "status": "pass",
+      "value": "#(1, 1)"
+    },
+    {
+      "name": "display representation 5",
+      "status": "pass",
+      "value": "#(3, 4)"
+    },
+    {
+      "name": "read cached statistics",
+      "status": "pass",
+      "value": "Layer: Layer_01\nLast completed result\n\nLast calculation\nRequested: 40\nConsidered for spacing: 40\nAccepted placements: 40 | Removed: 0\nSpacing rejected, between layers: 0 | Within layer: 0\nCleanup removed: 0 | Target shortfall: 0\nAttempts: 40 | Rounds: 1\n\nPrepared mesh instances: 40\nLast preview preparation: 36 ms\nDraw limits can display fewer without changing accepted placements."
+    },
+    {
+      "name": "browsing keeps publication",
+      "status": "pass",
+      "value": "#(19, 19)"
+    }
+  ]
+}

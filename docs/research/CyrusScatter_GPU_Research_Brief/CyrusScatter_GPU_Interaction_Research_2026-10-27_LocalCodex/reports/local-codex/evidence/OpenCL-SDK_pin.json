@@ -1,0 +1,39 @@
+{
+  "repository": "KhronosGroup/OpenCL-SDK",
+  "retrieved_utc": "2026-10-27T09:31:12.038112+00:00",
+  "branch": "main",
+  "commit": "6090378a113db8dab20ae278c8fa57ab10b92300",
+  "commit_date": "2026-09-22T23:29:33Z",
+  "declared_license_spdx": "Apache-2.0",
+  "tree_truncated": false,
+  "inspected_files": [
+    {
+      "path": "LICENSE",
+      "url": "https://github.com/KhronosGroup/OpenCL-SDK/blob/6090378a113db8dab20ae278c8fa57ab10b92300/LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "LICENSES/Apache-2.0.txt",
+      "url": "https://github.com/KhronosGroup/OpenCL-SDK/blob/6090378a113db8dab20ae278c8fa57ab10b92300/LICENSES/Apache-2.0.txt",
+      "bytes": 10343,
+      "sha256": "44b0a56e80b41a1b0a6bd1292515e806539fd97b30be54c2719e6c763190ab57"
+    },
+    {
+      "path": "samples/core/copybuffer/main.cpp",
+      "url": "https://github.com/KhronosGroup/OpenCL-SDK/blob/6090378a113db8dab20ae278c8fa57ab10b92300/samples/core/copybuffer/main.cpp",
+      "bytes": 4640,
+      "sha256": "8a6b3c591bbbdea68901dbe6ec65feb0e73d67a05c41e895142900996ebfead5"
+    }
+  ],
+  "candidate_paths": [
+    "ruby/copybuffer/copybuffer.rb",
+    "ruby/copybufferkernel/copybufferkernel.rb",
+    "samples/core/copybuffer/CMakeLists.txt",
+    "samples/core/copybuffer/README.md",
+    "samples/core/copybuffer/main.cpp",
+    "samples/core/copybufferkernel/CMakeLists.txt",
+    "samples/core/copybufferkernel/README.md",
+    "samples/core/copybufferkernel/main.cpp"
+  ]
+}

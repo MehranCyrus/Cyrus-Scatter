@@ -1,5 +1,34 @@
 # Release and saved-data versioning
 
+**28 October user-selected UI/settings delivery: 0.87.6.** This three-part increment covers the all-panel control audit, Point source repair, contextual layout and painting/preview feedback. Scene **65**, Interactions **15**, source transform/Undo **2/2**, Edit capability/storage **4/3**, recipe **9** and Scene metadata **1** remain. Matched native/managed/script payloads are packaged for Max 2024, 2026 and 2027; runtime UI qualification is Max 2027 only. The 0.87.5.6 performance reference remains immutable. [Delivery](plans/ui-settings-0876-20261028/DELIVERY.md).
+
+**28 October 0.87.5.6 compatibility packaging follow-up:** the user now explicitly
+requests the latest website and an EXE for Max 2024 and 2026. Keep 0.87.5.6:
+no plugin behavior, saved schema or capability changes. Build distinct older-host
+payloads without host tests and preserve the exact qualified Max 2027 MZP.
+[Installer and verification scope](plans/drag-response-08756-20261028/INSTALLER_COMPATIBILITY_08756.md).
+The original performance campaign below retains its Max 2027-only scope.
+
+**28 October user-selected performance patch: 0.87.5.6, Max 2027 only.** The requested four-part patch covers faster artistic bending, workload-aware CPU participation, held-drag presentation, source-history filtering and trunk/falloff controls. Saved scene schema advances to **65**, native Interactions to **15**. Source transform/Undo **2/2**, Edit capability/storage **4/3**, recipe **9** and independent product versions remain. Older Detailed-contact scenes migrate to Bend on load; native .max/Scene presets preserve the new controls. [Delivery and exact verification limits](plans/drag-response-08756-20261028/DELIVERY_08756.md). No older-host or website delivery is implied.
+
+**28 October callback correction: 0.87.5.5.** A user-reproduced application callback failure requires a successor to the delivered 0.87.5.4 artifact. Use a patch increment; do not overwrite/relabel the earlier packages. Managed/native/package labels are 0.87.5.5. Scene 64 / Interactions 14 / source transform 2 / source Undo 2 / Edit capability/storage 4/3 / recipe 9 / Scene preset metadata 1 remain. The public site follows the corrected EXE. [Cause and scoped qualification](plans/scene-adaptation-08754-20261028/CALLBACK_HOTFIX_08755.md).
+
+**28 October user-selected feature patch: 0.87.5.4.** The user selects this label for ordinary scene colliders, broader branch bending/pruning, neighbor adaptation and scaled-box/color repairs. Despite the feature-sized scope, retain their four-part label. Managed identity is **0.87.5.4**; persistent scene advances to **64**, Interactions to **14**, source-command Undo to **2**. Source transform **2**, Edit capability/storage **4/3**, portable recipe **9** and Scene preset metadata **1** remain. Native Scene presets remain Max 2027 only. The user also requests Max 2024/2026/2027 payloads in one EXE and waives older-host tests. Independent products remain unchanged. [Exact scope](plans/scene-adaptation-08754-20261028/DELIVERY_08754.md).
+
+**28 October user-selected correction: 0.87.5.3, Max 2027 only.** The user explicitly selects this four-part patch for Test22 source-list, scale/Edit, dense output and navigation repairs. Managed identity is **0.87.5.3**. The matched package requires Interactions **13**, source-transform **2**, source-command Undo **1** and Edit capability **4**. Persistent scene **63**, portable recipe **9**, Edit storage **3** and Scene preset metadata **1** remain; no new saved field is introduced. Independently versioned products remain unchanged. [Exact delivery and limits](plans/scene-repair-08753-20261028/DELIVERY_08753.md).
+
+**27 October user-selected performance patch: 0.87.5.2, Max 2027 only.** The user explicitly requests this four-part label after the 0.87.5.1 Library delivery. It reduces repeated contact checks/interpolation and adds observational work counters, with no saved-state or artist-setting change. Managed identity is **0.87.5.2**; Interactions 12 / scene 63 / portable recipe 9 / Scene preset metadata 1 / Edit/storage 3 remain. Independent products retain their versions. [Measured scope and exact package](plans/contact-audit-08752-20261027/DELIVERY_08752.md).
+
+**27 October user-selected Library delivery: 0.87.5.1, Max 2027 only.** The user explicitly requests this patch label for native Scene presets alongside portable recipes. This adds scene-preset metadata format 1 and requires the matched script/native/managed package; managed identity is **0.87.5.1**. Interactions 12, scene schema 63, portable recipe 9 and Edit/storage 3 remain unchanged. The standard-merge load policy is explicitly selected by the user. Independent products retain their versions. [Delivery and exact scope](plans/scene-presets-08751/DELIVERY_08751.md).
+
+**27 October user-selected feature delivery: 0.87.5, Max 2027 only.** Integrating compact-pose GPU display with the existing CPU contact/render system is a user-visible feature step. Native Interactions advances to 12 for the matched script/modules; scene schema 63, recipe 9, Edit/storage 3, prepared envelope 2 and intent 1 remain. Managed assembly identity is **0.87.5.0**. Independent products retain their versions. [Delivery and exact scope](plans/shared-pose-viewport-0875-20261027/DELIVERY_0875.md).
+
+**27 October 2026 user-selected recipe correction: 0.87.4.4.** The requested patch adds transport for authored Cyrus Edit records and prepared interactions in Library recipes. Recipe format/capability advances to 9; native Edit capability/storage advances to 3, retaining earlier storage readers. Script scene schema remains 63 and Interactions remains 11. The explicit delivery scope authorizes distinct Max 2024/2026/2027 SDK packages in one EXE, with runtime tests only in Max 2027. Independent Analyzer/content versions are unchanged. [Implementation and acceptance](plans/recipe-authored-08744-20261027/PLAN.md); [artist workflow](plans/recipe-authored-08744-20261027/ARTIST_GUIDE_08744.md).
+
+**27 October 2026 editor correction: 0.87.4.2.** The user requests repair of selected/isolated leaf preparation and viewer orbit on a trunk/leaves model. This is a focused correction and UI improvement to the existing 0.87.4 editor, so a four-part patch is appropriate. Native Interactions advances to 10 for the new required command semantics; scene schema 62, authored intent 1 and prepared envelope 2 remain. [Scope and qualification](plans/preparation-editor-repair-20261027/DELIVERY_08742.md) preserve preceding 0.87.4.1 receipts and independent product versions.
+
+**27 October 2026 authorized interaction performance patch: 0.87.4.1.** The user explicitly selected this four-part version for the Max 2027 performance/reliability campaign. Native Interactions advances to capability 9 for the matched script/native pair; scene schema remains 62, and independently versioned products remain unchanged. The [delivery](plans/interactions-performance-08741-20261027/DELIVERY_08741.md) records exact qualification, measured results and limitations.
+
 **26 October 2026 authorized editor delivery: 0.87.4.** The user explicitly selects this version for the Source Preparation Editor, fern/grass Max 2027 qualification and a matched MZP. This supersedes the research proposal's tentative 0.88.0 label. The authoring UI and native bridge require Interactions 8; scene class schema advances to 62 and authored definitions use guarded envelope 2. Existing format-1 preparations remain readable without authored overrides. Independent product versions remain separate. See the [implementation record](plans/source-preparation-editor-20261026/IMPLEMENTATION_0874.md); [the delivery](plans/source-preparation-editor-20261026/DELIVERY_0874.md) records its scoped acceptance and remaining limits.
 
 **26 October 2026 authorized successor: 0.87.3.2.** The user explicitly selects this patch for canonical Interactions source +/remove controls, primary preparation settings, bounded broad-leaf crown inference and native swatch sizing. Native Interactions advances from 6 to 7 to enforce its matched script/native pair; saved scene schema remains 61. Analyzer, content, licensing, MCP and the independent Lab versions do not change. See the [scope and qualification plan](plans/scatter-interactions-garden-20261025/PLAN_08732.md). Max 2027 acceptance and the MZP identity are recorded in the successor delivery; earlier 0.87.3.1 receipts keep their original identities.
@@ -16,14 +45,15 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.87.4 | Optional authored source preparation editor |
-| Scatter native/package | 0.87.4 / Max 2027 | [Scoped editor delivery](plans/source-preparation-editor-20261026/DELIVERY_0874.md); historical receipts retain their scope |
-| Native Interactions capability | 8 | Authored source inspection/editor bridge and guarded definition format 2 |
+| Scatter UI | 0.87.5.6 | Responsive artistic bending and trunk/falloff controls |
+| Scatter native/package | 0.87.5.6 / Max 2024, 2026, 2027 MZPs and combined EXE | Original Max 2027 scripted viewport evidence retained; 2024/2026 compilation/package only |
+| Native Interactions capability | 15 | Layer trunk/falloff payload, fast artistic response, scene colliders and visibility masks |
+| Source transform / authored Undo | 2 / 2 | Source scale/Edit binding and bounded source/scene-collider/response commands |
 | Native placement / Brush POD | 2 / 2 | Internal matched-module contracts; opaque native publication and filtered Paint output |
-| Native Edit capability / storage | 2 / 2 | Source lineage and inactive history; supported legacy reader and explicit old-reader rejection of upgraded scenes |
-| Recipe / numeric-settings format and capability | 8 / 3 | 271 typed authored fields; source clearance and explicit older recipe conversion |
+| Native Edit capability / storage | 4 / 3 | Source-aware edits and authored recipe/Scene transport |
+| Recipe / numeric-settings format and capability | 9 / 3 | Supported authored Edit and preparation transport; separate native Scene preset metadata 1 |
 | Library / portable-package capability | 4 / 3; shared-store 1 | Closed renderer graph 3 and shared static graph 4; standalone model-package 1; lower type/profile bounds remain |
-| Saved MAXScript schema | 62 | Authored source intent; deliberate readers for preceding 59/60/61 scenes and retained historical upgrades |
+| Saved MAXScript schema | 65 | Appended trunk/falloff settings; older Detailed responses migrate to Bend |
 | Calculation model | CyrusUnified2 | Independent per-source scopes; procedural publication bridge 4 |
 | Surface Analyzer | 0.14.2 | Independent installer safety correction; current matched builds tested in Max 2027 only. Three-host 0.86.9 receipts retain their original scope |
 | MCP package / closed plan | 0.73.0 / 0.73 | Automation contract, not the Scatter UI version |

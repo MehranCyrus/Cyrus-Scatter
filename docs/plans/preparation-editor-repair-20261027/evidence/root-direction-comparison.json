@@ -1,0 +1,42 @@
+{
+  "before_direction": {
+    "fingerprint": "21c8d2f4a90e63776c27029c17c8fa551204b07ca31a598469cee950ddad5096",
+    "guides": 46,
+    "roots_outside_recorded_crown": [
+      {
+        "guide": 4,
+        "piece": 4714,
+        "root_m": [
+          -0.21670042971769968,
+          0.018607147747388808,
+          0.3466489712397257
+        ]
+      },
+      {
+        "guide": 10,
+        "piece": 4720,
+        "root_m": [
+          -0.11352062225341797,
+          -0.24237625598907472,
+          0.47761574983596805
+        ]
+      },
+      {
+        "guide": 20,
+        "piece": 4730,
+        "root_m": [
+          -0.3260037451982498,
+          0.11917520314455032,
+          0.5848215371370316
+        ]
+      }
+    ],
+    "crown_guides": 41
+  },
+  "after_direction": {
+    "fingerprint": "21c8d2f4a90e63776c27029c17c8fa551204b07ca31a598469cee950ddad5096",
+    "guides": 46,
+    "roots_outside_recorded_crown": [],
+    "crown_guides": 46
+  }
+}

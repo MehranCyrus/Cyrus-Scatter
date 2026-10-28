@@ -1,0 +1,146 @@
+[
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\A062-regression-direction1\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "3393994843211568760",
+        "hinges": 5,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "3393994843211568760",
+        "hinges": 5,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\S02-regression-direction1\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "7467819638553274395",
+        "hinges": 5,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "7467819638553274395",
+        "hinges": 5,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\replays\\S06-regression-direction2\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "7633144294775385257",
+        "hinges": 3,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "7633144294775385257",
+        "hinges": 3,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction1\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "5922256474048119754",
+        "hinges": 4,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "5922256474048119754",
+        "hinges": 4,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction2\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "5225991226750020379",
+        "hinges": 4,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "5225991226750020379",
+        "hinges": 4,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\A063-pivot-replay-direction3\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "14603276304990753195",
+        "hinges": 4,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "14603276304990753195",
+        "hinges": 4,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-01\\replays\\S01-pivot-replay-direction1\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "15762130496260711966",
+        "hinges": 1,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "15762130496260711966",
+        "hinges": 1,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  },
+  {
+    "fixture": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\candidate-host-06\\tree-quality-replay\\fixture.json",
+    "samples": [
+      {
+        "stiffness": 0.0,
+        "digest": "12867186862080137978",
+        "hinges": 4,
+        "solver_iterations": 0
+      },
+      {
+        "stiffness": 1.0,
+        "digest": "12867186862080137978",
+        "hinges": 4,
+        "solver_iterations": 0
+      }
+    ],
+    "same_pose": true
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "machine": "x86_64",
+  "tools": {
+    "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "g++": "/usr/bin/g++",
+    "clang++": null,
+    "cmake": null,
+    "nvcc": null,
+    "nvidia-smi": null,
+    "clinfo": null,
+    "powershell": null,
+    "dotnet": null,
+    "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "unzip": "/usr/bin/unzip"
+  },
+  "gpu_device_nodes": [],
+  "max_sdk_or_host": "Not supplied or used",
+  "private_repo": "Not accessed",
+  "input_files": {
+    "README.md": {
+      "supplied_filename": "README(3).md",
+      "size": 1530,
+      "sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75",
+      "manifest_match": true
+    },
+    "RESEARCH_PROMPT.md": {
+      "supplied_filename": "RESEARCH_PROMPT(1).md",
+      "size": 28077,
+      "sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+      "manifest_match": true
+    },
+    "CURRENT_SYSTEM_CONTEXT.md": {
+      "supplied_filename": "CURRENT_SYSTEM_CONTEXT(1).md",
+      "size": 12170,
+      "sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+      "manifest_match": true
+    },
+    "BRIEF_METADATA.json": {
+      "supplied_filename": "BRIEF_METADATA(1).json",
+      "size": 766,
+      "sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8",
+      "manifest_match": true
+    }
+  },
+  "compiler_banner": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+}

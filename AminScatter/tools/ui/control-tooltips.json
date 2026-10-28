@@ -275,6 +275,7 @@
     "cleanCheck": "Remove isolated plants after spacing. Protected instance edits remain."
   },
   "interactionsUI": {},
+  "collidersUI": {},
   "detailsUI": {
     "refreshButton": "Read the existing calculation statistics without regenerating placements.",
     "helpButton": "Explain settings ownership, display budgets, evaluation order and policy limits."

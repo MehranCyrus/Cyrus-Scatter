@@ -1,0 +1,6 @@
+{
+  "begin_qpc_ms": 1106609351.232666,
+  "end_qpc_ms": 1106611037.232666,
+  "scope": "Nine actual wheel events calibrated from wall clock to QPC; 50 ms lead and 250 ms tail.",
+  "event_count": 9
+}

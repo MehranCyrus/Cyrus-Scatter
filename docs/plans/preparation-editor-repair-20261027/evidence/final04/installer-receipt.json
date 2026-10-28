@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "scope": "Exact MZP installer engine in a disposable profile; Max UI and installed startup are separate checks",
+  "archive_sha256": "bb21c68cd9525e059a8ff3d2ebbaa6af3e5030135c38f9b8b2433197a3377b86",
+  "release": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\installer-04\\runtime\\r\\90874bb0f6f5",
+  "script_sha256": "e55e3771024a48efffc87b85d1a9979867bb48bf154add2d36e5c63c586204d6",
+  "native_sha256": "d567fd4076f9ca738fa8e5a6ce9ecc27d0277a729c33a7146f7ed71ca2c15f7e"
+}

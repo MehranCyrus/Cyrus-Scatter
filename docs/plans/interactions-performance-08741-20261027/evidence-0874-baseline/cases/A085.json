@@ -1,0 +1,32 @@
+{
+  "key": "A085",
+  "model_key": "A085",
+  "status": "failed",
+  "phase": "prepare through generated UI",
+  "attempts": [],
+  "name": "Myrtle - 03",
+  "category": "Shrubs",
+  "source_scene_sha256": "8bdff5a7559a92118988575fd7990c9363256ebb7f15dcd025b3f4673e2996e7",
+  "node_name": "CyrusModel_A085",
+  "settings": {
+    "minimum_m": 0.005,
+    "branch_connection_m": 0.15,
+    "stiffness": 0.5,
+    "preview_fraction": 1.0,
+    "hide_roots": false,
+    "contact_gap": 0.0,
+    "limits": [
+      2000000,
+      4000000,
+      100000,
+      8192,
+      2000000,
+      2048,
+      256
+    ]
+  },
+  "initial_scatter_ms": 778.8150999695063,
+  "prepare_seconds": 5.795377799775451,
+  "ui_message": "-- Runtime error: Preparation work limit reached; increase Work in Preparation limits.",
+  "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08741\\measure_case.py\", line 146, in <module>\n    raise RuntimeError('Preparation did not produce a ready definition: '+report['ui_message'])\nRuntimeError: Preparation did not produce a ready definition: -- Runtime error: Preparation work limit reached; increase Work in Preparation limits.\n"
+}

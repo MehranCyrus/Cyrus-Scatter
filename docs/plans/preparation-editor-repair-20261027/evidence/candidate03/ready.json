@@ -1,0 +1,23 @@
+{
+  "status": "ready",
+  "version": "0.87.4.2",
+  "native_capability": 10,
+  "schema": 62,
+  "scene_sources_found": [
+    "Outdoor_Plants_01_Rhapis_Excelsa_Small02_001",
+    "Outdoor_Plants_01_Neottopteris_Nidus_Bush_Decorative05_001",
+    "Outdoor_Plants_01_Neottopteris_Nidus_Bush05_001",
+    "Outdoor_Plants_01_Dipteris_Conjugata_Small03_001",
+    "Outdoor_Plants_01_Brainea_Insignis_Fern_Medium03_001",
+    "Outdoor_Plants_01_Lemon_Balm_rly_001",
+    "Outdoor_Plants_01_Lemon_Balm_rly3_001",
+    "Outdoor_Plants_01_Grass_Wild_QMH_001",
+    "Outdoor_Plants_01_Grass_Wild_QMH2_001",
+    "Outdoor_Plants_01_Carex_Elata_Aurea_Grass_001"
+  ],
+  "scene_sources_missing": [],
+  "units": "centimeters",
+  "unit_scale": 1.0,
+  "fixture_sha256": "70e2807fd2041f9f06766db71a09b565752c18a383c0a5ccf24684009a257f8d",
+  "sphere": "Sphere001"
+}

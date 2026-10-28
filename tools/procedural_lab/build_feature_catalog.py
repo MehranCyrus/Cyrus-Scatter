@@ -17,7 +17,7 @@ SECTION_CAPS={
     'backgroundUI':['C16'],'randomUI':['C19'],'diversityUI':['C17','C18'],
     'proceduralUI':['C20'],'instanceRadiusUI':['C21'],'spacingUI':['C23'],
     'separationUI':['C22'],'detailsUI':['C27'],'workflowUI':['C26'],
-    'properties':['C07','C26'],'interactionsUI':['C37'],
+    'properties':['C07','C26'],'interactionsUI':['C37'],'collidersUI':['C37'],
 }
 
 def build():
@@ -48,6 +48,7 @@ def build():
                 if section=='setsUI':owner='Selected layer / named Paint Area'
                 elif section=='brushUI':owner='Selected Paint Area and its receiver; shared layer models'
                 elif section in ('sourceUI','sourceContainersUI'):owner='Selected layer model collection'
+                elif section=='collidersUI':owner='Root controller ordinary scene collider references'
                 elif section=='surface' and entry['name'] in ('sharedPick','removeSurfaces','surfacesButton','receiversList'):owner='Selected layer receiving surfaces'
                 elif section=='surface' and entry['name']=='surfaceVisibility':owner='Selected receiving scene nodes; viewport visibility shared by every referencing setup'
                 elif section=='previewUI' and entry['name']=='memoryButton':owner='Per-Max installation preference; shared native viewport admission across controllers'

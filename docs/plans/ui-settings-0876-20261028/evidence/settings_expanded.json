@@ -1,0 +1,991 @@
+{
+  "case": "settings_expanded",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "flow_layersUI_layerColor",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_layersUI_visibleCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_layersUI_enabledCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_idColor",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_existingGroups",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_groupColor",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_weightSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_sourceZSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_sourceScaleSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_radiusSourceSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_radiusModeDrop",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_followRadiusCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_showRadiusCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_forwardAxis",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_clearanceCopiesList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_clearanceOthersList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_clearanceExternalList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_clearancePriorityList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_clearanceFactorSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_clearanceGapSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceUI_clearanceMetricList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "sourceContainersUI_enabledCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "placementUI_columnSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "placementUI_rowSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "placementUI_originXSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "placementUI_originYSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "placementUI_headingSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "placementUI_jitterSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_sizeSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_divSeedSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_roughSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_blurSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_noiseSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_cornerMode",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_arrangementMode",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_strokeWidth",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_bandStart",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_bandEnd",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_bandStrength",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_bandCurveCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_bandScaleMode",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_bandColor",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_fieldFalloffCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_fieldBoundaryCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_fieldView",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_fieldSampleSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_strokeMode",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_strokeScaleMin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_strokeScaleMax",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_edgeOffsetSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_edgeAlongSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_edgeAcrossSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_keepCornerCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_cornerAngleSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_cornerCountSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_edgeRotXSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_edgeRotYSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_edgeRotZSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_streetStartSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_streetEndSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_centerStreetSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_faceOutCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_cornerRadiusSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "diversityUI_straightStreet",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_modeRadio",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_countSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_densitySpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_seedSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_invertCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_uvChannelSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_resolutionList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_imageCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_tileLockCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_wrappingList",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_maskViewList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_maskDetailList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_opacitySpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_markersCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_markerSizeList",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_tileXSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_tileYSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_repeatXSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_repeatYSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_headingSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_offsetXSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_offsetYSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_offsetUSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_offsetVSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_meshCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "distributionUI_meshChannelSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_meshComponentList",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_meshMinSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_meshMaxSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "distributionUI_meshInvertCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "populationPolicyUI_populationList",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "populationPolicyUI_attemptSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "populationPolicyUI_roundSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "populationPolicyUI_repairCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "setsUI_paintedCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "setsUI_setList",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "setsUI_targetList",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "setsUI_enabledCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_modeRadio",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_radiusSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_densitySpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_overlayMode",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_overlayColor",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_insideSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_outsideSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_densityFade",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_scaleFade",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_scaleMin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "brushUI_scaleMax",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_areaMode",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_aaWidth",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_aaCaps",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_aaStreetOffset",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_aaRadius",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_slopeCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "areaUI_slopeMinSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_slopeMaxSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_slopeLowerSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_slopeUpperSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_altitudeMinSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_altitudeMaxSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_altitudeLowerSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_altitudeUpperSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_altitudeCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "areaUI_fallDeleteCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_fallDeleteSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_fallScaleCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_fallScaleSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_fallDensityCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "areaUI_fallDensitySpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "randomUI_rotXMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_rotXMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_rotYMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_rotYMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_rotZMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_rotZMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_sclXMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_sclXMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_sclYMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_sclYMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_sclZMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_sclZMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_wholeMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_wholeMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_movXMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_movXMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_movYMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_movYMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_movZMinSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_movZMaxSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_projectCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_alignCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_normalBlendSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "randomUI_directionXSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "randomUI_directionYSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "randomUI_directionZSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "proceduralUI_peerList",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "proceduralUI_enabledCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "proceduralUI_multiplierSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "proceduralUI_gapSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "proceduralUI_planarCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "spacingUI_relaxCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "spacingUI_spacingSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "spacingUI_iterationsSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "spacingUI_strengthSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "spacingUI_boundaryRelaxCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "spacingUI_finalStrengthSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "spacingUI_finalIterSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "spacingUI_finalMoveSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "separationUI_cleanCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "separationUI_neighborSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "separationUI_minNeighborSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "separationUI_minIslandSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "separationUI_planarCheck",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "flow_previewUI_previewCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_displayModeDrop",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_proxyShapeDrop",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "flow_previewUI_instancesLimitSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "flow_previewUI_faceLimitSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "flow_previewUI_identificationDrop",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_pointColorRadio",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_solidColorPicker",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "flow_previewUI_budgetSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_navigationPointsSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_navigationInstancesSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "flow_previewUI_navigationFacesSpin",
+      "status": "pass",
+      "value": "not exercised: prerequisite inactive"
+    },
+    {
+      "name": "flow_previewUI_pointsSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_radiusLimitSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_radiusMetricDrop",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_radiusAllCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_iconSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "flow_previewUI_autoRenderCheck",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "ordinary box fixture remains healthy",
+      "status": "pass",
+      "value": "40"
+    }
+  ]
+}

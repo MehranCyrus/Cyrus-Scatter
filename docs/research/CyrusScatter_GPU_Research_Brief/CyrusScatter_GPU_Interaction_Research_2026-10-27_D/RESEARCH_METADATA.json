@@ -1,0 +1,104 @@
+{
+  "schema": "cyrus.gpu-interaction-research-metadata/1",
+  "researcher_id": "A",
+  "researcher_model": "GPT-5.6 Sol Pro",
+  "research_started_date": "2026-10-27",
+  "research_completed_at_utc": "2026-10-27T09:12:16Z",
+  "language": "English",
+  "baseline": {
+    "product": "Cyrus Scatter",
+    "version": "0.87.4.3",
+    "native_interaction_capability": 11,
+    "scene_schema": 63,
+    "host": "3ds Max 2027 / Windows x64",
+    "status_origin": "provided project context, not independently verified"
+  },
+  "source_cutoff": "Primary sources checked through 2026-10-27",
+  "notable_source_versions": {
+    "CUDA_Windows_guide": "13.3",
+    "CUDA_samples": "v13.4 / inspected commit 5443602d89ed99aede2e4b7bf329daddeadb320e",
+    "OpenCL_spec": "v3.1.1, 2026-05-22, commit 9f68efb5d80e77a4e437c5b8ee67d581666d044c",
+    "OpenCL_SDK": "v2026.05.29 / commit e26922bdf54eaa9fcc31fe1f91d21b8d2bd6970f",
+    "NVIDIA_Warp": "v1.18.0",
+    "PositionBasedDynamics": "commit 10a70bc146a97873dc3c8fef372f5217e010542e",
+    "TressFX": "latest tag v4.1.0; inspected public commit ba0bdacdfb964e38522fda812bf23169bc5fa603",
+    "Jolt_reference_pin": "1b2e77e3c6c09709e5edc79dc208459b8ff32051 / header 5.6.1",
+    "Max_SDK_docs": "2027 public API reference"
+  },
+  "available_tools": {
+    "cpu": "AMD EPYC 9V74, 5 visible vCPUs (container allocation)",
+    "os": "Linux x86_64, kernel 6.18.55",
+    "python": "3.13.5",
+    "cmake": "3.31.6",
+    "gcc": "14.2.0",
+    "gpu": null,
+    "nvidia_smi": false,
+    "cuda_compiler_runtime": false,
+    "opencl_device_runtime": false,
+    "direct3d": false,
+    "3ds_max": false,
+    "max_sdk": false,
+    "renderers": [],
+    "private_cyrus_repository": false
+  },
+  "experiments_actually_executed": [
+    "Verified supplied README, research prompt, current context and metadata SHA-256 values against the supplied manifest.",
+    "Inspected current official documentation, specifications and public repository source/metadata listed in 17_SOURCE_LEDGER.md.",
+    "Calculated analytical byte lower bounds from the supplied 451-guide / 22,032-vertex source.",
+    "Generated Markdown, JSON, Mermaid, SHA-256 manifest and ZIP artifacts.",
+    "Validated required inventory, JSON syntax, relative links, source-ID references, manifest hashes and ZIP CRC/integrity."
+  ],
+  "unexecuted_proposals": [
+    "No 3ds Max 2027 SDK/plugin compilation or host execution.",
+    "No CUDA, OpenCL, D3D11 or HLSL prototype compilation.",
+    "No GPU/driver/toolkit/OpenCL device benchmark.",
+    "No renderer, Bake, export, UI input, visual or artist-acceptance test.",
+    "No private Cyrus source inspection or private test execution.",
+    "No timings, FPS, pointer latency, p95/p99, VRAM peak or speedup measured."
+  ],
+  "principal_recommendation": "Instrument the CPU reference and prove public Max HLSL shared-source pose deformation first. Keep CPU exact fitting/visible validation and canonical renderer/Bake materialization. Prototype CUDA/OpenCL fitting only if measured active workloads justify it; compare them on the same NVIDIA GPU. Direct compute-to-Nitrous sharing is gated on explicit public Max 2027 resource/device ownership evidence.",
+  "highest_risk_unresolved_question": "Whether the installed Max 2027 public SDK supports the required pose-buffer and any native-resource synchronization path without private APIs, and whether that same pose can be delivered consistently to the intended renderer and Bake/export.",
+  "limitations": [
+    "Public Max API pages inspected may not cover every installed SDK header/sample; absence is not proof of nonexistence.",
+    "Hardware recommendations are test categories, not purchase recommendations.",
+    "Third-party license notes are engineering inputs, not legal advice.",
+    "Analytical memory values exclude implementation overhead and are not measured peaks.",
+    "Provided project observations were not reproduced and are not generalized beyond their stated scope."
+  ],
+  "input_verification": "evidence/input-verification.json",
+  "artifact_inventory": {
+    "required": [
+      "00_README.md",
+      "01_EXECUTIVE_DECISION.md",
+      "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+      "03_PARALLELISM_AND_DATA_LAYOUT.md",
+      "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+      "05_COLLISION_AND_GUIDE_SOLVING.md",
+      "06_GPU_DEFORMATION_AND_INSTANCING.md",
+      "07_MAX_2027_INTEROP_FEASIBILITY.md",
+      "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+      "09_MEMORY_PRECISION_AND_HARDWARE.md",
+      "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+      "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+      "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+      "13_PHASED_IMPLEMENTATION_PLAN.md",
+      "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+      "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+      "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+      "17_SOURCE_LEDGER.md",
+      "18_ACCEPTANCE_CHECKLIST.md",
+      "RESEARCH_METADATA.json",
+      "MANIFEST.sha256"
+    ],
+    "additional": [
+      "diagrams/01_stage_dataflow.mmd",
+      "diagrams/02_async_lifecycle.mmd",
+      "diagrams/03_buffer_ownership.mmd",
+      "evidence/input-verification.json",
+      "evidence/research-environment.txt",
+      "evidence/package-validation.json",
+      "evidence/package-validation.log"
+    ]
+  },
+  "zip_expected_name": "CyrusScatter_GPU_Interaction_Research_2026-10-27_A.zip"
+}

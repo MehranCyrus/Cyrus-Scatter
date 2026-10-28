@@ -1,6 +1,18 @@
 # Current codebase architecture
 
-Applies to the Cyrus Scatter 0.87.4 source, saved schema 62 and `CyrusUnified2`. Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current editor qualification](plans/source-preparation-editor-20261026/DELIVERY_0874.md). Source implementation and scoped qualification are distinct. The [preceding three-host installer](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) does not extend the Max 2027 runtime evidence to 2024/2026. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. Versioned sections below describe their original foundation; current formats are recipe 8, numeric settings 3, native Edit storage 2, library capability 4 and asset package capability 3 and shared-store capability 1.
+The [performance baseline](PERFORMANCE_BASELINE.md) owns the artist-endorsed responsiveness decision and the comparison procedure. Its source map and measurements complement the implementation below; approximate Bend/Trim and Detailed contact have different costs and guarantees.
+
+The [0.87.5.6 response patch](plans/drag-response-08756-20261028/DELIVERY_08756.md) replaces broad-response angle searches with at most four coarse span queries per guide/collider and one artistic bend. Prepared guide bounds/radii are shared. Structural root guides and a source-height smoothstep implement trunk/base/fade controls. Existing numeric worker execution now admits small groups of complex plants using guide counts, with joined workers and ordered publication. Exact-refinement scratch is reserved only for Detailed mode. A ready-frame notification requests the SDK presentation boundary during held input, without rebuilding placements. Each new ticket receives its own bounded redraw allowance; reusing a viewport record must not exhaust retries for later poses. Inactive source-history rows are excluded before constructing Edit contact matrices; their authored history remains available for Undo. [Ownership and scope](plans/drag-response-08756-20261028/PLAN.md).
+
+The [0.87.5.5 callback correction](plans/scene-adaptation-08754-20261028/CALLBACK_HOTFIX_08755.md) explicitly resolves late-declared interaction members through `this.` in `liveTimeChanged`. The [0.87.5.4 adaptation foundation](plans/scene-adaptation-08754-20261028/PLAN.md) adds root-owned ordinary scene collider references, layer-owned response settings and reversible per-instance guide-subtree masks. Finite nonsingular obstacle linear transforms bake into immutable numeric copies; translation reuses geometry. Geometry watches target the object separately from node pose/offset changes. Broad guide/envelope fitting avoids detailed mesh refinement; optional neighbor response uses stable one-way priorities against rest proxies. Host capture/publication remain on the host thread; workers consume copied numeric data. CPU mesh output and compact GPU poses consume the same mask. Failed successors retain the complete preceding publication.
+
+The [0.87.5.3 repair](plans/scene-repair-08753-20261028/AUDIT.md) binds both source views to canonical authored rows, includes evaluated source-node scale once and permits per-model Scale revisions in typed Edit bindings. [Static authored source commands](plans/scene-repair-08753-20261028/SOURCE_COMMAND_UNDO.md) use bounded native RestoreObj snapshots; derived meshes/placements are excluded. Viewport publication retains immutable exact-output references, and multi-mesh render/Bake construction is admitted per batch. Exact collider metadata and candidate-frame memo scratch are charged. GPU binding buffers and memory leases reuse immutable prepared Source identity; a new preparation invalidates them. One camera/mouse activity authority owns reduced drawing and idle restoration; pure orbit changes no contact state or buffers. Explicit Fast navigation selects complete instances within the existing moving quota.
+
+The [0.87.5.2 contact audit](plans/contact-audit-08752-20261027/AUDIT.md) caches guide-local triangle addresses and indexed connected-component representatives in each immutable Source. Exact checks retain every triangle surface test and classify one point per component for containment. Consecutive identical ring/rigid-leaf attachments reuse double-precision frame work within a candidate. Existing worker budgets, atomic publication and GPU source/pose lifetimes remain. Process counters and separate preview build/reuse timings make repeated work observable; the dense basal edge-strain limitation remains open.
+
+The [0.87.5 implementation](plans/shared-pose-viewport-0875-20261027/IMPLEMENTATION_0875.md) replaces per-instance posed triangle batches in Mesh/Textured mesh with shared source bindings, generation-owned pose buffers and a sparse raw-instance lookup table. Public Nitrous typed buffers perform vertex deformation; the existing CPU solver/render/Bake path stays canonical. Compiled programs bind the current item's immutable buffers before each Draw. Source reservations outlive retained generations, unchanged source types reuse their state, and complete hiding also applies to box previews. Native Interactions 12; persistent schema/recipe/Edit formats are unchanged. See the [dated delivery](plans/shared-pose-viewport-0875-20261027/DELIVERY_0875.md) for measured scope.
+
+Describes Cyrus Scatter 0.87.5.6 over the preceding interaction foundation, including the 0.87.5.1 Library and saved schema 65 and `CyrusUnified2`. Versioned sections retain their original scoped evidence; the current response report records scoped successor qualification. Native Scene presets are described in [their implementation section](#native-scene-presets-08751). Use [the artist guide](ARTIST_GUIDE.md), [the backlog](BACKLOG.md) and [current editor qualification](plans/source-preparation-editor-20261026/DELIVERY_0874.md). Source implementation and scoped qualification are distinct. The [preceding three-host installer](plans/preset-gallery-improvements/INSTALLER_0873_COMPATIBILITY.md) does not extend the Max 2027 runtime evidence to 2024/2026. The [0.86.0 native execution evidence](plans/native-placement/EXECUTION_0860.md), [0.85.4 memory evidence](plans/memory-0854/README.md) and earlier dated records retain their exact scope. Read relevant [foundation contracts](ENGINEERING_FOUNDATION.md) with their verification limits. [Edited recipe ownership and replay](plans/recipe-authored-08744-20261027/PLAN.md) describes sparse native overrides, prepared definitions, asset roles and failure behavior. Versioned sections below describe their original foundation; current formats are recipe 9, numeric settings 3, native Edit storage 3, library capability 4 and asset package capability 3 and shared-store capability 1.
 
 ## Ownership
 
@@ -402,6 +414,32 @@ metadata does not. The host resolves Off/Follow Density/Custom into one effectiv
 trace in the 15-field Band record (native interface 9). The immutable numeric field
 validates it and multiplies the separately keyed random scale after selecting its
 owner. Published transform/radius computation therefore consumes the factor once.
+
+## Native Scene presets (0.87.5.1)
+
+`scene-presets.ms` saves a bounded dependency closure through Max serialization.
+Native metadata format 1 identifies a `.max` attachment and its declared assets;
+file-only Library browsing does not read scene headers or evaluate plants.
+`SharedLibrary.Scenes.cs` verifies and collects copied file descriptors, reuses
+immutable content objects and publishes the catalog only after attachments are
+ready. Host APIs and serialization stay on the Max thread; hashing/copying run
+on the Library file worker. Owned staging is cleaned after completion or cancellation.
+
+Explicit Load verifies host, units and files, repaths only a private staged `.max`
+copy and uses standard Max merge. This user-selected behavior clears Undo history
+and has a short load notice. Failed merge cleanup removes only newly added nodes.
+The original setup and pending Manual publication remain unchanged by Save.
+Imported owner/source/clone identities are coordinated across the complete Edit
+stack, including inactive history and radius references. Receiver slots and
+variation domains remain local to the independent imported owner so candidate
+variation and geometry proofs are retained. Ordinary Max Copy of Edit stacks
+remains a separate limitation.
+
+Admission bounds include 10 layers, 10,000 nodes, 1,024 assets, 8 MiB metadata,
+2 GiB per payload and 16 GiB total. Portable format 9 remains a separate data-only
+path. Scene presets currently require Max 2027, matching system units and the
+required plug-ins; interactions retain the one-Edit limit. See [implementation
+scope](plans/scene-presets-08751/PLAN.md) and [executed qualification](plans/scene-presets-08751/DELIVERY_08751.md).
 
 ## Static authored recipes (0.82.5)
 

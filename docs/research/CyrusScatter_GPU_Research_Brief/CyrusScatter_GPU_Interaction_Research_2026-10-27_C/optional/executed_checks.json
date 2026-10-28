@@ -1,0 +1,448 @@
+{
+  "assumptions": {
+    "delta_guide_header_bytes": 16,
+    "mutable_graphics_vertex_bytes": 40,
+    "nodes_per_guide": 8,
+    "note": "Hypothesis; not supplied451guide source node count",
+    "pose_node_bytes": 32,
+    "transfer_rate_bytes_per_second": 16000000000.0
+  },
+  "budgets": [
+    {
+      "K_assumed_D": 1,
+      "N": 1000,
+      "changed_guides_per_instance": 1,
+      "float_pos_normal_tangent_unique_geometry_bytes": 881280,
+      "full_guide_directory_uint32_bytes": 1804000,
+      "instance_plus_index_bytes": 176000,
+      "pose_bytes_excluding_instance_headers_masks": 272
+    },
+    {
+      "K_assumed_D": 10,
+      "N": 10000,
+      "changed_guides_per_instance": 6,
+      "float_pos_normal_tangent_unique_geometry_bytes": 8812800,
+      "full_guide_directory_uint32_bytes": 18040000,
+      "instance_plus_index_bytes": 1760000,
+      "pose_bytes_excluding_instance_headers_masks": 16320
+    },
+    {
+      "K_assumed_D": 100,
+      "N": 100000,
+      "changed_guides_per_instance": 6,
+      "float_pos_normal_tangent_unique_geometry_bytes": 88128000,
+      "full_guide_directory_uint32_bytes": 180400000,
+      "instance_plus_index_bytes": 17600000,
+      "pose_bytes_excluding_instance_headers_masks": 163200
+    },
+    {
+      "K_assumed_D": 10,
+      "N": 1000000,
+      "changed_guides_per_instance": 6,
+      "float_pos_normal_tangent_unique_geometry_bytes": 8812800,
+      "full_guide_directory_uint32_bytes": 1804000000,
+      "instance_plus_index_bytes": 176000000,
+      "pose_bytes_excluding_instance_headers_masks": 16320
+    },
+    {
+      "K_assumed_D": 1000,
+      "N": 1000000,
+      "changed_guides_per_instance": 451,
+      "float_pos_normal_tangent_unique_geometry_bytes": 881280000,
+      "full_guide_directory_uint32_bytes": 1804000000,
+      "instance_plus_index_bytes": 176000000,
+      "pose_bytes_excluding_instance_headers_masks": 122672000
+    },
+    {
+      "K_assumed_D": 10000,
+      "N": 1000000,
+      "changed_guides_per_instance": 451,
+      "float_pos_normal_tangent_unique_geometry_bytes": 8812800000,
+      "full_guide_directory_uint32_bytes": 1804000000,
+      "instance_plus_index_bytes": 176000000,
+      "pose_bytes_excluding_instance_headers_masks": 1226720000
+    },
+    {
+      "K_assumed_D": 1000000,
+      "N": 1000000,
+      "changed_guides_per_instance": 451,
+      "float_pos_normal_tangent_unique_geometry_bytes": 881280000000,
+      "full_guide_directory_uint32_bytes": 1804000000,
+      "instance_plus_index_bytes": 176000000,
+      "pose_bytes_excluding_instance_headers_masks": 122672000000
+    }
+  ],
+  "checks": [
+    {
+      "id": "X01_endpoints_outside_segment_contact",
+      "observed": {
+        "endpoint_distance": 2.0615528128088303,
+        "minimum_signed_gap": -0.65
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X02_analytic_u_normal_witness",
+      "observed": {
+        "gap": -0.65,
+        "guide_center": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "normal": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "normal_unique": true,
+        "reconstruction_residual": 0.0,
+        "solid_witness": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "u": 0.5
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X03_fixed_root_exclusion_contact_independence",
+      "observed": {
+        "hidden_by_inside_solid_margin": false,
+        "required_policy": "infeasible, retain preceding complete result",
+        "violates_fixed_root_contact_clearance": true
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X04_fully_inside_segment",
+      "observed": {
+        "empty_surface_crossings_implies_outside": false,
+        "endpoints_inside": true,
+        "segment_sphere_surface_crossings": 0
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X05_clear_guide_penetrating_leaf",
+      "observed": {
+        "guide_gap": 0.18999999999999995,
+        "leaf_vertex_signed_distance": -0.09999999999999998
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X06_rebase_before_float_conversion",
+      "observed": {
+        "double_subtract_then_float_delta": 0.0010000000474974513,
+        "world_float_delta": 0.0,
+        "world_float_ulp_m": 0.0625
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X07_sampled_sdf_interpolation_bound",
+      "observed": {
+        "derived_bound_m": 0.08660254037844387,
+        "gradient_or_solid_sign_certification": false,
+        "max_observed_error_m": 0.06211585875919198,
+        "samples": 1331
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X08_incomplete_never_clear",
+      "observed": {
+        "budget": 10,
+        "clear_allowed": false,
+        "count": 13,
+        "status": "IncompleteBudgetExceeded"
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X09_dense_pose_and_geometry_arithmetic",
+      "observed": {
+        "all_guide_pose_bytes_per_instance": 122672,
+        "million_full_poses_bytes": 122672000000,
+        "million_unique_vertex_stream_bytes": 881280000000,
+        "unique_vertex_bytes_per_instance": 881280
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "X10_fixture_counts",
+      "observed": {
+        "geometry_sha256_canonical_json": "a9f58755ba8df2ee05032364e0644204fff716bfbb41e49ad0458999d78a4ec2",
+        "guide_nodes": 8,
+        "render_vertices": 16,
+        "triangles": 14
+      },
+      "status": "PASS"
+    }
+  ],
+  "dense_sdf_bytes": {
+    "1024_cubed_float32": 4294967296,
+    "256_cubed_float32": 67108864,
+    "512_cubed_float32": 536870912
+  },
+  "dense_span_collider_pairs_10k_grass_64_colliders": 2020480000,
+  "execution": "Executed Python arithmetic and analytic controls only",
+  "fixture": {
+    "contact_gap": 0.05,
+    "guide_radius": 0.1,
+    "seed": 20261027,
+    "segment": [
+      [
+        -2.0,
+        0.5,
+        0.0
+      ],
+      [
+        2.0,
+        0.5,
+        0.0
+      ]
+    ],
+    "sphere": {
+      "center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "radius": 1.0
+    },
+    "units": "metres",
+    "up": "+Y"
+  },
+  "fixture_sha256_canonical_json": "3887a1805688aef23d9fa7a38233e76c8904d6468e8d7d32b7f85383bf4a843a",
+  "float32_spacing_m": {
+    "1.0": 1.1920928955078125e-07,
+    "10.0": 9.5367431640625e-07,
+    "100.0": 7.62939453125e-06,
+    "10000.0": 0.0009765625,
+    "1000000.0": 0.0625,
+    "32.0": 3.814697265625e-06
+  },
+  "not_executed": [
+    "GPU kernels",
+    "Max",
+    "production CPU fitter",
+    "renderers",
+    "timing benchmark"
+  ],
+  "passed": 10,
+  "prepared_ribbon_fixture": {
+    "guide_nodes": [
+      [
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.1,
+        0.0
+      ],
+      [
+        0.0,
+        0.2,
+        0.0
+      ],
+      [
+        0.0,
+        0.30000000000000004,
+        0.0
+      ],
+      [
+        0.0,
+        0.4,
+        0.0
+      ],
+      [
+        0.0,
+        0.5,
+        0.0
+      ],
+      [
+        0.0,
+        0.6000000000000001,
+        0.0
+      ],
+      [
+        0.0,
+        0.7000000000000001,
+        0.0
+      ]
+    ],
+    "positions": [
+      [
+        -0.01,
+        0.0,
+        0.0
+      ],
+      [
+        0.01,
+        0.0,
+        0.0
+      ],
+      [
+        -0.01,
+        0.1,
+        0.0
+      ],
+      [
+        0.01,
+        0.1,
+        0.0
+      ],
+      [
+        -0.01,
+        0.2,
+        0.0
+      ],
+      [
+        0.01,
+        0.2,
+        0.0
+      ],
+      [
+        -0.01,
+        0.30000000000000004,
+        0.0
+      ],
+      [
+        0.01,
+        0.30000000000000004,
+        0.0
+      ],
+      [
+        -0.01,
+        0.4,
+        0.0
+      ],
+      [
+        0.01,
+        0.4,
+        0.0
+      ],
+      [
+        -0.01,
+        0.5,
+        0.0
+      ],
+      [
+        0.01,
+        0.5,
+        0.0
+      ],
+      [
+        -0.01,
+        0.6000000000000001,
+        0.0
+      ],
+      [
+        0.01,
+        0.6000000000000001,
+        0.0
+      ],
+      [
+        -0.01,
+        0.7000000000000001,
+        0.0
+      ],
+      [
+        0.01,
+        0.7000000000000001,
+        0.0
+      ]
+    ],
+    "root_vertex_indices": [
+      0,
+      1
+    ],
+    "triangles": [
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        2,
+        3,
+        4
+      ],
+      [
+        4,
+        5,
+        6
+      ],
+      [
+        6,
+        7,
+        8
+      ],
+      [
+        8,
+        9,
+        10
+      ],
+      [
+        10,
+        11,
+        12
+      ],
+      [
+        12,
+        13,
+        14
+      ],
+      [
+        1,
+        3,
+        2
+      ],
+      [
+        3,
+        5,
+        4
+      ],
+      [
+        5,
+        7,
+        6
+      ],
+      [
+        7,
+        9,
+        8
+      ],
+      [
+        9,
+        11,
+        10
+      ],
+      [
+        11,
+        13,
+        12
+      ],
+      [
+        13,
+        15,
+        14
+      ]
+    ],
+    "units": "metres",
+    "up": "+Y"
+  },
+  "python": "3.12.14",
+  "researcher": "A",
+  "schema": "cyrus.gpu.research.analytic-checks/1",
+  "system": "Linux",
+  "transfer_floor_ms": {
+    "1000_full_poses_one_way": 7.667,
+    "1000_full_vertex_streams_one_way": 55.08
+  }
+}

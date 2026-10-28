@@ -77,7 +77,7 @@ fn CyrusAssetCheckDefaults value baseline supported = (
 fn CyrusAssetCheckController control depth:0 = (
     if control==undefined do return true
     if depth>8 do throw "Portable source controller depth exceeds its bound."
-    if findItem #(PRS,Position_XYZ,Euler_XYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 do throw ("Portable assets require supported static parameter and transform controllers. Unsupported class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
+    if findItem #(PRS,Position_XYZ,Euler_XYZ,ScaleXYZ,Bezier_Position,Linear_Position,TCB_Position,Bezier_Rotation,Linear_Rotation,TCB_Rotation,Bezier_Scale,Linear_Scale,TCB_Scale,Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 do throw ("Portable assets require supported static parameter and transform controllers. Unsupported class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
     if (numKeys control)>0 do throw ("Portable assets require supported static parameter and transform controllers. Keyed class: "+(classof control as string)+". Prepare an explicitly named static derivative before packaging; the source is preserved.")
     for i=1 to control.numSubs do (
         local child=(getSubAnim control i).controller
@@ -211,7 +211,7 @@ fn CyrusAssetRoleIsSource role = (
     if (CyrusRecipeGet role "kind")!="node" or (CyrusRecipeGet role "requirements")!=undefined do return false
     local purposes=CyrusRecipeGet role "purposes"
     if purposes.count==0 do return false
-    for purpose in purposes where findItem #("sources","procSourceNodes") purpose==0 do return false
+    for purpose in purposes where findItem #("sources","procSourceNodes","interactionCollider") purpose==0 do return false
     true
 )
 fn CyrusAssetRoleIsReceiver role = (

@@ -1,5 +1,6 @@
 #include "interactions_geometry.h"
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <limits>
 #include <map>
@@ -37,6 +38,15 @@ bool rayBounds(Vec o,Vec d,const Bounds& b){
         double p=(a-x)/v,q=(z-x)/v;if(p>q)std::swap(p,q);lo=std::max(lo,p);hi=std::min(hi,q);if(lo>hi)return false;}
     return true;
 }
+// Triangle BVHs split each range in half and admit at most 16M triangles, so
+// depth-first traversal requires fewer than 64 pending nodes. Retain an
+// explicit guard if that admission/build policy changes later.
+struct Traversal {
+    std::array<unsigned,64> values{};std::size_t count=0;
+    void push(unsigned value){if(count==values.size())throw std::runtime_error("Collision BVH traversal depth exceeded");values[count++]=value;}
+    unsigned pop(){return values[--count];}
+    bool empty()const{return count==0;}
+};
 std::pair<double,double> segmentParameters(Vec a,Vec b,Vec c,Vec d){
     auto u=sub(b,a),w=sub(d,c),r=sub(a,c);double aa=dot(u,u),ee=dot(w,w),ff=dot(w,r),s=0,t=0;
     if(aa<1e-24&&ee<1e-24)return {0,0};
@@ -71,11 +81,24 @@ Vec Transform::point(Vec p)const{return add(vector(p),rows[3]);}
 Vec Transform::inverseVector(Vec p)const{const auto x=cross(rows[1],rows[2]),y=cross(rows[2],rows[0]),z=cross(rows[0],rows[1]);const double determinant=dot(rows[0],x);if(std::abs(determinant)<1e-24)throw std::runtime_error("Singular interaction inverse");return {dot(p,x)/determinant,dot(p,y)/determinant,dot(p,z)/determinant};}
 Vec Transform::inversePoint(Vec p)const{return inverseVector(sub(p,rows[3]));}
 Bounds Transform::bounds(const Bounds& b)const{Bounds r;for(int i=0;i<8;++i)r.include(point({i&1?b.hi.x:b.lo.x,i&2?b.hi.y:b.lo.y,i&4?b.hi.z:b.lo.z}));return r;}
+InverseTransform::InverseTransform(const Transform& t):translation(t.rows[3]),cofactors{cross(t.rows[1],t.rows[2]),cross(t.rows[2],t.rows[0]),cross(t.rows[0],t.rows[1])},determinant(dot(t.rows[0],cofactors[0])){
+    if(!std::isfinite(determinant)||std::abs(determinant)<1e-24)throw std::runtime_error("Singular interaction inverse");
+}
+Vec InverseTransform::point(Vec p)const{p=sub(p,translation);return {dot(p,cofactors[0])/determinant,dot(p,cofactors[1])/determinant,dot(p,cofactors[2])/determinant};}
 
 struct MeshGeometry::Impl {
     struct Node {Bounds box;unsigned begin=0,count=0,left=0,right=0;};
-    std::vector<Vec> vertices;std::vector<Tri> triangles;std::vector<unsigned> order;std::vector<Node> nodes;Bounds box;bool closed=true;
-    Bounds triangleBounds(unsigned id)const{Bounds b;for(auto i:triangles[id])b.include(vertices[i]);return b;}
+    struct TriangleData {Bounds bounds;Vec normal;double normalLength=0;};
+    // Fixed source geometry is shared by every instance/query. Keep the cache
+    // bounded for large detailed colliders; the remaining faces use the same
+    // exact calculation on demand. This is acceleration metadata, not a hull.
+    static constexpr std::size_t maximumCachedTriangles=65536;
+    std::vector<Vec> vertices;std::vector<Tri> triangles;std::vector<unsigned> order;std::vector<Node> nodes;
+    std::vector<TriangleData> triangleData;Bounds box;bool closed=true;
+    TriangleData calculateTriangleData(unsigned id)const{const auto& t=triangles[id];TriangleData out;for(auto i:t)out.bounds.include(vertices[i]);
+        out.normal=cross(sub(vertices[t[1]],vertices[t[0]]),sub(vertices[t[2]],vertices[t[0]]));out.normalLength=length(out.normal);return out;}
+    TriangleData data(unsigned id)const{return id<triangleData.size()?triangleData[id]:calculateTriangleData(id);}
+    Bounds triangleBounds(unsigned id)const{if(id<triangleData.size())return triangleData[id].bounds;Bounds b;for(auto i:triangles[id])b.include(vertices[i]);return b;}
     unsigned build(unsigned begin,unsigned end){
         unsigned id=unsigned(nodes.size());nodes.emplace_back();Bounds b,centres;
         for(unsigned i=begin;i<end;++i){auto a=triangleBounds(order[i]);b.include(a);centres.include(mul(add(a.lo,a.hi),.5));}
@@ -85,12 +108,14 @@ struct MeshGeometry::Impl {
         auto left=build(begin,mid),right=build(mid,end);nodes[id].left=left;nodes[id].right=right;return id;
     }
     bool inside(Vec p)const{
-        if(!closed)return false;Vec direction=unit({1,.3713906763541037,.6947465906068658});std::vector<double> hits;std::vector<unsigned> stack{0};
-        while(!stack.empty()){auto id=stack.back();stack.pop_back();const auto& n=nodes[id];if(!rayBounds(p,direction,n.box))continue;
-            if(n.count)for(unsigned j=n.begin;j<n.begin+n.count;++j){const auto& t=triangles[order[j]];double distance=0;if(rayTriangle(p,direction,vertices[t[0]],vertices[t[1]],vertices[t[2]],distance)&&distance>1e-9)hits.push_back(distance);}
-            else{stack.push_back(n.left);stack.push_back(n.right);}}
-        std::sort(hits.begin(),hits.end());unsigned distinct=0;double last=-1;
-        for(double t:hits)if(last<0||t-last>1e-8*std::max(1.,t)){++distinct;last=t;}return distinct%2!=0;
+        if(!closed)return false;static const Vec direction=unit({1,.3713906763541037,.6947465906068658});
+        std::array<double,32> smallHits{};std::vector<double> extraHits;std::size_t hitCount=0;Traversal stack;stack.push(0);
+        while(!stack.empty()){auto id=stack.pop();const auto& n=nodes[id];if(!rayBounds(p,direction,n.box))continue;
+            if(n.count)for(unsigned j=n.begin;j<n.begin+n.count;++j){const auto& t=triangles[order[j]];double distance=0;if(rayTriangle(p,direction,vertices[t[0]],vertices[t[1]],vertices[t[2]],distance)&&distance>1e-9){
+                if(hitCount<smallHits.size())smallHits[hitCount]=distance;else{if(hitCount==smallHits.size())extraHits.assign(smallHits.begin(),smallHits.end());extraHits.push_back(distance);}++hitCount;}}
+            else{stack.push(n.left);stack.push(n.right);}}
+        unsigned distinct=0;double last=-1;auto count=[&](auto begin,auto end){std::sort(begin,end);for(auto it=begin;it!=end;++it){const double t=*it;if(last<0||t-last>1e-8*std::max(1.,t)){++distinct;last=t;}}};
+        if(hitCount<=smallHits.size())count(smallHits.begin(),smallHits.begin()+hitCount);else count(extraHits.begin(),extraHits.end());return distinct%2!=0;
     }
     Witness point(Vec p)const{
         double best=1e100;Vec surface{};unsigned face=0;std::vector<unsigned> stack{0};Bounds pb=pointBox(p);
@@ -101,6 +126,23 @@ struct MeshGeometry::Impl {
         if(distance>1e-10)normal=mul(sub(p,surface),(negative?-1:1)/distance);
         else {auto t=triangles[face];normal=unit(cross(sub(vertices[t[1]],vertices[t[0]]),sub(vertices[t[2]],vertices[t[0]])));if(closed&&inside(add(surface,mul(normal,1e-7))))normal=mul(normal,-1);}
         return {p,surface,normal,0,negative?-distance:distance};
+    }
+    bool occupied(Vec p,double scale,double gap)const{
+        if(!finite(p)||!std::isfinite(scale)||scale<=0||!std::isfinite(gap)||gap<=0)throw std::runtime_error("Invalid fixed-root contact band");
+        // The original predicate asks only whether a point is within the
+        // positive band or inside the solid. Search for any near triangle,
+        // pruning everything beyond the band; only then perform parity.
+        // nextafter keeps the pruning bound conservative at floating-point
+        // equality; the original strict comparison decides the result.
+        const double radius=std::nextafter(gap/scale,std::numeric_limits<double>::infinity());
+        const double radiusSq=radius*radius;const Bounds query=pointBox(p);
+        if(box.distanceSq(query)>radiusSq)return false;
+        Traversal stack;stack.push(0);
+        while(!stack.empty()){const auto id=stack.pop();const auto& node=nodes[id];if(node.box.distanceSq(query)>radiusSq)continue;
+            if(node.count)for(unsigned j=node.begin;j<node.begin+node.count;++j){const auto t=triangles[order[j]];const auto d=sub(p,closestTriangle(p,vertices[t[0]],vertices[t[1]],vertices[t[2]]));
+                if(std::sqrt(dot(d,d))*scale<gap)return true;}
+            else{stack.push(node.left);stack.push(node.right);}}
+        return inside(p);
     }
     std::optional<Witness> segment(Vec a,Vec b,double maximum=1e50)const{
         Bounds segmentBox;segmentBox.include(a);segmentBox.include(b);double best=maximum*maximum,bestU=0;bool found=false;std::vector<unsigned> stack{0};Vec axis{},surface{};
@@ -138,14 +180,64 @@ MeshGeometry::MeshGeometry(std::vector<Vec> vertices,std::vector<Tri> triangles,
     if(p->triangles.empty())throw std::runtime_error("Collider has no admitted triangles");
     p->closed=std::all_of(edges.begin(),edges.end(),[](const auto& e){return e.second==2;});
     if(requireSolid&&!p->closed)throw std::runtime_error("Mesh collider is open/nonmanifold after seam welding; choose an explicit proxy");
+    const auto cached=std::min(p->triangles.size(),Impl::maximumCachedTriangles);p->triangleData.reserve(cached);
+    for(unsigned id=0;id<cached;++id)p->triangleData.push_back(p->calculateTriangleData(id));
     p->order.resize(p->triangles.size());std::iota(p->order.begin(),p->order.end(),0);p->nodes.reserve(2*p->triangles.size());p->build(0,unsigned(p->triangles.size()));impl_=std::move(p);
 }
 const Bounds& MeshGeometry::bounds()const{return impl_->box;}
 bool MeshGeometry::solid()const{return impl_->closed;}
-std::size_t MeshGeometry::bytes()const{return sizeof(*impl_)+impl_->vertices.capacity()*sizeof(Vec)+impl_->triangles.capacity()*sizeof(Tri)+impl_->order.capacity()*sizeof(unsigned)+impl_->nodes.capacity()*sizeof(Impl::Node);}
+std::size_t MeshGeometry::bytes()const{return sizeof(*impl_)+impl_->vertices.capacity()*sizeof(Vec)+impl_->triangles.capacity()*sizeof(Tri)+impl_->order.capacity()*sizeof(unsigned)+impl_->nodes.capacity()*sizeof(Impl::Node)+impl_->triangleData.capacity()*sizeof(Impl::TriangleData);}
+std::shared_ptr<const MeshGeometry> MeshGeometry::bakeLinear(const Transform& transform,std::shared_ptr<const void> lease)const{
+    for(auto row:transform.rows)if(!finite(row))throw std::runtime_error("Nonfinite collider transform");
+    const auto determinant=dot(cross(transform.rows[0],transform.rows[1]),transform.rows[2]);
+    const double magnitude=length(transform.rows[0])*length(transform.rows[1])*length(transform.rows[2]);
+    if(magnitude<1e-24||std::abs(determinant)<magnitude*1e-8)throw std::runtime_error("Collider has a collapsed or nearly singular transform; give it a nonzero thickness");
+    auto vertices=impl_->vertices;auto triangles=impl_->triangles;
+    for(auto& point:vertices){point=transform.vector(point);if(!finite(point))throw std::runtime_error("Collider transform exceeds finite geometry range");}
+    if(determinant<0)for(auto& face:triangles)std::swap(face[1],face[2]);
+    auto result=std::make_shared<MeshGeometry>(std::move(vertices),std::move(triangles),impl_->closed);result->allocationLease=std::move(lease);return result;
+}
 Witness MeshGeometry::point(Vec p)const{return impl_->point(p);}
+ContactTopology::ContactTopology(unsigned count,std::vector<Tri> faces):vertices(count),triangles(std::move(faces)){
+    if(count>8000000||triangles.size()>16000000)throw std::runtime_error("Contact topology exceeds source admission");
+    std::vector<unsigned> parents(count);std::iota(parents.begin(),parents.end(),0u);
+    auto root=[&](unsigned v){while(parents[v]!=v){parents[v]=parents[parents[v]];v=parents[v];}return v;};
+    for(const auto& t:triangles){for(auto v:t)if(v>=count)throw std::runtime_error("Contact topology vertex outside source");
+        for(unsigned k=1;k<3;++k){const auto a=root(t[0]),b=root(t[k]);if(a!=b)parents[std::max(a,b)]=std::min(a,b);}}
+    for(unsigned v=0;v<count;++v)if(root(v)==v)components.push_back(v);
+}
+bool meshNear(const MeshGeometry& mesh,const std::vector<Vec>& points,const ContactTopology& topology,
+              double band,std::size_t& work,MeshContactWork& measured){
+    if(points.size()!=topology.vertices||!std::isfinite(band)||band<=0)throw std::runtime_error("Invalid connected mesh contact input");
+    ++measured.checks;const auto box=mesh.bounds().expanded(band);
+    auto charge=[&]{if(++work>2000000)throw std::runtime_error("Detailed contact refinement reached its 2M geometry-query budget; reduce simultaneous contact complexity.");};
+    const auto start=std::chrono::steady_clock::now();bool inside=false;
+    for(auto v:topology.components){charge();const auto p=points[v];if(p.x<box.lo.x||p.x>box.hi.x||p.y<box.lo.y||p.y>box.hi.y||p.z<box.lo.z||p.z>box.hi.z)continue;
+        ++measured.pointTests;if(mesh.occupied(p,1.,band)){inside=true;break;}}
+    measured.pointMs+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();if(inside)return true;
+    const auto faceStart=std::chrono::steady_clock::now();bool crossing=false;
+    for(const auto& t:topology.triangles){charge();Bounds b;for(auto v:t)b.include(points[v]);if(!b.overlaps(box))continue;
+        ++measured.faceTests;if(mesh.triangleNear(points[t[0]],points[t[1]],points[t[2]],band)){crossing=true;break;}}
+    measured.faceMs+=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-faceStart).count();return crossing;
+}
+bool MeshGeometry::occupied(Vec p,double scale,double gap)const{return impl_->occupied(p,scale,gap);}
 Witness MeshGeometry::segment(Vec a,Vec b)const{return impl_->segment(a,b).value();}
 std::optional<Witness> MeshGeometry::contactSegment(Vec a,Vec b,double radius)const{return impl_->segment(a,b,radius);}
+bool MeshGeometry::segmentNear(Vec a,Vec b,double band)const{
+    if(!finite(a)||!finite(b)||!std::isfinite(band)||band<=0)throw std::runtime_error("Invalid segment contact band");
+    Bounds box;box.include(a);box.include(b);const auto expanded=std::nextafter(band,std::numeric_limits<double>::infinity());
+    const auto radiusSq=expanded*expanded;if(impl_->box.distanceSq(box)>radiusSq)return false;
+    auto near=[&](Vec x,Vec y){return length(sub(x,y))<band;};Traversal stack;stack.push(0);
+    while(!stack.empty()){const auto id=stack.pop();const auto& node=impl_->nodes[id];if(node.box.distanceSq(box)>radiusSq)continue;
+        if(node.count)for(unsigned j=node.begin;j<node.begin+node.count;++j){const auto& t=impl_->triangles[impl_->order[j]];
+            const auto x=impl_->vertices[t[0]],y=impl_->vertices[t[1]],z=impl_->vertices[t[2]];double hit=0;
+            if(rayTriangle(a,sub(b,a),x,y,z,hit)&&hit<=1)return true;
+            if(near(a,closestTriangle(a,x,y,z))||near(b,closestTriangle(b,x,y,z)))return true;
+            for(unsigned k=0;k<3;++k){const auto c=impl_->vertices[t[k]],d=impl_->vertices[t[(k+1)%3]];const auto [u,v]=segmentParameters(a,b,c,d);
+                if(near(add(a,mul(sub(b,a),u)),add(c,mul(sub(d,c),v))))return true;}}
+        else{stack.push(node.left);stack.push(node.right);}}
+    return impl_->closed&&impl_->inside(a);
+}
 bool MeshGeometry::rayHit(Vec origin,Vec direction,double maximumDistance)const{
     direction=unit(direction);std::vector<unsigned> stack{0};Bounds query;query.include(origin);query.include(add(origin,mul(direction,maximumDistance)));
     while(!stack.empty()){const auto id=stack.back();stack.pop_back();const auto& node=impl_->nodes[id];if(!node.box.overlaps(query)||!rayBounds(origin,direction,node.box))continue;
@@ -158,10 +250,17 @@ bool MeshGeometry::projectedNear(Vec origin,Vec direction,double radius)const{
     auto edgeDistance=[&](double ax,double ay,double bx,double by){const double x=bx-ax,y=by-ay,den=x*x+y*y;const double t=den>1e-30?std::clamp(((px-ax)*x+(py-ay)*y)/den,0.,1.):0.;const double dx=px-ax-t*x,dy=py-ay-t*y;return dx*dx+dy*dy;};
     std::vector<unsigned> stack{0};while(!stack.empty()){auto id=stack.back();stack.pop_back();const auto& node=impl_->nodes[id];const auto c=mul(add(node.box.lo,node.box.hi),.5),e=mul(sub(node.box.hi,node.box.lo),.5);
         const double ex=std::abs(u.x)*e.x+std::abs(u.y)*e.y+std::abs(u.z)*e.z,ey=std::abs(v.x)*e.x+std::abs(v.y)*e.y+std::abs(v.z)*e.z;
+        const double height=dot(sub(c,origin),direction),extent=std::abs(direction.x)*e.x+std::abs(direction.y)*e.y+std::abs(direction.z)*e.z;
+        if(height+extent<0)continue;
         const double dx=std::max(0.,std::abs(px-dot(c,u))-ex),dy=std::max(0.,std::abs(py-dot(c,v))-ey);if(dx*dx+dy*dy>limit)continue;
-        if(node.count)for(unsigned i=node.begin;i<node.begin+node.count;++i){auto triangle=impl_->triangles[impl_->order[i]];double x[3],y[3],side[3];for(unsigned k=0;k<3;++k){x[k]=dot(impl_->vertices[triangle[k]],u);y[k]=dot(impl_->vertices[triangle[k]],v);}
-            for(unsigned k=0;k<3;++k){unsigned j=(k+1)%3;side[k]=(x[j]-x[k])*(py-y[k])-(y[j]-y[k])*(px-x[k]);if(edgeDistance(x[k],y[k],x[j],y[j])<=limit)return true;}
-            const double area=(x[1]-x[0])*(y[2]-y[0])-(y[1]-y[0])*(x[2]-x[0]);if(std::abs(area)>1e-20&&((side[0]>=0&&side[1]>=0&&side[2]>=0)||(side[0]<=0&&side[1]<=0&&side[2]<=0)))return true;
+        if(node.count)for(unsigned i=node.begin;i<node.begin+node.count;++i){
+            const auto tri=impl_->triangles[impl_->order[i]];Vec clipped[6];unsigned count=0;
+            for(unsigned k=0;k<3;++k){const auto a=impl_->vertices[tri[k]],b=impl_->vertices[tri[(k+1)%3]];const double da=dot(sub(a,origin),direction),db=dot(sub(b,origin),direction);
+                if(da>=0)clipped[count++]=a;if((da<0)!=(db<0))clipped[count++]=add(a,mul(sub(b,a),da/(da-db)));}
+            if(!count)continue;bool positive=false,negative=false;
+            for(unsigned k=0;k<count;++k){auto a=clipped[k],b=clipped[(k+1)%count];const double ax=dot(a,u),ay=dot(a,v),bx=dot(b,u),by=dot(b,v);
+                if(edgeDistance(ax,ay,bx,by)<=limit)return true;const double side=(bx-ax)*(py-ay)-(by-ay)*(px-ax);positive|=side>1e-20;negative|=side< -1e-20;}
+            if(count>=3&&(positive!=negative))return true;
         }else{stack.push_back(node.left);stack.push_back(node.right);}}
     return false;
 }
@@ -190,9 +289,37 @@ double MeshGeometry::triangleDistance(Vec a,Vec b,Vec c,double maximum)const{
         }else{stack.push_back(node.left);stack.push_back(node.right);}}
     return std::sqrt(best);
 }
+bool MeshGeometry::triangleNear(Vec a,Vec b,Vec c,double band)const{
+    if(!finite(a)||!finite(b)||!finite(c)||!std::isfinite(band)||band<=0)throw std::runtime_error("Invalid triangle contact band");
+    const Vec query[3]{a,b,c};Bounds box;for(auto p:query)box.include(p);
+    const double radius=std::nextafter(band,std::numeric_limits<double>::infinity()),radiusSq=radius*radius;
+    const double bandSq=band*band,lower=std::nextafter(bandSq,0.),upper=std::nextafter(bandSq,std::numeric_limits<double>::infinity());
+    // Most pairs can be compared without a square root; at a rounding-boundary
+    // defer to the original strict distance predicate.
+    auto near=[&](Vec p,Vec q){const auto d=sub(p,q);const double sq=dot(d,d);return sq<lower||(sq<=upper&&std::sqrt(sq)<band);};
+    const Vec queryNormal=cross(sub(b,a),sub(c,a));const double queryNormalLength=length(queryNormal);
+    auto separated=[&](Vec origin,Vec normal,double normalLength,Vec x,Vec y,Vec z){if(normalLength<1e-14)return false;
+        const double da=dot(normal,sub(x,origin)),db=dot(normal,sub(y,origin)),dc=dot(normal,sub(z,origin));
+        const double tolerance=band*normalLength+1e-12*(1+std::abs(da)+std::abs(db)+std::abs(dc));
+        return std::min({da,db,dc})>tolerance||std::max({da,db,dc})< -tolerance;};
+    Traversal stack;stack.push(0);while(!stack.empty()){const auto id=stack.pop();const auto& node=impl_->nodes[id];if(node.box.distanceSq(box)>radiusSq)continue;
+        if(node.count)for(unsigned i=node.begin;i<node.begin+node.count;++i){const auto triangleID=impl_->order[i];const auto tri=impl_->triangles[triangleID];const auto cached=impl_->data(triangleID);if(cached.bounds.distanceSq(box)>radiusSq)continue;
+            const Vec target[3]{impl_->vertices[tri[0]],impl_->vertices[tri[1]],impl_->vertices[tri[2]]};
+            // Plane distance is a conservative lower bound to distance from
+            // the triangle. It cheaply rejects many separated face pairs before
+            // any edge-to-edge closest-point calculations.
+            if(separated(a,queryNormal,queryNormalLength,target[0],target[1],target[2])||separated(target[0],cached.normal,cached.normalLength,a,b,c))continue;
+            for(unsigned k=0;k<3;++k){double u=0;if(rayTriangle(query[k],sub(query[(k+1)%3],query[k]),target[0],target[1],target[2],u)&&u<=1)return true;
+                if(rayTriangle(target[k],sub(target[(k+1)%3],target[k]),a,b,c,u)&&u<=1)return true;
+                if(near(query[k],closestTriangle(query[k],target[0],target[1],target[2]))||near(target[k],closestTriangle(target[k],a,b,c)))return true;
+                for(unsigned j=0;j<3;++j){auto [s,t]=segmentParameters(query[k],query[(k+1)%3],target[j],target[(j+1)%3]);if(near(add(query[k],mul(sub(query[(k+1)%3],query[k]),s)),add(target[j],mul(sub(target[(j+1)%3],target[j]),t))))return true;}}
+        }else{stack.push(node.left);stack.push(node.right);}}
+    return false;
+}
+MeshWorld::ShapeQuery::ShapeQuery(const Shape& shape):bounds(shape.transform.bounds(shape.geometry->bounds())),inverse(shape.transform),scale(shape.transform.scale()){}
 MeshWorld::MeshWorld(std::uint64_t generation,std::vector<Shape> shapes,std::size_t calls,std::size_t contacts):generation_(generation),shapes_(std::move(shapes)),maxCalls_(calls),maxContacts_(contacts){
     if(!generation||!calls||!contacts||shapes_.size()>4096)throw std::runtime_error("Invalid mesh world admission");
-    std::vector<std::uint64_t> ids;for(const auto& s:shapes_){if(!s.id||!s.geometry||!s.geometry->solid())throw std::runtime_error("Invalid solid collider binding");s.transform.scale();ids.push_back(s.id);}
+    std::vector<std::uint64_t> ids;cached_.reserve(shapes_.size());for(const auto& s:shapes_){if(!s.id||!s.geometry||!s.geometry->solid())throw std::runtime_error("Invalid solid collider binding");cached_.emplace_back(s);ids.push_back(s.id);}
     std::sort(ids.begin(),ids.end());if(std::adjacent_find(ids.begin(),ids.end())!=ids.end())throw std::runtime_error("Duplicate collider identity");
 }
 bool MeshWorld::admit(v::Cancellation c)const{return !c.requested()&&++calls_<=maxCalls_;}
@@ -200,7 +327,7 @@ v::BackendIdentity MeshWorld::backend()const{return {"Cyrus mesh contact adapter
 v::PointResult MeshWorld::classify_point(Vec p,double radius,v::Cancellation cancel)const{
     v::PointResult out;out.generation=generation_;if(!admit(cancel)){out.outcome=cancel.requested()?v::Outcome::Cancelled:v::Outcome::ResourceLimit;return out;}
     if(!finite(p)||!std::isfinite(radius)||radius<0){out.outcome=v::Outcome::InvalidInput;return out;}
-    for(const auto& s:shapes_){auto w=s.geometry->point(s.transform.inversePoint(p));double gap=w.gap*s.transform.scale()-radius;
+    for(std::size_t i=0;i<shapes_.size();++i){const auto& s=shapes_[i];const auto& query=cached_[i];auto w=s.geometry->point(query.inverse.point(p));double gap=w.gap*query.scale-radius;
         out.hits.push_back({s.id,gap< -1e-7?v::Location::Inside:gap>1e-7?v::Location::Outside:v::Location::Boundary,gap});}
     out.outcome=v::Outcome::Ok;out.complete=true;return out;
 }
@@ -208,17 +335,48 @@ v::ContactResult MeshWorld::query_capsule(const v::CapsuleQuery& q,v::Cancellati
     v::ContactResult out;out.generation=generation_;if(!admit(cancel)){out.outcome=cancel.requested()?v::Outcome::Cancelled:v::Outcome::ResourceLimit;return out;}
     if(!q.guide_id||!q.span_id||!finite(q.a)||!finite(q.b)||length(sub(q.b,q.a))<1e-12||!std::isfinite(q.geometric_radius_m)||q.geometric_radius_m<0||!std::isfinite(q.clearance_m)||q.clearance_m<0){out.outcome=v::Outcome::InvalidInput;return out;}
     Bounds query;query.include(q.a);query.include(q.b);query=query.expanded(q.geometric_radius_m+q.clearance_m+1e-6);
-    for(const auto& s:shapes_){if(!query.overlaps(s.transform.bounds(s.geometry->bounds())))continue;
-        auto candidate=s.geometry->contactSegment(s.transform.inversePoint(q.a),s.transform.inversePoint(q.b),(q.geometric_radius_m+q.clearance_m+1e-6)/s.transform.scale());if(!candidate)continue;auto w=*candidate;
+    for(std::size_t i=0;i<shapes_.size();++i){const auto& s=shapes_[i];const auto& cache=cached_[i];if(!query.overlaps(cache.bounds))continue;
+        auto candidate=s.geometry->contactSegment(cache.inverse.point(q.a),cache.inverse.point(q.b),(q.geometric_radius_m+q.clearance_m+1e-6)/cache.scale);if(!candidate)continue;auto w=*candidate;
         // Max's float similarities carry small orthogonality errors. Rebuild
         // the axis from the caller's material fraction and use the exact
         // inverse-transpose normal; the qualified witness equation must hold
         // in the caller's coordinates, not approximately in source space.
         const auto axis=add(q.a,mul(sub(q.b,q.a),w.u)),surface=s.transform.point(w.surface);
-        const auto& r=s.transform.rows;const auto normal=unit(add(add(mul(cross(r[1],r[2]),w.normal.x),mul(cross(r[2],r[0]),w.normal.y)),mul(cross(r[0],r[1]),w.normal.z)));
+        const auto& c=cache.inverse.cofactors;const auto normal=unit(add(add(mul(c[0],w.normal.x),mul(c[1],w.normal.y)),mul(c[2],w.normal.z)));
         double gap=dot(normal,sub(axis,surface))-q.geometric_radius_m-q.clearance_m;if(gap>1e-7)continue;
         if(out.contacts.size()>=maxContacts_){out.outcome=v::Outcome::ResourceLimit;return out;}
         out.contacts.push_back({s.id,q.guide_id,q.span_id,w.u,true,axis,surface,normal,gap});}
     out.outcome=v::Outcome::Ok;out.complete=true;return out;
+}
+std::optional<bool> MeshWorld::capsuleClear(const v::CapsuleQuery& q,v::Cancellation cancel,double tolerance)const{
+    if(!std::isfinite(tolerance)||tolerance<0)return {};
+    // Preserve the full collector's resource behaviour for unusual worlds.
+    if(shapes_.size()>maxContacts_||q.geometric_radius_m+q.clearance_m<=tolerance){
+        auto result=query_capsule(q,cancel);if(result.outcome!=v::Outcome::Ok||!result.complete)return {};
+        for(const auto& hit:result.contacts)if(hit.signed_gap_m< -tolerance)return false;return true;}
+    if(!admit(cancel)||!q.guide_id||!q.span_id||!finite(q.a)||!finite(q.b)||length(sub(q.b,q.a))<1e-12||
+       !std::isfinite(q.geometric_radius_m)||q.geometric_radius_m<0||!std::isfinite(q.clearance_m)||q.clearance_m<0)return {};
+    Bounds query;query.include(q.a);query.include(q.b);query=query.expanded(q.geometric_radius_m+q.clearance_m+1e-6);
+    const double target=q.geometric_radius_m+q.clearance_m-tolerance;
+    for(std::size_t i=0;i<shapes_.size();++i){const auto& shape=shapes_[i];const auto& cache=cached_[i];if(!query.overlaps(cache.bounds))continue;
+        const auto a=cache.inverse.point(q.a),b=cache.inverse.point(q.b);
+        // Admission permits 1e-5 float-rounding deviations from an exact
+        // similarity. A wider conservative band and a coordinate-dependent
+        // roundoff allowance bracket the transformed signed gap; near its
+        // boundary retain the original witness equation.
+        auto magnitude=[](Vec p){return std::max({std::abs(p.x),std::abs(p.y),std::abs(p.z)});};
+        const auto bounds=shape.geometry->bounds();
+        const double magnitudeBound=std::max({1.,magnitude(q.a),magnitude(q.b),magnitude(shape.transform.rows[3]),cache.scale*magnitude(bounds.lo),cache.scale*magnitude(bounds.hi)});
+        const double roundoff=1e-11+128*std::numeric_limits<double>::epsilon()*magnitudeBound/cache.scale;
+        const double upper=target/cache.scale/(1.-1e-4)+roundoff;
+        if(!shape.geometry->segmentNear(a,b,upper))continue;
+        const double lower=std::max(0.,target/cache.scale/(1.+1e-4)-roundoff);
+        if(lower>0&&shape.geometry->segmentNear(a,b,lower))return false;
+        auto witness=shape.geometry->contactSegment(a,b,(q.geometric_radius_m+q.clearance_m+1e-6)/cache.scale);if(!witness)continue;
+        const auto axis=add(q.a,mul(sub(q.b,q.a),witness->u)),surface=shape.transform.point(witness->surface);const auto& c=cache.inverse.cofactors;
+        const auto normal=unit(add(add(mul(c[0],witness->normal.x),mul(c[1],witness->normal.y)),mul(c[2],witness->normal.z)));
+        if(dot(normal,sub(axis,surface))-q.geometric_radius_m-q.clearance_m< -tolerance)return false;
+    }
+    return true;
 }
 }

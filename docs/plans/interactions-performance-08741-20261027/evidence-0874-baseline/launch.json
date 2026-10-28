@@ -1,0 +1,31 @@
+{
+  "pid": 45016,
+  "host": 2027,
+  "command": [
+    "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmax.exe",
+    "-q",
+    "-silent",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-host-01\\listener.log"
+  ],
+  "script": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08741\\baseline_host.py",
+  "script_sha256": "de7e03dcfeffaf66d8fe2d483cb42a2ec0151fa820a62c3996651dee63678a0b",
+  "payload": {
+    "AminScatter.dlx": "adc909380715a40eafa542b59fcf6d05131c1c16defbc2c24bf746611369ad8a",
+    "CyrusBrush.dlx": "b1d982903cf794514b03814c5ad736f1a907fdf2a0ea27c891363f110ff6d29e",
+    "CyrusBrushStorage.dlh": "1711224daa5786405f3a087f53713794928df43f2f7b39305b5f5f148894cb1f",
+    "CyrusScatterEdit.dlm": "d417e2a4a6125dcd7ef0fcc3165b4ab84b445c4941793e89c3648b9b2389addd",
+    "CyrusScatter.ms": "ecb336b12ad01607fd8b6e7a412a7b864f93eb5059330b3aa1d404202cf72e18",
+    "CyrusGallery.dll": "917a7395bdbba0cb74ea9c1384d27936fd903357b93e64a2d4f6ecb243cc8ad4"
+  },
+  "artist_ini_sha256": "6579ecf2ecd5004b6d4bf955b73fcf91cf5392afda9425da9311d42720d87a2c",
+  "data": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\baseline-data-01",
+  "explicit_test_ocio_default": false
+}

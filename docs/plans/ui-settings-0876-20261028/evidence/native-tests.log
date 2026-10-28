@@ -1,0 +1,390 @@
+Start testing: Oct 28 22:42 Iran Standard Time
+----------------------------------------------------------
+6/53 Testing: scatter_source_radius
+6/53 Test: scatter_source_radius
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/source_radius_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_source_radius" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+35 source radius assertions passed
+<end of output>
+Test time =   0.07 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_source_radius" end time: Oct 28 22:42 Iran Standard Time
+"scatter_source_radius" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/53 Testing: scatter_source_measurement
+8/53 Test: scatter_source_measurement
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/source_measurement_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_source_measurement" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS: 26 source measurement checks; finite physical bounds, pivot radii, indices and independent admission
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_source_measurement" end time: Oct 28 22:42 Iran Standard Time
+"scatter_source_measurement" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/53 Testing: scatter_grid
+18/53 Test: scatter_grid
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/grid_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_grid" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+180000 faces / 10201 hits: 95.7847 ms; visits=625951
+PASS 79651 grid identity, analytic projection, pipeline, jitter and admission checks
+<end of output>
+Test time =   0.29 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_grid" end time: Oct 28 22:42 Iran Standard Time
+"scatter_grid" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/53 Testing: scatter_mesh_density
+30/53 Test: scatter_mesh_density
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/mesh_density_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_mesh_density" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+Mesh density analytic, stable eligibility and invalid input checks passed
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_mesh_density" end time: Oct 28 22:42 Iran Standard Time
+"scatter_mesh_density" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/53 Testing: scatter_surface_filter
+31/53 Test: scatter_surface_filter
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/surface_filter_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_surface_filter" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+surface filter analytic, bounds, units, probability and candidate stability passed
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_surface_filter" end time: Oct 28 22:42 Iran Standard Time
+"scatter_surface_filter" time elapsed: 00:00:00
+----------------------------------------------------------
+
+32/53 Testing: scatter_presets
+32/53 Test: scatter_presets
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/preset_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_presets" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS: bounded typed presets, round trips, strict parsing and curve domains
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_presets" end time: Oct 28 22:42 Iran Standard Time
+"scatter_presets" time elapsed: 00:00:00
+----------------------------------------------------------
+
+33/53 Testing: scatter_spline_bands
+33/53 Test: scatter_spline_bands
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/spline_band_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_spline_bands" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+Sharp rectangle: max progress error=0.000468351, levels=1025, vertices=4104, prepared bytes=173160, query visits=387128, experiment ms=30.2974
+Concave independent finer-grid offset reference: max progress error=0.00048545
+Adaptive cubic: vertices=409, independent max chord error=0.000727355
+Complex Sharp: supported probes=120, max contribution error=0.000608542
+PASS 228209 spline-field/Auto-radius assertions
+<end of output>
+Test time =   3.98 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_spline_bands" end time: Oct 28 22:42 Iran Standard Time
+"scatter_spline_bands" time elapsed: 00:00:03
+----------------------------------------------------------
+
+34/53 Testing: scatter_spline_overlay
+34/53 Test: scatter_spline_overlay
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/spline_overlay_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_spline_overlay" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+17386 spline overlay checks passed
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_spline_overlay" end time: Oct 28 22:42 Iran Standard Time
+"scatter_spline_overlay" time elapsed: 00:00:00
+----------------------------------------------------------
+
+36/53 Testing: scatter_receivers
+36/53 Test: scatter_receivers
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/receiver_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_receivers" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+131087 receiver assertions passed
+<end of output>
+Test time =   0.42 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_receivers" end time: Oct 28 22:42 Iran Standard Time
+"scatter_receivers" time elapsed: 00:00:00
+----------------------------------------------------------
+
+38/53 Testing: scatter_procedural
+38/53 Test: scatter_procedural
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/procedural_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_procedural" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay, expanded capacity, numeric identities and 240 exhaustive comparisons passed
+<end of output>
+Test time =   0.40 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_procedural" end time: Oct 28 22:42 Iran Standard Time
+"scatter_procedural" time elapsed: 00:00:00
+----------------------------------------------------------
+
+39/53 Testing: scatter_source_clearance
+39/53 Test: scatter_source_clearance
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/source_clearance_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_source_clearance" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+compile 10 layers, sources=1, populated=0: 0.089 ms
+compile 10 layers, sources=32, populated=0: 0.1478 ms
+compile 10 layers, sources=128, populated=0: 0.316 ms
+compile 10 layers, sources=512, populated=0: 1.0516 ms
+compile 10 layers, sources=1, populated=1: 0.0264 ms
+compile 10 layers, sources=32, populated=1: 0.0795 ms
+compile 10 layers, sources=128, populated=1: 0.2754 ms
+compile 10 layers, sources=512, populated=1: 1.1178 ms
+100000 rows: 331.899 ms, 0 neighbor visits
+Source clearance: scopes, independent inheritance, Count admission, effective-rule equivalence, protected priority, displaced blockers, dormant sources, cleanup/refill, limits, 240 single-pass and 500 refill oracle scenes passed
+<end of output>
+Test time =   0.53 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_source_clearance" end time: Oct 28 22:42 Iran Standard Time
+"scatter_source_clearance" time elapsed: 00:00:00
+----------------------------------------------------------
+
+40/53 Testing: scatter_group_spacing
+40/53 Test: scatter_group_spacing
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/group_spacing_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_group_spacing" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS 180 exhaustive comparisons, priorities, protected edits, gaps, planes, invalid input and 100k coincident candidates
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_group_spacing" end time: Oct 28 22:42 Iran Standard Time
+"scatter_group_spacing" time elapsed: 00:00:00
+----------------------------------------------------------
+
+41/53 Testing: scatter_brush
+41/53 Test: scatter_brush
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/brush_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_brush" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS 9054 vector assertions; 400 edits + 10000 queries 100.126 ms; vertices 986; examined segments 554144
+<end of output>
+Test time =   0.38 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_brush" end time: Oct 28 22:42 Iran Standard Time
+"scatter_brush" time elapsed: 00:00:00
+----------------------------------------------------------
+
+42/53 Testing: scatter_brush_conversion
+42/53 Test: scatter_brush_conversion
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/brush_conversion_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_brush_conversion" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS 19831 Paint/spline normalization assertions
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_brush_conversion" end time: Oct 28 22:42 Iran Standard Time
+"scatter_brush_conversion" time elapsed: 00:00:00
+----------------------------------------------------------
+
+43/53 Testing: scatter_brush_feedback
+43/53 Test: scatter_brush_feedback
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/brush_feedback_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_brush_feedback" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS vector sweep, local erase, feedback bounds, BVH picking
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_brush_feedback" end time: Oct 28 22:42 Iran Standard Time
+"scatter_brush_feedback" time elapsed: 00:00:00
+----------------------------------------------------------
+
+44/53 Testing: scatter_preview_sampling
+44/53 Test: scatter_preview_sampling
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/preview_sampling_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_preview_sampling" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS exact budget, unique ordered coverage, boundary continuity, uint64 bounds
+<end of output>
+Test time =   0.29 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_preview_sampling" end time: Oct 28 22:42 Iran Standard Time
+"scatter_preview_sampling" time elapsed: 00:00:00
+----------------------------------------------------------
+
+45/53 Testing: scatter_viewport_policy
+45/53 Test: scatter_viewport_policy
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/viewport_policy_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_viewport_policy" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+viewport budgets, zero, coverage, deterministic prefixes and memory fallback passed
+<end of output>
+Test time =   0.31 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_viewport_policy" end time: Oct 28 22:42 Iran Standard Time
+"scatter_viewport_policy" time elapsed: 00:00:00
+----------------------------------------------------------
+
+47/53 Testing: scatter_prepared_bands
+47/53 Test: scatter_prepared_bands
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/prepared_band_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_prepared_bands" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS 160000 differential boundary queries, masks, holes, tilted/stacked paths, duplicate vertices and thresholds
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_prepared_bands" end time: Oct 28 22:42 Iran Standard Time
+"scatter_prepared_bands" time elapsed: 00:00:00
+----------------------------------------------------------
+
+49/53 Testing: scatter_spacing
+49/53 Test: scatter_spacing
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/spacing_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_spacing" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+overlap_energy 91.3524 -> 3.96383; collision 763; combined 1456
+count=10000 kept=10000 ms=146.396
+count=100000 kept=98545 ms=5701.37
+PASS ordered spacing, determinism, masks, strokes, tilted surface, disabled controls
+<end of output>
+Test time =   6.15 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_spacing" end time: Oct 28 22:42 Iran Standard Time
+"scatter_spacing" time elapsed: 00:00:06
+----------------------------------------------------------
+
+50/53 Testing: scatter_weights
+50/53 Test: scatter_weights
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/weight_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_weights" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+random box=69.994%
+cluster box=70.373%
+PASS weights, groups, zero, strokes, fixed positions and transforms
+<end of output>
+Test time =   0.48 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_weights" end time: Oct 28 22:42 Iran Standard Time
+"scatter_weights" time elapsed: 00:00:00
+----------------------------------------------------------
+
+51/53 Testing: scatter_orientation
+51/53 Test: scatter_orientation
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/orientation_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_orientation" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS axes, scales, convex/concave/45deg, masked corners, holes, winding, tilted plane, offsets, disabled
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_orientation" end time: Oct 28 22:42 Iran Standard Time
+"scatter_orientation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+52/53 Testing: scatter_edge_border
+52/53 Test: scatter_edge_border
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/edge_border_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_edge_border" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS spacing, offset, deterministic jitter, masks, bounded prefixes, relax pins, ordered collisions, thin regions, elements, limit
+<end of output>
+Test time =   0.13 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_edge_border" end time: Oct 28 22:42 Iran Standard Time
+"scatter_edge_border" time elapsed: 00:00:00
+----------------------------------------------------------
+
+53/53 Testing: scatter_boundary_falloff
+53/53 Test: scatter_boundary_falloff
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027/boundary_falloff_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/ui0876-20261028-01/final/native-2027
+"scatter_boundary_falloff" start time: Oct 28 22:42 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS boundary, 100k points, Area Include/Exclude directions and XY projection, dense curves, side-limited scale/density
+<end of output>
+Test time =   0.22 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_boundary_falloff" end time: Oct 28 22:42 Iran Standard Time
+"scatter_boundary_falloff" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 28 22:42 Iran Standard Time

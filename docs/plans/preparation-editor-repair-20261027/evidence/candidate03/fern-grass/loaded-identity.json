@@ -1,0 +1,22 @@
+{
+  "host": 2027,
+  "modules": {
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\payload-03\\AminScatter.dlx",
+      "sha256": "2feb4f05ff69020dafe4e3c3c19af7815ec2a761616b4bcd9a0e57af9b802c78"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\payload-03\\CyrusBrush.dlx",
+      "sha256": "06a3f073d178487b0b41c9069f0471894d6bcf3c7b01c71ff923ef7f768928ce"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\payload-03\\CyrusBrushStorage.dlh",
+      "sha256": "9e67ae06d4142d068a47613e29eadde9305468c007a62be1059d26e2f5a85f78"
+    },
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\payload-03\\CyrusScatterEdit.dlm",
+      "sha256": "88fdb6425b70073b16818104109dbffdc6373a9d1344afeee8981a77296babd7"
+    }
+  },
+  "script_fingerprint": "b779e094a50daece4111150695d4343486319ab38a38b23b3ae2517df7bbc214"
+}

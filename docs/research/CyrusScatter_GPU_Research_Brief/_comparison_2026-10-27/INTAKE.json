@@ -1,0 +1,969 @@
+{
+  "schema": "cyrus.gpu-research-review-intake/1",
+  "utc": "2026-10-27T10:14:27.353548+00:00",
+  "purpose": "Preserve original research identity; folder labels identify reports despite repeated internal A labels",
+  "scope": "Review only; no production code, Max session or source research edited",
+  "head": "d24b880816ab367874f417f79d1253aafa9a60f5",
+  "reports": [
+    {
+      "folder_label": "A",
+      "relative_folder": "CyrusScatter_GPU_Interaction_Research_2026-10-27_A",
+      "report_root": "CyrusScatter_GPU_Interaction_Research_2026-10-27_A",
+      "declared_researcher_id": "A",
+      "core_documents": 19,
+      "core_words": 56283,
+      "input_files": 24,
+      "manifest_results": [
+        {
+          "path": "MANIFEST.sha256",
+          "checked": 23,
+          "issues": []
+        }
+      ],
+      "files": [
+        {
+          "path": "00_README.md",
+          "bytes": 9015,
+          "sha256": "474b3639e2fa3d91452fe3c686768d2d2ada11ec04f9372c88de26aae2593f61"
+        },
+        {
+          "path": "01_EXECUTIVE_DECISION.md",
+          "bytes": 12922,
+          "sha256": "bb986f40bf109aca332abcb30f57c8978edb630989dcdc3eb90b039ba81cecba"
+        },
+        {
+          "path": "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+          "bytes": 11027,
+          "sha256": "82ade91f3e10c90fafe2d203a07af622b2cf3cf23355889607709ee5c78b1d7f"
+        },
+        {
+          "path": "03_PARALLELISM_AND_DATA_LAYOUT.md",
+          "bytes": 19119,
+          "sha256": "de2e69af97dd2b85487fcdf7ba6c857338c571a0090d45c380151d35f8333320"
+        },
+        {
+          "path": "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+          "bytes": 19624,
+          "sha256": "18d0d3d36e72ebcb51a682f6baba0ea7b88254445f27e3af824ca048b98e3637"
+        },
+        {
+          "path": "05_COLLISION_AND_GUIDE_SOLVING.md",
+          "bytes": 40648,
+          "sha256": "837623fce70d1421149df009d81a4344cd5a861fc1ce2383ab8444f05c413c63"
+        },
+        {
+          "path": "06_GPU_DEFORMATION_AND_INSTANCING.md",
+          "bytes": 17943,
+          "sha256": "000b7353e8f822965f652bb6b8e048ab7e53380940b1fbe22705fa6d005b7cad"
+        },
+        {
+          "path": "07_MAX_2027_INTEROP_FEASIBILITY.md",
+          "bytes": 24247,
+          "sha256": "ffb044644bc73fe2d0413d9cd65ad4512e12dd386a0fa5ae18b6970c9d8a1d30"
+        },
+        {
+          "path": "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+          "bytes": 17023,
+          "sha256": "2783221314c282569f4180ae893285411a6d597c4269e0071d95bf93c4c94eb9"
+        },
+        {
+          "path": "09_MEMORY_PRECISION_AND_HARDWARE.md",
+          "bytes": 28525,
+          "sha256": "f8b1e00753d7702533084c15d7d831745aa79e4087bd9ed4de1f306a11093ffc"
+        },
+        {
+          "path": "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+          "bytes": 19244,
+          "sha256": "729276d69e25f27aec5daea4bf6b54bfdf89411c10c0f907c08ad7d60dcfb5d8"
+        },
+        {
+          "path": "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+          "bytes": 18518,
+          "sha256": "28857a64dc1e3dbddcaebdeacef067b20b69653b470d0516e4b5c018343f0c4e"
+        },
+        {
+          "path": "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+          "bytes": 15363,
+          "sha256": "f99d57c33b69894c0a720332700b557cde5b2618726ff2d2fc485b4a373520db"
+        },
+        {
+          "path": "13_PHASED_IMPLEMENTATION_PLAN.md",
+          "bytes": 11987,
+          "sha256": "d8e9eaaba7ba52788756f79b2c939620f3cf1fdc7ccd51db4ed2565e07bed6b1"
+        },
+        {
+          "path": "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+          "bytes": 21220,
+          "sha256": "85a4eded6ad78569f3014ff4c2fa5c3e15c341b1c592ae3441b1151bbf71f85d"
+        },
+        {
+          "path": "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+          "bytes": 20773,
+          "sha256": "64169ac537d3ed6f5f5812226e3a0615fe4a1cbaee84757587f35a0f36e1b39e"
+        },
+        {
+          "path": "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+          "bytes": 18121,
+          "sha256": "c834e420750d2214ef08228bcbddcff39a603c000e4ba26d736dbd87708e71d3"
+        },
+        {
+          "path": "17_SOURCE_LEDGER.md",
+          "bytes": 121663,
+          "sha256": "a43d21b9b797afea7e83426622358255a1bf461cf25f75d56912f8635a53f0e1"
+        },
+        {
+          "path": "18_ACCEPTANCE_CHECKLIST.md",
+          "bytes": 10441,
+          "sha256": "4f960b72efce84e48e5ee77891b178ed2ce734227b6c1f3179c8f8d7c775c994"
+        },
+        {
+          "path": "analysis/calculated_estimates.json",
+          "bytes": 4795,
+          "sha256": "4b4cfe3ffcb6fb3b2494d8764bf06ed1c77d49d5d8735605bc35cc27e0e1fda2"
+        },
+        {
+          "path": "analysis/estimate_memory.py",
+          "bytes": 2596,
+          "sha256": "5c6dd0bc3101719b34db26e66534a3cb9f41fa809beb69ec6e6c97ca66332dde"
+        },
+        {
+          "path": "analysis/README.md",
+          "bytes": 822,
+          "sha256": "457b974c52ff318e0d23cc51edb2fa7a7618887dc0f163b91c7505fb0b44b352"
+        },
+        {
+          "path": "MANIFEST.sha256",
+          "bytes": 2269,
+          "sha256": "e3a33b2e7d731a388827b152db08a5b08c182c3d22eab31b8b00870ef5d3e86a"
+        },
+        {
+          "path": "RESEARCH_METADATA.json",
+          "bytes": 11283,
+          "sha256": "989fe3e8e2bee3a97bc7db7b3caad14e0b94ad2caafdfde07c9c0314b78f82ae"
+        }
+      ]
+    },
+    {
+      "folder_label": "B",
+      "relative_folder": "CyrusScatter_GPU_Interaction_Research_2026-10-27_B",
+      "report_root": "CyrusScatter_GPU_Interaction_Research_2026-10-27_B",
+      "declared_researcher_id": "A",
+      "core_documents": 19,
+      "core_words": 52695,
+      "input_files": 37,
+      "manifest_results": [
+        {
+          "path": "inputs/MANIFEST.sha256",
+          "checked": 4,
+          "issues": []
+        },
+        {
+          "path": "MANIFEST.sha256",
+          "checked": 36,
+          "issues": []
+        }
+      ],
+      "files": [
+        {
+          "path": "00_README.md",
+          "bytes": 8110,
+          "sha256": "ac2e3400874c873f7c229c952d97f77e586f02cfac83d58d1d4d4d88cdd7baf6"
+        },
+        {
+          "path": "01_EXECUTIVE_DECISION.md",
+          "bytes": 12399,
+          "sha256": "d228a183123d026e865d910fe2b53bd6ec80f7f737809d083ea1a632ab3c1547"
+        },
+        {
+          "path": "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+          "bytes": 8042,
+          "sha256": "3a5d4d9d3fcbb47b630b67b8ba2f3d0b3a346930eba06d36bb0f09afaba04162"
+        },
+        {
+          "path": "03_PARALLELISM_AND_DATA_LAYOUT.md",
+          "bytes": 14110,
+          "sha256": "e62ce049afa14694d1f86d2c04dfbf97eb246ac00b153d3b3c8661ce927ed7d3"
+        },
+        {
+          "path": "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+          "bytes": 22749,
+          "sha256": "c1bda7cd9539bb052a854f48a5dcbf1461885e32a8026fea56594c3a34f02e9e"
+        },
+        {
+          "path": "05_COLLISION_AND_GUIDE_SOLVING.md",
+          "bytes": 31958,
+          "sha256": "df64c97a7195f5c9b77f8a9ff48c2952e9a724e6673f9f87e0320b9fab4e3ada"
+        },
+        {
+          "path": "06_GPU_DEFORMATION_AND_INSTANCING.md",
+          "bytes": 19146,
+          "sha256": "557854c7c1795890deb3c0545a8144d2cbb03d19074327712158eea5142c76c6"
+        },
+        {
+          "path": "07_MAX_2027_INTEROP_FEASIBILITY.md",
+          "bytes": 22031,
+          "sha256": "a19d67df524702e5f7addc466a8daf82b34ed3211356ffcd20cb32fd0d69d326"
+        },
+        {
+          "path": "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+          "bytes": 13659,
+          "sha256": "5d262a89c1e8dd4f9e1a65046e5cfe49368d4da9b3a4d71443567c51f4fa86b3"
+        },
+        {
+          "path": "09_MEMORY_PRECISION_AND_HARDWARE.md",
+          "bytes": 17025,
+          "sha256": "b7f722d1638a6ae2d8a5878748facc54c1fd52c3a9b08951894e038255028703"
+        },
+        {
+          "path": "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+          "bytes": 14225,
+          "sha256": "a0afb0c1e780d3aabf8269fda5dee9222b8617eca6e0295133a34a07aa14e287"
+        },
+        {
+          "path": "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+          "bytes": 14244,
+          "sha256": "6e7e0033d5098f29ec9a8dbbdf4d7abb2f1e6b5b5e3dcd2d5927dbd39d2855d1"
+        },
+        {
+          "path": "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+          "bytes": 25719,
+          "sha256": "cbb5622b2ea4838c95cdc5a5f6d4060c94315161cfd9bf7d4e217546fa9a79ca"
+        },
+        {
+          "path": "13_PHASED_IMPLEMENTATION_PLAN.md",
+          "bytes": 8378,
+          "sha256": "b309bfb6333cec4861bca15197e56c9135278f939f6244d767bcfef6b95df585"
+        },
+        {
+          "path": "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+          "bytes": 16923,
+          "sha256": "9e652bfbac647fe8845d072bb3ea25c0bebcafa10392a33f5360e0e118657c17"
+        },
+        {
+          "path": "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+          "bytes": 18287,
+          "sha256": "4c92f8857a0f9e399104646ba77d9c7b7958ce85237f268d9af1a4875da1d964"
+        },
+        {
+          "path": "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+          "bytes": 10951,
+          "sha256": "b5bb23b0c00f2acad7717f281150469b36f819a97da3d23e57507d1770aff35e"
+        },
+        {
+          "path": "17_SOURCE_LEDGER.md",
+          "bytes": 131202,
+          "sha256": "70cfe409e4de35df8314dd5255a8e9db0e4bc5d9b2170e4426bdefd7f7fecab2"
+        },
+        {
+          "path": "18_ACCEPTANCE_CHECKLIST.md",
+          "bytes": 6011,
+          "sha256": "7fab821035b1eb37e7eb0ec7b4fabf0c382e7f7643e750283bad1b5c2e771a1f"
+        },
+        {
+          "path": "analysis/analytic_counterexamples.json",
+          "bytes": 1457,
+          "sha256": "2e2a9e7eab32e56e0814207eb130395025aee43407edb2e659e5c8809ca66293"
+        },
+        {
+          "path": "analysis/calculate_budgets.py",
+          "bytes": 4385,
+          "sha256": "1a4798128fcec7b72d4a5df4f77865b773e43f0171bc65338b5e419bb28fcfe9"
+        },
+        {
+          "path": "analysis/calculated_budgets.json",
+          "bytes": 11128,
+          "sha256": "109971e8c7c245635058538799d4cbc94a627439e4f8853627d6e082bd4bead0"
+        },
+        {
+          "path": "analysis/check_adversarial_geometry.py",
+          "bytes": 2785,
+          "sha256": "1799c7c098be6f2d7bce081a77ab4baa5e81141d092f862f10385a7adf60f135"
+        },
+        {
+          "path": "analysis/check_decision_scores.py",
+          "bytes": 1268,
+          "sha256": "ecc9822315f3289acb67ce2efa959509cebe36ee864e12343807d914bee8c701"
+        },
+        {
+          "path": "analysis/decision_scores.json",
+          "bytes": 519,
+          "sha256": "9f335faaf1313be720b4c15db3daa2b4544b517581083dc79e1ac748280d89e7"
+        },
+        {
+          "path": "analysis/environment_and_inputs.json",
+          "bytes": 1572,
+          "sha256": "886ddca17f183c0042c3df7a7c572eb216bbb69ab9a26505daaa989d02534b28"
+        },
+        {
+          "path": "analysis/EXECUTED_CHECKS.md",
+          "bytes": 4192,
+          "sha256": "f47c54f54da73ce8241e4adec9b4814295b94eaa480b527b477794cd59c91208"
+        },
+        {
+          "path": "analysis/README.md",
+          "bytes": 2914,
+          "sha256": "217adebf31ad1fb717ef8b976231e89246e4ca6e4b47bc26f95282bce2f44989"
+        },
+        {
+          "path": "analysis/source_ledger.json",
+          "bytes": 113514,
+          "sha256": "40aabcab68e54d0a8f64a8ea4ed1a1acc06d9da98fe2c3088194547133e93190"
+        },
+        {
+          "path": "analysis/verify_package.py",
+          "bytes": 7440,
+          "sha256": "cea075f77e8cd0621679cbfc4f7f1ab2dec0b57322436d0928c3ed485f7aab4b"
+        },
+        {
+          "path": "inputs/BRIEF_METADATA.json",
+          "bytes": 766,
+          "sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8"
+        },
+        {
+          "path": "inputs/CURRENT_SYSTEM_CONTEXT.md",
+          "bytes": 12170,
+          "sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861"
+        },
+        {
+          "path": "inputs/MANIFEST.sha256",
+          "bytes": 343,
+          "sha256": "300d8540195865fe493ff9b47ec77fd3c7d1b02fa8cb946312184afac5b853df"
+        },
+        {
+          "path": "inputs/README.md",
+          "bytes": 1530,
+          "sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75"
+        },
+        {
+          "path": "inputs/RESEARCH_PROMPT.md",
+          "bytes": 28077,
+          "sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650"
+        },
+        {
+          "path": "MANIFEST.sha256",
+          "bytes": 3515,
+          "sha256": "6fb95920f623a861c0711c7c18dd17a6b7733fc7782de7c3c25747d59bd6e598"
+        },
+        {
+          "path": "RESEARCH_METADATA.json",
+          "bytes": 10266,
+          "sha256": "4da7250501e72566d24edf90b921a70185aaa09f56668932a88614a7c9f02fb1"
+        }
+      ]
+    },
+    {
+      "folder_label": "C",
+      "relative_folder": "CyrusScatter_GPU_Interaction_Research_2026-10-27_C",
+      "report_root": "CyrusScatter_GPU_Interaction_Research_2026-10-27_C",
+      "declared_researcher_id": "A",
+      "core_documents": 19,
+      "core_words": 46241,
+      "input_files": 28,
+      "manifest_results": [
+        {
+          "path": "MANIFEST.sha256",
+          "checked": 27,
+          "issues": []
+        }
+      ],
+      "files": [
+        {
+          "path": "00_README.md",
+          "bytes": 7103,
+          "sha256": "a288f61db3aac8bf686531302070203c17e4721747fb60255813d6208a0958f8"
+        },
+        {
+          "path": "01_EXECUTIVE_DECISION.md",
+          "bytes": 9979,
+          "sha256": "c96cccd656161abc51ad0a0288f74d0f1241637d17189271515f7e6879036512"
+        },
+        {
+          "path": "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+          "bytes": 9715,
+          "sha256": "d0f3240c2731955d2ba92fd70e510e106e11c4ecff283c6ff14c0a37501ce012"
+        },
+        {
+          "path": "03_PARALLELISM_AND_DATA_LAYOUT.md",
+          "bytes": 17991,
+          "sha256": "bfd6632437bd19a634de986cd9e796eae54240350e4dda75a32d5505ac80634e"
+        },
+        {
+          "path": "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+          "bytes": 19395,
+          "sha256": "43b3d764d04609315a93097cac61bd6e15c5dca5c436767ecdae6797cd147e66"
+        },
+        {
+          "path": "05_COLLISION_AND_GUIDE_SOLVING.md",
+          "bytes": 21549,
+          "sha256": "d3368193699383fc297f0af26a9e5548bc8cf053b74b2f0ba9c6c23bdc9e8f61"
+        },
+        {
+          "path": "06_GPU_DEFORMATION_AND_INSTANCING.md",
+          "bytes": 13553,
+          "sha256": "bab913bec3e2f71e4a6b21ac6ac01f1742aacb359b6b987f87e073aec7006ced"
+        },
+        {
+          "path": "07_MAX_2027_INTEROP_FEASIBILITY.md",
+          "bytes": 25485,
+          "sha256": "abf6d93e3b82ac3926faf25e81b0fc9b542e388b317339e566f50630cdf1a038"
+        },
+        {
+          "path": "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+          "bytes": 11771,
+          "sha256": "f29eec1be9cad0903e49ec8f4ff998cf548553b560d3feb2e5f47cf1fbf9c9ce"
+        },
+        {
+          "path": "09_MEMORY_PRECISION_AND_HARDWARE.md",
+          "bytes": 15387,
+          "sha256": "7f1b6c5d49de15d193734322482813dc7f73e723886cd2fc8a4b76800d4ee8c8"
+        },
+        {
+          "path": "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+          "bytes": 15814,
+          "sha256": "9d7be98e97c8d4934592849054e8d77ad06a71235cbd100f625484198a91b6db"
+        },
+        {
+          "path": "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+          "bytes": 14033,
+          "sha256": "8088aa62cf0070595268eb55f3916e7fba074b8a4b922642178869410960f50d"
+        },
+        {
+          "path": "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+          "bytes": 18195,
+          "sha256": "608378dff32caa3035ce6f48957a5e357b2f35951857be2c6261be5dea8e5be1"
+        },
+        {
+          "path": "13_PHASED_IMPLEMENTATION_PLAN.md",
+          "bytes": 12360,
+          "sha256": "a0519a7f13c54492f1886a686690ba7c22613d37aa455d3b61c371de4b862728"
+        },
+        {
+          "path": "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+          "bytes": 15253,
+          "sha256": "826fe0525ba97dca44fc8f63bebfa5e9409933b0b68ddf554dfbe088a9b10ee9"
+        },
+        {
+          "path": "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+          "bytes": 17095,
+          "sha256": "fc6a987f6ea4c22ac2b97f04591d2f74123f4cc55d65d3b623d29a63fb3d89bd"
+        },
+        {
+          "path": "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+          "bytes": 10689,
+          "sha256": "5482b4ca93f55166985d78cbd26a6465888d1c60dc891d0705423a3c7d980250"
+        },
+        {
+          "path": "17_SOURCE_LEDGER.md",
+          "bytes": 112737,
+          "sha256": "7f6ca88a22a2244a7829360db8feaf90017b2fdb3a7ef1269f3f661001be985d"
+        },
+        {
+          "path": "18_ACCEPTANCE_CHECKLIST.md",
+          "bytes": 6011,
+          "sha256": "5f0929645a832571a10fddc73e4a2901d86b5a164d76022b1448ada60ae8d94a"
+        },
+        {
+          "path": "ARTIFACT_VERIFICATION.json",
+          "bytes": 1232,
+          "sha256": "776506fe0ed311ce52ce241b215d5c5b572a7d813bca64700a37b7066e93fe8c"
+        },
+        {
+          "path": "MANIFEST.sha256",
+          "bytes": 2631,
+          "sha256": "5b1330d780eccd25b2ee86be0edefa5e57e75592296df3698674089354ce4c2e"
+        },
+        {
+          "path": "optional/benchmark_cases.json",
+          "bytes": 21701,
+          "sha256": "69125a3eae0d2e5666f56fd85fcf0166fd6a8d49e2541d515d1ad2268d1b2714"
+        },
+        {
+          "path": "optional/executed_checks.json",
+          "bytes": 9138,
+          "sha256": "ac507bf0327680f17f2a72287b66c25580f50f51607217a593298a2fb289c4e6"
+        },
+        {
+          "path": "optional/README.md",
+          "bytes": 5645,
+          "sha256": "a00a573b24e099e99443087f50ba2e69c60d99369a23915f8e3f15c09973d79b"
+        },
+        {
+          "path": "optional/research_checks.py",
+          "bytes": 9712,
+          "sha256": "bedb0de3f11df6b948d292c37ebff602fcf983df68f935ca26506da8c3029067"
+        },
+        {
+          "path": "optional/verify_package.py",
+          "bytes": 10145,
+          "sha256": "a449a1295412eddc5f0a4974d0dfa5408eeb3ab01ac9f6ed7d9c5770576f30e2"
+        },
+        {
+          "path": "RESEARCH_METADATA.json",
+          "bytes": 9276,
+          "sha256": "396b24c848e7e6ad2069636a135e3bf24d31fad9011befeb57cc84978e060000"
+        },
+        {
+          "path": "SOURCE_LEDGER.json",
+          "bytes": 98198,
+          "sha256": "cfb7baec25dcf7f665490268ca1d9056a83e689e50f78985acf50f58719bcf1e"
+        }
+      ]
+    },
+    {
+      "folder_label": "D",
+      "relative_folder": "CyrusScatter_GPU_Interaction_Research_2026-10-27_D",
+      "report_root": "CyrusScatter_GPU_Interaction_Research_2026-10-27_D",
+      "declared_researcher_id": "A",
+      "core_documents": 19,
+      "core_words": 29289,
+      "input_files": 28,
+      "manifest_results": [
+        {
+          "path": "MANIFEST.sha256",
+          "checked": 27,
+          "issues": []
+        }
+      ],
+      "files": [
+        {
+          "path": "00_README.md",
+          "bytes": 8866,
+          "sha256": "46b7638fb0538ed23409cd5f5294ca9c03ac214c9b77270468effb24b627dbbf"
+        },
+        {
+          "path": "01_EXECUTIVE_DECISION.md",
+          "bytes": 13525,
+          "sha256": "d0c207dc20a874dc3dd5f099890f8d62bbeaadfb05308c9100fa3dd1d14cf3a7"
+        },
+        {
+          "path": "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+          "bytes": 11258,
+          "sha256": "bd92b69478454575bbdb7c955fdb0928466c7237154bf9a59bb88b92afdd1ab7"
+        },
+        {
+          "path": "03_PARALLELISM_AND_DATA_LAYOUT.md",
+          "bytes": 13009,
+          "sha256": "24851e0c9544d7b096684ac747c613ba14a6bab9d16ca858e82a94cc72eb54b4"
+        },
+        {
+          "path": "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+          "bytes": 11719,
+          "sha256": "1eeccc791946416cff5d0c2260b9b2d4839dd2f461544dc88bef102854a22f18"
+        },
+        {
+          "path": "05_COLLISION_AND_GUIDE_SOLVING.md",
+          "bytes": 12838,
+          "sha256": "cc87b92d4a922cc635256d612692222287bec49218f94eae0b002aab11093aa5"
+        },
+        {
+          "path": "06_GPU_DEFORMATION_AND_INSTANCING.md",
+          "bytes": 11242,
+          "sha256": "e6011198842f0223cbdd9544694e8f2ae6b142043e38a5156adb75771fb2633d"
+        },
+        {
+          "path": "07_MAX_2027_INTEROP_FEASIBILITY.md",
+          "bytes": 10966,
+          "sha256": "b6ba602a44eb25f7bd29d2c32c0cbfefa9a672b36eff29ca23ffe25f4572893e"
+        },
+        {
+          "path": "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+          "bytes": 10134,
+          "sha256": "1cd11e2ac89b8e5f8c64cf6a0840dd139451b623c272eefb685e59e68562a899"
+        },
+        {
+          "path": "09_MEMORY_PRECISION_AND_HARDWARE.md",
+          "bytes": 9260,
+          "sha256": "d75a96c4f281c4dc0e89522eed22f6dd26e0ea67d807944f4850b8b60e8a2f9c"
+        },
+        {
+          "path": "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+          "bytes": 11535,
+          "sha256": "4a81424a7c6f9b824f8d1fd553004d99c0fb6b4e067d22713d523bb2989bbc8f"
+        },
+        {
+          "path": "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+          "bytes": 15936,
+          "sha256": "dcc6f68f03fd15465cda5938cac5e6437a031c12a06c864928892da1b43ae079"
+        },
+        {
+          "path": "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+          "bytes": 10261,
+          "sha256": "0f25a89e193f8e22b505cab7f7e7f1fba800053518ffcf906430cd85d50a3197"
+        },
+        {
+          "path": "13_PHASED_IMPLEMENTATION_PLAN.md",
+          "bytes": 8665,
+          "sha256": "824073d04e380e5c5690000051ea9611feab48e5b7b050bb628f161b70a5540e"
+        },
+        {
+          "path": "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+          "bytes": 8572,
+          "sha256": "1089d6a765813644bfa20961ed2349d22351b88592e2581d2345079a653fb7bc"
+        },
+        {
+          "path": "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+          "bytes": 10505,
+          "sha256": "fec10a2b88875774d233825eed3a8e379f6daaa6064a49d691c9fac4a37dfb1f"
+        },
+        {
+          "path": "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+          "bytes": 10645,
+          "sha256": "1bba4a624c579e1c13eeee619a73ae0eda698846de2c17f2185d8509e6b0fbd7"
+        },
+        {
+          "path": "17_SOURCE_LEDGER.md",
+          "bytes": 15022,
+          "sha256": "f5eda6dbeea6030c21c287a7ab587f8288e129701d932335f31d8dee5db6c878"
+        },
+        {
+          "path": "18_ACCEPTANCE_CHECKLIST.md",
+          "bytes": 10778,
+          "sha256": "83a4c075ab1efe2765002b35c67e46c1f02e3d1ef52b104351b163030dd6818e"
+        },
+        {
+          "path": "diagrams/01_stage_dataflow.mmd",
+          "bytes": 819,
+          "sha256": "e9066977d9a28877b461e08c2af5c7bde4b56fab3c14c5f986ce785baa59d60d"
+        },
+        {
+          "path": "diagrams/02_async_lifecycle.mmd",
+          "bytes": 936,
+          "sha256": "0258a5c409044abd05f56e474186354e130f0eab0520fa1bfd54e7e1289a9238"
+        },
+        {
+          "path": "diagrams/03_buffer_ownership.mmd",
+          "bytes": 967,
+          "sha256": "c2344779f30df586d949c1674e51efdb7fbedba6ce86d60a7d32b535c4fa24a5"
+        },
+        {
+          "path": "evidence/input-verification.json",
+          "bytes": 1407,
+          "sha256": "8f33c83c70a5c4ab256b62bf066565dfc18cf50f2dce26fd5abffadb8bd3b5dc"
+        },
+        {
+          "path": "evidence/package-validation.json",
+          "bytes": 1877,
+          "sha256": "078e8b28da2e92c7fc8063b7932dd77fccf51e4c556d5d2ff038bc2fe8393155"
+        },
+        {
+          "path": "evidence/package-validation.log",
+          "bytes": 335,
+          "sha256": "f5200465455820d82578152eb04b6b6dc967f26d7521ec8210196ab1c0136a07"
+        },
+        {
+          "path": "evidence/research-environment.txt",
+          "bytes": 728,
+          "sha256": "9b97aac567f20bb1875d0988b713e0272acc49dfb537e83bb37fd917d1f5bfe7"
+        },
+        {
+          "path": "MANIFEST.sha256",
+          "bytes": 2679,
+          "sha256": "8bab85d40502a33faf65cdec3cf1cdfa0c0ea4bcb98af28351c42944f2c958e3"
+        },
+        {
+          "path": "RESEARCH_METADATA.json",
+          "bytes": 5348,
+          "sha256": "d7a3e487d5dc2c1d2d42b91dd00b7146683bdd26df63bc66cdb3babcb4458bca"
+        }
+      ]
+    },
+    {
+      "folder_label": "LocalCodex",
+      "relative_folder": "CyrusScatter_GPU_Interaction_Research_2026-10-27_LocalCodex",
+      "report_root": "CyrusScatter_GPU_Interaction_Research_2026-10-27_LocalCodex/reports/local-codex",
+      "declared_researcher_id": "LocalCodex",
+      "core_documents": 19,
+      "core_words": 18313,
+      "input_files": 54,
+      "manifest_results": [
+        {
+          "path": "MANIFEST.sha256",
+          "checked": 4,
+          "issues": []
+        },
+        {
+          "path": "PACKAGE_MANIFEST.sha256",
+          "checked": 53,
+          "issues": []
+        },
+        {
+          "path": "reports/local-codex/MANIFEST.sha256",
+          "checked": 38,
+          "issues": []
+        }
+      ],
+      "files": [
+        {
+          "path": "BRIEF_METADATA.json",
+          "bytes": 766,
+          "sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8"
+        },
+        {
+          "path": "comparison/CLAIM_MATRIX.csv",
+          "bytes": 3019,
+          "sha256": "0561bcfe9139e140aed87d4c27edf65c027c639fae74bbe1e70093fd3da4957a"
+        },
+        {
+          "path": "comparison/DECISION_LOG.md",
+          "bytes": 943,
+          "sha256": "ddedc5f2de72726f431ba146d85bafedaa2518acab1f23215642f92cda3b9bff"
+        },
+        {
+          "path": "comparison/README.md",
+          "bytes": 3374,
+          "sha256": "60ec9b85a577061a5c32469d5c780faacc8b0fed1957584d42a6290395bee888"
+        },
+        {
+          "path": "comparison/REPORT_REGISTER.json",
+          "bytes": 839,
+          "sha256": "73d8825845c16f84e13a6986f0f5ab42e23d785359b7367f0ecc2bcb161dd255"
+        },
+        {
+          "path": "CURRENT_SYSTEM_CONTEXT.md",
+          "bytes": 12170,
+          "sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861"
+        },
+        {
+          "path": "external/A/README.md",
+          "bytes": 270,
+          "sha256": "0eb8ed5efad1df02021fb5ec1ee8422f6a0a4ad2b86a54ee8593a9118cf9c2cd"
+        },
+        {
+          "path": "external/B/README.md",
+          "bytes": 270,
+          "sha256": "a72a2dbc865fe0cf70802d5f22827595c0247d9d1aebd9bbd80aec9826086323"
+        },
+        {
+          "path": "external/C/README.md",
+          "bytes": 270,
+          "sha256": "8e9a02d205149a2ce0079f651be117eea342a52a7c3184046c1716fc12f1a6d7"
+        },
+        {
+          "path": "MANIFEST.sha256",
+          "bytes": 343,
+          "sha256": "300d8540195865fe493ff9b47ec77fd3c7d1b02fa8cb946312184afac5b853df"
+        },
+        {
+          "path": "PACKAGE_MANIFEST.sha256",
+          "bytes": 5838,
+          "sha256": "f16d83e862e7c7d18658dbfe8545972d1de5d438cd64318af353f94155f83d68"
+        },
+        {
+          "path": "README.md",
+          "bytes": 1530,
+          "sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75"
+        },
+        {
+          "path": "reports/local-codex/00_README.md",
+          "bytes": 5936,
+          "sha256": "cd897325acedf0338922fa2c72b703582af1a7b6061ef76b245ea1c9bf720245"
+        },
+        {
+          "path": "reports/local-codex/01_EXECUTIVE_DECISION.md",
+          "bytes": 6088,
+          "sha256": "1719e3dd90e2141e7b7f6b64f285613620d84b23be95c416e7adf8b96033b9fe"
+        },
+        {
+          "path": "reports/local-codex/02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+          "bytes": 8466,
+          "sha256": "759ec1f631cd5a9c48da185ef54efaf523803a82eaa366e908d8e92f78e5579c"
+        },
+        {
+          "path": "reports/local-codex/03_PARALLELISM_AND_DATA_LAYOUT.md",
+          "bytes": 7967,
+          "sha256": "7f255b82db4ac13bee87ed8f2bcf7a2a2ad0581f30515f5f86c943d79ec26341"
+        },
+        {
+          "path": "reports/local-codex/04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+          "bytes": 6362,
+          "sha256": "6d52f7139a7ee5859666ab47bf9ea3a4f375ff747cbce0a0b0c284dcaabddddc"
+        },
+        {
+          "path": "reports/local-codex/05_COLLISION_AND_GUIDE_SOLVING.md",
+          "bytes": 9890,
+          "sha256": "437e6241679fe00856a2e371dfd3538da5f371d29b3c20ac1eadd79ed38e09aa"
+        },
+        {
+          "path": "reports/local-codex/06_GPU_DEFORMATION_AND_INSTANCING.md",
+          "bytes": 7365,
+          "sha256": "0421268f1eedd406d1419b98e0d9b7608d1c48301641436777be03a53a098d68"
+        },
+        {
+          "path": "reports/local-codex/07_MAX_2027_INTEROP_FEASIBILITY.md",
+          "bytes": 7944,
+          "sha256": "d25b40dcc2b3d0dbae3227f13698e78ca51bd9033baa82c1870035dc0ea6e1b7"
+        },
+        {
+          "path": "reports/local-codex/08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+          "bytes": 7752,
+          "sha256": "f15d88d35971856effd7fa5092e7228cf2381282f1ca3b12b782c3d130a79783"
+        },
+        {
+          "path": "reports/local-codex/09_MEMORY_PRECISION_AND_HARDWARE.md",
+          "bytes": 6559,
+          "sha256": "cca35bec87f60ac9f6610a809cb19e41fdbf2d7c71da42dc78f1cdc1e033670a"
+        },
+        {
+          "path": "reports/local-codex/10_BENCHMARK_AND_VALIDATION_PLAN.md",
+          "bytes": 8624,
+          "sha256": "7f27d9f7bdf864d117512ebacfa05ff0d459851dd5c60564f4cbdfd4dd26645d"
+        },
+        {
+          "path": "reports/local-codex/11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+          "bytes": 8299,
+          "sha256": "0b663a37c126e9ca69e4f917a3f4b32b3d8aec3cc47b5dc55b542573e5776b7d"
+        },
+        {
+          "path": "reports/local-codex/12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+          "bytes": 8965,
+          "sha256": "d1c40697bf2e7a8653a5217c7862bae48bd223b41ab74ee620e446e1b0cd1570"
+        },
+        {
+          "path": "reports/local-codex/13_PHASED_IMPLEMENTATION_PLAN.md",
+          "bytes": 7312,
+          "sha256": "14bfb26ca6aabec59681514be82c6bca529dfba4dfdb5a218372eeb185f3e864"
+        },
+        {
+          "path": "reports/local-codex/14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+          "bytes": 7559,
+          "sha256": "8a8f4680c8f97be5e1d53f73a8885dfb66861f831f5ecffcb4121a4f74dd0b11"
+        },
+        {
+          "path": "reports/local-codex/15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+          "bytes": 4910,
+          "sha256": "acdf9e4157bd1bac290c525aa87a185887230590212a863e8726463db5701bb3"
+        },
+        {
+          "path": "reports/local-codex/16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+          "bytes": 4346,
+          "sha256": "86a4e3fb2d9d10ad3f2551df8783387bba1615a43523eafb9ed4a5881eb69075"
+        },
+        {
+          "path": "reports/local-codex/17_SOURCE_LEDGER.md",
+          "bytes": 9815,
+          "sha256": "58da48421104efe17ecdce12e4fd9a7808b969f7ade1eb8b816ea6563c28e5a1"
+        },
+        {
+          "path": "reports/local-codex/18_ACCEPTANCE_CHECKLIST.md",
+          "bytes": 3941,
+          "sha256": "9fc5720d233315e30ab82056f1cade89c58213676a0123eee719f4662c9a3907"
+        },
+        {
+          "path": "reports/local-codex/evidence/cuda-samples_pin.json",
+          "bytes": 3904,
+          "sha256": "0efcdfdc58707cddd48db717a84007b6a6a1953860ea828ffa2f1b9989835bb8"
+        },
+        {
+          "path": "reports/local-codex/evidence/deformation-build.log",
+          "bytes": 25,
+          "sha256": "7c4807a6ca1af8156d1032143276ae4e66346ef4c6beb72c7b99f593bad9f00c"
+        },
+        {
+          "path": "reports/local-codex/evidence/interop-build.log",
+          "bytes": 21,
+          "sha256": "e387b1fde6cc0f7b38d7008448a73a66562570a996427c9e2380fcb415504794"
+        },
+        {
+          "path": "reports/local-codex/evidence/local_source_identity.json",
+          "bytes": 4936,
+          "sha256": "caf0f7a34722b6bcc649b62d2b5f932c09c7a979ff39f8a9420cdc05da0eb4c5"
+        },
+        {
+          "path": "reports/local-codex/evidence/nvcc-attempt-02.log",
+          "bytes": 219,
+          "sha256": "55ca335de145fa3d97c2154adf89b90f0596ec24a781e283ffa658d5494389e0"
+        },
+        {
+          "path": "reports/local-codex/evidence/OpenCL-SDK_pin.json",
+          "bytes": 1584,
+          "sha256": "1d82fabd1e266bacd6ae68afebf69f378fa08267b91e552e59b1abb23850280b"
+        },
+        {
+          "path": "reports/local-codex/evidence/PositionBasedDynamics_pin.json",
+          "bytes": 3441,
+          "sha256": "0bb3742285b8233b143f7cbdfab5edcd74697f7600fb7b1135e0f9e1fb43c01e"
+        },
+        {
+          "path": "reports/local-codex/evidence/TressFX_pin.json",
+          "bytes": 1742,
+          "sha256": "58345d5dd64a3a95611acc807bb10169dd538720e95364da4afa3db1539033eb"
+        },
+        {
+          "path": "reports/local-codex/evidence/warp_pin.json",
+          "bytes": 5241,
+          "sha256": "d640e50b251370311a233c286851ab58263b4fe648b7bd3da9c3c89475d27bf9"
+        },
+        {
+          "path": "reports/local-codex/MANIFEST.sha256",
+          "bytes": 3743,
+          "sha256": "ac7fbbd84b42af80583e0399694a2a187c6d2e01266c7d6170e02c116835b563"
+        },
+        {
+          "path": "reports/local-codex/prototype/deformation_execution.json",
+          "bytes": 1164,
+          "sha256": "5c2cbe32f073894b7f94c47d9f8ab87bda86172e534f3a49445a0ed9c87bc2d7"
+        },
+        {
+          "path": "reports/local-codex/prototype/deformation_probe.cpp",
+          "bytes": 14519,
+          "sha256": "1f3848f23c443a87d59b7a361a79906ecd3126e43d920cacfcbce0945f8d589b"
+        },
+        {
+          "path": "reports/local-codex/prototype/deformation_results.json",
+          "bytes": 8867,
+          "sha256": "4abedf0eb85341f1896ad41bb330f532c25d42ea889b18a153050ce39ff44369"
+        },
+        {
+          "path": "reports/local-codex/prototype/interop_execution.json",
+          "bytes": 1152,
+          "sha256": "15540524e3f37de11b65cd10d9d3365b60cb7168502372a1a64dbc508a87b218"
+        },
+        {
+          "path": "reports/local-codex/prototype/interop_probe.cpp",
+          "bytes": 8404,
+          "sha256": "80aa07cb6daa1d48e577fb5142fcb8fab76f3c645c3862c7ad58827ef14e7593"
+        },
+        {
+          "path": "reports/local-codex/prototype/interop_results.json",
+          "bytes": 442,
+          "sha256": "e9ee3ad0d26bad4cf29672d0ac3a0efdecb943d4d053710af6917f5629f7293e"
+        },
+        {
+          "path": "reports/local-codex/prototype/README.md",
+          "bytes": 4124,
+          "sha256": "9cbf7086018f57578be16b207f87ae0f826b0097a356e717a99b17702a73efaa"
+        },
+        {
+          "path": "reports/local-codex/prototype/run_probes.py",
+          "bytes": 2774,
+          "sha256": "bd66dfa185f7a824c1f13419339ab62847274fd99b1cb37208c28d6130ec28f4"
+        },
+        {
+          "path": "reports/local-codex/RESEARCH_METADATA.json",
+          "bytes": 4303,
+          "sha256": "fcfd547051394b78d325f0db3c752318c7aa8f21afa177794931a4dcc2633c0b"
+        },
+        {
+          "path": "reports/local-codex/VALIDATION.json",
+          "bytes": 791,
+          "sha256": "d176cca200176d2ffc685fea7272ae3deea3188121732172a3b83e86211f3145"
+        },
+        {
+          "path": "reports/README.md",
+          "bytes": 654,
+          "sha256": "165fee6cf755123ce275eb9d2d731a67a45ba5744c6a806c1705eceb0befd57a"
+        },
+        {
+          "path": "RESEARCH_PROMPT.md",
+          "bytes": 28077,
+          "sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650"
+        },
+        {
+          "path": "START_HERE.md",
+          "bytes": 1669,
+          "sha256": "f898de9b4b1d295f635c59117f333df10f9ca602392a521732029ab8e92bc6c8"
+        }
+      ]
+    }
+  ]
+}

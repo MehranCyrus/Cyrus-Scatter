@@ -1,0 +1,1 @@
+try(CVBindings=#();CVDocument=CyrusRecipeCapture WFRoot (WFRoot.logicalLayers()) "Edited grass and collider" bindingResult:CVBindings)catch((dotNetClass "System.IO.File").WriteAllText (GardenRun+"capture-trace.txt") (getCurrentException()+"\n"+getCurrentExceptionStackTrace()))

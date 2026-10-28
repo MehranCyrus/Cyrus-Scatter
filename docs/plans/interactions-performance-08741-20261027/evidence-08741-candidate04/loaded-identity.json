@@ -1,0 +1,22 @@
+{
+  "host": 2027,
+  "modules": {
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\payload-04\\AminScatter.dlx",
+      "sha256": "fec9d100b866f3dbccc325696076acc29bf680fe48afd309217a2d19fc26ff2e"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\payload-04\\CyrusBrush.dlx",
+      "sha256": "d8044e7e5efd25bf38cbf094297ba3f99abbca51faf407b53fb4a5c426c8aebc"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\payload-04\\CyrusBrushStorage.dlh",
+      "sha256": "c4c5243e178fcea815f083cbed39a9481109fa760db6a18d875b5c1f3e0bd35a"
+    },
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\payload-04\\CyrusScatterEdit.dlm",
+      "sha256": "bb29ccf5a5c53e75aa271def606d74a996d1e54ee1d6e1f2a91a241e4d20ba84"
+    }
+  },
+  "script_fingerprint": "aad60292cdd74bb4e72021e58eb95652dc4ebf8aca8210f893434710ac7faf56"
+}

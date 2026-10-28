@@ -1,0 +1,46 @@
+{
+  "scope": "Whole Max process; dominant swap chain within recorded QPC interval. Presentation data is not isolated plugin GPU time or calibrated input-to-photon latency.",
+  "pid": 14712,
+  "begin_qpc_ms": 1106533201.232666,
+  "end_qpc_ms": 1106534888.232666,
+  "selected_swap_chain": "0x2A37C71AF80",
+  "chain_counts": {
+    "0x2A37C71AF80": 31
+  },
+  "presents": 31,
+  "present_modes": {
+    "Composed: Copy with GPU GDI": 31
+  },
+  "metrics": {
+    "FrameTime": {
+      "samples": 31,
+      "median_ms": 32.1124,
+      "p95_ms": 147.238,
+      "max_ms": 254.4476
+    },
+    "DisplayedTime": {
+      "samples": 30,
+      "median_ms": 44.70215,
+      "p95_ms": 142.811,
+      "max_ms": 249.5078
+    },
+    "DisplayLatency": {
+      "samples": 30,
+      "median_ms": 56.71225,
+      "p95_ms": 169.4847,
+      "max_ms": 278.8908
+    },
+    "CPUBusy": {
+      "samples": 31,
+      "median_ms": 32.049,
+      "p95_ms": 147.1653,
+      "max_ms": 254.3758
+    },
+    "GPUTime": {
+      "samples": 31,
+      "median_ms": 32.4034,
+      "p95_ms": 147.4104,
+      "max_ms": 252.618
+    }
+  }
+}

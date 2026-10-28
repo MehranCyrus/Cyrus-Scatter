@@ -25,8 +25,9 @@ def_visible_primitive(cyrusSourceEditBinding,"cyrusSourceEditBinding");
 Value* cyrusSourceEditBinding_cf(Value** a,int n){check_arg_count(cyrusSourceEditBinding,3,n);return bindingAPI([&]()->Value*{
     const auto legacy=bindingText(a[0],eb::maxSignatureBytes),basis=bindingText(a[1],eb::maxSignatureBytes);auto* input=bindingArray(a[2],eb::maxActiveSources);
     std::vector<eb::SourceSpec> sources;sources.reserve(input->size);std::size_t bytes=legacy.size()+basis.size();
-    for(int i=0;i<input->size;++i){auto* row=bindingArray(input->data[i],2);if(row->size!=2)throw RuntimeError(_T("Source binding needs stable native ID and settings"));
+    for(int i=0;i<input->size;++i){auto* row=bindingArray(input->data[i],3);if(row->size!=2&&row->size!=3)throw RuntimeError(_T("Source binding needs stable native ID, settings and optional editable scale"));
         eb::SourceSpec source{bindingText(row->data[0],eb::maxIdentityBytes),bindingText(row->data[1],eb::maxSettingsBytes)};
+        if(row->size==3)source.settings=eb::editableScaleSettings(source.settings,row->data[2]->to_double());
         if(source.id.size()+source.settings.size()>eb::maxDescriptorBytes-bytes)throw RuntimeError(_T("Source binding exceeds 8 MiB"));bytes+=source.id.size()+source.settings.size();sources.push_back(std::move(source));}
     return host::string(eb::make(legacy,basis,sources));
 });}

@@ -1,0 +1,45 @@
+{
+  "scope": "Equivalent captured SI geometry and collider positions expressed in different host translation units; numeric replay, not separate Max host unit changes",
+  "results": [
+    {
+      "unit": "millimetres",
+      "metres_per_unit": 0.001,
+      "hidden_roots": 18,
+      "fitted_guides": 28,
+      "penetrating": 0,
+      "crossing": 0,
+      "anchor_error_m": 0.0,
+      "max_edge_change": 0.045627947332919305
+    },
+    {
+      "unit": "centimetres",
+      "metres_per_unit": 0.01,
+      "hidden_roots": 18,
+      "fitted_guides": 28,
+      "penetrating": 0,
+      "crossing": 0,
+      "anchor_error_m": 0.0,
+      "max_edge_change": 0.04562864020015911
+    },
+    {
+      "unit": "inches",
+      "metres_per_unit": 0.0254,
+      "hidden_roots": 18,
+      "fitted_guides": 28,
+      "penetrating": 0,
+      "crossing": 0,
+      "anchor_error_m": 0.0,
+      "max_edge_change": 0.04562852617800317
+    },
+    {
+      "unit": "metres",
+      "metres_per_unit": 1.0,
+      "hidden_roots": 18,
+      "fitted_guides": 28,
+      "penetrating": 0,
+      "crossing": 0,
+      "anchor_error_m": 0.0,
+      "max_edge_change": 0.04562681063592189
+    }
+  ]
+}

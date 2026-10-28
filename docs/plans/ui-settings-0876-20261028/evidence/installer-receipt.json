@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "version": "0.87.6",
+  "exe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.6-20261028-final\\CyrusScatter-0.87.6-Setup.exe",
+  "exe_bytes": 8356352,
+  "exe_sha256": "6c05af719cf70e7bbd519418fd10c89c8c346eb489fc57981cbbc7fa3d90bdd4",
+  "packages": {
+    "CyrusScatter-0.87.6-Max2024.mzp": "17a89cc27acdd40c1637329360567cd2a8db683b29bcf3d4712de7de4a5d386a",
+    "CyrusScatter-0.87.6-Max2026.mzp": "aee328bb5be7dc372cceb4770dcbcc6b56597ecdab9d14fb3e08e51c1554ca7a",
+    "CyrusScatter-0.87.6-Max2027.mzp": "0dd193dc54accf658fad54ce339a1e00a7b401e2621f4f3c51c602bac2547a89"
+  },
+  "embedded_resources": {
+    "Cyrus.Payload.2024.mzp": "17a89cc27acdd40c1637329360567cd2a8db683b29bcf3d4712de7de4a5d386a",
+    "Cyrus.Payload.2026.mzp": "aee328bb5be7dc372cceb4770dcbcc6b56597ecdab9d14fb3e08e51c1554ca7a",
+    "Cyrus.Payload.2027.mzp": "0dd193dc54accf658fad54ce339a1e00a7b401e2621f4f3c51c602bac2547a89"
+  },
+  "builds": {
+    "2024": {
+      "receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\ui0876-20261028-01\\final\\native-2024\\receipt.json",
+      "receipt_sha256": "45c77eb811ab460b479bbba3a0622052b0f5733c362a0e293233b06949f62a91",
+      "producer_build_only": true,
+      "separate_native_suites_passed": 0,
+      "separate_host_ui_tested": false,
+      "runtime_evidence": null,
+      "native": {
+        "AminScatter.dlx": "7e3ba89ce22f03e9ca8f80ba53540d3c227809963b36464a146c244b947a217b",
+        "CyrusScatterEdit.dlm": "39941f052b5001446be30fd2f7fbdc082f73050a363bc4dbac39534d3d1a882f",
+        "CyrusBrush.dlx": "e30d3389b6c0d196d9825368c7606f5699048230999771738c5e89de59d7bccf",
+        "CyrusBrushStorage.dlh": "108954b05ce29db9d9953b48d6c55ee2a62bf6ea507aab4104dd15f3288e2695"
+      }
+    },
+    "2026": {
+      "receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\ui0876-20261028-01\\final\\native-2026\\receipt.json",
+      "receipt_sha256": "ae9f2331b7934e0ca39c7c026cc9e3ac31cae931e371aee7b2565466ca56fc41",
+      "producer_build_only": true,
+      "separate_native_suites_passed": 0,
+      "separate_host_ui_tested": false,
+      "runtime_evidence": null,
+      "native": {
+        "AminScatter.dlx": "770d2ff4135bad444e007466f57a49236c30146f7a0411ba8d063248241e868c",
+        "CyrusScatterEdit.dlm": "93e7478e38a3b63344c98cd0b212fc4a485def4d261ae8f93e0ab1d89414d751",
+        "CyrusBrush.dlx": "c43abfbf6351c2adb92ef384dc0867e56658ff36c3854d1853f26e936428bd47",
+        "CyrusBrushStorage.dlh": "54c6d9ac419ae6051cba5f7cee824f1227d3ad5d8fecb939772a60c896f47082"
+      }
+    },
+    "2027": {
+      "receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\ui0876-20261028-01\\final\\native-2027\\receipt.json",
+      "receipt_sha256": "66e8cda1b461b495934962046d069eda4c7294520cda04035874aeb11ae1181d",
+      "producer_build_only": true,
+      "separate_native_suites_passed": 23,
+      "separate_host_ui_tested": true,
+      "runtime_evidence": "docs/plans/ui-settings-0876-20261028/QUALIFICATION.json",
+      "native": {
+        "AminScatter.dlx": "987dd99b7f59029e7be0054b439f1cf347730f0905fa57fd8c6d530a7b9637da",
+        "CyrusScatterEdit.dlm": "89fd77402c2a1abfadbb96c46b0361781d538c4c6ab96bc84a1378a81e263f0a",
+        "CyrusBrush.dlx": "f7c58a0f47117f9ef4adc8aa22c2400111aaa1c882b4d2327080b9d2ee999894",
+        "CyrusBrushStorage.dlh": "df8d8dd6c41a715d6ee152eac181074f7e60e793015aa4083e3483501b90eac5"
+      }
+    }
+  },
+  "qualified_2027_preserved": true,
+  "scope": "2024/2026 SDK compilation/package only. Max 2027 UI/settings and 23 native suites are recorded separately. This packaging step does not launch Max or execute the installer. Installer UI and artist-profile installation are not tested.",
+  "analyzer": "Independent installation retained; not rebuilt or bundled.",
+  "content": "Existing 0.86.7 shared content retained; optional archive not embedded."
+}

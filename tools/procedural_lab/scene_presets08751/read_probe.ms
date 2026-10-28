@@ -1,0 +1,1 @@
+(dotNetClass "System.IO.File").WriteAllText (GardenRun+"probe-state.txt") (((theHold.getUndoNames()) as string)+"\n"+((theHold.getRedoNames()) as string)+"\n"+((for n in objects collect n.name) as string))

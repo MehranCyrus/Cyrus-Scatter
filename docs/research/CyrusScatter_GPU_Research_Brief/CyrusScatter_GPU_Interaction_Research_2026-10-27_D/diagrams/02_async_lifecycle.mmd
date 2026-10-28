@@ -1,0 +1,22 @@
+stateDiagram-v2
+    [*] --> Idle
+    Idle --> Capturing: relevant edit / Update
+    Capturing --> FailedLastGood: invalid or over budget
+    Capturing --> Queued: owned snapshot complete
+    Queued --> InFlight: submit CPU/GPU work
+    Queued --> CancelRequested: superseded
+    InFlight --> StaleInFlight: newer request / Undo / deletion
+    InFlight --> DeviceFailed: device or allocation failure
+    InFlight --> Validating: completion fence
+    StaleInFlight --> Retiring: fence completes
+    DeviceFailed --> CpuFallback: preserve last good
+    Validating --> Discarded: revisions changed
+    Validating --> FailedLastGood: quality failed
+    Validating --> ReadyToPublish: complete validation pass
+    ReadyToPublish --> Discarded: host recheck fails
+    ReadyToPublish --> Published: atomic host-thread swap
+    Published --> Idle
+    FailedLastGood --> Idle
+    CpuFallback --> Idle
+    Retiring --> Idle
+    Discarded --> Idle

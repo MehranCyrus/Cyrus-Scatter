@@ -1,0 +1,22 @@
+{
+  "host": 2027,
+  "modules": {
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\installer-04\\runtime\\r\\90874bb0f6f5\\bin\\AminScatter.dlx",
+      "sha256": "d567fd4076f9ca738fa8e5a6ce9ecc27d0277a729c33a7146f7ed71ca2c15f7e"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\installer-04\\runtime\\r\\90874bb0f6f5\\bin\\CyrusBrush.dlx",
+      "sha256": "f555d17c82e01c06cf43d67ca6c34432ca401f1f2cf28af5cec7dad3f0021445"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\installer-04\\runtime\\r\\90874bb0f6f5\\bin\\CyrusBrushStorage.dlh",
+      "sha256": "f10bb9402a2ae7609f1fd53cbc28b752769800470b8f23684cb8f1cf0de5714d"
+    },
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\preparation-editor-repair-20261027-01\\installer-04\\runtime\\r\\90874bb0f6f5\\bin\\CyrusScatterEdit.dlm",
+      "sha256": "8c03f7e4bc83b87a26c4da5859f5f38c82f769c569e022b13cbae693c3b0cb27"
+    }
+  },
+  "script_fingerprint": "b779e094a50daece4111150695d4343486319ab38a38b23b3ae2517df7bbc214"
+}

@@ -1,0 +1,17 @@
+Research execution environment
+==============================
+Timestamp UTC: 2026-10-27T09:12:16Z
+OS: Linux x86_64, kernel 6.18.55
+CPU visible to container: AMD EPYC 9V74, 5 online vCPUs
+Python: 3.13.5
+CMake: 3.31.6
+GCC: 14.2.0
+NVIDIA GPU / nvidia-smi: not available
+CUDA compiler/runtime: not available
+OpenCL clinfo/device runtime: not available
+Direct3D: not available
+3ds Max 2027 / SDK: not available
+Private Cyrus repository: not available
+Production renderers: not available
+
+Execution boundary: source/document research, analytical calculations, artifact generation, hashes, link/inventory/ZIP validation only. No CUDA/OpenCL/HLSL build, Max host test, renderer test, visual test, or performance benchmark was executed.

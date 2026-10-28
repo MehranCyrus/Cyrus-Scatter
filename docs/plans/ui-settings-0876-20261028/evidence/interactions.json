@@ -1,0 +1,71 @@
+{
+  "case": "interactions",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "owned ribbon source",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "Prepare model actual button",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "interactionsUI_strengthSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "interactionsUI_trunkSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "interactionsUI_fixedBaseSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "interactionsUI_transitionSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "interactionsUI_foliageSpin",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "response 2",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "response 3",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "response 1",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "source guide toggle",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "scene collider pick",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "scene collider remove",
+      "status": "pass",
+      "value": "True"
+    }
+  ]
+}

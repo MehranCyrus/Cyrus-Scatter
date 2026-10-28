@@ -1,0 +1,44 @@
+{
+  "repository": "GPUOpen-Effects/TressFX",
+  "retrieved_utc": "2026-10-27T09:31:00.498518+00:00",
+  "branch": "master",
+  "commit": "ba0bdacdfb964e38522fda812bf23169bc5fa603",
+  "commit_date": "2020-01-24T10:21:58Z",
+  "declared_license_spdx": "MIT",
+  "tree_truncated": false,
+  "inspected_files": [
+    {
+      "path": "license.txt",
+      "url": "https://github.com/GPUOpen-Effects/TressFX/blob/ba0bdacdfb964e38522fda812bf23169bc5fa603/license.txt",
+      "bytes": 1094,
+      "sha256": "e008031a95f6f655def9eaf914118531c9e1055b8ea201eb98b9f95f1af9bec4"
+    },
+    {
+      "path": "src/Shaders/TressFXSDFCollision.hlsl",
+      "url": "https://github.com/GPUOpen-Effects/TressFX/blob/ba0bdacdfb964e38522fda812bf23169bc5fa603/src/Shaders/TressFXSDFCollision.hlsl",
+      "bytes": 26132,
+      "sha256": "fbe949965e7d3c41ee4e9f0af1bd237559c1ff7cc2c50f558ad50f58fd0f9d6e"
+    },
+    {
+      "path": "src/Shaders/TressFXSimulation.hlsl",
+      "url": "https://github.com/GPUOpen-Effects/TressFX/blob/ba0bdacdfb964e38522fda812bf23169bc5fa603/src/Shaders/TressFXSimulation.hlsl",
+      "bytes": 45388,
+      "sha256": "c8f09bf49a3b30ebf4e2b2cc11d753b42baee811e3b6d12bd5cac06ba62eb734"
+    }
+  ],
+  "candidate_paths": [
+    "src/SDF.cpp",
+    "src/SDF.h",
+    "src/Shaders/TressFXSDFCollision.hlsl",
+    "src/Shaders/TressFXSimulation.hlsl",
+    "src/Simulation.cpp",
+    "src/Simulation.h",
+    "src/TressFX/TressFXSDFCollision.cpp",
+    "src/TressFX/TressFXSDFCollision.h",
+    "src/TressFX/TressFXSDFInputMeshInterface.h",
+    "src/TressFX/TressFXSDFMarchingCubes.cpp",
+    "src/TressFX/TressFXSDFMarchingCubes.h",
+    "src/TressFX/TressFXSimulation.cpp",
+    "src/TressFX/TressFXSimulation.h"
+  ]
+}

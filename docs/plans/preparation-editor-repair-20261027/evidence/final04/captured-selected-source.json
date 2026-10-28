@@ -1,0 +1,32 @@
+{
+  "report": {
+    "basal_band_m": 0.03,
+    "cache_realization_ms": 314.5111,
+    "can_prepare": true,
+    "complex_foliage_parts": 0,
+    "crown_root_guides": 46,
+    "delivered_preview_triangles": 11256,
+    "fixed_parts": 4710,
+    "ground_level_m": 0.07858783627549806,
+    "ground_roots": 46,
+    "guides": 46,
+    "max_attachment_distance_m": 0.0,
+    "max_parent_distance_m": 0.0,
+    "parts": 4756,
+    "preview_triangles": 11256,
+    "profile": "Connectivity-derived tubes and geodesic ribbons",
+    "review_required": true,
+    "ribbon_guides": 46,
+    "seconds": 0.2290118,
+    "source_payload_bytes": 14888186,
+    "tube_guides": 0,
+    "unattached_parts": 0,
+    "unresolved_guides": 0,
+    "warning": "Review inferred roots, tube direction, leaf guides and attachments before accepting. Geometry inference does not guarantee botanical correctness.",
+    "work_units": 11124867
+  },
+  "selected_pieces": 46,
+  "source_triangles": 183030,
+  "source_vertices": 125845,
+  "status": "pass"
+}

@@ -1,0 +1,409 @@
+{
+  "schema": "cyrus.evaluation/1",
+  "version": "harness-core-v1",
+  "dataset_kind": "challenge",
+  "review_status": "Agent-reviewed development evidence labels; human review pending.",
+  "split_policy": "All development; existing frozen broad evaluations remain unchanged.",
+  "queries": [
+    {
+      "id": "H01",
+      "language": "en",
+      "category": "boundary",
+      "query": "cyrusScenePresetMerge",
+      "mode": "identifier",
+      "information_need": "Explain why saved Scene presets require matching system units.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H01-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/tools/ui/templates/scene-presets.ms",
+              "sha256": "21f1505ae40f82c5e9ff6f8d7684cf8dfb00afd3343e6dd3c5d15cded3fe9bbe",
+              "start_line": 3,
+              "end_line": 3
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/tools/ui/templates/scene-presets.ms"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Scene merge requires matching units",
+        "Portable adapters have a different conversion boundary"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H02",
+      "language": "en",
+      "category": "boundary",
+      "query": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+      "mode": "path",
+      "information_need": "Find the three Save choices and explain when to use each.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H02-owner",
+          "alternatives": [
+            {
+              "path": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+              "sha256": "3d1b621217dceb6c4aa942e45a8e69c103ecc6b40e7709deaef7340d3167bb02",
+              "start_line": 1,
+              "end_line": 31
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/scene-presets-08751/ARTIST_GUIDE.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Scene preset",
+        "Portable preset",
+        "Settings only"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H03",
+      "language": "en",
+      "category": "boundary",
+      "query": "cyrusEditSceneRemap",
+      "mode": "identifier",
+      "information_need": "Explain independent Scene imports versus ordinary Max Copy.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H03-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/src/cyrus_edit_recipe.inc",
+              "sha256": "bc5b5fe578e475d0332eedf3b2412f5a7cf513bdef5552a609a3bc65bfee0540",
+              "start_line": 7,
+              "end_line": 7
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/src/cyrus_edit_recipe.inc"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Coordinated source/clone identity remapping",
+        "Ordinary Copy remains a separate limitation"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H04",
+      "language": "en",
+      "category": "boundary",
+      "query": "F05",
+      "mode": "identifier",
+      "information_need": "Explain failure retention without claiming every fault case was tested.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H04-owner",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 118,
+              "end_line": 129
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Retain previous complete result",
+        "Required behavior differs from executed proof"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H05",
+      "language": "en",
+      "category": "boundary",
+      "query": "F02",
+      "mode": "identifier",
+      "information_need": "Explain stable candidates while preserving quota and Relax limitations.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H05-owner",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 82,
+              "end_line": 93
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Quota and acceptance context",
+        "Relax and protected edits"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H06",
+      "language": "en",
+      "category": "boundary",
+      "query": "F04",
+      "mode": "identifier",
+      "information_need": "Explain why browsing should not apply pending Manual placement edits.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H06-owner",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 106,
+              "end_line": 117
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Manual pending changes wait",
+        "Relevant invalidation only"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H07",
+      "language": "en",
+      "category": "boundary",
+      "query": "AminScatter/include/scene_preset.h",
+      "mode": "path",
+      "information_need": "Find native Scene metadata admission bounds.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H07-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/include/scene_preset.h",
+              "sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+              "start_line": 1,
+              "end_line": 10
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/include/scene_preset.h"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Format 1",
+        "Max 2027 admission",
+        "Finite resource bounds"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H08",
+      "language": "en",
+      "category": "boundary",
+      "query": "PrepareScene",
+      "mode": "identifier",
+      "information_need": "Explain copying/repathing the private staged Max file.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H08-owner",
+          "alternatives": [
+            {
+              "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+              "sha256": "86571966a7d0db755603bb86716ae4e738a50040d511090468005a022bbf394b",
+              "start_line": 56,
+              "end_line": 56
+            }
+          ],
+          "canonical_paths": [
+            "AminScatter/shared/SharedLibrary.Scenes.cs"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Private staging copy",
+        "Original scene and immutable store retained"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H09",
+      "language": "en",
+      "category": "boundary",
+      "query": "docs/plans/scene-presets-08751/DELIVERY_08751.md",
+      "mode": "path",
+      "information_need": "Describe what passed for 0.87.5.1 and its unqualified combinations.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H09-owner",
+          "alternatives": [
+            {
+              "path": "docs/plans/scene-presets-08751/DELIVERY_08751.md",
+              "sha256": "f47bb87f0ed3f6039d7a313e1d4ee34b5734bcc6872e2e595ea2082d8bbba6e6",
+              "start_line": 1,
+              "end_line": 80
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/scene-presets-08751/DELIVERY_08751.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Max 2027 only",
+        "Scoped tests",
+        "No arbitrary renderer qualification"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H10",
+      "language": "en",
+      "category": "boundary",
+      "query": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+      "mode": "path",
+      "information_need": "Find the current Library workflow without using the old asset checkbox.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H10-owner",
+          "alternatives": [
+            {
+              "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+              "sha256": "c2bfcd5a6d5c2db3bd72a7e66168b6b20c66afd08fcaeb72c697d619c75a064c",
+              "start_line": 1,
+              "end_line": 55
+            }
+          ],
+          "canonical_paths": [
+            "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Three save choices",
+        "Independent model imports differ from complete recipes"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H11",
+      "language": "en",
+      "category": "boundary",
+      "query": "F06",
+      "mode": "identifier",
+      "information_need": "Inspect the matched lifetime of accepted resource publication.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H11-owner",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 130,
+              "end_line": 141
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Bounded resources",
+        "Retained generations and lifetime"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    },
+    {
+      "id": "H12",
+      "language": "en",
+      "category": "boundary",
+      "query": "F10",
+      "mode": "identifier",
+      "information_need": "Explain supported unit behavior without promising arbitrary rescaling.",
+      "answerable": true,
+      "required_evidence": [
+        {
+          "id": "H12-owner",
+          "alternatives": [
+            {
+              "path": "docs/ENGINEERING_FOUNDATION.md",
+              "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+              "start_line": 184,
+              "end_line": 195
+            }
+          ],
+          "canonical_paths": [
+            "docs/ENGINEERING_FOUNDATION.md"
+          ]
+        }
+      ],
+      "optional_evidence": [],
+      "misleading_substitutions": [],
+      "required_qualifiers": [
+        "Original units/evidence limits",
+        "No unsupported conversion guarantee"
+      ],
+      "review_status": "Agent-authored development labels; not unseen holdout or generated-answer evaluation.",
+      "split": "development"
+    }
+  ],
+  "anchors": []
+}

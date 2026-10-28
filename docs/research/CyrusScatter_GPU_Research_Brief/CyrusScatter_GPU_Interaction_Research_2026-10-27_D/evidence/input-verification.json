@@ -1,0 +1,35 @@
+{
+  "schema": "cyrus.research-input-verification/1",
+  "verified_at_utc": "2026-10-27T09:12:16Z",
+  "files": [
+    {
+      "logical_name": "README.md",
+      "mounted_path": "/mnt/data/README(5).md",
+      "expected_sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75",
+      "actual_sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75",
+      "match": true
+    },
+    {
+      "logical_name": "RESEARCH_PROMPT.md",
+      "mounted_path": "/mnt/data/RESEARCH_PROMPT(3).md",
+      "expected_sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+      "actual_sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+      "match": true
+    },
+    {
+      "logical_name": "CURRENT_SYSTEM_CONTEXT.md",
+      "mounted_path": "/mnt/data/CURRENT_SYSTEM_CONTEXT(3).md",
+      "expected_sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+      "actual_sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+      "match": true
+    },
+    {
+      "logical_name": "BRIEF_METADATA.json",
+      "mounted_path": "/mnt/data/BRIEF_METADATA(3).json",
+      "expected_sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8",
+      "actual_sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8",
+      "match": true
+    }
+  ],
+  "all_match": true
+}

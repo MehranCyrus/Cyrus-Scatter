@@ -1,0 +1,23 @@
+{
+  "schema": "cyrus.harness-task-cases/1",
+  "scope": "Core and delivered native Scene/Library workflows; development cases, not unseen holdout",
+  "model_usage": "No model calls or paid API use are performed by the payload benchmark",
+  "cases": [
+    {"id":"H01","task":"Explain why saved Scene presets require matching system units.","query":"cyrusScenePresetMerge","mode":"identifier","expected_path":"AminScatter/tools/ui/templates/scene-presets.ms","required_answer_limits":["Scene merge requires matching units","Portable adapters have a different conversion boundary"]},
+    {"id":"H02","task":"Find the three Save choices and explain when to use each.","query":"docs/plans/scene-presets-08751/ARTIST_GUIDE.md","mode":"path","expected_path":"docs/plans/scene-presets-08751/ARTIST_GUIDE.md","required_answer_limits":["Scene preset","Portable preset","Settings only"]},
+    {"id":"H03","task":"Explain independent Scene imports versus ordinary Max Copy.","query":"cyrusEditSceneRemap","mode":"identifier","expected_path":"AminScatter/src/cyrus_edit_recipe.inc","required_answer_limits":["Coordinated source/clone identity remapping","Ordinary Copy remains a separate limitation"]},
+    {"id":"H04","task":"Explain failure retention without claiming every fault case was tested.","query":"F05","mode":"identifier","expected_path":"docs/ENGINEERING_FOUNDATION.md","required_answer_limits":["Retain previous complete result","Required behavior differs from executed proof"]},
+    {"id":"H05","task":"Explain stable candidates while preserving quota and Relax limitations.","query":"F02","mode":"identifier","expected_path":"docs/ENGINEERING_FOUNDATION.md","required_answer_limits":["Quota and acceptance context","Relax and protected edits"]},
+    {"id":"H06","task":"Explain why browsing should not apply pending Manual placement edits.","query":"F04","mode":"identifier","expected_path":"docs/ENGINEERING_FOUNDATION.md","required_answer_limits":["Manual pending changes wait","Relevant invalidation only"]},
+    {"id":"H07","task":"Find native Scene metadata admission bounds.","query":"AminScatter/include/scene_preset.h","mode":"path","expected_path":"AminScatter/include/scene_preset.h","required_answer_limits":["Format 1","Max 2027 admission","Finite resource bounds"]},
+    {"id":"H08","task":"Explain copying/repathing the private staged Max file.","query":"PrepareScene","mode":"identifier","expected_path":"AminScatter/shared/SharedLibrary.Scenes.cs","required_answer_limits":["Private staging copy","Original scene and immutable store retained"]},
+    {"id":"H09","task":"Describe what passed for 0.87.5.1 and its unqualified combinations.","query":"docs/plans/scene-presets-08751/DELIVERY_08751.md","mode":"path","expected_path":"docs/plans/scene-presets-08751/DELIVERY_08751.md","required_answer_limits":["Max 2027 only","Scoped tests","No arbitrary renderer qualification"]},
+    {"id":"H10","task":"Find the current Library workflow without using the old asset checkbox.","query":"docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md","mode":"path","expected_path":"docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md","required_answer_limits":["Three save choices","Independent model imports differ from complete recipes"]},
+    {"id":"H11","task":"Inspect the matched lifetime of accepted resource publication.","query":"F06","mode":"identifier","expected_path":"docs/ENGINEERING_FOUNDATION.md","required_answer_limits":["Bounded resources","Retained generations and lifetime"]},
+    {"id":"H12","task":"Explain supported unit behavior without promising arbitrary rescaling.","query":"F10","mode":"identifier","expected_path":"docs/ENGINEERING_FOUNDATION.md","required_answer_limits":["Original units/evidence limits","No unsupported conversion guarantee"]}
+  ],
+  "future_agent_measurement": {
+    "required": ["matched model and settings", "frozen input identities", "reviewed answer or patch", "all tool calls", "total tokens when available", "wall time", "rework", "critical constraint failures"],
+    "not_claimed": ["Answer accuracy from retrieval ranks", "Billed token savings from character counts", "Unseen holdout from these development cases"]
+  }
+}

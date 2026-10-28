@@ -1,5 +1,4 @@
 struct EditInput {Matrix3 tm;int source;EditKey id;bool protectedEdit=false;int face=0;Point3 bary{1,0,0};std::uint64_t owner=0;};
-#include "cyrus_edit_binding.inc"
 static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<EditInput>& input,const std::wstring& signature){
     auto derived=ce::make<EditDerived>();derived->matrices.reserve(input.size());derived->order.reserve(input.size());derived->incoming.reserve(input.size());
     for(unsigned i=0;i<input.size();++i){derived->incoming.emplace(input[i].id,i);derived->matrices.push_back(input[i].tm);derived->order.push_back(input[i].id);}

@@ -1,6 +1,26 @@
 # Install and build Cyrus Scatter
 
-## Current 0.87.4 Source Preparation Editor — Max 2027
+Current installer: [CyrusScatter 0.87.6 EXE](../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Setup.exe), with distinct Max 2024, 2026 and 2027 payloads. Save work and close the versions selected for installation, install, then reopen Max. MZP alternatives: [2024](../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Max2024.mzp), [2026](../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Max2026.mzp), [2027](../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Max2027.mzp). Use **Scripting > Run Script**, then restart Max. Keep the complete matched script/native pair. [Delivery and qualification](plans/ui-settings-0876-20261028/DELIVERY.md): runtime checks are Max 2027; older hosts are compile/package only. Existing library content and independent Analyzer are retained.
+
+The preceding [0.87.5.6 performance baseline](plans/drag-response-08756-20261028/DELIVERY_08756.md) also has a separately recorded [compatibility EXE](plans/drag-response-08756-20261028/INSTALLER_COMPATIBILITY_08756.md). Its exact original runtime qualification is preserved.
+
+Preceding combined installer: [CyrusScatter 0.87.5.5 combined EXE and matched MZPs](plans/scene-adaptation-08754-20261028/CALLBACK_HOTFIX_08755.md). This corrects the 0.87.5.4 callback error. Save work and close the Max versions selected in the EXE, install, then reopen. For an MZP use **Scripting > Run Script**, then restart. Max 2024/2026 are separate compiled payloads; runtime qualification is Max 2027 only. Existing Library content and independent Analyzer installation remain.
+
+Earlier patch: [CyrusScatter 0.87.5.3 Max 2027 MZP, saved trials and exact evidence](plans/scene-repair-08753-20261028/DELIVERY_08753.md). Run through **Scripting > Run Script**, then restart Max. Use the complete matched native/script/managed package; no loose-script replacement. Only disposable profiles were installed for qualification. [Artist instructions](plans/scene-repair-08753-20261028/ARTIST_GUIDE.md). This delivery does not update older-host EXEs.
+
+Preceding performance patch: [CyrusScatter 0.87.5.2 Max 2027 MZP and exact evidence](plans/contact-audit-08752-20261027/DELIVERY_08752.md). Run it through **Scripting > Run Script**, then restart Max. Install its complete matched native/script/managed pair. It retains the 0.87.5.1 Scene preset system. [Artist guide](plans/contact-audit-08752-20261027/ARTIST_GUIDE.md). Only disposable profiles were installed during this task.
+
+Preceding Library delivery: [CyrusScatter 0.87.5.1 Max 2027 MZP and exact evidence](plans/scene-presets-08751/DELIVERY_08751.md). Run it through **Scripting > Run Script**, then restart Max. Install the complete matching script/native/Gallery pair. This delivery adds native Scene presets and retains the preceding shared-pose viewport. It does not update the earlier Max 2024/2026 EXE or independently versioned products.
+
+## Preceding 0.87.4.3 hiding and Wireframe — Max 2027
+
+Run [CyrusScatter-0.87.4.3-Max2027.mzp](../dist/CyrusScatter-0.87.4.3-20261027-r3/CyrusScatter-0.87.4.3-Max2027.mzp) through **Scripting > Run Script**, follow its result, then restart Max. The matched script/native pair requires Interactions 11 and saves schema 63. [Artist workflow](plans/interaction-hide-wireframe-20261027/ARTIST_GUIDE_08743.md) and [executed tests](plans/interaction-hide-wireframe-20261027/DELIVERY_08743.md). Artist profiles were not installed or restarted during qualification.
+
+## Preceding 0.87.4.2 preparation correction — Max 2027
+
+Run [CyrusScatter-0.87.4.2-Max2027.mzp](../dist/CyrusScatter-0.87.4.2-20261027/CyrusScatter-0.87.4.2-Max2027.mzp) through **Scripting > Run Script**, follow the installer result, then restart Max. Use **Interactions > Edit preparation** and the [selected-leaf workflow](plans/preparation-editor-repair-20261027/ARTIST_GUIDE_08742.md). The matched package requires native Interactions 10 and keeps scene schema 62. [Exact tests and remaining limits](plans/preparation-editor-repair-20261027/DELIVERY_08742.md). Qualification uses disposable profiles; the artist runs installation and restart.
+
+## Preceding 0.87.4 Source Preparation Editor — Max 2027
 
 Run [CyrusScatter-0.87.4-Max2027.mzp](../dist/CyrusScatter-0.87.4-20261027-final/CyrusScatter-0.87.4-Max2027.mzp) through **Scripting > Run Script**, follow the installer result, then restart Max. The editor is under **Interactions > Edit preparation…**. [Exact payload, fern/grass trials and remaining limits](plans/source-preparation-editor-20261026/DELIVERY_0874.md). This package uses schema 62 and native Interactions 8. Preserve original scenes when saving upgraded copies. Existing plant content and the independent Analyzer are retained. No artist installation or restart was performed.
 

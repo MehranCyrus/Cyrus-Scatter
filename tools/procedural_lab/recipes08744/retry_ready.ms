@@ -1,0 +1,1 @@
+if CyrusReadyPresetEditor!=undefined do destroyDialog CyrusReadyPresetEditor;(local path=((CyrusSharedStore()).RecipePaths())[1],digest;digest=(cyrusRecipeInfo path)[11];CyrusOpenReadyPreset undefined (CyrusPresetPackageDirectory path digest) surface:CVTerrain)

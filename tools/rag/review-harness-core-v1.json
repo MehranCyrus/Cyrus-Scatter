@@ -1,0 +1,273 @@
+{
+  "schema": "cyrus.harness-source-review/1",
+  "agent_reviewed": true,
+  "human_reviewed": false,
+  "scope": [
+    "Core requirements and delivered Library owners plus versioned preparation guides only.",
+    "Working interaction implementation, independent products, release histories and instruction/evaluation files are excluded.",
+    "This is a companion; the legacy 64-source project MCP enrollment is retained and remains independently stale."
+  ],
+  "audit": "_local/rag/out/20261027-harness-stage1-02",
+  "native_producer_receipt": "build/scene-presets-08751-20261027-01/native-final/receipt.json",
+  "native_producer_receipt_sha256": "c1c196a8364bce8cb32e44b8a5ef2741af0d8345c0478a791822dca6be9f48b5",
+  "source_comparisons": [
+    {
+      "path": "AminScatter/tools/ui/templates/scene-presets.ms",
+      "current_sha256": "21f1505ae40f82c5e9ff6f8d7684cf8dfb00afd3343e6dd3c5d15cded3fe9bbe",
+      "producer_sha256": "c435913a435ef8f3cf5af6da70b749e6e383caca6d4ee736ec4bb0dad3d21bf3",
+      "exact_match": false,
+      "version_label_only_difference": true
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+      "current_sha256": "86571966a7d0db755603bb86716ae4e738a50040d511090468005a022bbf394b",
+      "producer_sha256": "91c6f9a11187494d73d07bc986fd8686dd147e9ecd159c1d158acb713e6adece",
+      "exact_match": false,
+      "version_label_only_difference": true
+    },
+    {
+      "path": "AminScatter/include/scene_preset.h",
+      "current_sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+      "producer_sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+      "exact_match": true,
+      "version_label_only_difference": false
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_recipe.inc",
+      "current_sha256": "bc5b5fe578e475d0332eedf3b2412f5a7cf513bdef5552a609a3bc65bfee0540",
+      "producer_sha256": "bc5b5fe578e475d0332eedf3b2412f5a7cf513bdef5552a609a3bc65bfee0540",
+      "exact_match": true,
+      "version_label_only_difference": false
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "sha256": "5cef76d41782461d004611017955e3b3fd6853e68d5be372e47aec0dd560aa4a",
+      "ranges": [
+        [
+          1,
+          239
+        ]
+      ],
+      "role": "maintained_guide",
+      "knowledge_status": "current",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Complete F01-F12 requirements and evidence limits; no host qualification inferred."
+      }
+    },
+    {
+      "path": "docs/KNOWLEDGE_BASELINE.json",
+      "sha256": "3cda152cfd2dbb7fa4b267ab7008e7c703af8b9c729ac2a5568af1bcc31fab04",
+      "ranges": [
+        [
+          1,
+          26
+        ]
+      ],
+      "role": "editorial",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Explicit delivered Library facts cross-checked by the front door against the scoped 0.87.5.1 qualification receipt; newer working labels are not deliveries."
+      }
+    },
+    {
+      "path": "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md",
+      "sha256": "c2bfcd5a6d5c2db3bd72a7e66168b6b20c66afd08fcaeb72c697d619c75a064c",
+      "ranges": [
+        [
+          1,
+          55
+        ]
+      ],
+      "role": "maintained_guide",
+      "knowledge_status": "current",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Maintained delivered 0.87.5.1 Library workflow, Max 2027 only; ongoing interactions excluded."
+      }
+    },
+    {
+      "path": "docs/plans/scene-presets-08751/PLAN.md",
+      "sha256": "ab8194b08e8a032eda7bde2266a4a0db56c24963441463b3dca7a45e3187f9cf",
+      "ranges": [
+        [
+          1,
+          65
+        ]
+      ],
+      "role": "proposal",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Feature contract and recorded acceptance checklist for Scene presets; use the separate delivery and qualification receipt for executed proof."
+      }
+    },
+    {
+      "path": "docs/plans/scene-presets-08751/ARTIST_GUIDE.md",
+      "sha256": "3d1b621217dceb6c4aa942e45a8e69c103ecc6b40e7709deaef7340d3167bb02",
+      "ranges": [
+        [
+          1,
+          31
+        ]
+      ],
+      "role": "maintained_guide",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Delivered native Scene/Portable/Settings choices and artist limitations; not arbitrary graph or host qualification."
+      }
+    },
+    {
+      "path": "docs/plans/scene-presets-08751/DELIVERY_08751.md",
+      "sha256": "f47bb87f0ed3f6039d7a313e1d4ee34b5734bcc6872e2e595ea2082d8bbba6e6",
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "role": "historical_evidence",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Exact dated 0.87.5.1 scoped Max 2027 delivery and remaining limits, not proof for the 0.87.5.2 working tree."
+      }
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/scene-presets.ms",
+      "sha256": "21f1505ae40f82c5e9ff6f8d7684cf8dfb00afd3343e6dd3c5d15cded3fe9bbe",
+      "ranges": [
+        [
+          1,
+          224
+        ]
+      ],
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Working Scene orchestration owner. Only the package version guard differs from its exact 0.87.5.1 producer bytes; no 0.87.5.2 host acceptance inferred."
+      }
+    },
+    {
+      "path": "AminScatter/shared/SharedLibrary.Scenes.cs",
+      "sha256": "86571966a7d0db755603bb86716ae4e738a50040d511090468005a022bbf394b",
+      "ranges": [
+        [
+          1,
+          80
+        ]
+      ],
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Working managed native-Scene store owner. Only the saved version label differs from its exact 0.87.5.1 producer bytes; no whole-working-tree acceptance inferred."
+      }
+    },
+    {
+      "path": "AminScatter/include/scene_preset.h",
+      "sha256": "9740840dd322a53693d75133d93a35047873794c8f9bdbb6ac151cd92fbb826f",
+      "ranges": [
+        [
+          1,
+          40
+        ]
+      ],
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Native Scene metadata/admission owner; exact bytes match the scoped 0.87.5.1 native producer receipt."
+      }
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_recipe.inc",
+      "sha256": "bc5b5fe578e475d0332eedf3b2412f5a7cf513bdef5552a609a3bc65bfee0540",
+      "ranges": [
+        [
+          1,
+          56
+        ]
+      ],
+      "role": "implementation",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Coordinated Scene Edit identity remapping owner; exact bytes match the scoped 0.87.5.1 native producer. Ordinary Max Copy remains distinct."
+      }
+    },
+    {
+      "path": "docs/plans/source-preparation-editor-20261026/ARTIST_WORKFLOW_0874.md",
+      "sha256": "6d7f2917a4f37a275ed51396a71ab3ee52c63cd48911b53485dc8f177a0a5516",
+      "ranges": [
+        [
+          1,
+          61
+        ]
+      ],
+      "role": "historical_evidence",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4 preparation-editor workflow. Its Keep and share recipe exclusion is superseded by 0.87.4.4 authored format 9 and 0.87.5.1 native Scene presets. Do not follow its older installer or saving boundary as current guidance."
+      }
+    },
+    {
+      "path": "docs/plans/preparation-editor-repair-20261027/ARTIST_GUIDE_08742.md",
+      "sha256": "fa866a054b5e43b9c4455a6256b88b0b3720a3d0521238f167a88fe0e91f16b4",
+      "ranges": [
+        [
+          1,
+          26
+        ]
+      ],
+      "role": "historical_evidence",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4.2 selected/isolated-piece and navigation workflow; model-specific counts/settings are examples. Not acceptance of ongoing contact work."
+      }
+    },
+    {
+      "path": "docs/plans/interaction-hide-wireframe-20261027/ARTIST_GUIDE_08743.md",
+      "sha256": "68db50a686de13eb94231f58f09027fa45fe83a713a2fbfe20ee4bbf26fd8cb7",
+      "ranges": [
+        [
+          1,
+          22
+        ]
+      ],
+      "role": "historical_evidence",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.4.3 hiding and Wireframe semantics; its Interactions 11 package identity is historical. Use the current matched delivery, not its older installer."
+      }
+    },
+    {
+      "path": "docs/plans/shared-pose-viewport-0875-20261027/ARTIST_GUIDE_0875.md",
+      "sha256": "eaff8ccdd7742e8b5765e975263d2be5c35f4ed97f1f29ba827c1b7fbf39f135",
+      "ranges": [
+        [
+          1,
+          52
+        ]
+      ],
+      "role": "historical_evidence",
+      "knowledge_status": "unknown",
+      "applicability": {
+        "snapshot": "Core/Library companion reviewed 27 October 2026",
+        "limits": "Versioned 0.87.5 shared-pose display and setting limits. Example fern bounds are not universal settings or proof of ongoing 0.87.5.2 contact changes."
+      }
+    }
+  ],
+  "review_limits": [
+    "Admission and evidence applicability review, not a new full code audit.",
+    "Versioned historical guides are not rewritten; superseded saving/package statements are explicitly qualified."
+  ]
+}

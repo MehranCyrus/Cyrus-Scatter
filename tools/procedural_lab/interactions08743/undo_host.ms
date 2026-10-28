@@ -1,0 +1,2 @@
+-- The owned dispatcher emits max undo / max redo as standalone host events.
+-- No Python execution or extra fileIn scope may wrap those commands.

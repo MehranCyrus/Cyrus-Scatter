@@ -1,0 +1,536 @@
+{
+  "case": "layout",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "all 14 panels constructed",
+      "status": "pass",
+      "value": "14"
+    },
+    {
+      "name": "band captions after bind",
+      "status": "pass",
+      "value": "#(\"x\", \"Out +\", \"In +\")"
+    }
+  ],
+  "bounds_issues": [],
+  "measured_controls": 1167,
+  "measurement_skips": [
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'",
+    "'pymxs.MXSWrapperBase' object has no attribute 'width'"
+  ],
+  "widths": [
+    {
+      "page": "managerUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "managerUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "managerUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "managerUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "managerUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "managerUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "surfacesUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "surfacesUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "surfacesUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "surfacesUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "surfacesUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "surfacesUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "modelsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "modelsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "modelsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "modelsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "modelsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "modelsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "containersUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "containersUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "containersUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "containersUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "containersUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "containersUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "layoutUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "layoutUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "layoutUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "layoutUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "layoutUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "layoutUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "populationUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "populationUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "populationUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "populationUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "populationUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "populationUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "coverageUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "coverageUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "coverageUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "coverageUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "coverageUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "coverageUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "areasUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "areasUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "areasUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "areasUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "areasUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "areasUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "transformsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "transformsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "transformsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "transformsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "transformsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "transformsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "spacingUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "spacingUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "spacingUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "spacingUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "spacingUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "spacingUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "displayUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "displayUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "displayUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "displayUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "displayUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "displayUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "statisticsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "statisticsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "statisticsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "statisticsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "statisticsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "statisticsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "interactionsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "interactionsUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "interactionsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "interactionsUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "interactionsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "interactionsUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "collidersUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "collidersUI",
+      "requested": 168,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "collidersUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "collidersUI",
+      "requested": 220,
+      "actual_layout": 154,
+      "expanded": true
+    },
+    {
+      "page": "collidersUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": false
+    },
+    {
+      "page": "collidersUI",
+      "requested": 320,
+      "actual_layout": 154,
+      "expanded": true
+    }
+  ]
+}

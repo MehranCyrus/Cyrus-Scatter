@@ -109,7 +109,7 @@ void historyAndFeedback(){
     unsigned sentinel=0;std::memcpy(&sentinel,stream.chunks.at(0).bytes.data(),sizeof(sentinel));check(stream.chunks[0].id==0x7301&&sentinel>1000,"Recognized old chunk refuses downgrade before extension can be ignored");
     CSEdit loaded;ILoad load(stream.chunks);check(loaded.Load(&load)==IO_OK,"Versioned source history load");equalRows(absent,loaded.layers.at(7));
     bindStable(loaded.layers.at(7),binding(),nativeEditInput(four()));check(activeEditOrder(loaded.layers.at(7)).size()==4,"Saved inactive history recovers original source");
-    auto bad=stream.chunks;unsigned future=3;std::memcpy(bad[1].bytes.data(),&future,sizeof(future));ILoad futureLoad(bad);const auto old=loaded.layers.at(7);check(loaded.Load(&futureLoad)==IO_ERROR,"Unknown storage version rejected");equalRows(old,loaded.layers.at(7));
+    auto bad=stream.chunks;unsigned future=4;std::memcpy(bad[1].bytes.data(),&future,sizeof(future));ILoad futureLoad(bad);const auto old=loaded.layers.at(7);check(loaded.Load(&futureLoad)==IO_ERROR,"Unknown storage version rejected");equalRows(old,loaded.layers.at(7));
     bad=stream.chunks;bad[1].bytes.pop_back();ILoad truncated(bad);check(loaded.Load(&truncated)==IO_ERROR,"Truncated storage rejected atomically");equalRows(old,loaded.layers.at(7));
 }
 void corruptSavedOrder(ISave& stream,unsigned row,std::uint64_t order){
@@ -120,12 +120,12 @@ void corruptSavedOrder(ISave& stream,unsigned row,std::uint64_t order){
     const auto number=[&](){unsigned value=0;const auto start=at;skip(sizeof(value));std::memcpy(&value,bytes.data()+start,sizeof(value));return value;};
     const auto text=[&](){const auto n=number();skip(n);};
     if(number()!=editStorageVersion||number()!=1)throw std::runtime_error("Expected one source-aware fixture layer");
-    skip(sizeof(int));text();text();skip(2*sizeof(std::uint8_t)+sizeof(std::uint64_t));
+    skip(sizeof(int));text();text();skip(3*sizeof(std::uint8_t)+sizeof(std::uint64_t));
     const auto sources=number();for(unsigned i=0;i<sources;++i)text();
     const auto rows=number();if(row>=rows)throw std::runtime_error("Missing order fixture row");
     for(unsigned i=0;i<rows;++i){skip(2*sizeof(unsigned));const auto position=at;skip(sizeof(std::uint64_t));
         if(i==row)std::memcpy(bytes.data()+position,&order,sizeof(order));
-        skip(12*sizeof(float)+2*sizeof(std::uint8_t));text();text();}
+        skip(12*sizeof(float)+3*sizeof(std::uint8_t));text();text();}
 }
 void orderSafety(){
     EditLayer layer;bindStable(layer,binding(),nativeEditInput(four()));move(layer,0,2);
@@ -176,11 +176,43 @@ void legacyHydration(){
     check(incompatible.signature==old.signature&&!incompatible.sourceAware,"Rejected legacy conversion preserves its original bytes");
     EditLayer untouched;bindStable(untouched,binding(),nativeEditInput(four()));untouched.selection.set(1,true);bindStable(untouched,binding({"A","B"},"99"),nativeEditInput(four()));check(untouched.selection.get(1),"Untouched Edit can rebind while retaining valid selection");
 }
+void recipeReplay(){
+    EditLayer saved;saved.signature=binding();saved.sourceAware=true;saved.recipeUnbound=true;auto ids=ce::make<EditLineages>();ids->ids.emplace_back(L"A");ids->ids.emplace_back(L"B");saved.lineages=ids;
+    EditRow moved;moved.inputId=moved.outputId=EditKey(10);moved.lineage=1;moved.order=0;moved.delta.SetTrans({2,0,0});moved.recipeLocal=true;saved.append(moved);
+    auto clone=moved;clone.outputId=EditKey(L"recipe-clone");clone.order=4;saved.append(clone);
+    EditRow removed;removed.inputId=removed.outputId=EditKey(20);removed.lineage=2;removed.order=1;removed.deleted=true;saved.append(removed);saved.nextOrder=5;
+    CSEdit disk;disk.layers.emplace(7,saved);ISave output;check(disk.Save(&output)==IO_OK,"Unbound recipe history can be saved before a disabled layer evaluates");CSEdit loaded;ILoad file(output.chunks);check(loaded.Load(&file)==IO_OK&&loaded.layers.at(7).recipeUnbound&&loaded.layers.at(7).rows.get(0).recipeLocal,"Recipe-local flags survive native storage");
+    auto layer=loaded.layers.at(7);auto incoming=nativeEditInput(input({"B","A"},{{10,2},{20,1},{30,2},{40,1}}));bindStable(layer,binding({"B","A"}),incoming);
+    check(!layer.recipeUnbound&&activeEditOrder(layer).size()==4,"Recipe restores move, deletion and clone with remapped source order");const auto original=find(layer,10,L"A");check(!layer.rows.get(original).recipeLocal&&std::abs(layer.matrix(layer.rows.get(original)).GetTrans().x-12)<1e-5,"Local recipe offset restores on the correct original");
+    auto reordered=nativeEditInput(input({"A","B"},{{10,1},{20,2},{30,1},{40,2}}));bindStable(layer,binding(),reordered);check(std::abs(layer.matrix(layer.rows.get(find(layer,10,L"A"))).GetTrans().x-12)<1e-5,"Source reordering does not migrate the restored move");
+    auto rotated=nativeEditInput(input({"A","B"},{{10,1},{20,2},{30,1},{40,2}}));auto matrices=ce::make<EditDerived>(*rotated);auto view=*rotated->native;ep::Builder builder(view.token().owner,ep::Stage::Edited,view.sources(),view.size(),view.sourceCohort());for(unsigned i=0;i<view.size();++i){auto row=view.at(i);if(i==0)row.transform={0,2,0,-2,0,0,0,0,2,1000,2000,0};builder.appendGenerated(row);}matrices=nativeEditInput(builder.freeze());auto turn=saved;bindStable(turn,binding(),matrices);auto position=turn.matrix(turn.rows.get(find(turn,10,L"A"))).GetTrans();check(std::abs(position.x-1000)<.001&&std::abs(position.y-2004)<.001,"Local override follows rotated/scaled target base without world-space guessing");
+}
 void palette(){
     EditPalette colors;colors.sourceColors={{1,0,0},{0,1,0}};colors.bandIDs={4,9};colors.bandColors[0]={.5f,.5f,.5f};colors.bandColors[1]={0,0,1};colors.bandColors[2]={1,0,1};
     check(colors.color(2,0)==Point3(0,1,0),"Model identification addresses source ordinal, not candidate row");colors.mode=3;
     check(colors.color(1,9)==Point3(1,0,1)&&colors.color(1,0)==Point3(.5f,.5f,.5f),"Band lookup uses stable identity and grey fallback");colors.mode=4;
     check(colors.color(1,0)==Point3(1,0,0),"Material mode falls back to model identification for handles");
 }
+void sourceScaleReplay(){
+    auto signature=[](double scale,bool typed){std::vector<cyrus::editbinding::SourceSpec> specs;
+        for(const auto& id:{std::string("A"),std::string("B")}){const double value=id=="A"?scale:1.;auto raw="1.0|(color 100 200 100)|false|false|"+std::to_string(value)+"|0.0|1|";
+            specs.push_back({id,typed?cyrus::editbinding::editableScaleSettings(raw,value):raw});}
+        return receiverWide(cyrus::editbinding::make(legacy(),"CyrusBinding2:17|Owner:L|"+receiver,specs));};
+    auto rows=[](float scale){const auto base=four();ep::Builder next(base.token().owner,ep::Stage::Edited,base.sources(),base.size(),base.sourceCohort());
+        for(unsigned i=0;i<base.size();++i){auto row=base.at(i);if(row.source==1)for(unsigned axis=0;axis<3;++axis)row.transform[axis*3+axis]=scale;next.appendGenerated(row);}return next.freeze();};
+    EditLayer layer;bindStable(layer,signature(1,false),nativeEditInput(rows(1)));move(layer,0,3);move(layer,1,7);layer.rows.write(2).deleted=true;layer.selection.set(0,true);
+    auto clone=layer.rows.get(0);clone.outputId=EditKey(L"scaled-clone");clone.order=layer.allocateOrder();layer.append(clone);const auto before=layer;
+    bindStable(layer,signature(2,true),nativeEditInput(rows(2)));
+    check(layer.rows.size()==before.rows.size()&&activeEditOrder(layer).size()==4,"Source Scale revision retains base/clone/deleted history extent");
+    for(unsigned i=0;i<layer.rows.size();++i){const auto& a=before.rows.get(i);const auto& b=layer.rows.get(i);
+        check(a.inputId==b.inputId&&a.outputId==b.outputId&&a.lineage==b.lineage&&a.order==b.order&&a.deleted==b.deleted&&a.delta.rows==b.delta.rows,"Source Scale revision keeps exact authored identities/deltas and ordering");}
+    const auto a=find(layer,10,L"A"),b=find(layer,20,L"B");
+    check(layer.matrix(layer.rows.get(a)).GetRow(0).x==2&&layer.matrix(layer.rows.get(a)).GetTrans().x==13,"Resized moved source inherits the new base scale once while retaining world displacement");
+    check(layer.matrix(layer.rows.get(b)).GetRow(0).x==1&&layer.matrix(layer.rows.get(b)).GetTrans().x==27,"Other source scale and authored move remain unchanged");
+    check(layer.matrix(layer.rows.get(unsigned(layer.rows.size()-1))).GetRow(0).x==2,"Source clone inherits the revised base scale without identity remapping");
+    CSEdit saved;saved.layers.emplace(7,layer);ISave bytes;check(saved.Save(&bytes)==IO_OK,"Save resized authored source history");CSEdit loaded;ILoad input(bytes.chunks);check(loaded.Load(&input)==IO_OK,"Load resized authored source history");equalRows(layer,loaded.layers.at(7));
+    bindStable(loaded.layers.at(7),signature(.25,true),nativeEditInput(rows(.25f)));
+    check(loaded.layers.at(7).matrix(loaded.layers.at(7).rows.get(a)).GetRow(0).x==.25f&&loaded.layers.at(7).rows.get(a).delta.GetTrans().x==3,"Reloaded source accepts another Scale revision with its original authored delta");
 }
-int main(){try{const auto baseline=ce::memory().live;historyAndFeedback();orderSafety();legacyHydration();palette();check(ce::memory().live==baseline,"All tracked source, row and feedback allocations release");std::cout<<checks<<" native Edit state assertions passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+}
+int main(){try{const auto baseline=ce::memory().live;historyAndFeedback();orderSafety();legacyHydration();recipeReplay();palette();sourceScaleReplay();check(ce::memory().live==baseline,"All tracked source, row and feedback allocations release");std::cout<<checks<<" native Edit state assertions passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

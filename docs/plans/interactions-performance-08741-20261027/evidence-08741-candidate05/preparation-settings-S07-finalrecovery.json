@@ -1,0 +1,94 @@
+{
+  "case": "S07-finalrecovery",
+  "checks": [
+    "Solver stiffness updates without rebuilding preparation or static placements",
+    "Minimum stem automatically rebuilds the source definition",
+    "Branch connection automatically rebuilds the source definition",
+    "Changed preparation still produces a checked collider contact"
+  ],
+  "before": {
+    "hash": "650b9aaea87ba41bf22ff34e2daa91ecf173b9962a5949f39aac0bf32f095fb6",
+    "source": "681ae79bacf4acb51c4d0b15fa7843523495012ea5ea6fd72a0899725e37f026",
+    "revision": 11
+  },
+  "epoch": 56,
+  "stiffness": 0.20000000298023224,
+  "status": "pass",
+  "minimum": {
+    "hash": "7a42c9d6e388195968cff7bcf864ae148a06a1a80fa813a53e1ce01eb3ec450d",
+    "source": "681ae79bacf4acb51c4d0b15fa7843523495012ea5ea6fd72a0899725e37f026",
+    "revision": 12
+  },
+  "connection": {
+    "hash": "d5872bf53a6164e2cb081866877d603956e8888d674f8c0415b2138e93b8da44",
+    "source": "681ae79bacf4acb51c4d0b15fa7843523495012ea5ea6fd72a0899725e37f026",
+    "revision": 13
+  },
+  "contact": {
+    "affected": 1,
+    "compute_participants": 1,
+    "coverage_queries": 0,
+    "covered": 0,
+    "error": "",
+    "exact_mesh_scratch_bound_bytes": 2400000,
+    "failures": 0,
+    "fit_ms": 1.4509,
+    "fitted_guides": 5,
+    "generation": 2,
+    "hidden_roots": 0,
+    "hinge_fits": 5,
+    "host_runtime_reservation_bytes": 1049616,
+    "index_ms": 0.0,
+    "index_payload_bytes": 392,
+    "iterations": 0,
+    "layout_payload_bytes": 318,
+    "mesh_refinement_work": 4513,
+    "mesh_refinements": 0,
+    "obstacle_index_payload_bytes": 192,
+    "obstacle_query_scratch_bound_bytes": 40984,
+    "obstacles": 1,
+    "plants": 1,
+    "pose_payload_bytes": 9556,
+    "posed": 1,
+    "preview_ms": 3.4122,
+    "queries": 596,
+    "query_ms": 0.0062,
+    "restored": 0,
+    "retained_covered_roots": 0,
+    "reused_poses": 0,
+    "reuses": 0,
+    "separation_queries": 1,
+    "thread_launch_fallback": false,
+    "total_ms": 1.461,
+    "transient_obstacle_index_payload_bytes": 192,
+    "updates": 2,
+    "worker_coverage_ms": 0.14199999999999996,
+    "worker_edge_quality_ms": 0.058199999999999995,
+    "worker_mesh_check_ms": 0.4129000000000001,
+    "worker_mesh_face_ms": 0.1188,
+    "worker_mesh_point_ms": 0.0056,
+    "worker_mesh_transform_ms": 0.26039999999999996
+  },
+  "full_mesh_audit": {
+    "passed": true,
+    "quality_limit_maximum_stem_edge_change": 0.25,
+    "results": [
+      {
+        "audit_ms": 481.6539,
+        "delivered_float": false,
+        "identity": "c:4294967296",
+        "instance": 0,
+        "layer": 1,
+        "maximum_rigid_part_edge_change": 2.220446049250313e-15,
+        "maximum_stem_edge_change": 0.052321633702591575,
+        "minimum_surface_gap_m": 0.00124380953383463,
+        "penetrating_vertex_obstacle_pairs": 0,
+        "root_anchor_error_m": 0.0,
+        "touching_triangle_obstacle_pairs": 0,
+        "triangles": 27501
+      }
+    ],
+    "scope": "Independent complete visible triangles in double precision; renderer float delivery is a separate check",
+    "triangles": 27501
+  }
+}

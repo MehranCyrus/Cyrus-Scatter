@@ -1,3 +1,4 @@
+#include "recipe_authored.h"
 #include <max.h>
 #include "license_boundary.h"
 #include "receiver_plan.h"
@@ -96,7 +97,12 @@ public:
   if(!feedbackOwner)return;std::vector<cyrus::InteractionEditPatch> patches;
   for(const auto& [key,l]:layers)if(l.active&&!l.invalid&&cyrus::interactionLayer(feedbackOwner,key)){
    const bool obstacle=cyrus::interactionObstacleLayer(feedbackOwner,key);
-   for(unsigned i=0;i<l.rows.size();++i){const auto& row=l.rows.get(i);const auto wide=row.outputId.text();std::string id(wide.begin(),wide.end());if(!row.deleted&&!l.shown(row)&&!cyrus::interactionHasOverride(feedbackOwner,key,id))continue;
+   for(unsigned i=0;i<l.rows.size();++i){const auto& row=l.rows.get(i);
+    // Source history can retain the same candidate ID under another lineage.
+    // It has no current input matrix and must never address this collider's
+    // override merely because the candidate text matches. Keep it for Undo.
+    if(!l.input||l.source(row)>=l.input->size())continue;
+    const auto wide=row.outputId.text();std::string id(wide.begin(),wide.end());if(!row.deleted&&!l.shown(row)&&!cyrus::interactionHasOverride(feedbackOwner,key,id))continue;
     if(!row.deleted&&!obstacle&&!l.selection.get(i)&&!cyrus::interactionHasOverride(feedbackOwner,key,id))continue;
     patches.push_back({key,std::move(id),authoredFeedbackMatrix(l,i,key),row.deleted});}}
   if(!patches.empty())cyrus::interactionEdit(feedbackOwner,patches);
@@ -218,14 +224,22 @@ void CSEdit::BeginEditParams(IObjParam* p,ULONG,Animatable*){ip=p;feedbackRefres
 void CSEdit::EndEditParams(IObjParam* p,ULONG,Animatable*){pointerGesture=false;pointerAllowed=false;pointerFeedback.clear();feedbackRefreshPending=false;ClearAFlag(A_MOD_BEING_EDITED);NotifyDependents(FOREVER,PART_ALL,REFMSG_MOD_DISPLAY_OFF);if(level)p->UnRegisterDeleteUser(this);for(auto* mode:std::vector<CommandMode*>{move,rotate,scale,nscale,select}){p->DeleteMode(mode);delete mode;}move=nullptr;rotate=nullptr;scale=nullptr;nscale=nullptr;select=nullptr;if(panel)p->DeleteRollupPage(panel);panel=nullptr;ip=nullptr;level=0;}
 #include "cyrus_edit_storage.inc"
 namespace cyrus {
-std::vector<InteractionEditPatch> interactionAuthoredEdits(INode* node,const std::vector<int>& historyLayers,bool collect){
+std::vector<InteractionEditPatch> interactionAuthoredEdits(INode* node,const std::vector<int>& historyLayers,bool collect,const std::map<std::pair<int,std::string>,std::uint32_t>& admitted){
  std::vector<InteractionEditPatch> result;CSEdit* owner=nullptr;auto* object=node?node->GetObjectRef():nullptr;unsigned depth=0;
  while(object&&object->SuperClassID()==GEN_DERIVOB_CLASS_ID){if(++depth>256)throw std::runtime_error("Interaction Edit stack exceeds 256 levels");auto* derived=static_cast<IDerivedObject*>(object);
   for(int i=0;i<derived->NumModifiers();++i){auto* modifier=derived->GetModifier(i);if(modifier&&modifier->ClassID()==CS_EDIT_ID){if(owner)throw std::runtime_error("Interactions currently require one Cyrus Edit modifier per controller");owner=static_cast<CSEdit*>(modifier);}}object=derived->GetObjRef();}
  if(owner&&owner->feedbackOwner&&owner->feedbackOwner!=Animatable::GetHandleByAnim(node))throw std::runtime_error("Interactions require a separate Cyrus Edit modifier for each controller");
  if(!owner||!collect)return result;
  for(const auto& [key,layer]:owner->layers){if(layer.invalid)continue;const bool history=std::find(historyLayers.begin(),historyLayers.end(),key)!=historyLayers.end();
-  for(unsigned i=0;i<layer.rows.size();++i){const auto& row=layer.rows.get(i);if(!authoredEdit(row)&&!history)continue;const auto wide=row.outputId.text();std::string id(wide.begin(),wide.end());
+  for(unsigned i=0;i<layer.rows.size();++i){const auto& row=layer.rows.get(i);if(!authoredEdit(row)&&!history)continue;
+   // Restaging bend controls must use the same live-source boundary as a
+   // drag. Inactive source histories can share the admitted candidate text,
+   // but have no input matrix to replay. Retain their authored rows for Undo.
+   if(!layer.input||layer.source(row)>=layer.input->size())continue;
+   const auto wide=row.outputId.text();std::string id(wide.begin(),wide.end());
+   // A disabled/removed layer may retain authored history while its display
+   // input has retired. Filter identity BEFORE dereferencing feedback geometry.
+   if(!admitted.contains({key,id}))continue;
    if(!authoredEdit(row)&&!interactionHasOverride(Animatable::GetHandleByAnim(node),key,id))continue;
    if(result.size()>=4096)throw std::runtime_error("More than 4096 uncommitted instance edits; Update scatter before restaging interactions");result.push_back({key,std::move(id),owner->authoredFeedbackMatrix(layer,i,key),row.deleted});}}
  return result;
@@ -236,6 +250,8 @@ extern "C" __declspec(dllexport) ClassDesc* CyrusEditDesc(){static EditDesc desc
 static CSEdit* edit(Value* v){auto* p=v->to_reftarg();if(!p||p->ClassID()!=CS_EDIT_ID)throw RuntimeError(_T("Expected Cyrus Scatter Edit"));return static_cast<CSEdit*>(p);}
 def_visible_primitive(cyrusEditRevision,"cyrusEditRevision");Value* cyrusEditRevision_cf(Value**,int){return Integer::intern(editRevision);}
 def_visible_primitive(cyrusEditFingerprint,"cyrusEditFingerprint");Value* cyrusEditFingerprint_cf(Value** a,int count){check_arg_count(cyrusEditFingerprint,2,count);type_check(a[0],Array,_T("rows"));auto* rows=static_cast<Array*>(a[0]);std::uint64_t h=1469598103934665603ULL;auto add=[&](const void* p,std::size_t n){auto* b=static_cast<const unsigned char*>(p);for(std::size_t i=0;i<n;++i){h^=b[i];h*=1099511628211ULL;}};for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("instance row"));auto* r=static_cast<Array*>(rows->data[i]);cyrus::rows::current(r);Point3 p=r->data[0]->to_matrix3().GetTrans();add(&p,sizeof(p));int src=r->data[1]->to_int();add(&src,sizeof(src));}std::wstring text=a[1]->to_string();add(text.data(),text.size()*sizeof(wchar_t));return new String(std::to_wstring(h).c_str());}
+#include "cyrus_edit_binding.inc"
+#include "cyrus_edit_recipe.inc"
 #include "cyrus_edit_stack.inc"
 #include "cyrus_edit_feedback.inc"
 

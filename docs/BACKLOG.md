@@ -1,5 +1,9 @@
 # Current work and acceptance
 
+**28 October — [0.87.5.6 responsive bending](plans/drag-response-08756-20261028/DELIVERY_08756.md):** The user explicitly endorsed Bend/Trim, movement and preview. Preserve the [performance baseline](PERFORMANCE_BASELINE.md). Scripted held-input scene/Edit movement, orbit and trunk controls pass within its exact Max 2027 scope. Detailed-contact strain failures below remain historical Detailed-mode findings; they are not prerequisites for artistic bending. Wider model/contact coverage, physical timing, renderer/soak and B40 remain separate.
+
+**28 October — [0.87.5.5 application callback correction](plans/scene-adaptation-08754-20261028/CALLBACK_HOTFIX_08755.md):** The user-reported 0.87.5.4 `count in undefined` path is reproduced on a new controller and corrected with explicit late-member access. Direct empty/disabled/Manual/Live/time and loaded 1,000-plant callback checks pass in the matched Max 2027 package. Broader 0.87.5.4 Bend / Prune is approximate; protected trunks, welded topology, full renderer/soak and B40 remain separate. Earlier solver strain measurements below retain their original Detailed-contact scope.
+
 **27 October — [0.87.4 Source Preparation Editor](plans/source-preparation-editor-20261026/DELIVERY_0874.md):** Whole-piece authored correction and persistent source-slot intent are implemented. Remaining acceptance includes partial welded regions, wider plant families, DPI/driver coverage, large gardens and process-memory soak. One deeper grass overlap clears collision but produces 28.54% maximum stem-edge strain against the existing 25% quality limit; retain this failure for solver follow-up. B40 exposed-root collider work remains separate.
 
 **26 October — [tested preparation correction, 0.87.3.1](plans/scatter-interactions-garden-20261025/PREPARATION_FIX_08731.md):** ParamBlock2/findItem failure is reproduced and fixed. Scoped Max 2027 first/repeated/multi-source preparation, automatic settings, rejected changes, contact and persistence checks pass. B40 and broader renderer/topology/scale acceptance remain separate.
@@ -219,6 +223,21 @@ Raw source identities, owned host receipt and numeric findings are in
 This records the investigation; no fitted root generator or proxy delivery is
 implemented or qualified. The user put B40 on hold while the independent Library
 startup defect B39 was corrected in 0.87.3.
+
+## B41 — Further interaction performance without losing the baseline
+
+Observed in the exact 0.87.5.6 qualification: the Bend-only fixed-base-100% case
+produces zero posed plants/bent guides but still performs 1,786 contact queries
+in 23.863 ms. This is an unimplemented optimization opportunity. Skip only work
+that cannot affect the requested response; Trim and root-hiding semantics may
+still require queries. Preserve parent inheritance, move-away restoration and
+complete publication.
+
+Other candidates are finer branch rejection, cheaper appropriate collider queries,
+transient allocation reduction and separately measured buffer/draw costs. Compare
+against the [endorsed baseline](PERFORMANCE_BASELINE.md), using the same settings,
+scene/path and visible quality. A theoretical shortcut, more threads or a GPU
+rewrite is not acceptance. No new optimization is implemented by this record.
 
 ## Adaptive viewport follow-up
 

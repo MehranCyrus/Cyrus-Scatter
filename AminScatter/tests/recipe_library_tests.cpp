@@ -1,4 +1,5 @@
 #include "recipe_library.h"
+#include "scene_preset.h"
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -21,6 +22,14 @@ int main(){std::filesystem::path folder;try{
     Json layer={{"id","canopy"},{"name","Canopy"},{"enabled",true},{"visible",true},{"settings",defaults},{"paint",nullptr},{"areas",Json::array()}};
     Json d={{"format","cyrus.planting-recipe"},{"formatVersion",1},{"evaluationContract","CyrusUnified1"},{"sceneSchema",58},{"hostYear",2027},{"id","library-fixture"},{"name","Canopy AA"},{"unitsPerMetre",100.},{"exportScope","complete-setup"},{"rootSettings",defaults},{"roles",Json::array()},{"layers",Json::array({layer})},{"spacingRelationships",Json::array()}};
     folder=std::filesystem::temp_directory_path()/("cyrus-library-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));std::filesystem::create_directory(folder);
+    const auto scenePath=folder/"scene-envelope.json";
+    Json scene={{"format","cyrus.scene-preset"},{"version",1},{"id","scene-fixture"},{"revision",1},{"name","Native scene"},{"maxYear",2027},{"scatterVersion","0.87.5.1"},{"metersPerUnit",.01},{"nodeCount",4},{"layers",Json::array({"Grass","Collider"})},{"scene",{{"file","scene.max"},{"sha256",std::string(64,'a')},{"bytes",123}}},{"assets",Json::array()},{"presentation",nullptr}};
+    cyrus::scenepresets::validate(scene);put(scenePath,scene.dump());auto sceneInfo=summary(scenePath);check(sceneInfo.size()==17&&sceneInfo[0]=="Native scene"&&sceneInfo[1]==2&&sceneInfo[16]=="Scene preset");
+    check(readLibraryMetadata(scenePath)==scene);rejected([&]{read(scenePath,false);});
+    auto invalidScene=scene;invalidScene["scene"]["file"]="../scene.max";rejected([&]{cyrus::scenepresets::validate(invalidScene);});
+    invalidScene=scene;invalidScene["maxYear"]=2026;rejected([&]{cyrus::scenepresets::validate(invalidScene);});
+    invalidScene=scene;invalidScene["assets"]=Json::array({{{"id","file1"},{"type","bitmap"},{"payload",{{"file","assets/a.exr"},{"sha256",std::string(64,'b')},{"bytes",0}}}}});rejected([&]{cyrus::scenepresets::validate(invalidScene);});
+    invalidScene=scene;invalidScene["metersPerUnit"]=0;rejected([&]{cyrus::scenepresets::validate(invalidScene);});
     const auto path=folder/"canopy.CSRECIPE.JSON";writeNew(path,d);
     const auto original=load(path);auto info=summary(path);check(info[0]=="Canopy AA"&&info[1]==1&&info[2]==0&&info[4]==""&&!info[11].get<bool>());
     const auto bytes=unhex("89504e470d0a1a0a0000000d4948445200000001000000010804000000b51c0c020000000b4944415478da6364f80f00010501012718e3660000000049454e44ae426082");

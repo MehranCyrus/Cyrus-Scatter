@@ -1,0 +1,202 @@
+{
+  "utc": "2026-10-27T10:23:43.859554+00:00",
+  "reviewer": "LocalCodex",
+  "safe_execution": "Scripts inspected before execution; all output redirected to this owned build folder; no Max/GPU code executed",
+  "external_reruns": [
+    {
+      "folder_label": "A",
+      "script": "analysis/estimate_memory.py",
+      "exit_code": 0,
+      "matches_recorded_json_semantically": true,
+      "output": "A_estimate_memory_rerun.json",
+      "scope": "Analytic/arithmetic checks only; not solver or GPU performance",
+      "output_relative_to_review": "checks/A_estimate_memory_rerun.json",
+      "output_sha256": "73694f5636a3f967a697bb30de7d11fb68a372b23389d672361b14d4fd1a48d6"
+    },
+    {
+      "folder_label": "B",
+      "script": "analysis/calculate_budgets.py",
+      "exit_code": 0,
+      "matches_recorded_json_semantically": true,
+      "output": "B_calculate_budgets_rerun.json",
+      "scope": "Analytic/arithmetic checks only; not solver or GPU performance",
+      "output_relative_to_review": "checks/B_calculate_budgets_rerun.json",
+      "output_sha256": "d5773be5c75300037497be2d17192b2051e34f06cbe93f3ecff3954d338f99bf"
+    },
+    {
+      "folder_label": "B",
+      "script": "analysis/check_adversarial_geometry.py",
+      "exit_code": 0,
+      "matches_recorded_json_semantically": true,
+      "output": "B_check_adversarial_geometry_rerun.json",
+      "scope": "Analytic/arithmetic checks only; not solver or GPU performance",
+      "output_relative_to_review": "checks/B_check_adversarial_geometry_rerun.json",
+      "output_sha256": "2426aadf4a960029d2a594066330057f3ec3d0921d233ea3f31959c13d9804e8"
+    },
+    {
+      "folder_label": "B",
+      "script": "analysis/check_decision_scores.py",
+      "exit_code": 0,
+      "matches_recorded_json_semantically": true,
+      "output": "B_check_decision_scores_rerun.json",
+      "scope": "Analytic/arithmetic checks only; not solver or GPU performance",
+      "output_relative_to_review": "checks/B_check_decision_scores_rerun.json",
+      "output_sha256": "30e37dca3b0a55cb602b3ee96c6807202a26adbbdf95aef408dc0b358d6a4cc7"
+    },
+    {
+      "folder_label": "C",
+      "script": "optional/research_checks.py",
+      "exit_code": 0,
+      "checks_passed": 10,
+      "non_environment_content_matches": true,
+      "environment_fields_changed": [
+        "python",
+        "system"
+      ],
+      "output": "C_research_checks_rerun.json",
+      "scope": "Ten analytic/arithmetic controls; not complete fitter, Max or GPU tests",
+      "output_relative_to_review": "checks/C_research_checks_rerun.json",
+      "output_sha256": "40fc54a0e875a997d81e5c570a9858ecf9b6de89798a83253df51b904d548db1"
+    }
+  ],
+  "D_score_recalculation": {
+    "folder_label": "D",
+    "source": "01_EXECUTIVE_DECISION.md",
+    "columns": [
+      "CPU only",
+      "CPU fit + shader deform",
+      "CUDA fit + deform",
+      "OpenCL fit + deform",
+      "Persistent GPU scene"
+    ],
+    "stated_scores": [
+      4.42,
+      4.25,
+      3.08,
+      3.2,
+      2.35
+    ],
+    "independently_calculated_scores": [
+      4.45,
+      4.2,
+      3.02,
+      3.08,
+      2.42
+    ],
+    "all_stated_scores_match": false,
+    "weights_sum": 100,
+    "effect": "Changes numbers and relative gap; does not reverse CPU/shader leading the optional full GPU routes",
+    "rows": [
+      {
+        "criterion": "Preserves current contact semantics",
+        "weight": 20,
+        "scores": [
+          5,
+          5,
+          3,
+          3,
+          2
+        ]
+      },
+      {
+        "criterion": "Max 2027 integration risk",
+        "weight": 18,
+        "scores": [
+          5,
+          4,
+          2,
+          2,
+          1
+        ]
+      },
+      {
+        "criterion": "Sparse `K` efficiency",
+        "weight": 12,
+        "scores": [
+          5,
+          4,
+          2,
+          2,
+          2
+        ]
+      },
+      {
+        "criterion": "Large `K` upside",
+        "weight": 12,
+        "scores": [
+          2,
+          4,
+          5,
+          5,
+          5
+        ]
+      },
+      {
+        "criterion": "Renderer/Bake consistency",
+        "weight": 10,
+        "scores": [
+          5,
+          4,
+          3,
+          3,
+          2
+        ]
+      },
+      {
+        "criterion": "Failure recovery / last-good",
+        "weight": 8,
+        "scores": [
+          5,
+          4,
+          3,
+          3,
+          2
+        ]
+      },
+      {
+        "criterion": "Tooling/debuggability",
+        "weight": 7,
+        "scores": [
+          4,
+          4,
+          5,
+          3,
+          3
+        ]
+      },
+      {
+        "criterion": "Cross-vendor reach",
+        "weight": 5,
+        "scores": [
+          5,
+          4,
+          1,
+          5,
+          3
+        ]
+      },
+      {
+        "criterion": "Distribution simplicity",
+        "weight": 4,
+        "scores": [
+          5,
+          5,
+          2,
+          3,
+          2
+        ]
+      },
+      {
+        "criterion": "Future dynamic simulation",
+        "weight": 4,
+        "scores": [
+          2,
+          3,
+          5,
+          4,
+          5
+        ]
+      }
+    ]
+  }
+}

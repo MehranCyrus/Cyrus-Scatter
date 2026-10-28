@@ -1,0 +1,72 @@
+{
+  "status": "pass",
+  "scope": "Final installed package: actual Pan then Orbit toolbar choices and mouse drags; stable pivot and no source reanalysis/geometry upload.",
+  "states": {
+    "before": {
+      "analyses": 1,
+      "geometry_uploads": 2,
+      "view": {
+        "height": 735,
+        "orbit": false,
+        "pan": [
+          0.0,
+          0.0
+        ],
+        "pan_active": false,
+        "pitch": -0.2,
+        "pivot": [
+          0.07780289649963379,
+          0.024925172328948975,
+          0.8088019448067927
+        ],
+        "span": 2.282857021104031,
+        "width": 784,
+        "yaw": 0.35
+      }
+    },
+    "pan": {
+      "analyses": 1,
+      "geometry_uploads": 2,
+      "view": {
+        "height": 735,
+        "orbit": false,
+        "pan": [
+          -0.2608979452690321,
+          0.0931778375960829
+        ],
+        "pan_active": false,
+        "pitch": -0.2,
+        "pivot": [
+          0.07780289649963379,
+          0.024925172328948975,
+          0.8088019448067927
+        ],
+        "span": 2.282857021104031,
+        "width": 784,
+        "yaw": 0.35
+      }
+    },
+    "orbit": {
+      "analyses": 1,
+      "geometry_uploads": 2,
+      "view": {
+        "height": 735,
+        "orbit": false,
+        "pan": [
+          -0.2608979452690321,
+          0.0931778375960829
+        ],
+        "pan_active": false,
+        "pitch": -0.07177172842490642,
+        "pivot": [
+          0.07780289649963379,
+          0.024925172328948975,
+          0.8088019448067927
+        ],
+        "span": 2.282857021104031,
+        "width": 784,
+        "yaw": 0.8201703291086765
+      }
+    }
+  }
+}

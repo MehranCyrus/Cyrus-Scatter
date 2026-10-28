@@ -1,0 +1,56 @@
+{
+  "case": "paint_edges",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "enable Paint Areas",
+      "status": "pass",
+      "value": "None"
+    },
+    {
+      "name": "create Paint Area",
+      "status": "pass",
+      "value": "1000"
+    },
+    {
+      "name": "area rebound",
+      "status": "pass",
+      "value": "True"
+    },
+    {
+      "name": "one committed circular stroke",
+      "status": "pass",
+      "value": "112"
+    },
+    {
+      "name": "inward fade changes density",
+      "status": "pass",
+      "value": "#(112, 65)"
+    },
+    {
+      "name": "outward fade extends coverage",
+      "status": "pass",
+      "value": "#(112, 187)"
+    },
+    {
+      "name": "size fade parameters persist",
+      "status": "pass",
+      "value": "#(0.0, 10.0, true, true, 0.25, 1.0, #(0.0, 1.0), #(0.0, 1.0))"
+    },
+    {
+      "name": "Manual dirty state remains pending",
+      "status": "pass",
+      "value": "Brush stopped\nClick Update scatter to see changes."
+    },
+    {
+      "name": "clear and fill actual buttons",
+      "status": "pass",
+      "value": "956"
+    },
+    {
+      "name": "area enable and density",
+      "status": "pass",
+      "value": "True"
+    }
+  ]
+}

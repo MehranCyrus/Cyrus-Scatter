@@ -24,7 +24,7 @@ using EditKeySet=std::unordered_set<EditKey,EditKeyHash,std::equal_to<EditKey>,c
 using EditIncoming=std::unordered_map<EditKey,unsigned,EditKeyHash,std::equal_to<EditKey>,ce::Allocator<std::pair<const EditKey,unsigned>>>;
 // savedSource remains a legacy candidate-row index, never a model identity.
 // Variants of one base ID share order, but have independent saved source lineage.
-struct EditRow {EditKey inputId,outputId;unsigned savedSource=0,lineage=0;std::uint64_t order=0;Matrix3 delta{1};bool deleted=false;};
+struct EditRow {EditKey inputId,outputId;unsigned savedSource=0,lineage=0;std::uint64_t order=0;Matrix3 delta{1};bool deleted=false,recipeLocal=false;};
 static bool authoredEdit(const EditRow& r){return r.deleted||r.inputId!=r.outputId||hasEditTransform(r.delta);}
 struct EditVariant {EditKey id;unsigned lineage=0;bool operator==(const EditVariant& b)const noexcept{return id==b.id&&lineage==b.lineage;}};
 struct EditVariantHash{std::size_t operator()(const EditVariant& v)const noexcept{return EditKeyHash{}(v.id)^(std::size_t(v.lineage)*0x9e3779b9u);}};
@@ -89,7 +89,7 @@ struct EditLayer {
     std::wstring signature;
     std::wstring legacyProof;
     bool invalid=false,active=true,published=false,viewportVisible=true;
-    bool sourceAware=false;
+    bool sourceAware=false,recipeUnbound=false;
     std::uint64_t nextOrder=0;
     std::uint64_t allocateOrder(){if(nextOrder>=std::uint64_t(INT64_MAX))throw std::length_error("Edit instance ordering limit exceeded");return nextOrder++;}
     void observeOrder(std::uint64_t order){if(order>=std::uint64_t(INT64_MAX))throw std::invalid_argument("Invalid saved Edit order");nextOrder=std::max(nextOrder,order+1);}

@@ -1,0 +1,7 @@
+{
+  "begin_qpc_ms": 1106197280.2316895,
+  "end_qpc_ms": 1106198993.2316895,
+  "scope": "Nine actual wheel events bracketed by Node wall-clock timestamps calibrated against Max QPC; 50 ms lead and 250 ms tail.",
+  "event_count": 9,
+  "qpc_wall_offset_ms": -1791957873203.7683
+}

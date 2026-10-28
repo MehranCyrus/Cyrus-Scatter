@@ -1,0 +1,930 @@
+{
+  "case": "S06-regression",
+  "model_key": "S06",
+  "model_name": "Outdoor_Plants_01_Lemon_Balm_rly3_001",
+  "source_fingerprint": "13c1f821b660ed85b0de813182387c553dce2cedbc9042ca210cdefe44bfa737",
+  "status": "complete",
+  "scope": "Instrumented copy of loaded sync; elapsed CPU/host waits, not presented FPS.",
+  "samples": [
+    {
+      "index": 0,
+      "sync_returned": true,
+      "wall_ms": 220.53040005266666,
+      "stages": [
+        {
+          "label": "owners",
+          "ms": 0.0299
+        },
+        {
+          "label": "layer_entries",
+          "ms": 9.7509
+        },
+        {
+          "label": "preview_cache",
+          "ms": 1.1908000000000012
+        },
+        {
+          "label": "refresh_preview",
+          "ms": 205.2619
+        },
+        {
+          "label": "ensure_interactions",
+          "ms": 1.7386000000000195
+        },
+        {
+          "label": "collect_display",
+          "ms": 0.42319999999998004
+        },
+        {
+          "label": "retained_publish_and_status",
+          "ms": 1.6036000000000001
+        },
+        {
+          "label": "commit_records",
+          "ms": 0.013700000000000045
+        },
+        {
+          "label": "finish",
+          "ms": 0.006100000000003547
+        }
+      ],
+      "error": "",
+      "retained": [
+        "0",
+        "2",
+        "507",
+        "712",
+        "1421",
+        "3025",
+        "9385390456",
+        "34800",
+        "0",
+        "4",
+        "3496",
+        "0",
+        "1901858627585410467;7429285888432827232;"
+      ],
+      "retained_mesh": [
+        "7678",
+        "2",
+        "7678",
+        "8736314",
+        "72856883",
+        "8589934592",
+        "8589934592"
+      ],
+      "presentation": [
+        "1",
+        "507",
+        "505",
+        "1",
+        "True",
+        "0",
+        "2",
+        "False",
+        "False",
+        "True",
+        "1",
+        "13794687350484243958;9869626117820028577;",
+        "1901858627585410467;7429285888432827232;",
+        ""
+      ],
+      "publication_state": {
+        "epoch": 306,
+        "group_builds": 306,
+        "group_hits": 0,
+        "edit_key": "ProceduralEdit1|41069P:true:170L",
+        "layers": [
+          {
+            "dirty": false,
+            "preview_builds": 377,
+            "prepared_builds": 294,
+            "prepared_hits": 12
+          },
+          {
+            "dirty": false,
+            "preview_builds": 307,
+            "prepared_builds": 306,
+            "prepared_hits": 0
+          }
+        ]
+      }
+    },
+    {
+      "index": 1,
+      "sync_returned": true,
+      "wall_ms": 9.003299986943603,
+      "stages": [
+        {
+          "label": "owners",
+          "ms": 0.0235
+        },
+        {
+          "label": "layer_entries",
+          "ms": 4.7757
+        },
+        {
+          "label": "preview_cache",
+          "ms": 0.5094000000000003
+        },
+        {
+          "label": "refresh_preview",
+          "ms": 0.018600000000000172
+        },
+        {
+          "label": "ensure_interactions",
+          "ms": 2.3556999999999997
+        },
+        {
+          "label": "collect_display",
+          "ms": 0.5117999999999991
+        },
+        {
+          "label": "retained_publish_and_status",
+          "ms": 0.16310000000000002
+        },
+        {
+          "label": "commit_records",
+          "ms": 0.01150000000000162
+        },
+        {
+          "label": "finish",
+          "ms": 0.005399999999999849
+        }
+      ],
+      "error": "",
+      "retained": [
+        "0",
+        "2",
+        "507",
+        "712",
+        "1421",
+        "3025",
+        "9385390456",
+        "34800",
+        "0",
+        "4",
+        "3496",
+        "0",
+        "1901858627585410467;7429285888432827232;"
+      ],
+      "retained_mesh": [
+        "7678",
+        "2",
+        "7678",
+        "8736314",
+        "72856883",
+        "8589934592",
+        "8589934592"
+      ],
+      "presentation": [
+        "1",
+        "507",
+        "505",
+        "1",
+        "True",
+        "0",
+        "2",
+        "False",
+        "False",
+        "True",
+        "1",
+        "13794687350484243958;9869626117820028577;",
+        "1901858627585410467;7429285888432827232;",
+        ""
+      ],
+      "publication_state": {
+        "epoch": 306,
+        "group_builds": 306,
+        "group_hits": 0,
+        "edit_key": "ProceduralEdit1|41069P:true:170L",
+        "layers": [
+          {
+            "dirty": false,
+            "preview_builds": 377,
+            "prepared_builds": 294,
+            "prepared_hits": 12
+          },
+          {
+            "dirty": false,
+            "preview_builds": 307,
+            "prepared_builds": 306,
+            "prepared_hits": 0
+          }
+        ]
+      }
+    },
+    {
+      "index": 2,
+      "sync_returned": true,
+      "wall_ms": 10.40229992941022,
+      "stages": [
+        {
+          "label": "owners",
+          "ms": 0.0197
+        },
+        {
+          "label": "layer_entries",
+          "ms": 5.7128
+        },
+        {
+          "label": "preview_cache",
+          "ms": 0.4455
+        },
+        {
+          "label": "refresh_preview",
+          "ms": 0.007699999999999818
+        },
+        {
+          "label": "ensure_interactions",
+          "ms": 1.6218000000000004
+        },
+        {
+          "label": "collect_display",
+          "ms": 0.4518999999999993
+        },
+        {
+          "label": "retained_publish_and_status",
+          "ms": 0.15910000000000046
+        },
+        {
+          "label": "commit_records",
+          "ms": 0.010400000000000631
+        },
+        {
+          "label": "finish",
+          "ms": 0.00569999999999915
+        }
+      ],
+      "error": "",
+      "retained": [
+        "0",
+        "2",
+        "507",
+        "712",
+        "1421",
+        "3025",
+        "9385390456",
+        "34800",
+        "0",
+        "4",
+        "3496",
+        "0",
+        "1901858627585410467;7429285888432827232;"
+      ],
+      "retained_mesh": [
+        "7678",
+        "2",
+        "7678",
+        "8736314",
+        "72856883",
+        "8589934592",
+        "8589934592"
+      ],
+      "presentation": [
+        "1",
+        "507",
+        "505",
+        "1",
+        "True",
+        "0",
+        "2",
+        "False",
+        "False",
+        "True",
+        "1",
+        "13794687350484243958;9869626117820028577;",
+        "1901858627585410467;7429285888432827232;",
+        ""
+      ],
+      "publication_state": {
+        "epoch": 306,
+        "group_builds": 306,
+        "group_hits": 0,
+        "edit_key": "ProceduralEdit1|41069P:true:170L",
+        "layers": [
+          {
+            "dirty": false,
+            "preview_builds": 377,
+            "prepared_builds": 294,
+            "prepared_hits": 12
+          },
+          {
+            "dirty": false,
+            "preview_builds": 307,
+            "prepared_builds": 306,
+            "prepared_hits": 0
+          }
+        ]
+      }
+    },
+    {
+      "index": 3,
+      "sync_returned": true,
+      "wall_ms": 8.626400027424097,
+      "stages": [
+        {
+          "label": "owners",
+          "ms": 0.0218
+        },
+        {
+          "label": "layer_entries",
+          "ms": 5.6885
+        },
+        {
+          "label": "preview_cache",
+          "ms": 0.43630000000000013
+        },
+        {
+          "label": "refresh_preview",
+          "ms": 0.006800000000000139
+        },
+        {
+          "label": "ensure_interactions",
+          "ms": 1.5606
+        },
+        {
+          "label": "collect_display",
+          "ms": 0.4153000000000002
+        },
+        {
+          "label": "retained_publish_and_status",
+          "ms": 0.1448999999999998
+        },
+        {
+          "label": "commit_records",
+          "ms": 0.010999999999999233
+        },
+        {
+          "label": "finish",
+          "ms": 0.005399999999999849
+        }
+      ],
+      "error": "",
+      "retained": [
+        "0",
+        "2",
+        "507",
+        "712",
+        "1421",
+        "3025",
+        "9385390456",
+        "34800",
+        "0",
+        "4",
+        "3496",
+        "0",
+        "1901858627585410467;7429285888432827232;"
+      ],
+      "retained_mesh": [
+        "7678",
+        "2",
+        "7678",
+        "8736314",
+        "72856883",
+        "8589934592",
+        "8589934592"
+      ],
+      "presentation": [
+        "1",
+        "507",
+        "505",
+        "1",
+        "True",
+        "0",
+        "2",
+        "False",
+        "False",
+        "True",
+        "1",
+        "13794687350484243958;9869626117820028577;",
+        "1901858627585410467;7429285888432827232;",
+        ""
+      ],
+      "publication_state": {
+        "epoch": 306,
+        "group_builds": 306,
+        "group_hits": 0,
+        "edit_key": "ProceduralEdit1|41069P:true:170L",
+        "layers": [
+          {
+            "dirty": false,
+            "preview_builds": 377,
+            "prepared_builds": 294,
+            "prepared_hits": 12
+          },
+          {
+            "dirty": false,
+            "preview_builds": 307,
+            "prepared_builds": 306,
+            "prepared_hits": 0
+          }
+        ]
+      }
+    },
+    {
+      "index": 4,
+      "sync_returned": true,
+      "wall_ms": 8.290499914437532,
+      "stages": [
+        {
+          "label": "owners",
+          "ms": 0.0201
+        },
+        {
+          "label": "layer_entries",
+          "ms": 5.3107
+        },
+        {
+          "label": "preview_cache",
+          "ms": 0.44869999999999965
+        },
+        {
+          "label": "refresh_preview",
+          "ms": 0.006700000000000372
+        },
+        {
+          "label": "ensure_interactions",
+          "ms": 1.6429999999999998
+        },
+        {
+          "label": "collect_display",
+          "ms": 0.4256000000000002
+        },
+        {
+          "label": "retained_publish_and_status",
+          "ms": 0.1474000000000002
+        },
+        {
+          "label": "commit_records",
+          "ms": 0.009700000000000486
+        },
+        {
+          "label": "finish",
+          "ms": 0.005099999999998772
+        }
+      ],
+      "error": "",
+      "retained": [
+        "0",
+        "2",
+        "507",
+        "712",
+        "1421",
+        "3025",
+        "9385390456",
+        "34800",
+        "0",
+        "4",
+        "3496",
+        "0",
+        "1901858627585410467;7429285888432827232;"
+      ],
+      "retained_mesh": [
+        "7678",
+        "2",
+        "7678",
+        "8736314",
+        "72856883",
+        "8589934592",
+        "8589934592"
+      ],
+      "presentation": [
+        "1",
+        "507",
+        "505",
+        "1",
+        "True",
+        "0",
+        "2",
+        "False",
+        "False",
+        "True",
+        "1",
+        "13794687350484243958;9869626117820028577;",
+        "1901858627585410467;7429285888432827232;",
+        ""
+      ],
+      "publication_state": {
+        "epoch": 306,
+        "group_builds": 306,
+        "group_hits": 0,
+        "edit_key": "ProceduralEdit1|41069P:true:170L",
+        "layers": [
+          {
+            "dirty": false,
+            "preview_builds": 377,
+            "prepared_builds": 294,
+            "prepared_hits": 12
+          },
+          {
+            "dirty": false,
+            "preview_builds": 307,
+            "prepared_builds": 306,
+            "prepared_hits": 0
+          }
+        ]
+      }
+    },
+    {
+      "index": 5,
+      "sync_returned": true,
+      "wall_ms": 7.560099940747023,
+      "stages": [
+        {
+          "label": "owners",
+          "ms": 0.0154
+        },
+        {
+          "label": "layer_entries",
+          "ms": 4.559500000000001
+        },
+        {
+          "label": "preview_cache",
+          "ms": 0.4366999999999992
+        },
+        {
+          "label": "refresh_preview",
+          "ms": 0.006600000000000605
+        },
+        {
+          "label": "ensure_interactions",
+          "ms": 1.6408999999999994
+        },
+        {
+          "label": "collect_display",
+          "ms": 0.4275000000000002
+        },
+        {
+          "label": "retained_publish_and_status",
+          "ms": 0.18420000000000059
+        },
+        {
+          "label": "commit_records",
+          "ms": 0.015099999999999447
+        },
+        {
+          "label": "finish",
+          "ms": 0.005799999999999805
+        }
+      ],
+      "error": "",
+      "retained": [
+        "0",
+        "2",
+        "507",
+        "712",
+        "1421",
+        "3025",
+        "9385390456",
+        "34800",
+        "0",
+        "4",
+        "3496",
+        "0",
+        "1901858627585410467;7429285888432827232;"
+      ],
+      "retained_mesh": [
+        "7678",
+        "2",
+        "7678",
+        "8736314",
+        "72856883",
+        "8589934592",
+        "8589934592"
+      ],
+      "presentation": [
+        "1",
+        "507",
+        "505",
+        "1",
+        "True",
+        "0",
+        "2",
+        "False",
+        "False",
+        "True",
+        "1",
+        "13794687350484243958;9869626117820028577;",
+        "1901858627585410467;7429285888432827232;",
+        ""
+      ],
+      "publication_state": {
+        "epoch": 306,
+        "group_builds": 306,
+        "group_hits": 0,
+        "edit_key": "ProceduralEdit1|41069P:true:170L",
+        "layers": [
+          {
+            "dirty": false,
+            "preview_builds": 377,
+            "prepared_builds": 294,
+            "prepared_hits": 12
+          },
+          {
+            "dirty": false,
+            "preview_builds": 307,
+            "prepared_builds": 306,
+            "prepared_hits": 0
+          }
+        ]
+      }
+    }
+  ],
+  "before_move": {
+    "epoch": 305,
+    "group_builds": 305,
+    "group_hits": 0,
+    "edit_key": "ProceduralEdit1|41069P:true:169L",
+    "layers": [
+      {
+        "dirty": false,
+        "preview_builds": 376,
+        "prepared_builds": 293,
+        "prepared_hits": 12
+      },
+      {
+        "dirty": false,
+        "preview_builds": 306,
+        "prepared_builds": 305,
+        "prepared_hits": 0
+      }
+    ]
+  },
+  "after_move": {
+    "epoch": 305,
+    "group_builds": 305,
+    "group_hits": 0,
+    "edit_key": "ProceduralEdit1|41069P:true:170L",
+    "layers": [
+      {
+        "dirty": false,
+        "preview_builds": 376,
+        "prepared_builds": 293,
+        "prepared_hits": 12
+      },
+      {
+        "dirty": false,
+        "preview_builds": 306,
+        "prepared_builds": 305,
+        "prepared_hits": 0
+      }
+    ]
+  },
+  "after_ensure": {
+    "epoch": 305,
+    "group_builds": 305,
+    "group_hits": 0,
+    "edit_key": "ProceduralEdit1|41069P:true:170L",
+    "layers": [
+      {
+        "dirty": false,
+        "preview_builds": 376,
+        "prepared_builds": 293,
+        "prepared_hits": 12
+      },
+      {
+        "dirty": false,
+        "preview_builds": 306,
+        "prepared_builds": 305,
+        "prepared_hits": 0
+      }
+    ]
+  },
+  "contact_statistics": {
+    "affected": 1,
+    "compute_participants": 1,
+    "coverage_queries": 0,
+    "covered": 0,
+    "error": "",
+    "failures": 0,
+    "fit_ms": 9.5331,
+    "fitted_guides": 2,
+    "generation": 2,
+    "hidden_roots": 0,
+    "hinge_fits": 2,
+    "host_runtime_reservation_bytes": 1049616,
+    "index_ms": 0.0,
+    "index_payload_bytes": 200,
+    "iterations": 0,
+    "layout_payload_bytes": 318,
+    "mesh_refinement_work": 52385,
+    "mesh_refinements": 1,
+    "obstacles": 1,
+    "plants": 1,
+    "pose_payload_bytes": 1948,
+    "posed": 1,
+    "preview_ms": 1.7919,
+    "queries": 393,
+    "query_ms": 0.0031,
+    "restored": 0,
+    "retained_covered_roots": 0,
+    "reused_poses": 0,
+    "reuses": 0,
+    "separation_queries": 1,
+    "thread_launch_fallback": false,
+    "total_ms": 9.5402,
+    "updates": 2
+  },
+  "diagnostics": {
+    "schema": "cyrus.diagnostic-page/1.0",
+    "purpose": "engineering",
+    "session_id": "interaction_sync_profile",
+    "started_unix_ms": 1793052669407,
+    "elapsed_ms": 289,
+    "active": true,
+    "expired": false,
+    "limits": {
+      "events": 4096,
+      "bytes": 4194304,
+      "duration_ms": 120000
+    },
+    "health": {
+      "retained": 6,
+      "retained_bytes": 1640,
+      "high_water_bytes": 1640,
+      "evicted": 0,
+      "lock_drops": 0,
+      "failures": 0,
+      "truncated": 0
+    },
+    "oldest_sequence": 1,
+    "last_sequence": 6,
+    "measurements": {
+      "units": "microseconds",
+      "inclusive": true,
+      "stages": [
+        {
+          "stage": "geometry_extract",
+          "calls": 4,
+          "total_us": 964,
+          "max_us": 436,
+          "failed": 0
+        },
+        {
+          "stage": "mesh_channel_extract",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "candidates",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "mask_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "surface_filter",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "attributes_radii",
+          "calls": 4,
+          "total_us": 16,
+          "max_us": 6,
+          "failed": 0
+        },
+        {
+          "stage": "spacing",
+          "calls": 1,
+          "total_us": 39,
+          "max_us": 39,
+          "failed": 0
+        },
+        {
+          "stage": "preview_prepare",
+          "calls": 1,
+          "total_us": 454,
+          "max_us": 454,
+          "failed": 0
+        },
+        {
+          "stage": "buffer_upload",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "publication",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "map_bake",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_create",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_bind",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_layout",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        },
+        {
+          "stage": "ui_lists",
+          "calls": 0,
+          "total_us": 0,
+          "max_us": 0,
+          "failed": 0
+        }
+      ]
+    },
+    "events": [
+      {
+        "sequence": 1,
+        "elapsed_ms": 20,
+        "epoch": 305,
+        "action_id": 0,
+        "name": "input.invalidated",
+        "origin": "setting",
+        "owner_id": "ab61ba8d-f79c-4541-be6e-0a076b23cb0f",
+        "detail": "authored_or_dependency_edit"
+      },
+      {
+        "sequence": 2,
+        "elapsed_ms": 20,
+        "epoch": 305,
+        "action_id": 0,
+        "name": "input.invalidated",
+        "origin": "setting",
+        "owner_id": "77a70347-3adb-4aa3-9974-6dbac1823202",
+        "detail": "authored_or_dependency_edit"
+      },
+      {
+        "sequence": 3,
+        "elapsed_ms": 68,
+        "epoch": 305,
+        "action_id": 0,
+        "name": "solve.started",
+        "origin": "engine",
+        "owner_id": "57930d4d-4523-4be9-b233-41f466814b2d",
+        "detail": "input_changed"
+      },
+      {
+        "sequence": 4,
+        "elapsed_ms": 91,
+        "epoch": 305,
+        "action_id": 0,
+        "name": "prepare.started",
+        "origin": "engine",
+        "owner_id": "ab61ba8d-f79c-4541-be6e-0a076b23cb0f",
+        "detail": "key_changed"
+      },
+      {
+        "sequence": 5,
+        "elapsed_ms": 133,
+        "epoch": 305,
+        "action_id": 0,
+        "name": "prepare.started",
+        "origin": "engine",
+        "owner_id": "77a70347-3adb-4aa3-9974-6dbac1823202",
+        "detail": "key_changed"
+      },
+      {
+        "sequence": 6,
+        "elapsed_ms": 231,
+        "epoch": 306,
+        "action_id": 0,
+        "name": "publication.committed",
+        "origin": "engine",
+        "owner_id": "57930d4d-4523-4be9-b233-41f466814b2d",
+        "detail": "complete"
+      }
+    ],
+    "next_sequence": 6,
+    "has_more": false,
+    "training_eligible": false
+  }
+}

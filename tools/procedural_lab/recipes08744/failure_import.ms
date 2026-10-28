@@ -1,0 +1,1 @@
+try(CVBadDoc=cyrusRecipeRead (GardenRun+"failure-invalid.csrecipe.json");CyrusRecipeImport WFRoot CVBadDoc CVBadBindings calculate:true;(dotNetClass "System.IO.File").WriteAllText (GardenRun+"failure-result.txt") "unexpected success")catch((dotNetClass "System.IO.File").WriteAllText (GardenRun+"failure-result.txt") (getCurrentException()))

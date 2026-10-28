@@ -1,10 +1,12 @@
 #include "interactions_host.h"
 #include "license_boundary.h"
+#include "interaction_render_budget.h"
 #include <simpobj.h>
 #include <triobj.h>
 #include <SingleWeakRefMaker.h>
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>
+#include <maxscript/foundation/strings.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include <atomic>
 #include <map>
@@ -29,32 +31,38 @@ struct RenderPacket {
     std::shared_ptr<const ci::Snapshot> snapshot;
     RenderSource source; // Numeric data only: no weak scene watcher on render threads.
     unsigned layer=0,slot=0;
+    std::vector<std::size_t> instances;
+    ci::RenderSizing sizing;
+    std::shared_ptr<PreviewMemory> indexMemory;
     Box3 bounds;
 };
-std::size_t renderAdmission(const Mesh& mesh,std::size_t count,bool authoredNormals=false){
-    const auto vertices=std::size_t(mesh.getNumVerts())*count,faces=std::size_t(mesh.getNumFaces())*count;
-    if(vertices>20000000||faces>20000000)throw std::runtime_error("Posed full-mesh output exceeds the 20M face/vertex source-binding budget");
+ci::RenderSizing renderSizing(const Mesh& mesh,bool authoredNormals=false){
+    ci::RenderSizing out;out.vertices=std::size_t(mesh.getNumVerts());out.faces=std::size_t(mesh.getNumFaces());
     // Output Mesh plus construction buffers, per-instance remaps and map data.
-    std::size_t bytes=2*(vertices*sizeof(Point3)+faces*sizeof(Face))+std::size_t(mesh.getNumVerts())*sizeof(unsigned)+std::size_t(mesh.getNumFaces())*sizeof(unsigned);
-    if(authoredNormals)bytes+=2*faces*(3*sizeof(Point3)+sizeof(MeshNormalFace));
+    out.instanceBytes=2*(out.vertices*sizeof(Point3)+out.faces*sizeof(Face));out.fixedBytes=(out.vertices+out.faces)*sizeof(unsigned);
+    if(authoredNormals)out.instanceBytes+=2*out.faces*(3*sizeof(Point3)+sizeof(MeshNormalFace));
     for(int channel=-NUM_HIDDENMAPS;channel<mesh.getNumMaps();++channel)if(mesh.mapSupport(channel)&&mesh.getNumMapFaces(channel)==mesh.getNumFaces()&&mesh.getNumMapVerts(channel)>0)
-        bytes+=2*count*(std::size_t(mesh.getNumMapVerts(channel))*sizeof(UVVert)+std::size_t(mesh.getNumFaces())*sizeof(TVFace))+std::size_t(mesh.getNumMapVerts(channel))*sizeof(unsigned);
-    if(bytes>1024ull*1024*1024)throw std::runtime_error("Posed render construction exceeds 1 GiB explicit peak payload admission");return bytes;
+        {out.instanceBytes+=2*(std::size_t(mesh.getNumMapVerts(channel))*sizeof(UVVert)+out.faces*sizeof(TVFace));out.fixedBytes+=std::size_t(mesh.getNumMapVerts(channel))*sizeof(unsigned);}
+    return out;
 }
 Point3 host(ci::Vec p,double unit){return {float(p.x/unit),float(-p.z/unit),float(p.y/unit)};}
 ci::Transform transform(const ci::Snapshot& p,std::size_t i){auto found=p.overrides.find(i);return found==p.overrides.end()?p.layout->transform(i):found->second;}
-std::unique_ptr<Mesh> build(const RenderPacket& packet){
+std::unique_ptr<Mesh> build(const RenderPacket& packet,std::size_t begin=0,std::size_t count=SIZE_MAX,View* view=nullptr){
     const auto& snapshot=*packet.snapshot;const auto& source=packet.source;const auto& input=*source.mesh;const auto& rig=*source.rig;
     std::vector<std::pair<std::size_t,std::shared_ptr<const ci::Pose>>> instances;
     std::size_t upperFaces=0,upperVertices=0;
-    for(const auto& [index,pose]:snapshot.poses){const auto& p=snapshot.layout->instances[index];if(p.layer!=packet.layer||p.source!=packet.slot||pose->allHidden||snapshot.disabled.contains(index))continue;
+    if(begin>packet.instances.size())throw std::runtime_error("Render batch index outside the immutable publication");
+    const auto end=begin+std::min(count,packet.instances.size()-begin);
+    if(begin==end)return std::make_unique<Mesh>();
+    const auto bytes=packet.sizing.admit(end-begin);auto reservation=reserveSourceMetadataMemory(bytes);
+    instances.reserve(end-begin);
+    for(std::size_t k=begin;k<end;++k){const auto index=packet.instances[k];const auto& pose=snapshot.poses.at(index);
         upperFaces+=input.getNumFaces();upperVertices+=input.getNumVerts();instances.emplace_back(index,pose);}
-    const auto bytes=renderAdmission(input,instances.size(),bool(source.cornerNormals));auto reservation=reserveSourceMetadataMemory(bytes);
     std::vector<Point3> vertices;std::vector<Face> faces;vertices.reserve(upperVertices);faces.reserve(upperFaces);
     std::vector<Point3> normals;if(source.cornerNormals)normals.reserve(upperFaces*3);
     struct UVData {std::vector<UVVert> vertices;std::vector<TVFace> faces;};std::map<int,UVData> maps;
     for(int channel=-NUM_HIDDENMAPS;channel<input.getNumMaps();++channel)if(input.mapSupport(channel)&&input.getNumMapFaces(channel)==input.getNumFaces()&&input.getNumMapVerts(channel)>0){auto& data=maps[channel];data.vertices.reserve(std::size_t(input.getNumMapVerts(channel))*instances.size());data.faces.reserve(upperFaces);}
-    for(const auto& [index,pose]:instances){auto tm=transform(snapshot,index);std::vector<unsigned> remap(input.getNumVerts(),UINT_MAX);std::vector<unsigned> selected;selected.reserve(input.getNumFaces());
+    for(const auto& [index,pose]:instances){if(view&&view->CheckForRenderAbort())return {};auto tm=transform(snapshot,index);std::vector<unsigned> remap(input.getNumVerts(),UINT_MAX);std::vector<unsigned> selected;selected.reserve(input.getNumFaces());
         for(unsigned fi=0;fi<unsigned(input.getNumFaces());++fi)if(ci::visibleFace(rig,*pose,fi)){
             selected.push_back(fi);auto f=input.faces[fi];
             for(int k=0;k<3;++k){unsigned original=f.v[k];if(remap[original]==UINT_MAX){remap[original]=unsigned(vertices.size());vertices.push_back(host(tm.point(ci::posePoint(rig,*pose,original)),snapshot.layout->metresPerUnit));}f.v[k]=remap[original];}
@@ -86,6 +94,8 @@ public:
     std::string key;
     unsigned layer=0,slot=0;
     std::atomic<std::shared_ptr<const RenderPacket>> packet;
+    std::atomic<std::shared_ptr<const RenderPacket>> rendering;
+    std::atomic_bool renderingActive{false};
     std::unique_ptr<OwnerWatch> watch;
     InteractionRender(){ivalid.SetEmpty();}
     Class_ID ClassID()override{return renderID;}
@@ -103,10 +113,20 @@ public:
     void BuildMesh(TimeValue)override{mesh.setNumVerts(0);mesh.setNumFaces(0);ivalid=FOREVER;}
     int Display(TimeValue,INode*,ViewExp*,int)override{return 0;}
     int HitTest(TimeValue,INode*,int,int,int,IPoint2*,ViewExp*)override{return 0;}
-    void GetLocalBoundBox(TimeValue,INode*,ViewExp*,Box3& box)override{auto p=packet.load();if(p)box=p->bounds;else box.Init();}
+    void GetLocalBoundBox(TimeValue,INode*,ViewExp*,Box3& box)override{auto p=renderPacket();if(p)box=p->bounds;else box.Init();}
     void GetWorldBoundBox(TimeValue t,INode* n,ViewExp* v,Box3& box)override{GetLocalBoundBox(t,n,v,box);}
-    Mesh* GetRenderMesh(TimeValue,INode*,View&,BOOL& needDelete)override{
-        auto p=packet.load();needDelete=TRUE;if(!p)return new Mesh;return build(*p).release();
+    std::shared_ptr<const RenderPacket> renderPacket()const{return renderingActive.load()?rendering.load():packet.load();}
+    int RenderBegin(TimeValue,ULONG)override{rendering.store(packet.load());renderingActive.store(true);return 1;}
+    int RenderEnd(TimeValue)override{renderingActive.store(false);rendering.store({});return 1;}
+    int NumberOfRenderMeshes()override{auto p=renderPacket();return p?int(std::max<std::size_t>(1,p->sizing.chunks(p->instances.size()))):1;}
+    Mesh* GetMultipleRenderMesh(TimeValue,INode*,View& view,BOOL& needDelete,int number)override{
+        auto p=renderPacket();needDelete=TRUE;if(!p)return new Mesh;
+        if(number<0||std::size_t(number)>=std::max<std::size_t>(1,p->sizing.chunks(p->instances.size())))throw std::runtime_error("Unknown posed render batch");
+        return build(*p,std::size_t(number)*p->sizing.capacity(),p->sizing.capacity(),&view).release();
+    }
+    void GetMultipleRenderMeshTM(TimeValue,INode*,View&,int,Matrix3& tm,Interval& validity)override{tm.IdentityMatrix();validity=FOREVER;}
+    Mesh* GetRenderMesh(TimeValue,INode*,View& view,BOOL& needDelete)override{
+        auto p=renderPacket();needDelete=TRUE;if(!p)return new Mesh;return build(*p,0,SIZE_MAX,&view).release();
     }
     IOResult Save(ISave* save)override{if(key.size()>1024)return IO_ERROR;save->BeginChunk(0x7920);ULONG done=0;auto result=save->Write(key.data(),ULONG(key.size()),&done);save->EndChunk();return result==IO_OK&&done==key.size()?IO_OK:IO_ERROR;}
     IOResult Load(ILoad* load)override{IOResult result;while((result=load->OpenChunk())==IO_OK){if(load->CurChunkID()==0x7920){auto size=load->CurChunkLength();if(size>1024){load->CloseChunk();return IO_ERROR;}key.assign(size,'\0');ULONG done=0;if(load->Read(key.data(),ULONG(size),&done)!=IO_OK||done!=size){load->CloseChunk();return IO_ERROR;}}load->CloseChunk();}return result==IO_END?IO_OK:IO_ERROR;}
@@ -126,11 +146,12 @@ public:
 InteractionRender* output(INode* n){auto* object=n?n->GetObjectRef():nullptr;return object&&object->ClassID()==renderID?static_cast<InteractionRender*>(object):nullptr;}
 std::shared_ptr<const RenderPacket> packet(const std::shared_ptr<InteractionRuntime>& runtime,const std::shared_ptr<const ci::Snapshot>& snapshot,unsigned layer,unsigned slot){
     auto result=std::make_shared<RenderPacket>();result->snapshot=snapshot;result->layer=layer;result->slot=slot;const auto& source=*runtime->sources[layer][slot];result->source={source.mesh,source.rig,source.cornerNormals,source.memory};result->bounds.Init();
-    std::size_t count=0;
+    std::size_t matching=0;for(const auto& [index,pose]:snapshot->poses){const auto& p=snapshot->layout->instances[index];matching+=p.layer==layer&&p.source==slot&&!pose->allHidden&&!snapshot->disabled.contains(index);}
+    result->indexMemory=reserveSourceMetadataMemory(sizeof(RenderPacket)+matching*sizeof(std::size_t));result->instances.reserve(matching);
     for(const auto& [index,pose]:snapshot->poses){const auto& p=snapshot->layout->instances[index];if(p.layer!=layer||p.source!=slot||pose->allHidden||snapshot->disabled.contains(index))continue;
-        ++count;
+        result->instances.push_back(index);
         const double reach=result->source.rig->reach*transform(*snapshot,index).scale();auto centre=transform(*snapshot,index).rows[3];result->bounds+=host(ci::sub(centre,{reach,reach,reach}),snapshot->layout->metresPerUnit);result->bounds+=host(ci::add(centre,{reach,reach,reach}),snapshot->layout->metresPerUnit);}
-    renderAdmission(*result->source.mesh,count,bool(result->source.cornerNormals));return result;
+    std::sort(result->instances.begin(),result->instances.end());result->sizing=renderSizing(*result->source.mesh,bool(result->source.cornerNormals));result->indexMemory->commit();return result;
 }
 }
 void interactionRenderCommit(const std::shared_ptr<InteractionRuntime>& runtime,const std::shared_ptr<const ci::Snapshot>& snapshot,const std::function<void()>& publish){
@@ -176,11 +197,42 @@ def_visible_primitive(cyrusInteractionBake,"cyrusInteractionBake");
 Value* cyrusInteractionBake_cf(Value** a,int n){check_arg_count(cyrusInteractionBake,2,n);auto runtime=cyrus::interactionRuntime(a[0]);const int layer=a[1]->to_int()-1;
     if(!cyrusBoundaryAllows(runtime.get()))throw RuntimeError(_T("Active Cyrus authoring license required to Bake contacts"));
     if(layer<0||layer>=int(runtime->sources.size()))throw RuntimeError(_T("Invalid interaction Bake layer"));
-    one_typed_value_local(Array* result);vl.result=new Array(0);std::vector<INode*> created;created.reserve(runtime->sources[layer].size());
-    try{if(runtime->engine->layout().layers[layer].react)for(unsigned slot=0;slot<runtime->sources[layer].size();++slot){auto p=cyrus::packet(runtime,runtime->current,unsigned(layer),slot);auto mesh=cyrus::build(*p);if(!mesh->getNumFaces())continue;
+    one_typed_value_local(Array* result);vl.result=new Array(0);std::vector<INode*> created;
+    std::vector<std::pair<unsigned,std::shared_ptr<const cyrus::RenderPacket>>> packets;std::size_t chunks=0;
+    try{if(runtime->engine->layout().layers[layer].react)for(unsigned slot=0;slot<runtime->sources[layer].size();++slot){auto p=cyrus::packet(runtime,runtime->current,unsigned(layer),slot);chunks+=p->sizing.chunks(p->instances.size());
+        if(chunks>4096)throw std::runtime_error("Contact Bake exceeds 4096 bounded mesh batches; Bake fewer plants at once");packets.emplace_back(slot,std::move(p));}
+      created.reserve(chunks); // No allocation may orphan a newly created node.
+      for(const auto& [slot,p]:packets){
+      for(std::size_t batch=0;batch<p->sizing.chunks(p->instances.size());++batch){
+        if(created.size()>=4096)throw std::runtime_error("Contact Bake exceeds 4096 bounded mesh batches; Bake fewer plants at once");
+        auto mesh=cyrus::build(*p,batch*p->sizing.capacity(),p->sizing.capacity());if(!mesh->getNumFaces())continue;
         if(!cyrusBoundaryAllows(runtime.get()))throw std::runtime_error("Cyrus license expired before Bake publication; created nodes rolled back");
         auto deleter=[](TriObject* value){value->DeleteThis();};std::unique_ptr<TriObject,decltype(deleter)> pending(CreateNewTriObject(),deleter);pending->GetMesh()=*mesh;auto* node=GetCOREInterface()->CreateObjectNode(pending.get());if(!node)throw std::runtime_error("Posed Bake node allocation failed");pending.release();created.push_back(node);node->SetName(_T("Cyrus_Baked_Contact_Mesh"));node->SetNodeTM(GetCOREInterface()->GetTime(),Matrix3(1));
-        auto* source=Animatable::GetAnimByHandle(runtime->sources[layer][slot]->nodeHandle);if(source&&source->SuperClassID()==BASENODE_CLASS_ID)node->SetMtl(static_cast<INode*>(source)->GetMtl());node->SetRenderable(TRUE);vl.result->append(MAXNode::intern(node));}
+        auto* source=Animatable::GetAnimByHandle(runtime->sources[layer][slot]->nodeHandle);if(source&&source->SuperClassID()==BASENODE_CLASS_ID)node->SetMtl(static_cast<INode*>(source)->GetMtl());node->SetRenderable(TRUE);vl.result->append(MAXNode::intern(node));}}
     }catch(const std::exception& error){for(auto* node:created)GetCOREInterface()->DeleteNode(node,FALSE);throw RuntimeError(MSTR::FromACP(error.what()));}
     return_value(vl.result);
+}
+
+// Bounded, explicit inspection of the real public multi-mesh callbacks. Passive
+// reads do not construct polygons; mode1 samples one batch, mode2 verifies all
+// batches up to20M returned faces. No scene objects are created by this command.
+def_visible_primitive(cyrusInteractionRenderInfo,"cyrusInteractionRenderInfo");
+Value* cyrusInteractionRenderInfo_cf(Value** a,int n){check_arg_count(cyrusInteractionRenderInfo,2,n);
+    try{auto runtime=cyrus::interactionRuntime(a[0]);const int mode=a[1]->to_int();if(mode<0||mode>2)throw std::runtime_error("Render inspection mode must be 0,1 or2");
+        if(mode&&!cyrusBoundaryAllows(runtime.get()))throw std::runtime_error("Active authoring license required to construct inspection meshes");
+        struct ProbeView:View {ProbeView(){worldToView.IdentityMatrix();affineTM.IdentityMatrix();screenW=640;screenH=480;}Point2 ViewToScreen(Point3 p)override{return {p.x,p.y};}} view;
+        cyrus::interactions::Json report={{"scope","Exact public multi-mesh callbacks; construction bounds exclude renderer-owned meshes"},{"outputs",cyrus::interactions::Json::array()}};
+        std::size_t total=0;
+        for(auto handle:runtime->renderNodes){auto* v=Animatable::GetAnimByHandle(handle);if(!v||v->SuperClassID()!=BASENODE_CLASS_ID)continue;auto* node=static_cast<INode*>(v);auto* obj=cyrus::output(node);if(!obj||obj->owner!=runtime->controller)continue;
+            obj->RenderBegin(GetCOREInterface()->GetTime(),0);struct End{cyrus::InteractionRender* p;~End(){p->RenderEnd(0);}} end{obj};auto p=obj->renderPacket();if(!p)continue;
+            cyrus::interactions::Json entry={{"layer",p->layer+1},{"source",p->slot+1},{"posed_instances",p->instances.size()},
+                {"combined_construction_bytes",p->sizing.bytes(p->instances.size())},{"batch_capacity",p->sizing.capacity()},{"batches",obj->NumberOfRenderMeshes()},{"mesh_faces",cyrus::interactions::Json::array()}};
+            if(mode)for(int k=0;k<obj->NumberOfRenderMeshes()&&(mode==2||k==0);++k){
+                BOOL needDelete=FALSE;auto* mesh=obj->GetMultipleRenderMesh(GetCOREInterface()->GetTime(),node,view,needDelete,k);std::unique_ptr<Mesh> owned(needDelete?mesh:nullptr);if(!mesh)throw std::runtime_error("Inspection mesh construction was cancelled");
+                total+=mesh->getNumFaces();if(total>20000000)throw std::runtime_error("Render inspection exceeds20M returned faces; inspect one batch instead");
+                Matrix3 tm;Interval valid;obj->GetMultipleRenderMeshTM(0,node,view,k,tm,valid);if(!tm.IsIdentity())throw std::runtime_error("World-space posed batch has a nonidentity render transform");
+                entry["mesh_faces"].push_back(mesh->getNumFaces());}
+            report["outputs"].push_back(std::move(entry));}
+        report["constructed_faces"]=total;const auto text=report.dump();return new String(MSTR::FromACP(text.c_str()));
+    }catch(const std::exception& error){throw RuntimeError(MSTR::FromACP(error.what()));}
 }

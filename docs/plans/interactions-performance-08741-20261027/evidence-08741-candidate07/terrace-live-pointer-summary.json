@@ -1,0 +1,33 @@
+{
+  "scope": "Actual Sky pointer drag in a private Max 2027 Live terrace; coincident workload from other Max tests. Not FPS or controlled before/after timing.",
+  "frames": 112,
+  "held_frames": 4,
+  "held_distinct_states": [
+    {
+      "key": [
+        "1L",
+        "[-8000,-3100,-988.841]"
+      ],
+      "qpc_ms": 1104677088.272,
+      "fit_ms": 1694.4548,
+      "affected": 491,
+      "fitted_guides": 3354,
+      "quality_warning_guides": 6
+    },
+    {
+      "key": [
+        "2L",
+        "[-7925.79,-3100,-988.841]"
+      ],
+      "qpc_ms": 1104678560.97,
+      "fit_ms": 1321.7978,
+      "affected": 618,
+      "fitted_guides": 3611,
+      "quality_warning_guides": 4
+    }
+  ],
+  "initial_epoch": "3",
+  "final_epoch": "4",
+  "initial_builds": "3",
+  "final_builds": "4"
+}

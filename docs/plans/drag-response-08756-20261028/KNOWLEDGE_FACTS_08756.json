@@ -1,0 +1,18 @@
+{
+  "schema": "cyrus.delivery-facts/1",
+  "status": "scoped_pass",
+  "version": "0.87.5.6",
+  "max_year": 2027,
+  "scene_schema": 65,
+  "recipe_format": 9,
+  "edit_storage": 3,
+  "interactions": 15,
+  "qualification": "Existing exact Max 2027 scripted viewport/contact delivery; no new runtime checks in the documentation refresh.",
+  "qualification_receipt": "docs/plans/drag-response-08756-20261028/QUALIFICATION_08756.json",
+  "qualification_sha256": "d7e3646e6c6fbf55695c5f4e0278d2ac94bde866d555541bcccd8af9d0c0f00c",
+  "package_sha256": "1ae8f32491433f258a5ed24b35be09767b1ff8ef6568247deb008afa5e038b04",
+  "human_feedback": {
+    "date": "2026-10-28",
+    "scope": "User explicitly endorsed Bend/Trim, movement and preview; not acceptance of all scenes, physical timing, renderers or all contracts."
+  }
+}

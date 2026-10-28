@@ -1,0 +1,16 @@
+{
+  "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\package-05\\CyrusScatter-0.87.4.1-Max2027.mzp",
+  "sha256": "9b60f2d0836e994aa8dc009fccb964951eba54a1a804d7d75779b121853afb38",
+  "producer": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\interactions08741-20261027-01\\native-05\\receipt.json",
+  "tests_run": true,
+  "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max.",
+  "files": {
+    "AminScatter.dlx": "88704cdedcb62e243d839aa5c81f0423028f6a26c94ed4919c2bfd20891ef9cd",
+    "CyrusBrush.dlx": "4c34ff76aeedf480501a86687aa77d33db66be413227fa580f7a2d0c95895369",
+    "CyrusBrushStorage.dlh": "6435b89b2db8d64f3248538820e93d86fb2074f0439f3d25d3b0af45d9bbfdc4",
+    "CyrusGallery.dll": "ac92df62689af295aeb8a25f09b5878de821bcc37e0b142e4496f87bb65886fa",
+    "CyrusInstaller.dll": "1f22c6e5c8d22659c92add72687929063cd6814ee02ae42d353f9eb474541482",
+    "CyrusScatter.ms": "c033df5cf8cb6636a66f7a16b44d0a9e1d6c5d2892ef9291cc121f208659fb89",
+    "CyrusScatterEdit.dlm": "369787ac3dfa5a93f53c7105c91a1014fc855ab0d90f8ed1ebcaf71a0dc02db8"
+  }
+}

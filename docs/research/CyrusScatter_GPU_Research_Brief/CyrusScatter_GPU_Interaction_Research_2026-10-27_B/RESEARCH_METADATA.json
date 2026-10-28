@@ -1,0 +1,237 @@
+{
+  "schema": "cyrus.gpu-interaction-research/1",
+  "researcher_id": "A",
+  "research_date": "2026-10-27",
+  "research_timezone": "UTC",
+  "research_started_at_utc": null,
+  "model_identity": {
+    "known_identity": "ChatGPT / GPT-6 Astra Pro",
+    "exact_backend_revision": "Not available; not guessed"
+  },
+  "source_access_cutoff_date": "2026-10-27",
+  "baseline": {
+    "version": "0.87.4.3",
+    "native_interaction_capability": 11,
+    "scene_schema": 63,
+    "host": "3ds Max 2027 / Windows x64",
+    "evidence_class": "Provided project context; not independently verified"
+  },
+  "supplied_inputs": {
+    "README.md": {
+      "supplied_filename": "README(3).md",
+      "size": 1530,
+      "sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75",
+      "manifest_match": true
+    },
+    "RESEARCH_PROMPT.md": {
+      "supplied_filename": "RESEARCH_PROMPT(1).md",
+      "size": 28077,
+      "sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+      "manifest_match": true
+    },
+    "CURRENT_SYSTEM_CONTEXT.md": {
+      "supplied_filename": "CURRENT_SYSTEM_CONTEXT(1).md",
+      "size": 12170,
+      "sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+      "manifest_match": true
+    },
+    "BRIEF_METADATA.json": {
+      "supplied_filename": "BRIEF_METADATA(1).json",
+      "size": 766,
+      "sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8",
+      "manifest_match": true
+    }
+  },
+  "supplied_manifest_sha256": "300d8540195865fe493ff9b47ec77fd3c7d1b02fa8cb946312184afac5b853df",
+  "available_environment": {
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "machine": "x86_64",
+    "tools": {
+      "python3": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "g++": "/usr/bin/g++",
+      "clang++": null,
+      "cmake": null,
+      "nvcc": null,
+      "nvidia-smi": null,
+      "clinfo": null,
+      "powershell": null,
+      "dotnet": null,
+      "node": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "unzip": "/usr/bin/unzip"
+    },
+    "gpu_device_nodes": [],
+    "max_sdk_or_host": "Not supplied or used",
+    "private_repo": "Not accessed",
+    "input_files": {
+      "README.md": {
+        "supplied_filename": "README(3).md",
+        "size": 1530,
+        "sha256": "f8584dda7afc02ce1a5fd8fa7c427499ccc710b834ed42001333d53583b9ba75",
+        "manifest_match": true
+      },
+      "RESEARCH_PROMPT.md": {
+        "supplied_filename": "RESEARCH_PROMPT(1).md",
+        "size": 28077,
+        "sha256": "46de9d169bcab8a0e91a8f16401698fe6bdff353d76359cb5671962b66692650",
+        "manifest_match": true
+      },
+      "CURRENT_SYSTEM_CONTEXT.md": {
+        "supplied_filename": "CURRENT_SYSTEM_CONTEXT(1).md",
+        "size": 12170,
+        "sha256": "3720fd784f2fcb6742300199d3f84282345eecf124ca786478d1b2bf3a4ec861",
+        "manifest_match": true
+      },
+      "BRIEF_METADATA.json": {
+        "supplied_filename": "BRIEF_METADATA(1).json",
+        "size": 766,
+        "sha256": "4ed3e9ee03b54175d1177666e89104bd39fa731b8e5f1f3f761487f5572a82b8",
+        "manifest_match": true
+      }
+    },
+    "compiler_banner": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+  },
+  "gpu_hardware_identity": null,
+  "cpu_model_identity": null,
+  "tool_execution_limits": {
+    "cpp_compilation_executed": false,
+    "cuda_or_opencl_executed": false,
+    "graphics_shader_executed": false,
+    "max_host_executed": false,
+    "renderer_bake_export_executed": false,
+    "installer_executed": false,
+    "production_repository_accessed_or_modified": false,
+    "performance_measurements_executed": false
+  },
+  "source_versions": {
+    "Autodesk_SDK": "Public 2027 documentation / 29.0; no installed SDK inspected",
+    "Max_required_toolchain": "VS2022 17.14.13 / v143 / C++20 / Windows SDK 10.0.19041.0; actual local combination unqualified",
+    "CUDA": "13.4 Update 2; compiler/runtime/NVRTC 13.4.92; CCCL 3.4.3",
+    "OpenCL_specification": "3.1.2, 2026-09-17, registry commit 219be24fc8947c68ee45b4d25b55a92b8f799f29",
+    "OpenCL_SDK_and_ICD_loader": "v2026.05.29; runtime device feature support untested",
+    "OpenCL_base_command_buffer": "Ratified 1.0.0, 2026-09-09; mutable/multi-device extensions separately qualified",
+    "Warp": "1.18.0; f2eaed82d8d03b37bf1014cc975954067fefcf16",
+    "Jolt_public_GPU_hair": "Public v5.6.0 experimental GPU hair; not the private Physics Lab path",
+    "OpenVDB_NanoVDB": "13.2.0 current docs/header; release-page v13.1.0 pin separately identified; exact 13.2 pin unresolved",
+    "TressFX": "Standalone 4.1.0 historical release; rolling shader inspected; gated TressFX5 Unreal patch not inspected",
+    "Nsight_Systems": "2026.5.1 documentation; not installed/run",
+    "Nsight_Compute": "2026.3.1 documentation; not installed/run",
+    "PresentMon": "v2.6.0 release identity; rolling console/code separately inspected; not installed/run"
+  },
+  "evidence_vocabulary": {
+    "V": "Verified public documentation/source/paper within stated inspection scope",
+    "P": "Provided project facts and report-local observations",
+    "X": "Executed standard-library analysis or package verification",
+    "E": "Analytical estimate/deduction under explicit assumptions",
+    "D": "Unexecuted proposal/hypothesis/acceptance target",
+    "U": "Unresolved or not executed"
+  },
+  "experiments_actually_executed": [
+    {
+      "id": "input_hashes",
+      "result": "Four supplied document hashes matched supplied manifest"
+    },
+    {
+      "id": "budget_arithmetic",
+      "command": "python3 analysis/calculate_budgets.py",
+      "exit_code": 0,
+      "output": "analysis/calculated_budgets.json",
+      "scope": "Bytes, FP32 spacing, hypothetical transfers; not allocations or benchmarks"
+    },
+    {
+      "id": "analytic_geometry_oracles",
+      "command": "python3 analysis/check_adversarial_geometry.py",
+      "exit_code": 0,
+      "cases": 6,
+      "all_assertions_passed": true,
+      "output": "analysis/analytic_counterexamples.json",
+      "scope": "Analytic hazards; no fitter implementation"
+    },
+    {
+      "id": "weighted_score_arithmetic",
+      "command": "python3 analysis/check_decision_scores.py",
+      "exit_code": 0,
+      "output": "analysis/decision_scores.json",
+      "scope": "Declared judgment weights and sensitivity arithmetic only"
+    }
+  ],
+  "proposals_not_executed": [
+    "P0 CPU workload extraction and baseline traces",
+    "P1 public Max shader pose delivery and P1b native D3D acquisition/interop",
+    "P2 fake backend asynchronous lifecycle implementation",
+    "P3 matched CPU/CUDA/OpenCL bounded static solver",
+    "P4 field error-certificate implementation and refinement",
+    "P5 renderer/Bake/export and final integration parity",
+    "B01-B16 benchmark matrix, five trajectories, cold/warm and stress extensions",
+    "Hardware/driver/runtime/installer and device-failure qualification"
+  ],
+  "limitations": [
+    "No private repository, actual plant asset, installed Max/SDK or qualified GPU supplied.",
+    "Provided 4.05 ms observation is native contact evaluation in one narrow fixture, not total latency.",
+    "No measured CUDA/OpenCL speed advantage, crossover threshold, fit success rate or realtime capacity.",
+    "Some release commits verified while pinned file bodies were inaccessible; rolling bodies explicitly distinguished.",
+    "Public D3D11 declarations do not establish supported acquisition/ownership/synchronization in the existing Nitrous route.",
+    "Intended production renderer, exact compiler/runtime pairing and artist hardware remain local questions.",
+    "Fixture/trajectory generators and executable prototype harnesses are specified, not delivered or claimed executed.",
+    "Documentation reflects access date; exact adopted binaries/dependency licenses need a local audit."
+  ],
+  "package_validation": {
+    "status": "Passed",
+    "included_files": 37,
+    "required_core_files": 21,
+    "sha256_files_verified": 36,
+    "unchanged_supplied_inputs_verified": 4,
+    "markdown_files_checked": 24,
+    "local_links_and_anchors_checked": 386,
+    "source_records": 143,
+    "zip_members_verified": 37,
+    "zip_safe_paths_crc_and_byte_parity": true,
+    "external_links_recorded_not_network_retested": 141,
+    "command": "python3 analysis/verify_package.py . --zip ../CyrusScatter_GPU_Interaction_Research_2026-10-27_A.zip",
+    "scope": "Package integrity only; reverified after final manifest regeneration. Archive hash is returned separately to avoid self-reference."
+  },
+  "package_updated_at_utc": "2026-10-27T09:08:29+00:00",
+  "source_records": 143,
+  "public_source_records": 141,
+  "distinct_public_source_urls": 134,
+  "artifact_inventory": [
+    "00_README.md",
+    "01_EXECUTIVE_DECISION.md",
+    "02_REQUIREMENTS_AND_CURRENT_SYSTEM.md",
+    "03_PARALLELISM_AND_DATA_LAYOUT.md",
+    "04_CUDA_OPENCL_AND_GRAPHICS_COMPUTE.md",
+    "05_COLLISION_AND_GUIDE_SOLVING.md",
+    "06_GPU_DEFORMATION_AND_INSTANCING.md",
+    "07_MAX_2027_INTEROP_FEASIBILITY.md",
+    "08_ASYNC_PUBLICATION_AND_LIFETIMES.md",
+    "09_MEMORY_PRECISION_AND_HARDWARE.md",
+    "10_BENCHMARK_AND_VALIDATION_PLAN.md",
+    "11_EDGE_CASE_AND_FAILURE_MATRIX.md",
+    "12_PAPERS_AND_REUSABLE_IMPLEMENTATIONS.md",
+    "13_PHASED_IMPLEMENTATION_PLAN.md",
+    "14_MINIMAL_PROTOTYPE_SPECIFICATIONS.md",
+    "15_DISTRIBUTION_FALLBACK_AND_ARTIST_WORKFLOW.md",
+    "16_OPEN_QUESTIONS_FOR_LOCAL_CODEX.md",
+    "17_SOURCE_LEDGER.md",
+    "18_ACCEPTANCE_CHECKLIST.md",
+    "MANIFEST.sha256",
+    "RESEARCH_METADATA.json",
+    "analysis/EXECUTED_CHECKS.md",
+    "analysis/README.md",
+    "analysis/analytic_counterexamples.json",
+    "analysis/calculate_budgets.py",
+    "analysis/calculated_budgets.json",
+    "analysis/check_adversarial_geometry.py",
+    "analysis/check_decision_scores.py",
+    "analysis/decision_scores.json",
+    "analysis/environment_and_inputs.json",
+    "analysis/source_ledger.json",
+    "analysis/verify_package.py",
+    "inputs/BRIEF_METADATA.json",
+    "inputs/CURRENT_SYSTEM_CONTEXT.md",
+    "inputs/MANIFEST.sha256",
+    "inputs/README.md",
+    "inputs/RESEARCH_PROMPT.md"
+  ],
+  "research_completed_at_utc": "2026-10-27T09:08:28+00:00"
+}

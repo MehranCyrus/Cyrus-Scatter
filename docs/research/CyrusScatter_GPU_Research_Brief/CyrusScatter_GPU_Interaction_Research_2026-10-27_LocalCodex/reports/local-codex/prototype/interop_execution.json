@@ -1,0 +1,29 @@
+{
+  "utc": "2026-10-27T09:29:34.415292+00:00",
+  "command": [
+    "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe",
+    "/nologo",
+    "/std:c++17",
+    "/O2",
+    "/fp:precise",
+    "/MD",
+    "/EHsc",
+    "/IC:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.1\\include",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\research\\gpu-interactions-research-20261027\\reports\\local-codex\\prototype\\interop_probe.cpp",
+    "/Fe:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\gpu-interaction-research-20261027-01\\interop_probe.exe",
+    "/Fo:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\gpu-interaction-research-20261027-01\\interop_probe.obj",
+    "/link",
+    "/LIBPATH:C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.1\\lib\\x64",
+    "OpenCL.lib",
+    "cuda.lib",
+    "cudart.lib",
+    "nvrtc.lib",
+    "d3d11.lib",
+    "dxgi.lib"
+  ],
+  "source_sha256": "80aa07cb6daa1d48e577fb5142fcb8fab76f3c645c3862c7ad58827ef14e7593",
+  "compiler_exit_code": 0,
+  "production_files_changed": false,
+  "execution_exit_code": 0,
+  "validated_cases": 2
+}

@@ -13,6 +13,8 @@ void validateThumbnail(const std::vector<unsigned char>& bytes);
 void writePresentation(const std::filesystem::path& recipe, const Json& metadata,
                        const std::filesystem::path& thumbnail={});
 Json summary(const std::filesystem::path& recipe, bool confined=false);
+// Metadata dispatcher; portable hydration remains confined to recipes::read.
+Json readLibraryMetadata(const std::filesystem::path& path,std::string* sha256=nullptr);
 std::filesystem::path thumbnail(const std::filesystem::path& recipe);
 
 struct LibraryLimits {

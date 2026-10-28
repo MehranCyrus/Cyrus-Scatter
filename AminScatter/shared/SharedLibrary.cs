@@ -33,6 +33,7 @@ namespace Cyrus.Content {
                 finally{ContentObjects.Checkpoint=null;if(acquired)workers.Release();Interlocked.Decrement(ref pending);}});
         }
         public void Cancel(){cancel.Cancel();}
+        internal void Finally(Action<LibraryOperation> cleanup){task.ContinueWith(_=>{try{cleanup(this);}catch{}},TaskScheduler.Default);}
         public bool Terminal {get{return task.IsCompleted;}}
     }
     public sealed class LibraryModel {
@@ -148,7 +149,8 @@ namespace Cyrus.Content {
             var temp=Child(Root,"staging/text-"+Guid.NewGuid().ToString("N"));try{NewText(temp,text);ContentObjects.AtomicNew(temp,target);}finally{if(File.Exists(temp))File.Delete(temp);}return sha;
         }
         static void Attachments(Dictionary<string,object> recipe,Action<Dictionary<string,object>> add) {
-            foreach(var raw in A(recipe["layers"])) {var layer=D(raw);if(layer["paint"]!=null)add(D(D(layer["paint"])["payload"]));foreach(var rawArea in A(layer["areas"])){var area=D(rawArea);if(area["paint"]!=null)add(D(D(area["paint"])["payload"]));}}
+            if(IsScene(recipe)){add(D(recipe["scene"]));foreach(var raw in A(recipe["assets"]))add(D(D(raw)["payload"]));}
+            else foreach(var raw in A(recipe["layers"])) {var layer=D(raw);if(layer["paint"]!=null)add(D(D(layer["paint"])["payload"]));foreach(var rawArea in A(layer["areas"])){var area=D(rawArea);if(area["paint"]!=null)add(D(D(area["paint"])["payload"]));}}
             object presentation;if(recipe.TryGetValue("presentation",out presentation)&&presentation!=null){var p=D(presentation);if(p["thumbnail"]!=null)add(D(p["thumbnail"]));}
         }
         static Dictionary<string,object> Descriptor(string path,string sha,long bytes){return M("file",path,"sha256",sha,"bytes",bytes);}
@@ -243,6 +245,7 @@ namespace Cyrus.Content {
         }
         string PublishNow(LibrarySave save,string packageDirectory,Action check,bool modelsOnly=false) {
                 if(modelsOnly)return PublishModelsNow(save,packageDirectory,check);
+                ValidateRecipe(save.RecipePath);
                 var text=Read(save.RecipePath,8388608);var sha=HashText(text);var recipe=D(LibraryJson.Parse(text));var id=S(recipe["id"]);
                 if(!System.Text.RegularExpressions.Regex.IsMatch(id,"^[A-Za-z0-9_-]{1,80}$"))throw new IOException("Invalid recipe identity.");
                 using(Lock(check)){

@@ -1,0 +1,376 @@
+{
+  "assumptions": {
+    "expanded_dynamic_position_normal_bytes_per_vertex": 24,
+    "guide_header_bytes_assumed": 32,
+    "instance_bytes_assumed": 80,
+    "nodes_per_guide_assumed": 8,
+    "pose_node_bytes_assumed": 32,
+    "rest_vertex_bytes_assumed": 48,
+    "root_groups_equal_guides_for_mask_example_only": true,
+    "single_binding_bytes_assumed": 32,
+    "source_guides_supplied": 451,
+    "source_node_bytes_assumed": 48,
+    "source_triangles_supplied": 27501,
+    "source_vertices_supplied": 22032,
+    "triangle_index_bytes_assumed": 12,
+    "triangle_metadata_bytes_assumed": 8
+  },
+  "conditional_transfer_only_lower_bounds": [
+    {
+      "K": 10,
+      "assumed_effective_link_GBps": 12,
+      "bytes": 1154560,
+      "one_direction_ms": 0.09621333333333333,
+      "warning": "Illustrative 12 GB/s, not measured; excludes wait, dispatch, packing, validation, graphics upload and contention"
+    },
+    {
+      "K": 1000,
+      "assumed_effective_link_GBps": 12,
+      "bytes": 115456000,
+      "one_direction_ms": 9.621333333333334,
+      "warning": "Illustrative 12 GB/s, not measured; excludes wait, dispatch, packing, validation, graphics upload and contention"
+    },
+    {
+      "K": 10000,
+      "assumed_effective_link_GBps": 12,
+      "bytes": 1154560000,
+      "one_direction_ms": 96.21333333333334,
+      "warning": "Illustrative 12 GB/s, not measured; excludes wait, dispatch, packing, validation, graphics upload and contention"
+    }
+  ],
+  "dense_scalar_field": [
+    {
+      "cell_m": 0.01,
+      "extent_m": 2.0,
+      "samples_per_axis": 201,
+      "scalar_float32": {
+        "GB_decimal": 0.032482404,
+        "GiB_binary": 0.030251596122980118,
+        "MB_decimal": 32.482404,
+        "bytes": 32482404
+      },
+      "scalar_plus_xyz_gradient_float32": {
+        "GB_decimal": 0.129929616,
+        "GiB_binary": 0.12100638449192047,
+        "MB_decimal": 129.929616,
+        "bytes": 129929616
+      }
+    },
+    {
+      "cell_m": 0.005,
+      "extent_m": 2.0,
+      "samples_per_axis": 401,
+      "scalar_float32": {
+        "GB_decimal": 0.257924804,
+        "GiB_binary": 0.24021119251847267,
+        "MB_decimal": 257.924804,
+        "bytes": 257924804
+      },
+      "scalar_plus_xyz_gradient_float32": {
+        "GB_decimal": 1.031699216,
+        "GiB_binary": 0.9608447700738907,
+        "MB_decimal": 1031.699216,
+        "bytes": 1031699216
+      }
+    },
+    {
+      "cell_m": 0.01,
+      "extent_m": 20.0,
+      "samples_per_axis": 2001,
+      "scalar_float32": {
+        "GB_decimal": 32.048024004,
+        "GiB_binary": 29.847048226743937,
+        "MB_decimal": 32048.024004,
+        "bytes": 32048024004
+      },
+      "scalar_plus_xyz_gradient_float32": {
+        "GB_decimal": 128.192096016,
+        "GiB_binary": 119.38819290697575,
+        "MB_decimal": 128192.096016,
+        "bytes": 128192096016
+      }
+    }
+  ],
+  "fp32_spacing_metres": [
+    {
+      "coordinate_m": 1.0,
+      "direct_quantized_1mm_delta_m": 0.001000046730041504,
+      "double_rebased_then_fp32_1mm_delta_m": 0.0010000000474974513,
+      "ulp_m": 1.1920928955078125e-07
+    },
+    {
+      "coordinate_m": 10.0,
+      "direct_quantized_1mm_delta_m": 0.0010004043579101562,
+      "double_rebased_then_fp32_1mm_delta_m": 0.0010000000474974513,
+      "ulp_m": 9.5367431640625e-07
+    },
+    {
+      "coordinate_m": 1000.0,
+      "direct_quantized_1mm_delta_m": 0.0009765625,
+      "double_rebased_then_fp32_1mm_delta_m": 0.0010000000474974513,
+      "ulp_m": 6.103515625e-05
+    },
+    {
+      "coordinate_m": 100000.0,
+      "direct_quantized_1mm_delta_m": 0.0,
+      "double_rebased_then_fp32_1mm_delta_m": 0.0010000000474974513,
+      "ulp_m": 0.0078125
+    },
+    {
+      "coordinate_m": 1000000.0,
+      "direct_quantized_1mm_delta_m": 0.0,
+      "double_rebased_then_fp32_1mm_delta_m": 0.0010000000474974513,
+      "ulp_m": 0.0625
+    }
+  ],
+  "frame_targets_ms": {
+    "120": 8.333333333333334,
+    "30": 33.333333333333336,
+    "60": 16.666666666666668
+  },
+  "populations": [
+    {
+      "N": 1000,
+      "all_active_pose_32B_8nodes": {
+        "GB_decimal": 0.115456,
+        "GiB_binary": 0.10752677917480469,
+        "MB_decimal": 115.456,
+        "bytes": 115456000
+      },
+      "all_active_pose_three_versions": {
+        "GB_decimal": 0.346368,
+        "GiB_binary": 0.32258033752441406,
+        "MB_decimal": 346.368,
+        "bytes": 346368000
+      },
+      "dense_guide_table_4byte_if_every_instance_has_table": {
+        "GB_decimal": 0.001804,
+        "GiB_binary": 0.0016801059246063232,
+        "MB_decimal": 1.804,
+        "bytes": 1804000
+      },
+      "dense_guide_table_8byte_if_every_instance_has_table": {
+        "GB_decimal": 0.003608,
+        "GiB_binary": 0.0033602118492126465,
+        "MB_decimal": 3.608,
+        "bytes": 3608000
+      },
+      "expanded_position_normal": {
+        "GB_decimal": 0.528768,
+        "GiB_binary": 0.49245357513427734,
+        "MB_decimal": 528.768,
+        "bytes": 528768000
+      },
+      "instance_records": {
+        "GB_decimal": 8e-05,
+        "GiB_binary": 7.450580596923828e-05,
+        "MB_decimal": 0.08,
+        "bytes": 80000
+      },
+      "word_padded_visibility_mask": {
+        "GB_decimal": 6e-05,
+        "GiB_binary": 5.587935447692871e-05,
+        "MB_decimal": 0.06,
+        "bytes": 60000
+      }
+    },
+    {
+      "N": 10000,
+      "all_active_pose_32B_8nodes": {
+        "GB_decimal": 1.15456,
+        "GiB_binary": 1.0752677917480469,
+        "MB_decimal": 1154.56,
+        "bytes": 1154560000
+      },
+      "all_active_pose_three_versions": {
+        "GB_decimal": 3.46368,
+        "GiB_binary": 3.2258033752441406,
+        "MB_decimal": 3463.68,
+        "bytes": 3463680000
+      },
+      "dense_guide_table_4byte_if_every_instance_has_table": {
+        "GB_decimal": 0.01804,
+        "GiB_binary": 0.016801059246063232,
+        "MB_decimal": 18.04,
+        "bytes": 18040000
+      },
+      "dense_guide_table_8byte_if_every_instance_has_table": {
+        "GB_decimal": 0.03608,
+        "GiB_binary": 0.033602118492126465,
+        "MB_decimal": 36.08,
+        "bytes": 36080000
+      },
+      "expanded_position_normal": {
+        "GB_decimal": 5.28768,
+        "GiB_binary": 4.924535751342773,
+        "MB_decimal": 5287.68,
+        "bytes": 5287680000
+      },
+      "instance_records": {
+        "GB_decimal": 0.0008,
+        "GiB_binary": 0.0007450580596923828,
+        "MB_decimal": 0.8,
+        "bytes": 800000
+      },
+      "word_padded_visibility_mask": {
+        "GB_decimal": 0.0006,
+        "GiB_binary": 0.0005587935447692871,
+        "MB_decimal": 0.6,
+        "bytes": 600000
+      }
+    },
+    {
+      "N": 100000,
+      "all_active_pose_32B_8nodes": {
+        "GB_decimal": 11.5456,
+        "GiB_binary": 10.752677917480469,
+        "MB_decimal": 11545.6,
+        "bytes": 11545600000
+      },
+      "all_active_pose_three_versions": {
+        "GB_decimal": 34.6368,
+        "GiB_binary": 32.258033752441406,
+        "MB_decimal": 34636.8,
+        "bytes": 34636800000
+      },
+      "dense_guide_table_4byte_if_every_instance_has_table": {
+        "GB_decimal": 0.1804,
+        "GiB_binary": 0.16801059246063232,
+        "MB_decimal": 180.4,
+        "bytes": 180400000
+      },
+      "dense_guide_table_8byte_if_every_instance_has_table": {
+        "GB_decimal": 0.3608,
+        "GiB_binary": 0.33602118492126465,
+        "MB_decimal": 360.8,
+        "bytes": 360800000
+      },
+      "expanded_position_normal": {
+        "GB_decimal": 52.8768,
+        "GiB_binary": 49.245357513427734,
+        "MB_decimal": 52876.8,
+        "bytes": 52876800000
+      },
+      "instance_records": {
+        "GB_decimal": 0.008,
+        "GiB_binary": 0.007450580596923828,
+        "MB_decimal": 8.0,
+        "bytes": 8000000
+      },
+      "word_padded_visibility_mask": {
+        "GB_decimal": 0.006,
+        "GiB_binary": 0.005587935447692871,
+        "MB_decimal": 6.0,
+        "bytes": 6000000
+      }
+    },
+    {
+      "N": 1000000,
+      "all_active_pose_32B_8nodes": {
+        "GB_decimal": 115.456,
+        "GiB_binary": 107.52677917480469,
+        "MB_decimal": 115456.0,
+        "bytes": 115456000000
+      },
+      "all_active_pose_three_versions": {
+        "GB_decimal": 346.368,
+        "GiB_binary": 322.58033752441406,
+        "MB_decimal": 346368.0,
+        "bytes": 346368000000
+      },
+      "dense_guide_table_4byte_if_every_instance_has_table": {
+        "GB_decimal": 1.804,
+        "GiB_binary": 1.6801059246063232,
+        "MB_decimal": 1804.0,
+        "bytes": 1804000000
+      },
+      "dense_guide_table_8byte_if_every_instance_has_table": {
+        "GB_decimal": 3.608,
+        "GiB_binary": 3.3602118492126465,
+        "MB_decimal": 3608.0,
+        "bytes": 3608000000
+      },
+      "expanded_position_normal": {
+        "GB_decimal": 528.768,
+        "GiB_binary": 492.45357513427734,
+        "MB_decimal": 528768.0,
+        "bytes": 528768000000
+      },
+      "instance_records": {
+        "GB_decimal": 0.08,
+        "GiB_binary": 0.07450580596923828,
+        "MB_decimal": 80.0,
+        "bytes": 80000000
+      },
+      "word_padded_visibility_mask": {
+        "GB_decimal": 0.06,
+        "GiB_binary": 0.05587935447692871,
+        "MB_decimal": 60.0,
+        "bytes": 60000000
+      }
+    }
+  ],
+  "shared_source_lower_model": {
+    "GB_decimal": 0.002500196,
+    "GiB_binary": 0.002328488975763321,
+    "MB_decimal": 2.500196,
+    "bytes": 2500196
+  },
+  "sparse_examples": {
+    "K_10000_all_guides_compact_pose_readback": {
+      "GB_decimal": 1.15456,
+      "GiB_binary": 1.0752677917480469,
+      "MB_decimal": 1154.56,
+      "bytes": 1154560000
+    },
+    "K_10000_expanded_position_normal": {
+      "GB_decimal": 5.28768,
+      "GiB_binary": 4.924535751342773,
+      "MB_decimal": 5287.68,
+      "bytes": 5287680000
+    },
+    "K_10000_naive_8_colliders_per_span_pairs_16B": {
+      "GB_decimal": 4.04096,
+      "GiB_binary": 3.763437271118164,
+      "MB_decimal": 4040.96,
+      "bytes": 4040960000
+    },
+    "K_10000_plant_collider_pairs_8_each_16B": {
+      "GB_decimal": 0.00128,
+      "GiB_binary": 0.0011920928955078125,
+      "MB_decimal": 1.28,
+      "bytes": 1280000
+    },
+    "K_10_expanded_position_normal": {
+      "GB_decimal": 0.00528768,
+      "GiB_binary": 0.0049245357513427734,
+      "MB_decimal": 5.28768,
+      "bytes": 5287680
+    },
+    "N_1M_K_10_all_guides_pose": {
+      "GB_decimal": 0.00115456,
+      "GiB_binary": 0.0010752677917480469,
+      "MB_decimal": 1.15456,
+      "bytes": 1154560
+    },
+    "N_1M_K_10_changed_six_guides_pose_total": {
+      "GB_decimal": 1.536e-06,
+      "GiB_binary": 1.430511474609375e-06,
+      "MB_decimal": 0.001536,
+      "bytes": 1536
+    },
+    "all_active_1M_simple_blades_8nodes_pose": {
+      "GB_decimal": 0.256,
+      "GiB_binary": 0.2384185791015625,
+      "MB_decimal": 256.0,
+      "bytes": 256000000
+    },
+    "six_guides_headers_16B": {
+      "GB_decimal": 9.6e-08,
+      "GiB_binary": 8.940696716308594e-08,
+      "MB_decimal": 9.6e-05,
+      "bytes": 96
+    }
+  },
+  "status": "Executed arithmetic; all population/layout choices are assumptions, not measured allocations"
+}

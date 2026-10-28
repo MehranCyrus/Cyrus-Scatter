@@ -1,5 +1,7 @@
 # Shared models and recipes — 0.87.1
 
+**Versioned 0.87.1 guide.** Storage/sharing principles below retain their original scope. Current Save commands are Scene preset / Portable preset / Settings only; use the [maintained Library workflow](ARTIST_WORKFLOW.md) and [0.87.5.1 Scene guide](../scene-presets-08751/ARTIST_GUIDE.md). Later native Scene reuse does not widen the static adapters described here.
+
 The [delivery report](DELIVERY_0871.md) identifies the exact installers, scoped Max 2024/2026/2027 checks and remaining limits.
 
 ## Save and reuse

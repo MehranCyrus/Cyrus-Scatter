@@ -1,0 +1,1 @@
+for i=1 to 8 while theHold.Holding() do theHold.Accept "Owned fixture authored edit";(dotNetClass "System.IO.File").WriteAllText (GardenRun+"fixture-hold-finished.txt") (theHold.Holding() as string)

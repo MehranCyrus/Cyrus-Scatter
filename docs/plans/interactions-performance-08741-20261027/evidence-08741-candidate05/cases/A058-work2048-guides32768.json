@@ -1,0 +1,38 @@
+{
+  "key": "A058-work2048-guides32768",
+  "model_key": "A058",
+  "status": "failed",
+  "phase": "prepare through generated UI",
+  "attempts": [],
+  "host_memory_before": {
+    "private_bytes": 3655426048,
+    "working_set_bytes": 2903072768,
+    "process_lifetime_peak_working_set_bytes": 6610857984,
+    "scope": "Whole owned Max process; includes scene, plugins and prior test cases, not isolated Cyrus or GPU memory."
+  },
+  "name": "Tea Tree - 03",
+  "category": "Trees",
+  "source_scene_sha256": "73d65825345a37124bd03053bd467ea805075dc2c2e54f9ad1ea9faf1b4e49e5",
+  "node_name": "CyrusModel_A058",
+  "settings": {
+    "minimum_m": 0.005,
+    "branch_connection_m": 0.15,
+    "stiffness": 0.5,
+    "preview_fraction": 1.0,
+    "hide_roots": false,
+    "contact_gap": 0.0,
+    "limits": [
+      2000000,
+      4000000,
+      100000,
+      32768,
+      2000000,
+      2048,
+      2048
+    ]
+  },
+  "initial_scatter_ms": 966.0696999635547,
+  "prepare_seconds": 6.28783360007219,
+  "ui_message": "-- Runtime error: Preparation needs review: 23 unresolved guides and 10238 unattached pieces. Open Edit preparation to inspect them.",
+  "error": "Traceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\interactions08741\\measure_case.py\", line 174, in <module>\n    raise RuntimeError('Preparation did not produce a ready definition: '+report['ui_message'])\nRuntimeError: Preparation did not produce a ready definition: -- Runtime error: Preparation needs review: 23 unresolved guides and 10238 unattached pieces. Open Edit preparation to inspect them.\n"
+}

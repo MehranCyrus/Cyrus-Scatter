@@ -1,0 +1,16 @@
+{
+  "branch": "codex/workflow-0.75",
+  "head": "d24b880816ab367874f417f79d1253aafa9a60f5",
+  "sources": {
+    "AminScatter/src/preparation_editor.cpp": "343ba49a9006671ff3214072e1b1c976e5e238c8af2378fce3cb4fc379f829f1",
+    "CyrusVegetationLab/experiments/stem-live/topology_analysis.cpp": "fea137152c405cf554fbf9b30524809b2a6a413dd6b702d72977f9230e29b9db",
+    "CyrusVegetationLab/experiments/stem-live/preparation_authoring.cpp": "fb66df42c5eee75a34f0285f080822419e4891313a5c4b58692ad91da5f0e231",
+    "CyrusVegetationLab/experiments/stem-live/preparation_authoring.hpp": "57ef1fc367b4f41fabb5db45094875cf364bad32e7b2ccef59e3add013e58c82",
+    "AminScatter/tests/preparation_authoring_tests.cpp": "16dba8b0c035d44d10508fe385131e9a055a0762162ff5f5546179ea2c12c558",
+    "AminScatter/src/interactions_source.cpp": "8aabef19dd7ed8fbcf894eb6f99bc6acdefa154a42468bf8a05ca3c13d037558",
+    "AminScatter/src/interactions_host.cpp": "ac330dfea0904b676042d19f98eff375037e9d808154b88b5448f72e5d9c2730",
+    "AminScatter/CMakeLists.txt": "c99832be2f704a04f819499679b3ff5373bcec91d707482478ced3b0c4f98202",
+    "AminScatter/tools/ui/templates/unified-core.ms": "5955fb9f1ad3de3264977753c28805f95ca1c5bbec0511dd645762c4dc135274",
+    "AminScatter/tools/ui/templates/interactions-authoring.ms": "e5e99d9f69d8d9febd292174509cc4d17b83681edd10612fb1511e8312526dc4"
+  }
+}

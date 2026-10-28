@@ -1,6 +1,7 @@
 #include "recipe_library.h"
 #include <map>
 #include "recipe_store.h"
+#include "scene_preset.h"
 #include "presets.h"
 #include <algorithm>
 #include <fstream>
@@ -126,12 +127,24 @@ void writePresentation(const std::filesystem::path& recipe,const Json& info,cons
         write(temp,record.dump(2));std::filesystem::rename(temp,path);
     }catch(...){std::error_code ec;std::filesystem::remove(temp,ec);if(tempOwned)std::filesystem::remove(imageTemp,ec);if(imageWritten)std::filesystem::remove(imageTarget,ec);throw;}
 }
+Json readLibraryMetadata(const std::filesystem::path& path,std::string* sha256){
+    const auto bytes=load(path,maxManifestBytes);auto d=parse(bytes);
+    if(!cyrus::scenepresets::isScene(d))return read(path,false,sha256);
+    cyrus::scenepresets::validate(d);
+    if(sha256)*sha256=digest(std::vector<unsigned char>(bytes.begin(),bytes.end()));
+    return d;
+}
 Json summary(const std::filesystem::path& recipe,bool confined){
     if(confined){
         confinedPath(recipe);
         confinedPath(metadataPath(recipe));
     }
-    std::string hash;const auto d=read(recipe,false,&hash);std::size_t paints=0;Json layers=Json::array(),roles=Json::array();
+    std::string hash;const auto d=readLibraryMetadata(recipe,&hash);std::size_t paints=0;Json layers=Json::array(),roles=Json::array();
+    if(cyrus::scenepresets::isScene(d)){
+        Json info={{"category",""},{"tags",Json::array()},{"description",""}},image=Json::array();bool hasImage=false;
+        if(!d["presentation"].is_null()){const auto& p=d["presentation"];info=p["metadata"];hasImage=!p["thumbnail"].is_null();if(hasImage){const auto& t=p["thumbnail"];image=Json::array({utf8(attachmentPath(recipe,t["file"].get<std::string>())),t["sha256"],t["bytes"]});}}
+        return Json::array({d["name"],d["layers"].size(),0,d["id"],info["category"],info["tags"],info["description"],d["nodeCount"],d["layers"],roles,hash,hasImage,"",image,d["revision"],"Max 2027; matching plug-ins and system units.","Scene preset"});
+    }
     for(const auto& l:d["layers"]){layers.push_back(l["name"]);if(!l["paint"].is_null())++paints;for(const auto& a:l["areas"])if(!a["paint"].is_null())++paints;}
     for(const auto& r:d["roles"]){if(roles.size()==8)break;roles.push_back(r["name"]);}
     Json info={{"category",""},{"tags",Json::array()},{"description",""}},image=Json::array();bool hasImage=false;std::string warning;
@@ -175,7 +188,7 @@ Json summary(const std::filesystem::path& recipe,bool confined){
     return Json::array({d["name"],d["layers"].size(),paints,d["id"],info["category"],info["tags"],info["description"],d["roles"].size(),layers,roles,hash,hasImage,warning,image,d["revision"],requirements,readiness});
 }
 std::filesystem::path thumbnail(const std::filesystem::path& recipe){
-    std::string hash;const auto d=read(recipe,false,&hash);const auto p=d["presentation"].is_null()?presentation(recipe,hash):d["presentation"];if(p.is_null()||p["thumbnail"].is_null())return {};
+    std::string hash;const auto d=readLibraryMetadata(recipe,&hash);const auto p=d["presentation"].is_null()?presentation(recipe,hash):d["presentation"];if(p.is_null()||p["thumbnail"].is_null())return {};
     const auto& t=p["thumbnail"];const auto file=attachmentPath(recipe,t["file"].get<std::string>());
     const auto raw=load(file,maxThumbnailBytes);const std::vector<unsigned char> bytes(raw.begin(),raw.end());validateThumbnail(bytes);
     require(bytes.size()==t["bytes"].get<std::size_t>()&&digest(bytes)==t["sha256"].get<std::string>(),"Thumbnail integrity mismatch.");return file;

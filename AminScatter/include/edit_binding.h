@@ -21,6 +21,10 @@ bool isSourceAware(std::string_view) noexcept;
 Descriptor parse(const std::string&);
 std::string encode(const Descriptor&);
 std::string make(const std::string& legacy,const std::string& basis,const std::vector<SourceSpec>&);
+// Typed revision for the existing seven-field MAXScript source producer.
+// Only its scale is mutable. All identity/choice/orientation/offset semantics
+// remain guarded; unrelated opaque historical strings do not acquire this rule.
+std::string editableScaleSettings(const std::string& legacySettings,double modelScale);
 // Pure operation: caller installs only inside its existing transaction. Legacy
 // compatibility proves the signature, not the ownership of an absent row.
 // Hydrating each old row still requires its exact compatible native input.

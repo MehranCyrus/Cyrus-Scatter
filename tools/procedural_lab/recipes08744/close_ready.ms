@@ -1,0 +1,1 @@
+undo off (if CyrusReadyPresetEditor!=undefined do destroyDialog CyrusReadyPresetEditor)
