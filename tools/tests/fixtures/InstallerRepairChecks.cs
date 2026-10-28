@@ -8,6 +8,7 @@ using Cyrus.Setup;
 
 static class InstallerRepairChecks {
     static string work;
+    static string scatterPayloadOverride;
     static int checks;
     // Exact public startup/macro bytes from the archived Max 2027 .81.6 MZP.
     static readonly byte[] LegacyStartup=Convert.FromBase64String("LS0gUmVnaXN0ZXIgdGhlIHBlcnNpc3RlbnQgc2NlbmUgY2xhc3MgYmVmb3JlIG9wZW5pbmcgdXNlciBzY2VuZXMuCmZpbGVJbiAocGF0aENvbmZpZy5hcHBlbmRQYXRoIChnZXREaXIgI3VzZXJTY3JpcHRzKSAiQ3lydXNTY2F0dGVyL0N5cnVzU2NhdHRlci5tcyIpCg==");
@@ -21,11 +22,11 @@ static class InstallerRepairChecks {
     static string Root(InstallPaths p,string product){return Path.Combine(p.Scripts,product=="scatter"?"CyrusScatter":"CyrusSurfaceAnalyzer");}
     static string[] Targets(InstallPaths p,string product){return product=="scatter"?new[]{Path.Combine(p.Startup,"CyrusScatterStartup.ms"),Path.Combine(p.Macros,"CyrusScatter.mcr"),Path.Combine(Root(p,product),"installed.txt"),Path.Combine(p.Profile,"Plugin.UserSettings.ini")}:new[]{Path.Combine(p.Startup,"CyrusSurfaceAnalyzerStartup.ms"),Path.Combine(Root(p,product),"installed.txt"),Path.Combine(p.Profile,"Plugin.UserSettings.ini")};}
     static string Snapshot(InstallPaths p,string product){return String.Join("|",Array.ConvertAll(Targets(p,product),x=>File.Exists(x)?Convert.ToBase64String(File.ReadAllBytes(x)):"ABSENT"));}
-    static string Payload(string product){return Path.Combine(work,"payload-"+product);}
-    static void CreatePayloads() {
+    static string Payload(string product){return product=="scatter"&&scatterPayloadOverride!=null?scatterPayloadOverride:Path.Combine(work,"payload-"+product);}
+    static void CreatePayloads(string year="2027") {
         string folder=Payload("scatter");Directory.CreateDirectory(folder);
         string[] names={"AminScatter.dlx","CyrusBrush.dlx","CyrusBrushStorage.dlh","CyrusScatterEdit.dlm","CyrusScatter.ms","CyrusGallery.dll","CyrusInstaller.dll","Clipper2-LICENSE.txt","SurfaceGeodesic-LICENSE.txt","SurfaceGeodesic-NOTICE.txt","nlohmann-json-LICENSE.txt","libjpeg-turbo-LICENSE.txt","libjpeg-turbo-IJG-README.txt","libjpeg-turbo-NOTICE.txt","INSTALL.txt","LibraryFiles.ms","CyrusScatterStartup.ms","CyrusScatter.mcr","Uninstall.ms"};
-        var rows=new StringBuilder("CyrusScatterInstall2\t0.86.8.7\t2027\t0123456789ab\n");
+        var rows=new StringBuilder("CyrusScatterInstall2\t0.86.8.7\t"+year+"\t0123456789ab\n");
         foreach(string name in names){byte[] bytes=Encoding.UTF8.GetBytes("Owned filesystem fixture only: "+name+"\n");File.WriteAllBytes(Path.Combine(folder,name),bytes);rows.Append(name+"\t"+InstallEngine.Hash(bytes)+"\t"+bytes.Length+"\t"+name+"\n");}
         File.WriteAllText(Path.Combine(folder,"InstallInventory.txt"),rows.ToString(),new UTF8Encoding(false));
         folder=Payload("analyzer");Directory.CreateDirectory(folder);
@@ -62,7 +63,7 @@ static class InstallerRepairChecks {
             p=Paths("p"+(n++));Seed(product,p);string old=Backup(product,p,false);Directory.CreateDirectory(Path.GetDirectoryName(old));File.WriteAllText(old,"interrupted");CheckInstall(product,p);Check(File.ReadAllText(old)=="interrupted",product+" poisoned legacy final is retained");
             string metadata=product=="scatter"?Path.Combine(Path.GetDirectoryName(Backup(product,p,true)),"complete.txt"):Path.ChangeExtension(Backup(product,p,true),"txt");Check(File.ReadAllText(metadata).Contains(old)&&File.ReadAllText(metadata).Contains(Backup(product,p,true)),product+" migration records old and new backup paths");
             p=Paths("p"+(n++));Seed(product,p);string current=Backup(product,p,true);Directory.CreateDirectory(Path.GetDirectoryName(current));File.WriteAllText(current,"different canonical backup");string before=Snapshot(p,product);Check(Reject(()=>Install(product,p))&&Snapshot(p,product)==before&&File.ReadAllText(current)=="different canonical backup",product+" unexpected current backup and original are preserved");
-            string[] labels=product=="scatter"?new[]{"scatter-0","scatter-1","scatter-set"}:new[]{"analyzer-startup","analyzer-set"};
+            string[] labels=product=="scatter"?new[]{"scatter-0","scatter-1","scatter-set","scatter-registration"}:new[]{"analyzer-startup","analyzer-set"};
             foreach(string label in labels)foreach(string phase in new[]{"before-create","partial-write","before-flush","after-flush","before-verify","verified","before-move","after-move"}){
                 p=Paths("p"+(n++));Seed(product,p);before=Snapshot(p,product);bool hit=false;string target="backup:"+label+":"+phase;
                 Check(Reject(()=>Install(product,p,value=>{if(value==target){hit=true;throw new IOException("Owned checkpoint error");}}))&&hit&&Snapshot(p,product)==before,product+" original registration retained at "+target);VerifyBackups(product,p,false);CheckInstall(product,p);
@@ -111,7 +112,9 @@ static class InstallerRepairChecks {
             Check(Reject(()=>Install(product,p))&&Snapshot(p,product)==before,product+" custom registration preserved");return 0;
         }
         if(args[0]=="legacy-scatter"){
-            CreatePayloads();Seed("scatter",p);string legacy=args[4];
+            string year=args.Length>6?args[6]:"2027",scenario=args.Length>7?args[7]:"upgrade";
+            CreatePayloads(year);Seed("scatter",p);string legacy=args[4];
+            if(args.Length>8)scatterPayloadOverride=Path.GetFullPath(args[8]);
             string bins=args[5].StartsWith("r/")?Path.Combine(p.RuntimeRoot,args[5]):Path.Combine(Root(p,"scatter"),args[5]);Directory.CreateDirectory(bins);
             var originals=new Dictionary<string,string>();
             foreach(string name in new[]{"AminScatter.dlx","CyrusBrush.dlx","CyrusBrushStorage.dlh","CyrusScatterEdit.dlm"}){
@@ -119,10 +122,40 @@ static class InstallerRepairChecks {
             }
             File.Copy(Path.Combine(legacy,"CyrusScatterStartup.ms"),Targets(p,"scatter")[0],true);File.Copy(Path.Combine(legacy,"CyrusScatter.mcr"),Targets(p,"scatter")[1],true);
             string wrapperHash=InstallEngine.Hash(File.ReadAllBytes(Targets(p,"scatter")[0]));
-            File.AppendAllText(Path.Combine(p.Profile,"Plugin.UserSettings.ini"),"CyrusScatter2027="+bins+"\r\n",Encoding.Unicode);
+            string ini=Path.Combine(p.Profile,"Plugin.UserSettings.ini"),entry="CyrusScatter"+year+"="+bins+"\\\r\n";
+            File.AppendAllText(ini,entry,Encoding.Unicode);
+            Check(InstallEngine.InstalledVersion(p)==""&&InstallEngine.HasPreviousInstallation(p,year),"unreceipted installation is visible to installer UI");
+            if(scenario=="tampered")File.AppendAllText(Path.Combine(bins,"AminScatter.dlx"),"tampered");
+            if(scenario=="duplicate")File.AppendAllText(ini,entry,Encoding.Unicode);
+            string before=Snapshot(p,"scatter");byte[] originalIni=File.ReadAllBytes(ini);
+            var engine=new InstallEngine(Payload("scatter"),InstallEngine.Hash(File.ReadAllBytes(Path.Combine(Payload("scatter"),"InstallInventory.txt"))));
+            if(scenario=="tampered"||scenario=="duplicate"||scenario=="wrong-year"){
+                Check(Reject(()=>engine.PreflightRegistration(p))&&Snapshot(p,"scatter")==before,"invalid legacy registration rejected during preflight");
+                Check(Reject(()=>Install("scatter",p))&&Snapshot(p,"scatter")==before,"invalid legacy registration and wrappers preserved");return 0;
+            }
+            engine.PreflightRegistration(p);Check(Snapshot(p,"scatter")==before,"preflight preserves all registration bytes");
+            if(scenario=="rollback")Check(Reject(()=>Install("scatter",p,phase=>{if(phase=="publishing:3")throw new IOException("Owned publication interruption");}))&&Snapshot(p,"scatter")==before,"legacy publication failure restores original registration");
             Install("scatter",p);foreach(var original in originals)Check(InstallEngine.Hash(File.ReadAllBytes(original.Key))==original.Value,"exact archived Scatter native survives upgrade");
+            string iniBackup=Path.Combine(Root(p,"scatter"),"Backups","v2","registration-"+InstallEngine.Hash(originalIni)+".ini");
+            Check(File.Exists(iniBackup)&&InstallEngine.Hash(File.ReadAllBytes(iniBackup))==InstallEngine.Hash(originalIni),"original plugin INI has exact durable backup");
+            Check(File.ReadAllText(ini).Contains("Unrelated=C:\\Preserve\\Plugins"),"legacy upgrade preserves unrelated INI settings");
+            string installed=Snapshot(p,"scatter");int backupCount=Directory.GetFiles(Path.Combine(Root(p,"scatter"),"Backups"),"*",SearchOption.AllDirectories).Length;
+            Install("scatter",p);Check(Snapshot(p,"scatter")==installed&&backupCount==Directory.GetFiles(Path.Combine(Root(p,"scatter"),"Backups"),"*",SearchOption.AllDirectories).Length,"repeat legacy upgrade is idempotent");
             bool backup=false;foreach(string file in Directory.GetFiles(Path.Combine(Root(p,"scatter"),"Backups","v2"),"CyrusScatterStartup.ms",SearchOption.AllDirectories))backup|=InstallEngine.Hash(File.ReadAllBytes(file))==wrapperHash;
             Check(backup,"exact archived Scatter startup has durable backup");return 0;
+        }
+        if(args[0]=="package-scatter"){
+            string year=args[5];
+            foreach(string d in new[]{p.Scripts,p.Startup,p.Macros,p.Profile})Directory.CreateDirectory(d);
+            File.WriteAllText(Path.Combine(p.Profile,"Plugin.UserSettings.ini"),"[Directories]\nUnrelated=C:\\Preserve\\Plugins\n");
+            Check(!InstallEngine.HasPreviousInstallation(p,year),"clean profile has no previous Scatter installation");
+            if(args.Length>6){scatterPayloadOverride=Path.GetFullPath(args[6]);Install("scatter",p);}
+            scatterPayloadOverride=Path.GetFullPath(args[4]);
+            var engine=new InstallEngine(Payload("scatter"),InstallEngine.Hash(File.ReadAllBytes(Path.Combine(Payload("scatter"),"InstallInventory.txt"))));
+            engine.PreflightRegistration(p);Install("scatter",p);
+            Check(InstallEngine.InstalledVersion(p)=="0.87.6","real packaged payload installed for Max "+year);
+            string installed=Snapshot(p,"scatter");Install("scatter",p);Check(Snapshot(p,"scatter")==installed,"real package repeat install is idempotent");
+            Check(File.ReadAllText(Path.Combine(p.Profile,"Plugin.UserSettings.ini")).Contains("Unrelated=C:\\Preserve\\Plugins"),"real package preserves unrelated registration");return 0;
         }
         if(args[0]=="retry"){CheckInstall(product,p);return 0;}
         if(args[0]=="legacy"){

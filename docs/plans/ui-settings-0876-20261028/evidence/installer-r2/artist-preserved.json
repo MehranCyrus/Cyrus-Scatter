@@ -1,0 +1,22 @@
+{
+  "checked": 16,
+  "unchanged": true,
+  "files": {
+    "AminScatter.dlx": "d9f8374da174fcdd03a6d63efa0f53a93ab91fc835d5b2a14596605564a2b427",
+    "CyrusBrush.dlx": "82d5f53336239ae2cd30af35c1f4b83148848abcdae2c22872cf0a9a81b24998",
+    "CyrusBrushStorage.dlh": "703393aa08e7f6e2c89f392fb28058c7fdb8ad8620112cc6536539b384131150",
+    "CyrusScatterEdit.dlm": "f75914da0fa2e702966f24275f4380ee2c5a4b40e48d9d505750c77ef0a822ab",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2024 - 64bit\\ENU\\Plugin.UserSettings.ini": "150e709521046629078a3e776f336d73ceeff2a08717a12974fbefffea63b659",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2024 - 64bit\\ENU\\scripts\\Startup\\CyrusScatterStartup.ms": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2024 - 64bit\\ENU\\usermacros\\CyrusScatter.mcr": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2024 - 64bit\\ENU\\scripts\\CyrusScatter\\installed.txt": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\Plugin.UserSettings.ini": "38c6a983fe56c3a1e91184d54d82bb2601205b573f0976166778eb4663bff4e1",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\scripts\\Startup\\CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\usermacros\\CyrusScatter.mcr": "d76b48b84c4b882d4a5a40fd07e880c3b9fb3b0c12bbdac7bfccea3045c91b20",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\scripts\\CyrusScatter\\installed.txt": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\Plugin.UserSettings.ini": "7b369c9d8d2a0bbc259ae47fdb94ae175b07ab63a85315c5a49acb414c6e39a3",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\Startup\\CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\usermacros\\CyrusScatter.mcr": "a099bf60f20b776acc4f24a3ab0d7c090baeb8bd20fde1587709fdaaad78e36c",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\installed.txt": "5c01debc69b3318d416b7cf0d87bda6b8e357a9b02c5e475ad699565cd6b6dfe"
+  }
+}

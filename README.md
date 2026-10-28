@@ -1,6 +1,6 @@
 # Cyrus Scatter
 
-**Current delivery: [0.87.6 UI and settings](docs/plans/ui-settings-0876-20261028/DELIVERY.md).** Fixes Point sources, clarifies painting fades and mask previews, repairs Band labels and groups secondary controls. [Artist guide](docs/plans/ui-settings-0876-20261028/ARTIST_GUIDE.md) · [complete control ledger](docs/plans/ui-settings-0876-20261028/CONTROL_LEDGER.md). One EXE contains distinct Max 2024/2026/2027 payloads. Runtime UI checks are Max 2027 only; older hosts are compile/package checked. The website was not rebuilt in this UI round.
+**Current delivery: [0.87.6 UI and settings](docs/plans/ui-settings-0876-20261028/DELIVERY.md).** Fixes Point sources, clarifies painting fades and mask previews, repairs Band labels and groups secondary controls. [Artist guide](docs/plans/ui-settings-0876-20261028/ARTIST_GUIDE.md) · [complete control ledger](docs/plans/ui-settings-0876-20261028/CONTROL_LEDGER.md). One EXE contains distinct Max 2024/2026/2027 payloads. [Installer r2](docs/plans/ui-settings-0876-20261028/INSTALLER_REPAIR_R2.md) repairs verified legacy upgrades while preserving the plugin payloads. Runtime UI checks are Max 2027 only; older hosts are compile/package checked. The website was not rebuilt in this UI round.
 
 **Performance reference:** [preserve the 0.87.5.6 interaction baseline](docs/PERFORMANCE_BASELINE.md). The user endorsed its Bend/Trim, movement and preview. Future optimization compares both response and visual behavior against the exact scoped delivery.
 

@@ -1,0 +1,32 @@
+PASS EXE embeds Max 2024
+PASS embedded MZP bytes match delivered archive 2024
+PASS EXE embeds Max 2026
+PASS embedded MZP bytes match delivered archive 2026
+PASS EXE embeds Max 2027
+PASS embedded MZP bytes match delivered archive 2027
+PASS owned runtime and library state 2024
+PASS owned runtime and library state 2026
+PASS owned runtime and library state 2027
+PASS clean Max 2024 UI status
+PASS old Max 2026 UI status
+PASS receipted Max 2027 UI status
+PASS legacy presence does not grant receipt-based uninstall
+PASS combined EXE command completed within bound
+PASS combined three-host install/retry success: Installation completed. You can now open Max.
+PASS completed receipt and UI 2024
+PASS completed receipt and UI 2026
+PASS completed receipt and UI 2027
+PASS combined EXE command completed within bound
+PASS combined three-host install/retry success: Installation completed. You can now open Max.
+PASS completed receipt and UI 2024
+PASS completed receipt and UI 2026
+PASS completed receipt and UI 2027
+PASS existing modern installation moved to revised runtime
+PASS unrelated registration retained 2024
+PASS unrelated registration retained 2026
+PASS unrelated registration retained 2027
+PASS legacy INI durable backup matches before upgrade
+PASS legacy native bytes retained
+PASS legacy native bytes retained
+PASS legacy native bytes retained
+PASS legacy native bytes retained

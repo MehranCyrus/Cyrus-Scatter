@@ -54,17 +54,17 @@ namespace Cyrus.Setup {
         }
         void RefreshSelection() {
             if(busy)return;
-            bool any=false,installed=false,missing=false;
+            bool any=false,installed=false,missing=false,previous=false;
             foreach(var pair in hosts) {
                 if(!profiles.ContainsKey(pair.Key))continue;
-                string version;
-                try{version=InstallEngine.InstalledVersion(Distribution.FromProfile(profiles[pair.Key],pair.Key));}
+                string version;bool existing;
+                try{var paths=Distribution.FromProfile(profiles[pair.Key],pair.Key);version=InstallEngine.InstalledVersion(paths);existing=version.Length==0&&InstallEngine.HasPreviousInstallation(paths,pair.Key);}
                 catch(IOException){states[pair.Key].Text="Profile unavailable";pair.Value.Enabled=false;continue;}
-                states[pair.Key].Text=version.Length==0?"Ready to install":"Installed "+version;
-                if(pair.Value.Checked){any=true;installed|=version.Length>0;missing|=version.Length==0;}
+                states[pair.Key].Text=version.Length>0?"Installed "+version:existing?"Older installation found":"Ready to install";
+                if(pair.Value.Checked){any=true;installed|=version.Length>0;missing|=version.Length==0;previous|=existing;}
                 pair.Value.Parent.BackColor=pair.Value.Checked?Color.FromArgb(228,243,237):Color.FromArgb(244,247,248);
             }
-            view.Primary.Text=installed?(missing?"Install / Update":"Update"):"Install";
+            view.Primary.Text=previous?"Install / Update":installed?(missing?"Install / Update":"Update"):"Install";
             view.Primary.Enabled=any;view.Uninstall.Enabled=installed;
         }
         async Task Run(bool remove) {

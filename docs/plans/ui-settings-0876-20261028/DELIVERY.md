@@ -11,8 +11,13 @@ and mask previews, and puts less-used controls into named groups. The endorsed
 
 ## Download and install
 
-- [Combined EXE — Max 2024, 2026 and 2027](../../../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Setup.exe)
-- MZP: [2024](../../../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Max2024.mzp) · [2026](../../../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Max2026.mzp) · [2027](../../../dist/CyrusScatter-0.87.6-20261028-final/CyrusScatter-0.87.6-Max2027.mzp)
+- [Combined EXE — Max 2024, 2026 and 2027, installer r2](../../../dist/CyrusScatter-0.87.6-20261028-installer-r2/CyrusScatter-0.87.6-Setup.exe)
+- MZP: [2024](../../../dist/CyrusScatter-0.87.6-20261028-installer-r2/CyrusScatter-0.87.6-Max2024.mzp) · [2026](../../../dist/CyrusScatter-0.87.6-20261028-installer-r2/CyrusScatter-0.87.6-Max2026.mzp) · [2027](../../../dist/CyrusScatter-0.87.6-20261028-installer-r2/CyrusScatter-0.87.6-Max2027.mzp)
+
+The [installer r2 repair](INSTALLER_REPAIR_R2.md) fixes upgrades from verified old
+Max 2024/2026 installations, including the reported Max 2026 0.81.6 setup. Every
+plugin/runtime byte is identical to the original 0.87.6 delivery. Original native
+qualification receipts remain unchanged; r2 adds separate installer evidence.
 
 Save work and close the Max versions selected in the EXE, install, then reopen.
 For MZPs use **Scripting > Run Script**, then restart Max. Install the complete

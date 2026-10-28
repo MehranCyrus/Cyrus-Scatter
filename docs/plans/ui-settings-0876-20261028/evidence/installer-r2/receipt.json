@@ -1,0 +1,59 @@
+{
+  "version": "0.87.6",
+  "installer_revision": "r2",
+  "exe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.87.6-20261028-installer-r2\\CyrusScatter-0.87.6-Setup.exe",
+  "exe_sha256": "68eb237ae36a45582df6e9334c99fa9dfd46a3411b2d4333e54877588718189a",
+  "core_sha256": "2393512322ba3ce42c5a8b8de40d42f0eeff9d274d693b07b975802075fa304e",
+  "packages": [
+    {
+      "year": 2024,
+      "sha256": "95ffb18da66d3fc64b82e618fbc5086abf99d224ae5b1efdd82e0ef122afc2bb",
+      "base_sha256": "17a89cc27acdd40c1637329360567cd2a8db683b29bcf3d4712de7de4a5d386a",
+      "unchanged_members": 27,
+      "changed_members": [
+        "CyrusInstaller.dll",
+        "InstallInventory.txt",
+        "install.ms",
+        "manifest.json"
+      ],
+      "runtime_bytes_unchanged": true,
+      "content_id": "4935b963347f"
+    },
+    {
+      "year": 2026,
+      "sha256": "5d464ed0defd10b89f208bce209a19d7ff9c2b26c818a0ae95329cfb2b458c90",
+      "base_sha256": "aee328bb5be7dc372cceb4770dcbcc6b56597ecdab9d14fb3e08e51c1554ca7a",
+      "unchanged_members": 27,
+      "changed_members": [
+        "CyrusInstaller.dll",
+        "InstallInventory.txt",
+        "install.ms",
+        "manifest.json"
+      ],
+      "runtime_bytes_unchanged": true,
+      "content_id": "9ca4bfa5463f"
+    },
+    {
+      "year": 2027,
+      "sha256": "a139edc83fc30f7ad89e8e9274da07e20803c5bbaa6a60359e7a05ef541d9d8b",
+      "base_sha256": "0dd193dc54accf658fad54ce339a1e00a7b401e2621f4f3c51c602bac2547a89",
+      "unchanged_members": 27,
+      "changed_members": [
+        "CyrusInstaller.dll",
+        "InstallInventory.txt",
+        "install.ms",
+        "manifest.json"
+      ],
+      "runtime_bytes_unchanged": true,
+      "content_id": "a9203128f95f"
+    }
+  ],
+  "qualification": "Managed filesystem and unshown installer form only. Original plugin runtime qualification remains unchanged.",
+  "status": "scoped_pass",
+  "focused_tests": 37,
+  "delivered_scenarios": 9,
+  "delivered_checks": 76,
+  "artist_profile_hashes_unchanged": 16,
+  "protected_native_sources_unchanged": 67,
+  "runtime_launched": false
+}

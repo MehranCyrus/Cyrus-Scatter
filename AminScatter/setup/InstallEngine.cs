@@ -466,14 +466,18 @@ namespace Cyrus.Setup {
             }
             throw new IOException("Max "+year+": older startup/macro files are not recognized. They were preserved. See Error details.\nReview these files before updating: "+targets[0]+"\n"+targets[1]+"\nNo installation receipt: "+targets[2]);
         }
-        // Matching original Max 2027 packages for the admitted wrapper rows.
-        // version, inventory identity (empty for old loose layouts), native-set SHA.
+        // Exact archived packages, scoped to their SDK year. Shared wrapper bytes
+        // alone do not establish ownership of a native registration.
+        // year, version, inventory identity (empty for loose layouts), native-set SHA.
         static readonly string[,] LegacyRegistrations={
-            {"0.81.6","","7800997061d5627efa377fb24e67519e3224d42215c248436298a03b82953bfa"},
-            {"0.85.0","","29c9e9ffb122870c9c8bb9fa26fd6be1468eb31230437bba0acdae18725464b9"},
-            {"0.86.8.2","a0e8fbbd7f89","38b7f80122838eb8ae52f9302803e2cd985070f72addadee029575cff7665418"},
-            {"0.86.8.3","872f09e13064","cbd5fd34baf73fa4856d31495caa86606b4f430739f05244c0f53c74f430aef9"},
-            {"0.86.8.4","09f2cdd4bbb1","c36dd6e84081f474abd4fd1b3f8a3e77e6dc4d609c3773969f6fc2b2fd74223c"}
+            {"2026","0.81.6","","866ea3d514890907d31a19c36799ec5800ab0212438e5b895d0139ec6772cb01"},
+            {"2027","0.81.6","","7800997061d5627efa377fb24e67519e3224d42215c248436298a03b82953bfa"},
+            {"2027","0.85.0","","29c9e9ffb122870c9c8bb9fa26fd6be1468eb31230437bba0acdae18725464b9"},
+            {"2024","0.86.8.2","95b2c365ca4e","3680a387f6a6128084ccd550f4fa050e22d273d8a1957cf196f36bfe14d0245e"},
+            {"2026","0.86.8.2","2659a612260f","38877163cebd6929bbdaeff2c12e10a43c5834792ae4d0dc8c5acce406fc9b8c"},
+            {"2027","0.86.8.2","a0e8fbbd7f89","38b7f80122838eb8ae52f9302803e2cd985070f72addadee029575cff7665418"},
+            {"2027","0.86.8.3","872f09e13064","cbd5fd34baf73fa4856d31495caa86606b4f430739f05244c0f53c74f430aef9"},
+            {"2027","0.86.8.4","09f2cdd4bbb1","c36dd6e84081f474abd4fd1b3f8a3e77e6dc4d609c3773969f6fc2b2fd74223c"}
         };
         static string NativeSetHash(string folder) {
             using(var sha=SHA256.Create()) {
@@ -515,9 +519,10 @@ namespace Cyrus.Setup {
                     foreach(var entry in files)if(Native.Contains(entry.Name))Verify(Child(registered,entry.Name),entry);
                     recognized=true;
                 }
-                if(owned==null&&Year=="2027")for(int i=0;!recognized&&i<LegacyRegistrations.GetLength(0);++i) {
-                    string version=LegacyRegistrations[i,0],id=LegacyRegistrations[i,1],hash=LegacyRegistrations[i,2];
-                    bool knownPath=id.Length==0?String.Equals(registered,Child(root,"bin-max2027-"+hash.Substring(0,12)),StringComparison.OrdinalIgnoreCase)
+                if(owned==null)for(int i=0;!recognized&&i<LegacyRegistrations.GetLength(0);++i) {
+                    if(LegacyRegistrations[i,0]!=Year)continue;
+                    string version=LegacyRegistrations[i,1],id=LegacyRegistrations[i,2],hash=LegacyRegistrations[i,3];
+                    bool knownPath=id.Length==0?String.Equals(registered,Child(root,"bin-max"+Year+"-"+hash.Substring(0,12)),StringComparison.OrdinalIgnoreCase)
                         :String.Equals(registered,Child(runtime,"r/"+id+"/bin"),StringComparison.OrdinalIgnoreCase)
                             ||String.Equals(registered,Child(root,"Releases/"+version+"-"+id+"/bin"),StringComparison.OrdinalIgnoreCase);
                     if(knownPath)recognized=NativeSetHash(registered)==hash;
@@ -616,6 +621,22 @@ namespace Cyrus.Setup {
             if(data==null)return "";
             var rows=Decode(data).Replace("\r","").Split('\n');
             return rows.Length==6&&rows[0]==Marker&&System.Text.RegularExpressions.Regex.IsMatch(rows[1],@"^0\.[0-9]{1,3}\.[0-9]{1,3}(\.[0-9]{1,3})?$")?rows[1]:"";
+        }
+        // Read-only UI presence, not permission to replace or uninstall. Older
+        // installations can lack receipts; command preflight still proves ownership.
+        public static bool HasPreviousInstallation(InstallPaths paths,string year) {
+            CheckYear(year);
+            string[] targets=Targets(paths);
+            for(int i=0;i<3;++i)if(File.Exists(targets[i]))return true;
+            bool section=false;
+            foreach(string raw in Decode(ReadOptional(targets[3])).Replace("\r","").Split('\n')) {
+                string line=raw.Trim();
+                if(line.StartsWith("[")&&line.EndsWith("]")){section=line.Equals("[Directories]",StringComparison.OrdinalIgnoreCase);continue;}
+                int at=line.IndexOf('=');if(!section||at<0)continue;
+                string key=line.Substring(0,at).Trim();
+                if(key.Equals("CyrusScatter"+year,StringComparison.OrdinalIgnoreCase)||key.Equals("AminScatter"+year,StringComparison.OrdinalIgnoreCase))return true;
+            }
+            return false;
         }
         // Explicit installation command preflight, separate from the read-only
         // Plan used by library/UI inspection. Recover before checking ownership.
@@ -878,6 +899,8 @@ namespace Cyrus.Setup {
                     after[3]=Registration(before[3],Path.Combine(release,"bin"),Year);
                     for(int i=0;i<targets.Length;++i)if(!Equal(ReadOptional(targets[i]),before[i]))throw new IOException("An installation target changed during preparation; retry.");
                     if(legacyWrappers)PreserveLegacyWrappers(root,targets,before,checkpoint);
+                    if(before[2]==null&&before[3]!=null)
+                        VerifiedBackup.Publish(Child(root,"Backups/v2/registration-"+Hash(before[3])+".ini"),before[3],checkpoint,"scatter-registration");
                     for(int i=0;i<targets.Length;++i)if(!Equal(ReadOptional(targets[i]),before[i]))throw new IOException("An installation target changed during backup; it was preserved: "+targets[i]);
                     SaveJournal(Journal(paths),targets,before,after);
                     if(checkpoint!=null)checkpoint("journal");

@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "cases": [
+    {
+      "case": "clean-2024",
+      "passed": 4,
+      "log": "clean-2024.log"
+    },
+    {
+      "case": "modern-2024",
+      "passed": 4,
+      "log": "modern-2024.log"
+    },
+    {
+      "case": "clean-2026",
+      "passed": 4,
+      "log": "clean-2026.log"
+    },
+    {
+      "case": "modern-2026",
+      "passed": 4,
+      "log": "modern-2026.log"
+    },
+    {
+      "case": "clean-2027",
+      "passed": 4,
+      "log": "clean-2027.log"
+    },
+    {
+      "case": "modern-2027",
+      "passed": 4,
+      "log": "modern-2027.log"
+    },
+    {
+      "case": "archived-2024",
+      "passed": 10,
+      "log": "archived-2024.log"
+    },
+    {
+      "case": "archived-2026",
+      "passed": 10,
+      "log": "archived-2026.log"
+    },
+    {
+      "case": "combined-exe",
+      "passed": 32,
+      "log": "combined-exe.log"
+    }
+  ],
+  "checks": 76,
+  "exe_sha256": "68eb237ae36a45582df6e9334c99fa9dfd46a3411b2d4333e54877588718189a",
+  "scope": "Managed filesystem and unshown EXE form commands, using owned profiles only. No native module loaded; no Max runtime qualification."
+}

@@ -1,0 +1,4 @@
+PASS clean profile has no previous Scatter installation
+PASS real packaged payload installed for Max 2024
+PASS real package repeat install is idempotent
+PASS real package preserves unrelated registration

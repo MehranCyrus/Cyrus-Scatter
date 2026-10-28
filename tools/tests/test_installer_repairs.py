@@ -48,6 +48,7 @@ def test_backup_transactions_and_preservation(managed_fixture):
 @pytest.mark.parametrize('product,phase', [
     ('scatter', 'backup:scatter-0:partial-write'), ('scatter', 'backup:scatter-0:after-flush'),
     ('scatter', 'backup:scatter-0:after-move'), ('scatter', 'journal'), ('scatter', 'publishing:1'),
+    ('scatter', 'backup:scatter-registration:partial-write'), ('scatter', 'backup:scatter-registration:after-move'),
     ('analyzer', 'backup:analyzer-startup:partial-write'), ('analyzer', 'backup:analyzer-startup:after-flush'),
     ('analyzer', 'backup:analyzer-startup:after-move'), ('analyzer', 'analyzer-journal'), ('analyzer', 'analyzer-publish:1'),
 ])
@@ -120,20 +121,37 @@ def test_custom_registration_is_preserved(managed_fixture,product):
     (case/'custom-registration.log').write_text(log,encoding='utf-8')
 
 
-@pytest.mark.parametrize('version,day,registered',[
-    ('0.81.6','20261013','bin-max2027-7800997061d5'),
-    ('0.85.0','20261016','bin-max2027-29c9e9ffb122'),
-    ('0.86.8.2','20261021','r/a0e8fbbd7f89/bin'),
-    ('0.86.8.3','20261022','r/872f09e13064/bin'),
-    ('0.86.8.4','20261022','r/09f2cdd4bbb1/bin'),
+@pytest.mark.parametrize('year,version,day,registered',[
+    ('2026','0.81.6','20261013','bin-max2026-866ea3d51489'),
+    ('2027','0.81.6','20261013','bin-max2027-7800997061d5'),
+    ('2027','0.85.0','20261016','bin-max2027-29c9e9ffb122'),
+    ('2024','0.86.8.2','20261021','r/95b2c365ca4e/bin'),
+    ('2026','0.86.8.2','20261021','r/2659a612260f/bin'),
+    ('2026','0.86.8.2','20261021','Releases/0.86.8.2-2659a612260f/bin'),
+    ('2027','0.86.8.2','20261021','r/a0e8fbbd7f89/bin'),
+    ('2027','0.86.8.3','20261022','r/872f09e13064/bin'),
+    ('2027','0.86.8.4','20261022','r/09f2cdd4bbb1/bin'),
 ])
-def test_exact_archived_scatter_registration_upgrade(managed_fixture,version,day,registered):
-    archive=ROOT/'dist'/('CyrusScatter-'+version+'-'+day)/('CyrusScatter-'+version+'-Max2027.mzp')
+def test_exact_archived_scatter_registration_upgrade(managed_fixture,year,version,day,registered):
+    archive=ROOT/'dist'/('CyrusScatter-'+version+'-'+day)/('CyrusScatter-'+version+'-Max'+year+'.mzp')
     if not archive.is_file():pytest.skip('Historical ignored package is unavailable in this checkout')
     executable,output=managed_fixture
     case=output/('ls'+uuid.uuid4().hex[:6]);source=case/'old';source.mkdir(parents=True)
     with zipfile.ZipFile(archive) as z:
         for name in ('AminScatter.dlx','CyrusBrush.dlx','CyrusBrushStorage.dlh','CyrusScatterEdit.dlm','CyrusScatterStartup.ms','CyrusScatter.mcr'):
             (source/name).write_bytes(z.read(name))
-    log=run_fixture(executable,'legacy-scatter',case,'scatter','p',source,registered)
+    log=run_fixture(executable,'legacy-scatter',case,'scatter','p',source,registered,year)
     (case/'legacy-upgrade.log').write_text(log,encoding='utf-8')
+
+
+@pytest.mark.parametrize('scenario',['tampered','duplicate','wrong-year','rollback'])
+def test_max2026_legacy_upgrade_guards_and_rollback(managed_fixture,scenario):
+    archive=ROOT/'dist/CyrusScatter-0.81.6-20261013/CyrusScatter-0.81.6-Max2026.mzp'
+    if not archive.is_file():pytest.skip('Historical ignored package is unavailable in this checkout')
+    executable,output=managed_fixture
+    case=output/('guard'+uuid.uuid4().hex[:6]);source=case/'old';source.mkdir(parents=True)
+    with zipfile.ZipFile(archive) as z:
+        for name in ('AminScatter.dlx','CyrusBrush.dlx','CyrusBrushStorage.dlh','CyrusScatterEdit.dlm','CyrusScatterStartup.ms','CyrusScatter.mcr'):
+            (source/name).write_bytes(z.read(name))
+    run_fixture(executable,'legacy-scatter',case,'scatter','p',source,'bin-max2026-866ea3d51489',
+                '2027' if scenario=='wrong-year' else '2026',scenario)

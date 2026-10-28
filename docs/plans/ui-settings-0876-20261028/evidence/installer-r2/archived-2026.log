@@ -1,0 +1,10 @@
+PASS unreceipted installation is visible to installer UI
+PASS preflight preserves all registration bytes
+PASS exact archived Scatter native survives upgrade
+PASS exact archived Scatter native survives upgrade
+PASS exact archived Scatter native survives upgrade
+PASS exact archived Scatter native survives upgrade
+PASS original plugin INI has exact durable backup
+PASS legacy upgrade preserves unrelated INI settings
+PASS repeat legacy upgrade is idempotent
+PASS exact archived Scatter startup has durable backup
